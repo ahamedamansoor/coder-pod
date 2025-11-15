@@ -146,7 +146,7 @@ export function ContentDisplay({
     if (topic.slug === 'access-modifiers') return <JavaAccessModifiers />;
     if (topic.slug === 'encapsulation') return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'packages') return <JavaPackages />;
-    if (topic.slug === 'inheritance') return <JavaInheritance />;
+    if (topic.slug === 'inheritance') return <JavaInheritance onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'polymorphism') return <JavaPolymorphism />;
     if (topic.slug === 'inner-classes') return <JavaInnerClasses />;
     if (topic.slug === 'abstraction') return <JavaAbstraction />;
@@ -325,10 +325,3 @@ export function ContentDisplay({
     </div>
   );
 }
-
-    
-
-    
-
-
-
