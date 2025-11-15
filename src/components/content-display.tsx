@@ -135,7 +135,7 @@ export function ContentDisplay({
     if (topic.slug === 'arrays') return <JavaArrays onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'multi-dimensional-arrays') return <JavaMultiDimensionalArrays onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'methods') return <JavaMethods onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'method-parameters') return <JavaMethodParameters />;
+    if (topic.slug === 'method-parameters') return <JavaMethodParameters onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'method-overloading') return <JavaMethodOverloading />;
     if (topic.slug === 'scope') return <JavaScope />;
     if (topic.slug === 'recursion') return <JavaRecursion />;
@@ -325,3 +325,5 @@ export function ContentDisplay({
     </div>
   );
 }
+
+    
