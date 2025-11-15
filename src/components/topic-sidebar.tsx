@@ -48,7 +48,7 @@ export function TopicSidebar({
           <SidebarMenu className="p-4 space-y-4">
             {learningPlanTopic && (
               <div>
-                <p className="px-2 py-1 text-sm font-semibold text-muted-foreground">Learning Path</p>
+                <p className="px-2 py-1 text-base font-semibold text-muted-foreground">Learning Path</p>
                 <SidebarMenuItem key={learningPlanTopic.slug}>
                   <SidebarMenuButton
                     onClick={() => onTopicSelect(learningPlanTopic.slug)}
@@ -63,10 +63,10 @@ export function TopicSidebar({
             )}
             
             <div className='space-y-4'>
-              <p className="px-2 py-1 text-sm font-semibold text-muted-foreground">Topics</p>
+              <p className="px-2 py-1 text-base font-semibold text-muted-foreground">Topics</p>
               
               <div className="space-y-2">
-                <p className="px-2 text-base font-semibold text-foreground">Getting Started</p>
+                <p className="px-2 text-sm font-semibold text-foreground">Getting Started</p>
                 <div className="ml-2 border-l pl-2 space-y-2">
                   {whatIsJavaTopics.length > 0 && (
                     <div className="space-y-1">
@@ -171,7 +171,7 @@ export function TopicSidebar({
               </div>
 
               <div className="space-y-2">
-                <p className="px-2 text-base font-semibold text-foreground">Basic Output</p>
+                <p className="px-2 text-sm font-semibold text-foreground">Basic Output</p>
                 <div className="ml-2 border-l pl-2 space-y-2">
                   {printStatementTopics.length > 0 && (
                     <div className="space-y-1">
