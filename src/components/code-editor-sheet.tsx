@@ -35,103 +35,102 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     // Simulate code execution
     setTimeout(() => {
       try {
-        const printlnRegex = /System\.out\.println\(([^)]+)\);/g;
-        let match;
-        const outputs = [];
-        
+        // A very basic mock of a Java interpreter for demonstration purposes.
         const variables: Record<string, any> = {};
-        
-        // This is a very basic evaluator for demonstration purposes.
+
         const evaluateExpression = (expr: string): any => {
           expr = expr.trim();
-
-          // If it's a string literal
+          
+          // String literal
           if (expr.startsWith('"') && expr.endsWith('"')) {
             return expr.slice(1, -1);
           }
-          // If it's a number literal
-          if (!isNaN(Number(expr))) {
-            return Number(expr);
+
+          // Handle string concatenation
+          const parts = expr.split(/(?<!\\) \+ /);
+          if (parts.length > 1) {
+             return parts.map(part => evaluateExpression(part.trim())).join('');
           }
-          // If it's a boolean literal
-          if (expr === 'true' || expr === 'false') {
-            return expr === 'true';
-          }
-          // If it's a char literal
-          if (expr.startsWith("'") && expr.endsWith("'")) {
-             return expr.slice(1, -1);
-          }
-          // If it's a variable
+          
+          // Variable lookup
           if (variables[expr] !== undefined) {
             return variables[expr];
           }
 
-          // Handle simple arithmetic and string concatenation
-          const parts = expr.split(/( \+ )/).map(p => p.trim());
-          if (parts.length > 1) {
-            let result = evaluateExpression(parts[0]);
-            for (let i = 1; i < parts.length; i += 2) {
-              if (parts[i] === '+') {
-                result += evaluateExpression(parts[i+1]);
-              }
-            }
+          // Char literal
+          if (expr.startsWith("'") && expr.endsWith("'")) {
+             return expr.slice(1, -1);
+          }
+
+          // Boolean literals
+          if (expr === 'true') return true;
+          if (expr === 'false') return false;
+
+          // Number literals
+          if (!isNaN(Number(expr))) {
+            return Number(expr);
+          }
+
+          // Basic arithmetic - this part is tricky and limited.
+          // This will not respect operator precedence. It evaluates left-to-right.
+          try {
+            // A safer way to evaluate arithmetic without using eval()
+            let result = new Function('return ' + expr.replace(/[a-zA-Z]/g, ''))();
             return result;
+          } catch(e) {
+            // Fallback for more complex expressions or if evaluation fails
+            return `[expression: ${expr}]`;
           }
-
-          return expr; // Fallback
         };
+        
+        let outputs: any[] = [];
+        
+        // Remove comments first
+        const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+        
+        // Process lines
+        const lines = codeWithoutComments.split(';').map(l => l.trim()).filter(Boolean);
 
-        const varRegex = /(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^;]+);/g;
-        let varMatch;
-        // Create a copy of the code to manipulate for parsing
-        let parsableCode = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, ''); // Remove comments
+        for (const line of lines) {
+           // Variable declaration
+           const varRegex = /^(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
+           const varMatch = line.match(varRegex);
+           if (varMatch) {
+             const [, type, name, valueStr] = varMatch;
+             variables[name] = evaluateExpression(valueStr);
+             continue;
+           }
 
-        while ((varMatch = varRegex.exec(parsableCode)) !== null) {
-          const name = varMatch[2];
-          let valueStr = varMatch[3].trim();
-          
-          // Evaluate arithmetic expressions in assignments
-          const arithmeticMatch = valueStr.match(/([a-zA-Z0-9_.\-"' ]+)\s*([*\/+-])\s*([a-zA-Z0-9_.\-"' ]+)/);
-          if (arithmeticMatch) {
-            const left = evaluateExpression(arithmeticMatch[1].trim());
-            const operator = arithmeticMatch[2];
-            const right = evaluateExpression(arithmeticMatch[3].trim());
-            
-            let result;
-            if (typeof left === 'number' && typeof right === 'number') {
-               switch(operator) {
-                  case '+': result = left + right; break;
-                  case '-': result = left - right; break;
-                  case '*': result = left * right; break;
-                  case '/': result = left / right; break;
-               }
-               variables[name] = result;
-            }
-          } else {
-            variables[name] = evaluateExpression(valueStr);
-          }
+           // Print statement
+           const printlnRegex = /System\.out\.println\((.*)\)/;
+           const printMatch = line.match(printlnRegex);
+           if (printMatch) {
+             const content = printMatch[1].trim();
+             outputs.push(evaluateExpression(content));
+             continue;
+           }
+
+           const printErrRegex = /System\.err\.println\((.*)\)/;
+           const printErrMatch = line.match(printErrRegex);
+           if (printErrMatch) {
+               const content = printErrMatch[1].trim();
+               outputs.push(`Error: ${evaluateExpression(content)}`);
+               continue;
+           }
         }
         
-        while ((match = printlnRegex.exec(code)) !== null) {
-            let content = match[1].trim();
-            outputs.push(evaluateExpression(content));
-        }
-
         if (outputs.length > 0) {
           setOutput(outputs.join('\n'));
-        } else if (code.includes("System.err.println")) {
-          const errorMatch = code.match(/System\.err\.println\("([^"]*)"\);/);
-          setOutput(errorMatch ? `Error: ${errorMatch[1]}` : "Execution finished with an error.");
         } else {
           setOutput("Execution finished with no output.");
         }
 
-      } catch (e) {
-        setOutput("An error occurred during execution.");
+      } catch (e: any) {
+        setOutput(`An error occurred during execution: ${e.message}`);
       } finally {
         setIsRunning(false);
       }
-    }, 1000);
+    }, 500);
   };
 
   return (
