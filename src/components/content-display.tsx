@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -695,12 +695,18 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
 
       {qaResult && (
         <Card className="border-primary/50 bg-primary/5 animate-in fade-in-50 duration-500">
-          <CardHeader>
-            <CardTitle>Answer</CardTitle>
+          <CardHeader className="flex-row items-start gap-4">
+            <div className="bg-primary text-primary-foreground p-2 rounded-full">
+              <Sparkles className="w-5 h-5"/>
+            </div>
+            <div>
+              <CardTitle>AI Answer</CardTitle>
+              <CardDescription>Here's what our AI assistant came up with.</CardDescription>
+            </div>
           </CardHeader>
           <CardContent>
             <div
-              className="prose prose-sm max-w-none"
+              className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary"
               dangerouslySetInnerHTML={{ __html: qaResult.answer.replace(/\n/g, '<br />') }}
             />
           </CardContent>
@@ -709,5 +715,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     </div>
   );
 }
+
+    
 
     
