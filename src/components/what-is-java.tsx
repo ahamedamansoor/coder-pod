@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
   
@@ -598,7 +598,7 @@ export function HowJavaWorks() {
     );
 }
     
-export function JavaComments() {
+export function JavaComments({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
     const commentTypes = [
       {
         name: "Single-Line Comment",
@@ -661,6 +661,9 @@ export function JavaComments() {
                         <div className="bg-muted rounded-md p-4">
                             <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{comment.example}</pre>
                         </div>
+                        <Button onClick={() => onOpenEditor(comment.example)} variant="ghost" size="sm" className="mt-2">
+                            <Play className="mr-2 h-4 w-4" /> Try it
+                        </Button>
                     </CardContent>
                 </Card>
             ))}
@@ -680,3 +683,5 @@ export function JavaComments() {
       </div>
     );
   }
+
+    

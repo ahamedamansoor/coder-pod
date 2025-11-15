@@ -28,7 +28,7 @@ import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
 import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments } from './what-is-java';
 
-function JavaTypeCasting() {
+function JavaTypeCasting({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
     const wideningExample = {
       title: 'Widening Casting (Automatic)',
       description: 'This happens when you pass a smaller data type to a larger one. Java does this for you automatically because there is no risk of losing data.',
@@ -97,8 +97,13 @@ function JavaTypeCasting() {
             <CardDescription>{wideningExample.description}</CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6 items-center">
-            <div className="bg-background rounded-lg p-4 overflow-x-auto">
-              <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
+            <div>
+              <div className="bg-background rounded-lg p-4 overflow-x-auto">
+                <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
+              </div>
+              <Button onClick={() => onOpenEditor(wideningExample.code)} variant="ghost" size="sm" className="mt-2">
+                  <Play className="mr-2 h-4 w-4" /> Try it
+              </Button>
             </div>
             <div className="flex flex-col items-center text-center">
                 <p className="font-semibold text-primary mb-2">SAFE & AUTOMATIC</p>
@@ -121,8 +126,13 @@ function JavaTypeCasting() {
             <CardDescription>{narrowingExample.description}</CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6 items-center">
-            <div className="bg-background rounded-lg p-4 overflow-x-auto">
-              <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
+            <div>
+                <div className="bg-background rounded-lg p-4 overflow-x-auto">
+                  <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
+                </div>
+                <Button onClick={() => onOpenEditor(narrowingExample.code)} variant="ghost" size="sm" className="mt-2">
+                    <Play className="mr-2 h-4 w-4" /> Try it
+                </Button>
             </div>
              <div className="flex flex-col items-center text-center">
                 <p className="font-semibold text-destructive mb-2">UNSAFE & MANUAL</p>
@@ -142,7 +152,7 @@ function JavaTypeCasting() {
     );
   }
 
-function JavaVariables() {
+function JavaVariables({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
     const declarationSteps = [
       {
         step: 1,
@@ -216,6 +226,9 @@ function JavaVariables() {
                   <div className="bg-muted rounded p-2 w-full overflow-x-auto">
                     <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{item.code}</code></pre>
                   </div>
+                  <Button onClick={() => onOpenEditor(item.code)} variant="ghost" size="sm" className="mt-2">
+                      <Play className="mr-2 h-4 w-4" /> Try it
+                  </Button>
                 </div>
                 {index < declarationSteps.length - 1 && (
                   <ChevronRight className="w-8 h-8 text-muted-foreground hidden md:block" />
@@ -238,6 +251,9 @@ function JavaVariables() {
                 <div className="bg-background/50 rounded p-3 overflow-x-auto">
                   <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{ex.code}</code></pre>
                 </div>
+                <Button onClick={() => onOpenEditor(ex.code)} variant="ghost" size="sm" className="mt-2">
+                    <Play className="mr-2 h-4 w-4" /> Try it
+                </Button>
               </div>
             ))}
           </CardContent>
@@ -246,7 +262,7 @@ function JavaVariables() {
     );
   }
 
-function JavaDataTypes() {
+function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
   const [selectedTypeId, setSelectedTypeId] = useState<string | null>(null);
 
   const primitiveTypes = [
@@ -307,6 +323,9 @@ function JavaDataTypes() {
                     <p className="text-sm font-semibold whitespace-pre-wrap">{type.range || type.values || type.precision}</p>
                     <p className="text-xs text-muted-foreground mb-1 mt-2">Example:</p>
                     <pre className="text-primary text-sm font-code whitespace-pre-wrap">{type.example}</pre>
+                    <Button onClick={(e) => { e.stopPropagation(); onOpenEditor(type.example); }} variant="ghost" size="sm" className="mt-2">
+                        <Play className="mr-2 h-4 w-4" /> Try it
+                    </Button>
                 </div>
               )}
 
@@ -341,6 +360,9 @@ function JavaDataTypes() {
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
                 <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{type.example}</code></pre>
                </div>
+               <Button onClick={() => onOpenEditor(type.example)} variant="ghost" size="sm" className="mt-2">
+                  <Play className="mr-2 h-4 w-4" /> Try it
+               </Button>
              </div>
           ))}
         </CardContent>
@@ -349,7 +371,7 @@ function JavaDataTypes() {
   )
 }
 
-function JavaPrintFormats() {
+function JavaPrintFormats({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
   const [selectedMethodId, setSelectedMethodId] = useState<number | null>(null);
 
   const printMethods = [
@@ -445,6 +467,9 @@ function JavaPrintFormats() {
                   <p className="text-xs text-muted-foreground mb-2">Output:</p>
                   <pre className="text-foreground/80 text-sm font-code whitespace-pre-wrap">{method.output}</pre>
                 </div>
+                <Button onClick={(e) => { e.stopPropagation(); onOpenEditor(method.example); }} variant="ghost" size="sm" className="mt-2">
+                    <Play className="mr-2 h-4 w-4" /> Try it
+                </Button>
               </div>
             )}
             
@@ -480,6 +505,9 @@ function JavaPrintFormats() {
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
                 <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{spec.example}</code></pre>
                </div>
+               <Button onClick={() => onOpenEditor(spec.example)} variant="ghost" size="sm" className="mt-2">
+                  <Play className="mr-2 h-4 w-4" /> Try it
+               </Button>
              </div>
           ))}
         </CardContent>
@@ -587,19 +615,19 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
       return <FirstJavaProgram onOpenEditor={onOpenEditor} />;
     }
     if (isCommentsInJavaTopic) {
-      return <JavaComments />;
+      return <JavaComments onOpenEditor={onOpenEditor} />;
     }
     if (isJavaPrintTopic) {
-      return <JavaPrintFormats />;
+      return <JavaPrintFormats onOpenEditor={onOpenEditor} />;
     }
     if (isJavaDataTypesTopic) {
-      return <JavaDataTypes />;
+      return <JavaDataTypes onOpenEditor={onOpenEditor} />;
     }
     if (isJavaVariablesTopic) {
-      return <JavaVariables />;
+      return <JavaVariables onOpenEditor={onOpenEditor} />;
     }
     if (isJavaTypeCastingTopic) {
-        return <JavaTypeCasting />;
+        return <JavaTypeCasting onOpenEditor={onOpenEditor} />;
     }
     return (
       <Card>
@@ -749,3 +777,5 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     </div>
   );
 }
+
+    
