@@ -8,7 +8,7 @@ import { TopicSidebar } from '@/components/topic-sidebar';
 import { ContentDisplay } from '@/components/content-display';
 import { MainHeader } from '@/components/main-header';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
-import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
+import { Sidebar, SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
 
 export default function JavaTopicPage() {
