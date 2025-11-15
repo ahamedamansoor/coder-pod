@@ -107,14 +107,12 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
            if(reassignMatch) {
              const [, name, valueStr] = reassignMatch;
              if (finalVariables.has(name)) {
-                setOutput(`Error: cannot assign a value to final variable '${name}'`);
-                setIsRunning(false);
-                return;
+                throw new Error(`cannot assign a value to final variable '${name}'`);
              }
              if (variables[name] !== undefined) {
                 variables[name] = evaluateExpression(valueStr);
+                continue;
              }
-             continue;
            }
 
            // Regex for print statements
@@ -199,3 +197,5 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     </div>
   );
 }
+
+    
