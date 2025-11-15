@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Eye, Box, Code, AlertTriangle, Building, DoorOpen } from 'lucide-react';
+import { Play, Eye, Box, AlertTriangle, Building, DoorOpen } from 'lucide-react';
 import React from 'react';
 
 function wrapInMain(code: string): string {
@@ -11,7 +11,11 @@ function wrapInMain(code: string): string {
     if (code.includes('class Car')) {
         return code;
     }
-    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
+    return `public class Main {
+  public static void main(String[] args) {
+    ${code.split('\n').map(line => '  ' + line).join('\n')}
+  }
+}`;
 }
 
 interface JavaScopeProps {
@@ -19,6 +23,7 @@ interface JavaScopeProps {
 }
 
 export function JavaScope({ onOpenEditor }: JavaScopeProps) {
+
     const blockScopeExample = `// x cannot be used here because it's not declared yet
 
 if (true) {
