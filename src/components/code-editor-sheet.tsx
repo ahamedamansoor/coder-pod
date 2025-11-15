@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Sheet,
   SheetContent,
@@ -21,6 +21,13 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
   );
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    if (initialCode) {
+      setCode(initialCode);
+    }
+  }, [initialCode]);
+
 
   const handleRunCode = () => {
     setIsRunning(true);
@@ -84,11 +91,12 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
           let valueStr = varMatch[3].trim();
           
           // Evaluate arithmetic expressions in assignments
-          const arithmeticMatch = valueStr.match(/([a-zA-Z0-9_]+)\s*([*\/+-])\s*([a-zA-Z0-9_]+)/);
+          const arithmeticMatch = valueStr.match(/([a-zA-Z0-9_.\-"' ]+)\s*([*\/+-])\s*([a-zA-Z0-9_.\-"' ]+)/);
           if (arithmeticMatch) {
-            const left = evaluateExpression(arithmeticMatch[1]);
+            const left = evaluateExpression(arithmeticMatch[1].trim());
             const operator = arithmeticMatch[2];
-            const right = evaluateExpression(arithmeticMatch[3]);
+            const right = evaluateExpression(arithmeticMatch[3].trim());
+            
             let result;
             if (typeof left === 'number' && typeof right === 'number') {
                switch(operator) {
