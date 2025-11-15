@@ -148,8 +148,8 @@ export function ContentDisplay({
     if (topic.slug === 'packages') return <JavaPackages />;
     if (topic.slug === 'inheritance') return <JavaInheritance onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'polymorphism') return <JavaPolymorphism onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'inner-classes') return <JavaInnerClasses />;
-    if (topic.slug === 'abstraction') return <JavaAbstraction />;
+    if (topic.slug === 'inner-classes') return <JavaInnerClasses onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'abstraction') return <JavaAbstraction onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'interfaces') return <JavaInterfaces />;
     if (topic.slug === 'enums') return <JavaEnums />;
     if (topic.slug === 'date-time') return <JavaDate />;
