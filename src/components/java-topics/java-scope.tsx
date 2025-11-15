@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,9 @@ import React from 'react';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
+        return code;
+    }
+    if (code.includes('class Car')) {
         return code;
     }
     return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
