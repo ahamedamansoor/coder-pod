@@ -273,14 +273,14 @@ export function JdkJreJvm() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                     <Milestone className="w-6 h-6 text-primary" />
-                    In Simple Terms...
+                    In a Nutshell...
                 </CardTitle>
-                <CardDescription>Think of it like building and living in a house.</CardDescription>
+                <CardDescription>A simple analogy to remember the difference.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
-                <p><strong className="text-foreground">JDK is the entire construction site:</strong> It has all the tools (compilers), blueprints (libraries), and the foundation (JRE) to build the house.</p>
-                <p><strong className="text-secondary-foreground">JRE is the finished house with utilities:</strong> It has everything you need to live in the house (run the program), like electricity and plumbing (core libraries), and the house itself (JVM).</p>
-                <p><strong className="text-primary">JVM is the physical foundation of the house:</strong> It's the base that the house sits on and what makes it a usable space. You can't run a program without it.</p>
+                <p><strong className="text-foreground">JDK is the Toolbox:</strong> It has all the tools to build and run your Java program.</p>
+                <p><strong className="text-secondary-foreground">JRE is the Power:</strong> It gives your Java program the power it needs to run.</p>
+                <p><strong className="text-primary">JVM is the Engine:</strong> It's the core engine that actually runs your program.</p>
             </CardContent>
         </Card>
 
@@ -289,6 +289,7 @@ export function JdkJreJvm() {
   }
 
     
+
 
 
 
