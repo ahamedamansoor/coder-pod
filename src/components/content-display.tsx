@@ -144,7 +144,7 @@ export function ContentDisplay({
     if (topic.slug === 'class-methods') return <JavaClassMethods />;
     if (topic.slug === 'constructors') return <JavaConstructors onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'access-modifiers') return <JavaAccessModifiers />;
-    if (topic.slug === 'encapsulation') return <JavaEncapsulation />;
+    if (topic.slug === 'encapsulation') return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'packages') return <JavaPackages />;
     if (topic.slug === 'inheritance') return <JavaInheritance />;
     if (topic.slug === 'polymorphism') return <JavaPolymorphism />;
@@ -329,5 +329,6 @@ export function ContentDisplay({
     
 
     
+
 
 
