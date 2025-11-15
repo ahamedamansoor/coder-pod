@@ -191,22 +191,14 @@ function JavaTypeCasting() {
     const wideningExample = {
       title: 'Widening Casting (Automatic)',
       description: 'This happens when you pass a smaller data type to a larger one. Java does this for you automatically because there is no risk of losing data.',
-      code: `int myInt = 9;
-double myDouble = myInt; // Automatic casting: int to double
-
-System.out.println(myInt);      // Outputs 9
-System.out.println(myDouble);   // Outputs 9.0`,
+      code: 'int myInt = 9;\ndouble myDouble = myInt; // Automatic casting: int to double\n\nSystem.out.println(myInt);      // Outputs 9\nSystem.out.println(myDouble);   // Outputs 9.0',
       order: 'byte -> short -> char -> int -> long -> float -> double'
     };
   
     const narrowingExample = {
       title: 'Narrowing Casting (Manual)',
       description: 'This happens when you pass a larger data type to a smaller one. You must do this manually by placing the type in parentheses. Be careful, you might lose data!',
-      code: `double myDouble = 9.78;
-int myInt = (int) myDouble; // Manual casting: double to int
-
-System.out.println(myDouble);   // Outputs 9.78
-System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
+      code: 'double myDouble = 9.78;\nint myInt = (int) myDouble; // Manual casting: double to int\n\nSystem.out.println(myDouble);   // Outputs 9.78\nSystem.out.println(myInt);      // Outputs 9 (the decimal part is lost)',
       order: 'double -> float -> long -> int -> char -> short -> byte'
     };
   
