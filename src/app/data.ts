@@ -65,4 +65,16 @@ export const languages: Language[] = [
       }
     ],
   },
+  {
+    slug: 'java',
+    name: 'Java',
+    topics: [
+      {
+        slug: 'print-formats',
+        title: 'Print Formats',
+        explanation:
+          'Java provides several ways to display output to the console, each with its specific use case. The most common methods are part of the `System.out` object. `System.out.print()` prints text without a new line. `System.out.println()` prints text and adds a new line. For formatted output, `System.out.printf()` uses format specifiers like `%s` for strings and `%d` for integers to control the output format. `String.format()` works similarly but returns a formatted string instead of printing it. For errors, `System.err.println()` prints to the standard error stream, often displayed in a different color in IDEs.',
+      },
+    ],
+  },
 ];

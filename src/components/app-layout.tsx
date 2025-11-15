@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   SidebarProvider,
   Sidebar,
@@ -16,7 +16,7 @@ export default function AppLayout() {
     languages[0].slug
   );
   const [selectedTopicSlug, setSelectedTopicSlug] = useState<string | null>(
-    languages[0].topics[0].slug
+    languages[0].topics[0]?.slug ?? null
   );
 
   const selectedLanguage = useMemo(
@@ -38,6 +38,13 @@ export default function AppLayout() {
       setSelectedTopicSlug(null);
     }
   };
+
+  useEffect(() => {
+    const lang = languages.find(l => l.slug === selectedLanguageSlug);
+    if (lang && (!selectedTopicSlug || !lang.topics.find(t => t.slug === selectedTopicSlug))) {
+      setSelectedTopicSlug(lang.topics[0]?.slug ?? null);
+    }
+  }, [selectedLanguageSlug, selectedTopicSlug]);
 
   return (
     <SidebarProvider>
