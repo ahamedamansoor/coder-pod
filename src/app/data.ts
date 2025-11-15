@@ -42,6 +42,11 @@ export const languages: Language[] = [
         explanation: 'Understanding the core components that run a Java program.',
       },
       {
+        slug: 'setting-up-environment',
+        title: 'Setting Up Environment',
+        explanation: 'A step-by-step guide to installing the Java Development Kit (JDK) and setting up your first project in an Integrated Development Environment (IDE).',
+      },
+      {
         slug: 'variables',
         title: 'Declaring and Initializing Variables',
         explanation:
