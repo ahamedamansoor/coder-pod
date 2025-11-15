@@ -102,7 +102,7 @@ System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6 items-center">
             <div className="bg-background rounded-lg p-4">
-              <pre><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
+              <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
             </div>
             <div className="flex flex-col items-center text-center">
                 <p className="font-semibold text-primary mb-2">SAFE & AUTOMATIC</p>
@@ -126,7 +126,7 @@ System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6 items-center">
             <div className="bg-background rounded-lg p-4">
-              <pre><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
+              <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
             </div>
              <div className="flex flex-col items-center text-center">
                 <p className="font-semibold text-destructive mb-2">UNSAFE & MANUAL</p>
@@ -240,7 +240,7 @@ function JavaVariables() {
                 <h3 className="font-bold text-primary text-lg mb-2">{ex.title}</h3>
                 <p className="text-sm text-foreground mb-3 h-12">{ex.description}</p>
                 <div className="bg-background/50 rounded p-3">
-                  <pre><code className="text-sm text-foreground font-code">{ex.code}</code></pre>
+                  <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{ex.code}</code></pre>
                 </div>
               </div>
             ))}
@@ -308,7 +308,7 @@ function JavaDataTypes() {
               {selectedTypeId === type.id && (
                 <div className="mt-4 space-y-3 bg-foreground/5 rounded-lg p-3">
                     <p className="text-xs text-muted-foreground mb-1">Range:</p>
-                    <p className="text-sm font-semibold">{type.range || type.values || type.precision}</p>
+                    <p className="text-sm font-semibold whitespace-pre-wrap">{type.range || type.values || type.precision}</p>
                     <p className="text-xs text-muted-foreground mb-1 mt-2">Example:</p>
                     <pre className="text-primary text-sm font-code whitespace-pre-wrap">{type.example}</pre>
                 </div>
@@ -343,7 +343,7 @@ function JavaDataTypes() {
                <p className="text-sm text-foreground mb-3 h-12">{type.description}</p>
                <div className="bg-background/50 rounded p-2">
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
-                <code className="text-sm text-foreground font-code">{type.example}</code>
+                <code className="text-sm text-foreground font-code whitespace-pre-wrap">{type.example}</code>
                </div>
              </div>
           ))}
@@ -436,7 +436,7 @@ function JavaPrintFormats() {
             
             <div className="bg-muted rounded-lg p-3 mb-3">
               <p className="text-xs text-muted-foreground mb-1">Syntax:</p>
-              <code className="text-sm text-foreground font-code">{method.syntax}</code>
+              <code className="text-sm text-foreground font-code whitespace-pre-wrap">{method.syntax}</code>
             </div>
 
             {selectedMethodId === method.id && (
@@ -482,7 +482,7 @@ function JavaPrintFormats() {
                <p className="text-sm text-foreground mt-1 mb-2">{spec.desc}</p>
                <div className="bg-background/50 rounded p-2">
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
-                <code className="text-sm text-foreground font-code">{spec.example}</code>
+                <code className="text-sm text-foreground font-code whitespace-pre-wrap">{spec.example}</code>
                </div>
              </div>
           ))}
@@ -651,7 +651,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
              </CardHeader>
              <CardContent>
                 <div className="bg-card p-4 rounded-md overflow-x-auto">
-                  <pre><code className="font-code text-sm text-foreground">
+                  <pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">
                     {simplifiedContent.examples}
                   </code></pre>
                 </div>
@@ -706,7 +706,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
           </CardHeader>
           <CardContent>
             <div
-              className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary"
+              className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary whitespace-pre-wrap"
               dangerouslySetInnerHTML={{ __html: qaResult.answer.replace(/\n/g, '<br />') }}
             />
           </CardContent>
