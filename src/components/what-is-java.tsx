@@ -1,3 +1,4 @@
+
 import {
     Card,
     CardContent,
@@ -5,7 +6,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route } from 'lucide-react';
 import Link from 'next/link';
   
 export function TheStoryOfJava() {
@@ -307,7 +308,7 @@ export function JavaEnvironmentSetup() {
                     <Settings className="w-10 h-10 text-primary" />
                     <h1 className="text-4xl font-bold text-foreground">Setting Up Your Java Environment</h1>
                 </div>
-                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Let's get your machine ready to code in Java. It's a two-step process: install the JDK, then choose an IDE.</p>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Let's get your machine ready to code in Java. It's a three-step process.</p>
             </div>
 
             <Card>
@@ -357,6 +358,37 @@ export function JavaEnvironmentSetup() {
                     </div>
                 </CardContent>
             </Card>
+            
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-4">
+                        <div className="bg-primary/10 text-primary p-3 rounded-full">
+                            <Route className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <CardTitle className="text-2xl">Step 2: Set the PATH Environment Variable</CardTitle>
+                            <CardDescription>Help your computer find the Java commands from anywhere.</CardDescription>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-4 pl-16">
+                    <div>
+                        <h3 className="font-semibold text-foreground mb-2">Why is this important?</h3>
+                        <p className="text-sm text-muted-foreground">Setting the PATH allows you to run Java commands like <code className="font-mono bg-muted p-1 rounded">javac</code> (compiler) and <code className="font-mono bg-muted p-1 rounded">java</code> (launcher) from any folder in your terminal. Without it, you'd have to type the full, long path to their location every single time.</p>
+                    </div>
+                    <div>
+                        <h3 className="font-semibold text-foreground mb-2">How to do it (The short version):</h3>
+                        <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+                            <li>Find the `bin` directory of your JDK installation (e.g., `C:\Program Files\Java\jdk-21\bin`).</li>
+                            <li>Copy this full path.</li>
+                            <li>Search for "Environment Variables" in your system settings.</li>
+                            <li>Find the `Path` variable under "System variables" and choose to edit it.</li>
+                            <li>Add the copied `bin` path as a new entry and save your changes.</li>
+                        </ol>
+                    </div>
+                     <p className="text-xs text-muted-foreground pt-2">Note: The exact steps can vary slightly between Windows, macOS, and Linux. A quick search for "how to set java path" for your specific operating system will provide detailed guides.</p>
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>
@@ -365,7 +397,7 @@ export function JavaEnvironmentSetup() {
                             <FileCode className="w-6 h-6" />
                         </div>
                         <div>
-                            <CardTitle className="text-2xl">Step 2: Choose an Integrated Development Environment (IDE)</CardTitle>
+                            <CardTitle className="text-2xl">Step 3: Choose an Integrated Development Environment (IDE)</CardTitle>
                             <CardDescription>An IDE is a code editor with powerful features like debugging and auto-completion.</CardDescription>
                         </div>
                     </div>
@@ -403,6 +435,8 @@ export function JavaEnvironmentSetup() {
     );
 }
     
+
+
 
 
 
