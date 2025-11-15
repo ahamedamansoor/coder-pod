@@ -246,7 +246,7 @@ function JavaIntroduction() {
 export function WhatIsJava() {
     return (
         <div className="space-y-16">
-            <div className="text-center">
+            <div className="text-center" id="introduction">
                 <div className="flex items-center justify-center gap-4 mb-4">
                     <VenetianMask className="w-12 h-12 text-primary" />
                     <h1 className="text-5xl font-bold tracking-tight text-foreground">What is Java?</h1>
@@ -254,8 +254,14 @@ export function WhatIsJava() {
             </div>
 
             <JavaIntroduction />
-            <TheStoryOfJava />
-            <JavaFeatures />
+            
+            <div id="history-of-java" className="pt-16">
+                <TheStoryOfJava />
+            </div>
+
+            <div id="features-of-java" className="pt-16">
+                <JavaFeatures />
+            </div>
         </div>
     )
 }
