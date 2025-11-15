@@ -9,15 +9,20 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
   type SimplifyTopicExplanationOutput,
 } from '@/ai/flows/simplify-topic-explanations';
+import {
+  answerQuestion,
+  type AnswerQuestionOutput,
+} from '@/ai/flows/answer-question';
 import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Textarea } from './ui/textarea';
 
 interface ContentDisplayProps {
   topic: Topic;
@@ -164,6 +169,11 @@ export function ContentDisplay({ topic, language }: ContentDisplayProps) {
   const [isSimplifying, setIsSimplifying] = React.useState(false);
   const [simplifiedContent, setSimplifiedContent] =
     React.useState<SimplifyTopicExplanationOutput | null>(null);
+  
+  const [question, setQuestion] = React.useState('');
+  const [isAsking, setIsAsking] = React.useState(false);
+  const [qaResult, setQaResult] = React.useState<AnswerQuestionOutput | null>(null);
+
   const { toast } = useToast();
 
   const handleSimplify = async () => {
@@ -186,6 +196,30 @@ export function ContentDisplay({ topic, language }: ContentDisplayProps) {
       });
     } finally {
       setIsSimplifying(false);
+    }
+  };
+
+  const handleAskQuestion = async () => {
+    if (!question.trim()) return;
+    setIsAsking(true);
+    setQaResult(null);
+    try {
+      const result = await answerQuestion({
+        topic: topic.title,
+        language: language.name,
+        explanation: topic.explanation,
+        question: question,
+      });
+      setQaResult(result);
+    } catch (error) {
+      console.error('Failed to answer question:', error);
+      toast({
+        variant: 'destructive',
+        title: 'An error occurred',
+        description: 'Failed to get an answer. Please try again.',
+      });
+    } finally {
+      setIsAsking(false);
     }
   };
   
@@ -275,6 +309,53 @@ export function ContentDisplay({ topic, language }: ContentDisplayProps) {
              </CardContent>
            </Card>
         </div>
+      )}
+      
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HelpCircle className="w-6 h-6 text-primary" />
+            Ask a Question
+          </CardTitle>
+          <CardDescription>
+            Have a question about {topic.title}? Ask our AI assistant.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Textarea
+            placeholder={`e.g., "What is the difference between print() and println()?"`}
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            disabled={isAsking}
+          />
+          <Button onClick={handleAskQuestion} disabled={isAsking || !question.trim()}>
+            {isAsking ? 'Thinking...' : 'Get Answer'}
+          </Button>
+        </CardContent>
+      </Card>
+      
+      {isAsking && (
+        <Card>
+            <CardContent className="p-6 space-y-2">
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+            </CardContent>
+          </Card>
+      )}
+
+      {qaResult && (
+        <Card className="border-primary/50 bg-primary/5 animate-in fade-in-50 duration-500">
+          <CardHeader>
+            <CardTitle>Answer</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div
+              className="prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: qaResult.answer.replace(/\n/g, '<br />') }}
+            />
+          </CardContent>
+        </Card>
       )}
     </div>
   );
