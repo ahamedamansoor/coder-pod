@@ -137,10 +137,10 @@ export function ContentDisplay({
     if (topic.slug === 'methods') return <JavaMethods onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'method-parameters') return <JavaMethodParameters onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'method-overloading') return <JavaMethodOverloading onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'scope') return <JavaScope />;
+    if (topic.slug === 'scope') return <JavaScope onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'recursion') return <JavaRecursion onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'classes-objects') return <JavaClassesObjects />;
-    if (topic.slug === 'class-attributes') return <JavaClassAttributes />;
+    if (topic.slug === 'classes-objects') return <JavaClassesObjects onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'class-attributes') return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'class-methods') return <JavaClassMethods />;
     if (topic.slug === 'constructors') return <JavaConstructors />;
     if (topic.slug === 'access-modifiers') return <JavaAccessModifiers />;
@@ -311,7 +311,7 @@ export function ContentDisplay({
             </div>
             <div>
               <CardTitle>AI Answer</CardTitle>
-              <CardDescription>Here's what our AI assistant came up with.</CardDescription>
+              <CardDescription>Here's what our AI assistant came with.</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
