@@ -16,6 +16,12 @@ export const languages: Language[] = [
     name: 'Java',
     topics: [
       {
+        slug: 'features-of-java',
+        title: 'Features of Java',
+        explanation:
+          'Java is a popular programming language with a wide range of features that make it powerful and versatile. Understanding these core features helps in appreciating why it is widely used for building robust applications.',
+      },
+      {
         slug: 'print-formats',
         title: 'Print Formats',
         explanation:
