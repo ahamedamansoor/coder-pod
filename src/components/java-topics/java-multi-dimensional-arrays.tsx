@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Table, Th, Repeat } from 'lucide-react';
+import { Play, Table, Rows, Repeat } from 'lucide-react';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -82,7 +82,7 @@ for (int i = 0; i < myNumbers.length; i++) {
             <Card>
                 <CardHeader>
                     <div className="flex items-center gap-3">
-                       <Th className="w-6 h-6 text-primary"/>
+                       <Rows className="w-6 h-6 text-primary"/>
                        <CardTitle>Declaration and Initialization</CardTitle>
                     </div>
                 </CardHeader>
@@ -108,7 +108,7 @@ for (int i = 0; i < myNumbers.length; i++) {
              <Card>
                 <CardHeader>
                     <div className="flex items-center gap-3">
-                       <Th className="w-6 h-6 text-primary"/>
+                       <Rows className="w-6 h-6 text-primary"/>
                        <CardTitle>Accessing and Changing Elements</CardTitle>
                     </div>
                     <CardDescription>You use two index numbers: the first for the row and the second for the column. Remember, indexes start at 0!</CardDescription>
