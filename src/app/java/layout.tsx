@@ -1,19 +1,18 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { MainHeader } from '@/components/main-header';
 import { TopicSidebar } from '@/components/topic-sidebar';
 import { languages } from '@/app/data';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 
 export default function JavaTopicLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: { topic: string };
 }) {
+  const params = useParams();
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
