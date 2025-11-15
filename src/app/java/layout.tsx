@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { MainHeader } from '@/components/main-header';
 import { TopicSidebar } from '@/components/topic-sidebar';
 import { languages } from '@/app/data';
 import { notFound, useParams } from 'next/navigation';
+import { JavaProvider } from './java-context';
 
 export default function JavaTopicLayout({
   children,
@@ -13,8 +14,7 @@ export default function JavaTopicLayout({
   children: React.ReactNode;
 }) {
   const params = useParams();
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [completedTopics, setCompletedTopics] = useState(new Set<string>());
+  const [isEditorOpen, setIsEditorOpen] = React.useState(false);
 
   const language = languages.find((lang) => lang.slug === 'java');
   if (!language) {
@@ -25,55 +25,39 @@ export default function JavaTopicLayout({
     notFound();
   }
 
-  const handleToggleComplete = useCallback((topicSlug: string) => {
-    setCompletedTopics((prev) => {
-      const newCompleted = new Set(prev);
-      if (newCompleted.has(topicSlug)) {
-        newCompleted.delete(topicSlug);
-      } else {
-        newCompleted.add(topicSlug);
-      }
-      return newCompleted;
-    });
-  }, []);
-
-  // Pass state and handlers to children via React.cloneElement
-  const childrenWithProps = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, {
-        isEditorOpen,
-        setIsEditorOpen,
-        completedTopics,
-        handleToggleComplete,
-      } as any);
-    }
-    return child;
-  });
-
   return (
-    <SidebarProvider>
-      <div
-        id="java-topic-page"
-        data-test="java-topic-page"
-        className="flex flex-col h-screen bg-background"
-      >
-        <MainHeader
-          onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
-          isEditorOpen={isEditorOpen}
-        />
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar>
-            <TopicSidebar
-              language={language}
-              selectedTopicSlug={selectedTopic.slug}
-              completedTopics={completedTopics}
-            />
-          </Sidebar>
-          <main className="flex-1 flex overflow-hidden">
-            {childrenWithProps}
-          </main>
+    <JavaProvider>
+      <SidebarProvider>
+        <div
+          id="java-topic-page"
+          data-test="java-topic-page"
+          className="flex flex-col h-screen bg-background"
+        >
+          <MainHeader
+            onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
+            isEditorOpen={isEditorOpen}
+          />
+          <div className="flex flex-1 overflow-hidden">
+            <Sidebar>
+              <TopicSidebar
+                language={language}
+                selectedTopicSlug={selectedTopic.slug}
+              />
+            </Sidebar>
+            <main className="flex-1 flex overflow-hidden">
+              {React.Children.map(children, (child) => {
+                if (React.isValidElement(child)) {
+                  return React.cloneElement(child, {
+                    isEditorOpen,
+                    setIsEditorOpen,
+                  } as any);
+                }
+                return child;
+              })}
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </JavaProvider>
   );
 }

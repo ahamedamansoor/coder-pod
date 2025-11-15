@@ -14,20 +14,20 @@ import { Separator } from './ui/separator';
 import { ScrollArea } from './ui/scroll-area';
 import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useJava } from '@/app/java/java-context';
 
 interface TopicSidebarProps {
   language: Language;
   selectedTopicSlug: string | null;
-  completedTopics: Set<string>;
 }
 
 export function TopicSidebar({
   language,
   selectedTopicSlug,
-  completedTopics,
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { completedTopics } = useJava();
 
   useEffect(() => {
     if (activeItemRef.current && scrollContainerRef.current) {

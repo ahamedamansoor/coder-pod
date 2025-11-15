@@ -27,19 +27,16 @@ import { JavaLearningRoadmap } from './java-learning-roadmap';
 import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes } from './java-topics';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
+import { useJava } from '@/app/java/java-context';
 
 export function ContentDisplay({ 
   topic, 
   language, 
   onOpenEditor,
-  completedTopics,
-  onToggleComplete,
 }: { 
   topic: Topic, 
   language: Language, 
   onOpenEditor: (code: string) => void,
-  completedTopics: Set<string>,
-  onToggleComplete: (topicSlug: string) => void,
 }) {
   const [isSimplifying, setIsSimplifying] = React.useState(false);
   const [simplifiedContent, setSimplifiedContent] =
@@ -48,6 +45,8 @@ export function ContentDisplay({
   const [question, setQuestion] = React.useState('');
   const [isAsking, setIsAsking] = React.useState(false);
   const [qaResult, setQaResult] = React.useState<AnswerQuestionOutput | null>(null);
+  
+  const { completedTopics, handleToggleComplete } = useJava();
 
   const { toast } = useToast();
 
@@ -101,7 +100,7 @@ export function ContentDisplay({
   const isLearningPlanTopic = language.slug === 'java' && topic.slug === 'learning-plan';
 
   const renderTopicContent = () => {
-    if (isLearningPlanTopic) return <JavaLearningRoadmap completedTopics={completedTopics} onToggleComplete={onToggleComplete} />;
+    if (isLearningPlanTopic) return <JavaLearningRoadmap />;
     if (topic.slug === 'what-is-java') return <WhatIsJava />;
     if (topic.slug === 'history-of-java') return <TheStoryOfJava />;
     if (topic.slug === 'features-of-java') return <JavaFeatures />;
@@ -191,12 +190,12 @@ export function ContentDisplay({
               A deep dive into {topic.title} in {language.name}.
             </p>
          </div>
-         {!isLearningPlanTopic && (
+         {!isLearningPlanTopic && completedTopics && (
             <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
                 <Checkbox 
                     id={`complete-${topic.slug}`} 
                     checked={completedTopics.has(topic.slug)}
-                    onCheckedChange={() => onToggleComplete(topic.slug)}
+                    onCheckedChange={() => handleToggleComplete(topic.slug)}
                 />
                 <Label htmlFor={`complete-${topic.slug}`} className="font-semibold text-muted-foreground">
                     Mark as completed

@@ -2,14 +2,10 @@
 'use client';
 import React, { useState } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
+import { useJava } from '@/app/java/java-context';
 
-export const JavaLearningRoadmap = ({
-    completedTopics,
-    onToggleComplete
-}: {
-    completedTopics: Set<string>,
-    onToggleComplete: (topicSlug: string) => void
-}) => {
+export const JavaLearningRoadmap = () => {
+  const { completedTopics, handleToggleComplete } = useJava();
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
 
   const modules = [
@@ -222,7 +218,7 @@ export const JavaLearningRoadmap = ({
   ];
 
   const toggleTopic = (topicId: string) => {
-    onToggleComplete(topicId);
+    handleToggleComplete(topicId);
 
     const topicModuleId = parseInt(topicId.split('-')[0]);
     const topicModule = modules.find(m => {
@@ -261,11 +257,11 @@ export const JavaLearningRoadmap = ({
   const calculateProgress = () => {
     const totalTopics = modules.reduce((acc, module) => acc + module.topics.length, 0);
     if (totalTopics === 0) return 0;
-    const completed = completedTopics?.size ?? 0;
+    const completed = completedTopics.size;
     return Math.round((completed / totalTopics) * 100);
   };
 
-  const completedCount = completedTopics?.size ?? 0;
+  const completedCount = completedTopics.size;
   const totalTopicCount = modules.reduce((acc, m) => acc + m.topics.length, 0);
 
   return (
