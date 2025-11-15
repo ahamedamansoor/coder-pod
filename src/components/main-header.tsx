@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/select';
 import { SidebarTrigger } from './ui/sidebar';
 import { Logo } from './logo';
+import { CodeEditorSheet } from './code-editor-sheet';
 
 interface MainHeaderProps {
   selectedLanguageSlug: string;
@@ -26,19 +27,22 @@ export function MainHeader({
           <Logo />
         </div>
       </div>
-      <div className="w-[200px]">
-        <Select value={selectedLanguageSlug} onValueChange={onLanguageChange}>
-          <SelectTrigger aria-label="Select Language">
-            <SelectValue placeholder="Select a language" />
-          </SelectTrigger>
-          <SelectContent>
-            {languages.map((lang) => (
-              <SelectItem key={lang.slug} value={lang.slug}>
-                {lang.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex items-center gap-4">
+        <div className="w-[200px]">
+          <Select value={selectedLanguageSlug} onValueChange={onLanguageChange}>
+            <SelectTrigger aria-label="Select Language">
+              <SelectValue placeholder="Select a language" />
+            </SelectTrigger>
+            <SelectContent>
+              {languages.map((lang) => (
+                <SelectItem key={lang.slug} value={lang.slug}>
+                  {lang.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <CodeEditorSheet />
       </div>
     </header>
   );
