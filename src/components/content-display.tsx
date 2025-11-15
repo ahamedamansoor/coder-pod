@@ -138,7 +138,7 @@ export function ContentDisplay({
     if (topic.slug === 'method-parameters') return <JavaMethodParameters onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'method-overloading') return <JavaMethodOverloading onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'scope') return <JavaScope />;
-    if (topic.slug === 'recursion') return <JavaRecursion />;
+    if (topic.slug === 'recursion') return <JavaRecursion onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'classes-objects') return <JavaClassesObjects />;
     if (topic.slug === 'class-attributes') return <JavaClassAttributes />;
     if (topic.slug === 'class-methods') return <JavaClassMethods />;
@@ -325,5 +325,7 @@ export function ContentDisplay({
     </div>
   );
 }
+
+    
 
     
