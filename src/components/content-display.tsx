@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Sigma, Waypoints, Repeat, Ban, Code2, SquareStack, ListTree, Repeat1, Search, AppWindow, ShieldQuestion, KeySquare, Lock, Eye, Users2, PackageCheck, Group, ArrowLeftRight, Shapes, Atom, Type, Brackets, SquareFunction, Hourglass, Calendar, Hash, Sailboat, ScrollText, FileSignature, Regex, GitFork, Brain, FileCog } from 'lucide-react';
-import React, { useState } from 'react';
+import { Wand2, HelpCircle, Sparkles } from 'lucide-react';
+import React from 'react';
 import {
   simplifyTopicExplanation,
   type SimplifyTopicExplanationOutput,
@@ -22,18 +22,9 @@ import {
 } from '@/ai/flows/answer-question';
 import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes } from './what-is-java';
-
-function wrapInMain(code: string): string {
-    if (code.trim().startsWith('public class')) {
-        return code;
-    }
-    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
-}
-
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes } from './java-topics';
 
 export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic, language: Language, onOpenEditor: (code: string) => void; }) {
   const [isSimplifying, setIsSimplifying] = React.useState(false);
@@ -181,45 +172,45 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isBitwiseOperatorsTopic) return <JavaBitwiseOperators onOpenEditor={onOpenEditor} />;
     if (isTernaryOperatorTopic) return <JavaTernaryOperator onOpenEditor={onOpenEditor} />;
     if (isOperatorPrecedenceTopic) return <JavaOperatorPrecedence onOpenEditor={onOpenEditor} />;
-    if (isScannerClassTopic) return <JavaScannerClass onOpenEditor={onOpenEditor} />;
-    if (isReadingDifferentTypesTopic) return <JavaReadingDifferentTypes onOpenEditor={onOpenEditor} />;
-    if (isInputValidationTopic) return <JavaInputValidation onOpenEditor={onOpenEditor} />;
+    if (isScannerClassTopic) return <JavaScannerClass />;
+    if (isReadingDifferentTypesTopic) return <JavaReadingDifferentTypes />;
+    if (isInputValidationTopic) return <JavaInputValidation />;
     if (isIfElseTopic) return <JavaIfElse onOpenEditor={onOpenEditor} />;
-    if (isSwitchTopic) return <JavaSwitch onOpenEditor={onOpenEditor} />;
-    if (isForLoopTopic) return <JavaForLoop onOpenEditor={onOpenEditor} />;
-    if (isWhileLoopTopic) return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
-    if (isBreakContinueTopic) return <JavaBreakContinue onOpenEditor={onOpenEditor} />;
-    if (isStringsTopic) return <JavaStringMethods onOpenEditor={onOpenEditor} />;
-    if (isArraysTopic) return <JavaArrays onOpenEditor={onOpenEditor} />;
-    if (isMultiDimensionalArraysTopic) return <JavaMultiDimensionalArrays onOpenEditor={onOpenEditor} />;
-    if (isMethodsTopic) return <JavaMethods onOpenEditor={onOpenEditor} />;
-    if (isMethodParametersTopic) return <JavaMethodParameters onOpenEditor={onOpenEditor} />;
-    if (isMethodOverloadingTopic) return <JavaMethodOverloading onOpenEditor={onOpenEditor} />;
-    if (isScopeTopic) return <JavaScope onOpenEditor={onOpenEditor} />;
-    if (isRecursionTopic) return <JavaRecursion onOpenEditor={onOpenEditor} />;
-    if (isClassesObjectsTopic) return <JavaClassesObjects onOpenEditor={onOpenEditor} />;
-    if (isClassAttributesTopic) return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
-    if (isClassMethodsTopic) return <JavaClassMethods onOpenEditor={onOpenEditor} />;
-    if (isConstructorsTopic) return <JavaConstructors onOpenEditor={onOpenEditor} />;
-    if (isAccessModifiersTopic) return <JavaAccessModifiers onOpenEditor={onOpenEditor} />;
-    if (isEncapsulationTopic) return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
-    if (isPackagesTopic) return <JavaPackages onOpenEditor={onOpenEditor} />;
-    if (isInheritanceTopic) return <JavaInheritance onOpenEditor={onOpenEditor} />;
-    if (isPolymorphismTopic) return <JavaPolymorphism onOpenEditor={onOpenEditor} />;
-    if (isInnerClassesTopic) return <JavaInnerClasses onOpenEditor={onOpenEditor} />;
-    if (isAbstractionTopic) return <JavaAbstraction onOpenEditor={onOpenEditor} />;
-    if (isInterfacesTopic) return <JavaInterfaces onOpenEditor={onOpenEditor} />;
-    if (isEnumsTopic) return <JavaEnums onOpenEditor={onOpenEditor} />;
-    if (isDateTopic) return <JavaDate onOpenEditor={onOpenEditor} />;
-    if (isHashMapTopic) return <JavaHashMap onOpenEditor={onOpenEditor} />;
-    if (isHashSetTopic) return <JavaHashSet onOpenEditor={onOpenEditor} />;
-    if (isIteratorTopic) return <JavaIterator onOpenEditor={onOpenEditor} />;
-    if (isWrapperClassesTopic) return <JavaWrapperClasses onOpenEditor={onOpenEditor} />;
-    if (isExceptionsTopic) return <JavaExceptions onOpenEditor={onOpenEditor} />;
-    if (isRegexTopic) return <JavaRegex onOpenEditor={onOpenEditor} />;
-    if (isThreadsTopic) return <JavaThreads onOpenEditor={onOpenEditor} />;
-    if (isLambdaTopic) return <JavaLambda onOpenEditor={onOpenEditor} />;
-    if (isFileHandlingTopic) return <JavaFileHandling onOpenEditor={onOpenEditor} />;
+    if (isSwitchTopic) return <JavaSwitch />;
+    if (isForLoopTopic) return <JavaForLoop />;
+    if (isWhileLoopTopic) return <JavaWhileLoop />;
+    if (isBreakContinueTopic) return <JavaBreakContinue />;
+    if (isStringsTopic) return <JavaStringMethods />;
+    if (isArraysTopic) return <JavaArrays />;
+    if (isMultiDimensionalArraysTopic) return <JavaMultiDimensionalArrays />;
+    if (isMethodsTopic) return <JavaMethods />;
+    if (isMethodParametersTopic) return <JavaMethodParameters />;
+    if (isMethodOverloadingTopic) return <JavaMethodOverloading />;
+    if (isScopeTopic) return <JavaScope />;
+    if (isRecursionTopic) return <JavaRecursion />;
+    if (isClassesObjectsTopic) return <JavaClassesObjects />;
+    if (isClassAttributesTopic) return <JavaClassAttributes />;
+    if (isClassMethodsTopic) return <JavaClassMethods />;
+    if (isConstructorsTopic) return <JavaConstructors />;
+    if (isAccessModifiersTopic) return <JavaAccessModifiers />;
+    if (isEncapsulationTopic) return <JavaEncapsulation />;
+    if (isPackagesTopic) return <JavaPackages />;
+    if (isInheritanceTopic) return <JavaInheritance />;
+    if (isPolymorphismTopic) return <JavaPolymorphism />;
+    if (isInnerClassesTopic) return <JavaInnerClasses />;
+    if (isAbstractionTopic) return <JavaAbstraction />;
+    if (isInterfacesTopic) return <JavaInterfaces />;
+    if (isEnumsTopic) return <JavaEnums />;
+    if (isDateTopic) return <JavaDate />;
+    if (isHashMapTopic) return <JavaHashMap />;
+    if (isHashSetTopic) return <JavaHashSet />;
+    if (isIteratorTopic) return <JavaIterator />;
+    if (isWrapperClassesTopic) return <JavaWrapperClasses />;
+    if (isExceptionsTopic) return <JavaExceptions />;
+    if (isRegexTopic) return <JavaRegex />;
+    if (isThreadsTopic) return <JavaThreads />;
+    if (isLambdaTopic) return <JavaLambda />;
+    if (isFileHandlingTopic) return <JavaFileHandling />;
 
     return (
       <Card>
@@ -435,5 +426,3 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     </div>
   );
 }
-
-    
