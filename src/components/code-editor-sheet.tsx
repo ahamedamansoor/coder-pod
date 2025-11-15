@@ -35,100 +35,119 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     // Simulate code execution
     setTimeout(() => {
       try {
-        // A very basic mock of a Java interpreter for demonstration purposes.
         const variables: Record<string, any> = {};
+        let outputs: any[] = [];
+        
+        const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+        const lines = codeWithoutComments.split(';').map(l => l.trim()).filter(Boolean);
 
         const evaluateExpression = (expr: string): any => {
           expr = expr.trim();
-          
-          // String literal
-          if (expr.startsWith('"') && expr.endsWith('"')) {
-            return expr.slice(1, -1);
-          }
 
-          // Handle string concatenation
-          const parts = expr.split(/(?<!\\)\s?\+\s?/);
+          const evaluatePart = (part: string) => {
+            part = part.trim();
+            if (part.startsWith('"') && part.endsWith('"')) {
+              return part.slice(1, -1);
+            }
+            if (part.startsWith("'") && part.endsWith("'")) {
+              return part.slice(1, -1);
+            }
+            if (variables[part] !== undefined) {
+              return variables[part];
+            }
+            if (part === 'true') return true;
+            if (part === 'false') return false;
+            
+            if (part.toLowerCase().endsWith('l')) return BigInt(part.slice(0,-1));
+            if (part.toLowerCase().endsWith('f')) return parseFloat(part);
+            if (part.toLowerCase().endsWith('d')) return parseFloat(part);
+            
+            if (!isNaN(Number(part))) {
+                return Number(part);
+            }
+            // Fallback for complex arithmetic not handled
+            try {
+                // VERY limited arithmetic. No operator precedence.
+                return new Function('return ' + part.replace(/[a-zA-Z$_]/g, ''))();
+            } catch (e) {
+                // If it fails, it's likely a variable name or complex expression part we can't handle.
+            }
+
+            return part; // Return as is if not a recognized type
+          };
+
+          // This regex splits by '+' but not inside quotes.
+          const parts = expr.match(/(?:"[^"]*"|'[^']*'|[^"'+])+/g) || [];
+
           if (parts.length > 1) {
-             return parts.map(part => evaluateExpression(part.trim())).join('');
-          }
-          
-          // Variable lookup
-          if (variables[expr] !== undefined) {
-            return variables[expr];
-          }
-
-          // Char literal
-          if (expr.startsWith("'") && expr.endsWith("'")) {
-             return expr.slice(1, -1);
-          }
-
-          // Boolean literals
-          if (expr === 'true') return true;
-          if (expr === 'false') return false;
-
-          // Number literals
-          if (!isNaN(Number(expr))) {
-            return Number(expr);
-          }
-          
-          // Handle numeric literals with suffixes (L, f, d)
-          if (expr.toLowerCase().endsWith('l')) return BigInt(expr.slice(0,-1));
-          if (expr.toLowerCase().endsWith('f')) return parseFloat(expr);
-          if (expr.toLowerCase().endsWith('d')) return parseFloat(expr);
-
-          // Basic arithmetic - this part is tricky and limited.
-          // This will not respect operator precedence. It evaluates left-to-right.
-          try {
-            // A safer way to evaluate arithmetic without using eval()
-            let result = new Function('return ' + expr.replace(/[a-zA-Z$_]/g, ''))();
-            return result;
-          } catch(e) {
-            // Fallback for more complex expressions or if evaluation fails
-            return `[expression: ${expr}]`;
+            return parts.reduce((acc, part) => {
+                const evaluatedPart = evaluatePart(part);
+                return acc + (evaluatedPart !== null ? evaluatedPart.toString() : 'null');
+            }, "");
+          } else {
+            return evaluatePart(expr);
           }
         };
         
-        let outputs: any[] = [];
-        
-        // Remove comments first
-        const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
-        
-        // Process lines
-        const lines = codeWithoutComments.split(';').map(l => l.trim()).filter(Boolean);
-
         for (const line of lines) {
-           // Variable declaration
-           const varRegex = /^(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
+           const varRegex = /^(final\s+)?(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
            const varMatch = line.match(varRegex);
            if (varMatch) {
-             const [, type, name, valueStr] = varMatch;
+             const [, , type, name, valueStr] = varMatch;
              variables[name] = evaluateExpression(valueStr);
              continue;
            }
-
-           // Print statement
-           const printlnRegex = /System\.out\.println\((.*)\)/;
-           const printMatch = line.match(printlnRegex);
-           if (printMatch) {
-             const content = printMatch[1].trim();
-             outputs.push(evaluateExpression(content));
+           
+           const reassignRegex = /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
+           const reassignMatch = line.match(reassignRegex);
+           if(reassignMatch) {
+             const [, name, valueStr] = reassignMatch;
+             if (variables[name] !== undefined) {
+                variables[name] = evaluateExpression(valueStr);
+             }
              continue;
            }
-           
-           // Print error statement
-           const printErrRegex = /System\.err\.println\((.*)\)/;
-           const printErrMatch = line.match(printErrRegex);
-           if (printErrMatch) {
-               const content = printErrMatch[1].trim();
-               outputs.push(`Error: ${evaluateExpression(content)}`);
-               continue;
+
+           const printlnRegex = /System\.(out|err)\.println\((.*)\)/;
+           const printMatch = line.match(printlnRegex);
+           if (printMatch) {
+             const [, stream, content] = printMatch;
+             const evaluatedContent = evaluateExpression(content.trim());
+             if (stream === 'err') {
+                outputs.push(`Error: ${evaluatedContent}`);
+             } else {
+                outputs.push(evaluatedContent);
+             }
+             continue;
            }
         }
         
         if (outputs.length > 0) {
-          setOutput(outputs.join('\n'));
+          setOutput(outputs.map(o => o.toString()).join('\n'));
         } else {
-          setOutput("Execution finished with no output.");
+           // Check for compilation errors due to final keyword
+            const finalErrorRegex = /final\s+(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=/;
+            let finalVars = new Set();
+            let errorMessage = "";
+
+            for (const line of lines) {
+                const finalMatch = line.match(finalErrorRegex);
+                if (finalMatch) {
+                    finalVars.add(finalMatch[2]);
+                }
+
+                const reassignMatch = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*=/);
+                if (reassignMatch && finalVars.has(reassignMatch[1])) {
+                    errorMessage = `Error: cannot assign a value to final variable '${reassignMatch[1]}'`;
+                    break;
+                }
+            }
+
+            if (errorMessage) {
+                setOutput(errorMessage);
+            } else {
+                setOutput("Execution finished with no output.");
+            }
         }
 
       } catch (e: any) {
