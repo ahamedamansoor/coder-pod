@@ -26,7 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments } from './what-is-java';
 
 function JavaTypeCasting() {
     const wideningExample = {
@@ -559,6 +559,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isLearningPlanTopic = language.slug === 'java' && topic.slug === 'learning-plan';
   const isSettingUpEnvironmentTopic = language.slug === 'java' && topic.slug === 'setting-up-environment';
   const isFirstJavaProgramTopic = language.slug === 'java' && topic.slug === 'first-java-program';
+  const isCommentsInJavaTopic = language.slug === 'java' && topic.slug === 'comments-in-java';
 
   const renderTopicContent = () => {
     if (isLearningPlanTopic) {
@@ -585,6 +586,9 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isFirstJavaProgramTopic) {
       return <FirstJavaProgram onOpenEditor={onOpenEditor} />;
     }
+    if (isCommentsInJavaTopic) {
+      return <JavaComments />;
+    }
     if (isJavaPrintTopic) {
       return <JavaPrintFormats />;
     }
@@ -609,7 +613,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic;
 
   return (
     <div className="space-y-8">

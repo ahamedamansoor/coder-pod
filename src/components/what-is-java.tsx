@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
   
@@ -596,8 +596,87 @@ export function HowJavaWorks() {
         </Card>
       </div>
     );
-  }
+}
     
+export function JavaComments() {
+    const commentTypes = [
+      {
+        name: "Single-Line Comment",
+        syntax: "// This is a single-line comment",
+        description: "Starts with `//`. Anything after `//` on the same line is ignored by the compiler. It's perfect for short explanations or quick notes.",
+        example: `// Calculate the sum of two numbers\nint sum = 5 + 10; // Adds 5 and 10 together`,
+        icon: MessageSquare
+      },
+      {
+        name: "Multi-Line Comment",
+        syntax: "/* ... */",
+        description: "Starts with `/*` and ends with `*/`. You can write multiple lines of comments between them. Ideal for longer explanations or temporarily disabling a block of code.",
+        example: `/*\n  This method calculates the area of a rectangle.\n  It takes width and height as input\n  and returns the calculated area.\n*/\nint calculateArea(int width, int height) {\n  return width * height;\n}`,
+        icon: Book
+      },
+      {
+        name: "Documentation Comment (Javadoc)",
+        syntax: "/** ... */",
+        description: "Starts with `/**` and ends with `*/`. This is a special type of comment used to generate official API documentation for your code. It's used to describe classes, methods, and variables.",
+        example: `/**\n * Represents a Person with a name and age.\n */\npublic class Person {\n  /**\n   * The main method to run the program.\n   * @param args Command line arguments (not used).\n   */\n  public static void main(String[] args) {\n    // ...\n  }\n}`,
+        icon: DraftingCompass
+      }
+    ];
+  
+    return (
+      <div className="space-y-8">
+        <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-2">
+                <MessageSquare className="w-10 h-10 text-primary" />
+                <h1 className="text-4xl font-bold text-foreground">Comments in Java</h1>
+            </div>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Leaving notes for yourself and others in your code.</p>
+        </div>
+  
+        <Card>
+            <CardHeader>
+                <CardTitle>Why Use Comments?</CardTitle>
+                <CardDescription>Comments are ignored by the computer but are crucial for humans.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                <p>✓ <strong>Explain Code:</strong> Clarify what your code does, especially the complex parts.</p>
+                <p>✓ <strong>Make Code Readable:</strong> Help other developers (and your future self!) understand your logic.</p>
+                <p>✓ <strong>Temporarily Disable Code:</strong> "Comment out" lines of code to prevent them from running without deleting them.</p>
+            </CardContent>
+        </Card>
 
+        <div className="space-y-6">
+            {commentTypes.map((comment) => (
+                <Card key={comment.name} className="hover:shadow-md transition-shadow">
+                    <CardHeader>
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="bg-primary/10 text-primary p-3 rounded-full">
+                                <comment.icon className="w-6 h-6" />
+                            </div>
+                            <CardTitle className="text-2xl">{comment.name}</CardTitle>
+                        </div>
+                        <CardDescription>{comment.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="bg-muted rounded-md p-4">
+                            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{comment.example}</pre>
+                        </div>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
 
-
+        <Card className="bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
+            <CardHeader className="flex-row items-center gap-4">
+                <Lightbulb className="w-8 h-8 text-yellow-600"/>
+                <div>
+                    <CardTitle className="text-yellow-800 dark:text-yellow-300">Best Practice</CardTitle>
+                    <CardDescription className="text-yellow-700 dark:text-yellow-400">
+                        Write comments to explain <em>why</em> your code is doing something, not just <em>what</em> it is doing. Good code should be self-explanatory about what it does.
+                    </CardDescription>
+                </div>
+            </CardHeader>
+        </Card>
+      </div>
+    );
+  }

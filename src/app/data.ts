@@ -57,6 +57,11 @@ export const languages: Language[] = [
         explanation: 'Learn the structure of a basic Java program and how to print "Hello, World!" to the console. This topic also introduces the interactive code editor.',
       },
       {
+        slug: 'comments-in-java',
+        title: 'Comments in Java',
+        explanation: 'Learn how to use comments to make your code more readable and understandable.'
+      },
+      {
         slug: 'variables',
         title: 'Declaring and Initializing Variables',
         explanation:
