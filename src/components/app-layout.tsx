@@ -23,6 +23,7 @@ export default function AppLayout() {
     languages[0].topics[0]?.slug ?? null
   );
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [initialCode, setInitialCode] = useState('');
 
   const selectedLanguage = useMemo(
     () => languages.find((lang) => lang.slug === selectedLanguageSlug)!,
@@ -42,6 +43,11 @@ export default function AppLayout() {
     } else {
       setSelectedTopicSlug(null);
     }
+  };
+
+  const handleOpenEditorWithCode = (code: string) => {
+    setInitialCode(code);
+    setIsEditorOpen(true);
   };
 
   useEffect(() => {
@@ -75,6 +81,7 @@ export default function AppLayout() {
                   key={`${selectedLanguage.slug}-${selectedTopic.slug}`}
                   topic={selectedTopic}
                   language={selectedLanguage}
+                  onOpenEditor={handleOpenEditorWithCode}
                 />
               ) : (
                 <div className="flex h-full items-center justify-center rounded-lg border border-dashed">
@@ -91,7 +98,7 @@ export default function AppLayout() {
               minWidth={300}
               maxWidthPercentage={50}
             >
-              <CodeEditorSheet />
+              <CodeEditorSheet key={initialCode} initialCode={initialCode} />
             </ResizablePanel>
           </div>
         </div>

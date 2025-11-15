@@ -47,6 +47,11 @@ export const languages: Language[] = [
         explanation: 'A step-by-step guide to installing the Java Development Kit (JDK) and setting up your first project in an Integrated Development Environment (IDE).',
       },
       {
+        slug: 'first-java-program',
+        title: 'First Java Program',
+        explanation: 'Learn the structure of a basic Java program and how to print "Hello, World!" to the console. This topic also introduces the interactive code editor.',
+      },
+      {
         slug: 'variables',
         title: 'Declaring and Initializing Variables',
         explanation:

@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -25,7 +25,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram } from './what-is-java';
 
 function JavaTypeCasting() {
     const wideningExample = {
@@ -488,7 +488,7 @@ function JavaPrintFormats() {
 }
 
 
-export function ContentDisplay({ topic, language }: { topic: Topic, language: Language }) {
+export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic, language: Language, onOpenEditor: (code: string) => void; }) {
   const [isSimplifying, setIsSimplifying] = React.useState(false);
   const [simplifiedContent, setSimplifiedContent] =
     React.useState<SimplifyTopicExplanationOutput | null>(null);
@@ -556,6 +556,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
   const isJavaTypeCastingTopic = language.slug === 'java' && topic.slug === 'type-casting';
   const isLearningPlanTopic = language.slug === 'java' && topic.slug === 'learning-plan';
   const isSettingUpEnvironmentTopic = language.slug === 'java' && topic.slug === 'setting-up-environment';
+  const isFirstJavaProgramTopic = language.slug === 'java' && topic.slug === 'first-java-program';
 
   const renderTopicContent = () => {
     if (isLearningPlanTopic) {
@@ -575,6 +576,9 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     }
     if(isSettingUpEnvironmentTopic) {
       return <JavaEnvironmentSetup />;
+    }
+    if (isFirstJavaProgramTopic) {
+      return <FirstJavaProgram onOpenEditor={onOpenEditor} />;
     }
     if (isJavaPrintTopic) {
       return <JavaPrintFormats />;
@@ -600,7 +604,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic;
 
   return (
     <div className="space-y-8">
