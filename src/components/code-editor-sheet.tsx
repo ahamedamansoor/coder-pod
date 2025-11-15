@@ -26,15 +26,65 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     setOutput("");
     // Simulate code execution
     setTimeout(() => {
-      // A real implementation would execute the code and capture stdout.
-      // Here, we'll just mock it based on the code content.
-      if (code.includes("System.out.println")) {
-        const match = code.match(/System.out.println\("([^"]*)"\);/);
-        setOutput(match ? match[1] : "Execution finished with no output.");
-      } else {
-        setOutput("Execution finished with no output.");
+      try {
+        // A real implementation would execute the code and capture stdout.
+        // This is a more robust mock to handle different println statements.
+        const printlnRegex = /System\.out\.println\(([^)]+)\);/g;
+        let match;
+        const outputs = [];
+        
+        // Simple evaluation for variables
+        const variables: Record<string, any> = {};
+        const varRegex = /(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^;]+);/g;
+        let varMatch;
+        while ((varMatch = varRegex.exec(code)) !== null) {
+          const name = varMatch[2];
+          let value = varMatch[3].trim();
+          
+          if (value.startsWith('"') && value.endsWith('"')) {
+            variables[name] = value.slice(1, -1);
+          } else if (value.match(/^[0-9.]+f?L?$/)) {
+             variables[name] = parseFloat(value);
+          } else if (value === 'true' || value === 'false') {
+             variables[name] = value === 'true';
+          } else if (value.startsWith("'") && value.endsWith("'")) {
+             variables[name] = value.slice(1, -1);
+          } else {
+             variables[name] = value; // Fallback for simple expressions
+          }
+        }
+        
+        while ((match = printlnRegex.exec(code)) !== null) {
+            let content = match[1].trim();
+            if (content.startsWith('"') && content.endsWith('"')) {
+                outputs.push(content.slice(1, -1));
+            } else if (variables[content]) {
+                outputs.push(variables[content]);
+            } else {
+                 // Handle simple concatenation for the demo
+                const parts = content.split('+').map(p => p.trim());
+                const result = parts.map(p => {
+                    if (p.startsWith('"') && p.endsWith('"')) return p.slice(1, -1);
+                    return variables[p] || p;
+                }).join('');
+                outputs.push(result);
+            }
+        }
+
+        if (outputs.length > 0) {
+          setOutput(outputs.join('\n'));
+        } else if (code.includes("System.err.println")) {
+          const errorMatch = code.match(/System\.err\.println\("([^"]*)"\);/);
+          setOutput(errorMatch ? `Error: ${errorMatch[1]}` : "Execution finished with an error.");
+        } else {
+          setOutput("Execution finished with no output.");
+        }
+
+      } catch (e) {
+        setOutput("An error occurred during execution.");
+      } finally {
+        setIsRunning(false);
       }
-      setIsRunning(false);
     }, 1000);
   };
 
