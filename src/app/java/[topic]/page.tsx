@@ -39,13 +39,6 @@ export default function JavaTopicPage() {
     router.push(`/java/${slug}`);
   };
   
-  const handleLanguageChange = (slug: string) => {
-    const newLang = languages.find(l => l.slug === slug);
-    if(newLang) {
-      router.push(`/${slug}/${newLang.topics[0].slug}`)
-    }
-  }
-
   const handleOpenEditor = useCallback((code?: string) => {
     setEditorInitialCode(code);
     setIsEditorOpen(true);
@@ -63,8 +56,6 @@ export default function JavaTopicPage() {
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
           <MainHeader
-            selectedLanguageSlug={language.slug}
-            onLanguageChange={handleLanguageChange}
             onToggleEditor={() => setIsEditorOpen(prev => !prev)}
             isEditorOpen={isEditorOpen}
           />
