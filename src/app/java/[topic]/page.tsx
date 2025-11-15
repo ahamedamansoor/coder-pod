@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useState, useCallback } from 'react';
@@ -47,19 +45,19 @@ export default function JavaTopicPage() {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-background">
-        <Sidebar>
-          <TopicSidebar
-            language={language}
-            selectedTopicSlug={selectedTopic.slug}
-            onTopicSelect={handleTopicSelect}
-          />
-        </Sidebar>
-        <div className="flex flex-1 flex-col">
-          <MainHeader
-            onToggleEditor={() => setIsEditorOpen(prev => !prev)}
-            isEditorOpen={isEditorOpen}
-          />
+      <div id="java-topic-page" data-test="java-topic-page" className="flex flex-col h-screen bg-background">
+        <MainHeader
+          onToggleEditor={() => setIsEditorOpen(prev => !prev)}
+          isEditorOpen={isEditorOpen}
+        />
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar>
+            <TopicSidebar
+              language={language}
+              selectedTopicSlug={selectedTopic.slug}
+              onTopicSelect={handleTopicSelect}
+            />
+          </Sidebar>
           <main className="flex-1 flex overflow-hidden">
             <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 w-full">
               <ContentDisplay topic={selectedTopic} language={language} onOpenEditor={handleOpenEditor} />

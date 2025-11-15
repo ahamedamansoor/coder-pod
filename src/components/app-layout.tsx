@@ -18,7 +18,7 @@ import Link from 'next/link';
 
 export default function AppLayout() {
   return (
-    <div className="flex flex-col min-h-screen bg-muted/40">
+    <div id="dashboard-page" data-test="dashboard-page" className="flex flex-col min-h-screen bg-muted/40">
       <header className="bg-background border-b sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
