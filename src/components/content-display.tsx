@@ -145,10 +145,10 @@ function JavaIntroduction() {
                   <CardDescription>From a small project to a global standard.</CardDescription>
               </CardHeader>
               <CardContent>
-                  <div className="relative border-l-2 border-primary/20 pl-6 space-y-8">
+                  <div className="relative border-l-2 border-primary/20 ml-4 pl-10 space-y-8">
                       {history.map((item, index) => (
                           <div key={index} className="relative flex items-start gap-6">
-                              <div className="absolute -left-[33px] bg-background p-1 rounded-full">
+                              <div className="absolute top-1 -left-[54px] bg-background p-1 rounded-full">
                                   <div className="bg-primary text-primary-foreground p-2 rounded-full">
                                       <item.icon className="w-6 h-6" />
                                   </div>
