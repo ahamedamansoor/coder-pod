@@ -132,7 +132,7 @@ export function ContentDisplay({
     if (topic.slug === 'while-loop') return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'break-continue') return <JavaBreakContinue onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'strings') return <JavaStringMethods onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'arrays') return <JavaArrays />;
+    if (topic.slug === 'arrays') return <JavaArrays onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'multi-dimensional-arrays') return <JavaMultiDimensionalArrays />;
     if (topic.slug === 'methods') return <JavaMethods />;
     if (topic.slug === 'method-parameters') return <JavaMethodParameters />;
