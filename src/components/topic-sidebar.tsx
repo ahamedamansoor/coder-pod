@@ -51,7 +51,7 @@ export function TopicSidebar({
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
   const gettingStartedTopics = language.topics.filter(t => 
-    ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'setting-up-environment', 'first-java-program', 'how-java-works', 'comments-in-java'].includes(t.slug)
+    ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'comments-in-java'].includes(t.slug)
   );
   
   const basicOutputTopics = language.topics.filter(t => 
