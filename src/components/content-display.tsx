@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -438,7 +438,7 @@ function JavaPrintFormats({ onOpenEditor }: { onOpenEditor: (code: string) => vo
        <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Terminal className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">Java Print Methods</h1>
+            <h1 className="text-4xl font-bold text-foreground">Print Statements & Format Specifiers</h1>
           </div>
           <p className="text-muted-foreground text-lg">A guide to output formatting in Java</p>
         </div>

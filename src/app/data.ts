@@ -81,7 +81,7 @@ export const languages: Language[] = [
       },
       {
         slug: 'print-formats',
-        title: 'Print Formats',
+        title: 'Print Statements & Format Specifiers',
         explanation:
           'Java provides several ways to display output, each with its specific use case. The most common methods are part of the `System.out` object. `System.out.print()` prints text without a new line. `System.out.println()` prints text and adds a new line. For formatted output, `System.out.printf()` uses format specifiers like `%s` for strings and `%d` for integers. `String.format()` works similarly but returns a formatted string. For errors, `System.err.println()` prints to the standard error stream.',
       },
