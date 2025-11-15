@@ -39,24 +39,17 @@ export function CodeEditorSheet() {
   };
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline">
-          <Code className="mr-2 h-4 w-4" />
-          Code Editor
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="w-[600px] sm:w-[600px] flex flex-col">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+    <div className="flex flex-col h-full border-l bg-card">
+        <div className="p-6 border-b">
+          <h2 className="text-lg font-semibold flex items-center gap-2">
             <Code className="w-6 h-6" /> Java Code Editor
-          </SheetTitle>
-          <SheetDescription>
+          </h2>
+          <p className="text-sm text-muted-foreground">
             Write and test your Java code snippets here. The output will appear
             below.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="flex-1 flex flex-col gap-4 py-4">
+          </p>
+        </div>
+        <div className="flex-1 flex flex-col gap-4 p-6 overflow-y-auto">
           <div className="flex-1 flex flex-col">
             <label htmlFor="code-editor" className="mb-2 text-sm font-medium">
               Code
@@ -85,13 +78,12 @@ export function CodeEditorSheet() {
             </div>
           </div>
         </div>
-        <SheetFooter>
+        <div className="p-6 border-t">
           <Button onClick={handleRunCode} disabled={isRunning}>
             <Play className="mr-2 h-4 w-4" />
             {isRunning ? "Running..." : "Run Code"}
           </Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </div>
+    </div>
   );
 }

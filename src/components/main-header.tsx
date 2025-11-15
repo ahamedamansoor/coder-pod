@@ -8,16 +8,21 @@ import {
 } from '@/components/ui/select';
 import { SidebarTrigger } from './ui/sidebar';
 import { Logo } from './logo';
-import { CodeEditorSheet } from './code-editor-sheet';
+import { Button } from './ui/button';
+import { Code } from 'lucide-react';
 
 interface MainHeaderProps {
   selectedLanguageSlug: string;
   onLanguageChange: (slug: string) => void;
+  onToggleEditor: () => void;
+  isEditorOpen: boolean;
 }
 
 export function MainHeader({
   selectedLanguageSlug,
   onLanguageChange,
+  onToggleEditor,
+  isEditorOpen
 }: MainHeaderProps) {
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
@@ -42,7 +47,10 @@ export function MainHeader({
             </SelectContent>
           </Select>
         </div>
-        <CodeEditorSheet />
+        <Button variant="outline" onClick={onToggleEditor}>
+          <Code className="mr-2 h-4 w-4" />
+          Code Editor
+        </Button>
       </div>
     </header>
   );

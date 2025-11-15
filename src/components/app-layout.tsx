@@ -10,6 +10,9 @@ import { languages } from '@/app/data';
 import { TopicSidebar } from './topic-sidebar';
 import { MainHeader } from './main-header';
 import { ContentDisplay } from './content-display';
+import { CodeEditorSheet } from './code-editor-sheet';
+import { Button } from './ui/button';
+import { Code } from 'lucide-react';
 
 export default function AppLayout() {
   const [selectedLanguageSlug, setSelectedLanguageSlug] = useState<string>(
@@ -18,6 +21,7 @@ export default function AppLayout() {
   const [selectedTopicSlug, setSelectedTopicSlug] = useState<string | null>(
     languages[0].topics[0]?.slug ?? null
   );
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   const selectedLanguage = useMemo(
     () => languages.find((lang) => lang.slug === selectedLanguageSlug)!,
@@ -47,37 +51,46 @@ export default function AppLayout() {
   }, [selectedLanguageSlug, selectedTopicSlug]);
 
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <TopicSidebar
-          language={selectedLanguage}
-          selectedTopicSlug={selectedTopicSlug}
-          onTopicSelect={setSelectedTopicSlug}
-        />
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex flex-col h-full min-h-0">
+    <div className="flex h-screen bg-background">
+      <SidebarProvider>
+        <Sidebar>
+          <TopicSidebar
+            language={selectedLanguage}
+            selectedTopicSlug={selectedTopicSlug}
+            onTopicSelect={setSelectedTopicSlug}
+          />
+        </Sidebar>
+        <div className="flex flex-1 flex-col min-h-0">
           <MainHeader
             selectedLanguageSlug={selectedLanguageSlug}
             onLanguageChange={handleLanguageChange}
+            onToggleEditor={() => setIsEditorOpen(!isEditorOpen)}
+            isEditorOpen={isEditorOpen}
           />
-          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-            {selectedTopic ? (
-              <ContentDisplay
-                key={`${selectedLanguage.slug}-${selectedTopic.slug}`}
-                topic={selectedTopic}
-                language={selectedLanguage}
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center rounded-lg border border-dashed">
-                <p className="text-muted-foreground">
-                  Select a topic to get started.
-                </p>
-              </div>
-            )}
-          </main>
+          <div className="flex flex-1 min-h-0">
+            <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+              {selectedTopic ? (
+                <ContentDisplay
+                  key={`${selectedLanguage.slug}-${selectedTopic.slug}`}
+                  topic={selectedTopic}
+                  language={selectedLanguage}
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-lg border border-dashed">
+                  <p className="text-muted-foreground">
+                    Select a topic to get started.
+                  </p>
+                </div>
+              )}
+            </main>
+            <div 
+              className={`transition-all duration-300 ease-in-out ${isEditorOpen ? 'w-[600px]' : 'w-0'} overflow-hidden`}
+            >
+              <CodeEditorSheet />
+            </div>
+          </div>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </SidebarProvider>
+    </div>
   );
 }
