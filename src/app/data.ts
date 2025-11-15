@@ -48,7 +48,7 @@ export const languages: Language[] = [
       },
       {
         slug: 'first-java-program',
-        title: 'First Java Program',
+        title: 'Hello World',
         explanation: 'Learn the structure of a basic Java program and how to print "Hello, World!" to the console. This topic also introduces the interactive code editor.',
       },
       {

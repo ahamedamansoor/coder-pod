@@ -286,15 +286,15 @@ export function JdkJreJvm() {
             <CardContent className="grid sm:grid-cols-3 gap-4 text-center">
                 <div className="bg-muted p-4 rounded-lg">
                     <h3 className="font-bold text-foreground">JDK</h3>
-                    <p className="text-sm text-muted-foreground">The Toolbox to BUILD</p>
+                    <p className="text-sm text-muted-foreground">Toolbox to BUILD</p>
                 </div>
                 <div className="bg-muted p-4 rounded-lg">
                     <h3 className="font-bold text-secondary-foreground">JRE</h3>
-                    <p className="text-sm text-muted-foreground">The Power to RUN</p>
+                    <p className="text-sm text-muted-foreground">Power to RUN</p>
                 </div>
                 <div className="bg-muted p-4 rounded-lg">
                     <h3 className="font-bold text-primary">JVM</h3>
-                    <p className="text-sm text-muted-foreground">The Engine to EXECUTE</p>
+                    <p className="text-sm text-muted-foreground">Engine to EXECUTE</p>
                 </div>
             </CardContent>
         </Card>
@@ -459,7 +459,7 @@ export function FirstJavaProgram({ onOpenEditor }: { onOpenEditor: (code: string
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
                     <HandMetal className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">Your First Java Program</h1>
+                    <h1 className="text-4xl font-bold text-foreground">Hello World</h1>
                 </div>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Let's write the traditional "Hello, World!" program. It's a rite of passage for every programmer!</p>
             </div>
@@ -518,3 +518,4 @@ export function FirstJavaProgram({ onOpenEditor }: { onOpenEditor: (code: string
     );
 }
     
+

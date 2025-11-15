@@ -24,7 +24,8 @@ export function TopicSidebar({
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
   const whatIsJavaTopics = language.topics.filter(t => ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm'].includes(t.slug));
-  const setupTopics = language.topics.filter(t => ['setting-up-environment', 'first-java-program'].includes(t.slug));
+  const setupTopics = language.topics.filter(t => ['setting-up-environment'].includes(t.slug));
+  const firstJavaProgramTopics = language.topics.filter(t => ['first-java-program'].includes(t.slug));
   const fundamentalTopics = language.topics.filter(t => ['variables', 'data-types', 'type-casting', 'print-formats'].includes(t.slug));
 
   const otherTopics = language.topics.filter(t => 
@@ -61,7 +62,7 @@ export function TopicSidebar({
               
               {whatIsJavaTopics.length > 0 && (
                 <div className="space-y-1">
-                  <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">Introduction</p>
+                  <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">What is Java?</p>
                   <div className="ml-2 border-l pl-2 space-y-1">
                     {whatIsJavaTopics.map((topic) => (
                       <SidebarMenuItem key={topic.slug}>
@@ -84,6 +85,26 @@ export function TopicSidebar({
                   <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">Environment</p>
                   <div className="ml-2 border-l pl-2 space-y-1">
                     {setupTopics.map((topic) => (
+                      <SidebarMenuItem key={topic.slug}>
+                        <SidebarMenuButton
+                          onClick={() => onTopicSelect(topic.slug)}
+                          isActive={selectedTopicSlug === topic.slug}
+                          tooltip={topic.title}
+                          className="justify-start text-sm"
+                        >
+                          {topic.title}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {firstJavaProgramTopics.length > 0 && (
+                <div className="space-y-1">
+                  <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">First Java Program</p>
+                  <div className="ml-2 border-l pl-2 space-y-1">
+                    {firstJavaProgramTopics.map((topic) => (
                       <SidebarMenuItem key={topic.slug}>
                         <SidebarMenuButton
                           onClick={() => onTopicSelect(topic.slug)}
