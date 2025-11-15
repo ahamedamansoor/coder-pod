@@ -30,12 +30,12 @@ function JavaDataTypes() {
   const primitiveTypes = [
     { id: 'byte', name: 'byte', size: '8-bit', range: '-128 to 127', example: 'byte age = 30;', description: 'Stores whole numbers.' },
     { id: 'short', name: 'short', size: '16-bit', range: '-32,768 to 32,767', example: 'short salary = 25000;', description: 'Stores whole numbers.' },
-    { id: 'int', name: 'int', size: '32-bit', range: '-2.1B to 2.1B', example: 'int population = 1000000;', description: 'Stores whole numbers, commonly used.' },
-    { id: 'long', name: 'long', size: '64-bit', range: 'Very large', example: 'long worldPopulation = 8000000000L;', description: 'Stores very large whole numbers.' },
+    { id: 'int', name: 'int', size: '32-bit', range: '-2,147,483,648 to 2,147,483,647', example: 'int population = 1000000;', description: 'Stores whole numbers, commonly used.' },
+    { id: 'long', name: 'long', size: '64-bit', range: '-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807', example: 'long worldPopulation = 8000000000L;', description: 'Stores very large whole numbers.' },
     { id: 'float', name: 'float', size: '32-bit', precision: '~6-7 digits', example: 'float price = 19.99f;', description: 'Stores fractional numbers.' },
     { id: 'double', name: 'double', size: '64-bit', precision: '~15 digits', example: 'double pi = 3.1415926535;', description: 'Stores fractional numbers, commonly used.' },
     { id: 'boolean', name: 'boolean', size: '1-bit', values: 'true or false', example: 'boolean isLoggedIn = true;', description: 'Stores true or false values.' },
-    { id: 'char', name: 'char', size: '16-bit', values: 'Single character/symbol', example: 'char grade = \'A\';', description: 'Stores single characters.' },
+    { id: 'char', name: 'char', size: '16-bit', range: '0 to 65,535', example: 'char grade = \'A\';', description: 'Stores single Unicode characters.' },
   ];
 
   const referenceTypes = [
@@ -81,7 +81,9 @@ function JavaDataTypes() {
               
               {selectedTypeId === type.id && (
                 <div className="mt-4 space-y-3 bg-foreground/5 rounded-lg p-3">
-                    <p className="text-xs text-muted-foreground mb-1">Example:</p>
+                    <p className="text-xs text-muted-foreground mb-1">Range:</p>
+                    <p className="text-sm font-semibold">{type.range || type.values || type.precision}</p>
+                    <p className="text-xs text-muted-foreground mb-1 mt-2">Example:</p>
                     <pre className="text-primary text-sm font-code whitespace-pre-wrap">{type.example}</pre>
                 </div>
               )}
@@ -460,3 +462,5 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     </div>
   );
 }
+
+    
