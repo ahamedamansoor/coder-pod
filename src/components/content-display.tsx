@@ -176,7 +176,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isReadingDifferentTypesTopic) return <JavaReadingDifferentTypes />;
     if (isInputValidationTopic) return <JavaInputValidation />;
     if (isIfElseTopic) return <JavaIfElse onOpenEditor={onOpenEditor} />;
-    if (isSwitchTopic) return <JavaSwitch />;
+    if (isSwitchTopic) return <JavaSwitch onOpenEditor={onOpenEditor} />;
     if (isForLoopTopic) return <JavaForLoop />;
     if (isWhileLoopTopic) return <JavaWhileLoop />;
     if (isBreakContinueTopic) return <JavaBreakContinue />;
