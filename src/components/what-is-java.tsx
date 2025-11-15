@@ -2,6 +2,7 @@
 
 
 
+
 import {
     Card,
     CardContent,
@@ -9,9 +10,10 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Plus, Minus, X, Divide, Percent, Equal, PlusSquare, Scale, Sigma, GitCompareArrows } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
   
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -1049,4 +1051,113 @@ export function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) =
       </Card>
     </div>
   )
+}
+
+export function JavaOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+  const operatorTypes = [
+    {
+      name: "Arithmetic Operators",
+      icon: PlusSquare,
+      description: "Used to perform common mathematical operations.",
+      operators: [
+        { op: "+", name: "Addition", example: "int sum = 10 + 5; // 15" },
+        { op: "-", name: "Subtraction", example: "int diff = 10 - 5; // 5" },
+        { op: "*", name: "Multiplication", example: "int prod = 10 * 5; // 50" },
+        { op: "/", name: "Division", example: "int quot = 10 / 5; // 2" },
+        { op: "%", name: "Modulus", example: "int rem = 10 % 3; // 1" },
+        { op: "++", name: "Increment", example: "int i = 5; i++; // i is now 6" },
+        { op: "--", name: "Decrement", example: "int i = 5; i--; // i is now 4" },
+      ]
+    },
+    {
+      name: "Assignment Operators",
+      icon: Equal,
+      description: "Used to assign values to variables.",
+      operators: [
+        { op: "=", name: "Assign", example: "int x = 10;" },
+        { op: "+=", name: "Add and assign", example: "int x = 10; x += 5; // x is 15" },
+        { op: "-=", name: "Subtract and assign", example: "int x = 10; x -= 5; // x is 5" },
+        { op: "*=", name: "Multiply and assign", example: "int x = 10; x *= 5; // x is 50" },
+      ]
+    },
+    {
+      name: "Comparison Operators",
+      icon: Scale,
+      description: "Used to compare two values, returns a boolean (`true` or `false`).",
+      operators: [
+        { op: "==", name: "Equal to", example: "10 == 5; // false" },
+        { op: "!=", name: "Not equal to", example: "10 != 5; // true" },
+        { op: ">", name: "Greater than", example: "10 > 5; // true" },
+        { op: "<", name: "Less than", example: "10 < 5; // false" },
+        { op: ">=", name: "Greater than or equal to", example: "10 >= 10; // true" },
+        { op: "<=", name: "Less than or equal to", example: "10 <= 5; // false" },
+      ]
+    },
+    {
+      name: "Logical Operators",
+      icon: GitCompareArrows,
+      description: "Used to determine the logic between variables or values.",
+      operators: [
+        { op: "&&", name: "Logical AND", example: "true && false; // false" },
+        { op: "||", name: "Logical OR", example: "true || false; // true" },
+        { op: "!", name: "Logical NOT", example: "!true; // false" },
+      ]
+    },
+  ];
+
+  return (
+    <div id="java-operators-page" data-test="java-operators-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Sigma className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Java Operators</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Symbols that perform operations on variables and values.</p>
+      </div>
+
+      {operatorTypes.map(type => (
+        <Card key={type.name}>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="bg-primary/10 text-primary p-3 rounded-full">
+                <type.icon className="w-6 h-6" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl">{type.name}</CardTitle>
+                <CardDescription>{type.description}</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Operator</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Example</TableHead>
+                  <TableHead className="text-right">Try it</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {type.operators.map(op => (
+                  <TableRow key={op.op}>
+                    <TableCell className="font-mono font-bold text-primary">{op.op}</TableCell>
+                    <TableCell>{op.name}</TableCell>
+                    <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.example}</code></pre>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button onClick={() => onOpenEditor(wrapInMain(`System.out.println(${op.example.replace(/;.*/, "")});`))} variant="ghost" size="icon">
+                        <Play className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
 }

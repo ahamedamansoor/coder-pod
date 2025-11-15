@@ -100,6 +100,11 @@ export const languages: Language[] = [
         slug: 'literals',
         title: 'Literals',
         explanation: 'Understand the fixed values—like numbers, characters, or text—that you assign to variables.'
+      },
+      {
+        slug: 'operators',
+        title: 'Operators',
+        explanation: 'Learn about the different types of operators in Java used to perform operations on variables and values.'
       }
     ],
   },

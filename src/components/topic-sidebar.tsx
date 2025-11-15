@@ -36,8 +36,12 @@ export function TopicSidebar({
     ['variables', 'data-types', 'type-casting', 'constants', 'literals'].includes(t.slug)
   );
 
+  const operatorsTopics = language.topics.filter(t => 
+    ['operators'].includes(t.slug)
+  );
+
   const otherTopics = language.topics.filter(t => 
-    !['learning-plan', ...gettingStartedTopics.map(t => t.slug), ...basicOutputTopics.map(t => t.slug), ...variablesAndDataTypesTopics.map(t => t.slug)].includes(t.slug)
+    !['learning-plan', ...gettingStartedTopics.map(t => t.slug), ...basicOutputTopics.map(t => t.slug), ...variablesAndDataTypesTopics.map(t => t.slug), ...operatorsTopics.map(t => t.slug)].includes(t.slug)
   );
 
   return (
@@ -113,6 +117,26 @@ export function TopicSidebar({
                   <p className="px-2 text-md font-semibold text-foreground">Variables & Data Types</p>
                   <div className="ml-2 border-l pl-2 spacey-1">
                     {variablesAndDataTypesTopics.map((topic) => (
+                      <SidebarMenuItem key={topic.slug}>
+                        <SidebarMenuButton
+                          onClick={() => onTopicSelect(topic.slug)}
+                          isActive={selectedTopicSlug === topic.slug}
+                          tooltip={topic.title}
+                          className="justify-start text-sm"
+                        >
+                          {topic.title}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {operatorsTopics.length > 0 && (
+                 <div className="space-y-2">
+                  <p className="px-2 text-md font-semibold text-foreground">Operators</p>
+                  <div className="ml-2 border-l pl-2 spacey-1">
+                    {operatorsTopics.map((topic) => (
                       <SidebarMenuItem key={topic.slug}>
                         <SidebarMenuButton
                           onClick={() => onTopicSelect(topic.slug)}

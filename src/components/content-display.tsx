@@ -1,6 +1,7 @@
 
 
 
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -12,7 +13,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Sigma } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -27,7 +28,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaOperators } from './what-is-java';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -281,7 +282,7 @@ function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void 
     { id: 'float', name: 'float', size: '32-bit', precision: '~6-7 digits', example: 'float price = 19.99f;\nSystem.out.println(price);', description: 'Stores fractional numbers.' },
     { id: 'double', name: 'double', size: '64-bit', precision: '~15 digits', example: 'double pi = 3.1415926535;\nSystem.out.println(pi);', description: 'Stores fractional numbers, commonly used.' },
     { id: 'boolean', name: 'boolean', size: '1-bit', values: 'true or false', example: 'boolean isLoggedIn = true;\nSystem.out.println(isLoggedIn);', description: 'Stores true or false values.' },
-    { id: 'char', name: 'char', size: '16-bit', range: '0 to 65,535', example: 'char grade = \'A\';\nSystem.out.println(grade);', description: 'Stores single Unicode characters.' },
+    { id: 'char', name: 'char', size: '16-bit', range: '0 to 65,535', example: 'char grade = \'A\';\nSystem.out.println(grade);', description: 'Stores single Unicode characters. You can look up characters on the' },
   ];
 
   const referenceTypes = [
@@ -323,7 +324,14 @@ function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void 
                 <h3 className="text-xl font-bold text-foreground">{type.name}</h3>
                 <span className="text-xs font-semibold bg-primary/10 text-primary px-2 py-1 rounded-full">{type.size}</span>
               </div>
-              <p className="text-muted-foreground text-sm mb-4 h-10">{type.description}</p>
+              <p className="text-muted-foreground text-sm mb-4 h-10">
+                {type.description}{' '}
+                {type.id === 'char' && (
+                  <a href="https://home.unicode.org/" target="_blank" rel="noopener noreferrer" className="text-primary underline">
+                    Unicode website
+                  </a>
+                )}.
+              </p>
               
               {selectedTypeId === type.id && (
                 <div className="mt-4 space-y-3 bg-foreground/5 rounded-lg p-3 overflow-x-auto">
@@ -599,6 +607,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isEscapeSequencesTopic = language.slug === 'java' && topic.slug === 'escape-sequences';
   const isConstantsTopic = language.slug === 'java' && topic.slug === 'constants';
   const isLiteralsTopic = language.slug === 'java' && topic.slug === 'literals';
+  const isOperatorsTopic = language.slug === 'java' && topic.slug === 'operators';
 
 
   const renderTopicContent = () => {
@@ -650,6 +659,9 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isLiteralsTopic) {
       return <JavaLiterals onOpenEditor={onOpenEditor} />;
     }
+    if (isOperatorsTopic) {
+      return <JavaOperators onOpenEditor={onOpenEditor} />;
+    }
     return (
       <Card>
         <CardHeader>
@@ -662,7 +674,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic && !isConstantsTopic && !isLiteralsTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic && !isConstantsTopic && !isLiteralsTopic && !isOperatorsTopic;
 
   return (
     <div className="space-y-8">
