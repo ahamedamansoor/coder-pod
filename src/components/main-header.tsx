@@ -2,6 +2,7 @@ import { SidebarTrigger } from './ui/sidebar';
 import { Logo } from './logo';
 import { Button } from './ui/button';
 import { Code } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -21,6 +22,7 @@ export function MainHeader({
         </div>
       </div>
       <div className="flex items-center gap-4">
+        <ThemeToggle />
         <Button variant="outline" onClick={onToggleEditor}>
           <Code className="mr-2 h-4 w-4" />
           Code Editor
