@@ -24,17 +24,20 @@ export function TopicSidebar({
 }: TopicSidebarProps) {
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
-  const whatIsJavaTopics = language.topics.filter(t => ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm'].includes(t.slug));
-  const setupTopics = language.topics.filter(t => ['setting-up-environment'].includes(t.slug));
-  const firstJavaProgramTopics = language.topics.filter(t => ['first-java-program'].includes(t.slug));
-  const howJavaWorksTopics = language.topics.filter(t => ['how-java-works'].includes(t.slug));
-  const commentsTopics = language.topics.filter(t => ['comments-in-java'].includes(t.slug));
+  const gettingStartedTopics = language.topics.filter(t => 
+    ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'setting-up-environment', 'first-java-program', 'how-java-works', 'comments-in-java'].includes(t.slug)
+  );
   
-  const printStatementTopics = language.topics.filter(t => ['print-statements-and-format-specifiers', 'escape-sequences'].includes(t.slug));
-  const fundamentalTopics = language.topics.filter(t => ['variables', 'data-types', 'type-casting', 'constants', 'literals'].includes(t.slug));
+  const basicOutputTopics = language.topics.filter(t => 
+    ['print-statements-and-format-specifiers', 'escape-sequences'].includes(t.slug)
+  );
+
+  const variablesAndDataTypesTopics = language.topics.filter(t => 
+    ['variables', 'data-types', 'type-casting', 'constants', 'literals'].includes(t.slug)
+  );
 
   const otherTopics = language.topics.filter(t => 
-    !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'comments-in-java', 'variables', 'data-types', 'type-casting', 'print-statements-and-format-specifiers', 'escape-sequences', 'constants', 'literals'].includes(t.slug)
+    !['learning-plan', ...gettingStartedTopics.map(t => t.slug), ...basicOutputTopics.map(t => t.slug), ...variablesAndDataTypesTopics.map(t => t.slug)].includes(t.slug)
   );
 
   return (
@@ -48,7 +51,7 @@ export function TopicSidebar({
           <SidebarMenu className="p-4 space-y-4">
             {learningPlanTopic && (
               <div>
-                <p className="px-2 py-1 text-lg font-semibold text-muted-foreground">Learning Path</p>
+                <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
                 <SidebarMenuItem key={learningPlanTopic.slug}>
                   <SidebarMenuButton
                     onClick={() => onTopicSelect(learningPlanTopic.slug)}
@@ -63,136 +66,13 @@ export function TopicSidebar({
             )}
             
             <div className='space-y-4'>
-              <p className="px-2 py-1 text-lg font-semibold text-muted-foreground">Topics</p>
+              <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
               
-              <div className="space-y-2">
-                <p className="px-2 text-sm font-semibold text-foreground">Getting Started</p>
-                <div className="ml-2 border-l pl-2 space-y-2">
-                  {whatIsJavaTopics.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">What is Java?</p>
-                      <div className="ml-2 border-l pl-2 space-y-1">
-                        {whatIsJavaTopics.map((topic) => (
-                          <SidebarMenuItem key={topic.slug}>
-                            <SidebarMenuButton
-                              onClick={() => onTopicSelect(topic.slug)}
-                              isActive={selectedTopicSlug === topic.slug}
-                              tooltip={topic.title}
-                              className="justify-start text-sm"
-                            >
-                              {topic.title}
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {setupTopics.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">Environment</p>
-                      <div className="ml-2 border-l pl-2 space-y-1">
-                        {setupTopics.map((topic) => (
-                          <SidebarMenuItem key={topic.slug}>
-                            <SidebarMenuButton
-                              onClick={() => onTopicSelect(topic.slug)}
-                              isActive={selectedTopicSlug === topic.slug}
-                              tooltip={topic.title}
-                              className="justify-start text-sm"
-                            >
-                              {topic.title}
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {firstJavaProgramTopics.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">First Java Program</p>
-                      <div className="ml-2 border-l pl-2 space-y-1">
-                        {firstJavaProgramTopics.map((topic) => (
-                          <SidebarMenuItem key={topic.slug}>
-                            <SidebarMenuButton
-                              onClick={() => onTopicSelect(topic.slug)}
-                              isActive={selectedTopicSlug === topic.slug}
-                              tooltip={topic.title}
-                              className="justify-start text-sm"
-                            >
-                              {topic.title}
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {howJavaWorksTopics.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">How Java Works</p>
-                      <div className="ml-2 border-l pl-2 space-y-1">
-                        {howJavaWorksTopics.map((topic) => (
-                          <SidebarMenuItem key={topic.slug}>
-                            <SidebarMenuButton
-                              onClick={() => onTopicSelect(topic.slug)}
-                              isActive={selectedTopicSlug === topic.slug}
-                              tooltip={topic.title}
-                              className="justify-start text-sm"
-                            >
-                              {topic.title}
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {commentsTopics.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">Comments</p>
-                      <div className="ml-2 border-l pl-2 space-y-1">
-                        {commentsTopics.map((topic) => (
-                          <SidebarMenuItem key={topic.slug}>
-                            <SidebarMenuButton
-                              onClick={() => onTopicSelect(topic.slug)}
-                              isActive={selectedTopicSlug === topic.slug}
-                              tooltip={topic.title}
-                              className="justify-start text-sm"
-                            >
-                              {topic.title}
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="px-2 text-sm font-semibold text-foreground">Basic Output</p>
-                <div className="ml-2 border-l pl-2 space-y-1">
-                  {printStatementTopics.map((topic) => (
-                    <SidebarMenuItem key={topic.slug}>
-                      <SidebarMenuButton
-                        onClick={() => onTopicSelect(topic.slug)}
-                        isActive={selectedTopicSlug === topic.slug}
-                        tooltip={topic.title}
-                        className="justify-start text-sm"
-                      >
-                        {topic.title}
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </div>
-              </div>
-
-              {fundamentalTopics.length > 0 && (
-                 <div className="space-y-2">
-                  <p className="px-2 text-sm font-semibold text-foreground">Variables & Data Types</p>
-                  <div className="ml-2 border-l pl-2 spacey-1">
-                    {fundamentalTopics.map((topic) => (
+              {gettingStartedTopics.length > 0 && (
+                <div className="space-y-2">
+                  <p className="px-2 text-md font-semibold text-foreground">Getting Started</p>
+                  <div className="ml-2 border-l pl-2 space-y-1">
+                    {gettingStartedTopics.map((topic) => (
                       <SidebarMenuItem key={topic.slug}>
                         <SidebarMenuButton
                           onClick={() => onTopicSelect(topic.slug)}
@@ -208,6 +88,45 @@ export function TopicSidebar({
                 </div>
               )}
 
+              {basicOutputTopics.length > 0 && (
+                <div className="space-y-2">
+                  <p className="px-2 text-md font-semibold text-foreground">Basic Output</p>
+                  <div className="ml-2 border-l pl-2 space-y-1">
+                    {basicOutputTopics.map((topic) => (
+                      <SidebarMenuItem key={topic.slug}>
+                        <SidebarMenuButton
+                          onClick={() => onTopicSelect(topic.slug)}
+                          isActive={selectedTopicSlug === topic.slug}
+                          tooltip={topic.title}
+                          className="justify-start text-sm"
+                        >
+                          {topic.title}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {variablesAndDataTypesTopics.length > 0 && (
+                 <div className="space-y-2">
+                  <p className="px-2 text-md font-semibold text-foreground">Variables & Data Types</p>
+                  <div className="ml-2 border-l pl-2 spacey-1">
+                    {variablesAndDataTypesTopics.map((topic) => (
+                      <SidebarMenuItem key={topic.slug}>
+                        <SidebarMenuButton
+                          onClick={() => onTopicSelect(topic.slug)}
+                          isActive={selectedTopicSlug === topic.slug}
+                          tooltip={topic.title}
+                          className="justify-start text-sm"
+                        >
+                          {topic.title}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {otherTopics.map((topic) => (
                 <SidebarMenuItem key={topic.slug}>
