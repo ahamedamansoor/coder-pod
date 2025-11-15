@@ -28,9 +28,8 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 1",
       icon: "📢",
       topics: [
-        { id: "2.1", name: "Print Statements", desc: "print(), println(), printf()", difficulty: "Easy" },
-        { id: "2.2", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" },
-        { id: "2.3", name: "Format Specifiers", desc: "%d, %f, %s, %c and formatting", difficulty: "Easy" }
+        { id: "2.1", name: "Print Statements & Format Specifiers", desc: "print(), println(), printf() and format specifiers like %d, %s", difficulty: "Easy" },
+        { id: "2.2", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" }
       ]
     },
     {
