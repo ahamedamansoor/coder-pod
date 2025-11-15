@@ -33,6 +33,12 @@ export const languages: Language[] = [
         explanation:
           'In Java, variables are containers for storing data values. To use a variable, you must declare it by specifying its type and name. You can also initialize it by assigning an initial value. Understanding how to declare and initialize variables is a fundamental concept in Java programming.',
       },
+      {
+        slug: 'type-casting',
+        title: 'Type Casting and Conversion',
+        explanation:
+          'Type casting is when you assign a value of one primitive data type to another type. In Java, there are two types of casting: widening casting (automatically) - converting a smaller type to a larger type size, and narrowing casting (manually) - converting a larger type to a smaller size type.',
+      },
     ],
   },
 ];

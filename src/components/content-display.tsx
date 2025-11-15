@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -23,6 +23,90 @@ import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
+
+function JavaTypeCasting() {
+    const wideningExample = {
+      title: 'Widening Casting (Automatic)',
+      description: 'This happens when you pass a smaller data type to a larger one. Java does this for you automatically because there is no risk of losing data.',
+      code: `int myInt = 9;
+double myDouble = myInt; // Automatic casting: int to double
+
+System.out.println(myInt);      // Outputs 9
+System.out.println(myDouble);   // Outputs 9.0`,
+      order: 'byte -> short -> char -> int -> long -> float -> double'
+    };
+  
+    const narrowingExample = {
+      title: 'Narrowing Casting (Manual)',
+      description: 'This happens when you pass a larger data type to a smaller one. You must do this manually by placing the type in parentheses. Be careful, you might lose data!',
+      code: `double myDouble = 9.78;
+int myInt = (int) myDouble; // Manual casting: double to int
+
+System.out.println(myDouble);   // Outputs 9.78
+System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
+      order: 'double -> float -> long -> int -> char -> short -> byte'
+    };
+  
+    return (
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <GitCommitHorizontal className="w-10 h-10 text-primary" />
+            <h1 className="text-4xl font-bold text-foreground">Type Casting & Conversion</h1>
+          </div>
+          <p className="text-muted-foreground text-lg">Changing a variable from one data type to another.</p>
+        </div>
+  
+        <Card className="bg-muted/30 border-border">
+          <CardHeader>
+            <CardTitle className="text-3xl">Widening Casting</CardTitle>
+            <CardDescription>{wideningExample.description}</CardDescription>
+          </CardHeader>
+          <CardContent className="grid md:grid-cols-2 gap-6 items-center">
+            <div className="bg-background rounded-lg p-4">
+              <pre><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
+            </div>
+            <div className="flex flex-col items-center text-center">
+                <p className="font-semibold text-primary mb-2">SAFE & AUTOMATIC</p>
+                <div className="font-mono text-sm bg-foreground/5 p-3 rounded-md">
+                    {wideningExample.order.split('->').map((type, index, arr) => (
+                        <React.Fragment key={type}>
+                            <span className="text-foreground/80">{type.trim()}</span>
+                            {index < arr.length - 1 && <ArrowRight className="inline w-4 h-4 mx-1 text-primary/50" />}
+                        </React.Fragment>
+                    ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">Smaller type to larger type</p>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-muted/30 border-border">
+          <CardHeader>
+            <CardTitle className="text-3xl">Narrowing Casting</CardTitle>
+            <CardDescription>{narrowingExample.description}</CardDescription>
+          </CardHeader>
+          <CardContent className="grid md:grid-cols-2 gap-6 items-center">
+            <div className="bg-background rounded-lg p-4">
+              <pre><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
+            </div>
+             <div className="flex flex-col items-center text-center">
+                <p className="font-semibold text-destructive mb-2">UNSAFE & MANUAL</p>
+                <div className="font-mono text-sm bg-foreground/5 p-3 rounded-md">
+                    {narrowingExample.order.split('->').map((type, index, arr) => (
+                        <React.Fragment key={type}>
+                            <span className="text-foreground/80">{type.trim()}</span>
+                            {index < arr.length - 1 && <ArrowRight className="inline w-4 h-4 mx-1 text-destructive/50" />}
+                        </React.Fragment>
+                    ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">Larger type to smaller type (potential data loss)</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
 function JavaVariables() {
     const declarationSteps = [
@@ -432,6 +516,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
   const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-formats';
   const isJavaDataTypesTopic = language.slug === 'java' && topic.slug === 'data-types';
   const isJavaVariablesTopic = language.slug === 'java' && topic.slug === 'variables';
+  const isJavaTypeCastingTopic = language.slug === 'java' && topic.slug === 'type-casting';
 
   const renderTopicContent = () => {
     if (isJavaPrintTopic) {
@@ -442,6 +527,9 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     }
     if (isJavaVariablesTopic) {
       return <JavaVariables />;
+    }
+    if (isJavaTypeCastingTopic) {
+        return <JavaTypeCasting />;
     }
     return (
       <Card>
@@ -455,9 +543,11 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     );
   };
 
+  const showSimplifyButton = !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic;
+
   return (
     <div className="space-y-8">
-      {!isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && (
+       {showSimplifyButton && (
         <header className="space-y-2">
           <h1 className="font-headline text-4xl font-bold tracking-tight">
             {topic.title}
@@ -470,13 +560,15 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
       
       {renderTopicContent()}
 
-      <div className="flex flex-col items-center gap-4">
-        <Button onClick={handleSimplify} disabled={isSimplifying} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-          <Wand2 className="mr-2 h-5 w-5" />
-          {isSimplifying ? 'Generating...' : 'Simplify with AI'}
-        </Button>
-        <p className="text-sm text-muted-foreground">Let AI help you understand this topic better.</p>
-      </div>
+      {showSimplifyButton && (
+        <div className="flex flex-col items-center gap-4">
+          <Button onClick={handleSimplify} disabled={isSimplifying} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Wand2 className="mr-2 h-5 w-5" />
+            {isSimplifying ? 'Generating...' : 'Simplify with AI'}
+          </Button>
+          <p className="text-sm text-muted-foreground">Let AI help you understand this topic better.</p>
+        </div>
+      )}
       
       {isSimplifying && (
         <div className="space-y-6">
