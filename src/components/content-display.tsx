@@ -24,6 +24,7 @@ import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
+import { JavaLearningRoadmap } from './java-learning-roadmap';
 
 function TheStoryOfJava() {
   const principles = [
@@ -792,8 +793,12 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
   const isJavaVariablesTopic = language.slug === 'java' && topic.slug === 'variables';
   const isJavaTypeCastingTopic = language.slug === 'java' && topic.slug === 'type-casting';
   const isTheStoryOfJavaTopic = language.slug === 'java' && topic.slug === 'the-story-of-java';
+  const isLearningPlanTopic = language.slug === 'java' && topic.slug === 'learning-plan';
 
   const renderTopicContent = () => {
+    if (isLearningPlanTopic) {
+      return <JavaLearningRoadmap />;
+    }
     if (isTheStoryOfJavaTopic) {
       return <TheStoryOfJava />;
     }
@@ -827,7 +832,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     );
   };
 
-  const showSimplifyButton = !isJavaIntroductionTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isJavaFeaturesTopic && !isTheStoryOfJavaTopic;
+  const showSimplifyButton = !isJavaIntroductionTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isJavaFeaturesTopic && !isTheStoryOfJavaTopic && !isLearningPlanTopic;
 
   return (
     <div className="space-y-8">
@@ -906,28 +911,30 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
         </div>
       )}
       
-      <Card className="mt-8">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <HelpCircle className="w-6 h-6 text-primary" />
-            Ask a Question
-          </CardTitle>
-          <CardDescription>
-            Have a question about {topic.title}? Ask our AI assistant.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Textarea
-            placeholder={`e.g., "What is the difference between a primitive and reference type?"`}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            disabled={isAsking}
-          />
-          <Button onClick={handleAskQuestion} disabled={isAsking || !question.trim()}>
-            {isAsking ? 'Thinking...' : 'Get Answer'}
-          </Button>
-        </CardContent>
-      </Card>
+      {!isLearningPlanTopic && (
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HelpCircle className="w-6 h-6 text-primary" />
+              Ask a Question
+            </CardTitle>
+            <CardDescription>
+              Have a question about {topic.title}? Ask our AI assistant.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Textarea
+              placeholder={`e.g., "What is the difference between a primitive and reference type?"`}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              disabled={isAsking}
+            />
+            <Button onClick={handleAskQuestion} disabled={isAsking || !question.trim()}>
+              {isAsking ? 'Thinking...' : 'Get Answer'}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
       
       {isAsking && (
         <Card>

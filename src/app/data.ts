@@ -17,6 +17,11 @@ export const languages: Language[] = [
     name: 'Java',
     topics: [
       {
+        slug: 'learning-plan',
+        title: 'Learning Plan',
+        explanation: 'A structured roadmap for learning Java from scratch.'
+      },
+      {
         slug: 'the-story-of-java',
         title: 'The Story of Java',
         explanation:
