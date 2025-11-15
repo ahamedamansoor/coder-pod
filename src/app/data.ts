@@ -37,7 +37,7 @@ export const languages: Language[] = [
         slug: 'event-loop',
         title: 'Event Loop',
         explanation:
-          'The event loop is a crucial concept for understanding asynchronous operations in JavaScript. It\'s a mechanism that allows Node.js or the browser to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible. The loop constantly checks the call stack and the callback queue. If the call stack is empty, it takes the first event from the queue and pushes it to the stack, effectively running it.'
+          "The event loop is a crucial concept for understanding asynchronous operations in JavaScript. It's a mechanism that allows Node.js or the browser to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible. The loop constantly checks the call stack and the callback queue. If the call stack is empty, it takes the first event from the queue and pushes it to the stack, effectively running it."
       }
     ],
   },
@@ -61,7 +61,7 @@ export const languages: Language[] = [
         slug: 'generators',
         title: 'Generators',
         explanation:
-          'A generator in Python is a special type of iterator, which can be used to create iterators in a more memory-efficient way. It\'s a function that returns an iterator that produces a sequence of values when iterated over. Generators are written like regular functions but use the `yield` statement instead of `return` to return data. When a generator function is called, it doesn\'t execute the function body immediately. Instead, it returns a generator object.'
+          "A generator in Python is a special type of iterator, which can be used to create iterators in a more memory-efficient way. It's a function that returns an iterator that produces a sequence of values when iterated over. Generators are written like regular functions but use the `yield` statement instead of `return` to return data. When a generator function is called, it doesn't execute the function body immediately. Instead, it returns a generator object."
       }
     ],
   },
@@ -73,7 +73,7 @@ export const languages: Language[] = [
         slug: 'print-formats',
         title: 'Print Formats',
         explanation:
-          'Java provides several ways to display output to the console, each with its specific use case. The most common methods are part of the `System.out` object. `System.out.print()` prints text without a new line. `System.out.println()` prints text and adds a new line. For formatted output, `System.out.printf()` uses format specifiers like `%s` for strings and `%d` for integers to control the output format. `String.format()` works similarly but returns a formatted string instead of printing it. For errors, `System.err.println()` prints to the standard error stream, often displayed in a different color in IDEs.',
+          'Java provides several ways to display output, each with its specific use case. The most common methods are part of the `System.out` object. `System.out.print()` prints text without a new line. `System.out.println()` prints text and adds a new line. For formatted output, `System.out.printf()` uses format specifiers like `%s` for strings and `%d` for integers. `String.format()` works similarly but returns a formatted string. For errors, `System.err.println()` prints to the standard error stream.',
       },
     ],
   },
