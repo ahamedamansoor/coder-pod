@@ -68,7 +68,8 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
             // Fallback for complex arithmetic not handled
             try {
                 // VERY limited arithmetic. No operator precedence.
-                return new Function('return ' + part.replace(/[a-zA-Z$_]/g, ''))();
+                const result = new Function('return ' + part.replace(/[a-zA-Z$_]/g, ''))();
+                if (result !== undefined) return result;
             } catch (e) {
                 // If it fails, it's likely a variable name or complex expression part we can't handle.
             }
@@ -82,7 +83,7 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
           if (parts.length > 1) {
             return parts.reduce((acc, part) => {
                 const evaluatedPart = evaluatePart(part);
-                return acc + (evaluatedPart !== null ? evaluatedPart.toString() : 'null');
+                return acc + (evaluatedPart !== null && evaluatedPart !== undefined ? evaluatedPart.toString() : '');
             }, "");
           } else {
             return evaluatePart(expr);
