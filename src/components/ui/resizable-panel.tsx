@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { cn } from '@/lib/utils';
@@ -69,7 +70,7 @@ export function ResizablePanel({
       ref={panelRef}
       className={cn(
         'relative flex-shrink-0 transition-all duration-300 ease-in-out',
-        isOpen ? 'w-auto' : 'w-0'
+        isOpen ? 'opacity-100' : 'opacity-0'
       )}
       style={{ width: isOpen ? `${width}px` : '0px' }}
     >
