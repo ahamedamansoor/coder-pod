@@ -23,7 +23,7 @@ export const languages: Language[] = [
       },
       {
         slug: 'what-is-java',
-        title: 'What is Java?',
+        title: 'Java Intro',
         explanation: 'A high-level overview of what Java is and where it is used.',
       },
       {
