@@ -1,20 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
 
 export const JavaLearningRoadmap = () => {
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
-
-  const toggleTopic = (topicId: string) => {
-    const newCompleted = new Set(completedTopics);
-    if (newCompleted.has(topicId)) {
-      newCompleted.delete(topicId);
-    } else {
-      newCompleted.add(topicId);
-    }
-    setCompletedTopics(newCompleted);
-  };
 
   const modules = [
     {
@@ -254,6 +244,34 @@ export const JavaLearningRoadmap = () => {
       ]
     }
   ];
+
+  const toggleTopic = (topicId: string) => {
+    const newCompleted = new Set(completedTopics);
+    let topicCompleted = false;
+    if (newCompleted.has(topicId)) {
+      newCompleted.delete(topicId);
+    } else {
+      newCompleted.add(topicId);
+      topicCompleted = true;
+    }
+    setCompletedTopics(newCompleted);
+
+    if (topicCompleted) {
+      const topicModuleId = parseInt(topicId.split('.')[0]);
+      const topicModule = modules.find(m => m.id === topicModuleId);
+      if (!topicModule) return;
+
+      const allTopicsInModuleCompleted = topicModule.topics.every(t => newCompleted.has(t.id));
+
+      if (allTopicsInModuleCompleted) {
+        const currentModuleIndex = modules.findIndex(m => m.id === topicModuleId);
+        if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
+          const nextModule = modules[currentModuleIndex + 1];
+          setExpandedModule(nextModule.id);
+        }
+      }
+    }
+  };
 
   const getDifficultyColor = (difficulty: string) => {
     switch(difficulty) {
