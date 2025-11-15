@@ -70,7 +70,7 @@ export function TopicSidebar({
                 <div className="ml-2 border-l pl-2 space-y-2">
                   {whatIsJavaTopics.length > 0 && (
                     <div className="space-y-1">
-                      <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">What is Java?</p>
+                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">What is Java?</p>
                       <div className="ml-2 border-l pl-2 space-y-1">
                         {whatIsJavaTopics.map((topic) => (
                           <SidebarMenuItem key={topic.slug}>
@@ -90,7 +90,7 @@ export function TopicSidebar({
 
                   {setupTopics.length > 0 && (
                     <div className="space-y-1">
-                      <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">Environment</p>
+                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">Environment</p>
                       <div className="ml-2 border-l pl-2 space-y-1">
                         {setupTopics.map((topic) => (
                           <SidebarMenuItem key={topic.slug}>
@@ -110,7 +110,7 @@ export function TopicSidebar({
 
                   {firstJavaProgramTopics.length > 0 && (
                     <div className="space-y-1">
-                      <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">First Java Program</p>
+                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">First Java Program</p>
                       <div className="ml-2 border-l pl-2 space-y-1">
                         {firstJavaProgramTopics.map((topic) => (
                           <SidebarMenuItem key={topic.slug}>
@@ -130,7 +130,7 @@ export function TopicSidebar({
 
                   {howJavaWorksTopics.length > 0 && (
                     <div className="space-y-1">
-                      <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">How Java Works</p>
+                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">How Java Works</p>
                       <div className="ml-2 border-l pl-2 space-y-1">
                         {howJavaWorksTopics.map((topic) => (
                           <SidebarMenuItem key={topic.slug}>
@@ -150,7 +150,7 @@ export function TopicSidebar({
 
                   {commentsTopics.length > 0 && (
                     <div className="space-y-1">
-                      <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">Comments</p>
+                      <p className="px-2 py-1 text-xs font-medium text-muted-foreground/80">Comments</p>
                       <div className="ml-2 border-l pl-2 space-y-1">
                         {commentsTopics.map((topic) => (
                           <SidebarMenuItem key={topic.slug}>
@@ -172,26 +172,19 @@ export function TopicSidebar({
 
               <div className="space-y-2">
                 <p className="px-2 text-sm font-semibold text-foreground">Basic Output</p>
-                <div className="ml-2 border-l pl-2 space-y-2">
-                  {printStatementTopics.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">Print Statements</p>
-                      <div className="ml-2 border-l pl-2 space-y-1">
-                        {printStatementTopics.map((topic) => (
-                          <SidebarMenuItem key={topic.slug}>
-                            <SidebarMenuButton
-                              onClick={() => onTopicSelect(topic.slug)}
-                              isActive={selectedTopicSlug === topic.slug}
-                              tooltip={topic.title}
-                              className="justify-start text-sm"
-                            >
-                              {topic.title}
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                <div className="ml-2 border-l pl-2 space-y-1">
+                  {printStatementTopics.map((topic) => (
+                    <SidebarMenuItem key={topic.slug}>
+                      <SidebarMenuButton
+                        onClick={() => onTopicSelect(topic.slug)}
+                        isActive={selectedTopicSlug === topic.slug}
+                        tooltip={topic.title}
+                        className="justify-start text-sm"
+                      >
+                        {topic.title}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
                 </div>
               </div>
 
