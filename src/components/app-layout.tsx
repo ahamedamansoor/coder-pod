@@ -85,15 +85,14 @@ export default function AppLayout() {
               )}
             </main>
             
-            {isEditorOpen && (
-              <ResizablePanel
-                initialWidth={480}
-                minWidth={300}
-                maxWidthPercentage={50}
-              >
-                <CodeEditorSheet />
-              </ResizablePanel>
-            )}
+            <ResizablePanel
+              isOpen={isEditorOpen}
+              initialWidth={400}
+              minWidth={300}
+              maxWidthPercentage={50}
+            >
+              <CodeEditorSheet />
+            </ResizablePanel>
           </div>
         </div>
       </SidebarProvider>

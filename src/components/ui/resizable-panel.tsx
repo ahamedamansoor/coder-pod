@@ -8,6 +8,7 @@ interface ResizablePanelProps {
   initialWidth?: number;
   minWidth?: number;
   maxWidthPercentage?: number;
+  isOpen: boolean;
 }
 
 export function ResizablePanel({
@@ -15,6 +16,7 @@ export function ResizablePanel({
   initialWidth = 500,
   minWidth = 300,
   maxWidthPercentage = 50,
+  isOpen,
 }: ResizablePanelProps) {
   const [width, setWidth] = useState(initialWidth);
   const isResizing = useRef(false);
@@ -66,8 +68,11 @@ export function ResizablePanel({
   return (
     <div
       ref={panelRef}
-      className="relative flex-shrink-0"
-      style={{ width: `${width}px` }}
+      className={cn(
+        'relative flex-shrink-0 transition-all duration-300 ease-in-out',
+        isOpen ? 'w-auto' : 'w-0'
+      )}
+      style={{ width: isOpen ? `${width}px` : '0px' }}
     >
       <div
         onMouseDown={handleMouseDown}
