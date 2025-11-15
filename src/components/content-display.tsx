@@ -177,7 +177,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isInputValidationTopic) return <JavaInputValidation />;
     if (isIfElseTopic) return <JavaIfElse onOpenEditor={onOpenEditor} />;
     if (isSwitchTopic) return <JavaSwitch onOpenEditor={onOpenEditor} />;
-    if (isForLoopTopic) return <JavaForLoop />;
+    if (isForLoopTopic) return <JavaForLoop onOpenEditor={onOpenEditor} />;
     if (isWhileLoopTopic) return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
     if (isBreakContinueTopic) return <JavaBreakContinue onOpenEditor={onOpenEditor} />;
     if (isStringsTopic) return <JavaStringMethods onOpenEditor={onOpenEditor} />;
