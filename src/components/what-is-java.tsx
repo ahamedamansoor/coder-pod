@@ -227,69 +227,64 @@ export function JdkJreJvm() {
           </p>
         </div>
   
-        <div className="relative p-8 md:p-12">
-            {/* JVM */}
-            <div className="relative z-10 w-full md:w-3/5 mx-auto">
-                <Card className="shadow-lg border-2 border-primary/50">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-3 text-2xl">
-                            <PlayCircle className="w-8 h-8 text-primary"/>
-                            JVM: Java Virtual Machine
-                        </CardTitle>
-                        <CardDescription>The Execution Engine</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <p className="text-foreground/90">The JVM is the heart of Java. It's an abstract machine that provides a runtime environment to execute Java bytecode. It's what makes "Write Once, Run Anywhere" possible.</p>
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                            <li>Manages memory and garbage collection.</li>
-                            <li>Converts bytecode into native machine code.</li>
-                            <li>Is platform-dependent (you need a different JVM for Windows, Mac, Linux).</li>
-                        </ul>
-                    </CardContent>
-                </Card>
-            </div>
+        <div className="relative p-4 md:p-8">
+          <Card className="shadow-2xl border-2 border-muted-foreground/30 p-4 md:p-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                  <HardHat className="w-8 h-8 text-muted-foreground"/>
+                  JDK: Java Development Kit
+              </CardTitle>
+              <CardDescription>The Development Toolkit</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <p className="text-foreground/90">The JDK is the full-featured toolkit for Java developers. It contains everything you need to <span className="font-bold">write, compile, and run</span> Java applications.</p>
+              <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                  <li>Includes the entire <span className="font-semibold text-secondary-foreground">JRE</span>.</li>
+                  <li>Provides development tools: the compiler (`javac`), debugger (`jdb`), and archiver (`jar`).</li>
+                  <li>If you want to code in Java, you need the JDK.</li>
+              </ul>
+              
+              <div className="pt-6">
+                <Card className="shadow-xl border-2 border-secondary/50 p-4 md:p-6">
+                  <CardHeader>
+                      <CardTitle className="flex items-center gap-3 text-2xl">
+                          <Library className="w-8 h-8 text-secondary-foreground"/>
+                          JRE: Java Runtime Environment
+                      </CardTitle>
+                      <CardDescription>The Running Environment</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                      <p className="text-foreground/90">The JRE contains everything needed to <span className="font-bold">run</span> a compiled Java program. If you only want to execute Java applications, this is all you need.</p>
+                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                          <li>Includes the <span className="font-semibold text-primary">JVM</span>.</li>
+                          <li>Provides the core Java libraries (like `java.lang`, `java.util`, etc.).</li>
+                          <li>Does NOT contain tools for development (like compilers or debuggers).</li>
+                      </ul>
 
-            {/* JRE */}
-            <div className="relative z-0 -mt-8 w-full md:w-4/5 mx-auto">
-                <Card className="shadow-xl border-2 border-secondary/50 pt-16">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-3 text-2xl">
-                            <Library className="w-8 h-8 text-secondary-foreground"/>
-                            JRE: Java Runtime Environment
-                        </CardTitle>
-                        <CardDescription>The Running Environment</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <p className="text-foreground/90">The JRE contains everything needed to <span className="font-bold">run</span> a compiled Java program. If you only want to execute Java applications, this is all you need.</p>
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                            <li>Includes the <span className="font-semibold text-primary">JVM</span>.</li>
-                            <li>Provides the core Java libraries (like `java.lang`, `java.util`, etc.).</li>
-                            <li>Does NOT contain tools for development (like compilers or debuggers).</li>
-                        </ul>
-                    </CardContent>
+                      <div className="pt-6">
+                          <Card className="shadow-lg border-2 border-primary/50 p-4">
+                              <CardHeader>
+                                  <CardTitle className="flex items-center gap-3 text-2xl">
+                                      <PlayCircle className="w-8 h-8 text-primary"/>
+                                      JVM: Java Virtual Machine
+                                  </CardTitle>
+                                  <CardDescription>The Execution Engine</CardDescription>
+                              </CardHeader>
+                              <CardContent className="space-y-2">
+                                  <p className="text-foreground/90">The JVM is the heart of Java. It's an abstract machine that provides a runtime environment to execute Java bytecode. It's what makes "Write Once, Run Anywhere" possible.</p>
+                                  <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                                      <li>Manages memory and garbage collection.</li>
+                                      <li>Converts bytecode into native machine code.</li>
+                                      <li>Is platform-dependent (you need a different JVM for Windows, Mac, Linux).</li>
+                                  </ul>
+                              </CardContent>
+                          </Card>
+                      </div>
+                  </CardContent>
                 </Card>
-            </div>
-            
-            {/* JDK */}
-             <div className="relative z-[-1] -mt-8 w-full mx-auto">
-                <Card className="shadow-2xl border-2 border-muted-foreground/30 pt-16">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-3 text-2xl">
-                            <HardHat className="w-8 h-8 text-muted-foreground"/>
-                            JDK: Java Development Kit
-                        </CardTitle>
-                        <CardDescription>The Development Toolkit</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <p className="text-foreground/90">The JDK is the full-featured toolkit for Java developers. It contains everything you need to <span className="font-bold">write, compile, and run</span> Java applications.</p>
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                            <li>Includes the entire <span className="font-semibold text-secondary-foreground">JRE</span>.</li>
-                            <li>Provides development tools: the compiler (`javac`), debugger (`jdb`), and archiver (`jar`).</li>
-                            <li>If you want to code in Java, you need the JDK.</li>
-                        </ul>
-                    </CardContent>
-                </Card>
-            </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Card>
