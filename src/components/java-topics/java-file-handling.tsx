@@ -5,6 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Play, File, FilePlus, FileText, FilePen, FileX } from 'lucide-react';
 import React from 'react';
 
+function onOpenEditor(code: string) {
+    // Dummy function for now, will be replaced by the real one
+    console.log("Opening editor with code:", code);
+}
+
 function wrapInMain(code: string): string {
     return `import java.io.File;
 import java.io.IOException;

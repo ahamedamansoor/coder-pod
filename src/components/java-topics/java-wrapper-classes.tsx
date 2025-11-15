@@ -5,6 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Play, Box, ArrowRightLeft, CheckCircle2 } from 'lucide-react';
 import React from 'react';
 
+function onOpenEditor(code: string) {
+    // Dummy function for now, will be replaced by the real one
+    console.log("Opening editor with code:", code);
+}
+
 function wrapInMain(code: string): string {
     return `import java.util.ArrayList;
 
