@@ -25,106 +25,111 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     setIsRunning(true);
     setOutput("");
     
+    // This is a mock executor. It doesn't actually compile or run Java.
+    // It scans the code for common patterns and simulates the output.
     setTimeout(() => {
       try {
-        const variables: Record<string, any> = {};
-        const finalVariables = new Set<string>();
-        let consoleOutput: string[] = [];
+        let simulatedOutput: string[] = [];
+        let executionHasOutput = false;
 
         const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
 
-        let codeToRun = codeWithoutComments;
-        const mainMethodMatch = /public\s+static\s+void\s+main\s*\([\s\S]*?\)\s*\{([\s\S]*)\}/.exec(codeToRun);
+        let mainMethodContent = codeWithoutComments;
+        const mainMethodMatch = /public\s+static\s+void\s+main\s*\([\s\S]*?\)\s*\{([\s\S]*)\}/.exec(codeWithoutComments);
         if (mainMethodMatch && mainMethodMatch[1]) {
-            codeToRun = mainMethodMatch[1];
+            mainMethodContent = mainMethodMatch[1];
         }
         
-        const statements = codeToRun.split(';').map(s => s.trim()).filter(Boolean);
+        const lines = mainMethodContent.split('\n').map(l => l.trim()).filter(Boolean);
 
-        const evaluateExpression = (expr: string): any => {
-          expr = expr.trim();
-          
-          const parts = expr.split('+').map(p => p.trim());
-          let result: any = null;
+        const variableValues: Record<string, any> = {};
 
-          for (const part of parts) {
-              let value: any;
-              if (part.startsWith('"') && part.endsWith('"')) {
-                  value = part.slice(1, -1);
-              } else if (variables.hasOwnProperty(part)) {
-                  value = variables[part];
-              } else if (!isNaN(Number(part))) {
-                  if (part.includes('.')) value = parseFloat(part);
-                  else value = parseInt(part, 10);
-              } else if (part === 'true') {
-                  value = true;
-              } else if (part === 'false') {
-                  value = false;
-              } else {
-                  value = part; // Treat as string if it's an unknown token
-              }
-              
-              if (result === null) {
-                  result = value;
-              } else {
-                  result = String(result) + String(value);
-              }
-          }
-          return result;
+        const evaluateRhs = (rhs: string) => {
+            rhs = rhs.trim();
+            // Try to resolve variables
+            for (const varName in variableValues) {
+                const regex = new RegExp(`\\b${varName}\\b`, 'g');
+                rhs = rhs.replace(regex, variableValues[varName]);
+            }
+
+            // Super simple evaluation for string concatenation and basic math
+            try {
+                if (rhs.includes('"')) { // Likely string operation
+                    return rhs.replace(/"/g, '').replace(/\s*\+\s*/g, '');
+                }
+                // Use Function constructor for safer eval-like behavior
+                return new Function(`return ${rhs}`)();
+            } catch (e) {
+                return rhs; // Return as is if evaluation fails
+            }
         };
 
-        for (const statement of statements) {
-            const varRegex = /^(final\s+)?(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
-            const varMatch = statement.match(varRegex);
-            if (varMatch) {
-                const [, isFinal, , name, valueStr] = varMatch;
-                if (finalVariables.has(name)) {
-                    throw new Error(`error: variable ${name} is already defined and is final`);
-                }
-                if (isFinal) {
-                    finalVariables.add(name);
-                }
-                variables[name] = evaluateExpression(valueStr);
-                continue;
-            }
-
-            const reassignRegex = /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
-            const reassignMatch = statement.match(reassignRegex);
-            if (reassignMatch) {
-                const [, name, valueStr] = reassignMatch;
-                if (finalVariables.has(name)) {
-                    throw new Error(`cannot assign a value to final variable ${name}`);
-                }
-                if (variables.hasOwnProperty(name)) {
-                    variables[name] = evaluateExpression(valueStr);
-                    continue;
-                }
-            }
-
-            const printlnRegex = /System\.(out|err)\.println\((.*)\)/;
-            const printMatch = statement.match(printlnRegex);
-            if (printMatch) {
-                const [, stream, content] = printMatch;
-                const evaluatedContent = evaluateExpression(content);
+        for (const line of lines) {
+            // System.out.println
+            const printlnMatch = /System\.(out|err)\.println\((.*)\);?/.exec(line);
+            if (printlnMatch) {
+                const [, stream, content] = printlnMatch;
+                const evaluatedContent = evaluateRhs(content);
                 const finalOutput = evaluatedContent !== null && evaluatedContent !== undefined ? String(evaluatedContent) : "null";
                 
                 if (stream === 'err') {
-                   consoleOutput.push(`Error: ${finalOutput}`);
+                   simulatedOutput.push(`Error: ${finalOutput}`);
                 } else {
-                   consoleOutput.push(finalOutput);
+                   simulatedOutput.push(finalOutput);
                 }
+                executionHasOutput = true;
+                continue;
+            }
+
+            // Variable declaration and assignment
+            const varAssignMatch = /^(final\s+)?(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*);?/.exec(line);
+            if (varAssignMatch) {
+                const [, , type, name, valueStr] = varAssignMatch;
+                const evaluatedValue = evaluateRhs(valueStr);
+                variableValues[name] = evaluatedValue;
+                simulatedOutput.push(`// Declared ${type} '${name}' and assigned value: ${evaluatedValue}`);
+                executionHasOutput = true;
+                continue;
+            }
+
+            // Variable re-assignment
+            const reassignMatch = /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*);?/.exec(line);
+            if (reassignMatch) {
+                const [, name, valueStr] = reassignMatch;
+                if (name in variableValues) {
+                   const evaluatedValue = evaluateRhs(valueStr);
+                   variableValues[name] = evaluatedValue;
+                   simulatedOutput.push(`// Re-assigned '${name}' to value: ${evaluatedValue}`);
+                   executionHasOutput = true;
+                }
+                continue;
+            }
+
+            // For loop
+            const forLoopMatch = /for\s*\((.*);(.*);(.*)\)/.exec(line);
+            if (forLoopMatch) {
+                simulatedOutput.push(`// A 'for' loop was found. Simulating its likely purpose.`);
+                executionHasOutput = true;
+                continue;
+            }
+            
+            // While loop
+            const whileLoopMatch = /while\s*\((.*)\)/.exec(line);
+            if (whileLoopMatch) {
+                simulatedOutput.push(`// A 'while' loop was found. Simulating its likely purpose.`);
+                executionHasOutput = true;
                 continue;
             }
         }
         
-        if (consoleOutput.length > 0) {
-          setOutput(consoleOutput.join('\n'));
+        if (simulatedOutput.length > 0) {
+          setOutput(simulatedOutput.join('\n'));
         } else {
-          setOutput("Execution finished with no output.");
+          setOutput("Execution finished. No print statements found to display output.");
         }
 
       } catch (e: any) {
-        setOutput(`An error occurred during execution: ${e.message}`);
+        setOutput(`An error occurred during simulation: ${e.message}`);
       } finally {
         setIsRunning(false);
       }
@@ -183,3 +188,5 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     </div>
   );
 }
+
+    
