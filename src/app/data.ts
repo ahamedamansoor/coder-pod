@@ -6,7 +6,7 @@ export type Topic = {
 };
 
 export type Language = {
-  slug: string;
+  slug:string;
   name: string;
   topics: Topic[];
 };
@@ -135,6 +135,21 @@ export const languages: Language[] = [
         slug: 'operator-precedence',
         title: 'Operator Precedence',
         explanation: 'Learn about the order in which operators are evaluated in Java.'
+      },
+      {
+        slug: 'scanner-class',
+        title: 'Scanner Class',
+        explanation: 'Learn how to use the Scanner class to get user input.'
+      },
+      {
+        slug: 'reading-different-types',
+        title: 'Reading Different Types',
+        explanation: 'Learn how to read various data types like integers, doubles, and strings from the user.'
+      },
+      {
+        slug: 'input-validation',
+        title: 'Input Validation',
+        explanation: 'Learn how to check if the user has entered the correct type of data.'
       }
     ],
   },

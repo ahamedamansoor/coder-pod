@@ -3,6 +3,7 @@
 
 
 
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -29,7 +30,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation } from './what-is-java';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -615,6 +616,9 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isBitwiseOperatorsTopic = language.slug === 'java' && topic.slug === 'bitwise-operators';
   const isTernaryOperatorTopic = language.slug === 'java' && topic.slug === 'ternary-operator';
   const isOperatorPrecedenceTopic = language.slug === 'java' && topic.slug === 'operator-precedence';
+  const isScannerClassTopic = language.slug === 'java' && topic.slug === 'scanner-class';
+  const isReadingDifferentTypesTopic = language.slug === 'java' && topic.slug === 'reading-different-types';
+  const isInputValidationTopic = language.slug === 'java' && topic.slug === 'input-validation';
 
 
   const renderTopicContent = () => {
@@ -687,6 +691,15 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isOperatorPrecedenceTopic) {
       return <JavaOperatorPrecedence onOpenEditor={onOpenEditor} />;
     }
+    if (isScannerClassTopic) {
+      return <JavaScannerClass onOpenEditor={onOpenEditor} />;
+    }
+    if (isReadingDifferentTypesTopic) {
+      return <JavaReadingDifferentTypes onOpenEditor={onOpenEditor} />;
+    }
+    if (isInputValidationTopic) {
+      return <JavaInputValidation onOpenEditor={onOpenEditor} />;
+    }
     return (
       <Card>
         <CardHeader>
@@ -699,7 +712,34 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic && !isConstantsTopic && !isLiteralsTopic && !isArithmeticOperatorsTopic && !isAssignmentOperatorsTopic && !isComparisonOperatorsTopic && !isLogicalOperatorsTopic && !isBitwiseOperatorsTopic && !isTernaryOperatorTopic && !isOperatorPrecedenceTopic;
+  const showSimplifyButton = ![
+    isLearningPlanTopic,
+    isWhatIsJavaTopic,
+    isHistoryOfJavaTopic,
+    isFeaturesOfJavaTopic,
+    isJdkJreJvmTopic,
+    isHowJavaWorksTopic,
+    isSettingUpEnvironmentTopic,
+    isFirstJavaProgramTopic,
+    isCommentsInJavaTopic,
+    isJavaPrintTopic,
+    isJavaDataTypesTopic,
+    isJavaVariablesTopic,
+    isJavaTypeCastingTopic,
+    isEscapeSequencesTopic,
+    isConstantsTopic,
+    isLiteralsTopic,
+    isArithmeticOperatorsTopic,
+    isAssignmentOperatorsTopic,
+    isComparisonOperatorsTopic,
+    isLogicalOperatorsTopic,
+    isBitwiseOperatorsTopic,
+    isTernaryOperatorTopic,
+    isOperatorPrecedenceTopic,
+    isScannerClassTopic,
+    isReadingDifferentTypesTopic,
+    isInputValidationTopic,
+  ].some(Boolean);
 
   return (
     <div className="space-y-8">

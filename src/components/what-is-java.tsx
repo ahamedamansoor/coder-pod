@@ -11,7 +11,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Plus, Minus, X, Divide, Percent, Equal, PlusSquare, Scale, Sigma, GitCompareArrows, ChevronsRight, FunctionSquare } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Plus, Minus, X, Divide, Percent, Equal, PlusSquare, Scale, Sigma, GitCompareArrows, ChevronsRight, FunctionSquare, Keyboard, Import, FileQuestion } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
@@ -1494,4 +1494,288 @@ export function JavaOperatorPrecedence({ onOpenEditor }: { onOpenEditor: (code: 
       </Card>
     </div>
   );
+}
+
+export function JavaScannerClass({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const steps = [
+      {
+        icon: Import,
+        title: "1. Import the Scanner",
+        description: "First, you need to tell Java you want to use the `Scanner` class. It lives in the `java.util` package.",
+        code: "import java.util.Scanner;"
+      },
+      {
+        icon: PlusSquare,
+        title: "2. Create a Scanner Object",
+        description: "Create a new `Scanner` object that reads from the standard input stream, which is your keyboard.",
+        code: "Scanner myObj = new Scanner(System.in);"
+      },
+      {
+        icon: FileQuestion,
+        title: "3. Prompt the User",
+        description: "Print a message to the console to tell the user what you want them to enter.",
+        code: 'System.out.println("Enter your name");'
+      },
+      {
+        icon: Keyboard,
+        title: "4. Read the Input",
+        description: "Use a method like `nextLine()` to read the user's input as a string.",
+        code: "String userName = myObj.nextLine();"
+      },
+      {
+        icon: PlayCircle,
+        title: "5. Use the Input",
+        description: "Now you can use the variable that holds the user's input in your program!",
+        code: 'System.out.println("Username is: " + userName);'
+      }
+    ];
+
+    const fullExample = `import java.util.Scanner;  // 1. Import
+
+public class Main {
+  public static void main(String[] args) {
+    // 2. Create a Scanner object
+    Scanner myObj = new Scanner(System.in);
+    
+    // 3. Prompt the user
+    System.out.println("Enter username");
+
+    // 4. Read user input
+    String userName = myObj.nextLine(); 
+    
+    // 5. Use the input
+    System.out.println("Username is: " + userName); 
+  }
+}`;
+  
+    return (
+      <div id="java-scanner-class-page" data-test="java-scanner-class-page" className="space-y-8">
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <Keyboard className="w-10 h-10 text-primary" />
+            <h1 className="text-4xl font-bold text-foreground">The Scanner Class</h1>
+          </div>
+          <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Making your Java programs interactive by reading user input.</p>
+        </div>
+  
+        <div className="relative">
+          <div aria-hidden="true" className="absolute inset-y-0 left-1/2 w-px bg-border -z-10"></div>
+          <div className="space-y-12">
+            {steps.map((step, index) => (
+              <div key={index} className="flex flex-col md:flex-row items-center gap-8">
+                <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8 md:order-2'}`}>
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="bg-primary/10 text-primary p-3 rounded-full">
+                            <step.icon className="w-6 h-6" />
+                        </div>
+                        <h2 className="text-2xl font-bold">{step.title}</h2>
+                    </div>
+                    <p className="text-muted-foreground mb-4">{step.description}</p>
+                    <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{step.code}</pre>
+                    </div>
+                </div>
+                 <div className={`w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold shrink-0 md:order-1 ${index % 2 === 0 ? '' : 'md:-ml-6'} ${index % 2 !== 0 ? '' : 'md:mr-[-25px]'} z-10`}>
+                    {index + 1}
+                </div>
+                <div className="md:w-1/2 hidden md:block"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Full Example</CardTitle>
+                <CardDescription>
+                    Here's how all the steps look together in a single program. Note that you can't run this example here because it requires real-time user input.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="bg-muted rounded-md p-4">
+                    <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{fullExample}</pre>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">To try this, you'll need to run it in a local development environment like VS Code or IntelliJ.</p>
+            </CardContent>
+        </Card>
+      </div>
+    );
+}
+
+export function JavaReadingDifferentTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const methods = [
+        { method: "next()", reads: "A single word (until a space is found)", example: 'String word = myScanner.next();' },
+        { method: "nextLine()", reads: "The entire line of text (until the user hits Enter)", example: 'String line = myScanner.nextLine();' },
+        { method: "nextInt()", reads: "An integer (`int`)", example: 'int number = myScanner.nextInt();' },
+        { method: "nextDouble()", reads: "A double-precision number (`double`)", example: 'double decimal = myScanner.nextDouble();' },
+        { method: "nextBoolean()", reads: "A boolean value (`true` or `false`)", example: 'boolean choice = myScanner.nextBoolean();' },
+        { method: "nextFloat()", reads: "A floating-point number (`float`)", example: 'float price = myScanner.nextFloat();' },
+        { method: "nextLong()", reads: "A long integer (`long`)", example: 'long largeNumber = myScanner.nextLong();' },
+    ];
+    
+    const fullExample = `import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner myScanner = new Scanner(System.in);
+
+    System.out.println("Enter name, age and salary:");
+
+    // String input
+    String name = myScanner.nextLine();
+
+    // Numerical input
+    int age = myScanner.nextInt();
+    double salary = myScanner.nextDouble();
+
+    // Output input by user
+    System.out.println("Name: " + name); 
+    System.out.println("Age: " + age);
+    System.out.println("Salary: " + salary);
+  }
+}`;
+
+    return (
+        <div id="java-reading-types-page" data-test="java-reading-types-page" className="space-y-8">
+            <div className="text-center">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                    <FileQuestion className="w-10 h-10 text-primary" />
+                    <h1 className="text-4xl font-bold text-foreground">Reading Different Data Types</h1>
+                </div>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">The `Scanner` class has different methods for reading different types of data.</p>
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Scanner Methods</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Method</TableHead>
+                                <TableHead>What it Reads</TableHead>
+                                <TableHead>Example Usage</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {methods.map(m => (
+                                <TableRow key={m.method}>
+                                    <TableCell><code className="font-mono text-primary font-semibold">{m.method}</code></TableCell>
+                                    <TableCell>{m.reads}</TableCell>
+                                    <TableCell><code className="font-mono bg-muted p-1 rounded text-sm">{m.example}</code></TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Full Example</CardTitle>
+                    <CardDescription>
+                        This program asks for a name, age, and salary, and then prints them out. Note that this example will not run in the browser editor.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{fullExample}</pre>
+                    </div>
+                </CardContent>
+            </Card>
+            
+            <Card className="border-yellow-500/50 bg-yellow-500/5">
+                <CardHeader>
+                    <CardTitle className="text-yellow-700">A Common Pitfall: `nextInt()` and `nextLine()`</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-yellow-600 mb-4">When you use `nextInt()` (or any other `next...()` method besides `nextLine()`), it only reads the number, not the "new line" character that's created when you press Enter. This leftover newline character is then immediately consumed by the next `nextLine()` call, causing it to skip the input you intended for it.</p>
+                    <p className="text-yellow-600 mb-2 font-semibold">The Fix:</p>
+                    <p className="text-yellow-600 mb-4">If you use a method like `nextInt()` and you know you're going to use `nextLine()` after it, add an extra `myScanner.nextLine();` call in between to consume the leftover newline character.</p>
+                    <div className="bg-background rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">
+{`int age = myScanner.nextInt();
+// Consume the leftover newline
+myScanner.nextLine(); 
+String name = myScanner.nextLine();`}
+                        </pre>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    );
+}
+
+
+export function JavaInputValidation({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const example = `import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    System.out.println("Please enter an integer:");
+
+    if (sc.hasNextInt()) {
+        int number = sc.nextInt();
+        System.out.println("You entered the integer: " + number);
+    } else {
+        System.out.println("That's not an integer! Please run the program again.");
+    }
+  }
+}`;
+
+    return (
+        <div id="java-input-validation-page" data-test="java-input-validation-page" className="space-y-8">
+            <div className="text-center">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                    <CheckCircle2 className="w-10 h-10 text-primary" />
+                    <h1 className="text-4xl font-bold text-foreground">Input Validation</h1>
+                </div>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Checking if the user has entered the correct type of data before you try to use it.</p>
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Why Validate Input?</CardTitle>
+                    <CardDescription>
+                        If you ask for an integer and the user types "hello", your program will crash with an `InputMismatchException`. To prevent this, you can check the input type first.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p>The `Scanner` class provides `hasNext...()` methods that check if the next input token can be interpreted as the specified type without actually consuming it.</p>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>The `hasNextInt()` Method</CardTitle>
+                    <CardDescription>
+                        This method returns `true` if the next token in the scanner's input can be interpreted as an `int` value.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{example}</pre>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">This example will not run correctly in the browser editor because it requires user input.</p>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Other `hasNext...()` Methods</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Just like there are different `next...()` methods, there's a corresponding `hasNext...()` method for each:</p>
+                    <ul className="list-disc list-inside mt-4 space-y-2">
+                        <li><code className="font-mono bg-muted p-1 rounded">hasNextDouble()</code></li>
+                        <li><code className="font-mono bg-muted p-1 rounded">hasNextFloat()</code></li>
+                        <li><code className="font-mono bg-muted p-1 rounded">hasNextBoolean()</code></li>
+                        <li>...and so on.</li>
+                    </ul>
+                </CardContent>
+            </Card>
+        </div>
+    );
 }

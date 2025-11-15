@@ -40,8 +40,19 @@ export function TopicSidebar({
     ['arithmetic-operators', 'assignment-operators', 'comparison-operators', 'logical-operators', 'bitwise-operators', 'ternary-operator', 'operator-precedence'].includes(t.slug)
   );
 
+  const userInputTopics = language.topics.filter(t =>
+    ['scanner-class', 'reading-different-types', 'input-validation'].includes(t.slug)
+  );
+
   const otherTopics = language.topics.filter(t => 
-    !['learning-plan', ...gettingStartedTopics.map(t => t.slug), ...basicOutputTopics.map(t => t.slug), ...variablesAndDataTypesTopics.map(t => t.slug), ...operatorsTopics.map(t => t.slug)].includes(t.slug)
+    ![
+      'learning-plan', 
+      ...gettingStartedTopics.map(t => t.slug), 
+      ...basicOutputTopics.map(t => t.slug), 
+      ...variablesAndDataTypesTopics.map(t => t.slug), 
+      ...operatorsTopics.map(t => t.slug),
+      ...userInputTopics.map(t => t.slug)
+    ].includes(t.slug)
   );
 
   return (
@@ -137,6 +148,26 @@ export function TopicSidebar({
                   <p className="px-2 text-md font-semibold text-foreground">Operators</p>
                   <div className="ml-2 border-l pl-2 spacey-1">
                     {operatorsTopics.map((topic) => (
+                      <SidebarMenuItem key={topic.slug}>
+                        <SidebarMenuButton
+                          onClick={() => onTopicSelect(topic.slug)}
+                          isActive={selectedTopicSlug === topic.slug}
+                          tooltip={topic.title}
+                          className="justify-start text-sm"
+                        >
+                          {topic.title}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {userInputTopics.length > 0 && (
+                 <div className="space-y-2">
+                  <p className="px-2 text-md font-semibold text-foreground">User Input</p>
+                  <div className="ml-2 border-l pl-2 spacey-1">
+                    {userInputTopics.map((topic) => (
                       <SidebarMenuItem key={topic.slug}>
                         <SidebarMenuButton
                           onClick={() => onTopicSelect(topic.slug)}
