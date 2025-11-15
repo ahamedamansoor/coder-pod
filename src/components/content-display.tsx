@@ -76,12 +76,12 @@ function JavaPrintFormats() {
   ];
 
   const formatSpecifiers = [
-    { spec: '%s', desc: 'String' },
-    { spec: '%d', desc: 'Integer' },
-    { spec: '%f', desc: 'Floating-point' },
-    { spec: '%b', desc: 'Boolean' },
-    { spec: '%c', desc: 'Character' },
-    { spec: '%n', desc: 'New line' },
+    { spec: '%s', desc: 'String', example: '"Hello"' },
+    { spec: '%d', desc: 'Integer', example: '123' },
+    { spec: '%f', desc: 'Float/Double', example: '12.34' },
+    { spec: '%b', desc: 'Boolean', example: 'true' },
+    { spec: '%c', desc: 'Character', example: "'a'" },
+    { spec: '%n', desc: 'New line', example: 'Next line' },
   ];
 
   return (
@@ -155,7 +155,11 @@ function JavaPrintFormats() {
           {formatSpecifiers.map((spec) => (
              <div key={spec.spec} className="bg-muted border border-border rounded-lg p-4 text-center hover:shadow-md transition-shadow">
                <code className="font-bold text-primary text-lg">{spec.spec}</code>
-               <p className="text-sm text-muted-foreground">{spec.desc}</p>
+               <p className="text-sm text-foreground mt-1 mb-2">{spec.desc}</p>
+               <div className="bg-background/50 rounded p-2">
+                <p className="text-xs text-muted-foreground mb-1">Example</p>
+                <code className="text-sm text-foreground font-code">{spec.example}</code>
+               </div>
              </div>
           ))}
         </CardContent>
