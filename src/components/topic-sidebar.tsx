@@ -13,21 +13,20 @@ import { Logo } from './logo';
 import { Separator } from './ui/separator';
 import { ScrollArea } from './ui/scroll-area';
 import { CheckCircle } from 'lucide-react';
+import Link from 'next/link';
 
 interface TopicSidebarProps {
   language: Language;
   selectedTopicSlug: string | null;
-  onTopicSelect: (slug: string) => void;
   completedTopics: Set<string>;
 }
 
 export function TopicSidebar({
   language,
   selectedTopicSlug,
-  onTopicSelect,
   completedTopics,
 }: TopicSidebarProps) {
-  const activeItemRef = useRef<HTMLDivElement>(null);
+  const activeItemRef = useRef<HTMLAnchorElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -124,19 +123,19 @@ export function TopicSidebar({
         <p className="px-2 text-md font-semibold text-foreground">{title}</p>
         <div className="ml-2 border-l pl-2 space-y-1">
           {topics.map((topic) => (
-            <div key={topic.slug} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={() => onTopicSelect(topic.slug)}
-                  isActive={selectedTopicSlug === topic.slug}
-                  tooltip={topic.title}
-                  className="justify-start text-sm"
-                >
+            <SidebarMenuItem key={topic.slug}>
+              <SidebarMenuButton
+                asChild
+                isActive={selectedTopicSlug === topic.slug}
+                tooltip={topic.title}
+                className="justify-start text-sm"
+              >
+                <Link href={`/java/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
                   {completedTopics.has(topic.slug) && <CheckCircle className="text-primary" />}
                   {topic.title}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </div>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           ))}
         </div>
       </div>
@@ -154,16 +153,18 @@ export function TopicSidebar({
            <div ref={scrollContainerRef} className="h-full">
               <SidebarMenu className="p-4 space-y-4">
                 {learningPlanTopic && (
-                  <div ref={selectedTopicSlug === learningPlanTopic.slug ? activeItemRef : null}>
+                  <div>
                     <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
                     <SidebarMenuItem key={learningPlanTopic.slug}>
                       <SidebarMenuButton
-                        onClick={() => onTopicSelect(learningPlanTopic.slug)}
+                        asChild
                         isActive={selectedTopicSlug === learningPlanTopic.slug}
                         tooltip={learningPlanTopic.title}
                         className="justify-start"
                       >
-                        {learningPlanTopic.title}
+                         <Link href={`/java/${learningPlanTopic.slug}`} ref={selectedTopicSlug === learningPlanTopic.slug ? activeItemRef : null}>
+                            {learningPlanTopic.title}
+                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   </div>
@@ -186,18 +187,18 @@ export function TopicSidebar({
                   {renderTopicGroup("Advanced Topics", advancedTopics)}
 
                   {otherTopics.map((topic) => (
-                    <div key={topic.slug} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton
-                          onClick={() => onTopicSelect(topic.slug)}
-                          isActive={selectedTopicSlug === topic.slug}
-                          tooltip={topic.title}
-                          className="justify-start"
-                        >
+                    <SidebarMenuItem key={topic.slug}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={selectedTopicSlug === topic.slug}
+                        tooltip={topic.title}
+                        className="justify-start"
+                      >
+                        <Link href={`/java/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
                           {topic.title}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </div>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
                   ))}
                 </div>
 
