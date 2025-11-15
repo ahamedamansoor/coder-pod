@@ -43,7 +43,7 @@ export const languages: Language[] = [
       },
       {
         slug: 'how-java-works',
-        title: 'How Java Works',
+        title: 'Compilation, Bytecode, & Execution',
         explanation: 'Understanding the journey from source code to a running program: compilation, bytecode, and execution.'
       },
       {

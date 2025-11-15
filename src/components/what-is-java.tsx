@@ -286,16 +286,13 @@ export function JdkJreJvm() {
             </CardHeader>
             <CardContent className="grid sm:grid-cols-3 gap-4 text-center">
                 <div className="bg-muted p-4 rounded-lg">
-                    <h3 className="font-bold text-foreground">JDK</h3>
-                    <p className="text-sm text-muted-foreground">Toolbox to BUILD</p>
+                    <h3 className="font-bold text-foreground">You write code with the JDK.</h3>
                 </div>
                 <div className="bg-muted p-4 rounded-lg">
-                    <h3 className="font-bold text-secondary-foreground">JRE</h3>
-                    <p className="text-sm text-muted-foreground">Power to RUN</p>
+                    <h3 className="font-bold text-secondary-foreground">The JRE provides the libraries to run it.</h3>
                 </div>
                 <div className="bg-muted p-4 rounded-lg">
-                    <h3 className="font-bold text-primary">JVM</h3>
-                    <p className="text-sm text-muted-foreground">Engine to EXECUTE</p>
+                    <h3 className="font-bold text-primary">The JVM executes it.</h3>
                 </div>
             </CardContent>
         </Card>
@@ -556,7 +553,7 @@ export function HowJavaWorks() {
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Workflow className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">How Java Works</h1>
+            <h1 className="text-4xl font-bold text-foreground">Compilation, Bytecode, & Execution</h1>
           </div>
           <p className="text-muted-foreground text-lg max-w-3xl mx-auto">From your code to a running program in four simple steps.</p>
         </div>
@@ -601,5 +598,6 @@ export function HowJavaWorks() {
     );
   }
     
+
 
 
