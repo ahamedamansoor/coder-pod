@@ -47,7 +47,7 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
           }
 
           // Handle string concatenation
-          const parts = expr.split(/(?<!\\) \+ /);
+          const parts = expr.split(/(?<!\\)\s?\+\s?/);
           if (parts.length > 1) {
              return parts.map(part => evaluateExpression(part.trim())).join('');
           }
@@ -70,12 +70,17 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
           if (!isNaN(Number(expr))) {
             return Number(expr);
           }
+          
+          // Handle numeric literals with suffixes (L, f, d)
+          if (expr.toLowerCase().endsWith('l')) return BigInt(expr.slice(0,-1));
+          if (expr.toLowerCase().endsWith('f')) return parseFloat(expr);
+          if (expr.toLowerCase().endsWith('d')) return parseFloat(expr);
 
           // Basic arithmetic - this part is tricky and limited.
           // This will not respect operator precedence. It evaluates left-to-right.
           try {
             // A safer way to evaluate arithmetic without using eval()
-            let result = new Function('return ' + expr.replace(/[a-zA-Z]/g, ''))();
+            let result = new Function('return ' + expr.replace(/[a-zA-Z$_]/g, ''))();
             return result;
           } catch(e) {
             // Fallback for more complex expressions or if evaluation fails
@@ -109,7 +114,8 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
              outputs.push(evaluateExpression(content));
              continue;
            }
-
+           
+           // Print error statement
            const printErrRegex = /System\.err\.println\((.*)\)/;
            const printErrMatch = line.match(printErrRegex);
            if (printErrMatch) {
