@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Bot, Code, Zap } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 export default function AppLayout() {
   return (
@@ -25,6 +26,7 @@ export default function AppLayout() {
             <Logo />
             <div className="flex items-center gap-4">
               <LearnModal />
+              <ThemeToggle />
               <Avatar>
                 <AvatarImage src="https://picsum.photos/seed/user/40/40" />
                 <AvatarFallback>U</AvatarFallback>

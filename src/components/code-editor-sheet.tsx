@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Code, Play, Terminal } from "lucide-react";
 import Editor from "@monaco-editor/react";
@@ -12,6 +13,7 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
   );
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (initialCode) {
@@ -50,26 +52,43 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
           if (part.toLowerCase().endsWith('d')) return parseFloat(part);
 
           if (!isNaN(Number(part))) {
-            return Number(part);
+            if (part.includes('.')) return parseFloat(part);
+            return parseInt(part, 10);
           }
           
           return part;
         };
 
         const evaluateExpression = (expr: string): any => {
-          expr = expr.trim();
-          const parts = expr.match(/(?:"[^"]*"|'[^']*'|[^"'+])+/g) || [];
-          let result: any = null;
+            expr = expr.trim();
+            // This regex handles string literals, variables, and the '+' operator.
+            const parts = expr.match(/(?:"[^"]*"|'[^']*'|[\w\.]+|[+\-*/])/g) || [];
+            let result: any = null;
+            let currentOperator = '+';
 
-          for (const part of parts) {
-            const evaluatedPart = evaluatePart(part);
-            if (result === null) {
-              result = evaluatedPart;
-            } else {
-              result += evaluatedPart;
+            for (let part of parts) {
+                part = part.trim();
+                if (['+', '-', '*', '/'].includes(part)) {
+                    currentOperator = part;
+                    continue;
+                }
+
+                const evaluatedPart = evaluatePart(part);
+                
+                if (result === null) {
+                    result = evaluatedPart;
+                } else {
+                    if (typeof result === 'string' || typeof evaluatedPart === 'string') {
+                         result = result.toString() + evaluatedPart.toString();
+                    } else {
+                         switch (currentOperator) {
+                            case '+': result += evaluatedPart; break;
+                            // Future operators can be added here
+                         }
+                    }
+                }
             }
-          }
-          return result;
+            return result;
         };
         
         for (const line of lines) {
@@ -162,7 +181,7 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
                 <Editor
                     height="100%"
                     language="java"
-                    theme="vs-dark"
+                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
                     value={code}
                     onChange={(value) => setCode(value || "")}
                     options={{ minimap: { enabled: false }, fontSize: 14 }}
