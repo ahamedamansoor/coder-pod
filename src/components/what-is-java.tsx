@@ -133,7 +133,7 @@ export function JavaFeatures() {
         description: 'It is designed for the distributed environment of the internet, making it suitable for network applications.'
       },
       {
-        icon: Share2,
+        icon: Layers,
         title: 'Dynamic',
         description: 'Java can adapt to an evolving environment. It can carry extensive amounts of run-time information that can be used to verify and resolve accesses to objects on run-time.'
       }
@@ -308,3 +308,5 @@ export function JdkJreJvm() {
       </div>
     );
   }
+
+    
