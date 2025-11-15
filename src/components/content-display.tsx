@@ -151,7 +151,7 @@ export function ContentDisplay({
     if (topic.slug === 'inner-classes') return <JavaInnerClasses onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'abstraction') return <JavaAbstraction onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'interfaces') return <JavaInterfaces onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'enums') return <JavaEnums />;
+    if (topic.slug === 'enums') return <JavaEnums onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'date-time') return <JavaDate />;
     if (topic.slug === 'hashmap') return <JavaHashMap />;
     if (topic.slug === 'hashset') return <JavaHashSet />;
