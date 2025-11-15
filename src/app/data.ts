@@ -22,22 +22,9 @@ export const languages: Language[] = [
         explanation: 'A structured roadmap for learning Java from scratch.'
       },
       {
-        slug: 'the-story-of-java',
-        title: 'The Story of Java',
-        explanation:
-          'Explore the origins of Java, from its inception as the "Green Project" to its evolution into a global programming standard. This topic covers the key milestones, the creators, and the initial goals that shaped Java into the language it is today.',
-      },
-      {
-        slug: 'introduction-to-java',
-        title: 'Introduction to Java',
-        explanation:
-          'Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers "write once, run anywhere" (WORA), meaning that compiled Java code can run on all platforms that support Java without the need for recompilation. It was originally developed by James Gosling at Sun Microsystems and released in 1995.',
-      },
-      {
-        slug: 'features-of-java',
-        title: 'Features of Java',
-        explanation:
-          'Java is a popular programming language with a wide range of features that make it powerful and versatile. Understanding these core features helps in appreciating why it is widely used for building robust applications.',
+        slug: 'what-is-java',
+        title: 'What is Java?',
+        explanation: 'An overview of Java, its history, and its core features.',
       },
       {
         slug: 'variables',
