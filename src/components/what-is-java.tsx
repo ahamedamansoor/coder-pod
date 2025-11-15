@@ -217,82 +217,61 @@ export function WhatIsJava() {
 export function JdkJreJvm() {
     return (
       <div className="space-y-8">
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Layers className="w-12 h-12 text-primary" />
-            <h1 className="text-5xl font-bold tracking-tight text-foreground">JDK vs JRE vs JVM</h1>
-          </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Understanding the core components that compile, run, and execute your Java code.
-          </p>
+        <div className="text-center mb-8">
+          <p className="text-muted-foreground text-lg">Understanding the core components that compile, run, and execute your Java code.</p>
         </div>
   
-        <div className="relative p-4 md:p-8">
-            <div className="border-2 border-muted-foreground/30 rounded-xl bg-card shadow-2xl p-4 md:p-8">
-                <div className="flex items-center gap-3 mb-4">
-                    <HardHat className="w-8 h-8 text-muted-foreground"/>
+        <div className="border-2 border-border bg-card rounded-xl p-6 shadow-sm">
+            <div className="flex items-center gap-3 mb-2">
+                <HardHat className="w-6 h-6 text-foreground"/>
+                <div>
+                    <h2 className="text-2xl font-bold text-foreground">JDK: Java Development Kit</h2>
+                    <p className="text-muted-foreground text-sm">The Development Toolkit</p>
+                </div>
+            </div>
+            <p className="text-foreground/90 mb-4 pl-9 text-sm">The JDK is the full-featured toolkit for Java developers. It contains everything you need to <span className="font-semibold">write, compile, and run</span> Java applications.</p>
+            <ul className="list-disc pl-14 text-sm space-y-1 text-foreground/80 mb-4">
+                <li>Includes the entire <span className="font-semibold text-secondary-foreground">JRE</span>.</li>
+                <li>Provides development tools: the compiler (`javac`), debugger (`jdb`), and archiver (`jar`).</li>
+                <li>If you want to code in Java, you need the JDK.</li>
+            </ul>
+
+            <div className="border-2 border-secondary/50 bg-secondary/10 rounded-lg p-6 ml-6">
+                <div className="flex items-center gap-3 mb-2">
+                    <Library className="w-6 h-6 text-secondary-foreground"/>
                     <div>
-                        <h2 className="text-2xl font-bold text-foreground">JDK: Java Development Kit</h2>
-                        <p className="text-muted-foreground">The complete toolkit for developing Java applications.</p>
+                        <h3 className="text-xl font-bold text-secondary-foreground">JRE: Java Runtime Environment</h3>
+                        <p className="text-muted-foreground text-sm">The Running Environment</p>
                     </div>
                 </div>
-                <p className="text-sm text-foreground/90 mb-4">Contains everything you need to <span className="font-semibold">write, compile, and debug</span> Java code. If you are a developer, this is what you need.</p>
+                <p className="text-foreground/90 mb-4 pl-9 text-sm">The JRE contains everything needed to <span className="font-semibold">run</span> a compiled Java program. If you only want to execute Java applications, this is all you need.</p>
+                <ul className="list-disc pl-14 text-sm space-y-1 text-foreground/80 mb-4">
+                    <li>Includes the <span className="font-semibold text-primary">JVM</span>.</li>
+                    <li>Provides the core Java libraries (like `java.lang`, `java.util`, etc.).</li>
+                    <li>Does NOT contain tools for development (like compilers or debuggers).</li>
+                </ul>
 
-                <div className="border-2 border-secondary/60 rounded-xl bg-secondary/10 p-4 md:p-6 mt-4">
-                    <div className="flex items-center gap-3 mb-4">
-                        <Library className="w-8 h-8 text-secondary-foreground"/>
+                <div className="border-2 border-primary/50 bg-primary/10 rounded-lg p-6 ml-6">
+                    <div className="flex items-center gap-3 mb-2">
+                        <PlayCircle className="w-6 h-6 text-primary"/>
                         <div>
-                            <h3 className="text-xl font-bold text-secondary-foreground">JRE: Java Runtime Environment</h3>
-                            <p className="text-muted-foreground">The environment for running compiled Java applications.</p>
+                            <h4 className="text-lg font-bold text-primary">JVM: Java Virtual Machine</h4>
+                            <p className="text-muted-foreground text-sm">The Execution Engine</p>
                         </div>
                     </div>
-                     <p className="text-sm text-foreground/90 mb-4">Provides the libraries and components needed to <span className="font-semibold">run</span> Java programs, but not to create them.</p>
-
-                    <div className="border-2 border-primary/50 rounded-xl bg-primary/10 p-4 mt-4">
-                        <div className="flex items-center gap-3 mb-4">
-                            <PlayCircle className="w-8 h-8 text-primary"/>
-                            <div>
-                                <h4 className="text-lg font-bold text-primary">JVM: Java Virtual Machine</h4>
-                                <p className="text-muted-foreground text-sm">The engine that executes the code.</p>
-                            </div>
-                        </div>
-                        <p className="text-sm text-foreground/90">The heart of Java. It's an abstract machine that takes your compiled Java code (bytecode) and translates it into instructions your computer can understand. This is what makes Java "Write Once, Run Anywhere."</p>
-                    </div>
+                    <p className="text-foreground/90 mb-4 pl-9 text-sm">The JVM is the heart of Java. It's an abstract machine that provides a runtime environment to execute Java bytecode. It's what makes "Write Once, Run Anywhere" possible.</p>
+                    <ul className="list-disc pl-14 text-sm space-y-1 text-foreground/80">
+                        <li>Manages memory and garbage collection.</li>
+                        <li>Converts bytecode into native machine code.</li>
+                        <li>Is platform-dependent (you need a different JVM for Windows, Mac, Linux).</li>
+                    </ul>
                 </div>
             </div>
         </div>
-
-
-        <Card>
-            <CardHeader>
-                <CardTitle>In a Nutshell</CardTitle>
-                <CardDescription>
-                    The relationship is simple: JDK contains JRE, and JRE contains JVM.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center font-semibold text-lg">
-                <div className="p-4 bg-muted rounded-md">
-                    <span className="text-muted-foreground">JDK (Develop)</span> ⊃ <span className="text-secondary-foreground">JRE (Run)</span> ⊃ <span className="text-primary">JVM (Execute)</span>
-                </div>
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div className="p-4 bg-background rounded-lg border">
-                        <h3 className="font-bold text-foreground">You are a Developer</h3>
-                        <p className="text-muted-foreground">You need the <span className="text-foreground font-semibold">JDK</span>.</p>
-                    </div>
-                    <div className="p-4 bg-background rounded-lg border">
-                        <h3 className="font-bold text-foreground">You are a User</h3>
-                        <p className="text-muted-foreground">You need the <span className="text-secondary-foreground font-semibold">JRE</span>.</p>
-                    </div>
-                    <div className="p-4 bg-background rounded-lg border">
-                        <h3 className="font-bold text-foreground">Your Code</h3>
-                        <p className="text-muted-foreground">It runs inside the <span className="text-primary font-semibold">JVM</span>.</p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
       </div>
     );
   }
 
     
+
 
