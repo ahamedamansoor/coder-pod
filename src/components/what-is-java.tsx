@@ -3,6 +3,7 @@
 
 
 
+
 import {
     Card,
     CardContent,
@@ -10,7 +11,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Plus, Minus, X, Divide, Percent, Equal, PlusSquare, Scale, Sigma, GitCompareArrows } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Plus, Minus, X, Divide, Percent, Equal, PlusSquare, Scale, Sigma, GitCompareArrows, ChevronsRight, FunctionSquare } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
@@ -1053,101 +1054,52 @@ export function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) =
   )
 }
 
-export function JavaOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
-  const operatorTypes = [
-    {
-      name: "Arithmetic Operators",
-      icon: PlusSquare,
-      description: "Used to perform common mathematical operations.",
-      operators: [
-        { op: "+", name: "Addition", example: "int sum = 10 + 5; // 15" },
-        { op: "-", name: "Subtraction", example: "int diff = 10 - 5; // 5" },
-        { op: "*", name: "Multiplication", example: "int prod = 10 * 5; // 50" },
-        { op: "/", name: "Division", example: "int quot = 10 / 5; // 2" },
-        { op: "%", name: "Modulus", example: "int rem = 10 % 3; // 1" },
-        { op: "++", name: "Increment", example: "int i = 5; i++; // i is now 6" },
-        { op: "--", name: "Decrement", example: "int i = 5; i--; // i is now 4" },
-      ]
-    },
-    {
-      name: "Assignment Operators",
-      icon: Equal,
-      description: "Used to assign values to variables.",
-      operators: [
-        { op: "=", name: "Assign", example: "int x = 10;" },
-        { op: "+=", name: "Add and assign", example: "int x = 10; x += 5; // x is 15" },
-        { op: "-=", name: "Subtract and assign", example: "int x = 10; x -= 5; // x is 5" },
-        { op: "*=", name: "Multiply and assign", example: "int x = 10; x *= 5; // x is 50" },
-      ]
-    },
-    {
-      name: "Comparison Operators",
-      icon: Scale,
-      description: "Used to compare two values, returns a boolean (`true` or `false`).",
-      operators: [
-        { op: "==", name: "Equal to", example: "10 == 5; // false" },
-        { op: "!=", name: "Not equal to", example: "10 != 5; // true" },
-        { op: ">", name: "Greater than", example: "10 > 5; // true" },
-        { op: "<", name: "Less than", example: "10 < 5; // false" },
-        { op: ">=", name: "Greater than or equal to", example: "10 >= 10; // true" },
-        { op: "<=", name: "Less than or equal to", example: "10 <= 5; // false" },
-      ]
-    },
-    {
-      name: "Logical Operators",
-      icon: GitCompareArrows,
-      description: "Used to determine the logic between variables or values.",
-      operators: [
-        { op: "&&", name: "Logical AND", example: "true && false; // false" },
-        { op: "||", name: "Logical OR", example: "true || false; // true" },
-        { op: "!", name: "Logical NOT", example: "!true; // false" },
-      ]
-    },
-  ];
+export function JavaArithmeticOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const operators = [
+        { op: "+", name: "Addition", example: "int sum = 10 + 5;", output: "15" },
+        { op: "-", name: "Subtraction", example: "int diff = 10 - 5;", output: "5" },
+        { op: "*", name: "Multiplication", example: "int prod = 10 * 5;", output: "50" },
+        { op: "/", name: "Division", example: "int quot = 10 / 5;", output: "2" },
+        { op: "%", name: "Modulus (Remainder)", example: "int rem = 10 % 3;", output: "1" },
+        { op: "++", name: "Increment", example: "int i = 5; i++;", output: "i will be 6" },
+        { op: "--", name: "Decrement", example: "int i = 5; i--;", output: "i will be 4" },
+      ];
 
   return (
-    <div id="java-operators-page" data-test="java-operators-page" className="space-y-8">
+    <div id="java-arithmetic-operators-page" data-test="java-arithmetic-operators-page" className="space-y-8">
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <Sigma className="w-10 h-10 text-primary" />
-          <h1 className="text-4xl font-bold text-foreground">Java Operators</h1>
+          <PlusSquare className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Arithmetic Operators</h1>
         </div>
-        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Symbols that perform operations on variables and values.</p>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Used to perform common mathematical operations.</p>
       </div>
 
-      {operatorTypes.map(type => (
-        <Card key={type.name}>
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="bg-primary/10 text-primary p-3 rounded-full">
-                <type.icon className="w-6 h-6" />
-              </div>
-              <div>
-                <CardTitle className="text-2xl">{type.name}</CardTitle>
-                <CardDescription>{type.description}</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
+        <Card>
+          <CardContent className="pt-6">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[100px]">Operator</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Example</TableHead>
+                   <TableHead>Output</TableHead>
                   <TableHead className="text-right">Try it</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {type.operators.map(op => (
+                {operators.map(op => (
                   <TableRow key={op.op}>
-                    <TableCell className="font-mono font-bold text-primary">{op.op}</TableCell>
+                    <TableCell className="font-mono font-bold text-primary text-lg">{op.op}</TableCell>
                     <TableCell>{op.name}</TableCell>
                     <TableCell>
                       <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.example}</code></pre>
                     </TableCell>
+                     <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.output}</code></pre>
+                    </TableCell>
                     <TableCell className="text-right">
-                      <Button onClick={() => onOpenEditor(wrapInMain(`System.out.println(${op.example.replace(/;.*/, "")});`))} variant="ghost" size="icon">
+                      <Button onClick={() => onOpenEditor(wrapInMain(`${op.example}\nSystem.out.println(${op.example.match(/(\w+)\s*=/)?.[1] || 'i'});`))} variant="ghost" size="icon">
                         <Play className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -1157,7 +1109,389 @@ export function JavaOperators({ onOpenEditor }: { onOpenEditor: (code: string) =
             </Table>
           </CardContent>
         </Card>
-      ))}
+    </div>
+  );
+}
+
+export function JavaAssignmentOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const operators = [
+        { op: "=", name: "Assign", example: "int x = 10;", output: "x is 10" },
+        { op: "+=", name: "Add and assign", example: "int x = 10; x += 5;", output: "x is 15" },
+        { op: "-=", name: "Subtract and assign", example: "int x = 10; x -= 5;", output: "x is 5" },
+        { op: "*=", name: "Multiply and assign", example: "int x = 10; x *= 5;", output: "x is 50" },
+        { op: "/=", name: "Divide and assign", example: "int x = 10; x /= 5;", output: "x is 2" },
+        { op: "%=", name: "Modulus and assign", example: "int x = 10; x %= 3;", output: "x is 1" },
+      ];
+
+  return (
+    <div id="java-assignment-operators-page" data-test="java-assignment-operators-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Equal className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Assignment Operators</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Used to assign values to variables.</p>
+      </div>
+
+        <Card>
+          <CardContent className="pt-6">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Operator</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Example</TableHead>
+                  <TableHead>Output</TableHead>
+                  <TableHead className="text-right">Try it</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {operators.map(op => (
+                  <TableRow key={op.op}>
+                    <TableCell className="font-mono font-bold text-primary text-lg">{op.op}</TableCell>
+                    <TableCell>{op.name}</TableCell>
+                    <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.example}</code></pre>
+                    </TableCell>
+                     <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.output}</code></pre>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button onClick={() => onOpenEditor(wrapInMain(`${op.example}\nSystem.out.println(x);`))} variant="ghost" size="icon">
+                        <Play className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+    </div>
+  );
+}
+
+export function JavaComparisonOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const operators = [
+        { op: "==", name: "Equal to", example: "10 == 5", output: "false" },
+        { op: "!=", name: "Not equal to", example: "10 != 5", output: "true" },
+        { op: ">", name: "Greater than", example: "10 > 5", output: "true" },
+        { op: "<", name: "Less than", example: "10 < 5", output: "false" },
+        { op: ">=", name: "Greater than or equal to", example: "10 >= 10", output: "true" },
+        { op: "<=", name: "Less than or equal to", example: "10 <= 5", output: "false" },
+      ];
+
+  return (
+    <div id="java-comparison-operators-page" data-test="java-comparison-operators-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Scale className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Comparison Operators</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Used to compare two values, returns a boolean (`true` or `false`).</p>
+      </div>
+
+        <Card>
+          <CardContent className="pt-6">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Operator</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Example</TableHead>
+                   <TableHead>Output</TableHead>
+                  <TableHead className="text-right">Try it</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {operators.map(op => (
+                  <TableRow key={op.op}>
+                    <TableCell className="font-mono font-bold text-primary text-lg">{op.op}</TableCell>
+                    <TableCell>{op.name}</TableCell>
+                    <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.example}</code></pre>
+                    </TableCell>
+                     <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.output}</code></pre>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button onClick={() => onOpenEditor(wrapInMain(`System.out.println(${op.example});`))} variant="ghost" size="icon">
+                        <Play className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+    </div>
+  );
+}
+
+export function JavaLogicalOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const operators = [
+        { op: "&&", name: "Logical AND", description: "Returns `true` if both statements are true.", example: "int x = 5;\nSystem.out.println(x > 3 && x < 10);", output: "true" },
+        { op: "||", name: "Logical OR", description: "Returns `true` if one of the statements is true.", example: "int x = 5;\nSystem.out.println(x > 3 || x < 4);", output: "true" },
+        { op: "!", name: "Logical NOT", description: "Reverse the result, returns `false` if the result is true.", example: "int x = 5;\nSystem.out.println(!(x > 3 && x < 10));", output: "false" },
+      ];
+
+  return (
+    <div id="java-logical-operators-page" data-test="java-logical-operators-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <GitCompareArrows className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Logical Operators</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Used to determine the logic between variables or values.</p>
+      </div>
+
+        <Card>
+          <CardContent className="pt-6">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Operator</TableHead>
+                  <TableHead>Name & Description</TableHead>
+                  <TableHead>Example</TableHead>
+                  <TableHead>Output</TableHead>
+                  <TableHead className="text-right">Try it</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {operators.map(op => (
+                  <TableRow key={op.op}>
+                    <TableCell className="font-mono font-bold text-primary text-lg">{op.op}</TableCell>
+                    <TableCell>
+                        <p className="font-semibold">{op.name}</p>
+                        <p className="text-xs text-muted-foreground">{op.description}</p>
+                    </TableCell>
+                    <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.example}</code></pre>
+                    </TableCell>
+                    <TableCell>
+                      <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.output}</code></pre>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button onClick={() => onOpenEditor(wrapInMain(op.example))} variant="ghost" size="icon">
+                        <Play className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+    </div>
+  );
+}
+
+export function JavaBitwiseOperators({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+  const operators = [
+    { op: "&", name: "Bitwise AND", example: "int result = 5 & 3; // 0101 & 0011", output: "1" },
+    { op: "|", name: "Bitwise OR", example: "int result = 5 | 3; // 0101 | 0011", output: "7" },
+    { op: "^", name: "Bitwise XOR", example: "int result = 5 ^ 3; // 0101 ^ 0011", output: "6" },
+    { op: "~", name: "Bitwise NOT (Complement)", example: "int result = ~5; // ~0101", output: "-6" },
+    { op: "<<", name: "Left Shift", example: "int result = 5 << 1; // 0101 << 1", output: "10" },
+    { op: ">>", name: "Right Shift", example: "int result = 5 >> 1; // 0101 >> 1", output: "2" },
+    { op: ">>>", name: "Unsigned Right Shift", example: "int result = -5 >>> 1;", output: "2147483645" },
+  ];
+
+  return (
+    <div id="java-bitwise-operators-page" data-test="java-bitwise-operators-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <ChevronsRight className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Bitwise Operators</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Perform operations on individual bits of integer types.</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+            <CardTitle>Understanding Bits</CardTitle>
+            <CardDescription>
+                Bitwise operators work on `int` and `long` data types at the binary level. For example, the number 5 is represented in binary as `0101`, and 3 is `0011`.
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+        <Table>
+            <TableHeader>
+            <TableRow>
+                <TableHead className="w-[100px]">Operator</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Example</TableHead>
+                <TableHead>Output</TableHead>
+                <TableHead className="text-right">Try it</TableHead>
+            </TableRow>
+            </TableHeader>
+            <TableBody>
+            {operators.map(op => (
+                <TableRow key={op.op}>
+                <TableCell className="font-mono font-bold text-primary text-lg">{op.op}</TableCell>
+                <TableCell>{op.name}</TableCell>
+                <TableCell>
+                    <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.example}</code></pre>
+                </TableCell>
+                <TableCell>
+                    <pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{op.output}</code></pre>
+                </TableCell>
+                <TableCell className="text-right">
+                    <Button onClick={() => onOpenEditor(wrapInMain(`${op.example}\nSystem.out.println(result);`))} variant="ghost" size="icon">
+                    <Play className="h-4 w-4" />
+                    </Button>
+                </TableCell>
+                </TableRow>
+            ))}
+            </TableBody>
+        </Table>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export function JavaTernaryOperator({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const example = "int time = 20;\nString result = (time < 18) ? \"Good day.\" : \"Good evening.\";\nSystem.out.println(result);";
+    const output = "Good evening.";
+
+  return (
+    <div id="java-ternary-operator-page" data-test="java-ternary-operator-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <FunctionSquare className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Ternary Operator</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">A shorthand for an if-else statement.</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+            <CardTitle>Syntax</CardTitle>
+            <CardDescription>
+                The ternary operator consists of a condition, a value to return if the condition is true, and a value to return if it's false.
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <pre className="font-mono text-sm bg-muted p-4 rounded-md"><code>variable = (condition) ? valueIfTrue : valueIfFalse;</code></pre>
+        </CardContent>
+      </Card>
+
+      <Card>
+          <CardHeader>
+              <CardTitle>Example</CardTitle>
+          </CardHeader>
+          <CardContent>
+                <div>
+                    <h4 className="text-sm font-semibold mb-2">Example Code:</h4>
+                    <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{example}</pre>
+                    </div>
+                    <Button onClick={() => onOpenEditor(wrapInMain(example))} variant="ghost" size="sm" className="mt-2">
+                        <Play className="mr-2 h-4 w-4" /> Try it
+                    </Button>
+                </div>
+                <div>
+                    <h4 className="text-sm font-semibold mb-2 mt-4">Resulting Output:</h4>
+                    <div className="bg-foreground/5 rounded-md p-4">
+                        <pre className="font-mono text-sm text-muted-foreground whitespace-pre-wrap">{output}</pre>
+                    </div>
+                </div>
+          </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export function JavaOperatorPrecedence({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+  const precedenceTable = [
+    { level: 1, operators: "() [] .", name: "Parentheses, Array Subscript, Member Selection" },
+    { level: 2, operators: "++ -- ! ~", name: "Unary (pre-increment, pre-decrement), Logical NOT, Bitwise Complement" },
+    { level: 3, operators: "* / %", name: "Multiplication, Division, Modulus" },
+    { level: 4, operators: "+ -", name: "Addition, Subtraction" },
+    { level: 5, operators: "<< >> >>>", name: "Bitwise Shift" },
+    { level: 6, operators: "< > <= >=", name: "Relational" },
+    { level: 7, operators: "== !=", name: "Equality" },
+    { level: 8, operators: "&", name: "Bitwise AND" },
+    { level: 9, operators: "^", name: "Bitwise XOR" },
+    { level: 10, operators: "|", name: "Bitwise OR" },
+    { level: 11, operators: "&&", name: "Logical AND" },
+    { level: 12, operators: "||", name: "Logical OR" },
+    { level: 13, operators: "?:", name: "Ternary" },
+    { level: 14, operators: "= += -= *= /= %= &= ^= |= <<= >>= >>>=", name: "Assignment" },
+  ];
+
+  const example1 = "int result1 = 10 + 20 * 30;";
+  const output1 = "610";
+  const example2 = "int result2 = (10 + 20) * 30;";
+  const output2 = "900";
+
+
+  return (
+    <div id="java-operator-precedence-page" data-test="java-operator-precedence-page" className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Sigma className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Operator Precedence</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">The order in which operators are evaluated in Java.</p>
+      </div>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle>Example</CardTitle>
+            </CardHeader>
+            <CardContent className="grid md:grid-cols-2 gap-4">
+                <div>
+                    <p className="text-sm text-muted-foreground mb-2">Multiplication (`*`) has higher precedence than addition (`+`).</p>
+                    <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{example1}</pre>
+                    </div>
+                    <Button onClick={() => onOpenEditor(wrapInMain(`${example1}\nSystem.out.println(result1);`))} variant="ghost" size="sm" className="mt-2">
+                        <Play className="mr-2 h-4 w-4" /> Try it
+                    </Button>
+                    <p className="text-sm font-semibold mt-2">Output: {output1}</p>
+                </div>
+                 <div>
+                    <p className="text-sm text-muted-foreground mb-2">Parentheses `()` have the highest precedence.</p>
+                    <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{example2}</pre>
+                    </div>
+                    <Button onClick={() => onOpenEditor(wrapInMain(`${example2}\nSystem.out.println(result2);`))} variant="ghost" size="sm" className="mt-2">
+                        <Play className="mr-2 h-4 w-4" /> Try it
+                    </Button>
+                    <p className="text-sm font-semibold mt-2">Output: {output2}</p>
+                </div>
+            </CardContent>
+        </Card>
+
+      <Card>
+        <CardHeader>
+            <CardTitle>Precedence Table</CardTitle>
+            <CardDescription>Operators with higher precedence are evaluated before operators with lower precedence. Operators on the same level are evaluated from left to right.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Precedence</TableHead>
+                <TableHead>Operator</TableHead>
+                <TableHead>Description</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {precedenceTable.map(row => (
+                <TableRow key={row.level}>
+                  <TableCell className="font-semibold">{row.level}</TableCell>
+                  <TableCell><pre className="font-mono text-sm bg-muted p-2 rounded-md"><code>{row.operators}</code></pre></TableCell>
+                  <TableCell>{row.name}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

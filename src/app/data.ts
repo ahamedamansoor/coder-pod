@@ -102,9 +102,39 @@ export const languages: Language[] = [
         explanation: 'Understand the fixed values—like numbers, characters, or text—that you assign to variables.'
       },
       {
-        slug: 'operators',
-        title: 'Operators',
-        explanation: 'Learn about the different types of operators in Java used to perform operations on variables and values.'
+        slug: 'arithmetic-operators',
+        title: 'Arithmetic Operators',
+        explanation: 'Learn about arithmetic operators in Java used to perform common mathematical operations like addition, subtraction, multiplication, etc.'
+      },
+      {
+        slug: 'assignment-operators',
+        title: 'Assignment Operators',
+        explanation: 'Learn about assignment operators in Java used to assign values to variables.'
+      },
+      {
+        slug: 'comparison-operators',
+        title: 'Comparison Operators',
+        explanation: 'Learn about comparison operators in Java used to compare two values.'
+      },
+      {
+        slug: 'logical-operators',
+        title: 'Logical Operators',
+        explanation: 'Learn about logical operators in Java used to determine the logic between variables or values.'
+      },
+      {
+        slug: 'bitwise-operators',
+        title: 'Bitwise Operators',
+        explanation: 'Learn about bitwise operators in Java that perform operations on individual bits of integer types.'
+      },
+      {
+        slug: 'ternary-operator',
+        title: 'Ternary Operator',
+        explanation: 'Learn about the ternary operator in Java, a shorthand for an if-else statement.'
+      },
+      {
+        slug: 'operator-precedence',
+        title: 'Operator Precedence',
+        explanation: 'Learn about the order in which operators are evaluated in Java.'
       }
     ],
   },

@@ -2,6 +2,7 @@
 
 
 
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -28,7 +29,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaOperators } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence } from './what-is-java';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -607,7 +608,13 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isEscapeSequencesTopic = language.slug === 'java' && topic.slug === 'escape-sequences';
   const isConstantsTopic = language.slug === 'java' && topic.slug === 'constants';
   const isLiteralsTopic = language.slug === 'java' && topic.slug === 'literals';
-  const isOperatorsTopic = language.slug === 'java' && topic.slug === 'operators';
+  const isArithmeticOperatorsTopic = language.slug === 'java' && topic.slug === 'arithmetic-operators';
+  const isAssignmentOperatorsTopic = language.slug === 'java' && topic.slug === 'assignment-operators';
+  const isComparisonOperatorsTopic = language.slug === 'java' && topic.slug === 'comparison-operators';
+  const isLogicalOperatorsTopic = language.slug === 'java' && topic.slug === 'logical-operators';
+  const isBitwiseOperatorsTopic = language.slug === 'java' && topic.slug === 'bitwise-operators';
+  const isTernaryOperatorTopic = language.slug === 'java' && topic.slug === 'ternary-operator';
+  const isOperatorPrecedenceTopic = language.slug === 'java' && topic.slug === 'operator-precedence';
 
 
   const renderTopicContent = () => {
@@ -659,8 +666,26 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isLiteralsTopic) {
       return <JavaLiterals onOpenEditor={onOpenEditor} />;
     }
-    if (isOperatorsTopic) {
-      return <JavaOperators onOpenEditor={onOpenEditor} />;
+    if (isArithmeticOperatorsTopic) {
+      return <JavaArithmeticOperators onOpenEditor={onOpenEditor} />;
+    }
+    if (isAssignmentOperatorsTopic) {
+      return <JavaAssignmentOperators onOpenEditor={onOpenEditor} />;
+    }
+    if (isComparisonOperatorsTopic) {
+      return <JavaComparisonOperators onOpenEditor={onOpenEditor} />;
+    }
+    if (isLogicalOperatorsTopic) {
+      return <JavaLogicalOperators onOpenEditor={onOpenEditor} />;
+    }
+    if (isBitwiseOperatorsTopic) {
+      return <JavaBitwiseOperators onOpenEditor={onOpenEditor} />;
+    }
+    if (isTernaryOperatorTopic) {
+      return <JavaTernaryOperator onOpenEditor={onOpenEditor} />;
+    }
+    if (isOperatorPrecedenceTopic) {
+      return <JavaOperatorPrecedence onOpenEditor={onOpenEditor} />;
     }
     return (
       <Card>
@@ -674,7 +699,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic && !isConstantsTopic && !isLiteralsTopic && !isOperatorsTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic && !isConstantsTopic && !isLiteralsTopic && !isArithmeticOperatorsTopic && !isAssignmentOperatorsTopic && !isComparisonOperatorsTopic && !isLogicalOperatorsTopic && !isBitwiseOperatorsTopic && !isTernaryOperatorTopic && !isOperatorPrecedenceTopic;
 
   return (
     <div className="space-y-8">

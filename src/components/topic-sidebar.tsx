@@ -37,7 +37,7 @@ export function TopicSidebar({
   );
 
   const operatorsTopics = language.topics.filter(t => 
-    ['operators'].includes(t.slug)
+    ['arithmetic-operators', 'assignment-operators', 'comparison-operators', 'logical-operators', 'bitwise-operators', 'ternary-operator', 'operator-precedence'].includes(t.slug)
   );
 
   const otherTopics = language.topics.filter(t => 
