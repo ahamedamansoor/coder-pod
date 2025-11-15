@@ -41,7 +41,7 @@ export function TheStoryOfJava() {
             <div className="text-center">
                 <div className="flex items-center justify-center gap-4 mb-4">
                     <History className="w-12 h-12 text-primary" />
-                    <h2 className="text-4xl font-bold tracking-tight text-foreground">The Story of Java</h2>
+                    <h1 className="text-4xl font-bold tracking-tight text-foreground">The Story of Java</h1>
                 </div>
                 <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                     From a small project for smart devices to a global programming language.
@@ -155,7 +155,7 @@ export function JavaFeatures() {
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
                     <Rocket className="w-10 h-10 text-primary" />
-                    <h2 className="text-4xl font-bold text-foreground">Features of Java</h2>
+                    <h1 className="text-4xl font-bold text-foreground">Features of Java</h1>
                 </div>
                 <p className="text-muted-foreground text-lg">Why Java is one of the most popular programming languages.</p>
             </div>
@@ -422,7 +422,6 @@ export function JavaEnvironmentSetup() {
                            <Link key={ide.name} href={ide.link} target="_blank" rel="noopener noreferrer">
                             <Card className="h-full hover:border-primary transition-colors flex flex-col">
                                 <CardHeader className="items-center">
-                                    {/* <img src={ide.logo} alt={`${ide.name} Logo`} className="w-12 h-12 mb-2"/> */}
                                     <CardTitle>{ide.name}</CardTitle>
                                 </CardHeader>
                                 <CardContent className="flex-1">
@@ -786,4 +785,3 @@ export function JavaEscapeSequences({ onOpenEditor }: { onOpenEditor: (code: str
         </div>
     );
 }
-    
