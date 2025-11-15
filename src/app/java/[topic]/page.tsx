@@ -61,7 +61,7 @@ export default function JavaTopicPage() {
             isEditorOpen={isEditorOpen}
           />
           <main className="flex-1 flex overflow-hidden">
-            <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 w-full">
               <ContentDisplay topic={selectedTopic} language={language} onOpenEditor={handleOpenEditor} />
             </div>
             <ResizablePanel isOpen={isEditorOpen}>
