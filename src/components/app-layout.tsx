@@ -1,0 +1,76 @@
+'use client';
+import React, { useState, useMemo } from 'react';
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarInset,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
+import { languages } from '@/app/data';
+import { TopicSidebar } from './topic-sidebar';
+import { MainHeader } from './main-header';
+import { ContentDisplay } from './content-display';
+
+export default function AppLayout() {
+  const [selectedLanguageSlug, setSelectedLanguageSlug] = useState<string>(
+    languages[0].slug
+  );
+  const [selectedTopicSlug, setSelectedTopicSlug] = useState<string | null>(
+    languages[0].topics[0].slug
+  );
+
+  const selectedLanguage = useMemo(
+    () => languages.find((lang) => lang.slug === selectedLanguageSlug)!,
+    [selectedLanguageSlug]
+  );
+  
+  const selectedTopic = useMemo(
+    () => selectedLanguage.topics.find((topic) => topic.slug === selectedTopicSlug),
+    [selectedLanguage, selectedTopicSlug]
+  );
+
+  const handleLanguageChange = (slug: string) => {
+    setSelectedLanguageSlug(slug);
+    const newLang = languages.find((l) => l.slug === slug);
+    if (newLang?.topics.length) {
+      setSelectedTopicSlug(newLang.topics[0].slug);
+    } else {
+      setSelectedTopicSlug(null);
+    }
+  };
+
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <TopicSidebar
+          language={selectedLanguage}
+          selectedTopicSlug={selectedTopicSlug}
+          onTopicSelect={setSelectedTopicSlug}
+        />
+      </Sidebar>
+      <SidebarInset>
+        <div className="flex flex-col h-full min-h-0">
+          <MainHeader
+            selectedLanguageSlug={selectedLanguageSlug}
+            onLanguageChange={handleLanguageChange}
+          />
+          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+            {selectedTopic ? (
+              <ContentDisplay
+                key={`${selectedLanguage.slug}-${selectedTopic.slug}`}
+                topic={selectedTopic}
+                language={selectedLanguage}
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center rounded-lg border border-dashed">
+                <p className="text-muted-foreground">
+                  Select a topic to get started.
+                </p>
+              </div>
+            )}
+          </main>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
