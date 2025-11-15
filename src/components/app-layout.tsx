@@ -24,19 +24,6 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost">Programming Languages</Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Select a Language</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <Link href="/java/learning-plan">
-                    <DropdownMenuItem>Java</DropdownMenuItem>
-                  </Link>
-                  <DropdownMenuItem disabled>JavaScript</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
               <LearnModal />
               <Avatar>
                 <AvatarImage src="https://picsum.photos/seed/user/40/40" />
@@ -99,9 +86,16 @@ export default function AppLayout() {
         </div>
         
         <div className="mt-16 text-center">
-            <Button size="lg" asChild>
-                <Link href="/java/learning-plan">Start Learning Java Now</Link>
-            </Button>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Choose Your Language</h2>
+            <p className="text-muted-foreground mb-8">Select a language to begin your learning journey.</p>
+            <div className="flex justify-center gap-4">
+                <Button size="lg" asChild>
+                    <Link href="/java/learning-plan">Start Learning Java</Link>
+                </Button>
+                <Button size="lg" variant="outline" disabled>
+                    Learn JavaScript (Coming Soon)
+                </Button>
+            </div>
         </div>
 
       </main>
