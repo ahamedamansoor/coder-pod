@@ -13,6 +13,7 @@ import { ContentDisplay } from './content-display';
 import { CodeEditorSheet } from './code-editor-sheet';
 import { Button } from './ui/button';
 import { Code } from 'lucide-react';
+import { ResizablePanel } from './ui/resizable-panel';
 
 export default function AppLayout() {
   const [selectedLanguageSlug, setSelectedLanguageSlug] = useState<string>(
@@ -83,11 +84,16 @@ export default function AppLayout() {
                 </div>
               )}
             </main>
-            <div 
-              className={`transition-all duration-300 ease-in-out flex-shrink-0 ${isEditorOpen ? 'w-full md:w-2/5 lg:w-1/3 xl:w-[500px]' : 'w-0'}`}
-            >
-              <CodeEditorSheet />
-            </div>
+            
+            {isEditorOpen && (
+              <ResizablePanel
+                initialWidth={480}
+                minWidth={300}
+                maxWidthPercentage={50}
+              >
+                <CodeEditorSheet />
+              </ResizablePanel>
+            )}
           </div>
         </div>
       </SidebarProvider>
