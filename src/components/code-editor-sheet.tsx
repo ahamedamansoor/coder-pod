@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -27,48 +28,85 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     // Simulate code execution
     setTimeout(() => {
       try {
-        // A real implementation would execute the code and capture stdout.
-        // This is a more robust mock to handle different println statements.
         const printlnRegex = /System\.out\.println\(([^)]+)\);/g;
         let match;
         const outputs = [];
         
-        // Simple evaluation for variables
         const variables: Record<string, any> = {};
+        
+        // This is a very basic evaluator for demonstration purposes.
+        const evaluateExpression = (expr: string): any => {
+          expr = expr.trim();
+
+          // If it's a string literal
+          if (expr.startsWith('"') && expr.endsWith('"')) {
+            return expr.slice(1, -1);
+          }
+          // If it's a number literal
+          if (!isNaN(Number(expr))) {
+            return Number(expr);
+          }
+          // If it's a boolean literal
+          if (expr === 'true' || expr === 'false') {
+            return expr === 'true';
+          }
+          // If it's a char literal
+          if (expr.startsWith("'") && expr.endsWith("'")) {
+             return expr.slice(1, -1);
+          }
+          // If it's a variable
+          if (variables[expr] !== undefined) {
+            return variables[expr];
+          }
+
+          // Handle simple arithmetic and string concatenation
+          const parts = expr.split(/( \+ )/).map(p => p.trim());
+          if (parts.length > 1) {
+            let result = evaluateExpression(parts[0]);
+            for (let i = 1; i < parts.length; i += 2) {
+              if (parts[i] === '+') {
+                result += evaluateExpression(parts[i+1]);
+              }
+            }
+            return result;
+          }
+
+          return expr; // Fallback
+        };
+
         const varRegex = /(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^;]+);/g;
         let varMatch;
-        while ((varMatch = varRegex.exec(code)) !== null) {
+        // Create a copy of the code to manipulate for parsing
+        let parsableCode = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, ''); // Remove comments
+
+        while ((varMatch = varRegex.exec(parsableCode)) !== null) {
           const name = varMatch[2];
-          let value = varMatch[3].trim();
+          let valueStr = varMatch[3].trim();
           
-          if (value.startsWith('"') && value.endsWith('"')) {
-            variables[name] = value.slice(1, -1);
-          } else if (value.match(/^[0-9.]+f?L?$/)) {
-             variables[name] = parseFloat(value);
-          } else if (value === 'true' || value === 'false') {
-             variables[name] = value === 'true';
-          } else if (value.startsWith("'") && value.endsWith("'")) {
-             variables[name] = value.slice(1, -1);
+          // Evaluate arithmetic expressions in assignments
+          const arithmeticMatch = valueStr.match(/([a-zA-Z0-9_]+)\s*([*\/+-])\s*([a-zA-Z0-9_]+)/);
+          if (arithmeticMatch) {
+            const left = evaluateExpression(arithmeticMatch[1]);
+            const operator = arithmeticMatch[2];
+            const right = evaluateExpression(arithmeticMatch[3]);
+            let result;
+            if (typeof left === 'number' && typeof right === 'number') {
+               switch(operator) {
+                  case '+': result = left + right; break;
+                  case '-': result = left - right; break;
+                  case '*': result = left * right; break;
+                  case '/': result = left / right; break;
+               }
+               variables[name] = result;
+            }
           } else {
-             variables[name] = value; // Fallback for simple expressions
+            variables[name] = evaluateExpression(valueStr);
           }
         }
         
         while ((match = printlnRegex.exec(code)) !== null) {
             let content = match[1].trim();
-            if (content.startsWith('"') && content.endsWith('"')) {
-                outputs.push(content.slice(1, -1));
-            } else if (variables[content]) {
-                outputs.push(variables[content]);
-            } else {
-                 // Handle simple concatenation for the demo
-                const parts = content.split('+').map(p => p.trim());
-                const result = parts.map(p => {
-                    if (p.startsWith('"') && p.endsWith('"')) return p.slice(1, -1);
-                    return variables[p] || p;
-                }).join('');
-                outputs.push(result);
-            }
+            outputs.push(evaluateExpression(content));
         }
 
         if (outputs.length > 0) {
