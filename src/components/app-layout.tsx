@@ -21,7 +21,7 @@ export default function AppLayout() {
   return (
     <div id="dashboard-page" data-test="dashboard-page" className="flex flex-col min-h-screen bg-muted/40">
       <header className="bg-background border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
@@ -35,7 +35,7 @@ export default function AppLayout() {
           </div>
         </div>
       </header>
-      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
             Welcome to Your AI-Powered Learning Space

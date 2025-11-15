@@ -7,6 +7,7 @@ import { ContentDisplay } from '@/components/content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
+import { useJava } from '../java-context';
 
 interface TopicPageProps {
   isEditorOpen?: boolean;
@@ -19,6 +20,7 @@ export default function JavaTopicPage({
 }: TopicPageProps) {
   const params = useParams();
   const { topic: topicSlug } = params;
+  const { completedTopics, handleToggleComplete } = useJava();
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
 
@@ -37,9 +39,12 @@ export default function JavaTopicPage({
 
   return (
     <>
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 w-full">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
         {isLearningPlanTopic ? (
-          <JavaLearningRoadmap />
+           <JavaLearningRoadmap
+            completedTopics={completedTopics}
+            handleToggleComplete={handleToggleComplete}
+          />
         ) : (
           <ContentDisplay
             topic={selectedTopic}
