@@ -30,7 +30,7 @@ export function TopicSidebar({
       <SidebarContent asChild>
         <ScrollArea>
           <SidebarMenu className="p-4">
-            <p className="px-2 py-1 text-sm font-semibold text-muted-foreground">Topics</p>
+            <p className="px-2 py-1 text-sm font-semibold text-muted-foreground">Learning Path</p>
             {language.topics.map((topic) => (
               <SidebarMenuItem key={topic.slug}>
                 <SidebarMenuButton

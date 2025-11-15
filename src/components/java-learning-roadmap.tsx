@@ -4,7 +4,7 @@ import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } 
 
 export const JavaLearningRoadmap = () => {
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
-  const [completedTopics, setCompletedTopics] = useState(new Set());
+  const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   const toggleTopic = (topicId: string) => {
     const newCompleted = new Set(completedTopics);
@@ -22,9 +22,6 @@ export const JavaLearningRoadmap = () => {
       title: "Getting Started",
       level: "Foundation",
       duration: "Week 1",
-      color: "from-blue-400 to-blue-600",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-300",
       icon: "🚀",
       topics: [
         { id: "1.1", name: "What is Java?", desc: "History, features, JVM, JRE, JDK", difficulty: "Easy" },
@@ -39,9 +36,6 @@ export const JavaLearningRoadmap = () => {
       title: "Basic Output",
       level: "Foundation",
       duration: "Week 1",
-      color: "from-green-400 to-green-600",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-300",
       icon: "📢",
       topics: [
         { id: "2.1", name: "Print Statements", desc: "print(), println(), printf()", difficulty: "Easy" },
@@ -54,9 +48,6 @@ export const JavaLearningRoadmap = () => {
       title: "Variables & Data Types",
       level: "Foundation",
       duration: "Week 1-2",
-      color: "from-purple-400 to-purple-600",
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-300",
       icon: "📦",
       topics: [
         { id: "3.1", name: "Variables Basics", desc: "Declaration, initialization, naming rules", difficulty: "Easy" },
@@ -71,9 +62,6 @@ export const JavaLearningRoadmap = () => {
       title: "Operators",
       level: "Foundation",
       duration: "Week 2",
-      color: "from-yellow-400 to-yellow-600",
-      bgColor: "bg-yellow-50",
-      borderColor: "border-yellow-300",
       icon: "➕",
       topics: [
         { id: "4.1", name: "Arithmetic Operators", desc: "+, -, *, /, %, ++, --", difficulty: "Easy" },
@@ -90,9 +78,6 @@ export const JavaLearningRoadmap = () => {
       title: "User Input",
       level: "Foundation",
       duration: "Week 2",
-      color: "from-pink-400 to-pink-600",
-      bgColor: "bg-pink-50",
-      borderColor: "border-pink-300",
       icon: "⌨️",
       topics: [
         { id: "5.1", name: "Scanner Class", desc: "Import, creating Scanner object", difficulty: "Easy" },
@@ -106,9 +91,6 @@ export const JavaLearningRoadmap = () => {
       title: "Control Flow - Conditional",
       level: "Core Concepts",
       duration: "Week 3",
-      color: "from-red-400 to-red-600",
-      bgColor: "bg-red-50",
-      borderColor: "border-red-300",
       icon: "🔀",
       topics: [
         { id: "6.1", name: "If Statement", desc: "Basic if, if-else, nested if", difficulty: "Easy" },
@@ -122,9 +104,6 @@ export const JavaLearningRoadmap = () => {
       title: "Control Flow - Loops",
       level: "Core Concepts",
       duration: "Week 3-4",
-      color: "from-indigo-400 to-indigo-600",
-      bgColor: "bg-indigo-50",
-      borderColor: "border-indigo-300",
       icon: "🔁",
       topics: [
         { id: "7.1", name: "For Loop", desc: "Basic for loop, syntax, examples", difficulty: "Easy" },
@@ -140,9 +119,6 @@ export const JavaLearningRoadmap = () => {
       title: "Strings",
       level: "Core Concepts",
       duration: "Week 4",
-      color: "from-teal-400 to-teal-600",
-      bgColor: "bg-teal-50",
-      borderColor: "border-teal-300",
       icon: "📝",
       topics: [
         { id: "8.1", name: "String Basics", desc: "Creating strings, immutability", difficulty: "Easy" },
@@ -159,9 +135,6 @@ export const JavaLearningRoadmap = () => {
       title: "Arrays",
       level: "Core Concepts",
       duration: "Week 5",
-      color: "from-orange-400 to-orange-600",
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-300",
       icon: "📊",
       topics: [
         { id: "9.1", name: "Array Basics", desc: "Declaration, initialization, accessing elements", difficulty: "Easy" },
@@ -178,9 +151,6 @@ export const JavaLearningRoadmap = () => {
       title: "Methods/Functions",
       level: "Core Concepts",
       duration: "Week 5-6",
-      color: "from-cyan-400 to-cyan-600",
-      bgColor: "bg-cyan-50",
-      borderColor: "border-cyan-300",
       icon: "⚙️",
       topics: [
         { id: "10.1", name: "Method Basics", desc: "Creating methods, calling methods", difficulty: "Easy" },
@@ -197,9 +167,6 @@ export const JavaLearningRoadmap = () => {
       title: "Object-Oriented Programming - Part 1",
       level: "Advanced",
       duration: "Week 6-7",
-      color: "from-violet-400 to-violet-600",
-      bgColor: "bg-violet-50",
-      borderColor: "border-violet-300",
       icon: "🎯",
       topics: [
         { id: "11.1", name: "Classes & Objects", desc: "Defining classes, creating objects", difficulty: "Medium" },
@@ -215,9 +182,6 @@ export const JavaLearningRoadmap = () => {
       title: "Object-Oriented Programming - Part 2",
       level: "Advanced",
       duration: "Week 7-8",
-      color: "from-fuchsia-400 to-fuchsia-600",
-      bgColor: "bg-fuchsia-50",
-      borderColor: "border-fuchsia-300",
       icon: "🏗️",
       topics: [
         { id: "12.1", name: "Inheritance", desc: "extends keyword, parent-child relationship", difficulty: "Medium" },
@@ -234,9 +198,6 @@ export const JavaLearningRoadmap = () => {
       title: "Exception Handling",
       level: "Advanced",
       duration: "Week 8",
-      color: "from-rose-400 to-rose-600",
-      bgColor: "bg-rose-50",
-      borderColor: "border-rose-300",
       icon: "⚠️",
       topics: [
         { id: "13.1", name: "Exception Basics", desc: "What are exceptions, types of exceptions", difficulty: "Medium" },
@@ -252,9 +213,6 @@ export const JavaLearningRoadmap = () => {
       title: "Collections Framework",
       level: "Advanced",
       duration: "Week 9-10",
-      color: "from-amber-400 to-amber-600",
-      bgColor: "bg-amber-50",
-      borderColor: "border-amber-300",
       icon: "📚",
       topics: [
         { id: "14.1", name: "ArrayList", desc: "Dynamic arrays, List interface", difficulty: "Medium" },
@@ -271,9 +229,6 @@ export const JavaLearningRoadmap = () => {
       title: "File Handling",
       level: "Advanced",
       duration: "Week 10",
-      color: "from-lime-400 to-lime-600",
-      bgColor: "bg-lime-50",
-      borderColor: "border-lime-300",
       icon: "📁",
       topics: [
         { id: "15.1", name: "File Class", desc: "Creating, deleting, checking files", difficulty: "Medium" },
@@ -288,9 +243,6 @@ export const JavaLearningRoadmap = () => {
       title: "Advanced Topics",
       level: "Expert",
       duration: "Week 11-12",
-      color: "from-emerald-400 to-emerald-600",
-      bgColor: "bg-emerald-50",
-      borderColor: "border-emerald-300",
       icon: "🚀",
       topics: [
         { id: "16.1", name: "Lambda Expressions", desc: "Functional programming basics", difficulty: "Hard" },
@@ -305,10 +257,10 @@ export const JavaLearningRoadmap = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch(difficulty) {
-      case 'Easy': return 'text-green-600 bg-green-100';
-      case 'Medium': return 'text-yellow-600 bg-yellow-100';
-      case 'Hard': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'Easy': return 'text-green-600 bg-green-100 dark:text-green-300 dark:bg-green-900/50';
+      case 'Medium': return 'text-yellow-600 bg-yellow-100 dark:text-yellow-300 dark:bg-yellow-900/50';
+      case 'Hard': return 'text-red-600 bg-red-100 dark:text-red-300 dark:bg-red-900/50';
+      default: return 'text-muted-foreground bg-muted';
     }
   };
 
@@ -322,17 +274,15 @@ export const JavaLearningRoadmap = () => {
   return (
     <div className="p-2 md:p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <BookOpen className="w-12 h-12 text-primary" />
             <h1 className="text-5xl font-bold text-foreground">Java Learning Path</h1>
           </div>
           <p className="text-muted-foreground text-lg mb-6">
-            Complete Structured Roadmap for Beginners
+            A structured roadmap for beginners to master Java.
           </p>
           
-          {/* Progress Bar */}
           <div className="max-w-2xl mx-auto bg-card rounded-lg shadow-md p-6 border">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-foreground">Overall Progress</span>
@@ -350,102 +300,93 @@ export const JavaLearningRoadmap = () => {
           </div>
         </div>
 
-        {/* Learning Path Timeline */}
-        <div className="space-y-6">
-          {modules.map((module, index) => (
-            <div key={module.id} className="relative">
-              {/* Timeline Line - This could be re-added if a design is settled on */}
-              
-              <div className={`${module.bgColor} border-2 ${module.borderColor} rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl`}>
-                {/* Module Header */}
-                <div
-                  onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)}
-                  className={`bg-gradient-to-r ${module.color} text-white p-6 cursor-pointer flex items-center justify-between`}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="text-4xl">{module.icon}</div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-1">
-                        <h2 className="text-2xl font-bold">{module.title}</h2>
-                        <span className="bg-white bg-opacity-30 px-3 py-1 rounded-full text-sm font-semibold">
-                          {module.level}
-                        </span>
-                      </div>
-                      <p className="text-white text-opacity-90">{module.duration} • {module.topics.length} topics</p>
+        <div className="space-y-4">
+          {modules.map((module) => (
+            <div key={module.id} className="bg-card border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+              <div
+                onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)}
+                className={`bg-card p-6 cursor-pointer flex items-center justify-between border-b`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="text-3xl bg-muted p-3 rounded-full">{module.icon}</div>
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <h2 className="text-xl font-bold text-foreground">{module.title}</h2>
+                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
+                        {module.level}
+                      </span>
                     </div>
+                    <p className="text-muted-foreground text-sm">{module.duration} • {module.topics.length} topics</p>
                   </div>
-                  {expandedModule === module.id ? (
-                    <ChevronDown className="w-6 h-6" />
-                  ) : (
-                    <ChevronRight className="w-6 h-6" />
-                  )}
                 </div>
-
-                {/* Module Topics */}
-                {expandedModule === module.id && (
-                  <div className="p-6 space-y-3">
-                    {module.topics.map((topic) => (
-                      <div
-                        key={topic.id}
-                        onClick={() => toggleTopic(topic.id)}
-                        className={`bg-white border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
-                          completedTopics.has(topic.id) ? 'border-green-400 bg-green-50' : 'border-gray-200'
-                        }`}
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="mt-1">
-                            {completedTopics.has(topic.id) ? (
-                              <CheckCircle className="w-6 h-6 text-green-600" />
-                            ) : (
-                              <Circle className="w-6 h-6 text-gray-400" />
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
-                              <h3 className="text-lg font-bold text-gray-800">{topic.name}</h3>
-                              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getDifficultyColor(topic.difficulty)}`}>
-                                {topic.difficulty}
-                              </span>
-                            </div>
-                            <p className="text-gray-600 text-sm">{topic.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                {expandedModule === module.id ? (
+                  <ChevronDown className="w-6 h-6 text-muted-foreground" />
+                ) : (
+                  <ChevronRight className="w-6 h-6 text-muted-foreground" />
                 )}
               </div>
+
+              {expandedModule === module.id && (
+                <div className="p-6 space-y-3 bg-muted/50">
+                  {module.topics.map((topic) => (
+                    <div
+                      key={topic.id}
+                      onClick={() => toggleTopic(topic.id)}
+                      className={`bg-background border rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-sm hover:border-primary/50 ${
+                        completedTopics.has(topic.id) ? 'border-primary bg-primary/5' : 'border-border'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="mt-1">
+                          {completedTopics.has(topic.id) ? (
+                            <CheckCircle className="w-6 h-6 text-primary" />
+                          ) : (
+                            <Circle className="w-6 h-6 text-muted-foreground/50" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <h3 className="text-lg font-semibold text-foreground">{topic.name}</h3>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getDifficultyColor(topic.difficulty)}`}>
+                              {topic.difficulty}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground text-sm">{topic.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        {/* Learning Tips */}
-        <div className="mt-12 bg-primary text-primary-foreground rounded-xl shadow-xl p-8">
+        <div className="mt-12 bg-primary/10 border border-primary/20 text-primary-foreground rounded-xl shadow-lg p-8">
           <div className="flex items-center gap-3 mb-6">
-            <Zap className="w-8 h-8" />
-            <h2 className="text-3xl font-bold">Learning Tips</h2>
+            <Zap className="w-8 h-8 text-primary" />
+            <h2 className="text-3xl font-bold text-foreground">Learning Tips</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-primary-foreground/10 rounded-lg p-4">
-              <h3 className="font-bold text-lg mb-2">✅ Practice Daily</h3>
-              <p className="text-sm">Code for at least 1-2 hours every day. Consistency beats intensity.</p>
+          <div className="grid md:grid-cols-2 gap-4 text-foreground">
+            <div className="bg-background rounded-lg p-4 border">
+              <h3 className="font-bold text-lg mb-2 text-primary">✅ Practice Daily</h3>
+              <p className="text-sm text-muted-foreground">Code for at least 1-2 hours every day. Consistency beats intensity.</p>
             </div>
-            <div className="bg-primary-foreground/10 rounded-lg p-4">
-              <h3 className="font-bold text-lg mb-2">🔨 Build Projects</h3>
-              <p className="text-sm">Apply concepts by building small projects after each module.</p>
+            <div className="bg-background rounded-lg p-4 border">
+              <h3 className="font-bold text-lg mb-2 text-primary">🔨 Build Projects</h3>
+              <p className="text-sm text-muted-foreground">Apply concepts by building small projects after each module.</p>
             </div>
-            <div className="bg-primary-foreground/10 rounded-lg p-4">
-              <h3 className="font-bold text-lg mb-2">🐛 Debug & Learn</h3>
-              <p className="text-sm">Don't fear errors. Debugging is where real learning happens.</p>
+            <div className="bg-background rounded-lg p-4 border">
+              <h3 className="font-bold text-lg mb-2 text-primary">🐛 Debug & Learn</h3>
+              <p className="text-sm text-muted-foreground">Don't fear errors. Debugging is where real learning happens.</p>
             </div>
-            <div className="bg-primary-foreground/10 rounded-lg p-4">
-              <h3 className="font-bold text-lg mb-2">👥 Join Community</h3>
-              <p className="text-sm">Engage with other learners, ask questions, help others.</p>
+            <div className="bg-background rounded-lg p-4 border">
+              <h3 className="font-bold text-lg mb-2 text-primary">👥 Join Community</h3>
+              <p className="text-sm text-muted-foreground">Engage with other learners, ask questions, help others.</p>
             </div>
           </div>
         </div>
 
-        {/* Footer Note */}
         <div className="mt-8 text-center text-muted-foreground">
           <Award className="w-12 h-12 mx-auto mb-3 text-yellow-500" />
           <p className="text-lg font-semibold">Estimated completion time: 10-12 weeks</p>
