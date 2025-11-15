@@ -16,6 +16,12 @@ export const languages: Language[] = [
     name: 'Java',
     topics: [
       {
+        slug: 'introduction-to-java',
+        title: 'Introduction to Java',
+        explanation:
+          'Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers "write once, run anywhere" (WORA), meaning that compiled Java code can run on all platforms that support Java without the need for recompilation. It was originally developed by James Gosling at Sun Microsystems and released in 1995.',
+      },
+      {
         slug: 'features-of-java',
         title: 'Features of Java',
         explanation:
