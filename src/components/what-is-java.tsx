@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
   
@@ -37,7 +37,7 @@ export function TheStoryOfJava() {
     ];
   
     return (
-        <div className="space-y-12">
+        <div id="history-of-java-page" data-test="history-of-java-page" className="w-full space-y-12">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-4 mb-4">
                     <History className="w-12 h-12 text-primary" />
@@ -151,7 +151,7 @@ export function JavaFeatures() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div id="java-features-page" data-test="java-features-page" className="w-full space-y-8">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
                     <Rocket className="w-10 h-10 text-primary" />
@@ -190,7 +190,7 @@ export function WhatIsJava() {
     ];
 
     return (
-        <div className="space-y-12">
+        <div id="what-is-java-page" data-test="what-is-java-page" className="w-full space-y-12">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-4 mb-4">
                     <VenetianMask className="w-12 h-12 text-primary" />
@@ -227,7 +227,7 @@ export function WhatIsJava() {
 
 export function JdkJreJvm() {
     return (
-      <div className="space-y-8">
+      <div id="jdk-jre-jvm-page" data-test="jdk-jre-jvm-page" className="w-full space-y-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Layers className="w-10 h-10 text-primary" />
@@ -316,7 +316,7 @@ export function JavaEnvironmentSetup() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div id="java-environment-setup-page" data-test="java-environment-setup-page" className="space-y-8">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
                     <Settings className="w-10 h-10 text-primary" />
@@ -460,7 +460,7 @@ export function FirstJavaProgram({ onOpenEditor }: { onOpenEditor: (code: string
     ];
 
     return (
-        <div className="space-y-8">
+        <div id="first-java-program-page" data-test="first-java-program-page" className="space-y-8">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
                     <HandMetal className="w-10 h-10 text-primary" />
@@ -556,7 +556,7 @@ export function HowJavaWorks() {
     ];
   
     return (
-      <div className="space-y-8">
+      <div id="how-java-works-page" data-test="how-java-works-page" className="w-full space-y-8">
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Workflow className="w-10 h-10 text-primary" />
@@ -631,7 +631,7 @@ export function JavaComments({ onOpenEditor }: { onOpenEditor: (code: string) =>
     ];
   
     return (
-      <div className="space-y-8">
+      <div id="java-comments-page" data-test="java-comments-page" className="space-y-8">
         <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
                 <MessageSquare className="w-10 h-10 text-primary" />
@@ -691,4 +691,99 @@ export function JavaComments({ onOpenEditor }: { onOpenEditor: (code: string) =>
     );
   }
 
+export function JavaEscapeSequences({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const sequences = [
+      {
+        name: "New Line",
+        sequence: "\\n",
+        description: "Moves the cursor to the beginning of the next line.",
+        example: 'System.out.println("Hello\\nWorld!");',
+        output: 'Hello\nWorld!',
+        icon: CornerDownLeft,
+      },
+      {
+        name: "Tab",
+        sequence: "\\t",
+        description: "Inserts a horizontal tab space.",
+        example: 'System.out.println("Column 1\\tColumn 2");',
+        output: 'Column 1\tColumn 2',
+        icon: ArrowRight,
+      },
+      {
+        name: "Double Quote",
+        sequence: '\\"',
+        description: "Allows you to include a double quote character inside a string literal.",
+        example: 'System.out.println("She said, \\"Hello!\\"");',
+        output: 'She said, "Hello!"',
+        icon: Combine,
+      },
+      {
+        name: "Backslash",
+        sequence: "\\\\",
+        description: "Allows you to include a backslash character itself.",
+        example: 'System.out.println("The path is C:\\\\Users\\\\John");',
+        output: 'The path is C:\\Users\\John',
+        icon: Asterisk,
+      },
+    ];
+
+    return (
+        <div id="java-escape-sequences-page" data-test="java-escape-sequences-page" className="space-y-8">
+            <div className="text-center">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                    <Combine className="w-10 h-10 text-primary" />
+                    <h1 className="text-4xl font-bold text-foreground">Escape Sequences</h1>
+                </div>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Special characters that control how your text is formatted.</p>
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>What are they?</CardTitle>
+                    <CardDescription>
+                        An escape sequence is a character that starts with a backslash (`\`) and is followed by another character. Java uses them inside `String` literals to represent special characters that would otherwise be difficult or impossible to type directly.
+                    </CardDescription>
+                </CardHeader>
+            </Card>
+
+            <div className="grid md:grid-cols-2 gap-6">
+                {sequences.map((seq) => (
+                    <Card key={seq.name} className="hover:shadow-lg transition-shadow">
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <div className="bg-primary/10 text-primary p-3 rounded-full">
+                                    <seq.icon className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <CardTitle className="text-2xl">{seq.name}</CardTitle>
+                                    <p className="text-sm font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md inline-block">{seq.sequence}</p>
+                                </div>
+                            </div>
+                            <CardDescription className="pt-2">{seq.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div>
+                                    <h4 className="text-sm font-semibold mb-2">Example Code:</h4>
+                                    <div className="bg-muted rounded-md p-4">
+                                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{seq.example}</pre>
+                                    </div>
+                                    <Button onClick={() => onOpenEditor(wrapInMain(seq.example))} variant="ghost" size="sm" className="mt-2">
+                                        <Play className="mr-2 h-4 w-4" /> Try it
+                                    </Button>
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-semibold mb-2">Resulting Output:</h4>
+                                    <div className="bg-foreground/5 rounded-md p-4">
+                                        <pre className="font-mono text-sm text-muted-foreground whitespace-pre-wrap">{seq.output}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+        </div>
+    );
+}
     

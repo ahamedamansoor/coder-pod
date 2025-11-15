@@ -26,7 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences } from './what-is-java';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -51,7 +51,7 @@ function JavaTypeCasting({ onOpenEditor }: { onOpenEditor: (code: string) => voi
     };
   
     return (
-      <div className="space-y-8">
+      <div id="java-type-casting-page" data-test="java-type-casting-page" className="space-y-8">
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <GitCommitHorizontal className="w-10 h-10 text-primary" />
@@ -209,7 +209,7 @@ function JavaVariables({ onOpenEditor }: { onOpenEditor: (code: string) => void 
     ];
   
     return (
-      <div className="space-y-8">
+      <div id="java-variables-page" data-test="java-variables-page" className="space-y-8">
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <PencilRuler className="w-10 h-10 text-primary" />
@@ -291,7 +291,7 @@ function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void 
   ];
 
   return (
-    <div className="space-y-8">
+    <div id="java-data-types-page" data-test="java-data-types-page" className="space-y-8">
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">
           <Variable className="w-10 h-10 text-primary" />
@@ -434,7 +434,7 @@ function JavaPrintFormats({ onOpenEditor }: { onOpenEditor: (code: string) => vo
   ];
 
   return (
-    <div className="space-y-8">
+    <div id="java-print-formats-page" data-test="java-print-formats-page" className="space-y-8">
        <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Terminal className="w-10 h-10 text-primary" />
@@ -595,6 +595,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isSettingUpEnvironmentTopic = language.slug === 'java' && topic.slug === 'setting-up-environment';
   const isFirstJavaProgramTopic = language.slug === 'java' && topic.slug === 'first-java-program';
   const isCommentsInJavaTopic = language.slug === 'java' && topic.slug === 'comments-in-java';
+  const isEscapeSequencesTopic = language.slug === 'java' && topic.slug === 'escape-sequences';
 
   const renderTopicContent = () => {
     if (isLearningPlanTopic) {
@@ -636,6 +637,9 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isJavaTypeCastingTopic) {
         return <JavaTypeCasting onOpenEditor={onOpenEditor} />;
     }
+    if (isEscapeSequencesTopic) {
+        return <JavaEscapeSequences onOpenEditor={onOpenEditor} />;
+    }
     return (
       <Card>
         <CardHeader>
@@ -648,7 +652,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic;
 
   return (
     <div className="space-y-8">
