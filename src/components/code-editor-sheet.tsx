@@ -30,8 +30,7 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     setTimeout(() => {
       try {
         let simulatedOutput: string[] = [];
-        let executionHasOutput = false;
-
+        
         const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
 
         let mainMethodContent = codeWithoutComments;
@@ -49,15 +48,17 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
             // Try to resolve variables
             for (const varName in variableValues) {
                 const regex = new RegExp(`\\b${varName}\\b`, 'g');
-                rhs = rhs.replace(regex, variableValues[varName]);
+                rhs = rhs.replace(regex, JSON.stringify(variableValues[varName]));
             }
 
             // Super simple evaluation for string concatenation and basic math
             try {
                 if (rhs.includes('"')) { // Likely string operation
+                     // This is tricky; a true evaluation is complex. Let's simplify.
+                    // We'll remove quotes and handle simple concatenation.
                     return rhs.replace(/"/g, '').replace(/\s*\+\s*/g, '');
                 }
-                // Use Function constructor for safer eval-like behavior
+                // Use Function constructor for safer eval-like behavior on simple math
                 return new Function(`return ${rhs}`)();
             } catch (e) {
                 return rhs; // Return as is if evaluation fails
@@ -77,7 +78,6 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
                 } else {
                    simulatedOutput.push(finalOutput);
                 }
-                executionHasOutput = true;
                 continue;
             }
 
@@ -88,7 +88,6 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
                 const evaluatedValue = evaluateRhs(valueStr);
                 variableValues[name] = evaluatedValue;
                 simulatedOutput.push(`// Declared ${type} '${name}' and assigned value: ${evaluatedValue}`);
-                executionHasOutput = true;
                 continue;
             }
 
@@ -100,7 +99,6 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
                    const evaluatedValue = evaluateRhs(valueStr);
                    variableValues[name] = evaluatedValue;
                    simulatedOutput.push(`// Re-assigned '${name}' to value: ${evaluatedValue}`);
-                   executionHasOutput = true;
                 }
                 continue;
             }
@@ -109,7 +107,6 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
             const forLoopMatch = /for\s*\((.*);(.*);(.*)\)/.exec(line);
             if (forLoopMatch) {
                 simulatedOutput.push(`// A 'for' loop was found. Simulating its likely purpose.`);
-                executionHasOutput = true;
                 continue;
             }
             
@@ -117,13 +114,12 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
             const whileLoopMatch = /while\s*\((.*)\)/.exec(line);
             if (whileLoopMatch) {
                 simulatedOutput.push(`// A 'while' loop was found. Simulating its likely purpose.`);
-                executionHasOutput = true;
                 continue;
             }
         }
         
         if (simulatedOutput.length > 0) {
-          setOutput(simulatedOutput.join('\n'));
+          setOutput(simulatedOutput.filter(line => !line.startsWith('//')).join('\n'));
         } else {
           setOutput("Execution finished. No print statements found to display output.");
         }
@@ -188,5 +184,3 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     </div>
   );
 }
-
-    
