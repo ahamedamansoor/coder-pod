@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { GripVertical } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ResizablePanelProps {
@@ -13,7 +12,7 @@ interface ResizablePanelProps {
 
 export function ResizablePanel({
   children,
-  initialWidth = 500,
+  initialWidth = 400,
   minWidth = 300,
   maxWidthPercentage = 50,
   isOpen,
@@ -24,6 +23,7 @@ export function ResizablePanel({
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     isResizing.current = true;
     document.body.style.cursor = 'col-resize';
     document.addEventListener('mousemove', handleMouseMove);
@@ -59,7 +59,6 @@ export function ResizablePanel({
 
   useEffect(() => {
     return () => {
-      // Cleanup event listeners when component unmounts
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
@@ -74,13 +73,17 @@ export function ResizablePanel({
       )}
       style={{ width: isOpen ? `${width}px` : '0px' }}
     >
-      <div
-        onMouseDown={handleMouseDown}
-        className="absolute top-0 left-0 -translate-x-1/2 h-full w-2 cursor-col-resize z-10 flex items-center justify-center group"
-      >
-        <div className="w-1 h-12 bg-border rounded-full transition-colors group-hover:bg-primary" />
-      </div>
-      <div className="h-full w-full overflow-hidden">{children}</div>
+      {isOpen && (
+        <>
+          <div
+            onMouseDown={handleMouseDown}
+            className="absolute top-0 left-0 -translate-x-1/2 h-full w-2 cursor-col-resize z-10 flex items-center justify-center group"
+          >
+            <div className="w-1 h-12 bg-border rounded-full transition-colors group-hover:bg-primary" />
+          </div>
+          <div className="h-full w-full overflow-hidden">{children}</div>
+        </>
+      )}
     </div>
   );
 }
