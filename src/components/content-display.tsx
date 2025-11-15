@@ -1,9 +1,4 @@
 
-
-
-
-
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -15,7 +10,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Sigma } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp, Sigma, Waypoints, Repeat, Ban, Code2, SquareStack, ListTree, Repeat1, Search, AppWindow, ShieldQuestion, KeySquare, Lock, Eye, Users2, PackageCheck, Group, ArrowLeftRight, Shapes, Atom, Type, Brackets, SquareFunction, Hourglass, Calendar, Hash, Sailboat, ScrollText, FileSignature, Regex, GitFork, Brain, FileCog } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -30,7 +25,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling } from './what-is-java';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -619,87 +614,108 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isScannerClassTopic = language.slug === 'java' && topic.slug === 'scanner-class';
   const isReadingDifferentTypesTopic = language.slug === 'java' && topic.slug === 'reading-different-types';
   const isInputValidationTopic = language.slug === 'java' && topic.slug === 'input-validation';
+  const isIfElseTopic = language.slug === 'java' && topic.slug === 'if-else';
+  const isSwitchTopic = language.slug === 'java' && topic.slug === 'switch';
+  const isForLoopTopic = language.slug === 'java' && topic.slug === 'for-loop';
+  const isWhileLoopTopic = language.slug === 'java' && topic.slug === 'while-loop';
+  const isBreakContinueTopic = language.slug === 'java' && topic.slug === 'break-continue';
+  const isStringsTopic = language.slug === 'java' && topic.slug === 'strings';
+  const isArraysTopic = language.slug === 'java' && topic.slug === 'arrays';
+  const isMultiDimensionalArraysTopic = language.slug === 'java' && topic.slug === 'multi-dimensional-arrays';
+  const isMethodsTopic = language.slug === 'java' && topic.slug === 'methods';
+  const isMethodParametersTopic = language.slug === 'java' && topic.slug === 'method-parameters';
+  const isMethodOverloadingTopic = language.slug === 'java' && topic.slug === 'method-overloading';
+  const isScopeTopic = language.slug === 'java' && topic.slug === 'scope';
+  const isRecursionTopic = language.slug === 'java' && topic.slug === 'recursion';
+  const isClassesObjectsTopic = language.slug === 'java' && topic.slug === 'classes-objects';
+  const isClassAttributesTopic = language.slug === 'java' && topic.slug === 'class-attributes';
+  const isClassMethodsTopic = language.slug === 'java' && topic.slug === 'class-methods';
+  const isConstructorsTopic = language.slug === 'java' && topic.slug === 'constructors';
+  const isAccessModifiersTopic = language.slug === 'java' && topic.slug === 'access-modifiers';
+  const isEncapsulationTopic = language.slug === 'java' && topic.slug === 'encapsulation';
+  const isPackagesTopic = language.slug === 'java' && topic.slug === 'packages';
+  const isInheritanceTopic = language.slug === 'java' && topic.slug === 'inheritance';
+  const isPolymorphismTopic = language.slug === 'java' && topic.slug === 'polymorphism';
+  const isInnerClassesTopic = language.slug === 'java' && topic.slug === 'inner-classes';
+  const isAbstractionTopic = language.slug === 'java' && topic.slug === 'abstraction';
+  const isInterfacesTopic = language.slug === 'java' && topic.slug === 'interfaces';
+  const isEnumsTopic = language.slug === 'java' && topic.slug === 'enums';
+  const isDateTopic = language.slug === 'java' && topic.slug === 'date-time';
+  const isHashMapTopic = language.slug === 'java' && topic.slug === 'hashmap';
+  const isHashSetTopic = language.slug === 'java' && topic.slug === 'hashset';
+  const isIteratorTopic = language.slug === 'java' && topic.slug === 'iterator';
+  const isWrapperClassesTopic = language.slug === 'java' && topic.slug === 'wrapper-classes';
+  const isExceptionsTopic = language.slug === 'java' && topic.slug === 'exceptions';
+  const isRegexTopic = language.slug === 'java' && topic.slug === 'regex';
+  const isThreadsTopic = language.slug === 'java' && topic.slug === 'threads';
+  const isLambdaTopic = language.slug === 'java' && topic.slug === 'lambda';
+  const isFileHandlingTopic = language.slug === 'java' && topic.slug === 'file-handling';
 
 
   const renderTopicContent = () => {
-    if (isLearningPlanTopic) {
-      return <JavaLearningRoadmap />;
-    }
-    if (isWhatIsJavaTopic) {
-      return <WhatIsJava />;
-    }
-    if (isHistoryOfJavaTopic) {
-      return <TheStoryOfJava />;
-    }
-    if (isFeaturesOfJavaTopic) {
-      return <JavaFeatures />;
-    }
-    if (isJdkJreJvmTopic) {
-      return <JdkJreJvm />;
-    }
-    if (isHowJavaWorksTopic) {
-      return <HowJavaWorks />;
-    }
-    if(isSettingUpEnvironmentTopic) {
-      return <JavaEnvironmentSetup />;
-    }
-    if (isFirstJavaProgramTopic) {
-      return <FirstJavaProgram onOpenEditor={onOpenEditor} />;
-    }
-    if (isCommentsInJavaTopic) {
-      return <JavaComments onOpenEditor={onOpenEditor} />;
-    }
-    if (isJavaPrintTopic) {
-      return <JavaPrintFormats onOpenEditor={onOpenEditor} />;
-    }
-    if (isJavaDataTypesTopic) {
-      return <JavaDataTypes onOpenEditor={onOpenEditor} />;
-    }
-    if (isJavaVariablesTopic) {
-      return <JavaVariables onOpenEditor={onOpenEditor} />;
-    }
-    if (isJavaTypeCastingTopic) {
-        return <JavaTypeCasting onOpenEditor={onOpenEditor} />;
-    }
-    if (isEscapeSequencesTopic) {
-        return <JavaEscapeSequences onOpenEditor={onOpenEditor} />;
-    }
-    if (isConstantsTopic) {
-      return <JavaConstants onOpenEditor={onOpenEditor} />;
-    }
-    if (isLiteralsTopic) {
-      return <JavaLiterals onOpenEditor={onOpenEditor} />;
-    }
-    if (isArithmeticOperatorsTopic) {
-      return <JavaArithmeticOperators onOpenEditor={onOpenEditor} />;
-    }
-    if (isAssignmentOperatorsTopic) {
-      return <JavaAssignmentOperators onOpenEditor={onOpenEditor} />;
-    }
-    if (isComparisonOperatorsTopic) {
-      return <JavaComparisonOperators onOpenEditor={onOpenEditor} />;
-    }
-    if (isLogicalOperatorsTopic) {
-      return <JavaLogicalOperators onOpenEditor={onOpenEditor} />;
-    }
-    if (isBitwiseOperatorsTopic) {
-      return <JavaBitwiseOperators onOpenEditor={onOpenEditor} />;
-    }
-    if (isTernaryOperatorTopic) {
-      return <JavaTernaryOperator onOpenEditor={onOpenEditor} />;
-    }
-    if (isOperatorPrecedenceTopic) {
-      return <JavaOperatorPrecedence onOpenEditor={onOpenEditor} />;
-    }
-    if (isScannerClassTopic) {
-      return <JavaScannerClass onOpenEditor={onOpenEditor} />;
-    }
-    if (isReadingDifferentTypesTopic) {
-      return <JavaReadingDifferentTypes onOpenEditor={onOpenEditor} />;
-    }
-    if (isInputValidationTopic) {
-      return <JavaInputValidation onOpenEditor={onOpenEditor} />;
-    }
+    if (isLearningPlanTopic) return <JavaLearningRoadmap />;
+    if (isWhatIsJavaTopic) return <WhatIsJava />;
+    if (isHistoryOfJavaTopic) return <TheStoryOfJava />;
+    if (isFeaturesOfJavaTopic) return <JavaFeatures />;
+    if (isJdkJreJvmTopic) return <JdkJreJvm />;
+    if (isHowJavaWorksTopic) return <HowJavaWorks />;
+    if(isSettingUpEnvironmentTopic) return <JavaEnvironmentSetup />;
+    if (isFirstJavaProgramTopic) return <FirstJavaProgram onOpenEditor={onOpenEditor} />;
+    if (isCommentsInJavaTopic) return <JavaComments onOpenEditor={onOpenEditor} />;
+    if (isJavaPrintTopic) return <JavaPrintFormats onOpenEditor={onOpenEditor} />;
+    if (isJavaDataTypesTopic) return <JavaDataTypes onOpenEditor={onOpenEditor} />;
+    if (isJavaVariablesTopic) return <JavaVariables onOpenEditor={onOpenEditor} />;
+    if (isJavaTypeCastingTopic) return <JavaTypeCasting onOpenEditor={onOpenEditor} />;
+    if (isEscapeSequencesTopic) return <JavaEscapeSequences onOpenEditor={onOpenEditor} />;
+    if (isConstantsTopic) return <JavaConstants onOpenEditor={onOpenEditor} />;
+    if (isLiteralsTopic) return <JavaLiterals onOpenEditor={onOpenEditor} />;
+    if (isArithmeticOperatorsTopic) return <JavaArithmeticOperators onOpenEditor={onOpenEditor} />;
+    if (isAssignmentOperatorsTopic) return <JavaAssignmentOperators onOpenEditor={onOpenEditor} />;
+    if (isComparisonOperatorsTopic) return <JavaComparisonOperators onOpenEditor={onOpenEditor} />;
+    if (isLogicalOperatorsTopic) return <JavaLogicalOperators onOpenEditor={onOpenEditor} />;
+    if (isBitwiseOperatorsTopic) return <JavaBitwiseOperators onOpenEditor={onOpenEditor} />;
+    if (isTernaryOperatorTopic) return <JavaTernaryOperator onOpenEditor={onOpenEditor} />;
+    if (isOperatorPrecedenceTopic) return <JavaOperatorPrecedence onOpenEditor={onOpenEditor} />;
+    if (isScannerClassTopic) return <JavaScannerClass onOpenEditor={onOpenEditor} />;
+    if (isReadingDifferentTypesTopic) return <JavaReadingDifferentTypes onOpenEditor={onOpenEditor} />;
+    if (isInputValidationTopic) return <JavaInputValidation onOpenEditor={onOpenEditor} />;
+    if (isIfElseTopic) return <JavaIfElse onOpenEditor={onOpenEditor} />;
+    if (isSwitchTopic) return <JavaSwitch onOpenEditor={onOpenEditor} />;
+    if (isForLoopTopic) return <JavaForLoop onOpenEditor={onOpenEditor} />;
+    if (isWhileLoopTopic) return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
+    if (isBreakContinueTopic) return <JavaBreakContinue onOpenEditor={onOpenEditor} />;
+    if (isStringsTopic) return <JavaStringMethods onOpenEditor={onOpenEditor} />;
+    if (isArraysTopic) return <JavaArrays onOpenEditor={onOpenEditor} />;
+    if (isMultiDimensionalArraysTopic) return <JavaMultiDimensionalArrays onOpenEditor={onOpenEditor} />;
+    if (isMethodsTopic) return <JavaMethods onOpenEditor={onOpenEditor} />;
+    if (isMethodParametersTopic) return <JavaMethodParameters onOpenEditor={onOpenEditor} />;
+    if (isMethodOverloadingTopic) return <JavaMethodOverloading onOpenEditor={onOpenEditor} />;
+    if (isScopeTopic) return <JavaScope onOpenEditor={onOpenEditor} />;
+    if (isRecursionTopic) return <JavaRecursion onOpenEditor={onOpenEditor} />;
+    if (isClassesObjectsTopic) return <JavaClassesObjects onOpenEditor={onOpenEditor} />;
+    if (isClassAttributesTopic) return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
+    if (isClassMethodsTopic) return <JavaClassMethods onOpenEditor={onOpenEditor} />;
+    if (isConstructorsTopic) return <JavaConstructors onOpenEditor={onOpenEditor} />;
+    if (isAccessModifiersTopic) return <JavaAccessModifiers onOpenEditor={onOpenEditor} />;
+    if (isEncapsulationTopic) return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
+    if (isPackagesTopic) return <JavaPackages onOpenEditor={onOpenEditor} />;
+    if (isInheritanceTopic) return <JavaInheritance onOpenEditor={onOpenEditor} />;
+    if (isPolymorphismTopic) return <JavaPolymorphism onOpenEditor={onOpenEditor} />;
+    if (isInnerClassesTopic) return <JavaInnerClasses onOpenEditor={onOpenEditor} />;
+    if (isAbstractionTopic) return <JavaAbstraction onOpenEditor={onOpenEditor} />;
+    if (isInterfacesTopic) return <JavaInterfaces onOpenEditor={onOpenEditor} />;
+    if (isEnumsTopic) return <JavaEnums onOpenEditor={onOpenEditor} />;
+    if (isDateTopic) return <JavaDate onOpenEditor={onOpenEditor} />;
+    if (isHashMapTopic) return <JavaHashMap onOpenEditor={onOpenEditor} />;
+    if (isHashSetTopic) return <JavaHashSet onOpenEditor={onOpenEditor} />;
+    if (isIteratorTopic) return <JavaIterator onOpenEditor={onOpenEditor} />;
+    if (isWrapperClassesTopic) return <JavaWrapperClasses onOpenEditor={onOpenEditor} />;
+    if (isExceptionsTopic) return <JavaExceptions onOpenEditor={onOpenEditor} />;
+    if (isRegexTopic) return <JavaRegex onOpenEditor={onOpenEditor} />;
+    if (isThreadsTopic) return <JavaThreads onOpenEditor={onOpenEditor} />;
+    if (isLambdaTopic) return <JavaLambda onOpenEditor={onOpenEditor} />;
+    if (isFileHandlingTopic) return <JavaFileHandling onOpenEditor={onOpenEditor} />;
+
     return (
       <Card>
         <CardHeader>
@@ -712,7 +728,11 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = ![
+  const noCustomContentTopics = [
+    'user-input'
+  ];
+
+  const showSimplifyButton = !noCustomContentTopics.includes(topic.slug) && ![
     isLearningPlanTopic,
     isWhatIsJavaTopic,
     isHistoryOfJavaTopic,
@@ -739,6 +759,42 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     isScannerClassTopic,
     isReadingDifferentTypesTopic,
     isInputValidationTopic,
+    isIfElseTopic,
+    isSwitchTopic,
+    isForLoopTopic,
+    isWhileLoopTopic,
+    isBreakContinueTopic,
+    isStringsTopic,
+    isArraysTopic,
+    isMultiDimensionalArraysTopic,
+    isMethodsTopic,
+    isMethodParametersTopic,
+    isMethodOverloadingTopic,
+    isScopeTopic,
+    isRecursionTopic,
+    isClassesObjectsTopic,
+    isClassAttributesTopic,
+    isClassMethodsTopic,
+    isConstructorsTopic,
+    isAccessModifiersTopic,
+    isEncapsulationTopic,
+    isPackagesTopic,
+    isInheritanceTopic,
+    isPolymorphismTopic,
+    isInnerClassesTopic,
+    isAbstractionTopic,
+    isInterfacesTopic,
+    isEnumsTopic,
+    isDateTopic,
+    isHashMapTopic,
+    isHashSetTopic,
+    isIteratorTopic,
+    isWrapperClassesTopic,
+    isExceptionsTopic,
+    isRegexTopic,
+    isThreadsTopic,
+    isLambdaTopic,
+    isFileHandlingTopic
   ].some(Boolean);
 
   return (
@@ -875,5 +931,3 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     </div>
   );
 }
-
-    

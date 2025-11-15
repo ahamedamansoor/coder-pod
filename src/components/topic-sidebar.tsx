@@ -44,6 +44,35 @@ export function TopicSidebar({
     ['scanner-class', 'reading-different-types', 'input-validation'].includes(t.slug)
   );
 
+  const controlFlowTopics = language.topics.filter(t =>
+    ['if-else', 'switch', 'for-loop', 'while-loop', 'break-continue'].includes(t.slug)
+  );
+
+  const stringsTopics = language.topics.filter(t =>
+    ['strings'].includes(t.slug)
+  );
+
+  const arraysTopics = language.topics.filter(t =>
+    ['arrays', 'multi-dimensional-arrays'].includes(t.slug)
+  );
+
+  const methodsTopics = language.topics.filter(t =>
+    ['methods', 'method-parameters', 'method-overloading', 'scope', 'recursion'].includes(t.slug)
+  );
+
+  const oopTopics = language.topics.filter(t =>
+    ['classes-objects', 'class-attributes', 'class-methods', 'constructors', 'access-modifiers', 'encapsulation', 'packages', 'inheritance', 'polymorphism', 'inner-classes', 'abstraction', 'interfaces', 'enums'].includes(t.slug)
+  );
+
+  const collectionsTopics = language.topics.filter(t =>
+    ['hashmap', 'hashset', 'iterator', 'wrapper-classes'].includes(t.slug)
+  );
+
+  const advancedTopics = language.topics.filter(t =>
+    ['exceptions', 'regex', 'threads', 'lambda', 'file-handling', 'date-time'].includes(t.slug)
+  );
+
+
   const otherTopics = language.topics.filter(t => 
     ![
       'learning-plan', 
@@ -51,9 +80,39 @@ export function TopicSidebar({
       ...basicOutputTopics.map(t => t.slug), 
       ...variablesAndDataTypesTopics.map(t => t.slug), 
       ...operatorsTopics.map(t => t.slug),
-      ...userInputTopics.map(t => t.slug)
+      ...userInputTopics.map(t => t.slug),
+      ...controlFlowTopics.map(t => t.slug),
+      ...stringsTopics.map(t => t.slug),
+      ...arraysTopics.map(t => t.slug),
+      ...methodsTopics.map(t => t.slug),
+      ...oopTopics.map(t => t.slug),
+      ...collectionsTopics.map(t => t.slug),
+      ...advancedTopics.map(t => t.slug),
     ].includes(t.slug)
   );
+
+  const renderTopicGroup = (title: string, topics: typeof language.topics) => (
+    topics.length > 0 && (
+      <div className="space-y-2">
+        <p className="px-2 text-md font-semibold text-foreground">{title}</p>
+        <div className="ml-2 border-l pl-2 space-y-1">
+          {topics.map((topic) => (
+            <SidebarMenuItem key={topic.slug}>
+              <SidebarMenuButton
+                onClick={() => onTopicSelect(topic.slug)}
+                isActive={selectedTopicSlug === topic.slug}
+                tooltip={topic.title}
+                className="justify-start text-sm"
+              >
+                {topic.title}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </div>
+      </div>
+    )
+  );
+
 
   return (
     <>
@@ -83,105 +142,19 @@ export function TopicSidebar({
             <div className='space-y-4'>
               <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
               
-              {gettingStartedTopics.length > 0 && (
-                <div className="space-y-2">
-                  <p className="px-2 text-md font-semibold text-foreground">Getting Started</p>
-                  <div className="ml-2 border-l pl-2 space-y-1">
-                    {gettingStartedTopics.map((topic) => (
-                      <SidebarMenuItem key={topic.slug}>
-                        <SidebarMenuButton
-                          onClick={() => onTopicSelect(topic.slug)}
-                          isActive={selectedTopicSlug === topic.slug}
-                          tooltip={topic.title}
-                          className="justify-start text-sm"
-                        >
-                          {topic.title}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {renderTopicGroup("Getting Started", gettingStartedTopics)}
+              {renderTopicGroup("Basic Output", basicOutputTopics)}
+              {renderTopicGroup("Variables & Data Types", variablesAndDataTypesTopics)}
+              {renderTopicGroup("Operators", operatorsTopics)}
+              {renderTopicGroup("User Input", userInputTopics)}
+              {renderTopicGroup("Control Flow", controlFlowTopics)}
+              {renderTopicGroup("Strings", stringsTopics)}
+              {renderTopicGroup("Arrays", arraysTopics)}
+              {renderTopicGroup("Methods", methodsTopics)}
+              {renderTopicGroup("Object-Oriented Programming", oopTopics)}
+              {renderTopicGroup("Collections", collectionsTopics)}
+              {renderTopicGroup("Advanced Topics", advancedTopics)}
 
-              {basicOutputTopics.length > 0 && (
-                <div className="space-y-2">
-                  <p className="px-2 text-md font-semibold text-foreground">Basic Output</p>
-                  <div className="ml-2 border-l pl-2 space-y-1">
-                    {basicOutputTopics.map((topic) => (
-                      <SidebarMenuItem key={topic.slug}>
-                        <SidebarMenuButton
-                          onClick={() => onTopicSelect(topic.slug)}
-                          isActive={selectedTopicSlug === topic.slug}
-                          tooltip={topic.title}
-                          className="justify-start text-sm"
-                        >
-                          {topic.title}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {variablesAndDataTypesTopics.length > 0 && (
-                 <div className="space-y-2">
-                  <p className="px-2 text-md font-semibold text-foreground">Variables & Data Types</p>
-                  <div className="ml-2 border-l pl-2 spacey-1">
-                    {variablesAndDataTypesTopics.map((topic) => (
-                      <SidebarMenuItem key={topic.slug}>
-                        <SidebarMenuButton
-                          onClick={() => onTopicSelect(topic.slug)}
-                          isActive={selectedTopicSlug === topic.slug}
-                          tooltip={topic.title}
-                          className="justify-start text-sm"
-                        >
-                          {topic.title}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {operatorsTopics.length > 0 && (
-                 <div className="space-y-2">
-                  <p className="px-2 text-md font-semibold text-foreground">Operators</p>
-                  <div className="ml-2 border-l pl-2 spacey-1">
-                    {operatorsTopics.map((topic) => (
-                      <SidebarMenuItem key={topic.slug}>
-                        <SidebarMenuButton
-                          onClick={() => onTopicSelect(topic.slug)}
-                          isActive={selectedTopicSlug === topic.slug}
-                          tooltip={topic.title}
-                          className="justify-start text-sm"
-                        >
-                          {topic.title}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {userInputTopics.length > 0 && (
-                 <div className="space-y-2">
-                  <p className="px-2 text-md font-semibold text-foreground">User Input</p>
-                  <div className="ml-2 border-l pl-2 spacey-1">
-                    {userInputTopics.map((topic) => (
-                      <SidebarMenuItem key={topic.slug}>
-                        <SidebarMenuButton
-                          onClick={() => onTopicSelect(topic.slug)}
-                          isActive={selectedTopicSlug === topic.slug}
-                          tooltip={topic.title}
-                          className="justify-start text-sm"
-                        >
-                          {topic.title}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {otherTopics.map((topic) => (
                 <SidebarMenuItem key={topic.slug}>
