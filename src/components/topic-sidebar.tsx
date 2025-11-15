@@ -25,24 +25,22 @@ export function TopicSidebar({
   onTopicSelect,
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLDivElement>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (activeItemRef.current && scrollAreaRef.current) {
-      const activeItem = activeItemRef.current;
-      const scrollArea = scrollAreaRef.current;
-
-      const scrollAreaRect = scrollArea.getBoundingClientRect();
-      const activeItemRect = activeItem.getBoundingClientRect();
+    if (activeItemRef.current && scrollContainerRef.current) {
+      const activeElement = activeItemRef.current;
+      const scrollContainer = scrollContainerRef.current;
       
-      const isVisible = 
-        activeItemRect.top >= scrollAreaRect.top &&
-        activeItemRect.bottom <= scrollAreaRect.bottom;
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const itemRect = activeElement.getBoundingClientRect();
+
+      const isVisible = itemRect.top >= containerRect.top && itemRect.bottom <= containerRect.bottom;
 
       if (!isVisible) {
-        activeItem.scrollIntoView({
+        activeElement.scrollIntoView({
           behavior: 'smooth',
-          block: 'center',
+          block: 'nearest',
         });
       }
     }
@@ -148,57 +146,59 @@ export function TopicSidebar({
       </SidebarHeader>
       <Separator />
       <SidebarContent asChild>
-        <ScrollArea ref={scrollAreaRef}>
-          <SidebarMenu className="p-4 space-y-4">
-            {learningPlanTopic && (
-              <div ref={selectedTopicSlug === learningPlanTopic.slug ? activeItemRef : null}>
-                <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
-                <SidebarMenuItem key={learningPlanTopic.slug}>
-                  <SidebarMenuButton
-                    onClick={() => onTopicSelect(learningPlanTopic.slug)}
-                    isActive={selectedTopicSlug === learningPlanTopic.slug}
-                    tooltip={learningPlanTopic.title}
-                    className="justify-start"
-                  >
-                    {learningPlanTopic.title}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </div>
-            )}
-            
-            <div className='space-y-4'>
-              <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
-              
-              {renderTopicGroup("Getting Started", gettingStartedTopics)}
-              {renderTopicGroup("Basic Output", basicOutputTopics)}
-              {renderTopicGroup("Variables & Data Types", variablesAndDataTypesTopics)}
-              {renderTopicGroup("Operators", operatorsTopics)}
-              {renderTopicGroup("User Input", userInputTopics)}
-              {renderTopicGroup("Control Flow", controlFlowTopics)}
-              {renderTopicGroup("Strings", stringsTopics)}
-              {renderTopicGroup("Arrays", arraysTopics)}
-              {renderTopicGroup("Methods", methodsTopics)}
-              {renderTopicGroup("Object-Oriented Programming", oopTopics)}
-              {renderTopicGroup("Collections", collectionsTopics)}
-              {renderTopicGroup("Advanced Topics", advancedTopics)}
+        <ScrollArea>
+           <div ref={scrollContainerRef} className="h-full">
+              <SidebarMenu className="p-4 space-y-4">
+                {learningPlanTopic && (
+                  <div ref={selectedTopicSlug === learningPlanTopic.slug ? activeItemRef : null}>
+                    <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
+                    <SidebarMenuItem key={learningPlanTopic.slug}>
+                      <SidebarMenuButton
+                        onClick={() => onTopicSelect(learningPlanTopic.slug)}
+                        isActive={selectedTopicSlug === learningPlanTopic.slug}
+                        tooltip={learningPlanTopic.title}
+                        className="justify-start"
+                      >
+                        {learningPlanTopic.title}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </div>
+                )}
+                
+                <div className='space-y-4'>
+                  <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
+                  
+                  {renderTopicGroup("Getting Started", gettingStartedTopics)}
+                  {renderTopicGroup("Basic Output", basicOutputTopics)}
+                  {renderTopicGroup("Variables & Data Types", variablesAndDataTypesTopics)}
+                  {renderTopicGroup("Operators", operatorsTopics)}
+                  {renderTopicGroup("User Input", userInputTopics)}
+                  {renderTopicGroup("Control Flow", controlFlowTopics)}
+                  {renderTopicGroup("Strings", stringsTopics)}
+                  {renderTopicGroup("Arrays", arraysTopics)}
+                  {renderTopicGroup("Methods", methodsTopics)}
+                  {renderTopicGroup("Object-Oriented Programming", oopTopics)}
+                  {renderTopicGroup("Collections", collectionsTopics)}
+                  {renderTopicGroup("Advanced Topics", advancedTopics)}
 
-              {otherTopics.map((topic) => (
-                <div key={topic.slug} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={() => onTopicSelect(topic.slug)}
-                      isActive={selectedTopicSlug === topic.slug}
-                      tooltip={topic.title}
-                      className="justify-start"
-                    >
-                      {topic.title}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                  {otherTopics.map((topic) => (
+                    <div key={topic.slug} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                          onClick={() => onTopicSelect(topic.slug)}
+                          isActive={selectedTopicSlug === topic.slug}
+                          tooltip={topic.title}
+                          className="justify-start"
+                        >
+                          {topic.title}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-          </SidebarMenu>
+              </SidebarMenu>
+           </div>
         </ScrollArea>
       </SidebarContent>
     </>
