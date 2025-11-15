@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -101,6 +101,89 @@ function JavaFeatures() {
             </div>
         </div>
     );
+}
+
+function JavaIntroduction() {
+  const history = [
+      { year: 1991, event: 'James Gosling, Mike Sheridan, and Patrick Naughton initiate the "Green Project".', icon: Lightbulb },
+      { year: 1995, event: 'Sun Microsystems releases the first public version of Java (Java 1.0).', icon: CheckCircle2 },
+      { year: 2009, event: 'Oracle Corporation acquires Sun Microsystems.', icon: Briefcase },
+      { year: 'Today', event: 'Java is one of the most popular and widely used programming languages in the world.', icon: Globe },
+  ];
+
+  const applications = [
+      { name: 'Desktop GUI Applications', icon: Tv },
+      { name: 'Mobile Applications (Android)', icon: Smartphone },
+      { name: 'Web-based Applications', icon: Globe },
+      { name: 'Enterprise Applications', icon: Briefcase },
+      { name: 'Scientific Applications', icon: BrainCircuit },
+      { name: 'Gaming Applications', icon: Gamepad2 },
+      { name: 'Big Data Technologies', icon: Cloud },
+      { name: 'IoT Applications', icon: Network },
+      { name: 'Distributed Applications', icon: Share2 },
+      { name: 'Cloud-based Applications', icon: Cloud },
+  ];
+
+  return (
+      <div className="space-y-12">
+          <div className="text-center">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                  <VenetianMask className="w-12 h-12 text-primary" />
+                  <h1 className="text-5xl font-bold tracking-tight text-foreground">Introduction to Java</h1>
+              </div>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  A high-level, versatile, and object-oriented programming language designed for building robust, secure, and cross-platform applications.
+              </p>
+          </div>
+
+          <Card className="bg-muted/30 border-dashed">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-3 text-3xl">
+                      <History className="w-8 h-8 text-primary" />
+                      A Brief History
+                  </CardTitle>
+                  <CardDescription>From a small project to a global standard.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                  <div className="relative border-l-2 border-primary/20 pl-6 space-y-8">
+                      {history.map((item, index) => (
+                          <div key={index} className="relative flex items-start gap-6">
+                              <div className="absolute -left-[33px] bg-background p-1 rounded-full">
+                                  <div className="bg-primary text-primary-foreground p-2 rounded-full">
+                                      <item.icon className="w-6 h-6" />
+                                  </div>
+                              </div>
+                              <div>
+                                  <p className="font-bold text-lg text-primary">{item.year}</p>
+                                  <p className="text-foreground/90">{item.event}</p>
+                              </div>
+                          </div>
+                      ))}
+                  </div>
+              </CardContent>
+          </Card>
+
+          <Card>
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-3 text-3xl">
+                      <Users className="w-8 h-8 text-primary" />
+                      Where is Java Used?
+                  </CardTitle>
+                  <CardDescription>Java's versatility makes it a popular choice across many domains.</CardDescription>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {applications.map((app) => (
+                      <div key={app.name} className="flex flex-col items-center text-center p-4 rounded-lg bg-background hover:bg-muted/50 transition-colors">
+                          <div className="p-3 bg-primary/10 text-primary rounded-full mb-3">
+                              <app.icon className="w-7 h-7" />
+                          </div>
+                          <p className="text-sm font-medium text-foreground">{app.name}</p>
+                      </div>
+                  ))}
+              </CardContent>
+          </Card>
+      </div>
+  );
 }
 
 
@@ -631,6 +714,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     }
   };
   
+  const isJavaIntroductionTopic = language.slug === 'java' && topic.slug === 'introduction-to-java';
   const isJavaFeaturesTopic = language.slug === 'java' && topic.slug === 'features-of-java';
   const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-formats';
   const isJavaDataTypesTopic = language.slug === 'java' && topic.slug === 'data-types';
@@ -638,6 +722,9 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
   const isJavaTypeCastingTopic = language.slug === 'java' && topic.slug === 'type-casting';
 
   const renderTopicContent = () => {
+    if (isJavaIntroductionTopic) {
+      return <JavaIntroduction />;
+    }
     if (isJavaFeaturesTopic) {
         return <JavaFeatures />;
     }
@@ -665,7 +752,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     );
   };
 
-  const showSimplifyButton = !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isJavaFeaturesTopic;
+  const showSimplifyButton = !isJavaIntroductionTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isJavaFeaturesTopic;
 
   return (
     <div className="space-y-8">
