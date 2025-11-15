@@ -2,18 +2,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetFooter,
-} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Code, Play, Terminal } from "lucide-react";
-import { Textarea } from "./ui/textarea";
+import Editor from "@monaco-editor/react";
 
 export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
   const [code, setCode] = useState(
@@ -28,7 +19,6 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     }
   }, [initialCode]);
 
-
   const handleRunCode = () => {
     setIsRunning(true);
     setOutput("");
@@ -40,54 +30,46 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
         
         const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
         const lines = codeWithoutComments.split(';').map(l => l.trim()).filter(Boolean);
+        
+        const evaluatePart = (part: string): any => {
+          part = part.trim();
+          if (part.startsWith('"') && part.endsWith('"')) {
+            return part.slice(1, -1);
+          }
+          if (part.startsWith("'") && part.endsWith("'")) {
+            return part.slice(1, -1);
+          }
+          if (variables[part] !== undefined) {
+            return variables[part];
+          }
+          if (part === 'true') return true;
+          if (part === 'false') return false;
+          
+          if (part.toLowerCase().endsWith('l')) return BigInt(part.slice(0,-1));
+          if (part.toLowerCase().endsWith('f')) return parseFloat(part);
+          if (part.toLowerCase().endsWith('d')) return parseFloat(part);
+
+          if (!isNaN(Number(part))) {
+            return Number(part);
+          }
+          
+          return part;
+        };
 
         const evaluateExpression = (expr: string): any => {
           expr = expr.trim();
-
-          const evaluatePart = (part: string) => {
-            part = part.trim();
-            if (part.startsWith('"') && part.endsWith('"')) {
-              return part.slice(1, -1);
-            }
-            if (part.startsWith("'") && part.endsWith("'")) {
-              return part.slice(1, -1);
-            }
-            if (variables[part] !== undefined) {
-              return variables[part];
-            }
-            if (part === 'true') return true;
-            if (part === 'false') return false;
-            
-            if (part.toLowerCase().endsWith('l')) return BigInt(part.slice(0,-1));
-            if (part.toLowerCase().endsWith('f')) return parseFloat(part);
-            if (part.toLowerCase().endsWith('d')) return parseFloat(part);
-            
-            if (!isNaN(Number(part))) {
-                return Number(part);
-            }
-            // Fallback for complex arithmetic not handled
-            try {
-                // VERY limited arithmetic. No operator precedence.
-                const result = new Function('return ' + part.replace(/[a-zA-Z$_]/g, ''))();
-                if (result !== undefined) return result;
-            } catch (e) {
-                // If it fails, it's likely a variable name or complex expression part we can't handle.
-            }
-
-            return part; // Return as is if not a recognized type
-          };
-
-          // This regex splits by '+' but not inside quotes.
           const parts = expr.match(/(?:"[^"]*"|'[^']*'|[^"'+])+/g) || [];
+          let result: any = null;
 
-          if (parts.length > 1) {
-            return parts.reduce((acc, part) => {
-                const evaluatedPart = evaluatePart(part);
-                return acc + (evaluatedPart !== null && evaluatedPart !== undefined ? evaluatedPart.toString() : '');
-            }, "");
-          } else {
-            return evaluatePart(expr);
+          for (const part of parts) {
+            const evaluatedPart = evaluatePart(part);
+            if (result === null) {
+              result = evaluatedPart;
+            } else {
+              result += evaluatedPart;
+            }
           }
+          return result;
         };
         
         for (const line of lines) {
@@ -114,17 +96,18 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
            if (printMatch) {
              const [, stream, content] = printMatch;
              const evaluatedContent = evaluateExpression(content.trim());
+             const finalOutput = evaluatedContent !== null && evaluatedContent !== undefined ? evaluatedContent.toString() : "null";
              if (stream === 'err') {
-                outputs.push(`Error: ${evaluatedContent}`);
+                outputs.push(`Error: ${finalOutput}`);
              } else {
-                outputs.push(evaluatedContent);
+                outputs.push(finalOutput);
              }
              continue;
            }
         }
         
         if (outputs.length > 0) {
-          setOutput(outputs.map(o => o.toString()).join('\n'));
+          setOutput(outputs.join('\n'));
         } else {
            // Check for compilation errors due to final keyword
             const finalErrorRegex = /final\s+(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=/;
@@ -175,13 +158,16 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
             <label htmlFor="code-editor" className="mb-2 text-sm font-medium">
               Code
             </label>
-            <Textarea
-              id="code-editor"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="flex-1 font-mono text-sm resize-none"
-              placeholder="Enter your Java code here..."
-            />
+            <div className="flex-1 rounded-md border overflow-hidden">
+                <Editor
+                    height="100%"
+                    language="java"
+                    theme="vs-dark"
+                    value={code}
+                    onChange={(value) => setCode(value || "")}
+                    options={{ minimap: { enabled: false }, fontSize: 14 }}
+                />
+            </div>
           </div>
           <div className="h-[150px] flex flex-col">
             <label className="mb-2 text-sm font-medium flex items-center gap-2">
