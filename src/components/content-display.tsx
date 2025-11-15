@@ -28,6 +28,13 @@ import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
 import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments } from './what-is-java';
 
+function wrapInMain(code: string): string {
+    if (code.trim().startsWith('public class')) {
+        return code;
+    }
+    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
+}
+
 function JavaTypeCasting({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
     const wideningExample = {
       title: 'Widening Casting (Automatic)',
@@ -101,7 +108,7 @@ function JavaTypeCasting({ onOpenEditor }: { onOpenEditor: (code: string) => voi
               <div className="bg-background rounded-lg p-4 overflow-x-auto">
                 <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
               </div>
-              <Button onClick={() => onOpenEditor(wideningExample.code)} variant="ghost" size="sm" className="mt-2">
+              <Button onClick={() => onOpenEditor(wrapInMain(wideningExample.code))} variant="ghost" size="sm" className="mt-2">
                   <Play className="mr-2 h-4 w-4" /> Try it
               </Button>
             </div>
@@ -130,7 +137,7 @@ function JavaTypeCasting({ onOpenEditor }: { onOpenEditor: (code: string) => voi
                 <div className="bg-background rounded-lg p-4 overflow-x-auto">
                   <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
                 </div>
-                <Button onClick={() => onOpenEditor(narrowingExample.code)} variant="ghost" size="sm" className="mt-2">
+                <Button onClick={() => onOpenEditor(wrapInMain(narrowingExample.code))} variant="ghost" size="sm" className="mt-2">
                     <Play className="mr-2 h-4 w-4" /> Try it
                 </Button>
             </div>
@@ -179,25 +186,25 @@ function JavaVariables({ onOpenEditor }: { onOpenEditor: (code: string) => void 
         id: 'declare-init',
         title: 'Declare then Initialize',
         description: 'You can declare a variable first and then assign a value to it on a separate line.',
-        code: 'int score;\nscore = 100;',
+        code: 'int score;\nscore = 100;\nSystem.out.println(score);',
       },
       {
         id: 'declare-and-init',
         title: 'Declare and Initialize',
         description: 'A common shortcut is to assign a value at the same time you declare the variable.',
-        code: 'int score = 100;',
+        code: 'int score = 100;\nSystem.out.println(score);',
       },
       {
         id: 'multiple',
         title: 'Multiple Variables',
         description: 'You can declare multiple variables of the same type on one line, separated by commas.',
-        code: 'int x = 5, y = 10, z = 15;',
+        code: 'int x = 5, y = 10, z = 15;\nSystem.out.println(x + y + z);',
       },
       {
         id: 'final',
         title: 'Final (Constants)',
         description: 'Use the `final` keyword to create a constant, whose value cannot be changed.',
-        code: 'final double PI = 3.14159;',
+        code: 'final double PI = 3.14159;\nSystem.out.println(PI);',
       },
     ];
   
@@ -226,7 +233,7 @@ function JavaVariables({ onOpenEditor }: { onOpenEditor: (code: string) => void 
                   <div className="bg-muted rounded p-2 w-full overflow-x-auto">
                     <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{item.code}</code></pre>
                   </div>
-                  <Button onClick={() => onOpenEditor(item.code)} variant="ghost" size="sm" className="mt-2">
+                  <Button onClick={() => onOpenEditor(wrapInMain('// This is just a declaration, it doesn\'t print anything by itself\n' + item.code))} variant="ghost" size="sm" className="mt-2">
                       <Play className="mr-2 h-4 w-4" /> Try it
                   </Button>
                 </div>
@@ -251,7 +258,7 @@ function JavaVariables({ onOpenEditor }: { onOpenEditor: (code: string) => void 
                 <div className="bg-background/50 rounded p-3 overflow-x-auto">
                   <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{ex.code}</code></pre>
                 </div>
-                <Button onClick={() => onOpenEditor(ex.code)} variant="ghost" size="sm" className="mt-2">
+                <Button onClick={() => onOpenEditor(wrapInMain(ex.code))} variant="ghost" size="sm" className="mt-2">
                     <Play className="mr-2 h-4 w-4" /> Try it
                 </Button>
               </div>
@@ -266,21 +273,21 @@ function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void 
   const [selectedTypeId, setSelectedTypeId] = useState<string | null>(null);
 
   const primitiveTypes = [
-    { id: 'byte', name: 'byte', size: '8-bit', range: '-128 to 127', example: 'byte age = 30;', description: 'Stores whole numbers.' },
-    { id: 'short', name: 'short', size: '16-bit', range: '-32,768 to 32,767', example: 'short salary = 25000;', description: 'Stores whole numbers.' },
-    { id: 'int', name: 'int', size: '32-bit', range: '-2,147,483,648 to 2,147,483,647', example: 'int population = 1000000;', description: 'Stores whole numbers, commonly used.' },
-    { id: 'long', name: 'long', size: '64-bit', range: '-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807', example: 'long worldPopulation = 8000000000L;', description: 'Stores very large whole numbers.' },
-    { id: 'float', name: 'float', size: '32-bit', precision: '~6-7 digits', example: 'float price = 19.99f;', description: 'Stores fractional numbers.' },
-    { id: 'double', name: 'double', size: '64-bit', precision: '~15 digits', example: 'double pi = 3.1415926535;', description: 'Stores fractional numbers, commonly used.' },
-    { id: 'boolean', name: 'boolean', size: '1-bit', values: 'true or false', example: 'boolean isLoggedIn = true;', description: 'Stores true or false values.' },
-    { id: 'char', name: 'char', size: '16-bit', range: '0 to 65,535', example: 'char grade = \'A\';', description: 'Stores single Unicode characters.' },
+    { id: 'byte', name: 'byte', size: '8-bit', range: '-128 to 127', example: 'byte age = 30;\nSystem.out.println(age);', description: 'Stores whole numbers.' },
+    { id: 'short', name: 'short', size: '16-bit', range: '-32,768 to 32,767', example: 'short salary = 25000;\nSystem.out.println(salary);', description: 'Stores whole numbers.' },
+    { id: 'int', name: 'int', size: '32-bit', range: '-2,147,483,648 to 2,147,483,647', example: 'int population = 1000000;\nSystem.out.println(population);', description: 'Stores whole numbers, commonly used.' },
+    { id: 'long', name: 'long', size: '64-bit', range: '-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807', example: 'long worldPopulation = 8000000000L;\nSystem.out.println(worldPopulation);', description: 'Stores very large whole numbers.' },
+    { id: 'float', name: 'float', size: '32-bit', precision: '~6-7 digits', example: 'float price = 19.99f;\nSystem.out.println(price);', description: 'Stores fractional numbers.' },
+    { id: 'double', name: 'double', size: '64-bit', precision: '~15 digits', example: 'double pi = 3.1415926535;\nSystem.out.println(pi);', description: 'Stores fractional numbers, commonly used.' },
+    { id: 'boolean', name: 'boolean', size: '1-bit', values: 'true or false', example: 'boolean isLoggedIn = true;\nSystem.out.println(isLoggedIn);', description: 'Stores true or false values.' },
+    { id: 'char', name: 'char', size: '16-bit', range: '0 to 65,535', example: 'char grade = \'A\';\nSystem.out.println(grade);', description: 'Stores single Unicode characters.' },
   ];
 
   const referenceTypes = [
-    { id: 'string', name: 'String', description: 'A sequence of characters, like "Hello World".', example: 'String greeting = "Hello, Java!";' },
-    { id: 'array', name: 'Array', description: 'A collection of variables of the same type.', example: 'int[] numbers = {1, 2, 3, 4, 5};' },
-    { id: 'class', name: 'Class', description: 'A blueprint for creating objects.', example: 'class MyClass { int x = 5; }' },
-    { id: 'interface', name: 'Interface', description: 'A contract for what a class can do.', example: 'interface Animal { void makeSound(); }' },
+    { id: 'string', name: 'String', description: 'A sequence of characters, like "Hello World".', example: 'String greeting = "Hello, Java!";\nSystem.out.println(greeting);' },
+    { id: 'array', name: 'Array', description: 'A collection of variables of the same type.', example: 'int[] numbers = {1, 2, 3, 4, 5};\nSystem.out.println(numbers[0]);' },
+    { id: 'class', name: 'Class', description: 'A blueprint for creating objects.', example: 'class MyClass { int x = 5; }\nMyClass myObj = new MyClass();\nSystem.out.println(myObj.x);' },
+    { id: 'interface', name: 'Interface', description: 'A contract for what a class can do.', example: 'interface Animal { public void makeSound(); }\nclass Dog implements Animal {\n  public void makeSound() {\n    System.out.println("Woof");\n  }\n}\nDog myDog = new Dog();\nmyDog.makeSound();' },
   ];
 
   return (
@@ -323,7 +330,7 @@ function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void 
                     <p className="text-sm font-semibold whitespace-pre-wrap">{type.range || type.values || type.precision}</p>
                     <p className="text-xs text-muted-foreground mb-1 mt-2">Example:</p>
                     <pre className="text-primary text-sm font-code whitespace-pre-wrap">{type.example}</pre>
-                    <Button onClick={(e) => { e.stopPropagation(); onOpenEditor(type.example); }} variant="ghost" size="sm" className="mt-2">
+                    <Button onClick={(e) => { e.stopPropagation(); onOpenEditor(wrapInMain(type.example)); }} variant="ghost" size="sm" className="mt-2">
                         <Play className="mr-2 h-4 w-4" /> Try it
                     </Button>
                 </div>
@@ -360,7 +367,7 @@ function JavaDataTypes({ onOpenEditor }: { onOpenEditor: (code: string) => void 
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
                 <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{type.example}</code></pre>
                </div>
-               <Button onClick={() => onOpenEditor(type.example)} variant="ghost" size="sm" className="mt-2">
+               <Button onClick={() => onOpenEditor(wrapInMain(type.example))} variant="ghost" size="sm" className="mt-2">
                   <Play className="mr-2 h-4 w-4" /> Try it
                </Button>
              </div>
@@ -467,7 +474,7 @@ function JavaPrintFormats({ onOpenEditor }: { onOpenEditor: (code: string) => vo
                   <p className="text-xs text-muted-foreground mb-2">Output:</p>
                   <pre className="text-foreground/80 text-sm font-code whitespace-pre-wrap">{method.output}</pre>
                 </div>
-                <Button onClick={(e) => { e.stopPropagation(); onOpenEditor(method.example); }} variant="ghost" size="sm" className="mt-2">
+                <Button onClick={(e) => { e.stopPropagation(); onOpenEditor(wrapInMain(method.example)); }} variant="ghost" size="sm" className="mt-2">
                     <Play className="mr-2 h-4 w-4" /> Try it
                 </Button>
               </div>
@@ -505,7 +512,7 @@ function JavaPrintFormats({ onOpenEditor }: { onOpenEditor: (code: string) => vo
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
                 <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{spec.example}</code></pre>
                </div>
-               <Button onClick={() => onOpenEditor(spec.example)} variant="ghost" size="sm" className="mt-2">
+               <Button onClick={() => onOpenEditor(wrapInMain(spec.example))} variant="ghost" size="sm" className="mt-2">
                   <Play className="mr-2 h-4 w-4" /> Try it
                </Button>
              </div>

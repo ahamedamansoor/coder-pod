@@ -11,6 +11,13 @@ import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe,
 import Link from 'next/link';
 import { Button } from './ui/button';
   
+function wrapInMain(code: string): string {
+    if (code.trim().startsWith('public class')) {
+        return code;
+    }
+    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
+}
+
 export function TheStoryOfJava() {
     const principles = [
         { name: "Simple & Object-Oriented", description: "Easy to learn by removing C++ complexities, with a pure object-oriented approach." },
@@ -604,21 +611,21 @@ export function JavaComments({ onOpenEditor }: { onOpenEditor: (code: string) =>
         name: "Single-Line Comment",
         syntax: "// This is a single-line comment",
         description: "Starts with `//`. Anything after `//` on the same line is ignored by the compiler. It's perfect for short explanations or quick notes.",
-        example: `// Calculate the sum of two numbers\nint sum = 5 + 10; // Adds 5 and 10 together`,
+        example: `// Calculate the sum of two numbers\nint sum = 5 + 10; // Adds 5 and 10 together\nSystem.out.println(sum);`,
         icon: MessageSquare
       },
       {
         name: "Multi-Line Comment",
         syntax: "/* ... */",
         description: "Starts with `/*` and ends with `*/`. You can write multiple lines of comments between them. Ideal for longer explanations or temporarily disabling a block of code.",
-        example: `/*\n  This method calculates the area of a rectangle.\n  It takes width and height as input\n  and returns the calculated area.\n*/\nint calculateArea(int width, int height) {\n  return width * height;\n}`,
+        example: `/*\n  This code calculates the area of a rectangle.\n  It takes width and height as input\n  and returns the calculated area.\n*/\nint width = 10;\nint height = 5;\nint area = width * height;\nSystem.out.println("Area: " + area);`,
         icon: Book
       },
       {
         name: "Documentation Comment (Javadoc)",
         syntax: "/** ... */",
         description: "Starts with `/**` and ends with `*/`. This is a special type of comment used to generate official API documentation for your code. It's used to describe classes, methods, and variables.",
-        example: `/**\n * Represents a Person with a name and age.\n */\npublic class Person {\n  /**\n   * The main method to run the program.\n   * @param args Command line arguments (not used).\n   */\n  public static void main(String[] args) {\n    // ...\n  }\n}`,
+        example: `/**\n * The main method to run this example program.\n * @param args Command line arguments (not used).\n */\n// This is the main function, so the Javadoc comment would typically be on a class or method.\n// For demonstration, we'll just print a message.\nSystem.out.println("Javadoc comments are for documentation!");`,
         icon: DraftingCompass
       }
     ];
@@ -661,7 +668,7 @@ export function JavaComments({ onOpenEditor }: { onOpenEditor: (code: string) =>
                         <div className="bg-muted rounded-md p-4">
                             <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{comment.example}</pre>
                         </div>
-                        <Button onClick={() => onOpenEditor(comment.example)} variant="ghost" size="sm" className="mt-2">
+                        <Button onClick={() => onOpenEditor(wrapInMain(comment.example))} variant="ghost" size="sm" className="mt-2">
                             <Play className="mr-2 h-4 w-4" /> Try it
                         </Button>
                     </CardContent>
