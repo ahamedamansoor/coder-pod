@@ -1,4 +1,6 @@
 
+'use client';
+import React, { useEffect, useRef } from 'react';
 import type { Language } from '@/app/data';
 import {
   SidebarHeader,
@@ -22,6 +24,30 @@ export function TopicSidebar({
   selectedTopicSlug,
   onTopicSelect,
 }: TopicSidebarProps) {
+  const activeItemRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (activeItemRef.current && scrollAreaRef.current) {
+      const activeItem = activeItemRef.current;
+      const scrollArea = scrollAreaRef.current;
+
+      const scrollAreaRect = scrollArea.getBoundingClientRect();
+      const activeItemRect = activeItem.getBoundingClientRect();
+      
+      const isVisible = 
+        activeItemRect.top >= scrollAreaRect.top &&
+        activeItemRect.bottom <= scrollAreaRect.bottom;
+
+      if (!isVisible) {
+        activeItem.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    }
+  }, [selectedTopicSlug]);
+
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
   const gettingStartedTopics = language.topics.filter(t => 
@@ -97,22 +123,23 @@ export function TopicSidebar({
         <p className="px-2 text-md font-semibold text-foreground">{title}</p>
         <div className="ml-2 border-l pl-2 space-y-1">
           {topics.map((topic) => (
-            <SidebarMenuItem key={topic.slug}>
-              <SidebarMenuButton
-                onClick={() => onTopicSelect(topic.slug)}
-                isActive={selectedTopicSlug === topic.slug}
-                tooltip={topic.title}
-                className="justify-start text-sm"
-              >
-                {topic.title}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <div key={topic.slug} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={() => onTopicSelect(topic.slug)}
+                  isActive={selectedTopicSlug === topic.slug}
+                  tooltip={topic.title}
+                  className="justify-start text-sm"
+                >
+                  {topic.title}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </div>
           ))}
         </div>
       </div>
     )
   );
-
 
   return (
     <>
@@ -121,10 +148,10 @@ export function TopicSidebar({
       </SidebarHeader>
       <Separator />
       <SidebarContent asChild>
-        <ScrollArea>
+        <ScrollArea ref={scrollAreaRef}>
           <SidebarMenu className="p-4 space-y-4">
             {learningPlanTopic && (
-              <div>
+              <div ref={selectedTopicSlug === learningPlanTopic.slug ? activeItemRef : null}>
                 <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
                 <SidebarMenuItem key={learningPlanTopic.slug}>
                   <SidebarMenuButton
@@ -155,18 +182,19 @@ export function TopicSidebar({
               {renderTopicGroup("Collections", collectionsTopics)}
               {renderTopicGroup("Advanced Topics", advancedTopics)}
 
-
               {otherTopics.map((topic) => (
-                <SidebarMenuItem key={topic.slug}>
-                  <SidebarMenuButton
-                    onClick={() => onTopicSelect(topic.slug)}
-                    isActive={selectedTopicSlug === topic.slug}
-                    tooltip={topic.title}
-                    className="justify-start"
-                  >
-                    {topic.title}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <div key={topic.slug} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      onClick={() => onTopicSelect(topic.slug)}
+                      isActive={selectedTopicSlug === topic.slug}
+                      tooltip={topic.title}
+                      className="justify-start"
+                    >
+                      {topic.title}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </div>
               ))}
             </div>
 
