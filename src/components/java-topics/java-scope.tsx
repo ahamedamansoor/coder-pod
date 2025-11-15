@@ -1,7 +1,8 @@
+
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Eye, Box, AlertTriangle, Building, DoorOpen } from 'lucide-react';
+import { Play, Eye, Box, Building, DoorOpen } from 'lucide-react';
 import React from 'react';
 
 function wrapInMain(code: string): string {
