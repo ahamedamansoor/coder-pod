@@ -25,120 +25,96 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
     setIsRunning(true);
     setOutput("");
     
-    // Simulate code execution with a delay
     setTimeout(() => {
       try {
-        // A simple "interpreter" for basic Java snippets
         const variables: Record<string, any> = {};
         const finalVariables = new Set<string>();
         let consoleOutput: string[] = [];
 
-        // Remove comments
         const codeWithoutComments = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
 
-        // Extract code within main method if present, otherwise use the whole code
         let codeToRun = codeWithoutComments;
         const mainMethodMatch = /public\s+static\s+void\s+main\s*\([\s\S]*?\)\s*\{([\s\S]*)\}/.exec(codeToRun);
         if (mainMethodMatch && mainMethodMatch[1]) {
             codeToRun = mainMethodMatch[1];
         }
         
-        // Split into statements
         const statements = codeToRun.split(';').map(s => s.trim()).filter(Boolean);
 
-        const evaluatePart = (part: string): any => {
-            part = part.trim();
-            if (part.startsWith('"') && part.endsWith('"')) {
-                return part.slice(1, -1);
-            }
-            if (part.startsWith("'") && part.endsWith("'")) {
-                return part.slice(1, -1);
-            }
-            if (variables[part] !== undefined) {
-                return variables[part];
-            }
-            if (part === 'true') return true;
-            if (part === 'false') return false;
-            
-            if (!isNaN(Number(part))) {
-                if (part.includes('.')) return parseFloat(part);
-                if (part.toLowerCase().endsWith('f')) return parseFloat(part);
-                if (part.toLowerCase().endsWith('d')) return parseFloat(part);
-                if (part.toLowerCase().endsWith('l')) return BigInt(part.slice(0, -1));
-                return parseInt(part, 10);
-            }
-            // If it's none of the above, it's likely part of a string expression that wasn't split correctly
-            // or an unevaluated variable, return it as a string to avoid crashing.
-            return part;
-        };
-
         const evaluateExpression = (expr: string): any => {
-            expr = expr.trim();
-            const parts = expr.split('+').map(p => p.trim());
-            
-            let result = null;
+          expr = expr.trim();
+          
+          const parts = expr.split('+').map(p => p.trim());
+          let result: any = null;
 
-            for (const part of parts) {
-                const evaluatedPart = evaluatePart(part);
-                
-                if (result === null) {
-                    result = evaluatedPart;
-                } else {
-                     if (typeof result === 'string' || typeof evaluatedPart === 'string') {
-                         result = String(result) + String(evaluatedPart);
-                    } else {
-                         result += evaluatedPart;
-                    }
-                }
-            }
-            return result;
+          for (const part of parts) {
+              let value: any;
+              if (part.startsWith('"') && part.endsWith('"')) {
+                  value = part.slice(1, -1);
+              } else if (variables.hasOwnProperty(part)) {
+                  value = variables[part];
+              } else if (!isNaN(Number(part))) {
+                  if (part.includes('.')) value = parseFloat(part);
+                  else value = parseInt(part, 10);
+              } else if (part === 'true') {
+                  value = true;
+              } else if (part === 'false') {
+                  value = false;
+              } else {
+                  value = part; // Treat as string if it's an unknown token
+              }
+              
+              if (result === null) {
+                  result = value;
+              } else {
+                  result = String(result) + String(value);
+              }
+          }
+          return result;
         };
-        
+
         for (const statement of statements) {
-           // Regex for variable declaration (with optional 'final' and type)
-           const varRegex = /^(final\s+)?(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
-           const varMatch = statement.match(varRegex);
-           if (varMatch) {
-             const [, isFinal, , name, valueStr] = varMatch;
-             if (finalVariables.has(name)) {
-                throw new Error(`error: variable ${name} is already defined`);
-             }
-             if (isFinal) {
-               finalVariables.add(name);
-             }
-             variables[name] = evaluateExpression(valueStr);
-             continue;
-           }
-           
-           // Regex for variable reassignment
-           const reassignRegex = /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
-           const reassignMatch = statement.match(reassignRegex);
-           if(reassignMatch) {
-             const [, name, valueStr] = reassignMatch;
-             if (finalVariables.has(name)) {
-                throw new Error(`cannot assign a value to final variable ${name}`);
-             }
-             if (variables.hasOwnProperty(name)) {
+            const varRegex = /^(final\s+)?(int|double|String|float|boolean|char|long|short|byte)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
+            const varMatch = statement.match(varRegex);
+            if (varMatch) {
+                const [, isFinal, , name, valueStr] = varMatch;
+                if (finalVariables.has(name)) {
+                    throw new Error(`error: variable ${name} is already defined and is final`);
+                }
+                if (isFinal) {
+                    finalVariables.add(name);
+                }
                 variables[name] = evaluateExpression(valueStr);
                 continue;
-             }
-           }
+            }
 
-           // Regex for print statements
-           const printlnRegex = /System\.(out|err)\.println\((.*)\)/;
-           const printMatch = statement.match(printlnRegex);
-           if (printMatch) {
-             const [, stream, content] = printMatch;
-             const evaluatedContent = evaluateExpression(content);
-             const finalOutput = evaluatedContent !== null && evaluatedContent !== undefined ? evaluatedContent.toString() : "null";
-             
-             if (stream === 'err') {
-                consoleOutput.push(`Error: ${finalOutput}`);
-             } else {
-                consoleOutput.push(finalOutput);
-             }
-             continue;
-           }
+            const reassignRegex = /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)/;
+            const reassignMatch = statement.match(reassignRegex);
+            if (reassignMatch) {
+                const [, name, valueStr] = reassignMatch;
+                if (finalVariables.has(name)) {
+                    throw new Error(`cannot assign a value to final variable ${name}`);
+                }
+                if (variables.hasOwnProperty(name)) {
+                    variables[name] = evaluateExpression(valueStr);
+                    continue;
+                }
+            }
+
+            const printlnRegex = /System\.(out|err)\.println\((.*)\)/;
+            const printMatch = statement.match(printlnRegex);
+            if (printMatch) {
+                const [, stream, content] = printMatch;
+                const evaluatedContent = evaluateExpression(content);
+                const finalOutput = evaluatedContent !== null && evaluatedContent !== undefined ? String(evaluatedContent) : "null";
+                
+                if (stream === 'err') {
+                   consoleOutput.push(`Error: ${finalOutput}`);
+                } else {
+                   consoleOutput.push(finalOutput);
+                }
+                continue;
+            }
         }
         
         if (consoleOutput.length > 0) {
