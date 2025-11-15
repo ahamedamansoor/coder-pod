@@ -84,7 +84,7 @@ export default function AppLayout() {
               )}
             </main>
             <div 
-              className={`transition-all duration-300 ease-in-out ${isEditorOpen ? 'w-[600px]' : 'w-0'} overflow-hidden`}
+              className={`transition-all duration-300 ease-in-out ${isEditorOpen ? 'w-full md:w-2/5 lg:w-1/3 xl:w-[500px]' : 'w-0'} overflow-hidden`}
             >
               <CodeEditorSheet />
             </div>
