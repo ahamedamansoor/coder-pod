@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -81,11 +82,11 @@ function TheStoryOfJava() {
                   <CardDescription>A timeline of Java's journey.</CardDescription>
               </CardHeader>
               <CardContent>
-                  <div className="relative border-l-2 border-primary/20 ml-4 pl-8 space-y-10">
+                  <div className="relative border-l-2 border-primary/20 ml-6 pl-10 space-y-10">
                       {timeline.map((item, index) => (
                           <div key={index} className="relative flex items-start gap-6">
-                              <div className="absolute top-0 -left-[50px] bg-background p-2 rounded-full ring-4 ring-background">
-                                  <div className="bg-primary text-primary-foreground w-12 h-12 flex items-center justify-center rounded-full font-bold text-lg">
+                              <div className="absolute top-0 -left-[58px] bg-background p-2 rounded-full ring-4 ring-background">
+                                  <div className="bg-primary text-primary-foreground w-14 h-14 flex items-center justify-center rounded-full font-bold text-lg">
                                       {item.year}
                                   </div>
                               </div>
