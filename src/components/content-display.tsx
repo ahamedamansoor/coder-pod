@@ -24,7 +24,7 @@ import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes } from './java-topics';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes, JavaArrayList, JavaLinkedList } from './java-topics';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
@@ -155,6 +155,8 @@ export function ContentDisplay({
     if (topic.slug === 'date-time') return <JavaDate />;
     if (topic.slug === 'hashmap') return <JavaHashMap />;
     if (topic.slug === 'hashset') return <JavaHashSet />;
+    if (topic.slug === 'arraylist') return <JavaArrayList onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'linkedlist') return <JavaLinkedList onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'iterator') return <JavaIterator />;
     if (topic.slug === 'wrapper-classes') return <JavaWrapperClasses />;
     if (topic.slug === 'exceptions') return <JavaExceptions />;
@@ -325,3 +327,5 @@ export function ContentDisplay({
     </div>
   );
 }
+
+    

@@ -60,10 +60,7 @@ export * from './java-type-casting';
 export * from './java-variables';
 export * from './java-print-formats';
 export * from './java-data-types';
+export * from './java-arraylist';
+export * from './java-linkedlist';
 
     
-
-
-
-
-

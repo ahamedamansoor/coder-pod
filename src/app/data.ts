@@ -302,6 +302,16 @@ export const languages: Language[] = [
         explanation: 'Learn how to store unique items.'
       },
       {
+        slug: 'arraylist',
+        title: 'ArrayList',
+        explanation: 'Learn how to use a resizable array.'
+      },
+      {
+        slug: 'linkedlist',
+        title: 'LinkedList',
+        explanation: 'Learn about the LinkedList data structure.'
+      },
+      {
         slug: 'iterator',
         title: 'Iterator',
         explanation: 'Learn how to loop through collections.'
@@ -339,3 +349,5 @@ export const languages: Language[] = [
     ],
   },
 ];
+
+    

@@ -187,6 +187,8 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 9-10",
       icon: "📚",
       topics: [
+        { id: 'arraylist', name: 'ArrayList', desc: 'Using resizable arrays.', difficulty: 'Easy' },
+        { id: 'linkedlist', name: 'LinkedList', desc: 'Working with linked lists.', difficulty: 'Medium' },
         { id: "hashmap", name: "HashMap", desc: "Storing key/value pairs", difficulty: "Medium" },
         { id: "hashset", name: "HashSet", desc: "Storing unique items", difficulty: "Medium" },
         { id: "iterator", name: "Iterator", desc: "Looping through collections", difficulty: "Medium" }
@@ -389,3 +391,5 @@ export const JavaLearningRoadmap = () => {
     </div>
   );
 };
+
+    
