@@ -178,7 +178,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isIfElseTopic) return <JavaIfElse onOpenEditor={onOpenEditor} />;
     if (isSwitchTopic) return <JavaSwitch onOpenEditor={onOpenEditor} />;
     if (isForLoopTopic) return <JavaForLoop />;
-    if (isWhileLoopTopic) return <JavaWhileLoop />;
+    if (isWhileLoopTopic) return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
     if (isBreakContinueTopic) return <JavaBreakContinue />;
     if (isStringsTopic) return <JavaStringMethods />;
     if (isArraysTopic) return <JavaArrays />;
@@ -382,7 +382,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder={`e.g., "What is the difference between a primitive and reference type?"`}
+              placeholder={`e.g., "What is the difference between a while and a do-while loop?"`}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               disabled={isAsking}
