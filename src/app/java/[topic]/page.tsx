@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useCallback } from 'react';
@@ -54,7 +55,7 @@ export default function JavaTopicPage() {
             onTopicSelect={handleTopicSelect}
           />
         </Sidebar>
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col">
           <MainHeader
             onToggleEditor={() => setIsEditorOpen(prev => !prev)}
             isEditorOpen={isEditorOpen}
