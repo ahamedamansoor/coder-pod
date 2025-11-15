@@ -179,8 +179,8 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isSwitchTopic) return <JavaSwitch onOpenEditor={onOpenEditor} />;
     if (isForLoopTopic) return <JavaForLoop />;
     if (isWhileLoopTopic) return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
-    if (isBreakContinueTopic) return <JavaBreakContinue />;
-    if (isStringsTopic) return <JavaStringMethods />;
+    if (isBreakContinueTopic) return <JavaBreakContinue onOpenEditor={onOpenEditor} />;
+    if (isStringsTopic) return <JavaStringMethods onOpenEditor={onOpenEditor} />;
     if (isArraysTopic) return <JavaArrays />;
     if (isMultiDimensionalArraysTopic) return <JavaMultiDimensionalArrays />;
     if (isMethodsTopic) return <JavaMethods />;
