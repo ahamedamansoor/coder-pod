@@ -16,6 +16,12 @@ export const languages: Language[] = [
     name: 'Java',
     topics: [
       {
+        slug: 'the-story-of-java',
+        title: 'The Story of Java',
+        explanation:
+          'Explore the origins of Java, from its inception as the "Green Project" to its evolution into a global programming standard. This topic covers the key milestones, the creators, and the initial goals that shaped Java into the language it is today.',
+      },
+      {
         slug: 'introduction-to-java',
         title: 'Introduction to Java',
         explanation:
