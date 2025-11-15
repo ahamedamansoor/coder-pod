@@ -142,7 +142,7 @@ export function ContentDisplay({
     if (topic.slug === 'classes-objects') return <JavaClassesObjects onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'class-attributes') return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'class-methods') return <JavaClassMethods />;
-    if (topic.slug === 'constructors') return <JavaConstructors />;
+    if (topic.slug === 'constructors') return <JavaConstructors onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'access-modifiers') return <JavaAccessModifiers />;
     if (topic.slug === 'encapsulation') return <JavaEncapsulation />;
     if (topic.slug === 'packages') return <JavaPackages />;
@@ -329,4 +329,5 @@ export function ContentDisplay({
     
 
     
+
 
