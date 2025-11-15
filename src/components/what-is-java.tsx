@@ -1,5 +1,6 @@
 
 
+
 import {
     Card,
     CardContent,
@@ -7,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
   } from './ui/card';
-import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk } from 'lucide-react';
+import { VenetianMask, History, Lightbulb, Rocket, Users, Tv, Smartphone, Globe, Briefcase, BrainCircuit, Gamepad2, Cloud, Network, Share2, CheckCircle2, Puzzle, Package, Shield, Anchor, Cpu, Rabbit, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Code, Play, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, GitCommitHorizontal, Braces, PencilRuler, Variable, Box, Link2, ArrowRight, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
   
@@ -785,3 +786,151 @@ export function JavaEscapeSequences({ onOpenEditor }: { onOpenEditor: (code: str
         </div>
     );
 }
+
+export function JavaConstants({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const codeExample = {
+      correct: 'final int WEEKS_IN_YEAR = 52;\nSystem.out.println("Weeks in a year: " + WEEKS_IN_YEAR);',
+      incorrect: 'final int WEEKS_IN_YEAR = 52;\nWEEKS_IN_YEAR = 53; // This will cause a compilation error!',
+    };
+  
+    return (
+      <div id="java-constants-page" data-test="java-constants-page" className="space-y-8">
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <Pin className="w-10 h-10 text-primary" />
+            <h1 className="text-4xl font-bold text-foreground">Constants</h1>
+          </div>
+          <p className="text-muted-foreground text-lg">Creating variables with unchangeable values.</p>
+        </div>
+  
+        <Card>
+          <CardHeader>
+            <CardTitle>What is a Constant?</CardTitle>
+            <CardDescription>
+              A constant is a variable whose value cannot be changed once it has been assigned. In Java, you create a constant by using the `final` keyword.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <h3 className="font-semibold mb-2">How to Declare a Constant:</h3>
+              <div className="bg-muted p-4 rounded-md font-mono text-sm">
+                final type VARIABLE_NAME = value;
+              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Naming Convention:</h3>
+              <p className="text-sm text-muted-foreground">It is a common convention to write constant names in all uppercase letters with underscores separating words (e.g., `MAX_SIZE`). This makes them easy to identify in the code.</p>
+            </div>
+          </CardContent>
+        </Card>
+  
+        <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+                <CardTitle>Example in Action</CardTitle>
+                <CardDescription>Here is how you declare and use a constant.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="bg-muted rounded-md p-4 mb-2">
+                    <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{codeExample.correct}</pre>
+                </div>
+                <Button onClick={() => onOpenEditor(wrapInMain(codeExample.correct))} variant="ghost" size="sm">
+                    <Play className="mr-2 h-4 w-4" /> Try it
+                </Button>
+            </CardContent>
+        </Card>
+
+        <Card className="border-destructive/50 bg-destructive/5">
+            <CardHeader>
+                <CardTitle className="text-destructive flex items-center gap-2">
+                    <BadgeHelp className="w-6 h-6"/>
+                    What Happens If You Try to Change It?
+                </CardTitle>
+                <CardDescription>If you try to assign a new value to a `final` variable after it has been initialized, the compiler will give you an error.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="bg-card rounded-md p-4 mb-2">
+                    <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{codeExample.incorrect}</pre>
+                </div>
+                 <Button onClick={() => onOpenEditor(wrapInMain(codeExample.incorrect))} variant="ghost" size="sm">
+                    <Play className="mr-2 h-4 w-4" /> Try it & See the Error
+                </Button>
+            </CardContent>
+        </Card>
+      </div>
+    );
+  }
+  
+  export function JavaLiterals({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+    const literalTypes = [
+      {
+        name: "Integer Literals",
+        description: "Represents whole numbers. Can be decimal (base 10), hexadecimal (base 16, prefix `0x`), or binary (base 2, prefix `0b`).",
+        example: "int decimal = 100;\nint hex = 0x64;\nint binary = 0b1100100;\nSystem.out.println(decimal);",
+      },
+      {
+        name: "Floating-Point Literals",
+        description: "Represents numbers with fractional parts. By default, they are of type `double`. Add an `f` or `F` for `float`.",
+        example: "double pi = 3.14159;\nfloat price = 19.99f;\nSystem.out.println(price);",
+      },
+      {
+        name: "Character Literals",
+        description: "Represents a single character and is enclosed in single quotes.",
+        example: "char grade = 'A';\nchar symbol = '$';\nSystem.out.println(grade);",
+      },
+      {
+        name: "String Literals",
+        description: "Represents a sequence of characters and is enclosed in double quotes.",
+        example: 'String greeting = "Hello, Java!";\nSystem.out.println(greeting);',
+      },
+      {
+        name: "Boolean Literals",
+        description: "Represents a truth value. It can only be `true` or `false`.",
+        example: "boolean isLoggedIn = true;\nboolean isComplete = false;\nSystem.out.println(isLoggedIn);",
+      },
+      {
+        name: "Null Literal",
+        description: "Represents a null reference, meaning the variable does not point to any object.",
+        example: "String name = null;\nSystem.out.println(name);",
+      },
+    ];
+  
+    return (
+      <div id="java-literals-page" data-test="java-literals-page" className="space-y-8">
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <Award className="w-10 h-10 text-primary" />
+            <h1 className="text-4xl font-bold text-foreground">Literals</h1>
+          </div>
+          <p className="text-muted-foreground text-lg">The fixed values you assign to your variables.</p>
+        </div>
+  
+        <Card>
+            <CardHeader>
+                <CardTitle>What is a Literal?</CardTitle>
+                <CardDescription>
+                    In programming, a literal is a source code representation of a fixed value. It's the actual data you're assigning to a variable. For example, in `int x = 10;`, the `10` is the literal.
+                </CardDescription>
+            </CardHeader>
+        </Card>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {literalTypes.map((literal) => (
+                <Card key={literal.name} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                        <CardTitle>{literal.name}</CardTitle>
+                        <CardDescription>{literal.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="bg-muted rounded-md p-4 mb-2">
+                            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{literal.example}</pre>
+                        </div>
+                        <Button onClick={() => onOpenEditor(wrapInMain(literal.example))} variant="ghost" size="sm">
+                            <Play className="mr-2 h-4 w-4" /> Try it
+                        </Button>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+      </div>
+    );
+  }

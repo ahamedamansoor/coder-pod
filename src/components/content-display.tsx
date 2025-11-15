@@ -1,5 +1,6 @@
 
 
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -11,7 +12,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2, PencilRuler, ArrowRight, GitCommitHorizontal, Sparkles, Puzzle, Package, Globe, Shield, Anchor, Cpu, Shuffle, Cloud, Share2, Rabbit, Rocket, VenetianMask, CheckCircle2, History, Lightbulb, Users, Network, Gamepad2, ShoppingCart, Tv, Bot, Smartphone, Briefcase, BrainCircuit, Play, Layers, HardHat, PlayCircle, Library, Milestone, Download, Settings, FileCode, Route, HandMetal, Workflow, ArrowBigRight, File, Binary, Laptop, MessageSquare, Book, DraftingCompass, CornerDownLeft, Combine, Asterisk, Pin, Award, BadgeHelp } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -26,7 +27,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants } from './what-is-java';
 
 function wrapInMain(code: string): string {
     if (code.trim().startsWith('public class')) {
@@ -55,7 +56,7 @@ function JavaTypeCasting({ onOpenEditor }: { onOpenEditor: (code: string) => voi
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <GitCommitHorizontal className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">Type Casting & Conversion</h1>
+            <h1 className="text-4xl font-bold text-foreground">Type Casting</h1>
           </div>
           <p className="text-muted-foreground text-lg">Changing a variable from one data type to another.</p>
         </div>
@@ -213,7 +214,7 @@ function JavaVariables({ onOpenEditor }: { onOpenEditor: (code: string) => void 
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <PencilRuler className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">Declaring & Initializing Variables</h1>
+            <h1 className="text-4xl font-bold text-foreground">Variables Basics</h1>
           </div>
           <p className="text-muted-foreground text-lg">The first step to storing data in Java</p>
         </div>
@@ -587,7 +588,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isFeaturesOfJavaTopic = language.slug === 'java' && topic.slug === 'features-of-java';
   const isJdkJreJvmTopic = language.slug === 'java' && topic.slug === 'jdk-jre-jvm';
   const isHowJavaWorksTopic = language.slug === 'java' && topic.slug === 'how-java-works';
-  const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-formats';
+  const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-statements-and-format-specifiers';
   const isJavaDataTypesTopic = language.slug === 'java' && topic.slug === 'data-types';
   const isJavaVariablesTopic = language.slug === 'java' && topic.slug === 'variables';
   const isJavaTypeCastingTopic = language.slug === 'java' && topic.slug === 'type-casting';
@@ -596,6 +597,9 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isFirstJavaProgramTopic = language.slug === 'java' && topic.slug === 'first-java-program';
   const isCommentsInJavaTopic = language.slug === 'java' && topic.slug === 'comments-in-java';
   const isEscapeSequencesTopic = language.slug === 'java' && topic.slug === 'escape-sequences';
+  const isConstantsTopic = language.slug === 'java' && topic.slug === 'constants';
+  const isLiteralsTopic = language.slug === 'java' && topic.slug === 'literals';
+
 
   const renderTopicContent = () => {
     if (isLearningPlanTopic) {
@@ -640,6 +644,12 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     if (isEscapeSequencesTopic) {
         return <JavaEscapeSequences onOpenEditor={onOpenEditor} />;
     }
+    if (isConstantsTopic) {
+      return <JavaConstants onOpenEditor={onOpenEditor} />;
+    }
+    if (isLiteralsTopic) {
+      return <JavaLiterals onOpenEditor={onOpenEditor} />;
+    }
     return (
       <Card>
         <CardHeader>
@@ -652,7 +662,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic && !isCommentsInJavaTopic && !isEscapeSequencesTopic && !isConstantsTopic && !isLiteralsTopic;
 
   return (
     <div className="space-y-8">

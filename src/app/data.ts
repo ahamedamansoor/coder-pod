@@ -63,7 +63,7 @@ export const languages: Language[] = [
       },
       {
         slug: 'variables',
-        title: 'Declaring and Initializing Variables',
+        title: 'Variables Basics',
         explanation:
           'In Java, variables are containers for storing data values. To use a variable, you must declare it by specifying its type and name. You can also initialize it by assigning an initial value. Understanding how to declare and initialize variables is a fundamental concept in Java programming.',
       },
@@ -75,12 +75,12 @@ export const languages: Language[] = [
       },
       {
         slug: 'type-casting',
-        title: 'Type Casting and Conversion',
+        title: 'Type Casting',
         explanation:
           'Type casting is when you assign a value of one primitive data type to another type. In Java, there are two types of casting: widening casting (automatically) - converting a smaller type to a larger type size, and narrowing casting (manually) - converting a larger type to a smaller size type.',
       },
       {
-        slug: 'print-formats',
+        slug: 'print-statements-and-format-specifiers',
         title: 'Print Statements & Format Specifiers',
         explanation:
           'Java provides several ways to display output, each with its specific use case. The most common methods are part of the `System.out` object. `System.out.print()` prints text without a new line. `System.out.println()` prints text and adds a new line. For formatted output, `System.out.printf()` uses format specifiers like `%s` for strings and `%d` for integers. `String.format()` works similarly but returns a formatted string. For errors, `System.err.println()` prints to the standard error stream.',
@@ -91,6 +91,16 @@ export const languages: Language[] = [
         explanation:
           'In Java, escape sequences are special characters that start with a backslash (\\) and are used inside strings to represent characters that are either difficult to type or have a special meaning. They allow you to format your text output, for example, by adding new lines, tabs, or including quotes within a string.',
       },
+      {
+        slug: 'constants',
+        title: 'Constants',
+        explanation: 'Learn how to create variables whose values cannot be changed using the `final` keyword.'
+      },
+      {
+        slug: 'literals',
+        title: 'Literals',
+        explanation: 'Understand the fixed values—like numbers, characters, or text—that you assign to variables.'
+      }
     ],
   },
 ];

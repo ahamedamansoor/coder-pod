@@ -30,11 +30,11 @@ export function TopicSidebar({
   const howJavaWorksTopics = language.topics.filter(t => ['how-java-works'].includes(t.slug));
   const commentsTopics = language.topics.filter(t => ['comments-in-java'].includes(t.slug));
   
-  const printStatementTopics = language.topics.filter(t => ['print-formats', 'escape-sequences'].includes(t.slug));
-  const fundamentalTopics = language.topics.filter(t => ['variables', 'data-types', 'type-casting'].includes(t.slug));
+  const printStatementTopics = language.topics.filter(t => ['print-statements-and-format-specifiers', 'escape-sequences'].includes(t.slug));
+  const fundamentalTopics = language.topics.filter(t => ['variables', 'data-types', 'type-casting', 'constants', 'literals'].includes(t.slug));
 
   const otherTopics = language.topics.filter(t => 
-    !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'comments-in-java', 'variables', 'data-types', 'type-casting', 'print-formats', 'escape-sequences'].includes(t.slug)
+    !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'comments-in-java', 'variables', 'data-types', 'type-casting', 'print-statements-and-format-specifiers', 'escape-sequences', 'constants', 'literals'].includes(t.slug)
   );
 
   return (
@@ -48,7 +48,7 @@ export function TopicSidebar({
           <SidebarMenu className="p-4 space-y-4">
             {learningPlanTopic && (
               <div>
-                <p className="px-2 py-1 text-base font-semibold text-muted-foreground">Learning Path</p>
+                <p className="px-2 py-1 text-lg font-semibold text-muted-foreground">Learning Path</p>
                 <SidebarMenuItem key={learningPlanTopic.slug}>
                   <SidebarMenuButton
                     onClick={() => onTopicSelect(learningPlanTopic.slug)}
@@ -63,7 +63,7 @@ export function TopicSidebar({
             )}
             
             <div className='space-y-4'>
-              <p className="px-2 py-1 text-base font-semibold text-muted-foreground">Topics</p>
+              <p className="px-2 py-1 text-lg font-semibold text-muted-foreground">Topics</p>
               
               <div className="space-y-2">
                 <p className="px-2 text-sm font-semibold text-foreground">Getting Started</p>
@@ -189,8 +189,8 @@ export function TopicSidebar({
               </div>
 
               {fundamentalTopics.length > 0 && (
-                 <div className="space-y-1">
-                  <p className="px-2 py-1 text-sm font-medium text-muted-foreground/80">Fundamentals</p>
+                 <div className="space-y-2">
+                  <p className="px-2 text-sm font-semibold text-foreground">Variables & Data Types</p>
                   <div className="ml-2 border-l pl-2 spacey-1">
                     {fundamentalTopics.map((topic) => (
                       <SidebarMenuItem key={topic.slug}>
