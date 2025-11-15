@@ -56,6 +56,44 @@ System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
           </div>
           <p className="text-muted-foreground text-lg">Changing a variable from one data type to another.</p>
         </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Why and When to Use Type Casting</CardTitle>
+            <CardDescription>
+              Type casting allows you to convert a variable from one data type to another, which is essential for managing data and performing operations correctly.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+              <div className="flex items-start gap-4">
+                  <div className="bg-primary/10 text-primary p-2 rounded-full">
+                      <PencilRuler className="w-5 h-5"/>
+                  </div>
+                  <div>
+                      <h3 className="font-semibold">For Calculations</h3>
+                      <p className="text-muted-foreground text-sm">To perform math operations between different numeric types, you often need to convert them to a common type first (usually a larger one to avoid losing data).</p>
+                  </div>
+              </div>
+              <div className="flex items-start gap-4">
+                  <div className="bg-primary/10 text-primary p-2 rounded-full">
+                      <Braces className="w-5 h-5"/>
+                  </div>
+                  <div>
+                      <h3 className="font-semibold">Assigning Values</h3>
+                      <p className="text-muted-foreground text-sm">It's required when you want to put a value from a "larger" data type into a "smaller" one, like saving a `double` (e.g., 9.78) into an `int` (which can only hold whole numbers).</p>
+                  </div>
+              </div>
+              <div className="flex items-start gap-4">
+                  <div className="bg-primary/10 text-primary p-2 rounded-full">
+                      <Code className="w-5 h-5"/>
+                  </div>
+                  <div>
+                      <h3 className="font-semibold">Working with APIs/Libraries</h3>
+                      <p className="text-muted-foreground text-sm">Sometimes, a method or function you want to use requires a specific data type. You'll need to cast your variable to match what the method expects.</p>
+                  </div>
+              </div>
+          </CardContent>
+        </Card>
   
         <Card className="bg-muted/30 border-border">
           <CardHeader>
