@@ -18,6 +18,7 @@ export default function JavaTopicPage() {
 
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
+  const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   const language: Language | undefined = languages.find(
     (lang) => lang.slug === 'java'
@@ -44,6 +45,18 @@ export default function JavaTopicPage() {
     setIsEditorOpen(true);
   }, []);
 
+  const handleToggleComplete = useCallback((topicSlug: string) => {
+    setCompletedTopics(prev => {
+        const newCompleted = new Set(prev);
+        if (newCompleted.has(topicSlug)) {
+            newCompleted.delete(topicSlug);
+        } else {
+            newCompleted.add(topicSlug);
+        }
+        return newCompleted;
+    });
+  }, []);
+
   return (
     <SidebarProvider>
       <div id="java-topic-page" data-test="java-topic-page" className="flex flex-col h-screen bg-background">
@@ -57,11 +70,18 @@ export default function JavaTopicPage() {
               language={language}
               selectedTopicSlug={selectedTopic.slug}
               onTopicSelect={handleTopicSelect}
+              completedTopics={completedTopics}
             />
           </Sidebar>
           <main className="flex-1 flex overflow-hidden">
             <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 w-full">
-              <ContentDisplay topic={selectedTopic} language={language} onOpenEditor={handleOpenEditor} />
+              <ContentDisplay
+                topic={selectedTopic}
+                language={language}
+                onOpenEditor={handleOpenEditor}
+                completedTopics={completedTopics}
+                onToggleComplete={handleToggleComplete}
+              />
             </div>
             <ResizablePanel isOpen={isEditorOpen}>
               <CodeEditorSheet initialCode={editorInitialCode} />

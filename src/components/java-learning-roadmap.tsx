@@ -1,10 +1,16 @@
+
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
 
-export const JavaLearningRoadmap = () => {
+export const JavaLearningRoadmap = ({
+    completedTopics,
+    onToggleComplete
+}: {
+    completedTopics: Set<string>,
+    onToggleComplete: (topicSlug: string) => void
+}) => {
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
-  const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   const modules = [
     {
@@ -14,11 +20,14 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 1",
       icon: "🚀",
       topics: [
-        { id: "1.1", name: "What is Java?", desc: "History, features, JVM, JRE, JDK", difficulty: "Easy" },
-        { id: "1.2", name: "Setting Up Environment", desc: "Installing JDK, IDE (VS Code/IntelliJ/Eclipse)", difficulty: "Easy" },
-        { id: "1.3", name: "First Java Program", desc: "Hello World, structure of Java program", difficulty: "Easy" },
-        { id: "1.4", name: "How Java Works", desc: "Compilation process, bytecode, execution", difficulty: "Easy" },
-        { id: "1.5", name: "Comments in Java", desc: "Single-line, multi-line, documentation comments", difficulty: "Easy" }
+        { id: "what-is-java", name: "What is Java?", desc: "History, features, JVM, JRE, JDK", difficulty: "Easy" },
+        { id: "history-of-java", name: "History of Java", desc: "The story of how Java was created and evolved over time.", difficulty: "Easy" },
+        { id: "features-of-java", name: "Features of Java", desc: "The key features that make Java a powerful and popular programming language.", difficulty: "Easy" },
+        { id: "jdk-jre-jvm", name: "JDK, JRE, and JVM", desc: "Understanding the core components that run a Java program.", difficulty: "Easy" },
+        { id: "setting-up-environment", name: "Setting Up Environment", desc: "Installing JDK, IDE (VS Code/IntelliJ/Eclipse)", difficulty: "Easy" },
+        { id: "first-java-program", name: "Hello World", desc: "Hello World, structure of Java program", difficulty: "Easy" },
+        { id: "how-java-works", name: "Compilation, Bytecode, & Execution", desc: "Compilation process, bytecode, execution", difficulty: "Easy" },
+        { id: "comments-in-java", name: "Comments in Java", desc: "Single-line, multi-line, documentation comments", difficulty: "Easy" }
       ]
     },
     {
@@ -28,8 +37,8 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 1",
       icon: "📢",
       topics: [
-        { id: "2.1", name: "Print Statements & Format Specifiers", desc: "print(), println(), printf() and format specifiers like %d, %s", difficulty: "Easy" },
-        { id: "2.2", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" }
+        { id: "print-statements-and-format-specifiers", name: "Print Statements & Format Specifiers", desc: "print(), println(), printf() and format specifiers like %d, %s", difficulty: "Easy" },
+        { id: "escape-sequences", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" }
       ]
     },
     {
@@ -39,11 +48,11 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 1-2",
       icon: "📦",
       topics: [
-        { id: "3.1", name: "Variables Basics", desc: "Declaration, initialization, naming rules", difficulty: "Easy" },
-        { id: "3.2", name: "Primitive Data Types", desc: "int, double, float, char, boolean, byte, short, long", difficulty: "Easy" },
-        { id: "3.3", name: "Type Casting", desc: "Implicit and explicit casting, widening/narrowing", difficulty: "Medium" },
-        { id: "3.4", name: "Constants", desc: "final keyword, naming conventions", difficulty: "Easy" },
-        { id: "3.5", name: "Literals", desc: "Integer, floating-point, character, string literals", difficulty: "Easy" }
+        { id: "variables", name: "Variables Basics", desc: "Declaration, initialization, naming rules", difficulty: "Easy" },
+        { id: "data-types", name: "Data Types", desc: "int, double, float, char, boolean, byte, short, long", difficulty: "Easy" },
+        { id: "type-casting", name: "Type Casting", desc: "Implicit and explicit casting, widening/narrowing", difficulty: "Medium" },
+        { id: "constants", name: "Constants", desc: "final keyword, naming conventions", difficulty: "Easy" },
+        { id: "literals", name: "Literals", desc: "Integer, floating-point, character, string literals", difficulty: "Easy" }
       ]
     },
     {
@@ -53,13 +62,13 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 2",
       icon: "➕",
       topics: [
-        { id: "4.1", name: "Arithmetic Operators", desc: "+, -, *, /, %, ++, --", difficulty: "Easy" },
-        { id: "4.2", name: "Assignment Operators", desc: "=, +=, -=, *=, /=, %=", difficulty: "Easy" },
-        { id: "4.3", name: "Comparison Operators", desc: "==, !=, <, >, <=, >=", difficulty: "Easy" },
-        { id: "4.4", name: "Logical Operators", desc: "&&, ||, !", difficulty: "Easy" },
-        { id: "4.5", name: "Bitwise Operators", desc: "&, |, ^, ~, <<, >>", difficulty: "Medium" },
-        { id: "4.6", name: "Ternary Operator", desc: "condition ? true : false", difficulty: "Medium" },
-        { id: "4.7", name: "Operator Precedence", desc: "Order of operations, parentheses", difficulty: "Medium" }
+        { id: "arithmetic-operators", name: "Arithmetic Operators", desc: "+, -, *, /, %, ++, --", difficulty: "Easy" },
+        { id: "assignment-operators", name: "Assignment Operators", desc: "=, +=, -=, *=, /=, %=", difficulty: "Easy" },
+        { id: "comparison-operators", name: "Comparison Operators", desc: "==, !=, <, >, <=, >=", difficulty: "Easy" },
+        { id: "logical-operators", name: "Logical Operators", desc: "&&, ||, !", difficulty: "Easy" },
+        { id: "bitwise-operators", name: "Bitwise Operators", desc: "&, |, ^, ~, <<, >>", difficulty: "Medium" },
+        { id: "ternary-operator", name: "Ternary Operator", desc: "condition ? true : false", difficulty: "Medium" },
+        { id: "operator-precedence", name: "Operator Precedence", desc: "Order of operations, parentheses", difficulty: "Medium" }
       ]
     },
     {
@@ -69,10 +78,9 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 2",
       icon: "⌨️",
       topics: [
-        { id: "5.1", name: "Scanner Class", desc: "Import, creating Scanner object", difficulty: "Easy" },
-        { id: "5.2", name: "Reading Different Types", desc: "nextInt(), nextDouble(), nextLine(), next()", difficulty: "Easy" },
-        { id: "5.3", name: "Input Validation", desc: "hasNextInt(), hasNextDouble(), error handling", difficulty: "Medium" },
-        { id: "5.4", name: "BufferedReader", desc: "Alternative input method (optional)", difficulty: "Medium" }
+        { id: "scanner-class", name: "Scanner Class", desc: "Import, creating Scanner object", difficulty: "Easy" },
+        { id: "reading-different-types", name: "Reading Different Types", desc: "nextInt(), nextDouble(), nextLine(), next()", difficulty: "Easy" },
+        { id: "input-validation", name: "Input Validation", desc: "hasNextInt(), hasNextDouble(), error handling", difficulty: "Medium" }
       ]
     },
     {
@@ -82,10 +90,8 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 3",
       icon: "🔀",
       topics: [
-        { id: "6.1", name: "If Statement", desc: "Basic if, if-else, nested if", difficulty: "Easy" },
-        { id: "6.2", name: "Else-If Ladder", desc: "Multiple conditions", difficulty: "Easy" },
-        { id: "6.3", name: "Switch-Case", desc: "Switch statement, break, default", difficulty: "Easy" },
-        { id: "6.4", name: "Conditional Logic", desc: "Complex conditions, combining operators", difficulty: "Medium" }
+        { id: "if-else", name: "If-Else Statement", desc: "Basic if, if-else, nested if", difficulty: "Easy" },
+        { id: "switch", name: "Switch Statement", desc: "Switch statement, break, default", difficulty: "Easy" }
       ]
     },
     {
@@ -95,12 +101,9 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 3-4",
       icon: "🔁",
       topics: [
-        { id: "7.1", name: "For Loop", desc: "Basic for loop, syntax, examples", difficulty: "Easy" },
-        { id: "7.2", name: "While Loop", desc: "While loop syntax and use cases", difficulty: "Easy" },
-        { id: "7.3", name: "Do-While Loop", desc: "Post-test loop", difficulty: "Easy" },
-        { id: "7.4", name: "Nested Loops", desc: "Loops within loops, patterns", difficulty: "Medium" },
-        { id: "7.5", name: "Break & Continue", desc: "Loop control statements", difficulty: "Easy" },
-        { id: "7.6", name: "Enhanced For Loop", desc: "For-each loop (preview)", difficulty: "Easy" }
+        { id: "for-loop", name: "For Loop", desc: "Basic for loop, syntax, examples", difficulty: "Easy" },
+        { id: "while-loop", name: "While Loop", desc: "While loop syntax and use cases", difficulty: "Easy" },
+        { id: "break-continue", name: "Break and Continue", desc: "Loop control statements", difficulty: "Easy" }
       ]
     },
     {
@@ -110,13 +113,7 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 4",
       icon: "📝",
       topics: [
-        { id: "8.1", name: "String Basics", desc: "Creating strings, immutability", difficulty: "Easy" },
-        { id: "8.2", name: "String Methods", desc: "length(), charAt(), substring(), indexOf()", difficulty: "Easy" },
-        { id: "8.3", name: "String Comparison", desc: "equals(), equalsIgnoreCase(), compareTo()", difficulty: "Easy" },
-        { id: "8.4", name: "String Manipulation", desc: "toUpperCase(), toLowerCase(), trim(), replace()", difficulty: "Easy" },
-        { id: "8.5", name: "String Concatenation", desc: "+operator, concat() method", difficulty: "Easy" },
-        { id: "8.6", name: "StringBuilder & StringBuffer", desc: "Mutable strings, append(), insert()", difficulty: "Medium" },
-        { id: "8.7", name: "String Formatting", desc: "format() method, advanced formatting", difficulty: "Medium" }
+        { id: "strings", name: "String Methods", desc: "length(), charAt(), substring(), indexOf(), etc.", difficulty: "Easy" }
       ]
     },
     {
@@ -126,13 +123,8 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 5",
       icon: "📊",
       topics: [
-        { id: "9.1", name: "Array Basics", desc: "Declaration, initialization, accessing elements", difficulty: "Easy" },
-        { id: "9.2", name: "Array Length", desc: "length property, iterating arrays", difficulty: "Easy" },
-        { id: "9.3", name: "Array Operations", desc: "Searching, sorting, copying", difficulty: "Medium" },
-        { id: "9.4", name: "Multi-dimensional Arrays", desc: "2D arrays, nested arrays", difficulty: "Medium" },
-        { id: "9.5", name: "Enhanced For Loop with Arrays", desc: "For-each loop for arrays", difficulty: "Easy" },
-        { id: "9.6", name: "Arrays Class", desc: "Arrays.sort(), Arrays.toString(), etc.", difficulty: "Medium" },
-        { id: "9.7", name: "Jagged Arrays", desc: "Arrays with different lengths", difficulty: "Hard" }
+        { id: "arrays", name: "Arrays", desc: "Declaration, initialization, accessing elements", difficulty: "Easy" },
+        { id: "multi-dimensional-arrays", name: "Multi-Dimensional Arrays", desc: "2D arrays, nested arrays", difficulty: "Medium" }
       ]
     },
     {
@@ -142,13 +134,11 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 5-6",
       icon: "⚙️",
       topics: [
-        { id: "10.1", name: "Method Basics", desc: "Creating methods, calling methods", difficulty: "Easy" },
-        { id: "10.2", name: "Parameters & Arguments", desc: "Passing values to methods", difficulty: "Easy" },
-        { id: "10.3", name: "Return Types", desc: "Returning values, void methods", difficulty: "Easy" },
-        { id: "10.4", name: "Method Overloading", desc: "Same name, different parameters", difficulty: "Medium" },
-        { id: "10.5", name: "Variable Scope", desc: "Local vs instance variables", difficulty: "Medium" },
-        { id: "10.6", name: "Static Methods", desc: "Class methods vs instance methods", difficulty: "Medium" },
-        { id: "10.7", name: "Recursion", desc: "Methods calling themselves", difficulty: "Hard" }
+        { id: "methods", name: "Methods", desc: "Creating methods, calling methods", difficulty: "Easy" },
+        { id: "method-parameters", name: "Method Parameters", desc: "Passing values to methods", difficulty: "Easy" },
+        { id: "method-overloading", name: "Method Overloading", desc: "Same name, different parameters", difficulty: "Medium" },
+        { id: "scope", name: "Scope", desc: "Local vs instance variables", difficulty: "Medium" },
+        { id: "recursion", name: "Recursion", desc: "Methods calling themselves", difficulty: "Hard" }
       ]
     },
     {
@@ -158,12 +148,12 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 6-7",
       icon: "🎯",
       topics: [
-        { id: "11.1", name: "Classes & Objects", desc: "Defining classes, creating objects", difficulty: "Medium" },
-        { id: "11.2", name: "Constructors", desc: "Default, parameterized, constructor overloading", difficulty: "Medium" },
-        { id: "11.3", name: "Instance Variables", desc: "Object attributes, this keyword", difficulty: "Medium" },
-        { id: "11.4", name: "Instance Methods", desc: "Object behaviors, getters & setters", difficulty: "Medium" },
-        { id: "11.5", name: "Access Modifiers", desc: "public, private, protected, default", difficulty: "Medium" },
-        { id: "11.6", name: "Encapsulation", desc: "Data hiding, information security", difficulty: "Medium" }
+        { id: "classes-objects", name: "Classes & Objects", desc: "Defining classes, creating objects", difficulty: "Medium" },
+        { id: "class-attributes", name: "Class Attributes", desc: "Object attributes, this keyword", difficulty: "Medium" },
+        { id: "class-methods", name: "Class Methods", desc: "Object behaviors, getters & setters", difficulty: "Medium" },
+        { id: "constructors", name: "Constructors", desc: "Default, parameterized, constructor overloading", difficulty: "Medium" },
+        { id: "access-modifiers", name: "Access Modifiers", desc: "public, private, protected, default", difficulty: "Medium" },
+        { id: "encapsulation", name: "Encapsulation", desc: "Data hiding, information security", difficulty: "Medium" }
       ]
     },
     {
@@ -173,28 +163,25 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 7-8",
       icon: "🏗️",
       topics: [
-        { id: "12.1", name: "Inheritance", desc: "extends keyword, parent-child relationship", difficulty: "Medium" },
-        { id: "12.2", name: "Method Overriding", desc: "Redefining parent methods, @Override", difficulty: "Medium" },
-        { id: "12.3", name: "super Keyword", desc: "Accessing parent class members", difficulty: "Medium" },
-        { id: "12.4", name: "Polymorphism", desc: "Runtime polymorphism, dynamic binding", difficulty: "Hard" },
-        { id: "12.5", name: "Abstract Classes", desc: "abstract keyword, abstract methods", difficulty: "Hard" },
-        { id: "12.6", name: "Interfaces", desc: "interface keyword, implementing interfaces", difficulty: "Hard" },
-        { id: "12.7", name: "final Keyword", desc: "final classes, methods, variables", difficulty: "Medium" }
+        { id: "packages", name: "Packages and API", desc: "Use built-in and user-defined packages", difficulty: "Medium" },
+        { id: "inheritance", name: "Inheritance", desc: "extends keyword, parent-child relationship", difficulty: "Medium" },
+        { id: "polymorphism", name: "Polymorphism", desc: "Runtime polymorphism, dynamic binding", difficulty: "Hard" },
+        { id: "inner-classes", name: "Inner Classes", desc: "Nested classes in Java", difficulty: "Medium" },
+        { id: "abstraction", name: "Abstraction", desc: "abstract keyword, abstract methods", difficulty: "Hard" },
+        { id: "interfaces", name: "Interfaces", desc: "interface keyword, implementing interfaces", difficulty: "Hard" }
       ]
     },
     {
       id: 13,
-      title: "Exception Handling",
+      title: "Advanced Concepts",
       level: "Advanced",
-      duration: "Week 8",
-      icon: "⚠️",
+      duration: "Week 8-9",
+      icon: "🧩",
       topics: [
-        { id: "13.1", name: "Exception Basics", desc: "What are exceptions, types of exceptions", difficulty: "Medium" },
-        { id: "13.2", name: "Try-Catch", desc: "Handling exceptions, multiple catch blocks", difficulty: "Medium" },
-        { id: "13.3", name: "Finally Block", desc: "Cleanup code, always executes", difficulty: "Medium" },
-        { id: "13.4", name: "Throw & Throws", desc: "Creating and throwing exceptions", difficulty: "Medium" },
-        { id: "13.5", name: "Custom Exceptions", desc: "Creating your own exception classes", difficulty: "Hard" },
-        { id: "13.6", name: "Checked vs Unchecked", desc: "Exception hierarchy, handling strategies", difficulty: "Hard" }
+        { id: "enums", name: "Enums", desc: "Special classes that represent a group of constants", difficulty: "Medium" },
+        { id: "user-input", name: "User Input", desc: "Getting user input with Scanner", difficulty: "Easy" },
+        { id: "date-time", name: "Date and Time", desc: "Working with the Date and Time API", difficulty: "Medium" },
+        { id: "wrapper-classes", name: "Wrapper Classes", desc: "Using primitive data types as objects", difficulty: "Medium" }
       ]
     },
     {
@@ -204,71 +191,61 @@ export const JavaLearningRoadmap = () => {
       duration: "Week 9-10",
       icon: "📚",
       topics: [
-        { id: "14.1", name: "ArrayList", desc: "Dynamic arrays, List interface", difficulty: "Medium" },
-        { id: "14.2", name: "LinkedList", desc: "Linked list implementation", difficulty: "Medium" },
-        { id: "14.3", name: "HashSet", desc: "Set interface, unique elements", difficulty: "Medium" },
-        { id: "14.4", name: "HashMap", desc: "Key-value pairs, Map interface", difficulty: "Medium" },
-        { id: "14.5", name: "Iterator", desc: "Iterating collections", difficulty: "Medium" },
-        { id: "14.6", name: "Collections Class", desc: "Utility methods: sort, reverse, etc.", difficulty: "Medium" },
-        { id: "14.7", name: "Generics Basics", desc: "Type parameters, type safety", difficulty: "Hard" }
+        { id: "hashmap", name: "HashMap", desc: "Storing key/value pairs", difficulty: "Medium" },
+        { id: "hashset", name: "HashSet", desc: "Storing unique items", difficulty: "Medium" },
+        { id: "iterator", name: "Iterator", desc: "Looping through collections", difficulty: "Medium" }
       ]
     },
     {
       id: 15,
-      title: "File Handling",
+      title: "Error & File Handling",
       level: "Advanced",
       duration: "Week 10",
       icon: "📁",
       topics: [
-        { id: "15.1", name: "File Class", desc: "Creating, deleting, checking files", difficulty: "Medium" },
-        { id: "15.2", name: "Reading Files", desc: "FileReader, BufferedReader, Scanner", difficulty: "Medium" },
-        { id: "15.3", name: "Writing Files", desc: "FileWriter, BufferedWriter, PrintWriter", difficulty: "Medium" },
-        { id: "15.4", name: "File Operations", desc: "Copy, move, delete operations", difficulty: "Medium" },
-        { id: "15.5", name: "Serialization", desc: "Object persistence (optional)", difficulty: "Hard" }
+        { id: "exceptions", name: "Exceptions", desc: "Handling errors with try-catch blocks", difficulty: "Medium" },
+        { id: "file-handling", name: "File Handling", desc: "Create, read, write, and delete files", difficulty: "Medium" }
       ]
     },
     {
       id: 16,
-      title: "Advanced Topics",
+      title: "Functional & Concurrent Java",
       level: "Expert",
       duration: "Week 11-12",
       icon: "🚀",
       topics: [
-        { id: "16.1", name: "Lambda Expressions", desc: "Functional programming basics", difficulty: "Hard" },
-        { id: "16.2", name: "Stream API", desc: "Processing collections functionally", difficulty: "Hard" },
-        { id: "16.3", name: "Multithreading Basics", desc: "Thread class, Runnable interface", difficulty: "Hard" },
-        { id: "16.4", name: "Date & Time API", desc: "LocalDate, LocalTime, LocalDateTime", difficulty: "Medium" },
-        { id: "16.5", name: "Regular Expressions", desc: "Pattern matching, regex basics", difficulty: "Hard" },
-        { id: "16.6", name: "Annotations", desc: "@Override, @Deprecated, custom annotations", difficulty: "Hard" }
+        { id: "lambda", name: "Lambda Expressions", desc: "Functional programming basics", difficulty: "Hard" },
+        { id: "threads", name: "Threads", desc: "Multithreading basics", difficulty: "Hard" },
+        { id: "regex", name: "Regular Expressions", desc: "Pattern matching, regex basics", difficulty: "Hard" },
       ]
     }
   ];
 
   const toggleTopic = (topicId: string) => {
-    const newCompleted = new Set(completedTopics);
-    let topicCompleted = false;
-    if (newCompleted.has(topicId)) {
-      newCompleted.delete(topicId);
-    } else {
-      newCompleted.add(topicId);
-      topicCompleted = true;
-    }
-    setCompletedTopics(newCompleted);
+    onToggleComplete(topicId);
 
-    if (topicCompleted) {
-      const topicModuleId = parseInt(topicId.split('.')[0]);
-      const topicModule = modules.find(m => m.id === topicModuleId);
-      if (!topicModule) return;
+    const topicModuleId = parseInt(topicId.split('-')[0]);
+    const topicModule = modules.find(m => {
+        return m.topics.some(t => t.id === topicId);
+    });
 
-      const allTopicsInModuleCompleted = topicModule.topics.every(t => newCompleted.has(t.id));
+    if (!topicModule) return;
+    
+    // Check if we are completing this topic right now
+    const isCompleting = !completedTopics.has(topicId);
 
-      if (allTopicsInModuleCompleted) {
-        const currentModuleIndex = modules.findIndex(m => m.id === topicModuleId);
-        if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
-          const nextModule = modules[currentModuleIndex + 1];
-          setExpandedModule(nextModule.id);
+    if (isCompleting) {
+        const allTopicsInModuleCompleted = topicModule.topics.every(t =>
+          completedTopics.has(t.id) || t.id === topicId
+        );
+
+        if (allTopicsInModuleCompleted) {
+          const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
+          if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
+            const nextModule = modules[currentModuleIndex + 1];
+            setExpandedModule(nextModule.id);
+          }
         }
-      }
     }
   };
 

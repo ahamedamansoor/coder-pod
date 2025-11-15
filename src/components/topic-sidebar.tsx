@@ -12,17 +12,20 @@ import {
 import { Logo } from './logo';
 import { Separator } from './ui/separator';
 import { ScrollArea } from './ui/scroll-area';
+import { CheckCircle } from 'lucide-react';
 
 interface TopicSidebarProps {
   language: Language;
   selectedTopicSlug: string | null;
   onTopicSelect: (slug: string) => void;
+  completedTopics: Set<string>;
 }
 
 export function TopicSidebar({
   language,
   selectedTopicSlug,
   onTopicSelect,
+  completedTopics,
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -129,6 +132,7 @@ export function TopicSidebar({
                   tooltip={topic.title}
                   className="justify-start text-sm"
                 >
+                  {completedTopics.has(topic.slug) && <CheckCircle className="text-primary" />}
                   {topic.title}
                 </SidebarMenuButton>
               </SidebarMenuItem>
