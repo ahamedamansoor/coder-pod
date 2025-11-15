@@ -24,7 +24,17 @@ export const languages: Language[] = [
       {
         slug: 'what-is-java',
         title: 'What is Java?',
-        explanation: 'An overview of Java, its history, and its core features.',
+        explanation: 'A high-level overview of what Java is and where it is used.',
+      },
+      {
+        slug: 'history-of-java',
+        title: 'History of Java',
+        explanation: 'The story of how Java was created and evolved over time.',
+      },
+      {
+        slug: 'features-of-java',
+        title: 'Features of Java',
+        explanation: 'The key features that make Java a powerful and popular programming language.',
       },
       {
         slug: 'variables',

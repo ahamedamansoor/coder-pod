@@ -25,7 +25,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures } from './what-is-java';
 
 function JavaTypeCasting() {
     const wideningExample = {
@@ -547,6 +547,8 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
   };
   
   const isWhatIsJavaTopic = language.slug === 'java' && topic.slug === 'what-is-java';
+  const isHistoryOfJavaTopic = language.slug === 'java' && topic.slug === 'history-of-java';
+  const isFeaturesOfJavaTopic = language.slug === 'java' && topic.slug === 'features-of-java';
   const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-formats';
   const isJavaDataTypesTopic = language.slug === 'java' && topic.slug === 'data-types';
   const isJavaVariablesTopic = language.slug === 'java' && topic.slug === 'variables';
@@ -559,6 +561,12 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     }
     if (isWhatIsJavaTopic) {
       return <WhatIsJava />;
+    }
+    if (isHistoryOfJavaTopic) {
+      return <TheStoryOfJava />;
+    }
+    if (isFeaturesOfJavaTopic) {
+      return <JavaFeatures />;
     }
     if (isJavaPrintTopic) {
       return <JavaPrintFormats />;
@@ -584,7 +592,7 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic;
 
   return (
     <div className="space-y-8">
