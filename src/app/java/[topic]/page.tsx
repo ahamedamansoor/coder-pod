@@ -6,6 +6,7 @@ import { languages, type Language, type Topic } from '@/app/data';
 import { ContentDisplay } from '@/components/content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
+import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
 
 interface TopicPageProps {
   isEditorOpen: boolean;
@@ -35,17 +36,26 @@ export default function JavaTopicPage({
     setEditorInitialCode(code);
     setIsEditorOpen(true);
   }, [setIsEditorOpen]);
+  
+  const isLearningPlanTopic = selectedTopic.slug === 'learning-plan';
 
   return (
     <>
       <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 w-full">
-        <ContentDisplay
-          topic={selectedTopic}
-          language={language}
-          onOpenEditor={handleOpenEditor}
-          completedTopics={completedTopics}
-          onToggleComplete={handleToggleComplete}
-        />
+        {isLearningPlanTopic ? (
+          <JavaLearningRoadmap
+            completedTopics={completedTopics}
+            onToggleComplete={handleToggleComplete}
+          />
+        ) : (
+          <ContentDisplay
+            topic={selectedTopic}
+            language={language}
+            onOpenEditor={handleOpenEditor}
+            completedTopics={completedTopics}
+            onToggleComplete={handleToggleComplete}
+          />
+        )}
       </div>
       <ResizablePanel isOpen={isEditorOpen}>
         <CodeEditorSheet initialCode={editorInitialCode} />
