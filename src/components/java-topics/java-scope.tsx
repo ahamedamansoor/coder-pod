@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,8 +11,11 @@ function wrapInMain(code: string): string {
     return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
 }
 
+interface JavaScopeProps {
+  onOpenEditor: (code: string) => void;
+}
 
-export function JavaScope({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+export function JavaScope({ onOpenEditor }: JavaScopeProps) {
     const blockScopeExample = `// x cannot be used here because it's not declared yet
 
 if (true) {
@@ -21,7 +23,7 @@ if (true) {
   System.out.println("Inside the block, x is: " + x);
 } // x is destroyed here
 
-// System.out.println(x); // This would cause a compile error!`;
+// System.out.println(x); // This would cause a compilation error!`;
 
     const methodScopeExample = `public class Main {
     public static void main(String[] args) {
@@ -80,7 +82,7 @@ if (true) {
                         <Building className="w-24 h-24 text-primary shrink-0"/>
                         <div className="space-y-2">
                             <h3 className="font-bold text-xl text-foreground">Analogy: Variables in a House</h3>
-                            <p className="text-muted-foreground">Imagine your program is a house. A variable's scope is like the room it's in. A toy in the living room (`main` method) can be used anywhere in that room. A toy in a specific closet (`if` block) can only be used inside that closet. You can't use the closet toy out in the main living room.</p>
+                            <p className="text-muted-foreground">Imagine your program is a house. A variable's scope is like the room it's in. A toy in the living room (\`main\` method) can be used anywhere in that room. A toy in a specific closet (\`if\` block) can only be used inside that closet. You can't use the closet toy out in the main living room.</p>
                         </div>
                     </div>
                 </CardContent>
@@ -93,17 +95,17 @@ if (true) {
                            <Box className="w-6 h-6 text-primary"/>
                            <CardTitle>Block Scope</CardTitle>
                         </div>
-                        <CardDescription>A variable declared inside a block `{...}` is only accessible within that block.</CardDescription>
+                        <CardDescription>A variable declared inside a block \`{...}\` is only accessible within that block.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-sm text-muted-foreground mb-4">This applies to `if` statements, `for` or `while` loops, or any other time you use curly braces to create a block of code. Once the block ends, the variable is destroyed and can no longer be used.</p>
+                        <p className="text-sm text-muted-foreground mb-4">This applies to \`if\` statements, \`for\` or \`while\` loops, or any other time you use curly braces to create a block of code. Once the block ends, the variable is destroyed and can no longer be used.</p>
                         <div className="bg-muted rounded-md p-4 mb-4">
                             <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{blockScopeExample}</pre>
                         </div>
                         <Button onClick={() => onOpenEditor(wrapInMain(blockScopeExample))}>
                             <Play className="mr-2 h-4 w-4" /> Try it & See the Error
                         </Button>
-                        <p className="text-xs text-muted-foreground mt-2">Note: The final `println` is commented out. Try uncommenting it in the editor to see the "cannot find symbol" error.</p>
+                        <p className="text-xs text-muted-foreground mt-2">Note: The final \`println\` is commented out. Try uncommenting it in the editor to see the "cannot find symbol" error.</p>
                     </CardContent>
                 </Card>
 
