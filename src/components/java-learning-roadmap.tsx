@@ -261,9 +261,12 @@ export const JavaLearningRoadmap = ({
   const calculateProgress = () => {
     const totalTopics = modules.reduce((acc, module) => acc + module.topics.length, 0);
     if (totalTopics === 0) return 0;
-    const completed = completedTopics.size;
+    const completed = completedTopics?.size ?? 0;
     return Math.round((completed / totalTopics) * 100);
   };
+
+  const completedCount = completedTopics?.size ?? 0;
+  const totalTopicCount = modules.reduce((acc, m) => acc + m.topics.length, 0);
 
   return (
     <div className="p-2 md:p-6">
@@ -289,7 +292,7 @@ export const JavaLearningRoadmap = ({
               ></div>
             </div>
             <p className="text-sm text-muted-foreground mt-2">
-              {completedTopics.size} of {modules.reduce((acc, m) => acc + m.topics.length, 0)} topics completed
+              {completedCount} of {totalTopicCount} topics completed
             </p>
           </div>
         </div>
