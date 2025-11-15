@@ -101,7 +101,7 @@ System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
             <CardDescription>{wideningExample.description}</CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6 items-center">
-            <div className="bg-background rounded-lg p-4">
+            <div className="bg-background rounded-lg p-4 overflow-x-auto">
               <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{wideningExample.code}</code></pre>
             </div>
             <div className="flex flex-col items-center text-center">
@@ -125,7 +125,7 @@ System.out.println(myInt);      // Outputs 9 (the decimal part is lost)`,
             <CardDescription>{narrowingExample.description}</CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6 items-center">
-            <div className="bg-background rounded-lg p-4">
+            <div className="bg-background rounded-lg p-4 overflow-x-auto">
               <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{narrowingExample.code}</code></pre>
             </div>
              <div className="flex flex-col items-center text-center">
@@ -217,8 +217,8 @@ function JavaVariables() {
                   <div className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold mb-4">{item.step}</div>
                   <h3 className="font-bold text-lg mb-2">{item.title}</h3>
                   <p className="text-muted-foreground text-sm mb-3">{item.description}</p>
-                  <div className="bg-muted rounded p-2 w-full">
-                    <code className="text-sm text-foreground font-code">{item.code}</code>
+                  <div className="bg-muted rounded p-2 w-full overflow-x-auto">
+                    <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{item.code}</code></pre>
                   </div>
                 </div>
                 {index < declarationSteps.length - 1 && (
@@ -239,7 +239,7 @@ function JavaVariables() {
               <div key={ex.id} className="bg-muted border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-primary text-lg mb-2">{ex.title}</h3>
                 <p className="text-sm text-foreground mb-3 h-12">{ex.description}</p>
-                <div className="bg-background/50 rounded p-3">
+                <div className="bg-background/50 rounded p-3 overflow-x-auto">
                   <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{ex.code}</code></pre>
                 </div>
               </div>
@@ -306,7 +306,7 @@ function JavaDataTypes() {
               <p className="text-muted-foreground text-sm mb-4 h-10">{type.description}</p>
               
               {selectedTypeId === type.id && (
-                <div className="mt-4 space-y-3 bg-foreground/5 rounded-lg p-3">
+                <div className="mt-4 space-y-3 bg-foreground/5 rounded-lg p-3 overflow-x-auto">
                     <p className="text-xs text-muted-foreground mb-1">Range:</p>
                     <p className="text-sm font-semibold whitespace-pre-wrap">{type.range || type.values || type.precision}</p>
                     <p className="text-xs text-muted-foreground mb-1 mt-2">Example:</p>
@@ -341,9 +341,9 @@ function JavaDataTypes() {
              <div key={type.id} className="bg-muted border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
                <h3 className="font-bold text-primary text-lg mb-2">{type.name}</h3>
                <p className="text-sm text-foreground mb-3 h-12">{type.description}</p>
-               <div className="bg-background/50 rounded p-2">
+               <div className="bg-background/50 rounded p-2 overflow-x-auto">
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
-                <code className="text-sm text-foreground font-code whitespace-pre-wrap">{type.example}</code>
+                <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{type.example}</code></pre>
                </div>
              </div>
           ))}
@@ -434,18 +434,18 @@ function JavaPrintFormats() {
             </div>
             <p className="text-muted-foreground text-sm mb-4 h-10">{method.description}</p>
             
-            <div className="bg-muted rounded-lg p-3 mb-3">
+            <div className="bg-muted rounded-lg p-3 mb-3 overflow-x-auto">
               <p className="text-xs text-muted-foreground mb-1">Syntax:</p>
-              <code className="text-sm text-foreground font-code whitespace-pre-wrap">{method.syntax}</code>
+              <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{method.syntax}</code></pre>
             </div>
 
             {selectedMethodId === method.id && (
               <div className="mt-4 space-y-3">
-                <div className="bg-foreground/5 rounded-lg p-4">
+                <div className="bg-foreground/5 rounded-lg p-4 overflow-x-auto">
                   <p className="text-xs text-muted-foreground mb-2">Example Code:</p>
                   <pre className="text-primary text-sm font-code whitespace-pre-wrap">{method.example}</pre>
                 </div>
-                <div className="bg-foreground/5 rounded-lg p-4">
+                <div className="bg-foreground/5 rounded-lg p-4 overflow-x-auto">
                   <p className="text-xs text-muted-foreground mb-2">Output:</p>
                   <pre className="text-foreground/80 text-sm font-code whitespace-pre-wrap">{method.output}</pre>
                 </div>
@@ -480,9 +480,9 @@ function JavaPrintFormats() {
              <div key={spec.spec} className="bg-muted border border-border rounded-lg p-4 text-center hover:shadow-md transition-shadow">
                <code className="font-bold text-primary text-lg">{spec.spec}</code>
                <p className="text-sm text-foreground mt-1 mb-2">{spec.desc}</p>
-               <div className="bg-background/50 rounded p-2">
+               <div className="bg-background/50 rounded p-2 overflow-x-auto">
                 <p className="text-xs text-muted-foreground mb-1">Example</p>
-                <code className="text-sm text-foreground font-code whitespace-pre-wrap">{spec.example}</code>
+                <pre className="whitespace-pre-wrap"><code className="text-sm text-foreground font-code">{spec.example}</code></pre>
                </div>
              </div>
           ))}
@@ -719,3 +719,4 @@ export function ContentDisplay({ topic, language }: { topic: Topic, language: La
     
 
     
+
