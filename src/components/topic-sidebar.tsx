@@ -23,8 +23,8 @@ export function TopicSidebar({
 }: TopicSidebarProps) {
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
-  const whatIsJavaTopics = language.topics.filter(t => ['what-is-java', 'history-of-java', 'features-of-java'].includes(t.slug));
-  const otherTopics = language.topics.filter(t => !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java'].includes(t.slug));
+  const whatIsJavaTopics = language.topics.filter(t => ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm'].includes(t.slug));
+  const otherTopics = language.topics.filter(t => !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm'].includes(t.slug));
 
   return (
     <>

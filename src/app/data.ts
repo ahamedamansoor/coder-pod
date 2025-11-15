@@ -37,6 +37,11 @@ export const languages: Language[] = [
         explanation: 'The key features that make Java a powerful and popular programming language.',
       },
       {
+        slug: 'jdk-jre-jvm',
+        title: 'JDK, JRE, and JVM',
+        explanation: 'Understanding the core components that run a Java program.',
+      },
+      {
         slug: 'variables',
         title: 'Declaring and Initializing Variables',
         explanation:
