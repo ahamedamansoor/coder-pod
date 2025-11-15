@@ -36,7 +36,7 @@ function wrapInMain(code: string): string {
 }
 
 
-export function JavaMethodOverloading() {
+export function JavaMethodOverloading({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
 
     const overloadByNumber = `static int add(int a, int b) {
   return a + b;
