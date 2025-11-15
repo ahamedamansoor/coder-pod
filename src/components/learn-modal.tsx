@@ -16,7 +16,7 @@ export function LearnModal() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Learn</Button>
+        <Button variant="ghost">How it works</Button>
       </DialogTrigger>
       <DialogContent className="max-w-7xl h-[90vh] flex flex-col">
         <DialogHeader>

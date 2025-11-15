@@ -14,6 +14,16 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Bot, Code, Zap } from 'lucide-react';
 import { LearnModal } from './learn-modal';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import Link from 'next/link';
+
 
 export default function AppLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +35,19 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost">Programming Languages</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Select a Language</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <Link href="/java/learning-plan">
+                    <DropdownMenuItem>Java</DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem disabled>JavaScript</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <LearnModal />
               <Avatar>
                 <AvatarImage src="https://picsum.photos/seed/user/40/40" />
