@@ -27,6 +27,12 @@ export const languages: Language[] = [
         explanation:
           'In Java, every variable has a data type. Data types specify the size and type of values that can be stored in a variable. There are two main categories of data types: Primitive and Non-Primitive. Primitive types include `byte`, `short`, `int`, `long`, `float`, `double`, `boolean`, and `char`. Non-primitive types (or reference types) include Classes, Interfaces, and Arrays, like `String`.',
       },
+      {
+        slug: 'variables',
+        title: 'Declaring and Initializing Variables',
+        explanation:
+          'In Java, variables are containers for storing data values. To use a variable, you must declare it by specifying its type and name. You can also initialize it by assigning an initial value. Understanding how to declare and initialize variables is a fundamental concept in Java programming.',
+      },
     ],
   },
 ];
