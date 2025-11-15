@@ -265,7 +265,7 @@ function JavaPrintFormats() {
 }
 
 
-export function ContentDisplay({ topic, language }: ContentDisplayProps) {
+export function ContentDisplay({ topic, language }: { topic: Topic, language: Language }) {
   const [isSimplifying, setIsSimplifying] = React.useState(false);
   const [simplifiedContent, setSimplifiedContent] =
     React.useState<SimplifyTopicExplanationOutput | null>(null);
