@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -25,7 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram } from './what-is-java';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks } from './what-is-java';
 
 function JavaTypeCasting() {
     const wideningExample = {
@@ -550,6 +551,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
   const isHistoryOfJavaTopic = language.slug === 'java' && topic.slug === 'history-of-java';
   const isFeaturesOfJavaTopic = language.slug === 'java' && topic.slug === 'features-of-java';
   const isJdkJreJvmTopic = language.slug === 'java' && topic.slug === 'jdk-jre-jvm';
+  const isHowJavaWorksTopic = language.slug === 'java' && topic.slug === 'how-java-works';
   const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-formats';
   const isJavaDataTypesTopic = language.slug === 'java' && topic.slug === 'data-types';
   const isJavaVariablesTopic = language.slug === 'java' && topic.slug === 'variables';
@@ -573,6 +575,9 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     }
     if (isJdkJreJvmTopic) {
       return <JdkJreJvm />;
+    }
+    if (isHowJavaWorksTopic) {
+      return <HowJavaWorks />;
     }
     if(isSettingUpEnvironmentTopic) {
       return <JavaEnvironmentSetup />;
@@ -604,7 +609,7 @@ export function ContentDisplay({ topic, language, onOpenEditor }: { topic: Topic
     );
   };
 
-  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic;
+  const showSimplifyButton = !isWhatIsJavaTopic && !isHistoryOfJavaTopic && !isFeaturesOfJavaTopic && !isJdkJreJvmTopic && !isHowJavaWorksTopic && !isJavaPrintTopic && !isJavaDataTypesTopic && !isJavaVariablesTopic && !isJavaTypeCastingTopic && !isLearningPlanTopic && !isSettingUpEnvironmentTopic && !isFirstJavaProgramTopic;
 
   return (
     <div className="space-y-8">

@@ -1,3 +1,4 @@
+
 import type { Language } from '@/app/data';
 import {
   SidebarHeader,
@@ -23,13 +24,13 @@ export function TopicSidebar({
 }: TopicSidebarProps) {
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
-  const whatIsJavaTopics = language.topics.filter(t => ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm'].includes(t.slug));
+  const whatIsJavaTopics = language.topics.filter(t => ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works'].includes(t.slug));
   const setupTopics = language.topics.filter(t => ['setting-up-environment'].includes(t.slug));
   const firstJavaProgramTopics = language.topics.filter(t => ['first-java-program'].includes(t.slug));
   const fundamentalTopics = language.topics.filter(t => ['variables', 'data-types', 'type-casting', 'print-formats'].includes(t.slug));
 
   const otherTopics = language.topics.filter(t => 
-    !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'setting-up-environment', 'first-java-program', 'variables', 'data-types', 'type-casting', 'print-formats'].includes(t.slug)
+    !['learning-plan', 'what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'variables', 'data-types', 'type-casting', 'print-formats'].includes(t.slug)
   );
 
   return (
