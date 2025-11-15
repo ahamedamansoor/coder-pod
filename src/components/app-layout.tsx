@@ -1,19 +1,5 @@
 'use client';
-import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { JavaLearningDemo } from './java-learning-demo';
-import { Button } from './ui/button';
-import { Logo } from './logo';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Bot, Code, Zap } from 'lucide-react';
-import { LearnModal } from './learn-modal';
+import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,13 +7,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
+import { Button } from './ui/button';
+import { Logo } from './logo';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Bot, Code, Zap } from 'lucide-react';
+import { LearnModal } from './learn-modal';
 import Link from 'next/link';
 
-
 export default function AppLayout() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
       <header className="bg-background border-b sticky top-0 z-10">
@@ -111,7 +100,7 @@ export default function AppLayout() {
         
         <div className="mt-16 text-center">
             <Button size="lg" asChild>
-                <a href="/java/learning-plan">Start Learning Java Now</a>
+                <Link href="/java/learning-plan">Start Learning Java Now</Link>
             </Button>
         </div>
 
