@@ -87,7 +87,7 @@ export default function AppLayout() {
             
             <ResizablePanel
               isOpen={isEditorOpen}
-              initialWidth={400}
+              initialWidth={500}
               minWidth={300}
               maxWidthPercentage={50}
             >
