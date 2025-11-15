@@ -21,9 +21,11 @@ export default function JavaTopicLayout({
     notFound();
   }
   const selectedTopic = language.topics.find((t) => t.slug === params.topic);
-  if (!selectedTopic) {
-    notFound();
-  }
+  
+  // A topic might not be found on initial load or for the main dashboard.
+  // We don't want to 404 in those cases.
+  const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'learning-plan';
+
 
   return (
     <JavaProvider>
@@ -41,7 +43,7 @@ export default function JavaTopicLayout({
             <Sidebar>
               <TopicSidebar
                 language={language}
-                selectedTopicSlug={selectedTopic.slug}
+                selectedTopicSlug={selectedTopicSlug}
               />
             </Sidebar>
             <main className="flex-1 flex overflow-hidden">

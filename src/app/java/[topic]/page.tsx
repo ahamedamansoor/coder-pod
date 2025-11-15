@@ -7,22 +7,20 @@ import { ContentDisplay } from '@/components/content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
-import { useJava } from '../java-context';
 
 interface TopicPageProps {
-  isEditorOpen: boolean;
-  setIsEditorOpen: (isOpen: boolean) => void;
+  isEditorOpen?: boolean;
+  setIsEditorOpen?: (isOpen: boolean) => void;
 }
 
 export default function JavaTopicPage({
-  isEditorOpen,
-  setIsEditorOpen,
+  isEditorOpen = false,
+  setIsEditorOpen = () => {},
 }: TopicPageProps) {
   const params = useParams();
   const { topic: topicSlug } = params;
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
-  const { completedTopics, handleToggleComplete } = useJava();
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'java');
   if (!language) notFound();
