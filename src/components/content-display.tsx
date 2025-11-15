@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle } from 'lucide-react';
+import { Wand2, Terminal, FileText, ChevronRight, Code, HelpCircle, Variable, Box, Braces, Link2 } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   simplifyTopicExplanation,
@@ -24,9 +24,105 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 
-interface ContentDisplayProps {
-  topic: Topic;
-  language: Language;
+function JavaDataTypes() {
+  const [selectedTypeId, setSelectedTypeId] = useState<string | null>(null);
+
+  const primitiveTypes = [
+    { id: 'byte', name: 'byte', size: '8-bit', range: '-128 to 127', example: 'byte age = 30;', description: 'Stores whole numbers.' },
+    { id: 'short', name: 'short', size: '16-bit', range: '-32,768 to 32,767', example: 'short salary = 25000;', description: 'Stores whole numbers.' },
+    { id: 'int', name: 'int', size: '32-bit', range: '-2.1B to 2.1B', example: 'int population = 1000000;', description: 'Stores whole numbers, commonly used.' },
+    { id: 'long', name: 'long', size: '64-bit', range: 'Very large', example: 'long worldPopulation = 8000000000L;', description: 'Stores very large whole numbers.' },
+    { id: 'float', name: 'float', size: '32-bit', precision: '~6-7 digits', example: 'float price = 19.99f;', description: 'Stores fractional numbers.' },
+    { id: 'double', name: 'double', size: '64-bit', precision: '~15 digits', example: 'double pi = 3.1415926535;', description: 'Stores fractional numbers, commonly used.' },
+    { id: 'boolean', name: 'boolean', size: '1-bit', values: 'true or false', example: 'boolean isLoggedIn = true;', description: 'Stores true or false values.' },
+    { id: 'char', name: 'char', size: '16-bit', values: 'Single character/symbol', example: 'char grade = \'A\';', description: 'Stores single characters.' },
+  ];
+
+  const referenceTypes = [
+    { id: 'string', name: 'String', description: 'A sequence of characters, like "Hello World".', example: 'String greeting = "Hello, Java!";' },
+    { id: 'array', name: 'Array', description: 'A collection of variables of the same type.', example: 'int[] numbers = {1, 2, 3, 4, 5};' },
+    { id: 'class', name: 'Class', description: 'A blueprint for creating objects.', example: 'class MyClass { int x = 5; }' },
+    { id: 'interface', name: 'Interface', description: 'A contract for what a class can do.', example: 'interface Animal { void makeSound(); }' },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Variable className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">Java Data Types</h1>
+        </div>
+        <p className="text-muted-foreground text-lg">Understanding the building blocks of data in Java</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <Box className="w-8 h-8 text-primary" />
+            <CardTitle className="text-3xl">Primitive Types</CardTitle>
+          </div>
+          <CardDescription>The fundamental data types directly holding values.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {primitiveTypes.map((type) => (
+            <div
+              key={type.id}
+              onClick={() => setSelectedTypeId(type.id === selectedTypeId ? null : type.id)}
+              className={cn(
+                "bg-card border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary/50",
+                selectedTypeId === type.id ? 'border-primary ring-2 ring-primary/50' : 'border-border'
+              )}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-xl font-bold text-foreground">{type.name}</h3>
+                <span className="text-xs font-semibold bg-primary/10 text-primary px-2 py-1 rounded-full">{type.size}</span>
+              </div>
+              <p className="text-muted-foreground text-sm mb-4 h-10">{type.description}</p>
+              
+              {selectedTypeId === type.id && (
+                <div className="mt-4 space-y-3 bg-foreground/5 rounded-lg p-3">
+                    <p className="text-xs text-muted-foreground mb-1">Example:</p>
+                    <pre className="text-primary text-sm font-code whitespace-pre-wrap">{type.example}</pre>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end mt-4 text-primary">
+                <span className="text-sm font-medium">
+                  {selectedTypeId === type.id ? 'Collapse' : 'Expand'}
+                </span>
+                <ChevronRight className={cn(
+                    "w-4 h-4 ml-1 transition-transform",
+                    selectedTypeId === type.id ? 'rotate-90' : ''
+                )} />
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <Link2 className="w-8 h-8 text-primary" />
+            <CardTitle className="text-3xl">Reference Types</CardTitle>
+          </div>
+          <CardDescription>Types that store a reference (or address) to an object in memory.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {referenceTypes.map((type) => (
+             <div key={type.id} className="bg-muted border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
+               <h3 className="font-bold text-primary text-lg mb-2">{type.name}</h3>
+               <p className="text-sm text-foreground mb-3 h-12">{type.description}</p>
+               <div className="bg-background/50 rounded p-2">
+                <p className="text-xs text-muted-foreground mb-1">Example</p>
+                <code className="text-sm text-foreground font-code">{type.example}</code>
+               </div>
+             </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
 function JavaPrintFormats() {
@@ -228,10 +324,11 @@ export function ContentDisplay({ topic, language }: ContentDisplayProps) {
   };
   
   const isJavaPrintTopic = language.slug === 'java' && topic.slug === 'print-formats';
+  const isJavaDataTypesTopic = language.slug === 'java' && topic.slug === 'data-types';
 
   return (
     <div className="space-y-8">
-      {!isJavaPrintTopic && (
+      {!isJavaPrintTopic && !isJavaDataTypesTopic && (
         <header className="space-y-2">
           <h1 className="font-headline text-4xl font-bold tracking-tight">
             {topic.title}
@@ -242,9 +339,8 @@ export function ContentDisplay({ topic, language }: ContentDisplayProps) {
         </header>
       )}
       
-      {isJavaPrintTopic ? (
-        <JavaPrintFormats />
-      ) : (
+      {isJavaPrintTopic ? <JavaPrintFormats /> : 
+       isJavaDataTypesTopic ? <JavaDataTypes /> : (
         <Card>
           <CardHeader>
             <CardTitle>Original Explanation</CardTitle>
@@ -327,7 +423,7 @@ export function ContentDisplay({ topic, language }: ContentDisplayProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <Textarea
-            placeholder={`e.g., "What is the difference between print() and println()?"`}
+            placeholder={`e.g., "What is the difference between a primitive and reference type?"`}
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             disabled={isAsking}
