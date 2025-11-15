@@ -76,12 +76,12 @@ function JavaPrintFormats() {
   ];
 
   const formatSpecifiers = [
-    { spec: '%s', desc: 'String', example: '"Hello"' },
-    { spec: '%d', desc: 'Integer', example: '123' },
-    { spec: '%f', desc: 'Float/Double', example: '12.34' },
-    { spec: '%b', desc: 'Boolean', example: 'true' },
-    { spec: '%c', desc: 'Character', example: "'a'" },
-    { spec: '%n', desc: 'New line', example: 'Next line' },
+    { spec: '%s', desc: 'String', example: 'System.out.printf("Name: %s", "John");' },
+    { spec: '%d', desc: 'Integer', example: 'System.out.printf("Age: %d", 25);' },
+    { spec: '%f', desc: 'Float/Double', example: 'System.out.printf("Price: %.2f", 19.99);' },
+    { spec: '%b', desc: 'Boolean', example: 'System.out.printf("Is active: %b", true);' },
+    { spec: '%c', desc: 'Character', example: 'System.out.printf("Initial: %c", \'J\');' },
+    { spec: '%n', desc: 'New line', example: 'System.out.printf("Line 1%nLine 2");' },
   ];
 
   return (
@@ -151,7 +151,7 @@ function JavaPrintFormats() {
             Used with `printf()` and `String.format()` to format values.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {formatSpecifiers.map((spec) => (
              <div key={spec.spec} className="bg-muted border border-border rounded-lg p-4 text-center hover:shadow-md transition-shadow">
                <code className="font-bold text-primary text-lg">{spec.spec}</code>
