@@ -34,6 +34,7 @@ export const CssLearningRoadmap = () => {
       topics: [
         { id: "introduction-to-css", name: "CSS Introduction", desc: "What is CSS and how it styles HTML." },
         { id: "css-syntax-and-selectors", name: "Syntax & Selectors", desc: "How to write CSS rules and target HTML elements." },
+        { id: "css-combinators", name: "Combinators", desc: "Using combinators to create more specific and powerful selectors."},
         { id: "css-colors", name: "Colors", desc: "Applying colors to text, backgrounds, and borders." },
         { id: "css-box-model", name: "The Box Model", desc: "Understanding margin, border, padding, and content." },
         { id: "css-typography", name: "Typography", desc: "Styling text, fonts, and more." },

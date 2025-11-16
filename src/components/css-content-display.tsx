@@ -22,6 +22,7 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'css-animations': React.lazy(() => import('./css-topics/css-animations')),
   'css-variables': React.lazy(() => import('./css-topics/css-variables')),
   'css-responsive-design': React.lazy(() => import('./css-topics/css-responsive-design')),
+  'css-combinators': React.lazy(() => import('./css-topics/css-combinators')),
 };
 
 function LoadingSkeleton() {

@@ -49,6 +49,7 @@ export const languages: Language[] = [
       { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A structured roadmap for learning CSS from scratch.' },
       { slug: 'introduction-to-css', title: 'CSS Introduction', explanation: 'What is CSS and how it styles HTML.' },
       { slug: 'css-syntax-and-selectors', title: 'Syntax & Selectors', explanation: 'How to write CSS rules and target HTML elements.' },
+      { slug: 'css-combinators', title: 'Combinators', explanation: 'Using combinators to create more specific and powerful selectors.'},
       { slug: 'css-colors', title: 'Colors', explanation: 'Applying colors to text, backgrounds, and borders using various color formats.' },
       { slug: 'css-box-model', title: 'The Box Model', explanation: 'Understanding margin, border, padding, and content.' },
       { slug: 'css-typography', title: 'Typography', explanation: 'Styling text, fonts, and more.' },
