@@ -28,9 +28,9 @@ function TopicPageContent() {
   React.useEffect(() => {
     const panel = ref.current;
     if (panel) {
-      if (isEditorOpen && panel.getCollapsed()) {
+      if (isEditorOpen && panel.isCollapsed()) {
         panel.expand();
-      } else if (!isEditorOpen && !panel.getCollapsed()) {
+      } else if (!isEditorOpen && !panel.isCollapsed()) {
         panel.collapse();
       }
     }
