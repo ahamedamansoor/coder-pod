@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -64,6 +63,42 @@ export default function CssGrid({ onOpenWebPlayground }: CssGridProps) {
 `,
         js: ''
     };
+    
+    const placementExample = {
+        html: `<div class="grid-container">
+  <div class="grid-item item-a">A</div>
+  <div class="grid-item item-b">B</div>
+  <div class="grid-item item-c">C</div>
+  <div class="grid-item item-d">D</div>
+</div>`,
+        css: `.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 80px);
+  gap: 10px;
+}
+.grid-item {
+  background-color: hsl(var(--muted));
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+/* Place Item A from column line 1 to column line 3 */
+.item-a {
+  grid-column: 1 / 3;
+  background-color: hsl(var(--primary) / 0.3);
+}
+/* Place Item D from row line 1 to row line 3 */
+.item-d {
+  grid-row: 1 / 3;
+  grid-column: 4 / 5;
+  background-color: hsl(var(--destructive) / 0.3);
+}
+`
+    }
 
     return (
         <div className="space-y-8">
@@ -147,14 +182,44 @@ column-gap: 30px;`}</pre>
                 </CardContent>
             </Card>
 
+             <Card>
+                <CardHeader>
+                    <CardTitle>Placing Items in the Grid</CardTitle>
+                    <CardDescription>You can explicitly place items using `grid-column` and `grid-row`. These properties define which grid lines an item should start and end on.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="bg-muted p-4 rounded-lg">
+                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`/* Make an item start on column line 1 and end on column line 3 */
+.item-a {
+  grid-column: 1 / 3;
+}
+
+/* A shorthand for spanning 2 columns */
+.item-b {
+  grid-column: span 2;
+}
+
+/* Make an item start on row line 2 and end on row line 4 */
+.item-c {
+  grid-row: 2 / 4;
+}`}</pre>
+                    </div>
+                    <div className="mt-4">
+                        <Button onClick={() => onOpenWebPlayground(placementExample.html, placementExample.css, '')}>
+                            <Play className="mr-2 h-4 w-4" /> Try Item Placement
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
             <Card>
                 <CardHeader>
-                    <CardTitle>See It In Action</CardTitle>
-                    <CardDescription>Open this example in the Web Playground to see a classic header, sidebar, main content, and footer layout built with CSS Grid.</CardDescription>
+                    <CardTitle>Example: Full Page Layout with `grid-template-areas`</CardTitle>
+                    <CardDescription>Grid is perfect for creating entire page layouts. The `grid-template-areas` property allows you to name grid cells and place items into those named cells, making your layout code very easy to read.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                        <Play className="mr-2 h-4 w-4" /> Open Full Example in Playground
+                        <Play className="mr-2 h-4 w-4" /> Open Full Layout Example
                     </Button>
                 </CardContent>
             </Card>

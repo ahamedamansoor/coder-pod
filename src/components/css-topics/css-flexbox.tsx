@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -102,6 +101,18 @@ export default function CssFlexbox({ onOpenWebPlayground }: CssFlexboxProps) {
                     ))}
                 </CardContent>
             </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>See It In Action: Try It Yourself</CardTitle>
+                    <CardDescription>Open this example in the Web Playground and experiment by changing the `justify-content` and `align-items` properties on the container.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
+                        <Play className="mr-2 h-4 w-4" /> Open Full Example in Playground
+                    </Button>
+                </CardContent>
+            </Card>
             
             <Card>
                 <CardHeader>
@@ -120,17 +131,6 @@ export default function CssFlexbox({ onOpenWebPlayground }: CssFlexboxProps) {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>See It In Action</CardTitle>
-                    <CardDescription>Open this example in the Web Playground and experiment by changing the `justify-content` and `align-items` properties on the container.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                        <Play className="mr-2 h-4 w-4" /> Open Full Example in Playground
-                    </Button>
-                </CardContent>
-            </Card>
         </div>
     );
 }
