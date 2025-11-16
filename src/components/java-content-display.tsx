@@ -101,6 +101,7 @@ const JavaMethodOverriding = lazy(() => import('./java-topics/java-method-overri
 const JavaInstanceofOperator = lazy(() => import('./java-topics/java-instanceof-operator').then(module => ({ default: module.JavaInstanceofOperator })));
 const JavaObjectClass = lazy(() => import('./java-topics/java-object-class').then(module => ({ default: module.JavaObjectClass })));
 const JavaMethodReferences = lazy(() => import('./java-topics/java-method-references').then(module => ({ default: module.JavaMethodReferences })));
+const JavaTreeMapTreeSet = lazy(() => import('./java-topics/java-treemap-treeset').then(module => ({ default: module.JavaTreeMapTreeSet })));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -173,6 +174,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'instanceof-operator': JavaInstanceofOperator,
   'object-class': JavaObjectClass,
   'method-references': JavaMethodReferences,
+  'treemap-treeset': JavaTreeMapTreeSet,
 };
 
 function LoadingSkeleton() {
