@@ -46,7 +46,7 @@ export default function LoginPage() {
     }
 
     if (user.isAnonymous) {
-      router.push('/java/learning-plan');
+      router.push('/dashboard');
       return;
     }
 
