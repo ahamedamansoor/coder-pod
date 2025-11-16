@@ -18,6 +18,9 @@ import { useJava } from '@/app/java/java-context';
 import { useSpring } from '@/app/spring/spring-context';
 import { useJavascript } from '@/app/javascript/javascript-context';
 import { useReact } from '@/app/react/react-context';
+import { useHtml } from '@/app/html/html-context';
+import { useCss } from '@/app/css/css-context';
+import { useScss } from '@/app/scss/scss-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -27,24 +30,32 @@ interface TopicSidebarProps {
 }
 
 function useLanguageContext(language: Language) {
-    if (language.slug === 'java') {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        return useJava();
+    switch(language.slug) {
+        case 'java':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useJava();
+        case 'spring':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useSpring();
+        case 'javascript':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useJavascript();
+        case 'react':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useReact();
+        case 'html':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useHtml();
+        case 'css':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useCss();
+        case 'scss':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useScss();
+        default:
+            // Fallback or default context if necessary
+            return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
     }
-    if (language.slug === 'spring') {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        return useSpring();
-    }
-    if (language.slug === 'javascript') {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      return useJavascript();
-    }
-    if (language.slug === 'react') {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      return useReact();
-    }
-    // Fallback or default context if necessary
-    return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
 }
 
 
@@ -144,7 +155,14 @@ export function TopicSidebar({
               break;
           }
       }
+    } else if (language.slug === 'html') {
+        group = 'HTML Basics';
+    } else if (language.slug === 'css') {
+        group = 'CSS Basics';
+    } else if (language.slug === 'scss') {
+        group = 'Sass/SCSS Basics';
     }
+
 
     if (!acc[group]) {
       acc[group] = [];
@@ -161,6 +179,12 @@ export function TopicSidebar({
     ? ["Fundamentals", "Functions & Scope", "Data Structures", "Control Flow", "Browser APIs", "Asynchronous JS", "Modern JS", "Others"]
     : language.slug === 'react'
     ? ["Core Concepts", "Rendering", "Forms & Events", "Hooks", "Advanced", "Others"]
+    : language.slug === 'html'
+    ? ['HTML Basics']
+    : language.slug === 'css'
+    ? ['CSS Basics']
+    : language.slug === 'scss'
+    ? ['Sass/SCSS Basics']
     : [];
 
   const renderTopicGroup = (title: string, topics: typeof language.topics) => (

@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState } from 'react';
 import {
@@ -49,6 +50,15 @@ export function LearnModal() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/react/learning-plan">React</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/html/learning-plan">HTML</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/css/learning-plan">CSS</Link>
+                </DropdownMenuItem>
+                 <DropdownMenuItem asChild>
+                    <Link href="/scss/learning-plan">Sass/SCSS</Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
