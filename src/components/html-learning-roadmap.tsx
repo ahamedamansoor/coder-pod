@@ -2,6 +2,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
+import { useHtml } from '@/app/html/html-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,31 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import type { Language, Topic } from '@/app/data';
-import { useJava } from '@/app/java/java-context';
-import { useSpring } from '@/app/spring/spring-context';
-import { useJavascript } from '@/app/javascript/javascript-context';
-import { useReact } from '@/app/react/react-context';
-import { useHtml } from '@/app/html/html-context';
-import { useCss } from '@/app/css/css-context';
-import { useScss } from '@/app/scss/scss-context';
+import type { Language } from '@/app/data';
 
-function useLanguageContext(language: Language) {
-    switch(language.slug) {
-        case 'java': return useJava();
-        case 'spring': return useSpring();
-        case 'javascript': return useJavascript();
-        case 'react': return useReact();
-        case 'html': return useHtml();
-        case 'css': return useCss();
-        case 'scss': return useScss();
-        default: return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
-    }
-}
-
-export const GenericLearningRoadmap = ({ language }: { language: Language }) => {
-  const { completedTopics, handleToggleComplete, isProgressLoading } = useLanguageContext(language);
-  const [expandedModule, setExpandedModule] = useState<string | null>(null);
+export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
+  const { completedTopics, handleToggleComplete, isProgressLoading } = useHtml();
+  const [expandedModule, setExpandedModule] = useState<string | null>("HTML Basics");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   
@@ -46,26 +27,73 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
     }
   }, [user, isUserLoading, router]);
 
-  // Simplified module structure for generic languages
-  const modules = [{
-    id: language.name,
-    title: `${language.name} Topics`,
-    level: "All",
-    icon: "📖",
-    topics: language.topics.filter(t => t.slug !== 'learning-plan'),
-  }];
-
-  useEffect(() => {
-    if (modules.length > 0) {
-      setExpandedModule(modules[0].id);
-    }
-  }, [language.slug]);
+  const getTopicsForSlugs = (slugs: string[]) => {
+    return language.topics.filter(topic => slugs.includes(topic.slug));
+  };
+  
+  const modules = [
+    {
+      id: "HTML Basics",
+      title: "HTML Basics",
+      level: "Foundation",
+      icon: "🚀",
+      topics: getTopicsForSlugs(['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments']),
+    },
+    {
+      id: "Content & Structure",
+      title: "Content & Structure",
+      level: "Core Concepts",
+      icon: "🧱",
+      topics: getTopicsForSlugs(['html-lists', 'html-links', 'html-images', 'block-vs-inline', 'html-tables', 'html-semantic-elements', 'character-entities']),
+    },
+    {
+      id: "Forms & Input",
+      title: "Forms & Input",
+      level: "Core Concepts",
+      icon: "📝",
+      topics: getTopicsForSlugs(['html-forms', 'form-input-types', 'form-attributes']),
+    },
+    {
+      id: "Media & Graphics",
+      title: "Media & Graphics",
+      level: "Advanced",
+      icon: "🖼️",
+      topics: getTopicsForSlugs(['audio-and-video', 'iframes', 'svg-and-canvas']),
+    },
+    {
+      id: "Advanced Topics",
+      title: "Advanced Topics",
+      level: "Expert",
+      icon: "✨",
+      topics: getTopicsForSlugs(['html5-apis', 'web-workers-api', 'accessibility']),
+    },
+  ];
 
   const allTopics = modules.flatMap(m => m.topics);
   
+  const chartData = modules.map(m => ({
+    level: m.title,
+    topics: m.topics.length,
+    fill: `hsl(var(--chart-${modules.indexOf(m) + 1}))`
+  }));
+
   const toggleTopic = (topicId: string) => {
     if (!isUserAuthenticated) return;
     handleToggleComplete(topicId);
+
+    const topicModule = modules.find(m => m.topics.some(t => t.slug === topicId));
+    if (!topicModule) return;
+    
+    const isCompleting = !completedTopics.has(topicId);
+    if (isCompleting) {
+        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.slug) || t.slug === topicId);
+        if (allTopicsInModuleCompleted) {
+          const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
+          if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
+            setExpandedModule(modules[currentModuleIndex + 1].id);
+          }
+        }
+    }
   };
 
   const calculateProgress = () => {
@@ -89,7 +117,7 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
   const completedCount = isUserAuthenticated ? completedTopics.size : 0;
   const totalTopicCount = allTopics.length;
   
-  const TopicItem = ({ topic }: { topic: Topic }) => {
+  const TopicItem = ({ topic }: { topic: (typeof allTopics)[0] }) => {
     const isCompleted = isUserAuthenticated && completedTopics.has(topic.slug);
     const itemContent = (
       <div onClick={() => toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
@@ -115,14 +143,29 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
     <div className="p-2 md:p-6 max-w-none">
       <div className="mx-auto">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">{language.name} Learning Path</h1></div>
-          <p className="text-muted-foreground text-lg mb-6">A structured roadmap for beginners to master {language.name}.</p>
+          <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">HTML Learning Path</h1></div>
+          <p className="text-muted-foreground text-lg mb-6">A structured roadmap for beginners to master HTML.</p>
           <div className="max-w-2xl mx-auto bg-card rounded-lg shadow-md p-6 border">
             <div className="flex items-center justify-between mb-3"><span className="text-sm font-semibold text-foreground">Overall Progress</span><span className="text-2xl font-bold text-primary">{calculateProgress()}%</span></div>
             <div className="w-full bg-muted rounded-full h-4"><div className="bg-primary h-4 rounded-full transition-all duration-500" style={{ width: `${calculateProgress()}%` }}></div></div>
             <p className="text-sm text-muted-foreground mt-2">{completedCount} of {totalTopicCount} topics completed</p>
           </div>
         </div>
+        
+        <Card className="mb-8">
+            <CardHeader><CardTitle>Roadmap Overview</CardTitle><CardDescription>A visual breakdown of topics by category.</CardDescription></CardHeader>
+            <CardContent>
+                <div className="w-full h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart layout="vertical" data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <XAxis type="number" hide /><YAxis dataKey="level" type="category" tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} width={100} />
+                            <Tooltip cursor={{ fill: 'hsl(var(--muted))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', borderRadius: 'var(--radius)' }} />
+                            <Bar dataKey="topics" radius={[0, 4, 4, 0]} barSize={32}><LabelList dataKey="topics" position="right" offset={10} className="fill-foreground font-semibold" /></Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </CardContent>
+        </Card>
 
         <div className="space-y-4">
           {modules.map((module) => (

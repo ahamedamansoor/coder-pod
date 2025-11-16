@@ -14,8 +14,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useHtmlLayout } from '../html-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
-import { GenericLearningRoadmap } from '@/components/generic-learning-roadmap';
 import { HtmlContentDisplay } from '@/components/html-content-display';
+import { HtmlLearningRoadmap } from '@/components/html-learning-roadmap';
 
 function TopicPageContent() {
   const params = useParams();
@@ -58,7 +58,7 @@ function TopicPageContent() {
       <ResizablePanel defaultSize={100} minSize={30}>
         <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full">
           {isLearningPlanTopic ? (
-            <GenericLearningRoadmap language={language} />
+            <HtmlLearningRoadmap language={language} />
           ) : (
             <HtmlContentDisplay
               topic={selectedTopic}
