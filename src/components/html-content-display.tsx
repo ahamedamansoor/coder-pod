@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -17,6 +18,7 @@ const HtmlComments = lazy(() => import('./html-topics/html-comments'));
 const HtmlLists = lazy(() => import('./html-topics/html-lists'));
 const HtmlLinks = lazy(() => import('./html-topics/html-links'));
 const HtmlImages = lazy(() => import('./html-topics/html-images'));
+const BlockVsInline = lazy(() => import('./html-topics/block-vs-inline'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -30,6 +32,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-lists': HtmlLists,
   'html-links': HtmlLinks,
   'html-images': HtmlImages,
+  'block-vs-inline': BlockVsInline,
 };
 
 function LoadingSkeleton() {
