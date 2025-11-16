@@ -98,6 +98,7 @@ const JavaFileHandling = lazy(() => import('./java-topics/java-file-handling').t
 const JavaSuperKeyword = lazy(() => import('./java-topics/java-super-keyword').then(module => ({ default: module.JavaSuperKeyword })));
 const JavaMethodOverriding = lazy(() => import('./java-topics/java-method-overriding').then(module => ({ default: module.JavaMethodOverriding })));
 const JavaInstanceofOperator = lazy(() => import('./java-topics/java-instanceof-operator').then(module => ({ default: module.JavaInstanceofOperator })));
+const JavaObjectClass = lazy(() => import('./java-topics/java-object-class').then(module => ({ default: module.JavaObjectClass })));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -168,6 +169,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'super-keyword': JavaSuperKeyword,
   'method-overriding': JavaMethodOverriding,
   'instanceof-operator': JavaInstanceofOperator,
+  'object-class': JavaObjectClass,
 };
 
 function LoadingSkeleton() {
