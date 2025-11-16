@@ -68,10 +68,10 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
         setModuleExpanded(true);
         break;
       case 'moveCursorToTopic1':
-        setCursorPos({ x: 50, y: 45, show: true });
+        setCursorPos({ x: 50, y: 48, show: true });
         break;
       case 'clickTopic1':
-        setClickEffect({ show: true, x: 50, y: 45 });
+        setClickEffect({ show: true, x: 50, y: 48 });
         setTimeout(() => setClickEffect({ show: false, x: 0, y: 0 }), 300);
         break;
       case 'completeTopic1':
@@ -79,10 +79,10 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
         setProgressPercent(33);
         break;
       case 'moveCursorToTopic2':
-        setCursorPos({ x: 50, y: 53, show: true });
+        setCursorPos({ x: 50, y: 62, show: true });
         break;
       case 'clickTopic2':
-        setClickEffect({ show: true, x: 50, y: 53 });
+        setClickEffect({ show: true, x: 50, y: 62 });
         setTimeout(() => setClickEffect({ show: false, x: 0, y: 0 }), 300);
         break;
       case 'completeTopic2':
@@ -90,10 +90,10 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
         setProgressPercent(66);
         break;
       case 'moveCursorToTopic3':
-        setCursorPos({ x: 50, y: 61, show: true });
+        setCursorPos({ x: 50, y: 76, show: true });
         break;
       case 'clickTopic3':
-        setClickEffect({ show: true, x: 50, y: 61 });
+        setClickEffect({ show: true, x: 50, y: 76 });
         setTimeout(() => setClickEffect({ show: false, x: 0, y: 0 }), 300);
         break;
       case 'completeTopic3':
@@ -101,7 +101,7 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
         setProgressPercent(100);
         break;
       case 'updateProgress':
-        setCursorPos({ x: 50, y: 25, show: true });
+        setCursorPos({ x: 50, y: 15, show: true });
         break;
       case 'celebration':
         setCursorPos({ show: false, x: 0, y: 0 });
@@ -135,34 +135,34 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
   };
 
   return (
-    <div className="w-full bg-card p-4 sm:p-8 rounded-lg">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Monitor className="w-12 h-12 sm:w-16 sm:h-16 text-primary animate-pulse" />
-            <h1 className="text-4xl sm:text-6xl font-bold text-foreground">How It Works</h1>
+    <div className="w-full bg-card p-4 sm:p-6 rounded-lg">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-6">
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <Monitor className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">How It Works</h1>
           </div>
-          <p className="text-lg sm:text-2xl text-muted-foreground mb-8">Watch the Interactive Demo</p>
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6">Watch the Interactive Demo</p>
           
           <div className="flex items-center justify-center gap-4">
             <Button
               onClick={handlePlayPause}
-              className="px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold text-base sm:text-lg flex items-center gap-3 hover:scale-110 transition-transform shadow-2xl"
+              className="px-6 py-3 rounded-full font-bold text-base flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
             >
               {isPlaying ? (
                 <>
-                  <Pause className="w-6 h-6" /> Pause
+                  <Pause className="w-5 h-5" /> Pause
                 </>
               ) : (
                 <>
-                  <Play className="w-6 h-6" /> {currentStep > 0 && currentStep < steps.length -1 ? 'Resume' : 'Play'}
+                  <Play className="w-5 h-5" /> {currentStep > 0 && currentStep < steps.length -1 ? 'Resume' : 'Play'}
                 </>
               )}
             </Button>
           </div>
         </div>
 
-        <div className="relative bg-background rounded-xl sm:rounded-3xl shadow-2xl p-4 sm:p-8 overflow-hidden aspect-[16/9]">
+        <div className="relative bg-background rounded-xl shadow-2xl p-4 overflow-hidden aspect-[16/9]">
           {cursorPos.show && (
             <div
               className="absolute pointer-events-none z-50 transition-all duration-1000 ease-in-out"
@@ -172,7 +172,7 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
                 transform: 'translate(-50%, -50%)'
               }}
             >
-              <MousePointer2 className="w-6 h-6 sm:w-8 sm:h-8 text-primary animate-bounce" />
+              <MousePointer2 className="w-6 h-6 text-primary animate-bounce" />
             </div>
           )}
 
@@ -186,40 +186,40 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
               }}
             >
               <div className="relative">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/50 rounded-full animate-ping opacity-75"></div>
-                <div className="absolute inset-0 w-12 h-12 sm:w-16 sm:h-16 bg-primary/80 rounded-full animate-pulse"></div>
+                <div className="w-8 h-8 bg-primary/50 rounded-full animate-ping opacity-75"></div>
+                <div className="absolute inset-0 w-8 h-8 bg-primary/80 rounded-full animate-pulse"></div>
               </div>
             </div>
           )}
 
-          <div className="mb-4 sm:mb-8 bg-muted/50 rounded-lg sm:rounded-2xl p-3 sm:p-6 shadow-lg border">
-            <div className="flex items-center justify-between mb-2 sm:mb-4">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <Target className="w-5 h-5 sm:w-8 sm:h-8 text-primary" />
-                <span className="text-base sm:text-xl font-bold text-foreground">Your Progress</span>
+          <div className="mb-4 bg-muted/50 rounded-lg p-3 shadow-inner border">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Target className="w-5 h-5 text-primary" />
+                <span className="text-sm font-bold text-foreground">Your Progress</span>
               </div>
-              <span className="text-2xl sm:text-4xl font-bold text-primary">{progressPercent}%</span>
+              <span className="text-xl font-bold text-primary">{progressPercent}%</span>
             </div>
-            <div className="w-full bg-muted rounded-full h-4 sm:h-6 overflow-hidden">
+            <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
               <div
                 className="h-full bg-primary rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2"
                 style={{ width: `${progressPercent}%` }}
               >
                 {progressPercent > 0 && (
-                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary-foreground animate-spin" />
+                  <Sparkles className="w-2 h-2 text-primary-foreground animate-spin" />
                 )}
               </div>
             </div>
           </div>
 
-          <div className="bg-card border-2 sm:border-4 border-primary/20 rounded-lg sm:rounded-2xl overflow-hidden shadow-xl transition-all duration-500">
-            <div className="bg-primary/10 text-foreground p-3 sm:p-6 cursor-pointer">
+          <div className="bg-card border-2 border-primary/20 rounded-lg overflow-hidden shadow-md transition-all duration-500">
+            <div className="bg-primary/10 text-foreground p-4 cursor-pointer">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <div className="text-3xl sm:text-5xl">🚀</div>
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl">🚀</div>
                   <div>
-                    <h2 className="text-lg sm:text-3xl font-bold mb-1">Getting Started</h2>
-                    <p className="text-muted-foreground text-xs sm:text-base">Week 1 • 3 topics</p>
+                    <h2 className="text-base font-bold">Getting Started</h2>
+                    <p className="text-muted-foreground text-xs">Week 1 • 3 topics</p>
                   </div>
                 </div>
               </div>
@@ -230,60 +230,54 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
                 moduleExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
               }`}
             >
-              <div className="p-3 sm:p-6 space-y-2 sm:space-y-4">
+              <div className="p-3 space-y-2">
                 <div
-                  className={`bg-background border-2 sm:border-3 rounded-lg sm:rounded-xl p-2 sm:p-5 transition-all duration-500 ${
+                  className={`bg-background border-2 rounded-lg p-3 transition-all duration-500 ${
                     completedTopics.includes('topic1')
-                      ? 'border-green-400 bg-green-500/5 shadow-lg scale-105'
+                      ? 'border-green-400 bg-green-500/5 shadow-md scale-105'
                       : 'border-border'
                   }`}
                 >
-                  <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="flex items-center gap-3">
                     {completedTopics.includes('topic1') ? (
-                      <CheckCircle className="w-5 h-5 sm:w-8 sm:h-8 text-green-600 animate-bounce" />
+                      <CheckCircle className="w-5 h-5 text-green-600 animate-bounce" />
                     ) : (
-                      <div className="w-5 h-5 sm:w-8 sm:h-8 border-2 sm:border-4 border-muted rounded-full"></div>
+                      <div className="w-5 h-5 border-2 border-muted rounded-full"></div>
                     )}
-                    <div className="flex-1">
-                      <h3 className="text-sm sm:text-xl font-bold text-foreground">What is Java?</h3>
-                    </div>
+                    <h3 className="text-sm font-bold text-foreground">What is Java?</h3>
                   </div>
                 </div>
                 <div
-                  className={`bg-background border-2 sm:border-3 rounded-lg sm:rounded-xl p-2 sm:p-5 transition-all duration-500 ${
+                  className={`bg-background border-2 rounded-lg p-3 transition-all duration-500 ${
                     completedTopics.includes('topic2')
-                      ? 'border-green-400 bg-green-500/5 shadow-lg scale-105'
+                      ? 'border-green-400 bg-green-500/5 shadow-md scale-105'
                       : 'border-border'
                   }`}
                 >
-                  <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="flex items-center gap-3">
                     {completedTopics.includes('topic2') ? (
-                      <CheckCircle className="w-5 h-5 sm:w-8 sm-h-8 text-green-600 animate-bounce" />
+                      <CheckCircle className="w-5 h-5 text-green-600 animate-bounce" />
                     ) : (
-                      <div className="w-5 h-5 sm:w-8 sm:h-8 border-2 sm:border-4 border-muted rounded-full"></div>
+                      <div className="w-5 h-5 border-2 border-muted rounded-full"></div>
                     )}
-                    <div className="flex-1">
-                      <h3 className="text-sm sm:text-xl font-bold text-foreground">Setting Up</h3>
-                    </div>
+                    <h3 className="text-sm font-bold text-foreground">Setting Up</h3>
                   </div>
                 </div>
 
                 <div
-                  className={`bg-background border-2 sm:border-3 rounded-lg sm:rounded-xl p-2 sm:p-5 transition-all duration-500 ${
+                  className={`bg-background border-2 rounded-lg p-3 transition-all duration-500 ${
                     completedTopics.includes('topic3')
-                      ? 'border-green-400 bg-green-500/5 shadow-lg scale-105'
+                      ? 'border-green-400 bg-green-500/5 shadow-md scale-105'
                       : 'border-border'
                   }`}
                 >
-                  <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="flex items-center gap-3">
                     {completedTopics.includes('topic3') ? (
-                      <CheckCircle className="w-5 h-5 sm:w-8 sm:h-8 text-green-600 animate-bounce" />
+                      <CheckCircle className="w-5 h-5 text-green-600 animate-bounce" />
                     ) : (
-                      <div className="w-5 h-5 sm:w-8 sm-h-8 border-2 sm:border-4 border-muted rounded-full"></div>
+                      <div className="w-5 h-5 border-2 border-muted rounded-full"></div>
                     )}
-                    <div className="flex-1">
-                      <h3 className="text-sm sm:text-xl font-bold text-foreground">Hello World</h3>
-                    </div>
+                     <h3 className="text-sm font-bold text-foreground">Hello World</h3>
                   </div>
                 </div>
               </div>
@@ -291,10 +285,10 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
           </div>
           
           {progressPercent === 100 && (
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-black/20 dark:bg-black/50 animate-pulse">
-              <div className="bg-card rounded-xl sm:rounded-3xl p-6 sm:p-12 shadow-2xl transform scale-110 animate-bounce border">
-                <Trophy className="w-16 h-16 sm:w-24 sm:h-24 text-yellow-500 mx-auto mb-4" />
-                <h2 className="text-2xl sm:text-4xl font-bold text-foreground text-center">
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-black/30 backdrop-blur-sm animate-in fade-in-50">
+              <div className="bg-card rounded-xl p-6 shadow-2xl transform scale-100 animate-bounce border">
+                <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-2" />
+                <h2 className="text-2xl font-bold text-foreground text-center">
                   Module Complete! 🎉
                 </h2>
               </div>
