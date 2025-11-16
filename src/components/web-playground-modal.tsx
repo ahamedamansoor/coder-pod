@@ -30,7 +30,7 @@ const defaultHtml = `<!DOCTYPE html>
 <body>
   <h1>Welcome to the Web Playground!</h1>
   <p>Edit the HTML, CSS, and JS to see live updates.</p>
-  <button onclick="changeColor()">Click Me to Change BG</button>
+  <button onclick="showAlert()">Click Me for an Alert</button>
   <button onclick="logMessage()">Log to Console</button>
 </body>
 </html>
@@ -58,11 +58,8 @@ button {
 }
 `;
 
-const defaultJs = `function changeColor() {
-  const colors = ['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff'];
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-  document.body.style.backgroundColor = randomColor;
-  console.log("Background color changed to: " + randomColor);
+const defaultJs = `function showAlert() {
+  alert("Hello from the playground!");
 }
 
 function logMessage() {
@@ -278,7 +275,7 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
                   <iframe
                     src={outputSrc}
                     title="output"
-                    sandbox="allow-scripts"
+                    sandbox="allow-scripts allow-modals"
                     frameBorder="0"
                     width="100%"
                     height="100%"

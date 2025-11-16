@@ -43,7 +43,7 @@ button {
   cursor: pointer;
 }`,
       js: `function showAlert() {
-  alert("Hello from JavaScript!");
+  alert("Hello from JavaScript! This alert is allowed because of the 'allow-modals' sandbox setting.");
 }`
     };
 
