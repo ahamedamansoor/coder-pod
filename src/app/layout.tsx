@@ -1,8 +1,10 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { FirebaseClientProvider } from '@/firebase';
+import { WebPlaygroundProvider } from '@/components/web-playground-context';
 
 export const metadata: Metadata = {
   title: 'Coder Pod',
@@ -29,8 +31,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <FirebaseClientProvider>
-            {children}
-            <Toaster />
+            <WebPlaygroundProvider>
+              {children}
+              <Toaster />
+            </WebPlaygroundProvider>
           </FirebaseClientProvider>
         </ThemeProvider>
       </body>

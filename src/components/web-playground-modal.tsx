@@ -19,6 +19,8 @@ import { PanelTop, Code, Braces, FileJson, Terminal } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
+import { useWebPlayground } from './web-playground-context';
+import { Button } from './ui/button';
 
 const defaultHtml = `<!DOCTYPE html>
 <html>
@@ -126,16 +128,24 @@ type ConsoleLog = {
 };
 
 export function WebPlaygroundModal({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
-  const [htmlCode, setHtmlCode] = useState(defaultHtml);
-  const [cssCode, setCssCode] = useState(defaultCss);
-  const [jsCode, setJsCode] = useState(defaultJs);
+  const { open, setOpen, content, setContent } = useWebPlayground();
+
+  const [htmlCode, setHtmlCode] = useState(content.html || defaultHtml);
+  const [cssCode, setCssCode] = useState(content.css || defaultCss);
+  const [jsCode, setJsCode] = useState(content.js || defaultJs);
+
   const [outputSrc, setOutputSrc] = useState('');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [visiblePanels, setVisiblePanels] = useState<string[]>([
     'html', 'css', 'js', 'console'
   ]);
   const { theme } = useTheme();
+
+  useEffect(() => {
+    setHtmlCode(content.html || defaultHtml);
+    setCssCode(content.css || defaultCss);
+    setJsCode(content.js || defaultJs);
+  }, [content]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -192,9 +202,18 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
     }
     return String(msg);
   }
+  
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (!isOpen) {
+      // Reset content when closing if needed
+      setContent({ html: '', css: '', js: '' });
+    }
+  };
+
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0">
         <DialogHeader className="p-4 border-b flex-row items-center justify-between">
@@ -274,9 +293,12 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize={25} collapsible minSize={10}>
                   <div className="h-full flex flex-col">
-                    <div className="p-2 border-b flex items-center gap-2 text-sm font-semibold">
-                      <Terminal className="h-4 w-4" />
-                      Console
+                    <div className="p-2 border-b flex items-center justify-between text-sm font-semibold">
+                      <div className="flex items-center gap-2">
+                        <Terminal className="h-4 w-4" />
+                        Console
+                      </div>
+                      <Button variant="ghost" size="sm" onClick={() => setConsoleLogs([])}>Clear</Button>
                     </div>
                     <ScrollArea className="flex-1 p-2 bg-muted/50">
                       {consoleLogs.map((log, index) => (

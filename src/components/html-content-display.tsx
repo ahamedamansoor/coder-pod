@@ -5,13 +5,17 @@ import type { Language, Topic } from '@/app/data';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from './ui/skeleton';
 import { GenericContentDisplay } from './generic-content-display';
+import { useWebPlayground } from './web-playground-context';
 
-// Lazy load all the topic components. The import() must resolve to a module with a default export.
+// Lazy load all the topic components.
 const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction'));
+const DocumentStructure = lazy(() => import('./html-topics/document-structure'));
+
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'introduction-to-html': HtmlIntroduction,
+  'document-structure': DocumentStructure,
 };
 
 function LoadingSkeleton() {
@@ -36,13 +40,14 @@ export function HtmlContentDisplay({
   language: Language, 
   onOpenEditor: (code: string) => void,
 }) {
+  const { openWithContent } = useWebPlayground();
 
   const renderTopicContent = () => {
     const Component = topicComponentMap[topic.slug];
     
     if (Component) {
-      // For components that need onOpenEditor, we pass it. Others will just ignore it.
-      return <Component onOpenEditor={onOpenEditor} />;
+      // Pass both editor functions; the component will decide which one to use.
+      return <Component onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />;
     }
 
     // Fallback for topics without a custom component
