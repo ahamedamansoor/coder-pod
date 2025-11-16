@@ -10,17 +10,16 @@ import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
 import { useJava } from '../java-context';
 
 interface TopicPageProps {
-  isEditorOpen?: boolean;
-  setIsEditorOpen?: (isOpen: boolean) => void;
+  isEditorOpen: boolean;
+  setIsEditorOpen: (isOpen: boolean) => void;
 }
 
 export default function JavaTopicPage({
-  isEditorOpen = false,
-  setIsEditorOpen = () => {},
+  isEditorOpen,
+  setIsEditorOpen,
 }: TopicPageProps) {
   const params = useParams();
   const { topic: topicSlug } = params;
-  const { completedTopics, handleToggleComplete } = useJava();
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
 

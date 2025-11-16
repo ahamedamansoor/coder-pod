@@ -7,6 +7,7 @@ import { TopicSidebar } from '@/components/topic-sidebar';
 import { languages } from '@/app/data';
 import { notFound, useParams } from 'next/navigation';
 import { JavaProvider } from './java-context';
+import JavaTopicPage from './[topic]/page';
 
 export default function JavaTopicLayout({
   children,
@@ -23,6 +24,9 @@ export default function JavaTopicLayout({
   const selectedTopic = language.topics.find((t) => t.slug === params.topic);
   
   const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'what-is-java';
+
+  // The children prop is not used here because we need to explicitly pass props
+  // to the JavaTopicPage component. This avoids the complexity of React.cloneElement.
 
   return (
     <JavaProvider>
@@ -44,15 +48,10 @@ export default function JavaTopicLayout({
               />
             </Sidebar>
             <main className="flex-1 flex overflow-hidden">
-                {React.Children.map(children, (child) => {
-                    if (React.isValidElement(child)) {
-                    return React.cloneElement(child, {
-                        isEditorOpen,
-                        setIsEditorOpen,
-                    } as any);
-                    }
-                    return child;
-                })}
+              <JavaTopicPage
+                isEditorOpen={isEditorOpen}
+                setIsEditorOpen={setIsEditorOpen}
+              />
             </main>
           </div>
         </div>
