@@ -19,7 +19,6 @@ import { ThemeToggle } from './theme-toggle';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc } from 'firebase/firestore';
-import { LanguageSwitcher } from './language-switcher';
 
 export default function AppLayout() {
   const { user } = useUser();
@@ -64,7 +63,6 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
-              <LanguageSwitcher />
               <LearnModal />
               <ThemeToggle />
               {user ? (
