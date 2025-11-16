@@ -23,14 +23,14 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
     ];
     
     const audioExample = `<audio controls>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg" />
   Your browser does not support the audio element.
 </audio>`;
 
     const videoExample = `<video controls width="400" poster="https://picsum.photos/seed/poster/400/225">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm">
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
   <track default src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English" />
   Sorry, your browser doesn't support embedded videos.
 </video>`;
@@ -39,8 +39,8 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
         html: `<h2>Audio Player</h2>
 <p>This audio player includes multiple sources for browser compatibility.</p>
 <audio controls style="width: 100%;">
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg" />
   Your browser does not support the audio element.
 </audio>
 
@@ -49,8 +49,8 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
 <h2>Video Player</h2>
 <p>This video player includes a poster image and English subtitles.</p>
 <video controls width="100%" poster="https://picsum.photos/seed/playground/600/338" data-ai-hint="nature water">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm">
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
   <track default src="data:text/vtt;base64,V0VCVlRUDQoNCjAwOjAwOjAyLjUwMCAtLT4gMDA6MDA6MDQuNTAwDQpCeSBub3csIHlvdSdsbCBzaG91dCwNCg0KMDA6MDA6MDQuNTAwIC0tPiAwMDowMDowNi4wMDANCkhvdyBkaWQgSSBldmVyIGdldCBhbG9uZyB3aXRob3V0IHlvdT8=" kind="subtitles" srclang="en" label="English" />
   Sorry, your browser doesn't support embedded videos.
 </video>
@@ -89,7 +89,7 @@ video {
             <Card>
                 <CardHeader>
                     <CardTitle>Common Attributes</CardTitle>
-                    <CardDescription>These attributes work for both `<audio></audio>` and `<video></video>` tags.</CardDescription>
+                    <CardDescription>These attributes work for both `<audio />` and `<video />` tags.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {commonAttributes.map(attr => (
@@ -104,8 +104,8 @@ video {
             <div className="grid md:grid-cols-2 gap-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary" />The `<audio>` Element</CardTitle>
-                        <CardDescription>Used to embed sound content in documents. It's crucial to provide multiple `<source>` elements for browser compatibility.</CardDescription>
+                        <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary" />The `<audio />` Element</CardTitle>
+                        <CardDescription>Used to embed sound content in documents. It's crucial to provide multiple `<source />` elements for browser compatibility.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-4">
@@ -116,8 +116,8 @@ video {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary" />The `<video>` Element</CardTitle>
-                        <CardDescription>Used for playing videos. The `<track>` element is vital for adding subtitles, making your content accessible.</CardDescription>
+                        <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary" />The `<video />` Element</CardTitle>
+                        <CardDescription>Used for playing videos. The `<track />` element is vital for adding subtitles, making your content accessible.</CardDescription>
                     </CardHeader>
                     <CardContent>
                          <div className="bg-muted rounded-md p-4 mb-4">
@@ -147,16 +147,16 @@ video {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
-                        <h3 className="font-semibold text-lg">The `<source></source>` Element</h3>
-                        <p className="text-sm text-muted-foreground">Different browsers support different file formats (like `.mp4`, `.webm`, `.ogg`). To ensure compatibility, you can provide multiple source files inside the `<audio></audio>` or `<video></video>` tag. The browser will use the first one it recognizes.</p>
+                        <h3 className="font-semibold text-lg">The `<source />` Element</h3>
+                        <p className="text-sm text-muted-foreground">Different browsers support different file formats (like `.mp4`, `.webm`, `.ogg`). To ensure compatibility, you can provide multiple source files inside the `<audio />` or `<video />` tag. The browser will use the first one it recognizes.</p>
                     </div>
                     <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2"><Subtitles className="w-5 h-5" />The `<track>` Element (for Accessibility)</h3>
-                        <p className="text-sm text-muted-foreground">Used with `<video></video>` to specify timed text tracks (like subtitles or captions). This is crucial for users who are deaf or hard of hearing. The `src` attribute points to a WebVTT file (`.vtt`), which contains the timed text. You can also embed VTT content directly using a data URI for simple cases.</p>
+                        <h3 className="font-semibold text-lg flex items-center gap-2"><Subtitles className="w-5 h-5" />The `<track />` Element (for Accessibility)</h3>
+                        <p className="text-sm text-muted-foreground">Used with `<video />` to specify timed text tracks (like subtitles or captions). This is crucial for users who are deaf or hard of hearing. The `src` attribute points to a WebVTT file (`.vtt`), which contains the timed text. You can also embed VTT content directly using a data URI for simple cases.</p>
                     </div>
                      <div>
                         <h3 className="font-semibold text-lg">Fallback Content</h3>
-                        <p className="text-sm text-muted-foreground">Any text you place between the opening and closing `<audio></audio>` or `<video></video>` tags will be displayed only by browsers that do not support the element, acting as a helpful fallback message.</p>
+                        <p className="text-sm text-muted-foreground">Any text you place between the opening and closing `<audio />` or `<video />` tags will be displayed only by browsers that do not support the element, acting as a helpful fallback message.</p>
                     </div>
                 </CardContent>
             </Card>
