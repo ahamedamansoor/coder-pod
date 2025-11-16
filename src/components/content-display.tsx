@@ -28,7 +28,7 @@ import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
 import { cn } from '@/lib/utils';
 
 export function ContentDisplay({ 
@@ -147,7 +147,7 @@ export function ContentDisplay({
     if (topic.slug === 'class-attributes') return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'class-methods') return <JavaClassMethods />;
     if (topic.slug === 'constructors') return <JavaConstructors onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'access-modifiers') return <JavaAccessModifiers />;
+    if (topic.slug === 'access-modifiers') return <JavaAccessModifiers onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'encapsulation') return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'packages') return <JavaPackages />;
     if (topic.slug === 'inheritance') return <JavaInheritance onOpenEditor={onOpenEditor} />;
@@ -156,17 +156,17 @@ export function ContentDisplay({
     if (topic.slug === 'abstraction') return <JavaAbstraction onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'interfaces') return <JavaInterfaces onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'enums') return <JavaEnums onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'date-time') return <JavaDate />;
-    if (topic.slug === 'hashmap') return <JavaHashMap />;
-    if (topic.slug === 'hashset') return <JavaHashSet />;
+    if (topic.slug === 'date-time') return <JavaDate onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'hashmap') return <JavaHashMap onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'hashset') return <JavaHashSet onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'linkedlist') return <JavaLinkedList onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'iterator') return <JavaIterator />;
-    if (topic.slug === 'wrapper-classes') return <JavaWrapperClasses />;
-    if (topic.slug === 'exceptions') return <JavaExceptions />;
+    if (topic.slug === 'iterator') return <JavaIterator onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'wrapper-classes') return <JavaWrapperClasses onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'exceptions') return <JavaExceptions onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'regex') return <JavaRegex />;
     if (topic.slug === 'threads') return <JavaThreads />;
-    if (topic.slug === 'lambda') return <JavaLambda />;
-    if (topic.slug === 'file-handling') return <JavaFileHandling />;
+    if (topic.slug === 'lambda') return <JavaLambda onOpenEditor={onOpenEditor} />;
+    if (topic.slug === 'file-handling') return <JavaFileHandling onOpenEditor={onOpenEditor} />;
 
     return (
       <Card>
@@ -216,7 +216,7 @@ export function ContentDisplay({
             </p>
          </div>
          {!isLearningPlanTopic && (
-            <>
+            <TooltipProvider>
               {isUserAuthenticated ? (
                 markAsCompleteButton
               ) : (
@@ -229,7 +229,7 @@ export function ContentDisplay({
                   </TooltipContent>
                 </Tooltip>
               )}
-            </>
+            </TooltipProvider>
          )}
         </header>
       

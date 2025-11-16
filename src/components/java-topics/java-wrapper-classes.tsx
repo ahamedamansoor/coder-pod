@@ -5,9 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Play, Box, ArrowRightLeft, CheckCircle2 } from 'lucide-react';
 import React from 'react';
 
-function onOpenEditor(code: string) {
-    // Dummy function for now, will be replaced by the real one
-    console.log("Opening editor with code:", code);
+interface JavaWrapperClassesProps {
+  onOpenEditor: (code: string) => void;
 }
 
 function wrapInMain(code: string): string {
@@ -20,7 +19,7 @@ public class Main {
 }`;
 }
 
-export function JavaWrapperClasses() {
+export function JavaWrapperClasses({ onOpenEditor }: JavaWrapperClassesProps) {
 
     const wrapperExample = `Integer myInt = 5;
 Double myDouble = 5.99;
@@ -54,21 +53,21 @@ ArrayList<Integer> myNumbers = new ArrayList<Integer>();
                 <CardHeader>
                     <CardTitle>What are Wrapper Classes?</CardTitle>
                     <CardDescription>
-                       Wrapper classes provide a way to use primitive data types (`int`, `boolean`, etc.) as objects. For each primitive type, there is a corresponding wrapper class.
+                       Wrapper classes provide a way to use primitive data types (\`int\`, \`boolean\`, etc.) as objects. For each primitive type, there is a corresponding wrapper class.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex justify-center">
                      <div className="bg-muted p-4 rounded-lg w-full max-w-md">
                         <p className="text-center font-semibold mb-2">Primitive <ArrowRightLeft className="inline w-4 h-4 mx-2"/> Wrapper</p>
                         <ul className="space-y-1 font-mono text-sm">
-                            <li className="flex justify-between"><span>`byte`</span> <span>`Byte`</span></li>
-                            <li className="flex justify-between"><span>`short`</span> <span>`Short`</span></li>
-                            <li className="flex justify-between"><span>`int`</span> <span>`Integer`</span></li>
-                            <li className="flex justify-between"><span>`long`</span> <span>`Long`</span></li>
-                            <li className="flex justify-between"><span>`float`</span> <span>`Float`</span></li>
-                            <li className="flex justify-between"><span>`double`</span> <span>`Double`</span></li>
-                            <li className="flex justify-between"><span>`boolean`</span> <span>`Boolean`</span></li>
-                            <li className="flex justify-between"><span>`char`</span> <span>`Character`</span></li>
+                            <li className="flex justify-between"><span>\`byte\`</span> <span>\`Byte\`</span></li>
+                            <li className="flex justify-between"><span>\`short\`</span> <span>\`Short\`</span></li>
+                            <li className="flex justify-between"><span>\`int\`</span> <span>\`Integer\`</span></li>
+                            <li className="flex justify-between"><span>\`long\`</span> <span>\`Long\`</span></li>
+                            <li className="flex justify-between"><span>\`float\`</span> <span>\`Float\`</span></li>
+                            <li className="flex justify-between"><span>\`double\`</span> <span>\`Double\`</span></li>
+                            <li className="flex justify-between"><span>\`boolean\`</span> <span>\`Boolean\`</span></li>
+                            <li className="flex justify-between"><span>\`char\`</span> <span>\`Character\`</span></li>
                         </ul>
                      </div>
                 </CardContent>
@@ -91,7 +90,7 @@ ArrayList<Integer> myNumbers = new ArrayList<Integer>();
             <Card>
                 <CardHeader>
                     <CardTitle>Useful Methods</CardTitle>
-                    <CardDescription>Since they are objects, wrapper classes have useful methods. For example, you can convert an `Integer` to a `String` and use string methods on it.</CardDescription>
+                    <CardDescription>Since they are objects, wrapper classes have useful methods. For example, you can convert an \`Integer\` to a \`String\` and use string methods on it.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
@@ -111,8 +110,8 @@ ArrayList<Integer> myNumbers = new ArrayList<Integer>();
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-lg">The Java Collections Framework, such as `ArrayList`, can only store objects, not primitive types.</p>
-                    <p className="text-muted-foreground mt-2">To store an `int` in an `ArrayList`, you must use its wrapper class, `Integer`.</p>
+                    <p className="text-lg">The Java Collections Framework, such as \`ArrayList\`, can only store objects, not primitive types.</p>
+                    <p className="text-muted-foreground mt-2">To store an \`int\` in an \`ArrayList\`, you must use its wrapper class, \`Integer\`.</p>
                      <div className="bg-background border rounded-md p-4 mt-4">
                          <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{whyUseExample}</pre>
                     </div>

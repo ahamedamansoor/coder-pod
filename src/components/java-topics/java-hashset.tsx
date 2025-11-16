@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Play, Users, CheckCircle2, Search, Trash2, Plus } from 'lucide-react';
 import React from 'react';
 
+interface JavaHashSetProps {
+  onOpenEditor: (code: string) => void;
+}
+
 function wrapInMain(code: string): string {
     return `import java.util.HashSet; // Don't forget to import!
 
@@ -15,7 +19,7 @@ public class Main {
 }`;
 }
 
-export function JavaHashSet() {
+export function JavaHashSet({ onOpenEditor }: JavaHashSetProps) {
 
     const creationExample = `// Create a HashSet object called cars that will store strings
 HashSet<String> cars = new HashSet<String>();`;
@@ -70,18 +74,18 @@ for (String i : cars) {
                 <CardHeader>
                     <CardTitle>What is a HashSet?</CardTitle>
                     <CardDescription>
-                       Think of a guest list for a party. You only list each guest's name once, no matter how many times you're reminded they are coming. A `HashSet` is a collection of items where every item is **unique**.
+                       Think of a guest list for a party. You only list each guest's name once, no matter how many times you're reminded they are coming. A \`HashSet\` is a collection of items where every item is **unique**.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                   <p>A `HashSet` is one of the most popular classes in the Java Collections framework. You cannot add duplicate values to it. Also, unlike a list, the order of items is not guaranteed.</p>
+                   <p>A \`HashSet\` is one of the most popular classes in the Java Collections framework. You cannot add duplicate values to it. Also, unlike a list, the order of items is not guaranteed.</p>
                 </CardContent>
             </Card>
 
             <Card>
                 <CardHeader>
                     <CardTitle>Creating a HashSet</CardTitle>
-                    <CardDescription>To use a `HashSet`, you must first import it from `java.util.HashSet`.</CardDescription>
+                    <CardDescription>To use a \`HashSet\`, you must first import it from \`java.util.HashSet\`.</CardDescription>
                 </CardHeader>
                 <CardContent>
                      <div className="bg-muted rounded-md p-4 mb-4">
@@ -93,7 +97,7 @@ for (String i : cars) {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                  <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><Plus className="text-primary"/>Add Items with `add()`</CardTitle>
+                        <CardTitle className="flex items-center gap-2"><Plus className="text-primary"/>Add Items with \`add()\`</CardTitle>
                          <CardDescription>Duplicates will be ignored.</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -108,7 +112,7 @@ for (String i : cars) {
                  <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2"><Search className="text-primary"/>Check if an Item Exists</CardTitle>
-                        <CardDescription>Use the `contains()` method.</CardDescription>
+                        <CardDescription>Use the \`contains()\` method.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">
@@ -122,7 +126,7 @@ for (String i : cars) {
                  <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2"><Trash2 className="text-primary"/>Remove Items</CardTitle>
-                        <CardDescription>Use the `remove()` method.</CardDescription>
+                        <CardDescription>Use the \`remove()\` method.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">
@@ -138,7 +142,7 @@ for (String i : cars) {
             <Card>
                 <CardHeader>
                     <CardTitle>Looping Through a HashSet</CardTitle>
-                    <CardDescription>You can use a "for-each" loop to iterate over the items in a `HashSet`.</CardDescription>
+                    <CardDescription>You can use a "for-each" loop to iterate over the items in a \`HashSet\`.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">

@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Play, FunctionSquare, ArrowRight, Lightbulb } from 'lucide-react';
 import React from 'react';
 
+interface JavaLambdaProps {
+  onOpenEditor: (code: string) => void;
+}
+
 function wrapInMain(code: string): string {
     return `import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -16,7 +20,7 @@ public class Main {
 }`;
 }
 
-export function JavaLambda() {
+export function JavaLambda({ onOpenEditor }: JavaLambdaProps) {
 
     const lambdaSyntax = `(parameter1, parameter2) -> { code block }`;
 
@@ -75,7 +79,7 @@ numbers.forEach( method );`;
             <Card>
                 <CardHeader>
                     <CardTitle>Example in Action</CardTitle>
-                    <CardDescription>Lambdas are often used with collection methods like `forEach` to perform an action on each item.</CardDescription>
+                    <CardDescription>Lambdas are often used with collection methods like \`forEach\` to perform an action on each item.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
@@ -95,7 +99,7 @@ numbers.forEach( method );`;
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground mb-4">Lambda expressions can be stored in variables if the variable's type is an interface which has only one method. These are called **Functional Interfaces**. Java has many built-in functional interfaces, like `Consumer` in the `java.util.function` package.</p>
+                    <p className="text-muted-foreground mb-4">Lambda expressions can be stored in variables if the variable's type is an interface which has only one method. These are called **Functional Interfaces**. Java has many built-in functional interfaces, like \`Consumer\` in the \`java.util.function\` package.</p>
                      <div className="bg-background border rounded-md p-4 mb-4">
                          <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{consumerExample}</pre>
                     </div>

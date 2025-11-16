@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Play, Book, KeyRound, Plus, Trash2, Search, Repeat } from 'lucide-react';
 import React from 'react';
 
+interface JavaHashMapProps {
+  onOpenEditor: (code: string) => void;
+}
+
 function wrapInMain(code: string): string {
     return `import java.util.HashMap; // Don't forget to import!
 
@@ -15,7 +19,7 @@ public class Main {
 }`;
 }
 
-export function JavaHashMap() {
+export function JavaHashMap({ onOpenEditor }: JavaHashMapProps) {
 
     const creationExample = `// Create a HashMap object called capitalCities
 HashMap<String, String> capitalCities = new HashMap<String, String>();`;
@@ -80,31 +84,31 @@ for (String i : capitalCities.keySet()) {
                 <CardHeader>
                     <CardTitle>What is a HashMap?</CardTitle>
                     <CardDescription>
-                       Think of a dictionary. You look up a word (**the key**) to find its definition (**the value**). A `HashMap` in Java works exactly like that. It's a collection that stores items in "key/value" pairs, and you can access them by an index of another type (e.g. a `String`).
+                       Think of a dictionary. You look up a word (**the key**) to find its definition (**the value**). A \`HashMap\` in Java works exactly like that. It's a collection that stores items in "key/value" pairs, and you can access them by an index of another type (e.g. a \`String\`).
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                   <p>One object is used as a key (index) to another object (value). It can store different types: `String` keys and `Integer` values, or the same type, like `String` keys and `String` values.</p>
+                   <p>One object is used as a key (index) to another object (value). It can store different types: \`String\` keys and \`Integer\` values, or the same type, like \`String\` keys and \`String\` values.</p>
                 </CardContent>
             </Card>
 
             <Card>
                 <CardHeader>
                     <CardTitle>Creating a HashMap</CardTitle>
-                    <CardDescription>To use a `HashMap`, you must first import it from `java.util.HashMap`.</CardDescription>
+                    <CardDescription>To use a \`HashMap\`, you must first import it from \`java.util.HashMap\`.</CardDescription>
                 </CardHeader>
                 <CardContent>
                      <div className="bg-muted rounded-md p-4 mb-4">
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{creationExample}</pre>
                     </div>
-                    <p className="text-sm text-muted-foreground">In this example, we create a `HashMap` that will store `String` keys and `String` values.</p>
+                    <p className="text-sm text-muted-foreground">In this example, we create a \`HashMap\` that will store \`String\` keys and \`String\` values.</p>
                 </CardContent>
             </Card>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                  <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><Plus className="text-primary"/>Add Items with `put()`</CardTitle>
+                        <CardTitle className="flex items-center gap-2"><Plus className="text-primary"/>Add Items with \`put()\`</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">
@@ -117,7 +121,7 @@ for (String i : capitalCities.keySet()) {
                 </Card>
                  <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><Search className="text-primary"/>Access Items with `get()`</CardTitle>
+                        <CardTitle className="flex items-center gap-2"><Search className="text-primary"/>Access Items with \`get()\`</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">
@@ -130,7 +134,7 @@ for (String i : capitalCities.keySet()) {
                 </Card>
                  <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><Trash2 className="text-primary"/>Remove Items with `remove()`</CardTitle>
+                        <CardTitle className="flex items-center gap-2"><Trash2 className="text-primary"/>Remove Items with \`remove()\`</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">
@@ -146,7 +150,7 @@ for (String i : capitalCities.keySet()) {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><Repeat className="text-primary"/>Looping Through a HashMap</CardTitle>
-                    <CardDescription>You can loop through a `HashMap` in a few ways. You can iterate through its keys, its values, or both.</CardDescription>
+                    <CardDescription>You can loop through a \`HashMap\` in a few ways. You can iterate through its keys, its values, or both.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">

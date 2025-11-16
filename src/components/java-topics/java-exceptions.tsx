@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Play, AlertTriangle, Shield, ShieldCheck, ShieldQuestion } from 'lucide-react';
 import React from 'react';
 
+interface JavaExceptionsProps {
+  onOpenEditor: (code: string) => void;
+}
+
 function wrapInMain(code: string): string {
     return `public class Main {
   public static void checkAge(int age) {
@@ -21,7 +25,7 @@ function wrapInMain(code: string): string {
 }`;
 }
 
-export function JavaExceptions({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
+export function JavaExceptions({ onOpenEditor }: JavaExceptionsProps) {
 
     const exceptionExample = `try {
   int[] myNumbers = {1, 2, 3};
@@ -66,19 +70,19 @@ catch(Exception e) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-center">The `try...catch` Block</CardTitle>
+                    <CardTitle className="text-center">The \`try...catch\` Block</CardTitle>
                     <CardDescription className="text-center">The fundamental tool for handling exceptions.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 gap-6 items-center">
                      <div className="bg-muted p-6 rounded-lg text-center">
                         <Shield className="w-12 h-12 text-blue-500 mx-auto mb-4"/>
-                        <h3 className="font-semibold text-xl text-foreground mb-2">The `try` Block</h3>
-                        <p className="text-sm text-muted-foreground">The `try` statement allows you to define a block of code to be tested for errors while it is being executed.</p>
+                        <h3 className="font-semibold text-xl text-foreground mb-2">The \`try\` Block</h3>
+                        <p className="text-sm text-muted-foreground">The \`try\` statement allows you to define a block of code to be tested for errors while it is being executed.</p>
                     </div>
                     <div className="bg-muted p-6 rounded-lg text-center">
                         <ShieldCheck className="w-12 h-12 text-green-500 mx-auto mb-4"/>
-                        <h3 className="font-semibold text-xl text-foreground mb-2">The `catch` Block</h3>
-                        <p className="text-sm text-muted-foreground">The `catch` statement allows you to define a block of code to be executed, if an error occurs in the try block.</p>
+                        <h3 className="font-semibold text-xl text-foreground mb-2">The \`catch\` Block</h3>
+                        <p className="text-sm text-muted-foreground">The \`catch\` statement allows you to define a block of code to be executed, if an error occurs in the try block.</p>
                     </div>
                 </CardContent>
                 <CardContent>
@@ -94,8 +98,8 @@ catch(Exception e) {
             <div className="grid md:grid-cols-2 gap-8">
                  <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><ShieldCheck className="text-primary"/>The `finally` Statement</CardTitle>
-                        <CardDescription>The `finally` statement lets you execute code, after `try...catch`, regardless of the result (whether an exception was caught or not).</CardDescription>
+                        <CardTitle className="flex items-center gap-2"><ShieldCheck className="text-primary"/>The \`finally\` Statement</CardTitle>
+                        <CardDescription>The \`finally\` statement lets you execute code, after \`try...catch\`, regardless of the result (whether an exception was caught or not).</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">
@@ -108,8 +112,8 @@ catch(Exception e) {
                 </Card>
                  <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><ShieldQuestion className="text-primary"/>The `throw` Keyword</CardTitle>
-                        <CardDescription>The `throw` statement allows you to create a custom error. This is useful for creating specific exceptions for your own methods.</CardDescription>
+                        <CardTitle className="flex items-center gap-2"><ShieldQuestion className="text-primary"/>The \`throw\` Keyword</CardTitle>
+                        <CardDescription>The \`throw\` statement allows you to create a custom error. This is useful for creating specific exceptions for your own methods.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-2">

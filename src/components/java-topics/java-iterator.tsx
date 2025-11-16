@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Play, Route, StepForward, AlertTriangle } from 'lucide-react';
 import React from 'react';
 
+interface JavaIteratorProps {
+  onOpenEditor: (code: string) => void;
+}
+
 function wrapInMain(code: string): string {
     return `import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +20,7 @@ public class Main {
 }`;
 }
 
-export function JavaIterator() {
+export function JavaIterator({ onOpenEditor }: JavaIteratorProps) {
 
     const iteratorExample = `// Make a collection
 ArrayList<String> cars = new ArrayList<String>();
@@ -63,7 +67,7 @@ System.out.println(numbers);`;
                 <CardHeader>
                     <CardTitle>What is an Iterator?</CardTitle>
                     <CardDescription>
-                       An `Iterator` is an object that can be used to loop through collections, like `ArrayList`, `HashSet`, etc. It provides a standard way to traverse a collection and sometimes to modify it.
+                       An \`Iterator\` is an object that can be used to loop through collections, like \`ArrayList\`, \`HashSet\`, etc. It provides a standard way to traverse a collection and sometimes to modify it.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -80,22 +84,22 @@ System.out.println(numbers);`;
                     <div className="flex items-start gap-4">
                         <StepForward className="w-5 h-5 text-primary mt-1"/>
                         <div>
-                            <h3 className="font-semibold text-lg">`hasNext()`</h3>
-                            <p className="text-muted-foreground text-sm">Returns `true` if there are more elements left in the iteration.</p>
+                            <h3 className="font-semibold text-lg">\`hasNext()\`</h3>
+                            <p className="text-muted-foreground text-sm">Returns \`true\` if there are more elements left in the iteration.</p>
                         </div>
                     </div>
                      <div className="flex items-start gap-4">
                         <StepForward className="w-5 h-5 text-primary mt-1"/>
                         <div>
-                            <h3 className="font-semibold text-lg">`next()`</h3>
+                            <h3 className="font-semibold text-lg">\`next()\`</h3>
                             <p className="text-muted-foreground text-sm">Returns the next element in the iteration and moves the cursor forward.</p>
                         </div>
                     </div>
                      <div className="flex items-start gap-4">
                         <StepForward className="w-5 h-5 text-primary mt-1"/>
                         <div>
-                            <h3 className="font-semibold text-lg">`remove()`</h3>
-                            <p className="text-muted-foreground text-sm">Removes the last element returned by `next()` from the collection. This is the only safe way to modify a collection while iterating.</p>
+                            <h3 className="font-semibold text-lg">\`remove()\`</h3>
+                            <p className="text-muted-foreground text-sm">Removes the last element returned by \`next()\` from the collection. This is the only safe way to modify a collection while iterating.</p>
                         </div>
                     </div>
                 </CardContent>
@@ -104,7 +108,7 @@ System.out.println(numbers);`;
             <Card>
                 <CardHeader>
                     <CardTitle>Example: Basic Traversal</CardTitle>
-                    <CardDescription>First, you get the iterator from the collection using the `.iterator()` method. Then you use a `while` loop with `hasNext()` and `next()` to go through each item.</CardDescription>
+                    <CardDescription>First, you get the iterator from the collection using the \`.iterator()\` method. Then you use a \`while\` loop with \`hasNext()\` and \`next()\` to go through each item.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
@@ -123,7 +127,7 @@ System.out.println(numbers);`;
                         Safely Removing Items
                     </CardTitle>
                     <CardDescription>
-                        Trying to remove an item from a collection using the collection's own `remove()` method inside a loop will cause a `ConcurrentModificationException`. The ONLY safe way to modify a collection while looping through it is by using the iterator's `remove()` method.
+                        Trying to remove an item from a collection using the collection's own \`remove()\` method inside a loop will cause a \`ConcurrentModificationException\`. The ONLY safe way to modify a collection while looping through it is by using the iterator's \`remove()\` method.
                     </CardDescription>
                 </CardHeader>
                  <CardContent>
