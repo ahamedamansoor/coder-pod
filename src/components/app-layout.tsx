@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import {
@@ -25,7 +26,9 @@ export default function AppLayout() {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await auth.signOut();
+    if (auth) {
+      await auth.signOut();
+    }
     router.push('/login');
   };
 
@@ -34,8 +37,8 @@ export default function AppLayout() {
   };
 
   const getInitials = (name?: string | null) => {
-    if (!name) return '?';
     if (user?.isAnonymous) return 'G';
+    if (!name) return 'U';
     const names = name.split(' ');
     if (names.length > 1) {
       return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
@@ -55,15 +58,15 @@ export default function AppLayout() {
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Avatar className="cursor-pointer">
-                      <AvatarImage src={user?.photoURL || ''} alt={user?.displayName || 'User'} />
-                      <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
+                    <Avatar className="cursor-pointer h-9 w-9">
+                      <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                      <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel className='flex items-center gap-2'>
                       <User />
-                      {user.isAnonymous ? 'Guest User' : user?.displayName || 'User'}
+                      {user.isAnonymous ? 'Guest User' : user.displayName || 'User'}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
