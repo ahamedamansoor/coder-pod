@@ -30,6 +30,7 @@ import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
 import { cn } from '@/lib/utils';
+import { marked } from 'marked';
 
 export function ContentDisplay({ 
   topic, 
@@ -109,7 +110,8 @@ export function ContentDisplay({
         explanation: topic.explanation,
         question: question,
       });
-      setQaResult(result);
+      const parsedAnswer = await marked(result.answer);
+      setQaResult({ answer: parsedAnswer });
     } catch (error) {
       console.error('Failed to answer question:', error);
       toast({
@@ -224,6 +226,21 @@ export function ContentDisplay({
       </Label>
     </div>
   );
+
+  const getQuestionPlaceholder = () => {
+    switch (topic.slug) {
+      case 'access-modifiers':
+        return 'e.g., "What\'s the real difference between public and private?"';
+      case 'if-else':
+        return 'e.g., "When would I use else if versus just another if?"';
+      case 'for-loop':
+        return 'e.g., "What is an infinite loop and why should I avoid it?"';
+      case 'inheritance':
+        return 'e.g., "Can a class inherit from multiple classes?"';
+      default:
+        return 'e.g., "Explain this to me like I am five years old."';
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -354,7 +371,7 @@ export function ContentDisplay({
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder={`e.g., "What is the difference between a while and a do-while loop?"`}
+              placeholder={getQuestionPlaceholder()}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               disabled={isAsking}
@@ -384,13 +401,13 @@ export function ContentDisplay({
             </div>
             <div>
               <CardTitle>AI Answer</CardTitle>
-              <CardDescription>Here's what our AI assistant came with.</CardDescription>
+              <CardDescription>Here's what our AI assistant came up with.</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
             <div
-              className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary whitespace-pre-wrap"
-              dangerouslySetInnerHTML={{ __html: qaResult.answer.replace(/\n/g, '<br />') }}
+              className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-md prose-table:border prose-th:p-2 prose-td:p-2 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic"
+              dangerouslySetInnerHTML={{ __html: qaResult.answer }}
             />
           </CardContent>
         </Card>
