@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Frame, Play, ShieldAlert, BadgeInfo, CheckCircle } from 'lucide-react';
+import { Frame, Play, ShieldAlert, BadgeInfo, CheckCircle, FileCode, Clock, Loader } from 'lucide-react';
 import React from 'react';
 
 export default function Iframes({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -10,6 +10,7 @@ export default function Iframes({ onOpenWebPlayground }: { onOpenWebPlayground: 
   src="https://www.openstreetmap.org/export/embed.html?bbox=-0.13,51.5,0.1,51.51" 
   width="600" 
   height="450" 
+  name="map-frame"
   title="A map of London"
 ></iframe>`;
     
@@ -35,6 +36,7 @@ export default function Iframes({ onOpenWebPlayground }: { onOpenWebPlayground: 
   src="https://www.openstreetmap.org/export/embed.html?bbox=-74.01,40.70,-73.99,40.72" 
   width="100%" 
   height="300" 
+  name="map-frame"
   title="A map of lower Manhattan"
   style="border:1px solid black;"
 ></iframe>
@@ -48,7 +50,16 @@ export default function Iframes({ onOpenWebPlayground }: { onOpenWebPlayground: 
   height="315" 
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
   allowfullscreen
-></iframe>`,
+></iframe>
+
+<h2 style="margin-top: 2rem;">Embedded HTML with srcdoc</h2>
+<p>This iframe's content is defined directly in the HTML.</p>
+<iframe 
+  srcdoc="<p>Hello from inside the iframe!</p><style>body{background:lightyellow;}</style>"
+  title="Srcdoc example"
+  style="border:1px solid #ccc; width:100%; height: 100px;"
+></iframe>
+`,
         css: `body { 
   font-family: sans-serif;
   line-height: 1.6;
@@ -107,8 +118,41 @@ h2 {
                     <h3 className="font-bold flex items-center gap-2 mb-1">`width` & `height`</h3>
                     <p className="text-sm text-muted-foreground">Specifies the dimensions of the iframe in pixels.</p>
                 </div>
+                 <div className="bg-muted p-4 rounded-lg border">
+                    <h3 className="font-bold flex items-center gap-2 mb-1">`name`</h3>
+                    <p className="text-sm text-muted-foreground">Gives the iframe a name, which can be used as a target for links or forms.</p>
+                </div>
+                 <div className="bg-muted p-4 rounded-lg border">
+                    <h3 className="font-bold flex items-center gap-2 mb-1">`frameborder="0"`</h3>
+                    <p className="text-sm text-muted-foreground">This attribute is deprecated. You should use CSS (`border: none;`) instead to control the border.</p>
+                </div>
             </CardContent>
         </Card>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><FileCode className="w-6 h-6 text-primary"/>`srcdoc`: The `src` Alternative</CardTitle>
+                    <CardDescription>Instead of linking to an external URL, the `srcdoc` attribute allows you to embed your desired HTML content directly as a string.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">This is useful for simple, self-contained content as it avoids an extra network request.</p>
+                     <div className="bg-muted rounded-md p-4">
+                        <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`<iframe title="Example" srcdoc="<p>Hello from srcdoc!</p>"></iframe>`}</pre>
+                    </div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Loader className="w-6 h-6 text-primary"/>`loading="lazy"`: Performance Boost</CardTitle>
+                    <CardDescription>This attribute tells the browser to defer loading the iframe's content until the user scrolls near it.</CardDescription>
+                </CardHeader>
+                 <CardContent>
+                    <p className="text-sm text-muted-foreground">Using `loading="lazy"` is a great performance optimization, especially for content below the fold like embedded videos or maps.</p>
+                </CardContent>
+            </Card>
+        </div>
+
 
         <Card className="border-destructive/50 bg-destructive/5">
             <CardHeader>
@@ -149,7 +193,7 @@ h2 {
         <Card>
             <CardHeader>
                 <CardTitle>See It In Action</CardTitle>
-                <CardDescription>Open this example in the Web Playground to see how iframes are used to embed a map and a video.</CardDescription>
+                <CardDescription>Open this example in the Web Playground to see how iframes are used to embed a map, a video, and direct HTML content.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
