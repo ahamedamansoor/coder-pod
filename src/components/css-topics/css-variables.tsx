@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Variable, Lightbulb, Scope } from 'lucide-react';
+import { Play, Variable, Lightbulb, BoxSelect } from 'lucide-react';
 import React from 'react';
 
 interface CssVariablesProps {
@@ -97,7 +97,7 @@ body {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><Scope className="text-primary"/>Scope: Global vs. Local</CardTitle>
+                    <CardTitle className="flex items-center gap-2"><BoxSelect className="text-primary"/>Scope: Global vs. Local</CardTitle>
                     <CardDescription>
                         CSS variables are inherited. You can set them globally on the `:root` pseudo-class or locally on a specific element.
                     </CardDescription>

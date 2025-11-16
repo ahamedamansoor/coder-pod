@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -69,7 +68,7 @@ const JavaMultiDimensionalArrays = lazy(() => import('./java-topics/java-multi-d
 const JavaMethods = lazy(() => import('./java-topics/java-methods').then(module => ({ default: module.JavaMethods })));
 const JavaMethodParameters = lazy(() => import('./java-topics/java-method-parameters').then(module => ({ default: module.JavaMethodParameters })));
 const JavaMethodOverloading = lazy(() => import('./java-topics/java-method-overloading').then(module => ({ default: module.JavaMethodOverloading })));
-const JavaScope = lazy(() => import('./java-topics/java-scope').then(module => ({ default: module.JavaScope })));
+const JavaScope = lazy(() => import('./java-topics/java-scope'));
 const JavaRecursion = lazy(() => import('./java-topics/java-recursion').then(module => ({ default: module.JavaRecursion })));
 const JavaClassesObjects = lazy(() => import('./java-topics/java-classes-objects').then(module => ({ default: module.JavaClassesObjects })));
 const JavaClassAttributes = lazy(() => import('./java-topics/java-class-attributes').then(module => ({ default: module.JavaClassAttributes })));

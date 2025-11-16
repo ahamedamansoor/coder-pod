@@ -8,7 +8,7 @@ interface JavaScopeProps {
   onOpenEditor: (code: string) => void;
 }
 
-export function JavaScope({ onOpenEditor }: JavaScopeProps) {
+export default function JavaScope({ onOpenEditor }: JavaScopeProps) {
 
     const blockScopeExample = `public class Main {
     public static void main(String[] args) {
