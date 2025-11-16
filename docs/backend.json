@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the LinguaLeap application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "googleId": {
+          "type": "string",
+          "description": "Google ID of the user, if they signed up via Google."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the user."
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. Uses path-based ownership, with userId matching the authenticated user's UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user, which should match the Firebase Auth UID."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This design prioritizes security and scalability by adhering to the principles of Authorization Independence, Structural Segregation, Access Modeling, and Data Clarity. It avoids hierarchical authorization dependencies, ensuring that security rules are simple and robust. The use of path-based ownership for user data enables efficient and secure data access, aligning with best practices for Firestore security. The structure facilitates listing operations and supports the integrity of ownership and timestamps. The structure uses path-based ownership to manage user data in the system. This simplifies security rules and improves efficiency. No custom claims are required, and roles are based on the request.auth.uid."
+  }
+}
