@@ -100,9 +100,7 @@ export default function CssPositioning({ onOpenWebPlayground }: CssPositioningPr
             <Card>
                 <CardHeader>
                     <CardTitle>The `position` Property</CardTitle>
-                    <CardDescription>
-                       The `position` property specifies the type of positioning method used for an element. Once an element is "positioned" (i.e., its position is set to anything other than `static`), you can use the offset properties `top`, `bottom`, `left`, and `right` to move it around.
-                    </CardDescription>
+                    <CardDescription>The `position` property specifies the type of positioning method used for an element. Once an element is "positioned" (i.e., its position is set to anything other than `static`), you can use the offset properties `top`, `bottom`, `left`, and `right` to move it around.</CardDescription>
                 </CardHeader>
             </Card>
 
