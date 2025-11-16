@@ -9,10 +9,11 @@ import { Label } from '@/components/ui/label';
 import { Chrome, Loader2, User, Github } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useAuth, useFirestore } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, UserCredential, GithubAuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signInAnonymously, UserCredential, GithubAuthProvider } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -134,40 +135,12 @@ export default function LoginPage() {
       toast({
         variant: 'destructive',
         title: 'Sign-in failed',
-        description: 'Invalid email or password. Please try again or sign up.',
+        description: 'Invalid email or password. Please try again.',
       });
     } finally {
       setIsEmailLoading(false);
     }
   };
-
-  const handleEmailSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!auth) return;
-    setIsEmailLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await handleSuccessfulLogin(userCredential);
-    } catch (error: any) {
-      console.error('Email sign-up error:', error);
-       if (error.code === 'auth/email-already-in-use') {
-          toast({
-            variant: 'destructive',
-            title: 'Sign-up failed',
-            description: 'This email is already in use. Please try to sign in instead.',
-          });
-       } else {
-         toast({
-            variant: 'destructive',
-            title: 'Sign-up failed',
-            description: error.message || 'Could not create a new account.',
-          });
-       }
-    } finally {
-      setIsEmailLoading(false);
-    }
-  };
-
 
   const isLoading = isEmailLoading || isGoogleLoading || isAnonymousLoading || isGitHubLoading;
 
@@ -178,8 +151,8 @@ export default function LoginPage() {
           <div className="mx-auto">
             <Logo />
           </div>
-          <CardTitle>Welcome to Coder Pod</CardTitle>
-          <CardDescription>Sign in or create an account to save your progress.</CardDescription>
+          <CardTitle>Welcome Back to Coder Pod</CardTitle>
+          <CardDescription>Sign in to continue your learning journey.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
            <div className="grid grid-cols-2 gap-4">
@@ -212,7 +185,6 @@ export default function LoginPage() {
                 )}
               </Button>
             </div>
-
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -249,19 +221,21 @@ export default function LoginPage() {
                   disabled={isLoading}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Button type="submit" disabled={isLoading}>
-                  {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign In'}
-                </Button>
-                <Button onClick={handleEmailSignUp} type="button" variant="secondary" disabled={isLoading}>
-                  {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign Up'}
-                </Button>
-              </div>
+              <Button type="submit" disabled={isLoading} className="w-full">
+                {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign In'}
+              </Button>
             </div>
           </form>
+
+          <div className="text-center text-sm text-muted-foreground">
+            Don't have an account?{' '}
+            <Link href="/signup" className="font-semibold text-primary hover:underline">
+              Sign up
+            </Link>
+          </div>
           
         </CardContent>
-        <CardFooter className="flex-col gap-4">
+        <CardFooter className="flex-col gap-4 border-t pt-6">
           <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />

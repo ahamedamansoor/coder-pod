@@ -1,4 +1,3 @@
-
 {
   "entities": {
     "User": {
@@ -23,6 +22,11 @@
         "name": {
           "type": "string",
           "description": "Name of the user."
+        },
+        "dob": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of birth of the user."
         },
         "completedTopics": {
           "type": "array",
