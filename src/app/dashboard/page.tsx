@@ -1,9 +1,11 @@
+
 'use client';
 
 import AppLayout from '@/components/app-layout';
 import { useUser } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 
+// This is a trigger for recompilation.
 export default function Dashboard() {
   const { user, isUserLoading } = useUser();
 
