@@ -44,15 +44,15 @@ export default function JavaTopicLayout({
               />
             </Sidebar>
             <main className="flex-1 flex overflow-hidden">
-              {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
-                  return React.cloneElement(child, {
-                    isEditorOpen,
-                    setIsEditorOpen,
-                  } as any);
-                }
-                return child;
-              })}
+                {React.Children.map(children, (child) => {
+                    if (React.isValidElement(child)) {
+                    return React.cloneElement(child, {
+                        isEditorOpen,
+                        setIsEditorOpen,
+                    } as any);
+                    }
+                    return child;
+                })}
             </main>
           </div>
         </div>
