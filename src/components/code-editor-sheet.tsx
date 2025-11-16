@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Code, Play, Terminal, Copy, Check, X } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { executeJavaCode } from '@/ai/flows/execute-java-code';
+import { executeJavascriptCode } from '@/ai/flows/execute-javascript-code';
 import { useToast } from '@/hooks/use-toast';
 
 const defaultCodeSnippets: Record<string, string> = {
@@ -53,27 +54,31 @@ export function CodeEditorSheet({
   const handleRunCode = async () => {
     setIsRunning(true);
     setOutput('');
-    // For now, only Java execution is supported via AI flow
-    if (language.toLowerCase() === 'java' || language.toLowerCase() === 'spring') {
-      try {
-        const result = await executeJavaCode({ code });
-        setOutput(
-          result.output || 'Execution finished with no output.'
-        );
-      } catch (e: any) {
-        console.error('AI execution error:', e);
-        toast({
-          variant: 'destructive',
-          title: 'Execution Failed',
-          description: 'The AI model could not execute the code. Please try again.',
-        });
-        setOutput(`An error occurred: ${e.message || 'Unknown error'}`);
-      } finally {
-        setIsRunning(false);
-      }
-    } else {
+    
+    const lang = language.toLowerCase();
+
+    try {
+      let result;
+      if (lang === 'java' || lang === 'spring') {
+        result = await executeJavaCode({ code });
+      } else if (lang === 'javascript') {
+        result = await executeJavascriptCode({ code });
+      } else {
         setOutput(`Running ${language} code is not supported in this editor yet. You can copy the code to run it in a different environment.`);
         setIsRunning(false);
+        return;
+      }
+      setOutput(result.output || 'Execution finished with no output.');
+    } catch (e: any) {
+      console.error('AI execution error:', e);
+      toast({
+        variant: 'destructive',
+        title: 'Execution Failed',
+        description: 'The AI model could not execute the code. Please try again.',
+      });
+      setOutput(`An error occurred: ${e.message || 'Unknown error'}`);
+    } finally {
+      setIsRunning(false);
     }
   };
 
@@ -86,7 +91,7 @@ export function CodeEditorSheet({
   };
 
   const editorLanguage = language.toLowerCase() === 'spring' ? 'java' : language.toLowerCase();
-  const isExecutionSupported = language.toLowerCase() === 'java' || language.toLowerCase() === 'spring';
+  const isExecutionSupported = ['java', 'spring', 'javascript'].includes(language.toLowerCase());
 
   return (
     <div className="flex flex-col h-full border-l bg-card">
@@ -150,7 +155,7 @@ export function CodeEditorSheet({
           <Play className="mr-2 h-4 w-4" />
           {isRunning ? 'Running...' : 'Run Code'}
         </Button>
-        {!isExecutionSupported && <p className="text-xs text-muted-foreground self-center">Execution is only supported for Java/Spring.</p>}
+        {!isExecutionSupported && <p className="text-xs text-muted-foreground self-center">Execution is only supported for Java, Spring, and JavaScript.</p>}
       </div>
     </div>
   );

@@ -5,3 +5,4 @@ config();
 import '@/ai/flows/simplify-topic-explanations.ts';
 import '@/ai/flows/answer-question.ts';
 import '@/ai/flows/execute-java-code.ts';
+import '@/ai/flows/execute-javascript-code.ts';
