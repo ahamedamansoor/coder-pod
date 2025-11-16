@@ -1,5 +1,6 @@
+
 'use client';
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,11 +15,11 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket } from 'lucide-react';
 import { LearnModal } from './learn-modal';
-import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc } from 'firebase/firestore';
+import { LanguageSwitcher } from './language-switcher';
 
 export default function AppLayout() {
   const { user } = useUser();
@@ -63,6 +64,7 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
+              <LanguageSwitcher />
               <LearnModal />
               <ThemeToggle />
               {user ? (

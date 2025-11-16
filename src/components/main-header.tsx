@@ -14,9 +14,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { doc } from 'firebase/firestore';
 import { WebPlaygroundModal } from './web-playground-modal';
+import { LanguageSwitcher } from './language-switcher';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -33,6 +34,11 @@ export function MainHeader({
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
+  const params = useParams();
+  
+  const currentLanguageSlug = Array.isArray(params.lang) ? params.lang[0] : params.lang as string || 
+                              (router as any).query?.lang as string || 
+                              Object.keys(params)[0];
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -73,6 +79,7 @@ export function MainHeader({
         </div>
       </div>
       <div className="flex items-center gap-4">
+        <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
         <ThemeToggle />
         <WebPlaygroundModal>
             <Button variant="outline">
