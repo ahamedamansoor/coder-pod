@@ -8,9 +8,10 @@ import { GenericContentDisplay } from './generic-content-display';
 import { useWebPlayground } from './web-playground-context';
 
 // Lazy load all the topic components.
-const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction'));
-const DocumentStructure = lazy(() => import('./html-topics/document-structure'));
-const HtmlAttributes = lazy(() => import('./html-topics/html-attributes'));
+const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction').then(module => ({ default: module.default })));
+const DocumentStructure = lazy(() => import('./html-topics/document-structure').then(module => ({ default: module.default })));
+const HtmlAttributes = lazy(() => import('./html-topics/html-attributes').then(module => ({ default: module.default })));
+const HtmlElementsAndTags = lazy(() => import('./html-topics/html-elements-and-tags').then(module => ({ default: module.default })));
 
 
 // Map slugs to their lazy-loaded components
@@ -18,6 +19,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'introduction-to-html': HtmlIntroduction,
   'document-structure': DocumentStructure,
   'html-attributes': HtmlAttributes,
+  'html-elements-and-tags': HtmlElementsAndTags,
 };
 
 function LoadingSkeleton() {
