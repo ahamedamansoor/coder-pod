@@ -14,11 +14,9 @@ export function JavaInnerClasses({ onOpenEditor }: JavaInnerClassesProps) {
     const innerClassExample = `class OuterClass {
   private int outerX = 10;
 
-  // Inner class
-  class InnerClass {
+  class InnerClass { // Inner class
     public int getOuterX() {
-      // Can access private members of the outer class
-      return outerX;
+      return outerX; // Can access private members of the outer class
     }
   }
 }

@@ -77,8 +77,7 @@ export function JavaConstructors({ onOpenEditor }: JavaConstructorsProps) {
 
         // This is the constructor for the Car class
         public Car(String modelName, int modelYear) {
-            // Initialize the attributes model and year
-            model = modelName;
+            model = modelName; // Initialize the attributes model and year
             year = modelYear;
         }
     }

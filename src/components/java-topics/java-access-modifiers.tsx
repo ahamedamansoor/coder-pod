@@ -15,7 +15,8 @@ export function JavaAccessModifiers() {
             subclass: "Visible",
             world: "Visible",
             color: "text-green-500",
-            bgColor: "bg-green-500/10"
+            bgColor: "bg-green-500/10",
+            code: `public String myAttribute;`
         },
         {
             name: "protected",
@@ -26,7 +27,8 @@ export function JavaAccessModifiers() {
             subclass: "Visible",
             world: "Hidden",
             color: "text-yellow-500",
-            bgColor: "bg-yellow-500/10"
+            bgColor: "bg-yellow-500/10",
+            code: `protected String myAttribute;`
         },
         {
             name: "default",
@@ -37,7 +39,8 @@ export function JavaAccessModifiers() {
             subclass: "Hidden*",
             world: "Hidden",
             color: "text-blue-500",
-            bgColor: "bg-blue-500/10"
+            bgColor: "bg-blue-500/10",
+            code: `String myAttribute; // No modifier means default`
         },
         {
             name: "private",
@@ -48,7 +51,8 @@ export function JavaAccessModifiers() {
             subclass: "Hidden",
             world: "Hidden",
             color: "text-red-500",
-            bgColor: "bg-red-500/10"
+            bgColor: "bg-red-500/10",
+            code: `private String myAttribute;`
         }
     ];
 
@@ -125,9 +129,9 @@ export function JavaAccessModifiers() {
                         <CardContent>
                             <div className="bg-muted rounded-md p-4">
                                 <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`class MyClass {
-  ${mod.name === 'default' ? '' : mod.name + ' '}String myAttribute;
+  ${mod.code}
   
-  ${mod.name === 'default' ? '' : mod.name + ' '}void myMethod() {
+  void myMethod() {
     // ...
   }
 }`}</pre>
@@ -149,7 +153,7 @@ export function JavaAccessModifiers() {
                     <p className="text-muted-foreground mt-2">To allow other classes to read or modify these private attributes, you provide `public` "getter" and "setter" methods. This gives you more control over your data.</p>
                     <div className="bg-background border rounded-md p-4 mt-4">
                          <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`public class Person {
-  private String name; // Private attribute
+  private String name; // private attribute
 
   // Public "getter" method to access the name
   public String getName() {

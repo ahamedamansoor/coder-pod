@@ -12,7 +12,7 @@ function wrapInMain(code: string): string {
 }
 
 export function JavaTernaryOperator({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
-    const example = "int time = 20;\nString result = (time < 18) ? \"Good day.\" : \"Good evening.\";\nSystem.out.println(result);";
+    const example = "int time = 20;\nString result = (time < 18) ? \"Good day.\" : \"Good evening.\"; // Assigns one of two values based on a condition\nSystem.out.println(result);";
     const output = "Good evening.";
 
   return (

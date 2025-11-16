@@ -32,13 +32,11 @@ function wrapInMain(code: string): string {
 export function JavaRecursion({ onOpenEditor }: JavaRecursionProps) {
 
     const factorialExample = `public static long factorial(int n) {
-    // Base Case: the stopping condition
     if (n <= 1) {
-        return 1;
+        return 1; // Base Case: the stopping condition
     } 
-    // Recursive Step: the function calls itself
     else {
-        return n * factorial(n - 1);
+        return n * factorial(n - 1); // Recursive Step: the function calls itself
     }
 }`;
     
@@ -170,5 +168,3 @@ export function JavaRecursion({ onOpenEditor }: JavaRecursionProps) {
         </div>
     );
 }
-
-    

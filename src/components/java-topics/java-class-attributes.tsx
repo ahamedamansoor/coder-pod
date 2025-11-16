@@ -33,7 +33,7 @@ export function JavaClassAttributes({ onOpenEditor }: JavaClassAttributesProps) 
 
     const modifyAttributeExample = `System.out.println("Original color: " + myCar.color); // Prints "Red"
 myCar.color = "Yellow";
-System.out.println("New color: " + myCar.color); // Prints "Yellow"`;
+System.out.println("New color: " + myCar.color);       // Prints "Yellow"`;
     
     const finalAttributeExample = `class Vehicle {
     final String VIN = "12345ABC"; // Vehicle Identification Number is constant
@@ -63,8 +63,7 @@ Vehicle myVehicle = new Vehicle();
                  <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`public class Car {
-  // These are the attributes
-  String color = "Red";
+  String color = "Red";   // These are the attributes
   String model = "Mustang";
   int year = 1969;
 }`}</pre>

@@ -17,21 +17,39 @@ export function JavaComments({ onOpenEditor }: { onOpenEditor: (code: string) =>
         name: "Single-Line Comment",
         syntax: "// This is a single-line comment",
         description: "Starts with `//`. Anything after `//` on the same line is ignored by the compiler. It's perfect for short explanations or quick notes.",
-        example: `// Calculate the sum of two numbers\nint sum = 5 + 10; // Adds 5 and 10 together\nSystem.out.println(sum);`,
+        example: `// Calculate the sum of two numbers
+int sum = 5 + 10; // Adds 5 and 10 together
+System.out.println(sum);`,
         icon: MessageSquare
       },
       {
         name: "Multi-Line Comment",
         syntax: "/* ... */",
         description: "Starts with `/*` and ends with `*/`. You can write multiple lines of comments between them. Ideal for longer explanations or temporarily disabling a block of code.",
-        example: `/*\n  This code calculates the area of a rectangle.\n  It takes width and height as input\n  and returns the calculated area.\n*/\nint width = 10;\nint height = 5;\nint area = width * height;\nSystem.out.println("Area: " + area);`,
+        example: `/*
+  This code calculates the area of a rectangle.
+  It takes width and height as input
+  and returns the calculated area.
+*/
+int width = 10;
+int height = 5;
+int area = width * height;
+System.out.println("Area: " + area);`,
         icon: Book
       },
       {
         name: "Documentation Comment (Javadoc)",
         syntax: "/** ... */",
         description: "Starts with `/**` and ends with `*/`. This is a special type of comment used to generate official API documentation for your code. It's used to describe classes, methods, and variables.",
-        example: `/**\n * The main method to run this example program.\n * @param args Command line arguments (not used).\n */\n// This is the main function, so the Javadoc comment would typically be on a class or method.\n// For demonstration, we'll just print a message.\nSystem.out.println("Javadoc comments are for documentation!");`,
+        example: `/**
+ * The main method to run this example program.
+ * @param args Command line arguments (not used).
+ */
+public static void main(String[] args) {
+    // This is the main function, so the Javadoc comment would typically be on a class or method.
+    // For demonstration, we'll just print a message.
+    System.out.println("Javadoc comments are for documentation!");
+}`,
         icon: DraftingCompass
       }
     ];

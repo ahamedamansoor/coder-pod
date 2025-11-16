@@ -25,11 +25,9 @@ class Car extends Vehicle {
   private String modelName = "Mustang"; // Car attribute
   
   public static void main(String[] args) {
-    // Create a Car object
-    Car myCar = new Car();
+    Car myCar = new Car(); // Create a Car object
 
-    // Call the honk() method (from the Vehicle class) on the myCar object
-    myCar.honk();
+    myCar.honk(); // Call the honk() method (from the Vehicle class) on the myCar object
 
     // Display the value of the brand attribute (from the Vehicle class)
     // and the value of the modelName from the Car class

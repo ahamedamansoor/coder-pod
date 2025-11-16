@@ -18,19 +18,16 @@ function wrapInMain(code: string): string {
 
 export function JavaScope({ onOpenEditor }: JavaScopeProps) {
 
-    const blockScopeExample = `// x CANNOT be used here
+    const blockScopeExample = `// Code here CANNOT use x
 for (int i = 0; i < 5; i++) {
-  // i can ONLY be used inside this loop block
   int x = 10; // x can ONLY be used inside this loop block
-  System.out.println(x + i);
+  System.out.println(x + i); // i can ONLY be used inside this loop block
 }
-// x CANNOT be used here
-// i CANNOT be used here
+// Code here CANNOT use x or i
 `;
 
     const methodScopeExample = `public static void myMethod() {
-  // A variable declared here is available anywhere in myMethod
-  String message = "Hello from myMethod!";
+  String message = "Hello from myMethod!"; // Variable declared here is available anywhere in myMethod
   System.out.println(message);
 }
 
@@ -40,8 +37,7 @@ public static void main(String[] args) {
 }`;
     
     const classScopeExample = `public class Car {
-    // These are instance variables (class scope)
-    String model = "Mustang";
+    String model = "Mustang"; // These are instance variables (class scope)
     int year = 1969;
 
     void startEngine() {

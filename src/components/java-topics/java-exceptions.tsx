@@ -16,7 +16,6 @@ function wrapInMain(code: string): string {
 export function JavaExceptions() {
 
     const exceptionExample = `try {
-  // Block of code to try
   int[] myNumbers = {1, 2, 3};
   System.out.println(myNumbers[10]); // This will cause an error
 }
@@ -32,14 +31,12 @@ catch(Exception e) {
 } catch (Exception e) {
   System.out.println("Something went wrong.");
 } finally {
-  // This block is always executed
-  System.out.println("The 'try catch' is finished.");
+  System.out.println("The 'try catch' is finished."); // This block is always executed
 }`;
 
     const throwExample = `public static void checkAge(int age) {
     if (age < 18) {
-        // Throw an exception if age is below 18
-        throw new ArithmeticException("Access denied - You must be at least 18 years old.");
+        throw new ArithmeticException("Access denied - You must be at least 18 years old."); // Throw an exception
     }
     else {
         System.out.println("Access granted - You are old enough!");
