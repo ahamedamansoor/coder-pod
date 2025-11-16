@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -26,6 +25,7 @@ const HtmlForms = lazy(() => import('./html-topics/html-forms'));
 const FormInputTypes = lazy(() => import('./html-topics/form-input-types'));
 const FormAttributes = lazy(() => import('./html-topics/form-attributes'));
 const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
+const Iframes = lazy(() => import('./html-topics/iframes'));
 
 
 // Map slugs to their lazy-loaded components
@@ -48,6 +48,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'form-input-types': FormInputTypes,
   'form-attributes': FormAttributes,
   'audio-and-video': AudioAndVideo,
+  'iframes': Iframes,
 };
 
 function LoadingSkeleton() {
