@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MessageSquare, Play, Lightbulb, Code, Ban } from 'lucide-react';
 import React from 'react';
 
-export default function HtmlComments({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
+export default function HtmlComments({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
     
     const singleLineExample = `<!-- This is a single-line comment -->
 <p>This paragraph is visible.</p>`;
