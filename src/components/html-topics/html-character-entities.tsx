@@ -64,8 +64,8 @@ code {
 
         <Card>
             <CardHeader>
-                <CardTitle className="flex items-center gap-3"><AlertCircle className="w-6 h-6 text-primary"/>Why Are They Needed?</CardTitle>
-                <CardDescription>Some characters are reserved in HTML. For example, you cannot use the less than (`<`) and greater than (`>`) signs in your text, because the browser will interpret them as the start and end of a tag.</CardDescription>
+                <CardTitle className="flex items-center gap-3"><AlertCircle className="w-6 h-6 text-primary" />Why Are They Needed?</CardTitle>
+                <CardDescription>Some characters are reserved in HTML. For example, you cannot use the less than (`&lt;`) and greater than (`&gt;`) signs in your text, because the browser will interpret them as the start and end of a tag.</CardDescription>
             </CardHeader>
             <CardContent>
                  <p className="text-sm text-muted-foreground">To display a reserved character, we must use a **character entity** instead. They are also used for displaying special symbols not found on a standard keyboard.</p>
@@ -75,7 +75,7 @@ code {
         <Card>
             <CardHeader>
                 <CardTitle>Anatomy of an Entity</CardTitle>
-                <CardDescription>A character entity has two forms: the **name** and the **number**. Both produce the same result. They always start with an ampersand (`&`) and end with a semicolon (`;`).</CardDescription>
+                <CardDescription>A character entity has two forms: the **name** and the **number**. Both produce the same result. They always start with an ampersand (`&amp;`) and end with a semicolon (`;`).</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="grid md:grid-cols-2 gap-6 text-center">

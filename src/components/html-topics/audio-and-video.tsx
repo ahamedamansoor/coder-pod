@@ -89,7 +89,7 @@ video {
             <Card>
                 <CardHeader>
                     <CardTitle>Common Attributes</CardTitle>
-                    <CardDescription>These attributes work for both `<audio />` and `<video />` tags.</CardDescription>
+                    <CardDescription>These attributes work for both `&lt;audio /&gt;` and `&lt;video /&gt;` tags.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {commonAttributes.map(attr => (
@@ -104,8 +104,8 @@ video {
             <div className="grid md:grid-cols-2 gap-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary" />The `<audio />` Element</CardTitle>
-                        <CardDescription>Used to embed sound content in documents. It's crucial to provide multiple `<source />` elements for browser compatibility.</CardDescription>
+                        <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary" />The `&lt;audio /&gt;` Element</CardTitle>
+                        <CardDescription>Used to embed sound content in documents. It's crucial to provide multiple `&lt;source /&gt;` elements for browser compatibility.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-4">
@@ -116,8 +116,8 @@ video {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary" />The `<video />` Element</CardTitle>
-                        <CardDescription>Used for playing videos. The `<track />` element is vital for adding subtitles, making your content accessible.</CardDescription>
+                        <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary" />The `&lt;video /&gt;` Element</CardTitle>
+                        <CardDescription>Used for playing videos. The `&lt;track /&gt;` element is vital for adding subtitles, making your content accessible.</CardDescription>
                     </CardHeader>
                     <CardContent>
                          <div className="bg-muted rounded-md p-4 mb-4">
@@ -147,16 +147,16 @@ video {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
-                        <h3 className="font-semibold text-lg">The `<source />` Element</h3>
-                        <p className="text-sm text-muted-foreground">Different browsers support different file formats (like `.mp4`, `.webm`, `.ogg`). To ensure compatibility, you can provide multiple source files inside the `<audio />` or `<video />` tag. The browser will use the first one it recognizes.</p>
+                        <h3 className="font-semibold text-lg">The `&lt;source /&gt;` Element</h3>
+                        <p className="text-sm text-muted-foreground">Different browsers support different file formats (like `.mp4`, `.webm`, `.ogg`). To ensure compatibility, you can provide multiple source files inside the `&lt;audio /&gt;` or `&lt;video /&gt;` tag. The browser will use the first one it recognizes.</p>
                     </div>
                     <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2"><Subtitles className="w-5 h-5" />The `<track />` Element (for Accessibility)</h3>
-                        <p className="text-sm text-muted-foreground">Used with `<video />` to specify timed text tracks (like subtitles or captions). This is crucial for users who are deaf or hard of hearing. The `src` attribute points to a WebVTT file (`.vtt`), which contains the timed text. You can also embed VTT content directly using a data URI for simple cases.</p>
+                        <h3 className="font-semibold text-lg flex items-center gap-2"><Subtitles className="w-5 h-5" />The `&lt;track /&gt;` Element (for Accessibility)</h3>
+                        <p className="text-sm text-muted-foreground">Used with `&lt;video /&gt;` to specify timed text tracks (like subtitles or captions). This is crucial for users who are deaf or hard of hearing. The `src` attribute points to a WebVTT file (`.vtt`), which contains the timed text. You can also embed VTT content directly using a data URI for simple cases.</p>
                     </div>
                      <div>
                         <h3 className="font-semibold text-lg">Fallback Content</h3>
-                        <p className="text-sm text-muted-foreground">Any text you place between the opening and closing `<audio />` or `<video />` tags will be displayed only by browsers that do not support the element, acting as a helpful fallback message.</p>
+                        <p className="text-sm text-muted-foreground">Any text you place between the opening and closing `&lt;audio /&gt;` or `&lt;video /&gt;` tags will be displayed only by browsers that do not support the element, acting as a helpful fallback message.</p>
                     </div>
                 </CardContent>
             </Card>

@@ -191,7 +191,7 @@ colgroup col:nth-child(3) {
                 <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {tableElements.map(el => (
                         <div key={el.tag} className="bg-muted p-4 rounded-lg border">
-                            <h3 className="font-bold flex items-center gap-2 mb-1"><el.icon className="w-5 h-5 text-primary" />{el.tag}</h3>
+                            <h3 className="font-bold flex items-center gap-2 mb-1"><el.icon className="w-5 h-5 text-primary" /><code>{el.tag}</code></h3>
                             <p className="text-sm text-muted-foreground">{el.description}</p>
                         </div>
                     ))}
@@ -201,7 +201,7 @@ colgroup col:nth-child(3) {
             <Card>
                 <CardHeader>
                     <CardTitle>Simple Table Example</CardTitle>
-                    <CardDescription>A basic table structure with headers (`<th>`) and data cells (`<td>`) organized into rows (`<tr>`).</CardDescription>
+                    <CardDescription>A basic table structure with headers (`&lt;th&gt;`) and data cells (`&lt;td&gt;`) organized into rows (`&lt;tr&gt;`).</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
@@ -213,7 +213,7 @@ colgroup col:nth-child(3) {
             <Card>
                 <CardHeader>
                     <CardTitle>Advanced Table Structure</CardTitle>
-                    <CardDescription>For more complex tables, use `<thead>`, `<tbody>`, and `<tfoot>` to define header, body, and footer sections. This provides better structure for browsers and screen readers. `<colgroup>` and `<col>` can be used for styling entire columns.</CardDescription>
+                    <CardDescription>For more complex tables, use `&lt;thead&gt;`, `&lt;tbody&gt;`, and `&lt;tfoot&gt;` to define header, body, and footer sections. This provides better structure for browsers and screen readers. `&lt;colgroup&gt;` and `&lt;col&gt;` can be used for styling entire columns.</CardDescription>
                 </CardHeader>
                 <CardContent>
                      <div className="bg-muted rounded-md p-4 mb-4">

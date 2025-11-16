@@ -174,7 +174,7 @@ footer {
                         <div className="space-y-3">
                             {category.elements.map(el => (
                                 <div key={el.tag}>
-                                    <code className="font-mono text-sm bg-background p-1 rounded">{el.tag}</code>
+                                    <code className="font-mono text-sm bg-background p-1 rounded">&lt;{el.tag.replace('<', '').replace('>', '')}&gt;</code>
                                     <p className="text-xs text-muted-foreground mt-1">{el.description}</p>
                                 </div>
                             ))}

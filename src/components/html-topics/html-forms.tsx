@@ -134,8 +134,8 @@ button {
         
         <Card>
             <CardHeader>
-                <CardTitle>The Core `<form>` Element</CardTitle>
-                <CardDescription>Everything starts with the `<form>` tag, which acts as a container for all the input fields.</CardDescription>
+                <CardTitle>The Core &lt;form&gt; Element</CardTitle>
+                <CardDescription>Everything starts with the &lt;form&gt; tag, which acts as a container for all the input fields.</CardDescription>
             </CardHeader>
             <CardContent>
                  <div className="bg-muted p-4 rounded-lg border mb-4">
@@ -150,7 +150,7 @@ button {
                     </div>
                 </div>
                 <div className="flex items-center gap-4 text-center">
-                    <p className="font-mono text-lg">`<form action="/server-url" method="POST">`</p>
+                    <p className="font-mono text-lg">`&lt;form action="/server-url" method="POST"&gt;`</p>
                     <Send className="w-6 h-6 text-primary"/>
                     <p>User Data</p>
                     <Vote className="w-6 h-6 text-primary"/>
@@ -162,7 +162,7 @@ button {
         <Card>
             <CardHeader>
                 <CardTitle>Common Form Elements</CardTitle>
-                <CardDescription>These are the building blocks you'll use inside your `<form>` tag.</CardDescription>
+                <CardDescription>These are the building blocks you'll use inside your &lt;form&gt; tag.</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -179,7 +179,7 @@ button {
         <Card>
             <CardHeader>
                 <CardTitle>See It In Action</CardTitle>
-                <CardDescription>Open this full form example in the Web Playground. It combines `<fieldset>`, `<legend>`, `<label>`, `<input>`, and `<textarea>` for a well-structured form.</CardDescription>
+                <CardDescription>Open this full form example in the Web Playground. It combines &lt;fieldset&gt;, &lt;legend&gt;, &lt;label&gt;, &lt;input&gt;, and &lt;textarea&gt; for a well-structured form.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
