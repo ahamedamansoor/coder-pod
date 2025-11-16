@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -106,7 +107,7 @@ export default function FormAttributes({ onOpenWebPlayground }: { onOpenWebPlayg
 
       <Card>
         <CardHeader>
-          <CardTitle>Attributes for the `<form>` Element</CardTitle>
+          <CardTitle>Attributes for the &lt;form&gt; Element</CardTitle>
           <CardDescription>These attributes control how the entire form behaves and where its data is sent.</CardDescription>
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -121,7 +122,7 @@ export default function FormAttributes({ onOpenWebPlayground }: { onOpenWebPlayg
 
       <Card>
         <CardHeader>
-          <CardTitle>Attributes for `<input>` Elements</CardTitle>
+          <CardTitle>Attributes for &lt;input&gt; Elements</CardTitle>
           <CardDescription>These attributes define the behavior, validation, and appearance of individual form controls.</CardDescription>
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -138,7 +139,7 @@ export default function FormAttributes({ onOpenWebPlayground }: { onOpenWebPlayg
         <CardHeader>
           <CardTitle>See It In Action</CardTitle>
           <CardDescription>
-            Open this example in the Web Playground. Try submitting with an empty username (which is `required`) or a short password to see browser validation work.
+            Open this example in the Web Playground. Try submitting with an empty username (which is <code className="font-mono text-sm bg-muted p-1 rounded-sm">required</code>) or a short password to see browser validation work.
           </CardDescription>
         </CardHeader>
         <CardContent>
