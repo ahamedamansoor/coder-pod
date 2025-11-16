@@ -78,7 +78,7 @@ export default function HtmlComments({ onOpenWebPlayground }: { onOpenWebPlaygro
         <Card>
             <CardHeader>
                 <CardTitle>Syntax</CardTitle>
-                <CardDescription>An HTML comment starts with `<!--` and ends with `-->`. Everything in between is ignored by the browser.</CardDescription>
+                <CardDescription>An HTML comment starts with `&lt;!--` and ends with `--&gt;`. Everything in between is ignored by the browser.</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="bg-muted rounded-md p-4 mb-4">
