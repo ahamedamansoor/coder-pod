@@ -2,7 +2,7 @@
 import { SidebarTrigger } from './ui/sidebar';
 import { Logo } from './logo';
 import { Button } from './ui/button';
-import { Code, LogOut, User, LogIn } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc } from 'firebase/firestore';
+import { WebPlaygroundModal } from './web-playground-modal';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -71,6 +72,12 @@ export function MainHeader({
       </div>
       <div className="flex items-center gap-4">
         <ThemeToggle />
+        <WebPlaygroundModal>
+            <Button variant="outline">
+                <LayoutGrid className="mr-2 h-4 w-4" />
+                Web Playground
+            </Button>
+        </WebPlaygroundModal>
         <Button variant="outline" onClick={onToggleEditor}>
           <Code className="mr-2 h-4 w-4" />
           Code Editor
