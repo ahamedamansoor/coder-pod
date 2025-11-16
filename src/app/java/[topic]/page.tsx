@@ -6,7 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data';
 import { JavaContentDisplay } from '@/components/java-content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
-import { ResizablePanel } from '@/components/ui/resizable-panel';
+import { ResizablePanel } from '@/components/ui/resizable';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useJavaLayout } from '../java-layout-context';

@@ -6,7 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data';
 import { JavascriptContentDisplay } from '@/components/javascript-content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
-import { ResizablePanel } from '@/components/ui/resizable-panel';
+import { ResizablePanel } from '@/components/ui/resizable';
 import { JavascriptLearningRoadmap } from '@/components/javascript-learning-roadmap';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useJavascriptLayout } from '../javascript-layout-context';

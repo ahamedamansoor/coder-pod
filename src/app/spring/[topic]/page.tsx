@@ -6,7 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data';
 import { SpringContentDisplay } from '@/components/spring-content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
-import { ResizablePanel } from '@/components/ui/resizable-panel';
+import { ResizablePanel } from '@/components/ui/resizable';
 import { SpringLearningRoadmap } from '@/components/spring-learning-roadmap';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSpringLayout } from '../spring-layout-context';
