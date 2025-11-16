@@ -424,5 +424,3 @@ export function ContentDisplay({
     </div>
   );
 }
-
-    
