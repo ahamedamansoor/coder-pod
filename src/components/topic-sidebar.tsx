@@ -15,6 +15,7 @@ import { ScrollArea } from './ui/scroll-area';
 import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useJava } from '@/app/java/java-context';
+import { useSpring } from '@/app/spring/spring-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -29,8 +30,11 @@ export function TopicSidebar({
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { completedTopics } = useJava(); // This needs to be dynamic
+  const javaContext = useJava();
+  const springContext = useSpring();
   const { user } = useUser();
+
+  const { completedTopics } = language.slug === 'java' ? javaContext : springContext;
 
   const isUserAuthenticated = user && !user.isAnonymous;
 

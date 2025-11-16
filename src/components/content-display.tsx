@@ -25,6 +25,7 @@ import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
+import { useSpring } from '@/app/spring/spring-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
 import { cn } from '@/lib/utils';
@@ -211,10 +212,13 @@ export function ContentDisplay({
 
   const [hasCopied, setHasCopied] = React.useState(false);
   
-  const { completedTopics, handleToggleComplete } = useJava();
+  const javaContext = useJava();
+  const springContext = useSpring();
   const { user } = useUser();
   const isUserAuthenticated = user && !user.isAnonymous;
 
+  const { completedTopics, handleToggleComplete } = language.slug === 'java' ? javaContext : springContext;
+  
   const { toast } = useToast();
 
   React.useEffect(() => {
