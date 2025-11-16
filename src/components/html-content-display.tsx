@@ -14,6 +14,7 @@ const HtmlElementsAndTags = lazy(() => import('./html-topics/html-elements-and-t
 const HtmlHeadingsAndParagraphs = lazy(() => import('./html-topics/html-headings-and-paragraphs'));
 const TextFormatting = lazy(() => import('./html-topics/html-text-formatting'));
 const HtmlComments = lazy(() => import('./html-topics/html-comments'));
+const HtmlLists = lazy(() => import('./html-topics/html-lists'));
 
 
 // Map slugs to their lazy-loaded components
@@ -25,6 +26,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-headings-and-paragraphs': HtmlHeadingsAndParagraphs,
   'text-formatting': TextFormatting,
   'html-comments': HtmlComments,
+  'html-lists': HtmlLists,
 };
 
 function LoadingSkeleton() {
