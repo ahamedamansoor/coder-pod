@@ -6,8 +6,8 @@ import React, { lazy, Suspense } from 'react';
 import { Skeleton } from './ui/skeleton';
 import { GenericContentDisplay } from './generic-content-display';
 
-// Lazy load all the topic components
-const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction').then(module => ({ default: module.HtmlIntroduction })));
+// Lazy load all the topic components. The import() must resolve to a module with a default export.
+const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
