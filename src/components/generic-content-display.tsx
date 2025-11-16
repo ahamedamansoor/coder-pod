@@ -42,10 +42,12 @@ export function GenericContentDisplay({
   topic, 
   language, 
   onOpenEditor,
+  children
 }: { 
   topic: Topic, 
   language: Language, 
   onOpenEditor: (code: string) => void,
+  children?: React.ReactNode
 }) {
   const [isSimplifying, setIsSimplifying] = React.useState(false);
   const [simplifiedContent, setSimplifiedContent] = React.useState<SimplifyTopicExplanationOutput | null>(null);
@@ -151,10 +153,14 @@ export function GenericContentDisplay({
          )}
         </header>
       
-      <Card>
-        <CardHeader><CardTitle>Explanation</CardTitle></CardHeader>
-        <CardContent><p className="text-base leading-relaxed">{topic.explanation}</p></CardContent>
-      </Card>
+      {children ? (
+        children
+      ) : (
+        <Card>
+          <CardHeader><CardTitle>Explanation</CardTitle></CardHeader>
+          <CardContent><p className="text-base leading-relaxed">{topic.explanation}</p></CardContent>
+        </Card>
+      )}
       
       {!isLearningPlanTopic && (
         <>

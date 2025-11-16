@@ -16,7 +16,6 @@ const TextFormatting = lazy(() => import('./html-topics/html-text-formatting'));
 const HtmlComments = lazy(() => import('./html-topics/html-comments'));
 const HtmlLists = lazy(() => import('./html-topics/html-lists'));
 
-
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'introduction-to-html': HtmlIntroduction,
@@ -53,19 +52,15 @@ export function HtmlContentDisplay({
 }) {
   const { openWithContent } = useWebPlayground();
 
-  const renderTopicContent = () => {
-    const Component = topicComponentMap[topic.slug];
-    
-    if (Component) {
-      return <Component onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />;
-    }
-
-    return <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditor} />;
-  };
+  const CustomTopicComponent = topicComponentMap[topic.slug];
 
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      {renderTopicContent()}
-    </Suspense>
+    <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditor}>
+        {CustomTopicComponent && (
+            <Suspense fallback={<LoadingSkeleton />}>
+                <CustomTopicComponent onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />
+            </Suspense>
+        )}
+    </GenericContentDisplay>
   );
 }
