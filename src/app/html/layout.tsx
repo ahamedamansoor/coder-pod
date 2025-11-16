@@ -32,6 +32,7 @@ function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
         <MainHeader
           onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
           isEditorOpen={isEditorOpen}
+          showCodeEditorButton={false}
         />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar>

@@ -21,11 +21,13 @@ import { WebPlaygroundModal } from './web-playground-modal';
 interface MainHeaderProps {
   onToggleEditor: () => void;
   isEditorOpen: boolean;
+  showCodeEditorButton?: boolean;
 }
 
 export function MainHeader({
   onToggleEditor,
-  isEditorOpen
+  isEditorOpen,
+  showCodeEditorButton = true,
 }: MainHeaderProps) {
   const { user } = useUser();
   const auth = useAuth();
@@ -78,10 +80,12 @@ export function MainHeader({
                 Web Playground
             </Button>
         </WebPlaygroundModal>
-        <Button variant="outline" onClick={onToggleEditor}>
-          <Code className="mr-2 h-4 w-4" />
-          Code Editor
-        </Button>
+        {showCodeEditorButton && (
+          <Button variant="outline" onClick={onToggleEditor}>
+            <Code className="mr-2 h-4 w-4" />
+            Code Editor
+          </Button>
+        )}
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
