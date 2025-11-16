@@ -27,7 +27,7 @@ const SimplifyTopicExplanationOutputSchema = z.object({
   bulletPoints: z
     .array(z.string())
     .describe('An array of key ideas as bullet points.'),
-  examples: z.string().describe('Clear and concise code examples using markdown.'),
+  examples: z.string().optional().describe('Clear and concise code examples using markdown, if applicable. If no code example is relevant, this can be omitted.'),
 });
 
 export type SimplifyTopicExplanationOutput = z.infer<typeof SimplifyTopicExplanationOutputSchema>;
@@ -57,7 +57,7 @@ Existing Code:
 {{{codeSnippet}}}
 {{/if}}
 
-Your job is to provide a much simpler, more structured explanation. Please provide the following four things, adhering to the guidelines for each:
+Your job is to provide a much simpler, more structured explanation. Please provide the following things, adhering to the guidelines for each:
 
 1.  **Summary**:
     - A single, concise sentence that summarizes the absolute core of the topic.
@@ -72,11 +72,12 @@ Your job is to provide a much simpler, more structured explanation. Please provi
     - Each bullet point should be a short, easy-to-digest sentence.
 
 4.  **Examples**:
-    - Provide clear and concise code examples.
+    - **If the topic is code-related**, provide clear and concise code examples.
     - Use markdown for all code formatting (e.g., \`\`\`java).
     - If the concept involves a process, add comments to the code to explain each step.
     - Keep the examples focused on demonstrating only the topic at hand.
     - If an existing code snippet was provided, make your example a commented, simplified, or related version of it.
+    - **If the topic is purely conceptual (e.g., history), you may omit the code examples.**
 `,
 });
 

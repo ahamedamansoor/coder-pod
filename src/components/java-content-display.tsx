@@ -469,26 +469,28 @@ export function JavaContentDisplay({
                     </ul>
                  </CardContent>
                </Card>
-               <Card className="border-primary/50 bg-primary/5">
-                 <CardHeader className='flex-row items-center justify-between'>
-                    <CardTitle className="flex items-center gap-3"><Code className="text-primary"/>Code Examples</CardTitle>
-                    <Button variant="ghost" size="icon" onClick={handleCopyCode}>
-                        {hasCopied ? (
-                            <Check className="w-4 h-4 text-green-500" />
-                        ) : (
-                            <Copy className="w-4 h-4" />
-                        )}
-                        <span className="sr-only">Copy code</span>
-                    </Button>
-                 </CardHeader>
-                 <CardContent>
-                    <div className="bg-card p-4 rounded-md overflow-x-auto">
-                      <pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">
-                        {simplifiedContent.examples}
-                      </code></pre>
-                    </div>
-                 </CardContent>
-               </Card>
+               {simplifiedContent.examples && (
+                <Card className="border-primary/50 bg-primary/5">
+                  <CardHeader className='flex-row items-center justify-between'>
+                      <CardTitle className="flex items-center gap-3"><Code className="text-primary"/>Code Examples</CardTitle>
+                      <Button variant="ghost" size="icon" onClick={handleCopyCode}>
+                          {hasCopied ? (
+                              <Check className="w-4 h-4 text-green-500" />
+                          ) : (
+                              <Copy className="w-4 h-4" />
+                          )}
+                          <span className="sr-only">Copy code</span>
+                      </Button>
+                  </CardHeader>
+                  <CardContent>
+                      <div className="bg-card p-4 rounded-md overflow-x-auto">
+                        <pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">
+                          {simplifiedContent.examples}
+                        </code></pre>
+                      </div>
+                  </CardContent>
+                </Card>
+               )}
            </div>
         </div>
       )}
