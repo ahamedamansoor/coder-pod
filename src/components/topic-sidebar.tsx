@@ -16,7 +16,7 @@ import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface TopicSidebarProps {
   language: Language;
@@ -177,14 +177,16 @@ export function TopicSidebar({
                       {isUserAuthenticated ? (
                         learningPlanButton
                       ) : (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="w-full">{learningPlanButton}</div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>You need to be logged in to save your progress.</p>
-                          </TooltipContent>
-                        </Tooltip>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="w-full">{learningPlanButton}</div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Sign in to track your progress.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       )}
                     </SidebarMenuItem>
                   </div>

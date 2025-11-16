@@ -8,12 +8,17 @@ import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export const JavaLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useJava();
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  
+  const isUserAuthenticated = user && !user.isAnonymous;
 
   useEffect(() => {
     if (!isUserLoading && !user) {
@@ -239,8 +244,8 @@ export const JavaLearningRoadmap = () => {
   ];
 
   const toggleTopic = (topicId: string) => {
-    if (!user) {
-      router.push('/login');
+    if (!isUserAuthenticated) {
+      // Potentially show a toast or message
       return;
     }
     handleToggleComplete(topicId);
@@ -278,7 +283,7 @@ export const JavaLearningRoadmap = () => {
   };
 
   const calculateProgress = () => {
-    if (!user) return 0;
+    if (!isUserAuthenticated) return 0;
     const totalTopics = modules.reduce((acc, module) => acc + module.topics.length, 0);
     if (totalTopics === 0) return 0;
     const completed = completedTopics.size;
@@ -316,8 +321,58 @@ export const JavaLearningRoadmap = () => {
     );
   }
   
-  const completedCount = user ? completedTopics.size : 0;
+  const completedCount = isUserAuthenticated ? completedTopics.size : 0;
   const totalTopicCount = modules.reduce((acc, m) => acc + m.topics.length, 0);
+  
+  const TopicItem = ({ topic }: { topic: (typeof modules)[0]['topics'][0] }) => {
+    const isCompleted = isUserAuthenticated && completedTopics.has(topic.id);
+    const itemContent = (
+      <div
+        onClick={() => toggleTopic(topic.id)}
+        className={cn(
+          "bg-background border rounded-lg p-4 transition-all duration-200",
+          isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50",
+          !isUserAuthenticated && "cursor-not-allowed opacity-70",
+          isCompleted ? 'border-primary bg-primary/5' : 'border-border'
+        )}
+      >
+        <div className="flex items-start gap-3">
+          <div className="mt-1">
+            {isCompleted ? (
+              <CheckCircle className="w-6 h-6 text-primary" />
+            ) : (
+              <Circle className="w-6 h-6 text-muted-foreground/50" />
+            )}
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-1">
+              <Link href={`/java/${topic.id}`} className="hover:underline">
+                <h3 className="text-lg font-semibold text-foreground">{topic.name}</h3>
+              </Link>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getDifficultyColor(topic.difficulty)}`}>
+                {topic.difficulty}
+              </span>
+            </div>
+            <p className="text-muted-foreground text-sm">{topic.desc}</p>
+          </div>
+        </div>
+      </div>
+    );
+
+    if (!isUserAuthenticated) {
+      return (
+        <TooltipProvider>
+          <UITooltip>
+            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipContent>
+              <p>Sign in to track your progress.</p>
+            </TooltipContent>
+          </UITooltip>
+        </TooltipProvider>
+      );
+    }
+    return itemContent;
+  };
 
   return (
     <div className="p-2 md:p-6 max-w-none">
@@ -405,32 +460,7 @@ export const JavaLearningRoadmap = () => {
               {expandedModule === module.id && (
                 <div className="p-6 space-y-3 bg-muted/50">
                   {module.topics.map((topic) => (
-                    <div
-                      key={topic.id}
-                      onClick={() => toggleTopic(topic.id)}
-                      className={`bg-background border rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-sm hover:border-primary/50 ${
-                        user && completedTopics.has(topic.id) ? 'border-primary bg-primary/5' : 'border-border'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="mt-1">
-                          {user && completedTopics.has(topic.id) ? (
-                            <CheckCircle className="w-6 h-6 text-primary" />
-                          ) : (
-                            <Circle className="w-6 h-6 text-muted-foreground/50" />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-1">
-                            <h3 className="text-lg font-semibold text-foreground">{topic.name}</h3>
-                            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getDifficultyColor(topic.difficulty)}`}>
-                              {topic.difficulty}
-                            </span>
-                          </div>
-                          <p className="text-muted-foreground text-sm">{topic.desc}</p>
-                        </div>
-                      </div>
-                    </div>
+                    <TopicItem key={topic.id} topic={topic} />
                   ))}
                 </div>
               )}
@@ -472,3 +502,5 @@ export const JavaLearningRoadmap = () => {
     </div>
   );
 };
+
+    
