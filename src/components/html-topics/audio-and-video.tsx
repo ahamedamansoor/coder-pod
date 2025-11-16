@@ -39,19 +39,19 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
         html: `<h2>Audio Player</h2>
 <p>This audio player includes multiple sources for browser compatibility.</p>
 <audio controls style="width: 100%;">
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg" />
   Your browser does not support the audio element.
 </audio>
 
-<hr style="margin: 2rem 0;">
+<hr style="margin: 2rem 0;" />
 
 <h2>Video Player</h2>
 <p>This video player includes a poster image and English subtitles.</p>
 <video controls width="100%" poster="https://picsum.photos/seed/playground/600/338" data-ai-hint="nature water">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm">
-  <track default src="data:text/vtt;base64,V0VCVlRUDQoNCjAwOjAwOjAyLjUwMCAtLT4gMDA6MDA6MDQuNTAwDQpCeSBub3csIHlvdSdsbCBzaG91dCwNCg0KMDA6MDA6MDQuNTAwIC0tPiAwMDowMDowNi4wMDANCkhvdyBkaWQgSSBldmVyIGdldCBhbG9uZyB3aXRob3V0IHlvdT8=" kind="subtitles" srclang="en" label="English">
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
+  <track default src="data:text/vtt;base64,V0VCVlRUDQoNCjAwOjAwOjAyLjUwMCAtLT4gMDA6MDA6MDQuNTAwDQpCeSBub3csIHlvdSdsbCBzaG91dCwNCg0KMDA6MDA6MDQuNTAwIC0tPiAwMDowMDowNi4wMDANCkhvdyBkaWQgSSBldmVyIGdldCBhbG9uZyB3aXRob3V0IHlvdT8=" kind="subtitles" srclang="en" label="English" />
   Sorry, your browser doesn't support embedded videos.
 </video>
 `,

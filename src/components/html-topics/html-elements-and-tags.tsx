@@ -70,7 +70,7 @@ export default function HtmlElementsAndTags({ onOpenWebPlayground }: { onOpenWeb
   </ol>
 </section>
 
-<hr>
+<hr />
 <footer>
   <p>Copyright 2024 Coder Pod</p>
 </footer>`,

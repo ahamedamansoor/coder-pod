@@ -1,3 +1,4 @@
+
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,7 @@ export default function HtmlLinks({ onOpenWebPlayground }: { onOpenWebPlayground
 
 <h2>Download Link</h2>
 <p><a href="#" download="fake_document.txt">Download a file</a></p>
-<hr style="margin: 2rem 0;">
+<hr style="margin: 2rem 0;" />
 
 <h2 id="conclusion">Conclusion Section</h2>
 <p>You've successfully jumped to this section using an anchor link!</p>`,

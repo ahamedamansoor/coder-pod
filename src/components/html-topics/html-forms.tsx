@@ -33,12 +33,12 @@ export default function HtmlForms({ onOpenWebPlayground }: { onOpenWebPlayground
     
     <div>
       <label for="name">Name:</label>
-      <input type="text" id="name" name="user_name">
+      <input type="text" id="name" name="user_name" />
     </div>
     
     <div>
       <label for="mail">E-mail:</label>
-      <input type="email" id="mail" name="user_email">
+      <input type="email" id="mail" name="user_email" />
     </div>
   </fieldset>
 
