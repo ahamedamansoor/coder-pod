@@ -79,13 +79,14 @@ export default function SignupPage() {
       // Send verification email
       await sendEmailVerification(user);
 
-      // Don't create the Firestore profile here. It will be created on first verified login.
-      // We are passing user details via query params for pre-filling, this is optional.
+      // We pass user details via query params for pre-filling on the login page,
+      // as the profile will only be created upon first verified sign-in.
       const queryParams = new URLSearchParams({
         name: values.name,
         dob: values.dob.toISOString(),
         phoneNumber: `${values.countryCode}${values.phoneNumber}`,
       });
+      const loginUrl = `/login?${queryParams.toString()}`;
 
       toast({ 
         title: 'Account Created!',
@@ -93,7 +94,8 @@ export default function SignupPage() {
         duration: 8000,
       });
 
-      router.push('/login');
+      // Redirect to the login page with pre-fill data.
+      router.push(loginUrl);
 
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {

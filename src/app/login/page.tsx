@@ -29,20 +29,25 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const createUserProfile = async (user: FirebaseUser) => {
-    if (!user || user.isAnonymous || !firestore) return;
-    
-    // For social sign-ins, we can assume email is verified.
-    // For email/password, we must check.
-    if (!user.emailVerified && user.providerData.some(p => p.providerId === 'password')) {
+    if (!user || !firestore) return;
+
+    // For email/password sign-in, we must check if the email is verified.
+    // Social sign-ins (Google, GitHub) are assumed to have verified emails.
+    const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
+    if (isEmailPasswordSignIn && !user.emailVerified) {
         toast({
             variant: 'destructive',
             title: 'Verification Required',
             description: 'Please verify your email before signing in. Check your inbox for a verification link.',
             duration: 8000,
         });
-        // Optionally sign the user out again
-        await auth?.signOut();
+        await auth?.signOut(); // Sign out the unverified user
         return; 
+    }
+
+    if (user.isAnonymous) {
+      router.push('/java/learning-plan');
+      return;
     }
 
     const userRef = doc(firestore, `users/${user.uid}`);
@@ -124,8 +129,8 @@ export default function LoginPage() {
     if (!auth) return;
     setIsAnonymousLoading(true);
     try {
-      await signInAnonymously(auth);
-      router.push('/java/what-is-java');
+      const credential = await signInAnonymously(auth);
+      await createUserProfile(credential.user);
     } catch (error: any) {
       console.error('Anonymous sign-in error:', error);
        toast({
