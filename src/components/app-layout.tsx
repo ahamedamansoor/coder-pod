@@ -151,12 +151,18 @@ export default function AppLayout() {
         <div className="mt-16 text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">Choose Your Language</h2>
             <p className="text-muted-foreground mb-8">Select a language to begin your learning journey.</p>
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-4 flex-wrap">
                 <Button size="lg" asChild>
                     <Link href="/java/learning-plan">Start Learning Java</Link>
                 </Button>
                 <Button size="lg" asChild>
                     <Link href="/spring/learning-plan">Start Learning Spring</Link>
+                </Button>
+                 <Button size="lg" asChild>
+                    <Link href="/javascript/learning-plan">Start Learning JavaScript</Link>
+                </Button>
+                 <Button size="lg" asChild>
+                    <Link href="/react/learning-plan">Start Learning React</Link>
                 </Button>
             </div>
         </div>

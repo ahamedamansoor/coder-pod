@@ -16,6 +16,8 @@ import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useJava } from '@/app/java/java-context';
 import { useSpring } from '@/app/spring/spring-context';
+import { useJavascript } from '@/app/javascript/javascript-context';
+import { useReact } from '@/app/react/react-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -32,6 +34,14 @@ function useLanguageContext(language: Language) {
     if (language.slug === 'spring') {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         return useSpring();
+    }
+    if (language.slug === 'javascript') {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      return useJavascript();
+    }
+    if (language.slug === 'react') {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      return useReact();
     }
     // Fallback or default context if necessary
     return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
@@ -113,6 +123,36 @@ export function TopicSidebar({
                 break;
             }
         }
+    } else if (language.slug === 'javascript') {
+      const jsGroups: Record<string, string[]> = {
+        "Fundamentals": ['introduction-to-js', 'js-variables', 'js-data-types', 'js-operators'],
+        "Functions & Scope": ['js-functions', 'js-scope'],
+        "Data Structures": ['js-objects', 'js-arrays', 'js-array-methods'],
+        "Control Flow": ['js-loops', 'js-conditionals'],
+        "Browser APIs": ['js-dom-manipulation', 'js-events'],
+        "Asynchronous JS": ['js-async'],
+        "Modern JS": ['js-es6'],
+      };
+       for (const groupName in jsGroups) {
+          if (jsGroups[groupName].includes(topic.slug)) {
+              group = groupName;
+              break;
+          }
+      }
+    } else if (language.slug === 'react') {
+      const reactGroups: Record<string, string[]> = {
+        "Core Concepts": ['what-is-react', 'jsx', 'react-components', 'react-state', 'react-lifecycle'],
+        "Rendering": ['conditional-rendering', 'lists-and-keys'],
+        "Forms & Events": ['react-forms'],
+        "Hooks": ['use-state-hook', 'use-effect-hook', 'use-context-hook', 'custom-hooks'],
+        "Advanced": ['react-router', 'react-state-management', 'react-performance'],
+      };
+        for (const groupName in reactGroups) {
+          if (reactGroups[groupName].includes(topic.slug)) {
+              group = groupName;
+              break;
+          }
+      }
     }
 
     if (!acc[group]) {
@@ -124,7 +164,13 @@ export function TopicSidebar({
 
   const groupOrder = language.slug === 'java' 
     ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings", "Arrays", "Methods", "Object-Oriented Programming", "Collections", "Advanced Topics", "Others"]
-    : ["Spring Core", "Data & Persistence", "Spring MVC & Web", "Spring Boot", "Advanced Topics", "Spring Ecosystem", "Others"];
+    : language.slug === 'spring' 
+    ? ["Spring Core", "Data & Persistence", "Spring MVC & Web", "Spring Boot", "Advanced Topics", "Spring Ecosystem", "Others"]
+    : language.slug === 'javascript'
+    ? ["Fundamentals", "Functions & Scope", "Data Structures", "Control Flow", "Browser APIs", "Asynchronous JS", "Modern JS", "Others"]
+    : language.slug === 'react'
+    ? ["Core Concepts", "Rendering", "Forms & Events", "Hooks", "Advanced", "Others"]
+    : [];
 
   const renderTopicGroup = (title: string, topics: typeof language.topics) => (
     topics && topics.length > 0 && (
