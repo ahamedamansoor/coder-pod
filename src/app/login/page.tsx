@@ -12,7 +12,6 @@ import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, si
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Separator } from '@/components/ui/separator';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -83,36 +82,47 @@ export default function LoginPage() {
     setIsEmailLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // For existing users, we just update their last login time.
       const userRef = doc(firestore, `users/${userCredential.user.uid}`);
       await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
       router.push('/java/learning-plan');
-
     } catch (error: any) {
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-        try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          await handleSuccessfulLogin(userCredential);
-        } catch (signUpError: any) {
-          console.error('Email sign-up error:', signUpError);
-          toast({
-            variant: 'destructive',
-            title: 'Sign-up failed',
-            description: signUpError.message || 'Could not create a new account.',
-          });
-        }
-      } else {
-        console.error('Email sign-in error:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Sign-in failed',
-          description: error.message || 'An unexpected error occurred.',
-        });
-      }
+      console.error('Email sign-in error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Sign-in failed',
+        description: 'Invalid email or password. Please try again or sign up.',
+      });
     } finally {
       setIsEmailLoading(false);
     }
   };
+
+  const handleEmailSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsEmailLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await handleSuccessfulLogin(userCredential);
+    } catch (error: any) {
+      console.error('Email sign-up error:', error);
+       if (error.code === 'auth/email-already-in-use') {
+          toast({
+            variant: 'destructive',
+            title: 'Sign-up failed',
+            description: 'This email is already in use. Please try to sign in instead.',
+          });
+       } else {
+         toast({
+            variant: 'destructive',
+            title: 'Sign-up failed',
+            description: error.message || 'Could not create a new account.',
+          });
+       }
+    } finally {
+      setIsEmailLoading(false);
+    }
+  };
+
 
   const isLoading = isEmailLoading || isGoogleLoading || isAnonymousLoading;
 
@@ -123,8 +133,8 @@ export default function LoginPage() {
           <div className="mx-auto">
             <Logo />
           </div>
-          <CardTitle>Create an Account or Sign In</CardTitle>
-          <CardDescription>To save your progress, please create an account or sign in.</CardDescription>
+          <CardTitle>Welcome to Coder Pod</CardTitle>
+          <CardDescription>Sign in or create an account to save your progress.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
            <Button
@@ -152,41 +162,40 @@ export default function LoginPage() {
             </div>
           </div>
           
-          <form onSubmit={handleEmailSignIn}>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <Button type="submit" disabled={isLoading}>
-                {isEmailLoading ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  'Sign In or Sign Up with Email'
-                )}
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Button onClick={handleEmailSignIn} disabled={isLoading}>
+                {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign In'}
+              </Button>
+              <Button onClick={handleEmailSignUp} variant="secondary" disabled={isLoading}>
+                {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign Up'}
               </Button>
             </div>
-          </form>
+          </div>
           
         </CardContent>
         <CardFooter className="flex-col gap-4">
