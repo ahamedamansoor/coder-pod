@@ -53,7 +53,6 @@ export function TopicSidebar({
   selectedTopicSlug,
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLAnchorElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const { completedTopics } = useLanguageContext(language);
   const { user } = useUser();
@@ -62,21 +61,11 @@ export function TopicSidebar({
   const isUserAuthenticated = user && !user.isAnonymous;
 
   useEffect(() => {
-    if (activeItemRef.current && scrollContainerRef.current) {
-      const activeElement = activeItemRef.current;
-      const scrollContainer = scrollContainerRef.current;
-      
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const itemRect = activeElement.getBoundingClientRect();
-
-      const isVisible = itemRect.top >= containerRect.top && itemRect.bottom <= containerRect.bottom;
-
-      if (!isVisible) {
-        activeElement.scrollIntoView({
+    if (activeItemRef.current) {
+        activeItemRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'nearest',
         });
-      }
     }
   }, [selectedTopicSlug]);
 
@@ -221,7 +210,7 @@ export function TopicSidebar({
       <Separator />
       <SidebarContent asChild>
         <ScrollArea>
-           <div ref={scrollContainerRef} className="h-full">
+           <div className="h-full">
               <SidebarMenu className="p-4 space-y-4">
                 {learningPlanTopic && (
                   <div>
