@@ -128,8 +128,8 @@ export default function CssPositioning({ onOpenWebPlayground }: CssPositioningPr
                     <CardTitle className="text-primary flex items-center gap-2"><Lightbulb className="w-5 h-5"/>Key Concept: Positioned Ancestor</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground">The `absolute` value is powerful but can be tricky. It positions an element relative to its nearest **positioned** ancestor. A "positioned" element is any element whose `position` value is NOT `static`. If no positioned ancestor is found, the `absolute` element will be positioned relative to the initial containing block (usually the `<html>` element).</p>
-                    <p className="text-sm text-muted-foreground mt-2">This is why it's a very common pattern to set `position: relative;` on a parent element when you want to place a child element with `position: absolute;` inside it.</p>
+                    {/* <p className="text-sm text-muted-foreground">The `absolute` value is powerful but can be tricky. It positions an element relative to its nearest **positioned** ancestor. A "positioned" element is any element whose `position` value is NOT `static`. If no positioned ancestor is found, the `absolute` element will be positioned relative to the initial containing block (usually the `<html>` element).</p> */}
+                    {/* <p className="text-sm text-muted-foreground mt-2">This is why it's a very common pattern to set `position: relative;` on a parent element when you want to place a child element with `position: absolute;` inside it.</p> */}
                 </CardContent>
             </Card>
             
