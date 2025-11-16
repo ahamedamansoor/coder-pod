@@ -9,15 +9,12 @@ import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
 import { SpringLearningRoadmap } from '@/components/spring-learning-roadmap';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useSpringLayout } from '../spring-layout-context';
 
-interface TopicPageProps {
-  isEditorOpen: boolean;
-  setIsEditorOpen: (isOpen: boolean) => void;
-}
-
-function TopicPageContent({ isEditorOpen, setIsEditorOpen }: TopicPageProps) {
+function TopicPageContent() {
   const params = useParams();
   const { topic: topicSlug } = params;
+  const { isEditorOpen, setIsEditorOpen } = useSpringLayout();
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
 
@@ -61,10 +58,10 @@ function TopicPageContent({ isEditorOpen, setIsEditorOpen }: TopicPageProps) {
   );
 }
 
-export default function SpringTopicPage(props: TopicPageProps) {
+export default function SpringTopicPage() {
     return (
         <Suspense fallback={<Skeleton className="w-full h-full" />}>
-            <TopicPageContent {...props} />
+            <TopicPageContent />
         </Suspense>
     )
 }
