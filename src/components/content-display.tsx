@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, HelpCircle, Sparkles, CheckSquare, Lightbulb, GitCommitHorizontal, List, Code } from 'lucide-react';
+import { Wand2, HelpCircle, Sparkles, CheckSquare, Lightbulb, GitCommitHorizontal, List, Code, Copy, Check } from 'lucide-react';
 import React from 'react';
 import {
   simplifyTopicExplanation,
@@ -47,12 +47,33 @@ export function ContentDisplay({
   const [question, setQuestion] = React.useState('');
   const [isAsking, setIsAsking] = React.useState(false);
   const [qaResult, setQaResult] = React.useState<AnswerQuestionOutput | null>(null);
+
+  const [hasCopied, setHasCopied] = React.useState(false);
   
   const { completedTopics, handleToggleComplete } = useJava();
   const { user } = useUser();
   const isUserAuthenticated = user && !user.isAnonymous;
 
   const { toast } = useToast();
+
+  React.useEffect(() => {
+    if (hasCopied) {
+      const timer = setTimeout(() => {
+        setHasCopied(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasCopied]);
+
+  const handleCopyCode = () => {
+    if (simplifiedContent?.examples) {
+      navigator.clipboard.writeText(simplifiedContent.examples);
+      setHasCopied(true);
+      toast({
+        title: 'Copied to clipboard!',
+      });
+    }
+  };
 
   const handleSimplify = async () => {
     setIsSimplifying(true);
@@ -297,8 +318,16 @@ export function ContentDisplay({
                  </CardContent>
                </Card>
                <Card className="border-primary/50 bg-primary/5">
-                 <CardHeader>
+                 <CardHeader className='flex-row items-center justify-between'>
                     <CardTitle className="flex items-center gap-3"><Code className="text-primary"/>Code Examples</CardTitle>
+                    <Button variant="ghost" size="icon" onClick={handleCopyCode}>
+                        {hasCopied ? (
+                            <Check className="w-4 h-4 text-green-500" />
+                        ) : (
+                            <Copy className="w-4 h-4" />
+                        )}
+                        <span className="sr-only">Copy code</span>
+                    </Button>
                  </CardHeader>
                  <CardContent>
                     <div className="bg-card p-4 rounded-md overflow-x-auto">
