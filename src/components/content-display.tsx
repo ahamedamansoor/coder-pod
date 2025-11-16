@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -11,7 +10,7 @@ import {
 } from './ui/card';
 import { Button } from './ui/button';
 import { Wand2, HelpCircle, Sparkles, CheckSquare, Lightbulb, GitCommitHorizontal, List, Code, Copy, Check } from 'lucide-react';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import {
   simplifyTopicExplanation,
   type SimplifyTopicExplanationOutput,
@@ -23,8 +22,6 @@ import {
 import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from './ui/textarea';
-import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes, JavaLinkedList } from './java-topics';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
@@ -32,6 +29,168 @@ import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
+
+// Lazy load all the topic components
+const JavaLearningRoadmap = lazy(() => import('./java-learning-roadmap').then(module => ({ default: module.JavaLearningRoadmap })));
+const WhatIsJava = lazy(() => import('./java-topics/what-is-java').then(module => ({ default: module.WhatIsJava })));
+const TheStoryOfJava = lazy(() => import('./java-topics/the-story-of-java').then(module => ({ default: module.TheStoryOfJava })));
+const JavaFeatures = lazy(() => import('./java-topics/java-features').then(module => ({ default: module.JavaFeatures })));
+const JdkJreJvm = lazy(() => import('./java-topics/jdk-jre-jvm').then(module => ({ default: module.JdkJreJvm })));
+const HowJavaWorks = lazy(() => import('./java-topics/how-java-works').then(module => ({ default: module.HowJavaWorks })));
+const JavaEnvironmentSetup = lazy(() => import('./java-topics/java-environment-setup').then(module => ({ default: module.JavaEnvironmentSetup })));
+const FirstJavaProgram = lazy(() => import('./java-topics/first-java-program').then(module => ({ default: module.FirstJavaProgram })));
+const JavaComments = lazy(() => import('./java-topics/java-comments').then(module => ({ default: module.JavaComments })));
+const JavaPrintFormats = lazy(() => import('./java-topics/java-print-formats').then(module => ({ default: module.JavaPrintFormats })));
+const JavaDataTypes = lazy(() => import('./java-topics/java-data-types').then(module => ({ default: module.JavaDataTypes })));
+const JavaVariables = lazy(() => import('./java-topics/java-variables').then(module => ({ default: module.JavaVariables })));
+const JavaTypeCasting = lazy(() => import('./java-topics/java-type-casting').then(module => ({ default: module.JavaTypeCasting })));
+const JavaEscapeSequences = lazy(() => import('./java-topics/java-escape-sequences').then(module => ({ default: module.JavaEscapeSequences })));
+const JavaConstants = lazy(() => import('./java-topics/java-constants').then(module => ({ default: module.JavaConstants })));
+const JavaLiterals = lazy(() => import('./java-topics/java-literals').then(module => ({ default: module.JavaLiterals })));
+const JavaArithmeticOperators = lazy(() => import('./java-topics/java-arithmetic-operators').then(module => ({ default: module.JavaArithmeticOperators })));
+const JavaAssignmentOperators = lazy(() => import('./java-topics/java-assignment-operators').then(module => ({ default: module.JavaAssignmentOperators })));
+const JavaComparisonOperators = lazy(() => import('./java-topics/java-comparison-operators').then(module => ({ default: module.JavaComparisonOperators })));
+const JavaLogicalOperators = lazy(() => import('./java-topics/java-logical-operators').then(module => ({ default: module.JavaLogicalOperators })));
+const JavaBitwiseOperators = lazy(() => import('./java-topics/java-bitwise-operators').then(module => ({ default: module.JavaBitwiseOperators })));
+const JavaTernaryOperator = lazy(() => import('./java-topics/java-ternary-operator').then(module => ({ default: module.JavaTernaryOperator })));
+const JavaOperatorPrecedence = lazy(() => import('./java-topics/java-operator-precedence').then(module => ({ default: module.JavaOperatorPrecedence })));
+const JavaScannerClass = lazy(() => import('./java-topics/java-scanner-class').then(module => ({ default: module.JavaScannerClass })));
+const JavaReadingDifferentTypes = lazy(() => import('./java-topics/java-reading-different-types').then(module => ({ default: module.JavaReadingDifferentTypes })));
+const JavaInputValidation = lazy(() => import('./java-topics/java-input-validation').then(module => ({ default: module.JavaInputValidation })));
+const JavaIfElse = lazy(() => import('./java-topics/java-if-else').then(module => ({ default: module.JavaIfElse })));
+const JavaSwitch = lazy(() => import('./java-topics/java-switch').then(module => ({ default: module.JavaSwitch })));
+const JavaForLoop = lazy(() => import('./java-topics/java-for-loop').then(module => ({ default: module.JavaForLoop })));
+const JavaWhileLoop = lazy(() => import('./java-topics/java-while-loop').then(module => ({ default: module.JavaWhileLoop })));
+const JavaBreakContinue = lazy(() => import('./java-topics/java-break-continue').then(module => ({ default: module.JavaBreakContinue })));
+const JavaStringMethods = lazy(() => import('./java-topics/java-string-methods').then(module => ({ default: module.JavaStringMethods })));
+const JavaArrays = lazy(() => import('./java-topics/java-arrays').then(module => ({ default: module.JavaArrays })));
+const JavaMultiDimensionalArrays = lazy(() => import('./java-topics/java-multi-dimensional-arrays').then(module => ({ default: module.JavaMultiDimensionalArrays })));
+const JavaMethods = lazy(() => import('./java-topics/java-methods').then(module => ({ default: module.JavaMethods })));
+const JavaMethodParameters = lazy(() => import('./java-topics/java-method-parameters').then(module => ({ default: module.JavaMethodParameters })));
+const JavaMethodOverloading = lazy(() => import('./java-topics/java-method-overloading').then(module => ({ default: module.JavaMethodOverloading })));
+const JavaScope = lazy(() => import('./java-topics/java-scope').then(module => ({ default: module.JavaScope })));
+const JavaRecursion = lazy(() => import('./java-topics/java-recursion').then(module => ({ default: module.JavaRecursion })));
+const JavaClassesObjects = lazy(() => import('./java-topics/java-classes-objects').then(module => ({ default: module.JavaClassesObjects })));
+const JavaClassAttributes = lazy(() => import('./java-topics/java-class-attributes').then(module => ({ default: module.JavaClassAttributes })));
+const JavaClassMethods = lazy(() => import('./java-topics/java-class-methods').then(module => ({ default: module.JavaClassMethods })));
+const JavaConstructors = lazy(() => import('./java-topics/java-constructors').then(module => ({ default: module.JavaConstructors })));
+const JavaAccessModifiers = lazy(() => import('./java-topics/java-access-modifiers').then(module => ({ default: module.JavaAccessModifiers })));
+const JavaEncapsulation = lazy(() => import('./java-topics/java-encapsulation').then(module => ({ default: module.JavaEncapsulation })));
+const JavaPackages = lazy(() => import('./java-topics/java-packages').then(module => ({ default: module.JavaPackages })));
+const JavaInheritance = lazy(() => import('./java-topics/java-inheritance').then(module => ({ default: module.JavaInheritance })));
+const JavaPolymorphism = lazy(() => import('./java-topics/java-polymorphism').then(module => ({ default: module.JavaPolymorphism })));
+const JavaInnerClasses = lazy(() => import('./java-topics/java-inner-classes').then(module => ({ default: module.JavaInnerClasses })));
+const JavaAbstraction = lazy(() => import('./java-topics/java-abstraction').then(module => ({ default: module.JavaAbstraction })));
+const JavaInterfaces = lazy(() => import('./java-topics/java-interfaces').then(module => ({ default: module.JavaInterfaces })));
+const JavaEnums = lazy(() => import('./java-topics/java-enums').then(module => ({ default: module.JavaEnums })));
+const JavaDate = lazy(() => import('./java-topics/java-date').then(module => ({ default: module.JavaDate })));
+const JavaHashMap = lazy(() => import('./java-topics/java-hashmap').then(module => ({ default: module.JavaHashMap })));
+const JavaHashSet = lazy(() => import('./java-topics/java-hashset').then(module => ({ default: module.JavaHashSet })));
+const JavaLinkedList = lazy(() => import('./java-topics/java-linkedlist').then(module => ({ default: module.JavaLinkedList })));
+const JavaIterator = lazy(() => import('./java-topics/java-iterator').then(module => ({ default: module.JavaIterator })));
+const JavaWrapperClasses = lazy(() => import('./java-topics/java-wrapper-classes').then(module => ({ default: module.JavaWrapperClasses })));
+const JavaExceptions = lazy(() => import('./java-topics/java-exceptions').then(module => ({ default: module.JavaExceptions })));
+const JavaRegex = lazy(() => import('./java-topics/java-regex').then(module => ({ default: module.JavaRegex })));
+const JavaThreads = lazy(() => import('./java-topics/java-threads').then(module => ({ default: module.JavaThreads })));
+const JavaLambda = lazy(() => import('./java-topics/java-lambda').then(module => ({ default: module.JavaLambda })));
+const JavaFileHandling = lazy(() => import('./java-topics/java-file-handling').then(module => ({ default: module.JavaFileHandling })));
+
+// Map slugs to their lazy-loaded components
+const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
+  'learning-plan': JavaLearningRoadmap,
+  'what-is-java': WhatIsJava,
+  'history-of-java': TheStoryOfJava,
+  'features-of-java': JavaFeatures,
+  'jdk-jre-jvm': JdkJreJvm,
+  'how-java-works': HowJavaWorks,
+  'setting-up-environment': JavaEnvironmentSetup,
+  'first-java-program': FirstJavaProgram,
+  'comments-in-java': JavaComments,
+  'print-statements-and-format-specifiers': JavaPrintFormats,
+  'data-types': JavaDataTypes,
+  'variables': JavaVariables,
+  'type-casting': JavaTypeCasting,
+  'escape-sequences': JavaEscapeSequences,
+  'constants': JavaConstants,
+  'literals': JavaLiterals,
+  'arithmetic-operators': JavaArithmeticOperators,
+  'assignment-operators': JavaAssignmentOperators,
+  'comparison-operators': JavaComparisonOperators,
+  'logical-operators': JavaLogicalOperators,
+  'bitwise-operators': JavaBitwiseOperators,
+  'ternary-operator': JavaTernaryOperator,
+  'operator-precedence': JavaOperatorPrecedence,
+  'scanner-class': JavaScannerClass,
+  'reading-different-types': JavaReadingDifferentTypes,
+  'input-validation': JavaInputValidation,
+  'if-else': JavaIfElse,
+  'switch': JavaSwitch,
+  'for-loop': JavaForLoop,
+  'while-loop': JavaWhileLoop,
+  'break-continue': JavaBreakContinue,
+  'strings': JavaStringMethods,
+  'arrays': JavaArrays,
+  'multi-dimensional-arrays': JavaMultiDimensionalArrays,
+  'methods': JavaMethods,
+  'method-parameters': JavaMethodParameters,
+  'method-overloading': JavaMethodOverloading,
+  'scope': JavaScope,
+  'recursion': JavaRecursion,
+  'classes-objects': JavaClassesObjects,
+  'class-attributes': JavaClassAttributes,
+  'class-methods': JavaClassMethods,
+  'constructors': JavaConstructors,
+  'access-modifiers': JavaAccessModifiers,
+  'encapsulation': JavaEncapsulation,
+  'packages': JavaPackages,
+  'inheritance': JavaInheritance,
+  'polymorphism': JavaPolymorphism,
+  'inner-classes': JavaInnerClasses,
+  'abstraction': JavaAbstraction,
+  'interfaces': JavaInterfaces,
+  'enums': JavaEnums,
+  'date-time': JavaDate,
+  'hashmap': JavaHashMap,
+  'hashset': JavaHashSet,
+  'linkedlist': JavaLinkedList,
+  'iterator': JavaIterator,
+  'wrapper-classes': JavaWrapperClasses,
+  'exceptions': JavaExceptions,
+  'regex': JavaRegex,
+  'threads': JavaThreads,
+  'lambda': JavaLambda,
+  'file-handling': JavaFileHandling,
+};
+
+function LoadingSkeleton() {
+  return (
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <Skeleton className="h-10 w-3/4" />
+        <Skeleton className="h-6 w-1/2" />
+      </div>
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-8 w-1/4" />
+          <Skeleton className="h-5 w-2/4" />
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-8 w-1/3" />
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Skeleton className="h-20 w-full" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 export function ContentDisplay({ 
   topic, 
@@ -136,70 +295,14 @@ export function ContentDisplay({
   const isLearningPlanTopic = language.slug === 'java' && topic.slug === 'learning-plan';
 
   const renderTopicContent = () => {
-    if (isLearningPlanTopic) return <JavaLearningRoadmap />;
-    if (topic.slug === 'what-is-java') return <WhatIsJava />;
-    if (topic.slug === 'history-of-java') return <TheStoryOfJava />;
-    if (topic.slug === 'features-of-java') return <JavaFeatures />;
-    if (topic.slug === 'jdk-jre-jvm') return <JdkJreJvm />;
-    if (topic.slug === 'how-java-works') return <HowJavaWorks />;
-    if (topic.slug === 'setting-up-environment') return <JavaEnvironmentSetup />;
-    if (topic.slug === 'first-java-program') return <FirstJavaProgram onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'comments-in-java') return <JavaComments onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'print-statements-and-format-specifiers') return <JavaPrintFormats onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'data-types') return <JavaDataTypes onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'variables') return <JavaVariables onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'type-casting') return <JavaTypeCasting onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'escape-sequences') return <JavaEscapeSequences onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'constants') return <JavaConstants onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'literals') return <JavaLiterals onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'arithmetic-operators') return <JavaArithmeticOperators onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'assignment-operators') return <JavaAssignmentOperators onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'comparison-operators') return <JavaComparisonOperators onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'logical-operators') return <JavaLogicalOperators onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'bitwise-operators') return <JavaBitwiseOperators onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'ternary-operator') return <JavaTernaryOperator onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'operator-precedence') return <JavaOperatorPrecedence onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'scanner-class') return <JavaScannerClass />;
-    if (topic.slug === 'reading-different-types') return <JavaReadingDifferentTypes />;
-    if (topic.slug === 'input-validation') return <JavaInputValidation />;
-    if (topic.slug === 'if-else') return <JavaIfElse onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'switch') return <JavaSwitch onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'for-loop') return <JavaForLoop onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'while-loop') return <JavaWhileLoop onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'break-continue') return <JavaBreakContinue onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'strings') return <JavaStringMethods onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'arrays') return <JavaArrays onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'multi-dimensional-arrays') return <JavaMultiDimensionalArrays onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'methods') return <JavaMethods onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'method-parameters') return <JavaMethodParameters onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'method-overloading') return <JavaMethodOverloading onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'scope') return <JavaScope onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'recursion') return <JavaRecursion onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'classes-objects') return <JavaClassesObjects onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'class-attributes') return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'class-methods') return <JavaClassMethods onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'constructors') return <JavaConstructors onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'access-modifiers') return <JavaAccessModifiers onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'encapsulation') return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'packages') return <JavaPackages />;
-    if (topic.slug === 'inheritance') return <JavaInheritance onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'polymorphism') return <JavaPolymorphism onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'inner-classes') return <JavaInnerClasses onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'abstraction') return <JavaAbstraction onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'interfaces') return <JavaInterfaces onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'enums') return <JavaEnums onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'date-time') return <JavaDate onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'hashmap') return <JavaHashMap onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'hashset') return <JavaHashSet onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'linkedlist') return <JavaLinkedList onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'iterator') return <JavaIterator onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'wrapper-classes') return <JavaWrapperClasses onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'exceptions') return <JavaExceptions onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'regex') return <JavaRegex onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'threads') return <JavaThreads onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'lambda') return <JavaLambda onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'file-handling') return <JavaFileHandling onOpenEditor={onOpenEditor} />;
+    const Component = topicComponentMap[topic.slug];
+    
+    if (Component) {
+      // For components that need onOpenEditor, we pass it. Others will just ignore it.
+      return <Component onOpenEditor={onOpenEditor} />;
+    }
 
+    // Fallback for topics without a custom component
     return (
       <Card>
         <CardHeader>
@@ -280,7 +383,9 @@ export function ContentDisplay({
          )}
         </header>
       
-      {renderTopicContent()}
+      <Suspense fallback={<LoadingSkeleton />}>
+        {renderTopicContent()}
+      </Suspense>
 
       {showSimplifyButton && (
         <div className="flex flex-col items-center gap-4">
