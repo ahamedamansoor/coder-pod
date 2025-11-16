@@ -91,7 +91,7 @@ export function TopicSidebar({
   );
 
   const collectionsTopics = language.topics.filter(t =>
-    ['arraylist', 'linkedlist', 'hashmap', 'hashset', 'iterator', 'wrapper-classes'].includes(t.slug)
+    ['linkedlist', 'hashmap', 'hashset', 'iterator', 'wrapper-classes'].includes(t.slug)
   );
 
   const advancedTopics = language.topics.filter(t =>

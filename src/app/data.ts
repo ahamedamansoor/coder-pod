@@ -302,11 +302,6 @@ export const languages: Language[] = [
         explanation: 'Learn how to store unique items.'
       },
       {
-        slug: 'arraylist',
-        title: 'ArrayList',
-        explanation: 'Learn how to use a resizable array.'
-      },
-      {
         slug: 'linkedlist',
         title: 'LinkedList',
         explanation: 'Learn about the LinkedList data structure.'
