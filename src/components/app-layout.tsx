@@ -12,7 +12,7 @@ import { Button } from './ui/button';
 import { Logo } from './logo';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Bot, Code, LogOut, User, Zap, LogIn } from 'lucide-react';
+import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
@@ -145,6 +145,33 @@ export default function AppLayout() {
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        <div className="mt-16 bg-card p-8 rounded-lg shadow-sm border">
+          <h2 className="text-3xl font-bold text-foreground text-center mb-8">Why Coder Pod Stands Out</h2>
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+                <Target className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Learn by Doing, Not Just Watching</h3>
+              <p className="text-muted-foreground">Stop the tutorial fatigue. Our integrated AI-powered code editor lets you run and experiment with code directly in your browser, turning passive learning into active practice.</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+                <BrainCircuit className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Your Personal AI Tutor</h3>
+              <p className="text-muted-foreground">Stuck on a concept? No need to open another tab. Our AI assistant can simplify complex topics, provide analogies, and answer your specific questions, 24/7.</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+                <Rocket className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Guided Path to Mastery</h3>
+              <p className="text-muted-foreground">Don't get lost in random tutorials. We provide a structured, expert-designed learning roadmap that guides you from the basics to advanced topics, with progress tracking to keep you motivated.</p>
+            </div>
+          </div>
         </div>
         
         <div className="mt-16 text-center">
