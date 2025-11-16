@@ -11,9 +11,11 @@ import { useToast } from '@/hooks/use-toast';
 export function CodeEditorSheet({
   initialCode,
   onClose,
+  language = 'Java',
 }: {
   initialCode?: string;
   onClose: () => void;
+  language?: string;
 }) {
   const [code, setCode] = useState(
     initialCode ||
@@ -70,15 +72,17 @@ export function CodeEditorSheet({
     });
   };
 
+  const editorLanguage = language.toLowerCase() === 'spring' ? 'java' : language.toLowerCase();
+
   return (
     <div className="flex flex-col h-full border-l bg-card">
       <div className="p-4 border-b flex justify-between items-center">
         <div>
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Code className="w-6 h-6" /> Java Code Editor
+            <Code className="w-6 h-6" /> {language} Code Editor
           </h2>
           <p className="text-sm text-muted-foreground">
-            Write and run Java code using an AI-powered runtime.
+            Write and run {language} code using an AI-powered runtime.
           </p>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -101,7 +105,7 @@ export function CodeEditorSheet({
           <div className="flex-1 rounded-md border overflow-hidden">
             <Editor
               height="100%"
-              language="java"
+              language={editorLanguage}
               theme={theme === 'dark' ? 'vs-dark' : 'light'}
               value={code}
               onChange={(value) => setCode(value || '')}

@@ -52,6 +52,7 @@ function TopicPageContent() {
         <CodeEditorSheet
           initialCode={editorInitialCode}
           onClose={handleCloseEditor}
+          language={language.name}
         />
       </ResizablePanel>
     </>
