@@ -22,6 +22,8 @@ const BlockVsInline = lazy(() => import('./html-topics/block-vs-inline'));
 const HtmlTables = lazy(() => import('./html-topics/html-tables'));
 const HtmlSemanticElements = lazy(() => import('./html-topics/html-semantic-elements'));
 const CharacterEntities = lazy(() => import('./html-topics/html-character-entities'));
+const HtmlForms = lazy(() => import('./html-topics/html-forms'));
+
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -39,6 +41,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-tables': HtmlTables,
   'html-semantic-elements': HtmlSemanticElements,
   'character-entities': CharacterEntities,
+  'html-forms': HtmlForms,
 };
 
 function LoadingSkeleton() {
