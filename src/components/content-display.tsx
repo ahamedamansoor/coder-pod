@@ -30,6 +30,7 @@ import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { cn } from '@/lib/utils';
 
 export function ContentDisplay({ 
   topic, 
@@ -354,5 +355,3 @@ export function ContentDisplay({
     </div>
   );
 }
-
-    
