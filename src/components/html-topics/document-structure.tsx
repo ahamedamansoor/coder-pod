@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileCode, PersonStanding, BrainCircuit, Accessibility, Paintbrush, Link, Code, Play } from 'lucide-react';
+import { FileCode, PersonStanding, BrainCircuit, Accessibility, Paintbrush, Link as LinkIcon, Code, Play, Settings, FileJson, Route } from 'lucide-react';
 import React from 'react';
 
 export default function DocumentStructure({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
@@ -11,6 +11,7 @@ export default function DocumentStructure({ onOpenWebPlayground }: { onOpenWebPl
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Awesome Page</title>
     <link rel="stylesheet" href="style.css">
   </head>
@@ -48,11 +49,9 @@ button {
     };
 
     const headElements = [
-        { icon: Code, tag: '<title>', description: 'Sets the title of the page, which appears in the browser tab.' },
-        { icon: Accessibility, tag: '<meta>', description: 'Provides metadata like character set (`<meta charset="UTF-8">`) or viewport settings for mobile.' },
-        { icon: Paintbrush, tag: '<link>', description: 'Used to link external resources, most commonly CSS stylesheets.' },
-        { icon: Code, tag: '<script>', description: 'Used to embed or reference executable JavaScript code. Can be in head or body.' },
-        { icon: Code, tag: '<style>', description: 'Used to write CSS code directly inside the HTML document.' },
+        { icon: Code, tag: '<title>', description: 'Sets the title of the page, which appears in the browser tab and is important for SEO.' },
+        { icon: Settings, tag: '<style>', description: 'Used to write CSS code directly inside the HTML document.' },
+        { icon: Route, tag: '<script>', description: 'Used to embed or reference executable JavaScript code. Can be in head or body.' },
     ];
 
     return (
@@ -117,16 +116,38 @@ button {
                 <CardTitle>What Goes in the &lt;head&gt;?</CardTitle>
                 <CardDescription>Important setup information and links to external files.</CardDescription>
             </CardHeader>
-            <CardContent className="grid md:grid-cols-2 gap-4">
-                {headElements.map((el) => (
-                    <div key={el.tag} className="flex items-start gap-3 bg-muted p-4 rounded-lg">
-                        <el.icon className="w-5 h-5 text-primary mt-1 shrink-0" />
-                        <div>
-                            <code className="font-bold text-base">{el.tag}</code>
-                            <p className="text-xs text-muted-foreground">{el.description}</p>
+            <CardContent className="space-y-6">
+                <div className="p-4 rounded-lg bg-muted border">
+                    <h3 className="font-bold text-lg mb-3 flex items-center gap-2"><FileJson className="w-5 h-5 text-primary"/>The &lt;meta&gt; Tag</h3>
+                    <p className="text-sm text-muted-foreground mb-4">Provides metadata about the HTML document. It will not be displayed on the page, but is machine-readable. Common attributes include:</p>
+                    <ul className="space-y-3">
+                        <li><code className="font-semibold bg-background p-1 rounded">charset="UTF-8"</code>: Specifies the character encoding for the document. UTF-8 is the standard and helps browsers display text and symbols correctly.</li>
+                        <li><code className="font-semibold bg-background p-1 rounded">name="viewport"</code> with <code className="bg-background p-1 rounded">content="width=device-width, initial-scale=1.0"</code>: This is crucial for responsive design, telling the browser how to control the page's dimensions and scaling on mobile devices.</li>
+                        <li><code className="font-semibold bg-background p-1 rounded">name="description"</code>: A short description of the page's content, used by search engines.</li>
+                    </ul>
+                </div>
+
+                 <div className="p-4 rounded-lg bg-muted border">
+                    <h3 className="font-bold text-lg mb-3 flex items-center gap-2"><LinkIcon className="w-5 h-5 text-primary"/>The &lt;link&gt; Tag</h3>
+                    <p className="text-sm text-muted-foreground mb-4">Used to link the HTML document to external resources. Its most common use is to link to an external CSS stylesheet. Attributes include:</p>
+                    <ul className="space-y-3">
+                        <li><code className="font-semibold bg-background p-1 rounded">rel="stylesheet"</code>: Specifies the relationship between the HTML file and the linked file. `stylesheet` is used for CSS.</li>
+                        <li><code className="font-semibold bg-background p-1 rounded">href="style.css"</code>: Specifies the URL (or path) to the file you are linking.</li>
+                         <li><code className="font-semibold bg-background p-1 rounded">type="text/css"</code>: Specifies the media type of the linked document. While technically optional for CSS in modern browsers, it's good practice to include it.</li>
+                    </ul>
+                </div>
+                
+                <div className="grid md:grid-cols-3 gap-4 pt-4">
+                    {headElements.map((el) => (
+                        <div key={el.tag} className="flex items-start gap-3 bg-muted p-4 rounded-lg border">
+                            <el.icon className="w-5 h-5 text-primary mt-1 shrink-0" />
+                            <div>
+                                <code className="font-bold text-base">{el.tag}</code>
+                                <p className="text-xs text-muted-foreground">{el.description}</p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </CardContent>
         </Card>
       </div>
