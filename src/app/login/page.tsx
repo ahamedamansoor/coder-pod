@@ -9,7 +9,7 @@ import { Chrome, Loader2, User } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useAuth, useFirestore } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, UserCredential } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
@@ -27,14 +27,25 @@ export default function LoginPage() {
   const createUserProfile = async (user: any) => {
     if (!user || user.isAnonymous) return;
     const userRef = doc(firestore, `users/${user.uid}`);
-    const userProfile = {
-      id: user.uid,
-      email: user.email,
-      name: user.displayName,
-      createdAt: serverTimestamp(),
-      lastLoginAt: serverTimestamp(),
-    };
-    await setDoc(userRef, userProfile, { merge: true });
+    
+    // Check if the user document already exists
+    const docSnap = await getDoc(userRef);
+
+    if (!docSnap.exists()) {
+        // Document doesn't exist, create it
+        const userProfile = {
+          id: user.uid,
+          email: user.email,
+          name: user.displayName,
+          createdAt: serverTimestamp(),
+          lastLoginAt: serverTimestamp(),
+          completedTopics: [],
+        };
+        await setDoc(userRef, userProfile);
+    } else {
+        // Document exists, just update the last login time
+        await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
+    }
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {
