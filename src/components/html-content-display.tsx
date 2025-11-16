@@ -28,6 +28,7 @@ const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
 const Iframes = lazy(() => import('./html-topics/iframes'));
 const SvgAndCanvas = lazy(() => import('./html-topics/svg-and-canvas'));
 const Html5Apis = lazy(() => import('./html-topics/html5-apis'));
+const WebWorkersApi = lazy(() => import('./html-topics/web-workers-api'));
 
 
 // Map slugs to their lazy-loaded components
@@ -53,6 +54,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'iframes': Iframes,
   'svg-and-canvas': SvgAndCanvas,
   'html5-apis': Html5Apis,
+  'web-workers-api': WebWorkersApi,
 };
 
 function LoadingSkeleton() {

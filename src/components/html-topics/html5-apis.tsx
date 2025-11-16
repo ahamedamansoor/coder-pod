@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Play, Network, MapPin, Database, Hand, Lightbulb, CheckCircle2, XCircle } from 'lucide-react';
+import { Play, Network, MapPin, Database, Hand, Lightbulb, CheckCircle2, XCircle, Cpu, Wifi } from 'lucide-react';
 import React from 'react';
 
 export default function Html5Apis({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -19,6 +19,12 @@ export default function Html5Apis({ onOpenWebPlayground }: { onOpenWebPlayground
 <button id="saveData">Save to localStorage</button>
 <button id="loadData">Load from localStorage</button>
 <p>Saved data: <span id="storageResult"></span></p>
+
+<hr>
+
+<h2>Web Worker API</h2>
+<button id="startWorker">Start Heavy Calculation</button>
+<p>Worker Result: <span id="workerResult"></span></p>
 
 <hr>
 
@@ -61,7 +67,7 @@ hr {
   background-color: hsl(var(--primary) / 0.1);
 }
 `,
-        js: `// Geolocation
+        js: `// --- Geolocation ---
 const getLocationBtn = document.getElementById('getLocation');
 const locationResult = document.getElementById('locationResult');
 getLocationBtn.onclick = () => {
@@ -79,7 +85,7 @@ function showError(error) {
   locationResult.textContent = "Error: " + error.message;
 }
 
-// Web Storage
+// --- Web Storage ---
 const dataInput = document.getElementById('dataInput');
 const storageResult = document.getElementById('storageResult');
 document.getElementById('saveData').onclick = () => {
@@ -91,7 +97,36 @@ document.getElementById('loadData').onclick = () => {
   storageResult.textContent = savedData || "No data found.";
 };
 
-// Drag and Drop
+// --- Web Worker ---
+const workerResult = document.getElementById('workerResult');
+document.getElementById('startWorker').onclick = () => {
+    // Note: Creating a worker from a Blob URL is a way to do this without a separate file.
+    const workerCode = \`
+        self.onmessage = function(e) {
+            console.log('Worker: Message received from main script');
+            let result = 0;
+            // Simulate a heavy task
+            for (let i = 0; i < 1000000000; i++) {
+                result += i;
+            }
+            console.log('Worker: Posting message back to main script');
+            self.postMessage(result);
+        };
+    \`;
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    const worker = new Worker(URL.createObjectURL(blob));
+
+    worker.onmessage = (e) => {
+        workerResult.textContent = 'Calculation finished! Result is very big.';
+        console.log('Main: Message received from worker', e.data);
+        worker.terminate(); // Clean up the worker
+    };
+
+    workerResult.textContent = "Calculating... UI is still responsive!";
+    worker.postMessage('start'); // Start the worker
+};
+
+// --- Drag and Drop ---
 const source = document.getElementById('drag-source');
 const target = document.getElementById('drop-target');
 const dropResult = document.getElementById('dropResult');
@@ -207,8 +242,39 @@ function showError(error) {
 
         <Card>
             <CardHeader>
+                <CardTitle className="flex items-center gap-3"><Cpu className="w-6 h-6 text-primary" />Web Workers API</CardTitle>
+                <CardDescription>Allows you to run a script operation in a background thread separate from the main execution thread of a web application.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm mb-4">The advantage of this is that you can run processor-intensive tasks without freezing the user interface. The main script and the worker communicate via a system of messages.</p>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                    <li>Create a new worker with `new Worker('worker.js')`.</li>
+                    <li>Send messages to the worker using `worker.postMessage()`.</li>
+                    <li>Listen for messages from the worker using the `worker.onmessage` event handler.</li>
+                </ul>
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-3"><Wifi className="w-6 h-6 text-primary" />WebSocket API</CardTitle>
+                <CardDescription>Enables two-way interactive communication sessions between the user's browser and a server. It provides a persistent connection.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm mb-4">Unlike traditional HTTP, which is a request-response protocol, WebSockets allow the server to push data to the client at any time. This is ideal for real-time applications like chat apps, live sports updates, or online gaming.</p>
+                 <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                    <li>Create a new WebSocket with `new WebSocket('ws://example.com/socket')`.</li>
+                    <li>Send messages with `socket.send('Hello Server!')`.</li>
+                    <li>Listen for messages with `socket.onmessage`.</li>
+                    <li>Handle connection open/close with `socket.onopen` and `socket.onclose`.</li>
+                </ul>
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
                 <CardTitle>See Them All In Action</CardTitle>
-                <CardDescription>Open this example in the Web Playground to interact with all three APIs. Note that Geolocation may require you to grant permission within the playground's iframe.</CardDescription>
+                <CardDescription>Open this example in the Web Playground to interact with Geolocation, Web Storage, Web Workers, and Drag & Drop.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>

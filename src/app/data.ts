@@ -37,7 +37,7 @@ export const languages: Language[] = [
       { slug: 'iframes', title: 'Iframes', explanation: 'Embedding another HTML document within the current one using `<iframe>`.' },
       { slug: 'svg-and-canvas', title: 'SVG and Canvas', explanation: 'Introduction to embedding vector graphics with `<svg>` and drawing graphics with `<canvas>`.' },
       { slug: 'character-entities', title: 'Character Entities', explanation: 'How to display reserved characters like `<`, `>`, and `&`, and special symbols like `&copy;`.' },
-      { slug: 'html5-apis', title: 'HTML5 APIs', explanation: 'An overview of powerful browser APIs like Geolocation, Drag & Drop, and Web Storage (localStorage and sessionStorage).' },
+      { slug: 'html5-apis', title: 'HTML5 APIs', explanation: 'An overview of powerful browser APIs like Geolocation, Web Storage, Web Workers, and Web Sockets.' },
       { slug: 'web-workers-api', title: 'Web Workers API', explanation: 'Running background scripts in a separate thread to avoid freezing the user interface.' },
       { slug: 'accessibility', title: 'Accessibility (a11y)', explanation: 'Best practices for writing accessible HTML, including ARIA roles and proper semantic structure to support users with disabilities.' },
     ]
