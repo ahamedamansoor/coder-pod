@@ -1,6 +1,8 @@
+
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, BookOpen, CheckCircle, Trophy, Sparkles, Code, ArrowRight, MousePointer2, Monitor, Zap, Target } from 'lucide-react';
+import { Button } from './ui/button';
 
 export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) => {
   const [isPlaying, setIsPlaying] = useState(autoPlay);
@@ -256,7 +258,7 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
                 >
                   <div className="flex items-center gap-2 sm:gap-4">
                     {completedTopics.includes('topic2') ? (
-                      <CheckCircle className="w-5 h-5 sm:w-8 sm:h-8 text-green-600 animate-bounce" />
+                      <CheckCircle className="w-5 h-5 sm:w-8 sm-h-8 text-green-600 animate-bounce" />
                     ) : (
                       <div className="w-5 h-5 sm:w-8 sm:h-8 border-2 sm:border-4 border-muted rounded-full"></div>
                     )}
@@ -277,7 +279,7 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
                     {completedTopics.includes('topic3') ? (
                       <CheckCircle className="w-5 h-5 sm:w-8 sm:h-8 text-green-600 animate-bounce" />
                     ) : (
-                      <div className="w-5 h-5 sm:w-8 sm:h-8 border-2 sm:border-4 border-muted rounded-full"></div>
+                      <div className="w-5 h-5 sm:w-8 sm-h-8 border-2 sm:border-4 border-muted rounded-full"></div>
                     )}
                     <div className="flex-1">
                       <h3 className="text-sm sm:text-xl font-bold text-foreground">Hello World</h3>
