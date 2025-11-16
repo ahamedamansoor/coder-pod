@@ -226,7 +226,7 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
             variant="outline"
             value={visiblePanels}
             onValueChange={(value) => setVisiblePanels(value)}
-            className="gap-1"
+            className="gap-1 mr-8"
           >
             <ToggleGroupItem value="html" aria-label="Toggle HTML"><FileJson className="h-4 w-4" /></ToggleGroupItem>
             <ToggleGroupItem value="css" aria-label="Toggle CSS"><Braces className="h-4 w-4" /></ToggleGroupItem>
