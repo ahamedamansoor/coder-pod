@@ -24,6 +24,7 @@ const HtmlSemanticElements = lazy(() => import('./html-topics/html-semantic-elem
 const CharacterEntities = lazy(() => import('./html-topics/html-character-entities'));
 const HtmlForms = lazy(() => import('./html-topics/html-forms'));
 const FormInputTypes = lazy(() => import('./html-topics/form-input-types'));
+const FormAttributes = lazy(() => import('./html-topics/form-attributes'));
 const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
 
 
@@ -45,6 +46,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'character-entities': CharacterEntities,
   'html-forms': HtmlForms,
   'form-input-types': FormInputTypes,
+  'form-attributes': FormAttributes,
   'audio-and-video': AudioAndVideo,
 };
 
