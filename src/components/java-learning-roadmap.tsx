@@ -28,216 +28,194 @@ export const JavaLearningRoadmap = () => {
 
   const modules = [
     {
-      id: 1,
-      title: "Getting Started",
-      level: "Foundation",
-      duration: "Week 1",
-      icon: "🚀",
-      topics: [
-        { id: "what-is-java", name: "What is Java?", desc: "History, features, JVM, JRE, JDK", difficulty: "Easy" },
-        { id: "history-of-java", name: "History of Java", desc: "The story of how Java was created and evolved over time.", difficulty: "Easy" },
-        { id: "features-of-java", name: "Features of Java", desc: "The key features that make Java a powerful and popular programming language.", difficulty: "Easy" },
-        { id: "jdk-jre-jvm", name: "JDK, JRE, and JVM", desc: "Understanding the core components that run a Java program.", difficulty: "Easy" },
-        { id: "setting-up-environment", name: "Setting Up Environment", desc: "Installing JDK, IDE (VS Code/IntelliJ/Eclipse)", difficulty: "Easy" },
-        { id: "first-java-program", name: "Hello World", desc: "Hello World, structure of Java program", difficulty: "Easy" },
-        { id: "how-java-works", name: "Compilation, Bytecode, & Execution", desc: "Compilation process, bytecode, execution", difficulty: "Easy" },
-        { id: "comments-in-java", name: "Comments in Java", desc: "Single-line, multi-line, documentation comments", difficulty: "Easy" }
-      ]
+        id: 1,
+        title: "Getting Started",
+        level: "Foundation",
+        icon: "🚀",
+        topics: [
+            { id: "what-is-java", name: "What is Java?", desc: "A high-level overview of what Java is and where it is used.", difficulty: "Easy" },
+            { id: "history-of-java", name: "History of Java", desc: "The story of how Java was created and evolved over time.", difficulty: "Easy" },
+            { id: "features-of-java", name: "Features of Java", desc: "The key features that make Java a powerful and popular programming language.", difficulty: "Easy" },
+            { id: "jdk-jre-jvm", name: "JDK, JRE, and JVM", desc: "Understanding the core components that run a Java program.", difficulty: "Easy" },
+            { id: "how-java-works", name: "Compilation, Bytecode, & Execution", desc: "Understanding the journey from source code to a running program.", difficulty: "Easy" },
+            { id: "setting-up-environment", name: "Setting Up Environment", desc: "Installing JDK and setting up your first project.", difficulty: "Easy" },
+            { id: "first-java-program", name: "Hello World", desc: "Learn the structure of a basic Java program.", difficulty: "Easy" },
+            { id: "comments-in-java", name: "Comments in Java", desc: "How to use comments to make your code more readable.", difficulty: "Easy" }
+        ]
     },
     {
-      id: 2,
-      title: "Basic Output",
-      level: "Foundation",
-      duration: "Week 1",
-      icon: "📢",
-      topics: [
-        { id: "print-statements-and-format-specifiers", name: "Print Statements & Format Specifiers", desc: "print(), println(), printf() and format specifiers like %d, %s", difficulty: "Easy" },
-        { id: "escape-sequences", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" }
-      ]
+        id: 2,
+        title: "Basic Output",
+        level: "Foundation",
+        icon: "📢",
+        topics: [
+            { id: "print-statements-and-format-specifiers", name: "Print Statements & Format Specifiers", desc: "Using print(), println(), and printf() for output.", difficulty: "Easy" },
+            { id: "escape-sequences", name: "Escape Sequences", desc: "Special characters like \\n, \\t, \\\", etc.", difficulty: "Easy" }
+        ]
     },
     {
-      id: 3,
-      title: "Variables & Data Types",
-      level: "Foundation",
-      duration: "Week 1-2",
-      icon: "📦",
-      topics: [
-        { id: "variables", name: "Variables Basics", desc: "Declaration, initialization, naming rules", difficulty: "Easy" },
-        { id: "data-types", name: "Data Types", desc: "int, double, float, char, boolean, byte, short, long", difficulty: "Easy" },
-        { id: "type-casting", name: "Type Casting", desc: "Implicit and explicit casting, widening/narrowing", difficulty: "Medium" },
-        { id: "constants", name: "Constants", desc: "final keyword, naming conventions", difficulty: "Easy" },
-        { id: "literals", name: "Literals", desc: "Integer, floating-point, character, string literals", difficulty: "Easy" }
-      ]
+        id: 3,
+        title: "Variables & Data Types",
+        level: "Foundation",
+        icon: "📦",
+        topics: [
+            { id: "variables", name: "Variables Basics", desc: "Declaration, initialization, and naming conventions.", difficulty: "Easy" },
+            { id: "data-types", name: "Data Types", desc: "Primitive types like int, double, boolean, and char.", difficulty: "Easy" },
+            { id: "type-casting", name: "Type Casting", desc: "Converting between different data types.", difficulty: "Medium" },
+            { id: "constants", name: "Constants", desc: "Creating unchangeable variables with the `final` keyword.", difficulty: "Easy" },
+            { id: "literals", name: "Literals", desc: "Understanding fixed values assigned to variables.", difficulty: "Easy" }
+        ]
     },
     {
-      id: 4,
-      title: "Operators",
-      level: "Foundation",
-      duration: "Week 2",
-      icon: "➕",
-      topics: [
-        { id: "arithmetic-operators", name: "Arithmetic Operators", desc: "+, -, *, /, %, ++, --", difficulty: "Easy" },
-        { id: "assignment-operators", name: "Assignment Operators", desc: "=, +=, -=, *=, /=, %=", difficulty: "Easy" },
-        { id: "comparison-operators", name: "Comparison Operators", desc: "==, !=, <, >, <=, >=", difficulty: "Easy" },
-        { id: "logical-operators", name: "Logical Operators", desc: "&&, ||, !", difficulty: "Easy" },
-        { id: "bitwise-operators", name: "Bitwise Operators", desc: "&, |, ^, ~, <<, >>", difficulty: "Medium" },
-        { id: "ternary-operator", name: "Ternary Operator", desc: "condition ? true : false", difficulty: "Medium" },
-        { id: "operator-precedence", name: "Operator Precedence", desc: "Order of operations, parentheses", difficulty: "Medium" }
-      ]
+        id: 4,
+        title: "Operators",
+        level: "Foundation",
+        icon: "➕",
+        topics: [
+            { id: "arithmetic-operators", name: "Arithmetic Operators", desc: "Performing mathematical operations.", difficulty: "Easy" },
+            { id: "assignment-operators", name: "Assignment Operators", desc: "Assigning values to variables.", difficulty: "Easy" },
+            { id: "comparison-operators", name: "Comparison Operators", desc: "Comparing two values.", difficulty: "Easy" },
+            { id: "logical-operators", name: "Logical Operators", desc: "Combining boolean expressions.", difficulty: "Easy" },
+            { id: "bitwise-operators", name: "Bitwise Operators", desc: "Performing operations on individual bits.", difficulty: "Medium" },
+            { id: "ternary-operator", name: "Ternary Operator", desc: "A shorthand for if-else statements.", difficulty: "Medium" },
+            { id: "operator-precedence", name: "Operator Precedence", desc: "The order in which operators are evaluated.", difficulty: "Medium" }
+        ]
     },
     {
-      id: 5,
-      title: "User Input",
-      level: "Foundation",
-      duration: "Week 2",
-      icon: "⌨️",
-      topics: [
-        { id: "scanner-class", name: "Scanner Class", desc: "Import, creating Scanner object", difficulty: "Easy" },
-        { id: "reading-different-types", name: "Reading Different Types", desc: "nextInt(), nextDouble(), nextLine(), next()", difficulty: "Easy" },
-        { id: "input-validation", name: "Input Validation", desc: "hasNextInt(), hasNextDouble(), error handling", difficulty: "Medium" }
-      ]
+        id: 5,
+        title: "User Input",
+        level: "Foundation",
+        icon: "⌨️",
+        topics: [
+            { id: "scanner-class", name: "Scanner Class", desc: "Using the Scanner class to get user input.", difficulty: "Easy" },
+            { id: "reading-different-types", name: "Reading Different Types", desc: "Reading integers, doubles, and strings.", difficulty: "Easy" },
+            { id: "input-validation", name: "Input Validation", desc: "Checking if user input is of the correct type.", difficulty: "Medium" }
+        ]
     },
     {
-      id: 6,
-      title: "Control Flow - Conditional",
-      level: "Core Concepts",
-      duration: "Week 3",
-      icon: "🔀",
-      topics: [
-        { id: "if-else", name: "If-Else Statement", desc: "Basic if, if-else, nested if", difficulty: "Easy" },
-        { id: "switch", name: "Switch Statement", desc: "Switch statement, break, default", difficulty: "Easy" }
-      ]
+        id: 6,
+        title: "Control Flow",
+        level: "Core Concepts",
+        icon: "🔀",
+        topics: [
+            { id: "if-else", name: "If-Else Statement", desc: "Executing code based on a condition.", difficulty: "Easy" },
+            { id: "switch", name: "Switch Statement", desc: "Selecting one of many code blocks to execute.", difficulty: "Easy" },
+            { id: "for-loop", name: "For Loop", desc: "Looping through a block of code a number of times.", difficulty: "Easy" },
+            { id: "while-loop", name: "While Loop", desc: "Looping as long as a condition is true.", difficulty: "Easy" },
+            { id: "break-continue", name: "Break and Continue", desc: "Jumping out of a loop or skipping an iteration.", difficulty: "Easy" }
+        ]
     },
     {
-      id: 7,
-      title: "Control Flow - Loops",
-      level: "Core Concepts",
-      duration: "Week 3-4",
-      icon: "🔁",
-      topics: [
-        { id: "for-loop", name: "For Loop", desc: "Basic for loop, syntax, examples", difficulty: "Easy" },
-        { id: "while-loop", name: "While Loop", desc: "While loop syntax and use cases", difficulty: "Easy" },
-        { id: "break-continue", name: "Break and Continue", desc: "Loop control statements", difficulty: "Easy" }
-      ]
+        id: 7,
+        title: "Strings & Arrays",
+        level: "Core Concepts",
+        icon: "📊",
+        topics: [
+            { id: "strings", name: "String Methods", desc: "Common methods for working with strings.", difficulty: "Easy" },
+            { id: "arrays", name: "Arrays", desc: "Storing multiple values in a single variable.", difficulty: "Easy" },
+            { id: "multi-dimensional-arrays", name: "Multi-Dimensional Arrays", desc: "Creating arrays of arrays.", difficulty: "Medium" }
+        ]
     },
     {
-      id: 8,
-      title: "Strings & Arrays",
-      level: "Core Concepts",
-      duration: "Week 4-5",
-      icon: "📊",
-      topics: [
-        { id: "strings", name: "String Methods", desc: "length(), charAt(), substring(), indexOf(), etc.", difficulty: "Easy" },
-        { id: "arrays", name: "Arrays", desc: "Declaration, initialization, accessing elements", difficulty: "Easy" },
-        { id: "multi-dimensional-arrays", name: "Multi-Dimensional Arrays", desc: "2D arrays, nested arrays", difficulty: "Medium" }
-      ]
+        id: 8,
+        title: "Methods & OOP Basics",
+        level: "Core Concepts",
+        icon: "⚙️",
+        topics: [
+            { id: "methods", name: "Methods", desc: "Creating and calling methods (functions).", difficulty: "Easy" },
+            { id: "method-parameters", name: "Method Parameters", desc: "Passing information to methods.", difficulty: "Easy" },
+            { id: "method-overloading", name: "Method Overloading", desc: "Defining multiple methods with the same name.", difficulty: "Medium" },
+            { id: "scope", name: "Scope", desc: "Understanding where variables are accessible.", difficulty: "Medium" },
+            { id: "recursion", name: "Recursion", desc: "The technique of making a function call itself.", difficulty: "Hard" },
+            { id: "classes-objects", name: "Classes and Objects", desc: "The fundamentals of Object-Oriented Programming (OOP).", difficulty: "Medium" },
+            { id: "constructors", name: "Constructors", desc: "Special methods for creating and initializing objects.", difficulty: "Medium" }
+        ]
     },
     {
-      id: 9,
-      title: "Methods & OOP Basics",
-      level: "Core Concepts",
-      duration: "Week 5-6",
-      icon: "⚙️",
-      topics: [
-        { id: "methods", name: "Methods", desc: "Creating methods, calling methods", difficulty: "Easy" },
-        { id: "method-parameters", name: "Method Parameters", desc: "Passing values to methods", difficulty: "Easy" },
-        { id: "method-overloading", name: "Method Overloading", desc: "Same name, different parameters", difficulty: "Medium" },
-        { id: "scope", name: "Scope", desc: "Local vs instance variables", difficulty: "Medium" },
-        { id: "recursion", name: "Recursion", desc: "Methods calling themselves", difficulty: "Hard" },
-        { id: "classes-objects", name: "Classes & Objects", desc: "Defining classes, creating objects", difficulty: "Medium" },
-        { id: "constructors", name: "Constructors", desc: "Default, parameterized, constructor overloading", difficulty: "Medium" }
-      ]
+        id: 9,
+        title: "Advanced OOP",
+        level: "Advanced",
+        icon: "🏗️",
+        topics: [
+            { id: "class-attributes", name: "Class Attributes", desc: "Defining variables within a class.", difficulty: "Medium" },
+            { id: "class-methods", name: "Class Methods", desc: "Defining methods within a class.", difficulty: "Medium" },
+            { id: "access-modifiers", name: "Access Modifiers", desc: "Controlling the visibility of classes and members.", difficulty: "Medium" },
+            { id: "encapsulation", name: "Encapsulation", desc: "Bundling data and methods within one unit.", difficulty: "Medium" },
+            { id: "packages", name: "Packages and API", desc: "Using built-in and user-defined packages.", difficulty: "Medium" },
+            { id: "inheritance", name: "Inheritance", desc: "Inheriting attributes and methods from other classes.", difficulty: "Medium" },
+            { id: "super-keyword", name: "The \"super\" Keyword", desc: "Calling parent class methods and constructors.", difficulty: "Medium" },
+            { id: "method-overriding", name: "Method Overriding", desc: "Providing specific implementation in subclasses.", difficulty: "Medium" },
+            { id: "polymorphism", name: "Polymorphism", desc: "Using a single interface for different data types.", difficulty: "Hard" },
+            { id: "instanceof-operator", name: "The \"instanceof\" Operator", desc: "Checking the runtime type of an object.", difficulty: "Medium" },
+            { id: "inner-classes", name: "Inner Classes", desc: "Understanding nested classes in Java.", difficulty: "Medium" },
+            { id: "abstraction", name: "Abstraction", desc: "Hiding details and showing only essential information.", difficulty: "Hard" },
+            { id: "interfaces", name: "Interfaces", desc: "Another way to achieve abstraction in Java.", difficulty: "Hard" },
+            { id: "enums", name: "Enums", desc: "Special classes representing a group of constants.", difficulty: "Medium" },
+            { id: "object-class", name: "The Object Class", desc: "The root of all classes in Java.", difficulty: "Hard" }
+        ]
     },
     {
-      id: 10,
-      title: "Advanced OOP",
-      level: "Advanced",
-      duration: "Week 7-8",
-      icon: "🏗️",
-      topics: [
-        { id: "class-attributes", name: "Class Attributes", desc: "Object attributes, this keyword", difficulty: "Medium" },
-        { id: "class-methods", name: "Class Methods", desc: "Object behaviors, getters & setters", difficulty: "Medium" },
-        { id: "access-modifiers", name: "Access Modifiers", desc: "public, private, protected, default", difficulty: "Medium" },
-        { id: "encapsulation", name: "Encapsulation", desc: "Data hiding, information security", difficulty: "Medium" },
-        { id: "packages", name: "Packages and API", desc: "Use built-in and user-defined packages", difficulty: "Medium" },
-        { id: "inheritance", name: "Inheritance", desc: "extends keyword, parent-child relationship", difficulty: "Medium" },
-        { id: 'super-keyword', name: 'The "super" Keyword', desc: 'Calling parent class methods and constructors.', difficulty: 'Medium' },
-        { id: 'method-overriding', name: 'Method Overriding', desc: 'Providing specific implementation in subclasses.', difficulty: 'Medium' },
-        { id: "polymorphism", name: "Polymorphism", desc: "Runtime polymorphism, dynamic binding", difficulty: "Hard" },
-        { id: 'instanceof-operator', name: 'The "instanceof" Operator', desc: 'Checking the runtime type of an object.', difficulty: 'Medium' },
-        { id: "inner-classes", name: "Inner Classes", desc: "Nested classes in Java", difficulty: "Medium" },
-        { id: "abstraction", name: "Abstraction", desc: "abstract keyword, abstract methods", difficulty: "Hard" },
-        { id: "interfaces", name: "Interfaces", desc: "interface keyword, implementing interfaces", difficulty: "Hard" },
-        { id: "enums", name: "Enums", desc: "Special classes that represent a group of constants", difficulty: "Medium" },
-        { id: 'object-class', name: 'The Object Class', desc: 'The root of all classes in Java.', difficulty: 'Hard' }
-      ]
+        id: 10,
+        title: "Advanced Collections",
+        level: "Advanced",
+        icon: "📚",
+        topics: [
+            { id: "arraylist", name: "ArrayList", desc: "Working with resizable arrays.", difficulty: "Easy" },
+            { id: "linkedlist", name: "LinkedList", desc: "Using the LinkedList data structure.", difficulty: "Medium" },
+            { id: "hashmap", name: "HashMap", desc: "Storing key/value pairs.", difficulty: "Medium" },
+            { id: "hashset", name: "HashSet", desc: "Storing unique items.", difficulty: "Medium" },
+            { id: "treemap-treeset", name: "TreeMap & TreeSet", desc: "Understanding sorted collections.", difficulty: "Hard" },
+            { id: "queue-deque", name: "Queue & Deque", desc: "FIFO and LIFO data structures.", difficulty: "Hard" },
+            { id: "comparable-comparator", name: "Comparable & Comparator", desc: "Defining custom sorting logic.", difficulty: "Hard" },
+            { id: "iterator", name: "Iterator", desc: "Looping through collections.", difficulty: "Medium" },
+            { id: "wrapper-classes", name: "Wrapper Classes", desc: "Using primitive data types as objects.", difficulty: "Medium" }
+        ]
     },
     {
-      id: 11,
-      title: "Advanced Collections",
-      level: "Advanced",
-      duration: "Week 9-10",
-      icon: "📚",
-      topics: [
-        { id: 'arraylist', name: 'ArrayList', desc: 'Working with dynamic arrays.', difficulty: 'Easy' },
-        { id: 'linkedlist', name: 'LinkedList', desc: 'Working with linked lists.', difficulty: 'Medium' },
-        { id: "hashmap", name: "HashMap", desc: "Storing key/value pairs", difficulty: "Medium" },
-        { id: "hashset", name: "HashSet", desc: "Storing unique items", difficulty: "Medium" },
-        { id: 'treemap-treeset', name: 'TreeMap & TreeSet', desc: 'Understanding sorted collections.', difficulty: 'Hard' },
-        { id: 'queue-deque', name: 'Queue & Deque', desc: 'FIFO and LIFO data structures.', difficulty: 'Hard' },
-        { id: 'comparable-comparator', name: 'Comparable & Comparator', desc: 'Defining custom sorting logic.', difficulty: 'Hard' },
-        { id: "iterator", name: "Iterator", desc: "Looping through collections", difficulty: "Medium" },
-        { id: "wrapper-classes", name: "Wrapper Classes", desc: "Using primitive data types as objects", difficulty: "Medium" }
-      ]
+        id: 11,
+        title: "Error Handling & Generics",
+        level: "Advanced",
+        icon: "🧩",
+        topics: [
+            { id: "exceptions", name: "Exceptions", desc: "Handling errors with try-catch blocks.", difficulty: "Medium" },
+            { id: "generics-intro", name: "Introduction to Generics", desc: "Type safety with collections.", difficulty: "Medium" },
+            { id: "generics-methods-classes", name: "Generic Classes & Methods", desc: "Creating your own generic components.", difficulty: "Hard" }
+        ]
     },
     {
-      id: 12,
-      title: "Error Handling & Generics",
-      level: "Advanced",
-      duration: "Week 11",
-      icon: "🧩",
-      topics: [
-        { id: "exceptions", name: "Exceptions", desc: "Handling errors with try-catch blocks", difficulty: "Medium" },
-        { id: 'generics-intro', name: 'Intro to Generics', desc: 'Type safety with collections.', difficulty: 'Medium' },
-        { id: 'generics-methods-classes', name: 'Generic Classes & Methods', desc: 'Creating your own generic components.', difficulty: 'Hard' }
-      ]
+        id: 12,
+        title: "Functional Programming",
+        level: "Expert",
+        icon: "✨",
+        topics: [
+            { id: "lambda", name: "Lambda Expressions", desc: "Functional programming basics.", difficulty: "Hard" },
+            { id: "streams-api", name: "Streams API", desc: "Declarative data processing with streams.", difficulty: "Hard" },
+            { id: "optional-class", name: "The Optional Class", desc: "Avoiding NullPointerExceptions gracefully.", difficulty: "Medium" },
+            { id: "method-references", name: "Method References", desc: "Shorthand for certain lambda expressions.", difficulty: "Hard" }
+        ]
     },
     {
-      id: 13,
-      title: "Functional Programming",
-      level: "Expert",
-      duration: "Week 12",
-      icon: "✨",
-      topics: [
-        { id: "lambda", name: "Lambda Expressions", desc: "Functional programming basics", difficulty: "Hard" },
-        { id: 'streams-api', name: 'Streams API', desc: 'Declarative data processing with streams.', difficulty: 'Hard' },
-        { id: 'optional-class', name: 'The Optional Class', desc: 'Avoiding NullPointerExceptions gracefully.', difficulty: 'Medium' },
-        { id: 'method-references', name: 'Method References', desc: 'Shorthand for certain lambda expressions.', difficulty: 'Hard' },
-      ]
+        id: 13,
+        title: "Advanced Concurrency",
+        level: "Expert",
+        icon: "🚀",
+        topics: [
+            { id: "threads", name: "Threads", desc: "Multithreading basics.", difficulty: "Hard" },
+            { id: "synchronized-keyword", name: "The \"synchronized\" Keyword", desc: "Basic thread safety.", difficulty: "Hard" },
+            { id: "volatile-keyword", name: "The \"volatile\" Keyword", desc: "Ensuring visibility of variable changes.", difficulty: "Hard" },
+            { id: "executors-thread-pools", name: "Executors & Thread Pools", desc: "Efficiently managing threads.", difficulty: "Hard" }
+        ]
     },
     {
-      id: 14,
-      title: "Advanced Concurrency",
-      level: "Expert",
-      duration: "Week 13-14",
-      icon: "🚀",
-      topics: [
-        { id: "threads", name: "Threads", desc: "Multithreading basics", difficulty: "Hard" },
-        { id: 'synchronized-keyword', name: 'The "synchronized" Keyword', desc: 'Basic thread safety.', difficulty: 'Hard' },
-        { id: 'volatile-keyword', name: 'The "volatile" Keyword', desc: 'Ensuring visibility of variable changes.', difficulty: 'Hard' },
-        { id: 'executors-thread-pools', name: 'Executors & Thread Pools', desc: 'Efficiently managing threads.', difficulty: 'Hard' },
-      ]
-    },
-    {
-      id: 15,
-      title: "Files & Regex",
-      level: "Expert",
-      duration: "Week 15",
-      icon: "📁",
-      topics: [
-        { id: "file-handling", name: "File Handling", desc: "Create, read, write, and delete files", difficulty: "Medium" },
-        { id: "regex", name: "Regular Expressions", desc: "Pattern matching, regex basics", difficulty: "Hard" }
-      ]
+        id: 14,
+        title: "Files & Regex",
+        level: "Expert",
+        icon: "📁",
+        topics: [
+            { id: "file-handling", name: "File Handling", desc: "Creating, reading, writing, and deleting files.", difficulty: "Medium" },
+            { id: "regex", name: "Regular Expressions", desc: "Pattern matching for strings.", difficulty: "Hard" },
+            { id: "date-time", name: "Date and Time", desc: "Working with the date and time API.", difficulty: "Easy" }
+        ]
     }
   ];
 
@@ -452,7 +430,6 @@ export const JavaLearningRoadmap = () => {
                         {module.level}
                       </span>
                     </div>
-                    <p className="text-muted-foreground text-sm">{module.duration} • {module.topics.length} topics</p>
                   </div>
                 </div>
                 {expandedModule === module.id ? (
