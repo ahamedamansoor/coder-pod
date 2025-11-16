@@ -106,6 +106,9 @@ export default function LoginPage() {
     if (!auth) return;
     setIsGitHubLoading(true);
     const provider = new GithubAuthProvider();
+    // Add scopes to ensure we get user email and profile information
+    provider.addScope('read:user');
+    provider.addScope('user:email');
     try {
       const userCredential = await signInWithPopup(auth, provider);
       await handleSuccessfulLogin(userCredential);
