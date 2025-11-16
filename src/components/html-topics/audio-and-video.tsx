@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Music, Video, Play, Volume2, Repeat, Power, Eye, Info } from 'lucide-react';
+import { Music, Video, Play, Info, Subtitles } from 'lucide-react';
 import React from 'react';
 
 export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -10,16 +10,16 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
     const commonAttributes = [
         { attr: 'src', desc: 'The URL of the media file.' },
         { attr: 'controls', desc: 'Shows the default browser controls (play, pause, volume, etc.).' },
-        { attr: 'autoplay', desc: 'Starts playing the media automatically. (Note: Most browsers require the `muted` attribute to be set for autoplay to work.)' },
+        { attr: 'autoplay', desc: 'Starts playing automatically. Note: Most browsers require the `muted` attribute for this to work.' },
         { attr: 'loop', desc: 'Repeats the media file from the beginning after it finishes.' },
         { attr: 'muted', desc: 'Mutes the audio output by default.' },
-        { attr: 'preload', desc: 'Specifies if and how the author thinks the media file should be loaded when the page loads. Values: `auto`, `metadata`, `none`.' },
+        { attr: 'preload', desc: 'Hints to the browser how the file should be loaded. Values: `auto`, `metadata`, `none`.' },
     ];
 
     const videoOnlyAttributes = [
         { attr: 'width/height', desc: 'Sets the dimensions of the video player.' },
-        { attr: 'poster', desc: 'An image to show while the video is downloading, or until the user hits the play button.' },
-        { attr: 'playsinline', desc: 'Allows the video to play "inline" within the page on mobile devices, instead of automatically entering fullscreen.' },
+        { attr: 'poster', desc: 'An image to show while the video is downloading, or until the user hits play.' },
+        { attr: 'playsinline', desc: 'Allows video to play "inline" on mobile devices, instead of entering fullscreen.' },
     ];
     
     const audioExample = `<audio controls>
@@ -31,7 +31,7 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
     const videoExample = `<video controls width="400" poster="https://picsum.photos/seed/poster/400/225">
   <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
   <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm">
-  <track src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English">
+  <track default src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English">
   Sorry, your browser doesn't support embedded videos.
 </video>`;
     
@@ -48,7 +48,7 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
 
 <h2>Video Player</h2>
 <p>This video player includes a poster image and English subtitles.</p>
-<video controls width="100%" poster="https://picsum.photos/seed/playground/600/338">
+<video controls width="100%" poster="https://picsum.photos/seed/playground/600/338" data-ai-hint="nature water">
   <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
   <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm">
   <track default src="data:text/vtt;base64,V0VCVlRUDQoNCjAwOjAwOjAyLjUwMCAtLT4gMDA6MDA6MDQuNTAwDQpCeSBub3csIHlvdSdsbCBzaG91dCwNCg0KMDA6MDA6MDQuNTAwIC0tPiAwMDowMDowNi4wMDANCkhvdyBkaWQgSSBldmVyIGdldCBhbG9uZyB3aXRob3V0IHlvdT8=" kind="subtitles" srclang="en" label="English">
@@ -58,6 +58,8 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
         css: `body {
   font-family: sans-serif;
   padding: 1rem;
+  background-color: #f8f9fa;
+  color: #212529;
 }
 h2 {
   color: hsl(var(--primary));
@@ -69,6 +71,7 @@ video {
   max-width: 600px;
   border-radius: 8px;
   border: 2px solid hsl(var(--border));
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }`,
         js: ''
     };
@@ -102,7 +105,7 @@ video {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary"/>The `<audio>` Element</CardTitle>
-                        <CardDescription>Used to embed sound content in documents.</CardDescription>
+                        <CardDescription>Used to embed sound content in documents. It's crucial to provide multiple `<source>` elements for browser compatibility.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="bg-muted rounded-md p-4 mb-4">
@@ -114,7 +117,7 @@ video {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary"/>The `<video>` Element</CardTitle>
-                        <CardDescription>Used for playing videos or movies.</CardDescription>
+                        <CardDescription>Used for playing videos. The `<track>` element is vital for adding subtitles, making your content accessible.</CardDescription>
                     </CardHeader>
                     <CardContent>
                          <div className="bg-muted rounded-md p-4 mb-4">
@@ -145,15 +148,15 @@ video {
                 <CardContent className="space-y-4">
                     <div>
                         <h3 className="font-semibold text-lg">The `<source>` Element</h3>
-                        <p className="text-sm text-muted-foreground">Different browsers support different file formats. To ensure compatibility, you can provide multiple source files inside the `<audio>` or `<video>` tag. The browser will use the first one it recognizes.</p>
+                        <p className="text-sm text-muted-foreground">Different browsers support different file formats (like `.mp4`, `.webm`, `.ogg`). To ensure compatibility, you can provide multiple source files inside the `<audio>` or `<video>` tag. The browser will use the first one it recognizes.</p>
                     </div>
                     <div>
-                        <h3 className="font-semibold text-lg">The `<track>` Element</h3>
-                        <p className="text-sm text-muted-foreground">Used with `<video>` to specify timed text tracks (like subtitles or captions). This is crucial for accessibility. The `src` attribute points to a WebVTT file (`.vtt`).</p>
+                        <h3 className="font-semibold text-lg flex items-center gap-2"><Subtitles className="w-5 h-5"/>The `<track>` Element (for Accessibility)</h3>
+                        <p className="text-sm text-muted-foreground">Used with `<video>` to specify timed text tracks (like subtitles or captions). This is crucial for users who are deaf or hard of hearing. The `src` attribute points to a WebVTT file (`.vtt`), which contains the timed text. You can also embed VTT content directly using a data URI for simple cases.</p>
                     </div>
                      <div>
                         <h3 className="font-semibold text-lg">Fallback Content</h3>
-                        <p className="text-sm text-muted-foreground">Any text you place between the opening and closing `<audio>` or `<video>` tags will be displayed only by browsers that do not support the element.</p>
+                        <p className="text-sm text-muted-foreground">Any text you place between the opening and closing `<audio>` or `<video>` tags will be displayed only by browsers that do not support the element, acting as a helpful fallback message.</p>
                     </div>
                 </CardContent>
             </Card>
@@ -161,7 +164,7 @@ video {
             <Card>
                 <CardHeader>
                     <CardTitle>See It All In Action</CardTitle>
-                    <CardDescription>Open this full example in the Web Playground to interact with both an audio and video player.</CardDescription>
+                    <CardDescription>Open this full example in the Web Playground to interact with both an audio and video player, complete with controls, a poster image, and subtitles.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
