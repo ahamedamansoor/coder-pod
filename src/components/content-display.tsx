@@ -58,6 +58,14 @@ export function ContentDisplay({
   const { toast } = useToast();
 
   React.useEffect(() => {
+    // Reset AI content when the topic changes
+    setSimplifiedContent(null);
+    setQaResult(null);
+    setQuestion('');
+  }, [topic]);
+
+
+  React.useEffect(() => {
     if (hasCopied) {
       const timer = setTimeout(() => {
         setHasCopied(false);
