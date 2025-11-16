@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Chrome, Loader2, User } from 'lucide-react';
 import { Logo } from '@/components/logo';
-import { useAuth } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
+import { useAuth, useFirestore } from '@/firebase';
+import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, UserCredential } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
@@ -20,15 +21,34 @@ export default function LoginPage() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isAnonymousLoading, setIsAnonymousLoading] = useState(false);
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
+
+  const createUserProfile = async (user: any) => {
+    if (!user) return;
+    const userRef = doc(firestore, `users/${user.uid}`);
+    const userProfile = {
+      id: user.uid,
+      email: user.email,
+      name: user.displayName,
+      createdAt: serverTimestamp(),
+      lastLoginAt: serverTimestamp(),
+    };
+    await setDoc(userRef, userProfile, { merge: true });
+  };
+
+  const handleSuccessfulLogin = async (userCredential: UserCredential) => {
+    await createUserProfile(userCredential.user);
+    router.push('/java/learning-plan');
+  };
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      router.push('/java/learning-plan');
+      const userCredential = await signInWithPopup(auth, provider);
+      await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
       console.error('Google sign-in error:', error);
       toast({
@@ -62,14 +82,17 @@ export default function LoginPage() {
     e.preventDefault();
     setIsEmailLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // For existing users, we just update their last login time.
+      const userRef = doc(firestore, `users/${userCredential.user.uid}`);
+      await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
       router.push('/java/learning-plan');
+
     } catch (error: any) {
-      // If sign-in fails, try to sign up instead
       if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
         try {
-          await createUserWithEmailAndPassword(auth, email, password);
-          router.push('/java/learning-plan');
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await handleSuccessfulLogin(userCredential);
         } catch (signUpError: any) {
           console.error('Email sign-up error:', signUpError);
           toast({
