@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
@@ -5,6 +6,8 @@ import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const JavaLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useJava();
@@ -228,6 +231,13 @@ export const JavaLearningRoadmap = () => {
     }
   ];
 
+  const chartData = [
+    { level: "Foundation", topics: modules.filter(m => m.level === "Foundation").reduce((acc, m) => acc + m.topics.length, 0), fill: "hsl(var(--chart-1))" },
+    { level: "Core Concepts", topics: modules.filter(m => m.level === "Core Concepts").reduce((acc, m) => acc + m.topics.length, 0), fill: "hsl(var(--chart-2))" },
+    { level: "Advanced", topics: modules.filter(m => m.level === "Advanced").reduce((acc, m) => acc + m.topics.length, 0), fill: "hsl(var(--chart-3))" },
+    { level: "Expert", topics: modules.filter(m => m.level === "Expert").reduce((acc, m) => acc + m.topics.length, 0), fill: "hsl(var(--chart-4))" },
+  ];
+
   const toggleTopic = (topicId: string) => {
     if (!user) {
       router.push('/login');
@@ -310,8 +320,8 @@ export const JavaLearningRoadmap = () => {
   const totalTopicCount = modules.reduce((acc, m) => acc + m.topics.length, 0);
 
   return (
-    <div className="p-2 md:p-6">
-      <div className="mx-auto max-w-none">
+    <div className="p-2 md:p-6 max-w-none">
+      <div className="mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <BookOpen className="w-12 h-12 text-primary" />
@@ -337,6 +347,34 @@ export const JavaLearningRoadmap = () => {
             </p>
           </div>
         </div>
+        
+        <Card className="mb-8">
+            <CardHeader>
+                <CardTitle>Roadmap Overview</CardTitle>
+                <CardDescription>A visual breakdown of topics by difficulty level.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="w-full h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart layout="vertical" data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                            <XAxis type="number" hide />
+                            <YAxis dataKey="level" type="category" tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} width={100} />
+                            <Tooltip
+                                cursor={{ fill: 'hsl(var(--muted))' }}
+                                contentStyle={{
+                                    backgroundColor: 'hsl(var(--background))',
+                                    borderColor: 'hsl(var(--border))',
+                                    borderRadius: 'var(--radius)',
+                                }}
+                            />
+                            <Bar dataKey="topics" radius={[0, 4, 4, 0]} barSize={32}>
+                                <LabelList dataKey="topics" position="right" offset={10} className="fill-foreground font-semibold" />
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </CardContent>
+        </Card>
 
         <div className="space-y-4">
           {modules.map((module) => (
