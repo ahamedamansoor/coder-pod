@@ -112,7 +112,9 @@ code {
                         {commonEntities.map(entity => (
                             <TableRow key={entity.name}>
                                 <TableCell>{entity.description}</TableCell>
-                                <TableCell className="font-bold text-lg">{entity.result}</TableCell>
+                                <TableCell>
+                                    <code className="font-mono text-foreground text-lg bg-muted p-2 rounded">{entity.result}</code>
+                                </TableCell>
                                 <TableCell><code className="font-mono text-primary bg-muted p-1 rounded">{entity.name}</code></TableCell>
                                 <TableCell><code className="font-mono text-primary bg-muted p-1 rounded">{entity.number}</code></TableCell>
                             </TableRow>
