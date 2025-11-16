@@ -1,37 +1,67 @@
+
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Key, Play, AlertCircle } from 'lucide-react';
+import { Key, Play, AlertCircle, Sigma, DollarSign, Pilcrow } from 'lucide-react';
 import React from 'react';
 
 export default function HtmlCharacterEntities({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
     
-    const commonEntities = [
-        { description: 'Less than sign', result: '<', name: '&lt;', number: '&#60;' },
-        { description: 'Greater than sign', result: '>', name: '&gt;', number: '&#62;' },
+    const reservedChars = [
+        { description: 'Less than', result: '<', name: '&lt;', number: '&#60;' },
+        { description: 'Greater than', result: '>', name: '&gt;', number: '&#62;' },
         { description: 'Ampersand', result: '&', name: '&amp;', number: '&#38;' },
-        { description: 'Double quotation mark', result: '"', name: '&quot;', number: '&#34;' },
-        { description: 'Single quotation mark', result: "'", name: '&apos;', number: '&#39;' },
-        { description: 'Copyright symbol', result: '©', name: '&copy;', number: '&#169;' },
-        { description: 'Registered trademark', result: '®', name: '&reg;', number: '&#174;' },
-        { description: 'Euro sign', result: '€', name: '&euro;', number: '&#8364;' },
-        { description: 'Cent sign', result: '¢', name: '&cent;', number: '&#162;' },
+        { description: 'Double quote', result: '"', name: '&quot;', number: '&#34;' },
+        { description: 'Single quote', result: "'", name: '&apos;', number: '&#39;' },
+    ];
+    
+    const punctuationSymbols = [
         { description: 'Non-breaking space', result: ' ', name: '&nbsp;', number: '&#160;' },
+        { description: 'Inverted exclamation', result: '¡', name: '&iexcl;', number: '&#161;' },
+        { description: 'Inverted question mark', result: '¿', name: '&iquest;', number: '&#191;' },
+        { description: 'Section sign', result: '§', name: '&sect;', number: '&#167;' },
+        { description: 'Paragraph sign', result: '¶', name: '&para;', number: '&#182;' },
+        { description: 'Bullet', result: '•', name: '&bull;', number: '&#8226;' },
+        { description: 'En dash', result: '–', name: '&ndash;', number: '&#8211;' },
+        { description: 'Em dash', result: '—', name: '&mdash;', number: '&#8212;' },
+    ];
+    
+    const currencySymbols = [
+        { description: 'Cent', result: '¢', name: '&cent;', number: '&#162;' },
+        { description: 'Pound', result: '£', name: '&pound;', number: '&#163;' },
+        { description: 'Yen', result: '¥', name: '&yen;', number: '&#165;' },
+        { description: 'Euro', result: '€', name: '&euro;', number: '&#8364;' },
+        { description: 'Copyright', result: '©', name: '&copy;', number: '&#169;' },
+        { description: 'Registered TM', result: '®', name: '&reg;', number: '&#174;' },
+    ];
+    
+    const mathSymbols = [
+        { description: 'Plus-minus', result: '±', name: '&plusmn;', number: '&#177;' },
+        { description: 'Multiplication', result: '×', name: '&times;', number: '&#215;' },
+        { description: 'Division', result: '÷', name: '&divide;', number: '&#247;' },
+        { description: 'Not equal', result: '≠', name: '&ne;', number: '&#8800;' },
+        { description: 'Less than or equal', result: '≤', name: '&le;', number: '&#8804;' },
+        { description: 'Greater than or equal', result: '≥', name: '&ge;', number: '&#8805;' },
+        { description: 'Degree', result: '°', name: '&deg;', number: '&#176;' },
+        { description: 'Tilde', result: '~', name: 'N/A', number: '&#126;' },
     ];
     
     const playgroundCode = {
         html: `<!-- Using character entities to display code -->
-<h2>Displaying HTML Code</h2>
+<h2>Code & Reserved Characters</h2>
 <p>
   To show a paragraph tag, you must use entities: 
   <code>&lt;p&gt;This is a paragraph.&lt;/p&gt;</code>
 </p>
 
 <!-- Using entities for symbols -->
-<h2>Symbols & Copyright</h2>
+<h2>Symbols, Currency & Math</h2>
 <p>
-  The price is 50&cent;. Special offers may apply.
+  The price is 50&cent; or &euro;0.50.
+</p>
+<p>
+  Is 5 &ge; 4? Yes. Is 5 &ne; 5? No.
 </p>
 <p>
   Copyright &copy; 2024 Coder Pod&reg;.
@@ -40,6 +70,11 @@ export default function HtmlCharacterEntities({ onOpenWebPlayground }: { onOpenW
         css: `body { 
   font-family: sans-serif;
   line-height: 1.6;
+}
+h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  margin-top: 1.5rem;
 }
 code {
   background-color: #f4f4f4;
@@ -50,6 +85,31 @@ code {
 }`,
         js: ''
     };
+    
+    const EntityTable = ({ entities }: { entities: typeof reservedChars }) => (
+         <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Description</TableHead>
+                    <TableHead>Result</TableHead>
+                    <TableHead>Entity Name</TableHead>
+                    <TableHead>Entity Number</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {entities.map(entity => (
+                    <TableRow key={entity.name}>
+                        <TableCell>{entity.description}</TableCell>
+                        <TableCell>
+                            <code className="font-mono text-foreground text-lg bg-muted p-2 rounded">{entity.result}</code>
+                        </TableCell>
+                        <TableCell><code className="font-mono text-primary bg-muted p-1 rounded">{entity.name}</code></TableCell>
+                        <TableCell><code className="font-mono text-primary bg-muted p-1 rounded">{entity.number}</code></TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    );
 
     return (
       <div className="space-y-8">
@@ -73,55 +133,40 @@ code {
 
         <Card>
             <CardHeader>
-                <CardTitle>Anatomy of an Entity</CardTitle>
-                <CardDescription>A character entity has two forms: the **name** and the **number**. Both produce the same result. They always start with an ampersand (`&`) and end with a semicolon (`;`).</CardDescription>
+                <CardTitle>Reserved Characters</CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="grid md:grid-cols-2 gap-6 text-center">
-                    <div className="bg-muted p-4 rounded-lg border">
-                        <h3 className="font-bold text-lg">Entity Name</h3>
-                        <code className="text-primary font-mono bg-background p-1 rounded">&amp;lt;</code>
-                        <p className="text-xs text-muted-foreground mt-1">Easier to remember.</p>
-                    </div>
-                     <div className="bg-muted p-4 rounded-lg border">
-                        <h3 className="font-bold text-lg">Entity Number</h3>
-                        <code className="text-primary font-mono bg-background p-1 rounded">&amp;#60;</code>
-                        <p className="text-xs text-muted-foreground mt-1">Supported by all browsers.</p>
-                    </div>
-                </div>
-                <p className="text-xs text-muted-foreground text-center mt-4">While entity names are more readable, not all have a name. Every character has a number.</p>
+                <EntityTable entities={reservedChars} />
+            </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-3"><Pilcrow className="w-6 h-6 text-primary"/>Punctuation & Symbols</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <EntityTable entities={punctuationSymbols} />
+            </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-3"><DollarSign className="w-6 h-6 text-primary"/>Currency & Trademark Symbols</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <EntityTable entities={currencySymbols} />
+            </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-3"><Sigma className="w-6 h-6 text-primary"/>Mathematical Symbols</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <EntityTable entities={mathSymbols} />
             </CardContent>
         </Card>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Common Character Entities</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Description</TableHead>
-                            <TableHead>Result</TableHead>
-                            <TableHead>Entity Name</TableHead>
-                            <TableHead>Entity Number</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {commonEntities.map(entity => (
-                            <TableRow key={entity.name}>
-                                <TableCell>{entity.description}</TableCell>
-                                <TableCell>
-                                    <code className="font-mono text-foreground text-lg bg-muted p-2 rounded">{entity.result}</code>
-                                </TableCell>
-                                <TableCell><code className="font-mono text-primary bg-muted p-1 rounded">{entity.name}</code></TableCell>
-                                <TableCell><code className="font-mono text-primary bg-muted p-1 rounded">{entity.number}</code></TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </CardContent>
-        </Card>
 
         <Card>
             <CardHeader>
