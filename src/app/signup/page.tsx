@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -37,6 +38,7 @@ const formSchema = z.object({
 
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [phonePlaceholder, setPhonePlaceholder] = useState('555-123-4567');
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -51,6 +53,16 @@ export default function SignupPage() {
       phoneNumber: '',
     },
   });
+
+  const handleCountryChange = (dialCode: string) => {
+    const country = countries.find(c => c.dial_code === dialCode);
+    if (country) {
+      setPhonePlaceholder(`Phone number in ${country.name}`);
+    } else {
+      setPhonePlaceholder('555-123-4567');
+    }
+    form.setValue('countryCode', dialCode);
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -163,7 +175,7 @@ export default function SignupPage() {
                     name="countryCode"
                     render={({ field }) => (
                       <FormItem className="w-1/3">
-                        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
+                        <Select onValueChange={handleCountryChange} defaultValue={field.value} disabled={isLoading}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Code" />
@@ -185,7 +197,7 @@ export default function SignupPage() {
                     render={({ field }) => (
                       <FormItem className="w-2/3">
                         <FormControl>
-                          <Input type="tel" placeholder="555-123-4567" {...field} disabled={isLoading} />
+                          <Input type="tel" placeholder={phonePlaceholder} {...field} disabled={isLoading} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
