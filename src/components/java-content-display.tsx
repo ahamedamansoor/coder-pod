@@ -86,6 +86,7 @@ const JavaEnums = lazy(() => import('./java-topics/java-enums').then(module => (
 const JavaDate = lazy(() => import('./java-topics/java-date').then(module => ({ default: module.JavaDate })));
 const JavaHashMap = lazy(() => import('./java-topics/java-hashmap').then(module => ({ default: module.JavaHashMap })));
 const JavaHashSet = lazy(() => import('./java-topics/java-hashset').then(module => ({ default: module.JavaHashSet })));
+const JavaArrayList = lazy(() => import('./java-topics/java-arraylist').then(module => ({ default: module.JavaArrayList })));
 const JavaLinkedList = lazy(() => import('./java-topics/java-linkedlist').then(module => ({ default: module.JavaLinkedList })));
 const JavaIterator = lazy(() => import('./java-topics/java-iterator').then(module => ({ default: module.JavaIterator })));
 const JavaWrapperClasses = lazy(() => import('./java-topics/java-wrapper-classes').then(module => ({ default: module.JavaWrapperClasses })));
@@ -152,6 +153,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'date-time': JavaDate,
   'hashmap': JavaHashMap,
   'hashset': JavaHashSet,
+  'arraylist': JavaArrayList,
   'linkedlist': JavaLinkedList,
   'iterator': JavaIterator,
   'wrapper-classes': JavaWrapperClasses,
