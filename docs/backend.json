@@ -41,7 +41,8 @@
     "providers": [
       "password",
       "anonymous",
-      "google.com"
+      "google.com",
+      "github.com"
     ]
   },
   "firestore": {
