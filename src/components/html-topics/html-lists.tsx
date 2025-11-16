@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { List, ListOrdered, BookText, Play, ArrowRight, GitMerge } from 'lucide-react';
+import { List, ListOrdered, BookText, Play, ArrowRight, GitMerge, ListIcon, Circle, Square } from 'lucide-react';
 import React from 'react';
 
 export default function HtmlLists({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
@@ -14,6 +14,24 @@ export default function HtmlLists({ onOpenWebPlayground }: { onOpenWebPlayground
   <li>Cheese</li>
 </ul>`;
 
+    const unorderedListTypesCode = `<h3>Default (disc)</h3>
+<ul type="disc">
+  <li>First item</li>
+  <li>Second item</li>
+</ul>
+
+<h3>Circle</h3>
+<ul type="circle">
+  <li>First item</li>
+  <li>Second item</li>
+</ul>
+
+<h3>Square</h3>
+<ul type="square">
+  <li>First item</li>
+  <li>Second item</li>
+</ul>`;
+
     const orderedListCode = `<h2>Recipe Steps</h2>
 <ol>
   <li>Boil water.</li>
@@ -21,14 +39,32 @@ export default function HtmlLists({ onOpenWebPlayground }: { onOpenWebPlayground
   <li>Cook for 8-10 minutes.</li>
 </ol>`;
 
-    const orderedListTypesCode = `<h3>Roman Numerals</h3>
+    const orderedListTypesCode = `<h3>Numbers (default)</h3>
+<ol type="1">
+  <li>First item</li>
+  <li>Second item</li>
+</ol>
+
+<h3>Uppercase Letters</h3>
+<ol type="A">
+  <li>First item</li>
+  <li>Second item</li>
+</ol>
+
+<h3>Lowercase Letters</h3>
+<ol type="a">
+  <li>First item</li>
+  <li>Second item</li>
+</ol>
+
+<h3>Uppercase Roman</h3>
 <ol type="I">
   <li>First item</li>
   <li>Second item</li>
 </ol>
 
-<h3>Alphabetical</h3>
-<ol type="A">
+<h3>Lowercase Roman</h3>
+<ol type="i">
   <li>First item</li>
   <li>Second item</li>
 </ol>`;
@@ -100,7 +136,7 @@ export default function HtmlLists({ onOpenWebPlayground }: { onOpenWebPlayground
   font-family: sans-serif;
   line-height: 1.6;
 }
-h1, h2 {
+h1, h2, h3 {
   color: hsl(var(--primary));
   border-bottom: 1px solid hsl(var(--border));
   padding-bottom: 4px;
@@ -167,7 +203,14 @@ dd {
                     <div className="bg-muted rounded-md p-4 mb-4">
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{unorderedListCode}</pre>
                     </div>
-                    <Button onClick={() => onOpenWebPlayground(unorderedListCode, fullPlaygroundCode.css, '')}>
+                     <div className="my-4">
+                        <h4 className="font-semibold mb-2">Changing the Bullet Style with `type`</h4>
+                        <p className="text-sm text-muted-foreground mb-2">While usually styled with CSS, the `type` attribute on `&lt;ul&gt;` can be `disc` (default), `circle`, or `square`.</p>
+                        <div className="bg-muted rounded-md p-4">
+                            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{unorderedListTypesCode}</pre>
+                        </div>
+                    </div>
+                    <Button onClick={() => onOpenWebPlayground(unorderedListCode + '\n' + unorderedListTypesCode, fullPlaygroundCode.css, '')}>
                         <Play className="mr-2 h-4 w-4" /> Try it
                     </Button>
                 </CardContent>
@@ -183,13 +226,13 @@ dd {
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{orderedListCode}</pre>
                     </div>
                     <div className="my-4">
-                        <h4 className="font-semibold mb-2">Changing the Numbering Style</h4>
-                        <p className="text-sm text-muted-foreground mb-2">You can use the `type` attribute on the `&lt;ol&gt;` tag:</p>
+                        <h4 className="font-semibold mb-2">Changing the Numbering Style with `type`</h4>
+                        <p className="text-sm text-muted-foreground mb-2">You can use the `type` attribute on the `&lt;ol&gt;` tag to change the marker style.</p>
                         <div className="bg-muted rounded-md p-4">
                             <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{orderedListTypesCode}</pre>
                         </div>
                     </div>
-                     <Button onClick={() => onOpenWebPlayground(orderedListCode + orderedListTypesCode, fullPlaygroundCode.css, '')}>
+                     <Button onClick={() => onOpenWebPlayground(orderedListCode + '\n' + orderedListTypesCode, fullPlaygroundCode.css, '')}>
                         <Play className="mr-2 h-4 w-4" /> Try it
                     </Button>
                 </CardContent>
