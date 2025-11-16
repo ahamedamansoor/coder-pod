@@ -10,12 +10,14 @@ import { useWebPlayground } from './web-playground-context';
 // Lazy load all the topic components.
 const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction'));
 const DocumentStructure = lazy(() => import('./html-topics/document-structure'));
+const HtmlAttributes = lazy(() => import('./html-topics/html-attributes'));
 
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'introduction-to-html': HtmlIntroduction,
   'document-structure': DocumentStructure,
+  'html-attributes': HtmlAttributes,
 };
 
 function LoadingSkeleton() {
