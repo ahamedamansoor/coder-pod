@@ -185,7 +185,7 @@ export function ContentDisplay({
     if (topic.slug === 'wrapper-classes') return <JavaWrapperClasses onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'exceptions') return <JavaExceptions onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'regex') return <JavaRegex />;
-    if (topic.slug === 'threads') return <JavaThreads />;
+    if (topic.slug === 'threads') return <JavaThreads onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'lambda') return <JavaLambda onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'file-handling') return <JavaFileHandling onOpenEditor={onOpenEditor} />;
 
