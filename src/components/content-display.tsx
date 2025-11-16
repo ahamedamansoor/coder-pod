@@ -29,6 +29,7 @@ import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 export function ContentDisplay({ 
   topic, 
@@ -49,6 +50,7 @@ export function ContentDisplay({
   
   const { completedTopics, handleToggleComplete } = useJava();
   const { user } = useUser();
+  const isUserAuthenticated = user && !user.isAnonymous;
 
   const { toast } = useToast();
 
@@ -182,6 +184,26 @@ export function ContentDisplay({
 
   const showSimplifyButton = noCustomContent && !isLearningPlanTopic;
 
+  const markAsCompleteButton = (
+    <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
+      <Checkbox
+        id={`complete-${topic.slug}`}
+        checked={completedTopics.has(topic.slug)}
+        onCheckedChange={() => handleToggleComplete(topic.slug)}
+        disabled={!isUserAuthenticated}
+      />
+      <Label
+        htmlFor={`complete-${topic.slug}`}
+        className={cn(
+          "font-semibold text-muted-foreground",
+          !isUserAuthenticated && "cursor-not-allowed opacity-50"
+        )}
+      >
+        Mark as completed
+      </Label>
+    </div>
+  );
+
   return (
     <div className="space-y-8">
        <header className="space-y-2 flex justify-between items-start">
@@ -193,17 +215,21 @@ export function ContentDisplay({
               A deep dive into {topic.title} in {language.name}.
             </p>
          </div>
-         {!isLearningPlanTopic && user && (
-            <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
-                <Checkbox 
-                    id={`complete-${topic.slug}`} 
-                    checked={completedTopics.has(topic.slug)}
-                    onCheckedChange={() => handleToggleComplete(topic.slug)}
-                />
-                <Label htmlFor={`complete-${topic.slug}`} className="font-semibold text-muted-foreground">
-                    Mark as completed
-                </Label>
-            </div>
+         {!isLearningPlanTopic && (
+            <>
+              {isUserAuthenticated ? (
+                markAsCompleteButton
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {markAsCompleteButton}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>You must be logged in to save your progress.</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </>
          )}
         </header>
       
