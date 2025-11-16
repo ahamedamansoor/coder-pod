@@ -170,7 +170,19 @@ export function TopicSidebar({
             }
         }
     } else if (language.slug === 'css') {
-        group = 'CSS Basics';
+      const cssGroups: Record<string, string[]> = {
+            "CSS Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-colors', 'css-box-model', 'css-typography'],
+            "Layout": ['css-positioning', 'css-flexbox', 'css-grid'],
+            "Advanced Styling": ['css-pseudo-classes', 'css-pseudo-elements', 'css-variables'],
+            "Animation & Interactivity": ['css-transitions', 'css-animations'],
+            "Responsive Design": ['css-responsive-design'],
+        };
+        for (const groupName in cssGroups) {
+            if (cssGroups[groupName].includes(topic.slug)) {
+                group = groupName;
+                break;
+            }
+        }
     } else if (language.slug === 'scss') {
         group = 'Sass/SCSS Basics';
     }
@@ -194,7 +206,7 @@ export function TopicSidebar({
     : language.slug === 'html'
     ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics", "Others"]
     : language.slug === 'css'
-    ? ['CSS Basics']
+    ? ["CSS Fundamentals", "Layout", "Advanced Styling", "Animation & Interactivity", "Responsive Design", "Others"]
     : language.slug === 'scss'
     ? ['Sass/SCSS Basics']
     : [];
