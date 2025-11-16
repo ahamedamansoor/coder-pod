@@ -34,7 +34,7 @@ export default function JavaTopicLayout({
         <div
           id="java-topic-page"
           data-test="java-topic-page"
-          className="flex flex-col h-screen bg-background"
+          className="flex flex-col h-screen bg-background w-screen"
         >
           <MainHeader
             onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
