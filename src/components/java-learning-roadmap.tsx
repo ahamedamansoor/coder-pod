@@ -278,7 +278,7 @@ export const JavaLearningRoadmap = () => {
   if (isUserLoading || isProgressLoading) {
     return (
         <div className="p-2 md:p-6">
-            <div className="mx-auto">
+            <div className="mx-auto max-w-none">
                 <div className="text-center mb-8">
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <Skeleton className="w-12 h-12 rounded-full" />
@@ -311,7 +311,7 @@ export const JavaLearningRoadmap = () => {
 
   return (
     <div className="p-2 md:p-6">
-      <div className="mx-auto">
+      <div className="mx-auto max-w-none">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <BookOpen className="w-12 h-12 text-primary" />
