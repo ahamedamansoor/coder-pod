@@ -43,7 +43,7 @@ export const JavaLearningRoadmap = () => {
       icon: "📢",
       topics: [
         { id: "print-statements-and-format-specifiers", name: "Print Statements & Format Specifiers", desc: "print(), println(), printf() and format specifiers like %d, %s", difficulty: "Easy" },
-        { id: "escape-sequences", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\", etc.", difficulty: "Easy" }
+        { id: "escape-sequences", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" }
       ]
     },
     {
