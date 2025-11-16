@@ -7,7 +7,6 @@ import { ContentDisplay } from '@/components/content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
-import { useJava } from '../java-context';
 
 interface TopicPageProps {
   isEditorOpen: boolean;
@@ -34,6 +33,10 @@ export default function JavaTopicPage({
     setIsEditorOpen(true);
   }, [setIsEditorOpen]);
   
+  const handleCloseEditor = useCallback(() => {
+    setIsEditorOpen(false);
+  }, [setIsEditorOpen]);
+  
   const isLearningPlanTopic = selectedTopic.slug === 'learning-plan';
 
   return (
@@ -50,7 +53,10 @@ export default function JavaTopicPage({
         )}
       </div>
       <ResizablePanel isOpen={isEditorOpen}>
-        <CodeEditorSheet initialCode={editorInitialCode} />
+        <CodeEditorSheet
+          initialCode={editorInitialCode}
+          onClose={handleCloseEditor}
+        />
       </ResizablePanel>
     </>
   );

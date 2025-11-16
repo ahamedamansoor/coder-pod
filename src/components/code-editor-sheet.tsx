@@ -3,12 +3,18 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
-import { Code, Play, Terminal, Copy, Check } from 'lucide-react';
+import { Code, Play, Terminal, Copy, Check, X } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { executeJavaCode } from '@/ai/flows/execute-java-code';
 import { useToast } from '@/hooks/use-toast';
 
-export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
+export function CodeEditorSheet({
+  initialCode,
+  onClose,
+}: {
+  initialCode?: string;
+  onClose: () => void;
+}) {
   const [code, setCode] = useState(
     initialCode ||
       'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}'
@@ -66,13 +72,19 @@ export function CodeEditorSheet({ initialCode }: { initialCode?: string }) {
 
   return (
     <div className="flex flex-col h-full border-l bg-card">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold flex items-center gap-2">
-          <Code className="w-6 h-6" /> Java Code Editor
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Write and run Java code using an AI-powered runtime.
-        </p>
+      <div className="p-4 border-b flex justify-between items-center">
+        <div>
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <Code className="w-6 h-6" /> Java Code Editor
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Write and run Java code using an AI-powered runtime.
+          </p>
+        </div>
+        <Button variant="ghost" size="icon" onClick={onClose}>
+          <X className="w-5 h-5" />
+          <span className="sr-only">Close editor</span>
+        </Button>
       </div>
       <div className="flex-1 flex flex-col gap-4 p-4 overflow-y-auto">
         <div className="flex-1 flex flex-col relative">
