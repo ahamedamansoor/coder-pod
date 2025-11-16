@@ -176,7 +176,7 @@ export function ContentDisplay({
     if (topic.slug === 'recursion') return <JavaRecursion onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'classes-objects') return <JavaClassesObjects onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'class-attributes') return <JavaClassAttributes onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'class-methods') return <JavaClassMethods />;
+    if (topic.slug === 'class-methods') return <JavaClassMethods onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'constructors') return <JavaConstructors onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'access-modifiers') return <JavaAccessModifiers onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'encapsulation') return <JavaEncapsulation onOpenEditor={onOpenEditor} />;
@@ -194,7 +194,7 @@ export function ContentDisplay({
     if (topic.slug === 'iterator') return <JavaIterator onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'wrapper-classes') return <JavaWrapperClasses onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'exceptions') return <JavaExceptions onOpenEditor={onOpenEditor} />;
-    if (topic.slug === 'regex') return <JavaRegex />;
+    if (topic.slug === 'regex') return <JavaRegex onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'threads') return <JavaThreads onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'lambda') return <JavaLambda onOpenEditor={onOpenEditor} />;
     if (topic.slug === 'file-handling') return <JavaFileHandling onOpenEditor={onOpenEditor} />;
