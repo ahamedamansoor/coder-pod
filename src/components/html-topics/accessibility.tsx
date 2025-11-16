@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { UniversalAccess, Play, Building, Search, UserCheck, Eye, Pointer, Puzzle, Speaker } from 'lucide-react';
+import { Accessibility as AccessibilityIcon, Play, Building, Search, UserCheck, Eye, Pointer, Puzzle, Speaker } from 'lucide-react';
 import React from 'react';
 
 export default function Accessibility({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -70,7 +70,7 @@ img {
       <div className="space-y-8">
         <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-                <UniversalAccess className="w-10 h-10 text-primary" />
+                <AccessibilityIcon className="w-10 h-10 text-primary" />
                 <h1 className="text-4xl font-bold text-foreground">Accessibility (a11y)</h1>
             </div>
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Building websites that everyone can use, regardless of ability.</p>
