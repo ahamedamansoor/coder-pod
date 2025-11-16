@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -31,6 +32,7 @@ function JavaTopicLayoutContent({ children }: { children: React.ReactNode }) {
         <MainHeader
           onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
           isEditorOpen={isEditorOpen}
+          showWebPlaygroundButton={false}
         />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar>

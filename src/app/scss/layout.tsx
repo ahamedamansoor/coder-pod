@@ -32,6 +32,7 @@ function ScssTopicLayoutContent({ children }: { children: React.ReactNode }) {
         <MainHeader
           onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
           isEditorOpen={isEditorOpen}
+          showWebPlaygroundButton={true}
         />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar>

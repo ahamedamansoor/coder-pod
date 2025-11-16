@@ -23,12 +23,14 @@ interface MainHeaderProps {
   onToggleEditor: () => void;
   isEditorOpen: boolean;
   showCodeEditorButton?: boolean;
+  showWebPlaygroundButton?: boolean;
 }
 
 export function MainHeader({
   onToggleEditor,
   isEditorOpen,
   showCodeEditorButton = true,
+  showWebPlaygroundButton = true,
 }: MainHeaderProps) {
   const { user } = useUser();
   const auth = useAuth();
@@ -81,12 +83,14 @@ export function MainHeader({
       <div className="flex items-center gap-4">
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
         <ThemeToggle />
-        <WebPlaygroundModal>
-            <Button variant="outline">
-                <LayoutGrid className="mr-2 h-4 w-4" />
-                Web Playground
-            </Button>
-        </WebPlaygroundModal>
+        {showWebPlaygroundButton && (
+          <WebPlaygroundModal>
+              <Button variant="outline">
+                  <LayoutGrid className="mr-2 h-4 w-4" />
+                  Web Playground
+              </Button>
+          </WebPlaygroundModal>
+        )}
         {showCodeEditorButton && (
           <Button variant="outline" onClick={onToggleEditor}>
             <Code className="mr-2 h-4 w-4" />
