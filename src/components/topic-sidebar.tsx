@@ -95,12 +95,14 @@ export function TopicSidebar({
             "Operators": ['arithmetic-operators', 'assignment-operators', 'comparison-operators', 'logical-operators', 'bitwise-operators', 'ternary-operator', 'operator-precedence'],
             "User Input": ['scanner-class', 'reading-different-types', 'input-validation'],
             "Control Flow": ['if-else', 'switch', 'for-loop', 'while-loop', 'break-continue'],
-            "Strings": ['strings'],
-            "Arrays": ['arrays', 'multi-dimensional-arrays'],
-            "Methods": ['methods', 'method-parameters', 'method-overloading', 'scope', 'recursion'],
-            "Object-Oriented Programming": ['classes-objects', 'class-attributes', 'class-methods', 'constructors', 'access-modifiers', 'encapsulation', 'packages', 'inheritance', 'polymorphism', 'inner-classes', 'abstraction', 'interfaces', 'enums'],
-            "Collections": ['linkedlist', 'hashmap', 'hashset', 'iterator', 'wrapper-classes'],
-            "Advanced Topics": ['exceptions', 'regex', 'threads', 'lambda', 'file-handling', 'date-time'],
+            "Strings & Arrays": ['strings', 'arrays', 'multi-dimensional-arrays'],
+            "Methods & OOP Basics": ['methods', 'method-parameters', 'method-overloading', 'scope', 'recursion', 'classes-objects', 'constructors'],
+            "Advanced OOP": ['class-attributes', 'class-methods', 'access-modifiers', 'encapsulation', 'packages', 'inheritance', 'super-keyword', 'method-overriding', 'polymorphism', 'instanceof-operator', 'inner-classes', 'abstraction', 'interfaces', 'enums', 'object-class'],
+            "Advanced Collections": ['arraylist', 'linkedlist', 'hashmap', 'hashset', 'treemap-treeset', 'queue-deque', 'comparable-comparator', 'iterator', 'wrapper-classes'],
+            "Error Handling & Generics": ['exceptions', 'generics-intro', 'generics-methods-classes'],
+            "Functional Programming": ['lambda', 'streams-api', 'optional-class', 'method-references'],
+            "Advanced Concurrency": ['threads', 'synchronized-keyword', 'volatile-keyword', 'executors-thread-pools'],
+            "Files & Regex": ['file-handling', 'regex', 'date-time'],
         };
         for (const groupName in javaGroups) {
             if (javaGroups[groupName].includes(topic.slug)) {
@@ -163,7 +165,7 @@ export function TopicSidebar({
   }, {} as Record<string, typeof language.topics>);
 
   const groupOrder = language.slug === 'java' 
-    ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings", "Arrays", "Methods", "Object-Oriented Programming", "Collections", "Advanced Topics", "Others"]
+    ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings & Arrays", "Methods & OOP Basics", "Advanced OOP", "Advanced Collections", "Error Handling & Generics", "Functional Programming", "Advanced Concurrency", "Files & Regex", "Others"]
     : language.slug === 'spring' 
     ? ["Spring Core", "Data & Persistence", "Spring MVC & Web", "Spring Boot", "Advanced Topics", "Spring Ecosystem", "Others"]
     : language.slug === 'javascript'

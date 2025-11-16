@@ -122,28 +122,19 @@ export const JavaLearningRoadmap = () => {
     },
     {
       id: 8,
-      title: "Strings",
+      title: "Strings & Arrays",
       level: "Core Concepts",
-      duration: "Week 4",
-      icon: "📝",
-      topics: [
-        { id: "strings", name: "String Methods", desc: "length(), charAt(), substring(), indexOf(), etc.", difficulty: "Easy" }
-      ]
-    },
-    {
-      id: 9,
-      title: "Arrays",
-      level: "Core Concepts",
-      duration: "Week 5",
+      duration: "Week 4-5",
       icon: "📊",
       topics: [
+        { id: "strings", name: "String Methods", desc: "length(), charAt(), substring(), indexOf(), etc.", difficulty: "Easy" },
         { id: "arrays", name: "Arrays", desc: "Declaration, initialization, accessing elements", difficulty: "Easy" },
         { id: "multi-dimensional-arrays", name: "Multi-Dimensional Arrays", desc: "2D arrays, nested arrays", difficulty: "Medium" }
       ]
     },
     {
-      id: 10,
-      title: "Methods/Functions",
+      id: 9,
+      title: "Methods & OOP Basics",
       level: "Core Concepts",
       duration: "Week 5-6",
       icon: "⚙️",
@@ -152,86 +143,100 @@ export const JavaLearningRoadmap = () => {
         { id: "method-parameters", name: "Method Parameters", desc: "Passing values to methods", difficulty: "Easy" },
         { id: "method-overloading", name: "Method Overloading", desc: "Same name, different parameters", difficulty: "Medium" },
         { id: "scope", name: "Scope", desc: "Local vs instance variables", difficulty: "Medium" },
-        { id: "recursion", name: "Recursion", desc: "Methods calling themselves", difficulty: "Hard" }
-      ]
-    },
-    {
-      id: 11,
-      title: "Object-Oriented Programming - Part 1",
-      level: "Advanced",
-      duration: "Week 6-7",
-      icon: "🎯",
-      topics: [
+        { id: "recursion", name: "Recursion", desc: "Methods calling themselves", difficulty: "Hard" },
         { id: "classes-objects", name: "Classes & Objects", desc: "Defining classes, creating objects", difficulty: "Medium" },
-        { id: "class-attributes", name: "Class Attributes", desc: "Object attributes, this keyword", difficulty: "Medium" },
-        { id: "class-methods", name: "Class Methods", desc: "Object behaviors, getters & setters", difficulty: "Medium" },
-        { id: "constructors", name: "Constructors", desc: "Default, parameterized, constructor overloading", difficulty: "Medium" },
-        { id: "access-modifiers", name: "Access Modifiers", desc: "public, private, protected, default", difficulty: "Medium" },
-        { id: "encapsulation", name: "Encapsulation", desc: "Data hiding, information security", difficulty: "Medium" }
+        { id: "constructors", name: "Constructors", desc: "Default, parameterized, constructor overloading", difficulty: "Medium" }
       ]
     },
     {
-      id: 12,
-      title: "Object-Oriented Programming - Part 2",
+      id: 10,
+      title: "Advanced OOP",
       level: "Advanced",
       duration: "Week 7-8",
       icon: "🏗️",
       topics: [
+        { id: "class-attributes", name: "Class Attributes", desc: "Object attributes, this keyword", difficulty: "Medium" },
+        { id: "class-methods", name: "Class Methods", desc: "Object behaviors, getters & setters", difficulty: "Medium" },
+        { id: "access-modifiers", name: "Access Modifiers", desc: "public, private, protected, default", difficulty: "Medium" },
+        { id: "encapsulation", name: "Encapsulation", desc: "Data hiding, information security", difficulty: "Medium" },
         { id: "packages", name: "Packages and API", desc: "Use built-in and user-defined packages", difficulty: "Medium" },
         { id: "inheritance", name: "Inheritance", desc: "extends keyword, parent-child relationship", difficulty: "Medium" },
+        { id: 'super-keyword', name: 'The "super" Keyword', desc: 'Calling parent class methods and constructors.', difficulty: 'Medium' },
+        { id: 'method-overriding', name: 'Method Overriding', desc: 'Providing specific implementation in subclasses.', difficulty: 'Medium' },
         { id: "polymorphism", name: "Polymorphism", desc: "Runtime polymorphism, dynamic binding", difficulty: "Hard" },
+        { id: 'instanceof-operator', name: 'The "instanceof" Operator', desc: 'Checking the runtime type of an object.', difficulty: 'Medium' },
         { id: "inner-classes", name: "Inner Classes", desc: "Nested classes in Java", difficulty: "Medium" },
         { id: "abstraction", name: "Abstraction", desc: "abstract keyword, abstract methods", difficulty: "Hard" },
-        { id: "interfaces", name: "Interfaces", desc: "interface keyword, implementing interfaces", difficulty: "Hard" }
-      ]
-    },
-    {
-      id: 13,
-      title: "Advanced Concepts",
-      level: "Advanced",
-      duration: "Week 8-9",
-      icon: "🧩",
-      topics: [
+        { id: "interfaces", name: "Interfaces", desc: "interface keyword, implementing interfaces", difficulty: "Hard" },
         { id: "enums", name: "Enums", desc: "Special classes that represent a group of constants", difficulty: "Medium" },
-        { id: "user-input", name: "User Input", desc: "Getting user input with Scanner", difficulty: "Easy" },
-        { id: "date-time", name: "Date and Time", desc: "Working with the Date and Time API", difficulty: "Medium" },
-        { id: "wrapper-classes", name: "Wrapper Classes", desc: "Using primitive data types as objects", difficulty: "Medium" }
+        { id: 'object-class', name: 'The Object Class', desc: 'The root of all classes in Java.', difficulty: 'Hard' }
       ]
     },
     {
-      id: 14,
-      title: "Collections Framework",
+      id: 11,
+      title: "Advanced Collections",
       level: "Advanced",
       duration: "Week 9-10",
       icon: "📚",
       topics: [
+        { id: 'arraylist', name: 'ArrayList', desc: 'Working with dynamic arrays.', difficulty: 'Easy' },
         { id: 'linkedlist', name: 'LinkedList', desc: 'Working with linked lists.', difficulty: 'Medium' },
         { id: "hashmap", name: "HashMap", desc: "Storing key/value pairs", difficulty: "Medium" },
         { id: "hashset", name: "HashSet", desc: "Storing unique items", difficulty: "Medium" },
-        { id: "iterator", name: "Iterator", desc: "Looping through collections", difficulty: "Medium" }
+        { id: 'treemap-treeset', name: 'TreeMap & TreeSet', desc: 'Understanding sorted collections.', difficulty: 'Hard' },
+        { id: 'queue-deque', name: 'Queue & Deque', desc: 'FIFO and LIFO data structures.', difficulty: 'Hard' },
+        { id: 'comparable-comparator', name: 'Comparable & Comparator', desc: 'Defining custom sorting logic.', difficulty: 'Hard' },
+        { id: "iterator", name: "Iterator", desc: "Looping through collections", difficulty: "Medium" },
+        { id: "wrapper-classes", name: "Wrapper Classes", desc: "Using primitive data types as objects", difficulty: "Medium" }
+      ]
+    },
+    {
+      id: 12,
+      title: "Error Handling & Generics",
+      level: "Advanced",
+      duration: "Week 11",
+      icon: "🧩",
+      topics: [
+        { id: "exceptions", name: "Exceptions", desc: "Handling errors with try-catch blocks", difficulty: "Medium" },
+        { id: 'generics-intro', name: 'Intro to Generics', desc: 'Type safety with collections.', difficulty: 'Medium' },
+        { id: 'generics-methods-classes', name: 'Generic Classes & Methods', desc: 'Creating your own generic components.', difficulty: 'Hard' }
+      ]
+    },
+    {
+      id: 13,
+      title: "Functional Programming",
+      level: "Expert",
+      duration: "Week 12",
+      icon: "✨",
+      topics: [
+        { id: "lambda", name: "Lambda Expressions", desc: "Functional programming basics", difficulty: "Hard" },
+        { id: 'streams-api', name: 'Streams API', desc: 'Declarative data processing with streams.', difficulty: 'Hard' },
+        { id: 'optional-class', name: 'The Optional Class', desc: 'Avoiding NullPointerExceptions gracefully.', difficulty: 'Medium' },
+        { id: 'method-references', name: 'Method References', desc: 'Shorthand for certain lambda expressions.', difficulty: 'Hard' },
+      ]
+    },
+    {
+      id: 14,
+      title: "Advanced Concurrency",
+      level: "Expert",
+      duration: "Week 13-14",
+      icon: "🚀",
+      topics: [
+        { id: "threads", name: "Threads", desc: "Multithreading basics", difficulty: "Hard" },
+        { id: 'synchronized-keyword', name: 'The "synchronized" Keyword', desc: 'Basic thread safety.', difficulty: 'Hard' },
+        { id: 'volatile-keyword', name: 'The "volatile" Keyword', desc: 'Ensuring visibility of variable changes.', difficulty: 'Hard' },
+        { id: 'executors-thread-pools', name: 'Executors & Thread Pools', desc: 'Efficiently managing threads.', difficulty: 'Hard' },
       ]
     },
     {
       id: 15,
-      title: "Error & File Handling",
-      level: "Advanced",
-      duration: "Week 10",
+      title: "Files & Regex",
+      level: "Expert",
+      duration: "Week 15",
       icon: "📁",
       topics: [
-        { id: "exceptions", name: "Exceptions", desc: "Handling errors with try-catch blocks", difficulty: "Medium" },
-        { id: "file-handling", name: "File Handling", desc: "Create, read, write, and delete files", difficulty: "Medium" }
-      ]
-    },
-    {
-      id: 16,
-      title: "Functional & Concurrent Java",
-      level: "Expert",
-      duration: "Week 11-12",
-      icon: "🚀",
-      topics: [
-        { id: "lambda", name: "Lambda Expressions", desc: "Functional programming basics", difficulty: "Hard" },
-        { id: "threads", name: "Threads", desc: "Multithreading basics", difficulty: "Hard" },
-        { id: "regex", name: "Regular Expressions", desc: "Pattern matching, regex basics", difficulty: "Hard" },
+        { id: "file-handling", name: "File Handling", desc: "Create, read, write, and delete files", difficulty: "Medium" },
+        { id: "regex", name: "Regular Expressions", desc: "Pattern matching, regex basics", difficulty: "Hard" }
       ]
     }
   ];
@@ -502,5 +507,3 @@ export const JavaLearningRoadmap = () => {
     </div>
   );
 };
-
-    

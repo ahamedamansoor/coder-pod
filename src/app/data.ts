@@ -302,6 +302,11 @@ export const languages: Language[] = [
         explanation: 'Learn how to store unique items.'
       },
       {
+        slug: 'arraylist',
+        title: 'ArrayList',
+        explanation: 'Learn about the resizable array implementation, one of the most used collection classes.'
+      },
+      {
         slug: 'linkedlist',
         title: 'LinkedList',
         explanation: 'Learn about the LinkedList data structure.'
@@ -340,6 +345,81 @@ export const languages: Language[] = [
         slug: 'file-handling',
         title: 'File Handling',
         explanation: 'Learn how to create, read, write, and delete files in Java.'
+      },
+      {
+        slug: 'super-keyword',
+        title: 'The "super" Keyword',
+        explanation: 'Learn how to call methods and constructors of the parent class.'
+      },
+      {
+        slug: 'method-overriding',
+        title: 'Method Overriding',
+        explanation: 'Learn how a subclass can provide its own implementation of a method from its superclass.'
+      },
+      {
+        slug: 'instanceof-operator',
+        title: 'The "instanceof" Operator',
+        explanation: 'Learn how to check the type of an object at runtime.'
+      },
+      {
+        slug: 'object-class',
+        title: 'The Object Class',
+        explanation: 'Learn about the root of all classes in Java and its important methods like equals(), hashCode(), and toString().'
+      },
+      {
+        slug: 'treemap-treeset',
+        title: 'TreeMap and TreeSet',
+        explanation: 'Learn about sorted collections that offer unique performance characteristics.'
+      },
+      {
+        slug: 'queue-deque',
+        title: 'Queue and Deque',
+        explanation: 'Learn about FIFO (First-In, First-Out) and double-ended queue data structures.'
+      },
+      {
+        slug: 'comparable-comparator',
+        title: 'Comparable and Comparator',
+        explanation: 'Learn how to define custom sorting logic for your objects.'
+      },
+      {
+        slug: 'streams-api',
+        title: 'Streams API',
+        explanation: 'A deep dive into using streams for powerful, declarative data processing.'
+      },
+      {
+        slug: 'optional-class',
+        title: 'The Optional Class',
+        explanation: 'A modern way to handle null values gracefully and avoid NullPointerExceptions.'
+      },
+      {
+        slug: 'method-references',
+        title: 'Method References',
+        explanation: 'A shorthand syntax for lambda expressions that call an existing method.'
+      },
+      {
+        slug: 'synchronized-keyword',
+        title: 'The "synchronized" Keyword',
+        explanation: 'The basic mechanism for preventing thread interference and memory consistency errors.'
+      },
+      {
+        slug: 'volatile-keyword',
+        title: 'The "volatile" Keyword',
+        explanation: 'Ensuring that changes to a variable are always visible to other threads.'
+      },
+      {
+        slug: 'executors-thread-pools',
+        title: 'Executors and Thread Pools',
+        explanation: 'A more robust and efficient way to manage threads.'
+      },
+      {
+        slug: 'generics-intro',
+        title: 'Introduction to Generics',
+        explanation: 'Understanding why we use type parameters like <T> in collections.'
+      },
+      {
+        slug: 'generics-methods-classes',
+        title: 'Generic Classes & Methods',
+        explanation: 'How to write your own reusable, type-safe generic components.'
       }
     ],
   },
