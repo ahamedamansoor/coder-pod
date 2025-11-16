@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -26,7 +27,7 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const createUserProfile = async (user: any) => {
-    if (!user || user.isAnonymous) return;
+    if (!user || user.isAnonymous || !firestore) return;
     const userRef = doc(firestore, `users/${user.uid}`);
     
     // Check if the user document already exists
@@ -37,7 +38,7 @@ export default function LoginPage() {
         const userProfile = {
           id: user.uid,
           email: user.email,
-          name: user.displayName,
+          name: user.displayName || user.email,
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
           completedTopics: [],
@@ -55,6 +56,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
+    if (!auth) return;
     setIsGoogleLoading(true);
     const provider = new GoogleAuthProvider();
     try {
@@ -78,6 +80,7 @@ export default function LoginPage() {
   };
   
   const handleGitHubSignIn = async () => {
+    if (!auth) return;
     setIsGitHubLoading(true);
     const provider = new GithubAuthProvider();
     try {
@@ -100,6 +103,7 @@ export default function LoginPage() {
   };
 
   const handleAnonymousSignIn = async () => {
+    if (!auth) return;
     setIsAnonymousLoading(true);
     try {
       await signInAnonymously(auth);
@@ -118,11 +122,12 @@ export default function LoginPage() {
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!auth) return;
     setIsEmailLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const userRef = doc(firestore, `users/${userCredential.user.uid}`);
-      await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
+      // Ensure profile exists on sign-in as well
+      await createUserProfile(userCredential.user);
       router.push('/java/learning-plan');
     } catch (error: any) {
       console.error('Email sign-in error:', error);
@@ -138,6 +143,7 @@ export default function LoginPage() {
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!auth) return;
     setIsEmailLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
