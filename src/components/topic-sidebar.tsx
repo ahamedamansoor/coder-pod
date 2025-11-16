@@ -156,7 +156,19 @@ export function TopicSidebar({
           }
       }
     } else if (language.slug === 'html') {
-        group = 'HTML Basics';
+        const htmlGroups: Record<string, string[]> = {
+            "HTML Basics": ['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments'],
+            "Content & Structure": ['html-lists', 'html-links', 'html-images', 'block-vs-inline', 'html-tables', 'html-semantic-elements', 'character-entities'],
+            "Forms & Input": ['html-forms', 'form-input-types', 'form-attributes'],
+            "Media & Graphics": ['audio-and-video', 'iframes', 'svg-and-canvas'],
+            "Advanced Topics": ['html5-apis', 'web-workers-api', 'accessibility'],
+        };
+        for (const groupName in htmlGroups) {
+            if (htmlGroups[groupName].includes(topic.slug)) {
+                group = groupName;
+                break;
+            }
+        }
     } else if (language.slug === 'css') {
         group = 'CSS Basics';
     } else if (language.slug === 'scss') {
@@ -180,7 +192,7 @@ export function TopicSidebar({
     : language.slug === 'react'
     ? ["Core Concepts", "Rendering", "Forms & Events", "Hooks", "Advanced", "Others"]
     : language.slug === 'html'
-    ? ['HTML Basics']
+    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics"]
     : language.slug === 'css'
     ? ['CSS Basics']
     : language.slug === 'scss'
