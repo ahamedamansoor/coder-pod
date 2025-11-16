@@ -27,10 +27,16 @@ export default function HtmlLinks({ onOpenWebPlayground }: { onOpenWebPlayground
         html: `<h1>Link Showcase</h1>
 
 <h2>External Link</h2>
-<p><a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">Visit MDN Web Docs</a></p>
+<p>
+  This link opens in a new tab.
+  <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">Visit MDN Web Docs</a>
+</p>
 
 <h2>Internal (Relative) Link</h2>
-<p><a href="/contact">Contact Page (doesn't exist here, but shows the syntax)</a></p>
+<p>
+  This link doesn't go anywhere here, but on a real site it would.
+  <a href="javascript:alert('This would go to another page!');">Contact Page</a>
+</p>
 
 <h2>Jump to Section</h2>
 <p><a href="#conclusion">Go to the conclusion</a></p>
@@ -39,7 +45,16 @@ export default function HtmlLinks({ onOpenWebPlayground }: { onOpenWebPlayground
 <p><a href="mailto:info@example.com">Email Us</a> | <a href="tel:555-1234">Call Us</a></p>
 
 <h2>Download Link</h2>
-<p><a href="#" download="fake_document.txt">Download a file</a></p>
+<p>
+  This link will download a text file.
+  <a 
+    href="data:text/plain;charset=utf-8,Hello world! This is a demo file." 
+    download="demo-file.txt"
+  >
+    Download a file
+  </a>
+</p>
+
 <hr style="margin: 2rem 0;" />
 
 <h2 id="conclusion">Conclusion Section</h2>
