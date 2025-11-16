@@ -6,7 +6,6 @@ import { Newspaper, Heading1, Heading2, Heading3, Pilcrow, Play, AlertTriangle }
 import React from 'react';
 
 export default function HtmlHeadingsAndParagraphs({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
-
     const hierarchy = [
         { Icon: Heading1, tag: '<h1>', description: 'The main headline. There should only be ONE per page for SEO and accessibility.' },
         { Icon: Heading2, tag: '<h2>', description: 'Main section titles. You can have multiple of these.' },
@@ -64,7 +63,6 @@ p {
 }`,
         js: ''
     };
-
 
     return (
       <div className="space-y-8">

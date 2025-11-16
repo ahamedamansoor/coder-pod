@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -7,13 +6,12 @@ import { Skeleton } from './ui/skeleton';
 import { GenericContentDisplay } from './generic-content-display';
 import { useWebPlayground } from './web-playground-context';
 
-// Lazy load all the topic components.
-const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction').then(module => ({ default: module.default })));
-const DocumentStructure = lazy(() => import('./html-topics/document-structure').then(module => ({ default: module.default })));
-const HtmlAttributes = lazy(() => import('./html-topics/html-attributes').then(module => ({ default: module.default })));
-const HtmlElementsAndTags = lazy(() => import('./html-topics/html-elements-and-tags').then(module => ({ default: module.default })));
-const HtmlHeadingsAndParagraphs = lazy(() => import('./html-topics/html-headings-and-paragraphs').then(module => ({ default: module.default })));
-
+// Lazy load all the topic components
+const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction'));
+const DocumentStructure = lazy(() => import('./html-topics/document-structure'));
+const HtmlAttributes = lazy(() => import('./html-topics/html-attributes'));
+const HtmlElementsAndTags = lazy(() => import('./html-topics/html-elements-and-tags'));
+const HtmlHeadingsAndParagraphs = lazy(() => import('./html-topics/html-headings-and-paragraphs'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -42,9 +40,9 @@ export function HtmlContentDisplay({
   language, 
   onOpenEditor,
 }: { 
-  topic: Topic, 
-  language: Language, 
-  onOpenEditor: (code: string) => void,
+  topic: Topic; 
+  language: Language; 
+  onOpenEditor: (code: string) => void;
 }) {
   const { openWithContent } = useWebPlayground();
 
@@ -52,11 +50,9 @@ export function HtmlContentDisplay({
     const Component = topicComponentMap[topic.slug];
     
     if (Component) {
-      // Pass both editor functions; the component will decide which one to use.
       return <Component onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />;
     }
 
-    // Fallback for topics without a custom component
     return <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditor} />;
   };
 

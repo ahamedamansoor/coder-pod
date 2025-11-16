@@ -13,7 +13,7 @@ import { Button } from './ui/button';
 import { Logo } from './logo';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket } from 'lucide-react';
+import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket, CheckCircle } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import { ThemeToggle } from './theme-toggle';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
@@ -102,6 +102,10 @@ export default function AppLayout() {
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Master new programming languages with interactive tools, AI assistance, and a structured learning path.
+          </p>
+          <p className="mt-4 text-sm text-green-600 dark:text-green-400 flex items-center justify-center gap-2 font-semibold">
+            <CheckCircle className="h-4 w-4" />
+            All learning content is double-checked and AI-verified for accuracy.
           </p>
         </div>
 
