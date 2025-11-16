@@ -5,18 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Chrome, Loader2 } from 'lucide-react';
+import { Chrome, Loader2, User } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useAuth } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmailLoading, setIsEmailLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isAnonymousLoading, setIsAnonymousLoading] = useState(false);
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -26,7 +28,7 @@ export default function LoginPage() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      router.push('/dashboard');
+      router.push('/java/learning-plan');
     } catch (error: any) {
       console.error('Google sign-in error:', error);
       toast({
@@ -34,7 +36,25 @@ export default function LoginPage() {
         title: 'Sign-in failed',
         description: error.message || 'An unexpected error occurred during Google sign-in.',
       });
-      setIsGoogleLoading(false);
+    } finally {
+        setIsGoogleLoading(false);
+    }
+  };
+
+  const handleAnonymousSignIn = async () => {
+    setIsAnonymousLoading(true);
+    try {
+      await signInAnonymously(auth);
+      router.push('/java/learning-plan');
+    } catch (error: any) {
+      console.error('Anonymous sign-in error:', error);
+       toast({
+        variant: 'destructive',
+        title: 'Sign-in failed',
+        description: error.message || 'Could not sign in as a guest.',
+      });
+    } finally {
+      setIsAnonymousLoading(false);
     }
   };
 
@@ -43,13 +63,13 @@ export default function LoginPage() {
     setIsEmailLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push('/dashboard');
+      router.push('/java/learning-plan');
     } catch (error: any) {
       // If sign-in fails, try to sign up instead
       if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
         try {
           await createUserWithEmailAndPassword(auth, email, password);
-          router.push('/dashboard');
+          router.push('/java/learning-plan');
         } catch (signUpError: any) {
           console.error('Email sign-up error:', signUpError);
           toast({
@@ -71,6 +91,8 @@ export default function LoginPage() {
     }
   };
 
+  const isLoading = isEmailLoading || isGoogleLoading || isAnonymousLoading;
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-muted/40">
       <Card className="w-full max-w-md">
@@ -78,10 +100,35 @@ export default function LoginPage() {
           <div className="mx-auto">
             <Logo />
           </div>
-          <CardTitle>Welcome Back</CardTitle>
-          <CardDescription>Sign in to continue your learning journey.</CardDescription>
+          <CardTitle>Create an Account or Sign In</CardTitle>
+          <CardDescription>To save your progress, please create an account or sign in.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
+           <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+          >
+            {isGoogleLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <>
+                <Chrome className="mr-2 h-4 w-4" />
+                Continue with Google
+              </>
+            )}
+          </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or with email</span>
+            </div>
+          </div>
+          
           <form onSubmit={handleEmailSignIn}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
@@ -93,6 +140,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={isLoading}
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -104,43 +152,44 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                 />
               </div>
-              <Button type="submit" disabled={isEmailLoading || isGoogleLoading}>
+              <Button type="submit" disabled={isLoading}>
                 {isEmailLoading ? (
                   <Loader2 className="animate-spin" />
                 ) : (
-                  'Sign In or Sign Up'
+                  'Sign In or Sign Up with Email'
                 )}
               </Button>
             </div>
           </form>
-          <div className="relative my-6">
+          
+        </CardContent>
+        <CardFooter className="flex-col gap-4">
+          <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              <span className="bg-background px-2 text-muted-foreground">Or</span>
             </div>
           </div>
           <Button
-            variant="outline"
+            variant="ghost"
             className="w-full"
-            onClick={handleGoogleSignIn}
-            disabled={isEmailLoading || isGoogleLoading}
+            onClick={handleAnonymousSignIn}
+            disabled={isLoading}
           >
-            {isGoogleLoading ? (
+            {isAnonymousLoading ? (
               <Loader2 className="animate-spin" />
             ) : (
               <>
-                <Chrome className="mr-2 h-4 w-4" />
-                Google
+                <User className="mr-2 h-4 w-4" />
+                Continue as Guest
               </>
             )}
           </Button>
-        </CardContent>
-        <CardFooter className="justify-center text-xs text-muted-foreground">
-          <p>We'll create an account if you don't have one.</p>
         </CardFooter>
       </Card>
     </div>

@@ -1,12 +1,21 @@
-
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
 import { useJava } from '@/app/java/java-context';
+import { useUser } from '@/firebase';
+import { useRouter } from 'next/navigation';
 
 export const JavaLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete } = useJava();
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
+  const { user, isUserLoading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isUserLoading, router]);
 
   const modules = [
     {
@@ -34,7 +43,7 @@ export const JavaLearningRoadmap = () => {
       icon: "📢",
       topics: [
         { id: "print-statements-and-format-specifiers", name: "Print Statements & Format Specifiers", desc: "print(), println(), printf() and format specifiers like %d, %s", difficulty: "Easy" },
-        { id: "escape-sequences", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\\", etc.", difficulty: "Easy" }
+        { id: "escape-sequences", name: "Escape Sequences", desc: "\\n, \\t, \\\\, \\", etc.", difficulty: "Easy" }
       ]
     },
     {
@@ -219,9 +228,12 @@ export const JavaLearningRoadmap = () => {
   ];
 
   const toggleTopic = (topicId: string) => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
     handleToggleComplete(topicId);
 
-    const topicModuleId = parseInt(topicId.split('-')[0]);
     const topicModule = modules.find(m => {
         return m.topics.some(t => t.id === topicId);
     });
@@ -256,13 +268,18 @@ export const JavaLearningRoadmap = () => {
   };
 
   const calculateProgress = () => {
+    if (!user) return 0;
     const totalTopics = modules.reduce((acc, module) => acc + module.topics.length, 0);
     if (totalTopics === 0) return 0;
     const completed = completedTopics.size;
     return Math.round((completed / totalTopics) * 100);
   };
 
-  const completedCount = completedTopics.size;
+  if (isUserLoading) {
+    return <div>Loading...</div>; // Or a proper skeleton loader
+  }
+  
+  const completedCount = user ? completedTopics.size : 0;
   const totalTopicCount = modules.reduce((acc, m) => acc + m.topics.length, 0);
 
   return (
@@ -327,12 +344,12 @@ export const JavaLearningRoadmap = () => {
                       key={topic.id}
                       onClick={() => toggleTopic(topic.id)}
                       className={`bg-background border rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-sm hover:border-primary/50 ${
-                        completedTopics.has(topic.id) ? 'border-primary bg-primary/5' : 'border-border'
+                        user && completedTopics.has(topic.id) ? 'border-primary bg-primary/5' : 'border-border'
                       }`}
                     >
                       <div className="flex items-start gap-3">
                         <div className="mt-1">
-                          {completedTopics.has(topic.id) ? (
+                          {user && completedTopics.has(topic.id) ? (
                             <CheckCircle className="w-6 h-6 text-primary" />
                           ) : (
                             <Circle className="w-6 h-6 text-muted-foreground/50" />
@@ -390,5 +407,3 @@ export const JavaLearningRoadmap = () => {
     </div>
   );
 };
-
-    

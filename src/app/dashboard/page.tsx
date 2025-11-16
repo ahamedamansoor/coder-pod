@@ -2,21 +2,12 @@
 
 import AppLayout from '@/components/app-layout';
 import { useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Dashboard() {
   const { user, isUserLoading } = useUser();
-  const router = useRouter();
 
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, router]);
-
-  if (isUserLoading || !user) {
+  if (isUserLoading) {
     return (
       <div className="flex flex-col min-h-screen bg-muted/40">
         <header className="bg-background border-b sticky top-0 z-10">

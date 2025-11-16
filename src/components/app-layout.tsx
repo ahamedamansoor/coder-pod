@@ -12,7 +12,7 @@ import { Button } from './ui/button';
 import { Logo } from './logo';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Bot, Code, LogOut, User, Zap } from 'lucide-react';
+import { Bot, Code, LogOut, User, Zap, LogIn } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
@@ -29,8 +29,13 @@ export default function AppLayout() {
     router.push('/login');
   };
 
+  const handleSignIn = () => {
+    router.push('/login');
+  };
+
   const getInitials = (name?: string | null) => {
-    if (!name) return 'U';
+    if (!name) return '?';
+    if (user?.isAnonymous) return 'G';
     const names = name.split(' ');
     if (names.length > 1) {
       return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
@@ -47,25 +52,32 @@ export default function AppLayout() {
             <div className="flex items-center gap-4">
               <LearnModal />
               <ThemeToggle />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Avatar className="cursor-pointer">
-                    <AvatarImage src={user?.photoURL || ''} alt={user?.displayName || 'User'} />
-                    <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel className='flex items-center gap-2'>
-                    <User />
-                    {user?.displayName || 'User'}
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Sign out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar className="cursor-pointer">
+                      <AvatarImage src={user?.photoURL || ''} alt={user?.displayName || 'User'} />
+                      <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel className='flex items-center gap-2'>
+                      <User />
+                      {user.isAnonymous ? 'Guest User' : user?.displayName || 'User'}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Sign out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button onClick={handleSignIn}>
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         </div>
