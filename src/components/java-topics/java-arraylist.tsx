@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ interface JavaArrayListProps {
   onOpenEditor: (code: string) => void;
 }
 
-function wrapInMain(code: string): string {
+function wrapCode(code: string): string {
     return `import java.util.ArrayList; // Don't forget to import!
 
 public class Main {
@@ -141,7 +140,7 @@ for (String car : cars) {
                             <div className="bg-background/50 border rounded p-2 overflow-x-auto">
                                 <pre className="font-mono text-xs whitespace-pre-wrap">{method.example}</pre>
                             </div>
-                            <Button onClick={() => onOpenEditor(wrapInMain(`ArrayList<String> cars = new ArrayList<String>();\n${method.example}`))} variant="ghost" size="sm" className="mt-2">
+                            <Button onClick={() => onOpenEditor(wrapCode(`ArrayList<String> cars = new ArrayList<String>();\n${method.example}`))} variant="ghost" size="sm" className="mt-2">
                                 <Play className="mr-2 h-4 w-4" /> Try it
                             </Button>
                         </div>
@@ -158,7 +157,7 @@ for (String car : cars) {
                     <div className="bg-muted rounded-md p-4 mb-4">
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{loopExample}</pre>
                     </div>
-                    <Button onClick={() => onOpenEditor(wrapInMain(loopExample))}>
+                    <Button onClick={() => onOpenEditor(wrapCode(loopExample))}>
                         <Play className="mr-2 h-4 w-4" /> Try it
                     </Button>
                 </CardContent>
