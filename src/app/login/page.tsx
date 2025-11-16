@@ -60,12 +60,17 @@ export default function LoginPage() {
       const userCredential = await signInWithPopup(auth, provider);
       await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
-      console.error('Google sign-in error:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Sign-in failed',
-        description: error.message || 'An unexpected error occurred during Google sign-in.',
-      });
+      // Don't show an error if the user closes the popup
+      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+        console.log('Google sign-in cancelled by user.');
+      } else {
+        console.error('Google sign-in error:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Sign-in failed',
+          description: error.message || 'An unexpected error occurred during Google sign-in.',
+        });
+      }
     } finally {
         setIsGoogleLoading(false);
     }
