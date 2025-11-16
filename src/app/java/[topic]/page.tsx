@@ -6,10 +6,16 @@ import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data';
 import { JavaContentDisplay } from '@/components/java-content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
-import { ResizablePanel } from '@/components/ui/resizable';
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from '@/components/ui/resizable';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useJavaLayout } from '../java-layout-context';
+import { ImperativePanelHandle } from 'react-resizable-panels';
+import React from 'react';
 
 function TopicPageContent() {
   const params = useParams();
@@ -17,6 +23,18 @@ function TopicPageContent() {
   const { isEditorOpen, setIsEditorOpen } = useJavaLayout();
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
+  const ref = React.useRef<ImperativePanelHandle>(null);
+
+  React.useEffect(() => {
+    const panel = ref.current;
+    if (panel) {
+      if (isEditorOpen && panel.getCollapsed()) {
+        panel.expand();
+      } else if (!isEditorOpen && !panel.getCollapsed()) {
+        panel.collapse();
+      }
+    }
+  }, [isEditorOpen]);
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'java');
   if (!language) notFound();
@@ -36,26 +54,38 @@ function TopicPageContent() {
   const isLearningPlanTopic = selectedTopic.slug === 'learning-plan';
 
   return (
-    <>
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-        {isLearningPlanTopic ? (
-           <JavaLearningRoadmap/>
-        ) : (
-          <JavaContentDisplay
-            topic={selectedTopic}
-            language={language}
-            onOpenEditor={handleOpenEditor}
-          />
-        )}
-      </div>
-      <ResizablePanel isOpen={isEditorOpen}>
+    <ResizablePanelGroup direction="horizontal" className="w-full">
+      <ResizablePanel defaultSize={100} minSize={30}>
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full">
+          {isLearningPlanTopic ? (
+            <JavaLearningRoadmap/>
+          ) : (
+            <JavaContentDisplay
+              topic={selectedTopic}
+              language={language}
+              onOpenEditor={handleOpenEditor}
+            />
+          )}
+        </div>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel
+        ref={ref}
+        collapsible
+        collapsedSize={0}
+        defaultSize={0}
+        minSize={25}
+        maxSize={40}
+        onCollapse={() => setIsEditorOpen(false)}
+        className="data-[collapsed=true]:hidden"
+      >
         <CodeEditorSheet
           initialCode={editorInitialCode}
           onClose={handleCloseEditor}
           language={language.name}
         />
       </ResizablePanel>
-    </>
+    </ResizablePanelGroup>
   );
 }
 
