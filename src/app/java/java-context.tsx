@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, useContext, useCallback, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, useCallback, ReactNode, useEffect, useMemo } from 'react';
 import { useUser, useFirestore, useDoc } from '@/firebase';
 import { doc, updateDoc, arrayUnion, arrayRemove, setDoc, getDoc } from 'firebase/firestore';
 
@@ -16,7 +16,11 @@ export const JavaProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
 
-  const userDocRef = user ? doc(firestore, 'users', user.uid) : null;
+  const userDocRef = useMemo(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, 'users', user.uid);
+  }, [user, firestore]);
+  
   const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
 
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
