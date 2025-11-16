@@ -217,40 +217,42 @@ export default function LoginPage() {
             </div>
           </div>
           
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={isLoading}
-              />
+          <form onSubmit={handleEmailSignIn}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Button type="submit" disabled={isLoading}>
+                  {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign In'}
+                </Button>
+                <Button onClick={handleEmailSignUp} type="button" variant="secondary" disabled={isLoading}>
+                  {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign Up'}
+                </Button>
+              </div>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Button onClick={handleEmailSignIn} disabled={isLoading}>
-                {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign In'}
-              </Button>
-              <Button onClick={handleEmailSignUp} variant="secondary" disabled={isLoading}>
-                {isEmailLoading ? <Loader2 className="animate-spin" /> : 'Sign Up'}
-              </Button>
-            </div>
-          </div>
+          </form>
           
         </CardContent>
         <CardFooter className="flex-col gap-4">
