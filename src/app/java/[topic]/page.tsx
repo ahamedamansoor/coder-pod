@@ -4,7 +4,7 @@
 import { useState, useCallback, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data';
-import { ContentDisplay } from '@/components/content-display';
+import { JavaContentDisplay } from '@/components/java-content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
@@ -44,7 +44,7 @@ function TopicPageContent({ isEditorOpen, setIsEditorOpen }: TopicPageProps) {
         {isLearningPlanTopic ? (
            <JavaLearningRoadmap/>
         ) : (
-          <ContentDisplay
+          <JavaContentDisplay
             topic={selectedTopic}
             language={language}
             onOpenEditor={handleOpenEditor}
