@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sandwich, Code, Play, Braces, List, Ban, Pilcrow, Type, FileText } from 'lucide-react';
 import React from 'react';
 
-export default function HtmlElementsAndTags({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
+export default function HtmlElementsAndTags({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
 
     const anatomyCode = `<p>This is a paragraph.</p>`;
     
@@ -198,15 +198,15 @@ footer {
             </CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-4">
                 <div className="bg-background p-4 rounded-lg border text-center">
-                    <code className="font-mono font-bold">&lt;br&gt;</code>
+                    <code className="font-mono font-bold">&lt;br /&gt;</code>
                     <p className="text-sm text-muted-foreground mt-1">A line break.</p>
                 </div>
                 <div className="bg-background p-4 rounded-lg border text-center">
-                    <code className="font-mono font-bold">&lt;hr&gt;</code>
+                    <code className="font-mono font-bold">&lt;hr /&gt;</code>
                     <p className="text-sm text-muted-foreground mt-1">A horizontal rule (a thematic break).</p>
                 </div>
                 <div className="bg-background p-4 rounded-lg border text-center">
-                    <code className="font-mono font-bold">&lt;img src="..."&gt;</code>
+                    <code className="font-mono font-bold">&lt;img src="..." /&gt;</code>
                     <p className="text-sm text-muted-foreground mt-1">An image.</p>
                 </div>
             </CardContent>

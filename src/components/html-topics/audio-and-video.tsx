@@ -23,15 +23,15 @@ export default function AudioAndVideo({ onOpenWebPlayground }: { onOpenWebPlaygr
     ];
     
     const audioExample = `<audio controls>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  <source src="https://www.soundhelix.com/examples/ogg/SoundHelix-Song-1.ogg" type="audio/ogg" />
   Your browser does not support the audio element.
 </audio>`;
 
     const videoExample = `<video controls width="400" poster="https://picsum.photos/seed/poster/400/225">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm">
-  <track default src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English">
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+  <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
+  <track default src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English" />
   Sorry, your browser doesn't support embedded videos.
 </video>`;
     
@@ -80,7 +80,7 @@ video {
         <div className="space-y-8">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
-                    <Video className="w-10 h-10 text-primary" />
+                    <Video className="w-10 h-10 text-primary"></Video>
                     <h1 className="text-4xl font-bold text-foreground">Audio and Video</h1>
                 </div>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Embedding media directly into your web pages with HTML5.</p>
@@ -104,7 +104,7 @@ video {
             <div className="grid md:grid-cols-2 gap-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary"/>The `<audio>` Element</CardTitle>
+                        <CardTitle className="flex items-center gap-3"><Music className="w-6 h-6 text-primary"></Music>The `<audio>` Element</CardTitle>
                         <CardDescription>Used to embed sound content in documents. It's crucial to provide multiple `<source>` elements for browser compatibility.</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -116,7 +116,7 @@ video {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary"/>The `<video>` Element</CardTitle>
+                        <CardTitle className="flex items-center gap-3"><Video className="w-6 h-6 text-primary"></Video>The `<video>` Element</CardTitle>
                         <CardDescription>Used for playing videos. The `<track>` element is vital for adding subtitles, making your content accessible.</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -143,7 +143,7 @@ video {
 
             <Card className="border-primary bg-primary/5">
                 <CardHeader>
-                    <CardTitle className="text-primary flex items-center gap-2"><Info className="w-5 h-5"/>Best Practices & Key Concepts</CardTitle>
+                    <CardTitle className="text-primary flex items-center gap-2"><Info className="w-5 h-5"></Info>Best Practices & Key Concepts</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
@@ -168,7 +168,7 @@ video {
                 </CardHeader>
                 <CardContent>
                     <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                        <Play className="mr-2 h-4 w-4" /> Open Full Example in Playground
+                        <Play className="mr-2 h-4 w-4"></Play> Open Full Example in Playground
                     </Button>
                 </CardContent>
             </Card>

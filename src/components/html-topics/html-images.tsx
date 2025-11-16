@@ -5,19 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Image, Play, ExternalLink, Link as LinkIcon, FileImage, ShieldAlert, BadgeInfo, Frame, Rocket } from 'lucide-react';
 import React from 'react';
 
-export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
+export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
 
     const simpleImageCode = `<img 
   src="https://picsum.photos/seed/picsum/400/250" 
   alt="A random scenic image from Picsum Photos"
->`;
+/>`;
 
     const attributesCode = `<img 
   src="https://picsum.photos/seed/road/400/250" 
   alt="A winding road through a forest" 
   width="400" 
   height="250"
->`;
+/>`;
 
     const lazyLoadingCode = `<img 
   src="https://picsum.photos/seed/lazy/400/250" 
@@ -25,7 +25,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
   width="400"
   height="250"
   loading="lazy"
->`;
+/>`;
 
     const linkImageCode = `<a href="https://picsum.photos/" target="_blank">
   <img 
@@ -33,7 +33,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     alt="Click to visit Picsum Photos" 
     width="400" 
     height="250"
-  >
+  />
 </a>`;
     
     const figureCode = `<figure>
@@ -42,7 +42,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     alt="A bustling city street at night" 
     width="400" 
     height="250"
-  >
+  />
   <figcaption>Fig.1 - A city skyline at night, showcasing modern architecture.</figcaption>
 </figure>`;
 
@@ -55,7 +55,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
   alt="A beautiful sunny beach"
   width="300"
   height="200"
->
+/>
 
 <h2>Linked Image</h2>
 <p>Click the image below to go to Unsplash.</p>
@@ -65,7 +65,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     alt="A vintage camera, click to visit Unsplash"
     width="300"
     height="200"
-  >
+  />
 </a>
 
 <h2>Image with a Semantic Caption</h2>
@@ -75,7 +75,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     alt="A dense green forest with sunlight filtering through."
     width="300"
     height="200"
-  >
+  />
   <figcaption>Fig.1 - A forest in the morning light.</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     width="300"
     height="200"
     loading="lazy"
->
+/>
 `,
         css: `body { 
   font-family: sans-serif;
