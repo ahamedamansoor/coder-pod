@@ -139,7 +139,7 @@ export default function FormAttributes({ onOpenWebPlayground }: { onOpenWebPlayg
         <CardHeader>
           <CardTitle>See It In Action</CardTitle>
           <CardDescription>
-            Open this example in the Web Playground. Try submitting with an empty username (which is <code className="font-mono text-sm bg-muted p-1 rounded-sm">required</code>) or a short password to see browser validation work.
+            Open this example in the Web Playground. Try submitting with an empty username (which is <code>required</code>) or a short password to see browser validation work.
           </CardDescription>
         </CardHeader>
         <CardContent>

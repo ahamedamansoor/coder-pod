@@ -192,7 +192,7 @@ export function TopicSidebar({
     : language.slug === 'react'
     ? ["Core Concepts", "Rendering", "Forms & Events", "Hooks", "Advanced", "Others"]
     : language.slug === 'html'
-    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics"]
+    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics", "Others"]
     : language.slug === 'css'
     ? ['CSS Basics']
     : language.slug === 'scss'
