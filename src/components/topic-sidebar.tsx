@@ -249,8 +249,8 @@ export function TopicSidebar({
            <div className="h-full">
               <SidebarMenu className="p-4 space-y-4">
                 {learningPlanTopic && (
-                  <div>
-                    <SidebarMenuItem key={learningPlanTopic.slug}>
+                  <div key={learningPlanTopic.slug}>
+                    <SidebarMenuItem>
                       {isUserAuthenticated ? (
                         learningPlanButton
                       ) : (
