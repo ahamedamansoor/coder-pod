@@ -24,6 +24,7 @@ const HtmlSemanticElements = lazy(() => import('./html-topics/html-semantic-elem
 const CharacterEntities = lazy(() => import('./html-topics/html-character-entities'));
 const HtmlForms = lazy(() => import('./html-topics/html-forms'));
 const FormInputTypes = lazy(() => import('./html-topics/form-input-types'));
+const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
 
 
 // Map slugs to their lazy-loaded components
@@ -44,6 +45,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'character-entities': CharacterEntities,
   'html-forms': HtmlForms,
   'form-input-types': FormInputTypes,
+  'audio-and-video': AudioAndVideo,
 };
 
 function LoadingSkeleton() {
