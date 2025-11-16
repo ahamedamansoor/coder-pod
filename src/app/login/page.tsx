@@ -40,6 +40,7 @@ export default function LoginPage() {
           id: user.uid,
           email: user.email,
           name: user.displayName || user.email,
+          phoneNumber: user.phoneNumber || null,
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
           completedTopics: [],

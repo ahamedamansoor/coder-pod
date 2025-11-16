@@ -12,10 +12,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CalendarIcon, Loader2 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { countries } from '@/lib/countries';
 
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -27,6 +29,8 @@ const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+  countryCode: z.string().nonempty({ message: 'Please select your country code.' }),
+  phoneNumber: z.string().min(5, { message: 'Please enter a valid phone number.' }),
   dob: z.date({
     required_error: 'A date of birth is required.',
   }),
@@ -45,6 +49,8 @@ export default function SignupPage() {
       name: '',
       email: '',
       password: '',
+      countryCode: '+1',
+      phoneNumber: '',
     },
   });
 
@@ -65,6 +71,7 @@ export default function SignupPage() {
         name: values.name,
         email: values.email,
         dob: values.dob,
+        phoneNumber: `${values.countryCode}${values.phoneNumber}`,
         createdAt: serverTimestamp(),
         lastLoginAt: serverTimestamp(),
         completedTopics: [],
@@ -146,6 +153,44 @@ export default function SignupPage() {
                   </FormItem>
                 )}
               />
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <div className="flex gap-2">
+                  <FormField
+                    control={form.control}
+                    name="countryCode"
+                    render={({ field }) => (
+                      <FormItem className="w-1/3">
+                        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Code" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {countries.map(country => (
+                              <SelectItem key={country.code} value={country.dial_code}>{`${country.code} (${country.dial_code})`}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem className="w-2/3">
+                        <FormControl>
+                          <Input type="tel" placeholder="555-123-4567" {...field} disabled={isLoading} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </FormItem>
               <FormField
                 control={form.control}
                 name="dob"

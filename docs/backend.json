@@ -28,6 +28,10 @@
           "format": "date",
           "description": "Date of birth of the user."
         },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone number of the user, including country code."
+        },
         "completedTopics": {
           "type": "array",
           "items": {
