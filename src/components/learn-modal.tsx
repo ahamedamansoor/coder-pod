@@ -36,21 +36,10 @@ export function LearnModal() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Choose a Language</DropdownMenuLabel>
+            <DropdownMenuLabel>Choose a Path</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                    <Link href="/java/learning-plan">Java</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/spring/learning-plan">Spring</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/javascript/learning-plan">JavaScript</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/react/learning-plan">React</Link>
-                </DropdownMenuItem>
+                <DropdownMenuLabel className="text-xs text-muted-foreground">Frontend</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
                     <Link href="/html/learning-plan">HTML</Link>
                 </DropdownMenuItem>
@@ -59,6 +48,22 @@ export function LearnModal() {
                 </DropdownMenuItem>
                  <DropdownMenuItem asChild>
                     <Link href="/scss/learning-plan">Sass/SCSS</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/javascript/learning-plan">JavaScript</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/react/learning-plan">React</Link>
+                </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+                <DropdownMenuLabel className="text-xs text-muted-foreground">Backend</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                    <Link href="/java/learning-plan">Java</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/spring/learning-plan">Spring</Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
