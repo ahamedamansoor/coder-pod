@@ -1,14 +1,8 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play, File, FilePlus, FileText, FilePen, FileX } from 'lucide-react';
 import React from 'react';
-
-function onOpenEditor(code: string) {
-    // Dummy function for now, will be replaced by the real one
-    console.log("Opening editor with code:", code);
-}
 
 function wrapInMain(code: string): string {
     return `import java.io.File;
@@ -20,24 +14,25 @@ import java.util.Scanner;
 public class Main {
   public static void main(String[] args) {
     // Note: File operations might not work as expected in a browser-based editor.
-    // They rely on the local file system.
+    // They rely on the local file system, which the AI cannot access.
+    // The AI will simulate the expected behavior.
     try {
         ${code.split('\n').map(line => '    ' + line).join('\n')}
     } catch (IOException e) {
-        System.out.println("An error occurred.");
+        System.out.println("An error occurred during file simulation.");
         e.printStackTrace();
     }
   }
 }`;
 }
 
-export function JavaFileHandling() {
+export function JavaFileHandling({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
 
     const createFileExample = `File myObj = new File("filename.txt");
 if (myObj.createNewFile()) {
-    System.out.println("File created: " + myObj.getName());
+    System.out.println("File created: " + myObj.getName()); // Simulates creating a file
 } else {
-    System.out.println("File already exists.");
+    System.out.println("File already exists."); // Simulates file already being there
 }`;
 
     const writeFileExample = `FileWriter myWriter = new FileWriter("filename.txt");
@@ -45,17 +40,18 @@ myWriter.write("Files in Java might be tricky, but it is fun enough!");
 myWriter.close(); // Don't forget to close the writer!
 System.out.println("Successfully wrote to the file.");`;
 
-    const readFileExample = `File myObj = new File("filename.txt");
+    const readFileExample = `// Assume "filename.txt" was just created and written to.
+File myObj = new File("filename.txt");
 Scanner myReader = new Scanner(myObj);
 while (myReader.hasNextLine()) {
     String data = myReader.nextLine();
-    System.out.println(data);
+    System.out.println(data); // Simulates reading the content
 }
 myReader.close();`;
 
     const deleteFileExample = `File myObj = new File("filename.txt"); 
 if (myObj.delete()) { 
-    System.out.println("Deleted the file: " + myObj.getName());
+    System.out.println("Deleted the file: " + myObj.getName()); // Simulates deleting
 } else {
     System.out.println("Failed to delete the file.");
 }`;

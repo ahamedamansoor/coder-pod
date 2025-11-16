@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,65 +8,6 @@ interface JavaConstructorsProps {
   onOpenEditor: (code: string) => void;
 }
 
-function wrapInMain(code: string): string {
-    // This wrapper is complex because constructors are part of class definitions.
-    // We'll create a full class structure for each example.
-    
-    if (code.includes("Car myCar = new Car();")) {
-        return `public class Main {
-    // Nested Car class for demonstration
-    static class Car {
-        String model;
-        int year;
-        
-        // This is the constructor
-        public Car(String modelName, int modelYear) {
-            model = modelName;
-            year = modelYear;
-        }
-    }
-
-    public static void main(String[] args) {
-        Car myCar = new Car("Mustang", 1969);
-        System.out.println("Created a " + myCar.year + " " + myCar.model);
-    }
-}`;
-    }
-    
-     if (code.includes("Car carNoArgs = new Car();")) { // Overloading example
-        return `public class Main {
-    static class Car {
-        String model;
-        int year;
-
-        // Constructor with no arguments
-        public Car() {
-            model = "Generic";
-            year = 2024;
-        }
-
-        // Overloaded constructor with arguments
-        public Car(String modelName, int modelYear) {
-            model = modelName;
-            year = modelYear;
-        }
-    }
-
-    public static void main(String[] args) {
-        Car carNoArgs = new Car();
-        System.out.println("Default car: " + carNoArgs.year + " " + carNoArgs.model);
-        
-        Car customCar = new Car("Tesla Model S", 2023);
-        System.out.println("Custom car: " + customCar.year + " " + customCar.model);
-    }
-}`;
-    }
-
-    // Default fallback
-    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
-}
-
-
 export function JavaConstructors({ onOpenEditor }: JavaConstructorsProps) {
 
     const constructorExample = `public class Main {
@@ -77,8 +17,8 @@ export function JavaConstructors({ onOpenEditor }: JavaConstructorsProps) {
 
         // This is the constructor for the Car class
         public Car(String modelName, int modelYear) {
-            model = modelName; // Initialize the attributes model and year
-            year = modelYear;
+            model = modelName; // Initialize the attribute 'model'
+            year = modelYear;  // Initialize the attribute 'year'
         }
     }
 

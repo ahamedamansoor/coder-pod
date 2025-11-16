@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,34 +8,21 @@ interface JavaRecursionProps {
   onOpenEditor: (code: string) => void;
 }
 
-function wrapInMain(code: string): string {
-    // If the code already has a class structure, don't wrap it.
-    if (code.trim().startsWith('public class')) {
-        return code;
-    }
-    
-    // Check if it is a method to wrap it correctly to be runnable
-    const methodNameMatch = code.match(/static\s+\w+\s+(\w+)\s*\(/);
-    if (methodNameMatch) {
-      const methodName = methodNameMatch[1];
-      let callMethod = `long result = ${methodName}(5);\n    System.out.println("Factorial of 5 is: " + result);`;
-      
-      return `public class Main {\n  ${code.split('\n').map(line => '  ' + line).join('\n')}\n\n  public static void main(String[] args) {\n    ${callMethod}\n  }\n}`;
-    }
-
-    // Default fallback for simple lines of code
-    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
-}
-
-
 export function JavaRecursion({ onOpenEditor }: JavaRecursionProps) {
 
-    const factorialExample = `public static long factorial(int n) {
-    if (n <= 1) {
-        return 1; // Base Case: the stopping condition
-    } 
-    else {
-        return n * factorial(n - 1); // Recursive Step: the function calls itself
+    const factorialExample = `public class Main {
+    public static long factorial(int n) {
+        if (n <= 1) {
+            return 1; // Base Case: the stopping condition
+        } 
+        else {
+            return n * factorial(n - 1); // Recursive Step: the function calls itself
+        }
+    }
+
+    public static void main(String[] args) {
+        long result = factorial(5); // Start the recursion
+        System.out.println("Factorial of 5 is: " + result);
     }
 }`;
     

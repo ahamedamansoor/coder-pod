@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,13 +6,22 @@ import React from 'react';
 
 function wrapInMain(code: string): string {
     return `public class Main {
+  public static void checkAge(int age) {
+    if (age < 18) {
+        throw new ArithmeticException("Access denied - You must be at least 18 years old."); // Throw an exception
+    }
+    else {
+        System.out.println("Access granted - You are old enough!");
+    }
+  }
+
   public static void main(String[] args) {
     ${code.split('\n').map(line => '    ' + line).join('\n')}
   }
 }`;
 }
 
-export function JavaExceptions() {
+export function JavaExceptions({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
 
     const exceptionExample = `try {
   int[] myNumbers = {1, 2, 3};
@@ -27,24 +35,14 @@ catch(Exception e) {
 
     const finallyExample = `try {
   int[] myNumbers = {1, 2, 3};
-  System.out.println(myNumbers[1]);
+  System.out.println(myNumbers[1]); // This is a valid index
 } catch (Exception e) {
-  System.out.println("Something went wrong.");
+  System.out.println("Something went wrong."); // This block will be skipped
 } finally {
   System.out.println("The 'try catch' is finished."); // This block is always executed
 }`;
 
-    const throwExample = `public static void checkAge(int age) {
-    if (age < 18) {
-        throw new ArithmeticException("Access denied - You must be at least 18 years old."); // Throw an exception
-    }
-    else {
-        System.out.println("Access granted - You are old enough!");
-    }
-}
-
-// In main:
-// checkAge(15); // This will cause the program to crash with our custom message
+    const throwExample = `checkAge(15); // This will cause the program to crash with our custom message
 `;
 
     return (
@@ -117,7 +115,7 @@ catch(Exception e) {
                         <div className="bg-muted rounded-md p-4 mb-2">
                             <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{throwExample}</pre>
                         </div>
-                        <Button onClick={() => onOpenEditor(wrapInMain(`checkAge(15);`))} variant="ghost" size="sm">
+                        <Button onClick={() => onOpenEditor(wrapInMain(throwExample))} variant="ghost" size="sm">
                             <Play className="mr-2 h-4 w-4" /> Try it
                         </Button>
                     </CardContent>

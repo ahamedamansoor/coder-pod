@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -46,7 +45,6 @@ System.out.println("Area: " + area);`,
  * @param args Command line arguments (not used).
  */
 public static void main(String[] args) {
-    // This is the main function, so the Javadoc comment would typically be on a class or method.
     // For demonstration, we'll just print a message.
     System.out.println("Javadoc comments are for documentation!");
 }`,

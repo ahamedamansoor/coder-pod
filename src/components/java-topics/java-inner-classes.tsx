@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,7 @@ interface JavaInnerClassesProps {
 export function JavaInnerClasses({ onOpenEditor }: JavaInnerClassesProps) {
 
     const innerClassExample = `class OuterClass {
-  private int outerX = 10;
+  private int outerX = 10; // Private member of the outer class
 
   class InnerClass { // Inner class
     public int getOuterX() {

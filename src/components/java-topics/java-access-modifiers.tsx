@@ -1,10 +1,11 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Shield, Unlock, Lock, Users, Package, Check, X, Lightbulb } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Play } from 'lucide-react';
 
-export function JavaAccessModifiers() {
+export function JavaAccessModifiers({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
     const modifiers = [
         {
             name: "public",
@@ -16,7 +17,14 @@ export function JavaAccessModifiers() {
             world: "Visible",
             color: "text-green-500",
             bgColor: "bg-green-500/10",
-            code: `public String myAttribute;`
+            code: `public class Main {
+    public String myAttribute = "I am public!"; // public member
+
+    public static void main(String[] args){
+        Main myObj = new Main();
+        System.out.println(myObj.myAttribute); // accessible here
+    }
+}`
         },
         {
             name: "protected",
@@ -28,7 +36,30 @@ export function JavaAccessModifiers() {
             world: "Hidden",
             color: "text-yellow-500",
             bgColor: "bg-yellow-500/10",
-            code: `protected String myAttribute;`
+            code: `class Vehicle {
+    protected int speed; // protected member
+}
+
+class Bike extends Vehicle {
+    void setSpeed(int s) {
+        speed = s; // accessible in subclass
+    }
+    int getSpeed() {
+        return speed; // accessible in subclass
+    }
+}
+
+public class Main {
+    public static void main(String[] args){
+        Bike b = new Bike();
+        b.setSpeed(100);
+        System.out.println("Access via subclass method: " + b.getSpeed());
+
+        // This would cause a compile error if Main was in another package
+        // Vehicle v = new Vehicle();
+        // System.out.println(v.speed); 
+    }
+}`
         },
         {
             name: "default",
@@ -40,7 +71,16 @@ export function JavaAccessModifiers() {
             world: "Hidden",
             color: "text-blue-500",
             bgColor: "bg-blue-500/10",
-            code: `String myAttribute; // No modifier means default`
+            code: `class MyClass {
+    String myAttribute = "I am default!"; // default member
+}
+
+public class Main {
+    public static void main(String[] args){
+        MyClass myObj = new MyClass();
+        System.out.println(myObj.myAttribute); // accessible in same package
+    }
+}`
         },
         {
             name: "private",
@@ -52,7 +92,17 @@ export function JavaAccessModifiers() {
             world: "Hidden",
             color: "text-red-500",
             bgColor: "bg-red-500/10",
-            code: `private String myAttribute;`
+            code: `public class Main {
+    private String myAttribute = "I am private!"; // private member
+
+    public static void main(String[] args){
+        Main myObj = new Main();
+        System.out.println(myObj.myAttribute); // accessible within the same class
+
+        // OtherClass other = new OtherClass();
+        // System.out.println(other.myAttribute); // This would be an error
+    }
+}`
         }
     ];
 
@@ -128,14 +178,11 @@ export function JavaAccessModifiers() {
                         </CardHeader>
                         <CardContent>
                             <div className="bg-muted rounded-md p-4">
-                                <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`class MyClass {
-  ${mod.code}
-  
-  void myMethod() {
-    // ...
-  }
-}`}</pre>
+                                <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{mod.code}</pre>
                             </div>
+                            <Button onClick={() => onOpenEditor(mod.code)} variant="ghost" size="sm" className="mt-2">
+                                <Play className="mr-2 h-4 w-4" /> Try it
+                            </Button>
                         </CardContent>
                     </Card>
                 ))}

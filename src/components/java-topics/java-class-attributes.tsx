@@ -1,47 +1,52 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Wrench, Car, ArrowRight, Lightbulb, Edit, Eye, Lock } from 'lucide-react';
+import { Play, Wrench, ArrowRight, Lightbulb, Edit, Eye, Lock } from 'lucide-react';
 import React from 'react';
 
 interface JavaClassAttributesProps {
   onOpenEditor: (code: string) => void;
 }
 
-function wrapInMain(code: string): string {
-    // This is a more complex wrapper needed for class-based examples
-    const classCode = `class Car {
-    String color = "Red";
-    String model = "Mustang";
-    int year = 1969;
-}`;
-    
-    return `public class Main {
-    ${classCode.split('\n').map(line => '    ' + line).join('\n')}
+export function JavaClassAttributes({ onOpenEditor }: JavaClassAttributesProps) {
+
+    const accessAttributeExample = `public class Main {
+    static class Car {
+        String color = "Red";
+        String model = "Mustang";
+        int year = 1969;
+    }
 
     public static void main(String[] args) {
         Car myCar = new Car();
-        ${code.split('\n').map(line => '        ' + line).join('\n')}
+        System.out.println("My car's color is: " + myCar.color); // Accessing the attribute
     }
 }`;
-}
 
-export function JavaClassAttributes({ onOpenEditor }: JavaClassAttributesProps) {
+    const modifyAttributeExample = `public class Main {
+    static class Car {
+        String color = "Red";
+    }
 
-    const accessAttributeExample = `System.out.println("My car's color is: " + myCar.color);`;
-
-    const modifyAttributeExample = `System.out.println("Original color: " + myCar.color); // Prints "Red"
-myCar.color = "Yellow";
-System.out.println("New color: " + myCar.color);       // Prints "Yellow"`;
+    public static void main(String[] args) {
+        Car myCar = new Car();
+        System.out.println("Original color: " + myCar.color); // Prints "Red"
+        myCar.color = "Yellow"; // Modifying the attribute
+        System.out.println("New color: " + myCar.color);       // Prints "Yellow"
+    }
+}`;
     
-    const finalAttributeExample = `class Vehicle {
-    final String VIN = "12345ABC"; // Vehicle Identification Number is constant
-}
+    const finalAttributeExample = `public class Main {
+    static class Vehicle {
+        final String VIN = "12345ABC"; // Vehicle Identification Number is constant
+    }
 
-// In main:
-Vehicle myVehicle = new Vehicle();
-// myVehicle.VIN = "XYZ"; // This line would cause an error!`;
+    public static void main(String[] args) {
+        Vehicle myVehicle = new Vehicle();
+        System.out.println(myVehicle.VIN);
+        // myVehicle.VIN = "XYZ"; // This line would cause an error!
+    }
+}`;
 
     return (
         <div id="java-class-attributes-page" data-test="java-class-attributes-page" className="space-y-8">
@@ -63,9 +68,9 @@ Vehicle myVehicle = new Vehicle();
                  <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`public class Car {
-  String color = "Red";   // These are the attributes
-  String model = "Mustang";
-  int year = 1969;
+  String color = "Red";   // This is an attribute
+  String model = "Mustang"; // This is an attribute
+  int year = 1969;        // This is an attribute
 }`}</pre>
                     </div>
                 </CardContent>
@@ -84,9 +89,9 @@ Vehicle myVehicle = new Vehicle();
                         <p className="text-sm text-muted-foreground mb-4">After creating an object, you can read its properties like this:</p>
                         <div className="bg-muted rounded-md p-4 mb-4">
                             <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`Car myCar = new Car();
-System.out.println(myCar.color);`}</pre>
+System.out.println(myCar.color); // Accessing the attribute`}</pre>
                         </div>
-                        <Button onClick={() => onOpenEditor(wrapInMain(accessAttributeExample))}>
+                        <Button onClick={() => onOpenEditor(accessAttributeExample)}>
                             <Play className="mr-2 h-4 w-4" /> Try it
                         </Button>
                     </CardContent>
@@ -103,10 +108,10 @@ System.out.println(myCar.color);`}</pre>
                     <CardContent>
                        <p className="text-sm text-muted-foreground mb-4">This changes the state of the `myCar` object.</p>
                         <div className="bg-muted rounded-md p-4 mb-4">
-                            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`myCar.color = "Yellow";
+                            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{`myCar.color = "Yellow"; // Modifying the attribute
 System.out.println(myCar.color);`}</pre>
                         </div>
-                        <Button onClick={() => onOpenEditor(wrapInMain(modifyAttributeExample))}>
+                        <Button onClick={() => onOpenEditor(modifyAttributeExample)}>
                             <Play className="mr-2 h-4 w-4" /> Try it
                         </Button>
                     </CardContent>

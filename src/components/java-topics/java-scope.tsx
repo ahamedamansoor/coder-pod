@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,52 +8,54 @@ interface JavaScopeProps {
   onOpenEditor: (code: string) => void;
 }
 
-function wrapInMain(code: string): string {
-    if (code.trim().startsWith('public class')) {
-        return code;
-    }
-    return `public class Main {\n  public static void main(String[] args) {\n    ${code.split('\n').map(line => '  ' + line).join('\n')}\n  }\n}`;
-}
-
 export function JavaScope({ onOpenEditor }: JavaScopeProps) {
 
-    const blockScopeExample = `// Code here CANNOT use x
-for (int i = 0; i < 5; i++) {
-  int x = 10; // x can ONLY be used inside this loop block
-  System.out.println(x + i); // i can ONLY be used inside this loop block
-}
-// Code here CANNOT use x or i
-`;
+    const blockScopeExample = `public class Main {
+    public static void main(String[] args) {
+        // Code here CANNOT use x
+        for (int i = 0; i < 5; i++) {
+            int x = 10; // x can ONLY be used inside this loop block
+            System.out.println(x + i); // i can ONLY be used inside this loop block
+        }
+        // Code here CANNOT use x or i
+    }
+}`;
 
-    const methodScopeExample = `public static void myMethod() {
-  String message = "Hello from myMethod!"; // Variable declared here is available anywhere in myMethod
-  System.out.println(message);
-}
+    const methodScopeExample = `public class Main {
+    public static void myMethod() {
+        String message = "Hello from myMethod!"; // Variable declared here is available anywhere in myMethod
+        System.out.println(message);
+    }
 
-public static void main(String[] args) {
-  myMethod();
-  // The 'message' variable from myMethod CANNOT be used here
+    public static void main(String[] args) {
+        myMethod();
+        // The 'message' variable from myMethod CANNOT be used here
+        // System.out.println(message); // This would cause an error
+    }
 }`;
     
-    const classScopeExample = `public class Car {
-    String model = "Mustang"; // These are instance variables (class scope)
-    int year = 1969;
+    const classScopeExample = `public class Main {
+    static class Car {
+        String model = "Mustang"; // These are instance variables (class scope)
+        int year = 1969;
 
-    void startEngine() {
-        // 'model' and 'year' can be accessed here
-        System.out.println("Starting the " + year + " " + model);
+        void startEngine() {
+            // 'model' and 'year' can be accessed here
+            System.out.println("Starting the " + year + " " + model);
+        }
+
+        void drive() {
+            // 'model' and 'year' can also be accessed here
+            System.out.println("Driving the " + model);
+        }
     }
 
-    void drive() {
-        // 'model' and 'year' can also be accessed here
-        System.out.println("Driving the " + model);
+    public static void main(String[] args) {
+        Car myCar = new Car();
+        myCar.startEngine();
+        myCar.drive();
     }
-}
-// To test, in main:
-// Car myCar = new Car();
-// myCar.startEngine();
-// myCar.drive();
-`;
+}`;
 
 
     return (

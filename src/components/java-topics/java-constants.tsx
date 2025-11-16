@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,7 +12,7 @@ function wrapInMain(code: string): string {
 
 export function JavaConstants({ onOpenEditor }: { onOpenEditor: (code: string) => void }) {
     const codeExample = {
-      correct: 'final int WEEKS_IN_YEAR = 52;\nSystem.out.println("Weeks in a year: " + WEEKS_IN_YEAR);',
+      correct: 'final int WEEKS_IN_YEAR = 52; // This value cannot be changed\nSystem.out.println("Weeks in a year: " + WEEKS_IN_YEAR);',
       incorrect: 'final int WEEKS_IN_YEAR = 52;\nWEEKS_IN_YEAR = 53; // This will cause a compilation error!',
     };
   
