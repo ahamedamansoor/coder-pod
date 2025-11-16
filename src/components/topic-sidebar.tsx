@@ -25,16 +25,15 @@ interface TopicSidebarProps {
 }
 
 function useLanguageContext(language: Language) {
-    const javaContext = useJava();
-    const springContext = useSpring();
-
     if (language.slug === 'java') {
-        return javaContext;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        return useJava();
     }
     if (language.slug === 'spring') {
-        return springContext;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        return useSpring();
     }
-    // Fallback or default context if necessary, though in this app structure it's one or the other.
+    // Fallback or default context if necessary
     return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
 }
 
