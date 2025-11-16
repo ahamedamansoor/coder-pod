@@ -15,6 +15,7 @@ const SimplifyTopicExplanationInputSchema = z.object({
   topic: z.string().describe('The topic to simplify.'),
   language: z.string().describe('The programming language of the topic.'),
   explanation: z.string().describe('The explanation of the topic.'),
+  codeSnippet: z.string().optional().describe('An existing code snippet from the page to use as context.'),
 });
 export type SimplifyTopicExplanationInput = z.infer<typeof SimplifyTopicExplanationInputSchema>;
 
@@ -50,6 +51,12 @@ Language: {{{language}}}
 Here is the original, more complex explanation:
 Explanation: {{{explanation}}}
 
+{{#if codeSnippet}}
+Here is an existing code snippet from the page for context. Use this as a basis for your example. You can simplify it, add comments, or create a related example.
+Existing Code:
+{{{codeSnippet}}}
+{{/if}}
+
 Your job is to provide a much simpler, more structured explanation. Please provide the following four things, adhering to the guidelines for each:
 
 1.  **Summary**:
@@ -69,6 +76,7 @@ Your job is to provide a much simpler, more structured explanation. Please provi
     - Use markdown for all code formatting (e.g., \`\`\`java).
     - If the concept involves a process, add comments to the code to explain each step.
     - Keep the examples focused on demonstrating only the topic at hand.
+    - If an existing code snippet was provided, make your example a commented, simplified, or related version of it.
 `,
 });
 

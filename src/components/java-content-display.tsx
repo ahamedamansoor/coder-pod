@@ -10,7 +10,7 @@ import {
 } from './ui/card';
 import { Button } from './ui/button';
 import { Wand2, HelpCircle, Sparkles, CheckSquare, Lightbulb, GitCommitHorizontal, List, Code, Copy, Check } from 'lucide-react';
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useRef } from 'react';
 import {
   simplifyTopicExplanation,
   type SimplifyTopicExplanationOutput,
@@ -226,6 +226,7 @@ export function JavaContentDisplay({
   const isUserAuthenticated = user && !user.isAnonymous;
   
   const { toast } = useToast();
+  const topicContentRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     // Reset AI content when the topic changes
@@ -257,11 +258,19 @@ export function JavaContentDisplay({
   const handleSimplify = async () => {
     setIsSimplifying(true);
     setSimplifiedContent(null);
+
+    // Extract code from the rendered topic content
+    const codeElements = topicContentRef.current?.querySelectorAll('pre code');
+    const codeSnippet = codeElements && codeElements.length > 0
+      ? Array.from(codeElements).map(el => el.textContent).join('\n\n---\n\n')
+      : undefined;
+
     try {
       const result = await simplifyTopicExplanation({
         topic: topic.title,
         language: language.name,
         explanation: topic.explanation,
+        codeSnippet,
       });
       setSimplifiedContent(result);
     } catch (error) {
@@ -393,9 +402,11 @@ export function JavaContentDisplay({
          )}
         </header>
       
-      <Suspense fallback={<LoadingSkeleton />}>
-        {renderTopicContent()}
-      </Suspense>
+      <div ref={topicContentRef}>
+        <Suspense fallback={<LoadingSkeleton />}>
+          {renderTopicContent()}
+        </Suspense>
+      </div>
 
       {showSimplifyButton && (
         <div className="flex flex-col items-center gap-4">
