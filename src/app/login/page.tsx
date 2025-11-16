@@ -9,9 +9,9 @@ import { Label } from '@/components/ui/label';
 import { Chrome, Loader2, User, Github } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useAuth, useFirestore } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signInAnonymously, UserCredential, GithubAuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signInAnonymously, UserCredential, GithubAuthProvider, User as FirebaseUser } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
@@ -25,36 +25,53 @@ export default function LoginPage() {
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const createUserProfile = async (user: any) => {
+  const createUserProfile = async (user: FirebaseUser) => {
     if (!user || user.isAnonymous || !firestore) return;
-    const userRef = doc(firestore, `users/${user.uid}`);
     
-    // Check if the user document already exists
+    // For social sign-ins, we can assume email is verified.
+    // For email/password, we must check.
+    if (!user.emailVerified && user.providerData.some(p => p.providerId === 'password')) {
+        toast({
+            variant: 'destructive',
+            title: 'Verification Required',
+            description: 'Please verify your email before signing in. Check your inbox for a verification link.',
+            duration: 8000,
+        });
+        // Optionally sign the user out again
+        await auth?.signOut();
+        return; 
+    }
+
+    const userRef = doc(firestore, `users/${user.uid}`);
     const docSnap = await getDoc(userRef);
 
     if (!docSnap.exists()) {
-        // Document doesn't exist, create it
+        const nameFromUrl = searchParams.get('name');
+        const dobFromUrl = searchParams.get('dob');
+        const phoneFromUrl = searchParams.get('phoneNumber');
+
         const userProfile = {
           id: user.uid,
           email: user.email,
-          name: user.displayName || user.email,
-          phoneNumber: user.phoneNumber || null,
+          name: user.displayName || nameFromUrl || user.email,
+          phoneNumber: user.phoneNumber || phoneFromUrl || null,
+          dob: dobFromUrl ? new Date(dobFromUrl) : null,
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
           completedTopics: [],
         };
         await setDoc(userRef, userProfile);
     } else {
-        // Document exists, just update the last login time
         await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
     }
+    router.push('/java/learning-plan');
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {
     await createUserProfile(userCredential.user);
-    router.push('/java/learning-plan');
   };
 
   const handleGoogleSignIn = async () => {
@@ -65,7 +82,6 @@ export default function LoginPage() {
       const userCredential = await signInWithPopup(auth, provider);
       await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
-      // Don't show an error if the user closes the popup
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
         console.log('Google sign-in cancelled by user.');
       } else {
@@ -128,15 +144,17 @@ export default function LoginPage() {
     setIsEmailLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // Ensure profile exists on sign-in as well
       await createUserProfile(userCredential.user);
-      router.push('/java/learning-plan');
     } catch (error: any) {
       console.error('Email sign-in error:', error);
+       let description = 'Invalid email or password. Please try again.';
+       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+            description = 'Invalid email or password. Please try again.';
+       }
       toast({
         variant: 'destructive',
         title: 'Sign-in failed',
-        description: 'Invalid email or password. Please try again.',
+        description,
       });
     } finally {
       setIsEmailLoading(false);

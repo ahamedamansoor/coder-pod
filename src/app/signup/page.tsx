@@ -19,9 +19,8 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { countries } from '@/lib/countries';
 
-import { useAuth, useFirestore } from '@/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuth } from '@/firebase';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
@@ -39,7 +38,6 @@ const formSchema = z.object({
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const auth = useAuth();
-  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -56,7 +54,7 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    if (!auth || !firestore) {
+    if (!auth) {
       toast({ variant: 'destructive', title: 'Firebase not initialized.' });
       setIsLoading(false);
       return;
@@ -66,21 +64,24 @@ export default function SignupPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
 
-      const userProfile = {
-        id: user.uid,
-        name: values.name,
-        email: values.email,
-        dob: values.dob,
-        phoneNumber: `${values.countryCode}${values.phoneNumber}`,
-        createdAt: serverTimestamp(),
-        lastLoginAt: serverTimestamp(),
-        completedTopics: [],
-      };
+      // Send verification email
+      await sendEmailVerification(user);
 
-      await setDoc(doc(firestore, 'users', user.uid), userProfile);
-      
-      toast({ title: 'Account created successfully!' });
-      router.push('/java/learning-plan');
+      // Don't create the Firestore profile here. It will be created on first verified login.
+      // We are passing user details via query params for pre-filling, this is optional.
+      const queryParams = new URLSearchParams({
+        name: values.name,
+        dob: values.dob.toISOString(),
+        phoneNumber: `${values.countryCode}${values.phoneNumber}`,
+      });
+
+      toast({ 
+        title: 'Account Created!',
+        description: "We've sent a verification link to your email. Please verify your account before signing in.",
+        duration: 8000,
+      });
+
+      router.push('/login');
 
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
@@ -90,6 +91,7 @@ export default function SignupPage() {
           description: 'This email is already in use. Please try to sign in instead.',
         });
       } else {
+        console.error("Signup error:", error);
         toast({
           variant: 'destructive',
           title: 'Sign-up failed',
