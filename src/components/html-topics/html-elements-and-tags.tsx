@@ -161,7 +161,7 @@ footer {
         
         <Card>
             <CardHeader>
-                <CardTitle className="flex items-center gap-3"><FileText className="w-6 h-6 text-primary"/>Common Element Categories</CardTitle>
+                <CardTitle className="flex items-center gap-3"><FileText className="w-6 h-6 text-primary" />Common Element Categories</CardTitle>
                 <CardDescription>While there are over 100 HTML tags, they can be grouped into logical categories.</CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-6">
@@ -193,7 +193,7 @@ footer {
 
         <Card className="border-accent bg-accent/10">
             <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-primary"><Ban className="w-6 h-6"/>Void (or Empty) Elements</CardTitle>
+                <CardTitle className="flex items-center gap-3 text-primary"><Ban className="w-6 h-6" />Void (or Empty) Elements</CardTitle>
                 <CardDescription>Some elements are "self-closing" because they don't wrap around content. They represent a single instruction.</CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-4">
