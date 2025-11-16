@@ -119,7 +119,7 @@ export default function AppLayout() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Don't get stuck. Use our AI to simplify complex topics, get your questions answered instantly, and see practical code examples.
+                Whether you're a student learning new concepts or a professional needing a quick refresher, our AI simplifies complex topics into easy-to-understand explanations at a glance.
               </p>
             </CardContent>
           </Card>
