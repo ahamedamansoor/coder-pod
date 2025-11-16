@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Play, Api, MapPin, Database, Hand, Lightbulb, CheckCircle, XCircle } from 'lucide-react';
+import { Play, Network, MapPin, Database, Hand, Lightbulb, CheckCircle2, XCircle } from 'lucide-react';
 import React from 'react';
 
 export default function Html5Apis({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -118,7 +118,7 @@ target.ondrop = (e) => {
       <div className="space-y-8">
         <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-                <Api className="w-10 h-10 text-primary" />
+                <Network className="w-10 h-10 text-primary" />
                 <h1 className="text-4xl font-bold text-foreground">HTML5 APIs</h1>
             </div>
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Powerful browser features you can use with JavaScript.</p>
@@ -172,7 +172,7 @@ function showError(error) {
                     <TableBody>
                         <TableRow>
                             <TableCell className="font-semibold">Persistence</TableCell>
-                            <TableCell>Persists even after the browser is closed and reopened. <CheckCircle className="inline w-4 h-4 text-green-500"/></TableCell>
+                            <TableCell>Persists even after the browser is closed and reopened. <CheckCircle2 className="inline w-4 h-4 text-green-500"/></TableCell>
                             <TableCell>Lasts only for the duration of the page session (until the tab is closed). <XCircle className="inline w-4 h-4 text-destructive"/></TableCell>
                         </TableRow>
                          <TableRow>
