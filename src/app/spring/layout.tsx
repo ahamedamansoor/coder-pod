@@ -40,10 +40,10 @@ export default function SpringTopicLayout({
           />
           <div className="flex flex-1 overflow-hidden">
             <Sidebar>
-              <TopicSidebar
-                language={language}
-                selectedTopicSlug={selectedTopicSlug}
-              />
+                <TopicSidebar
+                  language={language}
+                  selectedTopicSlug={selectedTopicSlug}
+                />
             </Sidebar>
             <main className="flex-1 flex overflow-hidden">
               <SpringTopicPage

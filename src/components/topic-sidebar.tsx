@@ -24,17 +24,31 @@ interface TopicSidebarProps {
   selectedTopicSlug: string | null;
 }
 
+function useLanguageContext(language: Language) {
+    const javaContext = useJava();
+    const springContext = useSpring();
+
+    if (language.slug === 'java') {
+        return javaContext;
+    }
+    if (language.slug === 'spring') {
+        return springContext;
+    }
+    // Fallback or default context if necessary, though in this app structure it's one or the other.
+    return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
+}
+
+
 export function TopicSidebar({
   language,
   selectedTopicSlug,
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const javaContext = useJava();
-  const springContext = useSpring();
+  
+  const { completedTopics } = useLanguageContext(language);
   const { user } = useUser();
 
-  const { completedTopics } = language.slug === 'java' ? javaContext : springContext;
 
   const isUserAuthenticated = user && !user.isAnonymous;
 
