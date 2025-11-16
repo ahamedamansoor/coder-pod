@@ -16,6 +16,7 @@ const TextFormatting = lazy(() => import('./html-topics/html-text-formatting'));
 const HtmlComments = lazy(() => import('./html-topics/html-comments'));
 const HtmlLists = lazy(() => import('./html-topics/html-lists'));
 const HtmlLinks = lazy(() => import('./html-topics/html-links'));
+const HtmlImages = lazy(() => import('./html-topics/html-images'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -28,6 +29,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-comments': HtmlComments,
   'html-lists': HtmlLists,
   'html-links': HtmlLinks,
+  'html-images': HtmlImages,
 };
 
 function LoadingSkeleton() {
@@ -58,11 +60,11 @@ export function HtmlContentDisplay({
 
   return (
     <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditor}>
-        <Suspense fallback={<LoadingSkeleton />}>
-          {CustomTopicComponent ? (
-            <CustomTopicComponent onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />
-          ) : null}
-        </Suspense>
+      <Suspense fallback={<LoadingSkeleton />}>
+        {CustomTopicComponent ? (
+          <CustomTopicComponent onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />
+        ) : null}
+      </Suspense>
     </GenericContentDisplay>
   );
 }
