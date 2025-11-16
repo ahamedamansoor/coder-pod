@@ -139,7 +139,7 @@ export default function AppLayout() {
             <p className="text-muted-foreground mb-8">Select a language to begin your learning journey.</p>
             <div className="flex justify-center gap-4">
                 <Button size="lg" asChild>
-                    <Link href="/java/learning-plan">Start Learning Java</Link>
+                    <Link href="/java/what-is-java">Start Learning Java</Link>
                 </Button>
                 <Button size="lg" variant="outline" disabled>
                     Learn JavaScript (Coming Soon)

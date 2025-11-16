@@ -25,7 +25,7 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const createUserProfile = async (user: any) => {
-    if (!user) return;
+    if (!user || user.isAnonymous) return;
     const userRef = doc(firestore, `users/${user.uid}`);
     const userProfile = {
       id: user.uid,
@@ -64,7 +64,7 @@ export default function LoginPage() {
     setIsAnonymousLoading(true);
     try {
       await signInAnonymously(auth);
-      router.push('/java/learning-plan');
+      router.push('/java/what-is-java');
     } catch (error: any) {
       console.error('Anonymous sign-in error:', error);
        toast({

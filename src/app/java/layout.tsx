@@ -22,7 +22,7 @@ export default function JavaTopicLayout({
   }
   const selectedTopic = language.topics.find((t) => t.slug === params.topic);
   
-  const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'learning-plan';
+  const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'what-is-java';
 
   return (
     <JavaProvider>

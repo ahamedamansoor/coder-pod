@@ -15,6 +15,8 @@ import { ScrollArea } from './ui/scroll-area';
 import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useJava } from '@/app/java/java-context';
+import { useUser } from '@/firebase';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface TopicSidebarProps {
   language: Language;
@@ -28,6 +30,9 @@ export function TopicSidebar({
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { completedTopics } = useJava();
+  const { user } = useUser();
+
+  const isUserAuthenticated = user && !user.isAnonymous;
 
   useEffect(() => {
     if (activeItemRef.current && scrollContainerRef.current) {
@@ -131,7 +136,7 @@ export function TopicSidebar({
                 className="justify-start text-sm"
               >
                 <Link href={`/java/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
-                  {completedTopics.has(topic.slug) && <CheckCircle className="text-primary" />}
+                  {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className="text-primary" />}
                   {topic.title}
                 </Link>
               </SidebarMenuButton>
@@ -141,6 +146,20 @@ export function TopicSidebar({
       </div>
     )
   );
+
+  const learningPlanButton = (
+    <SidebarMenuButton
+      asChild
+      isActive={selectedTopicSlug === learningPlanTopic?.slug}
+      tooltip={learningPlanTopic?.title}
+      className="justify-start"
+      disabled={!isUserAuthenticated}
+    >
+       <Link href={`/java/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null}>
+          {learningPlanTopic?.title}
+       </Link>
+    </SidebarMenuButton>
+  )
 
   return (
     <>
@@ -156,16 +175,18 @@ export function TopicSidebar({
                   <div>
                     <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
                     <SidebarMenuItem key={learningPlanTopic.slug}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={selectedTopicSlug === learningPlanTopic.slug}
-                        tooltip={learningPlanTopic.title}
-                        className="justify-start"
-                      >
-                         <Link href={`/java/${learningPlanTopic.slug}`} ref={selectedTopicSlug === learningPlanTopic.slug ? activeItemRef : null}>
-                            {learningPlanTopic.title}
-                         </Link>
-                      </SidebarMenuButton>
+                      {isUserAuthenticated ? (
+                        learningPlanButton
+                      ) : (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="w-full">{learningPlanButton}</div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>You need to be logged in to save your progress.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
                     </SidebarMenuItem>
                   </div>
                 )}
