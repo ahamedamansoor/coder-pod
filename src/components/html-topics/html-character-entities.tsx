@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Key, Play, AlertCircle } from 'lucide-react';
 import React from 'react';
 
-export default function CharacterEntities({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
+export default function HtmlCharacterEntities({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
     
     const commonEntities = [
         { description: 'Less than sign', result: '<', name: '&lt;', number: '&#60;' },
