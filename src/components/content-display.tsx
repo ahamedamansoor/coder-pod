@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -10,7 +9,7 @@ import {
   CardTitle,
 } from './ui/card';
 import { Button } from './ui/button';
-import { Wand2, HelpCircle, Sparkles, CheckSquare } from 'lucide-react';
+import { Wand2, HelpCircle, Sparkles, CheckSquare, Lightbulb, GitCommitHorizontal, List, Code } from 'lucide-react';
 import React from 'react';
 import {
   simplifyTopicExplanation,
@@ -270,31 +269,46 @@ export function ContentDisplay({
       )}
 
       {simplifiedContent && (
-        <div className="space-y-6 animate-in fade-in-50 duration-500">
+        <div className="space-y-8 animate-in fade-in-50 duration-500">
            <Card className="border-primary/50 bg-primary/5">
              <CardHeader>
-                <CardTitle>Simplified Explanation</CardTitle>
-                <CardDescription>A simpler take on {topic.title}.</CardDescription>
+                <CardTitle className="flex items-center gap-3"><Lightbulb className="text-primary"/>Analogy</CardTitle>
+                <CardDescription>{simplifiedContent.summary}</CardDescription>
              </CardHeader>
              <CardContent>
-                <div className="whitespace-pre-wrap font-body text-base leading-relaxed text-foreground/90">
-                  {simplifiedContent.simplifiedExplanation}
-                </div>
+                <p className="text-lg italic text-foreground/90">"{simplifiedContent.analogy}"</p>
              </CardContent>
            </Card>
-           <Card className="border-primary/50 bg-primary/5">
-             <CardHeader>
-                <CardTitle>Code Examples</CardTitle>
-                <CardDescription>See {topic.title} in action.</CardDescription>
-             </CardHeader>
-             <CardContent>
-                <div className="bg-card p-4 rounded-md overflow-x-auto">
-                  <pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">
-                    {simplifiedContent.examples}
-                  </code></pre>
-                </div>
-             </CardContent>
-           </Card>
+
+           <div className="grid md:grid-cols-2 gap-8">
+               <Card className="border-primary/50 bg-primary/5">
+                 <CardHeader>
+                    <CardTitle className="flex items-center gap-3"><List className="text-primary"/>Key Ideas</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                    <ul className="space-y-3">
+                        {simplifiedContent.bulletPoints.map((point, i) => (
+                           <li key={i} className="flex items-start gap-3">
+                               <GitCommitHorizontal className="w-5 h-5 text-primary mt-1 shrink-0" />
+                               <span className="text-base text-foreground/90">{point}</span>
+                           </li>
+                        ))}
+                    </ul>
+                 </CardContent>
+               </Card>
+               <Card className="border-primary/50 bg-primary/5">
+                 <CardHeader>
+                    <CardTitle className="flex items-center gap-3"><Code className="text-primary"/>Code Examples</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                    <div className="bg-card p-4 rounded-md overflow-x-auto">
+                      <pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">
+                        {simplifiedContent.examples}
+                      </code></pre>
+                    </div>
+                 </CardContent>
+               </Card>
+           </div>
         </div>
       )}
       
