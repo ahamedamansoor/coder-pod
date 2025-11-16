@@ -28,6 +28,7 @@ import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSet
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
+import { useUser } from '@/firebase';
 
 export function ContentDisplay({ 
   topic, 
@@ -47,6 +48,7 @@ export function ContentDisplay({
   const [qaResult, setQaResult] = React.useState<AnswerQuestionOutput | null>(null);
   
   const { completedTopics, handleToggleComplete } = useJava();
+  const { user } = useUser();
 
   const { toast } = useToast();
 
@@ -191,7 +193,7 @@ export function ContentDisplay({
               A deep dive into {topic.title} in {language.name}.
             </p>
          </div>
-         {!isLearningPlanTopic && completedTopics && (
+         {!isLearningPlanTopic && user && (
             <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
                 <Checkbox 
                     id={`complete-${topic.slug}`} 

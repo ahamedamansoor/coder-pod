@@ -13,7 +13,7 @@
  * - User listing is disallowed to prevent unauthorized data access.
  * - All write operations are validated against the authenticated user's UID
  *   to ensure data integrity and prevent impersonation.
- * - No data shape validation is performed to allow for rapid prototyping.
+ * - The `completedTopics` field can be updated by the owner.
  *
  * Denormalization for Authorization:
  * The `id` field within the `/users/{userId}` document MUST match the `{userId}`
@@ -47,7 +47,8 @@ service cloud.firestore {
       // Allow the user to create their own profile, but enforce that the document ID matches their UID.
       allow create: if isOwner(userId) && request.resource.data.id == userId;
 
-      // Allow the user to update their own profile, but prevent them from changing the document ID.
+      // Allow the user to update their own profile.
+      // They can change their completedTopics, but not their user ID.
       allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
 
       // Allow the user to delete their own profile.

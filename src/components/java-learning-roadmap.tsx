@@ -4,9 +4,10 @@ import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } 
 import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const JavaLearningRoadmap = () => {
-  const { completedTopics, handleToggleComplete } = useJava();
+  const { completedTopics, handleToggleComplete, isProgressLoading } = useJava();
   const [expandedModule, setExpandedModule] = useState<number | null>(1);
   const { user, isUserLoading } = useUser();
   const router = useRouter();
@@ -240,7 +241,6 @@ export const JavaLearningRoadmap = () => {
 
     if (!topicModule) return;
     
-    // Check if we are completing this topic right now
     const isCompleting = !completedTopics.has(topicId);
 
     if (isCompleting) {
@@ -275,8 +275,35 @@ export const JavaLearningRoadmap = () => {
     return Math.round((completed / totalTopics) * 100);
   };
 
-  if (isUserLoading) {
-    return <div>Loading...</div>; // Or a proper skeleton loader
+  if (isUserLoading || isProgressLoading) {
+    return (
+        <div className="p-2 md:p-6">
+            <div className="mx-auto">
+                <div className="text-center mb-8">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <Skeleton className="w-12 h-12 rounded-full" />
+                        <Skeleton className="h-12 w-96" />
+                    </div>
+                    <Skeleton className="h-6 w-80 mx-auto mb-6" />
+                    
+                    <div className="max-w-2xl mx-auto bg-card rounded-lg shadow-md p-6 border">
+                        <div className="flex items-center justify-between mb-3">
+                            <Skeleton className="h-5 w-32" />
+                            <Skeleton className="h-8 w-16" />
+                        </div>
+                        <Skeleton className="w-full h-4 rounded-full" />
+                        <Skeleton className="h-4 w-48 mt-2" />
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                        <Skeleton key={i} className="h-24 w-full rounded-xl" />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
   }
   
   const completedCount = user ? completedTopics.size : 0;
