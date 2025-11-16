@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,6 +9,13 @@ import Editor from '@monaco-editor/react';
 import { executeJavaCode } from '@/ai/flows/execute-java-code';
 import { useToast } from '@/hooks/use-toast';
 
+const defaultCodeSnippets: Record<string, string> = {
+  java: 'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}',
+  spring: 'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, Spring!");\n  }\n}',
+  javascript: 'console.log("Hello, World!");',
+  react: 'function HelloWorld() {\n  return <h1>Hello, World!</h1>;\n}\n\n// To render in a real app, you would use:\n// ReactDOM.render(<HelloWorld />, document.getElementById("root"));',
+};
+
 export function CodeEditorSheet({
   initialCode,
   onClose,
@@ -17,10 +25,11 @@ export function CodeEditorSheet({
   onClose: () => void;
   language?: string;
 }) {
-  const [code, setCode] = useState(
-    initialCode ||
-      'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}'
-  );
+  const getDefaultCode = (lang: string) => {
+    return defaultCodeSnippets[lang.toLowerCase()] || defaultCodeSnippets['java'];
+  }
+
+  const [code, setCode] = useState(initialCode || getDefaultCode(language));
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
@@ -28,11 +37,9 @@ export function CodeEditorSheet({
   const { toast } = useToast();
 
   useEffect(() => {
-    if (initialCode) {
-      setCode(initialCode);
-      setOutput(''); // Clear previous output when new code comes in
-    }
-  }, [initialCode]);
+    setCode(initialCode || getDefaultCode(language));
+    setOutput(''); // Clear previous output when new code or language comes in
+  }, [initialCode, language]);
 
   useEffect(() => {
     if (hasCopied) {
@@ -46,21 +53,27 @@ export function CodeEditorSheet({
   const handleRunCode = async () => {
     setIsRunning(true);
     setOutput('');
-    try {
-      const result = await executeJavaCode({ code });
-      setOutput(
-        result.output || 'Execution finished with no output.'
-      );
-    } catch (e: any) {
-      console.error('AI execution error:', e);
-      toast({
-        variant: 'destructive',
-        title: 'Execution Failed',
-        description: 'The AI model could not execute the code. Please try again.',
-      });
-      setOutput(`An error occurred: ${e.message || 'Unknown error'}`);
-    } finally {
-      setIsRunning(false);
+    // For now, only Java execution is supported via AI flow
+    if (language.toLowerCase() === 'java' || language.toLowerCase() === 'spring') {
+      try {
+        const result = await executeJavaCode({ code });
+        setOutput(
+          result.output || 'Execution finished with no output.'
+        );
+      } catch (e: any) {
+        console.error('AI execution error:', e);
+        toast({
+          variant: 'destructive',
+          title: 'Execution Failed',
+          description: 'The AI model could not execute the code. Please try again.',
+        });
+        setOutput(`An error occurred: ${e.message || 'Unknown error'}`);
+      } finally {
+        setIsRunning(false);
+      }
+    } else {
+        setOutput(`Running ${language} code is not supported in this editor yet. You can copy the code to run it in a different environment.`);
+        setIsRunning(false);
     }
   };
 
@@ -73,6 +86,7 @@ export function CodeEditorSheet({
   };
 
   const editorLanguage = language.toLowerCase() === 'spring' ? 'java' : language.toLowerCase();
+  const isExecutionSupported = language.toLowerCase() === 'java' || language.toLowerCase() === 'spring';
 
   return (
     <div className="flex flex-col h-full border-l bg-card">
@@ -82,7 +96,7 @@ export function CodeEditorSheet({
             <Code className="w-6 h-6" /> {language} Code Editor
           </h2>
           <p className="text-sm text-muted-foreground">
-            Write and run {language} code using an AI-powered runtime.
+            Write and experiment with {language} code.
           </p>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -132,10 +146,11 @@ export function CodeEditorSheet({
         </div>
       </div>
       <div className="p-4 border-t flex gap-4">
-        <Button onClick={handleRunCode} disabled={isRunning}>
+        <Button onClick={handleRunCode} disabled={isRunning || !isExecutionSupported} title={!isExecutionSupported ? `Running ${language} is not yet supported` : 'Run Code'}>
           <Play className="mr-2 h-4 w-4" />
           {isRunning ? 'Running...' : 'Run Code'}
         </Button>
+        {!isExecutionSupported && <p className="text-xs text-muted-foreground self-center">Execution is only supported for Java/Spring.</p>}
       </div>
     </div>
   );
