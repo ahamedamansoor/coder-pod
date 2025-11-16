@@ -41,21 +41,34 @@ const prompt = ai.definePrompt({
   name: 'simplifyTopicExplanationPrompt',
   input: {schema: SimplifyTopicExplanationInputSchema},
   output: {schema: SimplifyTopicExplanationOutputSchema},
-  prompt: `You are an expert programming tutor who excels at breaking down complex topics. You are teaching the user about the following topic in a specific programming language:
+  prompt: `You are an expert programming tutor who excels at breaking down complex topics into simple, structured explanations.
 
+You are teaching the user about the following topic:
 Topic: {{{topic}}}
 Language: {{{language}}}
 
-Here is the original explanation of the topic:
-
+Here is the original, more complex explanation:
 Explanation: {{{explanation}}}
 
-Your job is to provide a much simpler, more structured explanation. Please provide the following:
+Your job is to provide a much simpler, more structured explanation. Please provide the following four things, adhering to the guidelines for each:
 
-1.  **Summary**: A single, concise sentence that summarizes the absolute core of the topic.
-2.  **Analogy**: A simple, relatable, real-world analogy to explain the concept.
-3.  **Bullet Points**: A few key ideas as bullet points.
-4.  **Examples**: Clear and concise code examples. Format the code using markdown.
+1.  **Summary**:
+    - A single, concise sentence that summarizes the absolute core of the topic.
+    - Avoid jargon.
+
+2.  **Analogy**:
+    - A simple, relatable, real-world analogy to explain the concept.
+    - Keep it short and to the point.
+
+3.  **Bullet Points**:
+    - A few key ideas presented as a list.
+    - Each bullet point should be a short, easy-to-digest sentence.
+
+4.  **Examples**:
+    - Provide clear and concise code examples.
+    - Use markdown for all code formatting (e.g., \`\`\`java).
+    - If the concept involves a process, add comments to the code to explain each step.
+    - Keep the examples focused on demonstrating only the topic at hand.
 `,
 });
 
