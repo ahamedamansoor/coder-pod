@@ -29,7 +29,7 @@ export function TopicSidebar({
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { completedTopics } = useJava();
+  const { completedTopics } = useJava(); // This needs to be dynamic
   const { user } = useUser();
 
   const isUserAuthenticated = user && !user.isAnonymous;
@@ -55,76 +55,63 @@ export function TopicSidebar({
 
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
-  const gettingStartedTopics = language.topics.filter(t => 
-    ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'comments-in-java'].includes(t.slug)
-  );
-  
-  const basicOutputTopics = language.topics.filter(t => 
-    ['print-statements-and-format-specifiers', 'escape-sequences'].includes(t.slug)
-  );
+  const topicsByGroup = language.topics.reduce((acc, topic) => {
+    if (topic.slug === 'learning-plan') return acc;
+    
+    let group = 'Others'; // Default group
 
-  const variablesAndDataTypesTopics = language.topics.filter(t => 
-    ['variables', 'data-types', 'type-casting', 'constants', 'literals'].includes(t.slug)
-  );
+    if (language.slug === 'java') {
+        const javaGroups: Record<string, string[]> = {
+            "Getting Started": ['what-is-java', 'history-of-java', 'features-of-java', 'jdk-jre-jvm', 'how-java-works', 'setting-up-environment', 'first-java-program', 'comments-in-java'],
+            "Basic Output": ['print-statements-and-format-specifiers', 'escape-sequences'],
+            "Variables & Data Types": ['variables', 'data-types', 'type-casting', 'constants', 'literals'],
+            "Operators": ['arithmetic-operators', 'assignment-operators', 'comparison-operators', 'logical-operators', 'bitwise-operators', 'ternary-operator', 'operator-precedence'],
+            "User Input": ['scanner-class', 'reading-different-types', 'input-validation'],
+            "Control Flow": ['if-else', 'switch', 'for-loop', 'while-loop', 'break-continue'],
+            "Strings": ['strings'],
+            "Arrays": ['arrays', 'multi-dimensional-arrays'],
+            "Methods": ['methods', 'method-parameters', 'method-overloading', 'scope', 'recursion'],
+            "Object-Oriented Programming": ['classes-objects', 'class-attributes', 'class-methods', 'constructors', 'access-modifiers', 'encapsulation', 'packages', 'inheritance', 'polymorphism', 'inner-classes', 'abstraction', 'interfaces', 'enums'],
+            "Collections": ['linkedlist', 'hashmap', 'hashset', 'iterator', 'wrapper-classes'],
+            "Advanced Topics": ['exceptions', 'regex', 'threads', 'lambda', 'file-handling', 'date-time'],
+        };
+        for (const groupName in javaGroups) {
+            if (javaGroups[groupName].includes(topic.slug)) {
+                group = groupName;
+                break;
+            }
+        }
+    } else if (language.slug === 'spring') {
+        const springGroups: Record<string, string[]> = {
+            "Spring Core": ['spring-core-overview', 'ioc-and-dependency-injection', 'spring-beans'],
+            "Data & Persistence": ['spring-data-jpa', 'jdbc-template'],
+            "Spring MVC & Web": ['spring-mvc', 'rest-controllers'],
+            "Spring Boot": ['spring-boot-basics', 'autoconfiguration'],
+            "Advanced Topics": ['spring-security', 'testing-in-spring', 'spring-aop', 'spring-webflux'],
+            "Spring Ecosystem": ['spring-cloud', 'spring-kafka'],
+        };
+         for (const groupName in springGroups) {
+            if (springGroups[groupName].includes(topic.slug)) {
+                group = groupName;
+                break;
+            }
+        }
+    }
 
-  const operatorsTopics = language.topics.filter(t => 
-    ['arithmetic-operators', 'assignment-operators', 'comparison-operators', 'logical-operators', 'bitwise-operators', 'ternary-operator', 'operator-precedence'].includes(t.slug)
-  );
+    if (!acc[group]) {
+      acc[group] = [];
+    }
+    acc[group].push(topic);
+    return acc;
+  }, {} as Record<string, typeof language.topics>);
 
-  const userInputTopics = language.topics.filter(t =>
-    ['scanner-class', 'reading-different-types', 'input-validation'].includes(t.slug)
-  );
-
-  const controlFlowTopics = language.topics.filter(t =>
-    ['if-else', 'switch', 'for-loop', 'while-loop', 'break-continue'].includes(t.slug)
-  );
-
-  const stringsTopics = language.topics.filter(t =>
-    ['strings'].includes(t.slug)
-  );
-
-  const arraysTopics = language.topics.filter(t =>
-    ['arrays', 'multi-dimensional-arrays'].includes(t.slug)
-  );
-
-  const methodsTopics = language.topics.filter(t =>
-    ['methods', 'method-parameters', 'method-overloading', 'scope', 'recursion'].includes(t.slug)
-  );
-
-  const oopTopics = language.topics.filter(t =>
-    ['classes-objects', 'class-attributes', 'class-methods', 'constructors', 'access-modifiers', 'encapsulation', 'packages', 'inheritance', 'polymorphism', 'inner-classes', 'abstraction', 'interfaces', 'enums'].includes(t.slug)
-  );
-
-  const collectionsTopics = language.topics.filter(t =>
-    ['linkedlist', 'hashmap', 'hashset', 'iterator', 'wrapper-classes'].includes(t.slug)
-  );
-
-  const advancedTopics = language.topics.filter(t =>
-    ['exceptions', 'regex', 'threads', 'lambda', 'file-handling', 'date-time'].includes(t.slug)
-  );
-
-
-  const otherTopics = language.topics.filter(t => 
-    ![
-      'learning-plan', 
-      ...gettingStartedTopics.map(t => t.slug), 
-      ...basicOutputTopics.map(t => t.slug), 
-      ...variablesAndDataTypesTopics.map(t => t.slug), 
-      ...operatorsTopics.map(t => t.slug),
-      ...userInputTopics.map(t => t.slug),
-      ...controlFlowTopics.map(t => t.slug),
-      ...stringsTopics.map(t => t.slug),
-      ...arraysTopics.map(t => t.slug),
-      ...methodsTopics.map(t => t.slug),
-      ...oopTopics.map(t => t.slug),
-      ...collectionsTopics.map(t => t.slug),
-      ...advancedTopics.map(t => t.slug),
-    ].includes(t.slug)
-  );
+  const groupOrder = language.slug === 'java' 
+    ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings", "Arrays", "Methods", "Object-Oriented Programming", "Collections", "Advanced Topics", "Others"]
+    : ["Spring Core", "Data & Persistence", "Spring MVC & Web", "Spring Boot", "Advanced Topics", "Spring Ecosystem", "Others"];
 
   const renderTopicGroup = (title: string, topics: typeof language.topics) => (
-    topics.length > 0 && (
-      <div className="space-y-2">
+    topics && topics.length > 0 && (
+      <div key={title} className="space-y-2">
         <p className="px-2 text-md font-semibold text-foreground">{title}</p>
         <div className="ml-2 border-l pl-2 space-y-1">
           {topics.map((topic) => (
@@ -135,7 +122,7 @@ export function TopicSidebar({
                 tooltip={topic.title}
                 className="justify-start text-sm"
               >
-                <Link href={`/java/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
+                <Link href={`/${language.slug}/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
                   {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className="text-primary" />}
                   {topic.title}
                 </Link>
@@ -155,7 +142,7 @@ export function TopicSidebar({
       className="justify-start"
       disabled={!isUserAuthenticated}
     >
-       <Link href={`/java/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null}>
+       <Link href={`/${language.slug}/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null}>
           {learningPlanTopic?.title}
        </Link>
     </SidebarMenuButton>
@@ -197,33 +184,7 @@ export function TopicSidebar({
                 <div className='space-y-4'>
                   <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
                   
-                  {renderTopicGroup("Getting Started", gettingStartedTopics)}
-                  {renderTopicGroup("Basic Output", basicOutputTopics)}
-                  {renderTopicGroup("Variables & Data Types", variablesAndDataTypesTopics)}
-                  {renderTopicGroup("Operators", operatorsTopics)}
-                  {renderTopicGroup("User Input", userInputTopics)}
-                  {renderTopicGroup("Control Flow", controlFlowTopics)}
-                  {renderTopicGroup("Strings", stringsTopics)}
-                  {renderTopicGroup("Arrays", arraysTopics)}
-                  {renderTopicGroup("Methods", methodsTopics)}
-                  {renderTopicGroup("Object-Oriented Programming", oopTopics)}
-                  {renderTopicGroup("Collections", collectionsTopics)}
-                  {renderTopicGroup("Advanced Topics", advancedTopics)}
-
-                  {otherTopics.map((topic) => (
-                    <SidebarMenuItem key={topic.slug}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={selectedTopicSlug === topic.slug}
-                        tooltip={topic.title}
-                        className="justify-start"
-                      >
-                        <Link href={`/java/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null}>
-                          {topic.title}
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  {groupOrder.map(groupName => renderTopicGroup(groupName, topicsByGroup[groupName]))}
                 </div>
 
               </SidebarMenu>
@@ -233,5 +194,3 @@ export function TopicSidebar({
     </>
   );
 }
-
-    

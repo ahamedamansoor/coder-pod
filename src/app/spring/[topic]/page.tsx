@@ -7,7 +7,7 @@ import { languages, type Language, type Topic } from '@/app/data';
 import { ContentDisplay } from '@/components/content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import { ResizablePanel } from '@/components/ui/resizable-panel';
-import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
+import { SpringLearningRoadmap } from '@/components/spring-learning-roadmap';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface TopicPageProps {
@@ -21,7 +21,7 @@ function TopicPageContent({ isEditorOpen, setIsEditorOpen }: TopicPageProps) {
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
 
-  const language: Language | undefined = languages.find((lang) => lang.slug === 'java');
+  const language: Language | undefined = languages.find((lang) => lang.slug === 'spring');
   if (!language) notFound();
 
   const selectedTopic: Topic | undefined = language.topics.find((t) => t.slug === topicSlug);
@@ -42,7 +42,7 @@ function TopicPageContent({ isEditorOpen, setIsEditorOpen }: TopicPageProps) {
     <>
       <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
         {isLearningPlanTopic ? (
-           <JavaLearningRoadmap/>
+           <SpringLearningRoadmap />
         ) : (
           <ContentDisplay
             topic={selectedTopic}
@@ -61,7 +61,7 @@ function TopicPageContent({ isEditorOpen, setIsEditorOpen }: TopicPageProps) {
   );
 }
 
-export default function JavaTopicPage(props: TopicPageProps) {
+export default function SpringTopicPage(props: TopicPageProps) {
     return (
         <Suspense fallback={<Skeleton className="w-full h-full" />}>
             <TopicPageContent {...props} />

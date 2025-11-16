@@ -343,6 +343,90 @@ export const languages: Language[] = [
       }
     ],
   },
+  {
+    slug: 'spring',
+    name: 'Spring',
+    topics: [
+        {
+            slug: 'learning-plan',
+            title: 'Learning Plan',
+            explanation: 'A structured roadmap for learning Spring from scratch.'
+        },
+        {
+            slug: 'spring-core-overview',
+            title: 'Spring Core Overview',
+            explanation: 'Introduction to the core concepts of the Spring Framework.'
+        },
+        {
+            slug: 'ioc-and-dependency-injection',
+            title: 'IoC and Dependency Injection',
+            explanation: 'Understanding Inversion of Control and Dependency Injection.'
+        },
+        {
+            slug: 'spring-beans',
+            title: 'Spring Beans',
+            explanation: 'Learn about the objects that form the backbone of your application.'
+        },
+        {
+            slug: 'spring-data-jpa',
+            title: 'Spring Data JPA',
+            explanation: 'Simplifying data access layers with Spring Data JPA.'
+        },
+        {
+            slug: 'jdbc-template',
+            title: 'JdbcTemplate',
+            explanation: 'Working with databases using Spring\'s JdbcTemplate.'
+        },
+        {
+            slug: 'spring-mvc',
+            title: 'Spring MVC',
+            explanation: 'Building web applications with the Model-View-Controller pattern.'
+        },
+        {
+            slug: 'rest-controllers',
+            title: 'REST Controllers',
+            explanation: 'Creating RESTful web services with Spring.'
+        },
+        {
+            slug: 'spring-boot-basics',
+            title: 'Spring Boot Basics',
+            explanation: 'Getting started with Spring Boot for rapid application development.'
+        },
+        {
+            slug: 'autoconfiguration',
+            title: 'Autoconfiguration',
+            explanation: 'Understanding how Spring Boot automatically configures your application.'
+        },
+        {
+            slug: 'spring-security',
+            title: 'Spring Security',
+            explanation: 'Securing your applications with Spring Security.'
+        },
+        {
+            slug: 'testing-in-spring',
+            title: 'Testing in Spring',
+            explanation: 'Learn how to test your Spring applications.'
+        },
+        {
+            slug: 'spring-aop',
+            title: 'Spring AOP',
+            explanation: 'Understanding Aspect-Oriented Programming with Spring.'
+        },
+        {
+            slug: 'spring-webflux',
+            title: 'Spring WebFlux',
+            explanation: 'Building reactive web applications with Spring WebFlux.'
+        },
+        {
+            slug: 'spring-cloud',
+            title: 'Spring Cloud',
+            explanation: 'Building distributed systems with Spring Cloud.'
+        },
+        {
+            slug: 'spring-kafka',
+            title: 'Spring for Apache Kafka',
+            explanation: 'Integrating with Apache Kafka for messaging.'
+        },
+    ]
+  }
 ];
-
-    

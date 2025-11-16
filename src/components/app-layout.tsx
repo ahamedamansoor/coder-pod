@@ -155,8 +155,8 @@ export default function AppLayout() {
                 <Button size="lg" asChild>
                     <Link href="/java/what-is-java">Start Learning Java</Link>
                 </Button>
-                <Button size="lg" variant="outline" disabled>
-                    Learn JavaScript (Coming Soon)
+                <Button size="lg" asChild>
+                    <Link href="/spring/learning-plan">Start Learning Spring</Link>
                 </Button>
             </div>
         </div>
