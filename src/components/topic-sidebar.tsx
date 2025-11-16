@@ -53,6 +53,7 @@ export function TopicSidebar({
     }
   }, [selectedTopicSlug]);
 
+  const roadmapOverviewTopic = language.topics.find(t => t.slug === 'roadmap-overview');
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
   const gettingStartedTopics = language.topics.filter(t => 
@@ -106,6 +107,7 @@ export function TopicSidebar({
 
   const otherTopics = language.topics.filter(t => 
     ![
+      'roadmap-overview',
       'learning-plan', 
       ...gettingStartedTopics.map(t => t.slug), 
       ...basicOutputTopics.map(t => t.slug), 
@@ -171,9 +173,23 @@ export function TopicSidebar({
         <ScrollArea>
            <div ref={scrollContainerRef} className="h-full">
               <SidebarMenu className="p-4 space-y-4">
+                {roadmapOverviewTopic && (
+                  <SidebarMenuItem key={roadmapOverviewTopic.slug}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={selectedTopicSlug === roadmapOverviewTopic.slug}
+                      tooltip={roadmapOverviewTopic.title}
+                      className="justify-start text-base"
+                    >
+                      <Link href={`/java/${roadmapOverviewTopic.slug}`} ref={selectedTopicSlug === roadmapOverviewTopic.slug ? activeItemRef : null}>
+                        {roadmapOverviewTopic.title}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+
                 {learningPlanTopic && (
                   <div>
-                    <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Learning Path</p>
                     <SidebarMenuItem key={learningPlanTopic.slug}>
                       {isUserAuthenticated ? (
                         learningPlanButton
@@ -191,6 +207,8 @@ export function TopicSidebar({
                   </div>
                 )}
                 
+                <Separator />
+
                 <div className='space-y-4'>
                   <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
                   
@@ -230,5 +248,3 @@ export function TopicSidebar({
     </>
   );
 }
-
-    

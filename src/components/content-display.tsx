@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -23,7 +24,7 @@ import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from './ui/textarea';
 import { JavaLearningRoadmap } from './java-learning-roadmap';
-import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes, JavaLinkedList } from './java-topics';
+import { WhatIsJava, TheStoryOfJava, JavaFeatures, JdkJreJvm, JavaEnvironmentSetup, FirstJavaProgram, HowJavaWorks, JavaComments, JavaEscapeSequences, JavaLiterals, JavaConstants, JavaArithmeticOperators, JavaAssignmentOperators, JavaComparisonOperators, JavaLogicalOperators, JavaBitwiseOperators, JavaTernaryOperator, JavaOperatorPrecedence, JavaScannerClass, JavaReadingDifferentTypes, JavaInputValidation, JavaIfElse, JavaSwitch, JavaForLoop, JavaWhileLoop, JavaBreakContinue, JavaStringMethods, JavaArrays, JavaMultiDimensionalArrays, JavaMethods, JavaMethodParameters, JavaMethodOverloading, JavaScope, JavaRecursion, JavaClassesObjects, JavaClassAttributes, JavaClassMethods, JavaConstructors, JavaAccessModifiers, JavaEncapsulation, JavaPackages, JavaInheritance, JavaPolymorphism, JavaInnerClasses, JavaAbstraction, JavaInterfaces, JavaEnums, JavaDate, JavaHashMap, JavaHashSet, JavaIterator, JavaWrapperClasses, JavaExceptions, JavaRegex, JavaThreads, JavaLambda, JavaFileHandling, JavaTypeCasting, JavaVariables, JavaPrintFormats, JavaDataTypes, JavaLinkedList, JavaRoadmapOverview } from './java-topics';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
@@ -133,9 +134,11 @@ export function ContentDisplay({
   };
   
   const isLearningPlanTopic = language.slug === 'java' && topic.slug === 'learning-plan';
+  const isRoadmapOverviewTopic = language.slug === 'java' && topic.slug === 'roadmap-overview';
 
   const renderTopicContent = () => {
     if (isLearningPlanTopic) return <JavaLearningRoadmap />;
+    if (isRoadmapOverviewTopic) return <JavaRoadmapOverview />;
     if (topic.slug === 'what-is-java') return <WhatIsJava />;
     if (topic.slug === 'history-of-java') return <TheStoryOfJava />;
     if (topic.slug === 'features-of-java') return <JavaFeatures />;
@@ -213,7 +216,7 @@ export function ContentDisplay({
   
   const noCustomContent = !Object.keys(topic).length || topic.explanation;
 
-  const showSimplifyButton = noCustomContent && !isLearningPlanTopic;
+  const showSimplifyButton = noCustomContent && !isLearningPlanTopic && !isRoadmapOverviewTopic;
 
   const markAsCompleteButton = (
     <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
@@ -261,7 +264,7 @@ export function ContentDisplay({
               A deep dive into {topic.title} in {language.name}.
             </p>
          </div>
-         {!isLearningPlanTopic && (
+         {!isLearningPlanTopic && !isRoadmapOverviewTopic && (
             <TooltipProvider>
               {isUserAuthenticated ? (
                 markAsCompleteButton
@@ -366,7 +369,7 @@ export function ContentDisplay({
         </div>
       )}
       
-      {!isLearningPlanTopic && (
+      {!isLearningPlanTopic && !isRoadmapOverviewTopic && (
         <Card className="mt-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
