@@ -53,7 +53,6 @@ export function TopicSidebar({
     }
   }, [selectedTopicSlug]);
 
-  const roadmapOverviewTopic = language.topics.find(t => t.slug === 'roadmap-overview');
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   
   const gettingStartedTopics = language.topics.filter(t => 
@@ -107,7 +106,6 @@ export function TopicSidebar({
 
   const otherTopics = language.topics.filter(t => 
     ![
-      'roadmap-overview',
       'learning-plan', 
       ...gettingStartedTopics.map(t => t.slug), 
       ...basicOutputTopics.map(t => t.slug), 
@@ -173,21 +171,6 @@ export function TopicSidebar({
         <ScrollArea>
            <div ref={scrollContainerRef} className="h-full">
               <SidebarMenu className="p-4 space-y-4">
-                {roadmapOverviewTopic && (
-                  <SidebarMenuItem key={roadmapOverviewTopic.slug}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={selectedTopicSlug === roadmapOverviewTopic.slug}
-                      tooltip={roadmapOverviewTopic.title}
-                      className="justify-start text-base"
-                    >
-                      <Link href={`/java/${roadmapOverviewTopic.slug}`} ref={selectedTopicSlug === roadmapOverviewTopic.slug ? activeItemRef : null}>
-                        {roadmapOverviewTopic.title}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )}
-
                 {learningPlanTopic && (
                   <div>
                     <SidebarMenuItem key={learningPlanTopic.slug}>
@@ -248,3 +231,5 @@ export function TopicSidebar({
     </>
   );
 }
+
+    

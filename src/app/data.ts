@@ -17,11 +17,6 @@ export const languages: Language[] = [
     name: 'Java',
     topics: [
       {
-        slug: 'roadmap-overview',
-        title: 'Roadmap Overview',
-        explanation: 'A visual overview of the Java learning path.'
-      },
-      {
         slug: 'learning-plan',
         title: 'Learning Plan',
         explanation: 'A structured roadmap for learning Java from scratch.'
@@ -349,3 +344,5 @@ export const languages: Language[] = [
     ],
   },
 ];
+
+    
