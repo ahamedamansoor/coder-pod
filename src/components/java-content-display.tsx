@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -99,6 +100,7 @@ const JavaSuperKeyword = lazy(() => import('./java-topics/java-super-keyword').t
 const JavaMethodOverriding = lazy(() => import('./java-topics/java-method-overriding').then(module => ({ default: module.JavaMethodOverriding })));
 const JavaInstanceofOperator = lazy(() => import('./java-topics/java-instanceof-operator').then(module => ({ default: module.JavaInstanceofOperator })));
 const JavaObjectClass = lazy(() => import('./java-topics/java-object-class').then(module => ({ default: module.JavaObjectClass })));
+const JavaMethodReferences = lazy(() => import('./java-topics/java-method-references').then(module => ({ default: module.JavaMethodReferences })));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -170,6 +172,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'method-overriding': JavaMethodOverriding,
   'instanceof-operator': JavaInstanceofOperator,
   'object-class': JavaObjectClass,
+  'method-references': JavaMethodReferences,
 };
 
 function LoadingSkeleton() {
