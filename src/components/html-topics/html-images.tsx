@@ -1,7 +1,8 @@
+
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Image, Play, ExternalLink, Link as LinkIcon, FileImage, ShieldAlert, BadgeInfo, Frame } from 'lucide-react';
+import { Image, Play, ExternalLink, Link as LinkIcon, FileImage, ShieldAlert, BadgeInfo, Frame, Rocket } from 'lucide-react';
 import React from 'react';
 
 export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
@@ -16,6 +17,14 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
   alt="A winding road through a forest" 
   width="400" 
   height="250"
+>`;
+
+    const lazyLoadingCode = `<img 
+  src="https://picsum.photos/seed/lazy/400/250" 
+  alt="This image will only load when you scroll near it."
+  width="400"
+  height="250"
+  loading="lazy"
 >`;
 
     const linkImageCode = `<a href="https://picsum.photos/" target="_blank">
@@ -40,7 +49,7 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     const fullPlaygroundCode = {
         html: `<h1>Image Showcase</h1>
 
-<h2>Basic Image</h2>
+<h2>Basic Image with Sizing</h2>
 <img 
   src="https://picsum.photos/seed/beach/300/200" 
   alt="A beautiful sunny beach"
@@ -68,7 +77,19 @@ export default function HtmlImages({ onOpenWebPlayground }: { onOpenWebPlaygroun
     height="200"
   >
   <figcaption>Fig.1 - A forest in the morning light.</figcaption>
-</figure>`,
+</figure>
+
+<p style="margin-top: 100vh;">Scroll down to see the lazy-loaded image...</p>
+
+<h2>Lazy-Loaded Image</h2>
+<img 
+    src="https://picsum.photos/seed/lazyload/300/200" 
+    alt="This image loaded only when it was needed."
+    width="300"
+    height="200"
+    loading="lazy"
+>
+`,
         css: `body { 
   font-family: sans-serif;
   line-height: 1.6;
@@ -78,6 +99,8 @@ img {
   border-radius: 8px;
   max-width: 100%; /* Important for responsiveness */
   height: auto;
+  display: block; /* To prevent extra space below */
+  margin-bottom: 1rem;
 }
 a img {
   border-color: hsl(var(--primary));
@@ -93,6 +116,7 @@ figure {
   border-radius: 8px;
   display: inline-block; /* To make it wrap the image */
   background-color: hsl(var(--muted));
+  margin: 0;
 }
 figcaption {
   margin-top: 0.5rem;
@@ -126,11 +150,6 @@ figcaption {
                 <div className="mt-4 grid md:grid-cols-2 gap-4">
                     <p className="text-sm">It requires at least two attributes: <code className="font-mono bg-foreground/10 p-1 rounded">src</code> to specify the image source and <code className="font-mono bg-foreground/10 p-1 rounded">alt</code> for alternative text.</p>
                 </div>
-                 <div className="mt-4">
-                    <Button onClick={() => onOpenWebPlayground(simpleImageCode, '', '')}>
-                        <Play className="mr-2 h-4 w-4" /> Try it
-                    </Button>
-                </div>
             </CardContent>
         </Card>
         
@@ -162,6 +181,20 @@ figcaption {
                  <Button onClick={() => onOpenWebPlayground(attributesCode, 'img { border: 2px solid red; }', '')}>
                     <Play className="mr-2 h-4 w-4" /> Try it
                 </Button>
+            </CardContent>
+        </Card>
+
+        <Card className="border-primary bg-primary/5">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-primary"><Rocket className="w-5 h-5"/>Performance Boost: Lazy Loading</CardTitle>
+                <CardDescription>The `loading="lazy"` attribute tells the browser to wait to load an image until the user scrolls near it. This is great for performance.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">This simple attribute can significantly speed up your initial page load time and save data for users on slow connections, especially on pages with many images below the fold.</p>
+                <div className="bg-muted rounded-md p-4 mb-4">
+                    <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{lazyLoadingCode}</pre>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">Note: The effect is best observed on a long page. Use your browser's developer tools (Network tab) to see images loading as you scroll.</p>
             </CardContent>
         </Card>
         
