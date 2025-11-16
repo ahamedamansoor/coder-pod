@@ -1,6 +1,6 @@
 
 'use client';
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,13 +17,22 @@ import { Bot, Code, LogOut, User, Zap, LogIn } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
+import { doc } from 'firebase/firestore';
 
 export default function AppLayout() {
   const { user } = useUser();
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
+
+  const userDocRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, 'users', user.uid);
+  }, [user, firestore]);
+
+  const { data: userData } = useDoc(userDocRef);
 
   const handleSignOut = async () => {
     if (auth) {
@@ -45,6 +54,8 @@ export default function AppLayout() {
     }
     return name[0].toUpperCase();
   };
+  
+  const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
 
   return (
     <div id="dashboard-page" data-test="dashboard-page" className="flex flex-col min-h-screen bg-muted/40">
@@ -59,14 +70,14 @@ export default function AppLayout() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer h-9 w-9">
-                      <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
-                      <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
+                      <AvatarImage src={user.photoURL || ''} alt={displayName} />
+                      <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel className='flex items-center gap-2'>
                       <User />
-                      {user.isAnonymous ? 'Guest User' : user.displayName || 'User'}
+                      {displayName}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
