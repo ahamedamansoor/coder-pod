@@ -75,11 +75,19 @@ Your job is to provide a much simpler, more structured explanation that a 10-yea
     - Use simple words.
 
 4.  **Examples**:
-    - **If the topic is code-related**, provide a very simple and clear code example.
-    - Use markdown for all code formatting (e.g., \`\`\`java).
-    - Add comments to the code that explain each line like you're talking to a beginner.
-    - Keep the examples focused on demonstrating only the topic at hand.
-    - **Use simple ASCII art** (like ->, ==>, etc.) to create a diagrammatic representation if it helps explain a process or flow (e.g. showing how one variable affects multiple elements).
+    - **If the topic is code-related**, provide a very simple and clear code example represented as a Mermaid.js graph diagram inside a markdown code block.
+    - Use the \`\`\`mermaid ... \`\`\` format.
+    - Create a \`graph TD\` (top-down) diagram.
+    - Each node in the diagram should represent a part of the code (like a variable declaration or a CSS rule).
+    - Use arrows (-->) to show how different parts of the code connect or affect each other.
+    - Node text should be simple and easy to understand, like a comment explaining that line of code.
+    - Example for an SCSS variable:
+      \`\`\`mermaid
+      graph TD
+          A["$main-color: blue; (This is our magic color!)"] --> B["header { color: $main-color; }"];
+          A --> C["button { background: $main-color; }"];
+          B --- C;
+      \`\`\`
     - **If the topic is purely conceptual, you may omit the code examples.**
 `,
 });
