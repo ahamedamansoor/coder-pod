@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -8,11 +7,13 @@ import { GenericContentDisplay } from './generic-content-display';
 
 // Lazy load all the topic components
 const WhatIsSass = lazy(() => import('./scss-topics/what-is-sass'));
+const SassInstallation = lazy(() => import('./scss-topics/sass-installation'));
 
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'what-is-sass': WhatIsSass,
+  'sass-installation': SassInstallation,
 };
 
 function LoadingSkeleton() {
