@@ -24,6 +24,7 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { MermaidDiagram } from './mermaid-diagram';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -138,6 +139,19 @@ export function GenericContentDisplay({
       <Label htmlFor={`complete-${topic.slug}`} className={cn("font-semibold text-muted-foreground", !isUserAuthenticated && "cursor-not-allowed opacity-50")}>Mark as completed</Label>
     </div>
   );
+  
+  const renderExample = (exampleText: string) => {
+    const isMermaid = exampleText.trim().startsWith('```mermaid');
+    if (isMermaid) {
+        const mermaidCode = exampleText.replace(/```mermaid\n|```/g, '').trim();
+        return <MermaidDiagram diagram={mermaidCode} />;
+    }
+    return (
+        <div className="bg-card p-4 rounded-md overflow-x-auto">
+            <pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">{exampleText}</code></pre>
+        </div>
+    )
+  }
 
   return (
     <div className="space-y-8">
@@ -185,7 +199,18 @@ export function GenericContentDisplay({
                <div className="grid md:grid-cols-2 gap-8">
                    <Card className="border-primary/50 bg-primary/5"><CardHeader><CardTitle className="flex items-center gap-3"><List className="text-primary"/>Key Ideas</CardTitle></CardHeader><CardContent><ul className="space-y-3">{simplifiedContent.bulletPoints.map((point, i) => (<li key={i} className="flex items-start gap-3"><GitCommitHorizontal className="w-5 h-5 text-primary mt-1 shrink-0" /><span className="text-base text-foreground/90">{point}</span></li>))}</ul></CardContent></Card>
                    {simplifiedContent.examples && (
-                    <Card className="border-primary/50 bg-primary/5"><CardHeader className='flex-row items-center justify-between'><CardTitle className="flex items-center gap-3"><Code className="text-primary"/>Code Examples</CardTitle><Button variant="ghost" size="icon" onClick={handleCopyCode}>{hasCopied ? (<Check className="w-4 h-4 text-green-500" />) : (<Copy className="w-4 h-4" />)}<span className="sr-only">Copy code</span></Button></CardHeader><CardContent><div className="bg-card p-4 rounded-md overflow-x-auto"><pre className="whitespace-pre-wrap"><code className="font-code text-sm text-foreground">{simplifiedContent.examples}</code></pre></div></CardContent></Card>
+                    <Card className="border-primary/50 bg-primary/5">
+                        <CardHeader className='flex-row items-center justify-between'>
+                            <CardTitle className="flex items-center gap-3"><Code className="text-primary"/>Code Examples</CardTitle>
+                            <Button variant="ghost" size="icon" onClick={handleCopyCode}>
+                                {hasCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                                <span className="sr-only">Copy code</span>
+                            </Button>
+                        </CardHeader>
+                        <CardContent>
+                            {renderExample(simplifiedContent.examples)}
+                        </CardContent>
+                    </Card>
                    )}
                </div>
             </div>
