@@ -7,10 +7,12 @@ import { Skeleton } from './ui/skeleton';
 
 // Lazy load all the topic components
 const SpringCoreOverview = lazy(() => import('./spring-topics/spring-core-overview'));
+const IocAndDependencyInjection = lazy(() => import('./spring-topics/ioc-and-dependency-injection'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'spring-core-overview': SpringCoreOverview,
+  'ioc-and-dependency-injection': IocAndDependencyInjection,
 };
 
 function LoadingSkeleton() {
