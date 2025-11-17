@@ -27,8 +27,8 @@ export const ReactProvider = ({ children }: { children: ReactNode }) => {
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   useEffect(() => {
-    if (userData && userData.completedReactTopics) {
-      setCompletedTopics(new Set(userData.completedReactTopics));
+    if (userData?.completedTopics?.react) {
+      setCompletedTopics(new Set(userData.completedTopics.react));
     } else {
       setCompletedTopics(new Set<string>());
     }
@@ -38,35 +38,34 @@ export const ReactProvider = ({ children }: { children: ReactNode }) => {
     if (!userDocRef) return;
 
     const newCompleted = new Set(completedTopics);
-    let updatedTopics;
+    const isCompleted = newCompleted.has(topicSlug);
 
-    if (newCompleted.has(topicSlug)) {
+    if (isCompleted) {
       newCompleted.delete(topicSlug);
-      updatedTopics = arrayRemove(topicSlug);
     } else {
       newCompleted.add(topicSlug);
-      updatedTopics = arrayUnion(topicSlug);
     }
 
     setCompletedTopics(newCompleted); // Optimistic update
 
     try {
+        const fieldName = 'completedTopics.react';
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
             await updateDoc(userDocRef, {
-                completedReactTopics: updatedTopics,
+                [fieldName]: Array.from(newCompleted),
             });
         } else {
-             await setDoc(userDocRef, { completedReactTopics: Array.from(newCompleted) }, { merge: true });
+             await setDoc(userDocRef, { completedTopics: { react: Array.from(newCompleted) } }, { merge: true });
         }
     } catch (error) {
       console.error("Error updating completed topics: ", error);
       // Revert optimistic update on error
       setCompletedTopics(prev => {
           const reverted = new Set(prev);
-          if (newCompleted.has(topicSlug)) {
+          if (newCompleted.has(topicSlug)) { // If we added it, remove it
               reverted.delete(topicSlug);
-          } else {
+          } else { // If we removed it, add it back
               reverted.add(topicSlug);
           }
           return reverted;

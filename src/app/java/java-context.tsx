@@ -26,8 +26,8 @@ export const JavaProvider = ({ children }: { children: ReactNode }) => {
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   useEffect(() => {
-    if (userData && userData.completedTopics) {
-      setCompletedTopics(new Set(userData.completedTopics));
+    if (userData?.completedTopics?.java) {
+      setCompletedTopics(new Set(userData.completedTopics.java));
     } else {
       setCompletedTopics(new Set<string>());
     }
@@ -37,26 +37,25 @@ export const JavaProvider = ({ children }: { children: ReactNode }) => {
     if (!userDocRef) return;
 
     const newCompleted = new Set(completedTopics);
-    let updatedTopics;
+    const isCompleted = newCompleted.has(topicSlug);
 
-    if (newCompleted.has(topicSlug)) {
+    if (isCompleted) {
       newCompleted.delete(topicSlug);
-      updatedTopics = arrayRemove(topicSlug);
     } else {
       newCompleted.add(topicSlug);
-      updatedTopics = arrayUnion(topicSlug);
     }
 
     setCompletedTopics(newCompleted); // Optimistic update
 
     try {
+        const fieldName = 'completedTopics.java';
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
             await updateDoc(userDocRef, {
-                completedTopics: updatedTopics,
+                [fieldName]: Array.from(newCompleted),
             });
         } else {
-             await setDoc(userDocRef, { completedTopics: Array.from(newCompleted) }, { merge: true });
+             await setDoc(userDocRef, { completedTopics: { java: Array.from(newCompleted) } }, { merge: true });
         }
     } catch (error) {
       console.error("Error updating completed topics: ", error);

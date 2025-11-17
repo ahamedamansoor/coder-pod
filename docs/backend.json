@@ -33,11 +33,17 @@
           "description": "Phone number of the user, including country code."
         },
         "completedTopics": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "An array of slugs for the topics the user has completed."
+          "type": "object",
+          "description": "An object where keys are language slugs and values are arrays of completed topic slugs for that language.",
+          "properties": {
+            "java": { "type": "array", "items": { "type": "string" } },
+            "spring": { "type": "array", "items": { "type": "string" } },
+            "javascript": { "type": "array", "items": { "type": "string" } },
+            "react": { "type": "array", "items": { "type": "string" } },
+            "html": { "type": "array", "items": { "type": "string" } },
+            "css": { "type": "array", "items": { "type": "string" } },
+            "scss": { "type": "array", "items": { "type": "string" } }
+          }
         },
         "createdAt": {
           "type": "string",

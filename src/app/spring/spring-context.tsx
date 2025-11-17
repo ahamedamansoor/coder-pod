@@ -27,8 +27,8 @@ export const SpringProvider = ({ children }: { children: ReactNode }) => {
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   useEffect(() => {
-    if (userData && userData.completedSpringTopics) { // Use a different field for Spring
-      setCompletedTopics(new Set(userData.completedSpringTopics));
+    if (userData?.completedTopics?.spring) {
+      setCompletedTopics(new Set(userData.completedTopics.spring));
     } else {
       setCompletedTopics(new Set<string>());
     }
@@ -38,26 +38,25 @@ export const SpringProvider = ({ children }: { children: ReactNode }) => {
     if (!userDocRef) return;
 
     const newCompleted = new Set(completedTopics);
-    let updatedTopics;
+    const isCompleted = newCompleted.has(topicSlug);
 
-    if (newCompleted.has(topicSlug)) {
+    if (isCompleted) {
       newCompleted.delete(topicSlug);
-      updatedTopics = arrayRemove(topicSlug);
     } else {
       newCompleted.add(topicSlug);
-      updatedTopics = arrayUnion(topicSlug);
     }
 
     setCompletedTopics(newCompleted); // Optimistic update
 
     try {
+        const fieldName = 'completedTopics.spring';
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
             await updateDoc(userDocRef, {
-                completedSpringTopics: updatedTopics, // Use a different field for Spring
+                [fieldName]: Array.from(newCompleted),
             });
         } else {
-             await setDoc(userDocRef, { completedSpringTopics: Array.from(newCompleted) }, { merge: true });
+             await setDoc(userDocRef, { completedTopics: { spring: Array.from(newCompleted) } }, { merge: true });
         }
     } catch (error) {
       console.error("Error updating completed topics: ", error);
