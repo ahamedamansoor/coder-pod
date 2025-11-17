@@ -24,6 +24,10 @@ import { useScss } from '@/app/scss/scss-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+// A new hook for Spring Boot will be needed here
+// import { useSpringBoot } from '@/app/spring-boot/spring-boot-context';
+
+
 interface TopicSidebarProps {
   language: Language;
   selectedTopicSlug: string | null;
@@ -37,6 +41,7 @@ function useLanguageContext(language: Language) {
         case 'spring':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useSpring();
+        // Add case for spring-boot when its context is created
         case 'javascript':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useJavascript();
@@ -113,14 +118,24 @@ export function TopicSidebar({
     } else if (language.slug === 'spring') {
         const springGroups: Record<string, string[]> = {
             "Spring Core": ['spring-core-overview', 'ioc-and-dependency-injection', 'spring-beans'],
-            "Data & Persistence": ['spring-data-jpa', 'jdbc-template'],
-            "Spring MVC & Web": ['spring-mvc', 'rest-controllers'],
-            "Spring Boot": ['spring-boot-basics', 'autoconfiguration'],
-            "Advanced Topics": ['spring-security', 'testing-in-spring', 'spring-aop', 'spring-webflux'],
-            "Spring Ecosystem": ['spring-cloud', 'spring-kafka'],
+            "AOP": ['spring-aop'],
+            "Data & Persistence": ['spring-data-jpa'],
+            "Web": ['spring-mvc', 'spring-security-basics'],
         };
          for (const groupName in springGroups) {
             if (springGroups[groupName].includes(topic.slug)) {
+                group = groupName;
+                break;
+            }
+        }
+    } else if (language.slug === 'spring-boot') {
+        const springBootGroups: Record<string, string[]> = {
+            "Core Concepts": ['spring-boot-basics', 'autoconfiguration', 'spring-boot-starters'],
+            "Configuration": ['spring-boot-properties', 'spring-boot-profiles'],
+            "Advanced": ['spring-boot-testing', 'spring-boot-actuator', 'spring-boot-webflux'],
+        };
+         for (const groupName in springBootGroups) {
+            if (springBootGroups[groupName].includes(topic.slug)) {
                 group = groupName;
                 break;
             }
@@ -198,7 +213,9 @@ export function TopicSidebar({
   const groupOrder = language.slug === 'java' 
     ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings & Arrays", "Methods & OOP Basics", "Advanced OOP", "Advanced Collections", "Error Handling & Generics", "Functional Programming", "Advanced Concurrency", "Files & Regex", "Others"]
     : language.slug === 'spring' 
-    ? ["Spring Core", "Data & Persistence", "Spring MVC & Web", "Spring Boot", "Advanced Topics", "Spring Ecosystem", "Others"]
+    ? ["Spring Core", "AOP", "Data & Persistence", "Web", "Others"]
+    : language.slug === 'spring-boot'
+    ? ["Core Concepts", "Configuration", "Advanced", "Others"]
     : language.slug === 'javascript'
     ? ["Fundamentals", "Functions & Scope", "Data Structures", "Control Flow", "Browser APIs", "Asynchronous JS", "Modern JS", "Others"]
     : language.slug === 'react'

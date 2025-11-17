@@ -63,7 +63,10 @@ export function LearnModal() {
                     <Link href="/java/learning-plan">Java</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="/spring/learning-plan">Spring</Link>
+                    <Link href="/spring/learning-plan">Spring Framework</Link>
+                </DropdownMenuItem>
+                 <DropdownMenuItem asChild>
+                    <Link href="/spring-boot/learning-plan">Spring Boot</Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

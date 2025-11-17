@@ -534,12 +534,12 @@ export const languages: Language[] = [
   },
   {
     slug: 'spring',
-    name: 'Spring',
+    name: 'Spring Framework',
     topics: [
         {
             slug: 'learning-plan',
             title: 'Learning Plan',
-            explanation: 'A structured roadmap for learning Spring from scratch.'
+            explanation: 'A structured roadmap for learning the Spring Framework from scratch.'
         },
         {
             slug: 'spring-core-overview',
@@ -557,14 +557,14 @@ export const languages: Language[] = [
             explanation: 'Learn about the objects that form the backbone of your application.'
         },
         {
+            slug: 'spring-aop',
+            title: 'Spring AOP',
+            explanation: 'Understanding Aspect-Oriented Programming with Spring.'
+        },
+        {
             slug: 'spring-data-jpa',
             title: 'Spring Data JPA',
             explanation: 'Simplifying data access layers with Spring Data JPA.'
-        },
-        {
-            slug: 'jdbc-template',
-            title: 'JdbcTemplate',
-            explanation: 'Working with databases using Spring\'s JdbcTemplate.'
         },
         {
             slug: 'spring-mvc',
@@ -572,9 +572,20 @@ export const languages: Language[] = [
             explanation: 'Building web applications with the Model-View-Controller pattern.'
         },
         {
-            slug: 'rest-controllers',
-            title: 'REST Controllers',
-            explanation: 'Creating RESTful web services with Spring.'
+            slug: 'spring-security-basics',
+            title: 'Spring Security Basics',
+            explanation: 'Introduction to securing your applications with Spring Security.'
+        }
+    ]
+  },
+  {
+    slug: 'spring-boot',
+    name: 'Spring Boot',
+    topics: [
+        {
+            slug: 'learning-plan',
+            title: 'Learning Plan',
+            explanation: 'A structured roadmap for learning Spring Boot.'
         },
         {
             slug: 'spring-boot-basics',
@@ -587,34 +598,34 @@ export const languages: Language[] = [
             explanation: 'Understanding how Spring Boot automatically configures your application.'
         },
         {
-            slug: 'spring-security',
-            title: 'Spring Security',
-            explanation: 'Securing your applications with Spring Security.'
+            slug: 'spring-boot-starters',
+            title: 'Spring Boot Starters',
+            explanation: 'Learn how starters simplify your dependency management.'
         },
         {
-            slug: 'testing-in-spring',
-            title: 'Testing in Spring',
-            explanation: 'Learn how to test your Spring applications.'
+            slug: 'spring-boot-properties',
+            title: 'Application Properties',
+            explanation: 'Configuring your application using application.properties or application.yml.'
         },
         {
-            slug: 'spring-aop',
-            title: 'Spring AOP',
-            explanation: 'Understanding Aspect-Oriented Programming with Spring.'
+            slug: 'spring-boot-profiles',
+            title: 'Profiles',
+            explanation: 'Managing different configurations for different environments (dev, prod).'
         },
         {
-            slug: 'spring-webflux',
+            slug: 'spring-boot-testing',
+            title: 'Testing in Spring Boot',
+            explanation: 'Learn how to test your Spring Boot applications with @SpringBootTest.'
+        },
+        {
+            slug: 'spring-boot-actuator',
+            title: 'Spring Boot Actuator',
+            explanation: 'Monitoring and managing your application in production.'
+        },
+        {
+            slug: 'spring-boot-webflux',
             title: 'Spring WebFlux',
-            explanation: 'Building reactive web applications with Spring WebFlux.'
-        },
-        {
-            slug: 'spring-cloud',
-            title: 'Spring Cloud',
-            explanation: 'Building distributed systems with Spring Cloud.'
-        },
-        {
-            slug: 'spring-kafka',
-            title: 'Spring for Apache Kafka',
-            explanation: 'Integrating with Apache Kafka for messaging.'
+            explanation: 'Building reactive web applications with Spring Boot.'
         },
     ]
   }
