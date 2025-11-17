@@ -1,21 +1,17 @@
 
 'use client';
 
-import { useState, useCallback, Suspense } from 'react';
+import { Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data';
 import {
   ResizablePanelGroup,
   ResizablePanel,
-  ResizableHandle,
 } from '@/components/ui/resizable';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useCssLayout } from '../css-layout-context';
-import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
 import { CssContentDisplay } from '@/components/css-content-display';
 import { CssLearningRoadmap } from '@/components/css-learning-roadmap';
-import { WebPlaygroundModal } from '@/components/web-playground-modal';
 
 function TopicPageContent() {
   const params = useParams();
