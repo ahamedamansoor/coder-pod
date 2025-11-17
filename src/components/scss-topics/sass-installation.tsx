@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { HardHat, Check, ArrowRight, Code, FileCode, Monitor } from 'lucide-react';
@@ -15,18 +14,18 @@ export default function SassInstallation() {
                 <HardHat className="w-10 h-10 text-primary" />
                 <h1 className="text-4xl font-bold text-foreground">Sass Installation</h1>
             </div>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Setting up your Next.js project to use Sass/SCSS.</p>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Setting up your project to use Sass/SCSS.</p>
         </div>
 
         <Card>
             <CardHeader>
-                <CardTitle>The Good News: It's (Almost) Already Done!</CardTitle>
+                <CardTitle>The Good News: It's Usually Simple!</CardTitle>
                 <CardDescription>
-                    Modern web development frameworks like Next.js have made setting up Sass incredibly simple. You don't need complex configuration files or build scripts. Next.js has built-in support for Sass.
+                    Modern web development frameworks and build tools have made setting up Sass incredibly simple. You often don't need complex configuration files or build scripts, as many frameworks have built-in support for Sass.
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <p>There is only one step you need to take.</p>
+                <p>For most modern JavaScript projects, there is only one step you need to take.</p>
             </CardContent>
         </Card>
         
@@ -39,7 +38,7 @@ export default function SassInstallation() {
                 <CardDescription>You just need to add the Dart Sass compiler package to your project's dependencies.</CardDescription>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">Open your terminal and run the following command:</p>
+                <p className="text-sm text-muted-foreground mb-4">Open your terminal in your project's root directory and run the following command:</p>
                 <div className="bg-background rounded-md p-4">
                     <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{installCommand}</pre>
                 </div>
@@ -50,7 +49,7 @@ export default function SassInstallation() {
             <CardHeader>
                 <CardTitle>How it Works</CardTitle>
                 <CardDescription>
-                    Once the `sass` package is installed, Next.js's build process automatically detects it and handles the rest for you.
+                    Once the `sass` package is installed, your project's build process will often automatically detect it and handle the rest for you.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -65,7 +64,7 @@ export default function SassInstallation() {
                         <div className="p-3 bg-primary/10 rounded-full inline-block">
                            <Check className="w-10 h-10 text-primary"/>
                         </div>
-                        <p className="font-semibold mt-2">Next.js Build Process</p>
+                        <p className="font-semibold mt-2">Build Process</p>
                         <p className="text-xs text-muted-foreground">Automatically compiles your SCSS files</p>
                     </div>
                     <ArrowRight className="w-8 h-8 text-muted-foreground shrink-0 md:rotate-0 rotate-90" />
