@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -78,6 +79,7 @@ Your job is to provide a much simpler, more structured explanation that a 10-yea
     - Use markdown for all code formatting (e.g., \`\`\`java).
     - Add comments to the code that explain each line like you're talking to a beginner.
     - Keep the examples focused on demonstrating only the topic at hand.
+    - **Use simple ASCII art** (like ->, ==>, etc.) to create a diagrammatic representation if it helps explain a process or flow (e.g. showing how one variable affects multiple elements).
     - **If the topic is purely conceptual, you may omit the code examples.**
 `,
 });
