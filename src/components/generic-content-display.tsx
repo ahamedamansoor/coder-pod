@@ -22,7 +22,6 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
-import { AiSimplification } from './ai-simplification';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -121,9 +120,6 @@ export function GenericContentDisplay({
       )}
       
       {!isLearningPlanTopic && (
-        <>
-          <AiSimplification topic={topic} language={language} />
-
           <Card className="mt-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><HelpCircle className="w-6 h-6 text-primary" />Ask a Question</CardTitle>
@@ -134,7 +130,6 @@ export function GenericContentDisplay({
               <Button onClick={handleAskQuestion} disabled={isAsking || !question.trim()}>{isAsking ? 'Thinking...' : 'Get Answer'}</Button>
             </CardContent>
           </Card>
-        </>
       )}
       
       {isAsking && (<Card><CardContent className="p-6 space-y-2"><Skeleton className="h-4 w-1/3" /><Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-3/4" /></CardContent></Card>)}
