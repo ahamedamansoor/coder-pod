@@ -15,13 +15,14 @@ import {
 } from '@/components/ui/resizable';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
-import { PanelTop, Code, Braces, FileJson, Terminal, Loader2 } from 'lucide-react';
+import { PanelTop, Code, Braces, FileJson, Terminal, Loader2, ChevronsUpDown } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import { useWebPlayground } from './web-playground-context';
 import { Button } from './ui/button';
 import { compileScssCode } from '@/ai/flows/compile-scss-code';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 const defaultHtml = `<!DOCTYPE html>
 <html>
@@ -30,8 +31,8 @@ const defaultHtml = `<!DOCTYPE html>
 </head>
 <body>
   <div class="card">
-    <h1>Welcome to the SCSS Playground!</h1>
-    <p>Edit the SCSS code to see live updates.</p>
+    <h1>Welcome to the Playground!</h1>
+    <p>Edit the code to see live updates.</p>
     <button>Click Me</button>
   </div>
 </body>
@@ -81,6 +82,47 @@ body {
       opacity: 0.9;
     }
   }
+}
+`;
+
+const defaultCss = `body {
+  font-family: sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card h1 {
+  color: #3b82f6;
+  margin-bottom: 1rem;
+}
+
+.card p {
+  color: #333;
+}
+
+.card button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.card button:hover {
+  opacity: 0.9;
 }
 `;
 
@@ -149,25 +191,34 @@ type ConsoleLog = {
   timestamp: string;
 };
 
+type StyleLang = 'css' | 'scss';
+
 export function WebPlaygroundModal({ children }: { children: React.ReactNode }) {
   const { open, setOpen, content, setContent } = useWebPlayground();
 
   const [htmlCode, setHtmlCode] = useState('');
-  const [scssCode, setScssCode] = useState('');
-  const [cssCode, setCssCode] = useState('');
+  const [styleCode, setStyleCode] = useState('');
   const [jsCode, setJsCode] = useState('');
+  const [compiledCss, setCompiledCss] = useState('');
   const [isCompiling, setIsCompiling] = useState(false);
+  const [styleLang, setStyleLang] = useState<StyleLang>('scss');
 
   const [outputSrc, setOutputSrc] = useState('');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [visiblePanels, setVisiblePanels] = useState<string[]>([
-    'html', 'scss', 'js', 'console'
+    'html', 'style', 'js', 'console'
   ]);
   const { theme } = useTheme();
 
   useEffect(() => {
+    if (content.css) {
+      setStyleLang('scss'); // Assume incoming css might be scss
+      setStyleCode(content.css);
+    } else {
+      setStyleLang('scss');
+      setStyleCode(defaultScss);
+    }
     setHtmlCode(content.html || defaultHtml);
-    setScssCode(content.css || defaultScss); // Treat incoming CSS as SCSS
     setJsCode(content.js || defaultJs);
   }, [content]);
 
@@ -175,23 +226,26 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (!open) return;
     
-    setIsCompiling(true);
-    const handler = setTimeout(async () => {
-      try {
-        const result = await compileScssCode({ scss: scssCode });
-        setCssCode(result.css);
-      } catch (e) {
-        console.error("SCSS Compilation Error:", e);
-        setCssCode(`/* SCSS Compilation Failed */`);
-      } finally {
-        setIsCompiling(false);
-      }
-    }, 500);
+    if (styleLang === 'scss') {
+      setIsCompiling(true);
+      const handler = setTimeout(async () => {
+        try {
+          const result = await compileScssCode({ scss: styleCode });
+          setCompiledCss(result.css);
+        } catch (e) {
+          console.error("SCSS Compilation Error:", e);
+          setCompiledCss(`/* SCSS Compilation Failed */`);
+        } finally {
+          setIsCompiling(false);
+        }
+      }, 500);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [scssCode, open]);
+      return () => clearTimeout(handler);
+    } else {
+      setCompiledCss(styleCode);
+      setIsCompiling(false);
+    }
+  }, [styleCode, styleLang, open]);
 
 
   useEffect(() => {
@@ -219,7 +273,7 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
         data:text/html;charset=utf-8,${encodeURIComponent(`
           <html>
             <head>
-              <style>${cssCode}</style>
+              <style>${compiledCss}</style>
               <script>${consoleScript}</script>
             </head>
             <body>
@@ -232,7 +286,7 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
     }, 250);
 
     return () => clearTimeout(timeout);
-  }, [htmlCode, cssCode, jsCode, open]);
+  }, [htmlCode, compiledCss, jsCode, open]);
   
   const getLogLevelClass = (type: ConsoleLog['type']) => {
     switch (type) {
@@ -276,7 +330,7 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
             className="gap-1 mr-8"
           >
             <ToggleGroupItem value="html" aria-label="Toggle HTML"><FileJson className="h-4 w-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="scss" aria-label="Toggle SCSS"><Braces className="h-4 w-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="style" aria-label="Toggle Style"><Braces className="h-4 w-4" /></ToggleGroupItem>
             <ToggleGroupItem value="js" aria-label="Toggle JS"><Code className="h-4 w-4" /></ToggleGroupItem>
             <ToggleGroupItem value="console" aria-label="Toggle Console"><Terminal className="h-4 w-4" /></ToggleGroupItem>
           </ToggleGroup>
@@ -296,31 +350,43 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
                     />
                   </ResizablePanel>
                 )}
-                {visiblePanels.includes('html') && visiblePanels.includes('scss') && <ResizableHandle withHandle />}
-                {visiblePanels.includes('scss') && (
+                {visiblePanels.includes('html') && visiblePanels.includes('style') && <ResizableHandle withHandle />}
+                {visiblePanels.includes('style') && (
                   <ResizablePanel defaultSize={25} collapsible minSize={10}>
                      <div className="relative h-full">
                        <div className="absolute top-2 right-2 z-10 bg-background/80 backdrop-blur-sm rounded-full p-1 text-xs flex items-center gap-1 text-muted-foreground">
-                        {isCompiling ? (
+                        {styleLang === 'scss' && isCompiling && (
                           <>
                             <Loader2 className="h-3 w-3 animate-spin" />
                             <span>Compiling...</span>
                           </>
-                        ) : (
-                          <span>SCSS</span>
                         )}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-6 text-xs gap-1">
+                                    {styleLang.toUpperCase()}
+                                    <ChevronsUpDown className="h-3 w-3" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuRadioGroup value={styleLang} onValueChange={(v) => setStyleLang(v as StyleLang)}>
+                                    <DropdownMenuRadioItem value="scss">SCSS</DropdownMenuRadioItem>
+                                    <DropdownMenuRadioItem value="css">CSS</DropdownMenuRadioItem>
+                                </DropdownMenuRadioGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                        </div>
                         <Editor
-                          language="scss"
-                          value={scssCode}
-                          onChange={(value) => setScssCode(value || '')}
+                          language={styleLang}
+                          value={styleCode}
+                          onChange={(value) => setStyleCode(value || '')}
                           theme={theme === 'dark' ? 'vs-dark' : 'light'}
                           options={{ minimap: { enabled: false }, wordWrap: 'on' }}
                         />
                      </div>
                   </ResizablePanel>
                 )}
-                {(visiblePanels.includes('html') || visiblePanels.includes('scss')) && visiblePanels.includes('js') && <ResizableHandle withHandle />}
+                {(visiblePanels.includes('html') || visiblePanels.includes('style')) && visiblePanels.includes('js') && <ResizableHandle withHandle />}
                 {visiblePanels.includes('js') && (
                   <ResizablePanel defaultSize={25} collapsible minSize={10}>
                     <Editor
