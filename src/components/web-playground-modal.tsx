@@ -1,6 +1,6 @@
 
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -15,12 +15,13 @@ import {
 } from '@/components/ui/resizable';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
-import { PanelTop, Code, Braces, FileJson, Terminal } from 'lucide-react';
+import { PanelTop, Code, Braces, FileJson, Terminal, Loader2 } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import { useWebPlayground } from './web-playground-context';
 import { Button } from './ui/button';
+import { compileScssCode } from '@/ai/flows/compile-scss-code';
 
 const defaultHtml = `<!DOCTYPE html>
 <html>
@@ -28,46 +29,70 @@ const defaultHtml = `<!DOCTYPE html>
   <title>My Playground</title>
 </head>
 <body>
-  <h1>Welcome to the Web Playground!</h1>
-  <p>Edit the HTML, CSS, and JS to see live updates.</p>
-  <button onclick="showAlert()">Click Me for an Alert</button>
-  <button onclick="logMessage()">Log to Console</button>
+  <div class="card">
+    <h1>Welcome to the SCSS Playground!</h1>
+    <p>Edit the SCSS code to see live updates.</p>
+    <button>Click Me</button>
+  </div>
 </body>
 </html>
 `;
 
-const defaultCss = `body {
+const defaultScss = `// Variables
+$primary-color: #3b82f6;
+$card-bg: white;
+$text-color: #333;
+
+body {
   font-family: sans-serif;
-  transition: background-color 0.5s;
-  padding: 1rem;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-h1 {
-  color: hsl(var(--primary));
-}
+.card {
+  background: $card-bg;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  
+  h1 {
+    color: $primary-color;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: $text-color;
+  }
 
-button {
-  padding: 10px 15px;
-  border: none;
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 5px;
-  margin-right: 5px;
+  button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
 }
 `;
 
-const defaultJs = `function showAlert() {
-  alert("Hello from the playground!");
-}
-
-function logMessage() {
+const defaultJs = `function logMessage() {
   console.log("Hello from the playground!");
   console.warn("This is a warning.");
   console.error("This is an error.");
   console.info({ user: "John Doe", id: 123 });
 }
+
+// You can call functions on load if you want
+logMessage();
 `;
 
 const consoleScript = `
@@ -127,22 +152,47 @@ type ConsoleLog = {
 export function WebPlaygroundModal({ children }: { children: React.ReactNode }) {
   const { open, setOpen, content, setContent } = useWebPlayground();
 
-  const [htmlCode, setHtmlCode] = useState(content.html || defaultHtml);
-  const [cssCode, setCssCode] = useState(content.css || defaultCss);
-  const [jsCode, setJsCode] = useState(content.js || defaultJs);
+  const [htmlCode, setHtmlCode] = useState('');
+  const [scssCode, setScssCode] = useState('');
+  const [cssCode, setCssCode] = useState('');
+  const [jsCode, setJsCode] = useState('');
+  const [isCompiling, setIsCompiling] = useState(false);
 
   const [outputSrc, setOutputSrc] = useState('');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [visiblePanels, setVisiblePanels] = useState<string[]>([
-    'html', 'css', 'js', 'console'
+    'html', 'scss', 'js', 'console'
   ]);
   const { theme } = useTheme();
 
   useEffect(() => {
     setHtmlCode(content.html || defaultHtml);
-    setCssCode(content.css || defaultCss);
+    setScssCode(content.css || defaultScss); // Treat incoming CSS as SCSS
     setJsCode(content.js || defaultJs);
   }, [content]);
+
+  // Debounced SCSS compilation
+  useEffect(() => {
+    if (!open) return;
+    
+    setIsCompiling(true);
+    const handler = setTimeout(async () => {
+      try {
+        const result = await compileScssCode({ scss: scssCode });
+        setCssCode(result.css);
+      } catch (e) {
+        console.error("SCSS Compilation Error:", e);
+        setCssCode(`/* SCSS Compilation Failed */`);
+      } finally {
+        setIsCompiling(false);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [scssCode, open]);
+
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -226,7 +276,7 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
             className="gap-1 mr-8"
           >
             <ToggleGroupItem value="html" aria-label="Toggle HTML"><FileJson className="h-4 w-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="css" aria-label="Toggle CSS"><Braces className="h-4 w-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="scss" aria-label="Toggle SCSS"><Braces className="h-4 w-4" /></ToggleGroupItem>
             <ToggleGroupItem value="js" aria-label="Toggle JS"><Code className="h-4 w-4" /></ToggleGroupItem>
             <ToggleGroupItem value="console" aria-label="Toggle Console"><Terminal className="h-4 w-4" /></ToggleGroupItem>
           </ToggleGroup>
@@ -246,19 +296,31 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
                     />
                   </ResizablePanel>
                 )}
-                {visiblePanels.includes('html') && visiblePanels.includes('css') && <ResizableHandle withHandle />}
-                {visiblePanels.includes('css') && (
+                {visiblePanels.includes('html') && visiblePanels.includes('scss') && <ResizableHandle withHandle />}
+                {visiblePanels.includes('scss') && (
                   <ResizablePanel defaultSize={25} collapsible minSize={10}>
-                    <Editor
-                      language="css"
-                      value={cssCode}
-                      onChange={(value) => setCssCode(value || '')}
-                      theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                      options={{ minimap: { enabled: false }, wordWrap: 'on' }}
-                    />
+                     <div className="relative h-full">
+                       <div className="absolute top-2 right-2 z-10 bg-background/80 backdrop-blur-sm rounded-full p-1 text-xs flex items-center gap-1 text-muted-foreground">
+                        {isCompiling ? (
+                          <>
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                            <span>Compiling...</span>
+                          </>
+                        ) : (
+                          <span>SCSS</span>
+                        )}
+                       </div>
+                        <Editor
+                          language="scss"
+                          value={scssCode}
+                          onChange={(value) => setScssCode(value || '')}
+                          theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                          options={{ minimap: { enabled: false }, wordWrap: 'on' }}
+                        />
+                     </div>
                   </ResizablePanel>
                 )}
-                {(visiblePanels.includes('html') || visiblePanels.includes('css')) && visiblePanels.includes('js') && <ResizableHandle withHandle />}
+                {(visiblePanels.includes('html') || visiblePanels.includes('scss')) && visiblePanels.includes('js') && <ResizableHandle withHandle />}
                 {visiblePanels.includes('js') && (
                   <ResizablePanel defaultSize={25} collapsible minSize={10}>
                     <Editor
