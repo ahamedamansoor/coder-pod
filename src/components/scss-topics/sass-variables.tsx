@@ -80,13 +80,13 @@ button {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-3"><PaintBucket className="w-6 h-6 text-primary" />The "Magic Paint Bucket" Analogy</CardTitle>
+                    <CardTitle className="flex items-center gap-3"><PaintBucket className="w-6 h-6 text-primary" />The &quot;Magic Paint Bucket&quot; Analogy</CardTitle>
                     <CardDescription>
-                        Imagine you have a magic paint bucket. You label it "Main Brand Color" and fill it with your favorite blue. Now, whenever you need to paint something blue, you just use the magic bucket instead of mixing the color from scratch every time. If you decide to change your brand color to red, you only have to change the color in that one magic bucket, and everything painted with it instantly updates!
+                        Imagine you have a magic paint bucket. You label it &quot;Main Brand Color&quot; and fill it with your favorite blue. Now, whenever you need to paint something blue, you just use the magic bucket instead of mixing the color from scratch every time. If you decide to change your brand color to red, you only have to change the color in that one magic bucket, and everything painted with it instantly updates!
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>That's exactly what Sass variables do for your CSS. They let you store a value once and reuse it everywhere.</p>
+                    <p>That&apos;s exactly what Sass variables do for your CSS. They let you store a value once and reuse it everywhere.</p>
                 </CardContent>
             </Card>
 
