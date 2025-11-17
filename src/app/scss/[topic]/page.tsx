@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useScssLayout } from '../scss-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
-import { GenericContentDisplay } from '@/components/generic-content-display';
+import { ScssContentDisplay } from '@/components/scss-content-display';
 import { GenericLearningRoadmap } from '@/components/generic-learning-roadmap';
 
 function TopicPageContent() {
@@ -60,7 +60,7 @@ function TopicPageContent() {
           {isLearningPlanTopic ? (
             <GenericLearningRoadmap language={language} />
           ) : (
-            <GenericContentDisplay
+            <ScssContentDisplay
               topic={selectedTopic}
               language={language}
               onOpenEditor={handleOpenEditor}
