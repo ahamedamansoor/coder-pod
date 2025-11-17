@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
@@ -258,9 +257,9 @@ export const JavaLearningRoadmap = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch(difficulty) {
-      case 'Easy': return 'text-green-600 bg-green-100 dark:text-green-300 dark:bg-green-900/50';
-      case 'Medium': return 'text-yellow-600 bg-yellow-100 dark:text-yellow-300 dark:bg-yellow-900/50';
-      case 'Hard': return 'text-red-600 bg-red-100 dark:text-red-300 dark:bg-red-900/50';
+      case 'Easy': return 'text-primary/80 bg-primary/10';
+      case 'Medium': return 'text-primary/90 bg-primary/20';
+      case 'Hard': return 'text-primary bg-primary/30';
       default: return 'text-muted-foreground bg-muted';
     }
   };
@@ -476,7 +475,7 @@ export const JavaLearningRoadmap = () => {
         </div>
 
         <div className="mt-8 text-center text-muted-foreground">
-          <Award className="w-12 h-12 mx-auto mb-3 text-yellow-500" />
+          <Award className="w-12 h-12 mx-auto mb-3 text-primary" />
           <p className="text-lg font-semibold">Estimated completion time: 10-12 weeks</p>
           <p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p>
         </div>

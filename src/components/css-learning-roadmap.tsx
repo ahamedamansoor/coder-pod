@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight } from 'lucide-react';
@@ -177,7 +176,7 @@ export const CssLearningRoadmap = () => {
           ))}
         </div>
 
-        <div className="mt-8 text-center text-muted-foreground"><Award className="w-12 h-12 mx-auto mb-3 text-yellow-500" /><p className="text-lg font-semibold">Happy Styling!</p><p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p></div>
+        <div className="mt-8 text-center text-muted-foreground"><Award className="w-12 h-12 mx-auto mb-3 text-primary" /><p className="text-lg font-semibold">Happy Styling!</p><p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p></div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import {
@@ -103,7 +102,7 @@ export default function AppLayout() {
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Master new programming languages with interactive tools, AI assistance, and a structured learning path.
           </p>
-          <p className="mt-4 text-sm text-green-600 dark:text-green-400 flex items-center justify-center gap-2 font-semibold">
+          <p className="mt-4 text-sm text-primary/80 flex items-center justify-center gap-2 font-semibold">
             <CheckCircle className="h-4 w-4" />
             All learning content is double-checked and AI-verified for accuracy.
           </p>
