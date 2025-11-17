@@ -536,46 +536,51 @@ export const languages: Language[] = [
     slug: 'spring',
     name: 'Spring Framework',
     topics: [
-        {
-            slug: 'learning-plan',
-            title: 'Learning Plan',
-            explanation: 'A structured roadmap for learning the Spring Framework from scratch.'
-        },
-        {
-            slug: 'spring-core-overview',
-            title: 'Spring Core Overview',
-            explanation: 'Introduction to the core concepts of the Spring Framework.'
-        },
-        {
-            slug: 'ioc-and-dependency-injection',
-            title: 'IoC and Dependency Injection',
-            explanation: 'Understanding Inversion of Control and Dependency Injection.'
-        },
-        {
-            slug: 'spring-beans',
-            title: 'Spring Beans',
-            explanation: 'Learn about the objects that form the backbone of your application.'
-        },
-        {
-            slug: 'spring-aop',
-            title: 'Spring AOP',
-            explanation: 'Understanding Aspect-Oriented Programming with Spring.'
-        },
-        {
-            slug: 'spring-data-jpa',
-            title: 'Spring Data JPA',
-            explanation: 'Simplifying data access layers with Spring Data JPA.'
-        },
-        {
-            slug: 'spring-mvc',
-            title: 'Spring MVC',
-            explanation: 'Building web applications with the Model-View-Controller pattern.'
-        },
-        {
-            slug: 'spring-security-basics',
-            title: 'Spring Security Basics',
-            explanation: 'Introduction to securing your applications with Spring Security.'
-        }
+      {
+        slug: 'learning-plan',
+        title: 'Learning Plan',
+        explanation: 'A structured roadmap for learning the Spring Framework from scratch.'
+      },
+      {
+        slug: 'spring-modules-overview',
+        title: 'Spring Modules Overview',
+        explanation: 'An introduction to the various modules that make up the Spring ecosystem.'
+      },
+      {
+          slug: 'ioc-container-and-beans',
+          title: 'IoC Container and Beans',
+          explanation: 'Understanding the core of Spring: Inversion of Control and how objects (Beans) are managed.'
+      },
+      {
+          slug: 'dependency-injection-overview',
+          title: 'Dependency Injection Overview',
+          explanation: 'Learn how Spring automatically provides dependencies to your objects.'
+      },
+      {
+          slug: 'constructor-injection',
+          title: 'Constructor Injection',
+          explanation: 'The recommended way to inject dependencies for mandatory components.'
+      },
+      {
+          slug: 'setter-injection',
+          title: 'Setter Injection',
+          explanation: 'Injecting dependencies through setter methods, ideal for optional components.'
+      },
+      {
+          slug: 'injecting-collections',
+          title: 'Injecting Collections',
+          explanation: 'How to inject lists, sets, and maps of beans.'
+      },
+      {
+          slug: 'bean-scopes',
+          title: 'Bean Scopes',
+          explanation: 'Understanding bean lifecycles, such as singleton (default) and prototype.'
+      },
+      {
+          slug: 'bean-lifecycle-and-inheritance',
+          title: 'Bean Lifecycle & Inheritance',
+          explanation: 'Exploring how beans are created, initialized, and destroyed, and how configurations can be inherited.'
+      }
     ]
   },
   {
