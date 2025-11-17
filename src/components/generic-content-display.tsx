@@ -1,10 +1,9 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { HelpCircle, Sparkles, CheckSquare } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import React from 'react';
 import { answerQuestion, type AnswerQuestionOutput } from '@/ai/flows/answer-question';
 import { Skeleton } from './ui/skeleton';
@@ -23,6 +22,7 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { AiSimplification } from './ai-simplification';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -122,6 +122,8 @@ export function GenericContentDisplay({
       
       {!isLearningPlanTopic && (
         <>
+          <AiSimplification topic={topic} language={language} />
+
           <Card className="mt-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><HelpCircle className="w-6 h-6 text-primary" />Ask a Question</CardTitle>
@@ -139,7 +141,9 @@ export function GenericContentDisplay({
 
       {qaResult && (
         <Card className="border-primary/50 bg-primary/5 animate-in fade-in-50 duration-500">
-          <CardHeader className="flex-row items-start gap-4"><div className="bg-primary text-primary-foreground p-2 rounded-full"><Sparkles className="w-5 h-5"/></div><div><CardTitle>AI Answer</CardTitle><CardDescription>Here's what our AI assistant came up with.</CardDescription></div></CardHeader>
+          <CardHeader>
+            <CardTitle>AI Answer</CardTitle>
+          </CardHeader>
           <CardContent><div className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-primary prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-md prose-table:border prose-th:p-2 prose-td:p-2 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic" dangerouslySetInnerHTML={{ __html: qaResult.answer }} /></CardContent>
         </Card>
       )}
