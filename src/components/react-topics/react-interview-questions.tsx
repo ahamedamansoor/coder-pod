@@ -23,36 +23,40 @@ const easyQuestions = [
     idealAnswer: "React is an open-source JavaScript library for building user interfaces, primarily for single-page applications. It’s used for handling the view layer in web and mobile apps and allows developers to create reusable UI components.",
   },
   {
+    question: "What are the major features of React?",
+    idealAnswer: "The major features of React are:\n\n- **JSX**: A syntax extension that allows writing HTML-like code in JavaScript.\n- **Virtual DOM**: A lightweight in-memory representation of the real DOM for efficient updates.\n- **Component-Based Architecture**: UI is built from small, reusable pieces called components.\n- **Unidirectional Data Flow**: Data flows in one direction (parent to child), making the app easier to reason about.\n- **Hooks**: Functions that let you use state and other React features in functional components.",
+  },
+  {
     question: "What is JSX?",
     idealAnswer: "JSX stands for JavaScript XML. It's a syntax extension for JavaScript that allows you to write HTML-like code directly in your JavaScript files. This makes writing React components more intuitive. JSX code is transpiled by tools like Babel into regular `React.createElement()` calls before it reaches the browser.",
   },
   {
     question: "What is the difference between an Element and a Component?",
-    idealAnswer: "An **Element** is a plain JavaScript object that describes what you want to see on the screen (e.g., a button or a heading). It’s an immutable description. A **Component** is a function or a class that accepts inputs (props) and returns a React element. Components are reusable blueprints, whereas elements are the output of those blueprints.",
+    idealAnswer: "An **Element** is a plain JavaScript object that describes what you want to see on the screen (e.g., a button or a heading). It’s an immutable description.\n\nA **Component** is a function or a class that accepts inputs (props) and returns a React element. Components are reusable blueprints, whereas elements are the output of those blueprints.",
+  },
+  {
+    question: "How do you create components in React?",
+    idealAnswer: "There are two ways:\n\n1.  **Function Components**: The modern and preferred way. They are simple JavaScript functions that accept props and return JSX.\n\n    ```javascript\n    function Welcome(props) {\n      return <h1>Hello, {props.name}</h1>;\n    }\n    ```\n\n2.  **Class Components**: The older way, using ES6 classes. They extend `React.Component` and must have a `render()` method.\n\n    ```javascript\n    class Welcome extends React.Component {\n      render() {\n        return <h1>Hello, {this.props.name}</h1>;\n      }\n    }\n    ```",
+  },
+  {
+    question: "What is state in React?",
+    idealAnswer: "State is an object that represents the parts of the app that can change. Each component can maintain its own state. When a component's state changes, React re-renders the component to reflect the new state. In functional components, state is managed with the `useState` hook.",
   },
   {
     question: "What are props in React?",
     idealAnswer: "Props (short for properties) are read-only inputs to a React component. They are used to pass data from a parent component down to a child component, allowing for dynamic and reusable components.",
   },
   {
-    question: "What is state in React?",
-    idealAnswer: "State is an object that represents the parts of the app that can change. Each component can maintain its own state. When a component's state changes, React re-renders the component to reflect the new state.",
-  },
-  {
     question: "What is the difference between state and props?",
     idealAnswer: "**Props** are passed to a component from its parent and are immutable (read-only) within the component. **State** is managed within the component and can be changed by it. Think of props as function arguments and state as local variables within that function.",
   },
   {
-    question: "Why do we need a 'key' prop when rendering lists?",
-    idealAnswer: "The `key` prop is a special string attribute you need to include when creating lists of elements. Keys help React identify which items have changed, been added, or been removed. This allows React to efficiently update the UI by minimizing DOM manipulations.",
+    question: "Why does React use className instead of the class attribute?",
+    idealAnswer: "React uses `className` because `class` is a reserved keyword in JavaScript for creating ES6 classes. Since JSX is an extension of JavaScript, using `class` would cause syntax errors.",
   },
   {
     question: "What are Fragments?",
     idealAnswer: "Fragments let you group a list of children without adding extra nodes to the DOM. A component must return a single root element, and Fragments allow you to do this without adding an unnecessary `<div>`. You can use `<React.Fragment>` or the shorter `<></>` syntax.",
-  },
-   {
-    question: "Why does React use `className` instead of the `class` attribute?",
-    idealAnswer: "React uses `className` because `class` is a reserved keyword in JavaScript for creating ES6 classes. Since JSX is an extension of JavaScript, using `class` would cause syntax errors.",
   },
   {
     question: "How do you handle events in React?",
@@ -61,13 +65,9 @@ const easyQuestions = [
 ];
 
 const mediumQuestions = [
-   {
+  {
     question: "What is the Virtual DOM and how does it work?",
     idealAnswer: "The Virtual DOM (VDOM) is a lightweight, in-memory representation of the real DOM. When a component's state changes, React creates a new VDOM. It then compares this new VDOM with the previous one (a process called 'diffing') and calculates the most efficient way to update the real DOM to match the new state, minimizing direct DOM manipulations.",
-  },
-  {
-    question: "When should you use a Class Component over a Function Component?",
-    idealAnswer: "With the introduction of Hooks, function components are now preferred for almost all use cases as they can manage state and side effects. However, you might still need class components for legacy codebases or for using the `componentDidCatch` lifecycle method for error boundaries, although this can also be handled by libraries.",
   },
   {
     question: "What are controlled vs. uncontrolled components?",
@@ -78,14 +78,6 @@ const mediumQuestions = [
     idealAnswer: "'Lifting State Up' is a pattern where you move the shared state from multiple components up to their closest common ancestor. This allows the parent to manage the state and pass it down as props to the children, keeping the data flow consistent and making the state easier to manage.",
   },
   {
-    question: "What are Higher-Order Components (HOCs)?",
-    idealAnswer: "A Higher-Order Component (HOC) is an advanced pattern for reusing component logic. It is a function that takes a component and returns a new, enhanced component with additional props, behavior, or data. Common use cases include connecting a component to the Redux store or adding authorization checks.",
-  },
-  {
-    question: "What is the Context API and what problem does it solve?",
-    idealAnswer: "The Context API provides a way to pass data through the component tree without having to manually pass props down at every level. This solves the problem of 'prop drilling'. It works by creating a `Context` object. A `Provider` component higher up the tree makes a value available, and any `Consumer` component (or a component using the `useContext` hook) can subscribe to it.",
-  },
-  {
     question: "What is reconciliation?",
     idealAnswer: "Reconciliation is the process by which React updates the DOM. When a component's state or props change, React compares the new element tree with the old one (the 'diffing' algorithm) and then efficiently updates the underlying DOM to match the new tree.",
   },
@@ -93,13 +85,21 @@ const mediumQuestions = [
     question: "What are the rules of Hooks?",
     idealAnswer: "There are two main rules for Hooks: \n1. **Only call Hooks at the top level**: Don't call Hooks inside loops, conditions, or nested functions. This ensures Hooks are called in the same order on every render. \n2. **Only call Hooks from React functions**: Call them from React function components or custom Hooks, not from regular JavaScript functions.",
   },
-   {
+  {
     question: "What is the difference between `useEffect` and `useLayoutEffect`?",
     idealAnswer: "`useEffect` runs asynchronously after the browser has painted the screen. This prevents it from blocking the browser's rendering process. `useLayoutEffect`, on the other hand, runs synchronously after React has performed all DOM mutations but *before* the browser has painted. It's useful for reading layout from the DOM and synchronously re-rendering to prevent visual flickers.",
   },
   {
     question: "What is code-splitting and how is it implemented in React?",
     idealAnswer: "Code-splitting is the process of splitting an application's code into smaller chunks that can be loaded on demand, rather than loading a single large bundle on initial load. In React, this is implemented using `React.lazy()` for dynamic imports and the `<Suspense>` component to show a loading indicator while the code chunk is being fetched.",
+  },
+  {
+    question: "What is the Context API and what problem does it solve?",
+    idealAnswer: "The Context API provides a way to pass data through the component tree without having to manually pass props down at every level. This solves the problem of 'prop drilling'. It works by creating a `Context` object. A `Provider` component higher up the tree makes a value available, and any `Consumer` component (or a component using the `useContext` hook) can subscribe to it.",
+  },
+  {
+    question: "What is the difference between `useState` and `useReducer`?",
+    idealAnswer: "`useState` is a basic hook for managing simple state (like numbers, strings, or booleans). `useReducer` is generally preferred for managing complex state logic that involves multiple sub-values or when the next state depends on the previous one. It's more predictable and easier to test for complex scenarios.",
   },
 ];
 
@@ -121,10 +121,6 @@ const hardQuestions = [
     idealAnswer: "Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of letting the entire component tree crash. A class component becomes an error boundary if it defines `static getDerivedStateFromError()` or `componentDidCatch()`.",
   },
   {
-    question: "What is the difference between Redux and React's Context API?",
-    idealAnswer: "**Context API** is a built-in React feature for avoiding prop drilling. It's great for low-frequency updates of simple state (e.g., theme, user auth). **Redux** is a powerful, standalone state management library with a large ecosystem. It's better for complex, high-frequency state updates, and provides powerful developer tools for debugging, time-travel, and middleware for handling side effects.",
-  },
-  {
     question: "What are Server Components in React?",
     idealAnswer: "React Server Components are a new type of component that runs exclusively on the server. They have no client-side JavaScript, which reduces the bundle size sent to the browser. They can access server-side resources directly (like databases or filesystems) and are great for rendering static or data-heavy parts of a page. They work alongside traditional Client Components, which handle interactivity.",
   },
@@ -132,7 +128,12 @@ const hardQuestions = [
     question: "Explain the concept of 'hydration' in the context of Server-Side Rendering (SSR).",
     idealAnswer: "Hydration is the process of 'attaching' React to the static HTML that was generated on the server. When the server sends a pre-rendered HTML page to the browser, it's just static content. Once the JavaScript bundle loads, React goes through the existing HTML, attaches event listeners, and initializes the application state, making the static page fully interactive. This process is called hydration.",
   },
+  {
+    question: "What are Higher-Order Components (HOCs)?",
+    idealAnswer: "A Higher-Order Component (HOC) is an advanced pattern for reusing component logic. It is a function that takes a component and returns a new, enhanced component with additional props, behavior, or data. Common use cases include connecting a component to the Redux store or adding authorization checks.",
+  },
 ];
+
 
 const categories = {
   easy: easyQuestions,
