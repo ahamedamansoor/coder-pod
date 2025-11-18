@@ -38,7 +38,7 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
 
   useEffect(() => {
     if (isDemoOpen && autoOpen) {
-      // When auto-opening for a new user
+      // When auto-opening for a new user, play the first demo
       const scrollTimer = setTimeout(() => {
         interviewDemoRef.current?.scrollIntoView({ behavior: 'smooth' });
         
@@ -49,7 +49,7 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
         
         return () => clearTimeout(playTimer);
 
-      }, 18000); // Start scrolling after the first demo finishes (approx 18s)
+      }, 23000); // Start scrolling after the first demo finishes (approx 23s)
       
       return () => clearTimeout(scrollTimer);
     } else {
@@ -134,11 +134,11 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
                      <div className="text-center mb-6">
                         <div className="flex items-center justify-center gap-4 mb-3">
                             <Mic className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-                            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">AI Interview Simulator</h2>
+                            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Practice with an AI Interview Simulator</h2>
                         </div>
                         <p className="text-lg sm:text-xl text-muted-foreground">Practice your skills with an AI-powered mock interview.</p>
+                        <AiInterviewDemo autoPlay={playInterviewDemo} />
                     </div>
-                    <AiInterviewDemo autoPlay={isDemoOpen && playInterviewDemo} />
                 </div>
             </div>
           </ScrollArea>

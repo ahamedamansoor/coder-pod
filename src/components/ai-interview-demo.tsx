@@ -61,15 +61,16 @@ export const AiInterviewDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =>
   };
 
   const resetDemo = (keepPlaying = false) => {
-    setIsPlaying(keepPlaying);
     setCurrentStep(0);
     setStepState({ showQuestion: true, showAnswer: false, showFeedback: false, showIdealAnswer: false });
+    setIsPlaying(keepPlaying);
   };
-
+  
   const handlePlayPause = () => {
     if (isPlaying) {
       setIsPlaying(false);
     } else {
+      // If the demo is at the end, reset it before playing again
       if (currentStep >= steps.length - 1) {
         resetDemo(true);
       } else {
