@@ -18,11 +18,10 @@ service cloud.firestore {
         
         // Allow a user to create a note for themselves
         allow create: if isOwner();
-      }
-
-      // Allow a user to list all the notes in their own 'notes' subcollection
-      match /notes {
-          allow list: if isOwner();
+        
+        // Allow a user to list all the notes in their own 'notes' subcollection
+        // This rule applies to the collection path /users/{userId}/notes
+        allow list: if isOwner();
       }
     }
   }
