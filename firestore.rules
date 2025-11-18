@@ -1,45 +1,28 @@
-/**
- * @fileoverview Firestore Security Rules for LinguaLeap application.
- *
- * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for user profiles.
- * Only the authenticated user can read and write their own data.
- *
- * Data Structure:
- * - User profiles: `/users/{userId}`
- *
- * Key Security Decisions:
- * - User listing is disallowed.
- * - All write operations are validated against the authenticated user's UID.
- * - The `completedTopics` and `phoneNumber` fields can be updated by the owner.
- */
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    /**
-     * @description Enforces that only the authenticated user can read and write their own profile data and sub-collections.
-     * @path /users/{userId}
-     * @allow (get, update, delete) - An authenticated user can manage their own profile document.
-     * @allow (create) - An authenticated user can create their own profile.
-     * @deny (list) - Listing all user profiles is forbidden.
-     */
     match /users/{userId} {
       function isOwner() {
         return request.auth != null && request.auth.uid == userId;
       }
 
       allow get, update, delete: if isOwner();
-      allow list: if false;
+      allow list: if false; // Disallow listing all users
       allow create: if isOwner();
       
-      /**
-       * @description Enforces that only the authenticated owner can manage their notes.
-       * @path /users/{userId}/notes/{noteId}
-       * @allow (get, list, create, update, delete) - The user can perform all operations on their own notes.
-       */
+      // Rules for the 'notes' subcollection
       match /notes/{noteId} {
-        allow read, write: if isOwner();
+        // Allow a user to read, update, or delete their own individual notes
+        allow get, update, delete: if isOwner();
+        
+        // Allow a user to create a note for themselves
+        allow create: if isOwner();
+      }
+
+      // Allow a user to list all the notes in their own 'notes' subcollection
+      match /notes {
+          allow list: if isOwner();
       }
     }
   }
