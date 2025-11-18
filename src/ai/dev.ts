@@ -6,3 +6,4 @@ import '@/ai/flows/answer-question.ts';
 import '@/ai/flows/execute-java-code.ts';
 import '@/ai/flows/execute-javascript-code.ts';
 import '@/ai/flows/compile-scss-code.ts';
+import '@/ai/flows/html-interview-flow.ts';
