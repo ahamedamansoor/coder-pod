@@ -27,11 +27,8 @@ export function LearnModal() {
   const [isDemoOpen, setIsDemoOpen] = useState(false);
   const { showLoader } = useLoading();
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Check if it's a main navigation link, not just any click
-    if ((e.currentTarget as HTMLAnchorElement).href) {
-      showLoader();
-    }
+  const handleLinkClick = () => {
+    showLoader();
   };
 
   const menuItems = [
