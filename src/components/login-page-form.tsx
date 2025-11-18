@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -40,6 +39,8 @@ export function LoginPageForm() {
   const createUserProfile = async (user: FirebaseUser) => {
     if (!user || !firestore) return;
 
+    let isNewUser = false;
+
     const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
     if (isEmailPasswordSignIn && !user.emailVerified) {
         toast({
@@ -56,6 +57,7 @@ export function LoginPageForm() {
     const docSnap = await getDoc(userRef);
 
     if (!docSnap.exists()) {
+        isNewUser = true;
         const nameFromUrl = searchParams.get('name');
         const dobFromUrl = searchParams.get('dob');
         const phoneFromUrl = searchParams.get('phoneNumber');
@@ -77,7 +79,7 @@ export function LoginPageForm() {
         await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
     }
     
-    router.push('/dashboard');
+    router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {

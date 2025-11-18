@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import {
@@ -17,7 +16,7 @@ import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket, Chec
 import { LearnModal } from './learn-modal';
 import { ThemeToggle } from './theme-toggle';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { doc } from 'firebase/firestore';
 
 export default function AppLayout() {
@@ -25,6 +24,9 @@ export default function AppLayout() {
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const isNewUser = searchParams.get('isNewUser') === 'true';
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -63,7 +65,7 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
-              <LearnModal />
+              <LearnModal autoOpen={isNewUser} />
               <ThemeToggle />
               {user ? (
                 <DropdownMenu>

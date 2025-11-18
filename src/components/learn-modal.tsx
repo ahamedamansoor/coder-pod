@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -24,9 +24,37 @@ import { useLoading } from '@/hooks/use-loading';
 import { AiInterviewDemo } from './ai-interview-demo';
 import { ScrollArea } from './ui/scroll-area';
 
-export function LearnModal() {
-  const [isDemoOpen, setIsDemoOpen] = useState(false);
+export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
+  const [isDemoOpen, setIsDemoOpen] = useState(autoOpen);
   const { showLoader } = useLoading();
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const interviewDemoRef = useRef<HTMLDivElement>(null);
+  const [playInterviewDemo, setPlayInterviewDemo] = useState(false);
+
+  useEffect(() => {
+    setIsDemoOpen(autoOpen);
+  }, [autoOpen]);
+
+  useEffect(() => {
+    if (isDemoOpen && autoOpen) {
+      // When auto-opening for a new user
+      const scrollTimer = setTimeout(() => {
+        interviewDemoRef.current?.scrollIntoView({ behavior: 'smooth' });
+        
+        // Wait for scroll to finish, then start the second demo
+        const playTimer = setTimeout(() => {
+            setPlayInterviewDemo(true);
+        }, 1000); // Wait 1s for scrolling to be noticeable
+        
+        return () => clearTimeout(playTimer);
+
+      }, 18000); // Start scrolling after the first demo finishes (approx 18s)
+      
+      return () => clearTimeout(scrollTimer);
+    } else {
+        setPlayInterviewDemo(false);
+    }
+  }, [isDemoOpen, autoOpen]);
 
   const handleLinkClick = () => {
     showLoader();
@@ -88,10 +116,10 @@ export function LearnModal() {
           <DialogHeader>
             <DialogTitle>How It Works: An Interactive Tour</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="flex-1">
+          <ScrollArea className="flex-1" ref={scrollAreaRef}>
             <div className="space-y-12 p-2">
                 <JavaLearningDemo autoPlay={isDemoOpen} />
-                <div className="border-t pt-8">
+                <div className="border-t pt-8" ref={interviewDemoRef}>
                      <div className="text-center mb-6">
                         <div className="flex items-center justify-center gap-4 mb-3">
                             <Mic className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
@@ -99,7 +127,7 @@ export function LearnModal() {
                         </div>
                         <p className="text-lg sm:text-xl text-muted-foreground mb-6">Practice your skills with an AI-powered mock interview.</p>
                     </div>
-                    <AiInterviewDemo autoPlay={isDemoOpen} />
+                    <AiInterviewDemo autoPlay={isDemoOpen && playInterviewDemo} />
                 </div>
             </div>
           </ScrollArea>

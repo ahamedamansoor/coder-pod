@@ -1,13 +1,12 @@
-
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import AppLayout from '@/components/app-layout';
 import { useUser } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLoading } from '@/hooks/use-loading';
 
-export default function Dashboard() {
+function DashboardContent() {
   const { user, isUserLoading } = useUser();
   const { hideLoader } = useLoading();
 
@@ -18,8 +17,6 @@ export default function Dashboard() {
   }, [isUserLoading, hideLoader]);
 
   if (isUserLoading) {
-    // This skeleton is shown *before* the main loader is hidden,
-    // preventing a flash of unstyled content if the loader is slow to appear.
     return (
       <div className="flex flex-col min-h-screen bg-muted/40">
         <header className="bg-background border-b sticky top-0 z-10">
@@ -49,4 +46,12 @@ export default function Dashboard() {
   }
 
   return <AppLayout />;
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
+  );
 }
