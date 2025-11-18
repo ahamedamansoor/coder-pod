@@ -65,7 +65,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Note",
       "type": "object",
-      "description": "A user-saved note containing a YouTube video link.",
+      "description": "A user-saved text note.",
       "properties": {
         "id": {
           "type": "string",
@@ -79,10 +79,9 @@
           "type": "string",
           "description": "The title of the note."
         },
-        "youtubeUrl": {
+        "content": {
           "type": "string",
-          "format": "uri",
-          "description": "The original URL of the YouTube video."
+          "description": "The text content of the note."
         },
         "createdAt": {
           "type": "string",
@@ -90,7 +89,7 @@
           "description": "The timestamp when the note was created."
         }
       },
-      "required": ["id", "userId", "title", "youtubeUrl"]
+      "required": ["id", "userId", "title", "content"]
     }
   },
   "auth": {
