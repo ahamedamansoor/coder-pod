@@ -153,6 +153,7 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
        <ModuleCompletionCelebration 
         isOpen={!!completedModule}
         moduleName={completedModule || ""}
+        languageSlug="html"
         onClose={() => setCompletedModule(null)}
       />
       <div className="mx-auto">

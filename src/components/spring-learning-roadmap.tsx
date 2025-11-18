@@ -128,6 +128,7 @@ export const SpringLearningRoadmap = () => {
        <ModuleCompletionCelebration 
         isOpen={!!completedModule}
         moduleName={completedModule || ""}
+        languageSlug="spring"
         onClose={() => setCompletedModule(null)}
       />
       <div className="mx-auto">

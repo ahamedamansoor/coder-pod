@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight } from 'lucide-react';
@@ -153,6 +154,7 @@ export const CssLearningRoadmap = () => {
       <ModuleCompletionCelebration 
         isOpen={!!completedModule}
         moduleName={completedModule || ""}
+        languageSlug="css"
         onClose={() => setCompletedModule(null)}
       />
       <div className="mx-auto">

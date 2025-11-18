@@ -131,6 +131,7 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
       <ModuleCompletionCelebration 
         isOpen={!!completedModule}
         moduleName={completedModule || ""}
+        languageSlug={language.slug}
         onClose={() => setCompletedModule(null)}
       />
       <div className="mx-auto">
