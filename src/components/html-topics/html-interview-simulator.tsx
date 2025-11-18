@@ -1,16 +1,20 @@
-
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Mic, Sparkles, User, BrainCircuit } from 'lucide-react';
+import { Loader2, Mic, Sparkles, User, BrainCircuit, Volume2 } from 'lucide-react';
 import { conductHtmlInterview } from '@/ai/flows/html-interview-flow';
+import { textToSpeech } from '@/ai/flows/text-to-speech-flow';
 import { useToast } from '@/hooks/use-toast';
 import { marked } from 'marked';
 import { Skeleton } from '../ui/skeleton';
+import { cn } from '@/lib/utils';
 
 const initialQuestion = "What is the difference between `<div>` and `<span>`?";
+
+// SpeechRecognition type definition for cross-browser compatibility
+const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
 export default function HtmlInterviewSimulator() {
   const [question, setQuestion] = useState(initialQuestion);
@@ -20,6 +24,92 @@ export default function HtmlInterviewSimulator() {
   const [isLoading, setIsLoading] = useState(false);
   const [previousQuestions, setPreviousQuestions] = useState<string[]>([initialQuestion]);
   const { toast } = useToast();
+
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any | null>(null);
+  
+  const [isReading, setIsReading] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (!SpeechRecognition) {
+      toast({
+        variant: 'destructive',
+        title: 'Browser Not Supported',
+        description: 'Speech recognition is not supported by your browser. Please use Chrome or Edge.',
+      });
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event: any) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      setUserAnswer(userAnswer + finalTranscript + interimTranscript);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.stop();
+    };
+  }, [userAnswer, toast]);
+
+  const handleMicClick = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      recognitionRef.current?.start();
+    }
+    setIsListening(!isListening);
+  };
+  
+  const handleReadAloud = async (text: string, id: string) => {
+    if (isReading === id) {
+      audioRef.current?.pause();
+      setIsReading(null);
+      return;
+    }
+
+    setIsReading(id);
+    try {
+      const response = await textToSpeech(text);
+      if (response.media) {
+        if (audioRef.current) {
+          audioRef.current.pause();
+        }
+        const audio = new Audio(response.media);
+        audioRef.current = audio;
+        audio.play();
+        audio.onended = () => setIsReading(null);
+      } else {
+        throw new Error('No audio data received.');
+      }
+    } catch (error) {
+      console.error('Text-to-speech error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Audio Failed',
+        description: 'Could not generate audio for the text.',
+      });
+      setIsReading(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,6 +158,10 @@ export default function HtmlInterviewSimulator() {
     setFeedback(null);
     setIdealAnswer(null);
     setPreviousQuestions([initialQuestion]);
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setIsReading(null);
     toast({
       title: 'New Session Started',
       description: 'The interview simulator has been reset.',
@@ -86,9 +180,15 @@ export default function HtmlInterviewSimulator() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BrainCircuit className="w-6 h-6 text-primary" />
-            Interviewer's Question
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <BrainCircuit className="w-6 h-6 text-primary" />
+              Interviewer's Question
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => handleReadAloud(question, 'question')} disabled={isReading !== null && isReading !== 'question'}>
+              <Volume2 className={cn("w-5 h-5", isReading === 'question' && 'text-primary animate-pulse')} />
+              <span className="sr-only">Read question</span>
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -104,14 +204,29 @@ export default function HtmlInterviewSimulator() {
               Your Answer
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <Textarea
-              placeholder="Type your answer here..."
+              placeholder="Type your answer here, or use the microphone to speak."
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
               rows={8}
               disabled={isLoading}
             />
+            {SpeechRecognition && (
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleMicClick}
+                className={cn(
+                  "absolute bottom-6 right-6",
+                  isListening && "bg-destructive text-destructive-foreground animate-pulse"
+                )}
+              >
+                <Mic className="w-5 h-5" />
+                <span className="sr-only">Record answer</span>
+              </Button>
+            )}
           </CardContent>
           <CardContent className="flex justify-between items-center">
             <Button type="submit" disabled={isLoading || !userAnswer.trim()}>
@@ -148,9 +263,15 @@ export default function HtmlInterviewSimulator() {
         <div className="space-y-6">
           <Card className="border-primary bg-primary/5">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <Sparkles className="w-5 h-5" />
-                AI Feedback
+              <CardTitle className="flex items-center justify-between text-primary">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  AI Feedback
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => handleReadAloud(feedback, 'feedback')} disabled={isReading !== null && isReading !== 'feedback'}>
+                  <Volume2 className={cn("w-5 h-5", isReading === 'feedback' && 'text-primary animate-pulse')} />
+                  <span className="sr-only">Read feedback</span>
+                </Button>
               </CardTitle>
             </CardHeader>
             <CardContent>
