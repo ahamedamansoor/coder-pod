@@ -43,9 +43,13 @@ service cloud.firestore {
        * @description Notebook sub-collection rules.
        * @path /users/{userId}/notes/{noteId}
        * @allow (read, write) - Only the owner of the notebook can read and write notes.
+       * @allow (list) - Only the owner can list their own notes.
        */
       match /notes/{noteId} {
         allow read, write: if isOwner();
+      }
+       match /notes {
+        allow list: if isOwner();
       }
     }
   }
