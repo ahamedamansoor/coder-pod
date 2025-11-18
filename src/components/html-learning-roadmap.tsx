@@ -5,8 +5,6 @@ import { useHtml } from '@/app/html/html-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -70,12 +68,6 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
 
   const allTopics = modules.flatMap(m => m.topics);
   
-  const chartData = modules.map(m => ({
-    level: m.title,
-    topics: m.topics.length,
-    fill: `hsl(var(--chart-${modules.indexOf(m) + 1}))`
-  }));
-
   const toggleTopic = (topicId: string) => {
     if (!isUserAuthenticated) return;
     handleToggleComplete(topicId);
@@ -150,24 +142,6 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
             <p className="text-sm text-muted-foreground mt-2">{completedCount} of {totalTopicCount} topics completed</p>
           </div>
         </div>
-        
-        <Card className="mb-8">
-            <CardHeader><CardTitle>Roadmap Overview</CardTitle><CardDescription>A visual breakdown of topics by category.</CardDescription></CardHeader>
-            <CardContent>
-                <div className="w-full h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} layout="horizontal" margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                          <XAxis dataKey="level" type="category" tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
-                          <YAxis type="number" hide />
-                          <Tooltip cursor={{ fill: 'hsl(var(--muted))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', borderRadius: 'var(--radius)' }} />
-                          <Bar dataKey="topics" radius={[4, 4, 0, 0]} barSize={32}>
-                            <LabelList dataKey="topics" position="top" offset={8} className="fill-foreground font-semibold" />
-                          </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </CardContent>
-        </Card>
 
         <div className="space-y-4">
           {modules.map((module) => (
