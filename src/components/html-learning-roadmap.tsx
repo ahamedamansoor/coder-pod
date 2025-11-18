@@ -156,10 +156,13 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
             <CardContent>
                 <div className="w-full h-64">
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart layout="vertical" data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                            <XAxis type="number" hide /><YAxis dataKey="level" type="category" tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} width={100} />
-                            <Tooltip cursor={{ fill: 'hsl(var(--muted))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', borderRadius: 'var(--radius)' }} />
-                            <Bar dataKey="topics" radius={[0, 4, 4, 0]} barSize={32}><LabelList dataKey="topics" position="right" offset={10} className="fill-foreground font-semibold" /></Bar>
+                        <BarChart data={chartData} layout="horizontal" margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                          <XAxis dataKey="level" type="category" tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                          <YAxis type="number" hide />
+                          <Tooltip cursor={{ fill: 'hsl(var(--muted))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', borderRadius: 'var(--radius)' }} />
+                          <Bar dataKey="topics" radius={[4, 4, 0, 0]} barSize={32}>
+                            <LabelList dataKey="topics" position="top" offset={8} className="fill-foreground font-semibold" />
+                          </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
