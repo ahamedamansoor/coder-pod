@@ -40,9 +40,9 @@ export function MainHeader({
   const params = useParams();
   const { showLoader } = useLoading();
   
-  const currentLanguageSlug = Array.isArray(params.lang) ? params.lang[0] : params.lang as string || 
-                              (router as any).query?.lang as string || 
-                              Object.keys(params)[0];
+  const segments = useParams();
+  const pathSegments = Object.values(segments);
+  const currentLanguageSlug = pathSegments[0] as string;
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
