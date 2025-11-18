@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -25,9 +24,14 @@ const CharacterEntities = lazy(() => import('./html-topics/html-character-entiti
 const HtmlForms = lazy(() => import('./html-topics/html-forms'));
 const FormInputTypes = lazy(() => import('./html-topics/form-input-types'));
 const FormAttributes = lazy(() => import('./html-topics/form-attributes'));
+const FormValidation = lazy(() => import('./html-topics/form-validation'));
+const DatalistElement = lazy(() => import('./html-topics/datalist-element'));
 const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
 const Iframes = lazy(() => import('./html-topics/iframes'));
 const SvgAndCanvas = lazy(() => import('./html-topics/svg-and-canvas'));
+const ResponsiveImages = lazy(() => import('./html-topics/responsive-images'));
+const DialogElement = lazy(() => import('./html-topics/dialog-element'));
+const PopoverApi = lazy(() => import('./html-topics/popover-api'));
 const Html5Apis = lazy(() => import('./html-topics/html5-apis'));
 const WebWorkersApi = lazy(() => import('./html-topics/web-workers-api'));
 const Accessibility = lazy(() => import('./html-topics/accessibility'));
@@ -53,9 +57,14 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-forms': HtmlForms,
   'form-input-types': FormInputTypes,
   'form-attributes': FormAttributes,
+  'form-validation': FormValidation,
+  'datalist-element': DatalistElement,
   'audio-and-video': AudioAndVideo,
   'iframes': Iframes,
   'svg-and-canvas': SvgAndCanvas,
+  'responsive-images': ResponsiveImages,
+  'dialog-element': DialogElement,
+  'popover-api': PopoverApi,
   'html5-apis': Html5Apis,
   'web-workers-api': WebWorkersApi,
   'accessibility': Accessibility,
