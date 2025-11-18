@@ -5,6 +5,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { FirebaseClientProvider } from '@/firebase';
 import { WebPlaygroundProvider } from '@/components/web-playground-context';
+import { LoadingProvider } from '@/hooks/use-loading';
+import { PageLoader } from '@/components/page-loader';
 
 export const metadata: Metadata = {
   title: 'Coder Pod',
@@ -32,8 +34,11 @@ export default function RootLayout({
         >
           <FirebaseClientProvider>
             <WebPlaygroundProvider>
-              {children}
-              <Toaster />
+              <LoadingProvider>
+                <PageLoader />
+                {children}
+                <Toaster />
+              </LoadingProvider>
             </WebPlaygroundProvider>
           </FirebaseClientProvider>
         </ThemeProvider>
