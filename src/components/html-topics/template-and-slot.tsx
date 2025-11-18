@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,7 +57,7 @@ export default function TemplateAndSlot({ onOpenWebPlayground }: { onOpenWebPlay
     }
   }
   customElements.define('user-card', UserCard);
-</script>
+<\/script>
 
 <!-- 3. Use the custom element and fill the slots -->
 <user-card>
@@ -143,7 +142,7 @@ body {
                 <CardTitle className="text-primary flex items-center gap-2"><Lightbulb className="w-5 h-5"/>Shadow DOM</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground">In the example, you see the term `attachShadow({ mode: 'open' })`. This is the key to **encapsulation** in Web Components. The "Shadow DOM" is a hidden DOM tree attached to an element. Styles and scripts inside the Shadow DOM are isolated from the rest of the page, preventing CSS conflicts and keeping the component's internal structure separate.</p>
+                <p className="text-sm text-muted-foreground">In the example, you see the term `attachShadow(&#123; mode: 'open' &#125;)`. This is the key to **encapsulation** in Web Components. The "Shadow DOM" is a hidden DOM tree attached to an element. Styles and scripts inside the Shadow DOM are isolated from the rest of the page, preventing CSS conflicts and keeping the component's internal structure separate.</p>
             </CardContent>
         </Card>
 
