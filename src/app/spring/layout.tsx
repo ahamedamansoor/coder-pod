@@ -38,6 +38,7 @@ function SpringTopicLayoutContent({ children }: { children: React.ReactNode }) {
         <MainHeader
           onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
           isEditorOpen={isEditorOpen}
+          showCodeEditorButton={true}
           showWebPlaygroundButton={false}
         />
         <div className="flex flex-1 overflow-hidden">
