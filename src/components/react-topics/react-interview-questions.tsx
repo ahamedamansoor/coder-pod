@@ -50,17 +50,17 @@ const easyQuestions = [
     question: "What is the difference between state and props?",
     idealAnswer: "**Props** are passed to a component from its parent and are immutable (read-only) within the component. **State** is managed within the component and can be changed by it. Think of props as function arguments and state as local variables within that function.",
   },
-  {
-    question: "Why does React use className instead of the class attribute?",
-    idealAnswer: "React uses `className` because `class` is a reserved keyword in JavaScript for creating ES6 classes. Since JSX is an extension of JavaScript, using `class` would cause syntax errors.",
+   {
+    question: 'Why should we not update the state directly?',
+    idealAnswer: "You should never update the state directly because it won't cause the component to re-render. When you call `this.setState()` or a `useState` setter function, React knows that the state has changed and schedules a re-render to update the UI. If you mutate the state directly (e.g., `this.state.message = 'Hello'`), React has no way of knowing a change occurred, and your UI will not reflect the new state.",
   },
   {
-    question: "What are Fragments?",
-    idealAnswer: "Fragments let you group a list of children without adding extra nodes to the DOM. A component must return a single root element, and Fragments allow you to do this without adding an unnecessary `<div>`. You can use `<React.Fragment>` or the shorter `<></>` syntax.",
+    question: "What are stateless components?",
+    idealAnswer: "A stateless component is a component that does not have its own state. They are also known as presentational or 'dumb' components. They receive data via props and render it. Typically, these are functional components that don't use state hooks, making them simple, predictable, and easy to test."
   },
-  {
-    question: "How do you handle events in React?",
-    idealAnswer: "React events are named using camelCase (e.g., `onClick`) rather than lowercase. You pass a function as the event handler rather than a string. For example: `<button onClick={handleClick}>`.",
+   {
+    question: 'What is the required method to be defined for a class component?',
+    idealAnswer: 'The `render()` method is the only required method in a class component. All other lifecycle methods are optional.',
   },
 ];
 
@@ -86,20 +86,32 @@ const mediumQuestions = [
     idealAnswer: "There are two main rules for Hooks: \n1. **Only call Hooks at the top level**: Don't call Hooks inside loops, conditions, or nested functions. This ensures Hooks are called in the same order on every render. \n2. **Only call Hooks from React functions**: Call them from React function components or custom Hooks, not from regular JavaScript functions.",
   },
   {
-    question: "What is the difference between `useEffect` and `useLayoutEffect`?",
-    idealAnswer: "`useEffect` runs asynchronously after the browser has painted the screen. This prevents it from blocking the browser's rendering process. `useLayoutEffect`, on the other hand, runs synchronously after React has performed all DOM mutations but *before* the browser has painted. It's useful for reading layout from the DOM and synchronously re-rendering to prevent visual flickers.",
-  },
-  {
-    question: "What is code-splitting and how is it implemented in React?",
-    idealAnswer: "Code-splitting is the process of splitting an application's code into smaller chunks that can be loaded on demand, rather than loading a single large bundle on initial load. In React, this is implemented using `React.lazy()` for dynamic imports and the `<Suspense>` component to show a loading indicator while the code chunk is being fetched.",
-  },
-  {
     question: "What is the Context API and what problem does it solve?",
     idealAnswer: "The Context API provides a way to pass data through the component tree without having to manually pass props down at every level. This solves the problem of 'prop drilling'. It works by creating a `Context` object. A `Provider` component higher up the tree makes a value available, and any `Consumer` component (or a component using the `useContext` hook) can subscribe to it.",
   },
   {
     question: "What is the difference between `useState` and `useReducer`?",
     idealAnswer: "`useState` is a basic hook for managing simple state (like numbers, strings, or booleans). `useReducer` is generally preferred for managing complex state logic that involves multiple sub-values or when the next state depends on the previous one. It's more predictable and easier to test for complex scenarios.",
+  },
+  {
+    question: "What is the purpose of callback function as an argument of setState()?",
+    idealAnswer: "The callback function is executed after the `setState` operation and subsequent re-render is complete. Since `setState()` is asynchronous, you cannot rely on `this.state` reflecting the new value immediately. The callback is useful for performing actions that need to happen right after the state has changed, like making an API call based on the new state."
+  },
+  {
+    question: 'How to bind methods or event handlers in JSX callbacks?',
+    idealAnswer: 'There are a few ways:\n1. **Binding in Constructor (for class components):** `this.handleClick = this.handleClick.bind(this);`\n2. **Arrow Functions in Class Fields:** `handleClick = () => { ... }`\n3. **Arrow Functions in Render/JSX:** `<button onClick={() => this.handleClick()}>Click</button>` (Note: this can have performance implications as a new function is created on each render).',
+  },
+  {
+    question: 'What is the use of refs?',
+    idealAnswer: 'Refs provide a way to access DOM nodes or React elements created in the render method. They are useful for:\n- Managing focus, text selection, or media playback.\n- Triggering imperative animations.\n- Integrating with third-party DOM libraries.',
+  },
+   {
+    question: 'When should you use a Class Component over a Function Component?',
+    idealAnswer: 'With the introduction of Hooks, you can use state, lifecycle methods, and other features in Function Components. Therefore, Function Components are now preferred for almost all use cases. You might need a Class Component only for very specific legacy use cases or if you need to implement an Error Boundary, which currently can only be done with a class component.',
+  },
+  {
+    question: 'What are Pure Components?',
+    idealAnswer: 'A `React.PureComponent` is similar to a `React.Component` but it implements `shouldComponentUpdate()` with a shallow prop and state comparison. For function components, you can achieve the same result by wrapping them in `React.memo()`. This prevents unnecessary re-renders when the props and state haven\'t changed.',
   },
 ];
 
@@ -131,6 +143,26 @@ const hardQuestions = [
   {
     question: "What are Higher-Order Components (HOCs)?",
     idealAnswer: "A Higher-Order Component (HOC) is an advanced pattern for reusing component logic. It is a function that takes a component and returns a new, enhanced component with additional props, behavior, or data. Common use cases include connecting a component to the Redux store or adding authorization checks.",
+  },
+   {
+    question: 'Why are String Refs legacy?',
+    idealAnswer: 'String refs are considered legacy because they have several drawbacks:\n- They force React to keep track of the currently executing component, which is problematic.\n- They are not composable.\n- They do not work with static analysis tools like Flow or TypeScript.\nCallback refs or the `React.createRef()` API are the modern, recommended approaches.',
+  },
+  {
+    question: 'What are the different phases of component lifecycle?',
+    idealAnswer: 'The component lifecycle has three main phases:\n1. **Mounting:** The component is being created and inserted into the DOM. Methods: `constructor`, `static getDerivedStateFromProps`, `render`, `componentDidMount`.\n2. **Updating:** The component is being re-rendered as a result of changes to props or state. Methods: `static getDerivedStateFromProps`, `shouldComponentUpdate`, `render`, `getSnapshotBeforeUpdate`, `componentDidUpdate`.\n3. **Unmounting:** The component is being removed from the DOM. Method: `componentWillUnmount`.',
+  },
+  {
+    question: 'What is the purpose of getSnapshotBeforeUpdate() lifecycle method?',
+    idealAnswer: '`getSnapshotBeforeUpdate()` is invoked right before the most recently rendered output is committed to the DOM. It enables your component to capture some information from the DOM (e.g., scroll position) before it is potentially changed. Any value returned by this lifecycle will be passed as a parameter to `componentDidUpdate()`.',
+  },
+   {
+    question: 'What is the difference between `useEffect` and `useLayoutEffect`?',
+    idealAnswer: '`useEffect` runs asynchronously after the browser has painted the screen. This prevents it from blocking the browser\'s rendering process. `useLayoutEffect`, on the other hand, runs synchronously after React has performed all DOM mutations but *before* the browser has painted. It\'s useful for reading layout from the DOM and synchronously re-rendering to prevent visual flickers.',
+  },
+  {
+    question: 'What is code-splitting and how is it implemented in React?',
+    idealAnswer: 'Code-splitting is the process of splitting an application\'s code into smaller chunks that can be loaded on demand, rather than loading a single large bundle on initial load. In React, this is implemented using `React.lazy()` for dynamic imports and the `<Suspense>` component to show a loading indicator while the code chunk is being fetched.',
   },
 ];
 
