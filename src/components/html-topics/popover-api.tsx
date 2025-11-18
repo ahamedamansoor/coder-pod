@@ -78,7 +78,7 @@ export default function PopoverApi({ onOpenWebPlayground }: { onOpenWebPlaygroun
                 </div>
                  <div className="bg-muted p-4 rounded-lg border">
                     <h3 className="font-bold flex items-center gap-2 mb-2"><Check className="w-5 h-5 text-green-600"/>Top Layer Rendering</h3>
-                    <p className="text-xs text-muted-foreground">Just like `<dialog>`, popovers are promoted to a top layer, so you don't need to fight with `z-index`.</p>
+                    <p className="text-xs text-muted-foreground">Just like `&lt;dialog&gt;`, popovers are promoted to a top layer, so you don't need to fight with `z-index`.</p>
                 </div>
             </CardContent>
         </Card>
@@ -91,7 +91,7 @@ export default function PopoverApi({ onOpenWebPlayground }: { onOpenWebPlaygroun
                 <p><strong>1. The `popover` attribute:</strong> Add this to the element you want to act as a popover. By default, it will be hidden.</p>
                 <pre className="font-mono text-sm bg-muted p-2 rounded">{'<div id="my-popover" popover>...</div>'}</pre>
                 
-                <p><strong>2. The `popovertarget` attribute:</strong> Add this to a `<button>` to make it control a popover. Its value should be the `id` of the popover element.</p>
+                <p><strong>2. The `popovertarget` attribute:</strong> Add this to a `&lt;button&gt;` to make it control a popover. Its value should be the `id` of the popover element.</p>
                 <pre className="font-mono text-sm bg-muted p-2 rounded">{'<button popovertarget="my-popover">Toggle</button>'}</pre>
                 
                 <p><strong>3. The `popovertargetaction` attribute:</strong> Specifies the action (`show`, `hide`, or `toggle`) the button should perform. `toggle` is the default.</p>
@@ -118,7 +118,7 @@ export default function PopoverApi({ onOpenWebPlayground }: { onOpenWebPlaygroun
             <CardContent>
                 <p className="text-sm text-muted-foreground">They seem similar, but have a key difference:</p>
                 <ul className="list-disc list-inside mt-2 text-sm space-y-1">
-                    <li>A `<dialog>` opened with `showModal()` is **modal**: it traps focus and requires an explicit user action to dismiss. Use it for critical information that requires a user response.</li>
+                    <li>A `&lt;dialog&gt;` opened with `showModal()` is **modal**: it traps focus and requires an explicit user action to dismiss. Use it for critical information that requires a user response.</li>
                     <li>A `popover` is **non-modal**: it has a "light dismiss" behavior. Clicking outside or pressing Escape will close it. Use it for less critical, transient UI like menus, tooltips, or notifications.</li>
                 </ul>
             </CardContent>

@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Play, Lightbulb, Check, Shield } from 'lucide-react';
+import { MessageSquare, Play, Lightbulb, Check, Shield, Pointer } from 'lucide-react';
 import React from 'react';
 
 export default function DialogElement({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -66,7 +66,7 @@ showButton.addEventListener('click', () => {
         <Card>
             <CardHeader>
                 <CardTitle>Why Use the Native &lt;dialog&gt;?</CardTitle>
-                <CardDescription>For years, developers relied on JavaScript libraries and complex CSS to create dialog boxes (popups). The native `<dialog>` element simplifies this immensely.</CardDescription>
+                <CardDescription>For years, developers relied on JavaScript libraries and complex CSS to create dialog boxes (popups). The native `&lt;dialog&gt;` element simplifies this immensely.</CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                  <div className="bg-muted p-4 rounded-lg border">
@@ -115,7 +115,7 @@ showButton.addEventListener('click', () => {
                 <CardTitle className="text-primary flex items-center gap-2"><Lightbulb className="w-5 h-5"/>Closing a Dialog without JavaScript</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground">If you place a `<button>` inside a `<form>` element that has the attribute `method="dialog"`, clicking that button will automatically close the parent dialog without needing any JavaScript `close()` calls. This is a convenient, declarative way to handle simple close actions.</p>
+                <p className="text-sm text-muted-foreground">If you place a `&lt;button&gt;` inside a `&lt;form&gt;` element that has the attribute `method="dialog"`, clicking that button will automatically close the parent dialog without needing any JavaScript `close()` calls. This is a convenient, declarative way to handle simple close actions.</p>
             </CardContent>
         </Card>
 
