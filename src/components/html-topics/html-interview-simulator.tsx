@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,16 +48,16 @@ export default function HtmlInterviewSimulator() {
     recognition.lang = 'en-US';
 
     recognition.onresult = (event: any) => {
-      let interimTranscript = '';
       let finalTranscript = '';
       for (let i = event.resultIndex; i < event.results.length; ++i) {
+        const transcript = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript;
-        } else {
-          interimTranscript += event.results[i][0].transcript;
+          finalTranscript += transcript + ' ';
         }
       }
-      setUserAnswer(userAnswer + finalTranscript + interimTranscript);
+      if (finalTranscript) {
+         setUserAnswer(prevAnswer => prevAnswer + finalTranscript);
+      }
     };
 
     recognition.onend = () => {
@@ -68,7 +69,7 @@ export default function HtmlInterviewSimulator() {
     return () => {
       recognition.stop();
     };
-  }, [userAnswer, toast]);
+  }, [toast]);
 
   const handleMicClick = () => {
     if (isListening) {
