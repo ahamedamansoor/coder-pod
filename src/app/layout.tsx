@@ -7,6 +7,7 @@ import { FirebaseClientProvider } from '@/firebase';
 import { WebPlaygroundProvider } from '@/components/web-playground-context';
 import { LoadingProvider } from '@/hooks/use-loading';
 import { PageLoader } from '@/components/page-loader';
+import { ReactPlaygroundProvider } from '@/components/react-playground-context';
 
 export const metadata: Metadata = {
   title: 'Coder Pod',
@@ -34,11 +35,13 @@ export default function RootLayout({
         >
           <FirebaseClientProvider>
             <WebPlaygroundProvider>
-              <LoadingProvider>
-                <PageLoader />
-                {children}
-                <Toaster />
-              </LoadingProvider>
+                <ReactPlaygroundProvider>
+                  <LoadingProvider>
+                    <PageLoader />
+                    {children}
+                    <Toaster />
+                  </LoadingProvider>
+                </ReactPlaygroundProvider>
             </WebPlaygroundProvider>
           </FirebaseClientProvider>
         </ThemeProvider>
