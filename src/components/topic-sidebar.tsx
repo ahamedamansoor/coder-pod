@@ -172,11 +172,13 @@ export function TopicSidebar({
       }
     } else if (language.slug === 'html') {
         const htmlGroups: Record<string, string[]> = {
-            "HTML Basics": ['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments'],
-            "Content & Structure": ['html-lists', 'html-links', 'html-images', 'block-vs-inline', 'html-tables', 'html-semantic-elements', 'character-entities'],
-            "Forms & Input": ['html-forms', 'form-input-types', 'form-attributes'],
-            "Media & Graphics": ['audio-and-video', 'iframes', 'svg-and-canvas'],
-            "Advanced Topics": ['html5-apis', 'web-workers-api', 'accessibility'],
+            "HTML Basics": ['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments', 'character-entities'],
+            "Content & Structure": ['html-lists', 'html-links', 'html-images', 'block-vs-inline', 'html-tables', 'html-semantic-elements'],
+            "Forms & Input": ['html-forms', 'form-input-types', 'form-attributes', 'form-validation', 'datalist-element', 'output-element'],
+            "Media & Graphics": ['audio-and-video', 'iframes', 'svg-and-canvas', 'responsive-images'],
+            "Advanced Topics & HTML5 Features": ['html5-latest-features', 'dialog-element', 'popover-api', 'details-and-summary', 'lazy-loading', 'content-visibility', 'template-and-slot', 'data-attributes', 'content-editable', 'progress-and-meter', 'advanced-tables'],
+            "Metadata, SEO, and Best Practices": ['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'html-email-basics', 'global-attributes'],
+            "API & Interactivity": ['html5-apis', 'web-workers-api', 'accessibility', 'interview-simulator'],
         };
         for (const groupName in htmlGroups) {
             if (htmlGroups[groupName].includes(topic.slug)) {
@@ -221,7 +223,7 @@ export function TopicSidebar({
     : language.slug === 'react'
     ? ["Fundamentals", "Rendering UI", "Hooks Deep Dive", "Advanced React", "Ecosystem & Modern React", "Others"]
     : language.slug === 'html'
-    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics", "Others"]
+    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Others"]
     : language.slug === 'css'
     ? ["CSS Fundamentals", "Layout", "Advanced Styling", "Animation & Interactivity", "Responsive Design", "Others"]
     : language.slug === 'scss'
