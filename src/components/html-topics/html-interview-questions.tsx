@@ -13,7 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Brain, Lightbulb } from 'lucide-react';
+import { Brain } from 'lucide-react';
 import React from 'react';
 import { marked } from 'marked';
 
@@ -77,7 +77,7 @@ function QnA({ questions }: QnAProps) {
             {q.question}
           </AccordionTrigger>
           <AccordionContent>
-            <div className="prose prose-sm max-w-none dark:prose-invert"
+            <div className="prose prose-sm max-w-none dark:prose-invert bg-muted/50 p-4 rounded-md border"
                  dangerouslySetInnerHTML={{ __html: marked.parse(q.idealAnswer) }} />
           </AccordionContent>
         </AccordionItem>
@@ -92,7 +92,7 @@ export default function HtmlInterviewQuestions() {
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">
           <Brain className="w-10 h-10 text-primary" />
-          <h1 className="text-4xl font-bold text-foreground">HTML Interview Q&A</h1>
+          <h1 className="text-4xl font-bold text-foreground">HTML Interview Q&amp;A</h1>
         </div>
         <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
           Test your knowledge with this curated list of common HTML interview questions.
