@@ -194,7 +194,7 @@ type ConsoleLog = {
 
 type StyleLang = 'css' | 'scss';
 
-export function WebPlaygroundModal({ children }: { children: React.ReactNode }) {
+export function WebPlaygroundModal({ children, initialLanguage }: { children: React.ReactNode, initialLanguage?: string }) {
   const { open, setOpen, content, setContent } = useWebPlayground();
 
   const [htmlCode, setHtmlCode] = useState('');
@@ -202,7 +202,9 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
   const [jsCode, setJsCode] = useState('');
   const [compiledCss, setCompiledCss] = useState('');
   const [isCompiling, setIsCompiling] = useState(false);
-  const [styleLang, setStyleLang] = useState<StyleLang>('scss');
+  
+  const initialStyleLang = initialLanguage === 'scss' ? 'scss' : 'css';
+  const [styleLang, setStyleLang] = useState<StyleLang>(initialStyleLang);
 
   const [outputSrc, setOutputSrc] = useState('');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
@@ -212,16 +214,20 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
   const { theme } = useTheme();
 
   useEffect(() => {
-    if (content.css) {
-      setStyleLang('scss'); // Assume incoming css might be scss
-      setStyleCode(content.css);
+    if (content.html || content.css || content.js) {
+        const lang = content.css.includes('$') || content.css.includes('@mixin') ? 'scss' : 'css';
+        setStyleLang(lang);
+        setStyleCode(content.css || (lang === 'scss' ? defaultScss : defaultCss));
+        setHtmlCode(content.html || defaultHtml);
+        setJsCode(content.js || defaultJs);
     } else {
-      setStyleLang('scss');
-      setStyleCode(defaultScss);
+        const defaultLang = initialLanguage === 'scss' ? 'scss' : 'css';
+        setStyleLang(defaultLang);
+        setStyleCode(defaultLang === 'scss' ? defaultScss : defaultCss);
+        setHtmlCode(defaultHtml);
+        setJsCode(defaultJs);
     }
-    setHtmlCode(content.html || defaultHtml);
-    setJsCode(content.js || defaultJs);
-  }, [content]);
+  }, [content, initialLanguage]);
 
   // Debounced SCSS compilation
   useEffect(() => {
