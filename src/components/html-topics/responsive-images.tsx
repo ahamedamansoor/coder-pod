@@ -25,11 +25,11 @@ export default function ResponsiveImages({ onOpenWebPlayground }: { onOpenWebPla
 
 <h3>Using '&lt;picture&gt;' for art direction</h3>
 <picture>
-  <!-- Show a tall, cropped image on small screens -->
+  {/* Show a tall, cropped image on small screens */}
   <source media="(max-width: 799px)" srcset="https://picsum.photos/seed/resp2/400/600">
-  <!-- Show a wide, landscape image on large screens -->
+  {/* Show a wide, landscape image on large screens */}
   <source media="(min-width: 800px)" srcset="https://picsum.photos/seed/resp2/1200/400">
-  <!-- Fallback image -->
+  {/* Fallback image */}
   <img src="https://picsum.photos/seed/resp2/1200/400" alt="A landscape that changes crop based on screen size." data-ai-hint="nature landscape">
 </picture>
 `,
@@ -80,7 +80,7 @@ hr {
         <Card>
             <CardHeader>
                 <CardTitle>Resolution Switching: `srcset` and `sizes`</CardTitle>
-                <CardDescription>These two attributes work together on an `<img>` tag to let the browser choose the best image from a list.</CardDescription>
+                <CardDescription>These two attributes work together on an `&lt;img&gt;` tag to let the browser choose the best image from a list.</CardDescription>
             </CardHeader>
             <CardContent>
                 <ul className="list-disc list-inside space-y-4 mb-4 text-muted-foreground">
@@ -94,13 +94,13 @@ hr {
         <Card>
             <CardHeader>
                 <CardTitle>Art Direction: The `&lt;picture&gt;` Element</CardTitle>
-                <CardDescription>The `<picture>` element is a wrapper that contains multiple `<source>` elements and one `<img>` element. This gives you more explicit control.</CardDescription>
+                <CardDescription>The `&lt;picture&gt;` element is a wrapper that contains multiple `&lt;source&gt;` elements and one `&lt;img&gt;` element. This gives you more explicit control.</CardDescription>
             </CardHeader>
             <CardContent>
                 <ul className="list-disc list-inside space-y-2 mb-4 text-muted-foreground">
-                    <li>The browser goes through each `<source>` element and checks its `media` attribute.</li>
-                    <li>It will use the first `<source>` that matches the media query and ignore the rest.</li>
-                    <li>The `<img>` tag at the end is a mandatory fallback for browsers that don't support `<picture>` or if no media conditions match.</li>
+                    <li>The browser goes through each `&lt;source&gt;` element and checks its `media` attribute.</li>
+                    <li>It will use the first `&lt;source&gt;` that matches the media query and ignore the rest.</li>
+                    <li>The `&lt;img&gt;` tag at the end is a mandatory fallback for browsers that don't support `&lt;picture&gt;` or if no media conditions match.</li>
                 </ul>
             </CardContent>
         </Card>
