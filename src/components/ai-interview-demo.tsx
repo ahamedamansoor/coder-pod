@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Mic, Pause, Play, BrainCircuit, User, Sparkles } from 'lucide-react';
@@ -55,14 +56,14 @@ export const AiInterviewDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =>
     } else if (action === 'showIdealAnswer') {
         setStepState(s => ({...s, showIdealAnswer: true}));
     } else if (action === 'reset') {
-        resetDemo(true);
+        resetDemo(false); // Set keepPlaying to false to pause after reset
     }
   };
 
   const resetDemo = (keepPlaying = false) => {
     setIsPlaying(keepPlaying);
     setCurrentStep(0);
-    setStepState({ showQuestion: false, showAnswer: false, showFeedback: false, showIdealAnswer: false });
+    setStepState({ showQuestion: true, showAnswer: false, showFeedback: false, showIdealAnswer: false });
   };
 
   const handlePlayPause = () => {
@@ -147,7 +148,7 @@ export const AiInterviewDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =>
                 </>
               ) : (
                 <>
-                  <Play className="w-5 h-5" /> {currentStep > 0 && currentStep < steps.length -1 ? 'Resume' : 'Play Demo'}
+                  <Play className="w-5 h-5" /> {currentStep > 0 && currentStep < steps.length -1 ? 'Resume' : 'Play'}
                 </>
               )}
             </Button>
