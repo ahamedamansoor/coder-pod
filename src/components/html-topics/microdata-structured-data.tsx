@@ -75,7 +75,7 @@ div[itemscope] {
                 <CardTitle className="text-primary flex items-center gap-2"><Lightbulb className="w-5 h-5"/>JSON-LD: The Modern Alternative</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground">While Microdata works, the more modern and recommended approach is **JSON-LD**. It involves placing a `&lt;script type="application/ld+json"&gt;` block in your page's `&lt;head&gt;` or `&lt;body&gt;`. This separates the structured data from your HTML, making it cleaner and easier to manage.</p>
+                <p className="text-sm text-muted-foreground">While Microdata works, the more modern and recommended approach is **JSON-LD**. It involves placing a `<code className="font-mono bg-background p-1 rounded">&lt;script type="application/ld+json"&gt;</code>` block in your page's `<code className="font-mono bg-background p-1 rounded">&lt;head&gt;</code>` or `<code className="font-mono bg-background p-1 rounded">&lt;body&gt;</code>`. This separates the structured data from your HTML, making it cleaner and easier to manage.</p>
             </CardContent>
         </Card>
       </div>

@@ -58,7 +58,7 @@ export default function HtmlDocumentMetadata({ onOpenWebPlayground }: { onOpenWe
                 <CardDescription>Specifies the base URL to use for all relative URLs in a page. You can only have one `&lt;base&gt;` element in a document.</CardDescription>
             </CardHeader>
             <CardContent>
-                <p className="text-sm">For example, if you set `<base href="https://example.com/docs/">`, a link like `<a href="page1.html">` will actually point to `https://example.com/docs/page1.html`.</p>
+                <p className="text-sm">For example, if you set <code className="font-mono bg-muted p-1 rounded">&lt;base href="https://example.com/docs/"&gt;</code>, a link like <code className="font-mono bg-muted p-1 rounded">&lt;a href="page1.html"&gt;</code> will actually point to `https://example.com/docs/page1.html`.</p>
             </CardContent>
         </Card>
         
