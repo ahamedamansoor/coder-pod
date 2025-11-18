@@ -1,13 +1,11 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
-import { Terminal, Loader2, AlertTriangle, PanelTop } from 'lucide-react';
+import { Terminal, Loader2, AlertTriangle } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
-import { unpkgPathPlugin } from '@/lib/unpkg-path-plugin';
-import { fetchPlugin } from '@/lib/fetch-plugin';
-import { useReactPlayground } from './react-playground-context';
+import { transpileReactCode } from '@/ai/flows/transpile-react-code';
 
 const initialCode = `import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -51,61 +49,39 @@ export function ReactPlayground() {
   const [output, setOutput] = useState<{ code: string; err: string }>({ code: '', err: '' });
   const [isBuilding, setIsBuilding] = useState(false);
   const { theme } = useTheme();
-  const { esbuildService, isEsbuildInitialized } = useReactPlayground();
 
-  const buildCode = async (newCode: string) => {
-    if (!esbuildService) return;
-
+  const buildCode = useCallback(async (newCode: string) => {
     setIsBuilding(true);
     setOutput({ code: '', err: '' });
 
     try {
-      const result = await esbuildService.build({
-        entryPoints: ['index.js'],
-        bundle: true,
-        write: false,
-        plugins: [unpkgPathPlugin(), fetchPlugin(newCode)],
-        define: {
-          'process.env.NODE_ENV': '"production"',
-          global: 'window',
-        },
-      });
-      setOutput({ code: result.outputFiles[0].text, err: '' });
+      const result = await transpileReactCode({ code: newCode });
+      if (result.success) {
+        setOutput({ code: result.transpiledCode, err: '' });
+      } else {
+        setOutput({ code: '', err: result.error || 'Unknown compilation error' });
+      }
     } catch (e: any) {
-      setOutput({ code: '', err: e.message });
+      setOutput({ code: '', err: e.message || 'Failed to communicate with the transpiler service.' });
     } finally {
       setIsBuilding(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    if (isEsbuildInitialized && esbuildService) {
-        buildCode(code);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEsbuildInitialized]);
+    buildCode(code);
+  }, []);
 
   // Debounced build
   useEffect(() => {
-    if (!isEsbuildInitialized) return;
     const timer = setTimeout(() => {
-        buildCode(code);
+      buildCode(code);
     }, 750);
 
     return () => {
-        clearTimeout(timer);
-    }
-  }, [code]);
-
-  if (!isEsbuildInitialized) {
-      return (
-          <div className="flex flex-col items-center justify-center h-full w-full bg-background text-foreground">
-              <Loader2 className="w-12 h-12 text-primary animate-spin" />
-              <h2 className="text-xl font-semibold mt-6">Starting Playground Engine...</h2>
-              <p className="text-muted-foreground mt-2">This may take a moment.</p>
-          </div>
-      )
-  }
+      clearTimeout(timer);
+    };
+  }, [code, buildCode]);
 
   const iframeSrcDoc = htmlTemplate(output.code);
 
