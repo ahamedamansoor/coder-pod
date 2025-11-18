@@ -14,6 +14,7 @@ import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { useLoading } from '@/hooks/use-loading';
 
 export function LoginPageForm() {
   const [email, setEmail] = useState('');
@@ -27,6 +28,7 @@ export function LoginPageForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const { showLoader } = useLoading();
 
   const createUserProfile = async (user: FirebaseUser) => {
     if (!user || !firestore) return;
@@ -43,11 +45,6 @@ export function LoginPageForm() {
         return; 
     }
 
-    if (user.isAnonymous) {
-      router.push('/dashboard');
-      return;
-    }
-
     const userRef = doc(firestore, `users/${user.uid}`);
     const docSnap = await getDoc(userRef);
 
@@ -59,18 +56,20 @@ export function LoginPageForm() {
         const userProfile = {
           id: user.uid,
           email: user.email,
-          name: user.displayName || nameFromUrl || user.email,
+          name: user.displayName || nameFromUrl || (user.isAnonymous ? 'Guest User' : user.email),
           phoneNumber: user.phoneNumber || phoneFromUrl || null,
           dob: dobFromUrl ? new Date(dobFromUrl) : null,
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
-          completedTopics: [],
+          completedTopics: {},
         };
         await setDoc(userRef, userProfile);
     } else {
         await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
     }
-    router.push('/java/learning-plan');
+    
+    showLoader();
+    router.push('/dashboard');
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {
