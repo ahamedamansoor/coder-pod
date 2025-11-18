@@ -1,3 +1,4 @@
+
 'use client';
 
 import { SidebarTrigger } from './ui/sidebar';
@@ -14,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, usePathname } from 'next/navigation';
 import { doc } from 'firebase/firestore';
 import { WebPlaygroundModal } from './web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
@@ -40,11 +41,12 @@ export function MainHeader({
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
+  const pathname = usePathname();
   const { showLoader } = useLoading();
   
   const params = useParams();
-  const currentLanguageSlug = params.topic ? (Array.isArray(params.lang) ? params.lang[0] : String(router.pathname).split('/')[1]) : undefined;
-
+  
+  const currentLanguageSlug = pathname.split('/')[1] || undefined;
   const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
 
   const userDocRef = useMemoFirebase(() => {
