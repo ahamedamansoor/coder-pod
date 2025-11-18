@@ -59,5 +59,7 @@ export const html: Language = {
     { slug: 'drag-and-drop-api', title: 'Drag and Drop API', explanation: 'Implementing native drag-and-drop functionality for elements.' },
     { slug: 'web-workers-api', title: 'Web Workers API', explanation: 'Running background scripts in a separate thread to avoid freezing the user interface.' },
     { slug: 'accessibility', title: 'Accessibility (a11y)', explanation: 'Best practices for writing accessible HTML, including ARIA roles and proper semantic structure to support users with disabilities.' },
+    // Practice
+    { slug: 'interview-simulator', title: 'AI Interview Simulator', explanation: 'Practice for your next technical interview with an AI-powered mock interviewer.' },
   ]
 };
