@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
 import {
   ResizablePanelGroup,
@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/resizable';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
-import { PanelTop, Code, Braces, FileJson, Terminal, Loader2, ChevronsUpDown } from 'lucide-react';
+import { PanelTop, Code, Braces, FileJson, Terminal, Loader2, ChevronsUpDown, X } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
@@ -316,24 +316,31 @@ export function WebPlaygroundModal({ children }: { children: React.ReactNode }) 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0">
+      <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0" showCloseButton={false}>
         <DialogHeader className="p-4 border-b flex-row items-center justify-between">
           <DialogTitle className="flex items-center gap-2">
             <PanelTop />
             Web Playground
           </DialogTitle>
-          <ToggleGroup
-            type="multiple"
-            variant="outline"
-            value={visiblePanels}
-            onValueChange={(value) => setVisiblePanels(value)}
-            className="gap-1 mr-8"
-          >
-            <ToggleGroupItem value="html" aria-label="Toggle HTML"><FileJson className="h-4 w-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="style" aria-label="Toggle Style"><Braces className="h-4 w-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="js" aria-label="Toggle JS"><Code className="h-4 w-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="console" aria-label="Toggle Console"><Terminal className="h-4 w-4" /></ToggleGroupItem>
-          </ToggleGroup>
+          <div className="flex items-center gap-2">
+            <ToggleGroup
+              type="multiple"
+              variant="outline"
+              value={visiblePanels}
+              onValueChange={(value) => setVisiblePanels(value)}
+              className="gap-1"
+            >
+              <ToggleGroupItem value="html" aria-label="Toggle HTML"><FileJson className="h-4 w-4" /></ToggleGroupItem>
+              <ToggleGroupItem value="style" aria-label="Toggle Style"><Braces className="h-4 w-4" /></ToggleGroupItem>
+              <ToggleGroupItem value="js" aria-label="Toggle JS"><Code className="h-4 w-4" /></ToggleGroupItem>
+              <ToggleGroupItem value="console" aria-label="Toggle Console"><Terminal className="h-4 w-4" /></ToggleGroupItem>
+            </ToggleGroup>
+            <DialogClose asChild>
+                <Button variant="outline" size="icon" aria-label="Close">
+                    <X className="h-4 w-4" />
+                </Button>
+            </DialogClose>
+          </div>
         </DialogHeader>
         <div className="flex-1 overflow-hidden">
           <ResizablePanelGroup direction="vertical">
