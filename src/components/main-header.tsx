@@ -2,7 +2,7 @@
 import { SidebarTrigger } from './ui/sidebar';
 import { Logo } from './logo';
 import { Button } from './ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid, Notebook } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -75,7 +75,6 @@ export function MainHeader({
   };
 
   const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
-  const isUserAuthenticated = user && !user.isAnonymous;
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6 md:pl-4">
@@ -87,14 +86,12 @@ export function MainHeader({
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
       </div>
       <div className="flex items-center gap-4">
-        {isUserAuthenticated && (
-          <Button variant="ghost" asChild>
-            <Link href="/notebook">
-              <Notebook className="mr-2 h-4 w-4" />
-              Notebook
-            </Link>
-          </Button>
-        )}
+        <Button variant="ghost" asChild>
+          <Link href="/dashboard">
+            <LayoutGrid className="mr-2 h-4 w-4" />
+            Dashboard
+          </Link>
+        </Button>
         {showWebPlaygroundButton && (
           <WebPlaygroundModal>
               <Button variant="outline">

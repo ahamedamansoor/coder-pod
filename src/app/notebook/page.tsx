@@ -1,53 +1,138 @@
-'use client';
-import { Suspense, useEffect } from 'react';
-import { NotebookPageContent } from '@/components/notebook-page-content';
-import { Skeleton } from '@/components/ui/skeleton';
+import { SidebarTrigger } from './ui/sidebar';
+import { Logo } from './logo';
+import { Button } from './ui/button';
+import { Code, LogOut, User, LogIn, LayoutGrid } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import { useParams, useRouter } from 'next/navigation';
+import { doc } from 'firebase/firestore';
+import { WebPlaygroundModal } from './web-playground-modal';
+import { LanguageSwitcher } from './language-switcher';
+import Link from 'next/link';
 import { useLoading } from '@/hooks/use-loading';
 
-function NotebookPageSkeleton() {
-  return (
-    <div className="flex flex-col min-h-screen bg-muted/40">
-      <header className="bg-background border-b sticky top-0 z-10">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Skeleton className="h-8 w-32" />
-            <div className="flex items-center gap-4">
-              <Skeleton className="h-8 w-24" />
-              <Skeleton className="h-10 w-10 rounded-full" />
-            </div>
-          </div>
-        </div>
-      </header>
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <Skeleton className="h-16 w-16 mx-auto rounded-full mb-4" />
-            <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
-            <Skeleton className="h-6 w-1/2 mx-auto" />
-          </div>
-          <div className="mb-8">
-              <Skeleton className="h-40 w-full" />
-          </div>
-          <div className="space-y-6">
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-          </div>
-        </div>
-      </main>
-    </div>
-  )
+interface MainHeaderProps {
+  onToggleEditor: () => void;
+  isEditorOpen: boolean;
+  showCodeEditorButton?: boolean;
+  showWebPlaygroundButton?: boolean;
 }
 
-export default function NotebookPage() {
-  const { hideLoader } = useLoading();
-
-  useEffect(() => {
-    hideLoader();
-  }, [hideLoader]);
+export function MainHeader({
+  onToggleEditor,
+  isEditorOpen,
+  showCodeEditorButton = true,
+  showWebPlaygroundButton = true,
+}: MainHeaderProps) {
+  const { user } = useUser();
+  const auth = useAuth();
+  const firestore = useFirestore();
+  const router = useRouter();
+  const params = useParams();
+  const { showLoader } = useLoading();
   
+  const currentLanguageSlug = Array.isArray(params.lang) ? params.lang[0] : params.lang as string || 
+                              (router as any).query?.lang as string || 
+                              Object.keys(params)[0];
+
+  const userDocRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, 'users', user.uid);
+  }, [user, firestore]);
+
+  const { data: userData } = useDoc(userDocRef);
+
+  const handleSignOut = async () => {
+    showLoader();
+    if (auth) {
+      await auth.signOut();
+    }
+    router.push('/login');
+  };
+  
+  const handleSignIn = () => {
+    router.push('/login');
+  };
+
+  const getInitials = (name?: string | null) => {
+    if (user?.isAnonymous) return 'G';
+    if (!name) return 'U';
+    const names = name.split(' ');
+    if (names.length > 1) {
+      return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
+    }
+    return name[0].toUpperCase();
+  };
+
+  const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
+
   return (
-    <Suspense fallback={<NotebookPageSkeleton />}>
-        <NotebookPageContent />
-    </Suspense>
-  )
+    <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6 md:pl-4">
+      <div className="flex items-center gap-4">
+        <SidebarTrigger className="md:hidden" />
+        <div className="hidden md:block">
+          <Logo />
+        </div>
+        <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
+      </div>
+      <div className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="/dashboard">
+            <LayoutGrid className="mr-2 h-4 w-4" />
+            Dashboard
+          </Link>
+        </Button>
+        {showWebPlaygroundButton && (
+          <WebPlaygroundModal>
+              <Button variant="outline">
+                  <LayoutGrid className="mr-2 h-4 w-4" />
+                  Web Playground
+              </Button>
+          </WebPlaygroundModal>
+        )}
+        {showCodeEditorButton && (
+          <Button variant="outline" onClick={onToggleEditor}>
+            <Code className="mr-2 h-4 w-4" />
+            Code Editor
+          </Button>
+        )}
+        <ThemeToggle />
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="cursor-pointer h-9 w-9">
+                <AvatarImage src={user.photoURL || ''} alt={displayName} />
+                <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel className='flex items-center gap-2'>
+                <User />
+                {displayName}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sign out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+           <Button onClick={handleSignIn}>
+              <LogIn className="mr-2 h-4 w-4" />
+              Sign In
+           </Button>
+        )}
+      </div>
+    </header>
+  );
 }

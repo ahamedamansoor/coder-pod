@@ -60,36 +60,6 @@
         "id",
         "email"
       ]
-    },
-    "Note": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Note",
-      "type": "object",
-      "description": "A user-saved text note.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the note."
-        },
-        "userId": {
-          "type": "string",
-          "description": "The ID of the user who owns this note."
-        },
-        "title": {
-          "type": "string",
-          "description": "The title of the note."
-        },
-        "content": {
-          "type": "string",
-          "description": "The text content of the note."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the note was created."
-        }
-      },
-      "required": ["id", "userId", "title", "content"]
     }
   },
   "auth": {
@@ -114,26 +84,6 @@
             {
               "name": "userId",
               "description": "The unique identifier of the user, which should match the Firebase Auth UID."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/notes/{noteId}",
-        "definition": {
-          "entityName": "Note",
-          "schema": {
-            "$ref": "#/backend/entities/Note"
-          },
-          "description": "Stores user-generated notes. Uses path-based ownership.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The owner of the notes collection."
-            },
-            {
-              "name": "noteId",
-              "description": "The unique identifier for the note."
             }
           ]
         }
