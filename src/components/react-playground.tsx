@@ -1,7 +1,6 @@
 
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import * as esbuild from 'esbuild-wasm';
+import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
@@ -11,8 +10,7 @@ import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { unpkgPathPlugin } from '@/lib/unpkg-path-plugin';
 import { fetchPlugin } from '@/lib/fetch-plugin';
-
-let esbuildService: esbuild.Service | undefined;
+import { useReactPlayground } from './react-playground-context';
 
 const initialCode = `import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -56,20 +54,13 @@ export function ReactPlayground() {
   const [output, setOutput] = useState<{ code: string; err: string }>({ code: '', err: '' });
   const [isBuilding, setIsBuilding] = useState(true);
   const { theme } = useTheme();
-
-  const startService = async () => {
-    if (!esbuildService) {
-        esbuildService = await esbuild.startService({
-            worker: true,
-            wasmURL: '/esbuild.wasm',
-        });
-    }
-    buildCode(code); // Initial build after service is ready
-  };
+  const { esbuildService } = useReactPlayground();
 
   useEffect(() => {
-    startService();
-  }, []);
+    if (esbuildService) {
+        buildCode(code);
+    }
+  }, [esbuildService, code]);
 
   const buildCode = async (newCode: string) => {
     if (!esbuildService) return;
@@ -109,9 +100,9 @@ export function ReactPlayground() {
             <PanelTop />
             React Playground
           </h1>
-          <Button onClick={handleRunClick} disabled={isBuilding}>
-            {isBuilding ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Play className="mr-2 h-4 w-4"/>}
-            Run
+          <Button onClick={handleRunClick} disabled={isBuilding || !esbuildService}>
+            {isBuilding || !esbuildService ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Play className="mr-2 h-4 w-4"/>}
+            {isBuilding || !esbuildService ? 'Building...' : 'Run'}
           </Button>
         </header>
       <ResizablePanelGroup direction="horizontal" className="flex-1">
