@@ -5,24 +5,17 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import {
-  Brain,
-  Lightbulb,
-  ArrowLeft,
-  ArrowRight,
-  Loader2,
-  Sparkles,
-} from 'lucide-react';
-import React, { useState, useMemo } from 'react';
-import { conductInterview, type ConductInterviewOutput } from '@/ai/flows/interview-flow';
-import { Skeleton } from '../ui/skeleton';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Brain, Lightbulb } from 'lucide-react';
+import React from 'react';
 import { marked } from 'marked';
-import { useToast } from '@/hooks/use-toast';
 
 const easyQuestions = [
   {
@@ -76,120 +69,20 @@ interface QnAProps {
 }
 
 function QnA({ questions }: QnAProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [userAnswer, setUserAnswer] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [aiFeedback, setAiFeedback] = useState<string | null>(null);
-  const { toast } = useToast();
-
-  const currentQuestion = useMemo(() => questions[currentIndex], [questions, currentIndex]);
-
-  const handleNext = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      resetState();
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-      resetState();
-    }
-  };
-  
-  const resetState = () => {
-    setShowAnswer(false);
-    setUserAnswer('');
-    setAiFeedback(null);
-  }
-
-  const handleGetFeedback = async () => {
-    if (!userAnswer.trim()) {
-        toast({ variant: 'destructive', title: 'Please enter your answer first.' });
-        return;
-    }
-    setIsLoading(true);
-    setAiFeedback(null);
-    try {
-        const result = await conductInterview({
-            language: 'HTML',
-            question: currentQuestion.question,
-            userAnswer: userAnswer,
-            previousQuestions: [currentQuestion.question], // simplified for this use case
-        });
-        const parsedFeedback = await marked(result.feedback);
-        setAiFeedback(parsedFeedback);
-
-    } catch (error) {
-        console.error('AI feedback error:', error);
-        toast({ variant: 'destructive', title: 'Failed to get AI feedback.' });
-    } finally {
-        setIsLoading(false);
-    }
-  }
-
   return (
-    <Card className="min-h-[400px] flex flex-col">
-      <CardHeader>
-        <CardDescription>Question {currentIndex + 1} of {questions.length}</CardDescription>
-        <CardTitle className="text-2xl">{currentQuestion.question}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1 space-y-4">
-        {showAnswer && (
-          <Card className="bg-muted/50 animate-in fade-in-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg text-primary"><Lightbulb /> Ideal Answer</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div
-                className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-ul:text-foreground/90 prose-li:text-foreground/90"
-                dangerouslySetInnerHTML={{ __html: currentQuestion.idealAnswer.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') }}
-              />
-            </CardContent>
-          </Card>
-        )}
-        
-        {showAnswer && (
-            <div className="space-y-2">
-                <Textarea 
-                    placeholder="Now, try to answer in your own words..."
-                    value={userAnswer}
-                    onChange={(e) => setUserAnswer(e.target.value)}
-                />
-                <Button onClick={handleGetFeedback} disabled={isLoading}>
-                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Get Feedback
-                </Button>
-            </div>
-        )}
-
-        {aiFeedback && (
-             <Card className="border-primary/30 bg-primary/5">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-lg text-primary"><Sparkles/> AI Feedback</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: aiFeedback }} />
-                </CardContent>
-            </Card>
-        )}
-        
-
-      </CardContent>
-      <CardFooter className="flex justify-between items-center border-t pt-4">
-        <Button variant="outline" onClick={handlePrev} disabled={currentIndex === 0}>
-          <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-        </Button>
-        {!showAnswer && (
-            <Button onClick={() => setShowAnswer(true)}>Reveal Answer</Button>
-        )}
-        <Button variant="outline" onClick={handleNext} disabled={currentIndex === questions.length - 1}>
-          Next <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </CardFooter>
-    </Card>
+    <Accordion type="single" collapsible className="w-full">
+      {questions.map((q, index) => (
+        <AccordionItem value={`item-${index}`} key={index}>
+          <AccordionTrigger className="text-left hover:no-underline">
+            {q.question}
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="prose prose-sm max-w-none dark:prose-invert"
+                 dangerouslySetInnerHTML={{ __html: marked.parse(q.idealAnswer) }} />
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
   );
 }
 
@@ -199,7 +92,7 @@ export default function HtmlInterviewQuestions() {
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">
           <Brain className="w-10 h-10 text-primary" />
-          <h1 className="text-4xl font-bold text-foreground">HTML Interview Q&amp;A</h1>
+          <h1 className="text-4xl font-bold text-foreground">HTML Interview Q&A</h1>
         </div>
         <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
           Test your knowledge with this curated list of common HTML interview questions.
@@ -213,13 +106,25 @@ export default function HtmlInterviewQuestions() {
           <TabsTrigger value="hard">Hard</TabsTrigger>
         </TabsList>
         <TabsContent value="easy">
-            <QnA questions={categories.easy} />
+          <Card>
+            <CardContent className="p-6">
+              <QnA questions={categories.easy} />
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="medium">
-            <QnA questions={categories.medium} />
+          <Card>
+            <CardContent className="p-6">
+              <QnA questions={categories.medium} />
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="hard">
-            <QnA questions={categories.hard} />
+          <Card>
+            <CardContent className="p-6">
+              <QnA questions={categories.hard} />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
