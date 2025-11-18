@@ -65,7 +65,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Note",
       "type": "object",
-      "description": "A summarized note created by the user from a URL or document.",
+      "description": "A user-saved note containing a YouTube video link.",
       "properties": {
         "id": {
           "type": "string",
@@ -79,14 +79,10 @@
           "type": "string",
           "description": "The title of the note."
         },
-        "summary": {
-          "type": "string",
-          "description": "The AI-generated summary of the content."
-        },
-        "sourceUrl": {
+        "youtubeUrl": {
           "type": "string",
           "format": "uri",
-          "description": "The original URL of the content (e.g., YouTube link)."
+          "description": "The original URL of the YouTube video."
         },
         "createdAt": {
           "type": "string",
@@ -94,7 +90,7 @@
           "description": "The timestamp when the note was created."
         }
       },
-      "required": ["id", "userId", "title", "summary"]
+      "required": ["id", "userId", "title", "youtubeUrl"]
     }
   },
   "auth": {
@@ -130,7 +126,7 @@
           "schema": {
             "$ref": "#/backend/entities/Note"
           },
-          "description": "Stores user-generated notes and summaries. Uses path-based ownership.",
+          "description": "Stores user-generated notes. Uses path-based ownership.",
           "params": [
             {
               "name": "userId",

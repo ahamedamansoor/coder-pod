@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
-import { Loader2, Notebook, Youtube, Plus, Trash2 } from 'lucide-react';
+import { Loader2, Notebook, Youtube, Plus, Trash2, PlayCircle } from 'lucide-react';
 import { useUser, useFirestore, useCollection } from '@/firebase';
 import { collection, addDoc, serverTimestamp, deleteDoc, doc, Query } from 'firebase/firestore';
-import { summarizeYoutubeUrl } from '@/ai/flows/summarize-youtube-url';
 import { useToast } from '@/hooks/use-toast';
 import { MainHeader } from './main-header';
 import { useMemoFirebase } from '@/firebase/provider';
@@ -22,12 +21,28 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { SidebarProvider } from './ui/sidebar';
 import { useLoading } from '@/hooks/use-loading';
 
+// Helper to extract YouTube video ID
+function getYoutubeVideoId(url: string) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+
 export function NotebookPageContent() {
   const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [title, setTitle] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
@@ -46,35 +61,42 @@ export function NotebookPageContent() {
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!youtubeUrl || !user || !firestore) return;
+    if (!youtubeUrl || !title || !user || !firestore) return;
 
-    setIsSummarizing(true);
+    if (!getYoutubeVideoId(youtubeUrl)) {
+        toast({
+            variant: 'destructive',
+            title: 'Invalid YouTube URL',
+            description: 'Please enter a valid YouTube video URL.',
+        });
+        return;
+    }
+
+    setIsAdding(true);
     try {
-      const result = await summarizeYoutubeUrl({ youtubeUrl });
-      
       await addDoc(notesCollection!, {
         userId: user.uid,
-        title: result.title,
-        summary: result.summary,
-        sourceUrl: youtubeUrl,
+        title: title,
+        youtubeUrl: youtubeUrl,
         createdAt: serverTimestamp(),
       });
 
       toast({
         title: 'Note Added!',
-        description: `Successfully summarized "${result.title}".`,
+        description: `Successfully saved "${title}".`,
       });
       setYoutubeUrl('');
+      setTitle('');
 
     } catch (error) {
       console.error("Failed to add note:", error);
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: 'Could not summarize the video. Please check the URL and try again.',
+        description: 'Could not save your note. Please try again.',
       });
     } finally {
-      setIsSummarizing(false);
+      setIsAdding(false);
     }
   };
 
@@ -111,10 +133,10 @@ export function NotebookPageContent() {
               <div className="text-center mb-12">
                   <Notebook className="w-16 h-16 mx-auto text-primary mb-4" />
                   <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
-                      My AI-Powered Notebook
+                      My Video Notebook
                   </h1>
                   <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                      Add a YouTube video URL to get an instant, AI-generated summary and save it to your notes.
+                      Save and watch your favorite educational YouTube videos in one place.
                   </p>
               </div>
 
@@ -122,12 +144,21 @@ export function NotebookPageContent() {
                   <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                           <Plus />
-                          Add a New Note
+                          Add a New Video Note
                       </CardTitle>
                   </CardHeader>
                   <CardContent>
-                      <form onSubmit={handleAddNote} className="flex gap-4">
-                          <div className="relative flex-1">
+                      <form onSubmit={handleAddNote} className="flex flex-col sm:flex-row gap-4">
+                            <Input
+                                type="text"
+                                placeholder="Note Title (e.g., 'React Hooks Tutorial')"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                required
+                                className="flex-1"
+                                disabled={isAdding}
+                            />
+                            <div className="relative flex-1">
                               <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                               <Input
                                   type="url"
@@ -136,16 +167,16 @@ export function NotebookPageContent() {
                                   onChange={(e) => setYoutubeUrl(e.target.value)}
                                   required
                                   className="pl-10"
-                                  disabled={isSummarizing}
+                                  disabled={isAdding}
                               />
-                          </div>
-                          <Button type="submit" disabled={isSummarizing || !youtubeUrl}>
-                              {isSummarizing ? (
+                            </div>
+                          <Button type="submit" disabled={isAdding || !youtubeUrl || !title}>
+                              {isAdding ? (
                                   <>
                                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                      Summarizing...
+                                      Saving...
                                   </>
-                              ) : "Add Note"}
+                              ) : "Save Note"}
                           </Button>
                       </form>
                   </CardContent>
@@ -155,23 +186,45 @@ export function NotebookPageContent() {
                   <h2 className="text-2xl font-bold text-foreground">Saved Notes</h2>
                   {isNotesLoading ? (
                       <div className="space-y-4">
-                          <Skeleton className="h-32 w-full" />
-                          <Skeleton className="h-32 w-full" />
+                          <Skeleton className="h-24 w-full" />
+                          <Skeleton className="h-24 w-full" />
                       </div>
                   ) : notes && notes.length > 0 ? (
-                      notes.map(note => (
+                      notes.map(note => {
+                        const videoId = getYoutubeVideoId(note.youtubeUrl);
+                        return (
                           <Card key={note.id}>
                               <CardHeader>
                                   <div className="flex justify-between items-start">
                                       <div>
                                           <CardTitle>{note.title}</CardTitle>
                                           <CardDescription>
-                                              <a href={note.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1 text-sm mt-1">
-                                                  <Youtube className="h-4 w-4"/> Source Video
+                                              <a href={note.youtubeUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1 text-sm mt-1">
+                                                  <Youtube className="h-4 w-4"/> View on YouTube
                                               </a>
                                           </CardDescription>
                                       </div>
-                                      <AlertDialog>
+                                      <div className="flex items-center gap-2">
+                                        {videoId && (
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button variant="secondary" size="sm">
+                                                        <PlayCircle className="mr-2 h-4 w-4" /> Watch
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className="max-w-4xl h-auto aspect-video p-0 border-0">
+                                                    <iframe
+                                                        className="w-full h-full rounded-lg"
+                                                        src={`https://www.youtube.com/embed/${videoId}`}
+                                                        title="YouTube video player"
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    ></iframe>
+                                                </DialogContent>
+                                            </Dialog>
+                                        )}
+                                        <AlertDialog>
                                           <AlertDialogTrigger asChild>
                                               <Button variant="ghost" size="icon">
                                                   <Trash2 className="h-4 w-4 text-destructive"/>
@@ -190,18 +243,17 @@ export function NotebookPageContent() {
                                               </AlertDialogFooter>
                                           </AlertDialogContent>
                                       </AlertDialog>
+                                      </div>
                                   </div>
                               </CardHeader>
-                              <CardContent>
-                                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">{note.summary}</p>
-                              </CardContent>
                           </Card>
-                      ))
+                        )
+                      })
                   ) : (
                       <Card className="text-center py-12">
                           <CardContent>
                               <p className="text-muted-foreground">You don't have any notes yet.</p>
-                              <p className="text-muted-foreground">Add a YouTube URL above to get started!</p>
+                              <p className="text-muted-foreground">Add a video title and YouTube URL above to get started!</p>
                           </CardContent>
                       </Card>
                   )}
