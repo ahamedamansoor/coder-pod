@@ -32,7 +32,7 @@ service cloud.firestore {
 
       allow get, update, delete: if isOwner();
       allow list: if false;
-      allow create: if isOwner() && request.resource.data.id == userId;
+      allow create: if isOwner();
 
       /**
        * @description Notebook sub-collection rules.
@@ -43,6 +43,7 @@ service cloud.firestore {
         allow read, write: if isOwner();
       }
       match /notes {
+        // A user should be able to list their own notes.
         allow list: if isOwner();
       }
     }
