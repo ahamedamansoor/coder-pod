@@ -1,7 +1,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { MainHeader } from '@/components/main-header';
 import { TopicSidebar } from '@/components/topic-sidebar';
@@ -9,10 +9,16 @@ import { languages } from '@/app/data';
 import { notFound, useParams } from 'next/navigation';
 import { JavaProvider } from './java-context';
 import { JavaLayoutProvider, useJavaLayout } from './java-layout-context';
+import { useLoading } from '@/hooks/use-loading';
 
 function JavaTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const { isEditorOpen, setIsEditorOpen } = useJavaLayout();
+  const { hideLoader } = useLoading();
+
+  useEffect(() => {
+    hideLoader();
+  }, [hideLoader]);
 
   const language = languages.find((lang) => lang.slug === 'java');
   if (!language) {
