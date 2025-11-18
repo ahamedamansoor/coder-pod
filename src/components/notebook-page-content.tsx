@@ -1,11 +1,19 @@
 'use client';
+import React, { useEffect } from 'react';
 import { MainHeader } from '@/components/main-header';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { Bot, BrainCircuit, Mic, Send, User } from 'lucide-react';
+import { useLoading } from '@/hooks/use-loading';
 
 export function NotebookPageContent() {
+  const { hideLoader } = useLoading();
+
+  useEffect(() => {
+    hideLoader();
+  }, [hideLoader]);
+
   return (
     <SidebarProvider>
       <div className="flex flex-col h-screen bg-muted/40">
