@@ -1,3 +1,4 @@
+
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -29,7 +30,7 @@ export default function HtmlDocumentMetadata({ onOpenWebPlayground }: { onOpenWe
     <link rel="stylesheet" href="style.css">
     
     <!-- Defer script execution until after the page has parsed -->
-    <script src="script.js" defer></script>
+    <script src="script.js" defer><\/script>
 </head>
 <body>
     <h1>Advanced Document Metadata</h1>
