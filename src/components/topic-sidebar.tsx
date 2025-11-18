@@ -282,6 +282,24 @@ export function TopicSidebar({
     </SidebarMenuButton>
   );
 
+  const mainLinks = [
+    learningPlanTopic && {
+      key: learningPlanTopic.slug,
+      content: isUserAuthenticated ? learningPlanButton : (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild><div className="w-full">{learningPlanButton}</div></TooltipTrigger>
+            <TooltipContent><p>Sign in to track your progress.</p></TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ),
+    },
+    interviewTopic && {
+      key: interviewTopic.slug,
+      content: interviewButton,
+    },
+  ].filter(Boolean);
+
   return (
     <>
       <SidebarHeader className="p-4">
@@ -292,32 +310,11 @@ export function TopicSidebar({
         <ScrollArea>
            <div className="h-full">
               <SidebarMenu className="p-4 space-y-4">
-                {learningPlanTopic && (
-                  <div key={learningPlanTopic.slug}>
-                    <SidebarMenuItem>
-                      {isUserAuthenticated ? (
-                        learningPlanButton
-                      ) : (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className="w-full">{learningPlanButton}</div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Sign in to track your progress.</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      )}
-                    </SidebarMenuItem>
+                {mainLinks.map(link => (
+                  <div key={link?.key}>
+                    <SidebarMenuItem>{link?.content}</SidebarMenuItem>
                   </div>
-                )}
-                
-                {interviewTopic && (
-                    <div key={interviewTopic.slug}>
-                        <SidebarMenuItem>{interviewButton}</SidebarMenuItem>
-                    </div>
-                )}
+                ))}
 
                 <Separator />
 

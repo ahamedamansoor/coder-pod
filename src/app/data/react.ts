@@ -6,6 +6,7 @@ export const react: Language = {
   name: 'React',
   topics: [
       { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A structured roadmap for learning React from scratch.' },
+      { slug: 'interview-questions', title: 'Interview Q&A', explanation: 'A curated list of common React interview questions and answers.' },
       { slug: 'what-is-react', title: 'What is React?', explanation: 'An overview of the React library and its philosophy.' },
       { slug: 'setting-up-react', title: 'Setting Up a React Environment', explanation: 'Creating a new React project using modern tools like Vite or Next.js.' },
       { slug: 'jsx', title: 'JSX Deep Dive', explanation: 'Understanding JavaScript XML for writing UI components and how it differs from HTML.' },
