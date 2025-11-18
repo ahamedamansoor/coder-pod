@@ -84,6 +84,7 @@ export function MainHeader({
         <div className="hidden md:block">
           <Logo />
         </div>
+        <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
       </div>
       <div className="flex items-center gap-4">
         {isUserAuthenticated && (
@@ -94,8 +95,6 @@ export function MainHeader({
             </Link>
           </Button>
         )}
-        <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
-        <ThemeToggle />
         {showWebPlaygroundButton && (
           <WebPlaygroundModal>
               <Button variant="outline">
@@ -110,6 +109,7 @@ export function MainHeader({
             Code Editor
           </Button>
         )}
+        <ThemeToggle />
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
