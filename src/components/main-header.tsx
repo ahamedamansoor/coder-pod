@@ -1,4 +1,6 @@
 
+'use client';
+
 import { SidebarTrigger } from './ui/sidebar';
 import { Button } from './ui/button';
 import { Code, LogOut, User, LogIn, LayoutGrid, Mic } from 'lucide-react';

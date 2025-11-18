@@ -1,6 +1,6 @@
 
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -26,7 +26,10 @@ interface InterviewSimulatorProps {
   children?: React.ReactNode;
 }
 
-const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+const SpeechRecognition =
+  typeof window !== 'undefined'
+    ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    : null;
 
 export function InterviewSimulator({ language, children }: InterviewSimulatorProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,10 +49,28 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    if (!isOpen) {
+      // Reset state when dialog is closed
+      setIsSessionStarted(false);
+      setQuestion('');
+      setUserAnswer('');
+      setFeedback(null);
+      setIdealAnswer(null);
+      setPreviousQuestions([]);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        setIsListening(false);
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     if (!SpeechRecognition) {
-        // We don't want to toast every time the component loads.
-        // It's better to inform the user only when they try to use the feature.
-        return;
+      return;
     }
 
     const recognition = new SpeechRecognition();
@@ -97,7 +118,8 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
     setIsListening(!isListening);
   };
   
-  const handleReadAloud = async (text: string, id: string) => {
+  const handleReadAloud = async (textToRead: string, id: string) => {
+    const strippedText = textToRead.replace(/<[^>]+>/g, '');
     if (isReading === id) {
       audioRef.current?.pause();
       setIsReading(null);
@@ -106,7 +128,7 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
 
     setIsReading(id);
     try {
-      const response = await textToSpeech(text);
+      const response = await textToSpeech(strippedText);
       if (response.media) {
         if (audioRef.current) {
           audioRef.current.pause();
@@ -115,6 +137,10 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
         audioRef.current = audio;
         audio.play();
         audio.onended = () => setIsReading(null);
+        audio.onerror = () => {
+          setIsReading(null);
+          toast({ variant: "destructive", title: "Audio Playback Error" });
+        }
       } else {
         throw new Error('No audio data received.');
       }
@@ -143,7 +169,7 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
     try {
       const result = await conductInterview({
         language,
-        question: 'Initial question', // This is just to kick off the flow
+        question: 'Initial question',
         userAnswer: '',
         previousQuestions: [],
       });
@@ -156,7 +182,7 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
         title: 'An Error Occurred',
         description: 'Could not start the interview session. Please try again.',
       });
-      setIsSessionStarted(false); // Reset on error
+      setIsSessionStarted(false);
     } finally {
       setIsLoading(false);
     }
@@ -233,23 +259,47 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
              </div>
           ) : (
             <>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <BrainCircuit className="w-6 h-6 text-primary" />
-                      Interviewer's Question
-                    </div>
-                    <Button variant="ghost" size="icon" onClick={() => handleReadAloud(question, 'question')} disabled={isReading !== null && isReading !== 'question'}>
-                      <Volume2 className={cn("w-5 h-5", isReading === 'question' && 'text-primary animate-pulse')} />
-                      <span className="sr-only">Read question</span>
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-lg font-semibold text-foreground">{question}</p>
-                </CardContent>
-              </Card>
+              {question && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <BrainCircuit className="w-6 h-6 text-primary" />
+                        Interviewer's Question
+                      </div>
+                      <Button variant="ghost" size="icon" onClick={() => handleReadAloud(question, 'question')} disabled={isReading !== null && isReading !== 'question'}>
+                        <Volume2 className={cn("w-5 h-5", isReading === 'question' && 'text-primary animate-pulse')} />
+                        <span className="sr-only">Read question</span>
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-lg font-semibold text-foreground">{question}</p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {feedback && idealAnswer && (
+                <div className="space-y-6">
+                  <Card className="border-primary bg-primary/5">
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between text-primary">
+                        <div className="flex items-center gap-2"><Sparkles className="w-5 h-5" /> AI Feedback</div>
+                         <Button variant="ghost" size="icon" onClick={() => handleReadAloud(feedback, 'feedback')} disabled={isReading !== null && isReading !== 'feedback'}>
+                            <Volume2 className={cn("w-5 h-5", isReading === 'feedback' && 'text-primary animate-pulse')} />
+                            <span className="sr-only">Read feedback</span>
+                        </Button>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent><div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: feedback }} /></CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader><CardTitle>Ideal Answer</CardTitle></CardHeader>
+                    <CardContent><div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: idealAnswer }} /></CardContent>
+                  </Card>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit}>
                 <Card>
@@ -290,32 +340,6 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
                   </DialogFooter>
                 </Card>
               </form>
-
-              {isLoading && (
-                <Card><CardContent className="p-6 space-y-2"><Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-5/6" /></CardContent></Card>
-              )}
-
-              {feedback && idealAnswer && (
-                <div className="space-y-6">
-                  <Card className="border-primary bg-primary/5">
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between text-primary">
-                        <div className="flex items-center gap-2"><Sparkles className="w-5 h-5" /> AI Feedback</div>
-                         <Button variant="ghost" size="icon" onClick={() => handleReadAloud(feedback, 'feedback')} disabled={isReading !== null && isReading !== 'feedback'}>
-                            <Volume2 className={cn("w-5 h-5", isReading === 'feedback' && 'text-primary animate-pulse')} />
-                            <span className="sr-only">Read feedback</span>
-                        </Button>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent><div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: feedback }} /></CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader><CardTitle>Ideal Answer</CardTitle></CardHeader>
-                    <CardContent><div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: idealAnswer }} /></CardContent>
-                  </Card>
-                </div>
-              )}
             </>
           )}
         </div>
