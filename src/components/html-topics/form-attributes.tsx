@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -143,7 +142,7 @@ export default function FormAttributes({ onOpenWebPlayground }: { onOpenWebPlayg
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={() => onOpenWebPlayground(playgroundCode, 'form {font-family: sans-serif; line-height: 1.6;} fieldset { margin-bottom: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 1rem;} legend {font-weight: bold;} label {display: block; margin-bottom: 4px;} input {padding: 8px; width: 95%; border-radius: 4px; border: 1px solid #ccc;} input:read-only {background-color: #eee;} input:disabled {background-color: #f9f9f9; cursor: not-allowed;}', '')}>
+          <Button onClick={() => onOpenWebPlayground(playgroundCode.html, 'form {font-family: sans-serif; line-height: 1.6;} fieldset { margin-bottom: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 1rem;} legend {font-weight: bold;} label {display: block; margin-bottom: 4px;} input {padding: 8px; width: 95%; border-radius: 4px; border: 1px solid #ccc;} input:read-only {background-color: #eee;} input:disabled {background-color: #f9f9f9; cursor: not-allowed;}', '')}>
             <Play className="mr-2 h-4 w-4" /> Open Full Example in Playground
           </Button>
         </CardContent>

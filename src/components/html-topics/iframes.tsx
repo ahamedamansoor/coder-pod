@@ -115,7 +115,7 @@ h2 {
                     <p className="text-sm text-muted-foreground">Provides a label for the iframe, which is crucial for screen readers and accessibility.</p>
                 </div>
                 <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-1">`width` & `height`</h3>
+                    <h3 className="font-bold flex items-center gap-2 mb-1">`width` &amp; `height`</h3>
                     <p className="text-sm text-muted-foreground">Specifies the dimensions of the iframe in pixels.</p>
                 </div>
                  <div className="bg-muted p-4 rounded-lg border">

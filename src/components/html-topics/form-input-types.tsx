@@ -196,7 +196,7 @@ export default function FormInputTypes({
         
         <Card>
           <CardHeader>
-            <CardTitle>Date & Time Inputs</CardTitle>
+            <CardTitle>Date &amp; Time Inputs</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
              {dateTimeInputTypes.map(input => (
@@ -225,7 +225,7 @@ export default function FormInputTypes({
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Button & Action Inputs</CardTitle>
+            <CardTitle>Button &amp; Action Inputs</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
              {actionInputTypes.map(input => (

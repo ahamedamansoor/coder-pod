@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -143,7 +142,7 @@ video {
 
             <Card className="border-primary bg-primary/5">
                 <CardHeader>
-                    <CardTitle className="text-primary flex items-center gap-2"><Info className="w-5 h-5" />Best Practices & Key Concepts</CardTitle>
+                    <CardTitle className="text-primary flex items-center gap-2"><Info className="w-5 h-5" />Best Practices &amp; Key Concepts</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
