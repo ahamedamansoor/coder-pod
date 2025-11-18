@@ -1,4 +1,3 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,7 +94,7 @@ export default function HtmlDocumentMetadata({ onOpenWebPlayground }: { onOpenWe
         <Card>
             <CardHeader>
                 <CardTitle>See It In Action</CardTitle>
-                <CardDescription>Check the `<head>` of the code in the playground to see these advanced tags in use.</CardDescription>
+                <CardDescription>Check the `&lt;head&gt;` of the code in the playground to see these advanced tags in use.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>

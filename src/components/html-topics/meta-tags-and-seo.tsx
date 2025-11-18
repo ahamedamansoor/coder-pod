@@ -49,7 +49,7 @@ export default function MetaTagsAndSeo({ onOpenWebPlayground }: { onOpenWebPlayg
         <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
                 <Search className="w-10 h-10 text-primary" />
-                <h1 className="text-4xl font-bold text-foreground">Meta Tags & SEO</h1>
+                <h1 className="text-4xl font-bold text-foreground">Meta Tags &amp; SEO</h1>
             </div>
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Improving your site's visibility on search engines and social media.</p>
         </div>
@@ -70,7 +70,7 @@ export default function MetaTagsAndSeo({ onOpenWebPlayground }: { onOpenWebPlayg
 
         <Card>
             <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Share2 className="w-5 h-5 text-primary"/>Open Graph & Twitter Cards</CardTitle>
+                <CardTitle className="flex items-center gap-2"><Share2 className="w-5 h-5 text-primary"/>Open Graph &amp; Twitter Cards</CardTitle>
                 <CardDescription>These special meta tags control how your page appears when shared on social media platforms like Facebook, LinkedIn, and Twitter.</CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-2 gap-6">
@@ -88,7 +88,7 @@ export default function MetaTagsAndSeo({ onOpenWebPlayground }: { onOpenWebPlayg
         <Card>
             <CardHeader>
                 <CardTitle>See It All In Action</CardTitle>
-                <CardDescription>This example contains all the essential meta tags. Open it in the playground and inspect the `<head>` element.</CardDescription>
+                <CardDescription>This example contains all the essential meta tags. Open it in the playground and inspect the `&lt;head&gt;` element.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
