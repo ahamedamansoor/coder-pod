@@ -38,42 +38,42 @@ export function LoginPageForm() {
   };
 
   const createUserProfile = async (user: FirebaseUser) => {
-    if (!user || !firestore) return;
-
-    const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
-    if (isEmailPasswordSignIn && !user.emailVerified) {
-        toast({
-            variant: 'destructive',
-            title: 'Verification Required',
-            description: 'Please verify your email before signing in. Check your inbox for a verification link.',
-            duration: 8000,
-        });
-        await auth?.signOut();
-        return; 
-    }
-
-    const userRef = doc(firestore, `users/${user.uid}`);
-    const docSnap = await getDoc(userRef);
-
-    if (!docSnap.exists()) {
-        const nameFromUrl = searchParams.get('name');
-        const dobFromUrl = searchParams.get('dob');
-        const phoneFromUrl = searchParams.get('phoneNumber');
-
-        const userProfile = {
-          id: user.uid,
-          email: user.email,
-          name: user.displayName || nameFromUrl || (user.isAnonymous ? 'Guest User' : user.email),
-          phoneNumber: user.phoneNumber || phoneFromUrl || null,
-          dob: dobFromUrl ? new Date(dobFromUrl) : null,
-          createdAt: serverTimestamp(),
-          lastLoginAt: serverTimestamp(),
-          completedTopics: {},
-        };
-        await setDoc(userRef, userProfile);
-    } else {
-        await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
-    }
+    // if (!user || !firestore) return;
+    //
+    // const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
+    // if (isEmailPasswordSignIn && !user.emailVerified) {
+    //     toast({
+    //         variant: 'destructive',
+    //         title: 'Verification Required',
+    //         description: 'Please verify your email before signing in. Check your inbox for a verification link.',
+    //         duration: 8000,
+    //     });
+    //     await auth?.signOut();
+    //     return; 
+    // }
+    //
+    // const userRef = doc(firestore, `users/${user.uid}`);
+    // const docSnap = await getDoc(userRef);
+    //
+    // if (!docSnap.exists()) {
+    //     const nameFromUrl = searchParams.get('name');
+    //     const dobFromUrl = searchParams.get('dob');
+    //     const phoneFromUrl = searchParams.get('phoneNumber');
+    //
+    //     const userProfile = {
+    //       id: user.uid,
+    //       email: user.email,
+    //       name: user.displayName || nameFromUrl || (user.isAnonymous ? 'Guest User' : user.email),
+    //       phoneNumber: user.phoneNumber || phoneFromUrl || null,
+    //       dob: dobFromUrl ? new Date(dobFromUrl) : null,
+    //       createdAt: serverTimestamp(),
+    //       lastLoginAt: serverTimestamp(),
+    //       completedTopics: {},
+    //     };
+    //     await setDoc(userRef, userProfile);
+    // } else {
+    //     await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
+    // }
     
     router.push('/dashboard');
   };
