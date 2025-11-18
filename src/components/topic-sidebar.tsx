@@ -1,7 +1,7 @@
 
 'use client';
 import React, { useEffect, useRef } from 'react';
-import type { Language } from '@/app/data';
+import type { Language } from '@/app/data/index';
 import {
   SidebarHeader,
   SidebarContent,
@@ -186,7 +186,7 @@ export function TopicSidebar({
         }
     } else if (language.slug === 'css') {
       const cssGroups: Record<string, string[]> = {
-            "CSS Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-colors', 'css-box-model', 'css-typography'],
+            "CSS Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-colors', 'css-box-model', 'css-typography', 'css-combinators'],
             "Layout": ['css-positioning', 'css-flexbox', 'css-grid'],
             "Advanced Styling": ['css-pseudo-classes', 'css-pseudo-elements', 'css-variables'],
             "Animation & Interactivity": ['css-transitions', 'css-animations'],

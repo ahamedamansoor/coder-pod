@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { MainHeader } from '@/components/main-header';
 import { TopicSidebar } from '@/components/topic-sidebar';
-import { languages } from '@/app/data';
+import { languages } from '@/app/data/index';
 import { notFound, useParams } from 'next/navigation';
 import { ScssProvider } from './scss-context';
 import { ScssLayoutProvider, useScssLayout } from './scss-layout-context';

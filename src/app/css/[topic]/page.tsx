@@ -3,7 +3,7 @@
 
 import { Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
-import { languages, type Language, type Topic } from '@/app/data';
+import { languages, type Language, type Topic } from '@/app/data/index';
 import {
   ResizablePanelGroup,
   ResizablePanel,

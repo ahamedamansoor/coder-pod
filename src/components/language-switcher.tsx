@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from './ui/button';
-import { languages } from '@/app/data';
+import { languages } from '@/app/data/index';
 import Link from 'next/link';
 import { ChevronDown, Code } from 'lucide-react';
 

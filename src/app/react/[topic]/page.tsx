@@ -3,7 +3,7 @@
 
 import { useState, useCallback, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
-import { languages, type Language, type Topic } from '@/app/data';
+import { languages, type Language, type Topic } from '@/app/data/index';
 import { ReactContentDisplay } from '@/components/react-content-display';
 import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import {
