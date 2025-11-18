@@ -157,13 +157,13 @@ export function TopicSidebar({
           }
       }
     } else if (language.slug === 'react') {
-      const reactGroups: Record<string, string[]> = {
-        "Core Concepts": ['what-is-react', 'jsx', 'react-components', 'react-state', 'react-lifecycle'],
-        "Rendering": ['conditional-rendering', 'lists-and-keys'],
-        "Forms & Events": ['react-forms'],
-        "Hooks": ['use-state-hook', 'use-effect-hook', 'use-context-hook', 'custom-hooks'],
-        "Advanced": ['react-router', 'react-state-management', 'react-performance'],
-      };
+        const reactGroups: Record<string, string[]> = {
+            "Fundamentals": ['what-is-react', 'setting-up-react', 'jsx', 'react-components', 'react-state', 'handling-events'],
+            "Rendering UI": ['conditional-rendering', 'lists-and-keys', 'react-forms'],
+            "Hooks Deep Dive": ['rules-of-hooks', 'use-state-hook', 'use-effect-hook', 'use-context-hook', 'use-reducer-hook', 'use-ref-hook', 'memoization-hooks', 'custom-hooks'],
+            "Advanced React": ['react-router', 'state-management-libraries', 'composition-patterns', 'error-boundaries', 'code-splitting'],
+            "Ecosystem & Modern React": ['react-and-typescript', 'react-performance', 'server-vs-client-components', 'testing-react-apps']
+        };
         for (const groupName in reactGroups) {
           if (reactGroups[groupName].includes(topic.slug)) {
               group = groupName;
@@ -219,7 +219,7 @@ export function TopicSidebar({
     : language.slug === 'javascript'
     ? ["Fundamentals", "Functions & Scope", "Data Structures", "Control Flow", "Browser APIs", "Asynchronous JS", "Modern JS", "Others"]
     : language.slug === 'react'
-    ? ["Core Concepts", "Rendering", "Forms & Events", "Hooks", "Advanced", "Others"]
+    ? ["Fundamentals", "Rendering UI", "Hooks Deep Dive", "Advanced React", "Ecosystem & Modern React", "Others"]
     : language.slug === 'html'
     ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics", "Others"]
     : language.slug === 'css'
