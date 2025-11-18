@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { unpkgPathPlugin } from '@/lib/unpkg-path-plugin';
 import { fetchPlugin } from '@/lib/fetch-plugin';
 
+let esbuildService: esbuild.Service | undefined;
+
 const initialCode = `import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -53,33 +55,34 @@ export function ReactPlayground() {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState<{ code: string; err: string }>({ code: '', err: '' });
   const [isBuilding, setIsBuilding] = useState(true);
-  const esbuildRef = useRef<any>();
   const { theme } = useTheme();
 
+  const startService = async () => {
+    if (!esbuildService) {
+        esbuildService = await esbuild.startService({
+            worker: true,
+            wasmURL: '/esbuild.wasm',
+        });
+    }
+    buildCode(code); // Initial build after service is ready
+  };
+
   useEffect(() => {
-    const startService = async () => {
-      esbuildRef.current = await esbuild.startService({
-        worker: true,
-        wasmURL: '/esbuild.wasm',
-      });
-      setIsBuilding(false);
-      buildCode();
-    };
     startService();
   }, []);
 
-  const buildCode = async () => {
-    if (!esbuildRef.current) return;
+  const buildCode = async (newCode: string) => {
+    if (!esbuildService) return;
 
     setIsBuilding(true);
     setOutput({ code: '', err: '' });
 
     try {
-      const result = await esbuildRef.current.build({
+      const result = await esbuildService.build({
         entryPoints: ['index.js'],
         bundle: true,
         write: false,
-        plugins: [unpkgPathPlugin(), fetchPlugin(code)],
+        plugins: [unpkgPathPlugin(), fetchPlugin(newCode)],
         define: {
           'process.env.NODE_ENV': '"production"',
           global: 'window',
@@ -93,6 +96,10 @@ export function ReactPlayground() {
     }
   };
   
+  const handleRunClick = () => {
+    buildCode(code);
+  };
+  
   const iframeSrcDoc = htmlTemplate(output.code);
 
   return (
@@ -102,7 +109,7 @@ export function ReactPlayground() {
             <PanelTop />
             React Playground
           </h1>
-          <Button onClick={buildCode} disabled={isBuilding}>
+          <Button onClick={handleRunClick} disabled={isBuilding}>
             {isBuilding ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Play className="mr-2 h-4 w-4"/>}
             Run
           </Button>
