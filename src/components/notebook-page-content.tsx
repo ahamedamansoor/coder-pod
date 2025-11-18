@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Loader2, Notebook, Plus, Trash2 } from 'lucide-react';
+import { Loader2, Notebook, Plus, Trash2, Youtube } from 'lucide-react';
 import { useUser, useFirestore, useCollection } from '@/firebase';
 import { collection, addDoc, serverTimestamp, deleteDoc, doc, Query } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
@@ -24,10 +23,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { SidebarProvider } from './ui/sidebar';
 import { useLoading } from '@/hooks/use-loading';
+import Image from 'next/image';
 
 export function NotebookPageContent() {
   const [newNoteTitle, setNewNoteTitle] = useState('');
-  const [newNoteContent, setNewNoteContent] = useState('');
+  const [newNoteUrl, setNewNoteUrl] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
@@ -35,26 +35,46 @@ export function NotebookPageContent() {
   const { hideLoader } = useLoading();
 
   useEffect(() => {
-    hideLoader();
-  }, [hideLoader]);
+    if (!isUserLoading) {
+        hideLoader();
+    }
+  }, [isUserLoading, hideLoader]);
 
   const notesCollection = useMemoFirebase(() => {
     if (!user || !firestore) return null;
+    // Construct a direct reference to the subcollection
     return collection(firestore, `users/${user.uid}/notes`);
   }, [user, firestore]) as Query | null;
 
   const { data: notes, isLoading: isNotesLoading } = useCollection(notesCollection);
 
+  const extractVideoId = (url: string) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  }
+
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newNoteTitle || !newNoteContent || !user || !firestore) return;
+    if (!newNoteTitle || !newNoteUrl || !user || !firestore || !notesCollection) return;
+
+    const videoId = extractVideoId(newNoteUrl);
+    if (!videoId) {
+        toast({
+            variant: 'destructive',
+            title: 'Invalid YouTube URL',
+            description: 'Please enter a valid YouTube video link.',
+        });
+        return;
+    }
 
     setIsAdding(true);
     try {
-      await addDoc(notesCollection!, {
+      await addDoc(notesCollection, {
         userId: user.uid,
         title: newNoteTitle,
-        content: newNoteContent,
+        youtubeUrl: newNoteUrl,
+        videoId: videoId,
         createdAt: serverTimestamp(),
       });
 
@@ -63,7 +83,7 @@ export function NotebookPageContent() {
         description: `Successfully saved "${newNoteTitle}".`,
       });
       setNewNoteTitle('');
-      setNewNoteContent('');
+      setNewNoteUrl('');
 
     } catch (error) {
       console.error("Failed to add note:", error);
@@ -113,7 +133,7 @@ export function NotebookPageContent() {
                       My Notebook
                   </h1>
                   <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                      A simple place to jot down your thoughts and code snippets.
+                      Your personal space to save and organize useful learning resources.
                   </p>
               </div>
 
@@ -128,21 +148,21 @@ export function NotebookPageContent() {
                       <form onSubmit={handleAddNote} className="space-y-4">
                           <Input
                               type="text"
-                              placeholder="Note Title"
+                              placeholder="Note Title (e.g., 'Java Concurrency Tutorial')"
                               value={newNoteTitle}
                               onChange={(e) => setNewNoteTitle(e.target.value)}
                               required
                               disabled={isAdding}
                           />
-                          <Textarea
-                              placeholder="Write your note here..."
-                              value={newNoteContent}
-                              onChange={(e) => setNewNoteContent(e.target.value)}
+                          <Input
+                              type="url"
+                              placeholder="YouTube Video URL"
+                              value={newNoteUrl}
+                              onChange={(e) => setNewNoteUrl(e.target.value)}
                               required
                               disabled={isAdding}
-                              rows={5}
                           />
-                          <Button type="submit" disabled={isAdding || !newNoteTitle || !newNoteContent}>
+                          <Button type="submit" disabled={isAdding || !newNoteTitle || !newNoteUrl}>
                               {isAdding ? (
                                   <>
                                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -157,17 +177,31 @@ export function NotebookPageContent() {
               <div className="space-y-6">
                   <h2 className="text-2xl font-bold text-foreground">Saved Notes</h2>
                   {isNotesLoading ? (
-                      <div className="space-y-4">
-                          <Skeleton className="h-24 w-full" />
-                          <Skeleton className="h-24 w-full" />
+                      <div className="grid md:grid-cols-2 gap-4">
+                          <Skeleton className="h-48 w-full" />
+                          <Skeleton className="h-48 w-full" />
                       </div>
                   ) : notes && notes.length > 0 ? (
-                      notes.map(note => (
-                          <Card key={note.id}>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {notes.map(note => (
+                          <Card key={note.id} className="overflow-hidden">
+                            <div className="relative aspect-video">
+                               <a href={note.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                                <Image 
+                                    src={`https://img.youtube.com/vi/${note.videoId}/hqdefault.jpg`}
+                                    alt={`Thumbnail for ${note.title}`}
+                                    fill
+                                    className="object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                    <Youtube className="w-12 h-12 text-white" />
+                                </div>
+                               </a>
+                            </div>
                               <CardHeader>
                                   <div className="flex justify-between items-start">
                                       <div>
-                                          <CardTitle>{note.title}</CardTitle>
+                                          <CardTitle className="hover:text-primary"><a href={note.youtubeUrl} target="_blank" rel="noopener noreferrer">{note.title}</a></CardTitle>
                                           <CardDescription>
                                             Saved on {note.createdAt ? new Date(note.createdAt.seconds * 1000).toLocaleDateString() : '...'}
                                           </CardDescription>
@@ -193,16 +227,14 @@ export function NotebookPageContent() {
                                     </AlertDialog>
                                   </div>
                               </CardHeader>
-                              <CardContent>
-                                <p className="whitespace-pre-wrap text-sm text-muted-foreground">{note.content}</p>
-                              </CardContent>
                           </Card>
-                      ))
+                      ))}
+                    </div>
                   ) : (
                       <Card className="text-center py-12">
                           <CardContent>
                               <p className="text-muted-foreground">You don't have any notes yet.</p>
-                              <p className="text-muted-foreground">Add a title and content above to get started!</p>
+                              <p className="text-muted-foreground">Add a title and a YouTube URL above to get started!</p>
                           </CardContent>
                       </Card>
                   )}
