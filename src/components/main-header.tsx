@@ -91,6 +91,14 @@ export function MainHeader({
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
       </div>
       <div className="flex items-center gap-4">
+        {currentLanguage && (
+          <InterviewSimulator language={currentLanguage.name}>
+             <Button variant="outline">
+                <Mic className="mr-2 h-4 w-4" />
+                AI Interview
+              </Button>
+          </InterviewSimulator>
+        )}
         {showWebPlaygroundButton && (
           <WebPlaygroundModal>
               <Button variant="outline">
@@ -104,14 +112,6 @@ export function MainHeader({
             <Code className="mr-2 h-4 w-4" />
             Code Editor
           </Button>
-        )}
-        {currentLanguage && (
-          <InterviewSimulator language={currentLanguage.name}>
-             <Button variant="outline">
-                <Mic className="mr-2 h-4 w-4" />
-                AI Interview
-              </Button>
-          </InterviewSimulator>
         )}
         <ThemeToggle />
         {user ? (
