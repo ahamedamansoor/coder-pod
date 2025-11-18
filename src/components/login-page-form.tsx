@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -29,15 +30,13 @@ export function LoginPageForm() {
   const { toast } = useToast();
   const { showLoader } = useLoading();
 
-  const handleLoginStart = () => {
+  const createUserProfile = async (user: FirebaseUser) => {
+    if (!user || !firestore) return;
+
     showLoader({
       title: 'Preparing your dashboard...',
       subtitle: 'Personalizing your learning experience.',
     });
-  };
-
-  const createUserProfile = async (user: FirebaseUser) => {
-    if (!user || !firestore) return;
 
     let isNewUser = false;
 
@@ -83,8 +82,14 @@ export function LoginPageForm() {
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {
-    handleLoginStart();
-    await createUserProfile(userCredential.user);
+    showLoader({
+        title: 'Login successful!',
+        subtitle: 'Redirecting you to your dashboard...',
+    });
+    // A brief delay to let the user see the success message
+    setTimeout(() => {
+        createUserProfile(userCredential.user);
+    }, 1000);
   };
 
   const handleGoogleSignIn = async () => {
@@ -140,8 +145,7 @@ export function LoginPageForm() {
     setIsAnonymousLoading(true);
     try {
       const credential = await signInAnonymously(auth);
-      handleLoginStart();
-      await createUserProfile(credential.user);
+      await handleSuccessfulLogin(credential);
     } catch (error: any) {
       console.error('Anonymous sign-in error:', error);
        toast({
@@ -160,8 +164,7 @@ export function LoginPageForm() {
     setIsEmailLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      handleLoginStart();
-      await createUserProfile(userCredential.user);
+      await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
       console.error('Email sign-in error:', error);
        let description = 'Invalid email or password. Please try again.';
