@@ -1,7 +1,7 @@
 
 import { SidebarTrigger } from './ui/sidebar';
 import { Button } from './ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid, Mic } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -19,6 +19,8 @@ import { WebPlaygroundModal } from './web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
 import Link from 'next/link';
 import { useLoading } from '@/hooks/use-loading';
+import { InterviewSimulator } from './interview-simulator';
+import { languages } from '@/app/data';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -37,12 +39,13 @@ export function MainHeader({
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
-  const params = useParams();
   const { showLoader } = useLoading();
   
   const segments = useParams();
   const pathSegments = Object.values(segments);
   const currentLanguageSlug = pathSegments[0] as string;
+
+  const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -101,6 +104,14 @@ export function MainHeader({
             <Code className="mr-2 h-4 w-4" />
             Code Editor
           </Button>
+        )}
+        {currentLanguage && (
+          <InterviewSimulator language={currentLanguage.name}>
+             <Button variant="outline">
+                <Mic className="mr-2 h-4 w-4" />
+                AI Interview
+              </Button>
+          </InterviewSimulator>
         )}
         <ThemeToggle />
         {user ? (

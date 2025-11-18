@@ -1,7 +1,9 @@
+
 'use server';
 
 /**
  * @fileOverview An AI flow to conduct a mock HTML interview.
+ * @deprecated Use the more generic 'interview-flow.ts' instead.
  *
  * - conductHtmlInterview - A function that evaluates a user's answer and provides feedback.
  * - ConductHtmlInterviewInput - The input type for the function.
