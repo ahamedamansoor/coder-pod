@@ -46,6 +46,12 @@ const ContentVisibility = lazy(() => import('./html-topics/content-visibility'))
 const ContentEditable = lazy(() => import('./html-topics/content-editable'));
 const ProgressAndMeter = lazy(() => import('./html-topics/progress-and-meter'));
 const AdvancedTables = lazy(() => import('./html-topics/advanced-tables'));
+const MetaTagsAndSeo = lazy(() => import('./html-topics/meta-tags-and-seo'));
+const HtmlDocumentMetadata = lazy(() => import('./html-topics/html-document-metadata'));
+const MicrodataStructuredData = lazy(() => import('./html-topics/microdata-structured-data'));
+const HtmlBestPractices = lazy(() => import('./html-topics/html-best-practices'));
+const HtmlEmailBasics = lazy(() => import('./html-topics/html-email-basics'));
+const GlobalAttributes = lazy(() => import('./html-topics/global-attributes'));
 
 
 // Map slugs to their lazy-loaded components
@@ -89,6 +95,12 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'content-editable': ContentEditable,
   'progress-and-meter': ProgressAndMeter,
   'advanced-tables': AdvancedTables,
+  'meta-tags-and-seo': MetaTagsAndSeo,
+  'html-document-metadata': HtmlDocumentMetadata,
+  'microdata-structured-data': MicrodataStructuredData,
+  'html-best-practices': HtmlBestPractices,
+  'html-email-basics': HtmlEmailBasics,
+  'global-attributes': GlobalAttributes,
 };
 
 function LoadingSkeleton() {
