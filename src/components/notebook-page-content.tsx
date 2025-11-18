@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
@@ -23,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { SidebarProvider } from './ui/sidebar';
+import { useLoading } from '@/hooks/use-loading';
 
 export function NotebookPageContent() {
   const [youtubeUrl, setYoutubeUrl] = useState('');
@@ -30,6 +31,11 @@ export function NotebookPageContent() {
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
+  const { hideLoader } = useLoading();
+
+  useEffect(() => {
+    hideLoader();
+  }, [hideLoader]);
 
   const notesCollection = useMemoFirebase(() => {
     if (!user || !firestore) return null;
