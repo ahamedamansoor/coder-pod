@@ -60,6 +60,15 @@ service cloud.firestore {
 
       // Allow the owner to delete their own profile.
       allow delete: if isOwner();
+
+      /**
+       * @description Notebook sub-collection rules.
+       * @path /users/{userId}/notes/{noteId}
+       * @allow (read, write) - Only the owner of the notebook can read and write notes.
+       */
+      match /notes/{noteId} {
+        allow read, write: if isOwner();
+      }
     }
   }
 }

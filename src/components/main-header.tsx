@@ -2,7 +2,7 @@
 import { SidebarTrigger } from './ui/sidebar';
 import { Logo } from './logo';
 import { Button } from './ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid, Notebook } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -18,6 +18,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { doc } from 'firebase/firestore';
 import { WebPlaygroundModal } from './web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
+import Link from 'next/link';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -81,6 +82,12 @@ export function MainHeader({
         </div>
       </div>
       <div className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="/notebook">
+            <Notebook className="mr-2 h-4 w-4" />
+            Notebook
+          </Link>
+        </Button>
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
         <ThemeToggle />
         {showWebPlaygroundButton && (
