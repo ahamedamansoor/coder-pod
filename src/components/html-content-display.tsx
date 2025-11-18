@@ -43,6 +43,7 @@ const LazyLoading = lazy(() => import('./html-topics/lazy-loading'));
 const TemplateAndSlot = lazy(() => import('./html-topics/template-and-slot'));
 const DataAttributes = lazy(() => import('./html-topics/data-attributes'));
 const ContentVisibility = lazy(() => import('./html-topics/content-visibility'));
+const ContentEditable = lazy(() => import('./html-topics/content-editable'));
 
 
 // Map slugs to their lazy-loaded components
@@ -83,6 +84,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'template-and-slot': TemplateAndSlot,
   'data-attributes': DataAttributes,
   'content-visibility': ContentVisibility,
+  'content-editable': ContentEditable,
 };
 
 function LoadingSkeleton() {
