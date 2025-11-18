@@ -16,6 +16,7 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { ModuleCompletionCelebration } from './module-completion-celebration';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -35,6 +36,7 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const [completedModule, setCompletedModule] = useState<string | null>(null);
   
   const isUserAuthenticated = user && !user.isAnonymous;
 
@@ -64,6 +66,21 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
   const toggleTopic = (topicId: string) => {
     if (!isUserAuthenticated) return;
     handleToggleComplete(topicId);
+
+    const topicModule = modules.find(m => m.topics.some(t => t.slug === topicId));
+    if (!topicModule) return;
+    
+    const isCompleting = !completedTopics.has(topicId);
+    if (isCompleting) {
+        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.slug) || t.slug === topicId);
+        if (allTopicsInModuleCompleted) {
+          setCompletedModule(topicModule.title);
+          const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
+          if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
+            setExpandedModule(modules[currentModuleIndex + 1].id);
+          }
+        }
+    }
   };
 
   const calculateProgress = () => {
@@ -111,6 +128,11 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
 
   return (
     <div className="p-2 md:p-6 max-w-none">
+      <ModuleCompletionCelebration 
+        isOpen={!!completedModule}
+        moduleName={completedModule || ""}
+        onClose={() => setCompletedModule(null)}
+      />
       <div className="mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">{language.name} Learning Path</h1></div>

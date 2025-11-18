@@ -5,16 +5,17 @@ import { useCss } from '@/app/css/css-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card } from '@/components/ui/card';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { ModuleCompletionCelebration } from './module-completion-celebration';
 
 export const CssLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useCss();
   const [expandedModule, setExpandedModule] = useState<string | null>("CSS Fundamentals");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const [completedModule, setCompletedModule] = useState<string | null>(null);
   
   const isUserAuthenticated = user && !user.isAnonymous;
 
@@ -95,6 +96,7 @@ export const CssLearningRoadmap = () => {
     if (isCompleting) {
         const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.id) || t.id === topicId);
         if (allTopicsInModuleCompleted) {
+          setCompletedModule(topicModule.title);
           const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
           if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
             setExpandedModule(modules[currentModuleIndex + 1].id);
@@ -148,6 +150,11 @@ export const CssLearningRoadmap = () => {
 
   return (
     <div className="p-2 md:p-6 max-w-none">
+      <ModuleCompletionCelebration 
+        isOpen={!!completedModule}
+        moduleName={completedModule || ""}
+        onClose={() => setCompletedModule(null)}
+      />
       <div className="mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">CSS Learning Path</h1></div>

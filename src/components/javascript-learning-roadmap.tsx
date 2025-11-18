@@ -8,12 +8,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { ModuleCompletionCelebration } from './module-completion-celebration';
 
 export const JavascriptLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useJavascript();
   const [expandedModule, setExpandedModule] = useState<string | null>("Fundamentals");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const [completedModule, setCompletedModule] = useState<string | null>(null);
   
   const isUserAuthenticated = user && !user.isAnonymous;
 
@@ -110,6 +112,7 @@ export const JavascriptLearningRoadmap = () => {
     if (isCompleting) {
         const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.id) || t.id === topicId);
         if (allTopicsInModuleCompleted) {
+          setCompletedModule(topicModule.title);
           const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
           if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
             setExpandedModule(modules[currentModuleIndex + 1].id);
@@ -121,8 +124,8 @@ export const JavascriptLearningRoadmap = () => {
   const getDifficultyColor = (difficulty: string) => {
     switch(difficulty) {
       case 'Easy': return 'text-primary/80 bg-primary/10';
-      case 'Medium': return 'text-primary/90 bg-primary/20';
-      case 'Hard': return 'text-primary bg-primary/30';
+      case 'Medium': return 'text-yellow-600 bg-yellow-400/10';
+      case 'Hard': return 'text-destructive bg-destructive/10';
       default: return 'text-muted-foreground bg-muted';
     }
   };
@@ -173,6 +176,11 @@ export const JavascriptLearningRoadmap = () => {
 
   return (
     <div className="p-2 md:p-6 max-w-none">
+       <ModuleCompletionCelebration 
+        isOpen={!!completedModule}
+        moduleName={completedModule || ""}
+        onClose={() => setCompletedModule(null)}
+      />
       <div className="mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">JavaScript Learning Path</h1></div>
