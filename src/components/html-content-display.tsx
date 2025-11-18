@@ -36,6 +36,7 @@ const Html5Apis = lazy(() => import('./html-topics/html5-apis'));
 const WebWorkersApi = lazy(() => import('./html-topics/web-workers-api'));
 const Accessibility = lazy(() => import('./html-topics/accessibility'));
 const HtmlInterviewSimulator = lazy(() => import('./html-topics/html-interview-simulator'));
+const Html5LatestFeatures = lazy(() => import('./html-topics/html5-latest-features'));
 
 
 // Map slugs to their lazy-loaded components
@@ -69,6 +70,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'web-workers-api': WebWorkersApi,
   'accessibility': Accessibility,
   'interview-simulator': HtmlInterviewSimulator,
+  'html5-latest-features': Html5LatestFeatures,
 };
 
 function LoadingSkeleton() {
