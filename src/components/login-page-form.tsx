@@ -30,6 +30,13 @@ export function LoginPageForm() {
   const { toast } = useToast();
   const { showLoader } = useLoading();
 
+  const handleLoginStart = () => {
+    showLoader({
+      title: 'Preparing your dashboard...',
+      subtitle: 'Personalizing your learning experience.',
+    });
+  };
+
   const createUserProfile = async (user: FirebaseUser) => {
     if (!user || !firestore) return;
 
@@ -68,11 +75,11 @@ export function LoginPageForm() {
         await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
     }
     
-    showLoader();
     router.push('/dashboard');
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {
+    handleLoginStart();
     await createUserProfile(userCredential.user);
   };
 
@@ -129,6 +136,7 @@ export function LoginPageForm() {
     setIsAnonymousLoading(true);
     try {
       const credential = await signInAnonymously(auth);
+      handleLoginStart();
       await createUserProfile(credential.user);
     } catch (error: any) {
       console.error('Anonymous sign-in error:', error);
@@ -148,6 +156,7 @@ export function LoginPageForm() {
     setIsEmailLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      handleLoginStart();
       await createUserProfile(userCredential.user);
     } catch (error: any) {
       console.error('Email sign-in error:', error);

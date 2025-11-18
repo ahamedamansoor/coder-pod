@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Rocket } from 'lucide-react';
@@ -5,7 +6,7 @@ import { useLoading } from '@/hooks/use-loading';
 import { cn } from '@/lib/utils';
 
 export function PageLoader() {
-  const { isLoading } = useLoading();
+  const { isLoading, loaderText } = useLoading();
 
   return (
     <div
@@ -16,8 +17,8 @@ export function PageLoader() {
     >
       <div className="relative flex flex-col items-center justify-center">
         <Rocket className="w-20 h-20 text-primary animate-bounce" />
-        <h2 className="text-2xl font-semibold mt-8 animate-pulse">Loading Your Learning Module...</h2>
-        <p className="text-muted-foreground mt-2">Just a moment!</p>
+        <h2 className="text-2xl font-semibold mt-8 animate-pulse">{loaderText.title}</h2>
+        <p className="text-muted-foreground mt-2">{loaderText.subtitle}</p>
       </div>
     </div>
   );
