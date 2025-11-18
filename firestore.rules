@@ -32,6 +32,15 @@ service cloud.firestore {
       allow get, update, delete: if isOwner();
       allow list: if false;
       allow create: if isOwner();
+      
+      /**
+       * @description Enforces that only the authenticated owner can manage their notes.
+       * @path /users/{userId}/notes/{noteId}
+       * @allow (get, list, create, update, delete) - The user can perform all operations on their own notes.
+       */
+      match /notes/{noteId} {
+        allow read, write: if isOwner();
+      }
     }
   }
 }
