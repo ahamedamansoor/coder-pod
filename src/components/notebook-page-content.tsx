@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Notebook, Plus, Trash2, Play, Youtube, Loader2, FileText } from 'lucide-react';
-import { useUser, useFirestore, useCollection } from '@/firebase';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, addDoc, deleteDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
@@ -31,12 +31,12 @@ export function NotebookPageContent() {
   const firestore = useFirestore();
   const { toast } = useToast();
 
-  const notesCollectionRef = useMemo(() => {
+  const notesCollectionRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     return collection(firestore, `users/${user.uid}/notes`);
   }, [user, firestore]);
   
-  const notesQuery = useMemo(() => {
+  const notesQuery = useMemoFirebase(() => {
     if (!notesCollectionRef) return null;
     return query(notesCollectionRef, orderBy('createdAt', 'desc'));
   }, [notesCollectionRef]);
