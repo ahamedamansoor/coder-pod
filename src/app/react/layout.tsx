@@ -46,7 +46,7 @@ function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
             onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
             isEditorOpen={isEditorOpen}
             showCodeEditorButton={false}
-            showWebPlaygroundButton={true}
+            showWebPlaygroundButton={false}
           />
           <main className="flex-1 flex overflow-hidden">
             {children}

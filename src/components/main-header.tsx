@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { useLoading } from '@/hooks/use-loading';
 import { InterviewSimulator } from './interview-simulator';
 import { languages } from '@/app/data';
+import { ReactPlaygroundModal } from './react-playground-modal';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -93,13 +94,22 @@ export function MainHeader({
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
       </div>
       <div className="flex items-center gap-4">
-        {currentLanguage?.slug === 'react' && (
-          <Button variant="outline" asChild>
-             <Link href="/react/playground">
-                <ToyBrick className="mr-2 h-4 w-4" />
-                React Playground
-              </Link>
-          </Button>
+        {currentLanguage?.slug === 'react' ? (
+          <ReactPlaygroundModal>
+            <Button variant="outline">
+              <ToyBrick className="mr-2 h-4 w-4" />
+              React Playground
+            </Button>
+          </ReactPlaygroundModal>
+        ) : (
+          showWebPlaygroundButton && (
+            <WebPlaygroundModal initialLanguage={currentLanguageSlug}>
+              <Button variant="outline">
+                <LayoutGrid className="mr-2 h-4 w-4" />
+                Web Playground
+              </Button>
+            </WebPlaygroundModal>
+          )
         )}
         {currentLanguage && (
           <InterviewSimulator language={currentLanguage.name}>
@@ -109,14 +119,7 @@ export function MainHeader({
               </Button>
           </InterviewSimulator>
         )}
-        {showWebPlaygroundButton && (
-          <WebPlaygroundModal initialLanguage={currentLanguageSlug}>
-              <Button variant="outline">
-                  <LayoutGrid className="mr-2 h-4 w-4" />
-                  Web Playground
-              </Button>
-          </WebPlaygroundModal>
-        )}
+        
         {showCodeEditorButton && (
           <Button variant="outline" onClick={onToggleEditor}>
             <Code className="mr-2 h-4 w-4" />
