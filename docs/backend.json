@@ -55,6 +55,15 @@
           "type": "string",
           "format": "date-time",
           "description": "The timestamp of the user's last login."
+        },
+        "plan": {
+          "type": "string",
+          "description": "The user's subscription plan.",
+          "enum": ["free", "paid"]
+        },
+        "tokenBalance": {
+            "type": "number",
+            "description": "The number of AI tokens the user has available."
         }
       },
       "required": [

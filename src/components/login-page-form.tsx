@@ -69,6 +69,8 @@ export function LoginPageForm() {
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
           completedTopics: {},
+          plan: "free",
+          tokenBalance: 10000,
         };
         await setDoc(userRef, userProfile);
     } else {
