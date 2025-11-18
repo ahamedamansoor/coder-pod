@@ -86,9 +86,10 @@ export function TopicSidebar({
   }, [selectedTopicSlug]);
 
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
+  const interviewTopic = language.topics.find(t => t.slug === 'interview-questions');
   
   const topicsByGroup = language.topics.reduce((acc, topic) => {
-    if (topic.slug === 'learning-plan') return acc;
+    if (topic.slug === 'learning-plan' || topic.slug === 'interview-questions') return acc;
     
     let group = 'Others'; // Default group
 
@@ -178,7 +179,6 @@ export function TopicSidebar({
             "Advanced Topics & HTML5 Features": ['html5-latest-features', 'dialog-element', 'popover-api', 'details-and-summary', 'lazy-loading', 'content-visibility', 'template-and-slot', 'data-attributes', 'content-editable', 'progress-and-meter', 'advanced-tables'],
             "Metadata, SEO, and Best Practices": ['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'global-attributes'],
             "API & Interactivity": ['html5-apis', 'web-storage-api', 'fetch-api', 'geolocation-api', 'drag-and-drop-api', 'web-workers-api', 'accessibility'],
-            "Practice": ['interview-questions', 'interview-simulator'],
         };
         for (const groupName in htmlGroups) {
             if (htmlGroups[groupName].includes(topic.slug)) {
@@ -223,7 +223,7 @@ export function TopicSidebar({
     : language.slug === 'react'
     ? ["Fundamentals", "Rendering UI", "Hooks Deep Dive", "Advanced React", "Ecosystem & Modern React", "Others"]
     : language.slug === 'html'
-    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Practice", "Others"]
+    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Others"]
     : language.slug === 'css'
     ? ["CSS Fundamentals", "Layout", "Advanced Styling", "Animation & Interactivity", "Responsive Design", "Others"]
     : language.slug === 'scss'
@@ -269,6 +269,19 @@ export function TopicSidebar({
     </SidebarMenuButton>
   )
 
+  const interviewButton = (
+    <SidebarMenuButton
+      asChild
+      isActive={selectedTopicSlug === interviewTopic?.slug}
+      tooltip={interviewTopic?.title}
+      className="justify-start"
+    >
+       <Link href={`/${language.slug}/${interviewTopic?.slug}`} ref={selectedTopicSlug === interviewTopic?.slug ? activeItemRef : null}>
+          {interviewTopic?.title}
+       </Link>
+    </SidebarMenuButton>
+  );
+
   return (
     <>
       <SidebarHeader className="p-4">
@@ -300,6 +313,12 @@ export function TopicSidebar({
                   </div>
                 )}
                 
+                {interviewTopic && (
+                    <div key={interviewTopic.slug}>
+                        <SidebarMenuItem>{interviewButton}</SidebarMenuItem>
+                    </div>
+                )}
+
                 <Separator />
 
                 <div className='space-y-4'>

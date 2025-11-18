@@ -5,6 +5,7 @@ export const html: Language = {
   name: 'HTML',
   topics: [
     { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A structured roadmap for learning HTML from scratch.' },
+    { slug: 'interview-questions', title: 'Interview Q&A', explanation: 'A curated list of common HTML interview questions and answers.' },
     // HTML Basics
     { slug: 'introduction-to-html', title: 'HTML Introduction', explanation: 'What is HTML and its role in web pages.' },
     { slug: 'document-structure', title: 'Document Structure', explanation: 'Understanding the basic boilerplate of an HTML document, including `<!DOCTYPE>`, `<html>`, `<head>`, and `<body>`.' },
@@ -59,8 +60,5 @@ export const html: Language = {
     { slug: 'drag-and-drop-api', title: 'Drag and Drop API', explanation: 'Implementing native drag-and-drop functionality for elements.' },
     { slug: 'web-workers-api', title: 'Web Workers API', explanation: 'Running background scripts in a separate thread to avoid freezing the user interface.' },
     { slug: 'accessibility', title: 'Accessibility (a11y)', explanation: 'Best practices for writing accessible HTML, including ARIA roles and proper semantic structure to support users with disabilities.' },
-    // Practice
-    { slug: 'interview-questions', title: 'Interview Q&A', explanation: 'A curated list of common HTML interview questions and answers.' },
-    { slug: 'interview-simulator', title: 'AI Interview Simulator', explanation: 'Practice for your next technical interview with an AI-powered mock interviewer.' },
   ]
 };

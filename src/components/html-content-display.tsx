@@ -36,7 +36,6 @@ const PopoverApi = lazy(() => import('./html-topics/popover-api'));
 const Html5Apis = lazy(() => import('./html-topics/html5-apis'));
 const WebWorkersApi = lazy(() => import('./html-topics/web-workers-api'));
 const Accessibility = lazy(() => import('./html-topics/accessibility'));
-const HtmlInterviewSimulator = lazy(() => import('./html-topics/html-interview-simulator'));
 const HtmlInterviewQuestions = lazy(() => import('./html-topics/html-interview-questions'));
 const Html5LatestFeatures = lazy(() => import('./html-topics/html5-latest-features'));
 const DetailsAndSummary = lazy(() => import('./html-topics/details-and-summary'));
@@ -89,7 +88,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html5-apis': Html5Apis,
   'web-workers-api': WebWorkersApi,
   'accessibility': Accessibility,
-  'interview-simulator': HtmlInterviewSimulator,
   'interview-questions': HtmlInterviewQuestions,
   'html5-latest-features': Html5LatestFeatures,
   'details-and-summary': DetailsAndSummary,
