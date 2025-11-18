@@ -1,4 +1,3 @@
-
 'use client';
 
 import { SidebarTrigger } from './ui/sidebar';
@@ -43,9 +42,8 @@ export function MainHeader({
   const router = useRouter();
   const { showLoader } = useLoading();
   
-  const segments = useParams();
-  const pathSegments = Object.values(segments);
-  const currentLanguageSlug = pathSegments[0] as string;
+  const params = useParams();
+  const currentLanguageSlug = params.topic ? (Array.isArray(params.lang) ? params.lang[0] : String(router.pathname).split('/')[1]) : undefined;
 
   const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
 
