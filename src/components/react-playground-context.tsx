@@ -32,8 +32,9 @@ export const ReactPlaygroundProvider = ({ children }: { children: ReactNode }) =
       }
     };
     
-    startEsbuildService();
-
+    if (typeof window !== 'undefined') {
+      startEsbuildService();
+    }
   }, []);
 
   return (
