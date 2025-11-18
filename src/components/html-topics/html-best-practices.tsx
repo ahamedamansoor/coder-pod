@@ -1,6 +1,6 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Code, Accessibility, Zap, Folder, File, ThumbsUp } from 'lucide-react';
+import { ThumbsUp, Code, Accessibility, Zap, Folder, FileCheck, CaseLower, File } from 'lucide-react';
 import React from 'react';
 
 export default function HtmlBestPractices() {
@@ -10,8 +10,10 @@ export default function HtmlBestPractices() {
         { icon: Accessibility, title: "Prioritize Accessibility", description: "Always include `alt` text for images, use `<label>` for form inputs, and ensure a logical heading structure (`<h1>`, `<h2>`, etc.)." },
         { icon: Zap, title: "Optimize for Performance", description: "Use `loading=\"lazy\"` for off-screen images/iframes. Optimize image sizes and use modern formats like WebP." },
         { icon: Folder, title: "Maintain a Logical Structure", description: "Ensure your document has a single `<h1>` and that heading levels are not skipped (e.g., don't jump from an `<h2>` to an `<h4>`)." },
-        { icon: File, title: "Validate Your HTML", description: "Use tools like the W3C Markup Validation Service to check for errors in your HTML, which can prevent unexpected rendering issues." },
-        { icon: Code, title: "Use Lowercase for Tags and Attributes", description: "While HTML is not case-sensitive, it's a strong convention to write all tags and attributes in lowercase for consistency and readability." },
+        { icon: FileCheck, title: "Validate Your HTML", description: "Use tools like the W3C Markup Validation Service to check for errors in your HTML, which can prevent unexpected rendering issues." },
+        { icon: CaseLower, title: "Use Lowercase for Tags and Attributes", description: "While HTML is not case-sensitive, it's a strong convention to write all tags and attributes in lowercase for consistency and readability." },
+        { icon: File, title: "Close Your Tags", description: "While some tags are self-closing (like `<img>`), most tags that have an opening tag (like `<p>`) also need a closing tag (`</p>`). Omitting them can lead to unpredictable rendering issues." },
+
     ];
 
     return (

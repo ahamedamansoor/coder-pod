@@ -1,6 +1,6 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Globe, Fingerprint, Tags, HelpCircle, SpellCheck, Keyboard, EyeOff, Edit, Database, Play } from 'lucide-react';
+import { Globe, Fingerprint, Tags, HelpCircle, SpellCheck, Keyboard, EyeOff, Edit, Database, Play, Code } from 'lucide-react';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -11,9 +11,10 @@ export default function GlobalAttributes({ onOpenWebPlayground }: { onOpenWebPla
         { icon: Tags, attr: 'class', desc: 'Assigns one or more class names to an element, primarily for CSS styling.' },
         { icon: HelpCircle, attr: 'title', desc: 'Provides extra information about an element, which typically appears as a tooltip on hover.' },
         { icon: SpellCheck, attr: 'lang', desc: 'Specifies the language of the element\'s content, which helps search engines and screen readers.' },
+        { icon: Code, attr: 'style', desc: 'Applies inline CSS styles directly to an element.' },
         { icon: Keyboard, attr: 'tabindex', desc: 'Controls whether an element can be focused with the Tab key and in what order.' },
         { icon: EyeOff, attr: 'hidden', desc: 'A boolean attribute that hides an element from view. It is similar to using CSS `display: none;`.' },
-        { icon: Edit, attr: 'contenteditable', desc: 'A boolean attribute that makes the content of an element editable by the user.' },
+        { icon: Edit, attr: 'contenteditable', desc: 'A boolean attribute that makes the content of the element editable by the user.' },
         { icon: Database, attr: 'data-*', desc: 'A set of custom attributes to store private data for the page or application, easily accessible by JavaScript.' },
     ];
     
@@ -23,25 +24,23 @@ export default function GlobalAttributes({ onOpenWebPlayground }: { onOpenWebPla
 <p id="main-paragraph" 
    class="important-text" 
    lang="en" 
-   title="This is a tooltip!">
-  This paragraph uses id, class, lang, and title attributes. Hover over it!
+   title="This is a tooltip!"
+   style="color: blue; border-left: 4px solid blue; padding-left: 10px;">
+  This paragraph uses id, class, lang, title and style attributes. Hover over it!
 </p>
 
-<div tabindex="0" style="padding: 10px; border: 1px solid #ccc; outline: none; border-radius: 4px;"
-    data-user-id="123" data-role="admin">
+<div tabindex="0" 
+    data-user-id="123" 
+    data-role="admin"
+    style="padding: 10px; border: 1px solid #ccc; outline: none; border-radius: 4px;">
   This div is focusable (try tabbing to it) and has custom data.
 </div>
 
-<p contenteditable="true">You can edit this paragraph directly!</p>
+<p contenteditable="true" style="margin-top: 1rem; border: 1px dashed #ccc; padding: 5px;">You can edit this paragraph directly!</p>
 
-<button onclick="toggleVisibility()">Toggle Hidden Text</button>
+<button onclick="toggleVisibility()" style="margin-top: 1rem;">Toggle Hidden Text</button>
 <p id="hidden-text" hidden>This text is initially hidden.</p>`,
-        css: `body { font-family: sans-serif; }
-#main-paragraph {
-  border-left: 4px solid hsl(var(--primary));
-  padding-left: 10px;
-}
-.important-text {
+        css: `.important-text {
   font-weight: bold;
 }
 div[tabindex="0"]:focus {

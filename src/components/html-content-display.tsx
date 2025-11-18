@@ -51,6 +51,10 @@ const HtmlDocumentMetadata = lazy(() => import('./html-topics/html-document-meta
 const MicrodataStructuredData = lazy(() => import('./html-topics/microdata-structured-data'));
 const HtmlBestPractices = lazy(() => import('./html-topics/html-best-practices'));
 const GlobalAttributes = lazy(() => import('./html-topics/global-attributes'));
+const WebStorageApi = lazy(() => import('./html-topics/web-storage-api'));
+const FetchApi = lazy(() => import('./html-topics/fetch-api'));
+const GeolocationApi = lazy(() => import('./html-topics/geolocation-api'));
+const DragAndDropApi = lazy(() => import('./html-topics/drag-and-drop-api'));
 
 
 // Map slugs to their lazy-loaded components
@@ -99,6 +103,10 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'microdata-structured-data': MicrodataStructuredData,
   'html-best-practices': HtmlBestPractices,
   'global-attributes': GlobalAttributes,
+  'web-storage-api': WebStorageApi,
+  'fetch-api': FetchApi,
+  'geolocation-api': GeolocationApi,
+  'drag-and-drop-api': DragAndDropApi,
 };
 
 function LoadingSkeleton() {

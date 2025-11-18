@@ -52,7 +52,11 @@ export const html: Language = {
     { slug: 'html-best-practices', title: 'HTML Best Practices', explanation: 'Covering code organization, naming conventions, performance, and validation.' },
     { slug: 'global-attributes', title: 'Global Attributes Overview', explanation: 'A look at important attributes available on all elements, like `title`, `lang`, `tabindex`, and ARIA roles.' },
     // API & Interactivity
-    { slug: 'html5-apis', title: 'HTML5 APIs Overview', explanation: 'An overview of powerful browser APIs like Geolocation, Web Storage, and more.' },
+    { slug: 'html5-apis', title: 'HTML5 APIs Overview', explanation: 'An overview of powerful browser APIs that extend HTML\'s capabilities.' },
+    { slug: 'web-storage-api', title: 'Web Storage API', explanation: 'Storing data locally in the user\'s browser with localStorage and sessionStorage.' },
+    { slug: 'fetch-api', title: 'Fetch API', explanation: 'Making modern, flexible network requests to get data from servers.' },
+    { slug: 'geolocation-api', title: 'Geolocation API', explanation: 'Accessing a user\'s geographical location with their permission.' },
+    { slug: 'drag-and-drop-api', title: 'Drag and Drop API', explanation: 'Implementing native drag-and-drop functionality for elements.' },
     { slug: 'web-workers-api', title: 'Web Workers API', explanation: 'Running background scripts in a separate thread to avoid freezing the user interface.' },
     { slug: 'accessibility', title: 'Accessibility (a11y)', explanation: 'Best practices for writing accessible HTML, including ARIA roles and proper semantic structure to support users with disabilities.' },
   ]
