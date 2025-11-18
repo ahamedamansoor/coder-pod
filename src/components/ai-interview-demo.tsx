@@ -46,11 +46,6 @@ export const AiInterviewDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =>
   }, [isPlaying, currentStep]);
 
   const executeStep = (action: string) => {
-    setStepState(prevState => ({
-      ...prevState,
-      [action]: true
-    }));
-
     if (action === 'showQuestion') {
         setStepState({ showQuestion: true, showAnswer: false, showFeedback: false, showIdealAnswer: false });
     } else if (action === 'showAnswer') {
