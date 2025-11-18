@@ -19,6 +19,7 @@ import { doc } from 'firebase/firestore';
 import { WebPlaygroundModal } from './web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
 import Link from 'next/link';
+import { useLoading } from '@/hooks/use-loading';
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -38,6 +39,7 @@ export function MainHeader({
   const firestore = useFirestore();
   const router = useRouter();
   const params = useParams();
+  const { showLoader } = useLoading();
   
   const currentLanguageSlug = Array.isArray(params.lang) ? params.lang[0] : params.lang as string || 
                               (router as any).query?.lang as string || 
@@ -51,6 +53,7 @@ export function MainHeader({
   const { data: userData } = useDoc(userDocRef);
 
   const handleSignOut = async () => {
+    showLoader();
     if (auth) {
       await auth.signOut();
     }

@@ -1,11 +1,12 @@
 
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { LoginPageForm } from '@/components/login-page-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Logo } from '@/components/logo';
+import { useLoading } from '@/hooks/use-loading';
 
 function LoginSkeleton() {
   return (
@@ -22,6 +23,12 @@ function LoginSkeleton() {
 }
 
 export default function LoginPage() {
+    const { hideLoader } = useLoading();
+
+    useEffect(() => {
+        hideLoader();
+    }, [hideLoader]);
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-muted/40">
             <Suspense fallback={<LoginSkeleton />}>
