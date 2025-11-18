@@ -117,10 +117,9 @@ export function TopicSidebar({
         }
     } else if (language.slug === 'spring') {
         const springGroups: Record<string, string[]> = {
-            "Spring Core": ['spring-core-overview', 'ioc-and-dependency-injection', 'spring-beans'],
-            "AOP": ['spring-aop'],
-            "Data & Persistence": ['spring-data-jpa'],
-            "Web": ['spring-mvc', 'spring-security-basics'],
+            "Spring Core Concepts": ['spring-modules-overview', 'ioc-container-and-beans'],
+            "Advanced Dependency Injection": ['dependency-injection-overview', 'constructor-injection', 'setter-injection', 'injecting-collections'],
+            "Bean Configuration": ['bean-scopes', 'bean-lifecycle-and-inheritance'],
         };
          for (const groupName in springGroups) {
             if (springGroups[groupName].includes(topic.slug)) {
@@ -215,7 +214,7 @@ export function TopicSidebar({
   const groupOrder = language.slug === 'java' 
     ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings & Arrays", "Methods & OOP Basics", "Advanced OOP", "Advanced Collections", "Error Handling & Generics", "Functional Programming", "Advanced Concurrency", "Files & Regex", "Others"]
     : language.slug === 'spring' 
-    ? ["Spring Core", "AOP", "Data & Persistence", "Web", "Others"]
+    ? ["Spring Core Concepts", "Advanced Dependency Injection", "Bean Configuration"]
     : language.slug === 'spring-boot'
     ? ["Core Concepts", "Configuration", "Advanced", "Others"]
     : language.slug === 'javascript'

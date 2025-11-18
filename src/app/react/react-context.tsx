@@ -1,9 +1,9 @@
 
 'use client';
 
-import React, { createContext, useState, useContext, useCallback, ReactNode, useEffect, useMemo } from 'react';
-import { useUser, useFirestore, useDoc } from '@/firebase';
-import { doc, updateDoc, arrayUnion, arrayRemove, setDoc, getDoc } from 'firebase/firestore';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 interface ReactContextType {
   completedTopics: Set<string>;
@@ -17,7 +17,7 @@ export const ReactProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
 
-  const userDocRef = useMemo(() => {
+  const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     return doc(firestore, 'users', user.uid);
   }, [user, firestore]);
@@ -34,7 +34,7 @@ export const ReactProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [userData]);
 
-  const handleToggleComplete = useCallback(async (topicSlug: string) => {
+  const handleToggleComplete = React.useCallback(async (topicSlug: string) => {
     if (!userDocRef) return;
 
     const newCompleted = new Set(completedTopics);
