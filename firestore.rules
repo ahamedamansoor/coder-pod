@@ -48,7 +48,8 @@ service cloud.firestore {
       match /notes/{noteId} {
         allow read, write: if isOwner();
       }
-       match /notes {
+      
+      match /notes {
         allow list: if isOwner();
       }
     }
