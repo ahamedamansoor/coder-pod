@@ -3,7 +3,7 @@
 
 import { SidebarTrigger } from './ui/sidebar';
 import { Button } from './ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid, Mic, Home, Notebook } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid, Mic, Home, Notebook, ToyBrick } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -93,6 +93,14 @@ export function MainHeader({
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
       </div>
       <div className="flex items-center gap-4">
+        {currentLanguage?.slug === 'react' && (
+          <Button variant="outline" asChild>
+             <Link href="/react/playground">
+                <ToyBrick className="mr-2 h-4 w-4" />
+                React Playground
+              </Link>
+          </Button>
+        )}
         {currentLanguage && (
           <InterviewSimulator language={currentLanguage.name}>
              <Button variant="outline">
