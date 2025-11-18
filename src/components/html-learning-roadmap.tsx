@@ -72,7 +72,7 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
         title: "Metadata, SEO, and Best Practices",
         level: "Advanced",
         icon: "📈",
-        topics: getTopicsForSlugs(['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'html-email-basics', 'global-attributes']),
+        topics: getTopicsForSlugs(['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'global-attributes']),
     },
     {
       id: "API & Interactivity",

@@ -50,7 +50,6 @@ export const html: Language = {
     { slug: 'html-document-metadata', title: 'Advanced Document Metadata', explanation: 'Understanding `<base>`, advanced `<link>` relations (preload, prefetch), and `<script>` attributes (async, defer).' },
     { slug: 'microdata-structured-data', title: 'Microdata & Structured Data', explanation: 'Using Schema.org markup to provide rich snippets for search engines.' },
     { slug: 'html-best-practices', title: 'HTML Best Practices', explanation: 'Covering code organization, naming conventions, performance, and validation.' },
-    { slug: 'html-email-basics', title: 'HTML Email Basics', explanation: 'Understanding the unique challenges and techniques for coding HTML emails.' },
     { slug: 'global-attributes', title: 'Global Attributes Overview', explanation: 'A look at important attributes available on all elements, like `title`, `lang`, `tabindex`, and ARIA roles.' },
     // API & Interactivity
     { slug: 'html5-apis', title: 'HTML5 APIs Overview', explanation: 'An overview of powerful browser APIs like Geolocation, Web Storage, and more.' },

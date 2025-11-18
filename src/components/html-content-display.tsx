@@ -50,7 +50,6 @@ const MetaTagsAndSeo = lazy(() => import('./html-topics/meta-tags-and-seo'));
 const HtmlDocumentMetadata = lazy(() => import('./html-topics/html-document-metadata'));
 const MicrodataStructuredData = lazy(() => import('./html-topics/microdata-structured-data'));
 const HtmlBestPractices = lazy(() => import('./html-topics/html-best-practices'));
-const HtmlEmailBasics = lazy(() => import('./html-topics/html-email-basics'));
 const GlobalAttributes = lazy(() => import('./html-topics/global-attributes'));
 
 
@@ -99,7 +98,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-document-metadata': HtmlDocumentMetadata,
   'microdata-structured-data': MicrodataStructuredData,
   'html-best-practices': HtmlBestPractices,
-  'html-email-basics': HtmlEmailBasics,
   'global-attributes': GlobalAttributes,
 };
 
