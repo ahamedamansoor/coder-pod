@@ -12,13 +12,12 @@ import { Button } from './ui/button';
 import { Logo } from './logo';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket, CheckCircle, Notebook } from 'lucide-react';
+import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket, CheckCircle } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import { ThemeToggle } from './theme-toggle';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc } from 'firebase/firestore';
-import Link from 'next/link';
 
 export default function AppLayout() {
   const { user } = useUser();
@@ -78,13 +77,6 @@ export default function AppLayout() {
                       <User />
                       {displayName}
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild className="cursor-pointer">
-                        <Link href="/notebook">
-                            <Notebook className="mr-2 h-4 w-4" />
-                            <span>AI Notebook</span>
-                        </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
                       <LogOut className="mr-2 h-4 w-4" />
