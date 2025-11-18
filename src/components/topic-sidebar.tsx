@@ -178,7 +178,7 @@ export function TopicSidebar({
             "Media & Graphics": ['audio-and-video', 'iframes', 'svg-and-canvas', 'responsive-images'],
             "Advanced Topics & HTML5 Features": ['html5-latest-features', 'dialog-element', 'popover-api', 'details-and-summary', 'lazy-loading', 'content-visibility', 'template-and-slot', 'data-attributes', 'content-editable', 'progress-and-meter', 'advanced-tables'],
             "Metadata, SEO, and Best Practices": ['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'html-email-basics', 'global-attributes'],
-            "API & Interactivity": ['html5-apis', 'web-workers-api', 'accessibility', 'interview-simulator'],
+            "API & Interactivity": ['html5-apis', 'web-workers-api', 'accessibility'],
         };
         for (const groupName in htmlGroups) {
             if (htmlGroups[groupName].includes(topic.slug)) {

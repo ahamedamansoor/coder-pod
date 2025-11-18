@@ -56,6 +56,5 @@ export const html: Language = {
     { slug: 'html5-apis', title: 'HTML5 APIs Overview', explanation: 'An overview of powerful browser APIs like Geolocation, Web Storage, and more.' },
     { slug: 'web-workers-api', title: 'Web Workers API', explanation: 'Running background scripts in a separate thread to avoid freezing the user interface.' },
     { slug: 'accessibility', title: 'Accessibility (a11y)', explanation: 'Best practices for writing accessible HTML, including ARIA roles and proper semantic structure to support users with disabilities.' },
-    { slug: 'interview-simulator', title: 'AI Interview Simulator', explanation: 'Practice for your next technical interview with an AI-powered simulator.' },
   ]
 };
