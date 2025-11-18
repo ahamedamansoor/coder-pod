@@ -7,6 +7,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function NotebookPage() {
     return (
         <Suspense fallback={<Skeleton className="h-screen w-screen" />}>
+            <NotebookPageContent />
         </Suspense>
     )
 }
+
+    
