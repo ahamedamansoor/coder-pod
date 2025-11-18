@@ -26,6 +26,7 @@ const FormInputTypes = lazy(() => import('./html-topics/form-input-types'));
 const FormAttributes = lazy(() => import('./html-topics/form-attributes'));
 const FormValidation = lazy(() => import('./html-topics/form-validation'));
 const DatalistElement = lazy(() => import('./html-topics/datalist-element'));
+const OutputElement = lazy(() => import('./html-topics/output-element'));
 const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
 const Iframes = lazy(() => import('./html-topics/iframes'));
 const SvgAndCanvas = lazy(() => import('./html-topics/svg-and-canvas'));
@@ -64,6 +65,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'form-attributes': FormAttributes,
   'form-validation': FormValidation,
   'datalist-element': DatalistElement,
+  'output-element': OutputElement,
   'audio-and-video': AudioAndVideo,
   'iframes': Iframes,
   'svg-and-canvas': SvgAndCanvas,
