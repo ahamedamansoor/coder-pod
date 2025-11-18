@@ -1,4 +1,3 @@
-
 import type { Language } from './types';
 
 export const html: Language = {
@@ -14,6 +13,7 @@ export const html: Language = {
     { slug: 'html-headings-and-paragraphs', title: 'Headings & Paragraphs', explanation: 'Structuring text content with `<h1>` through `<h6>` and `<p>` tags.' },
     { slug: 'text-formatting', title: 'Text Formatting', explanation: 'Using tags like `<b>`, `<i>`, `<u>`, `<strong>`, `<em>`, `<mark>`, and `<sub>` to format text.' },
     { slug: 'html-comments', title: 'Comments', explanation: 'How to add comments to your HTML code that are ignored by the browser.' },
+    { slug: 'character-entities', title: 'Character Entities', explanation: 'How to display reserved characters like `<`, `>`, and `&`, and special symbols like `&copy;`.' },
     // Content & Structure
     { slug: 'html-lists', title: 'Lists', explanation: 'Creating ordered (`<ol>`), unordered (`<ul>`), and description (`<dl>`) lists.' },
     { slug: 'html-links', title: 'Links (Hyperlinks)', explanation: 'Navigating between pages and websites using the `<a>` tag.' },
@@ -21,7 +21,6 @@ export const html: Language = {
     { slug: 'block-vs-inline', title: 'Block vs. Inline Elements', explanation: 'Understanding the difference between block-level elements (like `<div>`, `<p>`) and inline-level elements (like `<span>`, `<a>`).' },
     { slug: 'html-tables', title: 'Tables', explanation: 'Displaying data in a tabular format using `<table>`, `<tr>`, `<th>`, and `<td>`.' },
     { slug: 'html-semantic-elements', title: 'Semantic HTML', explanation: 'Using tags that describe their meaning and purpose, such as `<header>`, `<footer>`, `<article>`, `<section>`, and `<nav>`.' },
-    { slug: 'character-entities', title: 'Character Entities', explanation: 'How to display reserved characters like `<`, `>`, and `&`, and special symbols like `&copy;`.' },
     // Forms & Input
     { slug: 'html-forms', title: 'Forms', explanation: 'Collecting user input with `<form>`, `<input>`, `<textarea>`, and `<button>`.' },
     { slug: 'form-input-types', title: 'Form Input Types', explanation: 'Exploring various input types like `text`, `password`, `checkbox`, `radio`, `submit`, `date`, and `color`.' },
@@ -60,5 +59,3 @@ export const html: Language = {
     { slug: 'interview-simulator', title: 'AI Interview Simulator', explanation: 'Practice for your next technical interview with an AI-powered simulator.' },
   ]
 };
-
-    
