@@ -72,6 +72,7 @@ export function MainHeader({
   };
 
   const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
+  const isUserAuthenticated = user && !user.isAnonymous;
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
@@ -82,12 +83,14 @@ export function MainHeader({
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" asChild>
-          <Link href="/notebook">
-            <Notebook className="mr-2 h-4 w-4" />
-            Notebook
-          </Link>
-        </Button>
+        {isUserAuthenticated && (
+          <Button variant="ghost" asChild>
+            <Link href="/notebook">
+              <Notebook className="mr-2 h-4 w-4" />
+              Notebook
+            </Link>
+          </Button>
+        )}
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
         <ThemeToggle />
         {showWebPlaygroundButton && (
