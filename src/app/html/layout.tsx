@@ -33,21 +33,21 @@ function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
       <div
         id="html-topic-page"
         data-test="html-topic-page"
-        className="flex flex-col h-screen bg-background w-screen"
+        className="flex h-screen bg-background w-screen"
       >
-        <MainHeader
-          onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
-          isEditorOpen={isEditorOpen}
-          showCodeEditorButton={false}
-          showWebPlaygroundButton={true}
-        />
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar>
-            <TopicSidebar
-              language={language}
-              selectedTopicSlug={selectedTopicSlug}
-            />
-          </Sidebar>
+        <Sidebar>
+          <TopicSidebar
+            language={language}
+            selectedTopicSlug={selectedTopicSlug}
+          />
+        </Sidebar>
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <MainHeader
+            onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
+            isEditorOpen={isEditorOpen}
+            showCodeEditorButton={false}
+            showWebPlaygroundButton={true}
+          />
           <main className="flex-1 flex overflow-hidden">
             {children}
           </main>

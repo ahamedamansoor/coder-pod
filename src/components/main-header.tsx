@@ -77,7 +77,7 @@ export function MainHeader({
   const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
 
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6 md:pl-4">
+    <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="md:hidden" />
         <div className="hidden md:block">

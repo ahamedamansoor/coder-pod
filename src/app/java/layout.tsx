@@ -33,21 +33,21 @@ function JavaTopicLayoutContent({ children }: { children: React.ReactNode }) {
       <div
         id="java-topic-page"
         data-test="java-topic-page"
-        className="flex flex-col h-screen bg-background w-screen"
+        className="flex h-screen bg-background w-screen"
       >
-        <MainHeader
-          onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
-          isEditorOpen={isEditorOpen}
-          showCodeEditorButton={true}
-          showWebPlaygroundButton={false}
-        />
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar>
-            <TopicSidebar
-              language={language}
-              selectedTopicSlug={selectedTopicSlug}
-            />
-          </Sidebar>
+        <Sidebar>
+          <TopicSidebar
+            language={language}
+            selectedTopicSlug={selectedTopicSlug}
+          />
+        </Sidebar>
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <MainHeader
+            onToggleEditor={() => setIsEditorOpen((prev) => !prev)}
+            isEditorOpen={isEditorOpen}
+            showCodeEditorButton={true}
+            showWebPlaygroundButton={false}
+          />
           <main className="flex-1 flex overflow-hidden">
             {children}
           </main>
