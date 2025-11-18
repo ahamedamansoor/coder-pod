@@ -1,7 +1,7 @@
 
 import { SidebarTrigger } from './ui/sidebar';
 import { Button } from './ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid, Notebook } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -86,12 +86,6 @@ export function MainHeader({
           <Link href="/dashboard">
             <LayoutGrid className="mr-2 h-4 w-4" />
             Dashboard
-          </Link>
-        </Button>
-         <Button variant="ghost" asChild>
-          <Link href="/notebook">
-            <Notebook className="mr-2 h-4 w-4" />
-            Notebook
           </Link>
         </Button>
         {showWebPlaygroundButton && (

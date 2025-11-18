@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "User": {
@@ -60,30 +61,6 @@
         "id",
         "email"
       ]
-    },
-    "Note": {
-      "title": "Note",
-      "type": "object",
-      "description": "Represents a user's note, which can be a link or text.",
-      "properties": {
-        "title": {
-          "type": "string",
-          "description": "The title of the note."
-        },
-        "content": {
-          "type": "string",
-          "description": "The content of the note."
-        },
-        "language": {
-          "type": "string",
-          "description": "The programming language this note is associated with."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      },
-      "required": ["title", "content", "language"]
     }
   },
   "auth": {
@@ -108,26 +85,6 @@
             {
               "name": "userId",
               "description": "The unique identifier of the user, which should match the Firebase Auth UID."
-            }
-          ]
-        }
-      },
-       {
-        "path": "/users/{userId}/notes/{noteId}",
-        "definition": {
-          "entityName": "Note",
-          "schema": {
-            "$ref": "#/backend/entities/Note"
-          },
-          "description": "Stores user's notes for different programming languages. Uses path-based ownership, with userId matching the authenticated user's UID.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier of the user."
-            },
-            {
-              "name": "noteId",
-              "description": "The unique identifier of the note."
             }
           ]
         }
