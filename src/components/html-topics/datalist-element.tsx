@@ -52,19 +52,19 @@ input {
         <Card>
             <CardHeader>
                 <CardTitle>What is a &lt;datalist&gt;?</CardTitle>
-                <CardDescription>The `<datalist>` element specifies a list of pre-defined options for an `<input>` element. It provides an "autocomplete" feature on input fields. Users will see a drop-down list of the pre-defined options as they type.</CardDescription>
+                <CardDescription>The `&lt;datalist&gt;` element specifies a list of pre-defined options for an `&lt;input&gt;` element. It provides an "autocomplete" feature on input fields. Users will see a drop-down list of the pre-defined options as they type.</CardDescription>
             </CardHeader>
         </Card>
 
         <Card>
             <CardHeader>
                 <CardTitle>How It Works</CardTitle>
-                <CardDescription>You link an `<input>` to a `<datalist>` using the `list` attribute on the input, which must have the same value as the `id` of the datalist.</CardDescription>
+                <CardDescription>You link an `&lt;input&gt;` to a `&lt;datalist&gt;` using the `list` attribute on the input, which must have the same value as the `id` of the datalist.</CardDescription>
             </CardHeader>
             <CardContent>
                 <ul className="list-disc list-inside space-y-2 mb-4 text-muted-foreground">
-                    <li>The `<datalist>` element contains a series of `<option>` elements.</li>
-                    <li>The `value` of each `<option>` is what will be suggested to the user.</li>
+                    <li>The `&lt;datalist&gt;` element contains a series of `&lt;option&gt;` elements.</li>
+                    <li>The `value` of each `&lt;option&gt;` is what will be suggested to the user.</li>
                 </ul>
                 <div className="bg-muted rounded-md p-4 mb-4">
                     <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{playgroundCode.html}</pre>
@@ -80,7 +80,7 @@ input {
                 <CardTitle className="text-primary flex items-center gap-2"><Lightbulb className="w-5 h-5"/>User Flexibility</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground">Unlike the `<select>` element, a `<datalist>` provides suggestions but does not restrict the user to only those options. The user can still type in a different value if they wish.</p>
+                <p className="text-sm text-muted-foreground">Unlike the `&lt;select&gt;` element, a `&lt;datalist&gt;` provides suggestions but does not restrict the user to only those options. The user can still type in a different value if they wish.</p>
             </CardContent>
         </Card>
 
