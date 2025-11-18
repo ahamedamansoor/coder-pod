@@ -2,25 +2,25 @@
 'use client';
 
 import React, { createContext, useState, useEffect, useContext, ReactNode, useRef } from 'react';
-import * as esbuild from 'esbuild-wasm';
+import { startService, type Service } from 'esbuild-wasm';
 
 interface ReactPlaygroundContextType {
-  esbuildService: esbuild.Service | null;
+  esbuildService: Service | null;
 }
 
 const ReactPlaygroundContext = createContext<ReactPlaygroundContextType | undefined>(undefined);
 
 export const ReactPlaygroundProvider = ({ children }: { children: ReactNode }) => {
-  const [esbuildService, setEsbuildService] = useState<esbuild.Service | null>(null);
+  const [esbuildService, setEsbuildService] = useState<Service | null>(null);
   const isInitialized = useRef(false);
 
   useEffect(() => {
     if (isInitialized.current) return;
     isInitialized.current = true;
     
-    const startService = async () => {
+    const startEsbuildService = async () => {
       try {
-        const service = await esbuild.startService({
+        const service = await startService({
           worker: true,
           wasmURL: '/esbuild.wasm',
         });
@@ -29,7 +29,7 @@ export const ReactPlaygroundProvider = ({ children }: { children: ReactNode }) =
         console.error("Failed to initialize esbuild service", e);
       }
     };
-    startService();
+    startEsbuildService();
 
   }, []);
 
