@@ -4,11 +4,9 @@ import { useEffect } from 'react';
 import { useUser } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLoading } from '@/hooks/use-loading';
-import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
-import { TopicSidebar } from '@/components/topic-sidebar';
 import { MainHeader } from '@/components/main-header';
-import { languages } from '@/app/data';
 import { NotebookPageContent } from '@/components/notebook-page-content';
+import { Logo } from '@/components/logo';
 
 export default function NotebookPage() {
   const { user, isUserLoading } = useUser();
@@ -19,9 +17,6 @@ export default function NotebookPage() {
       hideLoader();
     }
   }, [isUserLoading, hideLoader]);
-
-  // Use a default/placeholder language for the sidebar as it's required
-  const placeholderLanguage = languages[0];
 
   if (isUserLoading) {
     return (
@@ -53,27 +48,14 @@ export default function NotebookPage() {
   }
 
   return (
-    <SidebarProvider>
-      <div className="flex h-screen bg-background w-screen">
-        <Sidebar>
-            {/* The sidebar is present for layout consistency but can be minimal */}
-            <TopicSidebar
-                language={placeholderLanguage}
-                selectedTopicSlug={null}
-            />
-        </Sidebar>
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <MainHeader
-            onToggleEditor={() => {}}
-            isEditorOpen={false}
-            showCodeEditorButton={false}
-            showWebPlaygroundButton={false}
-          />
-          <main className="flex-1 flex overflow-hidden">
-            <NotebookPageContent />
-          </main>
-        </div>
+      <div className="flex h-screen bg-background w-screen flex-col">
+        {/* We use a simplified header here as the main one requires sidebar context */}
+         <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
+            <Logo />
+         </header>
+        <main className="flex-1 flex overflow-hidden">
+          <NotebookPageContent />
+        </main>
       </div>
-    </SidebarProvider>
   );
 }
