@@ -8,10 +8,10 @@ import {
   ResizablePanelGroup,
   ResizablePanel,
 } from '@/components/ui/resizable';
-import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';
 import { CssContentDisplay } from '@/components/css-content-display';
 import { CssLearningRoadmap } from '@/components/css-learning-roadmap';
+import { InteractiveLoading } from '@/components/interactive-loading';
 
 function TopicPageContent() {
   const params = useParams();
@@ -46,7 +46,7 @@ function TopicPageContent() {
 
 export default function CssTopicPage() {
     return (
-        <Suspense fallback={<Skeleton className="w-full h-full" />}>
+        <Suspense fallback={<InteractiveLoading />}>
             <TopicPageContent />
         </Suspense>
     )

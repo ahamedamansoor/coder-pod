@@ -10,12 +10,12 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useHtmlLayout } from '../html-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
 import { HtmlContentDisplay } from '@/components/html-content-display';
 import { HtmlLearningRoadmap } from '@/components/html-learning-roadmap';
+import { InteractiveLoading } from '@/components/interactive-loading';
 
 function TopicPageContent() {
   const params = useParams();
@@ -91,7 +91,7 @@ function TopicPageContent() {
 
 export default function HtmlTopicPage() {
     return (
-        <Suspense fallback={<Skeleton className="w-full h-full" />}>
+        <Suspense fallback={<InteractiveLoading />}>
             <TopicPageContent />
         </Suspense>
     )

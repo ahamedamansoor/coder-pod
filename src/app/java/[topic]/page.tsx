@@ -12,10 +12,10 @@ import {
   ResizableHandle,
 } from '@/components/ui/resizable';
 import { JavaLearningRoadmap } from '@/components/java-learning-roadmap';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useJavaLayout } from '../java-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
+import { InteractiveLoading } from '@/components/interactive-loading';
 
 function TopicPageContent() {
   const params = useParams();
@@ -91,7 +91,7 @@ function TopicPageContent() {
 
 export default function JavaTopicPage() {
     return (
-        <Suspense fallback={<Skeleton className="w-full h-full" />}>
+        <Suspense fallback={<InteractiveLoading />}>
             <TopicPageContent />
         </Suspense>
     )
