@@ -94,17 +94,7 @@ export function ReactPlayground() {
   const iframeSrcDoc = htmlTemplate(output.code);
 
   return (
-    <div className="h-full w-full flex flex-col">
-       <header className="p-4 border-b flex-row items-center justify-between flex">
-          <h1 className="flex items-center gap-2 text-lg font-bold">
-            <PanelTop />
-            React Playground
-          </h1>
-          <Button onClick={handleRunClick} disabled={isBuilding || !esbuildService}>
-            {isBuilding || !esbuildService ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Play className="mr-2 h-4 w-4"/>}
-            {isBuilding || !esbuildService ? 'Building...' : 'Run'}
-          </Button>
-        </header>
+    <div className="h-full w-full flex flex-col pt-2">
       <ResizablePanelGroup direction="horizontal" className="flex-1">
         <ResizablePanel defaultSize={50}>
           <Editor
