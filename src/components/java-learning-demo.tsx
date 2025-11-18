@@ -137,29 +137,21 @@ export const JavaLearningDemo = ({ autoPlay = false }: { autoPlay?: boolean }) =
   return (
     <div className="w-full bg-card p-4 sm:p-6 rounded-lg">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-4 mb-3">
-            <Monitor className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">How It Works</h1>
-          </div>
-          <p className="text-lg sm:text-xl text-muted-foreground mb-6">Watch the Interactive Demo</p>
-          
-          <div className="flex items-center justify-center gap-4">
-            <Button
-              onClick={handlePlayPause}
-              className="px-6 py-3 rounded-full font-bold text-base flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
-            >
-              {isPlaying ? (
-                <>
-                  <Pause className="w-5 h-5" /> Pause
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5" /> {currentStep > 0 && currentStep < steps.length -1 ? 'Resume' : 'Play'}
-                </>
-              )}
-            </Button>
-          </div>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <Button
+            onClick={handlePlayPause}
+            className="px-6 py-3 rounded-full font-bold text-base flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
+          >
+            {isPlaying ? (
+              <>
+                <Pause className="w-5 h-5" /> Pause
+              </>
+            ) : (
+              <>
+                <Play className="w-5 h-5" /> {currentStep > 0 && currentStep < steps.length -1 ? 'Resume' : 'Play'}
+              </>
+            )}
+          </Button>
         </div>
 
         <div className="relative bg-background rounded-xl shadow-2xl p-4 overflow-hidden aspect-[16/9]">

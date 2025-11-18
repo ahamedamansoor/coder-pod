@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -19,7 +20,7 @@ import {
 import { Button } from './ui/button';
 import { JavaLearningDemo } from './java-learning-demo';
 import Link from 'next/link';
-import { BookOpen, Rocket, Mic } from 'lucide-react';
+import { BookOpen, Rocket, Mic, Monitor } from 'lucide-react';
 import { useLoading } from '@/hooks/use-loading';
 import { AiInterviewDemo } from './ai-interview-demo';
 import { ScrollArea } from './ui/scroll-area';
@@ -118,14 +119,24 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
           </DialogHeader>
           <ScrollArea className="flex-1" ref={scrollAreaRef}>
             <div className="space-y-12 p-2">
-                <JavaLearningDemo autoPlay={isDemoOpen} />
+                <div>
+                     <div className="text-center mb-6">
+                        <div className="flex items-center justify-center gap-4 mb-3">
+                            <Monitor className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+                            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Track Your Learning Progress</h2>
+                        </div>
+                        <p className="text-lg sm:text-xl text-muted-foreground">Follow a guided path and see your progress in real-time.</p>
+                    </div>
+                    <JavaLearningDemo autoPlay={isDemoOpen} />
+                </div>
+
                 <div className="border-t pt-8" ref={interviewDemoRef}>
                      <div className="text-center mb-6">
                         <div className="flex items-center justify-center gap-4 mb-3">
                             <Mic className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
                             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">AI Interview Simulator</h2>
                         </div>
-                        <p className="text-lg sm:text-xl text-muted-foreground mb-6">Practice your skills with an AI-powered mock interview.</p>
+                        <p className="text-lg sm:text-xl text-muted-foreground">Practice your skills with an AI-powered mock interview.</p>
                     </div>
                     <AiInterviewDemo autoPlay={isDemoOpen && playInterviewDemo} />
                 </div>
