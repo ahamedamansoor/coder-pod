@@ -2,13 +2,11 @@
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore'
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
-    const isConfigAvailable = process.env.NEXT_PUBLIC_FIREBASE_CONFIG;
-
     if (!getApps().length) {
         // When running in a non-browser environment (like during the build process),
         // Firebase App Hosting environment variables are not available.
@@ -31,23 +29,7 @@ export function initializeFirebase() {
             firebaseApp = initializeApp(firebaseConfig);
         }
 
-        const auth = getAuth(firebaseApp);
-        const firestore = getFirestore(firebaseApp);
-
-        // If in development, connect to emulators
-        if (process.env.NODE_ENV === 'development') {
-            // Check if emulators are already connected to avoid re-connecting
-            // @ts-ignore
-            if (!auth.emulatorConfig) {
-              connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
-            }
-            // @ts-ignore
-            if (!firestore.emulator) {
-              connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
-            }
-        }
-
-        return { firebaseApp, auth, firestore };
+        return getSdks(firebaseApp);
     }
 
     // If already initialized, return the SDKs with the already initialized App
