@@ -7,12 +7,12 @@ import React from 'react';
 export default function AdvancedTables({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
 
     const advancedElements = [
-        { tag: '<thead>', description: 'Groups the header content in a table. It should contain one or more `<tr>` elements with `<th>` cells.' },
-        { tag: '<tbody>', description: 'Groups the main body content in a table. It contains the primary data rows (`<tr>` with `<td>` cells).' },
+        { tag: '<thead>', description: 'Groups the header content in a table. It should contain one or more &lt;tr&gt; elements with &lt;th&gt; cells.' },
+        { tag: '<tbody>', description: 'Groups the main body content in a table. It contains the primary data rows (&lt;tr&gt; with &lt;td&gt; cells).' },
         { tag: '<tfoot>', description: 'Groups the footer content in a table, often used for summaries or totals.' },
-        { tag: '<caption>', description: 'Defines a table caption, which is important for accessibility as it describes the table\'s content.' },
+        { tag: '<caption>', description: "Defines a table caption, which is important for accessibility as it describes the table's content." },
         { tag: '<colgroup>', description: 'Specifies a group of one or more columns in a table for formatting.' },
-        { tag: '<col>', description: 'Used within a `<colgroup>` to specify column properties for each column.' },
+        { tag: '<col>', description: 'Used within a &lt;colgroup&gt; to specify column properties for each column.' },
     ];
     
     const playgroundCode = {
@@ -132,7 +132,7 @@ tfoot {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><Accessibility className="w-5 h-5 text-primary"/>The `scope` Attribute</CardTitle>
-                    <CardDescription>For accessibility, `scope` tells browsers and screen readers what a header cell (`<th>`) is a header for.</CardDescription>
+                    <CardDescription>For accessibility, `scope` tells browsers and screen readers what a header cell (`&lt;th&gt;`) is a header for.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <p><code className="font-mono bg-muted p-1 rounded">scope="col"</code>: The header is for a column.</p>
@@ -155,7 +155,7 @@ tfoot {
         <Card>
             <CardHeader>
                 <CardTitle>See It All In Action</CardTitle>
-                <CardDescription>Open this example in the Web Playground to see a well-structured table using `<thead>`, `<tbody>`, `<tfoot>`, `<caption>`, `scope`, and `colspan`.</CardDescription>
+                <CardDescription>Open this example in the Web Playground to see a well-structured table using `&lt;thead&gt;`, `&lt;tbody&gt;`, `&lt;tfoot&gt;`, `&lt;caption&gt;`, `scope`, and `colspan`.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
