@@ -1,4 +1,3 @@
-
 'use client';
 
 import { SidebarTrigger } from './ui/sidebar';
@@ -129,13 +128,6 @@ export function MainHeader({
                 <User />
                 {displayName}
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link href="/notebook">
-                  <Notebook className="mr-2 h-4 w-4" />
-                  <span>AI Notebook</span>
-                </Link>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />

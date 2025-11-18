@@ -10,11 +10,6 @@ service cloud.firestore {
       allow get, update, delete: if isOwner();
       allow list: if false; // Disallow listing all users
       allow create: if isOwner();
-      
-      // A user can perform any action on the notes within their own subcollection.
-      match /notes/{noteId} {
-        allow read, write: if isOwner();
-      }
     }
   }
 }
