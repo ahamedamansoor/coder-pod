@@ -3,11 +3,11 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
-import { Terminal, Loader2, AlertTriangle, Play, PanelTop } from 'lucide-react';
+import { Terminal, Loader2, AlertTriangle, Play, PanelTop, X } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 import { transpileReactCode } from '@/ai/flows/transpile-react-code';
 import { Button } from './ui/button';
-import { DialogHeader, DialogTitle } from './ui/dialog';
+import { DialogHeader, DialogTitle, DialogClose } from './ui/dialog';
 
 const initialCode = `import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
@@ -99,6 +99,11 @@ export function ReactPlayground() {
                     )}
                     {isBuilding ? 'Building...' : 'Run'}
                 </Button>
+                <DialogClose asChild>
+                    <Button variant="outline" size="icon" aria-label="Close" className="h-9 w-9">
+                        <X className="h-4 w-4" />
+                    </Button>
+                </DialogClose>
             </div>
          </DialogHeader>
       <ResizablePanelGroup direction="horizontal" className="flex-1">
