@@ -20,7 +20,7 @@ export const react: Language = {
       { slug: 'conditional-rendering', title: 'Conditional Rendering', explanation: "Techniques for conditionally rendering UI using if statements, the ternary operator, the logical AND (&&) operator, and rendering null." },
       { slug: 'rendering-lists', title: 'Rendering Lists', explanation: "Using the map() function to render lists of data, the importance of `key` props, rules for keys, filtering lists, and keeping lists in order." },
       { slug: 'keeping-components-pure', title: 'Keeping Components Pure', explanation: "Understanding pure components, side effects, impurity, and how React's StrictMode helps detect issues. Learn where side effects are permissible." },
-      { slug: 'understanding-ui-as-tree', title: 'Understanding Your UI as a Tree', explanation: "Visualizing your UI as a component tree, render tree, and module dependency tree." },
+      { slug: 'understanding-your-ui-as-a-tree', title: 'Understanding Your UI as a Tree', explanation: "Visualizing your UI as a component tree, render tree, and module dependency tree." },
 
       // SECTION 3: ADDING INTERACTIVITY
       { slug: 'responding-to-events', title: 'Responding to Events', explanation: "Adding event handlers, naming conventions, reading the event object, stopping propagation, preventing default behavior, and common events like onClick and onChange." },
@@ -77,7 +77,7 @@ export const react: Language = {
       { slug: 'strictmode-api', title: 'StrictMode', explanation: "Using `<StrictMode>` to highlight potential problems in an application, like unsafe lifecycles or unexpected side effects." },
 
       // SECTION 8: CLIENT LIBRARIES
-      { slug: 'react-dom-methods', title: 'React-DOM: ReactDOM methods', explanation: "An overview of key `react-dom` methods like `createRoot`, `hydrateRoot`, and `flushSync`." },
+      { slug: 'react-dom-methods', title: 'React-DOM Methods', explanation: "An overview of key `react-dom` methods like `createRoot`, `hydrateRoot`, and `flushSync`." },
 
       // SECTION 9: FORM DETAILS
       { slug: 'handling-forms-details', title: 'Handling Forms', explanation: "A detailed look at form handling in React, covering controlled and uncontrolled components, submission, and validation." },
@@ -128,10 +128,10 @@ export const react: Language = {
       { slug: 'typing-components', title: 'Typing Components', explanation: "Understanding `React.FC`, `React.ReactNode`, and other utility types for components." },
 
       // SECTION 16: ADVANCED REACT FEATURES
-      { slug: 'server-components', title: 'Server Components (React 18+)', explanation: "An introduction to the concept of Server Components, their benefits, and how they differ from Client Components." },
-      { slug: 'streaming-react-18', title: 'Streaming (React 18+)', explanation: "Understanding server-side rendering with streaming HTML and its integration with Suspense." },
-      { slug: 'automatic-batching-react-18', title: 'Automatic Batching (React 18+)', explanation: "How React 18 automatically batches multiple state updates to reduce re-renders, even those inside promises or timeouts." },
-      { slug: 'concurrent-features-react-18', title: 'Concurrent Features (React 18+)', explanation: "An overview of concurrent rendering and the new Hooks (`useTransition`, `useDeferredValue`) that enable it." },
+      { slug: 'server-components', title: 'Server Components', explanation: "An introduction to the concept of Server Components, their benefits, and how they differ from Client Components." },
+      { slug: 'streaming-react-18', title: 'Streaming', explanation: "Understanding server-side rendering with streaming HTML and its integration with Suspense." },
+      { slug: 'automatic-batching-react-18', title: 'Automatic Batching', explanation: "How React 18 automatically batches multiple state updates to reduce re-renders, even those inside promises or timeouts." },
+      { slug: 'concurrent-features-react-18', title: 'Concurrent Features', explanation: "An overview of concurrent rendering and the new Hooks (`useTransition`, `useDeferredValue`) that enable it." },
       { slug: 'error-boundaries-advanced', title: 'Error Boundaries (Advanced)', explanation: "A deep dive into creating error boundary components to catch and handle errors in your component tree." },
       
       // SECTION 17: DEVELOPER TOOLS
@@ -145,7 +145,7 @@ export const react: Language = {
       
       // SECTION 19: RULES & BEST PRACTICES
       { slug: 'rules-of-react', title: 'Rules of React', explanation: "A summary of the core rules of React, such as components and renders must be pure." },
-      { slug: 'rules-of-hooks-recap', title: 'Rules of Hooks', explanation: "A recap of the two fundamental rules of Hooks." },
+      { slug: 'rules-of-hooks-recap', title: 'Rules of Hooks (Recap)', explanation: "A recap of the two fundamental rules of Hooks." },
       { slug: 'best-practices', title: 'Best Practices', explanation: "A summary of best practices covering naming conventions, component composition, state management, performance, and more." },
       
       // SECTION 20: THINKING IN REACT

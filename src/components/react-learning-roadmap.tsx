@@ -14,7 +14,7 @@ import { react } from '@/app/data/react';
 
 export const ReactLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useReact();
-  const [expandedModule, setExpandedModule] = useState<string | null>("GETTING STARTED");
+  const [expandedModule, setExpandedModule] = useState<string | null>("SECTION 1: GETTING STARTED");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
@@ -30,26 +30,26 @@ export const ReactLearningRoadmap = () => {
   const allTopics = react.topics.filter(t => t.slug !== 'learning-plan' && t.slug !== 'interview-questions');
 
   const modules = [
-    { id: "GETTING STARTED", title: "Getting Started", level: "Beginner", topics: allTopics.slice(0, 5) },
-    { id: "DESCRIBING THE UI", title: "Describing the UI", level: "Beginner", topics: allTopics.slice(5, 10) },
-    { id: "ADDING INTERACTIVITY", title: "Adding Interactivity", level: "Beginner", topics: allTopics.slice(10, 17) },
-    { id: "MANAGING STATE", title: "Managing State", level: "Intermediate", topics: allTopics.slice(17, 21) },
-    { id: "ESCAPE HATCHES", title: "Escape Hatches", level: "Intermediate", topics: allTopics.slice(21, 30) },
-    { id: "HOOKS (COMPREHENSIVE)", title: "Hooks (Comprehensive)", level: "Intermediate", topics: allTopics.slice(30, 47) },
-    { id: "COMPONENT DETAILS", title: "Component Details", level: "Advanced", topics: allTopics.slice(47, 54) },
-    { id: "CLIENT LIBRARIES", title: "Client Libraries", level: "Advanced", topics: allTopics.slice(54, 55) },
-    { id: "FORM DETAILS", title: "Form Details", level: "Advanced", topics: allTopics.slice(55, 58) },
-    { id: "ADVANCED PATTERNS", title: "Advanced Patterns", level: "Advanced", topics: allTopics.slice(58, 65) },
-    { id: "CONTEXT API", title: "Context API", level: "Advanced", topics: allTopics.slice(65, 71) },
-    { id: "PERFORMANCE OPTIMIZATION", title: "Performance Optimization", level: "Expert", topics: allTopics.slice(71, 75) },
-    { id: "TESTING", title: "Testing", level: "Expert", topics: allTopics.slice(75, 80) },
-    { id: "DEPLOYMENT", title: "Deployment", level: "Expert", topics: allTopics.slice(80, 83) },
-    { id: "TYPESCRIPT WITH REACT", title: "TypeScript with React", level: "Expert", topics: allTopics.slice(83, 89) },
-    { id: "ADVANCED REACT FEATURES", title: "Advanced React Features", level: "Expert", topics: allTopics.slice(89, 94) },
-    { id: "DEVELOPER TOOLS", title: "Developer Tools", level: "Expert", topics: allTopics.slice(94, 96) },
-    { id: "API REFERENCE", title: "API Reference", level: "Reference", topics: allTopics.slice(96, 99) },
-    { id: "RULES & BEST PRACTICES", title: "Rules & Best Practices", level: "Reference", topics: allTopics.slice(99, 102) },
-    { id: "THINKING IN REACT", title: "Thinking in React", level: "Reference", topics: allTopics.slice(102, 105) },
+    { id: "SECTION 1: GETTING STARTED", title: "1. Getting Started", level: "Beginner", topics: allTopics.slice(0, 5) },
+    { id: "SECTION 2: DESCRIBING THE UI", title: "2. Describing the UI", level: "Beginner", topics: allTopics.slice(5, 10) },
+    { id: "SECTION 3: ADDING INTERACTIVITY", title: "3. Adding Interactivity", level: "Beginner", topics: allTopics.slice(10, 17) },
+    { id: "SECTION 4: MANAGING STATE", title: "4. Managing State", level: "Intermediate", topics: allTopics.slice(17, 21) },
+    { id: "SECTION 5: ESCAPE HATCHES", title: "5. Escape Hatches", level: "Intermediate", topics: allTopics.slice(21, 30) },
+    { id: "SECTION 6: HOOKS (COMPREHENSIVE)", title: "6. Hooks (Comprehensive)", level: "Intermediate", topics: allTopics.slice(30, 47) },
+    { id: "SECTION 7: COMPONENT DETAILS", title: "7. Component APIs", level: "Advanced", topics: allTopics.slice(47, 54) },
+    { id: "SECTION 8: CLIENT LIBRARIES", title: "8. ReactDOM APIs", level: "Advanced", topics: allTopics.slice(54, 55) },
+    { id: "SECTION 9: FORM DETAILS", title: "9. Form Handling", level: "Advanced", topics: allTopics.slice(55, 58) },
+    { id: "SECTION 10: ADVANCED PATTERNS", title: "10. Advanced Patterns", level: "Advanced", topics: allTopics.slice(58, 65) },
+    { id: "SECTION 11: CONTEXT API", title: "11. Context API", level: "Advanced", topics: allTopics.slice(65, 71) },
+    { id: "SECTION 12: PERFORMANCE OPTIMIZATION", title: "12. Performance", level: "Expert", topics: allTopics.slice(71, 75) },
+    { id: "SECTION 13: TESTING", title: "13. Testing", level: "Expert", topics: allTopics.slice(75, 80) },
+    { id: "SECTION 14: DEPLOYMENT", title: "14. Deployment", level: "Expert", topics: allTopics.slice(80, 83) },
+    { id: "SECTION 15: TYPESCRIPT WITH REACT", title: "15. TypeScript Integration", level: "Expert", topics: allTopics.slice(83, 89) },
+    { id: "SECTION 16: ADVANCED REACT FEATURES", title: "16. Advanced Features", level: "Expert", topics: allTopics.slice(89, 94) },
+    { id: "SECTION 17: DEVELOPER TOOLS", title: "17. Developer Tools", level: "Reference", topics: allTopics.slice(94, 96) },
+    { id: "SECTION 18: API REFERENCE", title: "18. API Reference", level: "Reference", topics: allTopics.slice(96, 99) },
+    { id: "SECTION 19: RULES & BEST PRACTICES", title: "19. Rules & Best Practices", level: "Reference", topics: allTopics.slice(99, 102) },
+    { id: "SECTION 20: THINKING IN REACT", title: "20. Thinking in React", level: "Reference", topics: allTopics.slice(102, 105) },
   ];
 
   const toggleTopic = (topicId: string) => {
@@ -94,7 +94,7 @@ export const ReactLearningRoadmap = () => {
         <div className="p-2 md:p-6">
           <Skeleton className="h-48 w-full mb-8" />
           <div className="space-y-4">
-            {[1, 2, 3].map((i) => (<Skeleton key={i} className="h-24 w-full rounded-xl" />))}
+            {[...Array(5)].map((_, i) => (<Skeleton key={i} className="h-16 w-full rounded-xl" />))}
           </div>
         </div>
     );
@@ -136,7 +136,7 @@ export const ReactLearningRoadmap = () => {
       <div className="mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">React Learning Path</h1></div>
-          <p className="text-muted-foreground text-lg mb-6">A structured roadmap for beginners to master the React library.</p>
+          <p className="text-muted-foreground text-lg mb-6">A comprehensive roadmap for beginners to master the React library.</p>
           <div className="max-w-2xl mx-auto bg-card rounded-lg shadow-md p-6 border">
             <div className="flex items-center justify-between mb-3"><span className="text-sm font-semibold text-foreground">Overall Progress</span><span className="text-2xl font-bold text-primary">{calculateProgress()}%</span></div>
             <div className="w-full bg-muted rounded-full h-4"><div className="bg-primary h-4 rounded-full transition-all duration-500" style={{ width: `${calculateProgress()}%` }}></div></div>
@@ -151,7 +151,10 @@ export const ReactLearningRoadmap = () => {
                 <div className="flex items-center gap-4">
                   <div className="text-3xl bg-muted p-3 rounded-full">⚛️</div>
                   <div>
-                    <div className="flex items-center gap-3 mb-1"><h2 className="text-xl font-bold text-foreground">{module.title}</h2><span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold', getLevelColor(module.level))}>{module.level}</span></div>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
+                      <h2 className="text-xl font-bold text-foreground">{module.title}</h2>
+                      <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold', getLevelColor(module.level))}>{module.level}</span>
+                    </div>
                   </div>
                 </div>
                 {expandedModule === module.id ? <ChevronDown className="w-6 h-6 text-muted-foreground" /> : <ChevronRight className="w-6 h-6 text-muted-foreground" />}
