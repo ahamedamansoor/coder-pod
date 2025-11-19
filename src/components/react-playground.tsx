@@ -99,11 +99,6 @@ export function ReactPlayground() {
                     )}
                     {isBuilding ? 'Building...' : 'Run'}
                 </Button>
-                <DialogClose asChild>
-                    <Button variant="outline" size="icon" aria-label="Close" className="h-9 w-9">
-                        <X className="h-4 w-4" />
-                    </Button>
-                </DialogClose>
             </div>
          </DialogHeader>
       <ResizablePanelGroup direction="horizontal" className="flex-1">
