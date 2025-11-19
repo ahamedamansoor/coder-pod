@@ -115,8 +115,16 @@ export function GenericContentDisplay({
 
   return (
     <div className="space-y-8">
-       <header className="relative space-y-2 text-center">
-          <div className="absolute top-0 right-0">
+       <header className="relative grid grid-cols-3 items-start">
+        <div className="col-start-2 text-center">
+            <h1 className="font-headline text-4xl font-bold tracking-tight">
+              {topic.title}
+            </h1>
+            <p className="text-lg text-muted-foreground mt-2">
+              A deep dive into {topic.title} in {language.name}.
+            </p>
+        </div>
+        <div className="col-start-3 flex justify-end">
              {!isLearningPlanTopic && (
                 <TooltipProvider>
                   {isUserAuthenticated ? (
@@ -133,8 +141,8 @@ export function GenericContentDisplay({
                   )}
                 </TooltipProvider>
              )}
-          </div>
-        </header>
+        </div>
+      </header>
       
       {children ? (
         children
