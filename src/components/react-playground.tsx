@@ -48,8 +48,8 @@ const htmlTemplate = (code: string) => `
   </html>
 `;
 
-export function ReactPlayground() {
-  const [code, setCode] = useState(initialCode);
+export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
+  const [code, setCode] = useState(defaultCode || initialCode);
   const [output, setOutput] = useState<{ code: string; err: string }>({ code: '', err: '' });
   const [isBuilding, setIsBuilding] = useState(true);
   const { theme } = useTheme();
@@ -75,7 +75,7 @@ export function ReactPlayground() {
   // Initial build
   useEffect(() => {
     buildCode(code);
-  }, [buildCode]);
+  }, [buildCode, code]);
 
   const handleRun = () => {
     buildCode(code);

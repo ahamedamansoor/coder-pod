@@ -4,6 +4,7 @@ import type { Language, Topic } from '@/app/data';
 import { GenericContentDisplay } from './generic-content-display';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from './ui/skeleton';
+import { useReactPlayground } from './react-playground-context';
 
 // Lazy load all the topic components
 const WhatIsReact = lazy(() => import('./react-topics/what-is-react'));
@@ -34,21 +35,23 @@ function LoadingSkeleton() {
 export function ReactContentDisplay({ 
   topic, 
   language, 
-  onOpenEditor,
 }: { 
   topic: Topic, 
   language: Language, 
-  onOpenEditor: (code: string) => void,
+  onOpenEditor?: (code: string) => void, // Made optional
 }) {
+  const { openWithContent } = useReactPlayground();
+
+  const onOpenEditorHandler = onOpenEditor || openWithContent;
   
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
   // If we have a custom full-page component, render it directly.
-  const fullPageTopics = ['react-version-updates', 'interview-questions'];
+  const fullPageTopics = ['what-is-react', 'react-version-updates', 'interview-questions'];
   if (fullPageTopics.includes(topic.slug) && CustomTopicComponent) {
     return (
       <Suspense fallback={<LoadingSkeleton />}>
-        <CustomTopicComponent onOpenEditor={onOpenEditor} />
+        <CustomTopicComponent onOpenEditor={onOpenEditorHandler} />
       </Suspense>
     );
   }
@@ -57,11 +60,11 @@ export function ReactContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-      onOpenEditor={onOpenEditor}
+      onOpenEditor={onOpenEditorHandler}
     >
       <Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (
-          <CustomTopicComponent onOpenEditor={onOpenEditor} />
+          <CustomTopicComponent onOpenEditor={onOpenEditorHandler} />
         ) : null}
       </Suspense>
     </GenericContentDisplay>

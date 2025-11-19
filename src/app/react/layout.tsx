@@ -10,6 +10,7 @@ import { notFound, useParams } from 'next/navigation';
 import { ReactProvider } from './react-context';
 import { ReactLayoutProvider, useReactLayout } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
+import { ReactPlaygroundProvider } from '@/components/react-playground-context';
 
 function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -65,11 +66,13 @@ export default function ReactTopicLayout({
 }) {
   return (
     <ReactProvider>
-      <ReactLayoutProvider>
-          <ReactTopicLayoutContent>
-            {children}
-          </ReactTopicLayoutContent>
-      </ReactLayoutProvider>
+      <ReactPlaygroundProvider>
+        <ReactLayoutProvider>
+            <ReactTopicLayoutContent>
+              {children}
+            </ReactTopicLayoutContent>
+        </ReactLayoutProvider>
+      </ReactPlaygroundProvider>
     </ReactProvider>
   );
 }

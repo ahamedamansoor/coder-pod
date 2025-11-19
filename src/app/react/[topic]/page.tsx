@@ -5,36 +5,21 @@ import { useState, useCallback, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data/index';
 import { ReactContentDisplay } from '@/components/react-content-display';
-import { CodeEditorSheet } from '@/components/code-editor-sheet';
 import {
   ResizablePanelGroup,
   ResizablePanel,
-  ResizableHandle,
 } from '@/components/ui/resizable';
 import { ReactLearningRoadmap } from '@/components/react-learning-roadmap';
 import { useReactLayout } from '../react-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
 import { InteractiveLoading } from '@/components/interactive-loading';
+import { useReactPlayground } from '@/components/react-playground-context';
 
 function TopicPageContent() {
   const params = useParams();
   const { topic: topicSlug } = params;
-  const { isEditorOpen, setIsEditorOpen } = useReactLayout();
-
-  const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
-  const ref = React.useRef<ImperativePanelHandle>(null);
-
-  React.useEffect(() => {
-    const panel = ref.current;
-    if (panel) {
-      if (isEditorOpen && panel.isCollapsed()) {
-        panel.expand();
-      } else if (!isEditorOpen && !panel.isCollapsed()) {
-        panel.collapse();
-      }
-    }
-  }, [isEditorOpen]);
+  const { openWithContent } = useReactPlayground();
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'react');
   if (!language) notFound();
@@ -43,13 +28,10 @@ function TopicPageContent() {
   if (!selectedTopic) notFound();
 
   const handleOpenEditor = useCallback((code?: string) => {
-    setEditorInitialCode(code);
-    setIsEditorOpen(true);
-  }, [setIsEditorOpen]);
-  
-  const handleCloseEditor = useCallback(() => {
-    setIsEditorOpen(false);
-  }, [setIsEditorOpen]);
+    if (code) {
+      openWithContent(code);
+    }
+  }, [openWithContent]);
   
   const isLearningPlanTopic = selectedTopic.slug === 'learning-plan';
 
@@ -67,23 +49,6 @@ function TopicPageContent() {
             />
           )}
         </div>
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel
-        ref={ref}
-        collapsible
-        collapsedSize={0}
-        defaultSize={0}
-        minSize={25}
-        maxSize={40}
-        onCollapse={() => setIsEditorOpen(false)}
-        className="data-[collapsed=true]:hidden"
-      >
-        <CodeEditorSheet
-          initialCode={editorInitialCode}
-          onClose={handleCloseEditor}
-          language={language.name}
-        />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
