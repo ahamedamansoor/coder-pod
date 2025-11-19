@@ -10,10 +10,11 @@ import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger }
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { ModuleCompletionCelebration } from './module-completion-celebration';
+import { react } from '@/app/data/react';
 
 export const ReactLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useReact();
-  const [expandedModule, setExpandedModule] = useState<string | null>("Fundamentals");
+  const [expandedModule, setExpandedModule] = useState<string | null>("GETTING STARTED");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
@@ -26,87 +27,41 @@ export const ReactLearningRoadmap = () => {
     }
   }, [user, isUserLoading, router]);
 
-  const modules = [
-    {
-      id: "Fundamentals",
-      title: "Fundamentals",
-      level: "Foundation",
-      icon: "⚛️",
-      topics: [
-        { id: "what-is-react", name: "What is React?", desc: "An overview of the React library and its philosophy.", difficulty: "Easy" },
-        { id: "setting-up-react", name: "Setting Up a React Environment", desc: "Creating a new React project using modern tools like Vite or Next.js.", difficulty: "Easy" },
-        { id: "jsx", name: "JSX Deep Dive", desc: "Understanding JavaScript XML for writing UI components and how it differs from HTML.", difficulty: "Easy" },
-        { id: "react-components", name: "Components & Props", desc: "Building reusable UI elements and passing data between them.", difficulty: "Easy" },
-        { id: "react-state", name: "State & Lifecycle", desc: "Managing dynamic data and understanding component lifecycle.", difficulty: "Medium" },
-        { id: "handling-events", name: "Handling Events", desc: "Making your components interactive by responding to user input.", difficulty: "Easy" },
-      ]
-    },
-    {
-      id: "Rendering",
-      title: "Rendering UI",
-      level: "Core Concepts",
-      icon: "🎨",
-      topics: [
-        { id: "conditional-rendering", name: "Conditional Rendering", desc: "Showing or hiding components and elements based on application state.", difficulty: "Easy" },
-        { id: "lists-and-keys", name: "Lists and Keys", desc: "Rendering dynamic lists of data and the importance of using keys.", difficulty: "Medium" },
-        { id: "react-forms", name: "Handling Forms", desc: "Managing user input with controlled and uncontrolled components.", difficulty: "Medium" },
-      ]
-    },
-    {
-      id: "Hooks",
-      title: "Hooks Deep Dive",
-      level: "Intermediate",
-      icon: "🎣",
-      topics: [
-        { id: "rules-of-hooks", name: "The Rules of Hooks", desc: "Understanding the two critical rules for using hooks effectively.", difficulty: "Easy" },
-        { id: "use-state-hook", name: "useState Hook", desc: "Managing simple state in functional components.", difficulty: "Easy" },
-        { id: "use-effect-hook", name: "useEffect Hook", desc: "Handling side effects like data fetching and subscriptions.", difficulty: "Medium" },
-        { id: "use-context-hook", name: "useContext Hook", desc: "Managing global state to avoid 'prop drilling'.", difficulty: "Medium" },
-        { id: "use-reducer-hook", name: "useReducer Hook", desc: "An alternative to useState for managing more complex component state.", difficulty: "Hard" },
-        { id: "use-ref-hook", name: "useRef Hook", desc: "Accessing DOM nodes and persisting values without causing re-renders.", difficulty: "Medium" },
-        { id: "memoization-hooks", name: "useCallback & useMemo", desc: "Optimizing performance by memoizing functions and values.", difficulty: "Hard" },
-        { id: "custom-hooks", name: "Custom Hooks", desc: "Creating your own reusable stateful logic to share across components.", difficulty: "Hard" },
-      ]
-    },
-    {
-      id: "Advanced Topics",
-      title: "Advanced React",
-      level: "Advanced",
-      icon: "🚀",
-      topics: [
-        { id: "react-router", name: "Routing with React Router", desc: "Implementing client-side navigation in a React application.", difficulty: "Medium" },
-        { id: "state-management-libraries", name: "State Management Libraries", desc: "Overview of libraries like Redux and Zustand for large-scale state management.", difficulty: "Hard" },
-        { id: "composition-patterns", name: "Advanced Component Patterns", desc: "Exploring patterns like Higher-Order Components (HOCs) and Render Props.", difficulty: "Hard" },
-        { id: "error-boundaries", name: "Error Boundaries", desc: "Catching JavaScript errors in your component tree and displaying a fallback UI.", difficulty: "Medium" },
-        { id: "code-splitting", name: "Code Splitting", desc: "Improving performance by lazy-loading components with React.lazy() and Suspense.", difficulty: "Medium" },
-      ]
-    },
-    {
-        id: "Ecosystem & Modern React",
-        title: "Ecosystem & Modern React",
-        level: "Expert",
-        icon: "✨",
-        topics: [
-          { id: "react-and-typescript", name: "React with TypeScript", desc: "Adding static types to your React application for better scalability.", difficulty: "Medium" },
-          { id: "react-performance", name: "Performance Optimization", desc: "Using tools like the React Profiler to fix performance bottlenecks.", difficulty: "Hard" },
-          { id: "server-vs-client-components", name: "Server & Client Components", desc: "Understanding the difference in modern React frameworks like Next.js.", difficulty: "Hard" },
-          { id: "testing-react-apps", name: "Testing React Applications", desc: "Introduction to testing libraries like Jest and React Testing Library.", difficulty: "Medium" },
-        ]
-      }
-  ];
+  const allTopics = react.topics.filter(t => t.slug !== 'learning-plan' && t.slug !== 'interview-questions');
 
-  const allTopics = modules.flatMap(m => m.topics);
+  const modules = [
+    { id: "GETTING STARTED", title: "Getting Started", level: "Beginner", topics: allTopics.slice(0, 5) },
+    { id: "DESCRIBING THE UI", title: "Describing the UI", level: "Beginner", topics: allTopics.slice(5, 10) },
+    { id: "ADDING INTERACTIVITY", title: "Adding Interactivity", level: "Beginner", topics: allTopics.slice(10, 17) },
+    { id: "MANAGING STATE", title: "Managing State", level: "Intermediate", topics: allTopics.slice(17, 21) },
+    { id: "ESCAPE HATCHES", title: "Escape Hatches", level: "Intermediate", topics: allTopics.slice(21, 30) },
+    { id: "HOOKS (COMPREHENSIVE)", title: "Hooks (Comprehensive)", level: "Intermediate", topics: allTopics.slice(30, 47) },
+    { id: "COMPONENT DETAILS", title: "Component Details", level: "Advanced", topics: allTopics.slice(47, 54) },
+    { id: "CLIENT LIBRARIES", title: "Client Libraries", level: "Advanced", topics: [allTopics[54]] },
+    { id: "FORM DETAILS", title: "Form Details", level: "Advanced", topics: allTopics.slice(55, 58) },
+    { id: "ADVANCED PATTERNS", title: "Advanced Patterns", level: "Advanced", topics: allTopics.slice(58, 65) },
+    { id: "CONTEXT API", title: "Context API", level: "Advanced", topics: allTopics.slice(65, 71) },
+    { id: "PERFORMANCE OPTIMIZATION", title: "Performance Optimization", level: "Expert", topics: allTopics.slice(71, 75) },
+    { id: "TESTING", title: "Testing (React Testing Basics)", level: "Expert", topics: allTopics.slice(75, 80) },
+    { id: "DEPLOYMENT", title: "Deployment", level: "Expert", topics: allTopics.slice(80, 83) },
+    { id: "TYPESCRIPT WITH REACT", title: "TypeScript with React", level: "Expert", topics: allTopics.slice(83, 89) },
+    { id: "ADVANCED REACT FEATURES", title: "Advanced React Features", level: "Expert", topics: allTopics.slice(89, 94) },
+    { id: "DEVELOPER TOOLS", title: "Developer Tools", level: "Expert", topics: allTopics.slice(94, 96) },
+    { id: "API REFERENCE", title: "API Reference", level: "Reference", topics: allTopics.slice(96, 99) },
+    { id: "RULES & BEST PRACTICES", title: "Rules & Best Practices", level: "Reference", topics: allTopics.slice(99, 102) },
+    { id: "THINKING IN REACT", title: "Thinking in React", level: "Reference", topics: allTopics.slice(102, 105) },
+  ];
 
   const toggleTopic = (topicId: string) => {
     if (!isUserAuthenticated) return;
     handleToggleComplete(topicId);
 
-    const topicModule = modules.find(m => m.topics.some(t => t.id === topicId));
+    const topicModule = modules.find(m => m.topics.some(t => t.slug === topicId));
     if (!topicModule) return;
     
     const isCompleting = !completedTopics.has(topicId);
     if (isCompleting) {
-        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.id) || t.id === topicId);
+        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.slug) || t.slug === topicId);
         if (allTopicsInModuleCompleted) {
           setCompletedModule(topicModule.title);
           const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
@@ -117,11 +72,12 @@ export const ReactLearningRoadmap = () => {
     }
   };
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch(difficulty) {
-      case 'Easy': return 'text-primary/80 bg-primary/10';
-      case 'Medium': return 'text-yellow-600 bg-yellow-400/10';
-      case 'Hard': return 'text-destructive bg-destructive/10';
+  const getLevelColor = (level: string) => {
+    switch(level) {
+      case 'Beginner': return 'text-primary/80 bg-primary/10';
+      case 'Intermediate': return 'text-yellow-600 bg-yellow-400/10';
+      case 'Advanced': return 'text-orange-600 bg-orange-400/10';
+      case 'Expert': return 'text-destructive bg-destructive/10';
       default: return 'text-muted-foreground bg-muted';
     }
   };
@@ -147,18 +103,17 @@ export const ReactLearningRoadmap = () => {
   const completedCount = isUserAuthenticated ? completedTopics.size : 0;
   const totalTopicCount = allTopics.length;
   
-  const TopicItem = ({ topic }: { topic: { id: string; name: string; desc: string; difficulty: string } }) => {
-    const isCompleted = isUserAuthenticated && completedTopics.has(topic.id);
+  const TopicItem = ({ topic }: { topic: { slug: string; title: string; explanation: string; } }) => {
+    const isCompleted = isUserAuthenticated && completedTopics.has(topic.slug);
     const itemContent = (
-      <div onClick={() => toggleTopic(topic.id)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
+      <div onClick={() => toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
         <div className="flex items-start gap-3">
           <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <Link href={`/react/${topic.id}`} className="hover:underline"><h3 className="text-lg font-semibold text-foreground">{topic.name}</h3></Link>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getDifficultyColor(topic.difficulty)}`}>{topic.difficulty}</span>
+              <Link href={`/react/${topic.slug}`} className="hover:underline"><h3 className="text-lg font-semibold text-foreground">{topic.title}</h3></Link>
             </div>
-            <p className="text-muted-foreground text-sm">{topic.desc}</p>
+            <p className="text-muted-foreground text-sm line-clamp-2">{topic.explanation}</p>
           </div>
         </div>
       </div>
@@ -194,24 +149,16 @@ export const ReactLearningRoadmap = () => {
             <div key={module.id} className="bg-card border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
               <div onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)} className={`bg-card p-6 cursor-pointer flex items-center justify-between border-b`}>
                 <div className="flex items-center gap-4">
-                  <div className="text-3xl bg-muted p-3 rounded-full">{module.icon}</div>
+                  <div className="text-3xl bg-muted p-3 rounded-full">⚛️</div>
                   <div>
-                    <div className="flex items-center gap-3 mb-1"><h2 className="text-xl font-bold text-foreground">{module.title}</h2><span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">{module.level}</span></div>
+                    <div className="flex items-center gap-3 mb-1"><h2 className="text-xl font-bold text-foreground">{module.title}</h2><span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold', getLevelColor(module.level))}>{module.level}</span></div>
                   </div>
                 </div>
                 {expandedModule === module.id ? <ChevronDown className="w-6 h-6 text-muted-foreground" /> : <ChevronRight className="w-6 h-6 text-muted-foreground" />}
               </div>
-              {expandedModule === module.id && (<div className="p-6 space-y-3 bg-muted/50">{module.topics.map((topic) => (<TopicItem key={topic.id} topic={topic} />))}</div>)}
+              {expandedModule === module.id && (<div className="p-6 space-y-3 bg-muted/50">{module.topics.map((topic) => (<TopicItem key={topic.slug} topic={topic} />))}</div>)}
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 bg-primary/10 border border-primary/20 text-primary-foreground rounded-xl shadow-lg p-8">
-          <div className="flex items-center gap-3 mb-6"><Zap className="w-8 h-8 text-primary" /><h2 className="text-3xl font-bold text-foreground">Learning Tips</h2></div>
-          <div className="grid md:grid-cols-2 gap-4 text-foreground">
-            <div className="bg-background rounded-lg p-4 border"><h3 className="font-bold text-lg mb-2 text-primary">✅ Understand Components</h3><p className="text-sm text-muted-foreground">React is all about components. Master how to build and compose them.</p></div>
-            <div className="bg-background rounded-lg p-4 border"><h3 className="font-bold text-lg mb-2 text-primary">🎣 Learn Hooks Well</h3><p className="text-sm text-muted-foreground">Hooks are the foundation of modern React. Focus on `useState` and `useEffect` first.</p></div>
-          </div>
         </div>
 
         <div className="mt-8 text-center text-muted-foreground"><Award className="w-12 h-12 mx-auto mb-3 text-primary" /><p className="text-lg font-semibold">Happy Coding!</p><p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p></div>
