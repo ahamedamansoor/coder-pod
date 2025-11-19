@@ -1,11 +1,13 @@
+
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
-import { Terminal, Loader2, AlertTriangle } from 'lucide-react';
+import { Terminal, Loader2, AlertTriangle, Play } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 import { transpileReactCode } from '@/ai/flows/transpile-react-code';
+import { Button } from './ui/button';
 
 const initialCode = `import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
@@ -36,7 +38,6 @@ const htmlTemplate = (code: string) => `
         h1 { color: #007bff; }
         button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
       </style>
-      <!-- Load React and ReactDOM from a CDN -->
       <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin><\/script>
       <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin><\/script>
     </head>
@@ -76,16 +77,9 @@ export function ReactPlayground() {
     buildCode(code);
   }, []);
 
-  // Debounced build on code change
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      buildCode(code);
-    }, 750);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [code, buildCode]);
+  const handleRun = () => {
+    buildCode(code);
+  };
 
   const iframeSrcDoc = htmlTemplate(output.code);
 
@@ -93,29 +87,38 @@ export function ReactPlayground() {
     <div className="h-full w-full flex flex-col">
       <ResizablePanelGroup direction="horizontal" className="flex-1">
         <ResizablePanel defaultSize={50}>
-          <Editor
-            value={code}
-            onChange={(value) => setCode(value || '')}
-            language="javascript"
-            theme={theme === 'dark' ? 'vs-dark' : 'light'}
-            options={{ minimap: { enabled: false }, fontSize: 14, wordWrap: 'on' }}
-          />
+          <div className="h-full flex flex-col">
+            <Editor
+              value={code}
+              onChange={(value) => setCode(value || '')}
+              language="javascript"
+              theme={theme === 'dark' ? 'vs-dark' : 'light'}
+              options={{ minimap: { enabled: false }, fontSize: 14, wordWrap: 'on' }}
+              className="flex-1"
+            />
+             <div className="p-2 border-t">
+              <Button onClick={handleRun} disabled={isBuilding}>
+                {isBuilding ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Play className="mr-2 h-4 w-4" />
+                )}
+                {isBuilding ? 'Building...' : 'Run'}
+              </Button>
+            </div>
+          </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={75}>
                <div className="relative w-full h-full">
-                {(isBuilding || output.err) && (
+                {(output.err) && (
                     <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/50">
-                        {isBuilding ? (
-                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                        ) : (
-                            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-md text-destructive flex items-center gap-2">
-                                <AlertTriangle className="h-5 w-5" />
-                                <span className="font-semibold">Build Failed</span>
-                            </div>
-                        )}
+                        <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-md text-destructive flex items-center gap-2">
+                            <AlertTriangle className="h-5 w-5" />
+                            <span className="font-semibold">Build Failed</span>
+                        </div>
                     </div>
                 )}
                  <iframe
