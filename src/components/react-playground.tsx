@@ -1,13 +1,14 @@
 
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
-import { Terminal, Loader2, AlertTriangle, Play } from 'lucide-react';
+import { Terminal, Loader2, AlertTriangle, Play, PanelTop } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 import { transpileReactCode } from '@/ai/flows/transpile-react-code';
 import { Button } from './ui/button';
+import { DialogHeader, DialogTitle } from './ui/dialog';
 
 const initialCode = `import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
@@ -18,7 +19,7 @@ function App() {
   return (
     <div className="card">
       <h1>Hello React!</h1>
-      <p>Click the button to increment the counter.</p>
+      <p>Click the Run button to see your changes.</p>
       <h2>{count}</h2>
       <button onClick={() => setCount(count + 1)}>Increment</button>
     </div>
@@ -75,7 +76,7 @@ export function ReactPlayground() {
   // Initial build
   useEffect(() => {
     buildCode(code);
-  }, []);
+  }, [buildCode]);
 
   const handleRun = () => {
     buildCode(code);
@@ -85,6 +86,20 @@ export function ReactPlayground() {
 
   return (
     <div className="h-full w-full flex flex-col">
+       <DialogHeader className="p-4 border-b flex-row items-center justify-between">
+            <DialogTitle className="flex items-center gap-2 text-lg font-bold">
+              <PanelTop />
+              React Playground
+            </DialogTitle>
+             <Button onClick={handleRun} disabled={isBuilding} size="sm">
+                {isBuilding ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Play className="mr-2 h-4 w-4" />
+                )}
+                {isBuilding ? 'Building...' : 'Run'}
+            </Button>
+         </DialogHeader>
       <ResizablePanelGroup direction="horizontal" className="flex-1">
         <ResizablePanel defaultSize={50}>
           <div className="h-full flex flex-col">
@@ -96,16 +111,6 @@ export function ReactPlayground() {
               options={{ minimap: { enabled: false }, fontSize: 14, wordWrap: 'on' }}
               className="flex-1"
             />
-             <div className="p-2 border-t">
-              <Button onClick={handleRun} disabled={isBuilding}>
-                {isBuilding ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Play className="mr-2 h-4 w-4" />
-                )}
-                {isBuilding ? 'Building...' : 'Run'}
-              </Button>
-            </div>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
