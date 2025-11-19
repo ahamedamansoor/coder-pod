@@ -9,6 +9,7 @@ import { useReactPlayground } from './react-playground-context';
 // Lazy load all the topic components
 const WhatIsReact = lazy(() => import('./react-topics/what-is-react'));
 const InstallationAndSetup = lazy(() => import('./react-topics/installation-and-setup'));
+const YourFirstComponent = lazy(() => import('./react-topics/your-first-component'));
 const ReactInterviewQuestions = lazy(() => import('./react-topics/react-interview-questions'));
 const ReactVersionUpdates = lazy(() => import('./react-topics/react-version-updates'));
 
@@ -17,6 +18,7 @@ const ReactVersionUpdates = lazy(() => import('./react-topics/react-version-upda
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'what-is-react': WhatIsReact,
   'installation-and-setup': InstallationAndSetup,
+  'your-first-component': YourFirstComponent,
   'interview-questions': ReactInterviewQuestions,
   'react-version-updates': ReactVersionUpdates,
 };
