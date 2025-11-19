@@ -42,7 +42,7 @@ export function ReactContentDisplay({
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
   // If we have a custom full-page component, render it directly.
-  if (topic.slug === 'react-version-updates' && CustomTopicComponent) {
+  if ((topic.slug === 'react-version-updates' || topic.slug === 'interview-questions') && CustomTopicComponent) {
     return (
       <Suspense fallback={<LoadingSkeleton />}>
         <CustomTopicComponent onOpenEditor={onOpenEditor} />
