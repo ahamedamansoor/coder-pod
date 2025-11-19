@@ -12,6 +12,7 @@ const WhatIsSass = lazy(() => import('./scss-topics/what-is-sass'));
 const SassInstallation = lazy(() => import('./scss-topics/sass-installation'));
 const SassVariables = lazy(() => import('./scss-topics/sass-variables'));
 const SassNesting = lazy(() => import('./scss-topics/sass-nesting'));
+const SassImport = lazy(() => import('./scss-topics/sass-import'));
 
 
 // Map slugs to their lazy-loaded components
@@ -20,6 +21,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'sass-installation': SassInstallation,
   'sass-variables': SassVariables,
   'sass-nesting': SassNesting,
+  'sass-import': SassImport,
 };
 
 function LoadingSkeleton() {
