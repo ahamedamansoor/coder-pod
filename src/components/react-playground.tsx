@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
@@ -44,7 +43,7 @@ const htmlTemplate = (code: string) => `
     </head>
     <body>
       <div id="root"></div>
-      <script type="text/javascript">${code}</script>
+      <script>${code}<\/script>
     </body>
   </html>
 `;
@@ -91,14 +90,16 @@ export function ReactPlayground() {
               <PanelTop />
               React Playground
             </DialogTitle>
-             <Button onClick={handleRun} disabled={isBuilding} size="sm">
-                {isBuilding ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Play className="mr-2 h-4 w-4" />
-                )}
-                {isBuilding ? 'Building...' : 'Run'}
-            </Button>
+             <div className="flex items-center gap-2">
+                 <Button onClick={handleRun} disabled={isBuilding} size="sm">
+                    {isBuilding ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Play className="mr-2 h-4 w-4" />
+                    )}
+                    {isBuilding ? 'Building...' : 'Run'}
+                </Button>
+            </div>
          </DialogHeader>
       <ResizablePanelGroup direction="horizontal" className="flex-1">
         <ResizablePanel defaultSize={50}>

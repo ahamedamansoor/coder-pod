@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import {
@@ -23,7 +22,7 @@ export function ReactPlaygroundModal({ children }: ReactPlaygroundModalProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0" showCloseButton={false}>
         <DialogClose asChild>
-            <Button variant="outline" size="icon" aria-label="Close" className="absolute top-3 right-3 h-8 w-8 z-50">
+            <Button variant="outline" size="icon" aria-label="Close" className="absolute top-3 right-3 h-8 w-8 z-50 mr-14">
                 <X className="h-4 w-4" />
             </Button>
         </DialogClose>
