@@ -3,7 +3,7 @@
 import type { Language, Topic } from '@/app/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { HelpCircle, Sparkles, CheckSquare, Code, ToyBrick } from 'lucide-react';
+import { HelpCircle, Sparkles } from 'lucide-react';
 import React from 'react';
 import {
   answerQuestion,
@@ -115,34 +115,34 @@ export function GenericContentDisplay({
 
   return (
     <div className="space-y-8">
-       <header className="relative grid grid-cols-3 items-start">
-        <div className="col-start-2 text-center">
-            <h1 className="font-headline text-4xl font-bold tracking-tight">
+       <header className="relative flex justify-center items-center py-4 border-b">
+         <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight">
               {topic.title}
             </h1>
             <p className="text-lg text-muted-foreground mt-2">
-              A deep dive into {topic.title} in {language.name}.
+              {topic.explanation}
             </p>
-        </div>
-        <div className="col-start-3 flex justify-end">
-             {!isLearningPlanTopic && (
-                <TooltipProvider>
-                  {isUserAuthenticated ? (
-                    markAsCompleteButton
-                  ) : (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        {markAsCompleteButton}
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>You must be logged in to save your progress.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                </TooltipProvider>
-             )}
-        </div>
-      </header>
+         </div>
+         <div className="absolute right-0 top-1/2 -translate-y-1/2">
+            {!isLearningPlanTopic && (
+              <TooltipProvider>
+                {isUserAuthenticated ? (
+                  markAsCompleteButton
+                ) : (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      {markAsCompleteButton}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Sign in to track your progress.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </TooltipProvider>
+            )}
+         </div>
+       </header>
       
       {children ? (
         children
