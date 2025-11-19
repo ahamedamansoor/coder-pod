@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -22,6 +23,7 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { AiSimplification } from './ai-simplification';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -113,10 +115,7 @@ export function GenericContentDisplay({
       {children ? (
         children
       ) : (
-        <Card>
-          <CardHeader><CardTitle>Explanation</CardTitle></CardHeader>
-          <CardContent><p className="text-base leading-relaxed">{topic.explanation}</p></CardContent>
-        </Card>
+        <AiSimplification topic={topic} language={language} />
       )}
       
       {!isLearningPlanTopic && (

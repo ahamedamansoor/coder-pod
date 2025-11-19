@@ -26,6 +26,7 @@ import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
+import { AiSimplification } from './ai-simplification';
 
 // Lazy load all the topic components
 const JavaLearningRoadmap = lazy(() => import('./java-learning-roadmap').then(module => ({ default: module.JavaLearningRoadmap })));
@@ -268,14 +269,7 @@ export function JavaContentDisplay({
 
     // Fallback for topics without a custom component
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Original Explanation</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-base leading-relaxed">{topic.explanation}</p>
-        </CardContent>
-      </Card>
+      <AiSimplification topic={topic} language={language} />
     );
   };
 
