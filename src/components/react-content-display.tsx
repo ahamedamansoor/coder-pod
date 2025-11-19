@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -41,6 +40,15 @@ export function ReactContentDisplay({
 }) {
   
   const CustomTopicComponent = topicComponentMap[topic.slug];
+
+  // If we have a custom full-page component, render it directly.
+  if (topic.slug === 'react-version-updates' && CustomTopicComponent) {
+    return (
+      <Suspense fallback={<LoadingSkeleton />}>
+        <CustomTopicComponent onOpenEditor={onOpenEditor} />
+      </Suspense>
+    );
+  }
 
   return (
     <GenericContentDisplay
