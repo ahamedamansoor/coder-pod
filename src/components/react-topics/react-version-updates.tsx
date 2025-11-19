@@ -1,184 +1,353 @@
 'use client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useMemo } from 'react';
+import { ChevronDown, ExternalLink, Zap, GitBranch, Code2, Sparkles, Search, Code, Layers, Anchor, History, FileUp, Component, Pointer, Cpu, VenetianMask, Share2, Settings } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Rss, GitBranch, Lightbulb, Zap, Rocket, Activity, Code, Settings, Check, X, Share2, Layers, VenetianMask, Cpu, FileText, Anchor, History, FileUp, Component, Pointer } from 'lucide-react';
-import React from 'react';
 
-const updates = [
-  {
-    version: "React 19",
-    date: "Dec 2024",
-    features: [
-      { title: "Actions", description: "Async functions in transitions for streamlined data submission and form handling.", icon: Zap },
-      { title: "React Server Components", description: "Stable release for server-side rendering with components to reduce client-side JavaScript.", icon: Rocket },
-      { title: "ref as Prop", description: "Function components now receive the `ref` prop directly, removing the need for `forwardRef`.", icon: GitBranch },
-      { title: "use() API", description: "A new hook to read promises and context in render, enabling conditional context access.", icon: Lightbulb },
-      { title: "DocumentHead Component", description: "A built-in component to manage document head tags like title and meta for better SEO.", icon: FileText },
-      { title: "Web Components Integration", description: "Improved support for using Web Components within React applications.", icon: Code },
-    ],
-  },
-  {
-    version: "React 18",
-    date: "Mar 2022",
-    features: [
-      { title: "Concurrent Features", description: "Introduced interruptible rendering, laying the foundation for all new features.", icon: Zap },
-      { title: "Automatic Batching", description: "Automatically groups multiple state updates into a single re-render for better performance.", icon: Rocket },
-      { title: "Transitions (useTransition)", description: "Mark state updates as non-urgent to prevent blocking user input.", icon: Lightbulb },
-      { title: "New Hooks", description: "Added `useId`, `useTransition`, `useDeferredValue`, and `useSyncExternalStore`.", icon: Lightbulb },
-      { title: "New Root API (createRoot)", description: "Modern API for rendering and hydrating apps, replacing `ReactDOM.render()`.", icon: Code },
-    ],
-  },
-  {
-    version: "React 17",
-    date: "Oct 2020",
-    features: [
-      { title: "No New Features", description: "A unique \"stepping stone\" release focused on making future upgrades easier.", icon: Anchor },
-      { title: "New JSX Transform", description: "Removed the need to `import React from 'react'` in every file that uses JSX.", icon: Code },
-      { title: "Gradual Upgrades", description: "Enabled different parts of an application to use different versions of React.", icon: Layers },
-      { title: "Event Delegation Changes", description: "Changed how event delegation works under the hood for better compatibility with other libraries.", icon: Settings },
-    ],
-  },
-  {
-    version: "React 16.8",
-    date: "Feb 2019",
-    features: [
-      { title: "Hooks Introduced", description: "The revolutionary feature that let function components use state and other React features.", icon: Zap },
-      { title: "useState & useEffect", description: "Introduced the most fundamental hooks for state management and side effects.", icon: Lightbulb },
-    ],
-  },
+const ReactVersionPage = () => {
+  const [expandedVersion, setExpandedVersion] = useState<string | null>('v19');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterTag, setFilterTag] = useState('all');
+
+  const versions = [
     {
-    version: "React 16.3",
-    date: "Mar 2018",
-    features: [
-      { title: "New Context API", description: "A stable and more ergonomic API (`React.createContext`) for passing data through the component tree.", icon: Share2 },
-      { title: "forwardRef API", description: "A way to pass refs through components to child DOM elements.", icon: GitBranch },
-    ],
-  },
-  {
-    version: "React 16",
-    date: "Sep 2017",
-    features: [
-      { title: "Fiber Reconciler", description: "A complete rewrite of React's core algorithm for faster, incremental rendering.", icon: Cpu },
-      { title: "Error Boundaries", description: "A new way to catch JavaScript errors in components and display a fallback UI.", icon: VenetianMask },
-      { title: "Portals", description: "The ability to render components into a different DOM node, useful for modals and tooltips.", icon: Layers },
-      { title: "Fragments", description: "Render multiple elements without adding an extra wrapper node to the DOM.", icon: Layers },
-    ],
-  },
-  {
-    version: "React 15",
-    date: "Apr 2016",
-    features: [
-      { title: "Improved SVG Support", description: "Full support for all SVG attributes.", icon: Code },
-      { title: "Cleaner DOM", description: "Removed unnecessary `<span>` wrappers that React used to insert around text.", icon: Settings },
-    ],
-  },
-   {
-    version: "React 0.14",
-    date: "Oct 2014",
-    features: [
-      { title: "React & ReactDOM Split", description: "The core React library was split from the DOM renderer, paving the way for React Native.", icon: GitBranch },
-    ],
-  },
-  {
-    version: "React 0.3.0 - 0.13.x",
-    date: "2013-2014",
-    features: [
-      { title: "Initial Release", description: "First public, open-source version introducing the Virtual DOM and component model.", icon: History },
-      { title: "JSX Comments", description: "Added support for comments within JSX using {/* ... */}.", icon: Code },
-      { title: "State & Props", description: "Established `getInitialState` and `props` for component data management.", icon: FileUp },
-      { title: "Stateless Components", description: "Functional components were introduced as a first-class concept.", icon: Component},
-    ],
-  },
-];
+      id: 'v19',
+      version: 'React 19',
+      date: 'Dec 2024',
+      icon: '⚡',
+      features: [
+        {
+          name: 'Actions',
+          description: 'Async functions in transitions for streamlined data submission and form handling.',
+          tags: ['Server', 'Forms', 'Async']
+        },
+        {
+          name: 'React Server Components',
+          description: 'Stable release for server-side rendering with components to reduce client-side JavaScript.',
+          tags: ['Server', 'Performance']
+        },
+        {
+          name: 'use() API',
+          description: 'New hook to read promises and context in render, enabling conditional context access.',
+          tags: ['Hooks', 'Async']
+        },
+        {
+          name: 'ref as Prop',
+          description: 'Function components now receive the ref prop directly, removing the need for forwardRef.',
+          tags: ['API', 'Simplification']
+        },
+        {
+          name: 'DocumentHead Component',
+          description: 'Built-in component to manage document head tags like title and meta for better SEO.',
+          tags: ['SEO', 'Features']
+        },
+        {
+          name: 'Web Components Integration',
+          description: 'Improved support for using Web Components within React applications.',
+          tags: ['Integration']
+        }
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v19.0.0',
+        npm: 'https://www.npmjs.com/package/react/v/19.0.0',
+        blog: 'https://react.dev/blog/2024/12/05/react-19'
+      }
+    },
+    {
+      id: 'v18',
+      version: 'React 18',
+      date: 'Mar 2022',
+      icon: '🎯',
+      features: [
+        {
+          name: 'Automatic Batching',
+          description: 'Automatically groups multiple state updates into single re-render for better performance.',
+          tags: ['Performance', 'Batching']
+        },
+        {
+          name: 'Concurrent Features',
+          description: 'Introduced interruptible rendering, laying foundation for all new features.',
+          tags: ['Rendering', 'Advanced']
+        },
+        {
+          name: 'Transitions (useTransition)',
+          description: 'Mark state updates as non-urgent to prevent blocking user input.',
+          tags: ['Hooks', 'UX']
+        },
+        {
+          name: 'Deferred Values (useDeferredValue)',
+          description: 'Defer re-rendering of part of the UI while keeping rest responsive.',
+          tags: ['Hooks', 'Performance']
+        },
+        {
+          name: 'New Root APIs',
+          description: 'createRoot() and hydrateRoot() replace legacy render() method.',
+          tags: ['API', 'SSR']
+        },
+        {
+          name: 'useId Hook',
+          description: 'Generate unique, stable IDs for accessibility and server rendering.',
+          tags: ['Hooks', 'A11y']
+        }
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v18.0.0',
+        npm: 'https://www.npmjs.com/package/react/v/18.0.0',
+        blog: 'https://react.dev/blog/2022/03/29/react-v18'
+      }
+    },
+    {
+      id: 'v17',
+      version: 'React 17',
+      date: 'Oct 2020',
+      icon: '🌱',
+      features: [
+        {
+          name: 'New JSX Transform',
+          description: 'No need to import React for JSX files. Direct compilation without React.createElement.',
+          tags: ['DX', 'JSX']
+        },
+        {
+          name: 'Gradual Upgrades',
+          description: 'Large applications can upgrade incrementally with mixed React versions.',
+          tags: ['Upgrade', 'Compatibility']
+        },
+        {
+          name: 'Event Delegation Changes',
+          description: 'Improved event system for better compatibility and performance.',
+          tags: ['Events', 'Performance']
+        },
+        {
+          name: 'Better Error Messages',
+          description: 'More helpful error information and improved debugging experience.',
+          tags: ['DX', 'Errors']
+        }
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v17.0.0',
+        npm: 'https://www.npmjs.com/package/react/v/17.0.0',
+        blog: 'https://react.dev/blog/2020/10/20/react-v17'
+      }
+    },
+    {
+      id: 'v16.8',
+      version: 'React 16.8 - Hooks',
+      date: 'Feb 2019',
+      icon: '🎣',
+      features: [
+        { name: 'useState & useEffect', description: 'Introduced the most fundamental hooks for state management and side effects.', tags: ['Hooks', 'State', 'Effects'] },
+        { name: 'Custom Hooks', description: 'Extract component logic into reusable functions following Hooks rules.', tags: ['Hooks', 'Reusability'] },
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v16.8.0',
+        npm: 'https://www.npmjs.com/package/react/v/16.8.0',
+        blog: 'https://react.dev/blog/2019/02/06/react-v16.8.0'
+      }
+    },
+    {
+      id: 'v16',
+      version: 'React 16 - Fiber',
+      date: 'Sep 2017',
+      icon: '🔧',
+      features: [
+        {
+          name: 'Fiber Reconciler',
+          description: 'Complete rewrite of rendering engine enabling incremental rendering and prioritization.',
+          tags: ['Architecture', 'Performance']
+        },
+        {
+          name: 'Error Boundaries',
+          description: 'Catch JavaScript errors in component tree and render fallback UI.',
+          tags: ['Error Handling']
+        },
+        {
+          name: 'Portals',
+          description: 'Render components outside parent DOM hierarchy for modals and tooltips.',
+          tags: ['Features', 'DOM']
+        },
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v16.0.0',
+        npm: 'https://www.npmjs.com/package/react/v/16.0.0',
+        blog: 'https://react.dev/blog/2017/09/26/react-v16'
+      }
+    },
+    {
+      id: 'v15',
+      version: 'React 15',
+      date: 'Apr 2016',
+      icon: '✨',
+      features: [
+        { name: 'SVG Support', description: 'Full support for all SVG tags and attributes.', tags: ['Features', 'SVG'] },
+        { name: 'Null Returns', description: 'Functional components can now return null without wrapper elements.', tags: ['API', 'Simplification'] },
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v15.0.0',
+        npm: 'https://www.npmjs.com/package/react/v/15.0.0',
+        blog: 'https://react.dev/blog/2016/04/07/react-v15'
+      }
+    },
+    {
+      id: 'v0.14',
+      version: 'React 0.14',
+      date: 'Oct 2014',
+      icon: '🌟',
+      features: [
+        { name: 'React/ReactDOM Split', description: 'Core React library separated from DOM-specific rendering logic.', tags: ['Architecture', 'Modular'] },
+        { name: 'Stateless Components', description: 'Functional components introduced as first-class citizen.', tags: ['Components', 'API'] },
+      ],
+      links: {
+        github: 'https://github.com/facebook/react/releases/tag/v0.14.0',
+        npm: 'https://www.npmjs.com/package/react/v/0.14.0',
+        blog: 'https://react.dev/blog/2014/10/16/react-v0.14'
+      }
+    }
+  ];
 
-const comparisonData = [
-    { feature: 'React/DOM Split', v0_14: true, v15: true, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Hooks', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Fiber', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Error Boundaries', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Fragments', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'New Context API', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Suspense', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Concurrent Mode', v0_14: false, v15: false, v16: true, v17: true, v18: true, v19: true },
-    { feature: 'Automatic Batching', v0_14: false, v15: false, v16: false, v17: false, v18: true, v19: true },
-    { feature: 'Actions', v0_14: false, v15: false, v16: false, v17: false, v18: false, v19: true },
-    { feature: 'Server Components', v0_14: false, v15: false, v16: false, v17: false, v18: false, v19: true },
-    { feature: 'ref as Prop', v0_14: false, v15: false, v16: false, v17: false, v18: false, v19: true },
-];
+  const filteredVersions = useMemo(() => {
+    if (!searchQuery && filterTag === 'all') return versions;
+    return versions.filter(v => {
+      const matchesSearch = v.version.toLowerCase().includes(searchQuery.toLowerCase()) || v.features.some(f => f.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesTag = filterTag === 'all' || v.features.some(f => f.tags.includes(filterTag));
+      return matchesSearch && matchesTag;
+    });
+  }, [searchQuery, filterTag]);
 
-export default function ReactVersionUpdates() {
-    return (
-        <div className="space-y-12">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Rss className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">React Version History</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    A look back at the major features and architectural shifts that have shaped modern React.
-                </p>
-            </div>
+  const allTags = [...new Set(versions.flatMap(v => v.features.flatMap(f => f.tags)))].sort();
 
-            <div className="relative pl-6 after:absolute after:inset-y-0 after:w-px after:bg-border after:left-6">
-                {updates.map((update, index) => (
-                    <div key={update.version} className="grid grid-cols-[auto_1fr] items-start gap-x-6 gap-y-12 mb-12">
-                        <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 ring-8 ring-background">
-                            <GitBranch className="h-6 w-6 text-primary" />
-                        </div>
-                        <div className="pt-2">
-                            <Badge variant="outline" className="mb-2">{update.date}</Badge>
-                            <h2 className="text-3xl font-bold">{update.version}</h2>
-                             <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                {update.features.map(feature => (
-                                    <div key={feature.title} className="bg-muted p-4 rounded-lg border">
-                                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
-                                            <feature.icon className="w-5 h-5 text-primary"/>
-                                            {feature.title}
-                                        </h3>
-                                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="relative overflow-hidden border-b">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="text-center space-y-6">
+            <Badge variant="outline" className="text-sm">
+              <Sparkles className="w-4 h-4 mr-2 text-primary" />
+              React Evolution
+            </Badge>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Major Feature Comparison</CardTitle>
-                    <CardDescription>A quick overview of when key features were introduced or stabilized.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Feature</TableHead>
-                                <TableHead>v0.14</TableHead>
-                                <TableHead>v15</TableHead>
-                                <TableHead>v16</TableHead>
-                                <TableHead>v17</TableHead>
-                                <TableHead>v18</TableHead>
-                                <TableHead>v19</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {comparisonData.map((row) => (
-                                <TableRow key={row.feature}>
-                                    <TableCell className="font-medium">{row.feature}</TableCell>
-                                    <TableCell>{row.v0_14 ? <Check className="text-green-500"/> : <X className="text-muted-foreground"/>}</TableCell>
-                                    <TableCell>{row.v15 ? <Check className="text-green-500"/> : <X className="text-muted-foreground"/>}</TableCell>
-                                    <TableCell>{row.v16 ? <Check className="text-green-500"/> : <X className="text-muted-foreground"/>}</TableCell>
-                                    <TableCell>{row.v17 ? <Check className="text-green-500"/> : <X className="text-muted-foreground"/>}</TableCell>
-                                    <TableCell>{row.v18 ? <Check className="text-green-500"/> : <X className="text-muted-foreground"/>}</TableCell>
-                                    <TableCell>{row.v19 ? <Check className="text-green-500"/> : <X className="text-muted-foreground"/>}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground">
+              React Version History
+            </h1>
+
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              A deep dive into React's major releases and the architectural innovations that shaped modern web development.
+            </p>
+          </div>
         </div>
-    );
-}
+      </div>
+
+      {/* Search & Filter */}
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-6 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+        <div className="relative">
+          <Input
+            type="text"
+            placeholder="Search versions or features..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-6 py-4 rounded-xl text-base"
+          />
+          <Search className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <Button
+            onClick={() => setFilterTag('all')}
+            variant={filterTag === 'all' ? 'default' : 'outline'}
+          >
+            All
+          </Button>
+          {allTags.map(tag => (
+            <Button
+              key={tag}
+              onClick={() => setFilterTag(tag)}
+              variant={filterTag === tag ? 'default' : 'outline'}
+            >
+              {tag}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* Versions Grid */}
+      <div className="max-w-7xl mx-auto px-6 pb-20 space-y-6">
+        {filteredVersions.map((versionData, idx) => (
+          <div key={versionData.id} className="group relative">
+            {/* Timeline Connector */}
+            {idx < filteredVersions.length - 1 && (
+              <div className="absolute -bottom-6 left-8 w-px h-6 bg-border"></div>
+            )}
+
+            {/* Timeline Dot */}
+            <div className="absolute left-0 top-8 w-16 h-16 flex items-center justify-center">
+              <div className="absolute inset-0 bg-primary/10 rounded-full group-hover:bg-primary/20 transition"></div>
+              <div className="text-3xl">{versionData.icon}</div>
+            </div>
+
+            <Card
+              className="ml-8 md:ml-32 overflow-hidden hover:border-primary/50 transition"
+              onClick={() => setExpandedVersion(expandedVersion === versionData.id ? null : versionData.id)}
+            >
+              <CardHeader className="cursor-pointer">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <h3 className="text-2xl font-bold text-foreground">{versionData.version}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{versionData.date}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <a href={versionData.links.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="p-2 rounded-lg bg-muted hover:bg-accent transition" title="GitHub Release">
+                      <GitBranch className="w-4 h-4 text-foreground" />
+                    </a>
+                    <a href={versionData.links.blog} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="p-2 rounded-lg bg-muted hover:bg-accent transition" title="Blog Post">
+                      <ExternalLink className="w-4 h-4 text-foreground" />
+                    </a>
+                  </div>
+                </div>
+              </CardHeader>
+              
+              <div className={`overflow-hidden transition-all duration-300 ${expandedVersion === versionData.id ? 'max-h-[1000px]' : 'max-h-0'}`}>
+                <CardContent className="pt-0 space-y-4">
+                  {versionData.features.map((feature, idx) => (
+                    <div key={idx} className="p-4 bg-muted/50 rounded-lg">
+                      <h4 className="font-semibold text-foreground flex items-center gap-2">
+                         <Zap className="w-4 h-4 text-yellow-500"/>
+                        {feature.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground mt-1">{feature.description}</p>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {feature.tags.map((tag, i) => (
+                          <Badge key={i} variant="secondary">{tag}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </div>
+
+              <div className="px-6 py-4 border-t flex items-center justify-between bg-muted/30 cursor-pointer">
+                <span className="text-sm text-muted-foreground">{versionData.features.length} features</span>
+                <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${expandedVersion === versionData.id ? 'rotate-180' : ''}`} />
+              </div>
+            </Card>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="border-t">
+        <div className="max-w-7xl mx-auto px-6 py-12 text-center">
+          <p className="text-muted-foreground">
+            React has evolved from a simple view library to a complete full-stack framework.
+          </p>
+          <p className="text-sm text-muted-foreground/80 mt-4">
+            Explore the journey and see how each version shaped modern web development 🚀
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ReactVersionPage;
