@@ -35,10 +35,11 @@ function LoadingSkeleton() {
 export function ReactContentDisplay({ 
   topic, 
   language, 
+  onOpenEditor,
 }: { 
   topic: Topic, 
   language: Language, 
-  onOpenEditor?: (code: string) => void, // Made optional
+  onOpenEditor: (code: string) => void,
 }) {
   const { openWithContent } = useReactPlayground();
 
@@ -46,8 +47,7 @@ export function ReactContentDisplay({
   
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
-  // If we have a custom full-page component, render it directly.
-  const fullPageTopics = ['what-is-react', 'react-version-updates', 'interview-questions'];
+  const fullPageTopics = ['react-version-updates', 'interview-questions'];
   if (fullPageTopics.includes(topic.slug) && CustomTopicComponent) {
     return (
       <Suspense fallback={<LoadingSkeleton />}>
