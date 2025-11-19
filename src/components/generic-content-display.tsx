@@ -4,7 +4,7 @@
 import type { Language, Topic } from '@/app/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, BookOpen, Code, Bot, BrainCircuit, Rocket, CheckCircle, Award, Sparkles } from 'lucide-react';
 import React from 'react';
 import { answerQuestion, type AnswerQuestionOutput } from '@/ai/flows/answer-question';
 import { Skeleton } from './ui/skeleton';
@@ -92,7 +92,7 @@ export function GenericContentDisplay({
   const isLearningPlanTopic = topic.slug === 'learning-plan';
 
   const markAsCompleteButton = (
-    <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
+    <div className="flex items-center space-x-2 shrink-0">
       <Checkbox id={`complete-${topic.slug}`} checked={completedTopics.has(topic.slug)} onCheckedChange={() => handleToggleComplete(topic.slug)} disabled={!isUserAuthenticated} />
       <Label htmlFor={`complete-${topic.slug}`} className={cn("font-semibold text-muted-foreground", !isUserAuthenticated && "cursor-not-allowed opacity-50")}>Mark as completed</Label>
     </div>
@@ -100,18 +100,22 @@ export function GenericContentDisplay({
 
   return (
     <div className="space-y-8">
-       <header className="flex justify-between items-start">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground">{topic.title}</h1>
-            <p className="mt-2 text-lg text-muted-foreground">{topic.explanation}</p>
-          </div>
-         {!isLearningPlanTopic && (
-            <TooltipProvider>
-              {isUserAuthenticated ? (markAsCompleteButton) : (<Tooltip><TooltipTrigger asChild>{markAsCompleteButton}</TooltipTrigger><TooltipContent><p>You must be logged in to save your progress.</p></TooltipContent></Tooltip>)}
-            </TooltipProvider>
-         )}
+       <header className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-2">
+                <Code className="w-10 h-10 text-primary" />
+                <h1 className="text-4xl font-bold text-foreground">{topic.title}</h1>
+            </div>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">{topic.explanation}</p>
         </header>
       
+      {!isLearningPlanTopic && (
+          <div className="flex justify-center">
+            <TooltipProvider>
+              {isUserAuthenticated ? (markAsCompleteButton) : (<Tooltip><TooltipTrigger asChild><div className="cursor-not-allowed">{markAsCompleteButton}</div></TooltipTrigger><TooltipContent><p>You must be logged in to save your progress.</p></TooltipContent></Tooltip>)}
+            </TooltipProvider>
+          </div>
+         )}
+
       {children ? (
         children
       ) : (
