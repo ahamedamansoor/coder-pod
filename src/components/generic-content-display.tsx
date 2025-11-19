@@ -1,21 +1,19 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { HelpCircle, BookOpen, Code, Bot, BrainCircuit, Rocket, CheckCircle, Award, Sparkles } from 'lucide-react';
+import { HelpCircle, Sparkles, CheckSquare, Code, ToyBrick } from 'lucide-react';
 import React from 'react';
-import { answerQuestion, type AnswerQuestionOutput } from '@/ai/flows/answer-question';
+import {
+  answerQuestion,
+  type AnswerQuestionOutput,
+} from '@/ai/flows/answer-question';
 import { Skeleton } from './ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
-import { useUser } from '@/firebase';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
-import { cn } from '@/lib/utils';
-import { marked } from 'marked';
 import { useJava } from '@/app/java/java-context';
 import { useSpring } from '@/app/spring/spring-context';
 import { useJavascript } from '@/app/javascript/javascript-context';
@@ -23,6 +21,10 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { useUser } from '@/firebase';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { cn } from '@/lib/utils';
+import { marked } from 'marked';
 import { AiSimplification } from './ai-simplification';
 
 function useLanguageContext(language: Language) {
@@ -92,30 +94,54 @@ export function GenericContentDisplay({
   const isLearningPlanTopic = topic.slug === 'learning-plan';
 
   const markAsCompleteButton = (
-    <div className="flex items-center space-x-2 shrink-0">
-      <Checkbox id={`complete-${topic.slug}`} checked={completedTopics.has(topic.slug)} onCheckedChange={() => handleToggleComplete(topic.slug)} disabled={!isUserAuthenticated} />
-      <Label htmlFor={`complete-${topic.slug}`} className={cn("font-semibold text-muted-foreground", !isUserAuthenticated && "cursor-not-allowed opacity-50")}>Mark as completed</Label>
+     <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
+      <Checkbox
+        id={`complete-${topic.slug}`}
+        checked={completedTopics.has(topic.slug)}
+        onCheckedChange={() => handleToggleComplete(topic.slug)}
+        disabled={!isUserAuthenticated}
+      />
+      <Label
+        htmlFor={`complete-${topic.slug}`}
+        className={cn(
+          "font-semibold text-muted-foreground",
+          !isUserAuthenticated && "cursor-not-allowed opacity-50"
+        )}
+      >
+        Mark as completed
+      </Label>
     </div>
   );
 
   return (
     <div className="space-y-8">
-       <header className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-2">
-                <Code className="w-10 h-10 text-primary" />
-                <h1 className="text-4xl font-bold text-foreground">{topic.title}</h1>
-            </div>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">{topic.explanation}</p>
+       <header className="space-y-2 flex justify-between items-start">
+         <div className="flex-1">
+            <h1 className="font-headline text-4xl font-bold tracking-tight">
+              {topic.title}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              A deep dive into {topic.title} in {language.name}.
+            </p>
+         </div>
+         {!isLearningPlanTopic && (
+            <TooltipProvider>
+              {isUserAuthenticated ? (
+                markAsCompleteButton
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {markAsCompleteButton}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>You must be logged in to save your progress.</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </TooltipProvider>
+         )}
         </header>
       
-      {!isLearningPlanTopic && (
-          <div className="flex justify-center">
-            <TooltipProvider>
-              {isUserAuthenticated ? (markAsCompleteButton) : (<Tooltip><TooltipTrigger asChild><div className="cursor-not-allowed">{markAsCompleteButton}</div></TooltipTrigger><TooltipContent><p>You must be logged in to save your progress.</p></TooltipContent></Tooltip>)}
-            </TooltipProvider>
-          </div>
-         )}
-
       {children ? (
         children
       ) : (
