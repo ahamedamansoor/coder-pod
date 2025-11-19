@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useMemo } from 'react';
 import { ChevronDown, ExternalLink, Zap, GitBranch, Code2, Sparkles, Search, Code, Layers, Anchor, History, FileUp, Component, Pointer, Cpu, VenetianMask, Share2, Settings } from 'lucide-react';
@@ -239,16 +238,16 @@ const ReactVersionPage = () => {
       </div>
 
       {/* Search & Filter */}
-      <div className="px-6 py-8 space-y-6 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+      <div className="sticky top-0 z-20 space-y-6 border-b bg-background/80 p-6 backdrop-blur-sm">
         <div className="relative">
           <Input
             type="text"
             placeholder="Search versions or features..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-6 py-4 rounded-xl text-base"
+            className="w-full rounded-xl px-6 py-4 text-base"
           />
-          <Search className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Search className="absolute right-6 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -271,51 +270,51 @@ const ReactVersionPage = () => {
       </div>
 
       {/* Versions Grid */}
-      <div className="px-6 pb-20 space-y-6">
+      <div className="space-y-6 p-6">
         {filteredVersions.map((versionData, idx) => (
           <div key={versionData.id} className="group relative">
             {/* Timeline Connector */}
             {idx < filteredVersions.length - 1 && (
-              <div className="absolute -bottom-6 left-8 w-px h-6 bg-border"></div>
+              <div className="absolute -bottom-6 left-8 h-6 w-px bg-border"></div>
             )}
 
             {/* Timeline Dot */}
-            <div className="absolute left-0 top-8 w-16 h-16 flex items-center justify-center">
-              <div className="absolute inset-0 bg-primary/10 rounded-full group-hover:bg-primary/20 transition"></div>
+            <div className="absolute left-0 top-8 flex h-16 w-16 items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-primary/10 transition group-hover:bg-primary/20"></div>
               <div className="text-3xl">{versionData.icon}</div>
             </div>
 
             <Card
-              className="ml-8 md:ml-32 overflow-hidden hover:border-primary/50 transition"
+              className="ml-8 overflow-hidden transition hover:border-primary/50 md:ml-32"
               onClick={() => setExpandedVersion(expandedVersion === versionData.id ? null : versionData.id)}
             >
               <CardHeader className="cursor-pointer">
-                <div className="flex items-start justify-between mb-2">
+                <div className="mb-2 flex items-start justify-between">
                   <div>
                     <h3 className="text-2xl font-bold text-foreground">{versionData.version}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{versionData.date}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{versionData.date}</p>
                   </div>
                   <div className="flex gap-2">
-                    <a href={versionData.links.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="p-2 rounded-lg bg-muted hover:bg-accent transition" title="GitHub Release">
-                      <GitBranch className="w-4 h-4 text-foreground" />
+                    <a href={versionData.links.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="rounded-lg bg-muted p-2 transition hover:bg-accent" title="GitHub Release">
+                      <GitBranch className="h-4 w-4 text-foreground" />
                     </a>
-                    <a href={versionData.links.blog} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="p-2 rounded-lg bg-muted hover:bg-accent transition" title="Blog Post">
-                      <ExternalLink className="w-4 h-4 text-foreground" />
+                    <a href={versionData.links.blog} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="rounded-lg bg-muted p-2 transition hover:bg-accent" title="Blog Post">
+                      <ExternalLink className="h-4 w-4 text-foreground" />
                     </a>
                   </div>
                 </div>
               </CardHeader>
               
               <div className={`overflow-hidden transition-all duration-300 ${expandedVersion === versionData.id ? 'max-h-[1000px]' : 'max-h-0'}`}>
-                <CardContent className="pt-0 space-y-4">
+                <CardContent className="space-y-4 pt-0">
                   {versionData.features.map((feature, idx) => (
-                    <div key={idx} className="p-4 bg-muted/50 rounded-lg">
-                      <h4 className="font-semibold text-foreground flex items-center gap-2">
-                         <Zap className="w-4 h-4 text-yellow-500"/>
+                    <div key={idx} className="rounded-lg bg-muted/50 p-4">
+                      <h4 className="flex items-center gap-2 font-semibold text-foreground">
+                         <Zap className="h-4 w-4 text-yellow-500"/>
                         {feature.name}
                       </h4>
-                      <p className="text-sm text-muted-foreground mt-1">{feature.description}</p>
-                      <div className="flex flex-wrap gap-2 mt-3">
+                      <p className="mt-1 text-sm text-muted-foreground">{feature.description}</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
                         {feature.tags.map((tag, i) => (
                           <Badge key={i} variant="secondary">{tag}</Badge>
                         ))}
@@ -325,9 +324,9 @@ const ReactVersionPage = () => {
                 </CardContent>
               </div>
 
-              <div className="px-6 py-4 border-t flex items-center justify-between bg-muted/30 cursor-pointer">
+              <div className="flex cursor-pointer items-center justify-between border-t bg-muted/30 px-6 py-4">
                 <span className="text-sm text-muted-foreground">{versionData.features.length} features</span>
-                <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${expandedVersion === versionData.id ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedVersion === versionData.id ? 'rotate-180' : ''}`} />
               </div>
             </Card>
           </div>
@@ -340,7 +339,7 @@ const ReactVersionPage = () => {
           <p className="text-muted-foreground">
             React has evolved from a simple view library to a complete full-stack framework.
           </p>
-          <p className="text-sm text-muted-foreground/80 mt-4">
+          <p className="mt-4 text-sm text-muted-foreground/80">
             Explore the journey and see how each version shaped modern web development 🚀
           </p>
         </div>
