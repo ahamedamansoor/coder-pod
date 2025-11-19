@@ -6,12 +6,14 @@ import React, { lazy, Suspense } from 'react';
 import { Skeleton } from './ui/skeleton';
 
 // Lazy load all the topic components
+const WhatIsReact = lazy(() => import('./react-topics/what-is-react'));
 const ReactInterviewQuestions = lazy(() => import('./react-topics/react-interview-questions'));
 const ReactVersionUpdates = lazy(() => import('./react-topics/react-version-updates'));
 
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
+  'what-is-react': WhatIsReact,
   'interview-questions': ReactInterviewQuestions,
   'react-version-updates': ReactVersionUpdates,
 };
