@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useMemo } from 'react';
 import { ChevronDown, ExternalLink, Zap, GitBranch, Code2, Sparkles, Search, Code, Layers, Anchor, History, FileUp, Component, Pointer, Cpu, VenetianMask, Share2, Settings } from 'lucide-react';
@@ -213,16 +214,15 @@ const ReactVersionPage = () => {
       const matchesTag = filterTag === 'all' || v.features.some(f => f.tags.includes(filterTag));
       return matchesSearch && matchesTag;
     });
-  }, [searchQuery, filterTag]);
+  }, [searchQuery, filterTag, versions]);
 
   const allTags = [...new Set(versions.flatMap(v => v.features.flatMap(f => f.tags)))].sort();
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="relative overflow-hidden border-b">
-        <div className="max-w-7xl mx-auto px-6 py-20">
-          <div className="text-center space-y-6">
+      <div className="relative overflow-hidden border-b px-6 py-20">
+        <div className="text-center space-y-6">
             <Badge variant="outline" className="text-sm">
               <Sparkles className="w-4 h-4 mr-2 text-primary" />
               React Evolution
@@ -236,11 +236,10 @@ const ReactVersionPage = () => {
               A deep dive into React's major releases and the architectural innovations that shaped modern web development.
             </p>
           </div>
-        </div>
       </div>
 
       {/* Search & Filter */}
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-6 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+      <div className="px-6 py-8 space-y-6 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="relative">
           <Input
             type="text"
@@ -272,7 +271,7 @@ const ReactVersionPage = () => {
       </div>
 
       {/* Versions Grid */}
-      <div className="max-w-7xl mx-auto px-6 pb-20 space-y-6">
+      <div className="px-6 pb-20 space-y-6">
         {filteredVersions.map((versionData, idx) => (
           <div key={versionData.id} className="group relative">
             {/* Timeline Connector */}
@@ -337,7 +336,7 @@ const ReactVersionPage = () => {
 
       {/* Footer */}
       <div className="border-t">
-        <div className="max-w-7xl mx-auto px-6 py-12 text-center">
+        <div className="px-6 py-12 text-center">
           <p className="text-muted-foreground">
             React has evolved from a simple view library to a complete full-stack framework.
           </p>
