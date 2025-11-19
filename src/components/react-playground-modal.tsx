@@ -17,7 +17,7 @@ export function ReactPlaygroundModal({ children }: ReactPlaygroundModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0">
+      <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0" showCloseButton={false}>
         <div className="flex-1 overflow-hidden">
           {open && <ReactPlayground />}
         </div>
