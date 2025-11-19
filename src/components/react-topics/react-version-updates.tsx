@@ -208,11 +208,16 @@ const ReactVersionPage = () => {
 
   const filteredVersions = useMemo(() => {
     if (!searchQuery && filterTag === 'all') return versions;
-    return versions.filter(v => {
-      const matchesSearch = v.version.toLowerCase().includes(searchQuery.toLowerCase()) || v.features.some(f => f.name.toLowerCase().includes(searchQuery.toLowerCase()));
-      const matchesTag = filterTag === 'all' || v.features.some(f => f.tags.includes(filterTag));
-      return matchesSearch && matchesTag;
-    });
+    return versions.map(v => {
+      const matchingFeatures = v.features.filter(f => 
+        (f.name.toLowerCase().includes(searchQuery.toLowerCase()) || f.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
+        (filterTag === 'all' || f.tags.includes(filterTag))
+      );
+      if (matchingFeatures.length > 0 || v.version.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return {...v, features: matchingFeatures.length > 0 ? matchingFeatures : v.features };
+      }
+      return null;
+    }).filter(Boolean);
   }, [searchQuery, filterTag, versions]);
 
   const allTags = [...new Set(versions.flatMap(v => v.features.flatMap(f => f.tags)))].sort();
@@ -242,7 +247,7 @@ const ReactVersionPage = () => {
         <div className="relative">
           <Input
             type="text"
-            placeholder="Search versions or features..."
+            placeholder="Search features (e.g., 'Hooks', 'Server Components')..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-xl px-6 py-4 text-base"
@@ -272,64 +277,66 @@ const ReactVersionPage = () => {
       {/* Versions Grid */}
       <div className="space-y-6 p-6">
         {filteredVersions.map((versionData, idx) => (
-          <div key={versionData.id} className="group relative">
-            {/* Timeline Connector */}
-            {idx < filteredVersions.length - 1 && (
-              <div className="absolute -bottom-6 left-8 h-6 w-px bg-border"></div>
-            )}
+          versionData && (
+            <div key={versionData.id} className="group relative">
+              {/* Timeline Connector */}
+              {idx < filteredVersions.length - 1 && (
+                <div className="absolute -bottom-6 left-8 h-6 w-px bg-border"></div>
+              )}
 
-            {/* Timeline Dot */}
-            <div className="absolute left-0 top-8 flex h-16 w-16 items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-primary/10 transition group-hover:bg-primary/20"></div>
-              <div className="text-3xl">{versionData.icon}</div>
-            </div>
+              {/* Timeline Dot */}
+              <div className="absolute left-0 top-8 flex h-16 w-16 items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-primary/10 transition group-hover:bg-primary/20"></div>
+                <div className="text-3xl">{versionData.icon}</div>
+              </div>
 
-            <Card
-              className="ml-8 overflow-hidden transition hover:border-primary/50 md:ml-32"
-              onClick={() => setExpandedVersion(expandedVersion === versionData.id ? null : versionData.id)}
-            >
-              <CardHeader className="cursor-pointer">
-                <div className="mb-2 flex items-start justify-between">
-                  <div>
-                    <h3 className="text-2xl font-bold text-foreground">{versionData.version}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{versionData.date}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <a href={versionData.links.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="rounded-lg bg-muted p-2 transition hover:bg-accent" title="GitHub Release">
-                      <GitBranch className="h-4 w-4 text-foreground" />
-                    </a>
-                    <a href={versionData.links.blog} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="rounded-lg bg-muted p-2 transition hover:bg-accent" title="Blog Post">
-                      <ExternalLink className="h-4 w-4 text-foreground" />
-                    </a>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <div className={`overflow-hidden transition-all duration-300 ${expandedVersion === versionData.id ? 'max-h-[1000px]' : 'max-h-0'}`}>
-                <CardContent className="space-y-4 pt-0">
-                  {versionData.features.map((feature, idx) => (
-                    <div key={idx} className="rounded-lg bg-muted/50 p-4">
-                      <h4 className="flex items-center gap-2 font-semibold text-foreground">
-                         <Zap className="h-4 w-4 text-yellow-500"/>
-                        {feature.name}
-                      </h4>
-                      <p className="mt-1 text-sm text-muted-foreground">{feature.description}</p>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {feature.tags.map((tag, i) => (
-                          <Badge key={i} variant="secondary">{tag}</Badge>
-                        ))}
-                      </div>
+              <Card
+                className="ml-8 overflow-hidden transition hover:border-primary/50 md:ml-32"
+                onClick={() => setExpandedVersion(expandedVersion === versionData.id ? null : versionData.id)}
+              >
+                <CardHeader className="cursor-pointer">
+                  <div className="mb-2 flex items-start justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold text-foreground">{versionData.version}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{versionData.date}</p>
                     </div>
-                  ))}
-                </CardContent>
-              </div>
+                    <div className="flex gap-2">
+                      <a href={versionData.links.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="rounded-lg bg-muted p-2 transition hover:bg-accent" title="GitHub Release">
+                        <GitBranch className="h-4 w-4 text-foreground" />
+                      </a>
+                      <a href={versionData.links.blog} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="rounded-lg bg-muted p-2 transition hover:bg-accent" title="Blog Post">
+                        <ExternalLink className="h-4 w-4 text-foreground" />
+                      </a>
+                    </div>
+                  </div>
+                </CardHeader>
+                
+                <div className={`overflow-hidden transition-all duration-300 ${expandedVersion === versionData.id ? 'max-h-[1000px]' : 'max-h-0'}`}>
+                  <CardContent className="space-y-4 pt-0">
+                    {versionData.features.map((feature, idx) => (
+                      <div key={idx} className="rounded-lg bg-muted/50 p-4">
+                        <h4 className="flex items-center gap-2 font-semibold text-foreground">
+                          <Zap className="h-4 w-4 text-yellow-500"/>
+                          {feature.name}
+                        </h4>
+                        <p className="mt-1 text-sm text-muted-foreground">{feature.description}</p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {feature.tags.map((tag, i) => (
+                            <Badge key={i} variant="secondary">{tag}</Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </div>
 
-              <div className="flex cursor-pointer items-center justify-between border-t bg-muted/30 px-6 py-4">
-                <span className="text-sm text-muted-foreground">{versionData.features.length} features</span>
-                <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedVersion === versionData.id ? 'rotate-180' : ''}`} />
-              </div>
-            </Card>
-          </div>
+                <div className="flex cursor-pointer items-center justify-between border-t bg-muted/30 px-6 py-4">
+                  <span className="text-sm text-muted-foreground">{versionData.features.length} features</span>
+                  <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedVersion === versionData.id ? 'rotate-180' : ''}`} />
+                </div>
+              </Card>
+            </div>
+          )
         ))}
       </div>
 
