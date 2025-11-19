@@ -87,9 +87,10 @@ export function TopicSidebar({
 
   const learningPlanTopic = language.topics.find(t => t.slug === 'learning-plan');
   const interviewTopic = language.topics.find(t => t.slug === 'interview-questions');
+  const reactUpdatesTopic = language.topics.find(t => t.slug === 'react-version-updates');
   
   const topicsByGroup = language.topics.reduce((acc, topic) => {
-    if (topic.slug === 'learning-plan' || topic.slug === 'interview-questions') return acc;
+    if (['learning-plan', 'interview-questions', 'react-version-updates'].includes(topic.slug)) return acc;
     
     let group = 'Others'; // Default group
 
@@ -157,7 +158,7 @@ export function TopicSidebar({
           }
       }
     } else if (language.slug === 'react') {
-        const allTopics = language.topics.filter(t => t.slug !== 'learning-plan' && t.slug !== 'interview-questions');
+        const allTopics = language.topics.filter(t => !['learning-plan', 'interview-questions', 'react-version-updates'].includes(t.slug));
         const reactGroups: Record<string, string[]> = {
             '1. Getting Started': allTopics.slice(0, 5).map(t => t.slug),
             '2. Describing the UI': allTopics.slice(5, 10).map(t => t.slug),
@@ -319,6 +320,19 @@ export function TopicSidebar({
     </SidebarMenuButton>
   );
 
+  const reactUpdatesButton = (
+    <SidebarMenuButton
+      asChild
+      isActive={selectedTopicSlug === reactUpdatesTopic?.slug}
+      tooltip={reactUpdatesTopic?.title}
+      className="justify-start"
+    >
+      <Link href={`/${language.slug}/${reactUpdatesTopic?.slug}`} ref={selectedTopicSlug === reactUpdatesTopic?.slug ? activeItemRef : null}>
+          {reactUpdatesTopic?.title}
+      </Link>
+    </SidebarMenuButton>
+  );
+
   const mainLinks = [
     learningPlanTopic && {
       key: learningPlanTopic.slug,
@@ -334,6 +348,10 @@ export function TopicSidebar({
     interviewTopic && {
       key: interviewTopic.slug,
       content: interviewButton,
+    },
+    reactUpdatesTopic && language.slug === 'react' && {
+      key: reactUpdatesTopic.slug,
+      content: reactUpdatesButton,
     },
   ].filter(Boolean);
 

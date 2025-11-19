@@ -7,6 +7,7 @@ export const react: Language = {
   topics: [
       { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A structured roadmap for learning React from scratch.' },
       { slug: 'interview-questions', title: 'Interview Q&A', explanation: 'A curated list of common React interview questions and answers.' },
+      { slug: 'react-version-updates', title: 'React Version Updates', explanation: 'Information about the latest React versions and their new features.' },
       
       // SECTION 1: GETTING STARTED
       { slug: 'what-is-react', title: 'What is React?', explanation: "React is a library for building user interfaces with components. This topic covers the declarative nature of React, its component-based architecture, and its core philosophy." },

@@ -14,7 +14,7 @@ import { react } from '@/app/data/react';
 
 export const ReactLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useReact();
-  const [expandedModule, setExpandedModule] = useState<string | null>("SECTION 1: GETTING STARTED");
+  const [expandedModule, setExpandedModule] = useState<string | null>("1. Getting Started");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
@@ -27,29 +27,29 @@ export const ReactLearningRoadmap = () => {
     }
   }, [user, isUserLoading, router]);
 
-  const allTopics = react.topics.filter(t => t.slug !== 'learning-plan' && t.slug !== 'interview-questions');
+  const allTopics = react.topics.filter(t => !['learning-plan', 'interview-questions', 'react-version-updates'].includes(t.slug));
 
   const modules = [
-    { id: "SECTION 1: GETTING STARTED", title: "1. Getting Started", level: "Beginner", topics: allTopics.slice(0, 5) },
-    { id: "SECTION 2: DESCRIBING THE UI", title: "2. Describing the UI", level: "Beginner", topics: allTopics.slice(5, 10) },
-    { id: "SECTION 3: ADDING INTERACTIVITY", title: "3. Adding Interactivity", level: "Beginner", topics: allTopics.slice(10, 17) },
-    { id: "SECTION 4: MANAGING STATE", title: "4. Managing State", level: "Intermediate", topics: allTopics.slice(17, 21) },
-    { id: "SECTION 5: ESCAPE HATCHES", title: "5. Escape Hatches", level: "Intermediate", topics: allTopics.slice(21, 30) },
-    { id: "SECTION 6: HOOKS (COMPREHENSIVE)", title: "6. Hooks (Comprehensive)", level: "Intermediate", topics: allTopics.slice(30, 47) },
-    { id: "SECTION 7: COMPONENT DETAILS", title: "7. Component APIs", level: "Advanced", topics: allTopics.slice(47, 54) },
-    { id: "SECTION 8: CLIENT LIBRARIES", title: "8. ReactDOM APIs", level: "Advanced", topics: allTopics.slice(54, 55) },
-    { id: "SECTION 9: FORM DETAILS", title: "9. Form Handling", level: "Advanced", topics: allTopics.slice(55, 58) },
-    { id: "SECTION 10: ADVANCED PATTERNS", title: "10. Advanced Patterns", level: "Advanced", topics: allTopics.slice(58, 65) },
-    { id: "SECTION 11: CONTEXT API", title: "11. Context API", level: "Advanced", topics: allTopics.slice(65, 71) },
-    { id: "SECTION 12: PERFORMANCE OPTIMIZATION", title: "12. Performance", level: "Expert", topics: allTopics.slice(71, 75) },
-    { id: "SECTION 13: TESTING", title: "13. Testing", level: "Expert", topics: allTopics.slice(75, 80) },
-    { id: "SECTION 14: DEPLOYMENT", title: "14. Deployment", level: "Expert", topics: allTopics.slice(80, 83) },
-    { id: "SECTION 15: TYPESCRIPT WITH REACT", title: "15. TypeScript Integration", level: "Expert", topics: allTopics.slice(83, 89) },
-    { id: "SECTION 16: ADVANCED REACT FEATURES", title: "16. Advanced Features", level: "Expert", topics: allTopics.slice(89, 94) },
-    { id: "SECTION 17: DEVELOPER TOOLS", title: "17. Developer Tools", level: "Reference", topics: allTopics.slice(94, 96) },
-    { id: "SECTION 18: API REFERENCE", title: "18. API Reference", level: "Reference", topics: allTopics.slice(96, 99) },
-    { id: "SECTION 19: RULES & BEST PRACTICES", title: "19. Rules & Best Practices", level: "Reference", topics: allTopics.slice(99, 102) },
-    { id: "SECTION 20: THINKING IN REACT", title: "20. Thinking in React", level: "Reference", topics: allTopics.slice(102, 105) },
+    { id: "1. Getting Started", title: "1. Getting Started", level: "Beginner", topics: allTopics.slice(0, 5) },
+    { id: "2. Describing the UI", title: "2. Describing the UI", level: "Beginner", topics: allTopics.slice(5, 10) },
+    { id: "3. Adding Interactivity", title: "3. Adding Interactivity", level: "Beginner", topics: allTopics.slice(10, 17) },
+    { id: "4. Managing State", title: "4. Managing State", level: "Intermediate", topics: allTopics.slice(17, 21) },
+    { id: "5. Escape Hatches", title: "5. Escape Hatches", level: "Intermediate", topics: allTopics.slice(21, 30) },
+    { id: "6. Hooks (Comprehensive)", title: "6. Hooks (Comprehensive)", level: "Intermediate", topics: allTopics.slice(30, 47) },
+    { id: "7. Component APIs", title: "7. Component APIs", level: "Advanced", topics: allTopics.slice(47, 54) },
+    { id: "8. ReactDOM APIs", title: "8. ReactDOM APIs", level: "Advanced", topics: allTopics.slice(54, 55) },
+    { id: "9. Form Handling", title: "9. Form Handling", level: "Advanced", topics: allTopics.slice(55, 58) },
+    { id: "10. Advanced Patterns", title: "10. Advanced Patterns", level: "Advanced", topics: allTopics.slice(58, 65) },
+    { id: "11. Context API", title: "11. Context API", level: "Advanced", topics: allTopics.slice(65, 71) },
+    { id: "12. Performance", title: "12. Performance", level: "Expert", topics: allTopics.slice(71, 75) },
+    { id: "13. Testing", title: "13. Testing", level: "Expert", topics: allTopics.slice(75, 80) },
+    { id: "14. Deployment", title: "14. Deployment", level: "Expert", topics: allTopics.slice(80, 83) },
+    { id: "15. TypeScript Integration", title: "15. TypeScript Integration", level: "Expert", topics: allTopics.slice(83, 89) },
+    { id: "16. Advanced Features", title: "16. Advanced Features", level: "Expert", topics: allTopics.slice(89, 94) },
+    { id: "17. Developer Tools", title: "17. Developer Tools", level: "Reference", topics: allTopics.slice(94, 96) },
+    { id: "18. API Reference", title: "18. API Reference", level: "Reference", topics: allTopics.slice(96, 99) },
+    { id: "19. Rules & Best Practices", title: "19. Rules & Best Practices", level: "Reference", topics: allTopics.slice(99, 102) },
+    { id: "20. Thinking in React", title: "20. Thinking in React", level: "Reference", topics: allTopics.slice(102, 105) },
   ];
 
   const toggleTopic = (topicId: string) => {
