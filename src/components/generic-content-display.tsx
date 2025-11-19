@@ -100,11 +100,11 @@ export function GenericContentDisplay({
 
   return (
     <div className="space-y-8">
-       <header className="space-y-2 flex justify-between items-start">
-         <div>
-            <h1 className="font-headline text-4xl font-bold tracking-tight">{topic.title}</h1>
-            <p className="text-lg text-muted-foreground">A deep dive into {topic.title} in {language.name}.</p>
-         </div>
+       <header className="flex justify-between items-start">
+          <div>
+            <h1 className="text-4xl font-bold text-foreground">{topic.title}</h1>
+            <p className="mt-2 text-lg text-muted-foreground">{topic.explanation}</p>
+          </div>
          {!isLearningPlanTopic && (
             <TooltipProvider>
               {isUserAuthenticated ? (markAsCompleteButton) : (<Tooltip><TooltipTrigger asChild>{markAsCompleteButton}</TooltipTrigger><TooltipContent><p>You must be logged in to save your progress.</p></TooltipContent></Tooltip>)}
