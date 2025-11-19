@@ -15,6 +15,7 @@ const SassNesting = lazy(() => import('./scss-topics/sass-nesting'));
 const SassImport = lazy(() => import('./scss-topics/sass-import'));
 const SassMixin = lazy(() => import('./scss-topics/sass-mixin'));
 const SassExtendInheritance = lazy(() => import('./scss-topics/sass-extend-inheritance'));
+const SassFunctions = lazy(() => import('./scss-topics/sass-functions'));
 
 
 // Map slugs to their lazy-loaded components
@@ -26,6 +27,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'sass-import': SassImport,
   'sass-mixin': SassMixin,
   'sass-extend-inheritance': SassExtendInheritance,
+  'sass-functions': SassFunctions,
 };
 
 function LoadingSkeleton() {
