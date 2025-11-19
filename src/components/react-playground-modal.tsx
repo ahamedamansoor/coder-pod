@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogTrigger,
 } from '@/components/ui/dialog';
 import { ReactPlayground } from './react-playground';
 import { useReactPlayground } from './react-playground-context';
