@@ -94,7 +94,7 @@ export function GenericContentDisplay({
   const isLearningPlanTopic = topic.slug === 'learning-plan';
 
   const markAsCompleteButton = (
-     <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
+     <div className="flex items-center space-x-2 shrink-0 bg-muted p-3 rounded-lg border">
       <Checkbox
         id={`complete-${topic.slug}`}
         checked={completedTopics.has(topic.slug)}
@@ -115,31 +115,25 @@ export function GenericContentDisplay({
 
   return (
     <div className="space-y-8">
-       <header className="space-y-2 flex justify-between items-start">
-         <div className="flex-1">
-            <h1 className="font-headline text-4xl font-bold tracking-tight">
-              {topic.title}
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              A deep dive into {topic.title} in {language.name}.
-            </p>
-         </div>
-         {!isLearningPlanTopic && (
-            <TooltipProvider>
-              {isUserAuthenticated ? (
-                markAsCompleteButton
-              ) : (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    {markAsCompleteButton}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>You must be logged in to save your progress.</p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
-            </TooltipProvider>
-         )}
+       <header className="relative space-y-2 text-center">
+          <div className="absolute top-0 right-0">
+             {!isLearningPlanTopic && (
+                <TooltipProvider>
+                  {isUserAuthenticated ? (
+                    markAsCompleteButton
+                  ) : (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        {markAsCompleteButton}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>You must be logged in to save your progress.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </TooltipProvider>
+             )}
+          </div>
         </header>
       
       {children ? (
