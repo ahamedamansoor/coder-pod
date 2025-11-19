@@ -40,9 +40,10 @@ const prompt = ai.definePrompt({
 
 **Instructions:**
 1.  **Transpile JSX:** Convert all JSX syntax into valid \`React.createElement()\` calls.
-2.  **Remove Imports:** Remove any 'react' or 'react-dom/client' imports. Assume \`React\` and \`ReactDOM\` are available as global variables in the browser environment.
-3.  **Error Handling:** If the code has a syntax error or cannot be transpiled, set the \`success\` field to \`false\` and provide a clear, concise error message in the \`error\` field.
-4.  **Output:** If successful, set \`success\` to \`true\` and return the final, browser-compatible JavaScript code in the \`transpiledCode\` field.
+2.  **Handle Hooks:** Ensure that React hooks like \`useState\`, \`useEffect\`, etc., are correctly referenced as properties of the global \`React\` object (e.g., \`React.useState\`, \`React.useEffect\`).
+3.  **Remove Imports:** Remove any 'react' or 'react-dom/client' imports. Assume \`React\` and \`ReactDOM\` are available as global variables in the browser environment.
+4.  **Error Handling:** If the code has a syntax error or cannot be transpiled, set the \`success\` field to \`false\` and provide a clear, concise error message in the \`error\` field.
+5.  **Output:** If successful, set \`success\` to \`true\` and return the final, browser-compatible JavaScript code in the \`transpiledCode\` field.
 
 **React Code to Transpile:**
 \`\`\`jsx
