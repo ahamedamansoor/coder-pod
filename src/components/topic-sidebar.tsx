@@ -157,19 +157,35 @@ export function TopicSidebar({
           }
       }
     } else if (language.slug === 'react') {
+        const allTopics = language.topics.filter(t => t.slug !== 'learning-plan' && t.slug !== 'interview-questions');
         const reactGroups: Record<string, string[]> = {
-            "Fundamentals": ['what-is-react', 'setting-up-react', 'jsx', 'react-components', 'react-state', 'handling-events'],
-            "Rendering UI": ['conditional-rendering', 'lists-and-keys', 'react-forms'],
-            "Hooks Deep Dive": ['rules-of-hooks', 'use-state-hook', 'use-effect-hook', 'use-context-hook', 'use-reducer-hook', 'use-ref-hook', 'memoization-hooks', 'custom-hooks'],
-            "Advanced React": ['react-router', 'state-management-libraries', 'composition-patterns', 'error-boundaries', 'code-splitting'],
-            "Ecosystem & Modern React": ['react-and-typescript', 'react-performance', 'server-vs-client-components', 'testing-react-apps']
+            '1. Getting Started': allTopics.slice(0, 5).map(t => t.slug),
+            '2. Describing the UI': allTopics.slice(5, 10).map(t => t.slug),
+            '3. Adding Interactivity': allTopics.slice(10, 17).map(t => t.slug),
+            '4. Managing State': allTopics.slice(17, 21).map(t => t.slug),
+            '5. Escape Hatches': allTopics.slice(21, 30).map(t => t.slug),
+            '6. Hooks (Comprehensive)': allTopics.slice(30, 47).map(t => t.slug),
+            '7. Component APIs': allTopics.slice(47, 54).map(t => t.slug),
+            '8. ReactDOM APIs': allTopics.slice(54, 55).map(t => t.slug),
+            '9. Form Handling': allTopics.slice(55, 58).map(t => t.slug),
+            '10. Advanced Patterns': allTopics.slice(58, 65).map(t => t.slug),
+            '11. Context API': allTopics.slice(65, 71).map(t => t.slug),
+            '12. Performance': allTopics.slice(71, 75).map(t => t.slug),
+            '13. Testing': allTopics.slice(75, 80).map(t => t.slug),
+            '14. Deployment': allTopics.slice(80, 83).map(t => t.slug),
+            '15. TypeScript Integration': allTopics.slice(83, 89).map(t => t.slug),
+            '16. Advanced Features': allTopics.slice(89, 94).map(t => t.slug),
+            '17. Developer Tools': allTopics.slice(94, 96).map(t => t.slug),
+            '18. API Reference': allTopics.slice(96, 99).map(t => t.slug),
+            '19. Rules & Best Practices': allTopics.slice(99, 102).map(t => t.slug),
+            '20. Thinking in React': allTopics.slice(102, 105).map(t => t.slug)
         };
         for (const groupName in reactGroups) {
           if (reactGroups[groupName].includes(topic.slug)) {
               group = groupName;
               break;
           }
-      }
+        }
     } else if (language.slug === 'html') {
         const htmlGroups: Record<string, string[]> = {
             "HTML Basics": ['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments', 'character-entities'],
@@ -221,7 +237,28 @@ export function TopicSidebar({
     : language.slug === 'javascript'
     ? ["Fundamentals", "Functions & Scope", "Data Structures", "Control Flow", "Browser APIs", "Asynchronous JS", "Modern JS", "Others"]
     : language.slug === 'react'
-    ? ["Fundamentals", "Rendering UI", "Hooks Deep Dive", "Advanced React", "Ecosystem & Modern React", "Others"]
+    ? [
+        '1. Getting Started', 
+        '2. Describing the UI', 
+        '3. Adding Interactivity', 
+        '4. Managing State', 
+        '5. Escape Hatches',
+        '6. Hooks (Comprehensive)',
+        '7. Component APIs',
+        '8. ReactDOM APIs',
+        '9. Form Handling',
+        '10. Advanced Patterns',
+        '11. Context API',
+        '12. Performance',
+        '13. Testing',
+        '14. Deployment',
+        '15. TypeScript Integration',
+        '16. Advanced Features',
+        '17. Developer Tools',
+        '18. API Reference',
+        '19. Rules & Best Practices',
+        '20. Thinking in React'
+      ]
     : language.slug === 'html'
     ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Others"]
     : language.slug === 'css'
