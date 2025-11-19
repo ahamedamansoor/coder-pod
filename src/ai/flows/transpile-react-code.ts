@@ -36,11 +36,11 @@ const prompt = ai.definePrompt({
   name: 'transpileReactCodePrompt',
   input: { schema: TranspileReactCodeInputSchema },
   output: { schema: TranspileReactCodeOutputSchema },
-  prompt: `You are an expert web development build tool. Your task is to take the provided React/JSX code and transpile it into a single, browser-runnable JavaScript module.
+  prompt: `You are an expert web development build tool, like Babel. Your task is to take the provided React/JSX code and transpile it into a single, browser-runnable JavaScript string.
 
 **Instructions:**
 1.  **Transpile JSX:** Convert all JSX syntax into valid \`React.createElement()\` calls.
-2.  **Handle Imports:** Resolve any imports (like 'react', 'react-dom/client') by replacing them with direct calls to a global \`React\` or \`ReactDOM\` object if necessary, or bundle the required logic. Assume that the browser environment does not support bare module specifiers. You must produce a single script that has no external dependencies beyond what's available in a standard browser with React and ReactDOM loaded.
+2.  **Remove Imports:** Remove any 'react' or 'react-dom/client' imports. Assume \`React\` and \`ReactDOM\` are available as global variables in the browser environment.
 3.  **Error Handling:** If the code has a syntax error or cannot be transpiled, set the \`success\` field to \`false\` and provide a clear, concise error message in the \`error\` field.
 4.  **Output:** If successful, set \`success\` to \`true\` and return the final, browser-compatible JavaScript code in the \`transpiledCode\` field.
 
@@ -49,7 +49,7 @@ const prompt = ai.definePrompt({
 {{{code}}}
 \`\`\`
 
-**IMPORTANT:** Respond ONLY with the JSON object. Do not include any other text or explanation.`,
+**IMPORTANT:** Respond ONLY with the JSON object containing the result. Do not include any other text, explanation, or markdown formatting around the JSON.`,
 });
 
 const transpileReactCodeFlow = ai.defineFlow(

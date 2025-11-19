@@ -8,7 +8,7 @@ import { ScrollArea } from './ui/scroll-area';
 import { transpileReactCode } from '@/ai/flows/transpile-react-code';
 
 const initialCode = `import React, { useState } from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -23,7 +23,7 @@ function App() {
   );
 }
 
-const root = createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
 `;
 
@@ -36,10 +36,13 @@ const htmlTemplate = (code: string) => `
         h1 { color: #007bff; }
         button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
       </style>
+      <!-- Load React and ReactDOM from a CDN -->
+      <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin><\/script>
+      <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin><\/script>
     </head>
     <body>
       <div id="root"></div>
-      <script type="module">${code}</script>
+      <script type="text/javascript">${code}</script>
     </body>
   </html>
 `;
@@ -47,7 +50,7 @@ const htmlTemplate = (code: string) => `
 export function ReactPlayground() {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState<{ code: string; err: string }>({ code: '', err: '' });
-  const [isBuilding, setIsBuilding] = useState(false);
+  const [isBuilding, setIsBuilding] = useState(true);
   const { theme } = useTheme();
 
   const buildCode = useCallback(async (newCode: string) => {
@@ -56,7 +59,7 @@ export function ReactPlayground() {
 
     try {
       const result = await transpileReactCode({ code: newCode });
-      if (result.success) {
+      if (result.success && result.transpiledCode) {
         setOutput({ code: result.transpiledCode, err: '' });
       } else {
         setOutput({ code: '', err: result.error || 'Unknown compilation error' });
@@ -68,11 +71,12 @@ export function ReactPlayground() {
     }
   }, []);
 
+  // Initial build
   useEffect(() => {
     buildCode(code);
   }, []);
 
-  // Debounced build
+  // Debounced build on code change
   useEffect(() => {
     const timer = setTimeout(() => {
       buildCode(code);
@@ -86,7 +90,7 @@ export function ReactPlayground() {
   const iframeSrcDoc = htmlTemplate(output.code);
 
   return (
-    <div className="h-full w-full flex flex-col pt-2">
+    <div className="h-full w-full flex flex-col">
       <ResizablePanelGroup direction="horizontal" className="flex-1">
         <ResizablePanel defaultSize={50}>
           <Editor
@@ -102,9 +106,16 @@ export function ReactPlayground() {
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={75}>
                <div className="relative w-full h-full">
-                {isBuilding && (
+                {(isBuilding || output.err) && (
                     <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/50">
-                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        {isBuilding ? (
+                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        ) : (
+                            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-md text-destructive flex items-center gap-2">
+                                <AlertTriangle className="h-5 w-5" />
+                                <span className="font-semibold">Build Failed</span>
+                            </div>
+                        )}
                     </div>
                 )}
                  <iframe
