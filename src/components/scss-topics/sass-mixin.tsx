@@ -1,8 +1,7 @@
-
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Mixer, Recipe, Lightbulb, AlertTriangle, Blocks } from 'lucide-react';
+import { Play, Puzzle, BookText, Lightbulb, AlertTriangle, Blocks } from 'lucide-react';
 import React from 'react';
 
 export default function SassMixin({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
@@ -81,7 +80,7 @@ export default function SassMixin({ onOpenWebPlayground }: { onOpenWebPlayground
         <div className="space-y-8">
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-2">
-                    <Mixer className="w-10 h-10 text-primary" />
+                    <Puzzle className="w-10 h-10 text-primary" />
                     <h1 className="text-4xl font-bold text-foreground">Sass @mixin</h1>
                 </div>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto">Creating reusable groups of CSS declarations, like functions for your styles.</p>
@@ -106,13 +105,13 @@ export default function SassMixin({ onOpenWebPlayground }: { onOpenWebPlayground
                 <CardContent>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                            <h3 className="font-semibold text-primary mb-2">SCSS (With `@mixin` and `@include`)</h3>
+                            <h3 className="font-semibold text-primary mb-2">SCSS (What you write)</h3>
                             <div className="bg-muted rounded-md p-4">
                                 <pre className="font-mono text-xs text-foreground whitespace-pre-wrap">{basicMixinScss}</pre>
                             </div>
                         </div>
                         <div>
-                            <h3 className="font-semibold text-foreground mb-2">Compiled CSS</h3>
+                            <h3 className="font-semibold text-foreground mb-2">Compiled CSS (What the browser gets)</h3>
                             <div className="bg-muted rounded-md p-4">
                                 <pre className="font-mono text-xs text-foreground whitespace-pre-wrap">{basicMixinCss}</pre>
                             </div>
@@ -128,7 +127,7 @@ export default function SassMixin({ onOpenWebPlayground }: { onOpenWebPlayground
             
             <Card className="bg-primary/5 border-primary/20">
                 <CardHeader>
-                    <CardTitle className="text-primary flex items-center gap-2"><Recipe className="w-5 h-5"/>Arguments & Default Values</CardTitle>
+                    <CardTitle className="text-primary flex items-center gap-2"><BookText className="w-5 h-5"/>Arguments & Default Values</CardTitle>
                     <CardDescription>Mixins can accept arguments, just like functions in a programming language. You can also provide default values, making some arguments optional.</CardDescription>
                 </CardHeader>
                 <CardContent>
