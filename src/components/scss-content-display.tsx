@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -9,12 +10,16 @@ import { useWebPlayground } from './web-playground-context';
 // Lazy load all the topic components
 const WhatIsSass = lazy(() => import('./scss-topics/what-is-sass'));
 const SassInstallation = lazy(() => import('./scss-topics/sass-installation'));
+const SassVariables = lazy(() => import('./scss-topics/sass-variables'));
+const SassNesting = lazy(() => import('./scss-topics/sass-nesting'));
 
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'what-is-sass': WhatIsSass,
   'sass-installation': SassInstallation,
+  'sass-variables': SassVariables,
+  'sass-nesting': SassNesting,
 };
 
 function LoadingSkeleton() {
