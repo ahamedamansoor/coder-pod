@@ -1,7 +1,7 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap } from 'lucide-react';
+import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight } from 'lucide-react';
 import { useReact } from '@/app/react/react-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
@@ -37,12 +37,12 @@ export const ReactLearningRoadmap = () => {
     { id: "ESCAPE HATCHES", title: "Escape Hatches", level: "Intermediate", topics: allTopics.slice(21, 30) },
     { id: "HOOKS (COMPREHENSIVE)", title: "Hooks (Comprehensive)", level: "Intermediate", topics: allTopics.slice(30, 47) },
     { id: "COMPONENT DETAILS", title: "Component Details", level: "Advanced", topics: allTopics.slice(47, 54) },
-    { id: "CLIENT LIBRARIES", title: "Client Libraries", level: "Advanced", topics: [allTopics[54]] },
+    { id: "CLIENT LIBRARIES", title: "Client Libraries", level: "Advanced", topics: allTopics.slice(54, 55) },
     { id: "FORM DETAILS", title: "Form Details", level: "Advanced", topics: allTopics.slice(55, 58) },
     { id: "ADVANCED PATTERNS", title: "Advanced Patterns", level: "Advanced", topics: allTopics.slice(58, 65) },
     { id: "CONTEXT API", title: "Context API", level: "Advanced", topics: allTopics.slice(65, 71) },
     { id: "PERFORMANCE OPTIMIZATION", title: "Performance Optimization", level: "Expert", topics: allTopics.slice(71, 75) },
-    { id: "TESTING", title: "Testing (React Testing Basics)", level: "Expert", topics: allTopics.slice(75, 80) },
+    { id: "TESTING", title: "Testing", level: "Expert", topics: allTopics.slice(75, 80) },
     { id: "DEPLOYMENT", title: "Deployment", level: "Expert", topics: allTopics.slice(80, 83) },
     { id: "TYPESCRIPT WITH REACT", title: "TypeScript with React", level: "Expert", topics: allTopics.slice(83, 89) },
     { id: "ADVANCED REACT FEATURES", title: "Advanced React Features", level: "Expert", topics: allTopics.slice(89, 94) },
