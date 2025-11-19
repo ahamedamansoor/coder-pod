@@ -11,7 +11,7 @@ export const scss: Language = {
     { slug: 'sass-variables', title: 'Variables', explanation: 'Storing reusable values like colors and font sizes.' },
     { slug: 'sass-nesting', title: 'Nesting', explanation: 'Writing CSS rules that mirror your HTML structure to create cleaner, more organized styles.' },
     { slug: 'sass-import', title: 'Sass @import', explanation: 'Importing SCSS files into other SCSS files.' },
-    { slug: 'sass-mixins', title: 'Sass @mixin', explanation: 'Creating reusable groups of CSS declarations.' },
+    { slug: 'sass-mixin', title: 'Sass @mixin', explanation: 'Creating reusable groups of CSS declarations.' },
     { slug: 'sass-extend-inheritance', title: 'Sass @extend', explanation: 'Sharing a set of CSS properties from one selector to another.' },
     { slug: 'sass-functions', title: 'Sass Functions', explanation: 'Using built-in functions and writing your own.' },
     { slug: 'sass-string', title: 'Sass String', explanation: 'Manipulating strings with Sass functions.' },
