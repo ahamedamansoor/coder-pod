@@ -8,6 +8,7 @@ import { useReactPlayground } from './react-playground-context';
 
 // Lazy load all the topic components
 const WhatIsReact = lazy(() => import('./react-topics/what-is-react'));
+const InstallationAndSetup = lazy(() => import('./react-topics/installation-and-setup'));
 const ReactInterviewQuestions = lazy(() => import('./react-topics/react-interview-questions'));
 const ReactVersionUpdates = lazy(() => import('./react-topics/react-version-updates'));
 
@@ -15,6 +16,7 @@ const ReactVersionUpdates = lazy(() => import('./react-topics/react-version-upda
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'what-is-react': WhatIsReact,
+  'installation-and-setup': InstallationAndSetup,
   'interview-questions': ReactInterviewQuestions,
   'react-version-updates': ReactVersionUpdates,
 };
@@ -35,15 +37,11 @@ function LoadingSkeleton() {
 export function ReactContentDisplay({ 
   topic, 
   language, 
-  onOpenEditor,
 }: { 
   topic: Topic, 
   language: Language, 
-  onOpenEditor: (code: string) => void,
 }) {
   const { openWithContent } = useReactPlayground();
-
-  const onOpenEditorHandler = onOpenEditor || openWithContent;
   
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
@@ -51,7 +49,7 @@ export function ReactContentDisplay({
   if (fullPageTopics.includes(topic.slug) && CustomTopicComponent) {
     return (
       <Suspense fallback={<LoadingSkeleton />}>
-        <CustomTopicComponent onOpenEditor={onOpenEditorHandler} />
+        <CustomTopicComponent onOpenEditor={openWithContent} />
       </Suspense>
     );
   }
@@ -60,11 +58,11 @@ export function ReactContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-      onOpenEditor={onOpenEditorHandler}
+      onOpenEditor={openWithContent}
     >
       <Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (
-          <CustomTopicComponent onOpenEditor={onOpenEditorHandler} />
+          <CustomTopicComponent onOpenEditor={openWithContent} />
         ) : null}
       </Suspense>
     </GenericContentDisplay>
