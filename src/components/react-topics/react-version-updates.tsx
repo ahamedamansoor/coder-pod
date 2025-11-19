@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Rss, GitBranch, Lightbulb, Zap, Rocket, Activity, Code, Settings, Check, X, Share2, Layers, VenetianMask, Cpu, FileText, Anchor } from 'lucide-react';
+import { Rss, GitBranch, Lightbulb, Zap, Rocket, Activity, Code, Settings, Check, X, Share2, Layers, VenetianMask, Cpu, FileText, Anchor, History, FileUp, Component, Pointer } from 'lucide-react';
 import React from 'react';
 
 const updates = [
@@ -47,7 +47,7 @@ const updates = [
       { title: "useState & useEffect", description: "Introduced the most fundamental hooks for state management and side effects.", icon: Lightbulb },
     ],
   },
-  {
+    {
     version: "React 16.3",
     date: "Mar 2018",
     features: [
@@ -78,6 +78,16 @@ const updates = [
     date: "Oct 2014",
     features: [
       { title: "React & ReactDOM Split", description: "The core React library was split from the DOM renderer, paving the way for React Native.", icon: GitBranch },
+    ],
+  },
+  {
+    version: "React 0.3.0 - 0.13.x",
+    date: "2013-2014",
+    features: [
+      { title: "Initial Release", description: "First public, open-source version introducing the Virtual DOM and component model.", icon: History },
+      { title: "JSX Comments", description: "Added support for comments within JSX using {/* ... */}.", icon: Code },
+      { title: "State & Props", description: "Established `getInitialState` and `props` for component data management.", icon: FileUp },
+      { title: "Stateless Components", description: "Functional components were introduced as a first-class concept.", icon: Component},
     ],
   },
 ];
