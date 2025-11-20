@@ -40,7 +40,7 @@ export function StudySessionsWidget() {
     if (date.toDateString() === tomorrow.toDateString()) {
       return `Tomorrow at ${format(date, 'p')}`;
     }
-    return format(date, 'MMM d \'at\' p');
+    return format(date, "MMM d 'at' p");
   }
 
   return (
@@ -94,7 +94,7 @@ export function StudySessionsWidget() {
       </CardContent>
       <CardFooter>
         <ScheduleStudyModal>
-            <Button className="w-full">
+            <Button className="w-full" disabled={isGuestUser}>
               <PlusCircle className="mr-2 h-4 w-4" />
               Schedule New Session
             </Button>

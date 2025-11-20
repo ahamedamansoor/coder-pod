@@ -220,49 +220,10 @@ export default function AppLayout() {
     }, (error) => {
       console.error('Error fetching activities:', error);
       setIsLoadingActivities(false);
-      // Fallback to mock data if Firebase fails
-      setRecentActivities([
-        { 
-          id: '1',
-          action: 'Completed', 
-          item: 'JavaScript Fundamentals', 
-          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-          type: 'course_completion',
-          icon: 'CheckCircle',
-          color: 'text-green-600'
-        },
-        { 
-          id: '2',
-          action: 'Started', 
-          item: 'React Hooks Deep Dive', 
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
-          type: 'course_start',
-          icon: 'BookOpen',
-          color: 'text-blue-600'
-        },
-        { 
-          id: '3',
-          action: 'Earned', 
-          item: 'Problem Solver Badge', 
-          timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-          type: 'achievement',
-          icon: 'Award',
-          color: 'text-yellow-600'
-        },
-        { 
-          id: '4',
-          action: 'Practiced', 
-          item: 'Algorithm Challenges', 
-          timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-          type: 'practice',
-          icon: 'Code',
-          color: 'text-purple-600'
-        }
-      ]);
     });
 
     return () => unsubscribe();
-  }, [user, firestore]);
+  }, [user, firestore, isGuestUser]);
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore || isGuestUser) return null;
@@ -323,7 +284,9 @@ export default function AppLayout() {
       Code,
       Trophy,
       Target,
-      Activity
+      Activity,
+      User,
+      Sparkles,
     };
     return iconMap[iconName] || Activity;
   };
@@ -336,7 +299,9 @@ export default function AppLayout() {
       achievement: 'text-yellow-600',
       practice: 'text-purple-600',
       lesson_complete: 'text-emerald-600',
-      quiz_passed: 'text-indigo-600'
+      quiz_passed: 'text-indigo-600',
+      guest_session: 'text-blue-600',
+      guest_exploration: 'text-purple-600'
     };
     return colorMap[type] || 'text-gray-600';
   };
@@ -439,7 +404,7 @@ export default function AppLayout() {
           </p>
           
           {/* Quick Stats Dashboard */}
-          {showStats && (
+          {showStats && !isGuestUser && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8 animate-fade-in-up" style={{animationDelay: '2.5s', animationFillMode: 'forwards'}}>
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/50 p-4 rounded-xl border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-2">
@@ -473,7 +438,7 @@ export default function AppLayout() {
           )}
 
           {/* Progress Section */}
-          {showStats && (
+          {showStats && !isGuestUser && (
             <div className="max-w-md mx-auto bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-2xl animate-fade-in-up" style={{animationDelay: '3s', animationFillMode: 'forwards'}}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium">Progress to {userStats.nextMilestone}</span>

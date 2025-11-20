@@ -6,18 +6,16 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      // Allow users to create, read, update, and delete their own document
-      allow get, create, update, delete: if isOwner(userId);
-      // Disallow listing all users for security
+      // A user can read, update, and delete their own document.
+      allow get, update, delete: if isOwner(userId);
+      // Any authenticated user can create their own user document.
+      allow create: if isOwner(userId);
+      // Nobody can list all users.
       allow list: if false;
-      
-      // Allow users to manage their own subcollections
-      match /studySessions/{sessionId} {
-        allow read, write, list: if isOwner(userId);
-      }
-      
-      match /activities/{activityId} {
-        allow read, write, list: if isOwner(userId);
+
+      // A user can perform any action on their own subcollections.
+      match /{allSubcollections}/{docId} {
+        allow read, write: if isOwner(userId);
       }
     }
   }
