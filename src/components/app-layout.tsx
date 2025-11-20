@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,8 +17,6 @@ import { Badge } from './ui/badge';
 import { Bot, Code, LogOut, User, Zap, LogIn, Target, BrainCircuit, Rocket, CheckCircle, TrendingUp, Award, BookOpen, Clock, Star, Activity, ChevronRight, Sparkles, Trophy, Calendar, BarChart3 } from 'lucide-react';
 import { LearnModal } from './learn-modal';
 import { ThemeToggle } from './theme-toggle';
-import { ScheduleStudyModal } from './schedule-study-modal';
-import { StudySessionsWidget } from './study-sessions-widget';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { doc, collection, query, orderBy, limit, where, onSnapshot } from 'firebase/firestore';
@@ -556,12 +554,6 @@ export default function AppLayout() {
                   <BarChart3 className="h-4 w-4 mr-2" />
                   View Progress
                 </Button>
-                <ScheduleStudyModal>
-                  <Button variant="outline" className="w-full justify-start hover:bg-muted/50 group">
-                    <Calendar className="h-4 w-4 mr-2 group-hover:text-primary transition-colors" />
-                    Schedule Study Time
-                  </Button>
-                </ScheduleStudyModal>
               </CardContent>
             </Card>
 
@@ -584,11 +576,6 @@ export default function AppLayout() {
               </CardContent>
             </Card>
           </div>
-        </div>
-
-        {/* Study Sessions Section */}
-        <div className="mb-16">
-          <StudySessionsWidget />
         </div>
 
         {/* Why Coder Pod Stands Out - Modern Design */}
