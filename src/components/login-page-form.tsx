@@ -40,8 +40,11 @@ export function LoginPageForm() {
 
     let isNewUser = false;
 
+    // This is the check that was causing the issue.
+    // We only want to check for email verification if the user is NOT anonymous
+    // and is signing in with a password.
     const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
-    if (isEmailPasswordSignIn && !user.emailVerified) {
+    if (isEmailPasswordSignIn && !user.isAnonymous && !user.emailVerified) {
         toast({
             variant: 'destructive',
             title: 'Verification Required',

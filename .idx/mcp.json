@@ -1,4 +1,6 @@
-"firebase": {
+{
+  "mcpServers": {
+    "firebase": {
   "command": "npx",
   "args": [
     "-y",
@@ -6,4 +8,6 @@
     "--dir", "/Users/turing/my-project",
     "--only", "auth,firestore,storage"
   ]
+}
+  }
 }
