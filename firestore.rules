@@ -1,25 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
     function isOwner(userId) {
       return request.auth != null && request.auth.uid == userId;
     }
 
     match /users/{userId} {
-      allow get, update, delete, create: if isOwner(userId);
-      allow list: if false; // Still block listing all users
+      allow get, create, update, delete: if isOwner(userId);
+      allow list: if false;
       
-      // Allow a user to LIST their own study sessions collection
-      // but not anybody else's.
-      allow list: if isOwner(userId) && request.path[2] == 'users' && request.path[4] == 'studySessions';
-
-      // Allow a user to read, create, update, and delete their own individual sessions.
       match /studySessions/{sessionId} {
-        allow read, write: if isOwner(userId);
+        allow read, write, list: if isOwner(userId);
       }
       
-      // Add other subcollections as needed
       match /activities/{activityId} {
         allow read, write, list: if isOwner(userId);
       }
