@@ -12,13 +12,13 @@ service cloud.firestore {
       allow list: if false; // Security: Disallow listing all user documents
       allow create: if isOwner(userId);
 
-      // Rules for the studySessions subcollection
+      // Allow a user to LIST their own study sessions collection
+      // but not anybody else's.
+      allow list: if isOwner(userId) && request.path[2] == 'users' && request.path[4] == 'studySessions';
+
+      // Allow a user to read, create, update, and delete their own individual sessions.
       match /studySessions/{sessionId} {
-        // Allow a user to read, create, update, and delete their own individual sessions.
         allow read, write: if isOwner(userId);
-        
-        // Allow a user to list all documents in their own studySessions subcollection.
-        allow list: if isOwner(userId);
       }
     }
   }
