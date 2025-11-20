@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -179,7 +178,7 @@ export function ScheduleStudyModal({ children }: { children: React.ReactNode }) 
                                     <FormControl>
                                         <SelectTrigger>
                                         <SelectValue placeholder="Select duration" />
-                                        </Trigger>
+                                        </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
                                         <SelectItem value="30">30 minutes</SelectItem>
