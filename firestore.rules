@@ -8,12 +8,18 @@ service cloud.firestore {
       }
 
       allow get, update, delete: if isOwner();
-      allow list: if false; // Disallow listing all users
+      allow list: if false; // Disallow listing all users for security
       allow create: if isOwner();
 
+      // Rules for the subcollection of study sessions
       match /studySessions/{sessionId} {
-        // This rule allows a user to read and write their own sessions.
+        // Allow a user to read and write their own individual sessions.
         allow read, write: if isOwner();
+      }
+
+      // Add this rule to allow the owner to LIST their own sessions.
+      match /studySessions {
+          allow list: if isOwner();
       }
     }
   }
