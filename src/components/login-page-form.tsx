@@ -33,18 +33,18 @@ export function LoginPageForm() {
   const createUserProfile = async (user: FirebaseUser) => {
     if (!user || !firestore) return;
 
-    showLoader({
-      title: 'Preparing your dashboard...',
-      subtitle: 'Personalizing your learning experience.',
-    });
-
+    const isGuest = user.isAnonymous;
     let isNewUser = false;
+    
+    if (!isGuest) {
+        showLoader({
+          title: 'Login successful!',
+          subtitle: 'Redirecting you to your dashboard...',
+        });
+    }
 
-    // This is the check that was causing the issue.
-    // We only want to check for email verification if the user is NOT anonymous
-    // and is signing in with a password.
     const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
-    if (isEmailPasswordSignIn && !user.isAnonymous && !user.emailVerified) {
+    if (isEmailPasswordSignIn && !isGuest && !user.emailVerified) {
         toast({
             variant: 'destructive',
             title: 'Verification Required',
@@ -67,7 +67,7 @@ export function LoginPageForm() {
         const userProfile = {
           id: user.uid,
           email: user.email,
-          name: user.displayName || nameFromUrl || (user.isAnonymous ? 'Guest User' : user.email),
+          name: user.displayName || nameFromUrl || (isGuest ? 'Guest User' : user.email),
           phoneNumber: user.phoneNumber || phoneFromUrl || null,
           dob: dobFromUrl ? new Date(dobFromUrl) : null,
           createdAt: serverTimestamp(),
@@ -85,14 +85,7 @@ export function LoginPageForm() {
   };
 
   const handleSuccessfulLogin = async (userCredential: UserCredential) => {
-    showLoader({
-        title: 'Login successful!',
-        subtitle: 'Redirecting you to your dashboard...',
-    });
-    // A brief delay to let the user see the success message
-    setTimeout(() => {
-        createUserProfile(userCredential.user);
-    }, 1000);
+    await createUserProfile(userCredential.user);
   };
 
   const handleGoogleSignIn = async () => {
@@ -152,6 +145,7 @@ export function LoginPageForm() {
   const handleAnonymousSignIn = async () => {
     if (!auth) return;
     setIsAnonymousLoading(true);
+    showLoader({ title: 'Entering as Guest...', subtitle: 'One moment please.' });
     try {
       const credential = await signInAnonymously(auth);
       await handleSuccessfulLogin(credential);
