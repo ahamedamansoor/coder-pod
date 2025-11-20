@@ -166,10 +166,10 @@ export function LoginPageForm() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
-      console.error('Email sign-in error:', error);
-       let description = 'Invalid email or password. Please try again.';
+       console.error('Email sign-in error:', error);
+       let description = 'An unexpected error occurred. Please try again.';
        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-            description = 'Invalid email or password. Please try again.';
+            description = 'The email or password you entered is incorrect. Please try again.';
        }
       toast({
         variant: 'destructive',
