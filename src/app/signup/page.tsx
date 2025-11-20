@@ -82,6 +82,7 @@ export default function SignupPage() {
       // We pass user details via query params for pre-filling on the login page,
       // as the profile will only be created upon first verified sign-in.
       const queryParams = new URLSearchParams({
+        email: values.email,
         name: values.name,
         dob: values.dob.toISOString(),
         phoneNumber: `${values.countryCode}${values.phoneNumber}`,

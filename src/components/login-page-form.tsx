@@ -101,7 +101,10 @@ export function LoginPageForm() {
       await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        console.log('Google sign-in cancelled by user.');
+        toast({
+          title: 'Sign-in cancelled',
+          description: 'You closed the Google sign-in window.',
+        });
       } else {
         console.error('Google sign-in error:', error);
         toast({
@@ -126,7 +129,10 @@ export function LoginPageForm() {
       await handleSuccessfulLogin(userCredential);
     } catch (error: any) {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        console.log('GitHub sign-in cancelled by user.');
+        toast({
+          title: 'Sign-in cancelled',
+          description: 'You closed the GitHub sign-in window.',
+        });
       } else {
         console.error('GitHub sign-in error:', error);
         toast({

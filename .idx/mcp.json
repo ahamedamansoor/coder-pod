@@ -1,0 +1,9 @@
+"firebase": {
+  "command": "npx",
+  "args": [
+    "-y",
+    "firebase-tools@latest", "mcp",
+    "--dir", "/Users/turing/my-project",
+    "--only", "auth,firestore,storage"
+  ]
+}
