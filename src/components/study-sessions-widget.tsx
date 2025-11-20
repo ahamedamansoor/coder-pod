@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from './ui/card';
@@ -13,11 +14,10 @@ export function StudySessionsWidget() {
   const { user } = useUser();
   const firestore = useFirestore();
   
-  // Check if user is guest/anonymous
-  const isGuestUser = user?.isAnonymous || false;
+  const isGuestUser = !user;
 
   const sessionsQuery = useMemoFirebase(() => {
-    if (!user || !firestore || isGuestUser) return null;
+    if (isGuestUser || !user || !firestore) return null;
     return query(
         collection(firestore, `users/${user.uid}/studySessions`),
         where('dateTime', '>=', new Date()),

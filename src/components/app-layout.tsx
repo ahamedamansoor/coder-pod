@@ -48,8 +48,7 @@ export default function AppLayout() {
   const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [isLoadingActivities, setIsLoadingActivities] = useState(true);
   
-  // Check if user is guest/anonymous
-  const isGuestUser = user?.isAnonymous || false;
+  const isGuestUser = !user;
 
   // Mock user stats - in real app, fetch from Firebase
   const userStats = {
@@ -172,13 +171,7 @@ export default function AppLayout() {
 
   // Fetch live activity data from Firebase
   useEffect(() => {
-    if (!user || !firestore) {
-      setIsLoadingActivities(false);
-      return;
-    }
-    
-    // For guest users, show mock data instead of trying to fetch from Firestore
-    if (isGuestUser) {
+    if (isGuestUser || !user || !firestore) {
       setRecentActivities([
         {
           id: 'guest-1',
@@ -245,7 +238,7 @@ export default function AppLayout() {
   };
 
   const getInitials = (name?: string | null) => {
-    if (user?.isAnonymous) return 'G';
+    if (isGuestUser) return 'G';
     if (!name) return 'U';
     const names = name.split(' ');
     if (names.length > 1) {
@@ -254,7 +247,7 @@ export default function AppLayout() {
     return name[0].toUpperCase();
   };
   
-  const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
+  const displayName = isGuestUser ? 'Guest User' : userData?.name || user?.displayName || 'User';
 
   // Helper function to format timestamp to relative time
   const formatRelativeTime = (timestamp: any) => {

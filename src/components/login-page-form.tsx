@@ -33,18 +33,15 @@ export function LoginPageForm() {
   const createUserProfile = async (user: FirebaseUser) => {
     if (!user || !firestore) return;
 
-    const isGuest = user.isAnonymous;
     let isNewUser = false;
     
-    if (!isGuest) {
-        showLoader({
-          title: 'Login successful!',
-          subtitle: 'Redirecting you to your dashboard...',
-        });
-    }
+    showLoader({
+      title: 'Login successful!',
+      subtitle: 'Redirecting you to your dashboard...',
+    });
 
     const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
-    if (isEmailPasswordSignIn && !isGuest && !user.emailVerified) {
+    if (isEmailPasswordSignIn && !user.emailVerified) {
         toast({
             variant: 'destructive',
             title: 'Verification Required',
@@ -67,7 +64,7 @@ export function LoginPageForm() {
         const userProfile = {
           id: user.uid,
           email: user.email,
-          name: user.displayName || nameFromUrl || (isGuest ? 'Guest User' : user.email),
+          name: user.displayName || nameFromUrl || user.email,
           phoneNumber: user.phoneNumber || phoneFromUrl || null,
           dob: dobFromUrl ? new Date(dobFromUrl) : null,
           createdAt: serverTimestamp(),
@@ -143,22 +140,8 @@ export function LoginPageForm() {
   };
 
   const handleAnonymousSignIn = async () => {
-    if (!auth) return;
-    setIsAnonymousLoading(true);
-    showLoader({ title: 'Entering as Guest...', subtitle: 'One moment please.' });
-    try {
-      const credential = await signInAnonymously(auth);
-      await handleSuccessfulLogin(credential);
-    } catch (error: any) {
-      console.error('Anonymous sign-in error:', error);
-       toast({
-        variant: 'destructive',
-        title: 'Sign-in failed',
-        description: error.message || 'Could not sign in as a guest.',
-      });
-    } finally {
-      setIsAnonymousLoading(false);
-    }
+    showLoader();
+    router.push('/dashboard');
   };
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
