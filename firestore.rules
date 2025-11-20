@@ -12,7 +12,7 @@ service cloud.firestore {
       allow create: if isOwner();
 
       match /studySessions/{sessionId} {
-        allow read, write: if isOwner();
+        allow read, write, create, update, delete: if isOwner();
       }
     }
   }
