@@ -46,6 +46,9 @@ export default function AppLayout() {
   // Live activity data
   const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [isLoadingActivities, setIsLoadingActivities] = useState(true);
+  
+  // Check if user is guest/anonymous
+  const isGuestUser = user?.isAnonymous || false;
 
   // Mock user stats - in real app, fetch from Firebase
   const userStats = {
@@ -166,9 +169,35 @@ export default function AppLayout() {
     }
   }, [showStats]);
 
-  // Fetch live activity data
+  // Fetch live activity data from Firebase
   useEffect(() => {
     if (!user || !firestore) {
+      setIsLoadingActivities(false);
+      return;
+    }
+    
+    // For guest users, show mock data instead of trying to fetch from Firestore
+    if (isGuestUser) {
+      setRecentActivities([
+        {
+          id: 'guest-1',
+          action: 'Started',
+          item: 'Guest Learning Session',
+          timestamp: { toDate: () => new Date() },
+          type: 'guest_session',
+          icon: 'User',
+          color: 'text-blue-600'
+        },
+        {
+          id: 'guest-2', 
+          action: 'Exploring',
+          item: 'Dashboard Features',
+          timestamp: { toDate: () => new Date(Date.now() - 5 * 60 * 1000) },
+          type: 'guest_exploration',
+          icon: 'Sparkles',
+          color: 'text-purple-600'
+        }
+      ]);
       setIsLoadingActivities(false);
       return;
     }
@@ -236,9 +265,9 @@ export default function AppLayout() {
   }, [user, firestore]);
 
   const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
+    if (!user || !firestore || isGuestUser) return null;
     return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
+  }, [user, firestore, isGuestUser]);
 
   const { data: userData } = useDoc(userDocRef);
 

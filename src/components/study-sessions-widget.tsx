@@ -12,16 +12,19 @@ import { format } from 'date-fns';
 export function StudySessionsWidget() {
   const { user } = useUser();
   const firestore = useFirestore();
+  
+  // Check if user is guest/anonymous
+  const isGuestUser = user?.isAnonymous || false;
 
   const sessionsQuery = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
+    if (!user || !firestore || isGuestUser) return null;
     return query(
         collection(firestore, `users/${user.uid}/studySessions`),
         where('dateTime', '>=', new Date()),
         orderBy('dateTime', 'asc'),
         limit(3)
     );
-  }, [user, firestore]);
+  }, [user, firestore, isGuestUser]);
 
   const { data: upcomingSessions, isLoading } = useCollection(sessionsQuery);
 
@@ -75,8 +78,17 @@ export function StudySessionsWidget() {
           ))
         ) : (
           <div className="text-center py-4">
-            <p className="text-muted-foreground">No upcoming sessions.</p>
-            <p className="text-sm text-muted-foreground mt-1">Schedule one to stay on track!</p>
+            {isGuestUser ? (
+              <>
+                <p className="text-muted-foreground">Sign up to schedule study sessions</p>
+                <p className="text-sm text-muted-foreground mt-1">Track your learning progress with personalized scheduling!</p>
+              </>
+            ) : (
+              <>
+                <p className="text-muted-foreground">No upcoming sessions.</p>
+                <p className="text-sm text-muted-foreground mt-1">Schedule one to stay on track!</p>
+              </>
+            )}
           </div>
         )}
       </CardContent>
