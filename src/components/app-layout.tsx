@@ -343,6 +343,36 @@ export default function AppLayout() {
 
   return (
     <div id="dashboard-page" data-test="dashboard-page" className="flex flex-col min-h-screen bg-muted/40">
+      {/* Guest User Banner */}
+      {isGuestUser && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-b border-blue-200 dark:border-blue-800">
+          <div className="px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-full">
+                  <User className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                    You're browsing as a guest
+                  </p>
+                  <p className="text-xs text-blue-700 dark:text-blue-300">
+                    Sign up to save your progress and access all features
+                  </p>
+                </div>
+              </div>
+              <Button 
+                size="sm" 
+                onClick={() => router.push('/signup')}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Sign Up Free
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <header className="bg-background border-b sticky top-0 z-10">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
