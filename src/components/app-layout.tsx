@@ -20,6 +20,8 @@ import { ThemeToggle } from './theme-toggle';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { doc, collection, query, orderBy, limit, where, onSnapshot } from 'firebase/firestore';
+import { ScheduleStudyModal } from './schedule-study-modal';
+import { StudySessionsWidget } from './study-sessions-widget';
 
 export default function AppLayout() {
   const { user } = useUser();
@@ -317,6 +319,12 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
+              <ScheduleStudyModal>
+                  <Button variant="outline">
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Schedule
+                  </Button>
+              </ScheduleStudyModal>
               <LearnModal autoOpen={isNewUser} />
               <ThemeToggle />
               {user ? (
@@ -480,7 +488,7 @@ export default function AppLayout() {
           </Card>
         </div>
 
-        {/* Learning Activity Feed */}
+        {/* Learning Activity Feed & Sessions */}
         <div className="grid lg:grid-cols-3 gap-8 mb-16">
           <div className="lg:col-span-2">
             <Card className="bg-card/50 backdrop-blur-sm border-border/50">
@@ -492,7 +500,6 @@ export default function AppLayout() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {isLoadingActivities ? (
-                  // Loading skeleton
                   Array.from({ length: 4 }).map((_, index) => (
                     <div key={index} className="flex items-center gap-4 p-3 rounded-lg animate-pulse">
                       <div className="w-8 h-8 bg-muted rounded-full"></div>
@@ -503,7 +510,6 @@ export default function AppLayout() {
                     </div>
                   ))
                 ) : recentActivities.length > 0 ? (
-                  // Live activity data
                   recentActivities.map((activity) => {
                     const IconComponent = getIconComponent(activity.icon || 'Activity');
                     const activityColor = activity.color || getActivityColor(activity.type);
@@ -525,7 +531,6 @@ export default function AppLayout() {
                     );
                   })
                 ) : (
-                  // Empty state
                   <div className="text-center py-8">
                     <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <p className="text-muted-foreground">No recent activity found</p>
@@ -537,44 +542,7 @@ export default function AppLayout() {
           </div>
 
           <div className="space-y-6">
-            {/* Quick Actions */}
-            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Rocket className="h-5 w-5 text-primary" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button className="w-full justify-start bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
-                  <BookOpen className="h-4 w-4 mr-2" />
-                  Continue Learning
-                </Button>
-                <Button variant="outline" className="w-full justify-start hover:bg-muted/50">
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  View Progress
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Achievements Preview */}
-            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Star className="h-5 w-5 text-yellow-500" />
-                  Latest Achievement
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
-                    <Trophy className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="font-semibold mb-1">Code Warrior</h3>
-                  <p className="text-sm text-muted-foreground">Completed 10 coding challenges</p>
-                </div>
-              </CardContent>
-            </Card>
+            <StudySessionsWidget />
           </div>
         </div>
 
@@ -622,5 +590,3 @@ export default function AppLayout() {
     </div>
   );
 }
-
-    
