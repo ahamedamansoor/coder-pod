@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import type { Language } from '@/app/data';
+import type { Language, Topic } from '@/app/data';
 import { ModuleCompletionCelebration } from './module-completion-celebration';
 
 export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
@@ -79,7 +79,7 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
       title: "API & Interactivity",
       level: "Expert",
       icon: "⚡",
-      topics: getTopicsForSlugs(['html5-apis', 'web-workers-api', 'accessibility']),
+      topics: getTopicsForSlugs(['html5-apis', 'web-storage-api', 'fetch-api', 'geolocation-api', 'drag-and-drop-api', 'web-workers-api', 'accessibility']),
     },
   ];
 
@@ -128,13 +128,17 @@ export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
   
   const TopicItem = ({ topic }: { topic: (typeof allTopics)[0] }) => {
     const isCompleted = isUserAuthenticated && completedTopics.has(topic.slug);
+    const LinkWrapper = isUserAuthenticated ? Link : 'div';
+    
     const itemContent = (
-      <div onClick={() => toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
+      <div onClick={() => isUserAuthenticated && toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
         <div className="flex items-start gap-3">
           <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <Link href={`/${language.slug}/${topic.slug}`} className="hover:underline"><h3 className="text-lg font-semibold text-foreground">{topic.title}</h3></Link>
+              <LinkWrapper href={isUserAuthenticated ? `/${language.slug}/${topic.slug}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
+                <h3 className="text-lg font-semibold text-foreground">{topic.title}</h3>
+              </LinkWrapper>
             </div>
             <p className="text-muted-foreground text-sm">{topic.explanation}</p>
           </div>

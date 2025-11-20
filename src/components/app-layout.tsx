@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -513,62 +514,64 @@ export default function AppLayout() {
         </div>
 
         {/* Learning Activity Feed & Sessions */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
-          <div className="lg:col-span-2">
-            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-primary" />
-                  Recent Learning Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {isLoadingActivities ? (
-                  Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 rounded-lg animate-pulse">
-                      <div className="w-8 h-8 bg-muted rounded-full"></div>
-                      <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-muted rounded w-3/4"></div>
-                        <div className="h-3 bg-muted rounded w-1/2"></div>
-                      </div>
+        {!isGuestUser && (
+            <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            <div className="lg:col-span-2">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-primary" />
+                    Recent Learning Activity
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {isLoadingActivities ? (
+                    Array.from({ length: 4 }).map((_, index) => (
+                        <div key={index} className="flex items-center gap-4 p-3 rounded-lg animate-pulse">
+                        <div className="w-8 h-8 bg-muted rounded-full"></div>
+                        <div className="flex-1 space-y-2">
+                            <div className="h-4 bg-muted rounded w-3/4"></div>
+                            <div className="h-3 bg-muted rounded w-1/2"></div>
+                        </div>
+                        </div>
+                    ))
+                    ) : recentActivities.length > 0 ? (
+                    recentActivities.map((activity) => {
+                        const IconComponent = getIconComponent(activity.icon || 'Activity');
+                        const activityColor = activity.color || getActivityColor(activity.type);
+                        
+                        return (
+                        <div key={activity.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200">
+                            <div className={`p-2 rounded-full bg-muted ${activityColor}`}>
+                            <IconComponent className="h-4 w-4" />
+                            </div>
+                            <div className="flex-1">
+                            <p className="text-sm font-medium">
+                                <span className="text-muted-foreground">{activity.action}</span> {activity.item}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                                {formatRelativeTime(activity.timestamp)}
+                            </p>
+                            </div>
+                        </div>
+                        );
+                    })
+                    ) : (
+                    <div className="text-center py-8">
+                        <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">No recent activity found</p>
+                        <p className="text-sm text-muted-foreground mt-1">Start learning to see your progress here!</p>
                     </div>
-                  ))
-                ) : recentActivities.length > 0 ? (
-                  recentActivities.map((activity) => {
-                    const IconComponent = getIconComponent(activity.icon || 'Activity');
-                    const activityColor = activity.color || getActivityColor(activity.type);
-                    
-                    return (
-                      <div key={activity.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200">
-                        <div className={`p-2 rounded-full bg-muted ${activityColor}`}>
-                          <IconComponent className="h-4 w-4" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">
-                            <span className="text-muted-foreground">{activity.action}</span> {activity.item}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatRelativeTime(activity.timestamp)}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div className="text-center py-8">
-                    <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No recent activity found</p>
-                    <p className="text-sm text-muted-foreground mt-1">Start learning to see your progress here!</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+                    )}
+                </CardContent>
+                </Card>
+            </div>
 
-          <div className="space-y-6">
-            <StudySessionsWidget />
-          </div>
-        </div>
+            <div className="space-y-6">
+                <StudySessionsWidget />
+            </div>
+            </div>
+        )}
 
         {/* Why Coder Pod Stands Out - Modern Design */}
         <div className="relative overflow-hidden bg-gradient-to-br from-card/50 via-card/30 to-primary/5 backdrop-blur-sm p-12 rounded-3xl border border-border/50">

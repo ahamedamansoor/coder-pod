@@ -106,13 +106,17 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
   
   const TopicItem = ({ topic }: { topic: Topic }) => {
     const isCompleted = isUserAuthenticated && completedTopics.has(topic.slug);
+    const LinkWrapper = isUserAuthenticated ? Link : 'div';
+    
     const itemContent = (
-      <div onClick={() => toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
+      <div onClick={() => isUserAuthenticated && toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
         <div className="flex items-start gap-3">
           <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <Link href={`/${language.slug}/${topic.slug}`} className="hover:underline"><h3 className="text-lg font-semibold text-foreground">{topic.title}</h3></Link>
+              <LinkWrapper href={isUserAuthenticated ? `/${language.slug}/${topic.slug}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
+                <h3 className="text-lg font-semibold text-foreground">{topic.title}</h3>
+              </LinkWrapper>
             </div>
             <p className="text-muted-foreground text-sm">{topic.explanation}</p>
           </div>

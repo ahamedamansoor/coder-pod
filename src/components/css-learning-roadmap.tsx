@@ -129,13 +129,15 @@ export const CssLearningRoadmap = () => {
   
   const TopicItem = ({ topic }: { topic: { id: string; name: string; desc: string; } }) => {
     const isCompleted = isUserAuthenticated && completedTopics.has(topic.id);
+    const LinkWrapper = isUserAuthenticated ? Link : 'div';
+    
     const itemContent = (
-      <div onClick={() => toggleTopic(topic.id)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
+      <div onClick={() => isUserAuthenticated && toggleTopic(topic.id)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
         <div className="flex items-start gap-3">
           <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <Link href={`/css/${topic.id}`} className="hover:underline"><h3 className="text-lg font-semibold text-foreground">{topic.name}</h3></Link>
+              <LinkWrapper href={isUserAuthenticated ? `/css/${topic.id}`: '#'} className={cn(isUserAuthenticated && "hover:underline")}><h3 className="text-lg font-semibold text-foreground">{topic.name}</h3></LinkWrapper>
             </div>
             <p className="text-muted-foreground text-sm">{topic.desc}</p>
           </div>

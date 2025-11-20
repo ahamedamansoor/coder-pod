@@ -302,9 +302,13 @@ export const JavaLearningRoadmap = () => {
   
   const TopicItem = ({ topic }: { topic: (typeof modules)[0]['topics'][0] }) => {
     const isCompleted = isUserAuthenticated && completedTopics.has(topic.id);
+    
+    const Wrapper = isUserAuthenticated ? 'div' : TooltipTrigger;
+    const LinkWrapper = isUserAuthenticated ? Link : 'div';
+    
     const itemContent = (
       <div
-        onClick={() => toggleTopic(topic.id)}
+        onClick={() => isUserAuthenticated && toggleTopic(topic.id)}
         className={cn(
           "bg-background border rounded-lg p-4 transition-all duration-200",
           isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50",
@@ -322,9 +326,9 @@ export const JavaLearningRoadmap = () => {
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <Link href={`/java/${topic.id}`} className="hover:underline">
+              <LinkWrapper href={isUserAuthenticated ? `/java/${topic.id}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
                 <h3 className="text-lg font-semibold text-foreground">{topic.name}</h3>
-              </Link>
+              </LinkWrapper>
               <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getDifficultyColor(topic.difficulty)}`}>
                 {topic.difficulty}
               </span>
