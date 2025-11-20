@@ -6,7 +6,10 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow get, create, update, delete: if isOwner(userId);
+      // A user can get, update, or delete their own document.
+      // A user can create their own document.
+      allow get, update, delete: if isOwner(userId);
+      allow create: if request.auth.uid == userId;
       
       match /studySessions/{sessionId} {
         allow read, write: if isOwner(userId);
