@@ -38,8 +38,10 @@ import { Input } from './ui/input';
 import { Calendar } from './ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Clock, Loader2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useUser, useFirestore, addDocumentNonBlocking } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 
 const formSchema = z.object({
@@ -56,6 +58,9 @@ export function ScheduleStudyModal({ children }: { children: React.ReactNode }) 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useUser();
+  const firestore = useFirestore();
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,18 +70,45 @@ export function ScheduleStudyModal({ children }: { children: React.ReactNode }) 
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!user || !firestore) {
+        toast({ variant: 'destructive', title: 'Error', description: 'You must be logged in to schedule a session.' });
+        return;
+    }
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
     
-    toast({
-      title: 'Session Scheduled! ✅',
-      description: `Your study session for "${values.topic}" is booked.`,
-    });
+    try {
+        const [hours, minutes] = values.time.split(':').map(Number);
+        const sessionDateTime = new Date(values.date);
+        sessionDateTime.setHours(hours, minutes);
 
-    setIsLoading(false);
-    setIsOpen(false);
-    form.reset();
+        const sessionData = {
+            topic: values.topic,
+            dateTime: sessionDateTime,
+            duration: parseInt(values.duration, 10),
+            userId: user.uid,
+        };
+        
+        const sessionsCollectionRef = collection(firestore, `users/${user.uid}/studySessions`);
+        await addDocumentNonBlocking(sessionsCollectionRef, sessionData);
+
+        toast({
+            title: 'Session Scheduled! ✅',
+            description: `Your study session for "${values.topic}" is booked.`,
+        });
+
+        setIsOpen(false);
+        form.reset();
+
+    } catch (error) {
+        console.error("Error scheduling session: ", error);
+        toast({
+            variant: 'destructive',
+            title: 'Scheduling Failed',
+            description: 'Could not save your session. Please try again.',
+        });
+    } finally {
+        setIsLoading(false);
+    }
   }
 
   return (
@@ -134,7 +166,7 @@ export function ScheduleStudyModal({ children }: { children: React.ReactNode }) 
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
-                                disabled={(date) => date < new Date()}
+                                disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
                                 initialFocus
                                 />
                             </PopoverContent>

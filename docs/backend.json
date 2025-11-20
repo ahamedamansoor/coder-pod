@@ -1,4 +1,3 @@
-
 {
   "entities": {
     "User": {
@@ -70,6 +69,27 @@
         "id",
         "email"
       ]
+    },
+    "StudySession": {
+      "title": "Study Session",
+      "type": "object",
+      "description": "Represents a scheduled study session for a user.",
+      "properties": {
+        "topic": {
+          "type": "string",
+          "description": "The topic of the study session."
+        },
+        "dateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The scheduled date and time for the session."
+        },
+        "duration": {
+          "type": "number",
+          "description": "The duration of the session in minutes."
+        }
+      },
+      "required": ["topic", "dateTime", "duration"]
     }
   },
   "auth": {
@@ -94,6 +114,24 @@
             {
               "name": "userId",
               "description": "The unique identifier of the user, which should match the Firebase Auth UID."
+            }
+          ],
+          "collections": [
+            {
+              "path": "/studySessions/{sessionId}",
+              "definition": {
+                "entityName": "StudySession",
+                "schema": {
+                  "$ref": "#/backend/entities/StudySession"
+                },
+                "description": "Stores a user's scheduled study sessions.",
+                "params": [
+                  {
+                    "name": "sessionId",
+                    "description": "The unique identifier for the study session."
+                  }
+                ]
+              }
             }
           ]
         }

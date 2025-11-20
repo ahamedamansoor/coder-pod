@@ -10,6 +10,10 @@ service cloud.firestore {
       allow get, update, delete: if isOwner();
       allow list: if false; // Disallow listing all users
       allow create: if isOwner();
+
+      match /studySessions/{sessionId} {
+        allow read, write: if isOwner();
+      }
     }
   }
 }
