@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -337,12 +336,14 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
-              <ScheduleStudyModal>
-                  <Button variant="outline">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      Schedule
-                  </Button>
-              </ScheduleStudyModal>
+              {!isGuestUser && (
+                  <ScheduleStudyModal>
+                      <Button variant="outline">
+                          <Calendar className="mr-2 h-4 w-4" />
+                          Schedule
+                      </Button>
+                  </ScheduleStudyModal>
+              )}
               <LearnModal autoOpen={isNewUser} />
               <ThemeToggle />
               {user ? (
@@ -396,54 +397,6 @@ export default function AppLayout() {
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8 opacity-0 animate-fade-in-up" style={{animationDelay: '2s', animationFillMode: 'forwards'}}>
             Master new programming languages with interactive tools, AI assistance, and a structured learning path.
           </p>
-          
-          {/* Quick Stats Dashboard */}
-          {showStats && !isGuestUser && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8 animate-fade-in-up" style={{animationDelay: '2.5s', animationFillMode: 'forwards'}}>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/50 p-4 rounded-xl border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <BookOpen className="h-5 w-5 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Courses</span>
-                </div>
-                <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{animatedStats.coursesCompleted}</div>
-              </div>
-              <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/50 p-4 rounded-xl border border-green-200/50 dark:border-green-800/50 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-green-600" />
-                  <span className="text-sm font-medium text-green-700 dark:text-green-300">Hours</span>
-                </div>
-                <div className="text-2xl font-bold text-green-900 dark:text-green-100">{animatedStats.hoursLearned}</div>
-              </div>
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/50 dark:to-orange-900/50 p-4 rounded-xl border border-orange-200/50 dark:border-orange-800/50 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Activity className="h-5 w-5 text-orange-600" />
-                  <span className="text-sm font-medium text-orange-700 dark:text-orange-300">Streak</span>
-                </div>
-                <div className="text-2xl font-bold text-orange-900 dark:text-orange-100">{animatedStats.streak}</div>
-              </div>
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/50 dark:to-purple-900/50 p-4 rounded-xl border border-purple-200/50 dark:border-purple-800/50 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Trophy className="h-5 w-5 text-purple-600" />
-                  <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Awards</span>
-                </div>
-                <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">{animatedStats.achievements}</div>
-              </div>
-            </div>
-          )}
-
-          {/* Progress Section */}
-          {showStats && !isGuestUser && (
-            <div className="max-w-md mx-auto bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-2xl animate-fade-in-up" style={{animationDelay: '3s', animationFillMode: 'forwards'}}>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium">Progress to {userStats.nextMilestone}</span>
-                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                  {userStats.currentLevel}
-                </Badge>
-              </div>
-              <Progress value={userStats.progressToNext} className="h-2 mb-2" />
-              <p className="text-xs text-muted-foreground">{userStats.progressToNext}% complete</p>
-            </div>
-          )}
         </div>
 
         {/* Interactive Feature Cards with Glassmorphism */}
@@ -505,66 +458,6 @@ export default function AppLayout() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Learning Activity Feed & Sessions */}
-        {!isGuestUser && (
-            <div className="grid lg:grid-cols-3 gap-8 mb-16">
-            <div className="lg:col-span-2">
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-primary" />
-                    Recent Learning Activity
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {isLoadingActivities ? (
-                    Array.from({ length: 4 }).map((_, index) => (
-                        <div key={index} className="flex items-center gap-4 p-3 rounded-lg animate-pulse">
-                        <div className="w-8 h-8 bg-muted rounded-full"></div>
-                        <div className="flex-1 space-y-2">
-                            <div className="h-4 bg-muted rounded w-3/4"></div>
-                            <div className="h-3 bg-muted rounded w-1/2"></div>
-                        </div>
-                        </div>
-                    ))
-                    ) : recentActivities.length > 0 ? (
-                    recentActivities.map((activity) => {
-                        const IconComponent = getIconComponent(activity.icon || 'Activity');
-                        const activityColor = activity.color || getActivityColor(activity.type);
-                        
-                        return (
-                        <div key={activity.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200">
-                            <div className={`p-2 rounded-full bg-muted ${activityColor}`}>
-                            <IconComponent className="h-4 w-4" />
-                            </div>
-                            <div className="flex-1">
-                            <p className="text-sm font-medium">
-                                <span className="text-muted-foreground">{activity.action}</span> {activity.item}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                {formatRelativeTime(activity.timestamp)}
-                            </p>
-                            </div>
-                        </div>
-                        );
-                    })
-                    ) : (
-                    <div className="text-center py-8">
-                        <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                        <p className="text-muted-foreground">No recent activity found</p>
-                        <p className="text-sm text-muted-foreground mt-1">Start learning to see your progress here!</p>
-                    </div>
-                    )}
-                </CardContent>
-                </Card>
-            </div>
-
-            <div className="space-y-6">
-                <StudySessionsWidget />
-            </div>
-            </div>
-        )}
 
         {/* Why Coder Pod Stands Out - Modern Design */}
         <div className="relative overflow-hidden bg-gradient-to-br from-card/50 via-card/30 to-primary/5 backdrop-blur-sm p-12 rounded-3xl border border-border/50">
