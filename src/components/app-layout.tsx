@@ -336,14 +336,6 @@ export default function AppLayout() {
           <div className="flex items-center justify-between h-16">
             <Logo />
             <div className="flex items-center gap-4">
-              {!isGuestUser && (
-                  <ScheduleStudyModal>
-                      <Button variant="outline">
-                          <Calendar className="mr-2 h-4 w-4" />
-                          Schedule
-                      </Button>
-                  </ScheduleStudyModal>
-              )}
               <LearnModal autoOpen={isNewUser} />
               <ThemeToggle />
               {user ? (
