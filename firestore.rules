@@ -21,7 +21,7 @@ service cloud.firestore {
       }
 
       // Add this rule to allow the owner to LIST their own sessions.
-      match /studySessions {
+      match /studySessions/{sessionId} {
           allow list: if isOwner(userId);
       }
     }

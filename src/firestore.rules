@@ -2,14 +2,28 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // The isOwner function is now defined at a higher level
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
     match /users/{userId} {
-      function isOwner() {
-        return request.auth != null && request.auth.uid == userId;
+      // Pass the userId from the path into the global function
+      allow get, update, delete: if isOwner(userId);
+      allow list: if false; // Disallow listing all users for security
+      allow create: if isOwner(userId);
+
+      // Rules for the subcollection of study sessions
+      match /studySessions/{sessionId} {
+        // Allow a user to read and write their own individual sessions.
+        allow read, write: if isOwner(userId);
       }
 
-      allow get, update, delete: if isOwner();
-      allow list: if false; // Disallow listing all users
-      allow create: if isOwner();
+      // Add this rule to allow the owner to LIST their own sessions.
+      match /studySessions/{sessionId} {
+          allow list: if isOwner(userId);
+      }
     }
   }
 }
