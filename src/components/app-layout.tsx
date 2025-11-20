@@ -401,60 +401,48 @@ export default function AppLayout() {
 
         {/* Interactive Feature Cards with Glassmorphism */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:bg-card/70 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+          <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="flex-row items-center gap-4 relative z-10">
-              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 text-blue-600 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300 group-hover:rotate-6">
+              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 text-blue-600 p-3 rounded-xl transition-transform duration-300">
                 <Zap className="w-6 h-6" />
               </div>
-              <CardTitle className="group-hover:text-blue-600 transition-colors duration-300">AI-Powered Explanations</CardTitle>
+              <CardTitle className="transition-colors duration-300">AI-Powered Explanations</CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-muted-foreground mb-4">
                 Whether you're a student learning new concepts or a professional needing a quick refresher, our AI simplifies complex topics into easy-to-understand explanations at a glance.
               </p>
-              <div className="flex items-center text-blue-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span>Explore AI Features</span>
-                <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-              </div>
             </CardContent>
           </Card>
 
-          <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:bg-card/70 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+          <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="flex-row items-center gap-4 relative z-10">
-              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-600 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300 group-hover:rotate-6">
+              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-600 p-3 rounded-xl transition-transform duration-300">
                 <Code className="w-6 h-6" />
               </div>
-              <CardTitle className="group-hover:text-green-600 transition-colors duration-300">Interactive Coding Platform</CardTitle>
+              <CardTitle className="transition-colors duration-300">Interactive Coding Platform</CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-muted-foreground mb-4">
                 Test your knowledge directly in the browser with our integrated code editor. Run code snippets and see the output immediately.
               </p>
-              <div className="flex items-center text-green-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span>Start Coding</span>
-                <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-              </div>
             </CardContent>
           </Card>
 
-          <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:bg-card/70 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+          <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="flex-row items-center gap-4 relative z-10">
-              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 text-purple-600 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300 group-hover:rotate-6">
+              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 text-purple-600 p-3 rounded-xl transition-transform duration-300">
                 <Bot className="w-6 h-6" />
               </div>
-              <CardTitle className="group-hover:text-purple-600 transition-colors duration-300">Personalized Learning</CardTitle>
+              <CardTitle className="transition-colors duration-300">Personalized Learning</CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-muted-foreground mb-4">
                 Follow a structured learning path, track your progress, and get personalized feedback to accelerate your learning journey.
               </p>
-              <div className="flex items-center text-purple-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span>View Learning Path</span>
-                <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-              </div>
             </CardContent>
           </Card>
         </div>
