@@ -12,7 +12,8 @@ service cloud.firestore {
       allow create: if isOwner();
 
       match /studySessions/{sessionId} {
-        allow read, write, create, update, delete: if isOwner();
+        // This rule allows a user to read and write their own sessions.
+        allow read, write: if isOwner();
       }
     }
   }
