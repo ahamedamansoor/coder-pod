@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -91,7 +92,7 @@ export function GenericContentDisplay({
     }
   };
   
-  const isLearningPlanTopic = topic.slug === 'learning-plan';
+  const isLearningPlanTopic = topic.slug === 'learning-plan' || topic.slug === 'interview-questions' || topic.slug === 'react-version-updates';
 
   const markAsCompleteButton = (
      <div className="flex items-center space-x-2 shrink-0 bg-muted p-3 rounded-lg border">
@@ -115,6 +116,31 @@ export function GenericContentDisplay({
 
   return (
     <div className="space-y-8">
+       <header className="space-y-2 flex justify-between items-start">
+         <div>
+            <h1 className="font-headline text-4xl font-bold tracking-tight">
+              {topic.title}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              A deep dive into {topic.title} in {language.name}.
+            </p>
+         </div>
+         {!isLearningPlanTopic && (
+            <TooltipProvider>
+              {isUserAuthenticated ? (
+                markAsCompleteButton
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild><div className="ml-4">{markAsCompleteButton}</div></TooltipTrigger>
+                  <TooltipContent>
+                    <p>Sign in to track your progress.</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </TooltipProvider>
+         )}
+        </header>
+
       {children ? (
         children
       ) : (

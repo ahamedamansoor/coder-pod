@@ -56,15 +56,6 @@ export function ReactContentDisplay({
   
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
-  const fullPageTopics = ['react-version-updates', 'interview-questions'];
-  if (fullPageTopics.includes(topic.slug) && CustomTopicComponent) {
-    return (
-      <Suspense fallback={<LoadingSkeleton />}>
-        <CustomTopicComponent onOpenEditor={openWithContent} />
-      </Suspense>
-    );
-  }
-
   return (
     <GenericContentDisplay
       topic={topic}

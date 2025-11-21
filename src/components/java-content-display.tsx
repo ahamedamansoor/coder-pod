@@ -23,7 +23,7 @@ import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { useJava } from '@/app/java/java-context';
 import { useUser } from '@/firebase';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
 import { AiSimplification } from './ai-simplification';
@@ -274,7 +274,7 @@ export function JavaContentDisplay({
   };
 
   const markAsCompleteButton = (
-    <div className="flex items-center space-x-2 shrink-0 ml-4 bg-muted p-3 rounded-lg border">
+    <div className="flex items-center space-x-2 shrink-0 bg-muted p-3 rounded-lg border">
       <Checkbox
         id={`complete-${topic.slug}`}
         checked={completedTopics.has(topic.slug)}
@@ -322,14 +322,12 @@ export function JavaContentDisplay({
          {!isLearningPlanTopic && (
             <TooltipProvider>
               {isUserAuthenticated ? (
-                markAsCompleteButton
+                <div className="ml-4">{markAsCompleteButton}</div>
               ) : (
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    {markAsCompleteButton}
-                  </TooltipTrigger>
+                  <TooltipTrigger asChild><div className="ml-4">{markAsCompleteButton}</div></TooltipTrigger>
                   <TooltipContent>
-                    <p>You must be logged in to save your progress.</p>
+                    <p>Sign in to track your progress.</p>
                   </TooltipContent>
                 </Tooltip>
               )}
