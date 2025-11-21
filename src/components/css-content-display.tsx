@@ -8,7 +8,6 @@ import { Skeleton } from './ui/skeleton';
 import { useWebPlayground } from './web-playground-context';
 
 const TopicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
-  'learning-plan': React.lazy(() => import('./css-topics/learning-plan')),
   'introduction-to-css': React.lazy(() => import('./css-topics/introduction-to-css')),
   'css-syntax-and-selectors': React.lazy(() => import('./css-topics/css-syntax-and-selectors')),
   'css-colors': React.lazy(() => import('./css-topics/css-colors')),
