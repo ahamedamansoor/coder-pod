@@ -47,7 +47,7 @@ function LoadingSkeleton() {
 
 export function ReactContentDisplay({ 
   topic, 
-  language, 
+  language,
 }: { 
   topic: Topic, 
   language: Language, 

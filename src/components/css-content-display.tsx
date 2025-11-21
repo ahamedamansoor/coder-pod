@@ -41,7 +41,6 @@ function LoadingSkeleton() {
 export function CssContentDisplay({ 
   topic, 
   language, 
-  onOpenEditor,
 }: { 
   topic: Topic, 
   language: Language, 
@@ -54,7 +53,7 @@ export function CssContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-      onOpenEditor={onOpenEditor}
+      onOpenEditor={openWithContent}
     >
       <React.Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (

@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -6,13 +7,26 @@ import React, { lazy, Suspense } from 'react';
 import { Skeleton } from './ui/skeleton';
 
 // Lazy load all the topic components
-const SpringCoreOverview = lazy(() => import('./spring-topics/spring-core-overview'));
-const IocAndDependencyInjection = lazy(() => import('./spring-topics/ioc-and-dependency-injection'));
+const SpringModulesOverview = lazy(() => import('./spring-topics/spring-modules-overview'));
+const IocContainerAndBeans = lazy(() => import('./spring-topics/ioc-container-and-beans'));
+const DependencyInjectionOverview = lazy(() => import('./spring-topics/dependency-injection-overview'));
+const ConstructorInjection = lazy(() => import('./spring-topics/constructor-injection'));
+const SetterInjection = lazy(() => import('./spring-topics/setter-injection'));
+const InjectingCollections = lazy(() => import('./spring-topics/injecting-collections'));
+const BeanScopes = lazy(() => import('./spring-topics/bean-scopes'));
+const BeanLifecycleAndInheritance = lazy(() => import('./spring-topics/bean-lifecycle-and-inheritance'));
+
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
-  'spring-core-overview': SpringCoreOverview,
-  'ioc-and-dependency-injection': IocAndDependencyInjection,
+  'spring-modules-overview': SpringModulesOverview,
+  'ioc-container-and-beans': IocContainerAndBeans,
+  'dependency-injection-overview': DependencyInjectionOverview,
+  'constructor-injection': ConstructorInjection,
+  'setter-injection': SetterInjection,
+  'injecting-collections': InjectingCollections,
+  'bean-scopes': BeanScopes,
+  'bean-lifecycle-and-inheritance': BeanLifecycleAndInheritance,
 };
 
 function LoadingSkeleton() {
