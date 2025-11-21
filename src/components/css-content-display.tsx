@@ -25,6 +25,10 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'css-variables': React.lazy(() => import('./css-topics/css-variables')),
   'css-responsive-design': React.lazy(() => import('./css-topics/css-responsive-design')),
   'css-combinators': React.lazy(() => import('./css-topics/css-combinators')),
+  'css-text-effects': React.lazy(() => import('./css-topics/css-text-effects')),
+  'css-display': React.lazy(() => import('./css-topics/css-display')),
+  'css-float-clear': React.lazy(() => import('./css-topics/css-float-clear')),
+  'css-attribute-selectors': React.lazy(() => import('./css-topics/css-attribute-selectors')),
 };
 
 function LoadingSkeleton() {
