@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
 import { Terminal, Loader2, AlertTriangle, Play, PanelTop, X } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
-import { transpileReactCode } from '@/ai/flows/transpile-react-code';
+import { transpileReactCode } from '@/utils/babel-transpiler';
 import { Button } from './ui/button';
 import { DialogHeader, DialogTitle, DialogClose } from './ui/dialog';
 
@@ -33,17 +33,99 @@ const htmlTemplate = (code: string) => `
   <html>
     <head>
       <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8f9fa; color: #333; }
-        .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-        h1 { color: #007bff; }
-        button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+        body { 
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; 
+          margin: 0; 
+          padding: 20px; 
+          background-color: #f8f9fa; 
+          color: #333; 
+          line-height: 1.6;
+        }
+        .card { 
+          background: white; 
+          padding: 2rem; 
+          border-radius: 12px; 
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+          text-align: center; 
+          max-width: 600px;
+          margin: 0 auto;
+        }
+        h1 { color: #007bff; margin-top: 0; }
+        h2 { color: #333; }
+        button { 
+          background: #007bff; 
+          color: white; 
+          border: none; 
+          padding: 12px 20px; 
+          border-radius: 6px; 
+          cursor: pointer; 
+          font-size: 14px;
+          font-weight: 500;
+          transition: background-color 0.2s;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        .error { 
+          background: #f8d7da; 
+          color: #721c24; 
+          padding: 1rem; 
+          border-radius: 6px; 
+          margin: 1rem 0;
+          border: 1px solid #f5c6cb;
+        }
+        input, textarea { 
+          padding: 8px 12px; 
+          border: 1px solid #ddd; 
+          border-radius: 4px; 
+          font-size: 14px;
+        }
+        input:focus, textarea:focus { 
+          outline: none; 
+          border-color: #007bff; 
+          box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
       </style>
       <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin><\/script>
       <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin><\/script>
+      <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>
     </head>
     <body>
       <div id="root"></div>
-      <script>${code}<\/script>
+      <script>
+        // Error handling for the playground
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error';
+          errorDiv.innerHTML = '<strong>Runtime Error:</strong><br>' + msg;
+          document.body.appendChild(errorDiv);
+          return false;
+        };
+        
+        // Execute the transpiled code
+        try {
+          // If the code looks like it contains JSX and Babel is available, transpile it
+          const codeToExecute = \`${code}\`;
+          
+          if (window.Babel && (codeToExecute.includes('<') || codeToExecute.includes('JSX'))) {
+            try {
+              const transpiled = window.Babel.transform(codeToExecute, {
+                presets: ['react']
+              });
+              eval(transpiled.code);
+            } catch (babelError) {
+              console.warn('Babel transpilation failed, trying direct execution:', babelError);
+              eval(codeToExecute);
+            }
+          } else {
+            eval(codeToExecute);
+          }
+        } catch (error) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error';
+          errorDiv.innerHTML = '<strong>Execution Error:</strong><br>' + error.message;
+          document.body.appendChild(errorDiv);
+        }
+      <\/script>
     </body>
   </html>
 `;
@@ -59,14 +141,14 @@ export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
     setOutput({ code: '', err: '' });
 
     try {
-      const result = await transpileReactCode({ code: newCode });
+      const result = await transpileReactCode(newCode);
       if (result.success && result.transpiledCode) {
         setOutput({ code: result.transpiledCode, err: '' });
       } else {
         setOutput({ code: '', err: result.error || 'Unknown compilation error' });
       }
     } catch (e: any) {
-      setOutput({ code: '', err: e.message || 'Failed to communicate with the transpiler service.' });
+      setOutput({ code: '', err: e.message || 'Failed to transpile code.' });
     } finally {
       setIsBuilding(false);
     }

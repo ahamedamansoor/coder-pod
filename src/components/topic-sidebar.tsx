@@ -205,11 +205,16 @@ export function TopicSidebar({
         }
     } else if (language.slug === 'css') {
       const cssGroups: Record<string, string[]> = {
-            "CSS Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-colors', 'css-box-model', 'css-typography', 'css-combinators'],
-            "Layout": ['css-positioning', 'css-flexbox', 'css-grid'],
-            "Advanced Styling": ['css-pseudo-classes', 'css-pseudo-elements', 'css-variables'],
-            "Animation & Interactivity": ['css-transitions', 'css-animations'],
-            "Responsive Design": ['css-responsive-design'],
+            "Getting Started": ['learning-plan'],
+            "Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-specificity', 'css-units'],
+            "Styling Basics": ['css-colors', 'css-typography', 'css-text-effects'],
+            "Box Model & Layout": ['css-box-model', 'css-display', 'css-positioning', 'css-float-clear'],
+            "Advanced Selectors": ['css-combinators', 'css-attribute-selectors', 'css-pseudo-classes', 'css-pseudo-elements'],
+            "Modern Layout": ['css-flexbox', 'css-grid', 'css-layout-patterns'],
+            "Responsive Design": ['css-responsive-design', 'css-media-queries', 'css-container-queries'],
+            "Animations & Effects": ['css-transitions', 'css-animations', 'css-transforms'],
+            "Advanced CSS": ['css-variables', 'css-functions', 'css-logical-properties', 'css-modern-features'],
+            "Professional CSS": ['css-performance', 'css-architecture', 'css-debugging', 'css-best-practices'],
         };
         for (const groupName in cssGroups) {
             if (cssGroups[groupName].includes(topic.slug)) {
@@ -263,7 +268,7 @@ export function TopicSidebar({
     : language.slug === 'html'
     ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Others"]
     : language.slug === 'css'
-    ? ["CSS Fundamentals", "Layout", "Advanced Styling", "Animation & Interactivity", "Responsive Design", "Others"]
+    ? ["Getting Started", "Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Advanced CSS", "Professional CSS", "Others"]
     : language.slug === 'scss'
     ? ['Sass/SCSS Basics']
     : [];

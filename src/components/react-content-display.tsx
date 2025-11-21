@@ -10,6 +10,10 @@ import { useReactPlayground } from './react-playground-context';
 const WhatIsReact = lazy(() => import('./react-topics/what-is-react'));
 const InstallationAndSetup = lazy(() => import('./react-topics/installation-and-setup'));
 const YourFirstComponent = lazy(() => import('./react-topics/your-first-component'));
+const WritingJSX = lazy(() => import('./react-topics/writing-jsx'));
+const JavaScriptInJSX = lazy(() => import('./react-topics/javascript-in-jsx'));
+const ComponentsAndProps = lazy(() => import('./react-topics/components-and-props'));
+const RenderingLists = lazy(() => import('./react-topics/rendering-lists'));
 const ReactInterviewQuestions = lazy(() => import('./react-topics/react-interview-questions'));
 const ReactVersionUpdates = lazy(() => import('./react-topics/react-version-updates'));
 
@@ -19,6 +23,10 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'what-is-react': WhatIsReact,
   'installation-and-setup': InstallationAndSetup,
   'your-first-component': YourFirstComponent,
+  'writing-jsx': WritingJSX,
+  'javascript-in-jsx': JavaScriptInJSX,
+  'components-and-props': ComponentsAndProps,
+  'rendering-lists': RenderingLists,
   'interview-questions': ReactInterviewQuestions,
   'react-version-updates': ReactVersionUpdates,
 };

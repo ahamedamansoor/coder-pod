@@ -223,24 +223,36 @@ const ReactVersionPage = () => {
   const allTags = [...new Set(versions.flatMap(v => v.features.flatMap(f => f.tags)))].sort();
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="relative overflow-hidden border-b px-6 py-20">
-        <div className="text-center space-y-6">
-            <Badge variant="outline" className="text-sm">
-              <Sparkles className="w-4 h-4 mr-2 text-primary" />
-              React Evolution
-            </Badge>
-
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground">
-              React Version History
-            </h1>
-
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              A deep dive into React's major releases and the architectural innovations that shaped modern web development.
-            </p>
-          </div>
+    <div className="space-y-8">
+      {/* Page Title */}
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <History className="w-10 h-10 text-primary" />
+          <h1 className="text-4xl font-bold text-foreground">React Version Updates</h1>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+          Information about the latest React versions and their new features.
+        </p>
       </div>
+
+      <div className="min-h-screen bg-background">
+        {/* Header */}
+        <div className="relative overflow-hidden border-b px-6 py-20">
+          <div className="text-center space-y-6">
+              <Badge variant="outline" className="text-sm">
+                <Sparkles className="w-4 h-4 mr-2 text-primary" />
+                React Evolution
+              </Badge>
+
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                React Version History
+              </h2>
+
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                A deep dive into React's major releases and the architectural innovations that shaped modern web development.
+              </p>
+            </div>
+        </div>
 
       {/* Search & Filter */}
       <div className="sticky top-0 z-20 space-y-6 border-b bg-background/80 p-6 backdrop-blur-sm">
@@ -350,6 +362,7 @@ const ReactVersionPage = () => {
             Explore the journey and see how each version shaped modern web development 🚀
           </p>
         </div>
+      </div>
       </div>
     </div>
   );
