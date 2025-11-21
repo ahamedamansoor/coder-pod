@@ -10,10 +10,11 @@ import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger }
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { ModuleCompletionCelebration } from './module-completion-celebration';
+import { css } from '@/app/data/css'; // Import the data directly
 
 export const CssLearningRoadmap = () => {
   const { completedTopics, handleToggleComplete, isProgressLoading } = useCss();
-  const [expandedModule, setExpandedModule] = useState<string | null>("CSS Fundamentals");
+  const [expandedModule, setExpandedModule] = useState<string | null>("Fundamentals");
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
@@ -26,63 +27,25 @@ export const CssLearningRoadmap = () => {
     }
   }, [user, isUserLoading, router]);
 
-  const modules = [
-    {
-      id: "CSS Fundamentals",
-      title: "CSS Fundamentals",
-      level: "Foundation",
-      icon: "🎨",
-      topics: [
-        { id: "introduction-to-css", name: "CSS Introduction", desc: "What is CSS and how it styles HTML." },
-        { id: "css-syntax-and-selectors", name: "Syntax & Selectors", desc: "How to write CSS rules and target HTML elements." },
-        { id: "css-combinators", name: "Combinators", desc: "Using combinators to create more specific and powerful selectors."},
-        { id: "css-colors", name: "Colors", desc: "Applying colors to text, backgrounds, and borders." },
-        { id: "css-box-model", name: "The Box Model", desc: "Understanding margin, border, padding, and content." },
-        { id: "css-typography", name: "Typography", desc: "Styling text, fonts, and more." },
-      ]
-    },
-    {
-      id: "Layout",
-      title: "Layout",
-      level: "Core Concepts",
-      icon: "🖼️",
-      topics: [
-        { id: "css-positioning", name: "Positioning", desc: "Controlling element layout with static, relative, absolute, etc." },
-        { id: "css-flexbox", name: "Flexbox", desc: "A modern layout model for one-dimensional layouts." },
-        { id: "css-grid", name: "Grid", desc: "A powerful layout model for two-dimensional layouts." },
-      ]
-    },
-    {
-      id: "Advanced Styling",
-      title: "Advanced Styling",
-      level: "Advanced",
-      icon: "✨",
-      topics: [
-        { id: "css-pseudo-classes", name: "Pseudo-classes", desc: "Styling elements based on their state, like :hover." },
-        { id: "css-pseudo-elements", name: "Pseudo-elements", desc: "Styling specific parts of an element, like ::before." },
-        { id: "css-variables", name: "Variables", desc: "Creating reusable values in your stylesheets." },
-      ]
-    },
-    {
-      id: "Animation & Interactivity",
-      title: "Animation & Interactivity",
-      level: "Advanced",
-      icon: "🚀",
-      topics: [
-        { id: "css-transitions", name: "Transitions", desc: "Creating smooth animations between states." },
-        { id: "css-animations", name: "Animations", desc: "Creating complex, multi-step animations with keyframes." },
-      ]
-    },
-    {
-      id: "Responsive Design",
-      title: "Responsive Design",
-      level: "Expert",
-      icon: "📱",
-      topics: [
-        { id: "css-responsive-design", name: "Responsive Design", desc: "Making websites look good on all devices using media queries." },
-      ]
-    }
-  ];
+  const cssGroups: Record<string, string[]> = {
+    "Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-specificity', 'css-units'],
+    "Styling Basics": ['css-colors', 'css-typography', 'css-text-effects'],
+    "Box Model & Layout": ['css-box-model', 'css-display', 'css-positioning', 'css-float-clear'],
+    "Advanced Selectors": ['css-combinators', 'css-attribute-selectors', 'css-pseudo-classes', 'css-pseudo-elements'],
+    "Modern Layout": ['css-flexbox', 'css-grid', 'css-layout-patterns'],
+    "Responsive Design": ['css-responsive-design', 'css-media-queries', 'css-container-queries'],
+    "Animations & Effects": ['css-transitions', 'css-animations', 'css-transforms'],
+    "Advanced CSS": ['css-variables', 'css-functions', 'css-logical-properties', 'css-modern-features'],
+    "Professional CSS": ['css-performance', 'css-architecture', 'css-debugging', 'css-best-practices'],
+  };
+
+  const modules = Object.entries(cssGroups).map(([groupName, topicSlugs]) => ({
+    id: groupName,
+    title: groupName,
+    level: "Core",
+    icon: "🎨",
+    topics: css.topics.filter(topic => topicSlugs.includes(topic.slug)),
+  }));
 
   const allTopics = modules.flatMap(m => m.topics);
 
@@ -90,12 +53,12 @@ export const CssLearningRoadmap = () => {
     if (!isUserAuthenticated) return;
     handleToggleComplete(topicId);
 
-    const topicModule = modules.find(m => m.topics.some(t => t.id === topicId));
+    const topicModule = modules.find(m => m.topics.some(t => t.slug === topicId));
     if (!topicModule) return;
     
     const isCompleting = !completedTopics.has(topicId);
     if (isCompleting) {
-        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.id) || t.id === topicId);
+        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.slug) || t.slug === topicId);
         if (allTopicsInModuleCompleted) {
           setCompletedModule(topicModule.title);
           const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
@@ -127,19 +90,19 @@ export const CssLearningRoadmap = () => {
   const completedCount = isUserAuthenticated ? completedTopics.size : 0;
   const totalTopicCount = allTopics.length;
   
-  const TopicItem = ({ topic }: { topic: { id: string; name: string; desc: string; } }) => {
-    const isCompleted = isUserAuthenticated && completedTopics.has(topic.id);
+  const TopicItem = ({ topic }: { topic: { slug: string; title: string; explanation: string; } }) => {
+    const isCompleted = isUserAuthenticated && completedTopics.has(topic.slug);
     const LinkWrapper = isUserAuthenticated ? Link : 'div';
     
     const itemContent = (
-      <div onClick={() => isUserAuthenticated && toggleTopic(topic.id)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
+      <div onClick={() => isUserAuthenticated && toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
         <div className="flex items-start gap-3">
           <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <LinkWrapper href={isUserAuthenticated ? `/css/${topic.id}`: '#'} className={cn(isUserAuthenticated && "hover:underline")}><h3 className="text-lg font-semibold text-foreground">{topic.name}</h3></LinkWrapper>
+              <LinkWrapper href={isUserAuthenticated ? `/css/${topic.slug}`: '#'} className={cn(isUserAuthenticated && "hover:underline")}><h3 className="text-lg font-semibold text-foreground">{topic.title}</h3></LinkWrapper>
             </div>
-            <p className="text-muted-foreground text-sm">{topic.desc}</p>
+            <p className="text-muted-foreground text-sm">{topic.explanation}</p>
           </div>
         </div>
       </div>
@@ -182,7 +145,7 @@ export const CssLearningRoadmap = () => {
                 </div>
                 {expandedModule === module.id ? <ChevronDown className="w-6 h-6 text-muted-foreground" /> : <ChevronRight className="w-6 h-6 text-muted-foreground" />}
               </div>
-              {expandedModule === module.id && (<div className="p-6 space-y-3 bg-muted/50">{module.topics.map((topic) => (<TopicItem key={topic.id} topic={topic} />))}</div>)}
+              {expandedModule === module.id && (<div className="p-6 space-y-3 bg-muted/50">{module.topics.map((topic) => (<TopicItem key={topic.slug} topic={topic} />))}</div>)}
             </div>
           ))}
         </div>

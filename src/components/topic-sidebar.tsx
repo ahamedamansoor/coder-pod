@@ -205,7 +205,6 @@ export function TopicSidebar({
         }
     } else if (language.slug === 'css') {
       const cssGroups: Record<string, string[]> = {
-            "Getting Started": ['learning-plan'],
             "Fundamentals": ['introduction-to-css', 'css-syntax-and-selectors', 'css-specificity', 'css-units'],
             "Styling Basics": ['css-colors', 'css-typography', 'css-text-effects'],
             "Box Model & Layout": ['css-box-model', 'css-display', 'css-positioning', 'css-float-clear'],
@@ -268,7 +267,7 @@ export function TopicSidebar({
     : language.slug === 'html'
     ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Others"]
     : language.slug === 'css'
-    ? ["Getting Started", "Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Advanced CSS", "Professional CSS", "Others"]
+    ? ["Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Advanced CSS", "Professional CSS"]
     : language.slug === 'scss'
     ? ['Sass/SCSS Basics']
     : [];

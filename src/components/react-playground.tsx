@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
@@ -5,7 +6,7 @@ import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
 import { Terminal, Loader2, AlertTriangle, Play, PanelTop, X } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
-import { transpileReactCode } from '@/utils/babel-transpiler';
+import { transpileReactCode } from '@/ai/flows/transpile-react-code';
 import { Button } from './ui/button';
 import { DialogHeader, DialogTitle, DialogClose } from './ui/dialog';
 
@@ -141,7 +142,7 @@ export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
     setOutput({ code: '', err: '' });
 
     try {
-      const result = await transpileReactCode(newCode);
+      const result = await transpileReactCode({ code: newCode });
       if (result.success && result.transpiledCode) {
         setOutput({ code: result.transpiledCode, err: '' });
       } else {
