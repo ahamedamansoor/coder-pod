@@ -984,17 +984,17 @@ document.addEventListener('DOMContentLoaded', function() {
             </Card>
 
             {/* Interactive Playground */}
-            <Card className="border-primary bg-primary/5">
+            <Card className="border-pink-200 bg-pink-50/50 dark:bg-pink-950/20">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-pink-700 dark:text-pink-300">
                         <Play className="w-5 h-5" />
-                        Interactive Positioning Playground
+                        Interactive Playground
                     </CardTitle>
                     <CardDescription>
                         Explore comprehensive positioning examples including position comparisons, interactive controls, z-index stacking, and common patterns with live demonstrations.
                     </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-6 md:p-8">
                     <div className="flex flex-wrap gap-3">
                         <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
                             <Play className="mr-2 h-4 w-4" />

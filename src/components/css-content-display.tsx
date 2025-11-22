@@ -32,6 +32,15 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'css-layout-patterns': React.lazy(() => import('./css-topics/css-layout-patterns')),
   'css-media-queries': React.lazy(() => import('./css-topics/css-media-queries')),
   'css-container-queries': React.lazy(() => import('./css-topics/css-container-queries')),
+  'css-transforms': React.lazy(() => import('./css-topics/css-transforms')),
+  'css-functions': React.lazy(() => import('./css-topics/css-functions')),
+  'css-logical-properties': React.lazy(() => import('./css-topics/css-logical-properties')),
+  'css-modern-features': React.lazy(() => import('./css-topics/css-modern-features')),
+  'css-performance': React.lazy(() => import('./css-topics/css-performance')),
+  'css-architecture': React.lazy(() => import('./css-topics/css-architecture')),
+  'css-debugging': React.lazy(() => import('./css-topics/css-debugging')),
+  'css-best-practices': React.lazy(() => import('./css-topics/css-best-practices')),
+  'sass-scss-introduction': React.lazy(() => import('./css-topics/sass-scss-introduction')),
 };
 
 function LoadingSkeleton() {
