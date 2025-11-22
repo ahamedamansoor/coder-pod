@@ -29,6 +29,9 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'css-display': React.lazy(() => import('./css-topics/css-display')),
   'css-float-clear': React.lazy(() => import('./css-topics/css-float-clear')),
   'css-attribute-selectors': React.lazy(() => import('./css-topics/css-attribute-selectors')),
+  'css-layout-patterns': React.lazy(() => import('./css-topics/css-layout-patterns')),
+  'css-media-queries': React.lazy(() => import('./css-topics/css-media-queries')),
+  'css-container-queries': React.lazy(() => import('./css-topics/css-container-queries')),
 };
 
 function LoadingSkeleton() {
