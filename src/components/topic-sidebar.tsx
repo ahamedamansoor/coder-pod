@@ -222,7 +222,22 @@ export function TopicSidebar({
             }
         }
     } else if (language.slug === 'scss') {
-        group = 'Sass/SCSS Basics';
+        const scssGroups: Record<string, string[]> = {
+            "1. Fundamentals": ['what-is-sass', 'sass-installation', 'sass-comments', 'sass-variables'],
+            "2. Nesting & Selectors": ['sass-nesting', 'sass-parent-selector'],
+            "3. File Organization": ['sass-import', 'sass-modules'],
+            "4. Reusability": ['sass-mixin', 'sass-extend-inheritance', 'sass-placeholder', 'sass-functions'],
+            "5. Control & Logic": ['sass-operators', 'sass-interpolation', 'sass-control-directives'],
+            "6. Data Types & Functions": ['sass-string', 'sass-numeric', 'sass-list', 'sass-map', 'sass-color', 'sass-selector', 'sass-introspection'],
+            "7. Advanced Topics": ['sass-advanced-nesting', 'sass-custom-functions', 'sass-responsive-mixins', 'sass-debugging'],
+            "8. Professional Development": ['sass-architecture', 'sass-performance', 'sass-advanced-patterns'],
+        };
+        for (const groupName in scssGroups) {
+            if (scssGroups[groupName].includes(topic.slug)) {
+                group = groupName;
+                break;
+            }
+        }
     }
 
 
@@ -269,7 +284,7 @@ export function TopicSidebar({
     : language.slug === 'css'
     ? ["Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Advanced CSS", "Professional CSS"]
     : language.slug === 'scss'
-    ? ['Sass/SCSS Basics']
+    ? ["1. Fundamentals", "2. Nesting & Selectors", "3. File Organization", "4. Reusability", "5. Control & Logic", "6. Data Types & Functions", "7. Advanced Topics", "8. Professional Development"]
     : [];
 
   const renderTopicGroup = (title: string, topics: typeof language.topics) => (

@@ -4,7 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Zap, Code, ArrowRight, Layers, File, Book, Lightbulb } from 'lucide-react';
 import React from 'react';
 
-export default function WhatIsSass() {
+export default function WhatIsSass({ onOpenEditor, onOpenWebPlayground }: {
+  onOpenEditor?: (code: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+} = {}) {
 
     const cssCode = `.card {
   background: white;
