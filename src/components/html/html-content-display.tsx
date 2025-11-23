@@ -124,18 +124,16 @@ function LoadingSkeleton() {
 export function HtmlContentDisplay({ 
   topic, 
   language, 
-  onOpenEditorAction,
 }: {
   topic: Topic; 
   language: Language; 
-  onOpenEditorAction: (code: string) => void;
 }) {
   const { openWithContent } = useWebPlayground();
 
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
   return (
-    <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditorAction}>
+    <GenericContentDisplay topic={topic} language={language}>
       <Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (
           React.createElement(CustomTopicComponent as any, { onOpenWebPlayground: openWithContent })

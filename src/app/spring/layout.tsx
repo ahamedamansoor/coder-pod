@@ -48,7 +48,7 @@ function SpringTopicLayoutContent({ children }: { children: React.ReactNode }) {
             showCodeEditorButton={true}
             showWebPlaygroundButton={false}
           />
-          <main className="flex-1 flex overflow-hidden">
+          <main className="flex-1 flex overflow-y-auto">
             {children}
           </main>
         </div>

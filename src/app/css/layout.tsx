@@ -48,7 +48,7 @@ function CssTopicLayoutContent({ children }: { children: React.ReactNode }) {
             showCodeEditorButton={false}
             showWebPlaygroundButton={true}
           />
-          <main className="flex-1 flex overflow-hidden">
+          <main className="flex-1 flex overflow-y-auto">
             {children}
           </main>
         </div>

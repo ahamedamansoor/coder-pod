@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState, useCallback, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data/index';
 import { CodeEditorSheet } from '@/components/shared/playground/code-editor-sheet';
@@ -42,15 +41,10 @@ function TopicPageContent() {
   const selectedTopic: Topic | undefined = language.topics.find((t) => t.slug === topicSlug);
   if (!selectedTopic) notFound();
 
-  const handleOpenEditor = useCallback((code?: string) => {
-    setEditorInitialCode(code);
-    setIsEditorOpen(true);
-  }, [setIsEditorOpen]);
-  
-  const handleCloseEditor = useCallback(() => {
+  const handleCloseEditor = () => {
     setIsEditorOpen(false);
-  }, [setIsEditorOpen]);
-  
+  };
+
   const isLearningPlanTopic = selectedTopic.slug === 'learning-plan';
 
   return (
@@ -63,7 +57,6 @@ function TopicPageContent() {
             <ScssContentDisplay
               topic={selectedTopic}
               language={language}
-              onOpenEditor={handleOpenEditor}
             />
           )}
         </div>

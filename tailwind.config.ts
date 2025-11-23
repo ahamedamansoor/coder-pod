@@ -7,6 +7,17 @@ export default {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    // Dynamic active menu/background classes generated from primary token
+    {
+      pattern: /!(bg|border|text)-(blue|purple|pink|amber|cyan|red|green|emerald)-(100|300|700)/,
+      variants: ['dark']
+    },
+    {
+      pattern: /(bg|text|border)-(blue|purple|pink|amber|cyan|red|green|emerald)-(50|100|200|300|400|500|600|700)/,
+      variants: ['dark','hover']
+    }
+  ],
   theme: {
     extend: {
       fontFamily: {
