@@ -114,12 +114,12 @@ function ShoppingList() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-3"><CurlyBraces className="w-6 h-6 text-primary"/>The Magic of Curly Braces</CardTitle>
                     <CardDescription>
-                        Curly braces `{}` are your portal to JavaScript land while inside JSX. They let you "escape" back into JavaScript so you can embed variables, expressions, or function calls directly within your markup.
+                        Curly braces &#123;&#125; are your portal to JavaScript land while inside JSX. They let you &quot;escape&quot; back into JavaScript so you can embed variables, expressions, or function calls directly within your markup.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted p-6 rounded-lg text-center border">
-                        <p className="font-mono text-lg">`<p>Hello, {`{user.name}`}</p>`</p>
+                        <p className="font-mono text-lg">&lt;p&gt;Hello, &#123;user.name&#125;&lt;/p&gt;</p>
                         <p className="text-sm text-muted-foreground mt-2">The expression inside the curly braces will be evaluated, and the result will be rendered in the DOM.</p>
                     </div>
                 </CardContent>
@@ -142,14 +142,14 @@ function ShoppingList() {
                             <Sparkles className="w-5 h-5 text-green-600 mt-1"/>
                             <div>
                                 <h4 className="font-semibold text-green-700 dark:text-green-300">Passing Attributes</h4>
-                                <p className="text-sm text-muted-foreground">You can use curly braces for attributes too! Use strings for static values (`className="avatar"`) and curly braces for dynamic values (`src={user.imageUrl}`).</p>
+                                <p className="text-sm text-muted-foreground">You can use curly braces for attributes too! Use strings for static values (className=&quot;avatar&quot;) and curly braces for dynamic values (src=&#123;user.imageUrl&#125;).</p>
                             </div>
                         </div>
                          <div className="flex items-start gap-3 p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
                             <Paintbrush className="w-5 h-5 text-purple-600 mt-1"/>
                             <div>
                                 <h4 className="font-semibold text-purple-700 dark:text-purple-300">Inline CSS Styling</h4>
-                                <p className="text-sm text-muted-foreground">The `style` attribute takes a JavaScript object with camelCased CSS properties, e.g., `style={{backgroundColor: 'blue'}}`.</p>
+                                <p className="text-sm text-muted-foreground">The style attribute takes a JavaScript object with camelCased CSS properties, e.g., style=&#123;&#123;backgroundColor: &apos;blue&apos;&#125;&#125;.</p>
                             </div>
                         </div>
                     </div>
@@ -159,13 +159,13 @@ function ShoppingList() {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><FunctionSquare className="w-6 h-6 text-primary"/>Event Handlers</CardTitle>
-                    <CardDescription>To respond to user interactions like clicks, you pass a function to event handler props like `onClick`.</CardDescription>
+                    <CardDescription>To respond to user interactions like clicks, you pass a function to event handler props like onClick.</CardDescription>
                 </CardHeader>
                 <CardContent>
                      <div className="bg-muted rounded-md p-4 mb-4">
                         <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{eventHandlerCode}</pre>
                     </div>
-                     <p className="text-sm text-muted-foreground mb-4">Note that you are passing the function itself (`handleClick`), not the result of calling it (`handleClick()`).</p>
+                     <p className="text-sm text-muted-foreground mb-4">Note that you are passing the function itself (handleClick), not the result of calling it (handleClick()).</p>
                     <Button onClick={() => onOpenEditor(eventHandlerCode)}>
                         <Play className="mr-2 h-4 w-4" /> Try it
                     </Button>
@@ -175,7 +175,7 @@ function ShoppingList() {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><Binary className="w-6 h-6 text-primary"/>Conditional Rendering</CardTitle>
-                    <CardDescription>You can't use `if` statements directly inside JSX, but you can use them outside or use other JavaScript expressions like ternary operators.</CardDescription>
+                    <CardDescription>You can&apos;t use if statements directly inside JSX, but you can use them outside or use other JavaScript expressions like ternary operators.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
@@ -190,7 +190,7 @@ function ShoppingList() {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><Repeat className="w-6 h-6 text-primary"/>Rendering Lists</CardTitle>
-                    <CardDescription>You can render a list of components from an array using JavaScript's `map()` function. Remember to give each item a unique `key`.</CardDescription>
+                    <CardDescription>You can render a list of components from an array using JavaScript&apos;s map() function. Remember to give each item a unique key.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="bg-muted rounded-md p-4 mb-4">
@@ -208,8 +208,8 @@ function ShoppingList() {
                 </CardHeader>
                  <CardContent>
                     <ul className="list-disc list-inside space-y-2 text-sm">
-                        <li>You can only embed **expressions** inside curly braces, not statements. `if`, `for`, `let x = ...` are statements and are not allowed.</li>
-                        <li>You cannot put curly braces inside the quotes of a string attribute: `<p className="{myClass}">` is wrong. `<p className={myClass}>` is correct.</li>
+                        <li>You can only embed expressions inside curly braces, not statements. if, for, let x = ... are statements and are not allowed.</li>
+                        <li>You cannot put curly braces inside the quotes of a string attribute: &lt;p className=&quot;&#123;myClass&#125;&quot;&gt; is wrong. &lt;p className=&#123;myClass&#125;&gt; is correct.</li>
                     </ul>
                  </CardContent>
             </Card>

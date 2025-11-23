@@ -9,8 +9,15 @@ import { LoadingProvider } from '@/hooks/use-loading';
 import { PageLoader } from '@/components/page-loader';
 
 export const metadata: Metadata = {
-  title: 'Coder Pod',
-  description: 'Your personal AI-powered programming language tutor.',
+  title: 'Coder Pod - Your Launchpad For Learning',
+  description: 'Your Launchpad For Learning - Master programming with AI-powered tutorials, interactive code editor, and personalized learning paths.',
+  keywords: ['programming', 'learning', 'coding', 'tutorials', 'AI tutor', 'web development', 'HTML', 'CSS', 'JavaScript', 'React'],
+  authors: [{ name: 'Coder Pod' }],
+  openGraph: {
+    title: 'Coder Pod - Your Launchpad For Learning',
+    description: 'Master programming with AI-powered tutorials and interactive learning.',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +31,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+        {/* Preload SCSS compiler for web playground */}
+        <script src="https://cdn.jsdelivr.net/npm/sass.js@0.11.1/dist/sass.sync.js" async></script>
       </head>
       <body className="font-body antialiased h-full">
         <ThemeProvider

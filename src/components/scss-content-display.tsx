@@ -31,6 +31,12 @@ const SassColor = lazy(() => import('./scss-topics/sass-color'));
 const SassSelector = lazy(() => import('./scss-topics/sass-selector'));
 const SassIntrospection = lazy(() => import('./scss-topics/sass-introspection'));
 const SassAdvancedNesting = lazy(() => import('./scss-topics/sass-advanced-nesting'));
+const SassCustomFunctions = lazy(() => import('./scss-topics/sass-custom-functions'));
+const SassResponsiveMixins = lazy(() => import('./scss-topics/sass-responsive-mixins'));
+const SassDebugging = lazy(() => import('./scss-topics/sass-debugging'));
+const SassArchitecture = lazy(() => import('./scss-topics/sass-architecture'));
+const SassPerformance = lazy(() => import('./scss-topics/sass-performance'));
+const SassAdvancedPatterns = lazy(() => import('./scss-topics/sass-advanced-patterns'));
 
 
 // Map slugs to their lazy-loaded components
@@ -58,6 +64,12 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'sass-selector': SassSelector,
   'sass-introspection': SassIntrospection,
   'sass-advanced-nesting': SassAdvancedNesting,
+  'sass-custom-functions': SassCustomFunctions,
+  'sass-responsive-mixins': SassResponsiveMixins,
+  'sass-debugging': SassDebugging,
+  'sass-architecture': SassArchitecture,
+  'sass-performance': SassPerformance,
+  'sass-advanced-patterns': SassAdvancedPatterns,
 };
 
 function LoadingSkeleton() {

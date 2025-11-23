@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useEffect, useRef } from 'react';
 import type { Language } from '@/app/data/index';
@@ -23,6 +22,7 @@ import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
 
 // A new hook for Spring Boot will be needed here
 // import { useSpringBoot } from '@/app/spring-boot/spring-boot-context';
@@ -72,8 +72,6 @@ export function TopicSidebar({
   
   const { completedTopics } = useLanguageContext(language);
   const { user } = useUser();
-
-
   const isUserAuthenticated = user && !user.isAnonymous;
 
   useEffect(() => {
@@ -188,20 +186,24 @@ export function TopicSidebar({
           }
         }
     } else if (language.slug === 'html') {
+        // New categories aligned with learning roadmap reorganization
         const htmlGroups: Record<string, string[]> = {
-            "HTML Basics": ['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments', 'character-entities'],
-            "Content & Structure": ['html-lists', 'html-links', 'html-images', 'block-vs-inline', 'html-tables', 'html-semantic-elements'],
-            "Forms & Input": ['html-forms', 'form-input-types', 'form-attributes', 'form-validation', 'datalist-element', 'output-element'],
-            "Media & Graphics": ['audio-and-video', 'iframes', 'svg-and-canvas', 'responsive-images'],
-            "Advanced Topics & HTML5 Features": ['html5-latest-features', 'dialog-element', 'popover-api', 'details-and-summary', 'lazy-loading', 'content-visibility', 'template-and-slot', 'data-attributes', 'content-editable', 'progress-and-meter', 'advanced-tables'],
-            "Metadata, SEO, and Best Practices": ['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'global-attributes'],
-            "API & Interactivity": ['html5-apis', 'web-storage-api', 'fetch-api', 'geolocation-api', 'drag-and-drop-api', 'web-workers-api', 'accessibility'],
+          'Foundation': ['introduction-to-html', 'document-structure'],
+          'Core Building Blocks': ['html-elements-and-tags','html-headings-and-paragraphs','text-formatting','html-attributes','global-attributes','html-comments','character-entities'],
+          'Grouping & Layout': ['block-vs-inline','html-lists','html-links','html-images','html-tables','html-semantic-elements'],
+          'Forms & User Input': ['html-forms','form-input-types','form-attributes','form-validation','datalist-element','output-element','progress-and-meter'],
+          'Media & Graphics': ['audio-and-video','responsive-images','iframes','svg-and-canvas'],
+          'Interactive & Components': ['details-and-summary','dialog-element','popover-api','template-and-slot','content-editable','data-attributes'],
+          'Performance & Enhancement': ['lazy-loading','content-visibility','advanced-tables'],
+          'Browser & Platform APIs': ['html5-latest-features','fetch-api','web-storage-api','geolocation-api','drag-and-drop-api','web-workers-api'],
+          'Metadata & SEO': ['meta-tags-and-seo','html-document-metadata','microdata-structured-data'],
+          'Accessibility & Quality': ['accessibility','html-best-practices'],
         };
         for (const groupName in htmlGroups) {
-            if (htmlGroups[groupName].includes(topic.slug)) {
-                group = groupName;
-                break;
-            }
+          if (htmlGroups[groupName].includes(topic.slug)) {
+            group = groupName;
+            break;
+          }
         }
     } else if (language.slug === 'css') {
       const cssGroups: Record<string, string[]> = {
@@ -248,7 +250,9 @@ export function TopicSidebar({
     return acc;
   }, {} as Record<string, typeof language.topics>);
 
-  const groupOrder = language.slug === 'java' 
+  const groupOrder = language.slug === 'html'
+    ? ['Foundation','Core Building Blocks','Grouping & Layout','Forms & User Input','Media & Graphics','Interactive & Components','Performance & Enhancement','Browser & Platform APIs','Metadata & SEO','Accessibility & Quality']
+    : language.slug === 'java'
     ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings & Arrays", "Methods & OOP Basics", "Advanced OOP", "Advanced Collections", "Error Handling & Generics", "Functional Programming", "Advanced Concurrency", "Files & Regex", "Others"]
     : language.slug === 'spring' 
     ? ["Spring Core Concepts", "Advanced Dependency Injection", "Bean Configuration"]
@@ -279,12 +283,15 @@ export function TopicSidebar({
         '19. Rules & Best Practices',
         '20. Thinking in React'
       ]
-    : language.slug === 'html'
-    ? ["HTML Basics", "Content & Structure", "Forms & Input", "Media & Graphics", "Advanced Topics & HTML5 Features", "Metadata, SEO, and Best Practices", "API & Interactivity", "Others"]
     : language.slug === 'css'
     ? ["Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Advanced CSS", "Professional CSS"]
     : language.slug === 'scss'
     ? ["1. Fundamentals", "2. Nesting & Selectors", "3. File Organization", "4. Reusability", "5. Control & Logic", "6. Data Types & Functions", "7. Advanced Topics", "8. Professional Development"]
+    : [];
+
+  // Build ordered groups array for generic component (HTML only)
+  const orderedGroupsForHtml = language.slug === 'html'
+    ? groupOrder.map(group => ({ title: group, topics: topicsByGroup[group] || [] }))
     : [];
 
   const renderTopicGroup = (title: string, topics: typeof language.topics) => (
@@ -394,8 +401,18 @@ export function TopicSidebar({
 
                 <div className='space-y-4'>
                   <p className="px-2 py-1 text-xl font-semibold text-muted-foreground">Topics</p>
-                  
-                  {groupOrder.map(groupName => renderTopicGroup(groupName, topicsByGroup[groupName]))}
+                  {language.slug === 'html' ? (
+                    <GenericGroupedTopicMenu
+                      groups={orderedGroupsForHtml}
+                      selectedTopicSlug={selectedTopicSlug}
+                      completedTopics={completedTopics}
+                      isUserAuthenticated={!!isUserAuthenticated}
+                      languageSlug={language.slug}
+                      activeItemRef={activeItemRef}
+                    />
+                  ) : (
+                    groupOrder.map(groupName => renderTopicGroup(groupName, topicsByGroup[groupName]))
+                  )}
                 </div>
 
               </SidebarMenu>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Language, Topic } from '@/app/data';
@@ -9,7 +8,7 @@ import { useWebPlayground } from './web-playground-context';
 
 // Lazy load all the topic components
 const HtmlIntroduction = lazy(() => import('./html-topics/html-introduction'));
-const DocumentStructure = lazy(() => import('./html-topics/document-structure'));
+const HtmlDocumentStructure = lazy(() => import('./html-topics/html-document-structure'));
 const HtmlAttributes = lazy(() => import('./html-topics/html-attributes'));
 const HtmlElementsAndTags = lazy(() => import('./html-topics/html-elements-and-tags'));
 const HtmlHeadingsAndParagraphs = lazy(() => import('./html-topics/html-headings-and-paragraphs'));
@@ -18,50 +17,49 @@ const HtmlComments = lazy(() => import('./html-topics/html-comments'));
 const HtmlLists = lazy(() => import('./html-topics/html-lists'));
 const HtmlLinks = lazy(() => import('./html-topics/html-links'));
 const HtmlImages = lazy(() => import('./html-topics/html-images'));
-const BlockVsInline = lazy(() => import('./html-topics/block-vs-inline'));
+const BlockVsInline = lazy(() => import('./html-topics/html-block-vs-inline'));
 const HtmlTables = lazy(() => import('./html-topics/html-tables'));
 const HtmlSemanticElements = lazy(() => import('./html-topics/html-semantic-elements'));
 const CharacterEntities = lazy(() => import('./html-topics/html-character-entities'));
 const HtmlForms = lazy(() => import('./html-topics/html-forms'));
-const FormInputTypes = lazy(() => import('./html-topics/form-input-types'));
-const FormAttributes = lazy(() => import('./html-topics/form-attributes'));
-const FormValidation = lazy(() => import('./html-topics/form-validation'));
-const DatalistElement = lazy(() => import('./html-topics/datalist-element'));
-const OutputElement = lazy(() => import('./html-topics/output-element'));
-const AudioAndVideo = lazy(() => import('./html-topics/audio-and-video'));
-const Iframes = lazy(() => import('./html-topics/iframes'));
-const SvgAndCanvas = lazy(() => import('./html-topics/svg-and-canvas'));
-const ResponsiveImages = lazy(() => import('./html-topics/responsive-images'));
-const DialogElement = lazy(() => import('./html-topics/dialog-element'));
-const PopoverApi = lazy(() => import('./html-topics/popover-api'));
+const FormInputTypes = lazy(() => import('./html-topics/html-form-input-types'));
+const FormAttributes = lazy(() => import('./html-topics/html-form-attributes'));
+const FormValidation = lazy(() => import('./html-topics/html-form-validation'));
+const AudioAndVideo = lazy(() => import('./html-topics/html-audio-and-video'));
+const Iframes = lazy(() => import('./html-topics/html-iframes'));
+const SvgAndCanvas = lazy(() => import('./html-topics/html-svg-and-canvas'));
+const ResponsiveImages = lazy(() => import('./html-topics/html-responsive-images'));
+const DialogElement = lazy(() => import('./html-topics/html-dialog-element'));
+const PopoverApi = lazy(() => import('./html-topics/html-popover-api'));
+const LazyLoading = lazy(() => import('./html-topics/html-lazy-loading'));
+const TemplateAndSlot = lazy(() => import('./html-topics/html-template-and-slot'));
+const DataAttributes = lazy(() => import('./html-topics/html-data-attributes'));
+const ContentVisibility = lazy(() => import('./html-topics/html-content-visibility'));
+const ContentEditable = lazy(() => import('./html-topics/html-content-editable'));
+const ProgressAndMeter = lazy(() => import('./html-topics/html-progress-and-meter'));
+const WebStorageApi = lazy(() => import('./html-topics/html-web-storage-api'));
+const FetchApi = lazy(() => import('./html-topics/html-fetch-api'));
+const GeolocationApi = lazy(() => import('./html-topics/html-geolocation-api'));
+const DragAndDropApi = lazy(() => import('./html-topics/html-drag-and-drop-api'));
 const Html5Apis = lazy(() => import('./html-topics/html5-apis'));
 const WebWorkersApi = lazy(() => import('./html-topics/web-workers-api'));
-const Accessibility = lazy(() => import('./html-topics/accessibility'));
+const Accessibility = lazy(() => import('./html-topics/html-accessibility'));
 const HtmlInterviewQuestions = lazy(() => import('./html-topics/html-interview-questions'));
 const Html5LatestFeatures = lazy(() => import('./html-topics/html5-latest-features'));
-const DetailsAndSummary = lazy(() => import('./html-topics/details-and-summary'));
-const LazyLoading = lazy(() => import('./html-topics/lazy-loading'));
-const TemplateAndSlot = lazy(() => import('./html-topics/template-and-slot'));
-const DataAttributes = lazy(() => import('./html-topics/data-attributes'));
-const ContentVisibility = lazy(() => import('./html-topics/content-visibility'));
-const ContentEditable = lazy(() => import('./html-topics/content-editable'));
-const ProgressAndMeter = lazy(() => import('./html-topics/progress-and-meter'));
-const AdvancedTables = lazy(() => import('./html-topics/advanced-tables'));
-const MetaTagsAndSeo = lazy(() => import('./html-topics/meta-tags-and-seo'));
+const DetailsAndSummary = lazy(() => import('./html-topics/html-details-and-summary'));
+const AdvancedTables = lazy(() => import('./html-topics/html-advanced-tables'));
+const MetaTagsAndSeo = lazy(() => import('./html-topics/html-meta-tags-and-seo').then(m => ({ default: m.default || m.HtmlMetaTagsAndSeoComponent })));
 const HtmlDocumentMetadata = lazy(() => import('./html-topics/html-document-metadata'));
-const MicrodataStructuredData = lazy(() => import('./html-topics/microdata-structured-data'));
+const MicrodataStructuredData = lazy(() => import('./html-topics/html-microdata-structured-data').then(m => ({ default: m.default || m.HtmlMicrodataStructuredDataComponent })));
 const HtmlBestPractices = lazy(() => import('./html-topics/html-best-practices'));
-const GlobalAttributes = lazy(() => import('./html-topics/global-attributes'));
-const WebStorageApi = lazy(() => import('./html-topics/web-storage-api'));
-const FetchApi = lazy(() => import('./html-topics/fetch-api'));
-const GeolocationApi = lazy(() => import('./html-topics/geolocation-api'));
-const DragAndDropApi = lazy(() => import('./html-topics/drag-and-drop-api'));
-
+const GlobalAttributes = lazy(() => import('./html-topics/html-global-attributes'));
+const DatalistElement = lazy(() => import('./html-topics/html-datalist-element'));
+const OutputElement = lazy(() => import('./html-topics/html-output-element'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'introduction-to-html': HtmlIntroduction,
-  'document-structure': DocumentStructure,
+  'document-structure': HtmlDocumentStructure,
   'html-attributes': HtmlAttributes,
   'html-elements-and-tags': HtmlElementsAndTags,
   'html-headings-and-paragraphs': HtmlHeadingsAndParagraphs,
@@ -78,8 +76,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'form-input-types': FormInputTypes,
   'form-attributes': FormAttributes,
   'form-validation': FormValidation,
-  'datalist-element': DatalistElement,
-  'output-element': OutputElement,
   'audio-and-video': AudioAndVideo,
   'iframes': Iframes,
   'svg-and-canvas': SvgAndCanvas,
@@ -108,6 +104,8 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'fetch-api': FetchApi,
   'geolocation-api': GeolocationApi,
   'drag-and-drop-api': DragAndDropApi,
+  'datalist-element': DatalistElement,
+  'output-element': OutputElement,
 };
 
 function LoadingSkeleton() {
@@ -126,21 +124,21 @@ function LoadingSkeleton() {
 export function HtmlContentDisplay({ 
   topic, 
   language, 
-  onOpenEditor,
-}: { 
+  onOpenEditorAction,
+}: {
   topic: Topic; 
   language: Language; 
-  onOpenEditor: (code: string) => void;
+  onOpenEditorAction: (code: string) => void;
 }) {
   const { openWithContent } = useWebPlayground();
 
   const CustomTopicComponent = topicComponentMap[topic.slug];
 
   return (
-    <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditor}>
+    <GenericContentDisplay topic={topic} language={language} onOpenEditor={onOpenEditorAction}>
       <Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (
-          <CustomTopicComponent onOpenEditor={onOpenEditor} onOpenWebPlayground={openWithContent} />
+          React.createElement(CustomTopicComponent as any, { onOpenWebPlayground: openWithContent })
         ) : null}
       </Suspense>
     </GenericContentDisplay>

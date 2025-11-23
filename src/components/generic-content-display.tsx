@@ -115,7 +115,7 @@ export function GenericContentDisplay({
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 min-h-screen">
       {children ? (
         children
       ) : (

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useCallback, Suspense } from 'react';
@@ -63,7 +62,7 @@ function TopicPageContent() {
             <HtmlContentDisplay
               topic={selectedTopic}
               language={language}
-              onOpenEditor={handleOpenEditor}
+              onOpenEditorAction={handleOpenEditor}
             />
           )}
         </div>

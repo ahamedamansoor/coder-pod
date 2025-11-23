@@ -10,6 +10,7 @@ import {
     Layers, RefreshCw, Wrench, BookOpen, Star, Rocket
 } from 'lucide-react';
 import React, { useState } from 'react';
+import { PageHeader } from './page-header';
 
 export default function SassVariables({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
     const [selectedExample, setSelectedExample] = useState('basic');
@@ -290,16 +291,14 @@ body {
 `;
 
     return (
-        <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Variable className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">Sass Variables Mastery</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master the art of storing reusable values to keep your stylesheets DRY and maintainable.
-                </p>
-            </div>
+        <div className="w-full space-y-8 min-h-screen pb-16">
+            <PageHeader
+                icon={Variable}
+                category="SCSS Variables"
+                title="Sass Variables Mastery"
+                description="Master the art of storing reusable values to keep your stylesheets DRY and maintainable"
+                colorTheme="blue"
+            />
 
             {/* Quick Start Overview */}
             <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200">

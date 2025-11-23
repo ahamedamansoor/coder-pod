@@ -1,155 +1,261 @@
-
 'use client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { FileCode, PersonStanding, BrainCircuit, Accessibility, Paintbrush, Link as LinkIcon, Code, Play, Settings, FileJson, Route } from 'lucide-react';
+
 import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { FileJson, Play, Code, Settings, Globe2, File } from 'lucide-react';
+import { PageHeader } from '../generic-page-header';
 
-export default function DocumentStructure({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
-
-    const boilerplateCode = `<!DOCTYPE html>
-<html>
+// Minimal boilerplate example
+const minimalStructure = `<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Awesome Page</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Page</title>
   </head>
   <body>
-    <h1>Hello, World!</h1>
-    <p>This is the visible part of my page.</p>
-    <script src="script.js"></script>
+    <h1>Hello World</h1>
   </body>
 </html>`;
 
-    const codeForPlayground = {
-      html: `<h1>Welcome to My Page!</h1>
-<p>This is the visible content of the page, structured by HTML.</p>
-<button onclick="showAlert()">Click Me</button>`,
-      css: `body {
-  background-color: #f0f8ff;
-  font-family: sans-serif;
-  text-align: center;
-  padding: 2rem;
-}
-h1 {
-  color: #4a4a4a;
-}
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}`,
-      js: `function showAlert() {
-  alert("Hello from JavaScript! This alert is allowed because of the 'allow-modals' sandbox setting.");
-}`
-    };
+// Complete professional boilerplate example
+const completeStructure = `<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Character encoding & rendering -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-    const headElements = [
-        { icon: Code, tag: '<title>', description: 'Sets the title of the page, which appears in the browser tab and is important for SEO.' },
-        { icon: Settings, tag: '<style>', description: 'Used to write CSS code directly inside the HTML document.' },
-        { icon: Route, tag: '<script>', description: 'Used to embed or reference executable JavaScript code. Can be in head or body.' },
-    ];
+    <!-- SEO basics -->
+    <title>Awesome App – Learn Faster</title>
+    <meta name="description" content="Awesome App helps you learn web development faster with interactive examples." />
+    <meta name="author" content="Your Name" />
 
-    return (
-      <div className="space-y-8">
-        <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-2">
-                <FileCode className="w-10 h-10 text-primary" />
-                <h1 className="text-4xl font-bold text-foreground">HTML Document Structure</h1>
+    <!-- Favicons & PWA -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Awesome App" />
+    <meta property="og:description" content="Interactive learning platform for modern web developers." />
+    <meta property="og:image" content="/social-card.png" />
+    <meta property="og:url" content="https://example.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles.css" />
+
+    <!-- JS best practice: defer for app bundle -->
+    <script src="/app.bundle.js" defer></script>
+    <!-- Async for analytics/non‑critical -->
+    <script src="https://example-analytics.com/script.js" async></script>
+  </head>
+  <body>
+    <header role="banner">
+      <nav aria-label="Main navigation">
+        <a href="/" class="logo">AwesomeApp</a>
+      </nav>
+    </header>
+    <main id="root" role="main">
+      <h1>Welcome</h1>
+      <p>Content goes here…</p>
+    </main>
+    <footer role="contentinfo">© <span id="year"></span> Awesome App</footer>
+
+    <!-- Inline script that depends on DOM -->
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </body>
+</html>`;
+
+// Playground demo code
+const playgroundCode = {
+  html: `<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Structure Demo</title>
+  <link rel='stylesheet' href='style.css' />
+  <script defer src='script.js'></script>
+</head>
+<body>
+  <header>
+    <h1>Document Structure Demo</h1>
+  </header>
+  <main>
+    <section>
+      <h2>Why Structure Matters</h2>
+      <p id='dynamic'></p>
+    </section>
+  </main>
+  <footer>© <span id='year'></span></footer>
+</body>
+</html>`,
+  css: `body { font-family: system-ui, sans-serif; margin: 2rem; line-height: 1.5; }
+header, footer { background: #0f172a; color: #fff; padding: 1rem; border-radius: 8px; }
+main { margin-top: 1rem; }
+section { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 6px; }
+code { background: #e2e8f0; padding: 0.125rem 0.375rem; border-radius: 4px; }`,
+  js: `document.getElementById('year').textContent = new Date().getFullYear();
+const dynamic = document.getElementById('dynamic');
+dynamic.textContent = 'Scripts loaded with defer execute after parsing, keeping the page responsive.';`
+};
+
+interface DocumentStructureProps {
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+}
+
+export default function DocumentStructure({ onOpenWebPlayground }: DocumentStructureProps) {
+  return (
+    <div className="space-y-10">
+      <PageHeader
+        icon={File}
+        category="HTML Basics"
+        title="HTML Document Structure"
+        description="Understanding the essential boilerplate and how the browser interprets your page"
+        colorTheme="blue"
+      />
+      {/* Intro */}
+      <Card>
+        <CardContent className="space-y-6 text-sm md:text-base leading-relaxed">
+          <p>
+            A well‑structured document improves accessibility, performance, SEO, and maintainability. The browser reads
+            your file top‑to‑bottom: declare intent early (doctype, language), then progressively add metadata, styles, and
+            behavior.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-muted rounded-md p-4 border">
+              <h3 className="font-semibold mb-2">Core Root Elements</h3>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li><code>&lt;!DOCTYPE html&gt;</code> – Standard mode trigger; always first.</li>
+                <li><code>&lt;html lang="en"&gt;</code> – Language aids accessibility & SEO.</li>
+                <li><code>&lt;head&gt;</code> – Metadata, links, preload hints, scripts (non‑blocking).</li>
+                <li><code>&lt;body&gt;</code> – Visible content, interactive UI, app root.</li>
+              </ul>
             </div>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">The essential boilerplate for every web page.</p>
-        </div>
+            <div className="bg-muted rounded-md p-4 border">
+              <h3 className="font-semibold mb-2">High‑Value Head Tags</h3>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li><code>&lt;meta charset&gt;</code> – Avoid mojibake / encoding issues.</li>
+                <li><code>&lt;meta viewport&gt;</code> – Responsive scaling on mobile.</li>
+                <li><code>&lt;title&gt;</code> – Browser tab & search result headline.</li>
+                <li><code>&lt;meta name="description"&gt;</code> – Influences snippets.</li>
+                <li><code>&lt;link rel="icon"&gt;</code> – Branding & PWA touch icons.</li>
+                <li><code>&lt;link rel="preload"&gt;</code> – Prioritize critical assets.</li>
+                <li><code>&lt;script defer&gt;</code> – Non‑blocking script loading.</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>The Human Body Analogy</CardTitle>
-                <CardDescription>Think of an HTML document like a person. It helps to understand where everything goes.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid md:grid-cols-3 gap-6">
-                 <div className="p-6 rounded-lg border-2 border-green-500/20 bg-green-500/10 flex flex-col items-center text-center">
-                    <PersonStanding className="w-10 h-10 mb-4 text-green-600" />
-                    <h3 className="text-xl font-bold mb-2 text-green-700">&lt;html&gt;</h3>
-                    <p className="text-sm text-muted-foreground">The whole person. This tag wraps everything.</p>
-                </div>
-                 <div className="p-6 rounded-lg border-2 border-blue-500/20 bg-blue-500/10 flex flex-col items-center text-center">
-                    <BrainCircuit className="w-10 h-10 mb-4 text-blue-600" />
-                    <h3 className="text-xl font-bold mb-2 text-blue-700">&lt;head&gt;</h3>
-                    <p className="text-sm text-muted-foreground">The brain. It contains important information (thoughts, settings) that isn't visibly displayed on the body itself.</p>
-                </div>
-                 <div className="p-6 rounded-lg border-2 border-purple-500/20 bg-purple-500/10 flex flex-col items-center text-center">
-                    <Accessibility className="w-10 h-10 mb-4 text-purple-600" />
-                    <h3 className="text-xl font-bold mb-2 text-purple-700">&lt;body&gt;</h3>
-                    <p className="text-sm text-muted-foreground">The visible body. This contains all the content that users see and interact with—text, images, buttons, etc.</p>
-                </div>
-            </CardContent>
-        </Card>
-        
-        <Card>
-            <CardHeader>
-                <CardTitle>The Basic Boilerplate</CardTitle>
-                <CardDescription>Every HTML page starts with this fundamental structure. The indentation shows how elements are "nested" inside each other.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="bg-muted rounded-md p-4 mb-4">
-                    <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{boilerplateCode}</pre>
-                </div>
-                 <div className="space-y-3 text-sm">
-                    <p><code className="font-semibold bg-foreground/10 p-1 rounded">&lt;!DOCTYPE html&gt;</code>: This is the very first thing. It's a declaration telling the browser, "Hey, this is an HTML5 document."</p>
-                    <p><code className="font-semibold bg-foreground/10 p-1 rounded">&lt;html&gt;</code>: The root element that contains all other elements.</p>
-                    <p><code className="font-semibold bg-foreground/10 p-1 rounded">&lt;head&gt;</code>: The "brain" containing metadata. This content is not displayed on the page.</p>
-                    <p><code className="font-semibold bg-foreground/10 p-1 rounded">&lt;body&gt;</code>: The "body" containing the visible content of the page.</p>
-                </div>
-                <div className="mt-6">
-                    <Button onClick={() => onOpenWebPlayground(codeForPlayground.html, codeForPlayground.css, codeForPlayground.js)}>
-                        <Play className="mr-2 h-4 w-4" /> Try it in the Web Playground
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
+      {/* defer vs async */}
+      <Card>
+        <CardContent>
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold flex items-center gap-2"><Settings className="w-6 h-6 text-primary" /> Script Loading: <code>defer</code> vs <code>async</code></h2>
+              <p className="text-muted-foreground text-sm md:text-base">Choose the right attribute to optimize render performance and execution order.</p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-background p-4 rounded border">
+                <code className="font-bold text-blue-600">defer</code>
+                <ul className="text-sm mt-2 space-y-1">
+                  <li>• Downloads in parallel with parsing</li>
+                  <li>• Executes after HTML parsed</li>
+                  <li>• Preserves tag order</li>
+                  <li>• ✅ Use for main app bundles</li>
+                </ul>
+              </div>
+              <div className="bg-background p-4 rounded border">
+                <code className="font-bold text-purple-600">async</code>
+                <ul className="text-sm mt-2 space-y-1">
+                  <li>• Downloads in parallel</li>
+                  <li>• Executes immediately when ready</li>
+                  <li>• No guaranteed order</li>
+                  <li>• ✅ Use for analytics / standalone scripts</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-4 text-xs text-muted-foreground">
+              Tip: Omit both for inline modules loaded via modern build tools only when execution order is insignificant.
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-         <Card>
-            <CardHeader>
-                <CardTitle>What Goes in the &lt;head&gt;?</CardTitle>
-                <CardDescription>Important setup information and links to external files.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="p-4 rounded-lg bg-muted border">
-                    <h3 className="font-bold text-lg mb-3 flex items-center gap-2"><FileJson className="w-5 h-5 text-primary"/>The &lt;meta&gt; Tag</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Provides metadata about the HTML document. It will not be displayed on the page, but is machine-readable. Common attributes include:</p>
-                    <ul className="space-y-3">
-                        <li><code className="font-semibold bg-background p-1 rounded">charset="UTF-8"</code>: Specifies the character encoding for the document. UTF-8 is the standard and helps browsers display text and symbols correctly.</li>
-                        <li><code className="font-semibold bg-background p-1 rounded">name="viewport"</code> with <code className="bg-background p-1 rounded">content="width=device-width, initial-scale=1.0"</code>: This is crucial for responsive design, telling the browser how to control the page's dimensions and scaling on mobile devices.</li>
-                        <li><code className="font-semibold bg-background p-1 rounded">name="description"</code>: A short description of the page's content, used by search engines.</li>
-                    </ul>
-                </div>
+      {/* Boilerplates */}
+      <Card>
+        <CardContent className="space-y-8">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold flex items-center gap-2"><FileJson className="w-6 h-6 text-primary" /> Boilerplate Templates</h2>
+            <p className="text-muted-foreground text-sm md:text-base">Start minimal, scale up to a production‑ready head section.</p>
+          </div>
+          <div>
+            <h3 className="font-bold text-lg mb-3">Minimal Structure</h3>
+            <div className="bg-muted rounded-md p-4">
+              <pre className="font-mono text-xs overflow-x-auto whitespace-pre-wrap">{minimalStructure}</pre>
+            </div>
+          </div>
+          <div>
+            <h3 className="font-bold text-lg mb-3">Complete Professional Structure</h3>
+            <div className="bg-muted rounded-md p-4">
+              <pre className="font-mono text-xs overflow-x-auto whitespace-pre-wrap">{completeStructure}</pre>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-                 <div className="p-4 rounded-lg bg-muted border">
-                    <h3 className="font-bold text-lg mb-3 flex items-center gap-2"><LinkIcon className="w-5 h-5 text-primary"/>The &lt;link&gt; Tag</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Used to link the HTML document to external resources. Its most common use is to link to an external CSS stylesheet. Attributes include:</p>
-                    <ul className="space-y-3">
-                        <li><code className="font-semibold bg-background p-1 rounded">rel="stylesheet"</code>: Specifies the relationship between the HTML file and the linked file. `stylesheet` is used for CSS.</li>
-                        <li><code className="font-semibold bg-background p-1 rounded">href="style.css"</code>: Specifies the URL (or path) to the file you are linking.</li>
-                         <li><code className="font-semibold bg-background p-1 rounded">type="text/css"</code>: Specifies the media type of the linked document. While technically optional for CSS in modern browsers, it's good practice to include it.</li>
-                    </ul>
-                </div>
-                
-                <div className="grid md:grid-cols-3 gap-4 pt-4">
-                    {headElements.map((el) => (
-                        <div key={el.tag} className="flex items-start gap-3 bg-muted p-4 rounded-lg border">
-                            <el.icon className="w-5 h-5 text-primary mt-1 shrink-0" />
-                            <div>
-                                <code className="font-bold text-base">{el.tag}</code>
-                                <p className="text-xs text-muted-foreground">{el.description}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
-      </div>
-    );
+      {/* Interactive Demo */}
+      <Card className="border-2 border-primary/50 bg-gradient-to-r from-blue-500/5 to-purple-500/5">
+        <CardContent className="space-y-4">
+          <h2 className="text-2xl font-bold flex items-center gap-2"><Play className="w-6 h-6 text-primary" /> Interactive Structure Demo</h2>
+          <p className="text-muted-foreground text-sm md:text-base">Experience a properly structured document and inspect timing.</p>
+          <Button
+            size="lg"
+            onClick={() => onOpenWebPlayground?.(playgroundCode.html, playgroundCode.css, playgroundCode.js)}
+            className="w-full md:w-auto"
+          >
+            <Play className="mr-2 h-5 w-5" /> Open Live Demo
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Quick Reference */}
+      <Card>
+        <CardContent className="space-y-6">
+          <h2 className="text-2xl font-bold flex items-center gap-2"><Code className="w-6 h-6 text-primary" /> Quick Reference Checklist</h2>
+          <div className="grid md:grid-cols-2 gap-6 text-sm">
+            <ul className="space-y-1 list-disc list-inside">
+              <li>✅ Doctype at very top</li>
+              <li>✅ <code>lang</code> attribute on <code>&lt;html&gt;</code></li>
+              <li>✅ Charset & viewport meta first</li>
+              <li>✅ Descriptive, concise <code>&lt;title&gt;</code></li>
+              <li>✅ One canonical description meta</li>
+              <li>✅ Preload truly critical assets only</li>
+              <li>✅ Use <code>defer</code> for app scripts</li>
+            </ul>
+            <ul className="space-y-1 list-disc list-inside">
+              <li>🚫 Avoid duplicate meta descriptions</li>
+              <li>🚫 Don’t block rendering with large inline scripts</li>
+              <li>🚫 Don’t forget accessibility landmarks (<code>&lt;main&gt;</code>, roles)</li>
+              <li>🚫 Avoid excessive <code>preconnect</code> hints</li>
+              <li>💡 Put analytics <code>async</code> to avoid blocking</li>
+              <li>💡 Keep head ordered: charset → viewport → title → description</li>
+              <li>💡 Year injection via a tiny inline script is fine</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

@@ -1,195 +1,31 @@
-
 'use client';
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight } from 'lucide-react';
+import { FileText, Code, Layout, Image, Database, Zap, Shield, Layers, Box, Cpu, Activity } from 'lucide-react';
 import { useHtml } from '@/app/html/html-context';
-import { useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import type { Language, Topic } from '@/app/data';
-import { ModuleCompletionCelebration } from './module-completion-celebration';
+import type { Language } from '@/app/data';
+import { GenericLearningPath } from './generic-learning-path';
+
+// Updated category icons matching reorganized html.ts categories
+const categoryIcons = {
+  'Foundation': { icon: FileText, color: 'text-blue-600', level: 'Beginner' },
+  'Core Building Blocks': { icon: Layers, color: 'text-indigo-600', level: 'Beginner' },
+  'Grouping & Layout': { icon: Layout, color: 'text-green-600', level: 'Beginner' },
+  'Forms & User Input': { icon: Code, color: 'text-purple-600', level: 'Intermediate' },
+  'Media & Graphics': { icon: Image, color: 'text-orange-600', level: 'Intermediate' },
+  'Interactive & Components': { icon: Box, color: 'text-pink-600', level: 'Intermediate' },
+  'Performance & Enhancement': { icon: Activity, color: 'text-teal-600', level: 'Advanced' },
+  'Browser & Platform APIs': { icon: Cpu, color: 'text-red-600', level: 'Advanced' },
+  'Metadata & SEO': { icon: Database, color: 'text-amber-600', level: 'Advanced' },
+  'Accessibility & Quality': { icon: Shield, color: 'text-rose-600', level: 'Advanced' },
+};
 
 export const HtmlLearningRoadmap = ({ language }: { language: Language }) => {
-  const { completedTopics, handleToggleComplete, isProgressLoading } = useHtml();
-  const [expandedModule, setExpandedModule] = useState<string | null>("HTML Basics");
-  const { user, isUserLoading } = useUser();
-  const router = useRouter();
-  const [completedModule, setCompletedModule] = useState<string | null>(null);
-  
-  const isUserAuthenticated = user && !user.isAnonymous;
-
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, router]);
-
-  const getTopicsForSlugs = (slugs: string[]) => {
-    return language.topics.filter(topic => slugs.includes(topic.slug));
-  };
-  
-  const modules = [
-    {
-      id: "HTML Basics",
-      title: "HTML Basics",
-      level: "Foundation",
-      icon: "🚀",
-      topics: getTopicsForSlugs(['introduction-to-html', 'document-structure', 'html-elements-and-tags', 'html-attributes', 'html-headings-and-paragraphs', 'text-formatting', 'html-comments', 'character-entities']),
-    },
-    {
-      id: "Content & Structure",
-      title: "Content & Structure",
-      level: "Core Concepts",
-      icon: "🧱",
-      topics: getTopicsForSlugs(['html-lists', 'html-links', 'html-images', 'block-vs-inline', 'html-tables', 'html-semantic-elements']),
-    },
-    {
-      id: "Forms & Input",
-      title: "Forms & Input",
-      level: "Core Concepts",
-      icon: "📝",
-      topics: getTopicsForSlugs(['html-forms', 'form-input-types', 'form-attributes', 'form-validation', 'datalist-element', 'output-element']),
-    },
-    {
-      id: "Media & Graphics",
-      title: "Media & Graphics",
-      level: "Intermediate",
-      icon: "🖼️",
-      topics: getTopicsForSlugs(['audio-and-video', 'iframes', 'svg-and-canvas', 'responsive-images']),
-    },
-    {
-        id: "Advanced Topics & HTML5 Features",
-        title: "Advanced Topics & HTML5 Features",
-        level: "Advanced",
-        icon: "✨",
-        topics: getTopicsForSlugs(['html5-latest-features', 'dialog-element', 'popover-api', 'details-and-summary', 'lazy-loading', 'content-visibility', 'template-and-slot', 'data-attributes', 'content-editable', 'progress-and-meter', 'advanced-tables']),
-    },
-    {
-        id: "Metadata, SEO, and Best Practices",
-        title: "Metadata, SEO, and Best Practices",
-        level: "Advanced",
-        icon: "📈",
-        topics: getTopicsForSlugs(['meta-tags-and-seo', 'html-document-metadata', 'microdata-structured-data', 'html-best-practices', 'global-attributes']),
-    },
-    {
-      id: "API & Interactivity",
-      title: "API & Interactivity",
-      level: "Expert",
-      icon: "⚡",
-      topics: getTopicsForSlugs(['html5-apis', 'web-storage-api', 'fetch-api', 'geolocation-api', 'drag-and-drop-api', 'web-workers-api', 'accessibility']),
-    },
-  ];
-
-  const allTopics = modules.flatMap(m => m.topics);
-  
-  const toggleTopic = (topicId: string) => {
-    if (!isUserAuthenticated) return;
-    handleToggleComplete(topicId);
-
-    const topicModule = modules.find(m => m.topics.some(t => t.slug === topicId));
-    if (!topicModule) return;
-    
-    const isCompleting = !completedTopics.has(topicId);
-    if (isCompleting) {
-        const allTopicsInModuleCompleted = topicModule.topics.every(t => completedTopics.has(t.slug) || t.slug === topicId);
-        if (allTopicsInModuleCompleted) {
-          setCompletedModule(topicModule.title);
-          const currentModuleIndex = modules.findIndex(m => m.id === topicModule.id);
-          if (currentModuleIndex !== -1 && currentModuleIndex < modules.length - 1) {
-            setExpandedModule(modules[currentModuleIndex + 1].id);
-          }
-        }
-    }
-  };
-
-  const calculateProgress = () => {
-    if (!isUserAuthenticated) return 0;
-    const totalTopics = allTopics.length;
-    if (totalTopics === 0) return 0;
-    return Math.round((completedTopics.size / totalTopics) * 100);
-  };
-
-  if (isUserLoading || isProgressLoading) {
-    return (
-        <div className="p-2 md:p-6">
-          <Skeleton className="h-48 w-full mb-8" />
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (<Skeleton key={i} className="h-24 w-full rounded-xl" />))}
-          </div>
-        </div>
-    );
-  }
-  
-  const completedCount = isUserAuthenticated ? completedTopics.size : 0;
-  const totalTopicCount = allTopics.length;
-  
-  const TopicItem = ({ topic }: { topic: (typeof allTopics)[0] }) => {
-    const isCompleted = isUserAuthenticated && completedTopics.has(topic.slug);
-    const LinkWrapper = isUserAuthenticated ? Link : 'div';
-    
-    const itemContent = (
-      <div onClick={() => isUserAuthenticated && toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
-        <div className="flex items-start gap-3">
-          <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <LinkWrapper href={isUserAuthenticated ? `/${language.slug}/${topic.slug}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
-                <h3 className="text-lg font-semibold text-foreground">{topic.title}</h3>
-              </LinkWrapper>
-            </div>
-            <p className="text-muted-foreground text-sm">{topic.explanation}</p>
-          </div>
-        </div>
-      </div>
-    );
-
-    if (!isUserAuthenticated) {
-      return (<TooltipProvider><UITooltip><TooltipTrigger asChild>{itemContent}</TooltipTrigger><TooltipContent><p>Sign in to track your progress.</p></TooltipContent></UITooltip></TooltipProvider>);
-    }
-    return itemContent;
-  };
+  const contextHooks = useHtml();
 
   return (
-    <div className="p-2 md:p-6 max-w-none">
-       <ModuleCompletionCelebration 
-        isOpen={!!completedModule}
-        moduleName={completedModule || ""}
-        languageSlug="html"
-        onClose={() => setCompletedModule(null)}
-      />
-      <div className="mx-auto">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">HTML Learning Path</h1></div>
-          <p className="text-muted-foreground text-lg mb-6">A structured roadmap for beginners to master HTML.</p>
-          <div className="max-w-2xl mx-auto bg-card rounded-lg shadow-md p-6 border">
-            <div className="flex items-center justify-between mb-3"><span className="text-sm font-semibold text-foreground">Overall Progress</span><span className="text-2xl font-bold text-primary">{calculateProgress()}%</span></div>
-            <div className="w-full bg-muted rounded-full h-4"><div className="bg-primary h-4 rounded-full transition-all duration-500" style={{ width: `${calculateProgress()}%` }}></div></div>
-            <p className="text-sm text-muted-foreground mt-2">{completedCount} of {totalTopicCount} topics completed</p>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          {modules.map((module) => (
-            <div key={module.id} className="bg-card border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
-              <div onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)} className={`bg-card p-6 cursor-pointer flex items-center justify-between border-b`}>
-                <div className="flex items-center gap-4">
-                  <div className="text-3xl bg-muted p-3 rounded-full">{module.icon}</div>
-                  <div>
-                    <div className="flex items-center gap-3 mb-1"><h2 className="text-xl font-bold text-foreground">{module.title}</h2><span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">{module.level}</span></div>
-                  </div>
-                </div>
-                {expandedModule === module.id ? <ChevronDown className="w-6 h-6 text-muted-foreground" /> : <ChevronRight className="w-6 h-6 text-muted-foreground" />}
-              </div>
-              {expandedModule === module.id && (<div className="p-6 space-y-3 bg-muted/50">{module.topics.map((topic) => (<TopicItem key={topic.slug} topic={topic} />))}</div>)}
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 text-center text-muted-foreground"><Award className="w-12 h-12 mx-auto mb-3 text-primary" /><p className="text-lg font-semibold">Happy Coding!</p><p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p></div>
-      </div>
-    </div>
+    <GenericLearningPath
+      language={language}
+      contextHooks={contextHooks}
+      categoryIcons={categoryIcons}
+    />
   );
 };

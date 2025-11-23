@@ -22,18 +22,18 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import { useWebPlayground } from './web-playground-context';
 import { Button } from './ui/button';
-import { compileScssCode } from '@/ai/flows/compile-scss-code';
+import { compileScss } from '@/lib/scss-compiler';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 const defaultHtml = `<!DOCTYPE html>
 <html>
 <head>
-  <title>My Playground</title>
+  <title>Web Playground</title>
 </head>
 <body>
   <div class="card">
     <h1>Welcome to the Playground!</h1>
-    <p>Edit the code to see live updates.</p>
+    <p>Edit the HTML, CSS/SCSS, and JavaScript to see live updates.</p>
     <button>Click Me</button>
   </div>
 </body>
@@ -213,7 +213,10 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
   ]);
   const { theme } = useTheme();
 
+  // Initialize/reset code when modal opens or content changes
   useEffect(() => {
+    if (!open) return; // Only initialize when modal is open
+    
     if (content.html || content.css || content.js) {
         const lang = content.css.includes('$') || content.css.includes('@mixin') ? 'scss' : 'css';
         setStyleLang(lang);
@@ -221,13 +224,14 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
         setHtmlCode(content.html || defaultHtml);
         setJsCode(content.js || defaultJs);
     } else {
+        // Use initialLanguage to determine default - prioritize SCSS for SCSS pages
         const defaultLang = initialLanguage === 'scss' ? 'scss' : 'css';
         setStyleLang(defaultLang);
         setStyleCode(defaultLang === 'scss' ? defaultScss : defaultCss);
         setHtmlCode(defaultHtml);
         setJsCode(defaultJs);
     }
-  }, [content, initialLanguage]);
+  }, [content, initialLanguage, open]);
 
   // Debounced SCSS compilation
   useEffect(() => {
@@ -237,11 +241,51 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
       setIsCompiling(true);
       const handler = setTimeout(async () => {
         try {
-          const result = await compileScssCode({ scss: styleCode });
+          const result = await compileScss(styleCode);
+          if (result.error) {
+            // Add error to console logs
+            setConsoleLogs((prev) => [
+              ...prev,
+              { 
+                type: 'error', 
+                message: ['SCSS Compilation Error:', result.error], 
+                timestamp: new Date().toLocaleTimeString() 
+              },
+            ]);
+          } else {
+            // Success - log it
+            console.log("SCSS compiled successfully");
+            setConsoleLogs((prev) => {
+              // Only add success message if there were previous errors or if it's the first compilation
+              const hasErrors = prev.some(log => log.type === 'error' && log.message.some(m => 
+                typeof m === 'string' && m.includes('SCSS')
+              ));
+              if (hasErrors || prev.length === 1) {
+                return [
+                  ...prev,
+                  { 
+                    type: 'info', 
+                    message: ['✓ SCSS compiled successfully'], 
+                    timestamp: new Date().toLocaleTimeString() 
+                  },
+                ];
+              }
+              return prev;
+            });
+          }
           setCompiledCss(result.css);
         } catch (e) {
+          const errorMsg = e instanceof Error ? e.message : 'Unknown error';
           console.error("SCSS Compilation Error:", e);
-          setCompiledCss(`/* SCSS Compilation Failed */`);
+          setConsoleLogs((prev) => [
+            ...prev,
+            { 
+              type: 'error', 
+              message: ['SCSS Compilation Failed:', errorMsg], 
+              timestamp: new Date().toLocaleTimeString() 
+            },
+          ]);
+          setCompiledCss(`/* SCSS Compilation Failed: ${errorMsg} */`);
         } finally {
           setIsCompiling(false);
         }
@@ -274,7 +318,19 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
   useEffect(() => {
     if (open) {
       setConsoleLogs([]); // Clear logs when modal opens
+      // Add welcome message based on mode
+      const defaultLang = initialLanguage === 'scss' ? 'scss' : 'css';
+      if (defaultLang === 'scss') {
+        setConsoleLogs([{
+          type: 'info',
+          message: ['🎨 SCSS Mode Active - Use variables, nesting, mixins and more!'],
+          timestamp: new Date().toLocaleTimeString()
+        }]);
+      }
     }
+  }, [open, initialLanguage]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setOutputSrc(`
         data:text/html;charset=utf-8,${encodeURIComponent(`
@@ -323,29 +379,50 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col p-0" showCloseButton={false}>
-        <DialogHeader className="p-4 border-b flex-row items-center justify-between">
-          <DialogTitle className="flex items-center gap-2">
-            <PanelTop />
-            Web Playground
-          </DialogTitle>
-          <div className="flex items-center gap-2">
-            <ToggleGroup
-              type="multiple"
-              variant="outline"
-              value={visiblePanels}
-              onValueChange={(value) => setVisiblePanels(value)}
-              className="gap-1"
-            >
-              <ToggleGroupItem value="html" aria-label="Toggle HTML"><FileJson className="h-4 w-4" /></ToggleGroupItem>
-              <ToggleGroupItem value="style" aria-label="Toggle Style"><Braces className="h-4 w-4" /></ToggleGroupItem>
-              <ToggleGroupItem value="js" aria-label="Toggle JS"><Code className="h-4 w-4" /></ToggleGroupItem>
-              <ToggleGroupItem value="console" aria-label="Toggle Console"><Terminal className="h-4 w-4" /></ToggleGroupItem>
-            </ToggleGroup>
+      <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] flex flex-col p-0 gap-0" showCloseButton={false}>
+        {/* Enhanced Header with gradient */}
+        <DialogHeader className="px-6 py-4 border-b bg-gradient-to-r from-primary/5 via-blue-500/5 to-purple-500/5 backdrop-blur-sm flex-row items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <PanelTop className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <DialogTitle className="text-lg font-bold">Web Playground</DialogTitle>
+              <p className="text-xs text-muted-foreground">Live code editor with instant preview</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            {/* Panel Toggles */}
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-background/50 rounded-lg border">
+              <span className="text-xs font-medium text-muted-foreground">Panels:</span>
+              <ToggleGroup
+                type="multiple"
+                variant="outline"
+                value={visiblePanels}
+                onValueChange={(value) => setVisiblePanels(value)}
+                className="gap-1"
+              >
+                <ToggleGroupItem value="html" aria-label="Toggle HTML" size="sm" className="h-8 w-8">
+                  <FileJson className="h-4 w-4" />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="style" aria-label="Toggle Style" size="sm" className="h-8 w-8">
+                  <Braces className="h-4 w-4" />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="js" aria-label="Toggle JS" size="sm" className="h-8 w-8">
+                  <Code className="h-4 w-4" />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="console" aria-label="Toggle Console" size="sm" className="h-8 w-8">
+                  <Terminal className="h-4 w-4" />
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+            
+            {/* Close Button */}
             <DialogClose asChild>
-                <Button variant="outline" size="icon" aria-label="Close">
-                    <X className="h-4 w-4" />
-                </Button>
+              <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-destructive/10 hover:text-destructive" aria-label="Close">
+                <X className="h-5 w-5" />
+              </Button>
             </DialogClose>
           </div>
         </DialogHeader>
@@ -354,75 +431,130 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
             <ResizablePanel defaultSize={75}>
               <ResizablePanelGroup direction="horizontal">
                 {visiblePanels.includes('html') && (
-                  <ResizablePanel defaultSize={25} collapsible minSize={10}>
-                    <Editor
-                      language="html"
-                      value={htmlCode}
-                      onChange={(value) => setHtmlCode(value || '')}
-                      theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                      options={{ minimap: { enabled: false }, wordWrap: 'on' }}
-                    />
+                  <ResizablePanel defaultSize={18} collapsible minSize={10}>
+                    <div className="h-full flex flex-col">
+                      <div className="px-4 py-2 bg-orange-500/10 border-b flex items-center gap-2">
+                        <FileJson className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                        <span className="text-sm font-semibold text-orange-700 dark:text-orange-300">HTML</span>
+                      </div>
+                      <div className="flex-1">
+                        <Editor
+                          language="html"
+                          value={htmlCode}
+                          onChange={(value) => setHtmlCode(value || '')}
+                          theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                          options={{ 
+                            minimap: { enabled: false }, 
+                            wordWrap: 'on',
+                            fontSize: 14,
+                            lineNumbers: 'on',
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </ResizablePanel>
                 )}
                 {visiblePanels.includes('html') && visiblePanels.includes('style') && <ResizableHandle withHandle />}
                 {visiblePanels.includes('style') && (
-                  <ResizablePanel defaultSize={25} collapsible minSize={10}>
-                     <div className="relative h-full">
-                       <div className="absolute top-2 right-2 z-10 bg-background/80 backdrop-blur-sm rounded-full p-1 text-xs flex items-center gap-1 text-muted-foreground">
-                        {styleLang === 'scss' && isCompiling && (
-                          <>
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                            <span>Compiling...</span>
-                          </>
-                        )}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-6 text-xs gap-1">
-                                    {styleLang.toUpperCase()}
-                                    <ChevronsUpDown className="h-3 w-3" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuRadioGroup value={styleLang} onValueChange={(v) => setStyleLang(v as StyleLang)}>
-                                    <DropdownMenuRadioItem value="scss">SCSS</DropdownMenuRadioItem>
-                                    <DropdownMenuRadioItem value="css">CSS</DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                  <ResizablePanel defaultSize={18} collapsible minSize={10}>
+                     <div className="h-full flex flex-col">
+                       <div className="px-4 py-2 bg-blue-500/10 border-b flex items-center justify-between">
+                         <div className="flex items-center gap-2">
+                           <Braces className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                           <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+                             {styleLang === 'scss' ? 'SCSS' : 'CSS'}
+                           </span>
+                           {styleLang === 'scss' && isCompiling && (
+                             <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                               <Loader2 className="h-3 w-3 animate-spin" />
+                               <span>Compiling...</span>
+                             </div>
+                           )}
+                         </div>
+                         <DropdownMenu>
+                           <DropdownMenuTrigger asChild>
+                             <Button variant="ghost" size="sm" className="h-7 text-xs gap-1 hover:bg-blue-500/20">
+                               {styleLang.toUpperCase()}
+                               <ChevronsUpDown className="h-3 w-3" />
+                             </Button>
+                           </DropdownMenuTrigger>
+                           <DropdownMenuContent>
+                             <DropdownMenuRadioGroup value={styleLang} onValueChange={(v) => setStyleLang(v as StyleLang)}>
+                               <DropdownMenuRadioItem value="scss">SCSS</DropdownMenuRadioItem>
+                               <DropdownMenuRadioItem value="css">CSS</DropdownMenuRadioItem>
+                             </DropdownMenuRadioGroup>
+                           </DropdownMenuContent>
+                         </DropdownMenu>
                        </div>
-                        <Editor
-                          language={styleLang}
-                          value={styleCode}
-                          onChange={(value) => setStyleCode(value || '')}
-                          theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                          options={{ minimap: { enabled: false }, wordWrap: 'on' }}
-                        />
+                       <div className="flex-1">
+                         <Editor
+                           language={styleLang}
+                           value={styleCode}
+                           onChange={(value) => setStyleCode(value || '')}
+                           theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                           options={{ 
+                             minimap: { enabled: false }, 
+                             wordWrap: 'on',
+                             fontSize: 14,
+                             lineNumbers: 'on',
+                             scrollBeyondLastLine: false,
+                             automaticLayout: true,
+                           }}
+                         />
+                       </div>
                      </div>
                   </ResizablePanel>
                 )}
                 {(visiblePanels.includes('html') || visiblePanels.includes('style')) && visiblePanels.includes('js') && <ResizableHandle withHandle />}
                 {visiblePanels.includes('js') && (
-                  <ResizablePanel defaultSize={25} collapsible minSize={10}>
-                    <Editor
-                      language="javascript"
-                      value={jsCode}
-                      onChange={(value) => setJsCode(value || '')}
-                      theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                      options={{ minimap: { enabled: false }, wordWrap: 'on' }}
-                    />
+                  <ResizablePanel defaultSize={18} collapsible minSize={10}>
+                    <div className="h-full flex flex-col">
+                      <div className="px-4 py-2 bg-yellow-500/10 border-b flex items-center gap-2">
+                        <Code className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                        <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">JavaScript</span>
+                      </div>
+                      <div className="flex-1">
+                        <Editor
+                          language="javascript"
+                          value={jsCode}
+                          onChange={(value) => setJsCode(value || '')}
+                          theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                          options={{ 
+                            minimap: { enabled: false }, 
+                            wordWrap: 'on',
+                            fontSize: 14,
+                            lineNumbers: 'on',
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </ResizablePanel>
                 )}
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={25} minSize={20}>
-                  <iframe
-                    src={outputSrc}
-                    title="output"
-                    sandbox="allow-scripts allow-modals"
-                    frameBorder="0"
-                    width="100%"
-                    height="100%"
-                    className="bg-white"
-                  />
+                <ResizablePanel defaultSize={46} minSize={25}>
+                  <div className="h-full flex flex-col">
+                    <div className="px-4 py-2 bg-green-500/10 border-b flex items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-sm font-semibold text-green-700 dark:text-green-300">Live Preview</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 relative">
+                      <iframe
+                        src={outputSrc}
+                        title="output"
+                        sandbox="allow-scripts allow-modals"
+                        frameBorder="0"
+                        width="100%"
+                        height="100%"
+                        className="bg-white dark:bg-gray-900"
+                      />
+                    </div>
+                  </div>
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
@@ -431,25 +563,55 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
               <>
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize={25} collapsible minSize={10}>
-                  <div className="h-full flex flex-col">
-                    <div className="p-2 border-b flex items-center justify-between text-sm font-semibold">
+                  <div className="h-full flex flex-col bg-muted/30">
+                    <div className="px-4 py-2 bg-purple-500/10 border-b flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Terminal className="h-4 w-4" />
-                        Console
+                        <Terminal className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                        <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Console Output</span>
+                        <span className="text-xs text-muted-foreground">
+                          ({consoleLogs.length} {consoleLogs.length === 1 ? 'message' : 'messages'})
+                        </span>
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => setConsoleLogs([])}>Clear</Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setConsoleLogs([])}
+                        className="h-7 text-xs hover:bg-purple-500/20"
+                      >
+                        Clear
+                      </Button>
                     </div>
-                    <ScrollArea className="flex-1 p-2 bg-muted/50">
-                      {consoleLogs.map((log, index) => (
-                        <div key={index} className={cn("flex gap-2 items-start font-mono text-xs border-b border-border/50 py-1", getLogLevelClass(log.type))}>
-                           <span className="opacity-50">{log.timestamp}</span>
-                           <div className="flex-1 whitespace-pre-wrap">
-                            {log.message.map((msg, i) => (
-                              <span key={i}>{renderLogMessage(msg)} </span>
-                            ))}
+                    <ScrollArea className="flex-1 p-3">
+                      {consoleLogs.length === 0 ? (
+                        <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+                          <div className="text-center">
+                            <Terminal className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p>Console is empty</p>
+                            <p className="text-xs mt-1">Messages will appear here</p>
                           </div>
                         </div>
-                      ))}
+                      ) : (
+                        consoleLogs.map((log, index) => (
+                          <div 
+                            key={index} 
+                            className={cn(
+                              "flex gap-3 items-start font-mono text-xs border-l-2 pl-3 py-2 mb-2 rounded-r bg-background/50",
+                              log.type === 'error' ? 'border-red-500 bg-red-500/5' : 
+                              log.type === 'warn' ? 'border-yellow-500 bg-yellow-500/5' : 
+                              log.type === 'info' ? 'border-blue-500 bg-blue-500/5' : 
+                              'border-green-500 bg-green-500/5',
+                              getLogLevelClass(log.type)
+                            )}
+                          >
+                            <span className="opacity-70 text-[10px] min-w-[60px]">{log.timestamp}</span>
+                            <div className="flex-1 whitespace-pre-wrap break-words">
+                              {log.message.map((msg, i) => (
+                                <span key={i} className="mr-2">{renderLogMessage(msg)}</span>
+                              ))}
+                            </div>
+                          </div>
+                        ))
+                      )}
                     </ScrollArea>
                   </div>
                 </ResizablePanel>

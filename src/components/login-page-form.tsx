@@ -172,10 +172,9 @@ export function LoginPageForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center space-y-4">
-        <div className="mx-auto">
+        <div className="flex justify-center">
           <Logo />
         </div>
-        <CardTitle>Welcome Back to Coder Pod</CardTitle>
         <CardDescription>Sign in to continue your learning journey.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
