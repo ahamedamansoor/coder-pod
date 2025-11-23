@@ -7,7 +7,7 @@ import { useUser } from '@/firebase';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Award, Linkedin, Home } from 'lucide-react';
-import { Logo } from '@/components/logo';
+import { Logo } from '@/components/shared/layout/logo';
 import Link from 'next/link';
 
 export default function CertificatePage() {

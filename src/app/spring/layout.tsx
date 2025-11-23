@@ -3,8 +3,8 @@
 
 import React, { useEffect } from 'react';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
-import { MainHeader } from '@/components/main-header';
-import { TopicSidebar } from '@/components/topic-sidebar';
+import { MainHeader } from '@/components/shared/layout/main-header';
+import { TopicSidebar } from '@/components/shared/topic-sidebar';
 import { languages } from '@/app/data/index';
 import { notFound, useParams } from 'next/navigation';
 import { SpringProvider } from './spring-context';

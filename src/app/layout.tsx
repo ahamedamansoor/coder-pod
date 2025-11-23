@@ -2,11 +2,11 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/shared/layout/theme-provider';
 import { FirebaseClientProvider } from '@/firebase';
-import { WebPlaygroundProvider } from '@/components/web-playground-context';
+import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { LoadingProvider } from '@/hooks/use-loading';
-import { PageLoader } from '@/components/page-loader';
+import { PageLoader } from '@/components/shared/page-loader';
 
 export const metadata: Metadata = {
   title: 'Coder Pod - Your Launchpad For Learning',

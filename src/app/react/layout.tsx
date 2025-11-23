@@ -3,14 +3,14 @@
 
 import React, { useEffect } from 'react';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
-import { MainHeader } from '@/components/main-header';
-import { TopicSidebar } from '@/components/topic-sidebar';
+import { MainHeader } from '@/components/shared/layout/main-header';
+import { TopicSidebar } from '@/components/shared/topic-sidebar';
 import { languages } from '@/app/data/index';
 import { notFound, useParams } from 'next/navigation';
 import { ReactProvider } from './react-context';
 import { ReactLayoutProvider, useReactLayout } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { ReactPlaygroundProvider } from '@/components/react-playground-context';
+import { ReactPlaygroundProvider } from '@/components/react/react-playground-context';
 
 function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();

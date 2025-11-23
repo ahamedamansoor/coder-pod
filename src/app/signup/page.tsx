@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CalendarIcon, Loader2 } from 'lucide-react';
-import { Logo } from '@/components/logo';
+import { Logo } from '@/components/shared/layout/logo';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { countries } from '@/lib/countries';

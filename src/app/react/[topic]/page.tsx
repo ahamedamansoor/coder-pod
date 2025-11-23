@@ -4,17 +4,17 @@
 import { useState, useCallback, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data/index';
-import { ReactContentDisplay } from '@/components/react-content-display';
+import { ReactContentDisplay } from '@/components/react/react-content-display';
 import {
   ResizablePanelGroup,
   ResizablePanel,
 } from '@/components/ui/resizable';
-import { ReactLearningRoadmap } from '@/components/react-learning-roadmap';
+import { ReactLearningRoadmap } from '@/components/react/react-learning-roadmap';
 import { useReactLayout } from '../react-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
-import { InteractiveLoading } from '@/components/interactive-loading';
-import { useReactPlayground } from '@/components/react-playground-context';
+import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { useReactPlayground } from '@/components/react/react-playground-context';
 
 function TopicPageContent() {
   const params = useParams();

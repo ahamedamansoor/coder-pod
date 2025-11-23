@@ -4,7 +4,7 @@
 import { useState, useCallback, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data/index';
-import { CodeEditorSheet } from '@/components/code-editor-sheet';
+import { CodeEditorSheet } from '@/components/shared/playground/code-editor-sheet';
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -13,9 +13,9 @@ import {
 import { useScssLayout } from '../scss-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
-import { ScssContentDisplay } from '@/components/scss-content-display';
-import { ScssLearningRoadmap } from '@/components/scss-learning-roadmap';
-import { InteractiveLoading } from '@/components/interactive-loading';
+import { ScssContentDisplay } from '@/components/scss/scss-content-display';
+import { ScssLearningRoadmap } from '@/components/scss/scss-learning-roadmap';
+import { InteractiveLoading } from '@/components/shared/interactive-loading';
 
 function TopicPageContent() {
   const params = useParams();

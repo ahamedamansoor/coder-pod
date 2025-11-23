@@ -2,10 +2,10 @@
 'use client';
 
 import { Suspense, useEffect } from 'react';
-import { LoginPageForm } from '@/components/login-page-form';
+import { LoginPageForm } from '@/components/shared/modals/login-page-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader } from '@/components/ui/card';
-import { Logo } from '@/components/logo';
+import { Logo } from '@/components/shared/layout/logo';
 import { useLoading } from '@/hooks/use-loading';
 
 function LoginSkeleton() {

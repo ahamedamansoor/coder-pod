@@ -9,9 +9,9 @@ import {
   ResizablePanel,
 } from '@/components/ui/resizable';
 import React from 'react';
-import { CssContentDisplay } from '@/components/css-content-display';
-import { CssLearningRoadmap } from '@/components/css-learning-roadmap';
-import { InteractiveLoading } from '@/components/interactive-loading';
+import { CssContentDisplay } from '@/components/css/css-content-display';
+import { CssLearningRoadmap } from '@/components/css/css-learning-roadmap';
+import { InteractiveLoading } from '@/components/shared/interactive-loading';
 
 function TopicPageContent() {
   const params = useParams();

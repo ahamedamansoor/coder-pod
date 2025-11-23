@@ -3,7 +3,7 @@
 import { useState, useCallback, Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/app/data/index';
-import { CodeEditorSheet } from '@/components/code-editor-sheet';
+import { CodeEditorSheet } from '@/components/shared/playground/code-editor-sheet';
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -12,9 +12,9 @@ import {
 import { useHtmlLayout } from '../html-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
-import { HtmlContentDisplay } from '@/components/html-content-display';
-import { HtmlLearningRoadmap } from '@/components/html-learning-roadmap';
-import { InteractiveLoading } from '@/components/interactive-loading';
+import { HtmlContentDisplay } from '@/components/html/html-content-display';
+import { HtmlLearningRoadmap } from '@/components/html/html-learning-roadmap';
+import { InteractiveLoading } from '@/components/shared/interactive-loading';
 
 function TopicPageContent() {
   const params = useParams();
