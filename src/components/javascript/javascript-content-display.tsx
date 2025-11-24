@@ -44,9 +44,11 @@ export function JavascriptContentDisplay({
   return (
     <GenericContentDisplay topic={topic} language={language}>
       <Suspense fallback={<LoadingSkeleton />}>
-        {CustomTopicComponent ? (
-          <CustomTopicComponent onOpenWebPlayground={openWithContent} />
-        ) : null}
+        {CustomTopicComponent
+          ? React.createElement(CustomTopicComponent as any, {
+              onOpenWebPlayground: openWithContent,
+            })
+          : null}
       </Suspense>
     </GenericContentDisplay>
   );

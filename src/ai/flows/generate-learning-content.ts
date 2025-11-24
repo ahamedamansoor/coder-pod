@@ -226,6 +226,7 @@ function extractSections(code: string): string[] {
 
 /**
  * Export utility function for direct usage
+ * Mirrors the flow input but provides convenient defaults in TypeScript.
  */
 export async function generateTopicContent(params: {
   language: string;
@@ -234,6 +235,19 @@ export async function generateTopicContent(params: {
   includePlayground?: boolean;
   existingTopics?: string[];
 }) {
-  return await generateLearningContent(params);
-}
+  const {
+    language,
+    topic,
+    level = 'all',
+    includePlayground = true,
+    existingTopics,
+  } = params;
 
+  return await generateLearningContent({
+    language,
+    topic,
+    level,
+    includePlayground,
+    existingTopics,
+  });
+}
