@@ -11,10 +11,11 @@ import type { Language, Topic } from '@/app/data';
 import { ModuleCompletionCelebration } from '@/components/shared/modals/module-completion-celebration';
 import { getThemeClasses, animationClasses } from '@/lib/language-themes';
 
-// Shared brand color used in the logo ("CODER")
-const LOGO_COLOR_CLASS = 'text-[#5B7FFF]';
-const LOGO_BG_CLASS = 'bg-[#5B7FFF]';
-const LOGO_BG_SOFT_CLASS = 'bg-[#5B7FFF]/5';
+// Shared brand color (Coder Pod blue) using theme-friendly classes
+const LOGO_COLOR_CLASS = 'text-primary';
+const LOGO_BG_CLASS = 'bg-primary';
+const LOGO_BG_SOFT_CLASS = 'bg-primary/10 dark:bg-primary/20';
+const LOGO_BORDER_SOFT = 'border-primary/40 dark:border-primary/50';
 
 // Utility function to decode HTML entities (works in SSR and client)
 const decodeHtmlEntities = (text: string | undefined | null): string => {
@@ -199,15 +200,15 @@ export const GenericLearningPath = ({
         onClick={() => toggleTopic(topic.slug)} 
         className={cn(
           "border rounded-lg p-4 transition-all duration-200 hover:-translate-y-0.5",
-          isUserAuthenticated && "cursor-pointer hover:shadow-md hover:border-[#5B7FFF]/40",
+          isUserAuthenticated && "cursor-pointer hover:shadow-md hover:border-primary/50 dark:hover:border-primary/60",
           !isUserAuthenticated && "cursor-not-allowed opacity-70",
           isCompleted ? cn(
-            "bg-background",
-            "border-[#5B7FFF]",
+            "bg-card dark:bg-slate-900/80",
+            "border-primary",
             "shadow-sm"
           ) : cn(
-            "bg-background",
-            "border-[#5B7FFF]/40"
+            "bg-card dark:bg-slate-900/60",
+            "border-primary/30 dark:border-primary/40"
           )
         )}
       >
@@ -225,11 +226,11 @@ export const GenericLearningPath = ({
           </div>
           <div className="flex-1">
             <Link href={`/${language.slug}/${topic.slug}`} className={cn(
-              "hover:underline transition-colors hover:text-[#5B7FFF]"
+              "hover:underline transition-colors hover:text-primary"
             )}>
               <h3 className={cn(
                 "text-lg font-semibold transition-colors",
-                isCompleted ? themeClasses.textPrimary : "text-foreground"
+                isCompleted ? themeClasses.textPrimary : "text-foreground dark:text-slate-100"
               )}>
                 {decodeHtmlEntities(topic.title)}
               </h3>
@@ -343,8 +344,9 @@ export const GenericLearningPath = ({
                 className={cn(
                   "border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
                   themeClasses.cardElevated,
+                  "bg-card dark:bg-slate-900/80",
                   animationClasses.fadeIn,
-                  "border-[#5B7FFF]/30"
+                  "border-primary/30 dark:border-primary/50"
                 )}
               >
                 {/* Module Header */}
@@ -353,16 +355,16 @@ export const GenericLearningPath = ({
                   className={cn(
                     "p-6 cursor-pointer flex items-center justify-between border-b transition-all duration-200",
                     themeClasses.cardBackground,
-                    "border-[#5B7FFF]/40",
-                    expandedModule === module.id && "bg-[#5B7FFF]/5",
-                    expandedModule === module.id && "border-[#5B7FFF]",
+                    "border-primary/30 dark:border-primary/50",
+                    expandedModule === module.id && "bg-primary/10 dark:bg-primary/20",
+                    expandedModule === module.id && "border-primary",
                   )}
                 >
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "text-3xl p-3 rounded-full transition-all duration-200 hover:scale-110",
                       themeClasses.cardBackground,
-                      "border-[#5B7FFF]/40",
+                      "border-primary/30 dark:border-primary/50",
                       module.color
                     )}>
                       <ModuleIcon className="w-8 h-8" />
@@ -371,18 +373,20 @@ export const GenericLearningPath = ({
                       <div className="flex items-center gap-3 mb-1">
                         <h2 className={cn(
                           "text-xl font-bold transition-colors",
-                          themeClasses.textPrimary
+                          themeClasses.textPrimary,
+                          "dark:text-slate-100"
                         )}>
                           {decodeHtmlEntities(module.title)}
                         </h2>
-                        <span className={cn(
-                          "px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105",
-                          LOGO_BG_SOFT_CLASS,
-                          LOGO_COLOR_CLASS,
-                          "border border-[#5B7FFF]/30"
-                        )}>
-                          {module.level}
-                        </span>
+                          <span className={cn(
+                            "px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105",
+                            LOGO_BG_SOFT_CLASS,
+                            LOGO_COLOR_CLASS,
+                            "border",
+                            LOGO_BORDER_SOFT
+                          )}>
+                            {module.level}
+                          </span>
                         <span className={cn(
                           "text-sm transition-colors",
                           themeClasses.textSecondary
@@ -392,18 +396,18 @@ export const GenericLearningPath = ({
                       </div>
                       {/* Module Progress Bar */}
                       <div className="flex items-center gap-2 mt-2">
-                        <div className={cn(
-                          "w-32 rounded-full h-2 overflow-hidden",
-                          themeClasses.progressBackground
-                        )}>
-                          <div 
-                            className={cn(
-                              "h-2 rounded-full transition-all duration-500",
-                              LOGO_BG_CLASS
-                            )} 
-                            style={{ width: `${moduleProgress}%` }}
-                          ></div>
-                        </div>
+                      <div className={cn(
+                        "w-32 rounded-full h-2 overflow-hidden",
+                        themeClasses.progressBackground
+                      )}>
+                        <div 
+                          className={cn(
+                            "h-2 rounded-full transition-all duration-500",
+                            "bg-primary"
+                          )} 
+                          style={{ width: `${moduleProgress}%` }}
+                        ></div>
+                      </div>
                         <span className={cn(
                           "text-xs transition-colors",
                           themeClasses.textSecondary
@@ -441,7 +445,7 @@ export const GenericLearningPath = ({
           "mt-12 rounded-lg p-6 border transition-all duration-300",
           themeClasses.cardElevated,
           animationClasses.fadeIn,
-          "border-[#5B7FFF]/30"
+          "border-primary/30 dark:border-primary/50"
         )}>
           <div className="flex items-center gap-3 mb-6">
             <Zap className={cn(
@@ -459,7 +463,7 @@ export const GenericLearningPath = ({
             <div className={cn(
               "rounded-lg p-4 border transition-all duration-200",
               themeClasses.cardDefault,
-              "border-[#5B7FFF]/30"
+              "border-primary/30 dark:border-primary/50"
             )}>
               <h3 className={cn(
                 "font-semibold text-base mb-2",
@@ -477,7 +481,7 @@ export const GenericLearningPath = ({
             <div className={cn(
               "rounded-lg p-4 border transition-all duration-200",
               themeClasses.cardDefault,
-              "border-[#5B7FFF]/30"
+              "border-primary/30 dark:border-primary/50"
             )}>
               <h3 className={cn(
                 "font-semibold text-base mb-2",

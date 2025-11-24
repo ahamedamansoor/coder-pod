@@ -31,11 +31,11 @@ export function GenericGroupedTopicMenu({
 }: GenericGroupedTopicMenuProps) {
   if (!groups || groups.length === 0) return null;
 
-  // Use consistent blue branding color for all menu elements
-  const blueTheme = {
-    primary: 'text-blue-600 dark:text-blue-400',
-    activeMenuContainer: '!bg-blue-100 dark:!bg-blue-900/20 !border-blue-300 dark:!border-blue-700',
-    activeMenuLink: '!text-blue-700 dark:!text-blue-300',
+  // Use Coder Pod brand color (primary token) for all menu elements
+  const brandTheme = {
+    primary: 'text-primary',
+    activeMenuContainer: '!bg-primary/10 !border-primary/40',
+    activeMenuLink: '!text-primary',
   };
 
   return (
@@ -45,14 +45,14 @@ export function GenericGroupedTopicMenu({
           <p 
             className={cn(
               "px-2 text-md font-semibold transition-colors",
-              blueTheme.primary
+              brandTheme.primary
             )}
           >
             {group.title}
           </p>
           <div 
             className={cn(
-              "ml-2 border-l-2 border-blue-300 dark:border-blue-700 pl-2 space-y-1 transition-colors"
+              "ml-2 border-l-2 border-primary/40 pl-2 space-y-1 transition-colors"
             )}
           >
             {group.topics.map(topic => (
@@ -64,9 +64,9 @@ export function GenericGroupedTopicMenu({
                   className={cn(
                     "justify-start text-sm transition-all duration-200 hover:shadow-sm",
                     selectedTopicSlug === topic.slug && cn(
-                      blueTheme.primary,
+                      brandTheme.primary,
                       "font-semibold",
-                      blueTheme.activeMenuContainer
+                      brandTheme.activeMenuContainer
                     )
                   )}
                 >
@@ -75,13 +75,13 @@ export function GenericGroupedTopicMenu({
                     ref={selectedTopicSlug === topic.slug ? activeItemRef : null}
                     className={cn(
                       "flex items-center gap-2 transition-colors",
-                      selectedTopicSlug === topic.slug && blueTheme.activeMenuLink
+                      selectedTopicSlug === topic.slug && brandTheme.activeMenuLink
                     )}
                   >
                     {completedTopics.has(topic.slug) && isUserAuthenticated && (
                       <CheckCircle className={cn(
                         "w-4 h-4 transition-colors",
-                        blueTheme.primary,
+                        brandTheme.primary,
                         animationClasses.scaleIn
                       )} />
                     )}

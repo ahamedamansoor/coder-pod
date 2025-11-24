@@ -74,12 +74,12 @@ export function TopicSidebar({
   const { completedTopics } = useLanguageContext(language);
   const { user } = useUser();
   const isUserAuthenticated = user && !user.isAnonymous;
-  // Use consistent blue branding color for all sidebar elements
-  const blueTheme = {
-    primary: 'text-blue-600 dark:text-blue-400',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    activeMenuContainer: '!bg-blue-100 dark:!bg-blue-900/20 !border-blue-300 dark:!border-blue-700',
-    activeMenuLink: '!text-blue-700 dark:!text-blue-300',
+  // Use Coder Pod brand color (primary token) for all sidebar elements
+  const brandTheme = {
+    primary: 'text-primary',
+    textSecondary: 'text-muted-foreground',
+    activeMenuContainer: '!bg-primary/10 !border-primary/40',
+    activeMenuLink: '!text-primary',
   };
 
   useEffect(() => {
@@ -313,10 +313,10 @@ export function TopicSidebar({
       <div key={title} className="space-y-2">
         <p className={cn(
           "px-2 text-md font-semibold transition-colors",
-          blueTheme.primary
+          brandTheme.primary
         )}>{title}</p>
         <div className={cn(
-          "ml-2 border-l-2 border-blue-300 dark:border-blue-700 pl-2 space-y-1 transition-colors"
+          "ml-2 border-l-2 border-primary/40 pl-2 space-y-1 transition-colors"
         )}>
           {topics.map((topic) => (
             <SidebarMenuItem key={topic.slug}>
@@ -327,17 +327,17 @@ export function TopicSidebar({
                 className={cn(
                   "justify-start text-sm transition-all duration-200",
                   selectedTopicSlug === topic.slug && cn(
-                    blueTheme.primary,
+                    brandTheme.primary,
                     "font-semibold",
-                    blueTheme.activeMenuContainer
+                    brandTheme.activeMenuContainer
                   )
                 )}
               >
                 <Link href={`/${language.slug}/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null} className={cn(
                   "flex items-center gap-2 transition-colors",
-                  selectedTopicSlug === topic.slug && blueTheme.activeMenuLink
+                  selectedTopicSlug === topic.slug && brandTheme.activeMenuLink
                 )}>
-                  {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className={cn("w-4 h-4", blueTheme.primary)} />}
+                  {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className={cn("w-4 h-4", brandTheme.primary)} />}
                   {topic.title}
                 </Link>
               </SidebarMenuButton>
@@ -356,16 +356,16 @@ export function TopicSidebar({
       className={cn(
         "justify-start text-sm transition-colors",
         selectedTopicSlug === learningPlanTopic?.slug && cn(
-          blueTheme.primary,
+          brandTheme.primary,
           "font-semibold",
-          blueTheme.activeMenuContainer
+          brandTheme.activeMenuContainer
         )
       )}
       disabled={!isUserAuthenticated}
     >
        <Link href={`/${language.slug}/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
-        selectedTopicSlug === learningPlanTopic?.slug && blueTheme.activeMenuLink
+        selectedTopicSlug === learningPlanTopic?.slug && brandTheme.activeMenuLink
        )}>
           {learningPlanTopic?.title}
        </Link>
@@ -380,15 +380,15 @@ export function TopicSidebar({
       className={cn(
         "justify-start text-sm transition-colors",
         selectedTopicSlug === interviewTopic?.slug && cn(
-          blueTheme.primary,
+          brandTheme.primary,
           "font-semibold",
-          blueTheme.activeMenuContainer
+          brandTheme.activeMenuContainer
         )
       )}
     >
        <Link href={`/${language.slug}/${interviewTopic?.slug}`} ref={selectedTopicSlug === interviewTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
-        selectedTopicSlug === interviewTopic?.slug && blueTheme.activeMenuLink
+        selectedTopicSlug === interviewTopic?.slug && brandTheme.activeMenuLink
        )}>
           {interviewTopic?.title}
        </Link>
@@ -403,15 +403,15 @@ export function TopicSidebar({
       className={cn(
         "justify-start text-sm transition-colors",
         selectedTopicSlug === reactUpdatesTopic?.slug && cn(
-          blueTheme.primary,
+          brandTheme.primary,
           "font-semibold",
-          blueTheme.activeMenuContainer
+          brandTheme.activeMenuContainer
         )
       )}
     >
       <Link href={`/${language.slug}/${reactUpdatesTopic?.slug}`} ref={selectedTopicSlug === reactUpdatesTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
-        selectedTopicSlug === reactUpdatesTopic?.slug && blueTheme.activeMenuLink
+        selectedTopicSlug === reactUpdatesTopic?.slug && brandTheme.activeMenuLink
       )}>
           {reactUpdatesTopic?.title}
       </Link>
@@ -461,7 +461,7 @@ export function TopicSidebar({
                 <div className='space-y-4'>
                   <p className={cn(
                     "px-2 py-1 text-xl font-semibold transition-colors",
-                    blueTheme.primary
+                    brandTheme.primary
                   )}>Topics</p>
                   {(language.slug === 'html' || language.slug === 'javascript') ? (
                     <GenericGroupedTopicMenu

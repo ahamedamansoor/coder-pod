@@ -21,103 +21,28 @@ export interface CategoryIcon {
 }
 
 // Professional, subtle language themes with dark mode support
+const brandTheme: LanguageTheme = {
+  primary: 'text-blue-600 dark:text-blue-400',
+  secondary: 'text-blue-500 dark:text-blue-300',
+  accent: 'text-blue-700 dark:text-blue-500',
+  gradient: 'from-blue-600/20 to-blue-500/20 dark:from-blue-400/30 dark:to-blue-300/30',
+  background: 'bg-blue-50/30 dark:bg-blue-950/10',
+  cardBackground: 'bg-white/95 dark:bg-gray-800/95',
+  textPrimary: 'text-gray-900 dark:text-gray-100',
+  textSecondary: 'text-gray-600 dark:text-gray-300',
+  border: 'border-blue-200/50 dark:border-gray-700/50',
+  shadow: 'shadow-sm dark:shadow-black/20'
+};
+
 export const languageThemes: Record<string, LanguageTheme> = {
-  html: {
-    primary: 'text-blue-600 dark:text-blue-400',
-    secondary: 'text-blue-500 dark:text-blue-300',
-    accent: 'text-blue-700 dark:text-blue-500',
-    gradient: 'from-blue-600/20 to-blue-500/20 dark:from-blue-400/30 dark:to-blue-300/30',
-    background: 'bg-blue-50/30 dark:bg-blue-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-blue-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  css: {
-    primary: 'text-blue-600 dark:text-blue-400',
-    secondary: 'text-blue-500 dark:text-blue-300',
-    accent: 'text-blue-700 dark:text-blue-500',
-    gradient: 'from-blue-600/20 to-indigo-600/20 dark:from-blue-400/30 dark:to-indigo-400/30',
-    background: 'bg-blue-50/30 dark:bg-blue-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-blue-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  scss: {
-    primary: 'text-pink-600 dark:text-pink-400',
-    secondary: 'text-pink-500 dark:text-pink-300',
-    accent: 'text-pink-700 dark:text-pink-500',
-    gradient: 'from-pink-600/20 to-rose-600/20 dark:from-pink-400/30 dark:to-rose-400/30',
-    background: 'bg-pink-50/30 dark:bg-pink-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-pink-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  javascript: {
-    primary: 'text-amber-600 dark:text-amber-400',
-    secondary: 'text-amber-500 dark:text-amber-300',
-    accent: 'text-amber-700 dark:text-amber-500',
-    gradient: 'from-amber-600/20 to-yellow-600/20 dark:from-amber-400/30 dark:to-yellow-400/30',
-    background: 'bg-amber-50/30 dark:bg-amber-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-amber-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  react: {
-    primary: 'text-cyan-600 dark:text-cyan-400',
-    secondary: 'text-cyan-500 dark:text-cyan-300',
-    accent: 'text-cyan-700 dark:text-cyan-500',
-    gradient: 'from-cyan-600/20 to-blue-600/20 dark:from-cyan-400/30 dark:to-blue-400/30',
-    background: 'bg-cyan-50/30 dark:bg-cyan-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-cyan-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  java: {
-    primary: 'text-red-600 dark:text-red-400',
-    secondary: 'text-red-500 dark:text-red-300',
-    accent: 'text-red-700 dark:text-red-500',
-    gradient: 'from-red-600/20 to-orange-600/20 dark:from-red-400/30 dark:to-orange-400/30',
-    background: 'bg-red-50/30 dark:bg-red-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-red-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  spring: {
-    primary: 'text-green-600 dark:text-green-400',
-    secondary: 'text-green-500 dark:text-green-300',
-    accent: 'text-green-700 dark:text-green-500',
-    gradient: 'from-green-600/20 to-emerald-600/20 dark:from-green-400/30 dark:to-emerald-400/30',
-    background: 'bg-green-50/30 dark:bg-green-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-green-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  },
-  'spring-boot': {
-    primary: 'text-emerald-600 dark:text-emerald-400',
-    secondary: 'text-emerald-500 dark:text-emerald-300',
-    accent: 'text-emerald-700 dark:text-emerald-500',
-    gradient: 'from-emerald-600/20 to-teal-600/20 dark:from-emerald-400/30 dark:to-teal-400/30',
-    background: 'bg-emerald-50/30 dark:bg-emerald-950/10',
-    cardBackground: 'bg-white/95 dark:bg-gray-800/95',
-    textPrimary: 'text-gray-900 dark:text-gray-100',
-    textSecondary: 'text-gray-600 dark:text-gray-300',
-    border: 'border-emerald-200/50 dark:border-gray-700/50',
-    shadow: 'shadow-sm dark:shadow-black/20'
-  }
+  html: { ...brandTheme },
+  css: { ...brandTheme },
+  scss: { ...brandTheme },
+  javascript: { ...brandTheme },
+  react: { ...brandTheme },
+  java: { ...brandTheme },
+  spring: { ...brandTheme },
+  'spring-boot': { ...brandTheme }
 };
 
 // Enhanced theming utilities

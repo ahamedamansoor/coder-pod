@@ -94,72 +94,9 @@ export function GenericContentDisplay({
   
   const isLearningPlanTopic = topic.slug === 'learning-plan' || topic.slug === 'interview-questions' || topic.slug === 'react-version-updates';
 
-  const markAsCompleteButton = (
-     <div className={cn(
-       "flex items-center space-x-2 shrink-0 p-3 rounded-lg border transition-all duration-200",
-       themeClasses.cardBackground,
-       themeClasses.border,
-       animationClasses.fadeIn
-     )}>
-      <Checkbox
-        id={`complete-${topic.slug}`}
-        checked={completedTopics.has(topic.slug)}
-        onCheckedChange={() => handleToggleComplete(topic.slug)}
-        disabled={!isUserAuthenticated}
-        className={cn(
-          "data-[state=checked]:bg-current",
-          themeClasses.primary
-        )}
-      />
-      <Label
-        htmlFor={`complete-${topic.slug}`}
-        className={cn(
-          "font-semibold transition-colors",
-          themeClasses.textSecondary,
-          !isUserAuthenticated && "cursor-not-allowed opacity-50"
-        )}
-      >
-        Mark as completed
-      </Label>
-    </div>
-  );
-
   return (
     <div className="space-y-8 min-h-screen">
-      {/* Unified Themed Topic Header */}
-      <div className={cn(
-        "rounded-lg p-6 border shadow-sm transition-colors",
-        themeClasses.cardBackground,
-        themeClasses.border,
-        animationClasses.fadeIn
-      )}>
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="space-y-2">
-            <h1 className={cn(
-              "text-3xl font-bold tracking-tight",
-              themeClasses.textPrimary
-            )}>
-              <span className={themeClasses.primary}>{topic.title}</span>
-            </h1>
-            <p className={cn(
-              "text-sm",
-              themeClasses.textSecondary
-            )}>{topic.explanation}</p>
-          </div>
-          {markAsCompleteButton}
-        </div>
-        {!isLearningPlanTopic && (
-          <div className={cn(
-            "mt-4 h-2 w-full rounded-full overflow-hidden",
-            themeClasses.progressBackground
-          )}>
-            <div className={cn(
-              "h-2 rounded-full",
-              themeClasses.progressBar
-            )} style={{ width: completedTopics.has(topic.slug) ? '100%' : '0%' }}></div>
-          </div>
-        )}
-      </div>
+      {/* Topic header intentionally removed per request */}
 
       {children ? (
         children
