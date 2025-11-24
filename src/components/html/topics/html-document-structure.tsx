@@ -3,8 +3,9 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileJson, Play, Code, Settings, File } from 'lucide-react';
+import { FileJson, Play, Code, Settings, File, LayoutTemplate, ArrowRight } from 'lucide-react';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 // Minimal boilerplate example
 const minimalStructure = `<!DOCTYPE html>
@@ -193,6 +194,261 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
         </CardContent>
       </Card>
 
+      {/* Visual Document Map */}
+      <Card>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <LayoutTemplate className="w-6 h-6 text-primary" />
+              Visual Map of an HTML Document
+            </h2>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Use this mental model to understand how <code className="font-mono">&lt;head&gt;</code> and{' '}
+              <code className="font-mono">&lt;body&gt;</code> fit together and where different responsibilities live.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-3 text-sm md:text-base">
+              <p className="text-muted-foreground">
+                Think of the <strong>head</strong> as everything the browser needs to understand the page{' '}
+                <em>before</em> showing it, and the <strong>body</strong> as everything the user will actually see and
+                interact with.
+              </p>
+              <ul className="space-y-2">
+                <li>
+                  <strong>Head responsibilities:</strong> metadata, SEO, icons, styles, preload hints, and initial
+                  script loading.
+                </li>
+                <li>
+                  <strong>Body responsibilities:</strong> landmarks (<code className="font-mono">&lt;header&gt;</code>,{' '}
+                  <code className="font-mono">&lt;main&gt;</code>, <code className="font-mono">&lt;footer&gt;</code>),
+                  content hierarchy, and interactive elements.
+                </li>
+                <li>
+                  <strong>Accessibility:</strong> a single <code className="font-mono">&lt;main&gt;</code> region,
+                  descriptive headings, and proper landmarks help screen readers and keyboard users navigate your page.
+                </li>
+              </ul>
+            </div>
+            <div className="space-y-3 text-xs md:text-sm">
+              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
+                  <span>Head region</span>
+                  <span>Browser-facing</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="rounded-md bg-blue-50 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-700 px-2 py-1 flex flex-col">
+                    <span className="font-mono text-[11px]">&lt;meta&gt;</span>
+                    <span className="text-[11px] text-slate-600 dark:text-slate-300">charset, viewport</span>
+                  </div>
+                  <div className="rounded-md bg-indigo-50 dark:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-700 px-2 py-1 flex flex-col">
+                    <span className="font-mono text-[11px]">&lt;title&gt;</span>
+                    <span className="text-[11px] text-slate-600 dark:text-slate-300">tab &amp; SEO title</span>
+                  </div>
+                  <div className="rounded-md bg-emerald-50 dark:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-700 px-2 py-1 flex flex-col">
+                    <span className="font-mono text-[11px]">&lt;link&gt;</span>
+                    <span className="text-[11px] text-slate-600 dark:text-slate-300">CSS, icons, fonts</span>
+                  </div>
+                  <div className="rounded-md bg-amber-50 dark:bg-amber-900/60 border border-amber-200 dark:border-amber-700 px-2 py-1 flex flex-col">
+                    <span className="font-mono text-[11px]">&lt;script&gt;</span>
+                    <span className="text-[11px] text-slate-600 dark:text-slate-300">defer / async bundles</span>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
+                  <span>Body region</span>
+                  <span>User-facing</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="rounded-md bg-pink-50 dark:bg-pink-900/60 border border-pink-200 dark:border-pink-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
+                    &lt;header&gt;
+                  </div>
+                  <div className="rounded-md bg-violet-50 dark:bg-violet-900/60 border border-violet-200 dark:border-violet-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
+                    &lt;nav&gt;
+                  </div>
+                  <div className="rounded-md bg-emerald-50 dark:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
+                    &lt;main&gt;
+                  </div>
+                  <div className="rounded-md bg-amber-50 dark:bg-amber-900/60 border border-amber-200 dark:border-amber-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
+                    &lt;section&gt; / &lt;article&gt;
+                  </div>
+                  <div className="rounded-md bg-sky-50 dark:bg-sky-900/60 border border-sky-200 dark:border-sky-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
+                    &lt;aside&gt;
+                  </div>
+                  <div className="rounded-md bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
+                    &lt;footer&gt;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Request & Render Flow */}
+      <Card>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Code className="w-6 h-6 text-primary" />
+              Request and Render Flow
+            </h2>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Document structure matters because it changes how quickly the browser can turn your HTML into pixels on
+              the screen.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-3 text-xs md:text-sm">
+              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
+                  <span>Network → DOM</span>
+                  <span>Steps 1–2</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
+                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">1. Request HTML</div>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
+                      Browser downloads the HTML document from the server.
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <ArrowRight className="w-4 h-4 text-slate-400" />
+                  </div>
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
+                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">2. Parse head &amp; body</div>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
+                      The parser builds the DOM tree, respecting the order of tags.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
+                  <span>CSS → Pixels</span>
+                  <span>Steps 3–4</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
+                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">3. Build render tree</div>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
+                      DOM + CSSOM combine so the browser knows both structure and styles.
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <ArrowRight className="w-4 h-4 text-slate-400" />
+                  </div>
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
+                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">4. Layout &amp; paint</div>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
+                      Positions are calculated, then pixels are drawn and composited to the screen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-3 text-sm md:text-base">
+              <p className="text-muted-foreground">
+                Placing critical styles and non-blocking scripts in the right order inside <code className="font-mono">&lt;head&gt;</code>{' '}
+                lets the browser start rendering sooner while still respecting your layout and behavior.
+              </p>
+              <ul className="space-y-2">
+                <li>
+                  <strong>Good structure:</strong> predictable load order, faster first paint, fewer layout shifts.
+                </li>
+                <li>
+                  <strong>Bad structure:</strong> blocking scripts, missing meta tags, and late styles that cause
+                  content to &quot;jump&quot; after load.
+                </li>
+                <li>
+                  <strong>Goal:</strong> make the path from &quot;request&quot; to &quot;usable page&quot; as short and
+                  smooth as possible.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Head vs Body – Beginner vs Expert */}
+      <Card>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Code className="w-6 h-6 text-primary" />
+              Head vs Body: Beginner and Expert Views
+            </h2>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Start with simple rules, then grow into performance, SEO, and accessibility concerns as you become more
+              advanced.
+            </p>
+          </div>
+          <Tabs defaultValue="beginner" className="w-full">
+            <TabsList className="mb-4">
+              <TabsTrigger value="beginner">Beginner View</TabsTrigger>
+              <TabsTrigger value="expert">Expert View</TabsTrigger>
+            </TabsList>
+            <TabsContent value="beginner" className="space-y-4">
+              <p className="text-sm md:text-base text-muted-foreground">
+                As a beginner, follow this rule of thumb: put <strong>page settings</strong> and{' '}
+                <strong>behind-the-scenes info</strong> in <code className="font-mono">&lt;head&gt;</code>, and{' '}
+                <strong>visible content</strong> in <code className="font-mono">&lt;body&gt;</code>.
+              </p>
+              <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
+                  <span className="uppercase tracking-wide">beginner-structure.html</span>
+                  <span className="text-slate-500 dark:text-slate-300">Clean, simple layout</span>
+                </div>
+                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{`<head>
+  <!-- Settings & metadata -->
+  <meta charset="UTF-8" />
+  <title>My Page</title>
+</head>
+<body>
+  <!-- Content & layout -->
+  <header>Logo + navigation</header>
+  <main>Page content</main>
+  <footer>Copyright</footer>
+</body>`}
+                </pre>
+              </div>
+            </TabsContent>
+            <TabsContent value="expert" className="space-y-4">
+              <p className="text-sm md:text-base text-muted-foreground">
+                As an expert, you&apos;ll think about how document structure affects{' '}
+                <strong>rendering performance</strong>, <strong>SEO</strong>, and <strong>assistive technologies</strong>.
+              </p>
+              <div className="rounded-md overflow-hidden border bg-slate-900 text-green-100">
+                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-800">
+                  <span className="uppercase tracking-wide">expert-structure.html</span>
+                  <span className="text-slate-300">Performance, SEO, a11y-aware</span>
+                </div>
+                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{`<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessible, Fast Page</title>
+    <meta name="description" content="Short, human-friendly summary of this page." />
+    <link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.bundle.js" defer></script>
+  </head>
+  <body>
+    <header role="banner">...</header>
+    <main id="main-content" role="main">...</main>
+    <footer role="contentinfo">...</footer>
+  </body>
+</html>`}
+                </pre>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+
       {/* Boilerplates */}
       <Card>
         <CardContent className="space-y-8">
@@ -202,14 +458,26 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
           </div>
           <div>
             <h3 className="font-bold text-lg mb-3">Minimal Structure</h3>
-            <div className="bg-muted rounded-md p-4">
-              <pre className="font-mono text-xs overflow-x-auto whitespace-pre-wrap">{minimalStructure}</pre>
+            <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
+                <span className="uppercase tracking-wide">minimal.html</span>
+                <span className="text-slate-500 dark:text-slate-300">Starter document</span>
+              </div>
+              <pre className="font-mono text-xs md:text-sm px-4 py-3 overflow-x-auto whitespace-pre">
+{minimalStructure}
+              </pre>
             </div>
           </div>
           <div>
             <h3 className="font-bold text-lg mb-3">Complete Professional Structure</h3>
-            <div className="bg-muted rounded-md p-4">
-              <pre className="font-mono text-xs overflow-x-auto whitespace-pre-wrap">{completeStructure}</pre>
+            <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
+                <span className="uppercase tracking-wide">production.html</span>
+                <span className="text-slate-500 dark:text-slate-300">Rich, SEO-aware boilerplate</span>
+              </div>
+              <pre className="font-mono text-xs md:text-sm px-4 py-3 overflow-x-auto whitespace-pre">
+{completeStructure}
+              </pre>
             </div>
           </div>
         </CardContent>
@@ -259,4 +527,3 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
     </div>
   );
 }
-

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import type { Topic } from '@/app/data/types';
 import { CheckCircle } from 'lucide-react';
-import { getThemeClasses, animationClasses } from '@/lib/language-themes';
+import { animationClasses } from '@/lib/language-themes';
 import { cn } from '@/lib/utils';
 
 interface Group {
@@ -31,12 +31,12 @@ export function GenericGroupedTopicMenu({
 }: GenericGroupedTopicMenuProps) {
   if (!groups || groups.length === 0) return null;
 
-  // Get theme classes for the current language
-  const themeClasses = getThemeClasses(languageSlug);
-  
-  // Remove per-language manual maps; rely on themeClasses.active* utilities
-  const getActiveStyles = () => themeClasses.activeMenuContainer;
-  const getActiveTextStyles = () => themeClasses.activeMenuLink;
+  // Use consistent blue branding color for all menu elements
+  const blueTheme = {
+    primary: 'text-blue-600 dark:text-blue-400',
+    activeMenuContainer: '!bg-blue-100 dark:!bg-blue-900/20 !border-blue-300 dark:!border-blue-700',
+    activeMenuLink: '!text-blue-700 dark:!text-blue-300',
+  };
 
   return (
     <>
@@ -45,15 +45,14 @@ export function GenericGroupedTopicMenu({
           <p 
             className={cn(
               "px-2 text-md font-semibold transition-colors",
-              themeClasses.primary
+              blueTheme.primary
             )}
           >
             {group.title}
           </p>
           <div 
             className={cn(
-              "ml-2 border-l-2 pl-2 space-y-1 transition-colors",
-              themeClasses.primary.replace('text-', 'border-')
+              "ml-2 border-l-2 border-blue-300 dark:border-blue-700 pl-2 space-y-1 transition-colors"
             )}
           >
             {group.topics.map(topic => (
@@ -65,9 +64,9 @@ export function GenericGroupedTopicMenu({
                   className={cn(
                     "justify-start text-sm transition-all duration-200 hover:shadow-sm",
                     selectedTopicSlug === topic.slug && cn(
-                      themeClasses.primary,
+                      blueTheme.primary,
                       "font-semibold",
-                      getActiveStyles()
+                      blueTheme.activeMenuContainer
                     )
                   )}
                 >
@@ -76,16 +75,13 @@ export function GenericGroupedTopicMenu({
                     ref={selectedTopicSlug === topic.slug ? activeItemRef : null}
                     className={cn(
                       "flex items-center gap-2 transition-colors",
-                      selectedTopicSlug === topic.slug && cn(
-                        themeClasses.primary,
-                        getActiveTextStyles()
-                      )
+                      selectedTopicSlug === topic.slug && blueTheme.activeMenuLink
                     )}
                   >
                     {completedTopics.has(topic.slug) && isUserAuthenticated && (
                       <CheckCircle className={cn(
                         "w-4 h-4 transition-colors",
-                        themeClasses.primary,
+                        blueTheme.primary,
                         animationClasses.scaleIn
                       )} />
                     )}

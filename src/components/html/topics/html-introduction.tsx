@@ -8,6 +8,7 @@ import {
   Box, Play, BookOpen, Target, ArrowRight, Minus, Rocket
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import React from 'react';
 
 export default function HtmlIntroduction({ onOpenWebPlayground }: { onOpenWebPlayground?: (html: string, css: string, js: string) => void }) {
@@ -338,6 +339,76 @@ button:hover {
           </CardContent>
         </Card>
 
+        {/* Page Layout Diagram */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-3xl">
+              <Layout className="w-8 h-8 text-primary" />
+              Visual Layout of a Simple Page
+            </CardTitle>
+            <CardDescription className="text-lg">
+              See where common HTML sections usually live on a page
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3 text-sm md:text-base">
+                <p className="text-muted-foreground">
+                  This diagram shows a typical high-level layout using semantic elements. The exact design comes from
+                  CSS, but the <strong>structure</strong> comes from HTML.
+                </p>
+                <ul className="space-y-2">
+                  <li>
+                    <strong>&lt;header&gt;</strong> — logo, site title, main navigation.
+                  </li>
+                  <li>
+                    <strong>&lt;nav&gt;</strong> — primary links to important areas.
+                  </li>
+                  <li>
+                    <strong>&lt;main&gt;</strong> — the unique content of this page.
+                  </li>
+                  <li>
+                    <strong>&lt;aside&gt;</strong> — related content, sidebars, or ads.
+                  </li>
+                  <li>
+                    <strong>&lt;footer&gt;</strong> — copyright, secondary links, legal info.
+                  </li>
+                </ul>
+              </div>
+              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-4 space-y-3 text-xs md:text-sm">
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                  <span>Page layout overview</span>
+                  <span>Semantic regions</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-9 rounded-md bg-blue-100 dark:bg-blue-900/60 border border-blue-300 dark:border-blue-700 flex items-center justify-center font-mono text-[11px] md:text-xs">
+                    &lt;header&gt;
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="col-span-1 h-24 rounded-md bg-indigo-50 dark:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-700 flex items-center justify-center font-mono text-[11px] md:text-xs text-center px-1">
+                      &lt;nav&gt;
+                    </div>
+                    <div className="col-span-2 flex flex-col gap-2">
+                      <div className="flex-1 rounded-md bg-emerald-50 dark:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-700 flex items-center justify-center font-mono text-[11px] md:text-xs">
+                        &lt;section&gt;
+                      </div>
+                      <div className="flex-1 rounded-md bg-amber-50 dark:bg-amber-900/60 border border-amber-200 dark:border-amber-700 flex items-center justify-center font-mono text-[11px] md:text-xs">
+                        &lt;article&gt;
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-9 rounded-md bg-violet-50 dark:bg-violet-900/60 border border-violet-200 dark:border-violet-700 flex items-center justify-center font-mono text-[11px] md:text-xs">
+                    &lt;aside&gt;
+                  </div>
+                  <div className="h-9 rounded-md bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-mono text-[11px] md:text-xs">
+                    &lt;footer&gt;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* History */}
         <Card>
           <CardHeader>
@@ -399,8 +470,239 @@ button:hover {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-muted rounded-md p-4 mb-4">
-              <pre className="font-mono text-sm text-foreground whitespace-pre-wrap">{simpleHtml}</pre>
+            <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100 mb-4">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
+                <span className="uppercase tracking-wide">index.html</span>
+                <span className="text-slate-500 dark:text-slate-300">Basic HTML document</span>
+              </div>
+              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{simpleHtml}
+              </pre>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              This is the minimum structure most beginner HTML pages start with. As you learn more,
+              you&apos;ll add metadata in the <code className="font-mono">&lt;head&gt;</code>, semantic layout
+              elements in the <code className="font-mono">&lt;body&gt;</code>, and connect CSS and JavaScript files.
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* How Browsers Read HTML - Flow Diagram */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-3xl">
+              <Layout className="w-8 h-8 text-primary" />
+              How Browsers Turn HTML into a Page
+            </CardTitle>
+            <CardDescription className="text-lg">
+              From your <code className="font-mono">.html</code> file to pixels on the screen
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  When you open an HTML file in a browser, the browser doesn&apos;t &quot;run&quot; it like a program.
+                  Instead, it <strong>parses</strong> the markup and builds internal trees that represent the page.
+                </p>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                    <span><strong>HTML Parser</strong> reads tags and builds the <strong>DOM (Document Object Model)</strong>.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                    <span><strong>CSS</strong> is loaded and combined with the DOM to build the <strong>render tree</strong>.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                    <span>The browser performs <strong>layout</strong> (where things go) and <strong>painting</strong> (how they look).</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                    <span>JavaScript can then <strong>modify the DOM</strong> to update the page dynamically.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-slate-100 dark:bg-slate-900 rounded-lg p-4 border">
+                <p className="text-xs font-semibold mb-3 text-slate-700 dark:text-slate-300 uppercase tracking-wide">
+                  Render pipeline (conceptual chart)
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs md:text-sm">
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-3 py-2 flex flex-col justify-between h-full">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] md:text-xs text-slate-500 dark:text-slate-400">Step 1</span>
+                      <ArrowRight className="w-3 h-3 text-slate-400" />
+                    </div>
+                    <div className="mt-1 font-semibold">HTML parsed → DOM tree</div>
+                    <p className="text-slate-600 dark:text-slate-300 mt-1">
+                      The browser reads tags and turns them into nodes in the Document Object Model (DOM).
+                    </p>
+                  </div>
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-3 py-2 flex flex-col justify-between h-full">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] md:text-xs text-slate-500 dark:text-slate-400">Step 2</span>
+                      <ArrowRight className="w-3 h-3 text-slate-400" />
+                    </div>
+                    <div className="mt-1 font-semibold">CSS parsed → CSSOM</div>
+                    <p className="text-slate-600 dark:text-slate-300 mt-1">
+                      Stylesheets are parsed into a separate tree (the CSSOM) that describes visual rules.
+                    </p>
+                  </div>
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-3 py-2 flex flex-col justify-between h-full">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] md:text-xs text-slate-500 dark:text-slate-400">Step 3</span>
+                      <ArrowRight className="w-3 h-3 text-slate-400" />
+                    </div>
+                    <div className="mt-1 font-semibold">Render tree → Layout</div>
+                    <p className="text-slate-600 dark:text-slate-300 mt-1">
+                      DOM + CSSOM combine into a render tree. The browser calculates sizes and positions.
+                    </p>
+                  </div>
+                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-3 py-2 flex flex-col justify-between h-full">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] md:text-xs text-slate-500 dark:text-slate-400">Step 4</span>
+                    </div>
+                    <div className="mt-1 font-semibold">Paint → Compositing</div>
+                    <p className="text-slate-600 dark:text-slate-300 mt-1">
+                      Pixels are drawn and composited to the screen. JavaScript can then update the DOM and trigger re-renders.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Beginner vs Expert View */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-3xl">
+              <Code className="w-8 h-8 text-primary" />
+              Beginner vs Expert View of HTML
+            </CardTitle>
+            <CardDescription className="text-lg">
+              Start with mental models that make sense now, then grow into deeper concepts
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="beginner" className="w-full">
+              <TabsList className="mb-4">
+                <TabsTrigger value="beginner">Beginner View</TabsTrigger>
+                <TabsTrigger value="expert">Expert View</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="beginner" className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  As a beginner, treat HTML like <strong>labels and containers</strong> for your content.
+                  Each tag describes what something <em>is</em>, not how it looks.
+                </p>
+                <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+                  <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
+                    <span className="uppercase tracking-wide">mental-model.html</span>
+                    <span className="text-slate-500 dark:text-slate-300">Beginner-friendly structure</span>
+                  </div>
+                  <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{`<header>Website title and navigation</header>
+<main>
+  <section>One logical block of content</section>
+  <section>Another logical block of content</section>
+</main>
+<footer>Copyright and links</footer>`}
+                  </pre>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="expert" className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  As you advance, you&apos;ll think of HTML in terms of <strong>accessibility</strong>, <strong>semantics</strong>,
+                  and how it shapes the <strong>DOM tree</strong> that JavaScript interacts with.
+                </p>
+                <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-green-100">
+                  <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
+                    <span className="uppercase tracking-wide">dom-focused.html</span>
+                    <span className="text-slate-500 dark:text-slate-300">Semantics, accessibility, DOM hooks</span>
+                  </div>
+                  <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{`<main id="app-root">
+  <article aria-labelledby="post-title">
+    <h1 id="post-title">Understanding the DOM</h1>
+    <p class="lead">HTML shapes the nodes JavaScript talks to.</p>
+    <button type="button" data-action="highlight">
+      Highlight key elements
+    </button>
+  </article>
+</main>`}
+                  </pre>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        {/* Edge Cases & Best Practices */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-3xl">
+              <Sparkles className="w-8 h-8 text-primary" />
+              Common Pitfalls and Edge Cases
+            </CardTitle>
+            <CardDescription className="text-lg">
+              Small details that make a big difference even in simple pages
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h3 className="font-semibold text-base flex items-center gap-2">
+                  <AlertCircle className="w-5 h-5 text-orange-600" />
+                  Common mistakes
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <Minus className="w-4 h-4 mt-0.5 text-orange-600 flex-shrink-0" />
+                    <span>Forgetting required attributes like <code className="font-mono">alt</code> on images.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Minus className="w-4 h-4 mt-0.5 text-orange-600 flex-shrink-0" />
+                    <span>Incorrectly nesting elements (e.g., putting a <code className="font-mono">&lt;div&gt;</code> inside <code className="font-mono">&lt;p&gt;</code>).</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Minus className="w-4 h-4 mt-0.5 text-orange-600 flex-shrink-0" />
+                    <span>Using headings out of order (<code className="font-mono">&lt;h3&gt;</code> directly after <code className="font-mono">&lt;h1&gt;</code>).</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Minus className="w-4 h-4 mt-0.5 text-orange-600 flex-shrink-0" />
+                    <span>Relying on HTML alone for layout instead of combining it with CSS.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="font-semibold text-base flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  Best practices from day one
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-green-600 flex-shrink-0" />
+                    <span>Use semantic tags (<code className="font-mono">&lt;main&gt;</code>, <code className="font-mono">&lt;nav&gt;</code>, <code className="font-mono">&lt;section&gt;</code>) instead of generic <code className="font-mono">&lt;div&gt;</code> blocks.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-green-600 flex-shrink-0" />
+                    <span>Always include a <code className="font-mono">&lt;!DOCTYPE html&gt;</code> at the top of your document.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-green-600 flex-shrink-0" />
+                    <span>Set the <code className="font-mono">lang</code> attribute on the <code className="font-mono">&lt;html&gt;</code> element for accessibility.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-green-600 flex-shrink-0" />
+                    <span>Validate your HTML using the official W3C validator to catch structural errors.</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </CardContent>
         </Card>

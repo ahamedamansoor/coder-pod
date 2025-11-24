@@ -85,7 +85,7 @@ export function MainHeader({
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="md:hidden" />
-        <Button variant="ghost" size="icon" asChild>
+        <Button variant="ghost" size="icon" asChild className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-950/30">
             <Link href="/">
                 <Home className="h-5 w-5" />
                 <span className="sr-only">Home</span>
@@ -96,7 +96,7 @@ export function MainHeader({
       <div className="flex items-center gap-4">
         {currentLanguage?.slug === 'react' ? (
           <ReactPlaygroundModal>
-            <Button variant="outline">
+            <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
               <ToyBrick className="mr-2 h-4 w-4" />
               React Playground
             </Button>
@@ -104,7 +104,7 @@ export function MainHeader({
         ) : (
           showWebPlaygroundButton && (
             <WebPlaygroundModal initialLanguage={currentLanguageSlug}>
-              <Button variant="outline">
+              <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
                 <LayoutGrid className="mr-2 h-4 w-4" />
                 Web Playground
               </Button>
@@ -113,7 +113,7 @@ export function MainHeader({
         )}
         {currentLanguage && (
           <InterviewSimulator language={currentLanguage.name}>
-             <Button variant="outline">
+             <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
                 <Mic className="mr-2 h-4 w-4" />
                 AI Interview
               </Button>
@@ -121,7 +121,7 @@ export function MainHeader({
         )}
         
         {showCodeEditorButton && (
-          <Button variant="outline" onClick={onToggleEditor}>
+          <Button variant="outline" onClick={onToggleEditor} className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
             <Code className="mr-2 h-4 w-4" />
             Code Editor
           </Button>
@@ -148,7 +148,7 @@ export function MainHeader({
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-           <Button onClick={handleSignIn}>
+           <Button onClick={handleSignIn} className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-600 dark:hover:bg-blue-700">
               <LogIn className="mr-2 h-4 w-4" />
               Sign In
            </Button>

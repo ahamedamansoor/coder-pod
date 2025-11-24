@@ -797,6 +797,97 @@ button:hover { background: #2563eb; }`,
         </CardContent>
       </Card>
 
+      {/* ==================== CHOOSING THE RIGHT ELEMENT ==================== */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Layers className="w-6 h-6 text-blue-600" />
+            Choosing the Right Element
+          </CardTitle>
+          <CardDescription className="text-base">
+            Match your content and behavior to the most semantic HTML tag
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+              <h4 className="font-bold text-base mb-2 flex items-center gap-2">
+                <Type className="w-5 h-5 text-blue-600" />
+                Text emphasis
+              </h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Use semantic emphasis instead of purely visual tags.
+              </p>
+              <ul className="text-sm space-y-1">
+                <li><span className="font-semibold">&lt;strong&gt;</span> — important, high-priority text.</li>
+                <li><span className="font-semibold">&lt;em&gt;</span> — stress emphasis, changes meaning.</li>
+                <li><span className="font-semibold">Avoid:</span> using &lt;b&gt; / &lt;i&gt; just for styling.</li>
+              </ul>
+            </div>
+
+            <div className="bg-emerald-50 dark:bg-emerald-950/20 p-4 rounded-lg border border-emerald-200 dark:border-emerald-800">
+              <h4 className="font-bold text-base mb-2 flex items-center gap-2">
+                <Box className="w-5 h-5 text-emerald-600" />
+                Navigation vs actions
+              </h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Choose between links and buttons based on behavior.
+              </p>
+              <ul className="text-sm space-y-1">
+                <li><span className="font-semibold">&lt;a&gt;</span> — go to another URL or section.</li>
+                <li><span className="font-semibold">&lt;button&gt;</span> — trigger an in-page action.</li>
+                <li><span className="font-semibold">Avoid:</span> using buttons for navigation-only links.</li>
+              </ul>
+            </div>
+
+            <div className="bg-amber-50 dark:bg-amber-950/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+              <h4 className="font-bold text-base mb-2 flex items-center gap-2">
+                <List className="w-5 h-5 text-amber-600" />
+                Lists or paragraphs?
+              </h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Repeated, related items belong in lists, not separate paragraphs.
+              </p>
+              <ul className="text-sm space-y-1">
+                <li>Use <span className="font-semibold">&lt;ul&gt;</span> / <span className="font-semibold">&lt;ol&gt;</span> for sets of options or steps.</li>
+                <li>Use <span className="font-semibold">&lt;p&gt;</span> for flowing prose.</li>
+                <li><span className="font-semibold">Avoid:</span> many short paragraphs acting like bullets.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
+              <span className="uppercase tracking-wide">elements-in-practice.html</span>
+              <span className="text-slate-500 dark:text-slate-300">Better element choices</span>
+            </div>
+            <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{`<!-- Good: button for an in-page action -->
+<button type="button" data-action="open-modal">
+  Open settings
+</button>
+
+<!-- Good: link for navigation -->
+<a href="/settings">
+  Go to settings page
+</a>
+
+<!-- Good: semantic emphasis -->
+<p>
+  Please <strong>save your work</strong> before you continue.
+</p>
+
+<!-- Good: real list instead of repeated paragraphs -->
+<ul>
+  <li>Download the starter project</li>
+  <li>Run <code>npm install</code></li>
+  <li>Start the dev server</li>
+</ul>`}
+            </pre>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* ==================== QUICK REFERENCE ==================== */}
       <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-2 border-blue-200 dark:border-blue-800">
         <CardHeader>
@@ -837,4 +928,3 @@ button:hover { background: #2563eb; }`,
     </div>
   );
 }
-

@@ -23,7 +23,6 @@ import { useScss } from '@/app/scss/scss-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
-import { getThemeClasses } from '@/lib/language-themes';
 import { cn } from '@/lib/utils';
 
 // A new hook for Spring Boot will be needed here
@@ -75,7 +74,13 @@ export function TopicSidebar({
   const { completedTopics } = useLanguageContext(language);
   const { user } = useUser();
   const isUserAuthenticated = user && !user.isAnonymous;
-  const themeClasses = getThemeClasses(language.slug);
+  // Use consistent blue branding color for all sidebar elements
+  const blueTheme = {
+    primary: 'text-blue-600 dark:text-blue-400',
+    textSecondary: 'text-gray-600 dark:text-gray-300',
+    activeMenuContainer: '!bg-blue-100 dark:!bg-blue-900/20 !border-blue-300 dark:!border-blue-700',
+    activeMenuLink: '!text-blue-700 dark:!text-blue-300',
+  };
 
   useEffect(() => {
     if (activeItemRef.current) {
@@ -308,11 +313,10 @@ export function TopicSidebar({
       <div key={title} className="space-y-2">
         <p className={cn(
           "px-2 text-md font-semibold transition-colors",
-          themeClasses.primary
+          blueTheme.primary
         )}>{title}</p>
         <div className={cn(
-          "ml-2 border-l pl-2 space-y-1 transition-colors",
-          themeClasses.primary.replace('text-', 'border-')
+          "ml-2 border-l-2 border-blue-300 dark:border-blue-700 pl-2 space-y-1 transition-colors"
         )}>
           {topics.map((topic) => (
             <SidebarMenuItem key={topic.slug}>
@@ -323,17 +327,17 @@ export function TopicSidebar({
                 className={cn(
                   "justify-start text-sm transition-all duration-200",
                   selectedTopicSlug === topic.slug && cn(
-                    themeClasses.primary,
+                    blueTheme.primary,
                     "font-semibold",
-                    themeClasses.activeMenuContainer
+                    blueTheme.activeMenuContainer
                   )
                 )}
               >
                 <Link href={`/${language.slug}/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null} className={cn(
                   "flex items-center gap-2 transition-colors",
-                  selectedTopicSlug === topic.slug && themeClasses.activeMenuLink
+                  selectedTopicSlug === topic.slug && blueTheme.activeMenuLink
                 )}>
-                  {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className={cn("w-4 h-4", themeClasses.primary)} />}
+                  {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className={cn("w-4 h-4", blueTheme.primary)} />}
                   {topic.title}
                 </Link>
               </SidebarMenuButton>
@@ -352,16 +356,16 @@ export function TopicSidebar({
       className={cn(
         "justify-start text-sm transition-colors",
         selectedTopicSlug === learningPlanTopic?.slug && cn(
-          themeClasses.primary,
+          blueTheme.primary,
           "font-semibold",
-          themeClasses.activeMenuContainer
+          blueTheme.activeMenuContainer
         )
       )}
       disabled={!isUserAuthenticated}
     >
        <Link href={`/${language.slug}/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
-        selectedTopicSlug === learningPlanTopic?.slug && themeClasses.activeMenuLink
+        selectedTopicSlug === learningPlanTopic?.slug && blueTheme.activeMenuLink
        )}>
           {learningPlanTopic?.title}
        </Link>
@@ -376,15 +380,15 @@ export function TopicSidebar({
       className={cn(
         "justify-start text-sm transition-colors",
         selectedTopicSlug === interviewTopic?.slug && cn(
-          themeClasses.primary,
+          blueTheme.primary,
           "font-semibold",
-          themeClasses.activeMenuContainer
+          blueTheme.activeMenuContainer
         )
       )}
     >
        <Link href={`/${language.slug}/${interviewTopic?.slug}`} ref={selectedTopicSlug === interviewTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
-        selectedTopicSlug === interviewTopic?.slug && themeClasses.activeMenuLink
+        selectedTopicSlug === interviewTopic?.slug && blueTheme.activeMenuLink
        )}>
           {interviewTopic?.title}
        </Link>
@@ -399,15 +403,15 @@ export function TopicSidebar({
       className={cn(
         "justify-start text-sm transition-colors",
         selectedTopicSlug === reactUpdatesTopic?.slug && cn(
-          themeClasses.primary,
+          blueTheme.primary,
           "font-semibold",
-          themeClasses.activeMenuContainer
+          blueTheme.activeMenuContainer
         )
       )}
     >
       <Link href={`/${language.slug}/${reactUpdatesTopic?.slug}`} ref={selectedTopicSlug === reactUpdatesTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
-        selectedTopicSlug === reactUpdatesTopic?.slug && themeClasses.activeMenuLink
+        selectedTopicSlug === reactUpdatesTopic?.slug && blueTheme.activeMenuLink
       )}>
           {reactUpdatesTopic?.title}
       </Link>
@@ -457,7 +461,7 @@ export function TopicSidebar({
                 <div className='space-y-4'>
                   <p className={cn(
                     "px-2 py-1 text-xl font-semibold transition-colors",
-                    themeClasses.textSecondary
+                    blueTheme.primary
                   )}>Topics</p>
                   {(language.slug === 'html' || language.slug === 'javascript') ? (
                     <GenericGroupedTopicMenu
