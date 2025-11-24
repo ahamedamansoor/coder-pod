@@ -19,6 +19,12 @@ import {
   Play,
   ArrowRight,
   Target,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  Lightbulb,
+  BookOpen,
+  TrendingUp,
 } from 'lucide-react';
 
 interface JavaScriptFirstProgramProps {
@@ -30,53 +36,107 @@ const consoleHtml = `<!DOCTYPE html>
   <head>
     <meta charset="UTF-8" />
     <title>Hello JavaScript</title>
+    <style>
+      body { 
+        font-family: system-ui; 
+        padding: 2rem; 
+        color: #64748b; 
+      }
+    </style>
   </head>
-  <body style="font-family: system-ui; padding: 2rem;">
-    <h1>Hello JavaScript</h1>
-    <p>Open your browser console to see your first program.</p>
+  <body>
+    <p>Open the console to see the output</p>
   </body>
 </html>`;
 
-const consoleJs = `console.log('Hello, JavaScript!');
-console.log('You just ran your first program 🎉');`;
+const consoleJs = `// Your First JavaScript Program
+
+console.log('Hello, JavaScript!');
+console.log('Welcome to programming!');
+
+console.log('');
+console.log('You can do math:');
+console.log('2 + 2 =', 2 + 2);
+console.log('10 × 5 =', 10 * 5);
+
+console.log('');
+console.log('✅ You just ran your first program!');`;
 
 const domHtml = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Interactive Hello</title>
+    <style>
+      body { 
+        font-family: system-ui; 
+        padding: 2rem; 
+      }
+      button { 
+        padding: 0.75rem 1.5rem; 
+        font-size: 1rem; 
+        cursor: pointer; 
+      }
+      #message { 
+        margin-top: 1rem; 
+        font-size: 1.1rem; 
+      }
+    </style>
   </head>
-  <body style="font-family: system-ui; padding: 2rem;">
-    <h1 id="title">Click the button to say hello</h1>
-    <button id="btn" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
-      Say Hello
-    </button>
-    <p id="message" style="margin-top: 1rem;"></p>
+  <body>
+    <button id="btn">Click Me</button>
+    <p id="message"></p>
   </body>
 </html>`;
 
-const domJs = `const button = document.getElementById('btn');
+const domJs = `// Making Pages Interactive
+
+const button = document.getElementById('btn');
 const message = document.getElementById('message');
 
 button.addEventListener('click', () => {
-  message.textContent = 'Hello from JavaScript! 🎉';
-});`;
+  message.textContent = 'Hello from JavaScript!';
+  message.style.color = '#10b981';
+  
+  console.log('Button clicked!');
+});
+
+console.log('Ready! Click the button.');`;
 
 const loopHtml = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Looped Messages</title>
+    <style>
+      body { 
+        font-family: system-ui; 
+        padding: 2rem; 
+        color: #64748b; 
+      }
+    </style>
   </head>
-  <body style="font-family: system-ui; padding: 2rem;">
-    <h1>Open the console to see multiple greetings</h1>
+  <body>
+    <p>Open the console to see the output</p>
   </body>
 </html>`;
 
-const loopJs = `for (let i = 1; i <= 3; i++) {
-  console.log('Hello number ' + i);
+const loopJs = `// Using Loops to Repeat Code
+
+console.log('Counting up:');
+for (let i = 1; i <= 5; i++) {
+  console.log('Number', i);
 }
-console.log('Loops let you repeat logic easily.');`;
+
+console.log('');
+console.log('Counting down:');
+for (let i = 3; i >= 1; i--) {
+  console.log(i + '...');
+}
+console.log('Done!');
+
+console.log('');
+console.log('✅ Loops repeat code automatically');`;
 
 export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScriptFirstProgramProps) {
   return (
@@ -86,14 +146,14 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
         category="JavaScript Fundamentals"
         title="First JavaScript Program"
         description="Write, run, and understand your very first JavaScript program—from console logs to interactive pages."
-        colorTheme="yellow"
+        colorTheme="blue"
       />
 
       {/* Overview */}
-      <Card className="border-yellow-200 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/20 dark:to-orange-950/20">
+      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-yellow-600" />
+            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
             From Zero to First Program
           </CardTitle>
           <CardDescription className="text-base">
@@ -103,13 +163,13 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
         <CardContent className="grid md:grid-cols-3 gap-4 text-sm md:text-base">
           <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
             <div className="flex items-center gap-2">
-              <Terminal className="w-5 h-5 text-yellow-600" />
+              <Terminal className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
               <h3 className="font-semibold">Step 1: Console Hello</h3>
             </div>
             <p className="text-muted-foreground">
               Learn how to make the browser talk back to you using <code className="font-mono">console.log</code>.
             </p>
-            <Badge variant="secondary" className="bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
+            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
               Beginner
             </Badge>
           </div>
@@ -121,7 +181,7 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
             <p className="text-muted-foreground">
               Attach JavaScript to real HTML elements and respond to user actions.
             </p>
-            <Badge variant="secondary" className="bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
               Intermediate
             </Badge>
           </div>
@@ -133,68 +193,10 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
             <p className="text-muted-foreground">
               Use loops and patterns to grow simple programs into reusable, scalable logic.
             </p>
-            <Badge variant="secondary" className="bg-yellow-200 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
+            <Badge className="bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-300/50 dark:border-purple-700/40">
               Towards Expert
             </Badge>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Beginner → Expert Tabs */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-yellow-600" />
-            Beginner to Expert Flow
-          </CardTitle>
-          <CardDescription className="text-base">
-            Switch views to see how your understanding of a &quot;simple&quot; program evolves.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="beginner">
-            <TabsList className="mb-4">
-              <TabsTrigger value="beginner">Beginner View</TabsTrigger>
-              <TabsTrigger value="intermediate">Intermediate View</TabsTrigger>
-              <TabsTrigger value="expert">Expert View</TabsTrigger>
-            </TabsList>
-            <TabsContent value="beginner" className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                As a beginner, focus on one thing: <strong>getting a message on the screen</strong>. The easiest place
-                to do that is the browser console.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">console.js</span>
-                  <span className="text-slate-500 dark:text-slate-300">First program</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-console.log('Hello, JavaScript!');</pre>
-              </div>
-            </TabsContent>
-            <TabsContent value="intermediate" className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                At the intermediate level, you see that a &quot;simple&quot; program still has <strong>inputs</strong>,{' '}
-                <strong>logic</strong>, and <strong>outputs</strong>. You think in terms of behavior: &quot;When the
-                user clicks, do X.&quot;
-              </p>
-              <p className="text-muted-foreground">
-                The &quot;first program&quot; becomes: &quot;When this event happens, run this function and update the
-                UI.&quot;
-              </p>
-            </TabsContent>
-            <TabsContent value="expert" className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                Experts see the same program as part of a <strong>system</strong>: event loop, call stack, DOM APIs,
-                and a flow of data. Even a simple console log is a call scheduled on an event loop and printed through
-                the devtools pipeline.
-              </p>
-              <p className="text-muted-foreground">
-                Thinking this way prepares you for debugging, performance tuning, and scaling your code beyond one
-                file.
-              </p>
-            </TabsContent>
-          </Tabs>
         </CardContent>
       </Card>
 
@@ -202,157 +204,351 @@ console.log('Hello, JavaScript!');</pre>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-yellow-600" />
+            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
             Run Your First Programs
           </CardTitle>
           <CardDescription className="text-base">
             Launch curated examples in the Web Playground to see JavaScript run inside a real page.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm md:text-base">
-          <Tabs defaultValue="console">
-            <TabsList className="mb-4">
-              <TabsTrigger value="console">Console Hello</TabsTrigger>
-              <TabsTrigger value="dom">Button Click Hello</TabsTrigger>
-              <TabsTrigger value="loop">Looped Messages</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="console" className="space-y-3">
-              <p className="text-muted-foreground">
-                The classic first program: log a message to the console. This example pairs a simple HTML page with a
-                script so you can see both sides.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">hello-console.html</span>
-                  <span className="text-slate-500 dark:text-slate-300">Console hello</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{consoleHtml}
-                </pre>
+        <CardContent className="space-y-6">
+          {/* Example 1: Console Hello */}
+          <div className="rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-gradient-to-br from-blue-50/40 to-cyan-50/40 dark:from-blue-950/10 dark:to-cyan-950/10 p-6 space-y-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-blue-500/80 dark:bg-blue-600/80 rounded-lg">
+                <Terminal className="w-5 h-5 text-white" />
               </div>
-              {onOpenWebPlayground && (
-                <Button
-                  className="w-full md:w-auto"
-                  onClick={() => onOpenWebPlayground(consoleHtml, '', consoleJs)}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Open in Web Playground
-                </Button>
-              )}
-            </TabsContent>
-
-            <TabsContent value="dom" className="space-y-3">
-              <p className="text-muted-foreground">
-                Next, attach JavaScript to the DOM. When the user clicks the button, your code runs and updates the
-                page.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">hello-dom.html</span>
-                  <span className="text-slate-500 dark:text-slate-300">DOM hello</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{domHtml}
-                </pre>
+              <div>
+                <h3 className="font-bold text-lg text-blue-700 dark:text-blue-300">1. Console Hello</h3>
+                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Classic first program</p>
               </div>
-              {onOpenWebPlayground && (
-                <Button
-                  className="w-full md:w-auto"
-                  onClick={() => onOpenWebPlayground(domHtml, domJs ? '' : '', domJs)}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Open in Web Playground
-                </Button>
-              )}
-            </TabsContent>
+            </div>
+            <p className="text-muted-foreground text-sm">
+              The classic first program: log a message to the console. This example pairs a simple HTML page with a script so you can see both sides.
+            </p>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
+                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">JavaScript</span>
+                <span className="text-blue-600/70 dark:text-blue-400/70">Console hello</span>
+              </div>
+              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{consoleJs}
+              </pre>
+            </div>
+            {onOpenWebPlayground && (
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => onOpenWebPlayground(consoleHtml, '', consoleJs)}
+              >
+                <Globe className="w-4 h-4 mr-2" />
+                Open in Web Playground
+              </Button>
+            )}
+          </div>
 
-            <TabsContent value="loop" className="space-y-3">
-              <p className="text-muted-foreground">
-                Finally, add a loop. This &quot;first program&quot; now prints multiple messages and hints at how you&apos;ll
-                work with repetition and patterns.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">loop.js</span>
-                  <span className="text-slate-500 dark:text-slate-300">Looped messages</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+          {/* Example 2: Button Click */}
+          <div className="rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-gradient-to-br from-emerald-50/40 to-green-50/40 dark:from-emerald-950/10 dark:to-green-950/10 p-6 space-y-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-emerald-500/80 dark:bg-emerald-600/80 rounded-lg">
+                <MousePointerClick className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">2. Button Click Hello</h3>
+                <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">Interactive DOM manipulation</p>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-sm">
+              Next, attach JavaScript to the DOM. When the user clicks the button, your code runs and updates the page.
+            </p>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
+                <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">JavaScript</span>
+                <span className="text-emerald-600/70 dark:text-emerald-400/70">DOM hello</span>
+              </div>
+              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
+{domJs}
+              </pre>
+            </div>
+            {onOpenWebPlayground && (
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => onOpenWebPlayground(domHtml, domJs ? '' : '', domJs)}
+              >
+                <Globe className="w-4 h-4 mr-2" />
+                Open in Web Playground
+              </Button>
+            )}
+          </div>
+
+          {/* Example 3: Loop */}
+          <div className="rounded-xl border-2 border-purple-200/60 dark:border-purple-800/40 bg-gradient-to-br from-purple-50/40 to-pink-50/40 dark:from-purple-950/10 dark:to-pink-950/10 p-6 space-y-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-purple-500/80 dark:bg-purple-600/80 rounded-lg">
+                <Layers className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-purple-700 dark:text-purple-300">3. Looped Messages</h3>
+                <p className="text-xs text-purple-600/70 dark:text-purple-400/70">Repetition with loops</p>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-sm">
+              Finally, add a loop. This &quot;first program&quot; now prints multiple messages and hints at how you&apos;ll work with repetition and patterns.
+            </p>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
+                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">JavaScript</span>
+                <span className="text-purple-600/70 dark:text-purple-400/70">Looped messages</span>
+              </div>
+              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
 {loopJs}
-                </pre>
-              </div>
-              {onOpenWebPlayground && (
-                <Button
-                  className="w-full md:w-auto"
-                  onClick={() => onOpenWebPlayground(loopHtml, '', loopJs)}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Open in Web Playground
-                </Button>
-              )}
-            </TabsContent>
-          </Tabs>
+              </pre>
+            </div>
+            {onOpenWebPlayground && (
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => onOpenWebPlayground(loopHtml, '', loopJs)}
+              >
+                <Globe className="w-4 h-4 mr-2" />
+                Open in Web Playground
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
 
-      {/* Concept Checklist – Accordion */}
+      {/* Step-by-Step Visual Breakdown */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Target className="w-6 h-6 text-yellow-600" />
-            First Program Concepts Checklist
+            <Code2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Anatomy of Your First Program
           </CardTitle>
           <CardDescription className="text-base">
-            Expand each item to confirm you understand the core ideas behind your first JavaScript program.
+            Let's break down every part of console.log('Hello, World!') and understand what's happening.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="output">
-              <AccordionTrigger className="text-sm md:text-base">
-                Output: Where does my program&apos;s result appear?
-              </AccordionTrigger>
-              <AccordionContent className="text-sm md:text-base text-muted-foreground space-y-2">
-                <p>
-                  In the browser, your first outputs usually go to the <strong>console</strong> or the{' '}
-                  <strong>page itself</strong>.
-                </p>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>
-                    <code className="font-mono">console.log()</code> → Developer console (great for debugging).
-                  </li>
-                  <li>DOM updates (like changing text) → What the user sees on the page.</li>
-                </ul>
-              </AccordionContent>
-            </AccordionItem>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* console */}
+            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
+              <div className="font-mono text-2xl font-bold text-blue-700 dark:text-blue-300 mb-3">console</div>
+              <h4 className="font-semibold mb-2">The Console Object</h4>
+              <p className="text-sm text-muted-foreground mb-3">
+                A built-in JavaScript object that provides access to the browser's debugging console.
+              </p>
+              <div className="space-y-1 text-xs">
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-blue-500" />
+                  <span className="text-muted-foreground">Global object (available everywhere)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-blue-500" />
+                  <span className="text-muted-foreground">Part of Web APIs</span>
+                </div>
+              </div>
+            </div>
 
-            <AccordionItem value="flow">
-              <AccordionTrigger className="text-sm md:text-base">
-                Flow: In what order does JavaScript run my code?
-              </AccordionTrigger>
-              <AccordionContent className="text-sm md:text-base text-muted-foreground space-y-2">
-                <p>
-                  JavaScript runs top-to-bottom, one line at a time. When you attach listeners (like
-                  <code className="font-mono"> addEventListener</code>), you&apos;re telling the browser: &quot;When
-                  this happens later, run this piece of code.&quot;
-                </p>
-              </AccordionContent>
-            </AccordionItem>
+            {/* .log() */}
+            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
+              <div className="font-mono text-2xl font-bold text-emerald-700 dark:text-emerald-300 mb-3">.log()</div>
+              <h4 className="font-semibold mb-2">The Method</h4>
+              <p className="text-sm text-muted-foreground mb-3">
+                A function (method) that outputs messages to the console. Think of it as "print" or "display".
+              </p>
+              <div className="space-y-1 text-xs">
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-emerald-500" />
+                  <span className="text-muted-foreground">Takes any value as input</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-emerald-500" />
+                  <span className="text-muted-foreground">Shows result in DevTools</span>
+                </div>
+              </div>
+            </div>
 
-            <AccordionItem value="mental-model">
-              <AccordionTrigger className="text-sm md:text-base">
-                Mental Model: What actually is a &quot;program&quot;?
-              </AccordionTrigger>
-              <AccordionContent className="text-sm md:text-base text-muted-foreground space-y-2">
-                <p>
-                  Think of a program as a set of <strong>instructions</strong> the computer follows to transform
-                  inputs into outputs. Even your first &quot;Hello, JavaScript!&quot; is a tiny, complete program.
-                </p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+            {/* 'Hello, World!' */}
+            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
+              <div className="font-mono text-2xl font-bold text-purple-700 dark:text-purple-300 mb-3">'Hello!'</div>
+              <h4 className="font-semibold mb-2">The String</h4>
+              <p className="text-sm text-muted-foreground mb-3">
+                Text data wrapped in quotes. This is what will be displayed in the console.
+              </p>
+              <div className="space-y-1 text-xs">
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-purple-500" />
+                  <span className="text-muted-foreground">Can use single or double quotes</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-purple-500" />
+                  <span className="text-muted-foreground">Called a "string" data type</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ; */}
+            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
+              <div className="font-mono text-2xl font-bold text-amber-700 dark:text-amber-300 mb-3">;</div>
+              <h4 className="font-semibold mb-2">The Semicolon</h4>
+              <p className="text-sm text-muted-foreground mb-3">
+                Marks the end of a statement. Like a period at the end of a sentence.
+              </p>
+              <div className="space-y-1 text-xs">
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-amber-500" />
+                  <span className="text-muted-foreground">Optional (but recommended)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4 text-amber-500" />
+                  <span className="text-muted-foreground">Helps avoid bugs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Full Example with Annotations */}
+          <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border">
+            <h4 className="font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              Putting It All Together
+            </h4>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-blue-600 dark:text-blue-400">console</span>
+                <span className="text-gray-600 dark:text-gray-400">.</span>
+                <span className="text-emerald-600 dark:text-emerald-400">log</span>
+                <span className="text-gray-600 dark:text-gray-400">(</span>
+                <span className="text-purple-600 dark:text-purple-400">'Hello, World!'</span>
+                <span className="text-gray-600 dark:text-gray-400">);</span>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mt-3">
+              This single line tells JavaScript: "Take the text 'Hello, World!' and display it in the console."
+            </p>
+          </div>
         </CardContent>
       </Card>
+
+      {/* Common Mistakes */}
+      <Card className="bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 border border-rose-200/50 dark:border-rose-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <AlertTriangle className="w-6 h-6 text-rose-600/80 dark:text-rose-400/80" />
+            Common Beginner Mistakes
+          </CardTitle>
+          <CardDescription className="text-base">
+            Learn from these common pitfalls and save yourself hours of debugging!
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Mistake 1 */}
+            <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-rose-200 dark:border-rose-800">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-rose-700 dark:text-rose-300 mb-1">Missing Quotes</h4>
+                  <div className="font-mono text-xs bg-rose-50 dark:bg-rose-950/20 p-2 rounded mb-2">
+                    console.log(Hello); // ❌ Error!
+                  </div>
+                  <p className="text-sm text-muted-foreground">Without quotes, JavaScript thinks "Hello" is a variable, not text.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 mt-3 pt-3 border-t border-rose-200 dark:border-rose-800">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-1">Correct Way</h4>
+                  <div className="font-mono text-xs bg-emerald-50 dark:bg-emerald-950/20 p-2 rounded">
+                    console.log('Hello'); // ✅ Works!
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mistake 2 */}
+            <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-rose-200 dark:border-rose-800">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-rose-700 dark:text-rose-300 mb-1">Typos in console</h4>
+                  <div className="font-mono text-xs bg-rose-50 dark:bg-rose-950/20 p-2 rounded mb-2">
+                    consol.log('Hi'); // ❌ Error!
+                  </div>
+                  <p className="text-sm text-muted-foreground">JavaScript is case-sensitive and spelling matters!</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 mt-3 pt-3 border-t border-rose-200 dark:border-rose-800">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-1">Correct Way</h4>
+                  <div className="font-mono text-xs bg-emerald-50 dark:bg-emerald-950/20 p-2 rounded">
+                    console.log('Hi'); // ✅ Works!
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mistake 3 */}
+            <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-rose-200 dark:border-rose-800">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-rose-700 dark:text-rose-300 mb-1">Mismatched Quotes</h4>
+                  <div className="font-mono text-xs bg-rose-50 dark:bg-rose-950/20 p-2 rounded mb-2">
+                    console.log('Hello"); // ❌ Error!
+                  </div>
+                  <p className="text-sm text-muted-foreground">Start and end quotes must match!</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 mt-3 pt-3 border-t border-rose-200 dark:border-rose-800">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-1">Correct Way</h4>
+                  <div className="font-mono text-xs bg-emerald-50 dark:bg-emerald-950/20 p-2 rounded">
+                    console.log("Hello"); // ✅ Works!
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mistake 4 */}
+            <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-rose-200 dark:border-rose-800">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-rose-700 dark:text-rose-300 mb-1">Missing Parentheses</h4>
+                  <div className="font-mono text-xs bg-rose-50 dark:bg-rose-950/20 p-2 rounded mb-2">
+                    console.log'Hello'; // ❌ Error!
+                  </div>
+                  <p className="text-sm text-muted-foreground">Functions need () to be called!</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 mt-3 pt-3 border-t border-rose-200 dark:border-rose-800">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-1">Correct Way</h4>
+                  <div className="font-mono text-xs bg-emerald-50 dark:bg-emerald-950/20 p-2 rounded">
+                    console.log('Hello'); // ✅ Works!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
+            <div className="flex items-start gap-3">
+              <Lightbulb className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-amber-700 dark:text-amber-300 mb-1">Pro Tip</h4>
+                <p className="text-sm text-muted-foreground">
+                  When you get an error, read the message carefully! It usually tells you exactly what went wrong and which line has the problem.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
     </div>
   );
 }

@@ -25,7 +25,6 @@ import { useUser } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
 import { AiSimplification } from './ai-simplification';
-import { getThemeClasses, animationClasses } from '@/lib/language-themes';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -58,9 +57,6 @@ export function GenericContentDisplay({
   const isUserAuthenticated = user && !user.isAnonymous;
   
   const { toast } = useToast();
-  
-  // Get theme classes for the current language
-  const themeClasses = getThemeClasses(language.slug);
 
   React.useEffect(() => {
     setQaResult(null);
@@ -105,20 +101,13 @@ export function GenericContentDisplay({
       )}
       
       {!isLearningPlanTopic && (
-          <Card className={cn(
-            "mt-8 transition-all duration-200 hover:shadow-lg",
-            themeClasses.cardElevated,
-            animationClasses.fadeIn
-          )}>
+          <Card className="mt-8 transition-all duration-200 hover:shadow-lg animate-in fade-in-50">
             <CardHeader>
-              <CardTitle className={cn(
-                "flex items-center gap-2",
-                themeClasses.textPrimary
-              )}>
-                <HelpCircle className={cn("w-6 h-6", themeClasses.primary)} />
+              <CardTitle className="flex items-center gap-2">
+                <HelpCircle className="w-6 h-6 text-primary" />
                 Ask a Question
               </CardTitle>
-              <CardDescription className={themeClasses.textSecondary}>
+              <CardDescription>
                 Have a question about {topic.title}? Ask our AI assistant.
               </CardDescription>
             </CardHeader>
@@ -128,19 +117,12 @@ export function GenericContentDisplay({
                 value={question} 
                 onChange={(e) => setQuestion(e.target.value)} 
                 disabled={isAsking}
-                className={cn(
-                  "transition-colors focus:ring-2",
-                  themeClasses.border,
-                  `focus:ring-${themeClasses.primary.split('-')[1]}-200`
-                )}
+                className="transition-colors focus:ring-2"
               />
               <Button 
                 onClick={handleAskQuestionAction}
                 disabled={isAsking || !question.trim()}
-                className={cn(
-                  "transition-all duration-200",
-                  themeClasses.buttonPrimary
-                )}
+                className="transition-all duration-200"
               >
                 {isAsking ? 'Thinking...' : 'Get Answer'}
               </Button>
@@ -149,11 +131,7 @@ export function GenericContentDisplay({
       )}
       
       {isAsking && (
-        <Card className={cn(
-          "transition-all duration-200",
-          themeClasses.cardDefault,
-          animationClasses.fadeIn
-        )}>
+        <Card className="transition-all duration-200 animate-in fade-in-50">
           <CardContent className="p-6 space-y-2">
             <Skeleton className="h-4 w-1/3" />
             <Skeleton className="h-4 w-full" />
@@ -163,28 +141,14 @@ export function GenericContentDisplay({
       )}
 
       {qaResult && (
-        <Card className={cn(
-          "transition-all duration-500 hover:shadow-lg",
-          themeClasses.cardBackground,
-          themeClasses.border,
-          animationClasses.fadeIn
-        )}>
+        <Card className="transition-all duration-500 hover:shadow-lg animate-in fade-in-50">
           <CardHeader>
-            <CardTitle className={themeClasses.textPrimary}>
+            <CardTitle>
               AI Answer
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className={cn(
-              "prose prose-sm max-w-none transition-colors",
-              "prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground",
-              "prose-code:text-current prose-pre:rounded-md prose-table:border prose-th:p-2 prose-td:p-2",
-              "prose-blockquote:border-l-4 prose-blockquote:pl-4 prose-blockquote:italic",
-              themeClasses.textPrimary,
-              `prose-code:${themeClasses.primary}`,
-              `prose-pre:${themeClasses.codeBackground}`,
-              `prose-blockquote:${themeClasses.border}`
-            )} 
+            <div className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-headings:text-foreground prose-strong:text-foreground prose-code:text-current prose-pre:rounded-md prose-table:border prose-th:p-2 prose-td:p-2 prose-blockquote:border-l-4 prose-blockquote:pl-4 prose-blockquote:italic" 
             dangerouslySetInnerHTML={{ __html: qaResult.answer }} />
           </CardContent>
         </Card>

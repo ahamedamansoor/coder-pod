@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import type { Language, Topic } from '@/app/data';
 import { ModuleCompletionCelebration } from '@/components/shared/modals/module-completion-celebration';
-import { getThemeClasses, animationClasses } from '@/lib/language-themes';
 
 // Shared brand color (Coder Pod blue) using theme-friendly classes
 const LOGO_COLOR_CLASS = 'text-primary';
@@ -97,9 +96,6 @@ export const GenericLearningPath = ({
   const [completedModule, setCompletedModule] = useState<string | null>(null);
 
   const isUserAuthenticated = user && !user.isAnonymous;
-  
-  // Get theme classes for the current language
-  const themeClasses = getThemeClasses(language?.slug || 'html');
 
   useEffect(() => {
     if (!isUserLoading && !user) {
@@ -218,7 +214,7 @@ export const GenericLearningPath = ({
               <CheckCircle className={cn(
                 "w-6 h-6 transition-all duration-200",
                 LOGO_COLOR_CLASS,
-                animationClasses.scaleIn
+                "animate-in zoom-in-95"
               )} />
             ) : (
               <Circle className="w-6 h-6 text-muted-foreground/50 transition-colors" />
@@ -230,14 +226,14 @@ export const GenericLearningPath = ({
             )}>
               <h3 className={cn(
                 "text-lg font-semibold transition-colors",
-                isCompleted ? themeClasses.textPrimary : "text-foreground dark:text-slate-100"
+                isCompleted ? "" : "text-foreground dark:text-slate-100"
               )}>
                 {decodeHtmlEntities(topic.title)}
               </h3>
             </Link>
             <p className={cn(
               "text-sm mt-1 transition-colors",
-              themeClasses.textSecondary
+              "text-muted-foreground"
             )}>
               {decodeHtmlEntities(topic.explanation)}
             </p>
@@ -270,12 +266,12 @@ export const GenericLearningPath = ({
       
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className={cn("text-center mb-8", animationClasses.fadeIn)}>
+        <div className={cn("text-center mb-8", "animate-in fade-in-50")}>
           <div className="flex items-center justify-center gap-3 mb-4">
-            <BookOpen className={cn("w-12 h-12", LOGO_COLOR_CLASS, animationClasses.bounceIn)} />
+            <BookOpen className={cn("w-12 h-12", LOGO_COLOR_CLASS, "animate-bounce")} />
             <h1 className={cn(
               "text-4xl md:text-5xl font-bold",
-              themeClasses.textPrimary
+              ""
             )}>
               <span className={LOGO_COLOR_CLASS}>
                 {decodeHtmlEntities(language.name)}
@@ -285,7 +281,7 @@ export const GenericLearningPath = ({
           </div>
           <p className={cn(
             "text-lg mb-6 transition-colors",
-            themeClasses.textSecondary
+            "text-muted-foreground"
           )}>
             A comprehensive roadmap from beginner to expert - master {decodeHtmlEntities(language.name)} with {totalCount} topics across {modules.length} categories.
           </p>
@@ -293,14 +289,14 @@ export const GenericLearningPath = ({
           {/* Progress Card */}
           <div className={cn(
             "max-w-2xl mx-auto rounded-lg p-6 border transition-all duration-300",
-            themeClasses.cardElevated,
-            animationClasses.slideIn,
+            "",
+            "animate-in slide-in-from-bottom-4",
             "border-[#5B7FFF]/30"
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className={cn(
                 "text-sm font-semibold",
-                themeClasses.textPrimary
+                ""
               )}>
                 Overall Progress
               </span>
@@ -313,7 +309,7 @@ export const GenericLearningPath = ({
             </div>
             <div className={cn(
               "w-full rounded-full h-3 overflow-hidden",
-              themeClasses.progressBackground
+              "bg-gray-200 dark:bg-gray-700"
             )}>
               <div 
                 className={cn(
@@ -325,7 +321,7 @@ export const GenericLearningPath = ({
             </div>
             <p className={cn(
               "text-sm mt-2",
-              themeClasses.textSecondary
+              "text-muted-foreground"
             )}>
               {completedCount} of {totalCount} topics completed
             </p>
@@ -343,9 +339,9 @@ export const GenericLearningPath = ({
                 key={module.id} 
                 className={cn(
                   "border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
-                  themeClasses.cardElevated,
+                  "",
                   "bg-card dark:bg-slate-900/80",
-                  animationClasses.fadeIn,
+                  "animate-in fade-in-50",
                   "border-primary/30 dark:border-primary/50"
                 )}
               >
@@ -354,7 +350,7 @@ export const GenericLearningPath = ({
                   onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)} 
                   className={cn(
                     "p-6 cursor-pointer flex items-center justify-between border-b transition-all duration-200",
-                    themeClasses.cardBackground,
+                    "",
                     "border-primary/30 dark:border-primary/50",
                     expandedModule === module.id && "bg-primary/10 dark:bg-primary/20",
                     expandedModule === module.id && "border-primary",
@@ -363,7 +359,7 @@ export const GenericLearningPath = ({
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "text-3xl p-3 rounded-full transition-all duration-200 hover:scale-110",
-                      themeClasses.cardBackground,
+                      "",
                       "border-primary/30 dark:border-primary/50",
                       module.color
                     )}>
@@ -373,7 +369,7 @@ export const GenericLearningPath = ({
                       <div className="flex items-center gap-3 mb-1">
                         <h2 className={cn(
                           "text-xl font-bold transition-colors",
-                          themeClasses.textPrimary,
+                          "",
                           "dark:text-slate-100"
                         )}>
                           {decodeHtmlEntities(module.title)}
@@ -389,7 +385,7 @@ export const GenericLearningPath = ({
                           </span>
                         <span className={cn(
                           "text-sm transition-colors",
-                          themeClasses.textSecondary
+                          "text-muted-foreground"
                         )}>
                           {module.topics.length} topics
                         </span>
@@ -398,7 +394,7 @@ export const GenericLearningPath = ({
                       <div className="flex items-center gap-2 mt-2">
                       <div className={cn(
                         "w-32 rounded-full h-2 overflow-hidden",
-                        themeClasses.progressBackground
+                        "bg-gray-200 dark:bg-gray-700"
                       )}>
                         <div 
                           className={cn(
@@ -410,7 +406,7 @@ export const GenericLearningPath = ({
                       </div>
                         <span className={cn(
                           "text-xs transition-colors",
-                          themeClasses.textSecondary
+                          "text-muted-foreground"
                         )}>
                           {moduleProgress}%
                         </span>
@@ -428,7 +424,7 @@ export const GenericLearningPath = ({
                 {expandedModule === module.id && (
                   <div className={cn(
                     "p-6 space-y-3 transition-colors",
-                    themeClasses.background
+                    ""
                   )}>
                     {module.topics.map((topic) => (
                       <TopicItem key={topic.slug} topic={topic} />
@@ -443,8 +439,8 @@ export const GenericLearningPath = ({
         {/* Learning Tips */}
         <div className={cn(
           "mt-12 rounded-lg p-6 border transition-all duration-300",
-          themeClasses.cardElevated,
-          animationClasses.fadeIn,
+          "",
+          "animate-in fade-in-50",
           "border-primary/30 dark:border-primary/50"
         )}>
           <div className="flex items-center gap-3 mb-6">
@@ -454,7 +450,7 @@ export const GenericLearningPath = ({
             )} />
             <h2 className={cn(
               "text-2xl font-bold",
-              themeClasses.textPrimary
+              ""
             )}>
               Learning Tips
             </h2>
@@ -462,36 +458,36 @@ export const GenericLearningPath = ({
           <div className="grid md:grid-cols-2 gap-4">
             <div className={cn(
               "rounded-lg p-4 border transition-all duration-200",
-              themeClasses.cardDefault,
+              "",
               "border-primary/30 dark:border-primary/50"
             )}>
               <h3 className={cn(
                 "font-semibold text-base mb-2",
-                themeClasses.textPrimary
+                ""
               )}>
                 Practice Daily
               </h3>
               <p className={cn(
                 "text-sm",
-                themeClasses.textSecondary
+                "text-muted-foreground"
               )}>
                 Consistency is key. Practice a little bit every day to build strong foundations.
               </p>
             </div>
             <div className={cn(
               "rounded-lg p-4 border transition-all duration-200",
-              themeClasses.cardDefault,
+              "",
               "border-primary/30 dark:border-primary/50"
             )}>
               <h3 className={cn(
                 "font-semibold text-base mb-2",
-                themeClasses.textPrimary
+                ""
               )}>
                 Build Projects
               </h3>
               <p className={cn(
                 "text-sm",
-                themeClasses.textSecondary
+                "text-muted-foreground"
               )}>
                 Apply what you learn by building real projects to solidify your understanding.
               </p>
@@ -502,7 +498,7 @@ export const GenericLearningPath = ({
         {/* Footer */}
         <div className={cn(
           "mt-12 mb-8 text-center transition-colors",
-          animationClasses.fadeIn
+          "animate-in fade-in-50"
         )}>
           <Award className={cn(
             "w-12 h-12 mx-auto mb-3 transition-all duration-200 hover:scale-110",
@@ -510,13 +506,13 @@ export const GenericLearningPath = ({
           )} />
           <p className={cn(
             "text-lg font-semibold",
-            themeClasses.textPrimary
+            ""
           )}>
             Happy Learning!
           </p>
           <p className={cn(
             "text-sm mt-2 mb-4",
-            themeClasses.textSecondary
+            "text-muted-foreground"
           )}>
             Click on topics to mark them as complete and track your progress!
           </p>

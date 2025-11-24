@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import type { Topic } from '@/app/data/types';
 import { CheckCircle } from 'lucide-react';
-import { animationClasses } from '@/lib/language-themes';
 import { cn } from '@/lib/utils';
 
 interface Group {
@@ -41,7 +40,7 @@ export function GenericGroupedTopicMenu({
   return (
     <>
       {groups.map(group => (
-        <div key={group.title} className={cn("space-y-2", animationClasses.fadeIn)}>
+        <div key={group.title} className="space-y-2 animate-in fade-in-50">
           <p 
             className={cn(
               "px-2 text-md font-semibold transition-colors",
@@ -80,9 +79,8 @@ export function GenericGroupedTopicMenu({
                   >
                     {completedTopics.has(topic.slug) && isUserAuthenticated && (
                       <CheckCircle className={cn(
-                        "w-4 h-4 transition-colors",
-                        brandTheme.primary,
-                        animationClasses.scaleIn
+                        "w-4 h-4 transition-colors animate-in zoom-in-95",
+                        brandTheme.primary
                       )} />
                     )}
                     <span 

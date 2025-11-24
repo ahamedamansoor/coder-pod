@@ -1,531 +1,435 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  ArrowRight,
-  CheckCircle2,
-  Code2,
   FileCode,
-  Globe,
-  Layout,
-  Layers,
-  Play,
   Sparkles,
-  TerminalSquare,
+  Layers,
+  Globe,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  Lightbulb,
+  Monitor,
+  Play,
+  Workflow,
+  ArrowRight,
 } from 'lucide-react';
 
-type PlaygroundOpener = (html: string, css: string, js: string) => void;
-
-interface HtmlTopicProps {
-  onOpenWebPlayground?: PlaygroundOpener;
+interface HtmlIntroductionProps {
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const INTRO_EXAMPLE = `<!DOCTYPE html>
+const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>My First HTML Page</title>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <title>HTML Intro</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #eef2ff, #f8fafc 50%), #f8fafc;
+      color: #0f172a;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(760px, 100%);
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      box-shadow: 0 18px 70px rgba(15, 23, 42, 0.08);
+      padding: 22px;
+    }
+    h1 { margin: 0 0 8px; color: #2563eb; }
+    p { margin: 0 0 12px; color: #475569; }
+    .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 12px; }
+    .pill { padding: 10px 12px; border-radius: 12px; background: #f1f5f9; border: 1px dashed #e2e8f0; font-weight: 600; }
+    code { background: #0f172a; color: #e2e8f0; padding: 8px 10px; border-radius: 8px; display: block; white-space: pre; }
+  </style>
+</head>
+<body>
+  <div class="card">
     <h1>Hello, HTML!</h1>
-    <p>This is my very first web page.</p>
-  </body>
+    <p>This mini page shows structure: heading, paragraph, and a styled list.</p>
+    <div class="grid" id="preview"></div>
+    <code id="snippet"></code>
+  </div>
+  <script src="./html-intro-demo.js"></script>
+</body>
 </html>`;
 
-const LIVE_HTML_TEMPLATE = `<main>
-  <h1>Hello, HTML 👋</h1>
-  <p>Edit this content and see it update instantly.</p>
-  <button>Click me</button>
-</main>`;
+const playgroundJs = `const points = [
+  '<!DOCTYPE html> declares HTML5',
+  '<head> holds metadata like <title>',
+  '<body> renders what users see'
+];
 
-function buildLiveSrcDoc(html: string) {
-  return `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <style>
-      :root {
-        color-scheme: light dark;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      }
-      body {
-        margin: 0;
-        padding: 1.5rem;
-        background: #f9fafb;
-        color: #0f172a;
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: #020617;
-          color: #e5e7eb;
-        }
-      }
-      button {
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        border: none;
-        background: #5B7FFF;
-        color: white;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #3b5edb;
-      }
-    </style>
-  </head>
-  <body>
-    ${html}
-  </body>
-</html>`;
-}
+document.getElementById('preview').innerHTML = points
+  .map(text => '<div class="pill">' + text + '</div>')
+  .join('');
 
-export default function HtmlTopic({ onOpenWebPlayground }: HtmlTopicProps) {
-  const [liveHtml, setLiveHtml] = useState(LIVE_HTML_TEMPLATE);
+document.getElementById('snippet').textContent =
+'<body>\\n  <h1>Hello, HTML!</h1>\\n  <p>Structure first, style later.</p>\\n</body>';`;
 
+export default function HtmlIntroduction({ onOpenWebPlayground }: HtmlIntroductionProps) {
   return (
-    <div className="w-full min-h-screen pb-16 bg-gradient-to-b from-background via-background to-background">
-      <div className="w-full px-3 md:px-6 space-y-10">
-        <PageHeader
-          icon={FileCode}
-          category="HTML · Foundations"
-          title="Introduction to HTML"
-          description="Explore the structural language of the web—from first tag to expert mental models."
-          colorTheme="blue"
-        />
+    <div className="w-full min-h-screen space-y-10 pb-16">
+      <PageHeader
+        icon={FileCode}
+        category="HTML · Foundations"
+        title="Introduction to HTML"
+        description="Understand what HTML is, how browsers read it, and the core tags that build every web page."
+        colorTheme="blue"
+      />
 
-        {/* Hero */}
-        <Card className="border border-[#5B7FFF]/25 bg-gradient-to-r from-blue-50 via-sky-50 to-indigo-100 dark:border-[#5B7FFF]/40 dark:from-slate-900/40 dark:via-slate-950/60 dark:to-slate-900/40">
-          <CardContent className="py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 dark:bg-slate-900/80 px-3 py-1 border border-[#5B7FFF]/30">
-                <Sparkles className="w-4 h-4 text-[#5B7FFF]" />
-                <span className="text-xs font-semibold tracking-wide text-[#1d3bb8] dark:text-[#c7d2ff]">
-                  Beginner → Expert guided journey
-                </span>
+      {/* Overview */}
+      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Why HTML Matters
+          </CardTitle>
+          <CardDescription className="text-base">
+            HTML gives structure and meaning to content. Browsers parse it top-to-bottom before applying CSS or JavaScript.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-3 gap-4">
+          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Layers className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
+              <h3 className="font-semibold">Structure</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">Headings, paragraphs, lists, and containers organize content.</p>
+            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">Tags</Badge>
+          </div>
+          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Globe className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
+              <h3 className="font-semibold">Semantics</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">Meaningful tags improve accessibility and SEO.</p>
+            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">Meaning</Badge>
+          </div>
+          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Monitor className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
+              <h3 className="font-semibold">Foundation</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">CSS styles HTML and JavaScript makes it interactive.</p>
+            <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">Base layer</Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Visual flow */}
+      <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Workflow className="w-7 h-7 text-blue-600/80 dark:text-blue-400/80" />
+            How HTML Becomes a Page (Diagram)
+          </CardTitle>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            Follow the journey from your editor to a rendered, interactive document.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {[
+              'Write HTML',
+              'Browser Parses',
+              'Build DOM',
+              'Apply CSS',
+              'Layout & Paint',
+              'User Interacts',
+            ].map((step, idx, arr) => (
+              <React.Fragment key={step}>
+                <div className="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/80 border border-blue-200/60 dark:border-blue-800/40 font-semibold">
+                  {step}
+                </div>
+                {idx < arr.length - 1 && (
+                  <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-2">
+              <div className="flex items-center gap-2">
+                <Layers className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
+                <h4 className="font-semibold">DOM Tree</h4>
               </div>
-              <p className="text-sm md:text-base text-slate-700 dark:text-slate-200">
-                HTML gives content meaning: headings, paragraphs, navigation, forms, and more. This page
-                walks you from your very first tag to expert-level patterns and mental models.
+              <p className="text-sm text-muted-foreground">
+                The browser turns tags into nodes. Each element becomes part of the tree you can query and update.
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-3 w-full md:w-auto text-center text-xs md:text-sm">
-              <div className="rounded-xl bg-white/90 dark:bg-slate-950/80 border border-[#5B7FFF]/20 px-3 py-2">
-                <p className="font-semibold text-[#1d3bb8] dark:text-[#c7d2ff]">Beginner</p>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300">Tags & structure</p>
+            <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-2">
+              <div className="flex items-center gap-2">
+                <Globe className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
+                <h4 className="font-semibold">CSS Cascade</h4>
               </div>
-              <div className="rounded-xl bg-white/90 dark:bg-slate-950/80 border border-[#5B7FFF]/20 px-3 py-2">
-                <p className="font-semibold text-[#1d3bb8] dark:text-[#c7d2ff]">Intermediate</p>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300">Semantics & layout</p>
-              </div>
-              <div className="rounded-xl bg-white/90 dark:bg-slate-950/80 border border-[#5B7FFF]/20 px-3 py-2">
-                <p className="font-semibold text-[#1d3bb8] dark:text-[#c7d2ff]">Expert</p>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300">Accessibility & APIs</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Tabs: beginner / intermediate / expert views */}
-        <Card className="border border-[#5B7FFF]/25 dark:border-[#5B7FFF]/40">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl md:text-3xl">
-              <Layers className="w-7 h-7 text-[#5B7FFF]" />
-              How to think about HTML
-            </CardTitle>
-            <CardDescription className="text-sm md:text-base">
-              Switch perspectives as you grow: from simple tags to semantics and accessibility.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="beginner" className="w-full">
-              <TabsList className="mb-4 inline-flex rounded-full bg-slate-100/80 dark:bg-slate-900/70 p-1 border border-[#5B7FFF]/25 shadow-sm">
-                <TabsTrigger
-                  value="beginner"
-                  className="px-4 py-1.5 rounded-full text-xs md:text-sm data-[state=active]:bg-[#5B7FFF] data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-[1.02] transition-all"
-                >
-                  Beginner
-                </TabsTrigger>
-                <TabsTrigger
-                  value="intermediate"
-                  className="px-4 py-1.5 rounded-full text-xs md:text-sm data-[state=active]:bg-[#5B7FFF] data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-[1.02] transition-all"
-                >
-                  Intermediate
-                </TabsTrigger>
-                <TabsTrigger
-                  value="expert"
-                  className="px-4 py-1.5 rounded-full text-xs md:text-sm data-[state=active]:bg-[#5B7FFF] data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-[1.02] transition-all"
-                >
-                  Expert
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="beginner" className="space-y-4 text-sm">
-                <p className="text-muted-foreground">
-                  At this level, HTML is about learning the most common tags and how to structure a basic
-                  page.
-                </p>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Core tags
-                    </Badge>
-                    <ul className="space-y-1">
-                      <li>&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</li>
-                      <li>Headings &lt;h1&gt;–&lt;h3&gt;</li>
-                      <li>Paragraphs &lt;p&gt;</li>
-                      <li>Links &lt;a&gt; and images &lt;img&gt;</li>
-                    </ul>
-                  </div>
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Goal
-                    </Badge>
-                    <p>Create a simple personal profile page with text, images, and links.</p>
-                  </div>
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Mindset
-                    </Badge>
-                    <p>Think in blocks of content, not in pixel-perfect design yet.</p>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="intermediate" className="space-y-4 text-sm">
-                <p className="text-muted-foreground">
-                  Now you start caring about semantics: making the structure meaningful, not just
-                  presentational.
-                </p>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Semantic layout
-                    </Badge>
-                    <ul className="space-y-1">
-                      <li>&lt;header&gt;, &lt;main&gt;, &lt;footer&gt;</li>
-                      <li>&lt;section&gt;, &lt;article&gt;, &lt;aside&gt;</li>
-                      <li>&lt;nav&gt; for navigation</li>
-                    </ul>
-                  </div>
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Forms
-                    </Badge>
-                    <p>Introduce &lt;form&gt;, inputs, labels, and basic validation attributes.</p>
-                  </div>
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Goal
-                    </Badge>
-                    <p>Build a multi-section landing page with a contact form.</p>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="expert" className="space-y-4 text-sm">
-                <p className="text-muted-foreground">
-                  Expert-level HTML is about accessibility, performance, and resilient structures.
-                </p>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Accessibility
-                    </Badge>
-                    <ul className="space-y-1">
-                      <li>Landmarks & ARIA roles</li>
-                      <li>Logical heading hierarchy</li>
-                      <li>Keyboard-first interactions</li>
-                    </ul>
-                  </div>
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      HTML5 APIs
-                    </Badge>
-                    <p>Use modern elements like &lt;dialog&gt;, &lt;template&gt; and media elements.</p>
-                  </div>
-                  <div className="rounded-lg border bg-background p-4 space-y-2">
-                    <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8]">
-                      Goal
-                    </Badge>
-                    <p>Create an accessible application shell with navigation and live regions.</p>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
-
-        {/* Visual diagram + code sample */}
-        <div className="grid lg:grid-cols-[1.2fr,1fr] gap-6">
-          <Card className="border border-[#5B7FFF]/25 dark:border-[#5B7FFF]/40">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-2xl">
-                <Layout className="w-6 h-6 text-[#5B7FFF]" />
-                Anatomy of a page
-              </CardTitle>
-              <CardDescription>
-                See how the core structural elements fit together in a real document.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="rounded-xl border bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 p-4 text-xs md:text-sm font-mono">
-                <div className="relative border border-[#5B7FFF]/40 rounded-lg p-4">
-                  <div className="absolute -top-3 left-4 bg-[#5B7FFF] text-white text-[10px] px-2 py-0.5 rounded-full">
-                    Document
-                  </div>
-                  <div className="space-y-3">
-                    <div className="rounded-md border border-[#5B7FFF]/40 bg-white/80 dark:bg-slate-950/80 p-3">
-                      <span className="font-semibold text-[#1d3bb8]">&lt;head&gt;</span> – metadata,
-                      title, SEO
-                    </div>
-                    <div className="rounded-md border border-[#5B7FFF]/40 bg-white/80 dark:bg-slate-950/80 p-3 space-y-2">
-                      <span className="font-semibold text-[#1d3bb8]">&lt;body&gt;</span>
-                      <div className="grid md:grid-cols-3 gap-2 text-[11px]">
-                        <div className="rounded border border-[#5B7FFF]/35 p-2">
-                          &lt;header&gt; — logo, nav
-                        </div>
-                        <div className="rounded border border-[#5B7FFF]/35 p-2">
-                          &lt;main&gt; — core content
-                        </div>
-                        <div className="rounded border border-[#5B7FFF]/35 p-2">
-                          &lt;footer&gt; — links, legal
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border border-[#5B7FFF]/25 dark:border-[#5B7FFF]/40">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <Code2 className="w-5 h-5 text-[#5B7FFF]" />
-                First HTML file
-              </CardTitle>
-              <CardDescription>Light in light mode, dark in dark mode.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-                <div className="flex items-center justify-between px-4 py-2 text-[11px] font-medium bg-slate-200/70 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">index.html</span>
-                  <span className="text-slate-500 dark:text-slate-300">Minimal but complete</span>
-                </div>
-                <pre className="font-mono text-xs md:text-[13px] px-4 py-3 whitespace-pre overflow-x-auto">
-{INTRO_EXAMPLE}
-                </pre>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Live playground */}
-        <Card className="border border-[#5B7FFF]/25 dark:border-[#5B7FFF]/40">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <TerminalSquare className="w-6 h-6 text-[#5B7FFF]" />
-              Live HTML playground
-            </CardTitle>
-            <CardDescription>
-              Edit the HTML on the left and watch the preview update instantly.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid lg:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    <FileCode className="w-3 h-3" />
-                    Live HTML
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-6 px-2 text-[11px]"
-                    onClick={() => setLiveHtml(LIVE_HTML_TEMPLATE)}
-                  >
-                    Reset
-                  </Button>
-                </div>
-                <textarea
-                  value={liveHtml}
-                  onChange={(event) => setLiveHtml(event.target.value)}
-                  className="w-full h-64 font-mono text-xs md:text-[13px] rounded-md border bg-slate-50 dark:bg-slate-950/80 dark:border-slate-700 p-3 focus:outline-none focus:ring-2 focus:ring-[#5B7FFF]/60"
-                  spellCheck={false}
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    <Globe className="w-3 h-3" />
-                    Live preview
-                  </span>
-                </div>
-                <div className="rounded-md border bg-slate-100 dark:bg-slate-900 h-64 overflow-hidden">
-                  <iframe
-                    title="HTML live preview"
-                    className="w-full h-full border-0"
-                    srcDoc={buildLiveSrcDoc(liveHtml)}
-                    sandbox="allow-scripts allow-same-origin"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {onOpenWebPlayground && (
-              <div className="pt-2 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                <p className="text-xs md:text-sm text-muted-foreground flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3 text-[#5B7FFF]" />
-                  Want more room? Open this example in the full playground.
-                </p>
-                <Button
-                  size="sm"
-                  className="inline-flex items-center gap-2"
-                  onClick={() =>
-                    onOpenWebPlayground?.(LIVE_HTML_TEMPLATE, '', '')
-                  }
-                >
-                  <Play className="w-4 h-4" />
-                  Open in playground
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Mental models */}
-        <Card className="border border-[#5B7FFF]/25 dark:border-[#5B7FFF]/40">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <Globe className="w-6 h-6 text-[#5B7FFF]" />
-              Mental models & best practices
-            </CardTitle>
-            <CardDescription>
-              A few durable ideas you can reuse as your projects grow.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="structure-first">
-                <AccordionTrigger className="text-sm md:text-base">
-                  1. Structure first, visuals later
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Great HTML reads like an outline of the page. If you removed all CSS, the content
-                    should still make sense in order and hierarchy.
-                  </p>
-                  <ul className="space-y-1 text-sm">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>Use headings to describe sections, not just to make text big.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>Group related content using &lt;section&gt; and &lt;article&gt;.</span>
-                    </li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="accessibility">
-                <AccordionTrigger className="text-sm md:text-base">
-                  2. Accessibility from day one
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    HTML is the first and most important layer of accessibility.
-                  </p>
-                  <ul className="space-y-1 text-sm">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>
-                        Always set the <code className="font-mono">lang</code> attribute on
-                        &nbsp;&lt;html&gt;.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>Use real buttons (&lt;button&gt;) for actions, not styled links.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>
-                        Provide text alternatives for images with the <code className="font-mono">alt</code>{' '}
-                        attribute.
-                      </span>
-                    </li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="reusable-patterns">
-                <AccordionTrigger className="text-sm md:text-base">
-                  3. Think in reusable patterns
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Repeating HTML patterns will later turn into components in frameworks like React or
-                    Vue.
-                  </p>
-                  <ul className="space-y-1 text-sm">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>Identify recurring card or list layouts in your markup.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#5B7FFF] mt-0.5" />
-                      <span>Keep attributes meaningful and consistent across similar elements.</span>
-                    </li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-        </Card>
-
-        {/* Closing card */}
-        <Card className="border border-[#5B7FFF]/25 dark:border-[#5B7FFF]/40 bg-gradient-to-r from-blue-50 via-sky-50 to-indigo-100 dark:from-slate-900/40 dark:via-slate-950/60 dark:to-slate-900/40">
-          <CardContent className="py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="space-y-2">
-              <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#5B7FFF]" />
-                You&apos;re ready to build real pages
-              </h2>
-              <p className="text-sm text-slate-700 dark:text-slate-200">
-                With a solid grasp of HTML structure, you&apos;re ready to layer on CSS, JavaScript and
-                real-world projects. Keep practicing by rebuilding interfaces you use every day.
+              <p className="text-sm text-muted-foreground">
+                Styles attach to nodes based on selectors and cascade rules before layout and paint.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8] dark:text-[#c7d2ff]">
-                Next · Document structure
-              </Badge>
-              <Badge variant="outline" className="border-[#5B7FFF]/40 text-[#1d3bb8] dark:text-[#c7d2ff]">
-                Next · Semantic HTML
-              </Badge>
+            <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-2">
+              <div className="flex items-center gap-2">
+                <Monitor className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
+                <h4 className="font-semibold">Accessibility Hooks</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Semantic elements improve keyboard navigation and screen readers—structure is your first a11y tool.
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Page skeleton */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            HTML Page Skeleton
+          </CardTitle>
+          <CardDescription className="text-base">
+            Every page follows the same outline: doctype, html, head, and body.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
+            <h4 className="font-semibold">Minimal document</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;!DOCTYPE html&gt;</div>
+              <div>&lt;html lang="en"&gt;</div>
+              <div className="pl-2">&lt;head&gt;...metadata...&lt;/head&gt;</div>
+              <div className="pl-2">&lt;body&gt;...content...&lt;/body&gt;</div>
+              <div>&lt;/html&gt;</div>
+            </div>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Head vs Body</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;head&gt;: title, meta, links, scripts (optional defer)</div>
+              <div>&lt;body&gt;: everything users see</div>
+            </div>
+            <Alert>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>Tip</AlertTitle>
+              <AlertDescription>Keep heavy scripts deferred so HTML can render first.</AlertDescription>
+            </Alert>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Core tags */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <FileCode className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Essential Tags
+          </CardTitle>
+          <CardDescription className="text-base">
+            Start with these tags to build any page.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-3 gap-4">
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-2">
+            <h4 className="font-semibold">Headings & text</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;h1&gt;Main title&lt;/h1&gt;</div>
+              <div>&lt;p&gt;Supporting paragraph.&lt;/p&gt;</div>
+            </div>
+          </div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-2">
+            <h4 className="font-semibold">Links & media</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;a href="#"&gt;Visit&lt;/a&gt;</div>
+              <div>&lt;img src="photo.jpg" alt="Description" /&gt;</div>
+            </div>
+          </div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-2">
+            <h4 className="font-semibold">Lists</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</div>
+              <div>&lt;ol&gt;&lt;li&gt;Step&lt;/li&gt;&lt;/ol&gt;</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Semantic landmarks */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Layers className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
+            Semantic Landmarks
+          </CardTitle>
+          <CardDescription className="text-base">
+            Wrap your layout with meaningful containers to aid accessibility and navigation.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
+            <h4 className="font-semibold">Landmark outline</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;header&gt;Logo + nav&lt;/header&gt;</div>
+              <div>&lt;nav aria-label="Main"&gt;...&lt;/nav&gt;</div>
+              <div>&lt;main&gt;Primary content&lt;/main&gt;</div>
+              <div>&lt;aside&gt;Related links&lt;/aside&gt;</div>
+              <div>&lt;footer&gt;Meta info&lt;/footer&gt;</div>
+            </div>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Why it matters</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>✅ Screen readers jump between landmarks quickly.</li>
+              <li>✅ Clear structure improves SEO and maintainability.</li>
+              <li>✅ Easier to style when sections are named by intent.</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Forms and labels */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Globe className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Form Basics
+          </CardTitle>
+          <CardDescription className="text-base">
+            Pair labels and inputs, add helpful hints, and wire accessibility attributes.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
+            <h4 className="font-semibold">Labeled input</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;label for="email"&gt;Email&lt;/label&gt;</div>
+              <div>&lt;input id="email" type="email" aria-describedby="hint" /&gt;</div>
+              <div>&lt;small id="hint"&gt;We never share your email&lt;/small&gt;</div>
+            </div>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Quick tips</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>✅ Match `for` and `id` for every control.</li>
+              <li>✅ Use specific types (`email`, `number`, `date`) for better UX.</li>
+              <li>✅ Add helper text with `aria-describedby` when guidance is needed.</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Responsive media */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Monitor className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
+            Responsive Media
+          </CardTitle>
+          <CardDescription className="text-base">
+            Make images adapt to containers and stay accessible.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
+            <h4 className="font-semibold">Image pattern</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>&lt;img</div>
+              <div className="pl-2">src="hero.jpg"</div>
+              <div className="pl-2">alt="Team collaborating in an office"</div>
+              <div className="pl-2">loading="lazy"</div>
+              <div className="pl-2">style="width:100%;max-width:640px;border-radius:12px;"</div>
+              <div>/&gt;</div>
+            </div>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Why this works</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>✅ `width: 100%` and `max-width` keep images fluid but bounded.</li>
+              <li>✅ `loading="lazy"` defers offscreen media.</li>
+              <li>✅ Descriptive `alt` text supports accessibility and SEO.</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Best practices */}
+      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Lightbulb className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
+            Best Practices
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
+            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <CheckCircle2 className="w-5 h-5" />
+              Do This
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>✅ Use semantic tags (&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;footer&gt;).</li>
+              <li>✅ Add alt text to images for accessibility.</li>
+              <li>✅ Keep titles and meta descriptions relevant.</li>
+              <li>✅ Validate HTML to catch missing tags.</li>
+            </ul>
+          </div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
+            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
+              <XCircle className="w-5 h-5" />
+              Avoid This
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>❌ Nesting block elements incorrectly (e.g., &lt;div&gt; inside &lt;p&gt;).</li>
+              <li>❌ Omitting language attribute on &lt;html&gt;.</li>
+              <li>❌ Using deprecated tags like &lt;font&gt; or &lt;center&gt;.</li>
+              <li>❌ Relying on inline styles for layout.</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Playground */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Try HTML Live
+          </CardTitle>
+          <CardDescription className="text-base">
+            Open the playground to see a simple page and key structural pieces highlighted.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
+              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">html-intro-demo.js</span>
+              <span className="text-blue-600/70 dark:text-blue-400/70">Structure + preview pills</span>
+            </div>
+            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
+          </div>
+
+          {onOpenWebPlayground && (
+            <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
+              <Play className="w-4 h-4 mr-2" />
+              Open in Web Playground
+            </Button>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

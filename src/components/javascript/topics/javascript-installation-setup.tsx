@@ -34,6 +34,7 @@ import {
   TrendingUp,
   BookOpen,
   ExternalLink,
+  MousePointerClick,
 } from 'lucide-react';
 
 interface JavaScriptInstallationSetupProps {
@@ -47,83 +48,113 @@ const browserInlineHtml = `<!DOCTYPE html>
     <title>JavaScript Setup Check</title>
     <style>
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #fef3c7, #ffedd5);
-      }
-      .card {
-        background: white;
-        padding: 2rem 2.5rem;
-        border-radius: 1rem;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-        text-align: center;
+        font-family: system-ui;
+        padding: 2rem;
+        color: #64748b;
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>Check the Console</h1>
-      <p>If you see "JavaScript is working!" in the console, your setup is correct 🎉</p>
-    </div>
-    <script>
-      console.log('JavaScript is working!');
-    </script>
+    <p>Open the console to see the output</p>
   </body>
 </html>`;
 
 const browserInlineCss = '';
-const browserInlineJs = '';
+const browserInlineJs = `// Browser Setup Check
+
+console.log('✅ JavaScript is working!');
+console.log('Environment: Browser Console');
+
+console.log('');
+console.log('Basic math:');
+console.log('2 + 2 =', 2 + 2);
+console.log('10 × 5 =', 10 * 5);
+
+console.log('');
+console.log('✅ Setup complete!');`;
 
 const domPlaygroundHtml = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Interactive Button</title>
+    <style>
+      body {
+        font-family: system-ui;
+        padding: 2rem;
+      }
+      button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      #output {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+      }
+    </style>
   </head>
   <body>
-    <main style="font-family: system-ui; padding: 2rem;">
-      <h1>Click the button to test JavaScript</h1>
-      <button id="btn" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
-        Click me
-      </button>
-      <p id="output" style="margin-top: 1rem;"></p>
-    </main>
+    <button id="btn">Click Me</button>
+    <p id="output"></p>
   </body>
 </html>`;
 
 const domPlaygroundCss = '';
 
-const domPlaygroundJs = `const button = document.getElementById('btn');
+const domPlaygroundJs = `// Interactive Button Demo
+
+const button = document.getElementById('btn');
 const output = document.getElementById('output');
 
 let count = 0;
 
 button.addEventListener('click', () => {
   count++;
-  output.textContent = 'Button clicked ' + count + ' time' + (count === 1 ? '' : 's') + '.';
-});`;
+  output.textContent = 'Clicked ' + count + ' times!';
+  
+  console.log('Click #' + count);
+});
+
+console.log('Ready! Click the button.');`;
 
 const nodeStyleHtml = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Node-style Script</title>
+    <style>
+      body {
+        font-family: system-ui;
+        padding: 2rem;
+        color: #64748b;
+      }
+    </style>
   </head>
-  <body style="font-family: system-ui; padding: 2rem;">
-    <h1>Simulated Node.js Script</h1>
-    <p>Open the console to see the output of a Node-style script.</p>
+  <body>
+    <p>Open the console to see the output</p>
   </body>
 </html>`;
 
 const nodeStyleCss = '';
 
-const nodeStyleJs = `console.log('Hello from a Node-style script!');
+const nodeStyleJs = `// Node.js Style Demo
 
-const args = ['--env=dev', '--verbose'];
-console.log('Arguments:', args.join(' '));`;
+console.log('Node.js JavaScript running!');
+
+const config = {
+  port: 3000,
+  environment: 'development'
+};
+
+console.log('');
+console.log('Server config:', config);
+
+console.log('');
+console.log('Starting server...');
+setTimeout(() => {
+  console.log('✅ Server ready on port', config.port);
+}, 1000);`;
 
 const packageJsonExample = `{
   "name": "my-javascript-project",
@@ -185,14 +216,14 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
         category="JavaScript Fundamentals"
         title="Installation & Setup"
         description="Turn your machine into a JavaScript-ready environment—from browser console to professional tooling."
-        colorTheme="yellow"
+        colorTheme="blue"
       />
 
       {/* Learning Path Overview */}
-      <Card className="border-yellow-200 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/15 dark:to-orange-950/20">
+      <Card className="bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 border border-amber-200/50 dark:border-amber-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-yellow-600" />
+            <Sparkles className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
             Your JavaScript Setup Journey
           </CardTitle>
           <CardDescription className="text-base">
@@ -202,94 +233,159 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
         <CardContent className="grid md:grid-cols-3 gap-4 text-sm md:text-base">
           <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
             <div className="flex items-center gap-2">
-              <MonitorSmartphone className="w-5 h-5 text-yellow-600" />
+              <MonitorSmartphone className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
               <h3 className="font-semibold">Level 1: Browser Only</h3>
             </div>
             <p className="text-muted-foreground">
               Use the developer console and inline scripts. Perfect for your first day of JavaScript.
             </p>
-            <Badge variant="secondary" className="bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
+            <Badge variant="secondary" className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
               Beginner
             </Badge>
           </div>
           <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
             <div className="flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-amber-600" />
+              <Cpu className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
               <h3 className="font-semibold">Level 2: Node.js & Terminal</h3>
             </div>
             <p className="text-muted-foreground">
               Run JavaScript from the command line and access the npm ecosystem used by professionals.
             </p>
-            <Badge variant="secondary" className="bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+            <Badge variant="secondary" className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
               Intermediate
             </Badge>
           </div>
           <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
             <div className="flex items-center gap-2">
-              <Code2 className="w-5 h-5 text-orange-600" />
+              <Code2 className="w-5 h-5 text-orange-600/80 dark:text-orange-400/80" />
               <h3 className="font-semibold">Level 3: Pro Editor Workflow</h3>
             </div>
             <p className="text-muted-foreground">
               Combine Node.js with a modern editor, extensions, and integrated terminal for maximum productivity.
             </p>
-            <Badge variant="secondary" className="bg-orange-100 text-orange-900 dark:bg-orange-900 dark:text-orange-100">
+            <Badge variant="secondary" className="bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-300/50 dark:border-purple-700/40">
               Expert
             </Badge>
           </div>
         </CardContent>
       </Card>
 
-      {/* Setup Modes – Tabs */}
+      {/* Setup Modes – Interactive Cards */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-yellow-600" />
-            Setup Modes
+            <Layers className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
+            Choose Your Setup Path
           </CardTitle>
           <CardDescription className="text-base">
-            Switch between beginner-friendly, intermediate, and expert setup instructions.
+            Pick your learning level and follow the tailored setup guide.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="browser">
-            <TabsList className="mb-4">
-              <TabsTrigger value="browser">Beginner: Browser</TabsTrigger>
-              <TabsTrigger value="node">Intermediate: Node.js</TabsTrigger>
-              <TabsTrigger value="editor">Expert: Editor</TabsTrigger>
-            </TabsList>
-            <TabsContent value="browser" className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                Use your browser&apos;s DevTools to run JavaScript instantly—no installation required. This is the
-                fastest, lowest-friction way to start experimenting.
-              </p>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                <li>Open DevTools (F12 or right-click → &quot;Inspect&quot;).</li>
-                <li>Go to the <strong>Console</strong> tab.</li>
-                <li>Type <code className="font-mono">console.log('Hello, JavaScript');</code> and press Enter.</li>
-              </ul>
-            </TabsContent>
-            <TabsContent value="node" className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                Install Node.js to run JavaScript files from your terminal and use tools like bundlers, linters, and
-                package managers.
-              </p>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                <li>Download the LTS version from the official Node.js site.</li>
-                <li>Run <code className="font-mono">node -v</code> and <code className="font-mono">npm -v</code> to confirm installation.</li>
-                <li>Create <code className="font-mono">app.js</code> with a simple <code className="font-mono">console.log</code> and run it.</li>
-              </ul>
-            </TabsContent>
-            <TabsContent value="editor" className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                Combine Node.js with a modern editor (like VS Code) for linting, formatting, and integrated terminals.
-              </p>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                <li>Install a code editor with JavaScript and TypeScript support.</li>
-                <li>Add extensions: ESLint, Prettier, Git integration, and a theme you like.</li>
-                <li>Open a project folder and run your Node scripts from the built-in terminal.</li>
-              </ul>
-            </TabsContent>
-          </Tabs>
+        <CardContent className="space-y-4">
+          {/* Beginner: Browser */}
+          <div className="group relative overflow-hidden rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 p-6 transition-all hover:shadow-lg hover:scale-[1.02]">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
+            <div className="relative z-10">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-3 bg-emerald-500/80 dark:bg-emerald-600/80 rounded-xl">
+                  <MonitorSmartphone className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-xl font-bold">Beginner: Browser Only</h3>
+                    <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700">Level 1</Badge>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    Use your browser&apos;s DevTools to run JavaScript instantly—no installation required. Perfect for absolute beginners!
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2 pl-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <span>Open DevTools (F12 or right-click → &quot;Inspect&quot;)</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <span>Go to the <strong>Console</strong> tab</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <span>Type <code className="font-mono text-xs bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded">console.log('Hello!');</code> and press Enter</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Intermediate: Node.js */}
+          <div className="group relative overflow-hidden rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 p-6 transition-all hover:shadow-lg hover:scale-[1.02]">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
+            <div className="relative z-10">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-3 bg-blue-500/80 dark:bg-blue-600/80 rounded-xl">
+                  <Terminal className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-xl font-bold">Intermediate: Node.js & Terminal</h3>
+                    <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 border-blue-300 dark:border-blue-700">Level 2</Badge>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    Run JavaScript from the command line and access the npm ecosystem used by professionals.
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2 pl-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>Download LTS version from <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">nodejs.org</a></span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>Verify: <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded">node -v</code> and <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded">npm -v</code></span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>Create <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded">app.js</code> and run with <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded">node app.js</code></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Expert: Editor */}
+          <div className="group relative overflow-hidden rounded-xl border-2 border-purple-200/60 dark:border-purple-800/40 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 p-6 transition-all hover:shadow-lg hover:scale-[1.02]">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-400/10 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
+            <div className="relative z-10">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-3 bg-purple-500/80 dark:bg-purple-600/80 rounded-xl">
+                  <Code2 className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-xl font-bold">Expert: Pro Editor Workflow</h3>
+                    <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 border-purple-300 dark:border-purple-700">Level 3</Badge>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    Combine Node.js with a modern editor for linting, formatting, and integrated terminals.
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2 pl-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span>Install VS Code or your preferred editor</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span>Add extensions: ESLint, Prettier, Git integration</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span>Use integrated terminal for running Node scripts</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -297,33 +393,37 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-yellow-600" />
+            <Play className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
             Try It in the Web Playground
           </CardTitle>
           <CardDescription className="text-base">
             Launch ready-made examples directly in the Web Playground and see JavaScript run in a realistic environment.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm md:text-base">
-          <Tabs defaultValue="inline">
-            <TabsList className="mb-4">
-              <TabsTrigger value="inline">Inline &lt;script&gt;</TabsTrigger>
-              <TabsTrigger value="dom">DOM Interaction</TabsTrigger>
-              <TabsTrigger value="node-style">Node-style Script</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="inline" className="space-y-3">
+        <CardContent className="space-y-6 text-sm md:text-base">
+          <div className="space-y-6">
+            {/* Example 1: Inline Script */}
+            <div className="rounded-xl border-2 border-amber-200/60 dark:border-amber-800/40 bg-gradient-to-br from-amber-50/40 to-yellow-50/40 dark:from-amber-950/10 dark:to-yellow-950/10 p-6 space-y-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-amber-500/80 dark:bg-amber-600/80 rounded-lg">
+                  <FileCode className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">1. Inline &lt;script&gt; Tag</h3>
+                  <p className="text-xs text-muted-foreground">Classic HTML approach</p>
+                </div>
+              </div>
               <p className="text-muted-foreground">
                 Classic way to include JavaScript: place a <code className="font-mono">&lt;script&gt;</code> tag in your
                 HTML. The example logs a message to the console and shows a friendly card on the page.
               </p>
               <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
                 <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">index.html</span>
+                  <span className="uppercase tracking-wide">JavaScript</span>
                   <span className="text-slate-500 dark:text-slate-300">Inline script</span>
                 </div>
                 <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{browserInlineHtml}
+{browserInlineJs}
                 </pre>
               </div>
               {onOpenWebPlayground && (
@@ -335,20 +435,30 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
                   Open in Web Playground
                 </Button>
               )}
-            </TabsContent>
+            </div>
 
-            <TabsContent value="dom" className="space-y-3">
+            {/* Example 2: DOM Interaction */}
+            <div className="rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-gradient-to-br from-blue-50/40 to-cyan-50/40 dark:from-blue-950/10 dark:to-cyan-950/10 p-6 space-y-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-blue-500/80 dark:bg-blue-600/80 rounded-lg">
+                  <MousePointerClick className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">2. DOM Interaction</h3>
+                  <p className="text-xs text-muted-foreground">Interactive button clicks</p>
+                </div>
+              </div>
               <p className="text-muted-foreground">
                 This example uses <code className="font-mono">addEventListener</code> to respond to clicks and update
                 the DOM. It demonstrates how JavaScript can manipulate the page in real time.
               </p>
               <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
                 <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">dom-demo.html</span>
+                  <span className="uppercase tracking-wide">JavaScript</span>
                   <span className="text-slate-500 dark:text-slate-300">DOM interactions</span>
                 </div>
                 <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{domPlaygroundHtml}
+{domPlaygroundJs}
                 </pre>
               </div>
               {onOpenWebPlayground && (
@@ -360,9 +470,19 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
                   Open in Web Playground
                 </Button>
               )}
-            </TabsContent>
+            </div>
 
-            <TabsContent value="node-style" className="space-y-3">
+            {/* Example 3: Node-style Script */}
+            <div className="rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-gradient-to-br from-emerald-50/40 to-green-50/40 dark:from-emerald-950/10 dark:to-green-950/10 p-6 space-y-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-emerald-500/80 dark:bg-emerald-600/80 rounded-lg">
+                  <Terminal className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">3. Node-style Script</h3>
+                  <p className="text-xs text-muted-foreground">Command-line JavaScript</p>
+                </div>
+              </div>
               <p className="text-muted-foreground">
                 While Node.js runs outside the browser, the core language is the same. This example mimics a
                 Node-style script that logs environment-like information.
@@ -385,8 +505,8 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
                   Open in Web Playground
                 </Button>
               )}
-            </TabsContent>
-          </Tabs>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -394,47 +514,140 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-yellow-600" />
+            <Layers className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
             JavaScript Environment Architecture
           </CardTitle>
           <CardDescription className="text-base">
             Understand how different JavaScript environments work together in modern development.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {/* ASCII Diagram */}
-          <div className="rounded-lg border bg-slate-50 dark:bg-slate-900/50 p-6 overflow-x-auto">
-            <pre className="font-mono text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-{`┌─────────────────────────────────────────────────────────────────┐
-│                    YOUR DEVELOPMENT MACHINE                      │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  ┌──────────────────┐         ┌──────────────────┐              │
-│  │   Web Browser    │         │     Node.js      │              │
-│  │   (V8 Engine)    │         │   (V8 Engine)    │              │
-│  ├──────────────────┤         ├──────────────────┤              │
-│  │ • DOM APIs       │         │ • File System    │              │
-│  │ • Fetch API      │         │ • HTTP Server    │              │
-│  │ • localStorage   │         │ • Process APIs   │              │
-│  │ • Console        │         │ • npm/packages   │              │
-│  └────────┬─────────┘         └────────┬─────────┘              │
-│           │                            │                         │
-│           └────────────┬───────────────┘                         │
-│                        │                                         │
-│              ┌─────────▼─────────┐                               │
-│              │  JavaScript Code  │                               │
-│              │  (Your Scripts)   │                               │
-│              └───────────────────┘                               │
-│                        │                                         │
-│           ┌────────────┴────────────┐                            │
-│           │                         │                            │
-│  ┌────────▼────────┐    ┌──────────▼─────────┐                  │
-│  │  Code Editor    │    │   Build Tools      │                  │
-│  │  (VS Code)      │    │  (Vite, Webpack)   │                  │
-│  └─────────────────┘    └────────────────────┘                  │
-│                                                                   │
-└───────────────────────────────────────────────────────────────────┘`}
-            </pre>
+        <CardContent className="space-y-8">
+          {/* Visual Diagram */}
+          <div className="relative">
+            {/* Main Container - Your Machine */}
+            <div className="rounded-2xl border-2 border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-950/10 dark:to-pink-950/10 p-6 md:p-8">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-purple-700 dark:text-purple-300 flex items-center justify-center gap-2">
+                  <MonitorSmartphone className="w-6 h-6" />
+                  Your Development Machine
+                </h3>
+              </div>
+
+              {/* Top Row: Browser & Node.js */}
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                {/* Web Browser */}
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition"></div>
+                  <div className="relative bg-white dark:bg-gray-900 rounded-xl border-2 border-blue-200 dark:border-blue-800 p-5">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-blue-500 rounded-lg">
+                        <Globe className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-blue-700 dark:text-blue-300">Web Browser</h4>
+                        <p className="text-xs text-blue-600/70 dark:text-blue-400/70">V8 JavaScript Engine</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                        <span>DOM APIs</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                        <span>Fetch API</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                        <span>localStorage</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Node.js */}
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-green-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition"></div>
+                  <div className="relative bg-white dark:bg-gray-900 rounded-xl border-2 border-emerald-200 dark:border-emerald-800 p-5">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-emerald-500 rounded-lg">
+                        <Terminal className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-emerald-700 dark:text-emerald-300">Node.js</h4>
+                        <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">V8 JavaScript Engine</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <span>File System</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <span>HTTP Server</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <span>npm/packages</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Arrow Down */}
+              <div className="flex justify-center mb-6">
+                <ArrowRight className="w-8 h-8 text-purple-400 rotate-90" />
+              </div>
+
+              {/* Middle: Your JavaScript Code */}
+              <div className="flex justify-center mb-6">
+                <div className="relative group max-w-md w-full">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-xl blur opacity-30 group-hover:opacity-40 transition"></div>
+                  <div className="relative bg-amber-50 dark:bg-amber-950/30 rounded-xl border-2 border-amber-300 dark:border-amber-700 p-6 text-center">
+                    <div className="inline-flex items-center gap-2 mb-2">
+                      <FileCode className="w-8 h-8 text-amber-600 dark:text-amber-400" />
+                      <h4 className="font-bold text-xl text-amber-700 dark:text-amber-300">JavaScript Code</h4>
+                    </div>
+                    <p className="text-sm text-amber-600/80 dark:text-amber-400/80">Your Scripts & Applications</p>
+                    <div className="mt-3 p-2 bg-white/50 dark:bg-gray-900/50 rounded font-mono text-xs">
+                      <span className="text-blue-600 dark:text-blue-400">const</span> <span className="text-amber-700 dark:text-amber-300">app</span> = <span className="text-purple-600 dark:text-purple-400">();</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Arrow Down */}
+              <div className="flex justify-center mb-6">
+                <ArrowRight className="w-8 h-8 text-purple-400 rotate-90" />
+              </div>
+
+              {/* Bottom Row: Editor & Build Tools */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Code Editor */}
+                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 rounded-xl border border-indigo-200 dark:border-indigo-800 p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-indigo-500 rounded-lg">
+                      <Code2 className="w-5 h-5 text-white" />
+                    </div>
+                    <h4 className="font-bold text-indigo-700 dark:text-indigo-300">Code Editor</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">VS Code, WebStorm, Sublime</p>
+                </div>
+
+                {/* Build Tools */}
+                <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 rounded-xl border border-orange-200 dark:border-orange-800 p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-orange-500 rounded-lg">
+                      <Settings className="w-5 h-5 text-white" />
+                    </div>
+                    <h4 className="font-bold text-orange-700 dark:text-orange-300">Build Tools</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Vite, Webpack, Rollup</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Interactive Environment Selector */}
@@ -488,7 +701,7 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
           {/* Environment Details */}
           <div className="p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20 border border-yellow-200 dark:border-yellow-800">
             <h4 className="font-semibold mb-2 flex items-center gap-2">
-              <Lightbulb className="w-5 h-5 text-yellow-600" />
+              <Lightbulb className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
               {selectedEnvironment === 'browser' && 'Browser Environment'}
               {selectedEnvironment === 'node' && 'Node.js Environment'}
               {selectedEnvironment === 'both' && 'Full Stack Environment'}
@@ -506,7 +719,7 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Download className="w-6 h-6 text-yellow-600" />
+            <Download className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
             Step-by-Step Installation Guide
           </CardTitle>
           <CardDescription className="text-base">
@@ -514,14 +727,14 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="browser-setup">
-            <TabsList className="mb-4 grid w-full grid-cols-3">
-              <TabsTrigger value="browser-setup">Browser Setup</TabsTrigger>
-              <TabsTrigger value="node-setup">Node.js Setup</TabsTrigger>
-              <TabsTrigger value="editor-setup">Editor Setup</TabsTrigger>
-            </TabsList>
+          <Accordion type="single" collapsible defaultValue="browser-setup" className="w-full">
+            <div className="grid md:grid-cols-3 gap-3 mb-6">
+              <button className="p-4 rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-emerald-50/40 dark:bg-emerald-950/10 hover:shadow-md transition-all"><Globe className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mx-auto mb-2" /><span className="font-semibold">Browser Setup</span></button>
+              <button className="p-4 rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-blue-50/40 dark:bg-blue-950/10 hover:shadow-md transition-all"><Terminal className="w-5 h-5 text-blue-600 dark:text-blue-400 mx-auto mb-2" /><span className="font-semibold">Node.js Setup</span></button>
+              <button className="p-4 rounded-xl border-2 border-purple-200/60 dark:border-purple-800/40 bg-purple-50/40 dark:bg-purple-950/10 hover:shadow-md transition-all"><Code2 className="w-5 h-5 text-purple-600 dark:text-purple-400 mx-auto mb-2" /><span className="font-semibold">Editor Setup</span></button>
+            </div>
 
-            <TabsContent value="browser-setup" className="space-y-6">
+            <AccordionItem value="browser-setup"><AccordionTrigger className="text-lg font-semibold hover:text-emerald-600"><div className="flex items-center gap-2"><Globe className="w-5 h-5" />Browser Setup Guide</div></AccordionTrigger><AccordionContent className="space-y-6 pt-4">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="rounded-full bg-blue-100 dark:bg-blue-900 p-2 text-blue-600 dark:text-blue-300">
@@ -569,9 +782,9 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
                     <p className="text-sm text-muted-foreground mb-2">
                       Click the "Console" tab in DevTools. This is your JavaScript playground.
                     </p>
-                    <div className="mt-2 p-3 bg-slate-900 text-green-400 rounded font-mono text-xs">
-                      <span className="text-slate-500">&gt;</span> console.log('Hello, World!');<br/>
-                      <span className="text-white">Hello, World!</span>
+                    <div className="mt-2 p-3 bg-gray-100 dark:bg-gray-900 text-green-600 dark:text-green-400 border border-gray-300 dark:border-gray-700 rounded font-mono text-xs">
+                      <span className="text-gray-600 dark:text-gray-500">&gt;</span> console.log('Hello, World!');<br/>
+                      <span className="text-gray-900 dark:text-white">Hello, World!</span>
                     </div>
                   </div>
                 </div>
@@ -615,9 +828,10 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
                   </AlertDescription>
                 </Alert>
               </div>
-            </TabsContent>
+            </AccordionContent>
+            </AccordionItem>
 
-            <TabsContent value="node-setup" className="space-y-6">
+            <AccordionItem value="node-setup"><AccordionTrigger className="text-lg font-semibold hover:text-blue-600"><div className="flex items-center gap-2"><Terminal className="w-5 h-5" />Node.js Setup Guide</div></AccordionTrigger><AccordionContent className="space-y-6 pt-4">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="rounded-full bg-emerald-100 dark:bg-emerald-900 p-2 text-emerald-600 dark:text-emerald-300">
@@ -664,13 +878,13 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
                       Open a terminal/command prompt and run these commands to confirm installation:
                     </p>
                     <div className="space-y-2 mt-2">
-                      <div className="p-3 bg-slate-900 text-green-400 rounded font-mono text-xs">
-                        <span className="text-slate-500">$</span> node --version<br/>
-                        <span className="text-white">v20.11.0</span>
+                      <div className="p-3 bg-gray-100 dark:bg-gray-900 text-green-600 dark:text-green-400 border border-gray-300 dark:border-gray-700 rounded font-mono text-xs">
+                        <span className="text-gray-600 dark:text-gray-500">$</span> node --version<br/>
+                        <span className="text-gray-900 dark:text-white">v20.11.0</span>
                       </div>
-                      <div className="p-3 bg-slate-900 text-green-400 rounded font-mono text-xs">
-                        <span className="text-slate-500">$</span> npm --version<br/>
-                        <span className="text-white">10.2.4</span>
+                      <div className="p-3 bg-gray-100 dark:bg-gray-900 text-green-600 dark:text-green-400 border border-gray-300 dark:border-gray-700 rounded font-mono text-xs">
+                        <span className="text-gray-600 dark:text-gray-500">$</span> npm --version<br/>
+                        <span className="text-gray-900 dark:text-white">10.2.4</span>
                       </div>
                     </div>
                   </div>
@@ -700,9 +914,9 @@ console.log('Platform:', os.platform());
 console.log('CPU cores:', os.cpus().length);`}
                       </pre>
                     </div>
-                    <div className="mt-2 p-3 bg-slate-900 text-green-400 rounded font-mono text-xs">
-                      <span className="text-slate-500">$</span> node app.js<br/>
-                      <span className="text-white">Hello from Node.js!<br/>Platform: darwin<br/>CPU cores: 8</span>
+                    <div className="mt-2 p-3 bg-gray-100 dark:bg-gray-900 text-green-600 dark:text-green-400 border border-gray-300 dark:border-gray-700 rounded font-mono text-xs">
+                      <span className="text-gray-600 dark:text-gray-500">$</span> node app.js<br/>
+                      <span className="text-gray-900 dark:text-white">Hello from Node.js!<br/>Platform: darwin<br/>CPU cores: 8</span>
                     </div>
                   </div>
                 </div>
@@ -718,8 +932,8 @@ console.log('CPU cores:', os.cpus().length);`}
                     <p className="text-sm text-muted-foreground mb-2">
                       Create a <code className="font-mono">package.json</code> file to manage dependencies:
                     </p>
-                    <div className="p-3 bg-slate-900 text-green-400 rounded font-mono text-xs mb-2">
-                      <span className="text-slate-500">$</span> npm init -y
+                    <div className="p-3 bg-gray-100 dark:bg-gray-900 text-green-600 dark:text-green-400 border border-gray-300 dark:border-gray-700 rounded font-mono text-xs mb-2">
+                      <span className="text-gray-600 dark:text-gray-500">$</span> npm init -y
                     </div>
                     <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
                       <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
@@ -740,9 +954,10 @@ console.log('CPU cores:', os.cpus().length);`}
                   </AlertDescription>
                 </Alert>
               </div>
-            </TabsContent>
+            </AccordionContent>
+            </AccordionItem>
 
-            <TabsContent value="editor-setup" className="space-y-6">
+            <AccordionItem value="editor-setup"><AccordionTrigger className="text-lg font-semibold hover:text-purple-600"><div className="flex items-center gap-2"><Code2 className="w-5 h-5" />Editor Setup Guide</div></AccordionTrigger><AccordionContent className="space-y-6 pt-4">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="rounded-full bg-purple-100 dark:bg-purple-900 p-2 text-purple-600 dark:text-purple-300">
@@ -895,16 +1110,17 @@ console.log('CPU cores:', os.cpus().length);`}
                   </AlertDescription>
                 </Alert>
               </div>
-            </TabsContent>
-          </Tabs>
+            </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       </Card>
 
       {/* Common Pitfalls & Troubleshooting */}
-      <Card className="border-orange-200 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-orange-950/20 dark:via-amber-950/15 dark:to-yellow-950/20">
+      <Card className="bg-gradient-to-br from-orange-50/60 to-amber-50/60 dark:from-orange-950/10 dark:to-amber-950/10 border border-orange-200/50 dark:border-orange-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <AlertTriangle className="w-6 h-6 text-orange-600" />
+            <AlertTriangle className="w-6 h-6 text-orange-600/80 dark:text-orange-400/80" />
             Common Pitfalls & Troubleshooting
           </CardTitle>
           <CardDescription className="text-base">
@@ -1020,7 +1236,7 @@ console.log('CPU cores:', os.cpus().length);`}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Shield className="w-6 h-6 text-yellow-600" />
+            <Shield className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
             Setup Best Practices
           </CardTitle>
           <CardDescription className="text-base">
@@ -1094,7 +1310,7 @@ console.log('CPU cores:', os.cpus().length);`}
 
             <div className="p-4 border rounded-lg space-y-2">
               <div className="flex items-center gap-2 mb-2">
-                <Wrench className="w-5 h-5 text-orange-600" />
+                <Wrench className="w-5 h-5 text-orange-600/80 dark:text-orange-400/80" />
                 <h3 className="font-semibold">Project Organization</h3>
               </div>
               <ul className="space-y-1 text-sm text-muted-foreground">
@@ -1125,7 +1341,7 @@ console.log('CPU cores:', os.cpus().length);`}
       </Card>
 
       {/* Learning Path & Next Steps */}
-      <Card className="border-blue-200 bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50 dark:from-blue-950/20 dark:via-cyan-950/15 dark:to-sky-950/20">
+      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
             <BookOpen className="w-6 h-6 text-blue-600" />

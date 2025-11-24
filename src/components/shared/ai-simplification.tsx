@@ -12,7 +12,6 @@ import { MermaidDiagram } from './mermaid-diagram';
 import { Sparkles, Lightbulb, Book, Code } from 'lucide-react';
 import type { Language, Topic } from '@/app/data';
 import { useToast } from '@/hooks/use-toast';
-import { getThemeClasses, animationClasses } from '@/lib/language-themes';
 import { cn } from '@/lib/utils';
 
 interface AiSimplificationProps {
@@ -25,9 +24,6 @@ export function AiSimplification({ topic, language, codeSnippet }: AiSimplificat
   const [simplification, setSimplification] = useState<SimplifyTopicExplanationOutput | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  
-  // Get theme classes for the current language
-  const themeClasses = getThemeClasses(language.slug);
 
   useEffect(() => {
     const getSimplification = async () => {
@@ -58,18 +54,10 @@ export function AiSimplification({ topic, language, codeSnippet }: AiSimplificat
 
   if (isLoading) {
     return (
-      <Card className={cn(
-        "transition-all duration-200",
-        themeClasses.cardBackground,
-        themeClasses.border,
-        animationClasses.fadeIn
-      )}>
+      <Card className="transition-all duration-200 animate-in fade-in-50">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <Sparkles className={cn(
-              "w-6 h-6 animate-pulse",
-              themeClasses.primary
-            )} />
+            <Sparkles className="w-6 h-6 animate-pulse text-primary" />
             <Skeleton className="h-7 w-1/3" />
           </div>
           <Skeleton className="h-5 w-2/3" />
@@ -87,86 +75,45 @@ export function AiSimplification({ topic, language, codeSnippet }: AiSimplificat
   }
 
   return (
-    <Card className={cn(
-      "transition-all duration-500 hover:shadow-lg",
-      themeClasses.cardBackground,
-      themeClasses.border,
-      animationClasses.fadeIn
-    )}>
+    <Card className="transition-all duration-500 hover:shadow-lg animate-in fade-in-50">
       <CardHeader>
         <div className="flex items-center gap-3">
-            <Sparkles className={cn(
-              "w-6 h-6 transition-all duration-200 hover:scale-110",
-              themeClasses.primary
-            )} />
-            <CardTitle className={themeClasses.textPrimary}>
+            <Sparkles className="w-6 h-6 transition-all duration-200 hover:scale-110 text-primary" />
+            <CardTitle>
               AI-Powered Simplification
             </CardTitle>
         </div>
-        <CardDescription className={themeClasses.textSecondary}>
+        <CardDescription>
           {simplification.summary}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className={cn(
-          "p-4 rounded-lg border transition-all duration-200 hover:shadow-sm",
-          themeClasses.cardElevated
-        )}>
-            <h3 className={cn(
-              "font-semibold text-lg flex items-center gap-2 mb-2",
-              themeClasses.textPrimary
-            )}>
-              <Lightbulb className={cn(
-                "w-5 h-5",
-                themeClasses.secondary
-              )} />
+        <div className="p-4 rounded-lg border transition-all duration-200 hover:shadow-sm">
+            <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
+              <Lightbulb className="w-5 h-5 text-primary" />
               Analogy
             </h3>
-            <p className={cn(
-              "text-sm",
-              themeClasses.textSecondary
-            )}>
+            <p className="text-sm text-muted-foreground">
               {simplification.analogy}
             </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className={cn(
-            "p-4 rounded-lg border transition-all duration-200 hover:shadow-sm",
-            themeClasses.cardElevated
-          )}>
-            <h3 className={cn(
-              "font-semibold text-lg flex items-center gap-2 mb-2",
-              themeClasses.textPrimary
-            )}>
-              <Book className={cn(
-                "w-5 h-5",
-                themeClasses.primary
-              )} />
+          <div className="p-4 rounded-lg border transition-all duration-200 hover:shadow-sm">
+            <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
+              <Book className="w-5 h-5 text-primary" />
               Key Ideas
             </h3>
-            <ul className={cn(
-              "list-disc list-inside space-y-2 text-sm",
-              themeClasses.textSecondary
-            )}>
+            <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
                 {simplification.bulletPoints.map((point, index) => (
                     <li key={index}>{point}</li>
                 ))}
             </ul>
           </div>
           {simplification.examples && (
-             <div className={cn(
-               "p-4 rounded-lg border transition-all duration-200 hover:shadow-sm",
-               themeClasses.cardElevated
-             )}>
-                <h3 className={cn(
-                  "font-semibold text-lg flex items-center gap-2 mb-2",
-                  themeClasses.textPrimary
-                )}>
-                  <Code className={cn(
-                    "w-5 h-5",
-                    themeClasses.accent
-                  )} />
+             <div className="p-4 rounded-lg border transition-all duration-200 hover:shadow-sm">
+                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
+                  <Code className="w-5 h-5 text-primary" />
                   Code Example
                 </h3>
                 <MermaidDiagram diagram={simplification.examples} />
