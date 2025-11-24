@@ -16,6 +16,11 @@ import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
 
+// Shared brand color used in the logo ("CODER")
+const LOGO_COLOR_CLASS = 'text-[#5B7FFF]';
+const LOGO_BG_CLASS = 'bg-[#5B7FFF]';
+const LOGO_BG_SOFT_CLASS = 'bg-[#5B7FFF]/5';
+
 function useLanguageContext(language: Language) {
     switch(language.slug) {
         case 'java': return useJava();
@@ -107,9 +112,23 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
     const LinkWrapper = isUserAuthenticated ? Link : 'div';
     
     const itemContent = (
-      <div onClick={() => isUserAuthenticated && toggleTopic(topic.slug)} className={cn("bg-background border rounded-lg p-4 transition-all duration-200", isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-primary/50", !isUserAuthenticated && "cursor-not-allowed opacity-70", isCompleted ? 'border-primary bg-primary/5' : 'border-border')}>
+      <div
+        onClick={() => isUserAuthenticated && toggleTopic(topic.slug)}
+        className={cn(
+          "bg-background border rounded-lg p-4 transition-all duration-200",
+          isUserAuthenticated && "cursor-pointer hover:shadow-sm hover:border-[#5B7FFF]/40",
+          !isUserAuthenticated && "cursor-not-allowed opacity-70",
+          isCompleted ? 'border-[#5B7FFF] bg-background' : 'border-border'
+        )}
+      >
         <div className="flex items-start gap-3">
-          <div className="mt-1">{isCompleted ? <CheckCircle className="w-6 h-6 text-primary" /> : <Circle className="w-6 h-6 text-muted-foreground/50" />}</div>
+          <div className="mt-1">
+            {isCompleted ? (
+              <CheckCircle className={cn("w-6 h-6", LOGO_COLOR_CLASS)} />
+            ) : (
+              <Circle className="w-6 h-6 text-muted-foreground/50" />
+            )}
+          </div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
               <LinkWrapper href={isUserAuthenticated ? `/${language.slug}/${topic.slug}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
@@ -133,11 +152,26 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
       {/* ModuleCompletionCelebration removed pending implementation */}
       <div className="mx-auto">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4"><BookOpen className="w-12 h-12 text-primary" /><h1 className="text-5xl font-bold text-foreground">{language.name} Learning Path</h1></div>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <BookOpen className={cn("w-12 h-12", LOGO_COLOR_CLASS)} />
+            <h1 className="text-5xl font-bold text-foreground">
+              {language.name} Learning Path
+            </h1>
+          </div>
           <p className="text-muted-foreground text-lg mb-6">A structured roadmap for beginners to master {language.name}.</p>
           <div className="max-w-2xl mx-auto bg-card rounded-lg shadow-md p-6 border">
-            <div className="flex items-center justify-between mb-3"><span className="text-sm font-semibold text-foreground">Overall Progress</span><span className="text-2xl font-bold text-primary">{calculateProgress()}%</span></div>
-            <div className="w-full bg-muted rounded-full h-4"><div className="bg-primary h-4 rounded-full transition-all duration-500" style={{ width: `${calculateProgress()}%` }}></div></div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold text-foreground">Overall Progress</span>
+              <span className={cn("text-2xl font-bold", LOGO_COLOR_CLASS)}>
+                {calculateProgress()}%
+              </span>
+            </div>
+            <div className="w-full bg-muted rounded-full h-4">
+              <div
+                className={cn("h-4 rounded-full transition-all duration-500", LOGO_BG_CLASS)}
+                style={{ width: `${calculateProgress()}%` }}
+              ></div>
+            </div>
             <p className="text-sm text-muted-foreground mt-2">{completedCount} of {totalTopicCount} topics completed</p>
           </div>
         </div>
@@ -147,9 +181,16 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
             <div key={module.id} className="bg-card border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
               <div onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)} className={`bg-card p-6 cursor-pointer flex items-center justify-between border-b`}>
                 <div className="flex items-center gap-4">
-                  <div className="text-3xl bg-muted p-3 rounded-full">{module.icon}</div>
+                  <div className={cn("text-3xl bg-muted p-3 rounded-full", LOGO_COLOR_CLASS)}>
+                    {module.icon}
+                  </div>
                   <div>
-                    <div className="flex items-center gap-3 mb-1"><h2 className="text-xl font-bold text-foreground">{module.title}</h2><span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">{module.level}</span></div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <h2 className="text-xl font-bold text-foreground">{module.title}</h2>
+                      <span className={cn("px-3 py-1 rounded-full text-xs font-semibold", LOGO_BG_SOFT_CLASS, LOGO_COLOR_CLASS)}>
+                        {module.level}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 {expandedModule === module.id ? <ChevronDown className="w-6 h-6 text-muted-foreground" /> : <ChevronRight className="w-6 h-6 text-muted-foreground" />}
@@ -159,7 +200,11 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
           ))}
         </div>
 
-        <div className="mt-8 text-center text-muted-foreground"><Award className="w-12 h-12 mx-auto mb-3 text-yellow-500" /><p className="text-lg font-semibold">Happy Coding!</p><p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p></div>
+        <div className="mt-8 text-center text-muted-foreground">
+          <Award className={cn("w-12 h-12 mx-auto mb-3", LOGO_COLOR_CLASS)} />
+          <p className="text-lg font-semibold">Happy Coding!</p>
+          <p className="text-sm mt-2">Click on topics to mark them as complete and track your progress!</p>
+        </div>
       </div>
     </div>
   );

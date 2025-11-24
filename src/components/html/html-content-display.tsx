@@ -7,7 +7,7 @@ import { GenericContentDisplay } from '@/components/shared/generic-content-displ
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 
 // Lazy load all the topic components
-const HtmlIntroduction = lazy(() => import('@/components/html/topics/html-introduction'));
+const HtmlIntroduction = lazy(() => import('@/components/html/topics/html-topic'));
 const HtmlDocumentStructure = lazy(() => import('@/components/html/topics/html-document-structure'));
 const HtmlAttributes = lazy(() => import('@/components/html/topics/html-attributes'));
 const HtmlElementsAndTags = lazy(() => import('@/components/html/topics/html-elements-and-tags'));
