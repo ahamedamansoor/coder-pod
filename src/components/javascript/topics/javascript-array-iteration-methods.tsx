@@ -680,20 +680,15 @@ export default function JavaScriptArrayIterationMethods({
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Try Iteration Methods
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
           </CardTitle>
-          <CardDescription className="text-base">Run combined forEach/map/filter/reduce demos in the browser console.</CardDescription>
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ array iteration methods, transformations, and aggregations.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30">
-              <span className="uppercase tracking-wide text-indigo-700 dark:text-indigo-300">array-iteration-demo.js</span>
-              <span className="text-indigo-600/70 dark:text-indigo-400/70">forEach, map, filter, reduce, some, every</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
           {onOpenWebPlayground && (
             <Button onClick={() => openSnippet(playgroundJs)} className="w-full md:w-auto">
               <Play className="w-4 h-4 mr-2" />

@@ -92,7 +92,10 @@ export function MainHeader({
             </Link>
         </Button>
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
-         <Button asChild variant="outline">
+         <Button
+          asChild
+          className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200"
+        >
           <Link href="/notes">
             <Notebook className="mr-2 h-4 w-4" />
             Add Notes

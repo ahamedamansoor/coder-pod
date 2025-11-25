@@ -501,33 +501,28 @@ export default function JavaScriptIife({ onOpenWebPlayground }: JavaScriptIifePr
         </CardContent>
       </Card>
 
-      {/* Playground */}
+      {/* Hands-on Playground */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-violet-600/80 dark:text-violet-400/80" />
-            Try IIFEs Yourself
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
           </CardTitle>
-          <CardDescription className="text-base">Run multiple IIFE styles and inspect their outputs.</CardDescription>
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ IIFE patterns, scope isolation, and module design.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-violet-100 dark:bg-violet-900/30">
-              <span className="uppercase tracking-wide text-violet-700 dark:text-violet-300">iife-demo.js</span>
-              <span className="text-violet-600/70 dark:text-violet-400/70">Classic + module + async patterns</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
+        <CardContent className="space-y-3">
           {onOpenWebPlayground && (
-            <Button onClick={() => openSnippet(playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Try in Playground
+            <Button
+              onClick={() => openSnippet(playgroundJs)}
+            >
+              Run in playground
             </Button>
           )}
-          <Alert>
-            <AlertTitle>Tip</AlertTitle>
-            <AlertDescription>Open your browser console to view output from each snippet once you launch the playground.</AlertDescription>
-          </Alert>
+          <p className="text-xs text-muted-foreground">
+            The console output highlights IIFE usage (classic syntax, module pattern, async IIFEs, and arrow functions) with practical examples most developers encounter.
+          </p>
         </CardContent>
       </Card>
     </div>

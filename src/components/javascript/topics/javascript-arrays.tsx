@@ -441,33 +441,28 @@ export default function JavaScriptArrays({ onOpenWebPlayground }: JavaScriptArra
         </CardContent>
       </Card>
 
-      {/* Playground */}
+      {/* Hands-on Playground */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Try Arrays Yourself
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
           </CardTitle>
-          <CardDescription className="text-base">Run push/shift/reduce operations and inspect the outputs.</CardDescription>
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ arrays, methods, and transformations.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30">
-              <span className="uppercase tracking-wide text-indigo-700 dark:text-indigo-300">arrays-demo.js</span>
-              <span className="text-indigo-600/70 dark:text-indigo-400/70">push, reduce, spread</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
+        <CardContent className="space-y-3">
           {onOpenWebPlayground && (
-            <Button onClick={() => openSnippet(playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Try in Playground
+            <Button
+              onClick={() => openSnippet(playgroundJs)}
+            >
+              Run in playground
             </Button>
           )}
-          <Alert>
-            <AlertTitle>Tip</AlertTitle>
-            <AlertDescription>Open the browser console after launching the playground to watch each operation log in sequence.</AlertDescription>
-          </Alert>
+          <p className="text-xs text-muted-foreground">
+            The console output highlights array operations (push, shift, reduce, spread, and iteration methods) with practical examples most developers encounter.
+          </p>
         </CardContent>
       </Card>
     </div>

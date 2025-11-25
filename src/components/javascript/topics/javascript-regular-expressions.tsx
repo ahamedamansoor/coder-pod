@@ -742,32 +742,28 @@ console.log(checkPassword('weak'));`}
         </CardContent>
       </Card>
 
-      {/* Playground */}
+      {/* Hands-on Playground */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Practice Regular Expressions
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
           </CardTitle>
-          <CardDescription className="text-base">
-            Interactive demo with basic patterns, character classes, quantifiers, flags, and groups. Open the console!
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ regular expressions, patterns, and matching.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">regex-demo.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Core regex concepts</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
-
+        <CardContent className="space-y-3">
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
+            <Button
+              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
+            >
+              Run in playground
             </Button>
           )}
+          <p className="text-xs text-muted-foreground">
+            The console output highlights regex patterns (basic syntax, character classes, quantifiers, flags, and capture groups) with practical examples most developers encounter.
+          </p>
         </CardContent>
       </Card>
     </div>

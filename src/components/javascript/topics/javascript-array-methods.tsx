@@ -588,33 +588,28 @@ console.log(fruits);  // ['apple','banana','cherry'] ✓`}
         </CardContent>
       </Card>
 
-      {/* Playground */}
+      {/* Hands-on Playground */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Practice Array Methods
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
           </CardTitle>
-          <CardDescription className="text-base">Run the sample console demo to cement the operations.</CardDescription>
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ array methods, mutations, and transformations.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30">
-              <span className="uppercase tracking-wide text-indigo-700 dark:text-indigo-300">array-methods-demo.js</span>
-              <span className="text-indigo-600/70 dark:text-indigo-400/70">push, shift, reduce, filter, map</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
+        <CardContent className="space-y-3">
           {onOpenWebPlayground && (
-            <Button onClick={() => openSnippet(playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Try in Playground
+            <Button
+              onClick={() => openSnippet(playgroundJs)}
+            >
+              Run in playground
             </Button>
           )}
-          <Alert>
-            <AlertTitle>Tip</AlertTitle>
-            <AlertDescription>Click the button above, open DevTools console, and tweak the array values to see different outputs.</AlertDescription>
-          </Alert>
+          <p className="text-xs text-muted-foreground">
+            The console output highlights array methods (push, pop, shift, unshift, slice, splice, and indexOf) with practical examples most developers encounter.
+          </p>
         </CardContent>
       </Card>
     </div>

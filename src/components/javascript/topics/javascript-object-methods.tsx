@@ -773,29 +773,28 @@ console.log(API_CONFIG.BASE_URL);`}
         </CardContent>
       </Card>
 
+      {/* Hands-on Playground */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Practice Object Methods
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
           </CardTitle>
-          <CardDescription className="text-base">Interactive demo covering inspection, cloning, freezing, sealing, and equality checks. Includes ES2024 Object.groupBy() examples.</CardDescription>
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ object methods, manipulation, and ES2024 features.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">object-methods-demo.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">16+ methods + ES2024</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
-
+        <CardContent className="space-y-3">
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
+            <Button
+              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
+            >
+              Run in playground
             </Button>
           )}
+          <p className="text-xs text-muted-foreground">
+            The console output highlights object methods (keys, values, entries, assign, freeze, seal, and ES2024 groupBy) with practical examples most developers encounter.
+          </p>
         </CardContent>
       </Card>
     </div>
