@@ -450,6 +450,108 @@ console.log(average); // 23.25
         </CardContent>
       </Card>
 
+      {/* ES2023 New Immutable Methods */}
+      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+            ES2023 New Immutable Methods
+          </CardTitle>
+          <CardDescription className="text-base">
+            Modern immutable alternatives to mutating methods—return new arrays without changing the original.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert>
+            <Lightbulb className="h-4 w-4" />
+            <AlertTitle>Why Immutable?</AlertTitle>
+            <AlertDescription>
+              These methods return <strong>new arrays</strong> instead of modifying the original. Perfect for React state, Redux reducers, and functional programming.
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="p-5 rounded-xl border bg-white dark:bg-gray-900 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold">toReversed()</h4>
+                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">ES2023</Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Returns new array with elements in reversed order
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`const nums = [1, 2, 3, 4, 5];
+const reversed = nums.toReversed();
+
+console.log(reversed); // [5,4,3,2,1]
+console.log(nums);     // [1,2,3,4,5] ✓`}
+              </pre>
+            </div>
+
+            <div className="p-5 rounded-xl border bg-white dark:bg-gray-900 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold">toSorted()</h4>
+                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">ES2023</Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Returns new sorted array (original unchanged)
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`const nums = [3, 1, 4, 1, 5];
+const sorted = nums.toSorted();
+
+console.log(sorted); // [1,1,3,4,5]
+console.log(nums);   // [3,1,4,1,5] ✓`}
+              </pre>
+            </div>
+
+            <div className="p-5 rounded-xl border bg-white dark:bg-gray-900 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold">toSpliced()</h4>
+                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">ES2023</Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Returns new array with elements removed/added
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`const tasks = ['todo', 'done', 'review'];
+const updated = tasks.toSpliced(1, 1, 'in-progress');
+
+console.log(updated); // ['todo','in-progress','review']
+console.log(tasks);   // ['todo','done','review'] ✓`}
+              </pre>
+            </div>
+
+            <div className="p-5 rounded-xl border bg-white dark:bg-gray-900 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold">with()</h4>
+                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">ES2023</Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Returns new array with one element changed
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`const fruits = ['apple', 'banana', 'cherry'];
+const updated = fruits.with(1, 'blueberry');
+
+console.log(updated); // ['apple','blueberry','cherry']
+console.log(fruits);  // ['apple','banana','cherry'] ✓`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="p-4 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800">
+            <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-300">Comparison with Old Methods</h4>
+            <div className="grid grid-cols-2 gap-2 text-sm font-mono text-xs">
+              <div><code className="text-rose-600">reverse()</code> → <code className="text-emerald-600">toReversed()</code></div>
+              <div><code className="text-rose-600">sort()</code> → <code className="text-emerald-600">toSorted()</code></div>
+              <div><code className="text-rose-600">splice()</code> → <code className="text-emerald-600">toSpliced()</code></div>
+              <div><code className="text-rose-600">arr[i]=x</code> → <code className="text-emerald-600">with(i,x)</code></div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Best practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/50 dark:border-emerald-800/30">
         <CardHeader>

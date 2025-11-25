@@ -96,7 +96,7 @@ export function MainHeader({
       <div className="flex items-center gap-4">
         {currentLanguage?.slug === 'react' ? (
           <ReactPlaygroundModal>
-            <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
+            <Button className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200">
               <ToyBrick className="mr-2 h-4 w-4" />
               React Playground
             </Button>
@@ -104,7 +104,7 @@ export function MainHeader({
         ) : (
           showWebPlaygroundButton && (
             <WebPlaygroundModal initialLanguage={currentLanguageSlug}>
-              <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
+              <Button className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200">
                 <LayoutGrid className="mr-2 h-4 w-4" />
                 Web Playground
               </Button>
@@ -113,7 +113,7 @@ export function MainHeader({
         )}
         {currentLanguage && (
           <InterviewSimulator language={currentLanguage.name}>
-             <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
+             <Button className="rounded-full border border-emerald-200/60 bg-white/80 text-emerald-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-emerald-900/40 dark:bg-slate-900/70 dark:text-emerald-200">
                 <Mic className="mr-2 h-4 w-4" />
                 AI Interview
               </Button>
@@ -121,7 +121,7 @@ export function MainHeader({
         )}
         
         {showCodeEditorButton && (
-          <Button variant="outline" onClick={onToggleEditor} className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/30">
+          <Button onClick={onToggleEditor} className="rounded-full border border-slate-200/70 bg-white/80 text-slate-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-slate-800/40 dark:bg-slate-900/70 dark:text-slate-100">
             <Code className="mr-2 h-4 w-4" />
             Code Editor
           </Button>

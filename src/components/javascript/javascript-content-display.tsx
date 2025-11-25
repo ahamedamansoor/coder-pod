@@ -31,6 +31,19 @@ const JavaScriptArrayMethodsBasics = lazy(() => import('./topics/javascript-arra
 const JavaScriptArrayIterationMethods = lazy(() => import('./topics/javascript-array-iteration-methods'));
 const JavaScriptArrayDestructuring = lazy(() => import('./topics/javascript-array-destructuring'));
 const JavaScriptObjects = lazy(() => import('./topics/javascript-objects'));
+const JavaScriptObjectMethods = lazy(() => import('./topics/javascript-object-methods'));
+const JavaScriptObjectDestructuring = lazy(() => import('./topics/javascript-object-destructuring'));
+const JavaScriptThisKeyword = lazy(() => import('./topics/javascript-this-keyword'));
+const JavaScriptStrings = lazy(() => import('./topics/javascript-strings'));
+const JavaScriptTemplateLiterals = lazy(() => import('./topics/javascript-template-literals'));
+const JavaScriptStringMethods = lazy(() => import('./topics/javascript-string-methods'));
+const JavaScriptRegularExpressions = lazy(() => import('./topics/javascript-regular-expressions'));
+const JavaScriptScope = lazy(() => import('./topics/javascript-scope'));
+const JavaScriptClosures = lazy(() => import('./topics/javascript-closures'));
+const JavaScriptHoisting = lazy(() => import('./topics/javascript-hoisting'));
+const JavaScriptConstructorFunctions = lazy(() => import('./topics/javascript-constructor-functions'));
+const JavaScriptPrototypes = lazy(() => import('./topics/javascript-prototypes'));
+const JavaScriptES6Classes = lazy(() => import('./topics/javascript-es6-classes'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -58,6 +71,19 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'js-array-methods': JavaScriptArrayIterationMethods,
   'array-destructuring': JavaScriptArrayDestructuring,
   'js-objects': JavaScriptObjects,
+  'object-methods': JavaScriptObjectMethods,
+  'object-destructuring': JavaScriptObjectDestructuring,
+  'this-keyword': JavaScriptThisKeyword,
+  'strings': JavaScriptStrings,
+  'template-literals': JavaScriptTemplateLiterals,
+  'string-methods': JavaScriptStringMethods,
+  'regular-expressions': JavaScriptRegularExpressions,
+  'js-scope': JavaScriptScope,
+  'closures': JavaScriptClosures,
+  'hoisting': JavaScriptHoisting,
+  'constructor-functions': JavaScriptConstructorFunctions,
+  'prototypes': JavaScriptPrototypes,
+  'es6-classes': JavaScriptES6Classes,
 };
 
 function LoadingSkeleton() {
