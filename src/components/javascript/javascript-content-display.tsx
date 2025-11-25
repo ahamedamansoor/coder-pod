@@ -19,6 +19,12 @@ const JavaScriptOperators = lazy(() => import('./topics/javascript-operators'));
 const JavaScriptTernaryOperator = lazy(() => import('./topics/javascript-ternary-operator'));
 const JavaScriptIfElse = lazy(() => import('./topics/javascript-if-else'));
 const JavaScriptSwitchStatements = lazy(() => import('./topics/javascript-switch-statements'));
+const JavaScriptLoops = lazy(() => import('./topics/javascript-loops'));
+const JavaScriptFunctions = lazy(() => import('./topics/javascript-functions'));
+const JavaScriptArrowFunctions = lazy(() => import('./topics/javascript-arrow-functions'));
+const JavaScriptFunctionParameters = lazy(() => import('./topics/javascript-function-parameters'));
+const JavaScriptCallbackParameters = lazy(() => import('./topics/javascript-callback-parameters'));
+const JavaScriptHigherOrderFunctions = lazy(() => import('./topics/javascript-higher-order-functions'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -34,6 +40,12 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'ternary-operator': JavaScriptTernaryOperator,
   'js-conditionals': JavaScriptIfElse,
   'switch-statement': JavaScriptSwitchStatements,
+  'js-loops': JavaScriptLoops,
+  'js-functions': JavaScriptFunctions,
+  'arrow-functions': JavaScriptArrowFunctions,
+  'function-parameters': JavaScriptFunctionParameters,
+  'callback-functions': JavaScriptCallbackParameters,
+  'higher-order-functions': JavaScriptHigherOrderFunctions,
 };
 
 function LoadingSkeleton() {

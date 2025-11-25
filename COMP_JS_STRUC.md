@@ -286,6 +286,9 @@ Use for listing 3 key benefits or features.
 
 ### Inline Code Snippet
 
+**IMPORTANT: Use Simple Pre Blocks for Vertical Expansion**
+
+❌ **DON'T use complex inline JSX with spans:**
 ```tsx
 <div className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs">
   <span className="text-blue-600 dark:text-blue-400">const</span>{' '}
@@ -293,6 +296,25 @@ Use for listing 3 key benefits or features.
   <span className="text-purple-600 dark:text-purple-400">'value'</span>;
 </div>
 ```
+
+✅ **DO use simple pre blocks with template literals:**
+```tsx
+<pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`const variable = 'value';
+
+const result = someFunction(variable);
+
+console.log(result);
+// Output: expected result`}
+</pre>
+```
+
+**Key Rules:**
+- Always use `<pre>` with template literals for code blocks
+- Add blank lines between logical sections for vertical expansion
+- Include `overflow-x-auto` for horizontal scrolling
+- Show complete examples with variable declarations and outputs
+- Add comments to explain what the code does
 
 ### Syntax Highlighting Color Guide
 
@@ -600,6 +622,13 @@ Always pair section titles with relevant icons:
 - Avoid unnecessary `<h1>` headings inside playground demos (e.g., “Comment Styles”) unless they add real instructional value; use concise titles or omit entirely.
 - Use consistent padding, spacing, and borders so embedded previews feel structured and aligned with surrounding UI.
 - Prefer light, friendly accent colors with clear contrast in both light and dark modes.
+- In decision diagrams/flows, use action-forward phrasing (e.g., “Need index + control? → Reach for for”, “Value-only, readable? → Grab for...of”, “Need early exit? → Pick for/while; skip forEach”) to keep guidance skimmable and engaging.
+- Pair decision steps with tiny inline code snippets that prove the choice (e.g., `for (let i = 0; i < arr.length; i++)`, `for (const item of items)`, `if (!ready) break;`) instead of plain text lists.
+- For each topic, include at least one canonical snippet that shows the core syntax plus key attributes/parameters (e.g., functions with `name`, `params`, `return`; loops with `init/condition/increment`; conditionals with `if/else if/else`; DOM examples with `defer`, `type`, or relevant attributes). Make the example runnable and minimal.
+- **CRITICAL: Expand snippets vertically with blank lines between statements** - Use `<pre>` blocks with template literals, not complex inline JSX with spans.
+- Add explicit inputs/outputs or comments (e.g., `add(2,3) // 5`, `console.log(result) // Output: 10`) so learners see cause-and-effect at a glance.
+- Avoid overly terse one-liners when clarity suffers - break code into multiple lines with proper spacing.
+- Show complete examples: variable declarations → function calls → console.log → comments with expected output.
 
 ---
 
@@ -735,7 +764,8 @@ When creating a new component, ensure:
 - [ ] All colors have dark mode variants
 - [ ] Gradients use low opacity (50/60 light, 10/20 dark)
 - [ ] Icons paired with all section headers
-- [ ] Code blocks have proper syntax highlighting
+- [ ] **Code blocks use `<pre>` with template literals (not inline JSX spans)**
+- [ ] **Code snippets are vertically expanded with blank lines between statements**
 - [ ] Responsive grid layouts (`md:grid-cols-*`)
 - [ ] No tab components used
 - [ ] Comparison cards for Do/Don't patterns

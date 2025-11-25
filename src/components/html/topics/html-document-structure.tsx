@@ -1,11 +1,12 @@
 // Migrated & standardized HTML topic component
 'use client';
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileJson, Play, Code, Settings, File, LayoutTemplate, ArrowRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { FileJson, Play, Code, File, LayoutTemplate, Sparkles, CheckCircle2, XCircle, Lightbulb, Zap, Eye, GitBranch } from 'lucide-react';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 // Minimal boilerplate example
 const minimalStructure = `<!DOCTYPE html>
@@ -116,352 +117,260 @@ interface HtmlDocumentStructureProps {
 }
 
 export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocumentStructureProps) {
+  const [hoveredPart, setHoveredPart] = React.useState<string | null>(null);
+
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 pb-16">
       <PageHeader
         icon={File}
-        category="HTML Basics"
+        category="HTML · Foundations"
         title="HTML Document Structure"
         description="Understanding the essential boilerplate and how the browser interprets your page"
         colorTheme="blue"
       />
-      {/* Intro */}
-      <Card>
-        <CardContent className="space-y-6 text-sm md:text-base leading-relaxed">
-          <p>
-            A well-structured document improves accessibility, performance, SEO, and maintainability. The browser reads
-            your file top-to-bottom: declare intent early (doctype, language), then progressively add metadata, styles, and
-            behavior.
-          </p>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-muted rounded-md p-4 border">
-              <h3 className="font-semibold mb-2">Core Root Elements</h3>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                <li><code>&lt;!DOCTYPE html&gt;</code> - Standard mode trigger; always first.</li>
-                <li><code>&lt;html lang="en"&gt;</code> - Language aids accessibility & SEO.</li>
-                <li><code>&lt;head&gt;</code> - Metadata, links, preload hints, scripts (non-blocking).</li>
-                <li><code>&lt;body&gt;</code> - Visible content, interactive UI, app root.</li>
-              </ul>
+
+      {/* Why Structure Matters */}
+      <Card className="relative overflow-hidden bg-gradient-to-br from-blue-50/60 via-indigo-50/40 to-purple-50/60 dark:from-blue-950/10 dark:via-indigo-950/5 dark:to-purple-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-3xl animate-pulse"></div>
+        <CardHeader className="relative">
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-7 h-7 text-blue-600 dark:text-blue-400 animate-pulse" />
+            Why Document Structure Matters
+          </CardTitle>
+          <CardDescription className="text-base">
+            Proper structure improves accessibility, performance, SEO, and maintainability
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="relative">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="group p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-blue-200 dark:border-blue-800 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-blue-500/20 dark:bg-blue-500/30 rounded-lg">
+                  <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="font-bold text-lg">Performance</h3>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                Proper script loading, critical CSS, and preload hints speed up page rendering dramatically.
+              </p>
+              <div className="mt-3 inline-flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400">
+                <CheckCircle2 className="w-3 h-3 mr-1" />
+                Faster Load Times
+              </div>
             </div>
-            <div className="bg-muted rounded-md p-4 border">
-              <h3 className="font-semibold mb-2">High-Value Head Tags</h3>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                <li><code>&lt;meta charset&gt;</code> - Avoid encoding issues.</li>
-                <li><code>&lt;meta viewport&gt;</code> - Responsive scaling on mobile.</li>
-                <li><code>&lt;title&gt;</code> - Browser tab & search result headline.</li>
-                <li><code>&lt;meta name="description"&gt;</code> - Influences snippets.</li>
-                <li><code>&lt;link rel="icon"&gt;</code> - Branding & PWA touch icons.</li>
-                <li><code>&lt;link rel="preload"&gt;</code> - Prioritize critical assets.</li>
-                <li><code>&lt;script defer&gt;</code> - Non-blocking script loading.</li>
-              </ul>
+
+            <div className="group p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-emerald-200 dark:border-emerald-800 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-emerald-500/20 dark:bg-emerald-500/30 rounded-lg">
+                  <Eye className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <h3 className="font-bold text-lg">Accessibility</h3>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                Semantic landmarks and proper metadata help screen readers navigate your content efficiently.
+              </p>
+              <div className="mt-3 inline-flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="w-3 h-3 mr-1" />
+                Inclusive Design
+              </div>
+            </div>
+
+            <div className="group p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-purple-200 dark:border-purple-800 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-purple-500/20 dark:bg-purple-500/30 rounded-lg">
+                  <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="font-bold text-lg">SEO</h3>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                Search engines parse meta tags, titles, and semantic HTML to understand and rank your content.
+              </p>
+              <div className="mt-3 inline-flex items-center text-xs font-semibold text-purple-600 dark:text-purple-400">
+                <CheckCircle2 className="w-3 h-3 mr-1" />
+                Better Rankings
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* defer vs async */}
-      <Card>
-        <CardContent>
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold flex items-center gap-2"><Settings className="w-6 h-6 text-primary" /> Script Loading: <code>defer</code> vs <code>async</code></h2>
-              <p className="text-muted-foreground text-sm md:text-base">Choose the right attribute to optimize render performance and execution order.</p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-background p-4 rounded border">
-                <code className="font-bold text-blue-600">defer</code>
-                <ul className="text-sm mt-2 space-y-1">
-                  <li>• Downloads in parallel with parsing</li>
-                  <li>• Executes after HTML parsed</li>
-                  <li>• Preserves tag order</li>
-                  <li>• ✅ Use for main app bundles</li>
-                </ul>
-              </div>
-              <div className="bg-background p-4 rounded border">
-                <code className="font-bold text-purple-600">async</code>
-                <ul className="text-sm mt-2 space-y-1">
-                  <li>• Downloads in parallel</li>
-                  <li>• Executes immediately when ready</li>
-                  <li>• No guaranteed order</li>
-                  <li>• ✅ Use for analytics / standalone scripts</li>
-                </ul>
-              </div>
-            </div>
-            <div className="mt-4 text-xs text-muted-foreground">
-              Tip: Omit both for inline modules only when execution order is insignificant.
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Visual Document Map */}
-      <Card>
+      {/* Interactive Document Anatomy */}
+      <Card className="bg-gradient-to-br from-cyan-50/40 to-blue-50/40 dark:from-cyan-950/10 dark:to-blue-950/10 border border-cyan-200/50 dark:border-cyan-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <LayoutTemplate className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />
+            Anatomy of an HTML Document
+          </CardTitle>
+          <CardDescription className="text-base">
+            Every HTML document has the same fundamental structure
+          </CardDescription>
+        </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <LayoutTemplate className="w-6 h-6 text-primary" />
-              Visual Map of an HTML Document
-            </h2>
-            <p className="text-muted-foreground text-sm md:text-base">
-              Use this mental model to understand how <code className="font-mono">&lt;head&gt;</code> and{' '}
-              <code className="font-mono">&lt;body&gt;</code> fit together and where different responsibilities live.
-            </p>
-          </div>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                Think of the <strong>head</strong> as everything the browser needs to understand the page{' '}
-                <em>before</em> showing it, and the <strong>body</strong> as everything the user will actually see and
-                interact with.
-              </p>
-              <ul className="space-y-2">
-                <li>
-                  <strong>Head responsibilities:</strong> metadata, SEO, icons, styles, preload hints, and initial
-                  script loading.
-                </li>
-                <li>
-                  <strong>Body responsibilities:</strong> landmarks (<code className="font-mono">&lt;header&gt;</code>,{' '}
-                  <code className="font-mono">&lt;main&gt;</code>, <code className="font-mono">&lt;footer&gt;</code>),
-                  content hierarchy, and interactive elements.
-                </li>
-                <li>
-                  <strong>Accessibility:</strong> a single <code className="font-mono">&lt;main&gt;</code> region,
-                  descriptive headings, and proper landmarks help screen readers and keyboard users navigate your page.
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-3 text-xs md:text-sm">
-              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
-                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
-                  <span>Head region</span>
-                  <span>Browser-facing</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="rounded-md bg-blue-50 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-700 px-2 py-1 flex flex-col">
-                    <span className="font-mono text-[11px]">&lt;meta&gt;</span>
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">charset, viewport</span>
+            {/* Document Parts */}
+            <div className="space-y-3">
+              <Badge className="bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">Document Parts</Badge>
+              <div className="space-y-2">
+                {[
+                  { name: 'DOCTYPE', desc: 'Declares HTML5 standard', icon: '📄' },
+                  { name: '<html>', desc: 'Root container with language', icon: '🌐' },
+                  { name: '<head>', desc: 'Metadata & resources', icon: '⚙️' },
+                  { name: '<body>', desc: 'Visible content', icon: '👁️' }
+                ].map((part) => (
+                  <div
+                    key={part.name}
+                    onMouseEnter={() => setHoveredPart(part.name)}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    className={`p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer ${
+                      hoveredPart === part.name
+                        ? 'bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/20 border-cyan-400 dark:border-cyan-600 shadow-xl transform scale-105'
+                        : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-2xl">{part.icon}</span>
+                      <code className="font-bold text-cyan-700 dark:text-cyan-300">{part.name}</code>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{part.desc}</p>
                   </div>
-                  <div className="rounded-md bg-indigo-50 dark:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-700 px-2 py-1 flex flex-col">
-                    <span className="font-mono text-[11px]">&lt;title&gt;</span>
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">tab &amp; SEO title</span>
-                  </div>
-                  <div className="rounded-md bg-emerald-50 dark:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-700 px-2 py-1 flex flex-col">
-                    <span className="font-mono text-[11px]">&lt;link&gt;</span>
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">CSS, icons, fonts</span>
-                  </div>
-                  <div className="rounded-md bg-amber-50 dark:bg-amber-900/60 border border-amber-200 dark:border-amber-700 px-2 py-1 flex flex-col">
-                    <span className="font-mono text-[11px]">&lt;script&gt;</span>
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">defer / async bundles</span>
-                  </div>
-                </div>
+                ))}
               </div>
-              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
-                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
-                  <span>Body region</span>
-                  <span>User-facing</span>
+            </div>
+
+            {/* Visual Structure */}
+            <div className="space-y-3">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Visual Structure</Badge>
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 font-mono text-sm space-y-1 border border-cyan-300 dark:border-cyan-700">
+                <div className="text-gray-700 dark:text-gray-400">&lt;<span className="text-pink-600 dark:text-pink-400">!DOCTYPE</span> <span className="text-amber-600 dark:text-yellow-300">html</span>&gt;</div>
+                <div className="text-gray-700 dark:text-gray-400">&lt;<span className="text-pink-600 dark:text-pink-400">html</span> <span className="text-amber-600 dark:text-yellow-300">lang</span>=<span className="text-green-600 dark:text-green-300">"en"</span>&gt;</div>
+                <div className="pl-4 space-y-1">
+                  <div className="text-gray-700 dark:text-gray-400">&lt;<span className="text-pink-600 dark:text-pink-400">head</span>&gt;</div>
+                  <div className="pl-4 space-y-0.5 text-xs">
+                    <div className="text-gray-600 dark:text-gray-500">&lt;<span className="text-pink-500 dark:text-pink-300">meta</span> charset=<span className="text-green-600 dark:text-green-300">"UTF-8"</span>&gt;</div>
+                    <div className="text-gray-600 dark:text-gray-500">&lt;<span className="text-pink-500 dark:text-pink-300">title</span>&gt;<span className="text-gray-900 dark:text-white">Page Title</span>&lt;/<span className="text-pink-500 dark:text-pink-300">title</span>&gt;</div>
+                  </div>
+                  <div className="text-gray-700 dark:text-gray-400">&lt;/<span className="text-pink-600 dark:text-pink-400">head</span>&gt;</div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="rounded-md bg-pink-50 dark:bg-pink-900/60 border border-pink-200 dark:border-pink-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
-                    &lt;header&gt;
+                <div className="pl-4 space-y-1">
+                  <div className="text-gray-700 dark:text-gray-400">&lt;<span className="text-pink-600 dark:text-pink-400">body</span>&gt;</div>
+                  <div className="pl-4 space-y-0.5 text-xs">
+                    <div className="text-gray-600 dark:text-gray-500">&lt;<span className="text-pink-500 dark:text-pink-300">h1</span>&gt;<span className="text-gray-900 dark:text-white">Hello!</span>&lt;/<span className="text-pink-500 dark:text-pink-300">h1</span>&gt;</div>
+                    <div className="text-gray-600 dark:text-gray-500">&lt;<span className="text-pink-500 dark:text-pink-300">p</span>&gt;<span className="text-gray-900 dark:text-white">Content here...</span>&lt;/<span className="text-pink-500 dark:text-pink-300">p</span>&gt;</div>
                   </div>
-                  <div className="rounded-md bg-violet-50 dark:bg-violet-900/60 border border-violet-200 dark:border-violet-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
-                    &lt;nav&gt;
-                  </div>
-                  <div className="rounded-md bg-emerald-50 dark:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
-                    &lt;main&gt;
-                  </div>
-                  <div className="rounded-md bg-amber-50 dark:bg-amber-900/60 border border-amber-200 dark:border-amber-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
-                    &lt;section&gt; / &lt;article&gt;
-                  </div>
-                  <div className="rounded-md bg-sky-50 dark:bg-sky-900/60 border border-sky-200 dark:border-sky-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
-                    &lt;aside&gt;
-                  </div>
-                  <div className="rounded-md bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-2 py-1 flex items-center justify-center font-mono text-[11px]">
-                    &lt;footer&gt;
-                  </div>
+                  <div className="text-gray-700 dark:text-gray-400">&lt;/<span className="text-pink-600 dark:text-pink-400">body</span>&gt;</div>
                 </div>
+                <div className="text-gray-700 dark:text-gray-400">&lt;/<span className="text-pink-600 dark:text-pink-400">html</span>&gt;</div>
               </div>
             </div>
           </div>
+
+          <Alert className="bg-cyan-50 dark:bg-cyan-950/20 border-cyan-200 dark:border-cyan-800">
+            <Lightbulb className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+            <AlertTitle className="text-cyan-900 dark:text-cyan-100">Remember</AlertTitle>
+            <AlertDescription className="text-cyan-800 dark:text-cyan-200">
+              The browser reads your HTML top-to-bottom. Place metadata first, then styles, then content!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* Request & Render Flow */}
-      <Card>
+      {/* Script Loading Strategy */}
+      <Card className="bg-gradient-to-br from-amber-50/40 to-orange-50/40 dark:from-amber-950/10 dark:to-orange-950/10 border border-amber-200/50 dark:border-amber-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Zap className="w-7 h-7 text-amber-600 dark:text-amber-400" />
+            Script Loading: defer vs async
+          </CardTitle>
+          <CardDescription className="text-base">
+            Choose the right loading strategy to optimize performance
+          </CardDescription>
+        </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Code className="w-6 h-6 text-primary" />
-              Request and Render Flow
-            </h2>
-            <p className="text-muted-foreground text-sm md:text-base">
-              Document structure matters because it changes how quickly the browser can turn your HTML into pixels on
-              the screen.
-            </p>
-          </div>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-3 text-xs md:text-sm">
-              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
-                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
-                  <span>Network → DOM</span>
-                  <span>Steps 1–2</span>
+            <div className="group p-6 bg-gradient-to-br from-blue-50/80 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 rounded-xl border-2 border-blue-300 dark:border-blue-700 transition-all duration-300 hover:shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-500/20 dark:bg-blue-500/30 rounded-lg">
+                  <Code className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
-                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">1. Request HTML</div>
-                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
-                      Browser downloads the HTML document from the server.
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
-                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">2. Parse head &amp; body</div>
-                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
-                      The parser builds the DOM tree, respecting the order of tags.
-                    </p>
-                  </div>
-                </div>
+                <code className="text-xl font-bold text-blue-700 dark:text-blue-300">defer</code>
               </div>
-              <div className="rounded-md border bg-slate-50 dark:bg-slate-900/60 p-3">
-                <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-300 mb-2">
-                  <span>CSS → Pixels</span>
-                  <span>Steps 3–4</span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
-                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">3. Build render tree</div>
-                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
-                      DOM + CSSOM combine so the browser knows both structure and styles.
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2 py-2">
-                    <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">4. Layout &amp; paint</div>
-                    <p className="text-[11px] text-slate-700 dark:text-slate-200">
-                      Positions are calculated, then pixels are drawn and composited to the screen.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-3 text-sm md:text-base">
-              <p className="text-muted-foreground">
-                Placing critical styles and non-blocking scripts in the right order inside <code className="font-mono">&lt;head&gt;</code>{' '}
-                lets the browser start rendering sooner while still respecting your layout and behavior.
-              </p>
-              <ul className="space-y-2">
-                <li>
-                  <strong>Good structure:</strong> predictable load order, faster first paint, fewer layout shifts.
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span>Downloads in parallel with HTML parsing</span>
                 </li>
-                <li>
-                  <strong>Bad structure:</strong> blocking scripts, missing meta tags, and late styles that cause
-                  content to &quot;jump&quot; after load.
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span>Executes after HTML is fully parsed</span>
                 </li>
-                <li>
-                  <strong>Goal:</strong> make the path from &quot;request&quot; to &quot;usable page&quot; as short and
-                  smooth as possible.
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span>Preserves script order</span>
                 </li>
               </ul>
+              <div className="mt-4 p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <p className="text-xs font-semibold text-blue-800 dark:text-blue-200">✅ Best for: Main app bundles</p>
+              </div>
+            </div>
+
+            <div className="group p-6 bg-gradient-to-br from-purple-50/80 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10 rounded-xl border-2 border-purple-300 dark:border-purple-700 transition-all duration-300 hover:shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-purple-500/20 dark:bg-purple-500/30 rounded-lg">
+                  <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <code className="text-xl font-bold text-purple-700 dark:text-purple-300">async</code>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
+                  <span>Downloads in parallel</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
+                  <span>Executes immediately when ready</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <XCircle className="w-4 h-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
+                  <span>No guaranteed execution order</span>
+                </li>
+              </ul>
+              <div className="mt-4 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <p className="text-xs font-semibold text-purple-800 dark:text-purple-200">✅ Best for: Analytics & standalone scripts</p>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Head vs Body – Beginner vs Expert */}
-      <Card>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Code className="w-6 h-6 text-primary" />
-              Head vs Body: Beginner and Expert Views
-            </h2>
-            <p className="text-muted-foreground text-sm md:text-base">
-              Start with simple rules, then grow into performance, SEO, and accessibility concerns as you become more
-              advanced.
-            </p>
-          </div>
-          <Tabs defaultValue="beginner" className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="beginner">Beginner View</TabsTrigger>
-              <TabsTrigger value="expert">Expert View</TabsTrigger>
-            </TabsList>
-            <TabsContent value="beginner" className="space-y-4">
-              <p className="text-sm md:text-base text-muted-foreground">
-                As a beginner, follow this rule of thumb: put <strong>page settings</strong> and{' '}
-                <strong>behind-the-scenes info</strong> in <code className="font-mono">&lt;head&gt;</code>, and{' '}
-                <strong>visible content</strong> in <code className="font-mono">&lt;body&gt;</code>.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">beginner-structure.html</span>
-                  <span className="text-slate-500 dark:text-slate-300">Clean, simple layout</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{`<head>
-  <!-- Settings & metadata -->
-  <meta charset="UTF-8" />
-  <title>My Page</title>
-</head>
-<body>
-  <!-- Content & layout -->
-  <header>Logo + navigation</header>
-  <main>Page content</main>
-  <footer>Copyright</footer>
-</body>`}
-                </pre>
-              </div>
-            </TabsContent>
-            <TabsContent value="expert" className="space-y-4">
-              <p className="text-sm md:text-base text-muted-foreground">
-                As an expert, you&apos;ll think about how document structure affects{' '}
-                <strong>rendering performance</strong>, <strong>SEO</strong>, and <strong>assistive technologies</strong>.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-900 text-green-100">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-800">
-                  <span className="uppercase tracking-wide">expert-structure.html</span>
-                  <span className="text-slate-300">Performance, SEO, a11y-aware</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{`<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Accessible, Fast Page</title>
-    <meta name="description" content="Short, human-friendly summary of this page." />
-    <link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/styles.css" />
-    <script src="/app.bundle.js" defer></script>
-  </head>
-  <body>
-    <header role="banner">...</header>
-    <main id="main-content" role="main">...</main>
-    <footer role="contentinfo">...</footer>
-  </body>
-</html>`}
-                </pre>
-              </div>
-            </TabsContent>
-          </Tabs>
+          <Alert>
+            <Lightbulb className="h-4 w-4" />
+            <AlertTitle>Pro Tip</AlertTitle>
+            <AlertDescription>
+              Use <code className="font-mono">defer</code> for your main application JavaScript. Use <code className="font-mono">async</code> for third-party scripts that don't depend on your code.
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
       {/* Boilerplates */}
-      <Card>
+      <Card className="bg-gradient-to-br from-emerald-50/40 to-green-50/40 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/50 dark:border-emerald-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <FileJson className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+            Boilerplate Templates
+          </CardTitle>
+          <CardDescription className="text-base">
+            Start minimal, scale up to a production-ready document structure
+          </CardDescription>
+        </CardHeader>
         <CardContent className="space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2"><FileJson className="w-6 h-6 text-primary" /> Boilerplate Templates</h2>
-            <p className="text-muted-foreground text-sm md:text-base">Start minimal, scale up to a production-ready head section.</p>
-          </div>
           <div>
-            <h3 className="font-bold text-lg mb-3">Minimal Structure</h3>
-            <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
-                <span className="uppercase tracking-wide">minimal.html</span>
-                <span className="text-slate-500 dark:text-slate-300">Starter document</span>
+            <div className="flex items-center gap-2 mb-3">
+              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">Beginner Friendly</Badge>
+              <h3 className="font-bold text-lg">Minimal Structure</h3>
+            </div>
+            <div className="rounded-xl overflow-hidden border-2 border-green-300 dark:border-green-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-green-100 dark:bg-green-900/30">
+                <span className="uppercase tracking-wide text-green-700 dark:text-green-300">minimal.html</span>
+                <span className="text-green-600 dark:text-green-400">Perfect starter template</span>
               </div>
               <pre className="font-mono text-xs md:text-sm px-4 py-3 overflow-x-auto whitespace-pre">
 {minimalStructure}
@@ -469,11 +378,14 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
             </div>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-3">Complete Professional Structure</h3>
-            <div className="rounded-md overflow-hidden border bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-200 dark:bg-slate-800">
-                <span className="uppercase tracking-wide">production.html</span>
-                <span className="text-slate-500 dark:text-slate-300">Rich, SEO-aware boilerplate</span>
+            <div className="flex items-center gap-2 mb-3">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Production Ready</Badge>
+              <h3 className="font-bold text-lg">Complete Professional Structure</h3>
+            </div>
+            <div className="rounded-xl overflow-hidden border-2 border-blue-300 dark:border-blue-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
+                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">production.html</span>
+                <span className="text-blue-600 dark:text-blue-400">SEO, Performance & Accessibility optimized</span>
               </div>
               <pre className="font-mono text-xs md:text-sm px-4 py-3 overflow-x-auto whitespace-pre">
 {completeStructure}
@@ -484,43 +396,139 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
       </Card>
 
       {/* Interactive Demo */}
-      <Card className="border-2 border-primary/50 bg-gradient-to-r from-blue-500/5 to-purple-500/5">
-        <CardContent className="space-y-4">
-          <h2 className="text-2xl font-bold flex items-center gap-2"><Play className="w-6 h-6 text-primary" /> Interactive Structure Demo</h2>
-          <p className="text-muted-foreground text-sm md:text-base">Experience a properly structured document and inspect timing.</p>
-          <Button
-            size="lg"
-            onClick={() => onOpenWebPlayground?.(playgroundCode.html, playgroundCode.css, playgroundCode.js)}
-            className="w-full md:w-auto"
-          >
-            <Play className="mr-2 h-5 w-5" /> Open Live Demo
-          </Button>
+      <Card className="bg-gradient-to-br from-blue-50/40 to-purple-50/40 dark:from-blue-950/10 dark:to-purple-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Play className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            Interactive Document Demo
+          </CardTitle>
+          <CardDescription className="text-base">
+            Experience a properly structured document with live examples of defer, async, and DOM manipulation
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <h4 className="font-semibold">Live Structure</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">See head and body sections in action</p>
+            </div>
+            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border border-emerald-200 dark:border-emerald-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <h4 className="font-semibold">Script Timing</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Watch defer execute after parsing</p>
+            </div>
+            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border border-purple-200 dark:border-purple-800">
+              <div className="flex items-center gap-2 mb-2">
+                <GitBranch className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <h4 className="font-semibold">DOM Updates</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Dynamic content injection example</p>
+            </div>
+          </div>
+
+          {onOpenWebPlayground && (
+            <Button
+              size="lg"
+              onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Launch Interactive Playground
+            </Button>
+          )}
         </CardContent>
       </Card>
 
       {/* Quick Reference */}
-      <Card>
-        <CardContent className="space-y-6">
-          <h2 className="text-2xl font-bold flex items-center gap-2"><Code className="w-6 h-6 text-primary" /> Quick Reference Checklist</h2>
-          <div className="grid md:grid-cols-2 gap-6 text-sm">
-            <ul className="space-y-1 list-disc list-inside">
-              <li>✅ Doctype at very top</li>
-              <li>✅ <code>lang</code> attribute on <code>&lt;html&gt;</code></li>
-              <li>✅ Charset & viewport meta first</li>
-              <li>✅ Descriptive, concise <code>&lt;title&gt;</code></li>
-              <li>✅ One canonical description meta</li>
-              <li>✅ Preload only truly critical assets</li>
-              <li>✅ Use <code>defer</code> for app scripts</li>
-            </ul>
-            <ul className="space-y-1 list-disc list-inside">
-              <li>🚫 Avoid duplicate meta descriptions</li>
-              <li>🚫 Don't block rendering with large inline scripts</li>
-              <li>🚫 Don't forget landmarks (<code>&lt;main&gt;</code>, roles)</li>
-              <li>💡 Limit <code>preconnect</code> hints to essentials</li>
-              <li>💡 Put analytics <code>async</code> to avoid blocking</li>
-              <li>💡 Order head: charset → viewport → title → description</li>
-              <li>💡 Tiny inline year script is fine</li>
-            </ul>
+      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <CheckCircle2 className="w-7 h-7 text-green-600 dark:text-green-400" />
+            Quick Reference Checklist
+          </CardTitle>
+          <CardDescription className="text-base">
+            Essential do's and don'ts for document structure
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
+              <h4 className="font-semibold mb-4 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                <CheckCircle2 className="w-5 h-5" />
+                Best Practices
+              </h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Doctype at very top: <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">&lt;!DOCTYPE html&gt;</code></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Always set <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">lang</code> attribute on <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">&lt;html&gt;</code></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Charset & viewport meta tags first in head</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Descriptive, concise <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">&lt;title&gt;</code> (under 60 chars)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>One canonical description meta tag</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Use <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">defer</code> for app scripts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Preload only truly critical assets</span>
+                </li>
+              </ul>
+            </div>
+            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
+              <h4 className="font-semibold mb-4 flex items-center gap-2 text-rose-700 dark:text-rose-300">
+                <XCircle className="w-5 h-5" />
+                Common Mistakes
+              </h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                  <span>Duplicate or conflicting meta descriptions</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                  <span>Blocking rendering with large inline scripts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                  <span>Missing semantic landmarks like <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">&lt;main&gt;</code></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Limit <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">preconnect</code> hints to essentials only</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Use <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">async</code> for analytics to avoid blocking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Order head tags: charset → viewport → title → description</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Small inline scripts (like year) are acceptable</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </CardContent>
       </Card>
