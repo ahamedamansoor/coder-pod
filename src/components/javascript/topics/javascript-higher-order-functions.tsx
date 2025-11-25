@@ -629,34 +629,30 @@ square(5);  // From cache → 25`}
         </CardContent>
       </Card>
 
-      {/* Playground */}
-      {onOpenWebPlayground && (
-        <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <Play className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-              Try Higher-Order Functions Live
-            </CardTitle>
-            <CardDescription className="text-base">
-              Interactive demo showing functions accepting and returning functions
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30">
-                <span className="uppercase tracking-wide text-indigo-700 dark:text-indigo-300">hof-demo.js</span>
-                <span className="text-indigo-600/70 dark:text-indigo-400/70">All patterns in action</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-            </div>
-
-            <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
+      {/* Hands-on Playground */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
+            Hands-on playground
+          </CardTitle>
+          <CardDescription className="text-sm">
+            Launch the simulator closure built playground to experiment with ✨ higher-order functions, function composition, and currying.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {onOpenWebPlayground && (
+            <Button
+              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
+            >
+              Run in playground
             </Button>
-          </CardContent>
-        </Card>
-      )}
+          )}
+          <p className="text-xs text-muted-foreground">
+            The console output highlights higher-order function patterns (functions as arguments, returning functions, composition, and currying) with practical examples most developers encounter.
+          </p>
+        </CardContent>
+      </Card>
       
     </div>
   );

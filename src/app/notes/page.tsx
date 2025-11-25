@@ -49,7 +49,7 @@ export default function NotesPage() {
   };
 
   useEffect(() => {
-    if (selectedLanguage) {
+    if (selectedLanguage && user) {
       fetchNotes(selectedLanguage);
     }
   }, [selectedLanguage, user, firestore]);
@@ -69,13 +69,15 @@ export default function NotesPage() {
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-4 sm:mb-0">My Notes</h1>
-        <Button onClick={() => setIsModalOpen(true)} className="bg-primary hover:bg-primary/90 text-primary-foreground">
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Create New Note
-        </Button>
+        {user && (
+            <Button onClick={() => setIsModalOpen(true)} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <PlusCircle className="mr-2 h-5 w-5" />
+            Create New Note
+            </Button>
+        )}
       </div>
 
-      <AddNoteModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onNoteAdded={onNoteAdded} />
+      {user && <AddNoteModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onNoteAdded={onNoteAdded} />}
 
       <div className="mb-8 p-6 bg-card rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-foreground mb-4">Select a Language</h2>
@@ -94,7 +96,7 @@ export default function NotesPage() {
         </div>
       </div>
 
-      {selectedLanguage && (
+      {selectedLanguage ? (
         <div>
           {isLoading ? (
             <div className="flex justify-center items-center h-40">
@@ -125,6 +127,10 @@ export default function NotesPage() {
                 <p className="text-muted-foreground text-lg">You haven't added any notes for this language yet.</p>
             </div>
           )}
+        </div>
+      ) : (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground text-lg">Please select a language to view your notes.</p>
         </div>
       )}
     </div>
