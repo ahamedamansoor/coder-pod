@@ -18,7 +18,8 @@ import {
   Box,
   Globe,
   Lock,
-  Users
+  Users,
+  Play
 } from 'lucide-react';
 
 interface JavaScriptStaticMethodsProps {
@@ -933,25 +934,36 @@ console.log(logger1.getLogs().length);`}
         </CardContent>
       </Card>
 
-      {/* Playground Section */}
-      <Card>
+      {/* Hands-on Playground */}
+      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/50 dark:border-purple-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Globe className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Interactive Playground
+            <Play className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+            Hands-on Playground
           </CardTitle>
           <CardDescription className="text-base">
-            Try static methods live - factory patterns, utilities, and static properties!
+            Open the interactive playground to experiment with static methods in your browser!
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <div className="flex items-start gap-3 p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
+            <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-purple-900 dark:text-purple-100">
+                Practice with Real Code
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Try factory patterns, utility classes, and static properties in an interactive environment. See results instantly in the browser console.
+              </p>
+            </div>
+          </div>
           {onOpenWebPlayground && (
             <Button
-              className="w-full md:w-auto"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg"
               onClick={() => onOpenWebPlayground(playgroundHtml, playgroundCss, playgroundJs)}
             >
-              <Globe className="w-4 h-4 mr-2" />
-              Open Interactive Demo
+              <Play className="w-4 h-4 mr-2" />
+              Launch Interactive Playground
             </Button>
           )}
         </CardContent>
