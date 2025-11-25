@@ -62,7 +62,7 @@ When enhancing or creating educational content components, follow this structure
 4. **Core Concepts** - Main variations or types (if applicable)
 5. **Detailed Examples** - Each concept with expanded code
 6. **Parameters/Options** - How to configure or customize
-7. **Real-World Use Cases** - 4+ practical examples
+7. **Real-World Examples** - **REQUIRED**: At least 2 practical patterns (Options Object, Math Operations, Form Validation, API calls, etc.)
 8. **Common Patterns** - Frequently used approaches
 9. **Comparison** - When to use what (table or cards)
 10. **Best Practices** - Do's and Don'ts
@@ -93,6 +93,47 @@ console.log(result);
 - ✅ Blank lines between logical sections
 - ✅ Use `<pre>` blocks, NOT complex inline JSX spans
 
+**Playground Standards:**
+
+🚨 **IMPORTANT: For NON-DOM JavaScript topics** (Variables, Functions, Operators, Loops, etc.):
+- ❌ **NO UI manipulation** - Do NOT create buttons, dynamic HTML, or visual elements
+- ✅ **Console-only output** - ALL results should appear in browser console
+- ✅ **Simple HTML** - Just show message: "Open console to see results"
+- ✅ **Focus on code learning** - The JavaScript demonstrates the concept, not UI building
+
+```tsx
+// Template for NON-DOM topics
+const playgroundHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Topic Demo</title>
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; 
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .container { text-align: center; background: rgba(255,255,255,0.95); padding: 48px 32px; 
+                 border-radius: 20px; max-width: 600px; }
+    h1 { color: #667eea; margin-bottom: 16px; font-size: 32px; }
+    p { color: #64748b; font-size: 18px; }
+    .console-hint { background: #0f172a; color: #22d3ee; padding: 16px; border-radius: 12px; 
+                    margin-top: 24px; font-family: monospace; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Topic Name</h1>
+    <p>Open the browser console to see the results!</p>
+    <div class="console-hint">Press F12 or Cmd+Option+J</div>
+  </div>
+  <script src="./demo.js"></script>
+</body>
+</html>`;
+```
+
+✅ **Only for DOM manipulation topics** (Event Listeners, DOM Selection, etc.):
+- Can include interactive UI elements
+- Show visual changes and demonstrate DOM concepts
+
 #### 5. **Content Completeness Checklist**
 
 Before considering a component "complete," verify:
@@ -101,6 +142,7 @@ Before considering a component "complete," verify:
 - [ ] **Progressive Learning** - Does it build from simple to complex?
 - [ ] **Multiple Examples** - At least 4-6 code examples showing different scenarios
 - [ ] **Real-World Focus** - Practical examples students will actually use
+- [ ] **Real-World Examples Section** - REQUIRED: Dedicated section with at least 2 practical patterns (Options Object, Math Operations, Form Validation, etc.)
 - [ ] **Visual Variety** - Mix of cards, tables, alerts, code blocks
 - [ ] **Outputs Shown** - Every example shows what happens when you run it
 - [ ] **Comparisons Included** - Help learners choose between options
@@ -148,9 +190,48 @@ console.log(sum2);  // 30`}
 - 3-4 detailed content cards (white/bordered)
 - 1 anatomy/breakdown section (visual)
 - 1 comparison table or grid
-- 2-3 real-world example cards
+- **1 Real-World Examples section with 2+ practical patterns** (REQUIRED)
 - 1 best practices comparison (Do/Don't)
 - 1 interactive playground
+
+**Real-World Examples Section Structure:**
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+      Real-World Examples
+    </CardTitle>
+    <CardDescription className="text-base">
+      Practical patterns you'll use every day
+    </CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-6">
+    <div className="grid md:grid-cols-2 gap-6">
+      {/* Pattern 1 */}
+      <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
+        <h4 className="font-semibold mb-3 flex items-center gap-2">
+          <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          Pattern Name (e.g., Options Object)
+        </h4>
+        <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`// Complete working code
+function example() {
+  // ...
+}
+console.log(example());
+// Output: ...`}
+        </pre>
+      </div>
+      
+      {/* Pattern 2 */}
+      <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
+        {/* Similar structure */}
+      </div>
+    </div>
+  </CardContent>
+</Card>
+```
 
 #### 8. **Innovation Principles**
 
@@ -952,10 +1033,12 @@ When generating components based on this design system:
 8. **No tabs or hidden content** - Make everything visible with cards
 9. **Test dark mode** - Ensure all colors work in both themes
 10. **Follow the section order** - Overview → What is? → Anatomy → Examples → Real-World → Best Practices
-11. **Icons matter** - Choose appropriate icons for each section
-12. **Mobile-first** - Ensure responsive design works on all screen sizes
-13. **Real-world focus** - Include practical examples students will actually use
-14. **Progressive learning** - Build from simple to complex, beginner to advanced
+11. **Real-World Examples REQUIRED** - Every component must have a dedicated "Real-World Examples" section with at least 2 practical patterns (Options Object, Math Operations, Form Validation, API calls, etc.)
+12. **Playground Console-Only for NON-DOM topics** - Variables, Functions, Operators, Loops etc. should ONLY show results in console. NO buttons, dynamic HTML, or UI manipulation. Only DOM topics can have interactive UI.
+13. **Icons matter** - Choose appropriate icons for each section
+14. **Mobile-first** - Ensure responsive design works on all screen sizes
+15. **Real-world focus** - Include practical examples students will actually use
+16. **Progressive learning** - Build from simple to complex, beginner to advanced
 
 ---
 

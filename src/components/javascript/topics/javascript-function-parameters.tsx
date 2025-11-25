@@ -25,88 +25,106 @@ const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Function Parameters Demo</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       min-height: 100vh;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at 15% 20%, #eef2ff, #f8fafc 45%), #f8fafc;
-      color: #0f172a;
-      display: grid;
-      place-items: center;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
     }
-    .card {
-      width: min(760px, 100%);
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      box-shadow: 0 18px 70px rgba(15, 23, 42, 0.08);
-      padding: 22px;
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 48px 32px;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
     }
-    .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 12px; }
-    .pill { padding: 10px 12px; border-radius: 12px; background: #f1f5f9; border: 1px dashed #e2e8f0; font-weight: 600; }
-    code { background: #0f172a; color: #e2e8f0; padding: 8px 10px; border-radius: 8px; display: block; white-space: pre; }
-    button {
-      margin-top: 14px;
-      background: linear-gradient(120deg, #2563eb, #38bdf8);
-      color: #fff;
-      border: none;
+    h1 {
+      color: #667eea;
+      margin-bottom: 16px;
+      font-size: 32px;
+    }
+    p {
+      color: #64748b;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .console-hint {
+      background: #0f172a;
+      color: #22d3ee;
+      padding: 16px;
       border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+      margin-top: 24px;
+      font-family: 'Monaco', monospace;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <p class="muted">Click run then open DevTools console to see parameters in action.</p>
-    <div class="grid" id="preview"></div>
-    <code id="snippet"></code>
-    <button id="run">Run parameters demo</button>
+  <div class="container">
+    <h1>🎯 Function Parameters</h1>
+    <p>Open the browser console to see the results!</p>
+    <div class="console-hint">Press F12 or Cmd+Option+J</div>
   </div>
-  <script src="./function-params-demo.js"></script>
+  <script src="./demo.js"></script>
 </body>
 </html>`;
 
 const playgroundJs = `console.clear();
+console.log('=== Function Parameters Demo ===\\n');
 
-// Default parameter
+// 1. Default Parameters
+console.log('1️⃣ DEFAULT PARAMETERS:');
 function greet(name = 'Guest') {
   return 'Hello, ' + name;
 }
 
-// Rest parameter
+console.log('greet():', greet());
+console.log('greet("Alice"):', greet('Alice'));
+console.log('');
+
+// 2. Rest Parameters
+console.log('2️⃣ REST PARAMETERS:');
 function sum(...nums) {
   return nums.reduce((total, n) => total + n, 0);
 }
 
-// Destructured parameter
+console.log('sum(1, 2, 3):', sum(1, 2, 3));
+console.log('sum(10, 20, 30, 40):', sum(10, 20, 30, 40));
+console.log('');
+
+// 3. Object Destructuring
+console.log('3️⃣ OBJECT DESTRUCTURING:');
 function formatUser({ name, plan = 'free' }) {
   return name + ' (' + plan + ')';
 }
 
-console.log(greet());
-console.log(greet('Ada'));
-console.log('sum 1,2,3 =', sum(1, 2, 3));
-console.log(formatUser({ name: 'Lin', plan: 'pro' }));
+console.log('formatUser({ name: "Lin", plan: "pro" }):', 
+  formatUser({ name: 'Lin', plan: 'pro' }));
+console.log('formatUser({ name: "Bob" }):', 
+  formatUser({ name: 'Bob' }));
+console.log('');
 
-document.getElementById('run').onclick = () => {
-  document.getElementById('preview').innerHTML = [
-    'Default: function greet(name = "Guest")',
-    'Rest: function sum(...nums)',
-    'Destructure: function formatUser({ name, plan = "free" })',
-  ].map(text => '<div class="pill">' + text + '</div>').join('');
+// 4. Array Destructuring
+console.log('4️⃣ ARRAY DESTRUCTURING:');
+function getCoordinates([x, y, z = 0]) {
+  return { x, y, z };
+}
 
-  document.getElementById('snippet').textContent =
-'function greet(name = \"Guest\") { ... }\\n' +
-'function sum(...nums) { ... }\\n' +
-'function formatUser({ name, plan = \"free\" }) { ... };';
-};`;
+console.log('getCoordinates([10, 20, 30]):', 
+  getCoordinates([10, 20, 30]));
+console.log('getCoordinates([5, 15]):', 
+  getCoordinates([5, 15]));
+
+console.log('\\n✅ All demos complete!');`;
 
 export default function JavaScriptFunctionParameters({ onOpenWebPlayground }: JavaScriptFunctionParametersProps) {
   return (
@@ -158,36 +176,365 @@ export default function JavaScriptFunctionParameters({ onOpenWebPlayground }: Ja
         </CardContent>
       </Card>
 
-      {/* Syntax & canonical snippets */}
+      {/* What are Function Parameters */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
             <Brackets className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Canonical Parameter Patterns
+            What are Function Parameters?
           </CardTitle>
           <CardDescription className="text-base">
-            Minimal, runnable snippets: defaults, rest, and destructuring.
+            Parameters are the named variables in a function definition that receive values when the function is called
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold">Defaults & required</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>function greet(name = 'Guest') {'{'} return 'Hi ' + name; {'}'}</div>
-              <div>function needBoth(a, b) {'{'} if (b === undefined) throw Error('b required'); {'}'}</div>
+        <CardContent className="space-y-6">
+          <p className="text-sm text-muted-foreground">
+            Think of parameters as labeled containers that hold the data your function needs to work. When you call a function, you pass <strong>arguments</strong> (actual values) that fill these parameter containers.
+          </p>
+          
+          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
+              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">parameters-vs-arguments.js</span>
+              <span className="text-blue-600/70 dark:text-blue-400/70">Understanding the difference</span>
             </div>
-            <p className="text-sm text-muted-foreground">Set reasonable defaults, and fail fast when a param is required.</p>
+            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Parameters: name, age (in definition)
+function introduce(name, age) {
+  return \`I'm \${name} and I'm \${age} years old.\`;
+}
+
+// Arguments: "Alice", 25 (values passed in)
+const message = introduce('Alice', 25);
+
+console.log(message);
+// Output: "I'm Alice and I'm 25 years old."`}
+            </pre>
           </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Rest & destructuring</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>function sum(...nums) {'{'} return nums.reduce((t, n) =&gt; t + n, 0); {'}'}</div>
-              <div>function display({'{'} name, plan = 'free' {'}'}) {'{'} return name + ' - ' + plan; {'}'}</div>
+
+          <Alert>
+            <Lightbulb className="h-4 w-4" />
+            <AlertTitle>Key Distinction</AlertTitle>
+            <AlertDescription>
+              <strong>Parameters</strong> are placeholders in the function definition. <strong>Arguments</strong> are the actual values you pass when calling the function.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Default Parameters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sliders className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Default Parameters
+          </CardTitle>
+          <CardDescription className="text-base">
+            Provide fallback values when arguments aren't supplied
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Basic Default Values</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
+                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">default-params.js</span>
+                <span className="text-blue-600/70 dark:text-blue-400/70">Setting default values</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Function with default parameters
+function greet(name = 'Guest', greeting = 'Hello') {
+  return \`\${greeting}, \${name}!\`;
+}
+
+// Call with both arguments
+console.log(greet('Alice', 'Hi'));
+// Output: "Hi, Alice!"
+
+// Call with one argument
+console.log(greet('Bob'));
+// Output: "Hello, Bob!"
+
+// Call with no arguments
+console.log(greet());
+// Output: "Hello, Guest!"`}
+              </pre>
             </div>
-            <Alert>
-              <AlertTitle>Tip</AlertTitle>
-              <AlertDescription>Use rest for flexible inputs; destructure to make dependencies explicit.</AlertDescription>
-            </Alert>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Default with Expressions</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
+                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">expression-defaults.js</span>
+                <span className="text-purple-600/70 dark:text-purple-400/70">Dynamic defaults</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Default can be an expression
+function createUser(name, createdAt = new Date()) {
+  return {
+    name: name,
+    created: createdAt
+  };
+}
+
+const user1 = createUser('Alice');
+console.log(user1);
+// { name: 'Alice', created: [current date] }
+
+// Can pass custom date
+const customDate = new Date('2024-01-01');
+const user2 = createUser('Bob', customDate);
+console.log(user2);
+// { name: 'Bob', created: 2024-01-01T00:00:00.000Z }`}
+              </pre>
+            </div>
+          </div>
+
+          <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+            <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <AlertTitle className="text-blue-900 dark:text-blue-100">When Defaults Apply</AlertTitle>
+            <AlertDescription className="text-blue-800 dark:text-blue-200">
+              Default values are used when the argument is <code className="font-mono">undefined</code>. Passing <code className="font-mono">null</code> or <code className="font-mono">0</code> will NOT trigger the default.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Rest Parameters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Layers className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
+            Rest Parameters
+          </CardTitle>
+          <CardDescription className="text-base">
+            Collect multiple arguments into a single array
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              The rest parameter syntax (<code className="font-mono">...name</code>) allows a function to accept any number of arguments as an array.
+            </p>
+            
+            <h4 className="font-semibold text-lg">Basic Rest Parameter</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
+                <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">rest-params.js</span>
+                <span className="text-emerald-600/70 dark:text-emerald-400/70">Flexible arguments</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Function with rest parameter
+function sum(...numbers) {
+  let total = 0;
+  for (const num of numbers) {
+    total += num;
+  }
+  return total;
+}
+
+console.log(sum(1, 2));
+// Output: 3
+
+console.log(sum(1, 2, 3, 4, 5));
+// Output: 15
+
+console.log(sum());
+// Output: 0`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Mixing Regular and Rest Parameters</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-cyan-100 dark:bg-cyan-900/30">
+                <span className="uppercase tracking-wide text-cyan-700 dark:text-cyan-300">rest-mixed.js</span>
+                <span className="text-cyan-600/70 dark:text-cyan-400/70">Combined parameters</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// First parameter is required, rest are collected
+function createList(title, ...items) {
+  return {
+    title: title,
+    items: items,
+    count: items.length
+  };
+}
+
+const groceries = createList('Shopping', 'Milk', 'Bread', 'Eggs');
+
+console.log(groceries);
+// Output: {
+//   title: 'Shopping',
+//   items: ['Milk', 'Bread', 'Eggs'],
+//   count: 3
+// }`}
+              </pre>
+            </div>
+          </div>
+
+          <Alert className="bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800">
+            <Lightbulb className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <AlertTitle className="text-emerald-900 dark:text-emerald-100">Rest Must Be Last</AlertTitle>
+            <AlertDescription className="text-emerald-800 dark:text-emerald-200">
+              The rest parameter must always be the last parameter in the function signature.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Destructuring Parameters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Brackets className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
+            Destructuring Parameters
+          </CardTitle>
+          <CardDescription className="text-base">
+            Extract values from objects and arrays directly in the function signature
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Object Destructuring</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-amber-100 dark:bg-amber-900/30">
+                <span className="uppercase tracking-wide text-amber-700 dark:text-amber-300">object-destructure.js</span>
+                <span className="text-amber-600/70 dark:text-amber-400/70">Pull specific properties</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Destructure object parameter
+function displayUser({ name, email, role = 'user' }) {
+  return \`\${name} (\${email}) - Role: \${role}\`;
+}
+
+const user1 = { name: 'Alice', email: 'alice@example.com', role: 'admin' };
+const user2 = { name: 'Bob', email: 'bob@example.com' };
+
+console.log(displayUser(user1));
+// Output: "Alice (alice@example.com) - Role: admin"
+
+console.log(displayUser(user2));
+// Output: "Bob (bob@example.com) - Role: user"`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Array Destructuring</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
+                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">array-destructure.js</span>
+                <span className="text-blue-600/70 dark:text-blue-400/70">Extract array elements</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Destructure array parameter
+function getCoordinates([x, y, z = 0]) {
+  return {
+    x: x,
+    y: y,
+    z: z
+  };
+}
+
+console.log(getCoordinates([10, 20, 30]));
+// Output: { x: 10, y: 20, z: 30 }
+
+console.log(getCoordinates([5, 15]));
+// Output: { x: 5, y: 15, z: 0 }`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Nested Destructuring</h4>
+            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
+              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
+                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">nested-destructure.js</span>
+                <span className="text-purple-600/70 dark:text-purple-400/70">Deep extraction</span>
+              </div>
+              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
+{`// Destructure nested objects
+function formatAddress({ user: { name }, address: { city, country } }) {
+  return \`\${name} lives in \${city}, \${country}\`;
+}
+
+const data = {
+  user: { name: 'Alice', id: 123 },
+  address: { city: 'New York', country: 'USA', zip: '10001' }
+};
+
+console.log(formatAddress(data));
+// Output: "Alice lives in New York, USA"`}
+              </pre>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Real-World Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+            Real-World Examples
+          </CardTitle>
+          <CardDescription className="text-base">
+            Practical patterns you'll use every day
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                Options Object Pattern
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`function createButton({
+  text,
+  color = 'blue',
+  size = 'medium',
+  disabled = false
+}) {
+  return \`Button: \${text} (\${color}, \${size})\`;
+}
+
+const btn = createButton({
+  text: 'Click Me',
+  color: 'red'
+});
+
+console.log(btn);
+// "Button: Click Me (red, medium)"`}
+              </pre>
+            </div>
+
+            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                Math Operations
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`function average(...numbers) {
+  if (numbers.length === 0) return 0;
+  
+  const sum = numbers.reduce(
+    (total, num) => total + num,
+    0
+  );
+  
+  return sum / numbers.length;
+}
+
+console.log(average(10, 20, 30));
+// 20
+
+console.log(average(5, 15, 25, 35));
+// 20`}
+              </pre>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -251,7 +598,7 @@ export default function JavaScriptFunctionParameters({ onOpenWebPlayground }: Ja
           {onOpenWebPlayground && (
             <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
               <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
+              Try in Playground
             </Button>
           )}
         </CardContent>

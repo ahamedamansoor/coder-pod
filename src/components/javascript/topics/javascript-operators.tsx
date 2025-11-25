@@ -29,91 +29,90 @@ const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Operator Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operators Demo</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       min-height: 100vh;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at 15% 20%, #f8fafc, #eef2ff 40%), #f8fafc;
-      color: #0f172a;
-      display: grid;
-      place-items: center;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
     }
-    .card {
-      width: min(760px, 100%);
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      box-shadow: 0 18px 70px rgba(15, 23, 42, 0.08);
-      padding: 22px;
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 48px 32px;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
     }
-    .row { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 12px; }
-    .pill { padding: 10px 12px; border-radius: 12px; background: #f1f5f9; border: 1px dashed #e2e8f0; font-weight: 600; }
-    button {
-      background: linear-gradient(120deg, #2563eb, #38bdf8);
-      color: #fff;
-      border: none;
+    h1 {
+      color: #667eea;
+      margin-bottom: 16px;
+      font-size: 32px;
+    }
+    p {
+      color: #64748b;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .console-hint {
+      background: #0f172a;
+      color: #22d3ee;
+      padding: 16px;
       border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+      margin-top: 24px;
+      font-family: 'Monaco', monospace;
+      font-size: 14px;
     }
-    .muted { color: #475569; margin-top: 8px; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <p class="muted">Click "Run" and open DevTools console to watch operators work.</p>
-    <div class="row" id="preview"></div>
-    <div style="display:flex; justify-content:flex-start; margin-top:14px; gap:10px; align-items:center;">
-      <button id="run">Run operator demo</button>
-      <span class="muted">Console shows arithmetic, comparison, logical, and typeof results.</span>
-    </div>
+  <div class="container">
+    <h1>🔢 Operators</h1>
+    <p>Open the browser console to see the results!</p>
+    <div class="console-hint">Press F12 or Cmd+Option+J</div>
   </div>
-  <script src="./operators-demo.js"></script>
+  <script src="./demo.js"></script>
 </body>
 </html>`;
 
 const playgroundJs = `console.clear();
-console.log('=== Arithmetic ===');
-console.log('2 + 3 =', 2 + 3);
-console.log('10 % 3 =', 10 % 3);
 
-console.log('\\n=== Assignment ===');
-let score = 10;
-score += 5;
-console.log('score += 5 =>', score);
+const a = 10;
+const b = 3;
 
-console.log('\\n=== Comparison ===');
-console.log("'5' == 5", '5' == 5);
-console.log("'5' === 5", '5' === 5);
-console.log("null == undefined", null == undefined);
+console.log('Arithmetic');
+console.log('a + b =', a + b);
+console.log('a % b =', a % b);
 
-console.log('\\n=== Logical ===');
-const isMember = true;
-const hasCoupon = false;
-console.log('member || coupon =>', isMember || hasCoupon);
-console.log('member && coupon =>', isMember && hasCoupon);
-console.log('!coupon =>', !hasCoupon);
+let count = 5;
+count += 2;
+console.log('Assignment: count += 2 ->', count);
 
-console.log('\\n=== typeof ===');
-console.log('typeof 42 =>', typeof 42);
-console.log('typeof null =>', typeof null, '(quirk)');
+console.log('');
+console.log('Comparison');
+console.log('a > b ?', a > b);
+console.log('a === "10"?', a === '10');
 
-document.getElementById('run').onclick = () => {
-  document.getElementById('preview').innerHTML = [
-    'Arithmetic: 2 + 3 = ' + (2 + 3),
-    'Assignment: score now ' + score,
-    "Comparison: '5' === 5 -> " + ('5' === 5),
-    'Logical: member && coupon -> ' + (isMember && hasCoupon),
-    'typeof null -> ' + typeof null + ' (object quirk)'
-  ].map(text => '<div class="pill">' + text + '</div>').join('');
-  console.log('\\nRun button clicked, results refreshed.');
-};`;
+console.log('');
+console.log('Logical');
+const loggedIn = true;
+const isAdmin = false;
+console.log('loggedIn && isAdmin ->', loggedIn && isAdmin);
+console.log('loggedIn || isAdmin ->', loggedIn || isAdmin);
+
+console.log('');
+console.log('Type checking');
+console.log('typeof a ->', typeof a);
+console.log('typeof null ->', typeof null);
+
+console.log('Open this console any time to see operators in action.');`;
 
 export default function JavaScriptOperators({ onOpenWebPlayground }: JavaScriptOperatorsProps) {
   return (

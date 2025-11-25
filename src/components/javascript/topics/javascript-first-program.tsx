@@ -31,6 +31,16 @@ interface JavaScriptFirstProgramProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/70 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
+      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
+    </div>
+    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
+  </div>
+);
+
 const consoleHtml = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -235,6 +245,15 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
 {consoleJs}
               </pre>
             </div>
+            <SnippetOutput
+              lines={[
+                "Console → Hello, JavaScript!",
+                "Console → Welcome to programming!",
+                "Console → 2 + 2 = 4",
+                "Console → 10 × 5 = 50",
+                "Console → ✅ You just ran your first program!",
+              ]}
+            />
             {onOpenWebPlayground && (
               <Button
                 className="w-full md:w-auto"
@@ -269,6 +288,13 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
 {domJs}
               </pre>
             </div>
+            <SnippetOutput
+              lines={[
+                "Console → Ready! Click the button.",
+                "Console (after click) → Button clicked!",
+                "DOM → Hello from JavaScript! (text turns green)",
+              ]}
+            />
             {onOpenWebPlayground && (
               <Button
                 className="w-full md:w-auto"
@@ -303,6 +329,15 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
 {loopJs}
               </pre>
             </div>
+            <SnippetOutput
+              lines={[
+                "Console → Counting up:",
+                "Console → Number 1 ... Number 5",
+                "Console → Counting down:",
+                "Console → 3... 2... 1...",
+                "Console → ✅ Loops repeat code automatically",
+              ]}
+            />
             {onOpenWebPlayground && (
               <Button
                 className="w-full md:w-auto"

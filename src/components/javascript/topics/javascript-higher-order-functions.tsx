@@ -43,144 +43,105 @@ const playgroundHtml = `<!DOCTYPE html>
       padding: 24px;
     }
     .container {
-      width: min(900px, 100%);
+      text-align: center;
       background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
-      padding: 32px;
+      padding: 48px 32px;
       box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      color: #0f172a;
+      max-width: 600px;
     }
-    h1 { color: #667eea; margin-bottom: 8px; font-size: 28px; }
-    .demo-section { 
-      background: #f8fafc; 
-      border-radius: 12px; 
-      padding: 20px; 
-      margin-bottom: 16px;
-      border-left: 4px solid #667eea;
-    }
-    .demo-title {
-      font-weight: 700;
+    h1 {
       color: #667eea;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      font-size: 32px;
     }
-    code { 
-      background: #0f172a; 
-      color: #e2e8f0; 
-      padding: 12px 16px; 
-      border-radius: 8px; 
-      display: block; 
-      white-space: pre; 
-      overflow-x: auto;
-      font-size: 13px;
-      margin: 8px 0;
+    p {
+      color: #64748b;
+      font-size: 18px;
+      margin-bottom: 8px;
     }
-    .result { 
-      background: #ecfdf5; 
-      border: 1px solid #86efac; 
-      color: #166534; 
-      padding: 12px; 
-      border-radius: 8px; 
-      margin-top: 8px;
-      font-weight: 600;
+    .console-hint {
+      background: #0f172a;
+      color: #22d3ee;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      font-family: 'Monaco', monospace;
+      font-size: 14px;
     }
-    button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 24px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 16px;
-      transition: transform 0.2s;
-    }
-    button:hover { transform: translateY(-2px); }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🚀 Higher-Order Functions</h1>
-    <div id="output"></div>
-    <button id="runBtn">▶ Run All Demos</button>
+    <p>Open the browser console to see the results!</p>
+    <div class="console-hint">Press F12 or Cmd+Option+J</div>
   </div>
   <script src="./demo.js"></script>
 </body>
 </html>`;
 
-const playgroundJs = `const output = document.getElementById('output');
+const playgroundJs = `console.clear();
+console.log('=== Higher-Order Functions Demo ===\\n');
 
-function addDemo(title, code, result) {
-  const section = document.createElement('div');
-  section.className = 'demo-section';
-  section.innerHTML = \`
-    <div class="demo-title">\${title}</div>
-    <code>\${code}</code>
-    <div class="result">📊 Result: \${result}</div>
-  \`;
-  output.appendChild(section);
+// 1. Function Returning Function
+console.log('1️⃣ FUNCTION RETURNING FUNCTION:');
+function createMultiplier(factor) {
+  return function(number) {
+    return number * factor;
+  };
 }
 
-document.getElementById('runBtn').addEventListener('click', () => {
-  output.innerHTML = '';
-  console.clear();
-  
-  // Demo 1: Function returning function
-  function createMultiplier(factor) {
-    return function(number) {
-      return number * factor;
-    };
-  }
-  const double = createMultiplier(2);
-  addDemo(
-    '1️⃣ Function Returning Function', 
-    'const double = createMultiplier(2);\\ndouble(5);',
-    'double(5) = ' + double(5)
-  );
-  
-  // Demo 2: Function accepting function
-  function repeatAction(times, action) {
-    for (let i = 0; i < times; i++) action(i);
-  }
-  let sum = 0;
-  repeatAction(5, (i) => { sum += i; });
-  addDemo(
-    '2️⃣ Function Accepting Function',
-    'repeatAction(5, (i) => { sum += i; });',
-    'sum = ' + sum
-  );
-  
-  // Demo 3: Array methods
-  const numbers = [1, 2, 3, 4, 5];
-  const doubled = numbers.map(x => x * 2);
-  const evens = numbers.filter(x => x % 2 === 0);
-  const total = numbers.reduce((acc, x) => acc + x, 0);
-  addDemo(
-    '3️⃣ Array Higher-Order Methods',
-    'numbers.map(x => x * 2)\\nnumbers.filter(x => x % 2 === 0)\\nnumbers.reduce((acc, x) => acc + x)',
-    'map: [' + doubled + '], filter: [' + evens + '], reduce: ' + total
-  );
-  
-  // Demo 4: Function composition
-  const addTax = (price) => price * 1.1;
-  const addShipping = (price) => price + 5;
-  function compose(f, g) {
-    return function(x) {
-      return f(g(x));
-    };
-  }
-  const finalPrice = compose(addTax, addShipping);
-  const result = finalPrice(100);
-  addDemo(
-    '4️⃣ Function Composition',
-    'const finalPrice = compose(addTax, addShipping);\\nfinalPrice(100);',
-    'Final price: $' + result.toFixed(2)
-  );
-  
-  console.log('✅ All demos completed! Check the results above.');
-});
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
 
-// Auto-run on page load
-document.getElementById('runBtn').click();`;
+console.log('double(5):', double(5));
+console.log('triple(5):', triple(5));
+console.log('');
+
+// 2. Function Accepting Function
+console.log('2️⃣ FUNCTION ACCEPTING FUNCTION:');
+function repeatAction(times, action) {
+  for (let i = 0; i < times; i++) {
+    action(i);
+  }
+}
+
+let sum = 0;
+repeatAction(5, (i) => { sum += i; });
+console.log('Sum after repeatAction(5):', sum);
+console.log('');
+
+// 3. Array Higher-Order Methods
+console.log('3️⃣ ARRAY HIGHER-ORDER METHODS:');
+const numbers = [1, 2, 3, 4, 5];
+
+const doubled = numbers.map(x => x * 2);
+console.log('map(x => x * 2):', doubled);
+
+const evens = numbers.filter(x => x % 2 === 0);
+console.log('filter(x => x % 2 === 0):', evens);
+
+const total = numbers.reduce((acc, x) => acc + x, 0);
+console.log('reduce(sum):', total);
+console.log('');
+
+// 4. Function Composition
+console.log('4️⃣ FUNCTION COMPOSITION:');
+const addTax = (price) => price * 1.1;
+const addShipping = (price) => price + 5;
+
+function compose(f, g) {
+  return function(x) {
+    return f(g(x));
+  };
+}
+
+const finalPrice = compose(addTax, addShipping);
+const result = finalPrice(100);
+console.log('finalPrice(100):', '$' + result.toFixed(2));
+
+console.log('\\n✅ All demos complete!');`;
 
 export default function JavaScriptHigherOrderFunctions({ onOpenWebPlayground }: JavaScriptHigherOrderFunctionsProps) {
   return (

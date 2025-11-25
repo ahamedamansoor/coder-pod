@@ -29,92 +29,58 @@ const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loops Demo</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       min-height: 100vh;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at 15% 20%, #eef2ff, #f8fafc 45%), #f8fafc;
-      color: #0f172a;
-      display: grid;
-      place-items: center;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
     }
-    .card {
-      width: min(760px, 100%);
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      box-shadow: 0 18px 70px rgba(15, 23, 42, 0.08);
-      padding: 22px;
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 48px 32px;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
     }
-    .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 12px; }
-    .pill { padding: 10px 12px; border-radius: 12px; background: #f1f5f9; border: 1px dashed #e2e8f0; font-weight: 600; }
-    code { background: #0f172a; color: #e2e8f0; padding: 8px 10px; border-radius: 8px; display: block; white-space: pre; }
-    button {
-      margin-top: 14px;
-      background: linear-gradient(120deg, #2563eb, #38bdf8);
-      color: #fff;
-      border: none;
+    h1 {
+      color: #667eea;
+      margin-bottom: 16px;
+      font-size: 32px;
+    }
+    p {
+      color: #64748b;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .console-hint {
+      background: #0f172a;
+      color: #22d3ee;
+      padding: 16px;
       border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+      margin-top: 24px;
+      font-family: 'Monaco', monospace;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <p class="muted">Click run then open DevTools console to see loop outputs.</p>
-    <div class="grid" id="preview"></div>
-    <code id="snippet"></code>
-    <button id="run">Run loops demo</button>
+  <div class="container">
+    <h1>🔄 Loops</h1>
+    <p>Open the browser console to see the results!</p>
+    <div class="console-hint">Press F12 or Cmd+Option+J</div>
   </div>
-  <script src="./loops-demo.js"></script>
+  <script src="./demo.js"></script>
 </body>
 </html>`;
-
-const playgroundJs = `console.clear();
-
-const numbers = [1, 2, 3];
-
-// for: index + control
-for (let i = 0; i < numbers.length; i++) {
-  console.log('for index', i, 'value', numbers[i]);
-}
-
-// for...of: simple values
-for (const n of numbers) {
-  console.log('for...of value', n);
-}
-
-// while: runs while condition is true
-let count = 0;
-while (count < 2) {
-  console.log('while count', count);
-  count++;
-}
-
-// forEach: callback for each item (no break)
-numbers.forEach((n, i) => console.log('forEach idx', i, 'value', n));
-
-document.getElementById('run').onclick = () => {
-  document.getElementById('preview').innerHTML = [
-    'for (i < length) { ... }',
-    'for...of (values only)',
-    'while (condition) { ... }',
-    'arr.forEach(cb)'
-  ].map(text => '<div class="pill">' + text + '</div>').join('');
-
-  document.getElementById('snippet').textContent =
-'for (let i = 0; i < arr.length; i++) { ... }\\n' +
-'for (const item of arr) { ... }\\n' +
-'while (condition) { ... }\\n' +
-'arr.forEach(cb)';
-};`;
 
 export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoopsProps) {
   return (

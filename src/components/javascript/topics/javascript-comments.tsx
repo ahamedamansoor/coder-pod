@@ -28,16 +28,55 @@ const commentsHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>JavaScript Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comments Demo</title>
   <style>
-    body { font-family: system-ui; padding: 1.5rem; color: #0f172a; background: #f8fafc; }
-    .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-    code { background: #0f172a; color: #e2e8f0; padding: 8px 10px; border-radius: 8px; display: block; white-space: pre; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 48px 32px;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+    }
+    h1 {
+      color: #667eea;
+      margin-bottom: 16px;
+      font-size: 32px;
+    }
+    p {
+      color: #64748b;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .console-hint {
+      background: #0f172a;
+      color: #22d3ee;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      font-family: 'Monaco', monospace;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
-  <h1>Comment Styles</h1>
-  <div id="output"></div>
+  <div class="container">
+    <h1>💬 Comments</h1>
+    <p>Open the browser console to see the results!</p>
+    <div class="console-hint">Press F12 or Cmd+Option+J</div>
+  </div>
   <script src="./comments.js"></script>
 </body>
 </html>`;

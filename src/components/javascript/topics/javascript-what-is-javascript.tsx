@@ -18,6 +18,16 @@ interface JavaScriptWhatIsJavaScriptProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/70 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
+      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
+    </div>
+    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
+  </div>
+);
+
 export default function JavaScriptWhatIsJavaScript({ onOpenEditor, onOpenWebPlayground }: JavaScriptWhatIsJavaScriptProps) {
   const [activeDemo, setActiveDemo] = useState<string>('');
 
@@ -475,13 +485,14 @@ export default function JavaScriptWhatIsJavaScript({ onOpenEditor, onOpenWebPlay
                   <p className="text-sm text-gray-600 dark:text-gray-400">Your first JavaScript program</p>
                 </div>
               </div>
-              <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-4 font-mono text-sm border border-gray-300 dark:border-gray-700">
-                <div className="text-gray-600 dark:text-gray-500">// Your first JS code</div>
-                <div className="text-blue-600 dark:text-blue-400">console</div><span className="text-gray-900 dark:text-white">.log(</span><span className="text-green-600 dark:text-green-400">&apos;Hello, JavaScript!&apos;</span><span className="text-gray-900 dark:text-white">);</span>
-              </div>
-              <Button 
-                onClick={() => openDemo(
-                  'Hello World',
+            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-4 font-mono text-sm border border-gray-300 dark:border-gray-700">
+              <div className="text-gray-600 dark:text-gray-500">// Your first JS code</div>
+              <div className="text-blue-600 dark:text-blue-400">console</div><span className="text-gray-900 dark:text-white">.log(</span><span className="text-green-600 dark:text-green-400">&apos;Hello, JavaScript!&apos;</span><span className="text-gray-900 dark:text-white">);</span>
+            </div>
+            <SnippetOutput lines={["Console → 'Hello, JavaScript!'", "DOM → ✅ Hello, JavaScript!"]} />
+            <Button 
+              onClick={() => openDemo(
+                'Hello World',
                   `<!DOCTYPE html>
 <html>
 <head>
@@ -563,6 +574,7 @@ document.getElementById('output').innerHTML = '<h2>✅ Hello, JavaScript!</h2><p
                 <div className="pl-4 text-purple-600 dark:text-purple-400">alert</div><span className="text-gray-900 dark:text-white">(</span><span className="text-green-600 dark:text-green-400">&apos;Clicked!&apos;</span><span className="text-gray-900 dark:text-white">);</span>
                 <div className="text-white">{'}'};</div>
               </div>
+              <SnippetOutput lines={["Alert → 'Clicked!'", "DOM → 🎉 Button Clicked! (Total clicks updates)"]} />
               <Button 
                 onClick={() => openDemo(
                   'Interactive Button',
@@ -659,6 +671,7 @@ button.onclick = () => {
                 <div className="text-blue-600 dark:text-blue-400">element</div><span className="text-gray-900 dark:text-white">.innerHTML = </span>
                 <div className="pl-4 text-green-600 dark:text-green-400">&apos;New content!&apos;</div><span className="text-gray-900 dark:text-white">;</span>
               </div>
+              <SnippetOutput lines={["DOM → ✨ Content Updated! (Update count increments)"]} />
               <Button 
                 onClick={() => openDemo(
                   'Dynamic Content',
@@ -754,6 +767,7 @@ button.onclick = () => {
                 <div className="pl-4 text-gray-500">// Valid ✅</div>
                 <div className="text-white">{'}'}</div>
               </div>
+              <SnippetOutput lines={["Valid email → Shows success message", "Missing '@' → Displays error prompt"]} />
               <Button 
                 onClick={() => openDemo(
                   'Form Validation',

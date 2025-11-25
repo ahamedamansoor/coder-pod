@@ -25,6 +25,10 @@ const JavaScriptArrowFunctions = lazy(() => import('./topics/javascript-arrow-fu
 const JavaScriptFunctionParameters = lazy(() => import('./topics/javascript-function-parameters'));
 const JavaScriptCallbackParameters = lazy(() => import('./topics/javascript-callback-parameters'));
 const JavaScriptHigherOrderFunctions = lazy(() => import('./topics/javascript-higher-order-functions'));
+const JavaScriptIife = lazy(() => import('./topics/javascript-iife'));
+const JavaScriptArrays = lazy(() => import('./topics/javascript-arrays'));
+const JavaScriptArrayMethodsBasics = lazy(() => import('./topics/javascript-array-methods'));
+const JavaScriptArrayIterationMethods = lazy(() => import('./topics/javascript-array-iteration-methods'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -46,6 +50,10 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'function-parameters': JavaScriptFunctionParameters,
   'callback-functions': JavaScriptCallbackParameters,
   'higher-order-functions': JavaScriptHigherOrderFunctions,
+  iife: JavaScriptIife,
+  'js-arrays': JavaScriptArrays,
+  'array-methods': JavaScriptArrayMethodsBasics,
+  'js-array-methods': JavaScriptArrayIterationMethods,
 };
 
 function LoadingSkeleton() {

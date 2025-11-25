@@ -21,53 +21,59 @@ interface JavaScriptCallbackParametersProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/40 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
+      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
+    </div>
+    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
+  </div>
+);
+
 const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Callback Parameters Demo</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       min-height: 100vh;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at 15% 20%, #eef2ff, #f8fafc 45%), #f8fafc;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f1f5f9;
       color: #0f172a;
-      display: grid;
-      place-items: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
     }
-    .card {
-      width: min(760px, 100%);
+    .panel {
+      text-align: center;
       background: #fff;
-      border: 1px solid #e2e8f0;
       border-radius: 18px;
-      box-shadow: 0 18px 70px rgba(15, 23, 42, 0.08);
-      padding: 22px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 70px rgba(15, 23, 42, 0.08);
+      max-width: 520px;
+      width: 100%;
     }
-    .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 12px; }
-    .pill { padding: 10px 12px; border-radius: 12px; background: #f1f5f9; border: 1px dashed #e2e8f0; font-weight: 600; }
-    code { background: #0f172a; color: #e2e8f0; padding: 8px 10px; border-radius: 8px; display: block; white-space: pre; }
-    button {
-      margin-top: 14px;
-      background: linear-gradient(120deg, #2563eb, #38bdf8);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+    h1 {
+      margin-bottom: 12px;
+      font-size: 28px;
+      color: #2563eb;
+    }
+    p {
+      color: #475569;
+      line-height: 1.6;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <p class="muted">Click run then open DevTools console to see callback params in action.</p>
-    <div class="grid" id="preview"></div>
-    <code id="snippet"></code>
-    <button id="run">Run callback demo</button>
+  <div class="panel">
+    <h1>Callback Arguments</h1>
+    <p>Open your browser console to see the exact values passed to each callback.</p>
   </div>
   <script src="./callback-demo.js"></script>
 </body>
@@ -98,19 +104,7 @@ fetchUser(
 );
 
 console.log('map result', withIndex); // [10,21,32]
-
-document.getElementById('run').onclick = () => {
-  document.getElementById('preview').innerHTML = [
-    'arr.map((value, index, array) => ...)',
-    'setTimeout(() => console.log("done"), 0)',
-    'fetchUser((data) => ..., (err) => ...)'
-  ].map(text => '<div class="pill">' + text + '</div>').join('');
-
-  document.getElementById('snippet').textContent =
-'arr.map((value, index, array) => value + index)\\n' +
-'setTimeout(() => console.log(\"done\"), 0)\\n' +
-'fetchUser((data) => { ... }, (err) => { ... })';
-};`;
+console.log('Open the console any time to rerun this logic.');`;
 
 export default function JavaScriptCallbackParameters({ onOpenWebPlayground }: JavaScriptCallbackParametersProps) {
   return (
@@ -162,6 +156,84 @@ export default function JavaScriptCallbackParameters({ onOpenWebPlayground }: Ja
         </CardContent>
       </Card>
 
+      {/* Beginner walkthrough */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Lightbulb className="w-6 h-6 text-amber-500/80 dark:text-amber-300/80" />
+            Function Parameters 101
+          </CardTitle>
+          <CardDescription className="text-base">
+            Start with tiny functions, name the inputs, and pass callbacks that expect those inputs.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border space-y-2">
+              <h4 className="font-semibold">Step 1: Plain function</h4>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 text-xs font-mono whitespace-pre-wrap">
+{`function add(a, b) {
+  return a + b;
+}
+
+add(2, 3); // a=2, b=3`}
+              </pre>
+              <SnippetOutput lines={['add(2, 3); // returns 5']} />
+              <p className="text-sm text-muted-foreground">Regular parameters are listed inside parentheses. Order matters.</p>
+            </div>
+            <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-2">
+              <h4 className="font-semibold">Step 2: Function as parameter</h4>
+              <pre className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 text-xs font-mono whitespace-pre-wrap border">
+{`function greet(name, formatter) {
+  const message = formatter(name);
+  console.log(message);
+}
+
+greet('Ada', (value) => 'Hi ' + value + '!');`}
+              </pre>
+              <SnippetOutput lines={["console.log(message); // 'Hi Ada!'"]} />
+              <p className="text-sm text-muted-foreground">Here the second parameter is a callback. It receives the <code>name</code> value.</p>
+            </div>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+              Extra beginner-friendly callback examples
+            </h4>
+            <div className="grid md:grid-cols-2 gap-3 text-xs font-mono">
+              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border">
+                <div>// Timer callback (no parameters)</div>
+                <div>setTimeout(() =&gt; console.log('time!'), 500);</div>
+                <div className="text-slate-500">// callback runs later, but no args</div>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border">
+                <div>// Iterating list (value, index)</div>
+                <div>['JS', 'TS'].forEach((value, index) =&gt; {'{'}</div>
+                <div className="pl-2">console.log(index, value);</div>
+                <div>{'}'});</div>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border md:col-span-2">
+                <div>// Custom helper with success + failure callbacks</div>
+                <div>{`function loadUser(onSuccess, onFailure) {`}</div>
+                <div className="pl-2">{`const ok = true;`}</div>
+                <div className="pl-2">{`if (ok) onSuccess({ name: 'Ada' });`}</div>
+                <div className="pl-2">{`else onFailure('Could not load');`}</div>
+                <div>{`}`}</div>
+                <div>{`loadUser(`}</div>
+                <div className="pl-2">{`(user) => console.log('user', user),`}</div>
+                <div className="pl-2">{`(message) => console.error(message)`}</div>
+                <div>{`);`}</div>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Identify what each callback receives (value, index, event, error) and write descriptive parameter names so the next
+              developer can follow your intent.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Canonical signatures */}
       <Card>
         <CardHeader>
@@ -180,6 +252,8 @@ export default function JavaScriptCallbackParameters({ onOpenWebPlayground }: Ja
               <div>arr.map((value, index, array) =&gt; value + index);</div>
               <div>arr.filter((value, index, array) =&gt; value {'>'} 10);</div>
               <div className="text-slate-500">// map log: value, index, same array</div>
+              <div>arr.reduce((total, value, index, array) =&gt; total + value, 0);</div>
+              <div className="text-slate-500">// reduce gets accumulator + value</div>
             </div>
             <p className="text-sm text-muted-foreground">Most array callbacks give (value, index, array) in that order.</p>
           </div>
@@ -195,6 +269,38 @@ export default function JavaScriptCallbackParameters({ onOpenWebPlayground }: Ja
               <AlertTitle>Tip</AlertTitle>
               <AlertDescription>Design async callbacks to deliver error first, result second, or migrate to Promises.</AlertDescription>
             </Alert>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Extra practical examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <ListChecks className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Practical Callback Examples
+          </CardTitle>
+          <CardDescription className="text-base">
+            Quick references for everyday APIs and patterns.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
+            <h4 className="font-semibold">DOM events</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>button.addEventListener('click', event =&gt; {'{'} ... {'}'});</div>
+              <div className="text-slate-500">// event carries target, coordinates, etc.</div>
+              <div>{`input.addEventListener('input', ({ target }) => console.log(target.value));`}</div>
+            </div>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Promise-style adapters</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>const toPromise = (fn) =&gt;</div>
+              <div className="pl-2">new Promise((resolve, reject) =&gt; fn(resolve, reject));</div>
+              <div>toPromise((res) =&gt; res('done')).then(console.log);</div>
+            </div>
+            <p className="text-sm text-muted-foreground">Wrap callbacks to integrate with Promise/async flows.</p>
           </div>
         </CardContent>
       </Card>
