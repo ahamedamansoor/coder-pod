@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Sidebar } from '@/components/shared/layout/sidebar';
+import { Sidebar } from '@/components/ui/sidebar';
 import { useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import React, { useState, useEffect } from 'react';
