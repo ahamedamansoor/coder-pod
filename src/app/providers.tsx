@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
 import { Loader2 } from 'lucide-react';
 import { FirebaseProvider } from '@/firebase';
+import { firebaseConfig } from '@/firebase/config';
 
 function GlobalLoadingIndicator() {
     const { isLoading } = useLoading();
@@ -25,7 +26,7 @@ function GlobalLoadingIndicator() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <FirebaseProvider>
+        <FirebaseProvider firebaseConfig={firebaseConfig}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                 <TooltipProvider>
                     <SidebarProvider>
