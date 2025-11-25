@@ -92,12 +92,6 @@ export function MainHeader({
             </Link>
         </Button>
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
-         <Button asChild variant="outline">
-          <Link href="/notes">
-            <Notebook className="mr-2 h-4 w-4" />
-            Add Notes
-          </Link>
-        </Button>
       </div>
       <div className="flex items-center gap-4">
         {currentLanguage?.slug === 'react' ? (
@@ -146,6 +140,13 @@ export function MainHeader({
                 <User />
                 {displayName}
               </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href="/notes">
+                  <Notebook className="mr-2 h-4 w-4" />
+                  <span>Notes</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />
