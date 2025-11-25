@@ -29,6 +29,8 @@ const JavaScriptIife = lazy(() => import('./topics/javascript-iife'));
 const JavaScriptArrays = lazy(() => import('./topics/javascript-arrays'));
 const JavaScriptArrayMethodsBasics = lazy(() => import('./topics/javascript-array-methods'));
 const JavaScriptArrayIterationMethods = lazy(() => import('./topics/javascript-array-iteration-methods'));
+const JavaScriptArrayDestructuring = lazy(() => import('./topics/javascript-array-destructuring'));
+const JavaScriptObjects = lazy(() => import('./topics/javascript-objects'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -54,6 +56,8 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'js-arrays': JavaScriptArrays,
   'array-methods': JavaScriptArrayMethodsBasics,
   'js-array-methods': JavaScriptArrayIterationMethods,
+  'array-destructuring': JavaScriptArrayDestructuring,
+  'js-objects': JavaScriptObjects,
 };
 
 function LoadingSkeleton() {

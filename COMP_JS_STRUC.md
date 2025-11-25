@@ -20,6 +20,7 @@ This document defines the design system, color palette, component patterns, and 
 11. [Button Styling](#button-styling)
 12. [Key Design Principles](#key-design-principles)
 13. [Section Organization Pattern](#section-organization-pattern)
+14. [Array Iteration Methods - Complete Reference](#array-iteration-methods---complete-reference)
 
 ---
 
@@ -994,6 +995,288 @@ export default function Component({ onOpenWebPlayground }: ComponentProps) {
 
 ---
 
+## Array Iteration Methods - Complete Reference
+
+### Overview
+
+JavaScript provides 15+ built-in array iteration methods that eliminate manual loops and make code more declarative. When documenting array methods, organize them by category for clarity.
+
+### Method Categories
+
+#### 1. **Transformation Methods** (Return New Arrays)
+Transform arrays into new arrays with different values or lengths.
+
+```tsx
+<Card className="bg-gradient-to-br from-indigo-50/60 to-slate-50/60 dark:from-indigo-950/10 dark:to-slate-950/10">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <Layers className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+      Transformation Methods
+    </CardTitle>
+    <CardDescription>Transform arrays into new arrays</CardDescription>
+  </CardHeader>
+  <CardContent className="grid md:grid-cols-2 gap-4">
+    {/* map(), filter(), flatMap() */}
+  </CardContent>
+</Card>
+```
+
+**Methods:**
+- `map(callback)` - Transform each element, returns new array of same length
+- `filter(callback)` - Keep elements that pass test, returns filtered array
+- `flatMap(callback)` - Map then flatten result in one operation
+
+**Badge Colors:** Blue for Transform, Emerald for Filter, Purple for Flatten
+
+#### 2. **Aggregation Methods** (Return Single Value)
+Combine all elements into a single accumulated value.
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <TrendingUp className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+      Aggregation Methods
+    </CardTitle>
+    <CardDescription>Combine array elements into a single value</CardDescription>
+  </CardHeader>
+  <CardContent className="grid md:grid-cols-2 gap-4">
+    {/* reduce(), reduceRight() */}
+  </CardContent>
+</Card>
+```
+
+**Methods:**
+- `reduce(callback, initial)` - Accumulate values from left to right
+- `reduceRight(callback, initial)` - Accumulate values from right to left
+
+**Badge Colors:** Amber with directional indicators (Left → Right, Right → Left)
+
+#### 3. **Search & Test Methods** (Find Elements or Indices)
+Locate specific elements or check their positions.
+
+```tsx
+<Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <Search className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+      Search & Test Methods
+    </CardTitle>
+    <CardDescription>Find elements, check conditions, locate indices</CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-6">
+    {/* Multiple search methods */}
+  </CardContent>
+</Card>
+```
+
+**Methods:**
+- `find(callback)` - Return first matching element (or undefined)
+- `findIndex(callback)` - Return index of first match (or -1)
+- `findLast(callback)` - Return last matching element (searches backward)
+- `findLastIndex(callback)` - Return index of last match (searches backward)
+- `includes(value)` - Check if array contains a value (boolean)
+- `indexOf(value)` - Find first occurrence position (or -1)
+- `lastIndexOf(value)` - Find last occurrence position (or -1)
+
+**Badge Colors:** 
+- Sky for "First Match/Index"
+- Cyan for "Last Match/Index"
+- Green for "Boolean"
+- Indigo for "Position"
+
+#### 4. **Boolean Test Methods** (Conditional Checks)
+Test if elements meet certain conditions, return true/false.
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <CheckCircle2 className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
+      Boolean Test Methods
+    </CardTitle>
+    <CardDescription>Test if elements meet certain conditions</CardDescription>
+  </CardHeader>
+  <CardContent className="grid md:grid-cols-2 gap-4">
+    {/* some(), every() */}
+  </CardContent>
+</Card>
+```
+
+**Methods:**
+- `some(callback)` - Returns true if ANY element passes the test
+- `every(callback)` - Returns true only if ALL elements pass the test
+
+**Badge Colors:** Orange for "At Least One", Emerald for "All Must Pass"
+
+#### 5. **Iterator Methods** (Get Iterators)
+Return iterators for indices, values, or key-value pairs.
+
+```tsx
+<Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <Grid3x3 className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+      Iterator Methods
+    </CardTitle>
+    <CardDescription>Get iterators for indices, values, or pairs</CardDescription>
+  </CardHeader>
+  <CardContent className="grid md:grid-cols-2 gap-4">
+    {/* entries(), keys(), values() */}
+  </CardContent>
+</Card>
+```
+
+**Methods:**
+- `entries()` - Returns iterator of [index, value] pairs
+- `keys()` - Returns iterator of array indices
+- `values()` - Returns iterator of array values
+- `forEach(callback)` - Execute function for each element (no return value)
+
+**Badge Colors:** Purple for "Index + Value", Pink for "Separate"
+
+### Method Card Structure
+
+Each method should have:
+
+```tsx
+<div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
+  {/* Header with badge */}
+  <div className="flex items-center justify-between">
+    <h4 className="font-semibold">methodName()</h4>
+    <Badge className="bg-{color}-100 text-{color}-700 dark:bg-{color}-900/30">
+      Category Label
+    </Badge>
+  </div>
+  
+  {/* Short description */}
+  <p className="text-xs text-muted-foreground">
+    Clear one-line explanation of what the method does
+  </p>
+  
+  {/* Code example */}
+  <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`const array = [1, 2, 3];
+const result = array.methodName((item) => {
+  // transformation or test
+});
+console.log(result);`}
+  </pre>
+  
+  {/* Output display */}
+  <SnippetOutput lines={['result -> [expected output]']} />
+</div>
+```
+
+### Quick Reference Card Pattern
+
+Show all methods at a glance with a 4-column grid organized by category:
+
+```tsx
+<Card className="bg-gradient-to-br from-indigo-50/70 via-purple-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:via-purple-950/10 dark:to-blue-950/10">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <ListChecks className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+      All Array Iteration Methods
+    </CardTitle>
+    <CardDescription>
+      15+ powerful methods to iterate, transform, search, and test arrays
+    </CardDescription>
+  </CardHeader>
+  <CardContent className="grid md:grid-cols-4 gap-3">
+    {/* 4 category boxes */}
+    <div className="p-3 rounded-lg bg-blue-50/80 dark:bg-blue-950/20 border border-blue-200/50">
+      <h4 className="font-semibold text-sm mb-2">Transform</h4>
+      <div className="space-y-1 text-xs">
+        <div>• map()</div>
+        <div>• filter()</div>
+        <div>• flatMap()</div>
+      </div>
+    </div>
+  </CardContent>
+</Card>
+```
+
+### Code Example Requirements
+
+**Every iteration method example must show:**
+
+1. **Input array** with realistic data
+2. **Method call** with clear callback parameter names
+3. **Expected output** with console.log
+4. **Comments** explaining the transformation/test
+
+```typescript
+// ✅ GOOD: Complete example
+const products = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 29 },
+];
+
+const names = products.map((product) => product.name);
+
+console.log(names);
+// Output: ['Laptop', 'Mouse']
+```
+
+```typescript
+// ❌ BAD: Incomplete example
+const result = arr.map(x => x * 2);
+```
+
+### Common Patterns to Include
+
+1. **Chaining operations** - Show combining multiple methods
+2. **Early exit scenarios** - When to use find vs filter
+3. **Performance considerations** - When to avoid unnecessary iterations
+4. **Common mistakes** - Mutating arrays, forgetting returns
+
+### Real-World Examples Section
+
+Include practical patterns like:
+- Filtering and transforming API responses
+- Calculating totals and aggregates
+- Finding specific items in datasets
+- Validating all/some items meet criteria
+- Extracting nested array data with flatMap
+
+### Icon Recommendations
+
+| Method Type | Icon | Color |
+|-------------|------|-------|
+| Transformation | `Layers`, `Filter` | Indigo/Blue |
+| Aggregation | `TrendingUp` | Amber |
+| Search | `Search` | Blue/Cyan |
+| Boolean | `CheckCircle2` | Emerald/Orange |
+| Iterator | `Grid3x3`, `Repeat` | Purple |
+
+### SnippetOutput Component
+
+For array methods, always include output visualization:
+
+```tsx
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-indigo-200/60 dark:border-indigo-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-indigo-100/60 dark:border-indigo-900/40 bg-gradient-to-r from-indigo-50 to-sky-50 dark:from-indigo-950/40 dark:to-sky-950/30 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-semibold text-white">IO</span>
+      <p className="text-xs font-semibold uppercase tracking-wide text-indigo-700 dark:text-indigo-200">Output</p>
+    </div>
+    <pre className="px-4 py-3 text-xs font-mono text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
+  </div>
+);
+```
+
+### Key Design Points
+
+1. **Organize by category** - Don't list methods alphabetically, group by purpose
+2. **Use consistent badge colors** - Each category has its color scheme
+3. **Show complete examples** - Input → Processing → Output
+4. **Include method descriptions** - One-line explanation for each
+5. **Add visual hierarchy** - Different card backgrounds for different categories
+6. **Provide comparison context** - When to use one method over another
+
+---
+
 ## Quick Reference Checklist
 
 When creating a new component, ensure:
@@ -1039,8 +1322,9 @@ When generating components based on this design system:
 14. **Mobile-first** - Ensure responsive design works on all screen sizes
 15. **Real-world focus** - Include practical examples students will actually use
 16. **Progressive learning** - Build from simple to complex, beginner to advanced
+17. **Array Iteration Methods** - When documenting array methods, organize by category (Transform, Aggregate, Search, Boolean, Iterator). Use color-coded badges, show all 15+ methods, include SnippetOutput for each example. See Section 14 for complete reference.
 
 ---
 
-*Last Updated: November 2024*
+*Last Updated: November 2025 - Added Array Iteration Methods Complete Reference (Section 14)*
 *CODER POD Educational Platform*

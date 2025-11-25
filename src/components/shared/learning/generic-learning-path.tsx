@@ -195,45 +195,58 @@ export const GenericLearningPath = ({
       <div 
         onClick={() => toggleTopic(topic.slug)} 
         className={cn(
-          "border rounded-lg p-4 transition-all duration-200 hover:-translate-y-0.5",
-          isUserAuthenticated && "cursor-pointer hover:shadow-md hover:border-primary/50 dark:hover:border-primary/60",
+          "rounded-xl p-4 transition-all duration-300 group",
+          "border border-border/40 dark:border-border/30",
+          isUserAuthenticated && "cursor-pointer hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5",
           !isUserAuthenticated && "cursor-not-allowed opacity-70",
           isCompleted ? cn(
-            "bg-card dark:bg-slate-900/80",
-            "border-primary",
+            "bg-gradient-to-br from-primary/5 via-primary/3 to-transparent",
+            "dark:from-primary/10 dark:via-primary/5 dark:to-transparent",
+            "border-primary/30 dark:border-primary/40",
             "shadow-sm"
           ) : cn(
-            "bg-card dark:bg-slate-900/60",
-            "border-primary/30 dark:border-primary/40"
+            "bg-card/50 dark:bg-slate-900/30",
+            "hover:bg-card/80 dark:hover:bg-slate-900/50",
+            "hover:border-primary/30"
           )
         )}
       >
-        <div className="flex items-start gap-3">
-          <div className="mt-1">
+        <div className="flex items-start gap-3.5">
+          <div className="mt-0.5 shrink-0">
             {isCompleted ? (
-              <CheckCircle className={cn(
-                "w-6 h-6 transition-all duration-200",
-                LOGO_COLOR_CLASS,
-                "animate-in zoom-in-95"
-              )} />
+              <div className={cn(
+                "relative p-1 rounded-full",
+                "bg-primary/10 dark:bg-primary/15"
+              )}>
+                <CheckCircle className={cn(
+                  "w-5 h-5 transition-all duration-300",
+                  LOGO_COLOR_CLASS,
+                  "animate-in zoom-in-95"
+                )} />
+                <div className="absolute inset-0 rounded-full bg-primary/20 blur-md animate-pulse" />
+              </div>
             ) : (
-              <Circle className="w-6 h-6 text-muted-foreground/50 transition-colors" />
+              <Circle className="w-5 h-5 text-muted-foreground/40 transition-all duration-200 group-hover:text-muted-foreground/60" />
             )}
           </div>
-          <div className="flex-1">
-            <Link href={`/${language.slug}/${topic.slug}`} className={cn(
-              "hover:underline transition-colors hover:text-primary"
-            )}>
+          <div className="flex-1 min-w-0">
+            <Link 
+              href={`/${language.slug}/${topic.slug}`} 
+              className="block"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h3 className={cn(
-                "text-lg font-semibold transition-colors",
-                isCompleted ? "" : "text-foreground dark:text-slate-100"
+                "text-base font-semibold transition-all duration-200 leading-snug",
+                "group-hover:text-primary",
+                isCompleted ? "text-foreground/90" : "text-foreground"
               )}>
                 {decodeHtmlEntities(topic.title)}
               </h3>
             </Link>
             <p className={cn(
-              "text-sm mt-1 transition-colors",
-              "text-muted-foreground"
+              "text-sm mt-1.5 leading-relaxed transition-colors",
+              "text-muted-foreground/80",
+              "line-clamp-2"
             )}>
               {decodeHtmlEntities(topic.explanation)}
             </p>
@@ -266,70 +279,139 @@ export const GenericLearningPath = ({
       
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className={cn("text-center mb-8", "animate-in fade-in-50")}>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <BookOpen className={cn("w-12 h-12", LOGO_COLOR_CLASS, "animate-bounce")} />
-            <h1 className={cn(
-              "text-4xl md:text-5xl font-bold",
-              ""
-            )}>
-              <span className={LOGO_COLOR_CLASS}>
-                {decodeHtmlEntities(language.name)}
-              </span>{' '}
-              Learning Path
-            </h1>
-          </div>
-          <p className={cn(
-            "text-lg mb-6 transition-colors",
-            "text-muted-foreground"
-          )}>
-            A comprehensive roadmap from beginner to expert - master {decodeHtmlEntities(language.name)} with {totalCount} topics across {modules.length} categories.
-          </p>
-          
-          {/* Progress Card */}
-          <div className={cn(
-            "max-w-2xl mx-auto rounded-lg p-6 border transition-all duration-300",
-            "",
-            "animate-in slide-in-from-bottom-4",
-            "border-[#5B7FFF]/30"
-          )}>
-            <div className="flex items-center justify-between mb-3">
-              <span className={cn(
-                "text-sm font-semibold",
-                ""
-              )}>
-                Overall Progress
-              </span>
-              <span className={cn(
-                "text-2xl font-bold",
-                LOGO_COLOR_CLASS
-              )}>
-                {calculateProgress()}%
-              </span>
+        <div className={cn("text-center mb-12", "animate-in fade-in-50 slide-in-from-top-4 duration-700")}>
+          {/* Title Section */}
+          <div className="relative mb-8">
+            {/* Decorative gradient background */}
+            <div className="absolute inset-0 -z-10 blur-3xl opacity-20 dark:opacity-10 animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-primary/20 to-transparent" />
             </div>
+            
+            <div className="flex items-center justify-center gap-4 mb-6 animate-in zoom-in-95 duration-500">
+              <div className="relative">
+                <BookOpen className={cn(
+                  "w-14 h-14", 
+                  LOGO_COLOR_CLASS,
+                  "transition-all duration-500 hover:scale-110 hover:rotate-12"
+                )} />
+                <div className={cn(
+                  "absolute -inset-2 rounded-full blur-xl opacity-50 -z-10",
+                  "bg-primary/30 animate-pulse"
+                )} />
+              </div>
+              
+              <h1 className={cn(
+                "text-4xl md:text-6xl font-extrabold tracking-tight",
+                "animate-in slide-in-from-left-5 duration-700"
+              )}>
+                <span className={cn(
+                  LOGO_COLOR_CLASS,
+                  "relative inline-block",
+                  "transition-all duration-300 hover:scale-105"
+                )}>
+                  {decodeHtmlEntities(language.name)}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 to-transparent rounded-lg blur-sm -z-10" />
+                </span>
+                {' '}
+                <span className="text-foreground/90 font-semibold">
+                  Learning Path
+                </span>
+              </h1>
+            </div>
+            
+            <p className={cn(
+              "text-base md:text-lg max-w-3xl mx-auto leading-relaxed",
+              "text-muted-foreground",
+              "animate-in fade-in-50 slide-in-from-bottom-3 duration-700 delay-150"
+            )}>
+              A comprehensive roadmap from beginner to expert — master{' '}
+              <span className="font-semibold text-foreground/80">
+                {decodeHtmlEntities(language.name)}
+              </span>
+              {' '}with{' '}
+              <span className={cn("font-bold", LOGO_COLOR_CLASS)}>{totalCount}</span>
+              {' '}topics across{' '}
+              <span className={cn("font-bold", LOGO_COLOR_CLASS)}>{modules.length}</span>
+              {' '}categories
+            </p>
+          </div>
+          
+          {/* Progress Card - Glass Morphism Style */}
+          <div className={cn(
+            "max-w-2xl mx-auto rounded-2xl p-8 backdrop-blur-sm",
+            "bg-gradient-to-br from-card/80 via-card/60 to-card/80",
+            "dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60",
+            "border border-primary/20 dark:border-primary/30",
+            "shadow-xl shadow-primary/5 dark:shadow-primary/10",
+            "transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:scale-[1.02]",
+            "animate-in slide-in-from-bottom-8 duration-700 delay-300"
+          )}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center",
+                  "bg-primary/10 dark:bg-primary/20",
+                  "border border-primary/30"
+                )}>
+                  <Trophy className={cn("w-5 h-5", LOGO_COLOR_CLASS)} />
+                </div>
+                <span className="text-sm font-bold tracking-wide uppercase text-foreground/80">
+                  Overall Progress
+                </span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className={cn(
+                  "text-4xl font-black",
+                  LOGO_COLOR_CLASS,
+                  "transition-all duration-300"
+                )}>
+                  {calculateProgress()}
+                </span>
+                <span className={cn("text-xl font-semibold", LOGO_COLOR_CLASS)}>%</span>
+              </div>
+            </div>
+            
+            {/* Enhanced Progress Bar */}
             <div className={cn(
-              "w-full rounded-full h-3 overflow-hidden",
-              "bg-gray-200 dark:bg-gray-700"
+              "relative w-full rounded-full h-4 overflow-hidden",
+              "bg-muted/50 dark:bg-slate-800/50",
+              "border border-primary/10",
+              "shadow-inner"
             )}>
               <div 
                 className={cn(
-                  "h-3 rounded-full transition-all duration-500",
-                  LOGO_BG_CLASS
+                  "h-full rounded-full transition-all duration-700 ease-out",
+                  "bg-gradient-to-r from-primary via-primary/90 to-primary",
+                  "shadow-lg shadow-primary/30",
+                  "relative overflow-hidden"
                 )} 
                 style={{ width: `${calculateProgress()}%` }}
-              ></div>
+              >
+                {/* Animated shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+              </div>
             </div>
-            <p className={cn(
-              "text-sm mt-2",
-              "text-muted-foreground"
-            )}>
-              {completedCount} of {totalCount} topics completed
-            </p>
+            
+            <div className="flex items-center justify-between mt-4">
+              <p className="text-sm text-muted-foreground font-medium">
+                {completedCount} of {totalCount} topics completed
+              </p>
+              {calculateProgress() === 100 && (
+                <span className={cn(
+                  "text-xs font-bold px-3 py-1 rounded-full",
+                  "bg-primary/15 border border-primary/30",
+                  LOGO_COLOR_CLASS,
+                  "animate-in zoom-in-95"
+                )}>
+                  🎉 Complete!
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Modules */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {modules.map((module) => {
             const ModuleIcon = module.icon;
             const moduleProgress = calculateModuleProgress(module.topics);
@@ -338,94 +420,103 @@ export const GenericLearningPath = ({
               <div 
                 key={module.id} 
                 className={cn(
-                  "border rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
-                  "",
-                  "bg-card dark:bg-slate-900/80",
-                  "animate-in fade-in-50",
-                  "border-primary/30 dark:border-primary/50"
+                  "rounded-2xl shadow-sm overflow-hidden transition-all duration-500",
+                  "bg-gradient-to-br from-card/95 via-card to-card/95",
+                  "dark:from-slate-900/70 dark:via-slate-900/60 dark:to-slate-900/70",
+                  "border border-border/50 dark:border-border/30",
+                  "hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-0.5",
+                  "backdrop-blur-sm",
+                  "animate-in fade-in-50 slide-in-from-bottom-4"
                 )}
               >
                 {/* Module Header */}
                 <div 
                   onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)} 
                   className={cn(
-                    "p-6 cursor-pointer flex items-center justify-between border-b transition-all duration-200",
-                    "",
-                    "border-primary/30 dark:border-primary/50",
-                    expandedModule === module.id && "bg-primary/10 dark:bg-primary/20",
-                    expandedModule === module.id && "border-primary",
+                    "p-5 md:p-6 cursor-pointer flex items-center justify-between",
+                    "transition-all duration-300",
+                    expandedModule === module.id && "bg-primary/5 dark:bg-primary/10"
                   )}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 flex-1">
                     <div className={cn(
-                      "text-3xl p-3 rounded-full transition-all duration-200 hover:scale-110",
-                      "",
-                      "border-primary/30 dark:border-primary/50",
+                      "relative p-3.5 rounded-2xl transition-all duration-300",
+                      "bg-primary/10 dark:bg-primary/15",
+                      "border border-primary/20 dark:border-primary/25",
+                      "shadow-sm shadow-primary/10",
+                      "group-hover:scale-110 group-hover:rotate-6",
                       module.color
                     )}>
-                      <ModuleIcon className="w-8 h-8" />
+                      <ModuleIcon className="w-7 h-7 relative z-10" />
+                      <div className="absolute inset-0 rounded-2xl bg-primary/5 blur-xl" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-1">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
                         <h2 className={cn(
-                          "text-xl font-bold transition-colors",
-                          "",
-                          "dark:text-slate-100"
+                          "text-lg md:text-xl font-bold transition-colors",
+                          "text-foreground/90 dark:text-foreground/95"
                         )}>
                           {decodeHtmlEntities(module.title)}
                         </h2>
                           <span className={cn(
-                            "px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105",
-                            LOGO_BG_SOFT_CLASS,
+                            "px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide",
+                            "bg-primary/10 dark:bg-primary/15",
                             LOGO_COLOR_CLASS,
-                            "border",
-                            LOGO_BORDER_SOFT
+                            "border border-primary/20",
+                            "transition-all duration-200 hover:scale-105"
                           )}>
                             {module.level}
                           </span>
-                        <span className={cn(
-                          "text-sm transition-colors",
-                          "text-muted-foreground"
-                        )}>
+                        <span className="text-xs text-muted-foreground font-medium">
                           {module.topics.length} topics
                         </span>
                       </div>
                       {/* Module Progress Bar */}
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-3 mt-2">
                       <div className={cn(
-                        "w-32 rounded-full h-2 overflow-hidden",
-                        "bg-gray-200 dark:bg-gray-700"
+                        "flex-1 max-w-[180px] rounded-full h-2 overflow-hidden",
+                        "bg-muted/30 dark:bg-slate-800/40",
+                        "shadow-inner"
                       )}>
                         <div 
                           className={cn(
-                            "h-2 rounded-full transition-all duration-500",
-                            "bg-primary"
+                            "h-full rounded-full transition-all duration-700 ease-out",
+                            "bg-gradient-to-r from-primary to-primary/80",
+                            "shadow-sm shadow-primary/30"
                           )} 
                           style={{ width: `${moduleProgress}%` }}
                         ></div>
                       </div>
                         <span className={cn(
-                          "text-xs transition-colors",
-                          "text-muted-foreground"
+                          "text-xs font-bold tabular-nums",
+                          LOGO_COLOR_CLASS
                         )}>
                           {moduleProgress}%
                         </span>
                       </div>
                     </div>
                   </div>
-                  {expandedModule === module.id ? (
-                    <ChevronDown className="w-6 h-6 text-muted-foreground" />
-                  ) : (
-                    <ChevronRight className="w-6 h-6 text-muted-foreground" />
-                  )}
+                  <div className={cn(
+                    "ml-4 p-2 rounded-full transition-all duration-200",
+                    "hover:bg-muted/50"
+                  )}>
+                    {expandedModule === module.id ? (
+                      <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                    )}
+                  </div>
                 </div>
 
                 {/* Module Topics */}
                 {expandedModule === module.id && (
                   <div className={cn(
-                    "p-6 space-y-3 transition-colors",
-                    ""
+                    "px-5 md:px-6 pb-5 md:pb-6 space-y-3",
+                    "border-t border-border/30 dark:border-border/20",
+                    "bg-muted/5 dark:bg-slate-950/20",
+                    "animate-in fade-in-50 slide-in-from-top-2 duration-300"
                   )}>
+                    <div className="h-3" />
                     {module.topics.map((topic) => (
                       <TopicItem key={topic.slug} topic={topic} />
                     ))}
@@ -438,57 +529,52 @@ export const GenericLearningPath = ({
 
         {/* Learning Tips */}
         <div className={cn(
-          "mt-12 rounded-lg p-6 border transition-all duration-300",
-          "",
-          "animate-in fade-in-50",
-          "border-primary/30 dark:border-primary/50"
+          "mt-12 rounded-2xl p-6 md:p-8 border backdrop-blur-sm",
+          "bg-gradient-to-br from-card/80 via-card/60 to-card/80",
+          "dark:from-slate-900/50 dark:via-slate-900/30 dark:to-slate-900/50",
+          "border-border/50 dark:border-border/30",
+          "shadow-sm",
+          "animate-in fade-in-50 slide-in-from-bottom-4"
         )}>
           <div className="flex items-center gap-3 mb-6">
-            <Zap className={cn(
-              "w-6 h-6",
-              LOGO_COLOR_CLASS
-            )} />
-            <h2 className={cn(
-              "text-2xl font-bold",
-              ""
+            <div className={cn(
+              "p-2.5 rounded-xl",
+              "bg-primary/10 dark:bg-primary/15",
+              "border border-primary/20"
             )}>
+              <Zap className={cn(
+                "w-6 h-6",
+                LOGO_COLOR_CLASS
+              )} />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground/90">
               Learning Tips
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div className={cn(
-              "rounded-lg p-4 border transition-all duration-200",
-              "",
-              "border-primary/30 dark:border-primary/50"
+              "rounded-xl p-5 border transition-all duration-300",
+              "bg-card/50 dark:bg-slate-900/30",
+              "border-border/40 dark:border-border/30",
+              "hover:shadow-md hover:-translate-y-0.5"
             )}>
-              <h3 className={cn(
-                "font-semibold text-base mb-2",
-                ""
-              )}>
+              <h3 className="font-bold text-base mb-2 text-foreground/90">
                 Practice Daily
               </h3>
-              <p className={cn(
-                "text-sm",
-                "text-muted-foreground"
-              )}>
+              <p className="text-sm leading-relaxed text-muted-foreground/80">
                 Consistency is key. Practice a little bit every day to build strong foundations.
               </p>
             </div>
             <div className={cn(
-              "rounded-lg p-4 border transition-all duration-200",
-              "",
-              "border-primary/30 dark:border-primary/50"
+              "rounded-xl p-5 border transition-all duration-300",
+              "bg-card/50 dark:bg-slate-900/30",
+              "border-border/40 dark:border-border/30",
+              "hover:shadow-md hover:-translate-y-0.5"
             )}>
-              <h3 className={cn(
-                "font-semibold text-base mb-2",
-                ""
-              )}>
+              <h3 className="font-bold text-base mb-2 text-foreground/90">
                 Build Projects
               </h3>
-              <p className={cn(
-                "text-sm",
-                "text-muted-foreground"
-              )}>
+              <p className="text-sm leading-relaxed text-muted-foreground/80">
                 Apply what you learn by building real projects to solidify your understanding.
               </p>
             </div>

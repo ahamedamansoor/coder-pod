@@ -219,6 +219,86 @@ export default function JavaScriptSwitchStatements({ onOpenWebPlayground }: Java
         </CardContent>
       </Card>
 
+      {/* What is Switch Statement? */}
+      <Card className="bg-gradient-to-br from-blue-50/60 to-indigo-50/60 dark:from-blue-950/10 dark:to-indigo-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <PanelsTopLeft className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            What is a Switch Statement?
+          </CardTitle>
+          <CardDescription className="text-base">
+            A control structure that selects one of many code blocks to execute based on matching values
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border space-y-4">
+            <p className="text-sm text-muted-foreground">
+              A switch statement <strong>evaluates an expression once</strong> and compares it against multiple case values. When a match is found,
+              it executes the associated code block. Think of it as a <strong>cleaner alternative to multiple if-else statements</strong> when checking
+              the same variable against different values.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-300">Switch Example</h4>
+                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
+{`// Clean and readable
+const day = 3;
+let dayName;
+
+switch (day) {
+  case 1:
+    dayName = 'Monday';
+    break;
+  case 2:
+    dayName = 'Tuesday';
+    break;
+  case 3:
+    dayName = 'Wednesday';
+    break;
+  default:
+    dayName = 'Unknown';
+}
+
+console.log(dayName);
+// Output: Wednesday`}
+                </pre>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2 text-amber-700 dark:text-amber-300">If-Else Equivalent</h4>
+                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
+{`// More verbose
+const day = 3;
+let dayName;
+
+if (day === 1) {
+  dayName = 'Monday';
+} else if (day === 2) {
+  dayName = 'Tuesday';
+} else if (day === 3) {
+  dayName = 'Wednesday';
+} else {
+  dayName = 'Unknown';
+}
+
+console.log(dayName);
+// Output: Wednesday`}
+                </pre>
+              </div>
+            </div>
+
+            <Alert>
+              <Lightbulb className="h-4 w-4" />
+              <AlertTitle>When to Use Switch</AlertTitle>
+              <AlertDescription>
+                Use switch when you have <strong>3 or more cases</strong> comparing the same variable. For 1-2 cases, if-else or ternary is clearer.
+              </AlertDescription>
+            </Alert>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Syntax */}
       <Card>
         <CardHeader>
@@ -253,6 +333,339 @@ export default function JavaScriptSwitchStatements({ onOpenWebPlayground }: Java
               <div className="pl-2">default: access = 'view';</div>
               <div>{'}'}</div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Fall-Through Pattern */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <ToggleLeft className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+            Fall-Through Pattern
+          </CardTitle>
+          <CardDescription className="text-base">
+            Multiple cases can share the same code by intentionally omitting break statements
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
+              <h4 className="font-semibold mb-3">Grouping Weekdays</h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Stack cases for shared logic
+const day = 'Monday';
+
+switch (day) {
+  case 'Monday':
+  case 'Tuesday':
+  case 'Wednesday':
+  case 'Thursday':
+  case 'Friday':
+    console.log('Workday');
+    break;
+  case 'Saturday':
+  case 'Sunday':
+    console.log('Weekend!');
+    break;
+  default:
+    console.log('Invalid day');
+}
+
+// Output: Workday`}
+              </pre>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
+              <h4 className="font-semibold mb-3">Seasons by Month</h4>
+              <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Group months by season
+const month = 'March';
+
+switch (month) {
+  case 'December':
+  case 'January':
+  case 'February':
+    console.log('Winter');
+    break;
+  case 'March':
+  case 'April':
+  case 'May':
+    console.log('Spring');
+    break;
+  default:
+    console.log('Summer/Fall');
+}
+
+// Output: Spring`}
+              </pre>
+            </div>
+          </div>
+
+          <Alert className="bg-amber-50/60 dark:bg-amber-950/10 border-amber-200/50 dark:border-amber-800/30">
+            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <AlertTitle>Fall-Through is Intentional</AlertTitle>
+            <AlertDescription>
+              When stacking cases, you're deliberately letting execution "fall through" to the next case's code. Always add a comment if this is intentional!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Real-World Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+            Real-World Examples
+          </CardTitle>
+          <CardDescription className="text-base">
+            Practical patterns you'll encounter in real applications
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Pattern 1: User Role Permissions */}
+            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                User Role Permissions
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Role-based access control
+function getPermissions(role) {
+  let permissions;
+  
+  switch (role) {
+    case 'admin':
+      permissions = ['read', 'write', 'delete'];
+      break;
+    case 'editor':
+      permissions = ['read', 'write'];
+      break;
+    case 'viewer':
+      permissions = ['read'];
+      break;
+    default:
+      permissions = [];
+  }
+  
+  return permissions;
+}
+
+console.log(getPermissions('editor'));
+// Output: ['read', 'write']
+
+console.log(getPermissions('guest'));
+// Output: []`}
+              </pre>
+              <p className="text-sm text-muted-foreground mt-3">
+                Common in authentication systems to determine what actions users can perform based on their role.
+              </p>
+            </div>
+
+            {/* Pattern 2: HTTP Status Codes */}
+            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                HTTP Status Handler
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Handle API responses
+function handleResponse(statusCode) {
+  switch (statusCode) {
+    case 200:
+    case 201:
+      return 'Success!';
+    case 400:
+      return 'Bad Request';
+    case 401:
+    case 403:
+      return 'Authentication required';
+    case 404:
+      return 'Not Found';
+    case 500:
+      return 'Server Error';
+    default:
+      return 'Unknown Status';
+  }
+}
+
+console.log(handleResponse(200));
+// Output: Success!
+
+console.log(handleResponse(404));
+// Output: Not Found`}
+              </pre>
+              <p className="text-sm text-muted-foreground mt-3">
+                Perfect for API response handling where different status codes require different messages or actions.
+              </p>
+            </div>
+
+            {/* Pattern 3: Calculator Operations */}
+            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                Calculator Operations
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Operation router
+function calculate(num1, num2, operator) {
+  let result;
+  
+  switch (operator) {
+    case '+':
+      result = num1 + num2;
+      break;
+    case '-':
+      result = num1 - num2;
+      break;
+    case '*':
+      result = num1 * num2;
+      break;
+    case '/':
+      result = num2 !== 0 
+        ? num1 / num2 
+        : 'Cannot divide by zero';
+      break;
+    default:
+      result = 'Invalid operator';
+  }
+  
+  return result;
+}
+
+console.log(calculate(10, 5, '+'));
+// Output: 15
+
+console.log(calculate(10, 5, '/'));
+// Output: 2`}
+              </pre>
+              <p className="text-sm text-muted-foreground mt-3">
+                Ideal for calculator apps or any tool that performs different operations based on user selection.
+              </p>
+            </div>
+
+            {/* Pattern 4: Game State Management */}
+            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                Game State Management
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Handle game states
+function updateGame(state) {
+  let message;
+  
+  switch (state) {
+    case 'loading':
+      message = 'Loading game...';
+      break;
+    case 'playing':
+      message = 'Game in progress';
+      break;
+    case 'paused':
+      message = 'Game paused';
+      break;
+    case 'won':
+      message = '🎉 You won!';
+      break;
+    case 'lost':
+      message = '💔 Game over';
+      break;
+    default:
+      message = 'Unknown state';
+  }
+  
+  return message;
+}
+
+console.log(updateGame('won'));
+// Output: 🎉 You won!
+
+console.log(updateGame('paused'));
+// Output: Game paused`}
+              </pre>
+              <p className="text-sm text-muted-foreground mt-3">
+                Used in games and interactive apps to handle different states and show appropriate messages or UI.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Switch vs If-Else Comparison */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <GitCompare className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+            Switch vs If-Else: When to Use Each
+          </CardTitle>
+          <CardDescription className="text-base">
+            Understanding which control structure fits your use case
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-slate-100 dark:bg-slate-900">
+                  <th className="border border-slate-300 dark:border-slate-700 px-4 py-3 text-left font-semibold">Scenario</th>
+                  <th className="border border-slate-300 dark:border-slate-700 px-4 py-3 text-left font-semibold">Use Switch</th>
+                  <th className="border border-slate-300 dark:border-slate-700 px-4 py-3 text-left font-semibold">Use If-Else</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                <tr>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3 font-medium">Number of conditions</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">3+ cases ✅</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">1-2 conditions ✅</td>
+                </tr>
+                <tr className="bg-slate-50 dark:bg-slate-900/50">
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3 font-medium">Checking same variable</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Perfect ✅</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Verbose ⚠️</td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3 font-medium">Exact value matching</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Excellent ✅</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Works fine ✅</td>
+                </tr>
+                <tr className="bg-slate-50 dark:bg-slate-900/50">
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3 font-medium">Range comparisons</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Not ideal ❌</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Better ✅</td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3 font-medium">Complex conditions</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Limited ❌</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Flexible ✅</td>
+                </tr>
+                <tr className="bg-slate-50 dark:bg-slate-900/50">
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3 font-medium">Readability</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Cleaner for many cases ✅</td>
+                  <td className="border border-slate-300 dark:border-slate-700 px-4 py-3">Better for ranges ✅</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 mt-6">
+            <Alert className="bg-emerald-50/60 dark:bg-emerald-950/10 border-emerald-200/50 dark:border-emerald-800/30">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              <AlertTitle>Use Switch When</AlertTitle>
+              <AlertDescription>
+                You're comparing <strong>one variable</strong> against <strong>multiple exact values</strong> (status codes, roles, days, etc.)
+              </AlertDescription>
+            </Alert>
+
+            <Alert className="bg-blue-50/60 dark:bg-blue-950/10 border-blue-200/50 dark:border-blue-800/30">
+              <Lightbulb className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <AlertTitle>Use If-Else When</AlertTitle>
+              <AlertDescription>
+                You need <strong>range checks</strong> (age {'>='} 18), <strong>complex conditions</strong> (user.isActive && user.verified), or <strong>1-2 simple checks</strong>
+              </AlertDescription>
+            </Alert>
           </div>
         </CardContent>
       </Card>
@@ -352,7 +765,7 @@ export default function JavaScriptSwitchStatements({ onOpenWebPlayground }: Java
           {onOpenWebPlayground && (
             <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
               <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
+              Try in Playground
             </Button>
           )}
         </CardContent>

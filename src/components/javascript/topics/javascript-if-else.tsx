@@ -79,6 +79,37 @@ const playgroundHtml = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const playgroundJs = `console.clear();
+
+const temperature = 28;
+
+if (temperature > 30) {
+  console.log('It is really hot outside!');
+} else if (temperature >= 20) {
+  console.log('Nice weather—go for a walk.');
+} else {
+  console.log('Grab a jacket, it is chilly.');
+}
+
+const userRole = 'editor';
+
+if (userRole === 'admin') {
+  console.log('Show admin dashboard');
+} else if (userRole === 'editor') {
+  console.log('Show content tools');
+} else {
+  console.log('Show basic profile');
+}
+
+const input = '';
+if (input) {
+  console.log('We have input:', input);
+} else {
+  console.log('No input provided (falsy value).');
+}
+
+console.log('Demo complete. Try changing the values above.');`;
+
 export default function JavaScriptIfElse({ onOpenWebPlayground }: JavaScriptIfElseProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">

@@ -22,6 +22,16 @@ interface JavaScriptFunctionsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
+      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
+    </div>
+    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
+  </div>
+);
+
 const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,6 +88,32 @@ const playgroundHtml = `<!DOCTYPE html>
   <script src="./demo.js"></script>
 </body>
 </html>`;
+
+const playgroundJs = `console.clear();
+
+function greet(name = 'Coder') {
+  return 'Hello, ' + name + '!';
+}
+
+const add = function (a, b) {
+  return a + b;
+};
+
+const multiply = (a, b) => a * b;
+
+console.log('greet():', greet());
+console.log('greet(\"Ada\"):', greet('Ada'));
+console.log('add(2, 3):', add(2, 3));
+console.log('multiply(4, 5):', multiply(4, 5));
+
+function applyTwice(fn, value) {
+  return fn(fn(value));
+}
+
+const double = (n) => n * 2;
+console.log('applyTwice(double, 3):', applyTwice(double, 3));
+
+console.log('All function forms executed.');`;
 
 export default function JavaScriptFunctions({ onOpenWebPlayground }: JavaScriptFunctionsProps) {
   return (
@@ -162,6 +198,7 @@ console.log(greet('Alice'));  // "Hello, Alice!"
 console.log(greet('Bob'));    // "Hello, Bob!"
 console.log(greet('Charlie')); // "Hello, Charlie!"`}
               </pre>
+              <SnippetOutput lines={['Hello, Alice!', 'Hello, Bob!', 'Hello, Charlie!']} />
             </div>
 
             <Alert>
@@ -319,6 +356,7 @@ function sum(a, b) {
   return a + b;
 }`}
             </pre>
+            <SnippetOutput lines={['formatName(\"Alice\") -> \"ALICE\"', 'formatName() -> \"GUEST\"']} />
             <p className="text-sm text-muted-foreground">Provide sensible defaults and fail fast when data is missing.</p>
           </div>
           <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
@@ -339,6 +377,7 @@ function getScores() {
   return [95, 87, 92];
 }`}
             </pre>
+            <SnippetOutput lines={['user.name -> \"Ada\"', 'getScores() -> [95, 87, 92]']} />
             <Alert>
               <AlertTitle>Tip</AlertTitle>
               <AlertDescription>Return objects for clarity; return promises when doing async work.</AlertDescription>
@@ -377,6 +416,7 @@ console.log(validateEmail('test@example.com'));
 console.log(validateEmail('invalid-email'));
 // false`}
               </pre>
+              <SnippetOutput lines={['validateEmail(\"test@example.com\") -> true', 'validateEmail(\"invalid-email\") -> false']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -396,6 +436,7 @@ console.log(calculatePrice(100, 0.2));
 console.log(calculatePrice(50));
 // "50.00" (no discount)`}
               </pre>
+              <SnippetOutput lines={['calculatePrice(100, 0.2) -> \"80.00\"', 'calculatePrice(50) -> \"50.00\"']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
@@ -418,6 +459,7 @@ console.log(getActiveUsers(users));
 // [{ name: 'Alice', active: true }, 
 //  { name: 'Charlie', active: true }]`}
               </pre>
+              <SnippetOutput lines={["[{ name: 'Alice', active: true }, { name: 'Charlie', active: true }]"]} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-amber-50/60 to-orange-50/60 dark:from-amber-950/10 dark:to-orange-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
@@ -441,6 +483,7 @@ console.log(formatName('John', 'Doe'));
 console.log(capitalize('hello WORLD'));
 // "Hello world"`}
               </pre>
+              <SnippetOutput lines={['formatName(\"John\", \"Doe\") -> \"John Doe\"', 'capitalize(\"hello WORLD\") -> \"Hello world\"']} />
             </div>
           </div>
         </CardContent>

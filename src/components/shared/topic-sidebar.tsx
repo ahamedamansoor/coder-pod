@@ -11,7 +11,7 @@ import {
 import { Logo } from './layout/logo';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { CheckCircle } from 'lucide-react';
+import { Sparkles, ArrowRight, CheckCircle, Circle } from 'lucide-react';
 import Link from 'next/link';
 import { useJava } from '@/app/java/java-context';
 import { useSpring } from '@/app/spring/spring-context';
@@ -308,45 +308,120 @@ export function TopicSidebar({
     ? groupOrder.map(group => ({ title: group, topics: topicsByGroup[group] || [] }))
     : [];
 
-  const renderTopicGroup = (title: string, topics: typeof language.topics) => (
-    topics && topics.length > 0 && (
+  const renderTopicGroup = (title: string, topics: typeof language.topics) => {
+    if (!topics || topics.length === 0) return null;
+    
+    // Calculate group progress
+    const completedCount = topics.filter(t => completedTopics.has(t.slug)).length;
+    const totalCount = topics.length;
+    const progressPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+    const isGroupComplete = completedCount === totalCount && totalCount > 0;
+    
+    return (
       <div key={title} className="space-y-2">
-        <p className={cn(
-          "px-2 text-md font-semibold transition-colors",
-          brandTheme.primary
-        )}>{title}</p>
-        <div className={cn(
-          "ml-2 border-l-2 border-primary/40 pl-2 space-y-1 transition-colors"
-        )}>
-          {topics.map((topic) => (
-            <SidebarMenuItem key={topic.slug}>
-              <SidebarMenuButton
-                asChild
-                isActive={selectedTopicSlug === topic.slug}
-                tooltip={topic.title}
+        {/* Enhanced Group Header */}
+        <div className="relative px-2 py-2 rounded-lg bg-gradient-to-r from-muted/30 to-transparent hover:from-muted/50 transition-all duration-300 group">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 flex-1">
+              {isGroupComplete ? (
+                <Sparkles className="w-4 h-4 text-primary shrink-0 animate-pulse" />
+              ) : (
+                <CheckCircle className="w-4 h-4 text-muted-foreground shrink-0" />
+              )}
+              <p className={cn(
+                "text-sm font-bold transition-colors line-clamp-1",
+                isGroupComplete ? "text-primary" : "text-foreground"
+              )}>
+                {title}
+              </p>
+            </div>
+            
+            {/* Progress Badge */}
+            {isUserAuthenticated && totalCount > 0 && (
+              <span className={cn(
+                "text-[10px] px-1.5 py-0.5 rounded-md font-semibold shrink-0 transition-all duration-300",
+                isGroupComplete 
+                  ? "bg-primary/15 text-primary border border-primary/20" 
+                  : "bg-muted/80 text-muted-foreground border border-border"
+              )}>
+                {completedCount}/{totalCount}
+              </span>
+            )}
+          </div>
+          
+          {/* Progress Bar */}
+          {isUserAuthenticated && totalCount > 0 && completedCount > 0 && (
+            <div className="mt-2 h-1 w-full bg-muted/50 rounded-full overflow-hidden">
+              <div 
                 className={cn(
-                  "justify-start text-sm transition-all duration-200",
-                  selectedTopicSlug === topic.slug && cn(
-                    brandTheme.primary,
-                    "font-semibold",
-                    brandTheme.activeMenuContainer
-                  )
+                  "h-full rounded-full transition-all duration-500 ease-out",
+                  isGroupComplete 
+                    ? "bg-primary" 
+                    : "bg-primary/70"
                 )}
-              >
-                <Link href={`/${language.slug}/${topic.slug}`} ref={selectedTopicSlug === topic.slug ? activeItemRef : null} className={cn(
-                  "flex items-center gap-2 transition-colors",
-                  selectedTopicSlug === topic.slug && brandTheme.activeMenuLink
-                )}>
-                  {completedTopics.has(topic.slug) && isUserAuthenticated && <CheckCircle className={cn("w-4 h-4", brandTheme.primary)} />}
-                  {topic.title}
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+          )}
+        </div>
+        
+        {/* Enhanced Topic List */}
+        <div className={cn(
+          "ml-4 border-l-2 border-border pl-3 space-y-0.5 transition-all duration-300"
+        )}>
+          {topics.map((topic) => {
+            const isCompleted = completedTopics.has(topic.slug);
+            const isActive = selectedTopicSlug === topic.slug;
+            
+            return (
+              <SidebarMenuItem key={topic.slug}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  tooltip={topic.title}
+                  className={cn(
+                    "justify-start text-xs transition-all duration-200 group/item",
+                    "hover:translate-x-0.5",
+                    isActive && "!bg-muted/50 font-semibold",
+                    !isActive && "hover:bg-muted/30"
+                  )}
+                >
+                  <Link 
+                    href={`/${language.slug}/${topic.slug}`} 
+                    ref={isActive ? activeItemRef : null} 
+                    className={cn(
+                      "flex items-center gap-2 w-full transition-colors",
+                      isActive && brandTheme.activeMenuLink
+                    )}
+                  >
+                    {/* Status Icon */}
+                    {isCompleted && isUserAuthenticated ? (
+                      <CheckCircle className={cn(
+                        "w-4 h-4 transition-all duration-200 shrink-0",
+                        isActive ? "text-primary" : "text-primary/70"
+                      )} />
+                    ) : isActive ? (
+                      <ArrowRight className="w-4 h-4 text-primary shrink-0" />
+                    ) : (
+                      <div className="w-3.5 h-3.5 rounded-full border-2 border-muted-foreground/40 group-hover/item:border-muted-foreground/60 transition-all duration-200 shrink-0" />
+                    )}
+                    
+                    {/* Topic Title */}
+                    <span className={cn(
+                      "transition-all duration-200 line-clamp-2 flex-1",
+                      isActive && "font-semibold"
+                    )}>
+                      {topic.title}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </div>
       </div>
-    )
-  );
+    );
+  };
 
   const learningPlanButton = (
     <SidebarMenuButton

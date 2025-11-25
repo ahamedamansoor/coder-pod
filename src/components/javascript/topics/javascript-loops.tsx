@@ -82,6 +82,83 @@ const playgroundHtml = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const playgroundJs = `console.clear();
+console.log('=== JavaScript Loops Demo ===\\n');
+
+// 1. Classic For Loop
+console.log('1️⃣ CLASSIC FOR LOOP:');
+const numbers = [10, 20, 30, 40, 50];
+
+for (let i = 0; i < numbers.length; i++) {
+  console.log('Index', i + ':', numbers[i]);
+}
+console.log('');
+
+// 2. For...of Loop (values)
+console.log('2️⃣ FOR...OF LOOP (Values):');
+const fruits = ['apple', 'banana', 'cherry'];
+
+for (const fruit of fruits) {
+  console.log('Fruit:', fruit);
+}
+console.log('');
+
+// 3. While Loop
+console.log('3️⃣ WHILE LOOP:');
+let countdown = 5;
+
+while (countdown > 0) {
+  console.log('Countdown:', countdown);
+  countdown--;
+}
+console.log('Liftoff! 🚀');
+console.log('');
+
+// 4. Do...While Loop
+console.log('4️⃣ DO...WHILE LOOP:');
+let attempts = 0;
+
+do {
+  attempts++;
+  console.log('Attempt', attempts);
+} while (attempts < 3);
+console.log('');
+
+// 5. forEach (Array method)
+console.log('5️⃣ FOREACH METHOD:');
+const tasks = ['Plan', 'Code', 'Test', 'Deploy'];
+
+tasks.forEach((task, index) => {
+  console.log(index + 1 + '.', task);
+});
+console.log('');
+
+// 6. Break and Continue
+console.log('6️⃣ BREAK & CONTINUE:');
+for (let i = 1; i <= 10; i++) {
+  if (i === 5) {
+    console.log('Skipping 5...');
+    continue; // Skip this iteration
+  }
+  if (i === 8) {
+    console.log('Breaking at 8!');
+    break; // Exit loop
+  }
+  console.log('Number:', i);
+}
+
+console.log('\\n✅ All loop demos complete!');`;
+
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
+      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
+    </div>
+    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
+  </div>
+);
+
 export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoopsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
@@ -128,6 +205,71 @@ export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoops
             </h3>
             <p className="text-sm text-muted-foreground">Pick based on readability, needed indexes, and control.</p>
             <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">Trade-offs</Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* What are Loops? */}
+      <Card className="bg-gradient-to-br from-blue-50/60 to-indigo-50/60 dark:from-blue-950/10 dark:to-indigo-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <RefreshCcw className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            What are Loops?
+          </CardTitle>
+          <CardDescription className="text-base">
+            Control structures that repeat a block of code until a condition is met
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Loops are programming constructs that <strong>execute a block of code repeatedly</strong>. Instead of writing the same code multiple times,
+              you use a loop to automate repetition. Loops are essential for <strong>processing arrays, retrying operations, counting,</strong> and
+              <strong> iterating through collections</strong>.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold mb-2 text-rose-700 dark:text-rose-300">❌ Without Loops (Repetitive)</h4>
+                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
+{`// Repetitive and unscalable
+const names = ['Alice', 'Bob', 'Charlie'];
+
+console.log('Hello, ' + names[0]);
+console.log('Hello, ' + names[1]);
+console.log('Hello, ' + names[2]);
+
+// What if we add 100 more names?
+// This approach doesn't scale!`}
+                </pre>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2 text-emerald-700 dark:text-emerald-300">✅ With Loops (Clean & Scalable)</h4>
+                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
+{`// Clean and scalable
+const names = ['Alice', 'Bob', 'Charlie'];
+
+for (const name of names) {
+  console.log('Hello, ' + name);
+}
+
+// Works with 3 or 3000 names!
+// Output: Hello, Alice
+//         Hello, Bob
+//         Hello, Charlie`}
+                </pre>
+                <SnippetOutput lines={['Hello, Alice', 'Hello, Bob', 'Hello, Charlie']} />
+              </div>
+            </div>
+
+            <Alert>
+              <Lightbulb className="h-4 w-4" />
+              <AlertTitle>Key Concept</AlertTitle>
+              <AlertDescription>
+                Loops have three main parts: <strong>initialization</strong> (start), <strong>condition</strong> (when to continue), and <strong>iteration</strong> (how to progress).
+              </AlertDescription>
+            </Alert>
           </div>
         </CardContent>
       </Card>
@@ -213,6 +355,150 @@ export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoops
               <AlertTitle>Heads up</AlertTitle>
               <AlertDescription>Use `for...in` for object keys; avoid it on arrays because order can be unexpected.</AlertDescription>
             </Alert>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Real-World Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
+            Real-World Examples
+          </CardTitle>
+          <CardDescription className="text-base">
+            Practical patterns you'll use in real applications
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Pattern 1: Processing Array Data */}
+            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                Processing Array Data
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Calculate total price
+const cart = [
+  { name: 'Book', price: 15 },
+  { name: 'Pen', price: 5 },
+  { name: 'Bag', price: 30 }
+];
+
+let total = 0;
+for (const item of cart) {
+  total += item.price;
+  console.log(item.name + ': $' + item.price);
+}
+
+console.log('Total: $' + total);
+// Output: Book: $15
+//         Pen: $5
+//         Bag: $30
+//         Total: $50`}
+              </pre>
+              <SnippetOutput lines={['Book: $15', 'Pen: $5', 'Bag: $30', 'Total: $50']} />
+              <p className="text-sm text-muted-foreground mt-3">
+                Perfect for shopping carts, summing values, or calculating totals from arrays of objects.
+              </p>
+            </div>
+
+            {/* Pattern 2: Finding Items */}
+            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                Finding Items (Early Exit)
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Search and stop
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' }
+];
+
+let found = null;
+for (const user of users) {
+  if (user.id === 2) {
+    found = user;
+    break; // Stop searching!
+  }
+}
+
+console.log('Found:', found.name);
+// Output: Found: Bob
+// (stops after finding Bob)`}
+              </pre>
+              <SnippetOutput lines={['Found: Bob', '(Loop exits after match)']} />
+              <p className="text-sm text-muted-foreground mt-3">
+                Use break to stop searching once you find what you need, saving unnecessary iterations.
+              </p>
+            </div>
+
+            {/* Pattern 3: Retry Logic */}
+            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                Retry Logic with While
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Retry until success
+let attempts = 0;
+let success = false;
+const maxAttempts = 3;
+
+while (!success && attempts < maxAttempts) {
+  attempts++;
+  console.log('Attempt', attempts);
+  
+  // Simulate operation
+  success = attempts === 2; // Success on 2nd try
+  
+  if (success) {
+    console.log('✅ Success!');
+  }
+}
+
+// Output: Attempt 1
+//         Attempt 2
+//         ✅ Success!`}
+              </pre>
+              <SnippetOutput lines={['Attempt 1', 'Attempt 2', '✅ Success!']} />
+              <p className="text-sm text-muted-foreground mt-3">
+                Common for API calls, network requests, or any operation that might fail and needs retries.
+              </p>
+            </div>
+
+            {/* Pattern 4: Building HTML Lists */}
+            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                Building Dynamic Lists
+              </h4>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
+{`// Pattern: Generate HTML/text lists
+const todos = ['Write code', 'Test', 'Deploy'];
+let htmlList = '<ul>';
+
+for (let i = 0; i < todos.length; i++) {
+  htmlList += '<li>' + (i + 1) + '. ';
+  htmlList += todos[i] + '</li>';
+}
+htmlList += '</ul>';
+
+console.log(htmlList);
+// Output: <ul>
+//   <li>1. Write code</li>
+//   <li>2. Test</li>
+//   <li>3. Deploy</li>
+// </ul>`}
+              </pre>
+              <SnippetOutput lines={['<ul>', '  <li>1. Write code</li>', '  <li>2. Test</li>', '  <li>3. Deploy</li>', '</ul>']} />
+              <p className="text-sm text-muted-foreground mt-3">
+                Useful for generating markup, creating numbered lists, or building UI components dynamically.
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -312,7 +598,7 @@ export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoops
           {onOpenWebPlayground && (
             <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
               <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
+              Try in Playground
             </Button>
           )}
         </CardContent>
