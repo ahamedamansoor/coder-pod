@@ -4,7 +4,7 @@
 import { ThemeProvider } from '@/components/shared/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '@/components/ui/toaster';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
 import { Loader2 } from 'lucide-react';
 import { FirebaseProvider } from '@/firebase';
