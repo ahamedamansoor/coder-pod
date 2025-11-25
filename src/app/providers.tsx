@@ -1,7 +1,7 @@
 
 'use client';
 
-import { ThemeProvider } from '@/components/shared/theme-provider';
+import { ThemeProvider } from '@/components/shared/layout';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
