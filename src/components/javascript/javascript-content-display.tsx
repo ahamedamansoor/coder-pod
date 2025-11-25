@@ -32,6 +32,8 @@ const JavaScriptArrayIterationMethods = lazy(() => import('./topics/javascript-a
 const JavaScriptArrayDestructuring = lazy(() => import('./topics/javascript-array-destructuring'));
 const JavaScriptObjects = lazy(() => import('./topics/javascript-objects'));
 const JavaScriptObjectMethods = lazy(() => import('./topics/javascript-object-methods'));
+const JavaScriptGettersSetters = lazy(() => import('./topics/javascript-getters-setters'));
+const JavaScriptPrivateFields = lazy(() => import('./topics/javascript-private-fields'));
 const JavaScriptObjectDestructuring = lazy(() => import('./topics/javascript-object-destructuring'));
 const JavaScriptThisKeyword = lazy(() => import('./topics/javascript-this-keyword'));
 const JavaScriptStrings = lazy(() => import('./topics/javascript-strings'));
@@ -44,6 +46,8 @@ const JavaScriptHoisting = lazy(() => import('./topics/javascript-hoisting'));
 const JavaScriptConstructorFunctions = lazy(() => import('./topics/javascript-constructor-functions'));
 const JavaScriptPrototypes = lazy(() => import('./topics/javascript-prototypes'));
 const JavaScriptES6Classes = lazy(() => import('./topics/javascript-es6-classes'));
+const JavaScriptClassInheritance = lazy(() => import('./topics/javascript-class-inheritance'));
+const JavaScriptStaticMethods = lazy(() => import('./topics/javascript-static-methods'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -72,6 +76,8 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'array-destructuring': JavaScriptArrayDestructuring,
   'js-objects': JavaScriptObjects,
   'object-methods': JavaScriptObjectMethods,
+  'getters-setters': JavaScriptGettersSetters,
+  'private-fields': JavaScriptPrivateFields,
   'object-destructuring': JavaScriptObjectDestructuring,
   'this-keyword': JavaScriptThisKeyword,
   'strings': JavaScriptStrings,
@@ -84,6 +90,8 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'constructor-functions': JavaScriptConstructorFunctions,
   'prototypes': JavaScriptPrototypes,
   'es6-classes': JavaScriptES6Classes,
+  'class-inheritance': JavaScriptClassInheritance,
+  'static-methods': JavaScriptStaticMethods,
 };
 
 function LoadingSkeleton() {
