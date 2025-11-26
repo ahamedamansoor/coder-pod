@@ -96,6 +96,32 @@ body {
     .border-3 {
         border-width: 3px;
     }
+    
+    /* Grid background pattern */
+    .bg-grid-slate-200\/50 {
+        background-image: linear-gradient(0deg, rgb(226 232 240 / 0.5) 1px, transparent 1px),
+                          linear-gradient(90deg, rgb(226 232 240 / 0.5) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+    
+    .dark .bg-grid-slate-800\/50 {
+        background-image: linear-gradient(0deg, rgb(30 41 59 / 0.5) 1px, transparent 1px),
+                          linear-gradient(90deg, rgb(30 41 59 / 0.5) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+}
+
+/* Ensure dashboard page has no sidebar wrapper constraints */
+body:has([data-route="dashboard"]) .group\/sidebar-wrapper {
+    width: 100vw !important;
+    max-width: 100vw !important;
+}
+
+/* Force full width for standalone pages without sidebar */
+.standalone-page {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 /* Custom animations for innovative dashboard */
@@ -121,10 +147,16 @@ body {
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0px);
+    transform: translate(0px, 0px) scale(1);
+  }
+  25% {
+    transform: translate(10px, -15px) scale(1.05);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translate(-5px, -25px) scale(1.1);
+  }
+  75% {
+    transform: translate(-15px, -15px) scale(1.05);
   }
 }
 
@@ -147,7 +179,289 @@ body {
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* 3D Perspective and Transform Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Smooth ease-out curve for refined animations */
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 0.95;
+  }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+/* Shimmer effect for elegant shine */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Breathing animation for subtle pulsing */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.95;
+  }
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Gentle slide in from various directions */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.6s ease-out;
+}
+
+/* Smooth bounce for interactive elements */
+@keyframes soft-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-soft-bounce {
+  animation: soft-bounce 2s ease-in-out infinite;
+}
+
+/* Rotate glow effect */
+@keyframes rotate-glow {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+.animate-rotate-glow {
+  animation: rotate-glow 8s linear infinite;
+}
+
+/* Scale pulse for attention */
+@keyframes scale-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-scale-pulse {
+  animation: scale-pulse 2s ease-in-out infinite;
+}
+
+/* Gradient shift animation */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+}
+
+/* Fade scale for smooth entrance */
+@keyframes fade-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-scale {
+  animation: fade-scale 0.5s ease-out;
+}
+
+/* Wave animation for backgrounds */
+@keyframes wave {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-10px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-5px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(10px) translateX(5px);
+  }
+}
+
+.animate-wave {
+  animation: wave 8s ease-in-out infinite;
+}
+
+/* Smoking/Vapor effect for text */
+@keyframes smoke {
+  0% {
+    text-shadow: 
+      0 0 10px rgba(59, 130, 246, 0.5),
+      0 0 20px rgba(99, 102, 241, 0.3),
+      0 0 30px rgba(139, 92, 246, 0.2),
+      0 0 40px rgba(59, 130, 246, 0.1);
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+  50% {
+    text-shadow: 
+      0 0 20px rgba(59, 130, 246, 0.7),
+      0 0 40px rgba(99, 102, 241, 0.5),
+      0 0 60px rgba(139, 92, 246, 0.3),
+      0 0 80px rgba(59, 130, 246, 0.2);
+    transform: translateY(-3px);
+    filter: blur(0.3px);
+  }
+  100% {
+    text-shadow: 
+      0 0 10px rgba(59, 130, 246, 0.5),
+      0 0 20px rgba(99, 102, 241, 0.3),
+      0 0 30px rgba(139, 92, 246, 0.2),
+      0 0 40px rgba(59, 130, 246, 0.1);
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.animate-smoke {
+  animation: smoke 4s ease-in-out infinite;
+}
+
+/* Dark mode variant for smoking effect */
+.dark .animate-smoke {
+  animation: smoke-dark 4s ease-in-out infinite;
+}
+
+@keyframes smoke-dark {
+  0% {
+    text-shadow: 
+      0 0 15px rgba(96, 165, 250, 0.6),
+      0 0 30px rgba(129, 140, 248, 0.4),
+      0 0 45px rgba(167, 139, 250, 0.3),
+      0 0 60px rgba(96, 165, 250, 0.2);
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+  50% {
+    text-shadow: 
+      0 0 25px rgba(96, 165, 250, 0.8),
+      0 0 50px rgba(129, 140, 248, 0.6),
+      0 0 75px rgba(167, 139, 250, 0.4),
+      0 0 100px rgba(96, 165, 250, 0.3);
+    transform: translateY(-3px);
+    filter: blur(0.3px);
+  }
+  100% {
+    text-shadow: 
+      0 0 15px rgba(96, 165, 250, 0.6),
+      0 0 30px rgba(129, 140, 248, 0.4),
+      0 0 45px rgba(167, 139, 250, 0.3),
+      0 0 60px rgba(96, 165, 250, 0.2);
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Vapor particles effect */
+@keyframes vapor {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1.5);
+  }
+}
+
+.animate-vapor {
+  animation: vapor 3s ease-out infinite;
 }
 
 .animate-glow {
@@ -159,6 +473,138 @@ body {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Innovative cursor pointer */
+.cursor-pointer {
+  cursor: pointer;
+  position: relative;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.cursor-pointer:active {
+  cursor: grabbing;
+}
+
+/* Custom button cursor with pointer effect */
+button.cursor-pointer,
+div.cursor-pointer,
+[role="button"].cursor-pointer {
+  cursor: pointer;
+}
+
+button.cursor-pointer:hover,
+div.cursor-pointer:hover,
+[role="button"].cursor-pointer:hover {
+  cursor: pointer;
+}
+
+button.cursor-pointer:active,
+div.cursor-pointer:active,
+[role="button"].cursor-pointer:active {
+  cursor: pointer;
+}
+
+/* Spotlight effect on hover */
+@keyframes spotlight {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+/* Text shadow glow for attractive fonts */
+.text-shadow-glow {
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Button pulse animation */
+@keyframes pulse-button {
+  0%, 100% {
+    box-shadow: 
+      0 0 0 0 rgba(59, 130, 246, 0.7),
+      0 20px 50px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 8px rgba(59, 130, 246, 0),
+      0 25px 60px rgba(59, 130, 246, 0.4);
+  }
+}
+
+.animate-pulse-button {
+  animation: pulse-button 1.5s ease-in-out infinite;
+}
+
+/* Waving border effect */
+@keyframes wave-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-wave-border {
+  animation: wave-border 3s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+/* Click ripple effect */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.click-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  width: 20px;
+  height: 20px;
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+/* Click flash effect */
+@keyframes click-flash {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-click-flash {
+  animation: click-flash 0.3s ease-out;
 }
 
 .dark .glass {
