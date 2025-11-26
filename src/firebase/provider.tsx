@@ -13,6 +13,7 @@ import {
 import { FirebaseApp } from 'firebase/app';
 import { toast } from 'sonner';
 import { initializeFirebase } from '.';
+import { firebaseConfig } from './config';
 
 interface FirebaseContextState {
   areServicesAvailable: boolean;
@@ -39,7 +40,6 @@ interface FirebaseProviderProps {
   children: ReactNode;
 }
 
-// This component exists to listen to Firebase errors and show toasts.
 const FirebaseErrorListener: React.FC = () => {
   const { userError } = useFirebase();
 
@@ -60,7 +60,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   const [userAuthState, setUserAuthState] = useState<{ user: User | null, isUserLoading: boolean, userError: Error | null }>({ user: null, isUserLoading: true, userError: null });
 
   useEffect(() => {
-    const { firebaseApp, firestore, auth } = initializeFirebase();
+    const { firebaseApp, firestore, auth } = initializeFirebase(firebaseConfig);
     setFirebaseServices({ firebaseApp, firestore, auth });
   }, []);
 
