@@ -358,7 +358,7 @@ console.log(counter.current);`}</pre>
             Hands-on playground
           </CardTitle>
           <CardDescription className="text-base">
-            Launch the standard CODER POD playground to experiment with `#` fields, methods, and accessors.
+            Launch the interactive playground to experiment with `#` fields, methods, and accessors.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col md:flex-row md:items-center md:gap-6 gap-4">

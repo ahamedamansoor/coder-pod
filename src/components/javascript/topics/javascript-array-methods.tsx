@@ -212,10 +212,8 @@ export default function JavaScriptArrayMethodsBasics({ onOpenWebPlayground }: Ja
         </CardHeader>
         <CardContent className="space-y-4">
           <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">{basicsSnippet}</pre>
-          <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/50 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">
-console.log(queue); // ["in-progress","done"]
-console.log(first); // "todo"
-</pre>
+          <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/50 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{`console.log(queue); // ["in-progress","done"]
+console.log(first); // "todo"`}</pre>
           <p className="text-sm text-muted-foreground">
             Methods are called directly from your array (e.g., <code>queue.push()</code>). They either mutate the array or return a new copy depending on the method.
           </p>
@@ -233,11 +231,9 @@ console.log(first); // "todo"
         </CardHeader>
         <CardContent className="space-y-4">
           <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">{anatomySnippet}</pre>
-          <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-indigo-200/50 dark:border-indigo-800/40 text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap">
-console.log('Length:', 3);
+          <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-indigo-200/50 dark:border-indigo-800/40 text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap">{`console.log('Length:', 3);
 console.log('Last item:', 'Chrome');
-console.log(tools); // ["VS Code","iTerm","Chrome"]
-</pre>
+console.log(tools); // ["VS Code","iTerm","Chrome"]`}</pre>
           <div className="grid md:grid-cols-3 gap-4 text-sm text-muted-foreground">
             <div className="rounded-lg border bg-white/80 dark:bg-slate-900/80 p-3">
               <strong className="block text-indigo-600 dark:text-indigo-300 mb-1">Access</strong>
@@ -272,10 +268,8 @@ console.log(tools); // ["VS Code","iTerm","Chrome"]
             </h4>
             <p className="text-sm text-muted-foreground">Use <code>push</code>/<code>pop</code> for stack behavior and <code>shift</code>/<code>unshift</code> for queue-style flows.</p>
             <pre className="bg-white/90 dark:bg-slate-950/80 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-100/60 dark:border-blue-900/40">{pushPopSnippet}</pre>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/60 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">
-console.log(last);  // "test"
-console.log(stack); // ["lint"]
-</pre>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/60 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{`console.log(last);  // "test"
+console.log(stack); // ["lint"]`}</pre>
             <div className="text-xs text-blue-700/80 dark:text-blue-100 bg-white/80 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/40 rounded-lg px-3 py-2">
               Perfect when modeling browser history, undo stacks, or task queues.
             </div>
@@ -289,11 +283,9 @@ console.log(stack); // ["lint"]
               <code>splice</code> edits the original array (great for in-place dashboards) while <code>slice</code> copies segments for previews.
             </p>
             <pre className="bg-white/90 dark:bg-slate-950/80 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-100/60 dark:border-emerald-900/40">{spliceSliceSnippet}</pre>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-100 whitespace-pre-wrap">
-console.log(removed); // ["review"]
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-100 whitespace-pre-wrap">{`console.log(removed); // ["review"]
 console.log(lessons); // ["intro","basics","project","advanced"]
-console.log(copy);    // ["basics","project"]
-</pre>
+console.log(copy);    // ["basics","project"]`}</pre>
             <div className="text-xs text-emerald-700/80 dark:text-emerald-100 bg-white/80 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/40 rounded-lg px-3 py-2">
               Use this combo to power drag-and-drop reordering while keeping audit-friendly copies.
             </div>
@@ -318,9 +310,7 @@ console.log(copy);    // ["basics","project"]
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{`const names = ['ada','lin'];
 const upper = names.map((n) => n.toUpperCase());
 console.log(upper); // ["ADA","LIN"]`}</pre>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/60 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">
-console.log(upper); // ["ADA","LIN"]
-</pre>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/60 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{`console.log(upper); // ["ADA","LIN"]`}</pre>
             </div>
             <div className="p-4 rounded-xl border border-emerald-200/60 dark:border-emerald-800/40 bg-white/90 dark:bg-slate-950/40 space-y-2">
               <h4 className="font-semibold text-emerald-700 dark:text-emerald-200">filter()</h4>
@@ -328,9 +318,7 @@ console.log(upper); // ["ADA","LIN"]
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{`const scores = [72, 88, 90];
 const passing = scores.filter((s) => s >= 80);
 console.log(passing); // [88, 90]`}</pre>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-100 whitespace-pre-wrap">
-console.log(passing); // [88, 90]
-</pre>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-100 whitespace-pre-wrap">{`console.log(passing); // [88, 90]`}</pre>
             </div>
             <div className="p-4 rounded-xl border border-purple-200/60 dark:border-purple-800/40 bg-white/90 dark:bg-slate-950/40 space-y-2">
               <h4 className="font-semibold text-purple-700 dark:text-purple-200">reduce()</h4>
@@ -338,9 +326,7 @@ console.log(passing); // [88, 90]
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{`const times = [30, 45, 25];
 const total = times.reduce((sum, t) => sum + t, 0);
 console.log(total); // 100`}</pre>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-purple-200/60 dark:border-purple-800/40 text-purple-900 dark:text-purple-100 whitespace-pre-wrap">
-console.log(total); // 100
-</pre>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-purple-200/60 dark:border-purple-800/40 text-purple-900 dark:text-purple-100 whitespace-pre-wrap">{`console.log(total); // 100`}</pre>
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
@@ -350,27 +336,21 @@ console.log(total); // 100
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{`const bugs = ['minor','critical','minor'];
 const firstCritical = bugs.find((type) => type === 'critical');
 console.log(firstCritical); // "critical"`}</pre>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-indigo-200/60 dark:border-indigo-800/40 text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap">
-console.log(firstCritical); // "critical"
-</pre>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-indigo-200/60 dark:border-indigo-800/40 text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap">{`console.log(firstCritical); // "critical"`}</pre>
             </div>
             <div className="p-4 rounded-xl border border-rose-200/60 dark:border-rose-800/40 bg-white/90 dark:bg-slate-950/40 space-y-2">
               <h4 className="font-semibold text-rose-700 dark:text-rose-200">some()</h4>
               <p className="text-sm text-muted-foreground">Check if at least one element meets the condition.</p>
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{`const flags = [false, false, true];
 console.log(flags.some(Boolean)); // true`}</pre>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-rose-200/60 dark:border-rose-800/40 text-rose-900 dark:text-rose-100 whitespace-pre-wrap">
-console.log(flags.some(Boolean)); // true
-</pre>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-rose-200/60 dark:border-rose-800/40 text-rose-900 dark:text-rose-100 whitespace-pre-wrap">{`console.log(flags.some(Boolean)); // true`}</pre>
             </div>
             <div className="p-4 rounded-xl border border-amber-200/60 dark:border-amber-800/40 bg-white/90 dark:bg-slate-950/40 space-y-2">
               <h4 className="font-semibold text-amber-700 dark:text-amber-200">every()</h4>
               <p className="text-sm text-muted-foreground">Ensure all elements satisfy the rule.</p>
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{`const sizes = ['sm','md','lg'];
 console.log(sizes.every((size) => typeof size === 'string')); // true`}</pre>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-amber-200/60 dark:border-amber-800/40 text-amber-900 dark:text-amber-100 whitespace-pre-wrap">
-console.log(sizes.every((size) => typeof size === 'string')); // true
-</pre>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-amber-200/60 dark:border-amber-800/40 text-amber-900 dark:text-amber-100 whitespace-pre-wrap">{`console.log(sizes.every((size) => typeof size === 'string')); // true`}</pre>
             </div>
           </div>
           <div className="rounded-lg border border-indigo-200/50 dark:border-indigo-800/40 bg-white/80 dark:bg-slate-950/30 p-4 text-sm text-muted-foreground">
@@ -433,19 +413,15 @@ console.log(sizes.every((size) => typeof size === 'string')); // true
           <div className="p-4 rounded-xl border bg-white dark:bg-gray-900 space-y-3">
             <h4 className="font-semibold">concat/spread cloning</h4>
             <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{immutabilitySnippet}</pre>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/50 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">
-console.log(base); // ["HTML","CSS"]
-console.log(extended); // ["HTML","CSS","JS"]
-</pre>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-blue-200/50 dark:border-blue-800/40 text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{`console.log(base); // ["HTML","CSS"]
+console.log(extended); // ["HTML","CSS","JS"]`}</pre>
           </div>
           <div className="p-4 rounded-xl border bg-white dark:bg-gray-900 space-y-3">
             <h4 className="font-semibold">Prefer pure methods</h4>
             <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">{mapFilterReduceSnippet}</pre>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-200/50 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-100 whitespace-pre-wrap">
-console.log(cToF);   // [64.4,71.6,77,82.4]
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border border-emerald-200/50 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-100 whitespace-pre-wrap">{`console.log(cToF);   // [64.4,71.6,77,82.4]
 console.log(warm);   // [22,25,28]
-console.log(average); // 23.25
-</pre>
+console.log(average); // 23.25`}</pre>
           </div>
         </CardContent>
       </Card>

@@ -27,7 +27,7 @@ function GlobalLoadingIndicator() {
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <FirebaseProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
                 <TooltipProvider>
                     <SidebarProvider>
                         <LoadingProvider>

@@ -1,7 +1,8 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLoading } from '@/hooks/use-loading';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -38,20 +39,76 @@ function TypingEffect({ text, speed = 50 }: { text: string; speed?: number }) {
     }
   }, [currentIndex, text, speed]);
 
+  // Apply brand styling: "CODER" in blue, "POD" in gray/white
+  const renderStyledText = () => {
+    const parts = displayedText.split(/(CODER|POD)/);
+    return parts.map((part, index) => {
+      if (part === 'CODER') {
+        return (
+          <span key={index} className="font-black tracking-tight" style={{ color: '#5B7FFF' }}>
+            {part}
+          </span>
+        );
+      } else if (part === 'POD') {
+        return (
+          <span key={index} className="font-black tracking-tight text-gray-900 dark:text-white">
+            {part}
+          </span>
+        );
+      }
+      return <span key={index} className="text-gray-900 dark:text-white">{part}</span>;
+    });
+  };
+
   return (
     <span>
-      {displayedText}
+      {renderStyledText()}
       {currentIndex < text.length && (
-        <span className="animate-pulse">|</span>
+        <span className="animate-pulse text-gray-900 dark:text-white">|</span>
       )}
     </span>
   );
 }
 
+// Helper function to get user initials
+function getUserInitials(displayName: string | null | undefined, email: string | null | undefined): string {
+  if (displayName) {
+    const nameParts = displayName.trim().split(' ');
+    if (nameParts.length >= 2) {
+      return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+    }
+    return displayName.substring(0, 2).toUpperCase();
+  }
+  if (email) {
+    return email.substring(0, 2).toUpperCase();
+  }
+  return 'U';
+}
+
 function DashboardContent() {
   const { user, isUserLoading } = useUser();
+  const firestore = useFirestore();
   const { hideLoader } = useLoading();
   const [showContent, setShowContent] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'frontend' | 'backend'>('all');
+
+  const userDocRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, 'users', user.uid);
+  }, [user, firestore]);
+  
+  const { data: userData } = useDoc(userDocRef);
+
+  // Filter languages based on category
+  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'scss'];
+  const backendLanguages = ['java', 'spring', 'spring-boot'];
+  
+  const filteredLanguages = languages.filter(lang => {
+    if (filter === 'all') return true;
+    if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
+    if (filter === 'backend') return backendLanguages.includes(lang.slug);
+    return true;
+  });
 
   useEffect(() => {
     if (!isUserLoading) {
@@ -114,6 +171,7 @@ function DashboardContent() {
           <div className="flex-shrink-0">
             <Logo />
           </div>
+          
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <DropdownMenu>
@@ -121,8 +179,8 @@ function DashboardContent() {
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || 'User'} />
-                      <AvatarFallback>
-                        {user?.displayName?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-bold">
+                        {getUserInitials(user?.displayName, user?.email)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -153,13 +211,13 @@ function DashboardContent() {
       {/* Hero Section - Full Width with 3D Perspective */}
       <div className="mb-12 lg:mb-16 perspective-1000">
         <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-950/20 dark:to-purple-950/20">
-          {/* Floating animated background elements */}
+          {/* Floating animated background elements - enhanced for visibility */}
           <div className="absolute inset-0 bg-grid-slate-200/50 dark:bg-grid-slate-800/50 [mask-image:linear-gradient(0deg,transparent,black)]" />
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-3xl animate-float animate-breathe" />
-          <div className="absolute top-1/4 right-1/3 w-72 h-72 bg-cyan-400/15 dark:bg-cyan-600/10 rounded-full blur-3xl animate-wave" style={{ animationDelay: '2s' }} />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-          <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-pink-400/15 dark:bg-pink-600/10 rounded-full blur-3xl animate-wave" style={{ animationDelay: '3s' }} />
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-indigo-400/10 dark:bg-indigo-600/5 rounded-full blur-3xl animate-breathe" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-blue-400/25 dark:bg-blue-600/15 rounded-full blur-3xl animate-float" style={{ animationDuration: '12s' }} />
+          <div className="absolute top-1/4 -right-32 w-[450px] h-[450px] bg-cyan-400/20 dark:bg-cyan-600/12 rounded-full blur-3xl animate-wave" style={{ animationDelay: '2s', animationDuration: '14s' }} />
+          <div className="absolute -bottom-32 right-1/4 w-[550px] h-[550px] bg-purple-400/25 dark:bg-purple-600/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s', animationDuration: '13s' }} />
+          <div className="absolute bottom-1/4 -left-32 w-[480px] h-[480px] bg-pink-400/20 dark:bg-pink-600/12 rounded-full blur-3xl animate-wave" style={{ animationDelay: '3s', animationDuration: '15s' }} />
+          <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-indigo-400/15 dark:bg-indigo-600/10 rounded-full blur-3xl animate-breathe" style={{ animationDelay: '1.5s', animationDuration: '8s' }} />
           <div className="relative px-6 sm:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28">
             <div className="max-w-[1920px] mx-auto text-center">
               <div className="flex items-center justify-center gap-2 mb-6 animate-fade-scale">
@@ -169,11 +227,17 @@ function DashboardContent() {
                   <span className="relative">AI-Powered Learning Platform</span>
                 </Badge>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6">
                 {showContent ? (
-                  <TypingEffect text="Welcome to CoderPod!" speed={80} />
+                  <TypingEffect text="Welcome to CODER POD!!!" speed={80} />
                 ) : (
-                  "Welcome to CoderPod!"
+                  <>
+                    <span className="text-gray-900 dark:text-white">Welcome to </span>
+                    <span className="font-black tracking-tight" style={{ color: '#5B7FFF' }}>CODER</span>
+                    {' '}
+                    <span className="font-black tracking-tight text-gray-900 dark:text-white">POD</span>
+                    <span className="text-gray-900 dark:text-white">!!!</span>
+                  </>
                 )}
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed">
@@ -218,156 +282,221 @@ function DashboardContent() {
             </p>
           </div>
 
+          {/* Filter Buttons */}
+          <div className="flex justify-center gap-3 mb-8">
+            <button
+              onClick={() => setFilter('all')}
+              className={cn(
+                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
+                'border backdrop-blur-md',
+                filter === 'all' 
+                  ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white border-transparent shadow-lg shadow-blue-500/25' 
+                  : 'bg-white/20 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15'
+              )}
+            >
+              All
+            </button>
+            <button
+              onClick={() => setFilter('frontend')}
+              className={cn(
+                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
+                'border backdrop-blur-md',
+                filter === 'frontend' 
+                  ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white border-transparent shadow-lg shadow-blue-500/25' 
+                  : 'bg-white/20 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15'
+              )}
+            >
+              Frontend
+            </button>
+            <button
+              onClick={() => setFilter('backend')}
+              className={cn(
+                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
+                'border backdrop-blur-md',
+                filter === 'backend' 
+                  ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white border-transparent shadow-lg shadow-blue-500/25' 
+                  : 'bg-white/20 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15'
+              )}
+            >
+              Backend
+            </button>
+          </div>
+
+          {/* Current Filter Display */}
+          {filter !== 'all' && (
+            <div className="mb-6">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {filter === 'frontend' && 'Frontend'}
+                {filter === 'backend' && 'Backend'}
+              </h3>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8">
-            {languages.map((lang, index) => {
+            {filteredLanguages.map((lang, index) => {
               const topicCount = lang.topics?.length ?? 0;
               const summary = lang.description ?? lang.topics?.[0]?.explanation ?? 'Interactive lessons curated for every learning style.';
               const focusLabel = lang.topics?.find((topic) => topic.category)?.category ?? 'Core Track';
               const accent = accentMap[lang.slug] ?? 'from-slate-400 via-slate-600 to-slate-800';
               
-              // Calculate completion status
-              const userProgress = user?.progress?.[lang.slug] || {};
-              const completedTopics = Object.values(userProgress).filter((status: any) => status?.completed).length;
-              const completionPercentage = topicCount > 0 ? Math.round((completedTopics / topicCount) * 100) : 0;
-              const isStarted = completedTopics > 0;
+              // Calculate completion status from Firestore
+              const completedTopicsArray = userData?.completedTopics?.[lang.slug] || [];
+              const completedCount = Array.isArray(completedTopicsArray) ? completedTopicsArray.length : 0;
+              // Exclude 'learning-plan' from total count
+              const actualTopicCount = lang.topics?.filter(t => t.slug !== 'learning-plan').length ?? 0;
+              const completionPercentage = actualTopicCount > 0 ? Math.round((completedCount / actualTopicCount) * 100) : 0;
+              const isStarted = completedCount > 0;
               const isCompleted = completionPercentage === 100;
 
               return (
                 <Card
                   key={lang.slug}
                   className={cn(
-                    'group relative h-full overflow-hidden rounded-3xl border border-white/40 bg-white/70 px-1.5 py-1.5 shadow-[0_8px_32px_rgba(15,23,42,0.06)] dark:border-white/5 dark:bg-slate-900/40 backdrop-blur-2xl transition-all duration-500 ease-out',
-                    'hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(15,23,42,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]',
-                    "before:absolute before:inset-0 before:rounded-[26px] before:border before:border-white/30 before:opacity-0 before:transition-all before:duration-500 before:content-[''] hover:before:opacity-100",
-                    'after:absolute after:inset-0 after:rounded-[26px] after:bg-gradient-to-br after:from-white/5 after:to-transparent after:opacity-0 after:transition-opacity after:duration-500 hover:after:opacity-100',
+                    'group relative h-full overflow-hidden rounded-3xl',
+                    // Glass morphism base - transparent with blur
+                    'bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl',
+                    // Borders with subtle gradient
+                    'border border-white/20 dark:border-white/10',
+                    'shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]',
+                    // Glass reflection layer
+                    'after:absolute after:inset-0 after:rounded-3xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none',
+                    // Smooth transitions - only shine animation on hover
+                    'transition-all duration-500 ease-out',
                     showContent ? 'animate-in fade-in slide-in-from-bottom-4' : 'opacity-0'
                   )}
                   style={{ animationDelay: `${index * 110}ms`, animationFillMode: 'forwards' }}
                 >
                   <Link 
-                    href={`/${lang.slug}`} 
-                    className="relative block h-full rounded-[22px] bg-gradient-to-br from-white/60 via-white/40 to-white/30 dark:from-slate-950/40 dark:via-slate-900/30 dark:to-slate-900/20 p-1.5 transition-all duration-500 cursor-pointer"
-                    onClick={() => console.log(`Navigating to: /${lang.slug}`)}
+                    href={`/${lang.slug}/learning-plan`} 
+                    className="relative block h-full p-6 cursor-pointer"
                   >
-                    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[22px]">
-                      {/* Soft ambient glow with rotation */}
-                      <div
-                        className={cn(
-                          'absolute -top-20 -right-12 h-48 w-48 rounded-full blur-[64px] opacity-20 group-hover:opacity-40 transition-all duration-700 ease-out animate-rotate-glow',
-                          `bg-gradient-to-br ${accent}`
-                        )}
-                      />
-                      {/* Top accent line with shimmer */}
-                      <div className="absolute inset-x-6 top-6 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-60 group-hover:opacity-80 group-hover:scale-x-110 transition-all duration-700">
-                        <div className="absolute inset-0 animate-shimmer opacity-60" />
-                      </div>
-                      {/* Bottom soft glow with breathing */}
-                      <div className="absolute bottom-8 left-1/4 h-32 w-32 rounded-full bg-primary/[0.03] dark:bg-primary/[0.06] blur-[48px] group-hover:scale-125 group-hover:translate-y-2 transition-all duration-700 animate-breathe" />
-                      {/* Radial overlay */}
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(59,130,246,0.04),_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    {/* Holographic shimmer effect */}
+                    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[shine-glow_1.5s_ease-in-out] pointer-events-none" />
                     </div>
-                    <div className="relative flex h-full flex-col rounded-[20px] bg-white/50 dark:bg-slate-950/50 p-6 transition-all duration-500 group-hover:bg-white/60 dark:group-hover:bg-slate-950/60">
+                    
+                    <div className="relative flex h-full flex-col">
                       <CardHeader className="space-y-4 p-0">
-                        {/* Header with Icon and Title */}
+                        {/* Top Section: Title + Chart */}
                         <div className="flex items-start justify-between gap-4">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className={cn(
-                                'relative grid h-12 w-12 place-items-center rounded-xl text-white shadow-lg transition-all duration-500 ease-out group-hover:shadow-xl group-hover:scale-110 overflow-hidden',
-                                `bg-gradient-to-br ${accent}`,
-                                'animate-gradient-shift'
-                              )}
-                            >
-                              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-40" />
-                              <Code2 className="relative w-5 h-5 text-slate-700 dark:text-white transition-transform duration-500 group-hover:rotate-12" />
-                            </div>
-                            <div>
-                              <CardTitle className="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300 group-hover:text-primary">{lang.name}</CardTitle>
-                              <p className="text-xs text-muted-foreground/70 mt-0.5">{topicCount} Modules</p>
-                            </div>
+                          {/* Left: Title */}
+                          <div className="flex-1">
+                            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">{lang.name}</CardTitle>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{actualTopicCount} Topics</p>
                           </div>
                           
-                          {/* Status Badge */}
-                          {isCompleted && (
-                            <Badge className="bg-green-500/90 text-white text-xs px-2.5 py-1 rounded-full animate-scale-pulse flex items-center gap-1">
-                              <span>✓</span> Complete
-                            </Badge>
-                          )}
-                          {isStarted && !isCompleted && (
-                            <Badge className="bg-blue-500/90 text-white text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
-                              <span>⚡</span> In Progress
-                            </Badge>
-                          )}
-                          {!isStarted && (
-                            <Badge variant="outline" className="text-xs px-2.5 py-1 rounded-full border-muted-foreground/30">
-                              New
-                            </Badge>
-                          )}
+                          {/* Right: Circular Progress */}
+                          <div className="relative flex flex-col items-center gap-1">
+                            <div className="relative h-16 w-16">
+                              {/* Background circle */}
+                              <svg className="absolute inset-0 -rotate-90" width="64" height="64">
+                                <defs>
+                                  <linearGradient id={`gradient-${lang.slug}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#3b82f6" />
+                                    <stop offset="50%" stopColor="#6366f1" />
+                                    <stop offset="100%" stopColor="#a855f7" />
+                                  </linearGradient>
+                                </defs>
+                                <circle
+                                  cx="32"
+                                  cy="32"
+                                  r="28"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                  className="text-slate-200 dark:text-slate-700"
+                                />
+                                {/* Progress circle */}
+                                <circle
+                                  cx="32"
+                                  cy="32"
+                                  r="28"
+                                  fill="none"
+                                  stroke={`url(#gradient-${lang.slug})`}
+                                  strokeWidth="4"
+                                  strokeLinecap="round"
+                                  strokeDasharray={`${2 * Math.PI * 28}`}
+                                  strokeDashoffset={`${2 * Math.PI * 28 * (1 - completionPercentage / 100)}`}
+                                  className="transition-all duration-1000 ease-out"
+                                />
+                              </svg>
+                              {/* Center percentage */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <span className={cn(
+                                  "text-sm font-black",
+                                  completionPercentage === 0 && "text-muted-foreground/40",
+                                  completionPercentage > 0 && completionPercentage < 100 && "text-blue-600 dark:text-blue-400",
+                                  completionPercentage === 100 && "text-green-600 dark:text-green-400"
+                                )}>
+                                  {completionPercentage}%
+                                </span>
+                              </div>
+                            </div>
+                            {/* Status Badge Below */}
+                            {isCompleted && (
+                              <Badge className="bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full">
+                                ✓ Done
+                              </Badge>
+                            )}
+                            {isStarted && !isCompleted && (
+                              <Badge className="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full">
+                                Active
+                              </Badge>
+                            )}
+                            {!isStarted && (
+                              <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-full border-muted-foreground/20">
+                                New
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Stats Pills */}
+                        <div className="flex flex-wrap gap-2">
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/30 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20">
+                            <Trophy className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
+                            <span className="text-xs font-semibold text-slate-900 dark:text-white">{completedCount}/{actualTopicCount}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/30 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20">
+                            <Target className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
+                            <span className="text-xs font-semibold text-slate-900 dark:text-white">{actualTopicCount - completedCount} left</span>
+                          </div>
                         </div>
 
                         {/* Description */}
-                        <p className="text-sm text-muted-foreground/80 leading-relaxed line-clamp-2 transition-colors duration-300 group-hover:text-muted-foreground">{summary}</p>
-
-                        {/* Progress Section */}
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-medium text-muted-foreground/70">Progress</span>
-                            <span className="text-sm font-bold text-primary">{completionPercentage}%</span>
-                          </div>
-                          <div className="relative h-2.5 rounded-full bg-slate-200/50 dark:bg-slate-800/50 overflow-hidden">
-                            <div 
-                              className={cn(
-                                "absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out",
-                                `bg-gradient-to-r ${accent.replace('/80', '').replace('/60', '')}`,
-                                completionPercentage === 0 && "w-0",
-                                completionPercentage === 100 && "animate-gradient-shift"
-                              )}
-                              style={{ width: `${completionPercentage}%` }}
-                            />
-                          </div>
-                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">{summary}</p>
                       </CardHeader>
                       
-                      <CardContent className="mt-auto p-0 pt-4">
-                        <div 
-                          className="group/button relative w-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-white font-semibold shadow-lg shadow-blue-500/25 dark:shadow-blue-500/15 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/35 dark:hover:shadow-blue-500/25 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 dark:hover:from-blue-400 dark:hover:via-indigo-400 dark:hover:to-purple-400 hover:scale-[1.03] hover:-translate-y-0.5 overflow-hidden px-5 py-2.5 text-center cursor-pointer active:scale-[0.98] select-none"
+                      <CardContent className="mt-auto p-0 pt-4 pointer-events-auto relative z-10">
+                        <button
+                          type="button"
+                          className="group/button relative w-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-white font-semibold shadow-lg shadow-blue-500/25 dark:shadow-blue-500/15 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/35 dark:hover:shadow-blue-500/25 hover:-translate-y-0.5 overflow-hidden px-5 py-2.5 text-center cursor-pointer active:scale-[0.98] select-none z-20"
                           onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            
                             // Create ripple effect
                             const button = e.currentTarget;
                             const rect = button.getBoundingClientRect();
                             const x = e.clientX - rect.left;
                             const y = e.clientY - rect.top;
-                            
+
                             const ripple = document.createElement('span');
                             ripple.className = 'click-ripple';
                             ripple.style.left = `${x}px`;
                             ripple.style.top = `${y}px`;
                             button.appendChild(ripple);
-                            
-                            // Add flash effect
+
                             button.classList.add('animate-click-flash');
-                            
-                            // Navigate after animation starts
-                            setTimeout(() => {
-                              router.push(`/${lang.slug}`);
-                            }, 150);
-                            
+
                             setTimeout(() => {
                               ripple.remove();
                               button.classList.remove('animate-click-flash');
                             }, 600);
                           }}
                         >
-                          {/* Waving border effect - only visible on hover */}
-                          <div className="absolute -inset-[2px] rounded-full opacity-0 group-hover/button:opacity-100 transition-opacity duration-500 pointer-events-none">
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 dark:from-blue-300 dark:via-purple-300 dark:to-indigo-300 animate-wave-border blur-[1px]" />
+                          {/* Shiny glow effect from left to right */}
+                          <div className="absolute inset-0 rounded-full pointer-events-none overflow-hidden">
+                            <div className="absolute top-0 bottom-0 w-[50%] bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover/button:animate-shine-glow pointer-events-none" style={{ filter: 'blur(10px)' }} />
                           </div>
-                          
-                          {/* Simple gradient overlay */}
-                          <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/0 to-white/20 group-hover/button:to-white/30 transition-all duration-300 pointer-events-none" />
                           
                           {/* Click indicator */}
                           <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 active:opacity-100 transition-opacity duration-150 pointer-events-none" />
@@ -375,7 +504,7 @@ function DashboardContent() {
                           <span className="relative text-sm font-medium tracking-wide group-hover/button:font-semibold transition-all duration-200 pointer-events-none">
                             Start Learning
                           </span>
-                        </div>
+                        </button>
                       </CardContent>
                     </div>
                   </Link>

@@ -48,6 +48,7 @@ const JavaScriptPrototypes = lazy(() => import('./topics/javascript-prototypes')
 const JavaScriptES6Classes = lazy(() => import('./topics/javascript-es6-classes'));
 const JavaScriptClassInheritance = lazy(() => import('./topics/javascript-class-inheritance'));
 const JavaScriptStaticMethods = lazy(() => import('./topics/javascript-static-methods'));
+const JavaScriptJsAsync = lazy(() => import('./topics/javascript-js-async'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -92,6 +93,7 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'es6-classes': JavaScriptES6Classes,
   'class-inheritance': JavaScriptClassInheritance,
   'static-methods': JavaScriptStaticMethods,
+  'js-async': JavaScriptJsAsync,
 };
 
 function LoadingSkeleton() {

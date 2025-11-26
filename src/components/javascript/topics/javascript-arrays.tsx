@@ -40,7 +40,7 @@ const playgroundHtml = `<!DOCTYPE html>
   <div class="layout">
     <section class="panel">
       <h1>Array Explorations</h1>
-      <p>Click run in CODER POD to execute the selected snippet and inspect console output.</p>
+      <p>Click run to execute the selected snippet and inspect console output.</p>
       <button id="run">Run Demo</button>
     </section>
     <section class="panel">
