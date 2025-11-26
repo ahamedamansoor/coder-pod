@@ -40,6 +40,7 @@ interface FirebaseProviderProps {
   children: ReactNode;
 }
 
+// This component exists to listen to Firebase errors and show toasts.
 const FirebaseErrorListener: React.FC = () => {
   const { userError } = useFirebase();
 
@@ -56,17 +57,12 @@ const FirebaseErrorListener: React.FC = () => {
 };
 
 export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) => {
-  const [{ firebaseApp, firestore, auth }, setFirebaseServices] = useState<{ firebaseApp: FirebaseApp | null, firestore: Firestore | null, auth: Auth | null }>({ firebaseApp: null, firestore: null, auth: null });
+  const [firebaseServices] = useState(() => initializeFirebase(firebaseConfig));
+  const { firebaseApp, firestore, auth } = firebaseServices;
+
   const [userAuthState, setUserAuthState] = useState<{ user: User | null, isUserLoading: boolean, userError: Error | null }>({ user: null, isUserLoading: true, userError: null });
 
   useEffect(() => {
-    const { firebaseApp, firestore, auth } = initializeFirebase(firebaseConfig);
-    setFirebaseServices({ firebaseApp, firestore, auth });
-  }, []);
-
-  useEffect(() => {
-    if (!auth) return;
-
     const unsubscribe = onIdTokenChanged(auth, (user) => {
       setUserAuthState({ user, isUserLoading: false, userError: null });
     }, (error) => {
