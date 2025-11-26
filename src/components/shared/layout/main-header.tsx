@@ -3,7 +3,7 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid, Mic, Home, Notebook, ToyBrick } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid, Mic, Home, ToyBrick } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -92,15 +92,6 @@ export function MainHeader({
             </Link>
         </Button>
         <LanguageSwitcher currentLanguageSlug={currentLanguageSlug} />
-         <Button
-          asChild
-          className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200"
-        >
-          <Link href="/notes">
-            <Notebook className="mr-2 h-4 w-4" />
-            Add Notes
-          </Link>
-        </Button>
       </div>
       <div className="flex items-center gap-4">
         {currentLanguage?.slug === 'react' ? (

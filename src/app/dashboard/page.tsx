@@ -1,10 +1,14 @@
 'use client';
 
 import { Suspense, useEffect } from 'react';
-import AppLayout from '@/components/shared/layout/app-layout';
+import { AppLayout } from '@/components/shared/layout/app-layout';
 import { useUser } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLoading } from '@/hooks/use-loading';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { languages } from '@/app/data';
 
 function DashboardContent() {
   const { user, isUserLoading } = useUser();
@@ -45,7 +49,29 @@ function DashboardContent() {
     );
   }
 
-  return <AppLayout />;
+  return (
+    <AppLayout>
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold mb-2">Welcome to CoderPod!</h1>
+        <p className="text-lg text-muted-foreground">Your personal AI-powered coding tutor.</p>
+      </div>
+      <div className="grid md:grid-cols-3 gap-8">
+        {languages.map((lang) => (
+          <Card key={lang.slug}>
+            <CardHeader>
+              <CardTitle>{lang.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4">{lang.description}</p>
+              <Button asChild>
+                <Link href={`/${lang.slug}`}>{lang.name} Learning Path</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </AppLayout>
+  );
 }
 
 export default function Dashboard() {
