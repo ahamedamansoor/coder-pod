@@ -1,14 +1,13 @@
 
 'use client';
 
-import { ThemeProvider } from '@/components/shared/layout';
+import { ThemeProvider } from '@/components/shared/layout/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
 import { Loader2 } from 'lucide-react';
 import { FirebaseProvider } from '@/firebase';
-import { firebaseConfig } from '@/firebase/config';
 
 function GlobalLoadingIndicator() {
     const { isLoading } = useLoading();
@@ -26,7 +25,7 @@ function GlobalLoadingIndicator() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <FirebaseProvider firebaseConfig={firebaseConfig}>
+        <FirebaseProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                 <TooltipProvider>
                     <SidebarProvider>

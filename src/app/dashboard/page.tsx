@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useEffect } from 'react';
-import AppLayout from '@/components/shared/layout/app-layout';
+import { AppLayout } from '@/components/shared/layout/app-layout';
 import { useUser } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLoading } from '@/hooks/use-loading';
@@ -45,7 +45,7 @@ function DashboardContent() {
     );
   }
 
-  return <AppLayout />;
+  return <AppLayout>Hello</AppLayout>;
 }
 
 export default function Dashboard() {
