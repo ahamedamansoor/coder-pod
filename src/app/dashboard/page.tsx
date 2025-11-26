@@ -20,7 +20,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { languages } from '@/app/data';
-import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings } from 'lucide-react';
+import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/shared/layout/logo';
 import { ThemeToggle } from '@/components/shared/layout/theme-toggle';
@@ -100,7 +100,7 @@ function DashboardContent() {
   const { data: userData } = useDoc(userDocRef);
 
   // Filter languages based on category
-  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'scss'];
+  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'scss', 'rxjs'];
   const backendLanguages = ['java', 'spring', 'spring-boot'];
   
   const filteredLanguages = languages.filter(lang => {
@@ -128,6 +128,8 @@ function DashboardContent() {
     java: 'from-orange-100/80 via-amber-50/60 to-pink-100/80',
     spring: 'from-emerald-100/80 via-green-50/60 to-lime-100/80',
     'spring-boot': 'from-teal-100/80 via-emerald-50/60 to-green-100/80',
+    dsa: 'from-violet-100/80 via-indigo-50/60 to-blue-100/80',
+    rxjs: 'from-cyan-100/80 via-sky-50/60 to-indigo-100/80',
   };
 
   const handleLogout = async () => {
@@ -538,6 +540,147 @@ function DashboardContent() {
           </div>
         </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="relative w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-blue-950/20 dark:to-indigo-950/20 border-t border-slate-200/50 dark:border-slate-800/50">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-24 left-1/4 w-96 h-96 bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-purple-400/10 dark:bg-purple-600/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
+          <div className="max-w-[1920px] mx-auto">
+            {/* Main Footer Content */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              {/* About Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600">
+                    <Code2 className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-lg font-bold">
+                    <span className="font-black" style={{ color: '#5B7FFF' }}>CODER</span>
+                    {' '}
+                    <span className="font-black text-gray-900 dark:text-white">POD</span>
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Your AI-powered coding companion for mastering programming languages through interactive lessons and hands-on practice.
+                </p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <span>Empowering developers worldwide</span>
+                </div>
+              </div>
+
+              {/* Quick Links */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/notes" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      My Notes
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="#languages" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      Languages
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Developer Info */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide">Connect</h3>
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground flex items-center gap-2">
+                    <Heart className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
+                    <span>Crafted with passion</span>
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <a 
+                      href="https://www.linkedin.com/in/ahamedamansoor/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
+                    >
+                      <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      <span>LinkedIn</span>
+                    </a>
+                    <a 
+                      href="mailto:ahamedamansoor@gmail.com" 
+                      className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 text-slate-700 dark:text-slate-300 text-sm font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                    >
+                      <Mail className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
+                      <span>Email</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="relative mb-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200 dark:border-slate-800"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <div className="bg-gradient-to-r from-transparent via-slate-50 dark:via-slate-950 to-transparent px-4">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <span>Built with Next.js, TypeScript & Firebase</span>
+                    <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Bar - Developer Credits */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-muted-foreground">
+                <span className="flex items-center gap-2">
+                  <Code2 className="w-4 h-4 text-blue-500" />
+                  <span>© {new Date().getFullYear()} CODER POD. All rights reserved.</span>
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-muted-foreground">Developed & Maintained by</span>
+                <a 
+                  href="https://www.linkedin.com/in/ahamedamansoor/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group relative font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span className="relative">
+                    Ahamed Mansoor A
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* Subtle Animation Indicator */}
+            <div className="flex justify-center mt-6 opacity-30 hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0s' }}></div>
+                <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

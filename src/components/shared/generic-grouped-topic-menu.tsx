@@ -107,9 +107,11 @@ export function GenericGroupedTopicMenu({
 
             {/* Enhanced Topic List */}
             <div className="ml-4 border-l-2 border-border pl-3 space-y-0.5 transition-all duration-300">
-              {group.topics.map((topic, topicIndex) => {
-                const isCompleted = completedTopics.has(topic.slug);
-                const isActive = selectedTopicSlug === topic.slug;
+                  {group.topics.map((topic, topicIndex) => {
+                    const isCompleted = completedTopics.has(topic.slug);
+                    const isActive = selectedTopicSlug === topic.slug;
+                    const truncatedTitle =
+                      topic.title.length > 48 ? `${topic.title.slice(0, 45)}…` : topic.title;
                 
                 return (
                   <SidebarMenuItem 
@@ -157,13 +159,13 @@ export function GenericGroupedTopicMenu({
                         </div>
 
                         {/* Topic Title */}
-                        <span 
+                        <span
                           className={cn(
-                            "transition-all duration-200 line-clamp-2 flex-1",
+                            "transition-all duration-200 flex-1 truncate",
                             isActive && "font-semibold"
                           )}
                         >
-                          {topic.title}
+                          {truncatedTitle}
                         </span>
                       </Link>
                     </SidebarMenuButton>

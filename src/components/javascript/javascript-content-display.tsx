@@ -49,6 +49,15 @@ const JavaScriptES6Classes = lazy(() => import('./topics/javascript-es6-classes'
 const JavaScriptClassInheritance = lazy(() => import('./topics/javascript-class-inheritance'));
 const JavaScriptStaticMethods = lazy(() => import('./topics/javascript-static-methods'));
 const JavaScriptJsAsync = lazy(() => import('./topics/javascript-js-async'));
+const JavaScriptCallbacks = lazy(() => import('./topics/javascript-callbacks'));
+const JavaScriptPromises = lazy(() => import('./topics/javascript-promises'));
+const JavaScriptPromiseMethods = lazy(() => import('./topics/javascript-promise-methods'));
+const JavaScriptAsyncAwait = lazy(() => import('./topics/javascript-async-await'));
+const JavaScriptAsyncErrorHandling = lazy(() => import('./topics/javascript-async-error-handling'));
+const JavaScriptCallStack = lazy(() => import('./topics/javascript-call-stack'));
+const JavaScriptEventLoop = lazy(() => import('./topics/javascript-event-loop'));
+const JavaScriptTaskQueue = lazy(() => import('./topics/javascript-task-queue'));
+const JavaScriptWhatIsDOM = lazy(() => import('./topics/javascript-what-is-dom'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -94,6 +103,15 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'class-inheritance': JavaScriptClassInheritance,
   'static-methods': JavaScriptStaticMethods,
   'js-async': JavaScriptJsAsync,
+  'callbacks': JavaScriptCallbacks,
+  'promises': JavaScriptPromises,
+  'promise-methods': JavaScriptPromiseMethods,
+  'async-await': JavaScriptAsyncAwait,
+  'error-handling-async': JavaScriptAsyncErrorHandling,
+  'call-stack': JavaScriptCallStack,
+  'event-loop': JavaScriptEventLoop,
+  'task-queue': JavaScriptTaskQueue,
+  'what-is-dom': JavaScriptWhatIsDOM,
 };
 
 function LoadingSkeleton() {

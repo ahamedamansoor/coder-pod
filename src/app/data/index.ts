@@ -7,6 +7,8 @@ import { react } from './react';
 import { java } from './java';
 import { spring } from './spring';
 import { springBoot } from './spring-boot';
+import { dsa } from './dsa';
+import { rxjs } from './rxjs';
 import type { Language } from './types';
 
 export const languages: Language[] = [
@@ -17,7 +19,9 @@ export const languages: Language[] = [
     react,
     java,
     spring,
-    springBoot
+    springBoot,
+    dsa,
+    rxjs,
 ];
 
 export * from './types';

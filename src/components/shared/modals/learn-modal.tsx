@@ -70,6 +70,7 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
             { href: '/scss/learning-plan', label: 'Sass/SCSS' },
             { href: '/javascript/learning-plan', label: 'JavaScript' },
             { href: '/react/learning-plan', label: 'React' },
+            { href: '/rxjs/learning-plan', label: 'RxJS' },
           ]
       },
       {
@@ -78,6 +79,12 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
             { href: '/java/learning-plan', label: 'Java' },
             { href: '/spring/learning-plan', label: 'Spring Framework' },
             { href: '/spring-boot/learning-plan', label: 'Spring Boot' },
+          ]
+      },
+      {
+          group: 'Computer Science',
+          items: [
+            { href: '/dsa/learning-plan', label: 'Data Structures & Algorithms' },
           ]
       }
   ]

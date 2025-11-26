@@ -21,6 +21,8 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { useDsa } from '@/app/dsa/dsa-context';
+import { useRxjs } from '@/app/rxjs/rxjs-context';
 import { useUser } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
@@ -35,6 +37,8 @@ function useLanguageContext(language: Language) {
         case 'html': return useHtml();
         case 'css': return useCss();
         case 'scss': return useScss();
+        case 'dsa': return useDsa();
+        case 'rxjs': return useRxjs();
         default: return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
     }
 }

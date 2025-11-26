@@ -20,14 +20,16 @@ export function LanguageSwitcher({
     (lang) => lang.slug === currentLanguageSlug
   );
 
-  const frontendSlugs = new Set(['html', 'css', 'scss', 'javascript', 'react']);
+  const frontendSlugs = new Set(['html', 'css', 'scss', 'javascript', 'react', 'rxjs']);
   const backendSlugs = new Set(['java', 'spring', 'spring-boot']);
+  const dsaSlugs = new Set(['dsa']);
 
   const frontendLanguages = languages.filter((lang) => frontendSlugs.has(lang.slug));
   const backendLanguages = languages.filter((lang) => backendSlugs.has(lang.slug));
   const otherLanguages = languages.filter(
-    (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug)
+    (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug)
   );
+  const dsaLanguages = languages.filter((lang) => dsaSlugs.has(lang.slug));
 
   return (
     <DropdownMenu>
@@ -53,6 +55,16 @@ export function LanguageSwitcher({
           <div>
             <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase">Backend</p>
             {backendLanguages.map((lang) => (
+              <DropdownMenuItem key={lang.slug} asChild>
+                <Link href={`/${lang.slug}/learning-plan`}>{lang.name}</Link>
+              </DropdownMenuItem>
+            ))}
+          </div>
+        )}
+        {dsaLanguages.length > 0 && (
+          <div>
+            <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase">DSA</p>
+            {dsaLanguages.map((lang) => (
               <DropdownMenuItem key={lang.slug} asChild>
                 <Link href={`/${lang.slug}/learning-plan`}>{lang.name}</Link>
               </DropdownMenuItem>

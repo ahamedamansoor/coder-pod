@@ -20,10 +20,14 @@ import { useReact } from '@/app/react/react-context';
 import { useHtml } from '@/app/html/html-context';
 import { useCss } from '@/app/css/css-context';
 import { useScss } from '@/app/scss/scss-context';
+import { useDsa } from '@/app/dsa/dsa-context';
+import { useRxjs } from '@/app/rxjs/rxjs-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
 import { cn } from '@/lib/utils';
+import { dsaCategoryOrder } from '@/data/dsa-roadmap';
+import { rxjsCategoryOrder } from '@/data/rxjs-roadmap';
 
 // A new hook for Spring Boot will be needed here
 // import { useSpringBoot } from '@/app/spring-boot/spring-boot-context';
@@ -58,6 +62,12 @@ function useLanguageContext(language: Language) {
         case 'scss':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useScss();
+        case 'dsa':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useDsa();
+        case 'rxjs':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useRxjs();
         default:
             // Fallback or default context if necessary
             return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
@@ -237,6 +247,10 @@ export function TopicSidebar({
                 break;
             }
         }
+    } else if (language.slug === 'dsa' || language.slug === 'rxjs') {
+      if (topic.category) {
+        group = topic.category;
+      }
     }
 
 
@@ -301,6 +315,10 @@ export function TopicSidebar({
     ? ["Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Advanced CSS", "Professional CSS"]
     : language.slug === 'scss'
     ? ["1. Fundamentals", "2. Nesting & Selectors", "3. File Organization", "4. Reusability", "5. Control & Logic", "6. Data Types & Functions", "7. Advanced Topics", "8. Professional Development"]
+    : language.slug === 'dsa'
+    ? dsaCategoryOrder
+    : language.slug === 'rxjs'
+    ? rxjsCategoryOrder
     : [];
 
   // Build ordered groups array for generic component (HTML and JavaScript)
@@ -329,7 +347,7 @@ export function TopicSidebar({
                 <CheckCircle className="w-4 h-4 text-muted-foreground shrink-0" />
               )}
               <p className={cn(
-                "text-sm font-bold transition-colors line-clamp-1",
+                "text-sm font-bold transition-colors line-clamp-1 truncate",
                 isGroupComplete ? "text-primary" : "text-foreground"
               )}>
                 {title}
@@ -373,6 +391,9 @@ export function TopicSidebar({
             const isCompleted = completedTopics.has(topic.slug);
             const isActive = selectedTopicSlug === topic.slug;
             
+            const truncatedTitle =
+              topic.title.length > 48 ? `${topic.title.slice(0, 45)}…` : topic.title;
+
             return (
               <SidebarMenuItem key={topic.slug}>
                 <SidebarMenuButton
@@ -407,11 +428,13 @@ export function TopicSidebar({
                     )}
                     
                     {/* Topic Title */}
-                    <span className={cn(
-                      "transition-all duration-200 line-clamp-2 flex-1",
-                      isActive && "font-semibold"
-                    )}>
-                      {topic.title}
+                    <span
+                      className={cn(
+                        "transition-all duration-200 flex-1 truncate",
+                        isActive && "font-semibold"
+                      )}
+                    >
+                      {truncatedTitle}
                     </span>
                   </Link>
                 </SidebarMenuButton>
