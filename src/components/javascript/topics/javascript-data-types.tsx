@@ -580,19 +580,43 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
             </div>
           </div>
 
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-              <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">JavaScript</span>
-              <span className="text-purple-600/70 dark:text-purple-400/70">Unique keys + huge numbers</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{symbolBigIntJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Symbol & BigInt"
+            description="Use Symbol for unique identifiers and BigInt for safely handling very large integers"
+            code={symbolBigIntJs}
+            output={[
+              "Symbol: Symbol(id)",
+              "Are they equal? false",
+              "// Each Symbol is unique",
+              "",
+              "BigInt: 9007199254740995n",
+              "Result: 10007199254741000n",
+              "\u2705 Symbol & BigInt for special needs"
+            ]}
+            language="javascript"
+            colorTheme="purple"
+            icon={CircleDot}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(symbolBigIntHtml, '', symbolBigIntJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Run Symbol & BigInt demo
-            </Button>
+            <InteractivePlayground
+              title="Try Symbol & BigInt"
+              description="Experiment with unique identifiers and large integers"
+              features={[
+                'Unique Symbols',
+                'Large Numbers',
+                'Object Keys',
+                'Safe Math'
+              ]}
+              buttonText="Open Symbol & BigInt Demo"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: symbolBigIntHtml,
+                css: '',
+                js: symbolBigIntJs
+              }}
+              colorTheme="purple"
+            />
           )}
         </CardContent>
       </Card>
@@ -739,19 +763,44 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
             </div>
           </div>
 
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">JavaScript</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Value vs reference in code</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{referenceCopyJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Copying Values vs References"
+            description="Primitives copy by value (independent), objects/arrays copy by reference (shared)"
+            code={referenceCopyJs}
+            output={[
+              "Primitive: a=5, b=10",
+              "// Changing b doesn't affect a",
+              "",
+              "Reference: obj1 and obj2 both = { x: 100 }",
+              "// They share the same object!",
+              "",
+              "\u2705 Primitives: value copy",
+              "\u2705 Objects: reference copy"
+            ]}
+            language="javascript"
+            colorTheme="amber"
+            icon={ClipboardCheck}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(referenceCopyHtml, '', referenceCopyJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              See copy behavior live
-            </Button>
+            <InteractivePlayground
+              title="Try Copy Behavior"
+              description="See the difference between copying values and references"
+              features={[
+                'Value Copy',
+                'Reference Copy',
+                'Shared State',
+                'Clone Methods'
+              ]}
+              buttonText="Open Copy Demo"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: referenceCopyHtml,
+                css: '',
+                js: referenceCopyJs
+              }}
+              colorTheme="amber"
+            />
           )}
         </CardContent>
       </Card>

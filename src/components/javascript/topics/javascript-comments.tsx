@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   MessageSquare,
   Sparkles,
@@ -16,7 +16,6 @@ import {
   XCircle,
   BookOpen,
   ClipboardList,
-  Play,
   ListChecks,
 } from 'lucide-react';
 
@@ -322,29 +321,26 @@ async function fetchProfile(id) {
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ comment styles and documentation.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(commentsHtml, '', commentsJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights comment usage (single-line, multi-line, and JSDoc) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try Comment Styles"
+          description="Experiment with single-line, multi-line, and JSDoc comments in a real coding environment"
+          features={[
+            'Single-line //',
+            'Multi-line /* */',
+            'JSDoc /** */',
+            'Best Practices'
+          ]}
+          buttonText="Open Comments Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: commentsHtml,
+            css: '',
+            js: commentsJs
+          }}
+          colorTheme="blue"
+        />
+      )}
     </div>
   );
 }

@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   Terminal,
   Bug,
@@ -19,7 +19,6 @@ import {
   CheckCircle2,
   XCircle,
   Sparkles,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptConsoleMethodsProps {
@@ -332,29 +331,26 @@ export default function JavaScriptConsoleMethods({ onOpenWebPlayground }: JavaSc
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ console methods and debugging techniques.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(consoleHtml, '', consoleJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights console methods (log, warn, error, table, group, time, and styled messages) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try Console Methods"
+          description="Experiment with log, warn, error, table, group, time, and styled console messages"
+          features={[
+            'console.log/warn/error',
+            'console.table',
+            'console.group',
+            'Styled Messages'
+          ]}
+          buttonText="Open Console Methods Demo"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: consoleHtml,
+            css: '',
+            js: consoleJs
+          }}
+          colorTheme="purple"
+        />
+      )}
     </div>
   );
 }
