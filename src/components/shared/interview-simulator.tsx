@@ -1,220 +1,188 @@
 
 'use client';
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Mic, Sparkles, User, BrainCircuit, Volume2 } from 'lucide-react';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import { textToSpeech } from '@/ai/flows/text-to-speech-flow';
-import { useToast } from '@/hooks/use-toast';
-import { marked } from 'marked';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/components/ui/use-toast';
+import { Mic, MicOff, Volume2, Loader2, Sparkles, Wand2, Send, CornerDownLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { interviewAi } from '@/ai/flows/interview-flow';
+import { useUser } from '@/firebase';
+import { languages } from '@/app/data';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import ReactMarkdown from 'react-markdown';
+import GeminiKeyModal from '../dashboard/GeminiKeyModal'; // Import the modal
 
 interface InterviewSimulatorProps {
-  language: string;
-  children?: React.ReactNode;
+  languageSlug: string;
 }
 
-const SpeechRecognition =
-  typeof window !== 'undefined'
-    ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    : null;
+const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ languageSlug }) => {
+  const { user } = useUser();
+  const { toast } = useToast();
+  
+  // AI Feature availability
+  const [isAiEnabled, setIsAiEnabled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-export function InterviewSimulator({ language, children }: InterviewSimulatorProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  // State for the interview flow
   const [question, setQuestion] = useState('');
   const [userAnswer, setUserAnswer] = useState('');
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [idealAnswer, setIdealAnswer] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState('');
+  const [idealAnswer, setIdealAnswer] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSessionStarted, setIsSessionStarted] = useState(false);
-  const [previousQuestions, setPreviousQuestions] = useState<string[]>([]);
-  const { toast } = useToast();
-
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<any | null>(null);
-  
   const [isReading, setIsReading] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [previousQuestions, setPreviousQuestions] = useState<string[]>([]);
+
+  const recognitionRef = useRef<any>(null);
+
+  // Get language name from slug
+  const language = languages.find(lang => lang.slug === languageSlug);
+  const languageName = language?.name || 'the selected language';
 
   useEffect(() => {
-    if (!isOpen) {
-      // Reset state when dialog is closed
-      setIsSessionStarted(false);
-      setQuestion('');
-      setUserAnswer('');
-      setFeedback(null);
-      setIdealAnswer(null);
-      setPreviousQuestions([]);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-        setIsListening(false);
-      }
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!SpeechRecognition) {
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    recognition.onresult = (event: any) => {
-      let finalTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript + ' ';
-        }
-      }
-      if (finalTranscript) {
-         setUserAnswer(prevAnswer => prevAnswer + finalTranscript);
-      }
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
-    recognitionRef.current = recognition;
-
-    return () => {
-      recognition.stop();
-    };
-  }, []);
-  
-  const handleMicClick = () => {
-    if (!SpeechRecognition) {
-      toast({
-        variant: 'destructive',
-        title: 'Browser Not Supported',
-        description: 'Speech recognition is not supported by your browser. Please use Chrome or Edge.',
-      });
-      return;
-    }
-    if (isListening) {
-      recognitionRef.current?.stop();
+    // Check for API key on mount
+    const key = localStorage.getItem('gemini_api_key');
+    if (key) {
+      setIsAiEnabled(true);
     } else {
-      recognitionRef.current?.start();
+      setIsAiEnabled(false);
     }
-    setIsListening(!isListening);
-  };
-  
-  const handleReadAloud = async (textToRead: string, id: string) => {
-    const strippedText = textToRead.replace(/<[^>]+>/g, '');
-    if (isReading === id) {
-      audioRef.current?.pause();
-      setIsReading(null);
-      return;
-    }
+  }, []);
 
-    setIsReading(id);
-    try {
-      const response = await textToSpeech(strippedText);
-      if (response.media) {
-        if (audioRef.current) {
-          audioRef.current.pause();
-        }
-        const audio = new Audio(response.media);
-        audioRef.current = audio;
-        audio.play();
-        audio.onended = () => setIsReading(null);
-        audio.onerror = () => {
-          setIsReading(null);
-          toast({ variant: "destructive", title: "Audio Playback Error" });
-        }
-      } else {
-        throw new Error('No audio data received.');
-      }
-    } catch (error) {
-      console.error('Text-to-speech error:', error);
+  const handleSaveKey = async (key: string) => {
+    // A real app would have a backend to validate the key.
+    // For this demo, we'll assume any non-empty key is valid.
+    if (key.trim()) {
+      localStorage.setItem('gemini_api_key', key);
+      setIsAiEnabled(true);
       toast({
-        variant: 'destructive',
-        title: 'Audio Failed',
-        description: 'Could not generate audio for the text.',
+        title: 'AI Features Unlocked!',
+        description: 'You can now use the AI Interview Simulator.',
+        className: 'bg-green-500 text-white',
       });
-      setIsReading(null);
+      return true;
     }
+    return false;
   };
 
-  const startNewSession = async () => {
+  const startInitialQuestion = useCallback(async () => {
+    if (!user || !isAiEnabled) return;
     setIsLoading(true);
-    setIsSessionStarted(true);
-    setFeedback(null);
-    setIdealAnswer(null);
-    setUserAnswer('');
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    setIsReading(null);
-
     try {
-      const result = await conductInterview({
-        language,
-        question: 'Initial question',
-        userAnswer: '',
-        previousQuestions: [],
-      });
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) throw new Error('API key not found');
+      
+      const result = await interviewAi(apiKey, languageName, user.displayName || 'the user', 'start', '', []);
       setQuestion(result.nextQuestion);
       setPreviousQuestions([result.nextQuestion]);
     } catch (error) {
-      console.error('Interview start error:', error);
+      console.error('Failed to start interview:', error);
       toast({
         variant: 'destructive',
-        title: 'An Error Occurred',
-        description: 'Could not start the interview session. Please try again.',
+        title: 'Failed to Start Interview',
+        description: 'Could not fetch the first question. Please ensure your API key is valid.',
       });
-      setIsSessionStarted(false);
+      // If it fails, maybe the key is bad
+      setIsAiEnabled(false); 
     } finally {
       setIsLoading(false);
     }
+  }, [user, languageName, toast, isAiEnabled]);
+
+  // Start the interview once AI is enabled
+  useEffect(() => {
+    if (isAiEnabled && !question && !isLoading) {
+      startInitialQuestion();
+    }
+  }, [isAiEnabled, question, isLoading, startInitialQuestion]);
+
+  
+  // --- Voice Recognition Logic ---
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+          const recognition = new SpeechRecognition();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+    
+          recognition.onresult = (event: any) => {
+            let finalTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript + ' ';
+              }
+            }
+            if (finalTranscript) {
+               setUserAnswer(prevAnswer => prevAnswer + finalTranscript);
+            }
+          };
+      
+          recognition.onend = () => {
+            setIsListening(false);
+          };
+      
+          recognitionRef.current = recognition;
+        } else {
+            console.warn("Speech Recognition not supported in this browser.");
+        }
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) return;
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userAnswer.trim()) {
-      toast({
-        variant: 'destructive',
-        title: 'Answer Required',
-        description: 'Please provide an answer before submitting.',
-      });
+  // --- Text-to-Speech Logic ---
+  const handleReadAloud = (text: string, type: string) => {
+    if (isReading === type) {
+      window.speechSynthesis.cancel();
+      setIsReading(null);
       return;
     }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setIsReading(null);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    setIsReading(type);
+  };
+
+  // --- Form Submission Logic ---
+  const handleSubmitAnswer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userAnswer.trim() || !isAiEnabled) return;
+
     setIsLoading(true);
-    setFeedback(null);
-    setIdealAnswer(null);
-
+    setFeedback('');
+    setIdealAnswer('');
+    
     try {
-      const result = await conductInterview({
-        language,
-        question,
-        userAnswer,
-        previousQuestions,
-      });
-
-      const parsedFeedback = await marked(result.feedback);
-      const parsedIdealAnswer = await marked(result.idealAnswer);
-
-      setFeedback(parsedFeedback);
-      setIdealAnswer(parsedIdealAnswer);
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) throw new Error('API key not found');
+      
+      const result = await interviewAi(apiKey, languageName, user?.displayName || 'the user', 'answer', userAnswer, previousQuestions);
+      
+      const feedbackRegex = /Feedback:(.*?)Ideal Answer:/s;
+      const idealAnswerRegex = /Ideal Answer:(.*)/s;
+      
+      const parsedFeedback = result.feedback.match(feedbackRegex)?.[1] || result.feedback;
+      const parsedIdealAnswer = result.feedback.match(idealAnswerRegex)?.[1] || '';
+      
+      setFeedback(parsedFeedback.trim());
+      setIdealAnswer(parsedIdealAnswer.trim());
       setQuestion(result.nextQuestion);
       setPreviousQuestions(prev => [...prev, result.nextQuestion]);
       setUserAnswer('');
@@ -229,121 +197,125 @@ export function InterviewSimulator({ language, children }: InterviewSimulatorPro
       setIsLoading(false);
     }
   };
+  
+  // --- Main Render Logic ---
+  if (!isAiEnabled) {
+    return (
+      <>
+        <Card className="relative h-full w-full flex flex-col items-center justify-center p-8 text-center">
+          <div className="absolute inset-0 bg-gray-100/50 dark:bg-gray-900/50 backdrop-blur-sm z-10" />
+          <div className="relative z-20">
+            <Sparkles className="mx-auto h-12 w-12 text-blue-500 mb-4" />
+            <h3 className="text-2xl font-bold mb-2">AI Feature Locked</h3>
+            <p className="text-muted-foreground mb-6">
+              Please provide your Gemini API key to use the AI Interview Simulator.
+            </p>
+            <Button onClick={() => setIsModalOpen(true)}>
+              Enter API Key
+            </Button>
+          </div>
+        </Card>
+        <GeminiKeyModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSaveKey}
+        />
+      </>
+    );
+  }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {children || <Button>Start Interview</Button>}
-      </DialogTrigger>
-      <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle>AI Interview Simulator: {language}</DialogTitle>
-          <DialogDescription>
-            Practice for your next technical interview. Answer the question and get instant feedback.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex-1 overflow-y-auto space-y-6 pr-4">
-          {!isSessionStarted ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-                <BrainCircuit className="w-20 h-20 text-primary mb-4"/>
-                <h2 className="text-2xl font-semibold mb-2">Ready to practice for your {language} interview?</h2>
-                <p className="text-muted-foreground mb-6">Click the button below to get your first question.</p>
-                <Button onClick={startNewSession} disabled={isLoading}>
-                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Start Session"}
-                </Button>
-            </div>
-          ) : isLoading && !feedback ? (
-             <div className="space-y-6">
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-40 w-full" />
-             </div>
-          ) : (
-            <>
-              {question && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <BrainCircuit className="w-6 h-6 text-primary" />
-                        Interviewer's Question
-                      </div>
-                      <Button variant="ghost" size="icon" onClick={() => handleReadAloud(question, 'question')} disabled={isReading !== null && isReading !== 'question'}>
-                        <Volume2 className={cn("w-5 h-5", isReading === 'question' && 'text-primary animate-pulse')} />
-                        <span className="sr-only">Read question</span>
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-lg font-semibold text-foreground">{question}</p>
-                  </CardContent>
-                </Card>
-              )}
-
-              {feedback && idealAnswer && (
-                <div className="space-y-6">
-                  <Card className="border-primary bg-primary/5">
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between text-primary">
-                        <div className="flex items-center gap-2"><Sparkles className="w-5 h-5" /> AI Feedback</div>
-                         <Button variant="ghost" size="icon" onClick={() => handleReadAloud(feedback, 'feedback')} disabled={isReading !== null && isReading !== 'feedback'}>
-                            <Volume2 className={cn("w-5 h-5", isReading === 'feedback' && 'text-primary animate-pulse')} />
-                            <span className="sr-only">Read feedback</span>
-                        </Button>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent><div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: feedback }} /></CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader><CardTitle>Ideal Answer</CardTitle></CardHeader>
-                    <CardContent><div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: idealAnswer }} /></CardContent>
-                  </Card>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <User className="w-6 h-6 text-foreground" />
-                      Your Answer
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative">
+    <div className="h-full w-full flex flex-col lg:flex-row gap-6 p-4">
+      {/* Left Panel: Interview Questions & Answers */}
+      <div className="flex-1 h-full">
+        <form onSubmit={handleSubmitAnswer} className="h-full flex flex-col gap-4">
+            {question && (
+              <Card className='flex-shrink-0'>
+                <CardHeader className="flex flex-row items-start justify-between">
+                  <CardTitle className="text-xl font-bold flex-1">
+                    Current Question
+                  </CardTitle>
+                    <Button variant="ghost" size="icon" onClick={() => handleReadAloud(question, 'question')} disabled={isReading !== null && isReading !== 'question'}>
+                      <Volume2 className={cn("w-5 h-5", isReading === 'question' && 'text-primary animate-pulse')} />
+                      <span className="sr-only">Read question</span>
+                    </Button>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-lg font-semibold text-foreground">{question}</p>
+                </CardContent>
+              </Card>
+            )}
+            
+            <Card className="flex-1 h-full flex flex-col">
+                <CardHeader>
+                    <CardTitle className="text-xl font-bold">Your Answer</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1 flex flex-col gap-4">
                     <Textarea
-                      placeholder="Type your answer here, or use the microphone to speak."
-                      value={userAnswer}
-                      onChange={(e) => setUserAnswer(e.target.value)}
-                      rows={6}
-                      disabled={isLoading}
+                        value={userAnswer}
+                        onChange={e => setUserAnswer(e.target.value)}
+                        placeholder="Type your answer here or use the microphone..."
+                        className="flex-1 text-base resize-none"
+                        disabled={isLoading}
                     />
-                    {SpeechRecognition && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={handleMicClick}
-                        className={cn(
-                          "absolute bottom-6 right-6",
-                          isListening && "bg-destructive text-destructive-foreground animate-pulse"
-                        )}
-                      >
-                        <Mic className="w-5 h-5" />
-                        <span className="sr-only">Record answer</span>
-                      </Button>
-                    )}
-                  </CardContent>
-                   <DialogFooter className="p-6 pt-0">
-                      <Button type="submit" disabled={isLoading || !userAnswer.trim()}>
-                        {isLoading ? ( <> <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Evaluating... </> ) : ( 'Submit Answer' )}
-                      </Button>
-                  </DialogFooter>
-                </Card>
-              </form>
-            </>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+                    <div className="flex items-center justify-between">
+                        <Button type="button" variant="outline" onClick={toggleListening} disabled={!recognitionRef.current || isLoading} size="icon">
+                            {isListening ? <MicOff className="w-5 h-5 text-red-500" /> : <Mic className="w-5 h-5" />}
+                            <span className="sr-only">{isListening ? 'Stop listening' : 'Start listening'}</span>
+                        </Button>
+                        <Button type="submit" disabled={isLoading || !userAnswer.trim()}>
+                            {isLoading ? (
+                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</>
+                            ) : (
+                                <><Send className="mr-2 h-4 w-4"/> Submit Answer</>
+                            )}
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </form>
+      </div>
+
+      {/* Right Panel: Feedback & Ideal Answer */}
+      <div className="flex-1 h-full">
+        <Card className="h-full w-full flex flex-col">
+            <CardHeader>
+                <CardTitle className="text-xl font-bold flex items-center">
+                    <Wand2 className="mr-2 text-primary"/> AI Assistant Feedback
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 h-full">
+                <ScrollArea className="h-full w-full">
+                  {isLoading && !feedback && (
+                    <div className="flex items-center justify-center h-full">
+                      <Loader2 className="h-8 w-8 text-primary animate-spin" />
+                      <p className='text-muted-foreground ml-4'>Analyzing your answer...</p>
+                    </div>
+                  )}
+                  {!isLoading && !feedback && (
+                    <div className="text-center text-muted-foreground h-full flex flex-col items-center justify-center">
+                      <Wand2 className='w-10 h-10 mb-4'/>
+                      <p>Your feedback will appear here after you submit an answer.</p>
+                    </div>
+                  )}
+                  {feedback && (
+                      <div className="space-y-6">
+                        <div>
+                          <h3 className='font-bold text-lg mb-2 flex items-center'>Feedback on Your Answer</h3>
+                          <ReactMarkdown className="prose dark:prose-invert max-w-none">{feedback}</ReactMarkdown>
+                        </div>
+                        <div>
+                          <h3 className='font-bold text-lg mb-2 flex items-center'>Ideal Answer</h3>
+                          <ReactMarkdown className="prose dark:prose-invert max-w-none">{idealAnswer}</ReactMarkdown>
+                        </div>
+                      </div>
+                  )}
+                </ScrollArea>
+            </CardContent>
+        </Card>
+      </div>
+    </div>
   );
-}
+};
+
+export default InterviewSimulator;
