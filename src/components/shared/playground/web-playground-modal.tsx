@@ -16,14 +16,17 @@ import {
 } from '@/components/ui/resizable';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
-import { PanelTop, Code, Braces, FileJson, Terminal, Loader2, ChevronsUpDown, X } from 'lucide-react';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { 
+  PanelTop, Code, Braces, FileJson, Terminal, Loader2, 
+  X, Play, Maximize2, RefreshCw, Eye, Settings, Trash2, Moon, Sun
+} from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useWebPlayground } from './web-playground-context';
 import { Button } from '@/components/ui/button';
 import { compileScss } from '@/lib/scss-compiler';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
 
 const defaultHtml = `<!DOCTYPE html>
 <html>
@@ -208,10 +211,26 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
 
   const [outputSrc, setOutputSrc] = useState('');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
-  const [visiblePanels, setVisiblePanels] = useState<string[]>([
-    'html', 'style', 'js', 'console'
-  ]);
-  const { theme } = useTheme();
+  const [iframeKey, setIframeKey] = useState(0);
+  const [autoRun, setAutoRun] = useState(false); // Default to manual run
+  const [hasChanges, setHasChanges] = useState(false);
+  const [visiblePanels, setVisiblePanels] = useState({
+    html: true,
+    css: true,
+    js: true,
+    preview: true,
+    console: true,
+  });
+  const { theme, setTheme } = useTheme();
+  const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>(theme === 'dark' ? 'dark' : 'light');
+
+  const togglePanel = (panel: keyof typeof visiblePanels) => {
+    setVisiblePanels(prev => ({ ...prev, [panel]: !prev[panel] }));
+  };
+
+  const toggleEditorTheme = () => {
+    setEditorTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   // Initialize/reset code when modal opens or content changes
   useEffect(() => {
@@ -330,8 +349,21 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     }
   }, [open, initialLanguage]);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
+  // Function to run the code
+  const runCode = useCallback(() => {
+    // Clear console before running
+    setConsoleLogs([{
+      type: 'info',
+      message: ['🚀 Running code...'],
+      timestamp: new Date().toLocaleTimeString()
+    }]);
+    
+    // Force iframe reload by changing key first
+    setIframeKey(prev => prev + 1);
+    
+    // Small delay to ensure iframe unmounts before updating source
+    setTimeout(() => {
+      // Update the output source
       setOutputSrc(`
         data:text/html;charset=utf-8,${encodeURIComponent(`
           <html>
@@ -346,10 +378,35 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
           </html>
         `)}
       `);
-    }, 250);
+      setHasChanges(false);
+    }, 50);
+  }, [htmlCode, compiledCss, jsCode]);
 
-    return () => clearTimeout(timeout);
-  }, [htmlCode, compiledCss, jsCode, open]);
+  // Track code changes
+  useEffect(() => {
+    if (open) {
+      setHasChanges(true);
+    }
+  }, [htmlCode, jsCode, styleCode, open]);
+
+  // Auto-run when enabled
+  useEffect(() => {
+    if (!open) return;
+    
+    if (autoRun && hasChanges) {
+      const timeout = setTimeout(() => {
+        runCode();
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [htmlCode, compiledCss, jsCode, autoRun, open, hasChanges, runCode]);
+
+  // Initial run when modal opens
+  useEffect(() => {
+    if (open && htmlCode && compiledCss) {
+      runCode();
+    }
+  }, [open]);
   
   const getLogLevelClass = (type: ConsoleLog['type']) => {
     switch (type) {
@@ -380,208 +437,393 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] flex flex-col p-0 gap-0" showCloseButton={false}>
-        {/* Enhanced Header with gradient */}
-        <DialogHeader className="px-6 py-4 border-b bg-gradient-to-r from-primary/5 via-blue-500/5 to-purple-500/5 backdrop-blur-sm flex-row items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <PanelTop className="h-5 w-5 text-primary" />
+        {/* Clean, Structured Header */}
+        <DialogHeader className="px-6 py-3 border-b bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900 flex-row items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-500 rounded-lg shadow-sm">
+                <Code className="h-4 w-4 text-white" />
+              </div>
+              <div>
+                <DialogTitle className="text-base font-bold">Web Playground</DialogTitle>
+                <p className="text-[10px] text-muted-foreground">Live coding environment</p>
+              </div>
             </div>
-            <div>
-              <DialogTitle className="text-lg font-bold">Web Playground</DialogTitle>
-              <p className="text-xs text-muted-foreground">Live code editor with instant preview</p>
+            
+            {/* Language Badges */}
+            <div className="flex items-center gap-1.5">
+              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-orange-50 border-orange-200 text-orange-700 dark:bg-orange-950/30 dark:border-orange-800 dark:text-orange-400">
+                HTML
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/30 dark:border-blue-800 dark:text-blue-400">
+                {styleLang.toUpperCase()}
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-yellow-50 border-yellow-200 text-yellow-700 dark:bg-yellow-950/30 dark:border-yellow-800 dark:text-yellow-400">
+                JS
+              </Badge>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            {/* Panel Toggles */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-background/50 rounded-lg border">
+            {/* Clean Square Panel Toggles */}
+            <div className="flex items-center gap-2">
               <span className="text-xs font-medium text-muted-foreground">Panels:</span>
-              <ToggleGroup
-                type="multiple"
-                variant="outline"
-                value={visiblePanels}
-                onValueChange={(value) => setVisiblePanels(value)}
-                className="gap-1"
-              >
-                <ToggleGroupItem value="html" aria-label="Toggle HTML" size="sm" className="h-8 w-8">
+              <div className="flex gap-1">
+                <button
+                  onClick={() => togglePanel('html')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.html 
+                      ? 'bg-orange-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="HTML"
+                >
                   <FileJson className="h-4 w-4" />
-                </ToggleGroupItem>
-                <ToggleGroupItem value="style" aria-label="Toggle Style" size="sm" className="h-8 w-8">
+                  {visiblePanels.html && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePanel('css')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.css 
+                      ? 'bg-blue-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="CSS"
+                >
                   <Braces className="h-4 w-4" />
-                </ToggleGroupItem>
-                <ToggleGroupItem value="js" aria-label="Toggle JS" size="sm" className="h-8 w-8">
+                  {visiblePanels.css && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePanel('js')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.js 
+                      ? 'bg-yellow-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="JavaScript"
+                >
                   <Code className="h-4 w-4" />
-                </ToggleGroupItem>
-                <ToggleGroupItem value="console" aria-label="Toggle Console" size="sm" className="h-8 w-8">
+                  {visiblePanels.js && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePanel('preview')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.preview 
+                      ? 'bg-emerald-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="Preview"
+                >
+                  <Eye className="h-4 w-4" />
+                  {visiblePanels.preview && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePanel('console')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.console 
+                      ? 'bg-purple-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="Console"
+                >
                   <Terminal className="h-4 w-4" />
-                </ToggleGroupItem>
-              </ToggleGroup>
+                  {visiblePanels.console && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+              </div>
             </div>
+            
+            <div className="h-6 w-px bg-border" />
+            
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleEditorTheme}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
+                editorTheme === 'dark'
+                  ? 'bg-slate-800 text-white border-slate-700 hover:bg-slate-700'
+                  : 'bg-white text-slate-900 border-slate-200 hover:bg-slate-50'
+              }`}
+              title={`Switch to ${editorTheme === 'dark' ? 'Light' : 'Dark'} Theme`}
+            >
+              {editorTheme === 'dark' ? (
+                <>
+                  <Moon className="h-4 w-4" />
+                  <span>Dark</span>
+                </>
+              ) : (
+                <>
+                  <Sun className="h-4 w-4" />
+                  <span>Light</span>
+                </>
+              )}
+            </button>
+            
+            <div className="h-6 w-px bg-border" />
+            
+            {/* Auto-run Toggle */}
+            <button
+              onClick={() => setAutoRun(!autoRun)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                autoRun
+                  ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md'
+                  : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:scale-105 border'
+              }`}
+              title={autoRun ? 'Auto-run enabled - Click to disable' : 'Manual run - Click to enable auto-run'}
+            >
+              <RefreshCw className={`h-4 w-4 ${autoRun ? 'animate-spin' : ''}`} />
+              <span>{autoRun ? 'Auto-run' : 'Manual'}</span>
+            </button>
+            
+            {/* Run Button */}
+            {!autoRun && (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={runCode}
+                className="h-10 px-4 text-xs font-semibold gap-2 bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 relative"
+              >
+                <Play className="h-4 w-4" />
+                Run Code
+                {hasChanges && (
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white animate-pulse" />
+                )}
+              </Button>
+            )}
+            
+            {autoRun && hasChanges && (
+              <Badge variant="secondary" className="text-xs px-3 py-1 animate-pulse font-medium">
+                ⚡ Running...
+              </Badge>
+            )}
+            
+            {/* Clear Console */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setConsoleLogs([])} 
+              className="h-8 text-xs gap-1.5"
+              title="Clear console"
+            >
+              <Trash2 className="h-3 w-3" />
+            </Button>
+            
+            <div className="h-4 w-px bg-border" />
             
             {/* Close Button */}
             <DialogClose asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-destructive/10 hover:text-destructive" aria-label="Close">
-                <X className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" aria-label="Close">
+                <X className="h-4 w-4" />
               </Button>
             </DialogClose>
           </div>
         </DialogHeader>
+        {/* Main Content Area with Resizable Panels - All Horizontal */}
         <div className="flex-1 overflow-hidden">
-          <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={75}>
-              <ResizablePanelGroup direction="horizontal">
-                {visiblePanels.includes('html') && (
-                  <ResizablePanel defaultSize={18} collapsible minSize={10}>
-                    <div className="h-full flex flex-col">
-                      <div className="px-4 py-2 bg-orange-500/10 border-b flex items-center gap-2">
-                        <FileJson className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                        <span className="text-sm font-semibold text-orange-700 dark:text-orange-300">HTML</span>
-                      </div>
+          <ResizablePanelGroup direction="horizontal">
+                {/* HTML Editor */}
+                {visiblePanels.html && (
+                  <>
+                    <ResizablePanel defaultSize={20} collapsible minSize={15}>
+                      <div className="h-full flex flex-col">
+                        <div className="px-4 py-2.5 bg-orange-50 dark:bg-orange-950/20 border-b flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="p-1 bg-orange-500 rounded">
+                              <FileJson className="h-3 w-3 text-white" />
+                            </div>
+                            <span className="text-xs font-semibold text-orange-700 dark:text-orange-300">HTML</span>
+                          </div>
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                            index.html
+                          </Badge>
+                        </div>
                       <div className="flex-1">
-                        <Editor
-                          language="html"
-                          value={htmlCode}
-                          onChange={(value) => setHtmlCode(value || '')}
-                          theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                          options={{ 
-                            minimap: { enabled: false }, 
-                            wordWrap: 'on',
-                            fontSize: 14,
-                            lineNumbers: 'on',
-                            scrollBeyondLastLine: false,
-                            automaticLayout: true,
-                          }}
-                        />
+                      <Editor
+                        language="html"
+                        value={htmlCode}
+                        onChange={(value) => setHtmlCode(value || '')}
+                        theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}
+                        options={{ 
+                          minimap: { enabled: false }, 
+                          wordWrap: 'on',
+                          fontSize: 13,
+                          lineNumbers: 'on',
+                          scrollBeyondLastLine: false,
+                          automaticLayout: true,
+                          padding: { top: 12, bottom: 12 },
+                          lineNumbersMinChars: 3,
+                          glyphMargin: false,
+                          folding: true,
+                        }}
+                      />
                       </div>
                     </div>
                   </ResizablePanel>
+                  {(visiblePanels.css || visiblePanels.js || visiblePanels.preview) && <ResizableHandle withHandle />}
+                </>
                 )}
-                {visiblePanels.includes('html') && visiblePanels.includes('style') && <ResizableHandle withHandle />}
-                {visiblePanels.includes('style') && (
-                  <ResizablePanel defaultSize={18} collapsible minSize={10}>
-                     <div className="h-full flex flex-col">
-                       <div className="px-4 py-2 bg-blue-500/10 border-b flex items-center justify-between">
-                         <div className="flex items-center gap-2">
-                           <Braces className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                           <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
-                             {styleLang === 'scss' ? 'SCSS' : 'CSS'}
-                           </span>
-                           {styleLang === 'scss' && isCompiling && (
-                             <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                               <Loader2 className="h-3 w-3 animate-spin" />
-                               <span>Compiling...</span>
-                             </div>
-                           )}
-                         </div>
-                         <DropdownMenu>
-                           <DropdownMenuTrigger asChild>
-                             <Button variant="ghost" size="sm" className="h-7 text-xs gap-1 hover:bg-blue-500/20">
-                               {styleLang.toUpperCase()}
-                               <ChevronsUpDown className="h-3 w-3" />
-                             </Button>
-                           </DropdownMenuTrigger>
-                           <DropdownMenuContent>
-                             <DropdownMenuRadioGroup value={styleLang} onValueChange={(v) => setStyleLang(v as StyleLang)}>
-                               <DropdownMenuRadioItem value="scss">SCSS</DropdownMenuRadioItem>
-                               <DropdownMenuRadioItem value="css">CSS</DropdownMenuRadioItem>
-                             </DropdownMenuRadioGroup>
-                           </DropdownMenuContent>
-                         </DropdownMenu>
-                       </div>
+                
+                {/* CSS/SCSS Editor */}
+                {visiblePanels.css && (
+                  <>
+                    <ResizablePanel defaultSize={20} collapsible minSize={15}>
+                  <div className="h-full flex flex-col">
+                    <div className="px-4 py-2.5 bg-blue-50 dark:bg-blue-950/20 border-b flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1 bg-blue-500 rounded">
+                          <Braces className="h-3 w-3 text-white" />
+                        </div>
+                        <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+                          {styleLang === 'scss' ? 'SCSS' : 'CSS'}
+                        </span>
+                        {styleLang === 'scss' && isCompiling && (
+                          <div className="flex items-center gap-1">
+                            <Loader2 className="h-3 w-3 animate-spin text-blue-500" />
+                            <span className="text-[10px] text-muted-foreground">Compiling...</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                          styles.{styleLang}
+                        </Badge>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setStyleLang(styleLang === 'css' ? 'scss' : 'css')}
+                          className="h-6 text-[10px] px-2"
+                        >
+                          Switch to {styleLang === 'css' ? 'SCSS' : 'CSS'}
+                        </Button>
+                      </div>
+                    </div>
                        <div className="flex-1">
                          <Editor
                            language={styleLang}
                            value={styleCode}
                            onChange={(value) => setStyleCode(value || '')}
-                           theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                           theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}
                            options={{ 
                              minimap: { enabled: false }, 
                              wordWrap: 'on',
-                             fontSize: 14,
+                             fontSize: 13,
                              lineNumbers: 'on',
                              scrollBeyondLastLine: false,
                              automaticLayout: true,
+                             padding: { top: 12, bottom: 12 },
+                             lineNumbersMinChars: 3,
+                             glyphMargin: false,
+                             folding: true,
                            }}
                          />
-                       </div>
-                     </div>
+                      </div>
+                    </div>
                   </ResizablePanel>
+                  {(visiblePanels.js || visiblePanels.preview) && <ResizableHandle withHandle />}
+                </>
                 )}
-                {(visiblePanels.includes('html') || visiblePanels.includes('style')) && visiblePanels.includes('js') && <ResizableHandle withHandle />}
-                {visiblePanels.includes('js') && (
-                  <ResizablePanel defaultSize={18} collapsible minSize={10}>
+                
+                {/* JavaScript Editor */}
+                {visiblePanels.js && (
+                  <>
+                    <ResizablePanel defaultSize={20} collapsible minSize={15}>
                     <div className="h-full flex flex-col">
-                      <div className="px-4 py-2 bg-yellow-500/10 border-b flex items-center gap-2">
-                        <Code className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-                        <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">JavaScript</span>
+                      <div className="px-4 py-2.5 bg-yellow-50 dark:bg-yellow-950/20 border-b flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-yellow-500 rounded">
+                            <Code className="h-3 w-3 text-white" />
+                          </div>
+                          <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-300">JavaScript</span>
+                        </div>
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                          script.js
+                        </Badge>
                       </div>
                       <div className="flex-1">
                         <Editor
                           language="javascript"
                           value={jsCode}
                           onChange={(value) => setJsCode(value || '')}
-                          theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                          theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}
                           options={{ 
                             minimap: { enabled: false }, 
                             wordWrap: 'on',
-                            fontSize: 14,
+                            fontSize: 13,
                             lineNumbers: 'on',
                             scrollBeyondLastLine: false,
                             automaticLayout: true,
+                            padding: { top: 12, bottom: 12 },
+                            lineNumbersMinChars: 3,
+                            glyphMargin: false,
+                            folding: true,
                           }}
                         />
                       </div>
                     </div>
                   </ResizablePanel>
+                  {visiblePanels.preview && <ResizableHandle withHandle />}
+                </>
                 )}
-                <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={46} minSize={25}>
-                  <div className="h-full flex flex-col">
-                    <div className="px-4 py-2 bg-green-500/10 border-b flex items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                        <span className="text-sm font-semibold text-green-700 dark:text-green-300">Live Preview</span>
+                
+                {/* Live Preview */}
+                {visiblePanels.preview && (
+                  <ResizablePanel defaultSize={40} minSize={20}>
+                    <div className="h-full flex flex-col">
+                      <div className="px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950/20 border-b flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Live Preview</span>
+                      </div>
+                      <div className={`flex-1 relative ${editorTheme === 'dark' ? 'bg-slate-900' : 'bg-white'}`}>
+                        <iframe
+                          key={iframeKey}
+                          src={outputSrc}
+                          title="preview"
+                          sandbox="allow-scripts allow-modals"
+                          frameBorder="0"
+                          width="100%"
+                          height="100%"
+                          className="absolute inset-0"
+                        />
                       </div>
                     </div>
-                    <div className="flex-1 relative">
-                      <iframe
-                        src={outputSrc}
-                        title="output"
-                        sandbox="allow-scripts allow-modals"
-                        frameBorder="0"
-                        width="100%"
-                        height="100%"
-                        className="bg-white dark:bg-gray-900"
-                      />
-                    </div>
-                  </div>
-                </ResizablePanel>
-              </ResizablePanelGroup>
-            </ResizablePanel>
-
-            {visiblePanels.includes('console') && (
-              <>
-                <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={25} collapsible minSize={10}>
-                  <div className="h-full flex flex-col bg-muted/30">
-                    <div className="px-4 py-2 bg-purple-500/10 border-b flex items-center justify-between">
+                  </ResizablePanel>
+                )}
+                
+                {/* Console Panel - Now Vertical */}
+                {visiblePanels.console && (
+                  <>
+                    {(visiblePanels.html || visiblePanels.css || visiblePanels.js || visiblePanels.preview) && <ResizableHandle withHandle />}
+                    <ResizablePanel defaultSize={20} collapsible minSize={15}>
+                  <div className="h-full flex flex-col">
+                    <div className="px-4 py-2.5 bg-purple-50 dark:bg-purple-950/20 border-b flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Terminal className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                        <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Console Output</span>
-                        <span className="text-xs text-muted-foreground">
-                          ({consoleLogs.length} {consoleLogs.length === 1 ? 'message' : 'messages'})
-                        </span>
+                        <div className="p-1 bg-purple-500 rounded">
+                          <Terminal className="h-3 w-3 text-white" />
+                        </div>
+                        <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">Console</span>
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                          {consoleLogs.length} {consoleLogs.length === 1 ? 'msg' : 'msgs'}
+                        </Badge>
                       </div>
                       <Button 
                         variant="ghost" 
                         size="sm" 
                         onClick={() => setConsoleLogs([])}
-                        className="h-7 text-xs hover:bg-purple-500/20"
+                        className="h-6 text-[10px] px-2 hover:bg-purple-500/20"
                       >
+                        <Trash2 className="h-3 w-3 mr-1" />
                         Clear
                       </Button>
                     </div>
-                    <ScrollArea className="flex-1 p-3">
+                    <ScrollArea className={`flex-1 p-3 ${editorTheme === 'dark' ? 'bg-slate-950' : 'bg-muted/30'}`}>
                       {consoleLogs.length === 0 ? (
                         <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
                           <div className="text-center">

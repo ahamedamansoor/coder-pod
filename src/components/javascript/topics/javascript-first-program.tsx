@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   Zap,
   Terminal,
@@ -30,16 +31,6 @@ import {
 interface JavaScriptFirstProgramProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/70 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
 
 const consoleHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -223,129 +214,130 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Example 1: Console Hello */}
-          <div className="rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-gradient-to-br from-blue-50/40 to-cyan-50/40 dark:from-blue-950/10 dark:to-cyan-950/10 p-6 space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-blue-500/80 dark:bg-blue-600/80 rounded-lg">
-                <Terminal className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-blue-700 dark:text-blue-300">1. Console Hello</h3>
-                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Classic first program</p>
-              </div>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              The classic first program: log a message to the console. This example pairs a simple HTML page with a script so you can see both sides.
-            </p>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">JavaScript</span>
-                <span className="text-blue-600/70 dark:text-blue-400/70">Console hello</span>
-              </div>
-              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{consoleJs}
-              </pre>
-            </div>
-            <SnippetOutput
-              lines={[
-                "Console → Hello, JavaScript!",
-                "Console → Welcome to programming!",
-                "Console → 2 + 2 = 4",
-                "Console → 10 × 5 = 50",
-                "Console → ✅ You just ran your first program!",
+          <div className="space-y-4">
+            <CodeSnippetWithOutput
+              title="1. Console Hello"
+              description="The classic first program: log a message to the console. This example pairs a simple HTML page with a script."
+              code={consoleJs}
+              output={[
+                "Hello, JavaScript!",
+                "Welcome to programming!",
+                "",
+                "You can do math:",
+                "2 + 2 = 4",
+                "10 × 5 = 50",
+                "",
+                "✅ You just ran your first program!"
               ]}
+              language="javascript"
+              colorTheme="blue"
+              icon={Terminal}
             />
             {onOpenWebPlayground && (
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => onOpenWebPlayground(consoleHtml, '', consoleJs)}
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                Open in Web Playground
-              </Button>
+              <InteractivePlayground
+                title="Try Console Hello"
+                description="Run your first JavaScript program and see console.log in action"
+                features={[
+                  'Console Output',
+                  'Math Operations',
+                  'Text Logging',
+                  'Beginner Friendly'
+                ]}
+                buttonText="Open Console Hello"
+                onLaunchPlayground={onOpenWebPlayground}
+                playgroundData={{
+                  html: consoleHtml,
+                  css: '',
+                  js: consoleJs
+                }}
+                colorTheme="blue"
+              />
             )}
           </div>
 
           {/* Example 2: Button Click */}
-          <div className="rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-gradient-to-br from-emerald-50/40 to-green-50/40 dark:from-emerald-950/10 dark:to-green-950/10 p-6 space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-emerald-500/80 dark:bg-emerald-600/80 rounded-lg">
-                <MousePointerClick className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">2. Button Click Hello</h3>
-                <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">Interactive DOM manipulation</p>
-              </div>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Next, attach JavaScript to the DOM. When the user clicks the button, your code runs and updates the page.
-            </p>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
-                <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">JavaScript</span>
-                <span className="text-emerald-600/70 dark:text-emerald-400/70">DOM hello</span>
-              </div>
-              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{domJs}
-              </pre>
-            </div>
-            <SnippetOutput
-              lines={[
-                "Console → Ready! Click the button.",
-                "Console (after click) → Button clicked!",
-                "DOM → Hello from JavaScript! (text turns green)",
+          <div className="space-y-4">
+            <CodeSnippetWithOutput
+              title="2. Button Click Hello"
+              description="Attach JavaScript to the DOM. When the user clicks the button, your code runs and updates the page."
+              code={domJs}
+              output={[
+                "Ready! Click the button.",
+                "// After clicking:",
+                "Button clicked!",
+                "// DOM updates: 'Hello from JavaScript!' (text turns green)"
               ]}
+              language="javascript"
+              colorTheme="emerald"
+              icon={MousePointerClick}
             />
             {onOpenWebPlayground && (
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => onOpenWebPlayground(domHtml, domJs ? '' : '', domJs)}
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                Open in Web Playground
-              </Button>
+              <InteractivePlayground
+                title="Try Button Click"
+                description="Experience interactive DOM manipulation with click events"
+                features={[
+                  'Event Listeners',
+                  'DOM Updates',
+                  'Style Changes',
+                  'User Interaction'
+                ]}
+                buttonText="Open Button Demo"
+                onLaunchPlayground={onOpenWebPlayground}
+                playgroundData={{
+                  html: domHtml,
+                  css: '',
+                  js: domJs
+                }}
+                colorTheme="emerald"
+              />
             )}
           </div>
 
           {/* Example 3: Loop */}
-          <div className="rounded-xl border-2 border-purple-200/60 dark:border-purple-800/40 bg-gradient-to-br from-purple-50/40 to-pink-50/40 dark:from-purple-950/10 dark:to-pink-950/10 p-6 space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-purple-500/80 dark:bg-purple-600/80 rounded-lg">
-                <Layers className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-purple-700 dark:text-purple-300">3. Looped Messages</h3>
-                <p className="text-xs text-purple-600/70 dark:text-purple-400/70">Repetition with loops</p>
-              </div>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Finally, add a loop. This &quot;first program&quot; now prints multiple messages and hints at how you&apos;ll work with repetition and patterns.
-            </p>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">JavaScript</span>
-                <span className="text-purple-600/70 dark:text-purple-400/70">Looped messages</span>
-              </div>
-              <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{loopJs}
-              </pre>
-            </div>
-            <SnippetOutput
-              lines={[
-                "Console → Counting up:",
-                "Console → Number 1 ... Number 5",
-                "Console → Counting down:",
-                "Console → 3... 2... 1...",
-                "Console → ✅ Loops repeat code automatically",
+          <div className="space-y-4">
+            <CodeSnippetWithOutput
+              title="3. Looped Messages"
+              description="Add a loop to your first program. This prints multiple messages and demonstrates repetition and patterns."
+              code={loopJs}
+              output={[
+                "Counting up:",
+                "Number 1",
+                "Number 2",
+                "Number 3",
+                "Number 4",
+                "Number 5",
+                "",
+                "Counting down:",
+                "3...",
+                "2...",
+                "1...",
+                "Done!",
+                "",
+                "✅ Loops repeat code automatically"
               ]}
+              language="javascript"
+              colorTheme="purple"
+              icon={Layers}
             />
             {onOpenWebPlayground && (
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => onOpenWebPlayground(loopHtml, '', loopJs)}
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                Open in Web Playground
-              </Button>
+              <InteractivePlayground
+                title="Try Loops"
+                description="Learn how loops work by repeating code automatically"
+                features={[
+                  'For Loops',
+                  'Repetition',
+                  'Counting Logic',
+                  'Pattern Practice'
+                ]}
+                buttonText="Open Loop Demo"
+                onLaunchPlayground={onOpenWebPlayground}
+                playgroundData={{
+                  html: loopHtml,
+                  css: '',
+                  js: loopJs
+                }}
+                colorTheme="purple"
+              />
             )}
           </div>
         </CardContent>

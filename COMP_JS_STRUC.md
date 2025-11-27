@@ -509,55 +509,85 @@ Use for listing 3 key benefits or features.
 
 ## Code Block Styling
 
-### Full Code Block with Header
+### CodeSnippetWithOutput Component (Recommended)
+
+**Use the CodeSnippetWithOutput component** for all code examples with outputs:
 
 ```tsx
-<div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-  <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-    <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">
-      filename.js
-    </span>
-    <span className="text-blue-600/70 dark:text-blue-400/70">
-      Description
-    </span>
-  </div>
-  <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-    {codeString}
-  </pre>
-</div>
+import { CodeSnippetWithOutput } from '@/components/shared';
+
+<CodeSnippetWithOutput
+  title="Example Title"
+  description="Brief description of what this code does"
+  code={`// Your code here
+const example = 'Hello World';
+console.log(example);`}
+  output={[
+    'Hello World',
+    '// Comments show in gray',
+    '> Info messages show in blue',
+    '✅ Success messages show in green',
+  ]}
+  language="javascript"
+  colorTheme="blue"
+  showLineNumbers={true}
+/>
 ```
 
-### Inline Code Snippet
+**Features:**
+- 📋 **Icon-only Copy**: Clean copy icon (no button chrome) with hover effect
+- 🎨 **Beautiful Code Font**: Fira Code, JetBrains Mono, SF Mono with ligature support
+- 📏 **Perfect Readability**: 13px font with relaxed line height
+- 🌓 **Adaptive Theme**: Light mode (slate-50) and dark mode (slate-950) backgrounds
+- 🎯 **Clean Design**: Professional headers with icon boxes and badges
+- 📊 **Output Counter**: Shows number of output lines in badge
+- ⚡ **No Line Numbers**: Clean code display without distractions
+- 🎨 **Stacked Layout**: Code on top, output below for easy reading
+- ✨ **Better Alignment**: Consistent padding and spacing throughout
 
-**IMPORTANT: Use Simple Pre Blocks for Vertical Expansion**
+**Props:**
+- `title`: Code example title (required)
+- `description`: Brief explanation (optional)
+- `code`: Code string (required)
+- `output`: Array of output strings (optional)
+- `language`: 'javascript' | 'html' | 'css' | 'typescript' (default: 'javascript')
+- `colorTheme`: 'blue' | 'purple' | 'emerald' | 'amber' (default: 'blue')
+- `showLineNumbers`: boolean (default: false)
+- `icon`: Custom icon component (optional)
 
-❌ **DON'T use complex inline JSX with spans:**
+**Output Formatting:**
+- Lines starting with `//` → Gray italic (comments)
+- Lines starting with `✓` or `✅` → Green bold (success)
+- Lines starting with `✗` or `❌` → Red bold (errors)
+- Lines starting with `>` → Blue medium (info)
+- Other lines → Medium weight (regular output)
+
+### Inline Code Snippet (Simple Cases)
+
+**For simple inline code without tabs:**
+
 ```tsx
-<div className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs">
-  <span className="text-blue-600 dark:text-blue-400">const</span>{' '}
-  <span className="text-amber-700 dark:text-amber-300">variable</span> ={' '}
-  <span className="text-purple-600 dark:text-purple-400">'value'</span>;
-</div>
-```
-
-✅ **DO use simple pre blocks with template literals:**
-```tsx
-<pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+<pre className="bg-slate-950 rounded-lg p-4 font-mono text-sm overflow-x-auto leading-loose">
+  <code className="text-slate-100">
 {`const variable = 'value';
 
 const result = someFunction(variable);
 
 console.log(result);
 // Output: expected result`}
+  </code>
 </pre>
 ```
 
 **Key Rules:**
 - Always use `<pre>` with template literals for code blocks
 - Add blank lines between logical sections for vertical expansion
+- Use `text-sm` for better readability (not text-xs)
+- Use `leading-loose` for better line spacing
 - Include `overflow-x-auto` for horizontal scrolling
 - Show complete examples with variable declarations and outputs
 - Add comments to explain what the code does
+- Use dark background (`bg-slate-950`) for better code readability
 
 ### Syntax Highlighting Color Guide
 
@@ -775,19 +805,94 @@ Use this pattern for "Do This" vs "Avoid This" comparisons.
 </Button>
 ```
 
-### Button for Playground
+### Interactive Playground Component
+
+**Use the InteractivePlayground component** for consistent, professional playground integration:
 
 ```tsx
+import { InteractivePlayground } from '@/components/shared';
+
+// Define your playground code
+const playgroundHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Topic Demo</title>
+</head>
+<body>
+  <h1>Demo Content</h1>
+  <p>Open console to see results (F12 or Cmd+Option+J)</p>
+</body>
+</html>`;
+
+const playgroundJs = `// Your JavaScript code here
+console.log('Demo code running!');`;
+
+// Use the InteractivePlayground component
 {onOpenWebPlayground && (
-  <Button
-    className="w-full md:w-auto"
-    onClick={() => onOpenWebPlayground(htmlCode, cssCode, jsCode)}
-  >
-    <Globe className="w-4 h-4 mr-2" />
-    Open in Web Playground
-  </Button>
+  <InteractivePlayground
+    title="Interactive Playground"
+    description="Explore comprehensive examples with live code editor, real-time preview, console output, and instant feedback."
+    features={[
+      'Syntax Highlighting',
+      'Live Preview',
+      'Console Output',
+      'Auto-Completion',
+    ]}
+    buttonText="Open JavaScript Playground"
+    onLaunchPlayground={onOpenWebPlayground}
+    playgroundData={{
+      html: playgroundHtml,
+      css: '',
+      js: playgroundJs,
+    }}
+    colorTheme="blue"
+  />
 )}
 ```
+
+**Features of the InteractivePlayground:**
+- ✅ **Clean Design**: Title with arrow, description, gradient button
+- ✅ **Feature Badges**: Shows playground capabilities with checkmarks
+- ✅ **Theme Support**: Uses `colorTheme="blue"` for JavaScript (follows CODER POD branding)
+- ✅ **Responsive**: Works on all screen sizes
+- ✅ **Professional**: Matches CodePen/JSFiddle aesthetics
+
+**Required Props:**
+- `onLaunchPlayground`: Callback function `(html, css, js) => void`
+- `playgroundData`: Object with `{ html, css, js }` code strings
+
+**Optional Props:**
+- `title`: Custom title (default: "Interactive Playground")
+- `description`: Custom description text
+- `features`: Array of feature strings for badges
+- `buttonText`: Custom button label
+- `colorTheme`: Color scheme - use `"blue"` for JavaScript
+
+**Playground Features (Opened via Button):**
+- 🎨 **All Panels Horizontal**: HTML | CSS | JS | Preview | Console
+- 🔲 **Square Panel Toggles**: Clean 36×36px icon-only buttons to show/hide any panel
+- 🌓 **Dark Theme Toggle**: Independent light/dark theme for all editors + preview + console
+- ⚡ **Auto-run & Manual Run**: Toggle between auto-execution or manual Run button with change indicator
+- 📏 **Resizable**: Drag handles between all panels to customize layout
+- 💻 **Monaco Editor**: Professional VS Code-style editor with syntax highlighting
+- 🔄 **Live Updates**: Auto-run mode (500ms delay) or Manual mode with Run button
+- 🎯 **Run Button**: Green gradient button with red pulse dot when code changes
+- 🗑️ **Clear Console**: Quick button to clear all console logs
+- ✨ **Professional Design**: Matches industry standards (CodePen, JSFiddle, StackBlitz)
+
+**Panel Toggle Colors:**
+- 🟧 **HTML**: Orange button
+- 🟦 **CSS**: Blue button  
+- 🟨 **JS**: Yellow button
+- 🟩 **Preview**: Emerald button
+- 🟪 **Console**: Purple button
+
+**Dark Mode Support:**
+- All editors switch theme with one button
+- Preview background adapts (`slate-900` in dark mode)
+- Console background adapts (`slate-950` in dark mode)
+- Consistent experience across all panels
 
 ---
 

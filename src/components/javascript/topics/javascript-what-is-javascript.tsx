@@ -3,49 +3,26 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
 import {
   Code2,
   Globe,
   Cpu,
-  Smartphone,
-  Layers,
   Sparkles,
   Terminal,
-  MousePointerClick,
   Activity,
   Lightbulb,
   Server,
   Cloud,
   Zap,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptWhatIsJavaScriptProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/20 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const consoleSnippet = `console.log('Hello, JavaScript!');
-console.log('Running inside the browser console.');`;
-
-const domSnippet = `const message = document.getElementById('message');
-message.textContent = '✅ DOM updated by JavaScript!';`;
-
-const fetchSnippet = `fetch('https://api.example.com/todos')
-  .then((res) => res.json())
-  .then((todos) => console.log('First todo:', todos[0]));`;
 
 const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -197,22 +174,23 @@ export default function JavaScriptWhatIsJavaScript({ onOpenWebPlayground }: Java
             </div>
           </div>
 
-          {/* First Example */}
-          <Alert className="bg-gradient-to-r from-violet-50/50 to-purple-50/50 dark:from-violet-950/20 dark:to-purple-950/20 border-violet-200 dark:border-violet-800">
-            <Terminal className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-            <AlertTitle className="text-violet-700 dark:text-violet-300">Your First JavaScript Code</AlertTitle>
-            <AlertDescription className="space-y-2">
-              <p className="text-violet-600/90 dark:text-violet-400/90">
-                Open your browser's console (F12 → Console tab) and type:
-              </p>
-              <div className="bg-slate-900 dark:bg-slate-950 rounded-lg p-3 font-mono text-sm">
-                <div className="text-slate-400">console.log(<span className="text-emerald-400">'Hello, JavaScript!'</span>);</div>
-              </div>
-              <p className="text-violet-600/90 dark:text-violet-400/90 text-sm">
-                Press Enter and see it work instantly—that's JavaScript! 🎉
-              </p>
-            </AlertDescription>
-          </Alert>
+          {/* First Example - Using CodeSnippetWithOutput */}
+          <CodeSnippetWithOutput
+            title="Your First JavaScript Code"
+            description="Open your browser's console (F12 → Console tab) and run this code"
+            code={`console.log('Hello, JavaScript!');
+console.log('Welcome to coding!');
+console.log(2 + 2);`}
+            output={[
+              "Hello, JavaScript!",
+              "Welcome to coding!",
+              "4",
+              "// Press Enter and see it work instantly—that's JavaScript! 🎉"
+            ]}
+            language="javascript"
+            colorTheme="blue"
+            icon={Terminal}
+          />
         </CardContent>
       </Card>
 
@@ -251,24 +229,6 @@ export default function JavaScriptWhatIsJavaScript({ onOpenWebPlayground }: Java
             </div>
           </div>
 
-          {/* Code Examples */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/20 dark:to-cyan-950/10 rounded-xl border border-blue-200/50">
-              <h4 className="font-semibold mb-2 flex items-center gap-2"><Terminal className="w-5 h-5 text-blue-600" /> Print Messages</h4>
-              <pre className="bg-white dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{consoleSnippet}</pre>
-              <SnippetOutput lines={["Hello, JavaScript!", 'Running inside the browser console.']} />
-            </div>
-            <div className="p-4 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/20 dark:to-green-950/10 rounded-xl border border-emerald-200/50">
-              <h4 className="font-semibold mb-2 flex items-center gap-2"><MousePointerClick className="w-5 h-5 text-emerald-600" /> Update Page Content</h4>
-              <pre className="bg-white dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{domSnippet}</pre>
-              <SnippetOutput lines={["message.textContent -> '✅ DOM updated by JavaScript!'" ]} />
-            </div>
-            <div className="p-4 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/20 dark:to-yellow-950/10 rounded-xl border border-amber-200/50">
-              <h4 className="font-semibold mb-2 flex items-center gap-2"><Activity className="w-5 h-5 text-amber-600" /> Fetch API Data</h4>
-              <pre className="bg-white dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{fetchSnippet}</pre>
-              <SnippetOutput lines={["First todo: { id: 1, title: 'Sample' }"]} />
-            </div>
-          </div>
 
           {/* Real Use Cases */}
           <div className="grid md:grid-cols-3 gap-4">
@@ -345,31 +305,27 @@ export default function JavaScriptWhatIsJavaScript({ onOpenWebPlayground }: Java
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Try JavaScript Right Now
-          </CardTitle>
-          <CardDescription className="text-base">Launch the playground and peek at real console output.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">what-is-js-demo.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Greetings + averages</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{playgroundJs}</pre>
-          </div>
-
-          {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)} className="w-full md:w-auto">
-              <Play className="w-4 h-4 mr-2" />
-              Open in Web Playground
-            </Button>
-          )}
-        </CardContent>
-      </Card>
+      {/* Interactive Playground - Clean, minimal design */}
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Interactive Playground"
+          description="Explore comprehensive JavaScript examples with a live code editor, real-time preview, console output, and instant feedback. Write, test, and debug your code all in one place."
+          features={[
+            'Syntax Highlighting',
+            'Live Preview',
+            'Console Output',
+            'Auto-Completion',
+          ]}
+          buttonText="Open JavaScript Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: playgroundHtml,
+            css: '',
+            js: playgroundJs,
+          }}
+          colorTheme="blue"
+        />
+      )}
     </div>
   );
 }

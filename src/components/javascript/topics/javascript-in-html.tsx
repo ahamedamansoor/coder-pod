@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   Code2,
   FileCode,
@@ -19,7 +20,6 @@ import {
   Upload,
   Lightbulb,
   Sparkles,
-  Play,
   Settings,
 } from 'lucide-react';
 
@@ -224,18 +224,38 @@ export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHt
           </div>
 
           {/* Example */}
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">inline-example.html</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{inlineExample}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Inline JavaScript Example"
+            description="JavaScript code written directly in HTML event attributes like onclick"
+            code={inlineExample}
+            output={[
+              "// When button is clicked:",
+              "Alert appears: 'Hello!'"
+            ]}
+            language="html"
+            colorTheme="blue"
+            icon={Code2}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(inlineExample, '', '')}>
-              <Play className="w-4 h-4 mr-2" />
-              Try Inline Example
-            </Button>
+            <InteractivePlayground
+              title="Try Inline JavaScript"
+              description="Click the button to see inline JavaScript in action"
+              features={[
+                'onclick Events',
+                'Inline Code',
+                'Quick Testing',
+                'Simple Interactions'
+              ]}
+              buttonText="Open Inline Example"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: inlineExample,
+                css: '',
+                js: ''
+              }}
+              colorTheme="blue"
+            />
           )}
 
           <Alert>
@@ -320,18 +340,39 @@ export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHt
           </div>
 
           {/* Example */}
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
-              <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">internal-script.html</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{internalExample}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Internal JavaScript Example"
+            description="JavaScript code organized in <script> tags within the HTML file"
+            code={internalExample}
+            output={[
+              "// When button is clicked:",
+              "Alert appears: 'Hello from internal script!'",
+              "// Function defined in <head>, called from button"
+            ]}
+            language="html"
+            colorTheme="emerald"
+            icon={FileCode}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(internalExample, '', '')}>
-              <Play className="w-4 h-4 mr-2" />
-              Try Internal Script
-            </Button>
+            <InteractivePlayground
+              title="Try Internal Script"
+              description="See how <script> tags keep JavaScript organized in your HTML"
+              features={[
+                'Script Tags',
+                'Function Definitions',
+                'Organized Code',
+                'Better Structure'
+              ]}
+              buttonText="Open Internal Script"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: internalExample,
+                css: '',
+                js: ''
+              }}
+              colorTheme="emerald"
+            />
           )}
         </CardContent>
       </Card>
@@ -383,6 +424,42 @@ export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHt
               </div>
             </div>
           </div>
+
+          <CodeSnippetWithOutput
+            title="External JavaScript Example"
+            description="Separate .js files linked to HTML with <script src='app.js'> - the professional approach"
+            code={externalJs}
+            output={[
+              "External JS loaded!",
+              "// When button is clicked:",
+              "Title changes to: 'Hello from external JS!'",
+              "Title color changes to green"
+            ]}
+            language="javascript"
+            colorTheme="purple"
+            icon={Link}
+          />
+
+          {onOpenWebPlayground && (
+            <InteractivePlayground
+              title="Try External JavaScript"
+              description="Experience the professional way of organizing JavaScript in separate files"
+              features={[
+                'Separate Files',
+                'Reusability',
+                'Better Organization',
+                'Browser Caching'
+              ]}
+              buttonText="Open External JS Example"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: externalHtml,
+                css: '',
+                js: externalJs
+              }}
+              colorTheme="purple"
+            />
+          )}
 
           {/* Benefits */}
           <div className="grid md:grid-cols-3 gap-4">

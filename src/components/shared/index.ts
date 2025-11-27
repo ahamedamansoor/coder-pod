@@ -13,3 +13,7 @@ export { AiInterviewDemo } from './ai-interview-demo';
 export { AiSimplification } from './ai-simplification';
 export { InterviewSimulator } from './interview-simulator';
 export { FirebaseErrorListener } from './FirebaseErrorListener';
+
+// Reusable code display components
+export { CodeSnippetWithOutput } from './code-snippet-with-output';
+export { InteractivePlayground } from './interactive-playground';

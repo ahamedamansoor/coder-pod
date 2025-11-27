@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   Box,
   Lock,
@@ -16,7 +17,6 @@ import {
   ArrowRight,
   Lightbulb,
   Sparkles,
-  Play,
   Code2,
   Zap,
   Globe,
@@ -277,18 +277,41 @@ export default function JavaScriptVariablesConstants({ onOpenWebPlayground }: Ja
             </div>
           </div>
 
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">JavaScript</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{letExampleJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="let Variable Example"
+            description="Variables declared with let can be reassigned to new values"
+            code={letExampleJs}
+            output={[
+              "Starting score: 0",
+              "After update: 10",
+              "Final score: 20",
+              "",
+              "✅ let allows reassignment"
+            ]}
+            language="javascript"
+            colorTheme="blue"
+            icon={Unlock}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(letExampleHtml, '', letExampleJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Try let Example in Playground
-            </Button>
+            <InteractivePlayground
+              title="Try let Variables"
+              description="Experiment with reassigning values using let"
+              features={[
+                'Reassignment',
+                'Value Updates',
+                'Block Scope',
+                'Console Output'
+              ]}
+              buttonText="Open let Example"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: letExampleHtml,
+                css: '',
+                js: letExampleJs
+              }}
+              colorTheme="blue"
+            />
           )}
         </CardContent>
       </Card>
@@ -358,18 +381,44 @@ export default function JavaScriptVariablesConstants({ onOpenWebPlayground }: Ja
             </div>
           </div>
 
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
-              <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">JavaScript</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{constExampleJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="const Variable Example"
+            description="Variables declared with const cannot be reassigned, but object properties can still change"
+            code={constExampleJs}
+            output={[
+              "PI: 3.14159",
+              "",
+              "--- Objects with const ---",
+              "Before: { name: 'Alice', age: 25 }",
+              "After: { name: 'Alice', age: 26 }",
+              "",
+              "✅ const prevents reassignment",
+              "✅ Object properties can still change"
+            ]}
+            language="javascript"
+            colorTheme="emerald"
+            icon={Lock}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(constExampleHtml, '', constExampleJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Try const Example in Playground
-            </Button>
+            <InteractivePlayground
+              title="Try const Variables"
+              description="See how const protects reassignment while allowing object mutations"
+              features={[
+                'Immutability',
+                'Object Properties',
+                'Best Practices',
+                'Error Prevention'
+              ]}
+              buttonText="Open const Example"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: constExampleHtml,
+                css: '',
+                js: constExampleJs
+              }}
+              colorTheme="emerald"
+            />
           )}
         </CardContent>
       </Card>
@@ -489,18 +538,45 @@ export default function JavaScriptVariablesConstants({ onOpenWebPlayground }: Ja
             </div>
           </div>
 
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-              <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">JavaScript</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{scopeExampleJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Variable Scope Example"
+            description="Understanding global and local scope - where variables are accessible in your code"
+            code={scopeExampleJs}
+            output={[
+              "Inside function:",
+              "  globalVar: I am global",
+              "  localVar: I am local",
+              "",
+              "Outside function:",
+              "  globalVar: I am global",
+              "",
+              "✅ Global: accessible everywhere",
+              "✅ Local: only inside function"
+            ]}
+            language="javascript"
+            colorTheme="purple"
+            icon={FileCode}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(scopeExampleHtml, '', scopeExampleJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Try Scope Example in Playground
-            </Button>
+            <InteractivePlayground
+              title="Try Variable Scope"
+              description="Experiment with global and local scope to understand variable accessibility"
+              features={[
+                'Global Scope',
+                'Local Scope',
+                'Function Scope',
+                'Block Scope'
+              ]}
+              buttonText="Open Scope Example"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: scopeExampleHtml,
+                css: '',
+                js: scopeExampleJs
+              }}
+              colorTheme="purple"
+            />
           )}
 
           <Alert>

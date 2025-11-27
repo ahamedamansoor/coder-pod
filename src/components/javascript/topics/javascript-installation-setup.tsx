@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   Zap,
   MonitorSmartphone,
@@ -40,16 +42,6 @@ import {
 interface JavaScriptInstallationSetupProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/70 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
 
 const browserInlineHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -413,131 +405,124 @@ export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: Jav
         <CardContent className="space-y-6 text-sm md:text-base">
           <div className="space-y-6">
             {/* Example 1: Inline Script */}
-            <div className="rounded-xl border-2 border-amber-200/60 dark:border-amber-800/40 bg-gradient-to-br from-amber-50/40 to-yellow-50/40 dark:from-amber-950/10 dark:to-yellow-950/10 p-6 space-y-4">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-amber-500/80 dark:bg-amber-600/80 rounded-lg">
-                  <FileCode className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg">1. Inline &lt;script&gt; Tag</h3>
-                  <p className="text-xs text-muted-foreground">Classic HTML approach</p>
-                </div>
-              </div>
-              <p className="text-muted-foreground">
-                Classic way to include JavaScript: place a <code className="font-mono">&lt;script&gt;</code> tag in your
-                HTML. The example logs a message to the console and shows a friendly card on the page.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">JavaScript</span>
-                  <span className="text-slate-500 dark:text-slate-300">Inline script</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{browserInlineJs}
-                </pre>
-              </div>
-              <SnippetOutput
-                lines={[
-                  "Console → ✅ JavaScript is working!",
-                  "Console → Environment: Browser Console",
-                  "Console → 2 + 2 = 4",
-                  "Console → 10 × 5 = 50",
-                  "Console → ✅ Setup complete!",
+            <div className="space-y-4">
+              <CodeSnippetWithOutput
+                title="1. Inline <script> Tag"
+                description="Classic way to include JavaScript: place a <script> tag in your HTML. This example logs messages to the console."
+                code={browserInlineJs}
+                output={[
+                  "✅ JavaScript is working!",
+                  "Environment: Browser Console",
+                  "",
+                  "Basic math:",
+                  "2 + 2 = 4",
+                  "10 × 5 = 50",
+                  "",
+                  "✅ Setup complete!"
                 ]}
+                language="javascript"
+                colorTheme="blue"
+                icon={FileCode}
               />
               {onOpenWebPlayground && (
-                <Button
-                  className="w-full md:w-auto"
-                  onClick={() => onOpenWebPlayground(browserInlineHtml, browserInlineCss, browserInlineJs)}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Open in Web Playground
-                </Button>
+                <InteractivePlayground
+                  title="Try Inline Script"
+                  description="Experience how JavaScript runs directly in the browser console"
+                  features={[
+                    'Console Output',
+                    'Browser DevTools',
+                    'Instant Feedback',
+                    'No Setup Required'
+                  ]}
+                  buttonText="Open Browser Console Demo"
+                  onLaunchPlayground={onOpenWebPlayground}
+                  playgroundData={{
+                    html: browserInlineHtml,
+                    css: browserInlineCss,
+                    js: browserInlineJs
+                  }}
+                  colorTheme="blue"
+                />
               )}
             </div>
 
             {/* Example 2: DOM Interaction */}
-            <div className="rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-gradient-to-br from-blue-50/40 to-cyan-50/40 dark:from-blue-950/10 dark:to-cyan-950/10 p-6 space-y-4">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-blue-500/80 dark:bg-blue-600/80 rounded-lg">
-                  <MousePointerClick className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg">2. DOM Interaction</h3>
-                  <p className="text-xs text-muted-foreground">Interactive button clicks</p>
-                </div>
-              </div>
-              <p className="text-muted-foreground">
-                This example uses <code className="font-mono">addEventListener</code> to respond to clicks and update
-                the DOM. It demonstrates how JavaScript can manipulate the page in real time.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">JavaScript</span>
-                  <span className="text-slate-500 dark:text-slate-300">DOM interactions</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{domPlaygroundJs}
-                </pre>
-              </div>
-              <SnippetOutput
-                lines={[
-                  "Console → Ready! Click the button.",
-                  "Console (after click) → Click #1",
-                  "DOM → Clicked 1 times! (updates with each click)",
+            <div className="space-y-4">
+              <CodeSnippetWithOutput
+                title="2. DOM Interaction"
+                description="Use addEventListener to respond to clicks and update the DOM. This demonstrates how JavaScript manipulates the page in real time."
+                code={domPlaygroundJs}
+                output={[
+                  "Ready! Click the button.",
+                  "// After clicking:",
+                  "Click #1",
+                  "Click #2",
+                  "// DOM updates: 'Clicked 2 times!'"
                 ]}
+                language="javascript"
+                colorTheme="emerald"
+                icon={MousePointerClick}
               />
               {onOpenWebPlayground && (
-                <Button
-                  className="w-full md:w-auto"
-                  onClick={() => onOpenWebPlayground(domPlaygroundHtml, domPlaygroundCss, domPlaygroundJs)}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Open in Web Playground
-                </Button>
+                <InteractivePlayground
+                  title="Try DOM Interaction"
+                  description="Click the button and watch JavaScript update the page dynamically"
+                  features={[
+                    'Event Listeners',
+                    'DOM Manipulation',
+                    'Real-time Updates',
+                    'Interactive UI'
+                  ]}
+                  buttonText="Open Interactive Button Demo"
+                  onLaunchPlayground={onOpenWebPlayground}
+                  playgroundData={{
+                    html: domPlaygroundHtml,
+                    css: domPlaygroundCss,
+                    js: domPlaygroundJs
+                  }}
+                  colorTheme="emerald"
+                />
               )}
             </div>
 
             {/* Example 3: Node-style Script */}
-            <div className="rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-gradient-to-br from-emerald-50/40 to-green-50/40 dark:from-emerald-950/10 dark:to-green-950/10 p-6 space-y-4">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-emerald-500/80 dark:bg-emerald-600/80 rounded-lg">
-                  <Terminal className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg">3. Node-style Script</h3>
-                  <p className="text-xs text-muted-foreground">Command-line JavaScript</p>
-                </div>
-              </div>
-              <p className="text-muted-foreground">
-                While Node.js runs outside the browser, the core language is the same. This example mimics a
-                Node-style script that logs environment-like information.
-              </p>
-              <div className="rounded-md overflow-hidden border bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-                <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800">
-                  <span className="uppercase tracking-wide">node-style.js</span>
-                  <span className="text-slate-500 dark:text-slate-300">Console script</span>
-                </div>
-                <pre className="font-mono text-xs md:text-sm px-4 py-3 whitespace-pre overflow-x-auto">
-{nodeStyleJs}
-                </pre>
-              </div>
-              <SnippetOutput
-                lines={[
-                  "Console → Node.js JavaScript running!",
-                  "Console → Server config: { port: 3000, environment: 'development' }",
-                  "Console → Starting server... (wait 1s)",
-                  "Console → ✅ Server ready on port 3000",
+            <div className="space-y-4">
+              <CodeSnippetWithOutput
+                title="3. Node-style Script"
+                description="While Node.js runs outside the browser, the core language is the same. This example mimics a Node-style script with environment configuration."
+                code={nodeStyleJs}
+                output={[
+                  "Node.js JavaScript running!",
+                  "",
+                  "Server config: { port: 3000, environment: 'development' }",
+                  "",
+                  "Starting server...",
+                  "// After 1 second:",
+                  "✅ Server ready on port 3000"
                 ]}
+                language="javascript"
+                colorTheme="purple"
+                icon={Terminal}
               />
               {onOpenWebPlayground && (
-                <Button
-                  className="w-full md:w-auto"
-                  onClick={() => onOpenWebPlayground(nodeStyleHtml, nodeStyleCss, nodeStyleJs)}
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Open in Web Playground
-                </Button>
+                <InteractivePlayground
+                  title="Try Node-style Code"
+                  description="Experience server-style JavaScript with configuration and async operations"
+                  features={[
+                    'Server Config',
+                    'Async Timing',
+                    'Console Logging',
+                    'Environment Setup'
+                  ]}
+                  buttonText="Open Node-style Demo"
+                  onLaunchPlayground={onOpenWebPlayground}
+                  playgroundData={{
+                    html: nodeStyleHtml,
+                    css: nodeStyleCss,
+                    js: nodeStyleJs
+                  }}
+                  colorTheme="purple"
+                />
               )}
             </div>
           </div>
@@ -1125,13 +1110,26 @@ console.log('CPU cores:', os.cpus().length);`}
                       Verify everything works together with this interactive example:
                     </p>
                     {onOpenWebPlayground && (
-                      <Button
-                        className="mt-2"
-                        onClick={() => onOpenWebPlayground(vscodeSetupHtml, vscodeSetupCss, vscodeSetupJs)}
-                      >
-                        <Play className="w-4 h-4 mr-2" />
-                        Test Complete Setup
-                      </Button>
+                      <div className="mt-3">
+                        <InteractivePlayground
+                          title="Test Complete Setup"
+                          description="Verify your editor environment with syntax highlighting, auto-completion, and integrated terminal"
+                          features={[
+                            'Syntax Highlighting',
+                            'Auto-completion',
+                            'Error Detection',
+                            'Git Integration'
+                          ]}
+                          buttonText="Test Complete Setup"
+                          onLaunchPlayground={onOpenWebPlayground}
+                          playgroundData={{
+                            html: vscodeSetupHtml,
+                            css: vscodeSetupCss,
+                            js: vscodeSetupJs
+                          }}
+                          colorTheme="purple"
+                        />
+                      </div>
                     )}
                   </div>
                 </div>

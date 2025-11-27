@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   Type,
   Hash,
@@ -14,7 +15,6 @@ import {
   XCircle,
   AlertTriangle,
   Lightbulb,
-  Play,
   Code2,
   Sparkles,
   Braces,
@@ -760,7 +760,7 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            <Box className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
             Try Primitive Types
           </CardTitle>
           <CardDescription className="text-base">
@@ -768,18 +768,43 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">JavaScript</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{primitivesJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Primitive Data Types"
+            description="String, Number, Boolean, Undefined, and Null - the five primitive types in JavaScript"
+            code={primitivesJs}
+            output={[
+              "String: Alice Hello",
+              "Number: 25 19.99",
+              "Boolean: true false",
+              "Undefined: undefined",
+              "Null: null",
+              "",
+              "✅ All primitive types shown"
+            ]}
+            language="javascript"
+            colorTheme="blue"
+            icon={Box}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(primitivesHtml, '', primitivesJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Try Primitive Types
-            </Button>
+            <InteractivePlayground
+              title="Try Primitive Types"
+              description="Experiment with all five primitive data types in JavaScript"
+              features={[
+                'String Values',
+                'Number Values',
+                'Boolean Logic',
+                'Undefined & Null'
+              ]}
+              buttonText="Open Primitive Types Demo"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: primitivesHtml,
+                css: '',
+                js: primitivesJs
+              }}
+              colorTheme="blue"
+            />
           )}
         </CardContent>
       </Card>
@@ -796,18 +821,45 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-              <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">JavaScript</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{typeCheckJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="typeof Operator"
+            description="Use the typeof operator to check the data type of any value"
+            code={typeCheckJs}
+            output={[
+              "String: 'string'",
+              "Number: 'number'",
+              "Boolean: 'boolean'",
+              "Null (quirk): 'object'",
+              "Undefined: 'undefined'",
+              "Object: 'object'",
+              "Function: 'function'",
+              "",
+              "\u2705 Use typeof to check types"
+            ]}
+            language="javascript"
+            colorTheme="purple"
+            icon={Type}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(typeCheckHtml, '', typeCheckJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Try typeof Operator
-            </Button>
+            <InteractivePlayground
+              title="Try typeof Operator"
+              description="See how typeof works with different data types in JavaScript"
+              features={[
+                'Type Checking',
+                'typeof Operator',
+                'Type Detection',
+                'Runtime Types'
+              ]}
+              buttonText="Open typeof Demo"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: typeCheckHtml,
+                css: '',
+                js: typeCheckJs
+              }}
+              colorTheme="purple"
+            />
           )}
         </CardContent>
       </Card>
@@ -824,18 +876,42 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
-              <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">JavaScript</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">{conversionJs}</pre>
-          </div>
+          <CodeSnippetWithOutput
+            title="Type Conversion"
+            description="JavaScript automatically converts between types, or you can convert explicitly"
+            code={conversionJs}
+            output={[
+              "String to Number: 42",
+              "Number to String: '100'",
+              "Boolean to Number: 1",
+              "Truthy/Falsy: false",
+              "",
+              "\u2705 Types convert automatically or explicitly"
+            ]}
+            language="javascript"
+            colorTheme="emerald"
+            icon={Code2}
+          />
 
           {onOpenWebPlayground && (
-            <Button onClick={() => onOpenWebPlayground(conversionHtml, '', conversionJs)}>
-              <Play className="w-4 h-4 mr-2" />
-              Try Type Conversion
-            </Button>
+            <InteractivePlayground
+              title="Try Type Conversion"
+              description="Learn how JavaScript converts between different data types"
+              features={[
+                'String Conversion',
+                'Number Conversion',
+                'Boolean Conversion',
+                'Automatic Conversion'
+              ]}
+              buttonText="Open Conversion Demo"
+              onLaunchPlayground={onOpenWebPlayground}
+              playgroundData={{
+                html: conversionHtml,
+                css: '',
+                js: conversionJs
+              }}
+              colorTheme="emerald"
+            />
           )}
         </CardContent>
       </Card>
