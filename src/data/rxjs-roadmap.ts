@@ -39,9 +39,10 @@ export const rxjsSections: RxjsSection[] = [
       'defer()',
       'empty()',
       'throwError()',
-      'NEVER',
+      'never()',
       'generate()',
       'iif()',
+      'generate()',
     ],
   },
   {

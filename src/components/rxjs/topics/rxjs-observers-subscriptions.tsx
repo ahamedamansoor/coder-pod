@@ -156,6 +156,205 @@ destroy$.complete();`}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
+            <Link2 className="w-6 h-6 text-indigo-600" />
+            Subscribe & unsubscribe in practice
+          </CardTitle>
+          <CardDescription>
+            How subscriptions look in real codebases—short-lived listeners, UI components, and framework helpers that manage cleanup for you.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-3">
+            <h4 className="font-semibold text-sm">1. Short-lived subscription with manual cleanup</h4>
+            <p className="text-xs text-muted-foreground">
+              For infinite streams (like <code>interval</code>) you <strong>must</strong> call <code>unsubscribe()</code> yourself, or they will keep emitting forever.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs font-mono whitespace-pre-wrap border">
+{`import { interval } from 'rxjs';
+
+// Infinite stream: 0, 1, 2, 3, ...
+const ticks$ = interval(1000);
+
+console.log('Subscribing...');
+const sub = ticks$.subscribe((value) => {
+  console.log('tick', value);
+});
+
+// Stop after ~2.5 seconds
+setTimeout(() => {
+  console.log('Unsubscribing now');
+  sub.unsubscribe();
+}, 2500);
+
+// Sample output:
+// Subscribing...
+// tick 0
+// tick 1
+// Unsubscribing now`}
+            </pre>
+            <SnippetOutput
+              lines={[
+                'Subscribing...',
+                'tick 0',
+                'tick 1',
+                'Unsubscribing now',
+              ]}
+            />
+            <p className="text-xs text-muted-foreground">
+              Think of a <code>Subscription</code> like a file handle: you open it with <code>subscribe()</code> and you are responsible for closing it.
+            </p>
+          </div>
+
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-3">
+            <h4 className="font-semibold text-sm">2. UI components: subscribe on mount, unsubscribe on destroy</h4>
+            <p className="text-xs text-muted-foreground">
+              In UI frameworks (React, Angular, etc.) the safest pattern is: <strong>subscribe in setup</strong>, <strong>unsubscribe in cleanup</strong>.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs font-mono whitespace-pre-wrap border">
+{`// React-style pattern using useEffect
+useEffect(() => {
+  const sub = userStatus$.subscribe((status) => {
+    console.log('status', status);
+  });
+
+  // Cleanup: called when component unmounts
+  return () => {
+    sub.unsubscribe();
+  };
+}, []);
+
+// Angular v17+ with takeUntilDestroyed (RxJS 8 interop)
+@Component({...})
+export class ProfileComponent {
+  private readonly destroyRef = inject(DestroyRef);
+
+  ngOnInit() {
+    userStatus$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((status) => console.log('status', status));
+  }
+}`}
+            </pre>
+            <p className="text-xs text-muted-foreground">
+              Modern Angular&apos;s <code>takeUntilDestroyed</code> and React&apos;s effect cleanup both express the same idea: tie subscription lifetime to component lifetime.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-gradient-to-br from-indigo-50/60 to-sky-50/60 dark:from-indigo-950/10 dark:to-sky-950/10 border border-indigo-200/40 dark:border-indigo-800/40">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Zap className="w-6 h-6 text-indigo-600" />
+            Subscription cleanup patterns
+          </CardTitle>
+          <CardDescription className="text-base">
+            Different ways RxJS tears down work when a subscription ends: manual unsubscribe, teardown logic, operators, and modern helpers.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-3">
+            <h4 className="font-semibold text-sm">3. Teardown logic inside the observable</h4>
+            <p className="text-xs text-muted-foreground">
+              When you create an <code>Observable</code> manually, you can return a cleanup function. RxJS runs it on <strong>complete</strong>, <strong>error</strong>, or
+              when the consumer calls <code>unsubscribe()</code>.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs font-mono whitespace-pre-wrap border">
+{`import { Observable } from 'rxjs';
+
+const clicksPerSecond$ = new Observable<number>((subscriber) => {
+  let count = 0;
+
+  const id = setInterval(() => {
+    count += 1;
+    subscriber.next(count);
+  }, 1000);
+
+  // Teardown: called on complete, error, or unsubscribe
+  return () => {
+    clearInterval(id);
+    console.log('🧹 teardown: stopped counting clicks per second');
+  };
+});
+
+const sub = clicksPerSecond$.subscribe((value) => {
+  console.log('count', value);
+});
+
+setTimeout(() => {
+  sub.unsubscribe(); // triggers teardown
+}, 2500);
+
+// Sample output:
+// count 1
+// count 2
+// 🧹 teardown: stopped counting clicks per second`}
+            </pre>
+            <SnippetOutput
+              lines={[
+                'count 1',
+                'count 2',
+                '🧹 teardown: stopped counting clicks per second',
+              ]}
+            />
+            <p className="text-xs text-muted-foreground">
+              Always release timers, listeners, and sockets in teardown functions so they don&apos;t leak when subscribers go away.
+            </p>
+          </div>
+
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-3">
+            <h4 className="font-semibold text-sm">4. finalize(): run cleanup logic on end or unsubscribe</h4>
+            <p className="text-xs text-muted-foreground">
+              The <code>finalize</code> operator runs exactly once when the subscription ends—no matter whether it completed, errored, or was unsubscribed early.
+              It&apos;s ideal for logging and releasing side resources.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs font-mono whitespace-pre-wrap border">
+{`import { interval, take, finalize } from 'rxjs';
+
+const limited$ = interval(500).pipe(
+  take(10), // would emit 0..9
+  finalize(() => {
+    console.log('🧹 finalize: stream stopped (complete or unsubscribe)');
+  })
+);
+
+const sub = limited$.subscribe((value) => {
+  console.log('tick', value);
+});
+
+// Unsubscribe before take(10) completes
+setTimeout(() => {
+  console.log('Manually unsubscribing');
+  sub.unsubscribe();
+}, 2100);
+
+// Sample output:
+// tick 0
+// tick 1
+// tick 2
+// Manually unsubscribing
+// 🧹 finalize: stream stopped (complete or unsubscribe)`}
+            </pre>
+            <SnippetOutput
+              lines={[
+                'tick 0',
+                'tick 1',
+                'tick 2',
+                'Manually unsubscribing',
+                '🧹 finalize: stream stopped (complete or unsubscribe)',
+              ]}
+            />
+            <p className="text-xs text-muted-foreground">
+              Combine <code>finalize</code> with <code>take</code>, <code>takeUntil</code>, or framework helpers so cleanup code always runs, even if you call
+              <code>unsubscribe()</code> early.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
             <Server className="w-6 h-6 text-indigo-600" />
             Real-world patterns
           </CardTitle>
@@ -238,11 +437,72 @@ window.addEventListener('beforeunload', () => {
         <CardContent className="grid md:grid-cols-2 gap-4 text-sm text-muted-foreground">
           <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-2">
             <p className="font-semibold">Signal-friendly subscriptions</p>
-            <p>Angular v17 + RxJS 8 add <code>takeUntilDestroyed</code> and <code>toObservable()</code>, so cleanup is automatic in components.</p>
+            <p>
+              Angular v17 + RxJS 8 add <code>takeUntilDestroyed</code> and <code>toObservable()</code>, so cleanup is automatic in components:
+              when the view is destroyed, all linked subscriptions unsubscribe.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-[11px] font-mono whitespace-pre-wrap border">
+{`effect(() => {
+  // toObservable() bridges signals -> Observable
+  const value = mySignal();
+  console.log('signal value', value);
+}); // Automatically cleaned up with component`}
+            </pre>
           </div>
           <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-2">
-            <p className="font-semibold">SubscriptionLike</p>
-            <p>Custom resources can now implement the Subscription interface—handy when wrapping native APIs (Web Bluetooth, BroadcastChannel).</p>
+            <p className="font-semibold">SubscriptionLike interfaces</p>
+            <p>
+              Modern RxJS exposes <code>SubscriptionLike</code> so your own resources can act like subscriptions—anything with
+              <code>unsubscribe()</code> can be added to a parent subscription and torn down together.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-[11px] font-mono whitespace-pre-wrap border">
+{`const sub = interval(1000).subscribe(console.log);
+
+// Wrap a non-RxJS resource
+const customResource: SubscriptionLike = {
+  closed: false,
+  unsubscribe() {
+    socket.close();
+    this.closed = true;
+  }
+};
+
+sub.add(customResource); // unsubscribes both`}
+            </pre>
+          </div>
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-2">
+            <p className="font-semibold">Promise helpers: firstValueFrom / lastValueFrom</p>
+            <p>
+              <code>firstValueFrom</code> and <code>lastValueFrom</code> subscribe under the hood, resolve a Promise with the first/last value,
+              and then <strong>auto-unsubscribe</strong>—great for one-off async operations.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-[11px] font-mono whitespace-pre-wrap border">
+{`import { firstValueFrom } from 'rxjs';
+
+// One-off async bridge
+const user$ = http.get('/api/user');
+
+const user = await firstValueFrom(user$);
+console.log('Loaded user', user); // subscription is already cleaned up`}
+            </pre>
+          </div>
+          <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-2">
+            <p className="font-semibold">Async iterator interop</p>
+            <p>
+              RxJS 8 adds helpers like <code>toAsyncGenerator</code> / <code>fromAsyncGenerator</code> so you can
+              <code>for await ... of</code> an observable; exiting the loop closes the underlying subscription automatically.
+            </p>
+            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-[11px] font-mono whitespace-pre-wrap border">
+{`import { interval, take } from 'rxjs';
+import { toAsyncGenerator } from 'rxjs/interop';
+
+const numbers$ = interval(500).pipe(take(3));
+
+for await (const n of toAsyncGenerator(numbers$)) {
+  console.log('value', n);
+}
+// After the loop, subscription is complete and cleaned up.`}
+            </pre>
           </div>
         </CardContent>
       </Card>

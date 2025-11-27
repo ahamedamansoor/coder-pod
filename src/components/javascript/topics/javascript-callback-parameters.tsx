@@ -305,6 +305,272 @@ greet('Ada', (value) => 'Hi ' + value + '!');`}
         </CardContent>
       </Card>
 
+      {/* Subscribe & Unsubscribe patterns */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Link2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Subscribe & Unsubscribe
+          </CardTitle>
+          <CardDescription className="text-base">
+            How real-world APIs let you start receiving values with a callback, and then stop them safely when you are done.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* 1. The basic subscribe → unsubscribe contract */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
+              <h4 className="font-semibold text-blue-800 dark:text-blue-200">1. Return a cleanup function</h4>
+              <p className="text-sm text-muted-foreground">
+                Many modern APIs treat <code>subscribe</code> as: “start sending values to this callback, and give me a way to stop later”.
+                The most common pattern is to return an <strong>unsubscribe function</strong>.
+              </p>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`// Internal list of listeners
+const listeners = [];
+
+// Subscribe: register callback and return unsubscribe function
+function subscribe(listener) {
+  listeners.push(listener);
+
+  return () => {
+    const index = listeners.indexOf(listener);
+    if (index !== -1) {
+      listeners.splice(index, 1); // unsubscribe
+    }
+  };
+}
+
+// Somewhere in your code: emit a value to all listeners
+function emit(value) {
+  listeners.forEach((listener) => listener(value));
+}
+
+// Usage
+const unsubscribe = subscribe((value) => {
+  console.log('listener A saw:', value);
+});
+
+emit(1);
+emit(2);
+unsubscribe();          // stop this listener
+emit(3);                // A will NOT be called now
+
+// Output:
+// listener A saw: 1
+// listener A saw: 2`}
+              </pre>
+              <SnippetOutput
+                lines={[
+                  'listener A saw: 1',
+                  'listener A saw: 2',
+                  '// (no log after unsubscribe)',
+                ]}
+              />
+              <p className="text-xs text-muted-foreground">
+                This same shape appears in libraries like RxJS, Redux-style stores, WebSocket helpers, and many custom utilities.
+              </p>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
+              <h4 className="font-semibold">2. Multiple subscribers, one emitter</h4>
+              <p className="text-sm text-muted-foreground">
+                Real systems rarely have just one listener. Subscribe/unsubscribe lets you add and remove many callbacks over time.
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
+{`// Reuse the previous subscribe/emit
+const unsubscribeB = subscribe((value) => {
+  console.log('listener B saw:', value);
+});
+
+emit('online');
+unsubscribeB();
+emit('offline');
+
+// Output:
+// listener A saw: online
+// listener B saw: online
+// listener A saw: offline`}
+              </pre>
+              <SnippetOutput
+                lines={[
+                  'listener A saw: online',
+                  'listener B saw: online',
+                  'listener A saw: offline',
+                ]}
+              />
+              <p className="text-xs text-muted-foreground">
+                Always check the documentation: some APIs return an object with <code>unsubscribe()</code>, others return a bare cleanup function.
+              </p>
+            </div>
+          </div>
+
+          {/* 2. DOM events: addEventListener / removeEventListener */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
+              <h4 className="font-semibold text-emerald-800 dark:text-emerald-200">3. Browser events (classic pattern)</h4>
+              <p className="text-sm text-muted-foreground">
+                The DOM uses a subscribe/unsubscribe pair: <code>addEventListener</code> and <code>removeEventListener</code>. You must pass
+                the <strong>same callback</strong> to unsubscribe correctly.
+              </p>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`// Subscribe
+function handleClick(event) {
+  console.log('Clicked at:', event.clientX, event.clientY);
+}
+
+button.addEventListener('click', handleClick);
+
+// Later: unsubscribe
+setTimeout(() => {
+  button.removeEventListener('click', handleClick);
+  console.log('Stopped listening for clicks');
+}, 5000);
+
+// Example output:
+// Clicked at: 120 340
+// Clicked at: 180 250
+// Stopped listening for clicks`}
+              </pre>
+              <SnippetOutput
+                lines={[
+                  'Clicked at: 120 340',
+                  'Clicked at: 180 250',
+                  'Stopped listening for clicks',
+                ]}
+              />
+              <p className="text-xs text-muted-foreground">
+                Forgetting to remove event listeners is a common source of memory leaks and “ghost” callbacks firing on old screens.
+              </p>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
+              <h4 className="font-semibold">4. One-time subscriptions with <code>once</code></h4>
+              <p className="text-sm text-muted-foreground">
+                Modern browsers let you auto-unsubscribe after the first event using the <code>once</code> option. You still pass a callback,
+                but you do not need manual cleanup code.
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
+{`// Fires only on the very first click
+button.addEventListener(
+  'click',
+  () => {
+    console.log('First click only!');
+  },
+  { once: true } // <-- auto-unsubscribe
+);
+
+// Output (no matter how many times you click):
+// First click only!`}
+              </pre>
+              <SnippetOutput lines={['First click only!']} />
+              <p className="text-xs text-muted-foreground">
+                Other useful options include <code>passive: true</code> (performance hint for scroll/touch) and <code>capture: true</code>
+                (listen during the capture phase).
+              </p>
+            </div>
+          </div>
+
+          {/* 3. Modern cancellation with AbortController + signal */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-sky-50/60 dark:from-indigo-950/10 dark:to-sky-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/40 space-y-3">
+              <h4 className="font-semibold text-indigo-800 dark:text-indigo-200">5. AbortSignal for grouped unsubscribe</h4>
+              <p className="text-sm text-muted-foreground">
+                The latest DOM APIs let you subscribe using an <code>AbortSignal</code>. When you call <code>controller.abort()</code>, all
+                listeners using that signal are unsubscribed at once.
+              </p>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`const controller = new AbortController();
+const { signal } = controller;
+
+// Subscribe with a signal (modern pattern)
+window.addEventListener(
+  'mousemove',
+  (event) => {
+    console.log('mouse:', event.clientX, event.clientY);
+  },
+  { signal } // auto-removed when controller.abort() is called
+);
+
+// Stop all related listeners after 3 seconds
+setTimeout(() => {
+  controller.abort();
+  console.log('Stopped tracking mouse (via AbortController)');
+}, 3000);
+
+// Output:
+// mouse: 100 220
+// mouse: 130 260
+// ...
+// Stopped tracking mouse (via AbortController)`}
+              </pre>
+              <SnippetOutput
+                lines={[
+                  'mouse: 100 220',
+                  'mouse: 130 260',
+                  '...',
+                  'Stopped tracking mouse (via AbortController)',
+                ]}
+              />
+              <p className="text-xs text-muted-foreground">
+                <code>AbortSignal</code> also works with <code>fetch</code>, web streams, and many newer browser APIs—one controller
+                can cancel network requests and event streams together.
+              </p>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
+              <h4 className="font-semibold">6. Subscribe/unsubscribe in async flows</h4>
+              <p className="text-sm text-muted-foreground">
+                In async code, callbacks often subscribe to data, then return a cleanup function that callers <strong>must</strong> run
+                (for example in frameworks or long-lived services).
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
+{`// Custom subscribe helper that also returns cleanup
+function subscribeToInterval(ms, onTick) {
+  const id = setInterval(() => {
+    const timestamp = new Date().toISOString();
+    onTick(timestamp);
+  }, ms);
+
+  // Unsubscribe function
+  return () => {
+    clearInterval(id);
+    console.log('Interval cleared');
+  };
+}
+
+// Usage in higher-level code
+const stop = subscribeToInterval(1000, (time) => {
+  console.log('tick at', time);
+});
+
+setTimeout(() => {
+  stop(); // unsubscribe
+}, 3100);
+
+// Sample output:
+// tick at 2024-01-01T10:00:00.000Z
+// tick at 2024-01-01T10:00:01.000Z
+// tick at 2024-01-01T10:00:02.000Z
+// Interval cleared`}
+              </pre>
+              <SnippetOutput
+                lines={[
+                  'tick at 2024-01-01T10:00:00.000Z',
+                  'tick at 2024-01-01T10:00:01.000Z',
+                  'tick at 2024-01-01T10:00:02.000Z',
+                  'Interval cleared',
+                ]}
+              />
+              <p className="text-xs text-muted-foreground">
+                Many libraries follow this idea: <code>subscribe(callback)</code> returns an <code>unsubscribe</code> function or a small
+                object like <code>{'{ unsubscribe() { … } }'}</code>. Always look for that cleanup API and call it when the work is done.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Best practices */}
       <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
         <CardHeader>

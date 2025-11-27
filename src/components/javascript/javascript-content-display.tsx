@@ -58,6 +58,22 @@ const JavaScriptCallStack = lazy(() => import('./topics/javascript-call-stack'))
 const JavaScriptEventLoop = lazy(() => import('./topics/javascript-event-loop'));
 const JavaScriptTaskQueue = lazy(() => import('./topics/javascript-task-queue'));
 const JavaScriptWhatIsDOM = lazy(() => import('./topics/javascript-what-is-dom'));
+const JavaScriptSelectingElements = lazy(() => import('./topics/javascript-selecting-elements'));
+const JavaScriptDOMManipulation = lazy(() => import('./topics/javascript-dom-manipulation'));
+const JavaScriptElementAttributes = lazy(() => import('./topics/javascript-element-attributes'));
+const JavaScriptDOMStyles = lazy(() => import('./topics/javascript-dom-styles'));
+const JavaScriptEvents = lazy(() => import('./topics/javascript-events'));
+const JavaScriptEventTypes = lazy(() => import('./topics/javascript-event-types'));
+const JavaScriptEventObject = lazy(() => import('./topics/javascript-event-object'));
+const JavaScriptEventPropagation = lazy(() => import('./topics/javascript-event-propagation'));
+const JavaScriptPreventDefault = lazy(() => import('./topics/javascript-prevent-default'));
+const JavaScriptFormHandling = lazy(() => import('./topics/javascript-form-handling'));
+const JavaScriptFormValidation = lazy(() => import('./topics/javascript-form-validation'));
+const JavaScriptFormDataApi = lazy(() => import('./topics/javascript-formdata-api'));
+const JavaScriptES6Overview = lazy(() => import('./topics/javascript-es6-overview'));
+const JavaScriptDestructuring = lazy(() => import('./topics/javascript-destructuring'));
+const JavaScriptSpreadRest = lazy(() => import('./topics/javascript-spread-rest'));
+const JavaScriptDefaultParameters = lazy(() => import('./topics/javascript-default-parameters'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -112,6 +128,22 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'event-loop': JavaScriptEventLoop,
   'task-queue': JavaScriptTaskQueue,
   'what-is-dom': JavaScriptWhatIsDOM,
+  'selecting-elements': JavaScriptSelectingElements,
+  'js-dom-manipulation': JavaScriptDOMManipulation,
+  'element-attributes': JavaScriptElementAttributes,
+  'dom-styles': JavaScriptDOMStyles,
+  'js-events': JavaScriptEvents,
+  'event-types': JavaScriptEventTypes,
+  'event-object': JavaScriptEventObject,
+  'event-propagation': JavaScriptEventPropagation,
+  'prevent-default': JavaScriptPreventDefault,
+  'form-handling': JavaScriptFormHandling,
+  'form-validation': JavaScriptFormValidation,
+  'formdata-api': JavaScriptFormDataApi,
+  'js-es6': JavaScriptES6Overview,
+  'destructuring': JavaScriptDestructuring,
+  'spread-rest': JavaScriptSpreadRest,
+  'default-parameters': JavaScriptDefaultParameters,
 };
 
 function LoadingSkeleton() {
