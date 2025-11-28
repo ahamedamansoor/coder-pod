@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { Mic, MicOff, Volume2, Loader2, Sparkles, Wand2, Send, CornerDownLeft, MessageSquare, Phone, PhoneOff, StopCircle, ArrowRight } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';
 import { validateApiKey } from '@/ai/flows/validate-api-key';
@@ -172,7 +173,16 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   }, [resetInterview]);
 
   const startInitialQuestion = useCallback(async () => {
-    if (!user || !isAiEnabled) {
+    if (!user) {
+      toast({
+        variant: 'default',
+        title: '🔐 Login Required',
+        description: 'Please login to access AI-powered interview features.',
+      });
+      return;
+    }
+    
+    if (!isAiEnabled) {
       toast({
         variant: 'destructive',
         title: 'AI Provider Not Connected',
@@ -235,13 +245,25 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       }
     } catch (error) {
       console.error('Failed to start interview:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Failed to Start Interview',
-        description: error instanceof Error ? error.message : 'Could not fetch the first question. Please ensure your API key is valid.',
-      });
-      // If it fails, maybe the key is bad
-      setIsAiEnabled(false); 
+      
+      // Check if error is due to AI configuration
+      const errorMessage = error instanceof Error ? error.message : '';
+      if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
+        toast({
+          variant: 'destructive',
+          title: 'AI Connection Failed',
+          description: 'Your AI key may be invalid or expired. Please update your API key.',
+        });
+        setIsAiEnabled(false);
+        setIsModalOpen(true);
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Failed to Start Interview',
+          description: error instanceof Error ? error.message : 'Could not fetch the first question. Please try again.',
+        });
+        setIsAiEnabled(false);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -561,11 +583,23 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       setUserAnswer('');
     } catch (error) {
       console.error('Interview AI error:', error);
-      toast({
-        variant: 'destructive',
-        title: 'An Error Occurred',
-        description: error instanceof Error ? error.message : 'Could not get feedback from the AI. Please try again.',
-      });
+      
+      // Check if error is due to AI configuration
+      const errorMessage = error instanceof Error ? error.message : '';
+      if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
+        toast({
+          variant: 'destructive',
+          title: 'AI Connection Failed',
+          description: 'Your AI key may be invalid or expired. Please update your API key.',
+        });
+        setIsModalOpen(true);
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'An Error Occurred',
+          description: error instanceof Error ? error.message : 'Could not get feedback from the AI. Please try again.',
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -740,23 +774,34 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
             </div>
 
             {/* Start Button */}
-            <Button 
-              onClick={startInitialQuestion}
-              disabled={isLoading}
-              className="w-full h-12 text-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Preparing Interview...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Start Interview
-                </>
-              )}
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    onClick={startInitialQuestion}
+                    disabled={isLoading}
+                    className="w-full h-12 text-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Preparing Interview...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-2 h-5 w-5" />
+                        Start Interview
+                      </>
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                {!user && (
+                  <TooltipContent side="bottom" className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-none">
+                    <p className="font-medium">🔐 Please login to use AI features</p>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </Card>
       );
@@ -980,11 +1025,23 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                                 setIsAnswerCorrect(null);
                               } catch (error) {
                                 console.error('Failed to fetch next questions:', error);
-                                toast({
-                                  variant: 'destructive',
-                                  title: 'Error',
-                                  description: 'Could not fetch more questions. Please try again.',
-                                });
+                                
+                                // Check if error is due to AI configuration
+                                const errorMessage = error instanceof Error ? error.message : '';
+                                if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
+                                  toast({
+                                    variant: 'destructive',
+                                    title: 'AI Connection Failed',
+                                    description: 'Your AI key may be invalid or expired. Please update your API key.',
+                                  });
+                                  setIsModalOpen(true);
+                                } else {
+                                  toast({
+                                    variant: 'destructive',
+                                    title: 'Error',
+                                    description: 'Could not fetch more questions. Please try again.',
+                                  });
+                                }
                               } finally {
                                 setIsLoading(false);
                               }

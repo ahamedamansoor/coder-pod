@@ -97,11 +97,7 @@ export const GenericLearningPath = ({
 
   const isUserAuthenticated = user && !user.isAnonymous;
 
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, router]);
+  // Allow guest users to view content - no redirect needed
 
   // Safety check for language prop
   if (!language || !language.topics) {

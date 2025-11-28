@@ -43,11 +43,7 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
   
   const isUserAuthenticated = user && !user.isAnonymous;
 
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, router]);
+  // Allow guest users to view content - no redirect needed
 
   // Simplified module structure for generic languages
   const modules = [{
