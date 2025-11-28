@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
 import {
   GitCompare,
   ToggleLeft,
@@ -14,7 +15,6 @@ import {
   XCircle,
   AlertTriangle,
   Lightbulb,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptTernaryOperatorProps {
@@ -357,13 +357,10 @@ console.log(message);
         <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Pattern 1: Button States */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Button States & Labels
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Dynamic button text
+            <CodeSnippetWithOutput
+              title="Button States & Labels"
+              description="Dynamic button text - perfect for toggling between UI states"
+              code={`// Pattern: Dynamic button text
 function SubmitButton({ isLoading }) {
   const buttonText = isLoading 
     ? 'Saving...' 
@@ -373,26 +370,21 @@ function SubmitButton({ isLoading }) {
 }
 
 console.log(SubmitButton({ isLoading: false }));
-// Output: Save Changes
-
-console.log(SubmitButton({ isLoading: true }));
-// Output: Saving...
-
-// Works great for UI states!`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Perfect for toggling between two states like loading/ready, enabled/disabled, or open/closed.
-              </p>
-            </div>
+console.log(SubmitButton({ isLoading: true }));`}
+              output={[
+                "Save Changes",
+                "Saving..."
+              ]}
+              language="javascript"
+              colorTheme="blue"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 2: Default Values */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Default Values & Fallbacks
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Provide safe defaults
+            <CodeSnippetWithOutput
+              title="Default Values & Fallbacks"
+              description="Provide safe defaults - prevents undefined errors in your application"
+              code={`// Pattern: Provide safe defaults
 function getUserRole(user) {
   return user && user.role 
     ? user.role 
@@ -403,24 +395,21 @@ const admin = { name: 'Alice', role: 'admin' };
 const visitor = { name: 'Bob' };
 
 console.log(getUserRole(admin));
-// Output: admin
-
-console.log(getUserRole(visitor));
-// Output: guest`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Ensures your code always has a valid value, preventing undefined errors in your application.
-              </p>
-            </div>
+console.log(getUserRole(visitor));`}
+              output={[
+                "admin",
+                "guest"
+              ]}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 3: CSS Classes */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Conditional CSS Classes
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Toggle CSS classes
+            <CodeSnippetWithOutput
+              title="Conditional CSS Classes"
+              description="Toggle CSS classes - common in React/Vue for dynamic styling"
+              code={`// Pattern: Toggle CSS classes
 function getStatusClass(status) {
   return status === 'active' 
     ? 'badge-success' 
@@ -428,26 +417,21 @@ function getStatusClass(status) {
 }
 
 console.log(getStatusClass('active'));
-// Output: badge-success
-
-console.log(getStatusClass('inactive'));
-// Output: badge-danger
-
-// Great for dynamic styling!`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Common in React, Vue, and other frameworks for conditional styling based on component state.
-              </p>
-            </div>
+console.log(getStatusClass('inactive'));`}
+              output={[
+                "badge-success",
+                "badge-danger"
+              ]}
+              language="javascript"
+              colorTheme="purple"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 4: Price Display */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Price & Discount Display
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Show discounted price
+            <CodeSnippetWithOutput
+              title="Price & Discount Display"
+              description="Handle conditional calculations like discounts, taxes, and shipping"
+              code={`// Pattern: Show discounted price
 function formatPrice(price, hasDiscount) {
   const finalPrice = hasDiscount 
     ? price * 0.8 
@@ -457,15 +441,15 @@ function formatPrice(price, hasDiscount) {
 }
 
 console.log(formatPrice(100, false));
-// Output: $100.00
-
-console.log(formatPrice(100, true));
-// Output: $80.00`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Clean way to handle conditional calculations like discounts, taxes, or shipping costs.
-              </p>
-            </div>
+console.log(formatPrice(100, true));`}
+              output={[
+                "$100.00",
+                "$80.00"
+              ]}
+              language="javascript"
+              colorTheme="amber"
+              icon={CheckCircle2}
+            />
           </div>
         </CardContent>
       </Card>
@@ -507,29 +491,26 @@ console.log(formatPrice(100, true));
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ ternary operators, conditional expressions, and nested logic.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights ternary operator usage (basic syntax, nested ternaries, and when to use alternatives) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try Ternary Operators"
+          description="Experiment with ternary operators, conditional expressions, and nested logic"
+          features={[
+            'Basic Ternary',
+            'Nested Ternaries',
+            'Conditional Returns',
+            'Best Practices'
+          ]}
+          buttonText="Open Ternary Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: playgroundHtml,
+            css: '',
+            js: playgroundJs
+          }}
+          colorTheme="purple"
+        />
+      )}
     </div>
   );
 }

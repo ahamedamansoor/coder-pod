@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
 import {
   RefreshCcw,
   ListOrdered,
@@ -16,7 +17,6 @@ import {
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   ArrowRight,
   Flag,
 } from 'lucide-react';
@@ -149,15 +149,6 @@ for (let i = 1; i <= 10; i++) {
 
 console.log('\\n✅ All loop demos complete!');`;
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
 
 export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoopsProps) {
   return (
@@ -373,13 +364,10 @@ for (const name of names) {
         <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Pattern 1: Processing Array Data */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Processing Array Data
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Calculate total price
+            <CodeSnippetWithOutput
+              title="Processing Array Data"
+              description="Calculate total price from shopping cart - perfect for summing values from arrays of objects"
+              code={`// Pattern: Calculate total price
 const cart = [
   { name: 'Book', price: 15 },
   { name: 'Pen', price: 5 },
@@ -392,26 +380,23 @@ for (const item of cart) {
   console.log(item.name + ': $' + item.price);
 }
 
-console.log('Total: $' + total);
-// Output: Book: $15
-//         Pen: $5
-//         Bag: $30
-//         Total: $50`}
-              </pre>
-              <SnippetOutput lines={['Book: $15', 'Pen: $5', 'Bag: $30', 'Total: $50']} />
-              <p className="text-sm text-muted-foreground mt-3">
-                Perfect for shopping carts, summing values, or calculating totals from arrays of objects.
-              </p>
-            </div>
+console.log('Total: $' + total);`}
+              output={[
+                "Book: $15",
+                "Pen: $5",
+                "Bag: $30",
+                "Total: $50"
+              ]}
+              language="javascript"
+              colorTheme="blue"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 2: Finding Items */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Finding Items (Early Exit)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Search and stop
+            <CodeSnippetWithOutput
+              title="Finding Items (Early Exit)"
+              description="Search and stop - use break to exit once you find what you need"
+              code={`// Pattern: Search and stop
 const users = [
   { id: 1, name: 'Alice' },
   { id: 2, name: 'Bob' },
@@ -426,24 +411,21 @@ for (const user of users) {
   }
 }
 
-console.log('Found:', found.name);
-// Output: Found: Bob
-// (stops after finding Bob)`}
-              </pre>
-              <SnippetOutput lines={['Found: Bob', '(Loop exits after match)']} />
-              <p className="text-sm text-muted-foreground mt-3">
-                Use break to stop searching once you find what you need, saving unnecessary iterations.
-              </p>
-            </div>
+console.log('Found:', found.name);`}
+              output={[
+                "Found: Bob",
+                "// Loop exits after match"
+              ]}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 3: Retry Logic */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Retry Logic with While
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Retry until success
+            <CodeSnippetWithOutput
+              title="Retry Logic with While"
+              description="Retry until success - common for API calls and network requests"
+              code={`// Pattern: Retry until success
 let attempts = 0;
 let success = false;
 const maxAttempts = 3;
@@ -458,26 +440,22 @@ while (!success && attempts < maxAttempts) {
   if (success) {
     console.log('✅ Success!');
   }
-}
-
-// Output: Attempt 1
-//         Attempt 2
-//         ✅ Success!`}
-              </pre>
-              <SnippetOutput lines={['Attempt 1', 'Attempt 2', '✅ Success!']} />
-              <p className="text-sm text-muted-foreground mt-3">
-                Common for API calls, network requests, or any operation that might fail and needs retries.
-              </p>
-            </div>
+}`}
+              output={[
+                "Attempt 1",
+                "Attempt 2",
+                "✅ Success!"
+              ]}
+              language="javascript"
+              colorTheme="purple"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 4: Building HTML Lists */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Building Dynamic Lists
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Generate HTML/text lists
+            <CodeSnippetWithOutput
+              title="Building Dynamic Lists"
+              description="Generate HTML/text lists dynamically from arrays"
+              code={`// Pattern: Generate HTML/text lists
 const todos = ['Write code', 'Test', 'Deploy'];
 let htmlList = '<ul>';
 
@@ -487,18 +465,18 @@ for (let i = 0; i < todos.length; i++) {
 }
 htmlList += '</ul>';
 
-console.log(htmlList);
-// Output: <ul>
-//   <li>1. Write code</li>
-//   <li>2. Test</li>
-//   <li>3. Deploy</li>
-// </ul>`}
-              </pre>
-              <SnippetOutput lines={['<ul>', '  <li>1. Write code</li>', '  <li>2. Test</li>', '  <li>3. Deploy</li>', '</ul>']} />
-              <p className="text-sm text-muted-foreground mt-3">
-                Useful for generating markup, creating numbered lists, or building UI components dynamically.
-              </p>
-            </div>
+console.log(htmlList);`}
+              output={[
+                "<ul>",
+                "  <li>1. Write code</li>",
+                "  <li>2. Test</li>",
+                "  <li>3. Deploy</li>",
+                "</ul>"
+              ]}
+              language="javascript"
+              colorTheme="amber"
+              icon={CheckCircle2}
+            />
           </div>
         </CardContent>
       </Card>
@@ -576,29 +554,26 @@ console.log(htmlList);
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ loops, iterations, and break/continue statements.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights loop patterns (for, for...of, for...in, while, do...while, and forEach) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try Loops"
+          description="Experiment with for, for...of, for...in, while, do...while, and forEach loops"
+          features={[
+            'for Loop',
+            'for...of & for...in',
+            'while & do...while',
+            'break & continue'
+          ]}
+          buttonText="Open Loops Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: playgroundHtml,
+            css: '',
+            js: playgroundJs
+          }}
+          colorTheme="blue"
+        />
+      )}
     </div>
   );
 }

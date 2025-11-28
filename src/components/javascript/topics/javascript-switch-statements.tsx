@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
 import {
   PanelsTopLeft,
   GitCompare,
@@ -16,7 +17,6 @@ import {
   CheckCircle2,
   XCircle,
   Sparkles,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptSwitchStatementsProps {
@@ -426,13 +426,10 @@ switch (month) {
         <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Pattern 1: User Role Permissions */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                User Role Permissions
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Role-based access control
+            <CodeSnippetWithOutput
+              title="User Role Permissions"
+              description="Role-based access control - common in authentication systems"
+              code={`// Pattern: Role-based access control
 function getPermissions(role) {
   let permissions;
   
@@ -454,24 +451,21 @@ function getPermissions(role) {
 }
 
 console.log(getPermissions('editor'));
-// Output: ['read', 'write']
-
-console.log(getPermissions('guest'));
-// Output: []`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Common in authentication systems to determine what actions users can perform based on their role.
-              </p>
-            </div>
+console.log(getPermissions('guest'));`}
+              output={[
+                "['read', 'write']",
+                "[]"
+              ]}
+              language="javascript"
+              colorTheme="blue"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 2: HTTP Status Codes */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                HTTP Status Handler
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Handle API responses
+            <CodeSnippetWithOutput
+              title="HTTP Status Handler"
+              description="API response handling - different status codes require different messages"
+              code={`// Pattern: Handle API responses
 function handleResponse(statusCode) {
   switch (statusCode) {
     case 200:
@@ -492,24 +486,21 @@ function handleResponse(statusCode) {
 }
 
 console.log(handleResponse(200));
-// Output: Success!
-
-console.log(handleResponse(404));
-// Output: Not Found`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Perfect for API response handling where different status codes require different messages or actions.
-              </p>
-            </div>
+console.log(handleResponse(404));`}
+              output={[
+                "Success!",
+                "Not Found"
+              ]}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 3: Calculator Operations */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Calculator Operations
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Operation router
+            <CodeSnippetWithOutput
+              title="Calculator Operations"
+              description="Operation router - ideal for calculator apps with different operations"
+              code={`// Pattern: Operation router
 function calculate(num1, num2, operator) {
   let result;
   
@@ -536,24 +527,21 @@ function calculate(num1, num2, operator) {
 }
 
 console.log(calculate(10, 5, '+'));
-// Output: 15
-
-console.log(calculate(10, 5, '/'));
-// Output: 2`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Ideal for calculator apps or any tool that performs different operations based on user selection.
-              </p>
-            </div>
+console.log(calculate(10, 5, '/'));`}
+              output={[
+                "15",
+                "2"
+              ]}
+              language="javascript"
+              colorTheme="purple"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 4: Game State Management */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Game State Management
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Handle game states
+            <CodeSnippetWithOutput
+              title="Game State Management"
+              description="Handle game states - used in games and interactive apps"
+              code={`// Pattern: Handle game states
 function updateGame(state) {
   let message;
   
@@ -581,15 +569,15 @@ function updateGame(state) {
 }
 
 console.log(updateGame('won'));
-// Output: 🎉 You won!
-
-console.log(updateGame('paused'));
-// Output: Game paused`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Used in games and interactive apps to handle different states and show appropriate messages or UI.
-              </p>
-            </div>
+console.log(updateGame('paused'));`}
+              output={[
+                "🎉 You won!",
+                "Game paused"
+              ]}
+              language="javascript"
+              colorTheme="amber"
+              icon={CheckCircle2}
+            />
           </div>
         </CardContent>
       </Card>
@@ -743,29 +731,26 @@ console.log(updateGame('paused'));
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ switch statements, case matching, and fall-through behavior.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights switch statement patterns (case matching, break statements, default cases, and fall-through) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try Switch Statements"
+          description="Experiment with switch statements, case matching, break statements, and fall-through behavior"
+          features={[
+            'Case Matching',
+            'Break Statements',
+            'Default Cases',
+            'Fall-through'
+          ]}
+          buttonText="Open Switch Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: playgroundHtml,
+            css: '',
+            js: playgroundJs
+          }}
+          colorTheme="amber"
+        />
+      )}
     </div>
   );
 }

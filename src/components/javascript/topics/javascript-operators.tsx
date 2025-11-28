@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
 import {
   Calculator,
   Scale,
@@ -18,7 +19,6 @@ import {
   Lightbulb,
   AlertTriangle,
   XCircle,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptOperatorsProps {
@@ -514,40 +514,33 @@ console.log(result2);
         <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Pattern 1: Default Values with OR */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Default Values with OR (||)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Provide fallback values
+            <CodeSnippetWithOutput
+              title="Default Values with OR (||)"
+              description="Provide fallback values - the OR operator returns the first truthy value"
+              code={`// Pattern: Provide fallback values
 function greetUser(name) {
   const displayName = name || 'Guest';
   return 'Hello, ' + displayName;
 }
 
 console.log(greetUser('Alice'));
-// Output: Hello, Alice
-
 console.log(greetUser(''));
-// Output: Hello, Guest
-
-console.log(greetUser());
-// Output: Hello, Guest`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                The OR operator returns the first truthy value, perfect for setting defaults when values might be empty or undefined.
-              </p>
-            </div>
+console.log(greetUser());`}
+              output={[
+                "Hello, Alice",
+                "Hello, Guest",
+                "Hello, Guest"
+              ]}
+              language="javascript"
+              colorTheme="blue"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 2: Conditional Execution with AND */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Conditional Execution with AND (&&)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Execute only if condition is true
+            <CodeSnippetWithOutput
+              title="Conditional Execution with AND (&&)"
+              description="Execute only if condition is true - AND operator short-circuits"
+              code={`// Pattern: Execute only if condition is true
 const user = { 
   isAdmin: true, 
   name: 'Bob' 
@@ -555,26 +548,23 @@ const user = {
 
 // Only log if user is admin
 user.isAdmin && console.log('Admin access granted');
-// Output: Admin access granted
 
 const normalUser = { isAdmin: false };
+normalUser.isAdmin && console.log('Will not print');`}
+              output={[
+                "Admin access granted",
+                "// Second log doesn't execute"
+              ]}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+            />
 
-normalUser.isAdmin && console.log('Will not print');
-// Output: (nothing)`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                The AND operator short-circuits, only executing the right side if the left side is truthy. Great for conditional code execution.
-              </p>
-            </div>
-
-            {/* Pattern 3: Nullish Coalescing */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Calculate Discounts
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Apply percentage discounts
+            {/* Pattern 3: Calculate Discounts */}
+            <CodeSnippetWithOutput
+              title="Calculate Discounts"
+              description="Arithmetic operators combined for real business logic like pricing and discounts"
+              code={`// Pattern: Apply percentage discounts
 function applyDiscount(price, percent) {
   const discount = price * (percent / 100);
   const finalPrice = price - discount;
@@ -590,27 +580,23 @@ const salePrice = applyDiscount(
 );
 
 console.log('Original: $' + originalPrice);
-// Output: Original: $100
-
 console.log('Discount: ' + discountRate + '%');
-// Output: Discount: 20%
-
-console.log('Final: $' + salePrice);
-// Output: Final: $80`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Arithmetic operators combined to calculate real business logic like pricing, taxes, and discounts.
-              </p>
-            </div>
+console.log('Final: $' + salePrice);`}
+              output={[
+                "Original: $100",
+                "Discount: 20%",
+                "Final: $80"
+              ]}
+              language="javascript"
+              colorTheme="purple"
+              icon={CheckCircle2}
+            />
 
             {/* Pattern 4: Form Validation */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Form Validation
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Pattern: Validate user input
+            <CodeSnippetWithOutput
+              title="Form Validation"
+              description="Combining comparison and logical operators to validate multiple conditions"
+              code={`// Pattern: Validate user input
 function validateForm(email, age) {
   const hasEmail = email && email.length > 0;
   const isAdult = age >= 18;
@@ -620,18 +606,17 @@ function validateForm(email, age) {
 }
 
 console.log(validateForm('user@email.com', 25));
-// Output: true
-
 console.log(validateForm('', 25));
-// Output: false
-
-console.log(validateForm('user@email.com', 16));
-// Output: false`}
-              </pre>
-              <p className="text-sm text-muted-foreground mt-3">
-                Combining comparison and logical operators to validate multiple conditions at once.
-              </p>
-            </div>
+console.log(validateForm('user@email.com', 16));`}
+              output={[
+                "true",
+                "false",
+                "false"
+              ]}
+              language="javascript"
+              colorTheme="amber"
+              icon={CheckCircle2}
+            />
           </div>
         </CardContent>
       </Card>
@@ -673,29 +658,26 @@ console.log(validateForm('user@email.com', 16));
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ operators, expressions, and comparisons.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights JavaScript operators (arithmetic, assignment, comparison, logical, and typeof) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try JavaScript Operators"
+          description="Experiment with arithmetic, assignment, comparison, logical, and typeof operators"
+          features={[
+            'Arithmetic (+, -, *, /)',
+            'Comparison (===, !==)',
+            'Logical (&&, ||, !)',
+            'typeof Operator'
+          ]}
+          buttonText="Open Operators Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: playgroundHtml,
+            css: '',
+            js: playgroundJs
+          }}
+          colorTheme="blue"
+        />
+      )}
     </div>
   );
 }

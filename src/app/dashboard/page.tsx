@@ -20,7 +20,8 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { languages } from '@/app/data';
-import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github } from 'lucide-react';
+import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Mic, Lock, Key } from 'lucide-react';
+import InterviewSimulator from '@/components/shared/interview-simulator';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/shared/layout/logo';
 import { ThemeToggle } from '@/components/shared/layout/theme-toggle';
@@ -514,6 +515,92 @@ function DashboardContent() {
               );
             })}
           </div>
+        </div>
+      </div>
+
+      {/* AI Features Section */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 mb-16 lg:mb-20">
+        <div className="max-w-[1920px] mx-auto">
+          <Card className="relative overflow-hidden border-2 border-gradient-to-r from-emerald-200/50 to-cyan-200/50 dark:from-emerald-900/30 dark:to-cyan-900/30 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950/20 dark:via-teal-950/20 dark:to-cyan-950/20 shadow-2xl">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute -top-24 left-1/4 w-64 h-64 bg-emerald-400/20 dark:bg-emerald-600/10 rounded-full blur-3xl animate-pulse" />
+              <div className="absolute -bottom-24 right-1/4 w-64 h-64 bg-cyan-400/20 dark:bg-cyan-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+            </div>
+            
+            <CardHeader className="relative">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 shadow-lg">
+                  <Sparkles className="w-6 h-6 text-white animate-pulse" />
+                </div>
+                <div>
+                  <CardTitle className="text-3xl font-bold bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-700 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                    AI-Powered Features
+                  </CardTitle>
+                  <CardDescription className="text-base mt-1">
+                    Practice with AI Interview Simulator across all languages
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            
+            <CardContent className="relative">
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                {/* Feature 1 */}
+                <div className="p-6 rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-emerald-200/50 dark:border-emerald-800/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                      <Mic className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h3 className="font-bold text-slate-900 dark:text-white">Mock Interviews</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Practice technical interviews with AI-generated questions tailored to your chosen language
+                  </p>
+                </div>
+
+                {/* Feature 2 */}
+                <div className="p-6 rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-teal-200/50 dark:border-teal-800/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 rounded-lg bg-teal-100 dark:bg-teal-900/30">
+                      <Target className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <h3 className="font-bold text-slate-900 dark:text-white">Real-time Feedback</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Get instant, constructive feedback on your answers with ideal solutions
+                  </p>
+                </div>
+
+                {/* Feature 3 */}
+                <div className="p-6 rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-cyan-200/50 dark:border-cyan-800/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+                      <Zap className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+                    </div>
+                    <h3 className="font-bold text-slate-900 dark:text-white">All Languages</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Available for JavaScript, React, Java, Spring, HTML, CSS and more
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="flex flex-col items-center gap-4 justify-center">
+                <InterviewSimulator language="JavaScript">
+                  <Button className="relative group overflow-hidden bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-6 text-lg">
+                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <Mic className="mr-3 h-5 w-5 relative z-10" />
+                    <span className="relative z-10 font-semibold">Start AI Interview</span>
+                  </Button>
+                </InterviewSimulator>
+                <p className="text-sm text-muted-foreground text-center max-w-md">
+                  Choose from 7 AI providers (Gemini, ChatGPT, Claude, Perplexity, Groq, Mistral, Cohere)
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 

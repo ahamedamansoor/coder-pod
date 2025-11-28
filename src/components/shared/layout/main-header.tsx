@@ -3,7 +3,7 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid, Mic, Home, ToyBrick } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid, Home, ToyBrick } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
@@ -15,13 +15,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { useParams, useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { doc } from 'firebase/firestore';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
 import Link from 'next/link';
 import { useLoading } from '@/hooks/use-loading';
-import { InterviewSimulator } from '@/components/shared/interview-simulator';
 import { languages } from '@/app/data';
 import { ReactPlaygroundModal } from '@/components/react/react-playground-modal';
 
@@ -44,8 +43,6 @@ export function MainHeader({
   const router = useRouter();
   const pathname = usePathname();
   const { showLoader } = useLoading();
-  
-  const params = useParams();
   
   const currentLanguageSlug = pathname.split('/')[1] || undefined;
   const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
@@ -111,15 +108,6 @@ export function MainHeader({
             </WebPlaygroundModal>
           )
         )}
-        {currentLanguage && (
-          <InterviewSimulator language={currentLanguage.name}>
-             <Button className="rounded-full border border-emerald-200/60 bg-white/80 text-emerald-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-emerald-900/40 dark:bg-slate-900/70 dark:text-emerald-200">
-                <Mic className="mr-2 h-4 w-4" />
-                AI Interview
-              </Button>
-          </InterviewSimulator>
-        )}
-        
         {showCodeEditorButton && (
           <Button onClick={onToggleEditor} className="rounded-full border border-slate-200/70 bg-white/80 text-slate-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-slate-800/40 dark:bg-slate-900/70 dark:text-slate-100">
             <Code className="mr-2 h-4 w-4" />

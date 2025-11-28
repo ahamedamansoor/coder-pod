@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   SplitSquareHorizontal,
   GitCompare,
@@ -15,7 +15,6 @@ import {
   CheckCircle2,
   XCircle,
   Sparkles,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptIfElseProps {
@@ -267,29 +266,26 @@ export default function JavaScriptIfElse({ onOpenWebPlayground }: JavaScriptIfEl
       </Card>
 
       {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ if/else statements, conditions, and branching logic.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights conditional statements (if, else if, else, and truthy/falsy values) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
+      {onOpenWebPlayground && (
+        <InteractivePlayground
+          title="Try If/Else Statements"
+          description="Experiment with if, else if, else statements and conditional logic"
+          features={[
+            'if Statements',
+            'else if Chains',
+            'else Blocks',
+            'Truthy/Falsy Values'
+          ]}
+          buttonText="Open If/Else Playground"
+          onLaunchPlayground={onOpenWebPlayground}
+          playgroundData={{
+            html: playgroundHtml,
+            css: '',
+            js: playgroundJs
+          }}
+          colorTheme="emerald"
+        />
+      )}
     </div>
   );
 }
