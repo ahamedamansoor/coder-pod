@@ -17,6 +17,12 @@ export { firebaseCheatsheet } from './firebase';
 export { sqlCheatsheet } from './sql';
 export { cassandraCheatsheet } from './cassandra';
 export { timescaledbCheatsheet } from './timescaledb';
+export { bashCheatsheet } from './bash';
+export { homebrewCheatsheet } from './homebrew';
+export { chromeCheatsheet } from './chrome';
+export { firefoxCheatsheet } from './firefox';
+export { edgeCheatsheet } from './edge';
+export { safariCheatsheet } from './safari';
 
 // Export all cheatsheets as an array
 import { linuxCheatsheet } from './linux';
@@ -38,6 +44,12 @@ import { firebaseCheatsheet } from './firebase';
 import { sqlCheatsheet } from './sql';
 import { cassandraCheatsheet } from './cassandra';
 import { timescaledbCheatsheet } from './timescaledb';
+import { bashCheatsheet } from './bash';
+import { homebrewCheatsheet } from './homebrew';
+import { chromeCheatsheet } from './chrome';
+import { firefoxCheatsheet } from './firefox';
+import { edgeCheatsheet } from './edge';
+import { safariCheatsheet } from './safari';
 
 export const allCheatsheets = [
   linuxCheatsheet,
@@ -59,6 +71,12 @@ export const allCheatsheets = [
   sqlCheatsheet,
   cassandraCheatsheet,
   timescaledbCheatsheet,
+  bashCheatsheet,
+  homebrewCheatsheet,
+  chromeCheatsheet,
+  firefoxCheatsheet,
+  edgeCheatsheet,
+  safariCheatsheet,
 ];
 
 // Categorized cheatsheets
@@ -76,16 +94,16 @@ export const cheatsheetCategories = [
   {
     id: 'developer-tools',
     name: 'Developer Tools',
-    cheatsheets: [gitCheatsheet, npmCheatsheet],
+    cheatsheets: [gitCheatsheet, npmCheatsheet, homebrewCheatsheet],
   },
   {
     id: 'editors-tools',
     name: 'Editors & Tools',
-    cheatsheets: [vimCheatsheet, vscodeCheatsheet, jetbrainsCheatsheet, regexCheatsheet, emmetCheatsheet],
+    cheatsheets: [vimCheatsheet, vscodeCheatsheet, jetbrainsCheatsheet, regexCheatsheet, emmetCheatsheet, chromeCheatsheet, firefoxCheatsheet, edgeCheatsheet, safariCheatsheet],
   },
   {
     id: 'system',
     name: 'System & Terminal',
-    cheatsheets: [linuxCheatsheet, macCheatsheet, windowsCheatsheet],
+    cheatsheets: [linuxCheatsheet, macCheatsheet, windowsCheatsheet, bashCheatsheet],
   },
 ];

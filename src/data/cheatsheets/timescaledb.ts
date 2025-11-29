@@ -296,6 +296,224 @@ export const timescaledbCheatsheet = {
       ],
     },
     {
+      title: 'Hyperfunctions (TimescaleDB Toolkit)',
+      commands: [
+        {
+          command: 'CREATE EXTENSION timescaledb_toolkit',
+          description: 'Enable advanced analytics toolkit',
+          usage: 'CREATE EXTENSION timescaledb_toolkit',
+          example: 'CREATE EXTENSION IF NOT EXISTS timescaledb_toolkit CASCADE;',
+        },
+        {
+          command: 'stats_agg',
+          description: 'Statistical aggregate',
+          usage: 'stats_agg(value)',
+          example: 'SELECT\n  time_bucket(\'1 hour\', time) AS bucket,\n  stats_agg(temperature) AS stats\nFROM metrics\nGROUP BY bucket;\n\n-- Extract statistics\nSELECT\n  bucket,\n  average(stats),\n  stddev(stats),\n  variance(stats)\nFROM (...) AS stats_data;',
+        },
+        {
+          command: 'approx_percentile',
+          description: 'Approximate percentile calculation',
+          usage: 'approx_percentile(percentile, value)',
+          example: 'SELECT\n  time_bucket(\'1 hour\', time) AS bucket,\n  approx_percentile(0.95, temperature) AS p95,\n  approx_percentile(0.99, temperature) AS p99\nFROM metrics\nGROUP BY bucket;',
+        },
+        {
+          command: 'counter_agg / delta',
+          description: 'Counter aggregation for monotonic data',
+          usage: 'counter_agg(time, value)',
+          example: 'SELECT\n  time_bucket(\'1 hour\', time) AS bucket,\n  delta(counter_agg(time, bytes_sent)) AS bytes_delta\nFROM network_traffic\nGROUP BY bucket;',
+        },
+        {
+          command: 'time_weight / average',
+          description: 'Time-weighted average',
+          usage: 'time_weight(method, time, value)',
+          example: 'SELECT\n  time_bucket(\'1 day\', time) AS bucket,\n  average(time_weight(\'Linear\', time, temperature))\nFROM metrics\nGROUP BY bucket;',
+        },
+      ],
+    },
+    {
+      title: 'Real-time Aggregation',
+      commands: [
+        {
+          command: 'Real-time continuous aggregates',
+          description: 'Enable real-time aggregation',
+          usage: 'WITH (timescaledb.materialized_only=false)',
+          example: 'CREATE MATERIALIZED VIEW metrics_realtime\nWITH (timescaledb.continuous, timescaledb.materialized_only=false) AS\nSELECT\n  time_bucket(\'1 minute\', time) AS bucket,\n  device_id,\n  AVG(temperature) AS avg_temp\nFROM metrics\nGROUP BY bucket, device_id;\n\n-- Queries automatically combine materialized + real-time data',
+        },
+        {
+          command: 'refresh_lag / max_interval_per_job',
+          description: 'Configure refresh behavior',
+          usage: 'ALTER MATERIALIZED VIEW ... SET ...',
+          example: 'ALTER MATERIALIZED VIEW metrics_realtime\nSET (timescaledb.refresh_lag = \'-30 minutes\');\n\n-- Only materialize data older than 30 minutes',
+        },
+      ],
+    },
+    {
+      title: 'Data Tiering',
+      commands: [
+        {
+          command: 'Tablespaces for tiering',
+          description: 'Move chunks to different storage',
+          usage: 'move_chunk(chunk_name, tablespace)',
+          example: '-- Create tablespace on slower storage\nCREATE TABLESPACE slow_storage LOCATION \'/mnt/slow\';\n\n-- Move old chunks to slow storage\nSELECT move_chunk(\n  chunk => \'_timescaledb_internal._hyper_1_1_chunk\',\n  destination_tablespace => \'slow_storage\'\n);',
+        },
+        {
+          command: 'tiered_storage_policy',
+          description: 'Auto-move chunks to different storage',
+          usage: 'add_tiered_storage_policy',
+          example: 'SELECT add_tiered_storage_policy(\n  \'metrics\',\n  move_after => INTERVAL \'7 days\',\n  destination_tablespace => \'slow_storage\'\n);',
+        },
+      ],
+    },
+    {
+      title: 'Cagg Policies',
+      commands: [
+        {
+          command: 'Refresh window',
+          description: 'Control which time range to refresh',
+          usage: 'start_offset, end_offset',
+          example: 'SELECT add_continuous_aggregate_policy(\n  \'metrics_hourly\',\n  start_offset => INTERVAL \'3 hours\',\n  end_offset => INTERVAL \'1 hour\',\n  schedule_interval => INTERVAL \'30 minutes\'\n);\n\n-- Refreshes data from 3 hours ago to 1 hour ago',
+        },
+        {
+          command: 'Manual refresh with window',
+          description: 'Refresh specific time range',
+          usage: 'refresh_continuous_aggregate with start/end',
+          example: 'CALL refresh_continuous_aggregate(\n  \'metrics_hourly\',\n  \'2024-01-01\',\n  \'2024-01-31\'\n);',
+        },
+        {
+          command: 'Drop cagg data',
+          description: 'Delete old aggregate data',
+          usage: 'DROP MATERIALIZED VIEW ... CASCADE',
+          example: 'DROP MATERIALIZED VIEW metrics_hourly CASCADE;',
+        },
+      ],
+    },
+    {
+      title: 'Advanced Time Functions',
+      commands: [
+        {
+          command: 'time_bucket_ng',
+          description: 'New time_bucket with timezone support',
+          usage: 'time_bucket_ng(bucket_width, time, timezone)',
+          example: 'SELECT\n  time_bucket_ng(\'1 day\', time, \'America/New_York\') AS bucket,\n  AVG(temperature)\nFROM metrics\nGROUP BY bucket;',
+        },
+        {
+          command: 'time_bucket with origin',
+          description: 'Custom bucket alignment',
+          usage: 'time_bucket(bucket_width, time, origin)',
+          example: 'SELECT\n  time_bucket(\'5 minutes\', time, \'2024-01-01 00:02:00\') AS bucket,\n  COUNT(*)\nFROM events\nGROUP BY bucket;\n\n-- Buckets start at :02, :07, :12, etc.',
+        },
+      ],
+    },
+    {
+      title: 'Compression Advanced',
+      commands: [
+        {
+          command: 'Compression with multiple segmentby',
+          description: 'Segment by multiple columns',
+          usage: 'compress_segmentby',
+          example: 'ALTER TABLE metrics SET (\n  timescaledb.compress,\n  timescaledb.compress_segmentby = \'device_id, location\',\n  timescaledb.compress_orderby = \'time DESC, sensor_id\'\n);',
+        },
+        {
+          command: 'Compression chunk_time_interval',
+          description: 'Compress after specific time',
+          usage: 'compress_after',
+          example: 'SELECT add_compression_policy(\n  \'metrics\',\n  compress_after => INTERVAL \'7 days\',\n  if_not_exists => TRUE\n);',
+        },
+        {
+          command: 'Recompress chunks',
+          description: 'Recompress with new settings',
+          usage: 'recompress_chunk',
+          example: '-- Update compression settings\nALTER TABLE metrics SET (\n  timescaledb.compress_orderby = \'time DESC, temperature\'\n);\n\n-- Recompress existing chunks\nSELECT recompress_chunk(chunk_name)\nFROM timescaledb_information.chunks\nWHERE is_compressed = true;',
+        },
+      ],
+    },
+    {
+      title: 'Multi-node Operations',
+      commands: [
+        {
+          command: 'distributed_exec',
+          description: 'Execute on all data nodes',
+          usage: 'CALL distributed_exec(query)',
+          example: 'CALL distributed_exec($$\n  CREATE INDEX IF NOT EXISTS idx_device\n  ON metrics (device_id, time DESC)\n$$);',
+        },
+        {
+          command: 'set_replication_factor',
+          description: 'Set chunk replication',
+          usage: 'set_replication_factor(hypertable, factor)',
+          example: 'SELECT set_replication_factor(\'metrics\', 2);',
+        },
+        {
+          command: 'copy_chunk',
+          description: 'Copy chunk to another node',
+          usage: 'copy_chunk(chunk_name, destination_node)',
+          example: 'SELECT copy_chunk(\n  chunk => \'_timescaledb_internal._hyper_1_1_chunk\',\n  destination_node => \'node2\'\n);',
+        },
+      ],
+    },
+    {
+      title: 'Alerting & Monitoring',
+      commands: [
+        {
+          command: 'timescaledb.license',
+          description: 'Check license type',
+          usage: 'SHOW timescaledb.license',
+          example: 'SHOW timescaledb.license;\n-- Returns: apache, timescale, or community',
+        },
+        {
+          command: 'Chunk statistics',
+          description: 'View chunk compression stats',
+          usage: 'SELECT FROM chunk_compression_stats',
+          example: 'SELECT\n  hypertable_name,\n  num_chunks,\n  compressed_chunks,\n  pg_size_pretty(uncompressed_total_bytes) AS uncompressed,\n  pg_size_pretty(compressed_total_bytes) AS compressed,\n  ROUND(100 - (compressed_total_bytes::FLOAT / \n    uncompressed_total_bytes * 100)) AS compression_ratio\nFROM chunk_compression_stats(\'metrics\');',
+        },
+        {
+          command: 'Job statistics',
+          description: 'Monitor background job execution',
+          usage: 'SELECT FROM timescaledb_information.job_stats',
+          example: 'SELECT\n  job_id,\n  last_run_status,\n  last_run_duration,\n  total_runs,\n  total_failures\nFROM timescaledb_information.job_stats\nORDER BY last_finish_time DESC;',
+        },
+      ],
+    },
+    {
+      title: 'Performance Tuning',
+      commands: [
+        {
+          command: 'timescaledb.max_background_workers',
+          description: 'Configure background workers',
+          usage: 'ALTER SYSTEM SET timescaledb.max_background_workers',
+          example: 'ALTER SYSTEM SET timescaledb.max_background_workers = 8;\nSELECT pg_reload_conf();',
+        },
+        {
+          command: 'Parallel query',
+          description: 'Enable parallel chunk queries',
+          usage: 'max_parallel_workers_per_gather',
+          example: 'SET max_parallel_workers_per_gather = 4;\n\nSELECT\n  time_bucket(\'1 hour\', time),\n  device_id,\n  AVG(temperature)\nFROM metrics\nWHERE time > NOW() - INTERVAL \'30 days\'\nGROUP BY 1, 2;',
+        },
+        {
+          command: 'Analyze hypertable',
+          description: 'Update statistics',
+          usage: 'ANALYZE table_name',
+          example: 'ANALYZE metrics;\n-- Updates planner statistics for better query plans',
+        },
+      ],
+    },
+    {
+      title: 'Data Migration',
+      commands: [
+        {
+          command: 'timescaledb-parallel-copy',
+          description: 'Fast bulk data import',
+          usage: 'timescaledb-parallel-copy --connection "..." --table metrics',
+          example: 'timescaledb-parallel-copy \\\n  --connection "host=localhost user=postgres dbname=mydb" \\\n  --table metrics \\\n  --file data.csv \\\n  --workers 4 \\\n  --copy-options "CSV HEADER"',
+        },
+        {
+          command: 'COPY with chunks',
+          description: 'Efficient COPY for time-series',
+          usage: 'COPY table FROM ...',
+          example: 'COPY metrics (time, device_id, temperature)\nFROM \'/path/to/data.csv\'\nWITH (FORMAT CSV, HEADER true);',
+        },
+      ],
+    },
+    {
       title: 'Best Practices',
       commands: [
         {
@@ -309,6 +527,12 @@ export const timescaledbCheatsheet = {
           description: 'Efficient time-series queries',
           example: '-- Always filter by time\nSELECT * FROM metrics\nWHERE time > NOW() - INTERVAL \'1 day\';\n\n-- Use time_bucket for aggregations\nSELECT\n  time_bucket(\'1 hour\', time),\n  AVG(temperature)\nFROM metrics\nGROUP BY 1;\n\n-- Order by time DESC for recent data\nSELECT * FROM metrics\nORDER BY time DESC\nLIMIT 100;',
           usage: 'Best practices for queries',
+        },
+        {
+          command: 'Memory configuration',
+          description: 'Recommended PostgreSQL settings',
+          example: '-- In postgresql.conf\nshared_buffers = 25% of RAM\neffective_cache_size = 50% of RAM\nmaintenance_work_mem = 2GB\nmax_worker_processes = CPU cores\nmax_parallel_workers = CPU cores\ntimescaledb.max_background_workers = 8',
+          usage: 'Performance tuning',
         },
       ],
     },

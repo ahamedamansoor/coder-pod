@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Search, Copy, Check, ChevronRight, Filter, X } from 'lucide-react';
+import { Search, Copy, Check, ChevronRight } from 'lucide-react';
 import { CheatsheetModal } from './cheatsheet-modal';
 import { cn } from '@/lib/utils';
 import { cheatsheetCategories, allCheatsheets } from '@/data/cheatsheets';
@@ -23,42 +22,10 @@ type MatchingCommand = {
   };
 };
 
-// Command type filters
-const COMMAND_FILTERS = [
-  { id: 'ssh', label: 'SSH', keywords: ['ssh', 'ssh-keygen', 'ssh-copy-id', 'sshfs'] },
-  { id: 'grep', label: 'Grep', keywords: ['grep', 'rg', 'ripgrep'] },
-  { id: 'git', label: 'Git', keywords: ['git'] },
-  { id: 'tar', label: 'Tar', keywords: ['tar', 'zip', 'unzip', 'gzip', 'gunzip'] },
-  { id: 'docker', label: 'Docker', keywords: ['docker'] },
-  { id: 'npm', label: 'npm', keywords: ['npm', 'npx', 'yarn', 'pnpm'] },
-  { id: 'database', label: 'Database', keywords: ['select', 'insert', 'update', 'delete', 'create', 'drop', 'set', 'get', 'hset', 'zadd', 'mongo', 'firebase', 'firestore', 'addDoc', 'getDoc', 'setDoc', 'cql', 'cassandra', 'timescale', 'hypertable', 'time_bucket'] },
-  { id: 'vim', label: 'Vim', keywords: ['vim', 'vi', 'nvim'] },
-  { id: 'find', label: 'Find', keywords: ['find', 'locate'] },
-  { id: 'process', label: 'Process', keywords: ['ps', 'kill', 'top', 'htop', 'pkill', 'killall'] },
-  { id: 'network', label: 'Network', keywords: ['curl', 'wget', 'ping', 'netstat', 'ifconfig', 'ip'] },
-  { id: 'tmux', label: 'Tmux', keywords: ['tmux', 'screen'] },
-  { id: 'sed', label: 'Sed', keywords: ['sed'] },
-  { id: 'awk', label: 'Awk', keywords: ['awk'] },
-];
-
 export default function CheatsheetBoard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSheet, setSelectedSheet] = useState<typeof allCheatsheets[0] | null>(null);
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
-  const [selectedCommandType, setSelectedCommandType] = useState<string | null>(null);
-
-  // Check if command matches the selected command type filter
-  const matchesCommandType = (command: { command: string }): boolean => {
-    if (!selectedCommandType) return true;
-    
-    const filter = COMMAND_FILTERS.find(f => f.id === selectedCommandType);
-    if (!filter) return true;
-    
-    const commandLower = command.command.toLowerCase();
-    return filter.keywords.some(keyword => 
-      commandLower.startsWith(keyword) || commandLower.includes(` ${keyword}`)
-    );
-  };
 
   // Enhanced filter that searches deeply within commands
   const searchInSheet = (sheet: typeof allCheatsheets[0], query: string): boolean => {
@@ -69,12 +36,6 @@ export default function CheatsheetBoard() {
       sheet.name.toLowerCase().includes(lowerQuery) ||
       sheet.description.toLowerCase().includes(lowerQuery)
     ) {
-      // If command type filter is active, check if sheet has matching commands
-      if (selectedCommandType) {
-        return sheet.sections.some(section => 
-          section.commands.some(command => matchesCommandType(command))
-        );
-      }
       return true;
     }
 
@@ -82,29 +43,24 @@ export default function CheatsheetBoard() {
     return sheet.sections.some(section => {
       // Search in section title
       if (section.title.toLowerCase().includes(lowerQuery)) {
-        if (selectedCommandType) {
-          return section.commands.some(command => matchesCommandType(command));
-        }
         return true;
       }
 
       // Search in commands
       return section.commands.some(command => {
-        const textMatch = (
+        return (
           command.command.toLowerCase().includes(lowerQuery) ||
           command.description.toLowerCase().includes(lowerQuery) ||
           command.usage.toLowerCase().includes(lowerQuery) ||
           command.example.toLowerCase().includes(lowerQuery)
         );
-        
-        return textMatch && matchesCommandType(command);
       });
     });
   };
 
   // Get all matching commands for the search query
   const getMatchingCommands = (query: string): MatchingCommand[] => {
-    if (!query.trim() && !selectedCommandType) return [];
+    if (!query.trim()) return [];
 
     const lowerQuery = query.toLowerCase();
     const matches: MatchingCommand[] = [];
@@ -112,13 +68,8 @@ export default function CheatsheetBoard() {
     allCheatsheets.forEach(sheet => {
       sheet.sections.forEach(section => {
         section.commands.forEach(command => {
-          // Check if command matches the command type filter
-          if (!matchesCommandType(command)) {
-            return;
-          }
-
-          // Check if command matches the search query (or no query)
-          const textMatch = !query.trim() || (
+          // Check if command matches the search query
+          const textMatch = (
             command.command.toLowerCase().includes(lowerQuery) ||
             command.description.toLowerCase().includes(lowerQuery) ||
             command.usage.toLowerCase().includes(lowerQuery) ||
@@ -141,29 +92,22 @@ export default function CheatsheetBoard() {
     return matches.slice(0, 20); // Limit to top 20 matches
   };
 
-  // Filter categories and cheatsheets based on deep search and command type
+  // Filter categories and cheatsheets based on search query
   const filteredCategories = cheatsheetCategories.map(category => ({
     ...category,
     cheatsheets: category.cheatsheets.filter((sheet) => {
-      // If no filters, show all
-      if (searchQuery.trim() === '' && !selectedCommandType) {
+      // If no search query, show all
+      if (searchQuery.trim() === '') {
         return true;
       }
       
-      // If only command type filter, check if sheet has matching commands
-      if (searchQuery.trim() === '' && selectedCommandType) {
-        return sheet.sections.some(section => 
-          section.commands.some(command => matchesCommandType(command))
-        );
-      }
-      
-      // If search query exists, use deep search (which also respects command type)
+      // Use deep search
       return searchInSheet(sheet, searchQuery);
     })
   })).filter(category => category.cheatsheets.length > 0);
 
   const matchingCommands = getMatchingCommands(searchQuery);
-  const isSearching = searchQuery.trim() !== '' || selectedCommandType !== null;
+  const isSearching = searchQuery.trim() !== '';
 
   // Copy command to clipboard
   const copyToClipboard = async (text: string) => {
@@ -213,47 +157,6 @@ export default function CheatsheetBoard() {
             </div>
           </div>
 
-          {/* Command Type Filters */}
-          <div className="mb-6">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Filter className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                Filter by command type:
-              </span>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              {COMMAND_FILTERS.map(filter => (
-                <Badge
-                  key={filter.id}
-                  variant={selectedCommandType === filter.id ? 'default' : 'outline'}
-                  className={cn(
-                    "cursor-pointer transition-all duration-200",
-                    "hover:scale-105 active:scale-95",
-                    selectedCommandType === filter.id
-                      ? "bg-blue-500 hover:bg-blue-600 text-white border-blue-500 shadow-md"
-                      : "bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl border-white/20 dark:border-white/10 hover:border-blue-400/50 dark:hover:border-blue-500/50 text-slate-700 dark:text-slate-300"
-                  )}
-                  onClick={() => setSelectedCommandType(selectedCommandType === filter.id ? null : filter.id)}
-                >
-                  {filter.label}
-                  {selectedCommandType === filter.id && (
-                    <X className="ml-1 h-3 w-3" />
-                  )}
-                </Badge>
-              ))}
-              {selectedCommandType && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSelectedCommandType(null)}
-                  className="h-7 px-2 text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                >
-                  Clear filter
-                </Button>
-              )}
-            </div>
-          </div>
-
           {/* Split View: Cheatsheets + Matching Commands */}
           <div className={cn(
             "grid gap-6",
@@ -283,6 +186,8 @@ export default function CheatsheetBoard() {
                   >
                     {category.cheatsheets.map((sheet) => {
                       const Icon = sheet.icon;
+                      // Calculate total command count
+                      const commandCount = sheet.sections.reduce((total, section) => total + section.commands.length, 0);
                       
                       return (
                         <Card
@@ -325,6 +230,15 @@ export default function CheatsheetBoard() {
                                 <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
                                   {sheet.description}
                                 </p>
+                                {/* Command count badge */}
+                                <div className="mt-2">
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 backdrop-blur-sm">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    {commandCount} commands
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>

@@ -258,7 +258,7 @@ function DashboardContent() {
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed">
                 Your personal AI-powered coding tutor. Master programming languages with interactive lessons, 
-                real-time feedback, and hands-on practice.
+                quick reference cheatsheets, real-time feedback, and hands-on practice.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
                 <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-yellow-200/50 dark:border-yellow-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-left">
@@ -272,6 +272,10 @@ function DashboardContent() {
                 <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-green-200/50 dark:border-green-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
                   <Target className="w-5 h-5 text-green-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
                   Achieve Goals
+                </div>
+                <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:-rotate-3 cursor-pointer animate-fade-scale" style={{ animationDelay: '0.3s' }}>
+                  <BookOpen className="w-5 h-5 text-blue-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                  Quick Reference
                 </div>
               </div>
             </div>
@@ -724,6 +728,51 @@ function DashboardContent() {
                       <Mail className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
                       <span>Email</span>
                     </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Support Section */}
+            <div className="mb-8">
+              <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-purple-50/30 to-white dark:from-gray-900 dark:via-purple-950/20 dark:to-gray-900 backdrop-blur-sm border-2 border-purple-200/50 dark:border-purple-800/30 hover:border-purple-400/50 dark:hover:border-purple-600/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20">
+                <div className="p-6 sm:p-8">
+                  <div className="flex flex-col sm:flex-row items-center gap-6">
+                    {/* Icon Section */}
+                    <div className="flex-shrink-0">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full blur-lg opacity-30 animate-pulse"></div>
+                        <div className="relative p-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
+                          <Heart className="w-8 h-8 text-white fill-white" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Content Section */}
+                    <div className="flex-1 text-center sm:text-left space-y-3">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                        Enjoying your learning journey?
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        We're dedicated to keeping all content free for everyone. Your support helps us create more quality resources and maintain this platform for the community.
+                      </p>
+                    </div>
+                    
+                    {/* CTA Section */}
+                    <div className="flex-shrink-0">
+                      <a 
+                        href="https://buymeacoffee.com/ahamedamansoor" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          console.log('Support Us clicked - redirecting to:', e.currentTarget.href);
+                        }}
+                        className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-sm font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/30 hover:-translate-y-1 cursor-pointer"
+                      >
+                        <span className="text-xl group-hover/btn:scale-125 transition-transform">☕</span>
+                        <span>Support Us</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
