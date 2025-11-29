@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import type { Language } from '@/app/data/index';
+import type { Language } from '@/data/languages';
 import {
   SidebarHeader,
   SidebarContent,
@@ -13,15 +13,15 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sparkles, ArrowRight, CheckCircle, Circle } from 'lucide-react';
 import Link from 'next/link';
-import { useJava } from '@/app/java/java-context';
-import { useSpring } from '@/app/spring/spring-context';
-import { useJavascript } from '@/app/javascript/javascript-context';
-import { useReact } from '@/app/react/react-context';
-import { useHtml } from '@/app/html/html-context';
-import { useCss } from '@/app/css/css-context';
-import { useScss } from '@/app/scss/scss-context';
-import { useDsa } from '@/app/dsa/dsa-context';
-import { useRxjs } from '@/app/rxjs/rxjs-context';
+import { useJava } from '@/app/languages/java/java-context';
+import { useSpring } from '@/app/languages/spring/spring-context';
+import { useJavascript } from '@/app/languages/javascript/javascript-context';
+import { useReact } from '@/app/languages/react/react-context';
+import { useHtml } from '@/app/languages/html/html-context';
+import { useCss } from '@/app/languages/css/css-context';
+import { useScss } from '@/app/languages/scss/scss-context';
+import { useDsa } from '@/app/languages/dsa/dsa-context';
+import { useRxjs } from '@/app/languages/rxjs/rxjs-context';
 import { useUser } from '@/firebase';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
@@ -201,6 +201,7 @@ export function TopicSidebar({
           'Forms & User Input': ['html-forms','form-input-types','form-attributes','form-validation','datalist-element','output-element','progress-and-meter'],
           'Media & Graphics': ['audio-and-video','responsive-images','iframes','svg-and-canvas'],
           'Interactive & Components': ['details-and-summary','dialog-element','popover-api','template-and-slot','content-editable','data-attributes'],
+          'Web Components': ['web-components-introduction','custom-elements','shadow-dom','web-component-templates','web-component-slots','web-component-lifecycle','web-component-attributes','web-component-styling','web-component-events','web-components-advanced'],
           'Performance & Enhancement': ['lazy-loading','content-visibility','advanced-tables'],
           'Browser & Platform APIs': ['html5-latest-features','fetch-api','web-storage-api','geolocation-api','drag-and-drop-api','web-workers-api'],
           'Metadata & SEO': ['meta-tags-and-seo','html-document-metadata','microdata-structured-data'],
@@ -262,7 +263,7 @@ export function TopicSidebar({
   }, {} as Record<string, typeof language.topics>);
 
   const groupOrder = language.slug === 'html'
-    ? ['Foundation','Core Building Blocks','Grouping & Layout','Forms & User Input','Media & Graphics','Interactive & Components','Performance & Enhancement','Browser & Platform APIs','Metadata & SEO','Accessibility & Quality']
+    ? ['Foundation','Core Building Blocks','Grouping & Layout','Forms & User Input','Media & Graphics','Interactive & Components','Web Components','Performance & Enhancement','Browser & Platform APIs','Metadata & SEO','Accessibility & Quality']
     : language.slug === 'java'
     ? ["Getting Started", "Basic Output", "Variables & Data Types", "Operators", "User Input", "Control Flow", "Strings & Arrays", "Methods & OOP Basics", "Advanced OOP", "Advanced Collections", "Error Handling & Generics", "Functional Programming", "Advanced Concurrency", "Files & Regex", "Others"]
     : language.slug === 'spring' 

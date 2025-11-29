@@ -11,11 +11,16 @@ import { Code2, Play, Terminal, Copy, Check, ChevronRight } from 'lucide-react';
  * CodeSnippetWithOutput - A beautiful, reusable component to display code and its output
  * 
  * Features:
- * - Syntax-highlighted code display
+ * - GitHub Light Default & Dark theme styling
  * - Live output preview
  * - Copy to clipboard functionality
  * - Multiple language support
- * - Responsive design with dark mode
+ * - Responsive design with authentic GitHub colors
+ * - SF Mono font stack (GitHub's official monospace font)
+ * 
+ * Color Schemes:
+ * Light: #ffffff bg, #24292f text, #f6f8fa header
+ * Dark: #0d1117 bg, #e6edf3 text, #161b22 header
  */
 
 interface CodeSnippetWithOutputProps {
@@ -112,67 +117,69 @@ export const CodeSnippetWithOutput: React.FC<CodeSnippetWithOutputProps> = ({
       </div>
       
       <CardContent className="p-6 space-y-4">
-        {/* Code Section */}
-        <div className="bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden relative">
-          {/* Header with Code label */}
-          <div className="flex items-center justify-between px-4 py-2.5 border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
+        {/* Code Section - GitHub Styled */}
+        <div className="bg-[#ffffff] dark:bg-[#0d1117] rounded-lg border border-[#d0d7de] dark:border-[#30363d] overflow-hidden relative">
+          {/* Header with Code label - GitHub Style */}
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#161b22]">
             <div className="flex items-center gap-2">
               <Code2 className={`w-4 h-4 ${theme.icon}`} />
-              <span className="text-xs font-bold uppercase tracking-wide">Code</span>
+              <span className="text-xs font-bold uppercase tracking-wide text-[#24292f] dark:text-[#e6edf3]">Code</span>
             </div>
             
             {/* Copy Icon - In Header */}
             <button
               onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-md hover:bg-[#eaeef2] dark:hover:bg-[#21262d] transition-colors"
               title={copied ? "Copied!" : "Copy code"}
             >
               {copied ? (
-                <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <Check className="w-4 h-4 text-[#1a7f37] dark:text-[#3fb950]" />
               ) : (
-                <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                <Copy className="w-4 h-4 text-[#57606a] dark:text-[#8b949e]" />
               )}
             </button>
           </div>
           
-          {/* Code Display - Beautiful Font */}
+          {/* Code Display - GitHub Font & Colors */}
           <pre className="p-5 overflow-x-auto" style={{ 
-            fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-            fontFeatureSettings: '"liga" 1, "calt" 1'
+            fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+            fontFeatureSettings: '"liga" 0, "calt" 0'
           }}>
-            <code className="text-[13px] leading-relaxed text-slate-800 dark:text-slate-100 antialiased" style={{ 
-              fontFamily: 'inherit'
+            <code className="text-[13px] leading-[1.45] text-[#24292f] dark:text-[#e6edf3] antialiased" style={{ 
+              fontFamily: 'inherit',
+              tabSize: 4
             }}>
               {code}
             </code>
           </pre>
         </div>
 
-        {/* Output Section - Below Code */}
+        {/* Output Section - GitHub Styled */}
         {output.length > 0 && (
-          <div className={`rounded-lg border ${theme.outputBorder} ${theme.outputBg} overflow-hidden`}>
-            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
+          <div className="rounded-lg border border-[#d0d7de] dark:border-[#30363d] bg-[#ffffff] dark:bg-[#0d1117] overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#161b22]">
               <Terminal className={`w-4 h-4 ${theme.icon}`} />
-              <span className="text-xs font-bold uppercase tracking-wide">Output</span>
+              <span className="text-xs font-bold uppercase tracking-wide text-[#24292f] dark:text-[#e6edf3]">Output</span>
               <Badge variant="secondary" className="ml-auto text-[10px]">
                 {output.length} {output.length === 1 ? 'line' : 'lines'}
               </Badge>
             </div>
             <div className="p-5">
-              <pre className="text-[13px] text-slate-800 dark:text-slate-100 whitespace-pre-wrap leading-relaxed antialiased" style={{ 
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-                fontFeatureSettings: '"liga" 1, "calt" 1'
+              <pre className="text-[13px] text-[#24292f] dark:text-[#e6edf3] whitespace-pre-wrap leading-[1.45] antialiased" style={{ 
+                fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+                fontFeatureSettings: '"liga" 0, "calt" 0',
+                tabSize: 4
               }}>
                 {output.map((line, index) => (
-                  <div key={index} className="mb-2 last:mb-0 pl-3 border-l-2 border-slate-300 dark:border-slate-700">
+                  <div key={index} className="mb-2 last:mb-0 pl-3 border-l-2 border-[#d0d7de] dark:border-[#30363d]">
                     {line.startsWith('//') ? (
-                      <span className="text-slate-500 dark:text-slate-500 italic">{line}</span>
+                      <span className="text-[#57606a] dark:text-[#8b949e] italic">{line}</span>
                     ) : line.startsWith('✓') || line.startsWith('✅') ? (
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{line}</span>
+                      <span className="text-[#1a7f37] dark:text-[#3fb950] font-semibold">{line}</span>
                     ) : line.startsWith('✗') || line.startsWith('❌') ? (
-                      <span className="text-red-600 dark:text-red-400 font-semibold">{line}</span>
+                      <span className="text-[#cf222e] dark:text-[#ff7b72] font-semibold">{line}</span>
                     ) : line.startsWith('>') ? (
-                      <span className="text-blue-600 dark:text-blue-400 font-medium">{line}</span>
+                      <span className="text-[#0969da] dark:text-[#58a6ff] font-medium">{line}</span>
                     ) : (
                       <span className="font-medium">{line}</span>
                     )}

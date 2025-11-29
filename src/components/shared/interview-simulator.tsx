@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';
 import { validateApiKey } from '@/ai/flows/validate-api-key';
 import { useUser } from '@/firebase';
-import { languages } from '@/app/data';
+import { languages } from '@/data/languages';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ReactMarkdown from 'react-markdown';
 import AIProviderModal from '../dashboard/GeminiKeyModal'; // Import the modal
@@ -48,6 +48,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [idealAnswer, setIdealAnswer] = useState('');
+  const [answerHint, setAnswerHint] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isReading, setIsReading] = useState<string | null>(null);
@@ -240,6 +241,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
           questionType
         });
         setQuestion(result.nextQuestion);
+        setAnswerHint(result.answerHint);
         setPreviousQuestions([result.nextQuestion]);
         setIsConfigured(true);
       }
@@ -330,36 +332,91 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     setIsReading(type);
   };
 
-  // Read feedback aloud in voice mode (faster speed)
-  const readFeedbackAloud = useCallback((feedbackText: string) => {
+  // Read feedback and simple answer aloud in voice mode with different voices
+  const readFeedbackAloud = useCallback((feedbackText: string, simpleAnswerText?: string) => {
     if (!feedbackText || interviewMode !== 'voice') return;
     
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
     
-    // Create utterance with feedback and prompt to check ideal answer
-    const fullText = `${feedbackText}. Please check the ideal answer on the right panel for reference.`;
-    const utterance = new SpeechSynthesisUtterance(fullText);
+    // Extract just the first sentence or summary from feedback (not the full markdown)
+    const simpleFeedback = feedbackText.split('\n')[0].replace(/[*_#]/g, '').trim();
     
-    // Faster reading for feedback
-    utterance.rate = 1.2; // Fast but understandable
-    utterance.pitch = 0.9;
-    utterance.volume = 1.0;
-    
-    // Use same male voice
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = 
+    
+    // PART 1: Read simple feedback in normal voice
+    const feedbackUtterance = new SpeechSynthesisUtterance(simpleFeedback);
+    feedbackUtterance.rate = 1.1;
+    feedbackUtterance.pitch = 0.9;
+    feedbackUtterance.volume = 1.0;
+    
+    // Use male voice for feedback
+    const maleVoice = 
       voices.find(voice => voice.name.includes('Google US English Male')) ||
       voices.find(voice => voice.name.includes('Google UK English Male')) ||
       voices.find(voice => voice.name.includes('Daniel')) ||
       voices.find(voice => voice.name.includes('Alex')) ||
       voices.find(voice => voice.name.includes('Male') && voice.lang.startsWith('en'));
     
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
+    if (maleVoice) {
+      feedbackUtterance.voice = maleVoice;
     }
     
-    window.speechSynthesis.speak(utterance);
+    // PART 2: Read "How it can be answered" in different voice (if available)
+    if (simpleAnswerText) {
+      feedbackUtterance.onend = () => {
+        // Add a clear transition
+        const transitionUtterance = new SpeechSynthesisUtterance("Now, here's how you could have answered this question.");
+        transitionUtterance.rate = 1.0;
+        transitionUtterance.pitch = 1.1; // Slightly higher pitch for distinction
+        transitionUtterance.volume = 1.0;
+        
+        // Use female voice or different voice for the answer guide
+        const guideVoice = 
+          voices.find(voice => voice.name.includes('Google US English Female')) ||
+          voices.find(voice => voice.name.includes('Google UK English Female')) ||
+          voices.find(voice => voice.name.includes('Samantha')) ||
+          voices.find(voice => voice.name.includes('Victoria')) ||
+          voices.find(voice => voice.name.includes('Female') && voice.lang.startsWith('en')) ||
+          maleVoice; // Fallback to male if no female voice
+        
+        if (guideVoice) {
+          transitionUtterance.voice = guideVoice;
+        }
+        
+        transitionUtterance.onend = () => {
+          // Now read the actual simple answer
+          const answerUtterance = new SpeechSynthesisUtterance(simpleAnswerText + ". Please check the detailed ideal answer on the right panel for reference.");
+          answerUtterance.rate = 1.0; // Slower, more clear
+          answerUtterance.pitch = 1.1; // Slightly higher pitch
+          answerUtterance.volume = 1.0;
+          
+          if (guideVoice) {
+            answerUtterance.voice = guideVoice;
+          }
+          
+          window.speechSynthesis.speak(answerUtterance);
+        };
+        
+        window.speechSynthesis.speak(transitionUtterance);
+      };
+    } else {
+      feedbackUtterance.onend = () => {
+        const closingUtterance = new SpeechSynthesisUtterance("Please check the detailed ideal answer on the right panel for reference.");
+        closingUtterance.rate = 1.1;
+        closingUtterance.pitch = 0.9;
+        closingUtterance.volume = 1.0;
+        
+        if (maleVoice) {
+          closingUtterance.voice = maleVoice;
+        }
+        
+        window.speechSynthesis.speak(closingUtterance);
+      };
+    }
+    
+    // Start by reading the feedback
+    window.speechSynthesis.speak(feedbackUtterance);
   }, [interviewMode]);
 
   // --- Voice Mode Conversation Logic ---
@@ -513,13 +570,16 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   // Handle next question button click
   const handleNextQuestion = () => {
     const nextQ = (window as any).__nextInterviewQuestion;
+    const nextHint = (window as any).__nextAnswerHint;
     if (nextQ) {
       setQuestion(nextQ);
+      setAnswerHint(nextHint || '');
       setPreviousQuestions(prev => [...prev, nextQ]);
       setFeedback('');
       setIdealAnswer('');
       setShowNextButton(false);
       delete (window as any).__nextInterviewQuestion;
+      delete (window as any).__nextAnswerHint;
     }
   };
 
@@ -569,14 +629,15 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       setFeedback(result.feedback);
       setIdealAnswer(result.idealAnswer);
       
-      // Store next question temporarily for both modes
+      // Store next question and hint temporarily for both modes
       setShowNextButton(true);
       (window as any).__nextInterviewQuestion = result.nextQuestion;
+      (window as any).__nextAnswerHint = result.answerHint;
       
-      // Read feedback aloud in voice mode
+      // Read feedback and simple answer aloud in voice mode
       if (interviewMode === 'voice' && result.feedback) {
         setTimeout(() => {
-          readFeedbackAloud(result.feedback);
+          readFeedbackAloud(result.feedback, result.simpleAnswer);
         }, 500); // Small delay after receiving feedback
       }
       
@@ -1195,6 +1256,21 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                       `}</style>
                       <ReactMarkdown>{question}</ReactMarkdown>
                     </div>
+                    
+                    {/* Answer Hint */}
+                    {answerHint && (
+                      <div className="flex gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-lg border-2 border-emerald-200 dark:border-emerald-800 mt-4">
+                        <Wand2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100 mb-1">
+                            💡 How to Answer Simply
+                          </p>
+                          <p className="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">
+                            {answerHint}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
@@ -1329,6 +1405,22 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                       `}</style>
                       <ReactMarkdown>{question}</ReactMarkdown>
                     </div>
+                    
+                    {/* Answer Hint */}
+                    {answerHint && (
+                      <div className="flex gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-lg border-2 border-emerald-200 dark:border-emerald-800">
+                        <Wand2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100 mb-1">
+                            💡 How to Answer Simply
+                          </p>
+                          <p className="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">
+                            {answerHint}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
                     <div className="flex items-center gap-2 text-sm text-muted-foreground bg-purple-50 dark:bg-purple-950/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
                       <Volume2 className="h-4 w-4 animate-pulse text-purple-600" />
                       <span className="font-medium">Question will be read aloud automatically</span>

@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { languages } from '@/app/data';
+import { languages } from '@/data/languages';
 import { useAuth, useFirestore } from '@/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { useLoading } from '@/hooks/use-loading';

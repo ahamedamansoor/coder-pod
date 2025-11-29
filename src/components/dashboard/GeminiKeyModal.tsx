@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Sparkles, ExternalLink, Check } from 'lucide-react';
+import { Sparkles, ExternalLink, Check, Shield, Info, AlertCircle } from 'lucide-react';
 import { AIProvider, AI_PROVIDERS } from '@/types/ai-providers';
 import { cn } from '@/lib/utils';
 
@@ -44,7 +44,7 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[550px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center">
             <Sparkles className="text-blue-500 mr-2" />
@@ -54,6 +54,48 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
             Select an AI provider and enter your API key to unlock AI-powered features.
           </DialogDescription>
         </DialogHeader>
+
+        {/* Important Information Section */}
+        <div className="space-y-3 py-4 border-y border-gray-200 dark:border-gray-700">
+          {/* Security Notice */}
+          <div className="flex gap-3 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+            <Shield className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 space-y-1">
+              <p className="text-sm font-medium text-green-900 dark:text-green-100">
+                Your API Key is Safe
+              </p>
+              <p className="text-xs text-green-700 dark:text-green-300">
+                Your API key is stored locally in your browser only. We never send it to our servers or store it anywhere else.
+              </p>
+            </div>
+          </div>
+
+          {/* Usage Notice */}
+          <div className="flex gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 space-y-1">
+              <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                You're Using Your Own API Provider
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-300">
+                You're connecting directly to {provider.name}. All AI requests go through your personal API key.
+              </p>
+            </div>
+          </div>
+
+          {/* Free Tier Warning */}
+          <div className="flex gap-3 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
+            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 space-y-1">
+              <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                Use Resources Wisely
+              </p>
+              <p className="text-xs text-amber-700 dark:text-amber-300">
+                Free tiers have usage limits. Please use AI features responsibly to stay within your provider's free quota.
+              </p>
+            </div>
+          </div>
+        </div>
         
         {/* AI Provider Selection */}
         <div className="space-y-4 py-4">

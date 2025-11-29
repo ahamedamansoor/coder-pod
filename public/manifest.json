@@ -1,0 +1,63 @@
+{
+  "name": "Coder Pod - Learn Programming",
+  "short_name": "Coder Pod",
+  "description": "Interactive platform to learn HTML, CSS, JavaScript, React, Java, Spring Boot and more with hands-on examples",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "development"],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "HTML Topics",
+      "short_name": "HTML",
+      "description": "Learn HTML",
+      "url": "/html/learning-plan",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "JavaScript Topics",
+      "short_name": "JavaScript",
+      "description": "Learn JavaScript",
+      "url": "/javascript/learning-plan",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "React Topics",
+      "short_name": "React",
+      "description": "Learn React",
+      "url": "/react/learning-plan",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

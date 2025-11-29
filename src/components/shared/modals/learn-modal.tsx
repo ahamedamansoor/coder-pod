@@ -18,7 +18,7 @@ import {
   DropdownMenuGroup,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { JavaLearningDemo } from '@/components/java/java-learning-demo';
+import { JavaLearningDemo } from '@/components/languages/java/java-learning-demo';
 import Link from 'next/link';
 import { BookOpen, Rocket, Mic, Monitor } from 'lucide-react';
 import { useLoading } from '@/hooks/use-loading';

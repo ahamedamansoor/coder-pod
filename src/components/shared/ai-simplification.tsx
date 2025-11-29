@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Skeleton } from '@/components/ui/skeleton';
 import { MermaidDiagram } from './mermaid-diagram';
 import { Sparkles, Lightbulb, Book, Code } from 'lucide-react';
-import type { Language, Topic } from '@/app/data';
+import type { Language, Topic } from '@/data/languages';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 

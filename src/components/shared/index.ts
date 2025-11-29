@@ -11,9 +11,10 @@ export { MermaidDiagram } from './mermaid-diagram';
 export { StudySessionsWidget } from './study-sessions-widget';
 export { AiInterviewDemo } from './ai-interview-demo';
 export { AiSimplification } from './ai-simplification';
-export { InterviewSimulator } from './interview-simulator';
+export { default as InterviewSimulator } from './interview-simulator';
 export { FirebaseErrorListener } from './FirebaseErrorListener';
 
 // Reusable code display components
 export { CodeSnippetWithOutput } from './code-snippet-with-output';
 export { InteractivePlayground } from './interactive-playground';
+export { FrontendCodePreview } from './frontend-code-preview';

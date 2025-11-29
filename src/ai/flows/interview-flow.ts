@@ -41,6 +41,16 @@ const ConductInterviewOutputSchema = z.object({
     .describe(
       'A new interview question relevant to the specified programming language that is different from the previous questions.'
     ),
+  answerHint: z
+    .string()
+    .describe(
+      'A helpful hint suggesting how to approach answering the nextQuestion in a simple and easy way. Give 2-3 key points on what to focus on. Keep it brief and encouraging.'
+    ),
+  simpleAnswer: z
+    .string()
+    .describe(
+      'A brief, clear, spoken-friendly example answer to the ORIGINAL question (not nextQuestion). This will be read aloud in voice mode. Keep it concise (2-3 sentences), conversational, and easy to understand. If this is the first question, this field should be empty.'
+    ),
 });
 export type ConductInterviewOutput = z.infer<typeof ConductInterviewOutputSchema>;
 
@@ -165,6 +175,17 @@ IMPORTANT: Include the correct answer at the end. Make options clear and distinc
     *   **Follow the question style specified above**
     *   If coding question: include code snippet using markdown \`\`\`{{{language}}}\` blocks with output as comments
     *   Example formats: "What does this code output?", "What's wrong with this code?", "Explain this concept"
+5.  **Provide a helpful answer hint**:
+    *   Give 2-3 simple suggestions on how to approach answering the question
+    *   Focus on what key points to cover
+    *   Keep it brief and encouraging (2-3 short sentences)
+    *   Example: "Think about the definition first, then explain with a simple example. Focus on when and why you'd use it."
+6.  **Provide a simple, spoken-friendly answer** to the ORIGINAL question:
+    *   This will be READ ALOUD in voice mode after feedback
+    *   Keep it very brief (2-3 sentences maximum)
+    *   Make it conversational and easy to understand when spoken
+    *   Focus on the core concept without code examples
+    *   Example: "A closure is a function that has access to variables from its outer scope, even after that outer scope has finished executing. It's useful for data privacy and creating function factories."
 
 **Context:**
 *   **Original Question:** {{{question}}}
@@ -173,7 +194,11 @@ IMPORTANT: Include the correct answer at the end. Make options clear and distinc
 {{else}}
 **Your Task:**
 1.  **Generate the first interview question** for a {{{language}}} mock interview following the question style specified above.
-2.  The \`feedback\` and \`idealAnswer\` fields should be empty strings.
+    *   IMPORTANT: Pick a RANDOM fundamental topic each time (e.g., variables, data types, functions, loops, scope, closures, etc.)
+    *   DO NOT always start with the same topic - vary the starting questions
+    *   The question should be fundamental but different from typical first questions
+2.  The \`feedback\`, \`idealAnswer\`, and \`simpleAnswer\` fields should be empty strings.
+3.  **Provide a helpful answer hint** with 2-3 brief suggestions on how to approach answering the question simply.
 
 **Context:**
 *   **Questions Already Asked:** None. This is the start of the interview.
@@ -279,6 +304,10 @@ Your Task:
      console.log(x * 2);
      // Output: ?
      \`\`\`
+5. Provide a brief, spoken-friendly simple answer to the ORIGINAL question:
+   - This will be read aloud in voice mode (2-3 sentences max)
+   - Make it conversational and easy to understand when spoken
+   - Focus on core concept without code examples
 
 Context:
 - Original Question: ${input.question}
@@ -286,15 +315,20 @@ Context:
 - Questions Already Asked: ${input.previousQuestions.join(', ')}
 ` : `
 Your Task:
-1. Generate the first interview question for a ${input.language} mock interview. The question should be a common, fundamental topic.
-2. The feedback and idealAnswer fields should be empty strings.
+1. Generate the first interview question for a ${input.language} mock interview.
+   - IMPORTANT: Pick a RANDOM fundamental topic each time (variables, data types, functions, loops, scope, closures, etc.)
+   - DO NOT always start with the same topic - vary the starting questions
+   - The question should be fundamental but different from typical first questions
+2. The feedback, idealAnswer, and simpleAnswer fields should be empty strings.
 `}
 
 Please provide your response in JSON format with the following structure:
 {
   "feedback": "string (constructive feedback on the answer, empty if first question)",
   "idealAnswer": "string (ideal comprehensive answer with code examples, empty if first question)",
-  "nextQuestion": "string (new interview question)"
+  "nextQuestion": "string (new interview question)",
+  "answerHint": "string (2-3 brief suggestions on how to approach answering the nextQuestion simply)",
+  "simpleAnswer": "string (brief 2-3 sentence spoken answer to ORIGINAL question, empty if first question)"
 }`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -325,7 +359,9 @@ Please provide your response in JSON format with the following structure:
     return {
       feedback: result.feedback || '',
       idealAnswer: result.idealAnswer || '',
-      nextQuestion: result.nextQuestion
+      nextQuestion: result.nextQuestion,
+      answerHint: result.answerHint || 'Focus on key concepts and explain with a simple example.',
+      simpleAnswer: result.simpleAnswer || ''
     };
   } catch (error: any) {
     console.error('OpenAI interview error:', error);
@@ -406,6 +442,10 @@ Your Task:
      console.log(x * 2);
      // Output: ?
      \`\`\`
+5. Provide a brief, spoken-friendly simple answer to the ORIGINAL question:
+   - This will be read aloud in voice mode (2-3 sentences max)
+   - Make it conversational and easy to understand when spoken
+   - Focus on core concept without code examples
 
 Context:
 - Original Question: ${input.question}
@@ -413,11 +453,14 @@ Context:
 - Questions Already Asked: ${input.previousQuestions.join(', ')}
 ` : `
 Your Task:
-1. Generate the first interview question for a ${input.language} mock interview. The question should be a common, fundamental topic.
-2. The feedback and idealAnswer fields should be empty strings.
+1. Generate the first interview question for a ${input.language} mock interview.
+   - IMPORTANT: Pick a RANDOM fundamental topic each time (variables, data types, functions, loops, scope, closures, etc.)
+   - DO NOT always start with the same topic - vary the starting questions
+   - The question should be fundamental but different from typical first questions
+2. The feedback, idealAnswer, and simpleAnswer fields should be empty strings.
 `}
 
-Respond with a JSON object containing: feedback (string), idealAnswer (string with code examples), and nextQuestion (string).`;
+Respond with a JSON object containing: feedback (string), idealAnswer (string with code examples), nextQuestion (string), answerHint (string - 2-3 brief tips on how to answer simply), and simpleAnswer (string - brief spoken answer to ORIGINAL question).`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -457,7 +500,9 @@ Respond with a JSON object containing: feedback (string), idealAnswer (string wi
     return {
       feedback: result.feedback || '',
       idealAnswer: result.idealAnswer || '',
-      nextQuestion: result.nextQuestion
+      nextQuestion: result.nextQuestion,
+      answerHint: result.answerHint || 'Focus on key concepts and explain with a simple example.',
+      simpleAnswer: result.simpleAnswer || ''
     };
   } catch (error: any) {
     console.error('Anthropic interview error:', error);
@@ -564,6 +609,10 @@ Your Task:
    - If it involves code, include a code snippet using markdown \`\`\`${input.language} blocks
    - If the code produces output, show expected output as comment or ask about it
    - Format with output: \`\`\`${input.language}\\nconst x = 5;\\nconsole.log(x);\\n// Output: ?\\n\`\`\`
+5. Provide a brief, spoken-friendly simple answer to the ORIGINAL question:
+   - This will be read aloud in voice mode (2-3 sentences max)
+   - Make it conversational and easy to understand when spoken
+   - Focus on core concept without code examples
 
 Context:
 - Original Question: ${input.question}
@@ -572,10 +621,13 @@ Context:
 ` : `
 Your Task:
 1. Generate the first interview question for a ${input.language} mock interview.
-2. Leave feedback and idealAnswer as empty strings.
+   - IMPORTANT: Pick a RANDOM fundamental topic each time
+   - Vary the starting questions - don't always ask the same thing
+   - Choose from: variables, data types, functions, loops, scope, closures, etc.
+2. Leave feedback, idealAnswer, and simpleAnswer as empty strings.
 `}
 
-Respond with JSON: {feedback: string, idealAnswer: string with code examples, nextQuestion: string}`;
+Respond with JSON: {feedback: string, idealAnswer: string with code examples, nextQuestion: string, answerHint: string - brief approach tips, simpleAnswer: string - brief spoken answer to ORIGINAL question}`;
 
     const response = await fetch('https://api.cohere.ai/v1/chat', {
       method: 'POST',
@@ -607,7 +659,9 @@ Respond with JSON: {feedback: string, idealAnswer: string with code examples, ne
     return {
       feedback: result.feedback || '',
       idealAnswer: result.idealAnswer || '',
-      nextQuestion: result.nextQuestion
+      nextQuestion: result.nextQuestion,
+      answerHint: result.answerHint || 'Focus on key concepts and explain with a simple example.',
+      simpleAnswer: result.simpleAnswer || ''
     };
   } catch (error: any) {
     console.error('Cohere interview error:', error);
@@ -680,6 +734,10 @@ Your Task:
    - If the code produces output, show expected output as comment or ask about it
    - Examples: "What does this code output?", "Fix this bug", "Predict the output"
    - Format with output: \`\`\`${input.language}\\nconst x = 5;\\nconsole.log(x);\\n// Output: ?\\n\`\`\`
+5. Provide a brief, spoken-friendly simple answer to the ORIGINAL question:
+   - This will be read aloud in voice mode (2-3 sentences max)
+   - Make it conversational and easy to understand when spoken
+   - Focus on core concept without code examples
 
 Context:
 - Original Question: ${input.question}
@@ -688,10 +746,12 @@ Context:
 ` : `
 Your Task:
 1. Generate the first interview question for a ${input.language} mock interview.
-2. Leave feedback and idealAnswer empty.
+   - Pick a RANDOM fundamental topic (variables, functions, data types, loops, scope, etc.)
+   - Vary the questions - don't repeat the same starting topic
+2. Leave feedback, idealAnswer, and simpleAnswer empty.
 `}
 
-Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code examples in markdown", "nextQuestion": "string"}`;
+Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code examples in markdown", "nextQuestion": "string", "answerHint": "string - 2-3 brief approach suggestions", "simpleAnswer": "string - brief spoken answer to ORIGINAL question"}`;
 
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -720,7 +780,9 @@ Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code 
     return {
       feedback: result.feedback || '',
       idealAnswer: result.idealAnswer || '',
-      nextQuestion: result.nextQuestion
+      nextQuestion: result.nextQuestion,
+      answerHint: result.answerHint || 'Focus on key concepts and explain with a simple example.',
+      simpleAnswer: result.simpleAnswer || ''
     };
   } catch (error: any) {
     console.error(`${providerName} interview error:`, error);

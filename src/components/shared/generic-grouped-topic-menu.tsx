@@ -2,7 +2,7 @@
 import React, { RefObject } from 'react';
 import Link from 'next/link';
 import { SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
-import type { Topic } from '@/app/data/types';
+import type { Topic } from '@/data/languages/types';
 import { 
   ChevronRight, 
   Sparkles,

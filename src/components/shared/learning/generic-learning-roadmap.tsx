@@ -7,14 +7,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import type { Language, Topic } from '@/app/data';
-import { useJava } from '@/app/java/java-context';
-import { useSpring } from '@/app/spring/spring-context';
-import { useJavascript } from '@/app/javascript/javascript-context';
-import { useReact } from '@/app/react/react-context';
-import { useHtml } from '@/app/html/html-context';
-import { useCss } from '@/app/css/css-context';
-import { useScss } from '@/app/scss/scss-context';
+import type { Language, Topic } from '@/data/languages';
+import { useJava } from '@/app/languages/java/java-context';
+import { useSpring } from '@/app/languages/spring/spring-context';
+import { useJavascript } from '@/app/languages/javascript/javascript-context';
+import { useReact } from '@/app/languages/react/react-context';
+import { useHtml } from '@/app/languages/html/html-context';
+import { useCss } from '@/app/languages/css/css-context';
+import { useScss } from '@/app/languages/scss/scss-context';
 
 // Shared brand color used in the logo ("CODER")
 const LOGO_COLOR_CLASS = 'text-[#5B7FFF]';

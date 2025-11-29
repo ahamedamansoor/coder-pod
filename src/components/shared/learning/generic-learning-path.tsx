@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import type { Language, Topic } from '@/app/data';
+import type { Language, Topic } from '@/data/languages';
 import { ModuleCompletionCelebration } from '@/components/shared/modals/module-completion-celebration';
 
 // Shared brand color (Coder Pod blue) using theme-friendly classes

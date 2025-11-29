@@ -18,7 +18,7 @@ import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { 
   PanelTop, Code, Braces, FileJson, Terminal, Loader2, 
-  X, Play, Maximize2, RefreshCw, Eye, Settings, Trash2, Moon, Sun
+  X, Play, Maximize2, RefreshCw, Eye, Settings, Trash2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -209,7 +209,7 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
   const initialStyleLang = initialLanguage === 'scss' ? 'scss' : 'css';
   const [styleLang, setStyleLang] = useState<StyleLang>(initialStyleLang);
 
-  const [outputSrc, setOutputSrc] = useState('');
+  const [outputSrc, setOutputSrc] = useState('about:blank');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [iframeKey, setIframeKey] = useState(0);
   const [autoRun, setAutoRun] = useState(false); // Default to manual run
@@ -221,20 +221,25 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     preview: true,
     console: true,
   });
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>(theme === 'dark' ? 'dark' : 'light');
+  const hasInitialRunRef = useRef(false);
 
   const togglePanel = (panel: keyof typeof visiblePanels) => {
     setVisiblePanels(prev => ({ ...prev, [panel]: !prev[panel] }));
   };
 
-  const toggleEditorTheme = () => {
-    setEditorTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
+  // Sync editor theme with main app theme
+  useEffect(() => {
+    setEditorTheme(theme === 'dark' ? 'dark' : 'light');
+  }, [theme]);
 
   // Initialize/reset code when modal opens or content changes
   useEffect(() => {
     if (!open) return; // Only initialize when modal is open
+    
+    // Reset initial run flag when new content is loaded
+    hasInitialRunRef.current = false;
     
     if (content.html || content.css || content.js) {
         const lang = content.css.includes('$') || content.css.includes('@mixin') ? 'scss' : 'css';
@@ -401,12 +406,17 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     }
   }, [htmlCode, compiledCss, jsCode, autoRun, open, hasChanges, runCode]);
 
-  // Initial run when modal opens
+  // Initial run when modal opens and content is ready
   useEffect(() => {
-    if (open && htmlCode && compiledCss) {
-      runCode();
+    if (open && htmlCode && compiledCss && !hasInitialRunRef.current) {
+      // Small delay to ensure everything is initialized
+      const timeout = setTimeout(() => {
+        runCode();
+        hasInitialRunRef.current = true;
+      }, 100);
+      return () => clearTimeout(timeout);
     }
-  }, [open]);
+  }, [open, htmlCode, compiledCss, runCode]);
   
   const getLogLevelClass = (type: ConsoleLog['type']) => {
     switch (type) {
@@ -429,6 +439,8 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     if (!isOpen) {
       // Reset content when closing if needed
       setContent({ html: '', css: '', js: '' });
+      // Reset initial run flag for next open
+      hasInitialRunRef.current = false;
     }
   };
 
@@ -541,33 +553,6 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
                 </button>
               </div>
             </div>
-            
-            <div className="h-6 w-px bg-border" />
-            
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleEditorTheme}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
-                editorTheme === 'dark'
-                  ? 'bg-slate-800 text-white border-slate-700 hover:bg-slate-700'
-                  : 'bg-white text-slate-900 border-slate-200 hover:bg-slate-50'
-              }`}
-              title={`Switch to ${editorTheme === 'dark' ? 'Light' : 'Dark'} Theme`}
-            >
-              {editorTheme === 'dark' ? (
-                <>
-                  <Moon className="h-4 w-4" />
-                  <span>Dark</span>
-                </>
-              ) : (
-                <>
-                  <Sun className="h-4 w-4" />
-                  <span>Light</span>
-                </>
-              )}
-            </button>
-            
-            <div className="h-6 w-px bg-border" />
             
             {/* Auto-run Toggle */}
             <button

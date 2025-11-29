@@ -19,8 +19,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { languages } from '@/app/data';
-import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Mic, Lock, Key } from 'lucide-react';
+import { languages } from '@/data/languages';
+import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Mic, Lock, Key, BookOpen } from 'lucide-react';
 import InterviewSimulator from '@/components/shared/interview-simulator';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/shared/layout/logo';
@@ -148,8 +148,9 @@ function DashboardContent() {
             <div className="flex-shrink-0">
               <Skeleton className="h-8 w-32" />
             </div>
-            <div className="flex items-center gap-4">
-              <Skeleton className="h-8 w-24" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-9 w-32" />
+              <Skeleton className="h-9 w-9 rounded-md" />
               <Skeleton className="h-10 w-10 rounded-full" />
             </div>
           </div>
@@ -175,7 +176,19 @@ function DashboardContent() {
             <Logo />
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Link href="/cheatsheets">
+              <Button
+                id="cheatsheets-btn"
+                data-testid="cheatsheets-btn"
+                variant="outline"
+                size="sm"
+                className="gap-2 text-sm font-medium text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/20 hover:text-blue-800 dark:hover:text-blue-300"
+              >
+                <BookOpen className="h-4 w-4 flex-shrink-0" />
+                <span className="hidden sm:inline">Cheat Sheets</span>
+              </Button>
+            </Link>
             <ThemeToggle />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
