@@ -13,7 +13,7 @@ export type SpringBootContextType = {
 const SpringBootContext = createContext<SpringBootContextType | undefined>(undefined);
 
 export const SpringBootProvider = ({ children }: { children: ReactNode }) => {
-  const { user, isLoading: isUserLoading } = useUser();
+  const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
 
   const userDocRef = useMemoFirebase(
