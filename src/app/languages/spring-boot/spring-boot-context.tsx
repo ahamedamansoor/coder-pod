@@ -21,7 +21,7 @@ export const SpringBootProvider = ({ children }: { children: ReactNode }) => {
     [user, firestore]
   );
 
-  const { data: userData, loading: isDocLoading } = useDoc(userDocRef);
+  const { data: userData, isLoading: isDocLoading } = useDoc(userDocRef);
 
   const completedTopics = useMemo(() => {
     const topics = userData?.['completedTopics']?.['spring-boot'] as string[];
