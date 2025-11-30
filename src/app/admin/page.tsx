@@ -20,7 +20,7 @@ import {
   TrendingUp,
   Database
 } from 'lucide-react';
-import { collection, getDocs, doc, deleteDoc, updateDoc, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, updateDoc, getFirestore, writeBatch } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
@@ -66,6 +66,7 @@ export default function AdminPage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
 
   // Check admin access
   useEffect(() => {
@@ -140,6 +141,39 @@ export default function AdminPage() {
       });
     } finally {
       setDeleteUserId(null);
+    }
+  };
+  
+  // Delete all users
+  const handleDeleteAllUsers = async () => {
+    try {
+      const firestore = getFirestore();
+      const usersCollection = collection(firestore, 'users');
+      const usersSnapshot = await getDocs(usersCollection);
+
+      const batch = writeBatch(firestore);
+      usersSnapshot.forEach((doc) => {
+        if (doc.id !== user?.uid) { // Don't delete the current admin
+          batch.delete(doc.ref);
+        }
+      });
+
+      await batch.commit();
+
+      setUsers(users.filter(u => u.id === user?.uid));
+      toast({
+        title: "Success",
+        description: "All other users have been deleted.",
+      });
+    } catch (error) {
+      console.error('Error deleting all users:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete all users.",
+        variant: "destructive",
+      });
+    } finally {
+      setShowDeleteAllDialog(false);
     }
   };
 
@@ -305,14 +339,24 @@ export default function AdminPage() {
             </div>
             <p className="text-muted-foreground">Manage users and monitor platform activity</p>
           </div>
-          <Button 
-            onClick={() => setShowPasswordDialog(true)}
-            variant="outline"
-            className="gap-2"
-          >
-            <Lock className="w-4 h-4" />
-            Change Password
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button 
+              onClick={() => setShowPasswordDialog(true)}
+              variant="outline"
+              className="gap-2"
+            >
+              <Lock className="w-4 h-4" />
+              Change Password
+            </Button>
+            <Button 
+              onClick={() => setShowDeleteAllDialog(true)}
+              variant="destructive"
+              className="gap-2"
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete All Users
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -547,6 +591,31 @@ export default function AdminPage() {
               className="bg-red-600 hover:bg-red-700"
             >
               Delete User
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete All Users Confirmation Dialog */}
+      <AlertDialog open={showDeleteAllDialog} onOpenChange={setShowDeleteAllDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              Delete All Users?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will permanently delete all users except for your own account.
+              This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAllUsers}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete All Users
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
