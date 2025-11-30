@@ -8,7 +8,7 @@
  * - ExecuteJavaCodeOutput - The return type for the executeJavaCode function.
  */
 
-import { ai } from '@/ai/genkit';
+import { ai } from '@/ai';
 import { z } from 'genkit';
 
 const ExecuteJavaCodeInputSchema = z.object({
