@@ -1,5 +1,7 @@
+
 import {genkit} from 'genkit';
 import {googleAI} from '@genkit-ai/google-genai';
+import { deleteUserFlow } from './flows/delete-user';
 
 // Check if API key is available in environment
 const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
@@ -39,4 +41,7 @@ try {
 }
 
 // Export ai instance
-export const ai = aiInstance;
+export const ai = {
+  ...aiInstance,
+  deleteUser: deleteUserFlow,
+};

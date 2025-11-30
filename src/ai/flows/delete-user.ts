@@ -1,39 +1,53 @@
 
-import { admin } from '@/lib/admin';
 import { defineFlow } from '@genkit-ai/flow';
 import * as z from 'zod';
+import { getAdminApp } from '../../lib/firebase-admin';
+import { isUserAdmin } from '../../lib/admin';
+
+// Initialize Firebase Admin SDK
+const adminApp = getAdminApp();
+const auth = adminApp.auth();
+const firestore = adminApp.firestore();
 
 export const deleteUserFlow = defineFlow(
   {
-    name: 'deleteUserFlow',
-    inputSchema: z.object({ userId: z.string() }),
-    outputSchema: z.object({ success: z.boolean(), message: z.string() }),
-    auth: {
-      policy: async (auth, input) => {
-        if (!auth) {
-          throw new Error('Authorization required.');
-        }
-        // Assuming you have a way to check if the user is an admin
-        const isAdmin = admin.auth().verifyIdToken(auth.idToken).then(decodedToken => decodedToken.admin);
-        if (!isAdmin) {
-          throw new Error('Admin access required.');
-        }
-      },
-    },
+    name: 'deleteUser',
+    inputSchema: z.object({
+      userIdToDelete: z.string(),
+      adminUserEmail: z.string(),
+    }),
+    outputSchema: z.object({
+      success: z.boolean(),
+      message: z.string(),
+    }),
   },
-  async ({ userId }) => {
+  async ({ userIdToDelete, adminUserEmail }) => {
+    // 1. Authenticate the admin user
+    if (!isUserAdmin({ email: adminUserEmail })) {
+      return {
+        success: false,
+        message: "Unauthorized: Only admins can delete users.",
+      };
+    }
+
     try {
-      // Delete from Firebase Authentication
-      await admin.auth().deleteUser(userId);
+      // 2. Delete user from Firebase Authentication
+      await auth.deleteUser(userIdToDelete);
+      
+      // 3. Delete user data from Firestore
+      const userDocRef = firestore.collection('users').doc(userIdToDelete);
+      await userDocRef.delete();
 
-      // Delete from Firestore
-      const firestore = admin.firestore();
-      await firestore.collection('users').doc(userId).delete();
-
-      return { success: true, message: 'User deleted successfully.' };
+      return {
+        success: true,
+        message: `Successfully deleted user ${userIdToDelete} from authentication and database.`,
+      };
     } catch (error: any) {
       console.error('Error deleting user:', error);
-      return { success: false, message: error.message || 'Failed to delete user.' };
+      return {
+        success: false,
+        message: error.message || "An unexpected error occurred.",
+      };
     }
   }
 );

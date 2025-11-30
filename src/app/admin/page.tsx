@@ -43,6 +43,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ai } from '@/ai/genkit';
 
 interface UserData {
   id: string;
@@ -123,20 +124,39 @@ export default function AdminPage() {
 
   // Delete user
   const handleDeleteUser = async (userId: string) => {
-    try {
-      const firestore = getFirestore();
-      await deleteDoc(doc(firestore, 'users', userId));
-      
-      setUsers(users.filter(u => u.id !== userId));
+    if (!user?.email) {
       toast({
-        title: "Success",
-        description: "User has been deleted successfully.",
+        title: "Error",
+        description: "Admin user email not found.",
+        variant: "destructive",
       });
-    } catch (error) {
+      return;
+    }
+
+    try {
+      const result = await ai.deleteUser({
+        userIdToDelete: userId,
+        adminUserEmail: user.email,
+      });
+
+      if (result.success) {
+        setUsers(users.filter(u => u.id !== userId));
+        toast({
+          title: "Success",
+          description: result.message,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
       console.error('Error deleting user:', error);
       toast({
         title: "Error",
-        description: "Failed to delete user.",
+        description: error.message || "Failed to delete user.",
         variant: "destructive",
       });
     } finally {
@@ -329,9 +349,9 @@ export default function AdminPage() {
     <div className="min-h-screen bg-background">
       <InnovativeHeader currentPage="dashboard" user={user} />
       
-      <main className="w-[100vw] py-8">
+      <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />
@@ -360,7 +380,6 @@ export default function AdminPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="px-4 sm:px-6 lg:px-8">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[...Array(4)].map((_, i) => (
@@ -440,10 +459,8 @@ export default function AdminPage() {
             </Card>
           </div>
         )}
-        </div>
 
         {/* Users Table */}
-        <div className="px-4 sm:px-6 lg:px-8">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -572,7 +589,6 @@ export default function AdminPage() {
             )}
           </CardContent>
         </Card>
-        </div>
       </main>
 
       {/* Delete Confirmation Dialog */}
