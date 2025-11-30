@@ -92,25 +92,41 @@ async function validateOpenAIKey(apiKey: string) {
     // Test OpenAI API key with a simple request
     const response = await fetch('https://api.openai.com/v1/models', {
       headers: {
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
       }
+    });
+
+    console.log('OpenAI validation response:', {
+      status: response.status,
+      statusText: response.statusText
     });
 
     if (response.ok) {
       return { valid: true };
     }
     
-    if (response.status === 401) {
-      return { valid: false, error: 'Invalid OpenAI API key.' };
+    const errorData = await response.json().catch(() => null);
+    console.log('OpenAI error data:', errorData);
+    
+    if (response.status === 401 || response.status === 403) {
+      return { valid: false, error: `Invalid OpenAI API key. ${errorData?.error?.message || ''}`.trim() };
     }
     
     if (response.status === 429) {
       return { valid: false, error: 'OpenAI API quota exceeded.' };
     }
     
-    return { valid: false, error: 'Failed to validate OpenAI API key.' };
+    return { 
+      valid: false, 
+      error: `Validation failed (${response.status}): ${errorData?.error?.message || response.statusText}` 
+    };
   } catch (error: any) {
-    throw error;
+    console.error('OpenAI validation error:', error);
+    return {
+      valid: false,
+      error: `Connection error: ${error.message || 'Failed to connect to OpenAI API'}`
+    };
   }
 }
 
@@ -186,21 +202,36 @@ async function validatePerplexityKey(apiKey: string) {
       })
     });
 
+    console.log('Perplexity validation response:', {
+      status: response.status,
+      statusText: response.statusText
+    });
+
     if (response.ok) {
       return { valid: true };
     }
     
-    if (response.status === 401) {
-      return { valid: false, error: 'Invalid Perplexity API key.' };
+    const errorData = await response.json().catch(() => null);
+    console.log('Perplexity error data:', errorData);
+    
+    if (response.status === 401 || response.status === 403) {
+      return { valid: false, error: `Invalid Perplexity API key. ${errorData?.error?.message || ''}`.trim() };
     }
     
     if (response.status === 429) {
       return { valid: false, error: 'Perplexity API quota exceeded.' };
     }
     
-    return { valid: false, error: 'Failed to validate Perplexity API key.' };
+    return { 
+      valid: false, 
+      error: `Validation failed (${response.status}): ${errorData?.error?.message || response.statusText}` 
+    };
   } catch (error: any) {
-    throw error;
+    console.error('Perplexity validation error:', error);
+    return {
+      valid: false,
+      error: `Connection error: ${error.message || 'Failed to connect to Perplexity API'}`
+    };
   }
 }
 
@@ -209,25 +240,42 @@ async function validateGroqKey(apiKey: string) {
     // Groq uses OpenAI-compatible API
     const response = await fetch('https://api.groq.com/openai/v1/models', {
       headers: {
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
       }
+    });
+
+    console.log('Groq validation response:', {
+      status: response.status,
+      statusText: response.statusText
     });
 
     if (response.ok) {
       return { valid: true };
     }
     
-    if (response.status === 401) {
-      return { valid: false, error: 'Invalid Groq API key.' };
+    // Try to get error details from response
+    const errorData = await response.json().catch(() => null);
+    console.log('Groq error data:', errorData);
+    
+    if (response.status === 401 || response.status === 403) {
+      return { valid: false, error: `Invalid Groq API key. ${errorData?.error?.message || ''}`.trim() };
     }
     
     if (response.status === 429) {
       return { valid: false, error: 'Groq API quota exceeded.' };
     }
     
-    return { valid: false, error: 'Failed to validate Groq API key.' };
+    return { 
+      valid: false, 
+      error: `Validation failed (${response.status}): ${errorData?.error?.message || response.statusText}` 
+    };
   } catch (error: any) {
-    throw error;
+    console.error('Groq validation error:', error);
+    return {
+      valid: false,
+      error: `Connection error: ${error.message || 'Failed to connect to Groq API'}`
+    };
   }
 }
 
@@ -236,25 +284,41 @@ async function validateMistralKey(apiKey: string) {
     // Mistral uses OpenAI-compatible API
     const response = await fetch('https://api.mistral.ai/v1/models', {
       headers: {
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
       }
+    });
+
+    console.log('Mistral validation response:', {
+      status: response.status,
+      statusText: response.statusText
     });
 
     if (response.ok) {
       return { valid: true };
     }
     
-    if (response.status === 401) {
-      return { valid: false, error: 'Invalid Mistral API key.' };
+    const errorData = await response.json().catch(() => null);
+    console.log('Mistral error data:', errorData);
+    
+    if (response.status === 401 || response.status === 403) {
+      return { valid: false, error: `Invalid Mistral API key. ${errorData?.error?.message || ''}`.trim() };
     }
     
     if (response.status === 429) {
       return { valid: false, error: 'Mistral API quota exceeded.' };
     }
     
-    return { valid: false, error: 'Failed to validate Mistral API key.' };
+    return { 
+      valid: false, 
+      error: `Validation failed (${response.status}): ${errorData?.error?.message || response.statusText}` 
+    };
   } catch (error: any) {
-    throw error;
+    console.error('Mistral validation error:', error);
+    return {
+      valid: false,
+      error: `Connection error: ${error.message || 'Failed to connect to Mistral API'}`
+    };
   }
 }
 
@@ -269,20 +333,35 @@ async function validateCohereKey(apiKey: string) {
       }
     });
 
+    console.log('Cohere validation response:', {
+      status: response.status,
+      statusText: response.statusText
+    });
+
     if (response.ok) {
       return { valid: true };
     }
     
-    if (response.status === 401) {
-      return { valid: false, error: 'Invalid Cohere API key.' };
+    const errorData = await response.json().catch(() => null);
+    console.log('Cohere error data:', errorData);
+    
+    if (response.status === 401 || response.status === 403) {
+      return { valid: false, error: `Invalid Cohere API key. ${errorData?.message || ''}`.trim() };
     }
     
     if (response.status === 429) {
       return { valid: false, error: 'Cohere API quota exceeded.' };
     }
     
-    return { valid: false, error: 'Failed to validate Cohere API key.' };
+    return { 
+      valid: false, 
+      error: `Validation failed (${response.status}): ${errorData?.message || response.statusText}` 
+    };
   } catch (error: any) {
-    throw error;
+    console.error('Cohere validation error:', error);
+    return {
+      valid: false,
+      error: `Connection error: ${error.message || 'Failed to connect to Cohere API'}`
+    };
   }
 }
