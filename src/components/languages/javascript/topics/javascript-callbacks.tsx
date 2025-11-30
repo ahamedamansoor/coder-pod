@@ -22,6 +22,7 @@ import {
   RefreshCw,
   FileCode,
   Network,
+  Play,
   ListChecks,
   Timer,
 } from 'lucide-react';
@@ -29,6 +30,24 @@ import {
 interface JavaScriptCallbacksProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
+
+const SnippetOutput = ({ lines }: { lines: string[] }) => (
+  <div className="mt-3 rounded-xl border border-amber-200/60 dark:border-amber-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
+    <div className="flex items-center gap-2 border-b border-amber-100/60 dark:border-amber-900/40 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/50 dark:to-yellow-950/40 px-4 py-2 rounded-t-xl">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-[10px] font-semibold text-white">
+        IO
+      </span>
+      <span className="text-xs font-semibold text-amber-900 dark:text-amber-100 uppercase tracking-wide">Output</span>
+    </div>
+    <div className="px-4 py-3 space-y-1">
+      {lines.map((line, i) => (
+        <div key={i} className="font-mono text-sm text-gray-700 dark:text-gray-300">
+          {line}
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">

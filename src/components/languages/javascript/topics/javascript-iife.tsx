@@ -17,6 +17,7 @@ import {
   XCircle,
   Zap,
   Box,
+  Play,
 } from 'lucide-react';
 
 interface JavaScriptIifeProps {

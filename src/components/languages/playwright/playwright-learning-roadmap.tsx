@@ -1,6 +1,6 @@
 'use client';
 
-import { PlayCircle, Download, TestTube, Blocks, Globe, MousePointer, Clock, CheckCheck, HookIcon, FolderTree, Settings, Target, Network, KeyRound, Eye, Bug, Gauge, BarChart3, Smartphone, FileCode, Accessibility, GitBranch, Package, Award, FileText } from 'lucide-react';
+import { PlayCircle, Download, TestTube, Blocks, Globe, MousePointer, Clock, CheckCheck, Workflow, FolderTree, Settings, Target, Network, KeyRound, Eye, Bug, Gauge, BarChart3, Smartphone, FileCode, Accessibility, GitBranch, Package, Award, FileText } from 'lucide-react';
 import { usePlaywright } from '@/app/languages/playwright/playwright-context';
 import type { Language } from '@/data/languages';
 import { GenericLearningPath } from '@/components/shared/learning/generic-learning-path';

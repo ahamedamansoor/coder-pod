@@ -11,7 +11,7 @@ interface CheatsheetSnippetProps {
   description: string;
   usage?: string;
   example?: string;
-  colorTheme?: 'blue' | 'emerald' | 'amber' | 'rose' | 'purple' | 'cyan';
+  colorTheme?: 'blue' | 'emerald' | 'amber' | 'rose' | 'purple' | 'cyan' | 'red' | 'indigo' | 'teal' | 'slate' | 'orange';
 }
 
 export function CheatsheetSnippet({
@@ -36,6 +36,11 @@ export function CheatsheetSnippet({
     rose: 'bg-rose-50/50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800',
     purple: 'bg-purple-50/50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800',
     cyan: 'bg-cyan-50/50 dark:bg-cyan-950/20 border-cyan-200 dark:border-cyan-800',
+    red: 'bg-red-50/50 dark:bg-red-950/20 border-red-200 dark:border-red-800',
+    indigo: 'bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800',
+    teal: 'bg-teal-50/50 dark:bg-teal-950/20 border-teal-200 dark:border-teal-800',
+    slate: 'bg-slate-50/50 dark:bg-slate-950/20 border-slate-200 dark:border-slate-800',
+    orange: 'bg-orange-50/50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800',
   };
 
   return (

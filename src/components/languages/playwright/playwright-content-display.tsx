@@ -13,7 +13,6 @@ interface PlaywrightContentDisplayProps {
 export function PlaywrightContentDisplay({
   topic,
   language,
-  onOpenEditor,
 }: PlaywrightContentDisplayProps) {
   // For now, use the generic content display
   // Individual topic components can be added later
@@ -21,7 +20,6 @@ export function PlaywrightContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-      onOpenEditor={onOpenEditor}
     />
   );
 }

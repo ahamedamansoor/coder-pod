@@ -1432,7 +1432,7 @@ async function readClipboard() {
                     try {
                       await navigator.clipboard.writeText('Hello from CODER POD!');
                       addClipboardLog('Copied: Hello from CODER POD!');
-                    } catch (err) {
+                    } catch (err: any) {
                       addClipboardLog('Copy failed: ' + err.message);
                     }
                   }}
@@ -1447,7 +1447,7 @@ async function readClipboard() {
                     try {
                       const text = await navigator.clipboard.readText();
                       addClipboardLog('Pasted: ' + text);
-                    } catch (err) {
+                    } catch (err: any) {
                       addClipboardLog('Paste failed: ' + err.message);
                     }
                   }}

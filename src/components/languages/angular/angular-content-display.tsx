@@ -13,7 +13,6 @@ interface AngularContentDisplayProps {
 export function AngularContentDisplay({
   topic,
   language,
-  onOpenEditor,
 }: AngularContentDisplayProps) {
   // For now, use the generic content display
   // Individual topic components can be added later
@@ -21,7 +20,6 @@ export function AngularContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-      onOpenEditor={onOpenEditor}
     />
   );
 }
