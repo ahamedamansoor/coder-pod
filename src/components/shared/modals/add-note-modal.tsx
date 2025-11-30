@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { languages } from '@/data/languages';
-import { useAuth, useFirestore } from '@/firebase';
+import { useUser, useFirestore } from '@/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { useLoading } from '@/hooks/use-loading';
 import { useToast } from '@/hooks/use-toast';
@@ -36,7 +36,7 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
   const [videoUrl, setVideoUrl] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
 
-  const { user } = useAuth();
+  const { user } = useUser();
   const firestore = useFirestore();
   const { showLoader, hideLoader } = useLoading();
   const { toast } = useToast();
