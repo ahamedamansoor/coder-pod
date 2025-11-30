@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition, useRef } from 'react';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { isUserAdmin } from '@/lib/admin';
@@ -20,7 +21,7 @@ import {
   TrendingUp,
   Database
 } from 'lucide-react';
-import { collection, getDocs, doc, deleteDoc, updateDoc, getFirestore, writeBatch } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, getFirestore, writeBatch } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
@@ -43,7 +44,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ai } from '@/ai/genkit';
+import { deleteUserAction } from './actions';
 
 interface UserData {
   id: string;
@@ -55,6 +56,11 @@ interface UserData {
   completedTopics?: Record<string, string[]>;
   isActive?: boolean;
 }
+
+const initialState = {
+  message: '',
+  success: false,
+};
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
@@ -68,6 +74,25 @@ export default function AdminPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
+  
+  const [formState, formAction] = useFormState(deleteUserAction, initialState);
+  const [isPending, startTransition] = useTransition();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Effect to handle Server Action response
+  useEffect(() => {
+    if (formState?.message) {
+      if (formState.success) {
+        toast({ title: "Success", description: formState.message });
+        if (deleteUserId) {
+            setUsers(users.filter(u => u.id !== deleteUserId));
+            setDeleteUserId(null);
+        }
+      } else {
+        toast({ title: "Error", description: formState.message, variant: "destructive" });
+      }
+    }
+  }, [formState, deleteUserId, toast]);
 
   // Check admin access
   useEffect(() => {
@@ -122,46 +147,10 @@ export default function AdminPage() {
     fetchUsers();
   }, [user, toast]);
 
-  // Delete user
-  const handleDeleteUser = async (userId: string) => {
-    if (!user?.email) {
-      toast({
-        title: "Error",
-        description: "Admin user email not found.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const result = await ai.deleteUser({
-        userIdToDelete: userId,
-        adminUserEmail: user.email,
-      });
-
-      if (result.success) {
-        setUsers(users.filter(u => u.id !== userId));
-        toast({
-          title: "Success",
-          description: result.message,
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: result.message,
-          variant: "destructive",
-        });
-      }
-    } catch (error: any) {
-      console.error('Error deleting user:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to delete user.",
-        variant: "destructive",
-      });
-    } finally {
-      setDeleteUserId(null);
-    }
+  // Trigger delete user action
+  const handleDeleteUser = (userId: string) => {
+    setDeleteUserId(userId);
+    setTimeout(() => formRef.current?.requestSubmit(), 0);
   };
   
   // Delete all users
@@ -551,7 +540,7 @@ export default function AdminPage() {
                               <Button
                                 size="sm"
                                 variant="destructive"
-                                onClick={() => setDeleteUserId(userData.id)}
+                                onClick={() => handleDeleteUser(userData.id)}
                                 className="gap-2"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -572,7 +561,7 @@ export default function AdminPage() {
                               <Button
                                 size="sm"
                                 variant="destructive"
-                                onClick={() => setDeleteUserId(userData.id)}
+                                onClick={() => handleDeleteUser(userData.id)}
                                 className="gap-2"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -606,12 +595,17 @@ export default function AdminPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteUserId && handleDeleteUser(deleteUserId)}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Delete User
-            </AlertDialogAction>
+            <form action={formAction} ref={formRef}>
+                <input type="hidden" name="userIdToDelete" value={deleteUserId || ''} />
+                <input type="hidden" name="adminUserEmail" value={user?.email || ''} />
+                <AlertDialogAction
+                    type="submit"
+                    className="bg-red-600 hover:bg-red-700"
+                    disabled={isPending}
+                >
+                    {isPending ? "Deleting..." : "Delete User"}
+                </AlertDialogAction>
+            </form>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
