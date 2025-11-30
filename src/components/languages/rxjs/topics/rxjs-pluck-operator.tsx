@@ -272,7 +272,7 @@ ajax('/api/metrics')
           <div className="rounded-xl border bg-white dark:bg-slate-900 p-4 space-y-3">
             <p className="font-semibold">pluck()</p>
             <p className="text-xs text-muted-foreground">
-              Shorthand for `map(item => item.path?.value)` - just pass the keys.
+              Shorthand for `map(item {'=>'} item.path?.value)` - just pass the keys.
             </p>
             <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs font-mono whitespace-pre-wrap border">
 {`source$.pipe(pluck('status')).subscribe(console.log);`}

@@ -139,17 +139,17 @@ const AnimatedMergeMap = () => {
                       <div className="flex items-center justify-between text-[10px] font-semibold">
                         <span>Stream {activation.id}</span>
                         <span className={
-                          activation.status === 'active' 
+                          activation.status === 'running' 
                             ? 'text-emerald-600 dark:text-emerald-400' 
                             : 'text-slate-500'
                         }>
-                          {activation.status === 'active' ? '* Active' : '[ok] Done'}
+                          {activation.status === 'running' ? '* Active' : '[ok] Done'}
                         </span>
                       </div>
                       <div className="h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                         <div 
                           className={`h-full transition-all duration-300 ${
-                            activation.status === 'completed' 
+                            activation.status === 'done' 
                               ? 'bg-emerald-500' 
                               : 'bg-indigo-500'
                           }`}

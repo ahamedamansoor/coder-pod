@@ -21,7 +21,6 @@ export function TailwindContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-      onOpenEditor={onOpenEditor}
     />
   );
 }

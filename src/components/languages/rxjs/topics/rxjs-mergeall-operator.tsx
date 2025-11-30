@@ -33,6 +33,8 @@ const AnimatedMergeAll = () => {
   >([]);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const innerActive = innerStates.filter((state) => state.status === 'running').length;
+
   const run = async () => {
     if (isPlaying) return;
     setIsPlaying(true);
@@ -144,10 +146,10 @@ const AnimatedMergeAll = () => {
               </h4>
             </div>
             <div className="min-h-[120px] p-3 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-lg border border-emerald-200/60 dark:border-emerald-700 text-[11px] font-mono text-slate-900 dark:text-emerald-100 flex flex-wrap gap-2">
-              {output.length === 0 ? (
+              {outputs.length === 0 ? (
                 <span className="text-[11px] text-muted-foreground">// merged output values appear here</span>
               ) : (
-                output.map((value, index) => (
+                outputs.map((value, index) => (
                   <span
                     key={`${value}-${index}`}
                     className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/80 border border-emerald-200 dark:border-emerald-700"

@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useJava } from '@/app/languages/java/java-context';
 import { useSpring } from '@/app/languages/spring/spring-context';
+import { useSpringBoot } from '@/app/languages/spring-boot/spring-boot-context';
 import { useJavascript } from '@/app/languages/javascript/javascript-context';
 import { useReact } from '@/app/languages/react/react-context';
 import { useHtml } from '@/app/languages/html/html-context';
@@ -32,6 +33,7 @@ function useLanguageContext(language: Language) {
     switch(language.slug) {
         case 'java': return useJava();
         case 'spring': return useSpring();
+        case 'spring-boot': return useSpringBoot();
         case 'javascript': return useJavascript();
         case 'react': return useReact();
         case 'html': return useHtml();
@@ -148,9 +150,6 @@ Keep it simple and easy to understand.`;
       marked.setOptions({
         breaks: true,
         gfm: true,
-        headerIds: true,
-        mangle: false,
-        sanitize: false, // We handle sanitization with prose classes
       });
       
       // Parse markdown and decode HTML entities
