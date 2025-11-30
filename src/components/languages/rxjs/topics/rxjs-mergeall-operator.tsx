@@ -33,8 +33,6 @@ const AnimatedMergeAll = () => {
   >([]);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const innerActive = innerStates.filter((state) => state.status === 'running').length;
-
   const run = async () => {
     if (isPlaying) return;
     setIsPlaying(true);
@@ -115,7 +113,7 @@ const AnimatedMergeAll = () => {
             </div>
             <div className="p-4 bg-gradient-to-r from-indigo-50 to-cyan-50 dark:from-indigo-950/20 dark:to-cyan-950/20 rounded-lg border border-indigo-200/60 dark:border-indigo-700">
               <p className="text-xs text-muted-foreground">
-                {innerActive === 0 ? 'No active inner streams' : `${innerActive} inner stream(s) running`}
+                {innerStates.filter((state) => state.status === 'running').length === 0 ? 'No active inner streams' : `${innerStates.filter((state) => state.status === 'running').length} inner stream(s) running`}
               </p>
             </div>
           </div>

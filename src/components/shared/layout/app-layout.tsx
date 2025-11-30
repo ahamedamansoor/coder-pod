@@ -15,7 +15,7 @@ interface AppLayoutProps {
 }
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-    const { isSidebarOpen, setSidebarOpen } = useSidebar();
+    const { open: isSidebarOpen, setOpen: setSidebarOpen } = useSidebar();
     const { user, isUserLoading } = useUser();
     const auth = useAuth();
     const firestore = useFirestore();

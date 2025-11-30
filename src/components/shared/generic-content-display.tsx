@@ -335,7 +335,7 @@ Keep it simple and easy to understand.`;
       <AIProviderModal
         isOpen={showAiKeyModal}
         onClose={() => setShowAiKeyModal(false)}
-        onSave={(provider: AIProvider, apiKey: string) => {
+        onSave={async (provider: AIProvider, apiKey: string) => {
           localStorage.setItem('ai_api_key', apiKey);
           localStorage.setItem('ai_provider', provider);
           setIsAiEnabled(true);
@@ -344,6 +344,7 @@ Keep it simple and easy to understand.`;
             title: 'AI Provider Connected',
             description: 'You can now use AI features!',
           });
+          return true;
         }}
       />
     </div>
