@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  
   webpack: (config, { isServer }) => {
     // Exclude Node.js built-in modules and server-only packages from client bundle
     if (!isServer) {
