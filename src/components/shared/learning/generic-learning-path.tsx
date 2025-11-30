@@ -1,14 +1,16 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap, Code, Rocket, Trophy, LucideIcon } from 'lucide-react';
+import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap, Code, Rocket, Trophy, LucideIcon, MapPin } from 'lucide-react';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import type { Language, Topic } from '@/data/languages';
 import { ModuleCompletionCelebration } from '@/components/shared/modals/module-completion-celebration';
+import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
 
 // Shared brand color (Coder Pod blue) using theme-friendly classes
 const LOGO_COLOR_CLASS = 'text-primary';
@@ -94,6 +96,7 @@ export const GenericLearningPath = ({
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
 
   const isUserAuthenticated = user && !user.isAnonymous;
 
@@ -111,8 +114,9 @@ export const GenericLearningPath = ({
   // Merge default icons with custom icons
   const mergedIcons = { ...defaultCategoryIcons, ...categoryIcons };
 
-  // Group topics by category
-  const allTopics = language.topics.filter(t => t.slug !== 'learning-plan');
+  // Group topics by category - filter out special sidebar items that aren't learning content
+  const excludedSlugs = ['learning-plan', 'interview-questions', 'react-version-updates'];
+  const allTopics = language.topics.filter(t => !excludedSlugs.includes(t.slug));
   const topicsByCategory = allTopics.reduce((acc, topic) => {
     const category = topic.category || 'Other';
     if (!acc[category]) {
@@ -227,7 +231,7 @@ export const GenericLearningPath = ({
           </div>
           <div className="flex-1 min-w-0">
             <Link 
-              href={`/${language.slug}/${topic.slug}`} 
+              href={`/languages/${language.slug}/${topic.slug}`} 
               className="block"
               onClick={(e) => e.stopPropagation()}
             >
@@ -265,7 +269,16 @@ export const GenericLearningPath = ({
   };
 
   return (
-    <div className="min-h-screen w-full p-2 md:p-6 pb-16">
+    <div className="min-h-screen w-full p-2 md:p-6 pb-16 bg-background relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDuration: '12s' }} />
+        <div className="absolute top-1/4 -right-32 w-[450px] h-[450px] bg-primary/8 dark:bg-primary/4 rounded-full blur-3xl animate-wave" style={{ animationDelay: '2s', animationDuration: '14s' }} />
+        <div className="absolute -bottom-32 right-1/4 w-[550px] h-[550px] bg-primary/12 dark:bg-primary/6 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s', animationDuration: '13s' }} />
+        <div className="absolute bottom-1/4 -left-32 w-[480px] h-[480px] bg-primary/7 dark:bg-primary/3 rounded-full blur-3xl animate-wave" style={{ animationDelay: '3s', animationDuration: '15s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/6 dark:bg-primary/3 rounded-full blur-3xl animate-breathe" style={{ animationDelay: '1.5s', animationDuration: '8s' }} />
+      </div>
+
       <ModuleCompletionCelebration 
         isOpen={!!completedModule}
         moduleName={completedModule || ""}
@@ -273,7 +286,14 @@ export const GenericLearningPath = ({
         onClose={() => setCompletedModule(null)}
       />
       
-      <div className="mx-auto max-w-7xl">
+      <LearningPathChartModal
+        isOpen={isChartModalOpen}
+        onClose={() => setIsChartModalOpen(false)}
+        language={language}
+        completedTopics={completedTopics}
+      />
+      
+      <div className="mx-auto max-w-7xl relative z-10">
         {/* Header */}
         <div className={cn("text-center mb-12", "animate-in fade-in-50 slide-in-from-top-4 duration-700")}>
           {/* Title Section */}
@@ -330,6 +350,23 @@ export const GenericLearningPath = ({
               <span className={cn("font-bold", LOGO_COLOR_CLASS)}>{modules.length}</span>
               {' '}categories
             </p>
+
+            {/* Visual Roadmap Button */}
+            <div className="mt-6 animate-in fade-in-50 slide-in-from-bottom-3 duration-700 delay-300">
+              <Button
+                onClick={() => setIsChartModalOpen(true)}
+                size="lg"
+                className={cn(
+                  "group relative gap-2 font-semibold shadow-lg hover:shadow-xl transition-all duration-300",
+                  "bg-gradient-to-r from-primary via-primary/90 to-primary hover:from-primary/90 hover:to-primary",
+                  "hover:scale-105 active:scale-95"
+                )}
+              >
+                <MapPin className="w-5 h-5 transition-transform group-hover:rotate-12" />
+                View Learning Path Chart
+                <div className="absolute inset-0 rounded-md bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              </Button>
+            </div>
           </div>
           
           {/* Progress Card - Glass Morphism Style */}

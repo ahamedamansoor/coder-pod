@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -20,11 +20,10 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { languages } from '@/data/languages';
-import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Mic, Lock, Key, BookOpen } from 'lucide-react';
+import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Mic, Lock, Key, BookOpen, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import InterviewSimulator from '@/components/shared/interview-simulator';
 import { cn } from '@/lib/utils';
-import { Logo } from '@/components/shared/layout/logo';
-import { ThemeToggle } from '@/components/shared/layout/theme-toggle';
+import { InnovativeHeader } from '@/components/shared';
 
 function TypingEffect({ text, speed = 50 }: { text: string; speed?: number }) {
   const [displayedText, setDisplayedText] = useState('');
@@ -91,7 +90,11 @@ function DashboardContent() {
   const firestore = useFirestore();
   const { hideLoader } = useLoading();
   const [showContent, setShowContent] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'frontend' | 'backend'>('all');
+  const [filter, setFilter] = useState<'all' | 'frontend' | 'backend' | 'testing'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -101,13 +104,26 @@ function DashboardContent() {
   const { data: userData } = useDoc(userDocRef);
 
   // Filter languages based on category
-  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'scss', 'rxjs'];
+  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'angular', 'scss', 'rxjs', 'tailwind', 'typescript'];
   const backendLanguages = ['java', 'spring', 'spring-boot'];
+  const testingLanguages = ['playwright'];
   
   const filteredLanguages = languages.filter(lang => {
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch = 
+        lang.name.toLowerCase().includes(query) ||
+        lang.description?.toLowerCase().includes(query) ||
+        lang.slug.toLowerCase().includes(query);
+      if (!matchesSearch) return false;
+    }
+    
+    // Category filter
     if (filter === 'all') return true;
     if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
     if (filter === 'backend') return backendLanguages.includes(lang.slug);
+    if (filter === 'testing') return testingLanguages.includes(lang.slug);
     return true;
   });
 
@@ -117,6 +133,43 @@ function DashboardContent() {
       setTimeout(() => setShowContent(true), 100);
     }
   }, [isUserLoading, hideLoader]);
+
+  // Check scroll position
+  const checkScroll = () => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      setCanScrollLeft(container.scrollLeft > 0);
+      setCanScrollRight(
+        container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+      );
+    }
+  };
+
+  // Scroll handler
+  const scroll = (direction: 'left' | 'right') => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const scrollAmount = container.clientWidth * 0.8; // Scroll 80% of container width
+      container.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  // Check scroll on mount and when filtered languages change
+  useEffect(() => {
+    checkScroll();
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScroll);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        container.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, [filteredLanguages]);
 
   const auth = useAuth();
   const router = useRouter();
@@ -169,60 +222,12 @@ function DashboardContent() {
 
   return (
     <div className="flex flex-col min-h-screen min-w-full w-screen bg-background overflow-x-hidden standalone-page" data-route="dashboard">
-      {/* Header */}
-      <header className="border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
-        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-          <div className="flex-shrink-0">
-            <Logo />
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <Link href="/cheatsheets">
-              <Button
-                id="cheatsheets-btn"
-                data-testid="cheatsheets-btn"
-                variant="outline"
-                size="sm"
-                className="gap-2 text-sm font-medium text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/20 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                <BookOpen className="h-4 w-4 flex-shrink-0" />
-                <span className="hidden sm:inline">Cheat Sheets</span>
-              </Button>
-            </Link>
-            <ThemeToggle />
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || 'User'} />
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-bold">
-                        {getUserInitials(user?.displayName, user?.email)}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.displayName || 'User'}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-          </div>
-        </div>
-      </header>
+      {/* Innovative Header with User */}
+      <InnovativeHeader 
+        currentPage="home" 
+        user={user}
+        onLogout={handleLogout}
+      />
 
       {/* Hero Section - Full Width with 3D Perspective */}
       <div className="mb-12 lg:mb-16 perspective-1000">
@@ -260,7 +265,7 @@ function DashboardContent() {
                 Your personal AI-powered coding tutor. Master programming languages with interactive lessons, 
                 quick reference cheatsheets, real-time feedback, and hands-on practice.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
                 <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-yellow-200/50 dark:border-yellow-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-left">
                   <Zap className="w-5 h-5 text-yellow-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
                   Interactive Lessons
@@ -276,6 +281,10 @@ function DashboardContent() {
                 <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:-rotate-3 cursor-pointer animate-fade-scale" style={{ animationDelay: '0.3s' }}>
                   <BookOpen className="w-5 h-5 text-blue-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
                   Quick Reference
+                </div>
+                <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-pink-200/50 dark:border-pink-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-left" style={{ animationDelay: '0.4s' }}>
+                  <MapPin className="w-5 h-5 text-pink-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                  Learning Roadmaps
                 </div>
               </div>
             </div>
@@ -302,44 +311,67 @@ function DashboardContent() {
             </p>
           </div>
 
-          {/* Filter Buttons */}
-          <div className="flex justify-center gap-3 mb-8">
-            <button
-              onClick={() => setFilter('all')}
-              className={cn(
-                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
-                'border backdrop-blur-md',
-                filter === 'all' 
-                  ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white border-transparent shadow-lg shadow-blue-500/25' 
-                  : 'bg-white/20 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15'
-              )}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setFilter('frontend')}
-              className={cn(
-                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
-                'border backdrop-blur-md',
-                filter === 'frontend' 
-                  ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white border-transparent shadow-lg shadow-blue-500/25' 
-                  : 'bg-white/20 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15'
-              )}
-            >
-              Frontend
-            </button>
-            <button
-              onClick={() => setFilter('backend')}
-              className={cn(
-                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
-                'border backdrop-blur-md',
-                filter === 'backend' 
-                  ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white border-transparent shadow-lg shadow-blue-500/25' 
-                  : 'bg-white/20 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15'
-              )}
-            >
-              Backend
-            </button>
+          {/* Search and Filter Bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+            {/* Search Bar */}
+            <div className="relative w-full sm:w-96">
+              <input
+                type="text"
+                placeholder="Search languages..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-5 py-3 pl-12 rounded-full bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-slate-700/50 focus:border-blue-400 dark:focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 transition-all duration-200"
+              />
+              <Code2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
+            </div>
+
+            {/* Filter Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setFilter('all')}
+                className={cn(
+                  'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
+                  filter === 'all' 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                    : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
+                )}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setFilter('frontend')}
+                className={cn(
+                  'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
+                  filter === 'frontend' 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                    : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
+                )}
+              >
+                Frontend
+              </button>
+              <button
+                onClick={() => setFilter('backend')}
+                className={cn(
+                  'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
+                  filter === 'backend' 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                    : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
+                )}
+              >
+                Backend
+              </button>
+              <button
+                onClick={() => setFilter('testing')}
+                className={cn(
+                  'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
+                  filter === 'testing' 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                    : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
+                )}
+              >
+                Testing
+              </button>
+            </div>
           </div>
 
           {/* Current Filter Display */}
@@ -352,7 +384,43 @@ function DashboardContent() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8">
+          {/* Results Count */}
+          {searchQuery && (
+            <div className="mb-4 text-sm text-slate-600 dark:text-slate-400">
+              Found {filteredLanguages.length} {filteredLanguages.length === 1 ? 'language' : 'languages'}
+            </div>
+          )}
+
+          {/* Scrollable Container with Navigation */}
+          <div className="relative group/carousel">
+            {/* Left Arrow */}
+            {canScrollLeft && (
+              <button
+                onClick={() => scroll('left')}
+                className="absolute -left-12 sm:-left-16 lg:-left-20 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/50 text-white shadow-xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 hover:scale-110"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Right Arrow */}
+            {canScrollRight && (
+              <button
+                onClick={() => scroll('right')}
+                className="absolute -right-12 sm:-right-16 lg:-right-20 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/50 text-white shadow-xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 hover:scale-110"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Horizontal Scroll Container */}
+            <div
+              ref={scrollContainerRef}
+              className="overflow-x-auto overflow-y-hidden scroll-smooth pb-4 scrollbar-hide"
+            >
+              <div className="inline-grid grid-rows-2 grid-flow-col gap-5 auto-cols-[minmax(280px,1fr)] sm:auto-cols-[minmax(300px,1fr)]">
             {filteredLanguages.map((lang, index) => {
               const topicCount = lang.topics?.length ?? 0;
               const summary = lang.description ?? lang.topics?.[0]?.explanation ?? 'Interactive lessons curated for every learning style.';
@@ -369,168 +437,98 @@ function DashboardContent() {
               const isCompleted = completionPercentage === 100;
 
               return (
-                <Card
+                <Link 
                   key={lang.slug}
+                  href={`/languages/${lang.slug}/learning-plan`} 
                   className={cn(
-                    'group relative h-full overflow-hidden rounded-3xl',
+                    'group relative h-full overflow-hidden rounded-2xl cursor-pointer block',
                     // Glass morphism base - transparent with blur
                     'bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl',
                     // Borders with subtle gradient
                     'border border-white/20 dark:border-white/10',
                     'shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]',
                     // Glass reflection layer
-                    'after:absolute after:inset-0 after:rounded-3xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none',
-                    // Smooth transitions - only shine animation on hover
+                    'after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none',
+                    // Smooth transitions
                     'transition-all duration-500 ease-out',
-                    showContent ? 'animate-in fade-in slide-in-from-bottom-4' : 'opacity-0'
+                    showContent ? 'animate-in fade-in zoom-in-95' : 'opacity-0'
                   )}
-                  style={{ animationDelay: `${index * 110}ms`, animationFillMode: 'forwards' }}
+                  style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'forwards' }}
                 >
-                  <Link 
-                    href={`/${lang.slug}/learning-plan`} 
-                    className="relative block h-full p-6 cursor-pointer"
-                  >
-                    {/* Holographic shimmer effect */}
-                    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                      <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[shine-glow_1.5s_ease-in-out] pointer-events-none" />
+                  {/* Holographic shimmer effect */}
+                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[shine-glow_1.5s_ease-in-out] pointer-events-none" />
+                  </div>
+
+                  <div className="relative p-5">
+                  {/* Progress Badge - Top Right */}
+                  <div className="absolute top-3 right-3">
+                    <div className={cn(
+                      "flex items-center justify-center w-12 h-12 rounded-full",
+                      "border-2 font-bold text-sm",
+                      completionPercentage === 0 && "border-slate-600 text-slate-400",
+                      completionPercentage > 0 && completionPercentage < 100 && "border-blue-500 text-blue-400",
+                      completionPercentage === 100 && "border-green-500 text-green-400"
+                    )}>
+                      {completionPercentage}%
                     </div>
-                    
-                    <div className="relative flex h-full flex-col">
-                      <CardHeader className="space-y-4 p-0">
-                        {/* Top Section: Title + Chart */}
-                        <div className="flex items-start justify-between gap-4">
-                          {/* Left: Title */}
-                          <div className="flex-1">
-                            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">{lang.name}</CardTitle>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{actualTopicCount} Topics</p>
-                          </div>
-                          
-                          {/* Right: Circular Progress */}
-                          <div className="relative flex flex-col items-center gap-1">
-                            <div className="relative h-16 w-16">
-                              {/* Background circle */}
-                              <svg className="absolute inset-0 -rotate-90" width="64" height="64">
-                                <defs>
-                                  <linearGradient id={`gradient-${lang.slug}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#3b82f6" />
-                                    <stop offset="50%" stopColor="#6366f1" />
-                                    <stop offset="100%" stopColor="#a855f7" />
-                                  </linearGradient>
-                                </defs>
-                                <circle
-                                  cx="32"
-                                  cy="32"
-                                  r="28"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                  className="text-slate-200 dark:text-slate-700"
-                                />
-                                {/* Progress circle */}
-                                <circle
-                                  cx="32"
-                                  cy="32"
-                                  r="28"
-                                  fill="none"
-                                  stroke={`url(#gradient-${lang.slug})`}
-                                  strokeWidth="4"
-                                  strokeLinecap="round"
-                                  strokeDasharray={`${2 * Math.PI * 28}`}
-                                  strokeDashoffset={`${2 * Math.PI * 28 * (1 - completionPercentage / 100)}`}
-                                  className="transition-all duration-1000 ease-out"
-                                />
-                              </svg>
-                              {/* Center percentage */}
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <span className={cn(
-                                  "text-sm font-black",
-                                  completionPercentage === 0 && "text-muted-foreground/40",
-                                  completionPercentage > 0 && completionPercentage < 100 && "text-blue-600 dark:text-blue-400",
-                                  completionPercentage === 100 && "text-green-600 dark:text-green-400"
-                                )}>
-                                  {completionPercentage}%
-                                </span>
-                              </div>
-                            </div>
-                            {/* Status Badge Below */}
-                            {isCompleted && (
-                              <Badge className="bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full">
-                                ✓ Done
-                              </Badge>
-                            )}
-                            {isStarted && !isCompleted && (
-                              <Badge className="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full">
-                                Active
-                              </Badge>
-                            )}
-                            {!isStarted && (
-                              <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-full border-muted-foreground/20">
-                                New
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
+                  </div>
 
-                        {/* Stats Pills */}
-                        <div className="flex flex-wrap gap-2">
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/30 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20">
-                            <Trophy className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-                            <span className="text-xs font-semibold text-slate-900 dark:text-white">{completedCount}/{actualTopicCount}</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/30 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20">
-                            <Target className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
-                            <span className="text-xs font-semibold text-slate-900 dark:text-white">{actualTopicCount - completedCount} left</span>
-                          </div>
-                        </div>
+                  {/* Language Title */}
+                  <div className="mb-3">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{lang.name}</h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{actualTopicCount} Topics</p>
+                  </div>
 
-                        {/* Description */}
-                        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">{summary}</p>
-                      </CardHeader>
-                      
-                      <CardContent className="mt-auto p-0 pt-4 pointer-events-auto relative z-10">
-                        <button
-                          type="button"
-                          className="group/button relative w-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-white font-semibold shadow-lg shadow-blue-500/25 dark:shadow-blue-500/15 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/35 dark:hover:shadow-blue-500/25 hover:-translate-y-0.5 overflow-hidden px-5 py-2.5 text-center cursor-pointer active:scale-[0.98] select-none z-20"
-                          onClick={(e) => {
-                            // Create ripple effect
-                            const button = e.currentTarget;
-                            const rect = button.getBoundingClientRect();
-                            const x = e.clientX - rect.left;
-                            const y = e.clientY - rect.top;
+                  {/* Status Badge */}
+                  <div className="mb-3">
+                    {isCompleted && (
+                      <Badge className="bg-green-500/10 text-green-400 border border-green-500/30 text-xs px-2 py-0.5">
+                        Active
+                      </Badge>
+                    )}
+                    {isStarted && !isCompleted && (
+                      <Badge className="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs px-2 py-0.5">
+                        Active
+                      </Badge>
+                    )}
+                    {!isStarted && (
+                      <Badge className="bg-slate-700/50 text-slate-300 border border-slate-600/50 text-xs px-2 py-0.5">
+                        New
+                      </Badge>
+                    )}
+                  </div>
 
-                            const ripple = document.createElement('span');
-                            ripple.className = 'click-ripple';
-                            ripple.style.left = `${x}px`;
-                            ripple.style.top = `${y}px`;
-                            button.appendChild(ripple);
-
-                            button.classList.add('animate-click-flash');
-
-                            setTimeout(() => {
-                              ripple.remove();
-                              button.classList.remove('animate-click-flash');
-                            }, 600);
-                          }}
-                        >
-                          {/* Shiny glow effect from left to right */}
-                          <div className="absolute inset-0 rounded-full pointer-events-none overflow-hidden">
-                            <div className="absolute top-0 bottom-0 w-[50%] bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover/button:animate-shine-glow pointer-events-none" style={{ filter: 'blur(10px)' }} />
-                          </div>
-                          
-                          {/* Click indicator */}
-                          <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 active:opacity-100 transition-opacity duration-150 pointer-events-none" />
-                          
-                          <span className="relative text-sm font-medium tracking-wide group-hover/button:font-semibold transition-all duration-200 pointer-events-none">
-                            Start Learning
-                          </span>
-                        </button>
-                      </CardContent>
+                  {/* Stats */}
+                  <div className="flex gap-3 mb-4">
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm border border-white/10">
+                        <Trophy className="w-3 h-3 text-amber-400" />
+                        <span className="text-slate-900 dark:text-white font-medium">{completedCount}/{actualTopicCount}</span>
+                      </div>
                     </div>
-                  </Link>
-                </Card>
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm border border-white/10">
+                        <Target className="w-3 h-3 text-blue-400" />
+                        <span className="text-slate-900 dark:text-white font-medium">{actualTopicCount - completedCount} left</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-4">{summary}</p>
+
+                  {/* Start Button */}
+                  <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium text-sm transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25">
+                    Start Learning
+                  </button>
+                  </div>
+                </Link>
               );
             })}
+              </div>
+            </div>
           </div>
         </div>
       </div>

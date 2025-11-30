@@ -4,9 +4,10 @@ import type { Language } from './types';
 export const javascript: Language = {
   slug: 'javascript',
   name: 'JavaScript',
+  description: 'The programming language of the web - from basics to advanced concepts',
   topics: [
     // LEARNING ROADMAP
-    { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A comprehensive roadmap for mastering JavaScript from beginner to expert level.' },
+    { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A comprehensive roadmap for mastering JavaScript from fundamentals to ES2024+ features.' },
     
     // 1. FUNDAMENTALS
     { slug: 'what-is-javascript', title: 'What is JavaScript?', explanation: 'Introduction to JavaScript, its history, ecosystem, and role in modern web development.', category: '1. Fundamentals' },
@@ -137,9 +138,149 @@ export const javascript: Language = {
     { slug: 'intersection-observer', title: 'Intersection Observer', explanation: 'Efficiently detecting element visibility for lazy loading and infinite scroll.', category: '14. APIs & Browser' },
     { slug: 'mutation-observer', title: 'Mutation Observer', explanation: 'Watching for changes to the DOM tree.', category: '14. APIs & Browser' },
     
-    // 15. SECURITY & TESTING
-    { slug: 'security', title: 'JavaScript Security', explanation: 'XSS, CSRF prevention, CSP, and secure coding practices.', category: '15. Security & Testing' },
-    { slug: 'testing', title: 'Testing JavaScript', explanation: 'Unit testing, integration testing, and TDD with Jest.', category: '15. Security & Testing' },
-    { slug: 'clean-code', title: 'Clean Code Principles', explanation: 'Writing maintainable, readable, and professional JavaScript code.', category: '15. Security & Testing' },
+    // 15. MODERN JAVASCRIPT (ES2020-ES2024)
+    { slug: 'optional-chaining', title: 'Optional Chaining', explanation: '?. operator for safe property access without null/undefined errors (ES2020).', category: '15. Modern JavaScript' },
+    { slug: 'nullish-coalescing', title: 'Nullish Coalescing', explanation: '?? operator for default values with null/undefined (ES2020).', category: '15. Modern JavaScript' },
+    { slug: 'bigint', title: 'BigInt', explanation: 'Working with arbitrarily large integers beyond Number.MAX_SAFE_INTEGER (ES2020).', category: '15. Modern JavaScript' },
+    { slug: 'promise-allsettled', title: 'Promise.allSettled', explanation: 'Waiting for all promises to complete regardless of rejection (ES2020).', category: '15. Modern JavaScript' },
+    { slug: 'dynamic-import', title: 'Dynamic Import', explanation: 'import() for lazy loading modules and code splitting (ES2020).', category: '15. Modern JavaScript' },
+    { slug: 'globalthis', title: 'globalThis', explanation: 'Universal global object across environments (ES2020).', category: '15. Modern JavaScript' },
+    { slug: 'logical-assignment', title: 'Logical Assignment', explanation: '&&=, ||=, ??= operators for conditional assignment (ES2021).', category: '15. Modern JavaScript' },
+    { slug: 'numeric-separators', title: 'Numeric Separators', explanation: 'Using _ in numbers for better readability: 1_000_000 (ES2021).', category: '15. Modern JavaScript' },
+    { slug: 'promise-any', title: 'Promise.any', explanation: 'Returns first fulfilled promise, ignoring rejections (ES2021).', category: '15. Modern JavaScript' },
+    { slug: 'string-replaceall', title: 'String.replaceAll', explanation: 'Replacing all occurrences in strings without regex (ES2021).', category: '15. Modern JavaScript' },
+    { slug: 'weakrefs', title: 'WeakRef & FinalizationRegistry', explanation: 'Weak references and cleanup callbacks for advanced memory management (ES2021).', category: '15. Modern JavaScript' },
+    { slug: 'class-fields', title: 'Class Fields', explanation: 'Public and private instance fields in classes (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'private-methods', title: 'Private Methods', explanation: 'Private instance and static methods with # syntax (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'static-blocks', title: 'Static Initialization Blocks', explanation: 'Static blocks for complex class initialization (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'top-level-await', title: 'Top-Level Await', explanation: 'Using await at module top level without async wrapper (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'at-method', title: 'Array/String .at()', explanation: 'Accessing array/string elements with negative indexing (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'hasown', title: 'Object.hasOwn', explanation: 'Safer alternative to hasOwnProperty for checking properties (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'error-cause', title: 'Error.cause', explanation: 'Chaining errors with cause property for better debugging (ES2022).', category: '15. Modern JavaScript' },
+    { slug: 'array-findlast', title: 'Array findLast/findLastIndex', explanation: 'Finding array elements from the end (ES2023).', category: '15. Modern JavaScript' },
+    { slug: 'array-toSorted', title: 'Immutable Array Methods', explanation: 'toSorted(), toReversed(), toSpliced(), with() for immutable operations (ES2023).', category: '15. Modern JavaScript' },
+    { slug: 'hashbang', title: 'Hashbang Grammar', explanation: '#! for executable JavaScript files in Node.js (ES2023).', category: '15. Modern JavaScript' },
+    { slug: 'symbols-as-weakmap-keys', title: 'Symbols as WeakMap Keys', explanation: 'Using symbols in WeakMap for better encapsulation (ES2023).', category: '15. Modern JavaScript' },
+    { slug: 'array-groupby', title: 'Array Grouping', explanation: 'Object.groupBy() and Map.groupBy() for grouping arrays (ES2024).', category: '15. Modern JavaScript' },
+    { slug: 'promise-withresolvers', title: 'Promise.withResolvers', explanation: 'Creating promise with exposed resolve/reject (ES2024).', category: '15. Modern JavaScript' },
+    { slug: 'regexp-v-flag', title: 'RegExp v Flag', explanation: 'Enhanced regex with set notation and properties (ES2024).', category: '15. Modern JavaScript' },
+    { slug: 'atomics-waitasync', title: 'Atomics.waitAsync', explanation: 'Non-blocking atomic operations for SharedArrayBuffer (ES2024).', category: '15. Modern JavaScript' },
+    { slug: 'arraybuffer-transfer', title: 'ArrayBuffer Transfer', explanation: 'Transferring and resizing ArrayBuffer (ES2024).', category: '15. Modern JavaScript' },
+    
+    // 16. ADVANCED ARRAY METHODS
+    { slug: 'array-flat', title: 'Array flat/flatMap', explanation: 'Flattening nested arrays and mapping with flatMap.', category: '16. Advanced Array Methods' },
+    { slug: 'array-from', title: 'Array.from', explanation: 'Creating arrays from iterables and array-like objects.', category: '16. Advanced Array Methods' },
+    { slug: 'array-of', title: 'Array.of', explanation: 'Creating arrays with predictable behavior.', category: '16. Advanced Array Methods' },
+    { slug: 'array-fill', title: 'Array fill', explanation: 'Filling arrays with static values.', category: '16. Advanced Array Methods' },
+    { slug: 'array-includes', title: 'Array includes', explanation: 'Checking for array membership with NaN support.', category: '16. Advanced Array Methods' },
+    { slug: 'typed-arrays', title: 'Typed Arrays', explanation: 'Int8Array, Uint8Array, Float32Array for binary data.', category: '16. Advanced Array Methods' },
+    
+    // 17. ADVANCED OBJECT PATTERNS
+    { slug: 'object-create', title: 'Object.create', explanation: 'Creating objects with specific prototype.', category: '17. Advanced Object Patterns' },
+    { slug: 'object-defineProperty', title: 'Object.defineProperty', explanation: 'Fine-grained control over object properties.', category: '17. Advanced Object Patterns' },
+    { slug: 'object-freeze-seal', title: 'Object Immutability', explanation: 'Object.freeze(), seal(), preventExtensions() for immutability.', category: '17. Advanced Object Patterns' },
+    { slug: 'property-descriptors', title: 'Property Descriptors', explanation: 'Configurable, enumerable, writable, and value descriptors.', category: '17. Advanced Object Patterns' },
+    { slug: 'object-getPrototypeOf', title: 'Prototype Manipulation', explanation: 'Getting and setting prototypes dynamically.', category: '17. Advanced Object Patterns' },
+    
+    // 18. SETS & MAPS
+    { slug: 'set', title: 'Set', explanation: 'Unique value collections with Set data structure.', category: '18. Sets & Maps' },
+    { slug: 'map', title: 'Map', explanation: 'Key-value pairs with any data type as keys.', category: '18. Sets & Maps' },
+    { slug: 'weakmap', title: 'WeakMap', explanation: 'Weak-reference maps for memory-efficient caching.', category: '18. Sets & Maps' },
+    { slug: 'weakset', title: 'WeakSet', explanation: 'Weak-reference sets for tracking objects.', category: '18. Sets & Maps' },
+    
+    // 19. DATE & TIME
+    { slug: 'date-object', title: 'Date Object', explanation: 'Working with dates and times in JavaScript.', category: '19. Date & Time' },
+    { slug: 'date-methods', title: 'Date Methods', explanation: 'Getting and setting date components.', category: '19. Date & Time' },
+    { slug: 'date-formatting', title: 'Date Formatting', explanation: 'toLocaleDateString, toLocaleTimeString, and formatting.', category: '19. Date & Time' },
+    { slug: 'temporal-api', title: 'Temporal API', explanation: 'Modern date/time API (Stage 3 proposal) for better date handling.', category: '19. Date & Time' },
+    
+    // 20. MATH & NUMBERS
+    { slug: 'math-object', title: 'Math Object', explanation: 'Mathematical operations and constants.', category: '20. Math & Numbers' },
+    { slug: 'number-methods', title: 'Number Methods', explanation: 'Number.isNaN, isFinite, parseInt, parseFloat, toFixed.', category: '20. Math & Numbers' },
+    { slug: 'math-random', title: 'Random Numbers', explanation: 'Generating random numbers and ranges.', category: '20. Math & Numbers' },
+    
+    // 21. JSON
+    { slug: 'json', title: 'JSON', explanation: 'JavaScript Object Notation for data interchange.', category: '21. JSON' },
+    { slug: 'json-parse', title: 'JSON.parse', explanation: 'Parsing JSON strings into objects.', category: '21. JSON' },
+    { slug: 'json-stringify', title: 'JSON.stringify', explanation: 'Converting objects to JSON strings with formatting.', category: '21. JSON' },
+    { slug: 'json-replacer-reviver', title: 'Replacer & Reviver', explanation: 'Custom transformations during JSON serialization.', category: '21. JSON' },
+    
+    // 22. INTERNATIONALIZATION
+    { slug: 'intl', title: 'Intl API', explanation: 'Internationalization and localization API.', category: '22. Internationalization' },
+    { slug: 'intl-datetimeformat', title: 'Intl.DateTimeFormat', explanation: 'Language-sensitive date/time formatting.', category: '22. Internationalization' },
+    { slug: 'intl-numberformat', title: 'Intl.NumberFormat', explanation: 'Language-sensitive number formatting.', category: '22. Internationalization' },
+    { slug: 'intl-collator', title: 'Intl.Collator', explanation: 'Language-sensitive string comparison.', category: '22. Internationalization' },
+    { slug: 'intl-pluralrules', title: 'Intl.PluralRules', explanation: 'Language-specific plural formatting.', category: '22. Internationalization' },
+    
+    // 23. BROWSER APIS (EXTENDED)
+    { slug: 'history-api', title: 'History API', explanation: 'Manipulating browser history for SPAs.', category: '23. Browser APIs' },
+    { slug: 'url-api', title: 'URL API', explanation: 'Parsing and constructing URLs with URL and URLSearchParams.', category: '23. Browser APIs' },
+    { slug: 'clipboard-api', title: 'Clipboard API', explanation: 'Reading from and writing to the clipboard.', category: '23. Browser APIs' },
+    { slug: 'file-api', title: 'File API', explanation: 'Reading files with FileReader and Blob.', category: '23. Browser APIs' },
+    { slug: 'drag-drop-api', title: 'Drag & Drop API', explanation: 'Implementing drag and drop functionality.', category: '23. Browser APIs' },
+    { slug: 'fullscreen-api', title: 'Fullscreen API', explanation: 'Requesting and managing fullscreen mode.', category: '23. Browser APIs' },
+    { slug: 'page-visibility-api', title: 'Page Visibility API', explanation: 'Detecting when page is visible/hidden.', category: '23. Browser APIs' },
+    { slug: 'battery-api', title: 'Battery Status API', explanation: 'Monitoring device battery status.', category: '23. Browser APIs' },
+    { slug: 'network-information', title: 'Network Information API', explanation: 'Detecting connection type and quality.', category: '23. Browser APIs' },
+    { slug: 'media-query-api', title: 'Media Query API', explanation: 'matchMedia for responsive JavaScript.', category: '23. Browser APIs' },
+    { slug: 'resize-observer', title: 'Resize Observer', explanation: 'Observing element size changes.', category: '23. Browser APIs' },
+    { slug: 'performance-api', title: 'Performance API', explanation: 'Measuring and monitoring web performance.', category: '23. Browser APIs' },
+    { slug: 'requestanimationframe', title: 'requestAnimationFrame', explanation: 'Smooth animations with optimal timing.', category: '23. Browser APIs' },
+    { slug: 'requestidlecallback', title: 'requestIdleCallback', explanation: 'Running tasks during browser idle time.', category: '23. Browser APIs' },
+    
+    // 24. ADVANCED ASYNC PATTERNS
+    { slug: 'async-iterators', title: 'Async Iterators', explanation: 'for await...of for async iteration.', category: '24. Advanced Async Patterns' },
+    { slug: 'async-generators', title: 'Async Generators', explanation: 'Combining async/await with generators.', category: '24. Advanced Async Patterns' },
+    { slug: 'microtasks-macrotasks', title: 'Microtasks vs Macrotasks', explanation: 'Understanding task queuing and execution order.', category: '24. Advanced Async Patterns' },
+    { slug: 'abort-controller', title: 'AbortController', explanation: 'Canceling fetch requests and async operations.', category: '24. Advanced Async Patterns' },
+    
+    // 25. JAVASCRIPT RUNTIME ENVIRONMENTS
+    { slug: 'browser-vs-nodejs', title: 'Browser vs Node.js', explanation: 'Understanding different JavaScript runtime environments and their differences.', category: '25. Runtime Environments' },
+    { slug: 'javascript-engines', title: 'JavaScript Engines', explanation: 'V8, SpiderMonkey, JavaScriptCore - how JavaScript is executed.', category: '25. Runtime Environments' },
+    { slug: 'runtime-apis', title: 'Runtime APIs', explanation: 'Browser-specific vs Node.js-specific APIs and global objects.', category: '25. Runtime Environments' },
+    { slug: 'commonjs-vs-esm', title: 'CommonJS vs ES Modules', explanation: 'Understanding module systems: require() vs import/export.', category: '25. Runtime Environments' },
+    
+    // 26. TOOLING & BUILD
+    { slug: 'npm-yarn', title: 'npm & Yarn', explanation: 'Package management with npm and Yarn.', category: '26. Tooling & Build' },
+    { slug: 'package-json', title: 'package.json', explanation: 'Managing dependencies and scripts.', category: '26. Tooling & Build' },
+    { slug: 'webpack', title: 'Webpack', explanation: 'Module bundling and build configuration.', category: '26. Tooling & Build' },
+    { slug: 'vite', title: 'Vite', explanation: 'Lightning-fast build tool for modern web projects.', category: '26. Tooling & Build' },
+    { slug: 'babel', title: 'Babel', explanation: 'Transpiling modern JavaScript for browser compatibility.', category: '26. Tooling & Build' },
+    { slug: 'eslint', title: 'ESLint', explanation: 'Linting and code quality enforcement.', category: '26. Tooling & Build' },
+    { slug: 'prettier', title: 'Prettier', explanation: 'Automatic code formatting.', category: '26. Tooling & Build' },
+    
+    // 27. SECURITY & BEST PRACTICES
+    { slug: 'xss-prevention', title: 'XSS Prevention', explanation: 'Cross-site scripting attacks and mitigation.', category: '27. Security & Best Practices' },
+    { slug: 'csrf-protection', title: 'CSRF Protection', explanation: 'Cross-site request forgery prevention.', category: '27. Security & Best Practices' },
+    { slug: 'content-security-policy', title: 'Content Security Policy', explanation: 'CSP headers for enhanced security.', category: '27. Security & Best Practices' },
+    { slug: 'sanitization', title: 'Input Sanitization', explanation: 'Cleaning user input to prevent attacks.', category: '27. Security & Best Practices' },
+    { slug: 'secure-coding', title: 'Secure Coding', explanation: 'Security best practices and common vulnerabilities.', category: '27. Security & Best Practices' },
+    { slug: 'code-splitting', title: 'Code Splitting', explanation: 'Breaking code into chunks for better loading.', category: '27. Security & Best Practices' },
+    { slug: 'tree-shaking', title: 'Tree Shaking', explanation: 'Removing unused code from bundles.', category: '27. Security & Best Practices' },
+    { slug: 'clean-code', title: 'Clean Code', explanation: 'Writing maintainable and readable JavaScript.', category: '27. Security & Best Practices' },
+    { slug: 'solid-principles', title: 'SOLID Principles', explanation: 'Object-oriented design principles in JavaScript.', category: '27. Security & Best Practices' },
+    
+    // 28. TESTING
+    { slug: 'unit-testing', title: 'Unit Testing', explanation: 'Testing individual functions and modules.', category: '28. Testing' },
+    { slug: 'jest', title: 'Jest', explanation: 'Popular testing framework for JavaScript.', category: '28. Testing' },
+    { slug: 'vitest', title: 'Vitest', explanation: 'Blazing fast unit test framework powered by Vite.', category: '28. Testing' },
+    { slug: 'test-driven-development', title: 'TDD', explanation: 'Test-driven development methodology.', category: '28. Testing' },
+    { slug: 'mocking', title: 'Mocking & Spies', explanation: 'Mock functions, modules, and spy on behavior.', category: '28. Testing' },
+    { slug: 'e2e-testing', title: 'E2E Testing', explanation: 'End-to-end testing with Cypress, Playwright.', category: '28. Testing' },
+    { slug: 'testing-best-practices', title: 'Testing Best Practices', explanation: 'Writing effective tests and coverage strategies.', category: '28. Testing' },
+    
+    // 29. META-PROGRAMMING
+    { slug: 'reflect-api', title: 'Reflect API', explanation: 'Built-in object for interceptable JavaScript operations.', category: '29. Meta-Programming' },
+    { slug: 'proxy-advanced', title: 'Advanced Proxy', explanation: 'Deep dive into Proxy traps and use cases.', category: '29. Meta-Programming' },
+    { slug: 'property-access', title: 'Property Access', explanation: 'Dot notation vs bracket notation and dynamic properties.', category: '29. Meta-Programming' },
+    { slug: 'eval-function', title: 'eval() & Function Constructor', explanation: 'Dynamic code execution (and why to avoid it).', category: '29. Meta-Programming' },
+    
+    // 30. MEMORY & PERFORMANCE
+    { slug: 'garbage-collection', title: 'Garbage Collection', explanation: 'How JavaScript manages memory automatically.', category: '30. Memory & Performance' },
+    { slug: 'memory-leaks', title: 'Memory Leaks', explanation: 'Common causes and how to prevent memory leaks.', category: '30. Memory & Performance' },
+    { slug: 'profiling', title: 'Profiling', explanation: 'Using DevTools to profile and optimize performance.', category: '30. Memory & Performance' },
+    { slug: 'call-stack-visualization', title: 'Call Stack Visualization', explanation: 'Understanding stack traces and debugging.', category: '30. Memory & Performance' },
+    { slug: 'lighthouse', title: 'Lighthouse', explanation: 'Auditing performance, accessibility, and SEO with Lighthouse.', category: '30. Memory & Performance' },
+    { slug: 'performance-monitoring', title: 'Performance Monitoring', explanation: 'Real-world performance monitoring with RUM and synthetic monitoring.', category: '30. Memory & Performance' },
   ]
 };

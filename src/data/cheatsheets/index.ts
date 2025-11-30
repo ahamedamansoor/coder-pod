@@ -2,8 +2,10 @@ export { linuxCheatsheet } from './linux';
 export { macCheatsheet } from './mac';
 export { windowsCheatsheet } from './windows';
 export { gitCheatsheet } from './git';
+export { htmlCheatsheet } from './html';
 export { javascriptCheatsheet } from './javascript';
 export { reactCheatsheet } from './react';
+export { angularCheatsheet } from './angular';
 export { npmCheatsheet } from './npm';
 export { vimCheatsheet } from './vim';
 export { vscodeCheatsheet } from './vscode';
@@ -29,8 +31,10 @@ import { linuxCheatsheet } from './linux';
 import { macCheatsheet } from './mac';
 import { windowsCheatsheet } from './windows';
 import { gitCheatsheet } from './git';
+import { htmlCheatsheet } from './html';
 import { javascriptCheatsheet } from './javascript';
 import { reactCheatsheet } from './react';
+import { angularCheatsheet } from './angular';
 import { npmCheatsheet } from './npm';
 import { vimCheatsheet } from './vim';
 import { vscodeCheatsheet } from './vscode';
@@ -56,8 +60,10 @@ export const allCheatsheets = [
   macCheatsheet,
   windowsCheatsheet,
   gitCheatsheet,
+  htmlCheatsheet,
   javascriptCheatsheet,
   reactCheatsheet,
+  angularCheatsheet,
   npmCheatsheet,
   vimCheatsheet,
   vscodeCheatsheet,
@@ -84,7 +90,7 @@ export const cheatsheetCategories = [
   {
     id: 'programming',
     name: 'Programming Languages',
-    cheatsheets: [javascriptCheatsheet, reactCheatsheet],
+    cheatsheets: [htmlCheatsheet, javascriptCheatsheet, reactCheatsheet, angularCheatsheet],
   },
   {
     id: 'databases',

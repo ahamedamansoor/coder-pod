@@ -47,7 +47,7 @@ function RxjsTopicContent() {
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={100} minSize={30}>
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
           {isLearningPlanTopic ? (
             <RxjsLearningRoadmap language={language} />
           ) : (

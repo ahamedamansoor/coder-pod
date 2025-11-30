@@ -1,5 +1,6 @@
 
 'use client';
+import { useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,29 +8,63 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { languages } from '@/data/languages';
-import Link from 'next/link';
-import { ChevronDown, Code } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ChevronDown, Code, Search } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export function LanguageSwitcher({
   currentLanguageSlug,
 }: {
   currentLanguageSlug?: string;
 }) {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  
   const currentLanguage = languages.find(
     (lang) => lang.slug === currentLanguageSlug
   );
 
-  const frontendSlugs = new Set(['html', 'css', 'scss', 'javascript', 'react', 'rxjs']);
+  const handleLanguageSelect = (slug: string) => {
+    router.push(`/languages/${slug}/learning-plan`);
+    setSearchQuery(''); // Reset search on selection
+  };
+
+  const frontendSlugs = new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'typescript', 'react', 'angular', 'rxjs']);
   const backendSlugs = new Set(['java', 'spring', 'spring-boot']);
   const dsaSlugs = new Set(['dsa']);
+  const testingSlugs = new Set(['playwright']);
 
-  const frontendLanguages = languages.filter((lang) => frontendSlugs.has(lang.slug));
-  const backendLanguages = languages.filter((lang) => backendSlugs.has(lang.slug));
-  const otherLanguages = languages.filter(
-    (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug)
-  );
-  const dsaLanguages = languages.filter((lang) => dsaSlugs.has(lang.slug));
+  // Filter languages based on search query
+  const filteredLanguages = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return {
+        frontend: languages.filter((lang) => frontendSlugs.has(lang.slug)),
+        backend: languages.filter((lang) => backendSlugs.has(lang.slug)),
+        testing: languages.filter((lang) => testingSlugs.has(lang.slug)),
+        dsa: languages.filter((lang) => dsaSlugs.has(lang.slug)),
+        other: languages.filter(
+          (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug)
+        ),
+      };
+    }
+
+    const query = searchQuery.toLowerCase();
+    const matchingLanguages = languages.filter((lang) =>
+      lang.name.toLowerCase().includes(query) || lang.slug.toLowerCase().includes(query)
+    );
+
+    return {
+      frontend: matchingLanguages.filter((lang) => frontendSlugs.has(lang.slug)),
+      backend: matchingLanguages.filter((lang) => backendSlugs.has(lang.slug)),
+      testing: matchingLanguages.filter((lang) => testingSlugs.has(lang.slug)),
+      dsa: matchingLanguages.filter((lang) => dsaSlugs.has(lang.slug)),
+      other: matchingLanguages.filter(
+        (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug)
+      ),
+    };
+  }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs]);
 
   return (
     <DropdownMenu>
@@ -40,47 +75,131 @@ export function LanguageSwitcher({
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-60 space-y-2">
-        {frontendLanguages.length > 0 && (
-          <div>
-            <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase">Frontend</p>
-            {frontendLanguages.map((lang) => (
-              <DropdownMenuItem key={lang.slug} asChild>
-                <Link href={`/${lang.slug}/learning-plan`}>{lang.name}</Link>
-              </DropdownMenuItem>
-            ))}
+      <DropdownMenuContent align="end" className="w-80 p-0">
+        {/* Search Bar */}
+        <div className="p-2 border-b sticky top-0 bg-background z-10">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search languages..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 h-9"
+            />
           </div>
-        )}
-        {backendLanguages.length > 0 && (
-          <div>
-            <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase">Backend</p>
-            {backendLanguages.map((lang) => (
-              <DropdownMenuItem key={lang.slug} asChild>
-                <Link href={`/${lang.slug}/learning-plan`}>{lang.name}</Link>
-              </DropdownMenuItem>
-            ))}
+        </div>
+
+        {/* Scrollable Content */}
+        <ScrollArea className="max-h-[400px]">
+          <div className="p-2 space-y-3">
+            {filteredLanguages.frontend.length > 0 && (
+              <div>
+                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Frontend ({filteredLanguages.frontend.length})
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {filteredLanguages.frontend.map((lang) => (
+                    <DropdownMenuItem 
+                      key={lang.slug} 
+                      onClick={() => handleLanguageSelect(lang.slug)}
+                      className="cursor-pointer text-sm"
+                    >
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {filteredLanguages.backend.length > 0 && (
+              <div>
+                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Backend ({filteredLanguages.backend.length})
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {filteredLanguages.backend.map((lang) => (
+                    <DropdownMenuItem 
+                      key={lang.slug} 
+                      onClick={() => handleLanguageSelect(lang.slug)}
+                      className="cursor-pointer text-sm"
+                    >
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {filteredLanguages.testing.length > 0 && (
+              <div>
+                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Testing ({filteredLanguages.testing.length})
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {filteredLanguages.testing.map((lang) => (
+                    <DropdownMenuItem 
+                      key={lang.slug} 
+                      onClick={() => handleLanguageSelect(lang.slug)}
+                      className="cursor-pointer text-sm"
+                    >
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {filteredLanguages.dsa.length > 0 && (
+              <div>
+                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  DSA ({filteredLanguages.dsa.length})
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {filteredLanguages.dsa.map((lang) => (
+                    <DropdownMenuItem 
+                      key={lang.slug} 
+                      onClick={() => handleLanguageSelect(lang.slug)}
+                      className="cursor-pointer text-sm"
+                    >
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {filteredLanguages.other.length > 0 && (
+              <div>
+                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Other ({filteredLanguages.other.length})
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {filteredLanguages.other.map((lang) => (
+                    <DropdownMenuItem 
+                      key={lang.slug} 
+                      onClick={() => handleLanguageSelect(lang.slug)}
+                      className="cursor-pointer text-sm"
+                    >
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No Results */}
+            {searchQuery && 
+             filteredLanguages.frontend.length === 0 && 
+             filteredLanguages.backend.length === 0 && 
+             filteredLanguages.testing.length === 0 && 
+             filteredLanguages.dsa.length === 0 && 
+             filteredLanguages.other.length === 0 && (
+              <div className="text-center py-6 text-sm text-muted-foreground">
+                No languages found matching "{searchQuery}"
+              </div>
+            )}
           </div>
-        )}
-        {dsaLanguages.length > 0 && (
-          <div>
-            <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase">DSA</p>
-            {dsaLanguages.map((lang) => (
-              <DropdownMenuItem key={lang.slug} asChild>
-                <Link href={`/${lang.slug}/learning-plan`}>{lang.name}</Link>
-              </DropdownMenuItem>
-            ))}
-          </div>
-        )}
-        {otherLanguages.length > 0 && (
-          <div>
-            <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase">Other</p>
-            {otherLanguages.map((lang) => (
-              <DropdownMenuItem key={lang.slug} asChild>
-                <Link href={`/${lang.slug}/learning-plan`}>{lang.name}</Link>
-              </DropdownMenuItem>
-            ))}
-          </div>
-        )}
+        </ScrollArea>
       </DropdownMenuContent>
     </DropdownMenu>
   );

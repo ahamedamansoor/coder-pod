@@ -1,12 +1,8 @@
 'use client';
 
 import { Suspense, lazy } from 'react';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Home, BookOpen } from 'lucide-react';
-import Link from 'next/link';
-import { Logo } from '@/components/shared/layout/logo';
-import { ThemeToggle } from '@/components/shared/layout/theme-toggle';
+import { InnovativeHeader } from '@/components/shared';
 
 // Lazy load the cheatsheet board content
 const CheatsheetBoardContent = lazy(() => import('@/components/cheatsheets/cheatsheet-board'));
@@ -48,35 +44,8 @@ export default function CheatsheetBoardPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-purple-50/20 to-cyan-50/40 dark:from-blue-950/30 dark:via-purple-950/15 dark:to-cyan-950/30"></div>
       </div>
       
-      {/* Header */}
-      <header className="border-b border-slate-200/50 dark:border-slate-800/50 flex-shrink-0 sticky top-0 z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl relative">
-        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4">
-            <Logo />
-            <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-              <span>/</span>
-              <BookOpen className="h-4 w-4" />
-              <span>Cheat Sheets</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <Link href="/dashboard">
-              <Button
-                id="home-btn"
-                data-testid="home-btn"
-                variant="outline"
-                size="sm"
-                className="gap-2 text-sm font-medium"
-              >
-                <Home className="h-4 w-4" />
-                <span className="hidden sm:inline">Home</span>
-              </Button>
-            </Link>
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
+      {/* Innovative Header */}
+      <InnovativeHeader currentPage="cheatsheets" />
 
       {/* Main Content */}
       <Suspense fallback={<CheatsheetBoardLoading />}>

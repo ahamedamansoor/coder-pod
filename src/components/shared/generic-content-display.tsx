@@ -19,6 +19,7 @@ import { useCss } from '@/app/languages/css/css-context';
 import { useScss } from '@/app/languages/scss/scss-context';
 import { useDsa } from '@/app/languages/dsa/dsa-context';
 import { useRxjs } from '@/app/languages/rxjs/rxjs-context';
+import { usePlaywright } from '@/app/languages/playwright/playwright-context';
 import { useUser } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
@@ -38,6 +39,7 @@ function useLanguageContext(language: Language) {
         case 'scss': return useScss();
         case 'dsa': return useDsa();
         case 'rxjs': return useRxjs();
+        case 'playwright': return usePlaywright();
         default: return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
     }
 }
