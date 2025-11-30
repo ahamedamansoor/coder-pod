@@ -67,8 +67,7 @@ export default function AllNotesPage() {
       <div className="space-y-12">
         {languages.map((lang) => (
           <div key={lang.slug}>
-            <h2 className="text-3xl font-semibold text-foreground mb-6 flex items-center">
-              {lang.icon && <lang.icon className="mr-3 h-8 w-8 text-primary" />}
+            <h2 className="text-3xl font-semibold text-foreground mb-6">
               {lang.name}
             </h2>
             {notesByLanguage[lang.slug] && notesByLanguage[lang.slug].length > 0 ? (

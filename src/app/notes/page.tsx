@@ -89,7 +89,6 @@ export default function NotesPage() {
               variant={selectedLanguage === lang.slug ? 'default' : 'outline'}
               className="flex items-center gap-2 text-lg px-6 py-4 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-sm hover:shadow-md"
             >
-              {lang.icon && <lang.icon className="h-6 w-6" />}
               <span>{lang.name}</span>
             </Button>
           ))}

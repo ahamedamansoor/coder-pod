@@ -37,8 +37,15 @@ const nextConfig = {
   // Optimize for production
   reactStrictMode: true,
   
-  // Enable SWC minification
-  swcMinify: true,
+  // Disable ESLint during build (run separately)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  
+  // Disable TypeScript errors during build (run separately)
+  typescript: {
+    ignoreBuildErrors: false,
+  },
   
   // Server Components external packages (prevents bundling for server components)
   serverExternalPackages: [
