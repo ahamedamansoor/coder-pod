@@ -329,9 +329,9 @@ export default function AdminPage() {
     <div className="min-h-screen bg-background">
       <InnovativeHeader currentPage="dashboard" user={user} />
       
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
+      <main className="w-[100vw] py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 px-4 sm:px-6 lg:px-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />
@@ -360,6 +360,7 @@ export default function AdminPage() {
         </div>
 
         {/* Stats Cards */}
+        <div className="px-4 sm:px-6 lg:px-8">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[...Array(4)].map((_, i) => (
@@ -439,8 +440,10 @@ export default function AdminPage() {
             </Card>
           </div>
         )}
+        </div>
 
         {/* Users Table */}
+        <div className="px-4 sm:px-6 lg:px-8">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -569,6 +572,7 @@ export default function AdminPage() {
             )}
           </CardContent>
         </Card>
+        </div>
       </main>
 
       {/* Delete Confirmation Dialog */}
