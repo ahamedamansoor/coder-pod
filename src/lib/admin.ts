@@ -1,9 +1,9 @@
 /**
  * Admin utility functions
- * Admin emails: ahamedamansoor@gmail.com, ahamedamansoor.dev@gmail.com
+ * Admin emails: ahamedamansoor@gmail.com, ahamedamansoor.dev@gmail.com, tech.vishnukumar@gmail.com
  */
 
-const ADMIN_EMAILS = ['ahamedamansoor@gmail.com', 'ahamedamansoor.dev@gmail.com'];
+const ADMIN_EMAILS = ['ahamedamansoor@gmail.com', 'ahamedamansoor.dev@gmail.com', 'tech.vishnukumar@gmail.com'];
 
 /**
  * Check if a user is an admin
