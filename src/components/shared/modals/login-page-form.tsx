@@ -75,7 +75,7 @@ export function LoginPageForm() {
         };
         await setDoc(userRef, userProfile);
     } else {
-        await setDoc(userRef, { lastLoginAt: serverTimestamp() }, { merge: true });
+        await setDoc(userRef, { lastLoginAt: serverTimestamp(), email: user.email }, { merge: true });
     }
     
     router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);

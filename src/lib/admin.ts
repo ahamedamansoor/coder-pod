@@ -1,16 +1,16 @@
 /**
  * Admin utility functions
- * Admin email: ahamedamansoor@gmail.com
+ * Admin emails: ahamedamansoor@gmail.com, ahamedamansoor.dev@gmail.com
  */
 
-const ADMIN_EMAIL = 'ahamedamansoor@gmail.com';
+const ADMIN_EMAILS = ['ahamedamansoor@gmail.com', 'ahamedamansoor.dev@gmail.com'];
 
 /**
  * Check if a user is an admin
  */
 export function isAdmin(email?: string | null): boolean {
   if (!email) return false;
-  return email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  return ADMIN_EMAILS.map(e => e.toLowerCase()).includes(email.toLowerCase());
 }
 
 /**
@@ -21,8 +21,8 @@ export function isUserAdmin(user: { email?: string | null } | null | undefined):
 }
 
 /**
- * Get admin email
+ * Get admin emails
  */
-export function getAdminEmail(): string {
-  return ADMIN_EMAIL;
+export function getAdminEmails(): string[] {
+  return ADMIN_EMAILS;
 }
