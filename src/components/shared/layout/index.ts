@@ -1,5 +1,5 @@
 // Layout components
-export { default as AppLayout } from './app-layout';
+export { AppLayout } from './app-layout';
 export { MainHeader } from './main-header';
 export { Logo } from './logo';
 export { ThemeProvider } from './theme-provider';

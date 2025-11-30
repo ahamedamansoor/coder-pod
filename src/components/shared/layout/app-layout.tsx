@@ -23,6 +23,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const searchParams = useSearchParams();
 
     const [userRole, setUserRole] = useState<string | null>(null);
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
+
+    const handleToggleEditor = () => {
+        setIsEditorOpen(!isEditorOpen);
+    };
 
     useEffect(() => {
         if (!isUserLoading && !user) {
@@ -53,7 +58,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                     isSidebarOpen && 'lg:ml-64'
                 )}
             >
-                <MainHeader />
+                <MainHeader 
+                    onToggleEditor={handleToggleEditor}
+                    isEditorOpen={isEditorOpen}
+                />
                 <main className="p-4 lg:p-6">
                     {children}
                 </main>
