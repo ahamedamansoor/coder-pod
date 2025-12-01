@@ -2,6 +2,7 @@ export { linuxCheatsheet } from './linux';
 export { macCheatsheet } from './mac';
 export { windowsCheatsheet } from './windows';
 export { gitCheatsheet } from './git';
+export { dockerCheatsheet } from './docker';
 export { htmlCheatsheet } from './html';
 export { javascriptCheatsheet } from './javascript';
 export { reactCheatsheet } from './react';
@@ -31,6 +32,7 @@ import { linuxCheatsheet } from './linux';
 import { macCheatsheet } from './mac';
 import { windowsCheatsheet } from './windows';
 import { gitCheatsheet } from './git';
+import { dockerCheatsheet } from './docker';
 import { htmlCheatsheet } from './html';
 import { javascriptCheatsheet } from './javascript';
 import { reactCheatsheet } from './react';
@@ -60,6 +62,7 @@ export const allCheatsheets = [
   macCheatsheet,
   windowsCheatsheet,
   gitCheatsheet,
+  dockerCheatsheet,
   htmlCheatsheet,
   javascriptCheatsheet,
   reactCheatsheet,
@@ -100,7 +103,7 @@ export const cheatsheetCategories = [
   {
     id: 'developer-tools',
     name: 'Developer Tools',
-    cheatsheets: [gitCheatsheet, npmCheatsheet, homebrewCheatsheet],
+    cheatsheets: [gitCheatsheet, dockerCheatsheet, npmCheatsheet, homebrewCheatsheet],
   },
   {
     id: 'editors-tools',

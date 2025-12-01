@@ -60,58 +60,47 @@ export function CheatsheetModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent 
         showCloseButton={false}
-        className="max-w-full w-screen h-screen p-0 flex flex-col bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-0 rounded-none"
+        className="max-w-full w-screen h-screen p-0 flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 border-0 rounded-none"
       >
         {/* Header */}
-        <DialogHeader className={cn(
-          "px-6 py-4 border-b flex-shrink-0 relative",
-          "bg-gradient-to-r from-blue-50/80 via-purple-50/50 to-cyan-50/80",
-          "dark:from-blue-950/50 dark:via-purple-950/30 dark:to-cyan-950/50",
-          "border-slate-200/50 dark:border-slate-800/50"
-        )}>
+        <DialogHeader className="px-6 py-4 border-b flex-shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-blue-100 dark:bg-blue-900/50 backdrop-blur-sm shadow-sm">
-                <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <div className="p-2.5 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+                <Icon className="h-5 w-5 text-white" />
               </div>
-              <DialogTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                {title}
-              </DialogTitle>
+              <div>
+                <DialogTitle className="text-lg font-bold text-slate-900 dark:text-white">
+                  {title}
+                </DialogTitle>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  {sections.reduce((acc, s) => acc + s.commands.length, 0)} commands • Quick reference
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                {sections.reduce((acc, s) => acc + s.commands.length, 0)} commands
-              </p>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className={cn(
-                  "h-9 w-9 rounded-full transition-all duration-200",
-                  "hover:bg-red-100 dark:hover:bg-red-900/30",
-                  "hover:text-red-600 dark:hover:text-red-400",
-                  "hover:scale-110"
-                )}
-              >
-                <X className="h-5 w-5" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="h-9 w-9 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
         </DialogHeader>
 
         {/* Section Filter Tabs */}
-        <div className="px-6 pt-4 pb-3 border-b border-slate-200/50 dark:border-slate-800/50 flex-shrink-0 bg-white/50 dark:bg-slate-900/50">
+        <div className="px-6 pt-3 pb-3 border-b border-slate-200/50 dark:border-slate-800/50 flex-shrink-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
             <Button
               size="sm"
               variant={selectedSection === null ? "default" : "outline"}
               onClick={() => setSelectedSection(null)}
               className={cn(
-                "flex-shrink-0 transition-all duration-200",
+                "flex-shrink-0 transition-all duration-200 rounded-full",
                 selectedSection === null 
-                  ? "bg-blue-600 hover:bg-blue-700 text-white" 
-                  : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md" 
+                  : "hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-300 dark:border-slate-700"
               )}
             >
               All Sections
@@ -123,10 +112,10 @@ export function CheatsheetModal({
                 variant={selectedSection === section.title ? "default" : "outline"}
                 onClick={() => setSelectedSection(section.title)}
                 className={cn(
-                  "flex-shrink-0 transition-all duration-200",
+                  "flex-shrink-0 transition-all duration-200 rounded-full",
                   selectedSection === section.title
-                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                    : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md"
+                    : "hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-300 dark:border-slate-700"
                 )}
               >
                 {section.title}
@@ -138,15 +127,21 @@ export function CheatsheetModal({
           </div>
         </div>
 
-        {/* Content with 3-column layout - Left aligned */}
-        <div className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50/50 via-transparent to-slate-50/50 dark:from-slate-900/50 dark:via-transparent dark:to-slate-900/50">
+        {/* Content with 3-column layout */}
+        <div className="flex-1 overflow-y-auto">
           <div className="px-6 py-6 space-y-8 w-full">
             {displaySections.map((section, sectionIndex) => (
               <div key={sectionIndex} className="space-y-4">
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white border-b pb-2 border-slate-200 dark:border-slate-800 sticky top-0 -mx-6 px-6 py-3 -mt-3 mb-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-10 shadow-sm">
-                  {section.title}
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="flex items-center gap-3 sticky top-0 -mx-6 px-6 py-3 -mt-3 mb-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl z-10 border-b border-slate-200/50 dark:border-slate-800/50">
+                  <div className="h-8 w-1 rounded-full bg-gradient-to-b from-blue-500 to-purple-600"></div>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                    {section.title}
+                  </h3>
+                  <span className="ml-auto text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    {section.commands.length} items
+                  </span>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {section.commands.map((cmd, cmdIndex) => (
                     <CheatsheetSnippet
                       key={cmdIndex}

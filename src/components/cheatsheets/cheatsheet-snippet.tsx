@@ -29,57 +29,50 @@ export function CheatsheetSnippet({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const themeColors = {
-    blue: 'bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800',
-    emerald: 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800',
-    amber: 'bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800',
-    rose: 'bg-rose-50/50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800',
-    purple: 'bg-purple-50/50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800',
-    cyan: 'bg-cyan-50/50 dark:bg-cyan-950/20 border-cyan-200 dark:border-cyan-800',
-    red: 'bg-red-50/50 dark:bg-red-950/20 border-red-200 dark:border-red-800',
-    indigo: 'bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800',
-    teal: 'bg-teal-50/50 dark:bg-teal-950/20 border-teal-200 dark:border-teal-800',
-    slate: 'bg-slate-50/50 dark:bg-slate-950/20 border-slate-200 dark:border-slate-800',
-    orange: 'bg-orange-50/50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800',
-  };
-
   return (
-    <Card
-      className={cn(
-        'p-3 border transition-all duration-200 hover:shadow-sm',
-        themeColors[colorTheme]
-      )}
-    >
-      <div className="space-y-2.5">
-        {/* Command Header */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <code className="text-sm font-mono font-semibold text-slate-900 dark:text-white">
+    <Card className="p-0 border-0 bg-white dark:bg-slate-800/50 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group">
+      {/* Command Header with gradient accent */}
+      <div className="relative">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div className="p-3 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-br from-slate-50 to-white dark:from-slate-800 dark:to-slate-800/80">
+          <div className="flex items-start justify-between gap-2">
+            <code className="text-sm font-mono font-bold text-slate-900 dark:text-white break-all">
               {command}
             </code>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-7 w-7 p-0 flex-shrink-0 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-md transition-colors"
+              onClick={handleCopy}
+            >
+              {copied ? (
+                <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              ) : (
+                <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+              )}
+            </Button>
           </div>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="h-6 w-6 p-0 hover:bg-slate-200 dark:hover:bg-slate-800"
-            onClick={handleCopy}
-          >
-            {copied ? (
-              <Check className="h-3 w-3 text-emerald-600" />
-            ) : (
-              <Copy className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-            )}
-          </Button>
         </div>
+      </div>
 
+      {/* Content */}
+      <div className="p-3 space-y-3">
         {/* Description */}
-        <p className="text-xs text-slate-700 dark:text-slate-300">{description}</p>
+        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          {description}
+        </p>
 
         {/* Usage */}
         {usage && (
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Usage:</p>
-            <pre className="text-xs bg-slate-900 dark:bg-slate-950 text-emerald-400 p-2.5 rounded overflow-x-auto font-mono">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent dark:from-slate-700 dark:to-transparent"></div>
+              <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                Usage
+              </p>
+              <div className="h-px flex-1 bg-gradient-to-l from-slate-200 to-transparent dark:from-slate-700 dark:to-transparent"></div>
+            </div>
+            <pre className="text-xs bg-slate-900 dark:bg-slate-950 text-emerald-400 dark:text-emerald-300 p-2.5 rounded-md overflow-x-auto font-mono border border-slate-800 dark:border-slate-900">
               {usage}
             </pre>
           </div>
@@ -87,9 +80,15 @@ export function CheatsheetSnippet({
 
         {/* Example */}
         {example && (
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Example:</p>
-            <pre className="text-xs bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 p-2.5 rounded overflow-x-auto font-mono border border-slate-200 dark:border-slate-800">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent dark:from-slate-700 dark:to-transparent"></div>
+              <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                Example
+              </p>
+              <div className="h-px flex-1 bg-gradient-to-l from-slate-200 to-transparent dark:from-slate-700 dark:to-transparent"></div>
+            </div>
+            <pre className="text-xs bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-900/50 text-slate-700 dark:text-slate-300 p-2.5 rounded-md overflow-x-auto font-mono border border-slate-200 dark:border-slate-800">
               {example}
             </pre>
           </div>
