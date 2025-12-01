@@ -115,10 +115,10 @@ export const GenericLearningPath = ({
   const mergedIcons = { ...defaultCategoryIcons, ...categoryIcons };
 
   // Group topics by category - filter out special sidebar items that aren't learning content
-  const excludedSlugs = ['learning-plan', 'interview-questions', 'react-version-updates'];
-  const allTopics = language.topics.filter(t => !excludedSlugs.includes(t.slug));
+  // Only include topics that have a category (excludes learning-plan, interview-questions, version-updates, etc.)
+  const allTopics = language.topics.filter(t => t.category);
   const topicsByCategory = allTopics.reduce((acc, topic) => {
-    const category = topic.category || 'Other';
+    const category = topic.category!;
     if (!acc[category]) {
       acc[category] = [];
     }

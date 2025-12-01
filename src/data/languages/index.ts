@@ -6,6 +6,7 @@ import { tailwind } from './tailwind';
 import { javascript } from './javascript';
 import { typescript } from './typescript';
 import { react } from './react';
+import { vue } from './vue';
 import { angular } from './angular';
 import { java } from './java';
 import { spring } from './spring';
@@ -25,6 +26,7 @@ export const languages: Language[] = [
     javascript,
     typescript,
     react,
+    vue,
     angular,
     java,
     spring,

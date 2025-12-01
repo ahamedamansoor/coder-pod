@@ -44,6 +44,12 @@ const languageColors: Record<string, { bg: string; border: string; text: string;
     text: 'text-cyan-600 dark:text-cyan-400',
     iconBg: 'bg-cyan-500'
   },
+  vue: { 
+    bg: 'bg-emerald-500', 
+    border: 'border-emerald-500 shadow-emerald-500/20', 
+    text: 'text-emerald-600 dark:text-emerald-400',
+    iconBg: 'bg-emerald-500'
+  },
   angular: { 
     bg: 'bg-orange-600', 
     border: 'border-orange-600 shadow-orange-600/20', 
@@ -92,6 +98,18 @@ const languageColors: Record<string, { bg: string; border: string; text: string;
     text: 'text-green-600 dark:text-green-400',
     iconBg: 'bg-green-600'
   },
+  rxjs: { 
+    bg: 'bg-purple-500', 
+    border: 'border-purple-500 shadow-purple-500/20', 
+    text: 'text-purple-600 dark:text-purple-400',
+    iconBg: 'bg-purple-500'
+  },
+  dsa: { 
+    bg: 'bg-slate-500', 
+    border: 'border-slate-500 shadow-slate-500/20', 
+    text: 'text-slate-600 dark:text-slate-400',
+    iconBg: 'bg-slate-500'
+  },
 };
 
 const languageCategories = [
@@ -101,7 +119,7 @@ const languageCategories = [
   },
   {
     title: 'Frontend',
-    languages: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'angular'],
+    languages: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'angular'],
   },
   {
     title: 'Backend',

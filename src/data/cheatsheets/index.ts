@@ -103,7 +103,7 @@ export const cheatsheetCategories = [
   {
     id: 'developer-tools',
     name: 'Developer Tools',
-    cheatsheets: [gitCheatsheet, dockerCheatsheet, npmCheatsheet, homebrewCheatsheet],
+    cheatsheets: [gitCheatsheet, dockerCheatsheet, kubernetesCheatsheet, npmCheatsheet, homebrewCheatsheet],
   },
   {
     id: 'editors-tools',

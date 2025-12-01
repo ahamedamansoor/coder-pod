@@ -17,6 +17,7 @@ import { useJava } from '@/app/languages/java/java-context';
 import { useSpring } from '@/app/languages/spring/spring-context';
 import { useJavascript } from '@/app/languages/javascript/javascript-context';
 import { useReact } from '@/app/languages/react/react-context';
+import { useVueContext } from '@/app/languages/vue/vue-context';
 import { useAngular } from '@/app/languages/angular/angular-context';
 import { useHtml } from '@/app/languages/html/html-context';
 import { useCss } from '@/app/languages/css/css-context';
@@ -58,6 +59,9 @@ function useLanguageContext(language: Language) {
         case 'react':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useReact();
+        case 'vue':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useVueContext();
         case 'angular':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useAngular();

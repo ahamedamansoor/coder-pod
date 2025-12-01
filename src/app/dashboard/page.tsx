@@ -104,7 +104,7 @@ function DashboardContent() {
   const { data: userData } = useDoc(userDocRef);
 
   // Filter languages based on category
-  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'angular', 'scss', 'rxjs', 'tailwind', 'typescript'];
+  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'vue', 'angular', 'scss', 'rxjs', 'tailwind', 'typescript'];
   const backendLanguages = ['java', 'spring', 'spring-boot'];
   const testingLanguages = ['playwright'];
   
