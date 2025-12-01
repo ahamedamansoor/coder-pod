@@ -5,6 +5,9 @@ export { gitCheatsheet } from './git';
 export { dockerCheatsheet } from './docker';
 export { htmlCheatsheet } from './html';
 export { javascriptCheatsheet } from './javascript';
+export { javaCheatsheet } from './java';
+export { springCheatsheet } from './spring';
+export { springBootCheatsheet } from './spring-boot';
 export { reactCheatsheet } from './react';
 export { angularCheatsheet } from './angular';
 export { npmCheatsheet } from './npm';
@@ -26,6 +29,7 @@ export { chromeCheatsheet } from './chrome';
 export { firefoxCheatsheet } from './firefox';
 export { edgeCheatsheet } from './edge';
 export { safariCheatsheet } from './safari';
+export { kubernetesCheatsheet } from './kubernetes';
 
 // Export all cheatsheets as an array
 import { linuxCheatsheet } from './linux';
@@ -33,8 +37,12 @@ import { macCheatsheet } from './mac';
 import { windowsCheatsheet } from './windows';
 import { gitCheatsheet } from './git';
 import { dockerCheatsheet } from './docker';
+import { kubernetesCheatsheet } from './kubernetes';
 import { htmlCheatsheet } from './html';
 import { javascriptCheatsheet } from './javascript';
+import { javaCheatsheet } from './java';
+import { springCheatsheet } from './spring';
+import { springBootCheatsheet } from './spring-boot';
 import { reactCheatsheet } from './react';
 import { angularCheatsheet } from './angular';
 import { npmCheatsheet } from './npm';
@@ -63,8 +71,12 @@ export const allCheatsheets = [
   windowsCheatsheet,
   gitCheatsheet,
   dockerCheatsheet,
+  kubernetesCheatsheet,
   htmlCheatsheet,
   javascriptCheatsheet,
+  javaCheatsheet,
+  springCheatsheet,
+  springBootCheatsheet,
   reactCheatsheet,
   angularCheatsheet,
   npmCheatsheet,
@@ -93,7 +105,7 @@ export const cheatsheetCategories = [
   {
     id: 'programming',
     name: 'Programming Languages',
-    cheatsheets: [htmlCheatsheet, javascriptCheatsheet, reactCheatsheet, angularCheatsheet],
+    cheatsheets: [javaCheatsheet, springCheatsheet, springBootCheatsheet, htmlCheatsheet, javascriptCheatsheet, reactCheatsheet, angularCheatsheet],
   },
   {
     id: 'databases',

@@ -21,3 +21,8 @@ export { InnovativeHeader } from './layout/innovative-header';
 export { CodeSnippetWithOutput } from './code-snippet-with-output';
 export { InteractivePlayground } from './interactive-playground';
 export { FrontendCodePreview } from './frontend-code-preview';
+export { InteractiveReactPlayground } from './interactive-react-playground';
+
+// Playground components
+export { ReactPlaygroundModal } from './playground/react-playground-modal';
+export { ReactPlaygroundProvider, useReactPlayground } from './playground/react-playground-context';

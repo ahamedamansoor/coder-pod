@@ -50,6 +50,12 @@ const languageColors: Record<string, { bg: string; border: string; text: string;
     text: 'text-emerald-600 dark:text-emerald-400',
     iconBg: 'bg-emerald-500'
   },
+  nextjs: { 
+    bg: 'bg-slate-900', 
+    border: 'border-slate-900 shadow-slate-900/20', 
+    text: 'text-slate-900 dark:text-slate-300',
+    iconBg: 'bg-slate-900'
+  },
   angular: { 
     bg: 'bg-orange-600', 
     border: 'border-orange-600 shadow-orange-600/20', 
@@ -105,10 +111,10 @@ const languageColors: Record<string, { bg: string; border: string; text: string;
     iconBg: 'bg-purple-500'
   },
   dsa: { 
-    bg: 'bg-slate-500', 
-    border: 'border-slate-500 shadow-slate-500/20', 
-    text: 'text-slate-600 dark:text-slate-400',
-    iconBg: 'bg-slate-500'
+    bg: 'bg-gradient-to-r from-violet-600 to-indigo-600', 
+    border: 'border-violet-600 shadow-violet-600/20', 
+    text: 'text-violet-600 dark:text-violet-400',
+    iconBg: 'bg-violet-600'
   },
 };
 
@@ -119,11 +125,15 @@ const languageCategories = [
   },
   {
     title: 'Frontend',
-    languages: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'angular'],
+    languages: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular'],
   },
   {
     title: 'Backend',
     languages: ['java', 'spring', 'spring-boot'],
+  },
+  {
+    title: 'Algorithms & Data Structures',
+    languages: ['dsa'],
   },
   {
     title: 'Testing & Tools',

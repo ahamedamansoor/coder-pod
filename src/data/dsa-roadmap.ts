@@ -676,14 +676,23 @@ export const dsaRoadmapSections: DsaRoadmapSection[] = [
     groups: [
       {
         title: 'Segment Trees',
-        items: ['Range sum query', 'Range minimum query'],
+        items: [
+          'Implement segment tree',
+          'Range sum query',
+          'Range minimum query',
+          'Range maximum query',
+          'Lazy propagation',
+        ],
       },
       {
         title: 'Union-Find (Disjoint Set)',
         items: [
+          'Implement Union-Find with path compression',
           'Number of connected components',
           'Redundant connection',
           'Accounts merge',
+          'Most stones removed',
+          'Satisfiability of equality equations',
         ],
       },
       {
@@ -693,6 +702,248 @@ export const dsaRoadmapSections: DsaRoadmapSection[] = [
           'Rotate image',
           'Set matrix zeroes',
           'Search a 2D matrix',
+          'Search a 2D matrix II',
+          'Word search',
+        ],
+      },
+      {
+        title: 'Math & Number Theory',
+        items: [
+          'GCD and LCM',
+          'Prime numbers (Sieve of Eratosthenes)',
+          'Modular arithmetic',
+          'Fast exponentiation',
+          'Factorial and combinations',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'graph-algorithms-dsa',
+    title: '19. Graph Algorithms',
+    summary: 'Master advanced graph algorithms for shortest paths, MST, and network flow.',
+    groups: [
+      {
+        title: 'Shortest Path Algorithms',
+        items: [
+          'Dijkstra\'s algorithm',
+          'Bellman-Ford algorithm',
+          'Floyd-Warshall algorithm',
+          'Network delay time',
+          'Path with minimum effort',
+          'Cheapest flights within K stops',
+        ],
+      },
+      {
+        title: 'Minimum Spanning Tree',
+        items: [
+          'Kruskal\'s algorithm',
+          'Prim\'s algorithm',
+          'Min cost to connect all points',
+          'Connecting cities with minimum cost',
+        ],
+      },
+      {
+        title: 'Advanced Graph Techniques',
+        items: [
+          'Strongly connected components (Kosaraju/Tarjan)',
+          'Articulation points and bridges',
+          'Bipartite graph check',
+          'Maximum bipartite matching',
+          'Eulerian path',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'string-algorithms-dsa',
+    title: '20. String Algorithms',
+    summary: 'Advanced string matching and manipulation techniques.',
+    groups: [
+      {
+        title: 'Pattern Matching',
+        items: [
+          'KMP algorithm',
+          'Rabin-Karp algorithm',
+          'Z-algorithm',
+          'Suffix arrays',
+          'Longest repeating substring',
+        ],
+      },
+      {
+        title: 'Advanced String Problems',
+        items: [
+          'Manacher\'s algorithm (longest palindromic substring)',
+          'Longest common substring',
+          'Longest palindromic subsequence',
+          'String hashing',
+          'Rolling hash',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'backtracking-dsa',
+    title: '21. Backtracking & Branch and Bound',
+    summary: 'Systematic search through solution spaces with pruning.',
+    groups: [
+      {
+        title: 'Classic Backtracking',
+        items: [
+          'N-Queens problem',
+          'Sudoku solver',
+          'Rat in a maze',
+          'Knight\'s tour',
+          'Word search',
+        ],
+      },
+      {
+        title: 'Combinatorial Problems',
+        items: [
+          'Generate parentheses',
+          'Combination sum variants',
+          'Permutations and combinations',
+          'Palindrome partitioning',
+          'Restore IP addresses',
+        ],
+      },
+      {
+        title: 'Game Theory & Minimax',
+        items: [
+          'Tic-tac-toe winner',
+          'Predict the winner',
+          'Stone game',
+          'Nim game',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'advanced-dp-dsa',
+    title: '22. Advanced Dynamic Programming',
+    summary: 'Complex DP patterns including bitmask, digit, and tree DP.',
+    groups: [
+      {
+        title: 'Bitmask DP',
+        items: [
+          'Traveling salesman problem',
+          'Assignment problem',
+          'Maximum students taking exam',
+          'Shortest path visiting all nodes',
+        ],
+      },
+      {
+        title: 'Digit DP',
+        items: [
+          'Count numbers with unique digits',
+          'Numbers at most N given digit set',
+          'Count special integers',
+        ],
+      },
+      {
+        title: 'Tree DP',
+        items: [
+          'House robber III',
+          'Binary tree cameras',
+          'Maximum sum BST in binary tree',
+          'Number of ways to reorder array',
+        ],
+      },
+      {
+        title: 'DP on Subsequences',
+        items: [
+          'Longest increasing path in matrix',
+          'Russian doll envelopes',
+          'Maximum length of pair chain',
+          'Longest string chain',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'monotonic-structures-dsa',
+    title: '23. Monotonic Stack & Deque',
+    summary: 'Master monotonic data structures for optimization problems.',
+    groups: [
+      {
+        title: 'Monotonic Stack',
+        items: [
+          'Next greater element pattern',
+          'Previous smaller element',
+          'Stock span problem',
+          'Maximum width ramp',
+          'Sum of subarray minimums',
+          'Sum of subarray ranges',
+        ],
+      },
+      {
+        title: 'Monotonic Deque',
+        items: [
+          'Sliding window maximum',
+          'Jump game VI',
+          'Constrained subsequence sum',
+          'Shortest subarray with sum at least K',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'computational-geometry-dsa',
+    title: '24. Computational Geometry',
+    summary: 'Geometric algorithms for 2D problems.',
+    groups: [
+      {
+        title: 'Basic Geometry',
+        items: [
+          'Check if point lies on line segment',
+          'Line intersection',
+          'Convex hull (Graham scan)',
+          'Closest pair of points',
+          'Area of polygon',
+        ],
+      },
+      {
+        title: 'Sweep Line Algorithm',
+        items: [
+          'Rectangle area',
+          'Skyline problem',
+          'Meeting rooms II',
+          'My calendar problems',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'complexity-analysis-dsa',
+    title: '25. Time & Space Complexity Analysis',
+    summary: 'Master Big O notation and analyze algorithm efficiency.',
+    groups: [
+      {
+        title: 'Time Complexity',
+        items: [
+          'Big O notation fundamentals',
+          'Common time complexities (O(1), O(log n), O(n), O(n log n), O(n²), O(2^n))',
+          'Amortized analysis',
+          'Best, average, and worst case analysis',
+          'Recurrence relations (Master theorem)',
+        ],
+      },
+      {
+        title: 'Space Complexity',
+        items: [
+          'Auxiliary space vs total space',
+          'In-place algorithms',
+          'Space-time tradeoffs',
+          'Iterative vs recursive space complexity',
+        ],
+      },
+      {
+        title: 'Algorithm Analysis',
+        items: [
+          'Comparing sorting algorithms',
+          'Analyzing nested loops',
+          'Understanding logarithmic complexity',
+          'Identifying optimal data structures',
         ],
       },
     ],

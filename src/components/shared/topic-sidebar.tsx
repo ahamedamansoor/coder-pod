@@ -18,6 +18,7 @@ import { useSpring } from '@/app/languages/spring/spring-context';
 import { useJavascript } from '@/app/languages/javascript/javascript-context';
 import { useReact } from '@/app/languages/react/react-context';
 import { useVueContext } from '@/app/languages/vue/vue-context';
+import { useNextjsContext } from '@/app/languages/nextjs/nextjs-context';
 import { useAngular } from '@/app/languages/angular/angular-context';
 import { useHtml } from '@/app/languages/html/html-context';
 import { useCss } from '@/app/languages/css/css-context';
@@ -62,6 +63,9 @@ function useLanguageContext(language: Language) {
         case 'vue':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useVueContext();
+        case 'nextjs':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useNextjsContext();
         case 'angular':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useAngular();
@@ -102,7 +106,20 @@ export function TopicSidebar({
 }: TopicSidebarProps) {
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   
-  const { completedTopics } = useLanguageContext(language);
+  const { completedTopics: rawCompletedTopics } = useLanguageContext(language);
+  
+  // Ensure completedTopics is always a Set (defensive programming)
+  const completedTopics = React.useMemo(() => {
+    if (rawCompletedTopics instanceof Set) {
+      return rawCompletedTopics;
+    }
+    if (Array.isArray(rawCompletedTopics)) {
+      console.warn('completedTopics was an array in sidebar, converting to Set');
+      return new Set(rawCompletedTopics);
+    }
+    return new Set<string>();
+  }, [rawCompletedTopics]);
+  
   const { user } = useUser();
   const isUserAuthenticated = user && !user.isAnonymous;
   // Use Coder Pod brand color (primary token) for all sidebar elements
@@ -148,7 +165,7 @@ export function TopicSidebar({
       if (topic.category) {
         group = topic.category;
       }
-    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright') {
+    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs') {
       // Use category from topic data if available
       if (topic.category) {
         group = topic.category;
@@ -254,11 +271,23 @@ export function TopicSidebar({
     ? rxjsCategoryOrder
     : language.slug === 'playwright'
     ? ["1. Getting Started", "2. Core Concepts", "3. Assertions & Expectations", "4. Test Organization", "5. Configuration", "6. Advanced Locators", "7. Network & API Testing", "8. Authentication & State", "9. Visual Testing", "10. Debugging & Development", "11. Parallelization & Performance", "12. Reporters & Results", "13. Mobile & Device Testing", "14. Advanced Features", "15. Accessibility Testing", "16. CI/CD Integration", "17. TypeScript Integration", "18. Best Practices"]
+    : language.slug === 'vue'
+    ? ["1. Getting Started", "2. Essentials", "3. Components In-Depth", "4. Reusability", "5. Built-in Components", "6. Scaling Up", "7. Composition API", "8. Reactivity In Depth", "9. Rendering Mechanism", "10. Vue Router", "11. Pinia (State Management)", "12. VueUse (Utilities)", "13. TypeScript with Vue", "14. Best Practices", "15. Testing", "16. Tooling & Ecosystem", "17. Server-Side Rendering", "18. Migration & Compatibility", "19. API Reference"]
+    : language.slug === 'nextjs'
+    ? ["1. Getting Started", "2. Routing Fundamentals", "3. App Router", "4. Data Fetching", "5. Server Components & Actions", "6. Client Components", "7. Rendering Strategies", "8. Caching & Revalidation", "9. Styling", "10. Optimizations", "11. API Routes", "12. Middleware", "13. Authentication", "14. Internationalization", "15. Testing", "16. Deployment", "17. Configuration", "18. Advanced Patterns", "19. Performance", "20. API Reference"]
     : [];
 
-  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, DSA)
-  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'dsa')
-    ? groupOrder.map(group => ({ title: group, topics: topicsByGroup[group] || [] }))
+  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Vue, Next.js, DSA)
+  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa')
+    ? groupOrder
+        .map(group => ({ title: group, topics: topicsByGroup[group] || [] }))
+        .filter(group => {
+          // Remove "Others" category from Next.js and Vue.js roadmaps
+          if ((language.slug === 'nextjs' || language.slug === 'vue') && group.title === 'Others') {
+            return false;
+          }
+          return group.topics.length > 0;
+        })
     : [];
 
   const renderTopicGroup = (title: string, topics: typeof language.topics) => {
@@ -497,7 +526,7 @@ export function TopicSidebar({
                     "px-2 py-1 text-xl font-semibold transition-colors",
                     brandTheme.primary
                   )}>Topics</p>
-                  {(language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'dsa') ? (
+                  {(language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa') ? (
                     <GenericGroupedTopicMenu
                       groups={orderedGroupsForGeneric}
                       selectedTopicSlug={selectedTopicSlug}

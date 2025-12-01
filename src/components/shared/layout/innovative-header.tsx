@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Shield } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Shield, Code, Play, Zap, StickyNote } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 interface InnovativeHeaderProps {
-  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'dashboard' | 'learning';
+  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning';
   showNavigation?: boolean;
   user?: {
     displayName?: string | null;
@@ -30,6 +30,10 @@ interface InnovativeHeaderProps {
   // Learning page specific props
   showSidebarTrigger?: boolean;
   showLanguageSwitcher?: boolean;
+  // Language-specific features
+  currentLanguage?: string;
+  onPlaygroundOpen?: () => void;
+  onWebPlaygroundOpen?: () => void;
 }
 
 function getUserInitials(displayName?: string | null, email?: string | null): string {
@@ -52,12 +56,17 @@ export function InnovativeHeader({
   user, 
   onLogout,
   showSidebarTrigger = false,
-  showLanguageSwitcher = false
+  showLanguageSwitcher = false,
+  currentLanguage,
+  onPlaygroundOpen,
+  onWebPlaygroundOpen
 }: InnovativeHeaderProps) {
   const navItems = [
     { href: '/', label: 'Home', icon: Home, page: 'home' },
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps' },
     { href: '/cheatsheets', label: 'Cheatsheets', icon: FileText, page: 'cheatsheets' },
+    { href: '/discover', label: 'Discover', icon: Sparkles, page: 'discover' },
+    { href: '/notes', label: 'Notes', icon: StickyNote, page: 'notes' },
   ];
 
   return (
@@ -128,8 +137,71 @@ export function InnovativeHeader({
           </nav>
         )}
 
-        {/* Right Side - Theme Toggle & User */}
+        {/* Right Side - Playground Button, Theme Toggle & User */}
         <div className="flex items-center gap-3">
+          {/* React Playground Button */}
+          {currentLanguage === 'react' && onPlaygroundOpen && (
+            <Button
+              onClick={onPlaygroundOpen}
+              className="relative group/play hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+              size="sm"
+            >
+              {/* Gradient Glow */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full opacity-0 group-hover/play:opacity-30 blur transition-all duration-300" />
+              
+              {/* Icon and Text */}
+              <Code className="w-4 h-4 relative z-10" />
+              <span className="relative z-10 font-semibold">React Playground</span>
+              <Zap className="w-4 h-4 text-yellow-300 relative z-10 animate-pulse" />
+            </Button>
+          )}
+          
+          {/* Mobile React Playground Button */}
+          {currentLanguage === 'react' && onPlaygroundOpen && (
+            <Button
+              onClick={onPlaygroundOpen}
+              className="sm:hidden relative group/play flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 p-0"
+              size="sm"
+            >
+              {/* Gradient Glow */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full opacity-0 group-hover/play:opacity-30 blur transition-all duration-300" />
+              
+              {/* Icon */}
+              <Play className="w-5 h-5 relative z-10" />
+            </Button>
+          )}
+
+          {/* Web Playground Button (HTML, CSS, SCSS, JS, TS, Tailwind) */}
+          {['html', 'css', 'scss', 'javascript', 'typescript', 'tailwind'].includes(currentLanguage || '') && onWebPlaygroundOpen && (
+            <Button
+              onClick={onWebPlaygroundOpen}
+              className="relative group/web hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-600 to-blue-600 hover:from-orange-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+              size="sm"
+            >
+              {/* Gradient Glow */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-full opacity-0 group-hover/web:opacity-30 blur transition-all duration-300" />
+              
+              {/* Icon and Text */}
+              <Code className="w-4 h-4 relative z-10" />
+              <span className="relative z-10 font-semibold">Web Playground</span>
+              <Zap className="w-4 h-4 text-yellow-300 relative z-10 animate-pulse" />
+            </Button>
+          )}
+          
+          {/* Mobile Web Playground Button */}
+          {['html', 'css', 'scss', 'javascript', 'typescript', 'tailwind'].includes(currentLanguage || '') && onWebPlaygroundOpen && (
+            <Button
+              onClick={onWebPlaygroundOpen}
+              className="sm:hidden relative group/web flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-orange-600 to-blue-600 hover:from-orange-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 p-0"
+              size="sm"
+            >
+              {/* Gradient Glow */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-full opacity-0 group-hover/web:opacity-30 blur transition-all duration-300" />
+              
+              {/* Icon */}
+              <Play className="w-5 h-5 relative z-10" />
+            </Button>
+          )}
           {/* Mobile Navigation */}
           {showNavigation && (
             <div className="flex lg:hidden items-center gap-1">

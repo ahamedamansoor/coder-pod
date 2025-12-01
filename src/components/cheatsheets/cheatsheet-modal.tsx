@@ -60,7 +60,7 @@ export function CheatsheetModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent 
         showCloseButton={false}
-        className="max-w-full w-screen h-screen p-0 flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 border-0 rounded-none"
+        className="max-w-full w-screen h-screen p-0 flex flex-col bg-background dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 border-0 rounded-none"
       >
         {/* Header */}
         <DialogHeader className="px-6 py-4 border-b flex-shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50">

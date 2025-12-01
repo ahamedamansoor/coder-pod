@@ -11,7 +11,8 @@ import { ReactProvider } from './react-context';
 import { ReactLayoutProvider, useReactLayout } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser, useAuth } from '@/firebase';
-import { ReactPlaygroundProvider } from '@/components/languages/react/react-playground-context';
+import { ReactPlaygroundProvider, useReactPlayground } from '@/components/languages/react/react-playground-context';
+import { ReactPlaygroundModal } from '@/components/languages/react/react-playground-modal';
 
 function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -20,6 +21,7 @@ function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const { hideLoader } = useLoading();
   const { user } = useUser();
   const { signOut } = useAuth();
+  const { setOpen: setPlaygroundOpen } = useReactPlayground();
 
   useEffect(() => {
     hideLoader();
@@ -32,6 +34,10 @@ function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error('Error signing out:', error);
     }
+  };
+
+  const handleOpenPlayground = () => {
+    setPlaygroundOpen(true);
   };
 
   const language = languages.find((lang) => lang.slug === 'react');
@@ -61,6 +67,8 @@ function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
             onLogout={handleLogout}
             showSidebarTrigger={true}
             showLanguageSwitcher={true}
+            currentLanguage="react"
+            onPlaygroundOpen={handleOpenPlayground}
           />
           <main className="flex-1 flex overflow-y-auto bg-background">
             {children}
@@ -84,6 +92,7 @@ export default function ReactTopicLayout({
             <ReactTopicLayoutContent>
               {children}
             </ReactTopicLayoutContent>
+            <ReactPlaygroundModal />
         </ReactLayoutProvider>
       </ReactPlaygroundProvider>
     </ReactProvider>

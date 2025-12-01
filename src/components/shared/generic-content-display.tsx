@@ -3,8 +3,9 @@
 import type { Language, Topic } from '@/data/languages';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, Sparkles } from 'lucide-react';
+import { HelpCircle, Sparkles, BookmarkIcon } from 'lucide-react';
 import React from 'react';
+import { VideoNotesDrawer } from '@/components/video-notes/video-notes-drawer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
@@ -60,8 +61,53 @@ export function GenericContentDisplay({
   const [qaResult, setQaResult] = React.useState<{ answer: string } | null>(null);
   const [isAiEnabled, setIsAiEnabled] = React.useState(false);
   const [showAiKeyModal, setShowAiKeyModal] = React.useState(false);
+  const [showVideoNotes, setShowVideoNotes] = React.useState(false);
+  const [videoNotesCount, setVideoNotesCount] = React.useState(0);
+
+  // Load video notes count for this language
+  const loadVideoNotesCount = React.useCallback(() => {
+    const STORAGE_KEY = 'video_notes';
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const allNotes = JSON.parse(stored);
+        const filteredNotes = allNotes.filter((note: any) => note.language === language.slug);
+        const count = filteredNotes.length;
+        setVideoNotesCount(count);
+      } catch (error) {
+        setVideoNotesCount(0);
+      }
+    } else {
+      setVideoNotesCount(0);
+    }
+  }, [language.slug]);
+
+  React.useEffect(() => {
+    loadVideoNotesCount();
+  }, [loadVideoNotesCount]);
+
+  // Refresh count when drawer closes
+  const handleDrawerChange = (open: boolean) => {
+    setShowVideoNotes(open);
+    if (!open) {
+      loadVideoNotesCount();
+    }
+  };
   
-  const { completedTopics, handleToggleComplete } = useLanguageContext(language);
+  const { completedTopics: rawCompletedTopics, handleToggleComplete } = useLanguageContext(language);
+  
+  // Ensure completedTopics is always a Set (defensive programming)
+  const completedTopics = React.useMemo(() => {
+    if (rawCompletedTopics instanceof Set) {
+      return rawCompletedTopics;
+    }
+    if (Array.isArray(rawCompletedTopics)) {
+      console.warn('completedTopics was an array in generic-content-display, converting to Set');
+      return new Set(rawCompletedTopics);
+    }
+    return new Set<string>();
+  }, [rawCompletedTopics]);
+  
   const { user } = useUser();
   const isUserAuthenticated = user && !user.isAnonymous;
   
@@ -193,13 +239,45 @@ Keep it simple and easy to understand.`;
 
   return (
     <div className="space-y-8 min-h-screen">
-      {/* Topic header intentionally removed per request */}
+      {/* Floating Video Notes Button with Animation */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50">
+        <div className="relative">
+          {/* Animated pulse ring */}
+          <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+          <div className="absolute inset-0 rounded-full bg-primary/30 animate-pulse" />
+          
+          <Button
+            onClick={() => setShowVideoNotes(true)}
+            size="lg"
+            className="gap-2 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-full h-auto py-4 px-5 flex-col bg-primary text-primary-foreground hover:scale-110 active:scale-95 relative"
+          >
+            <div className="relative">
+              <BookmarkIcon className="w-6 h-6" />
+              {videoNotesCount > 0 && (
+                <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center text-xs font-bold rounded-full bg-red-500 text-white border-2 border-white animate-bounce">
+                  {videoNotesCount}
+                </span>
+              )}
+            </div>
+            <span className="text-xs font-medium whitespace-nowrap">
+              Resources
+            </span>
+          </Button>
+        </div>
+      </div>
 
       {children ? (
         children
       ) : (
         <AiSimplification topic={topic} language={language} />
       )}
+      
+      {/* Video Notes Drawer */}
+      <VideoNotesDrawer
+        open={showVideoNotes}
+        onOpenChange={handleDrawerChange}
+        languageSlug={language.slug}
+      />
       
       {!isLearningPlanTopic && (
           <div className="relative mt-8">

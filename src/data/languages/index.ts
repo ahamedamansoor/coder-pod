@@ -7,6 +7,7 @@ import { javascript } from './javascript';
 import { typescript } from './typescript';
 import { react } from './react';
 import { vue } from './vue';
+import { nextjs } from './nextjs';
 import { angular } from './angular';
 import { java } from './java';
 import { spring } from './spring';
@@ -27,6 +28,7 @@ export const languages: Language[] = [
     typescript,
     react,
     vue,
+    nextjs,
     angular,
     java,
     spring,

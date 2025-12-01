@@ -90,7 +90,7 @@ function DashboardContent() {
   const firestore = useFirestore();
   const { hideLoader } = useLoading();
   const [showContent, setShowContent] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'frontend' | 'backend' | 'testing'>('all');
+  const [filter, setFilter] = useState<'all' | 'frontend' | 'backend' | 'testing' | 'algorithms'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -104,9 +104,10 @@ function DashboardContent() {
   const { data: userData } = useDoc(userDocRef);
 
   // Filter languages based on category
-  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'vue', 'angular', 'scss', 'rxjs', 'tailwind', 'typescript'];
+  const frontendLanguages = ['html', 'css', 'javascript', 'react', 'vue', 'nextjs', 'angular', 'scss', 'rxjs', 'tailwind', 'typescript'];
   const backendLanguages = ['java', 'spring', 'spring-boot'];
   const testingLanguages = ['playwright'];
+  const algorithmLanguages = ['dsa'];
   
   const filteredLanguages = languages.filter(lang => {
     // Search filter
@@ -124,6 +125,7 @@ function DashboardContent() {
     if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
     if (filter === 'backend') return backendLanguages.includes(lang.slug);
     if (filter === 'testing') return testingLanguages.includes(lang.slug);
+    if (filter === 'algorithms') return algorithmLanguages.includes(lang.slug);
     return true;
   });
 
@@ -371,6 +373,17 @@ function DashboardContent() {
               >
                 Testing
               </button>
+              <button
+                onClick={() => setFilter('algorithms')}
+                className={cn(
+                  'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
+                  filter === 'algorithms' 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                    : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
+                )}
+              >
+                Algorithms
+              </button>
             </div>
           </div>
 
@@ -380,6 +393,8 @@ function DashboardContent() {
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                 {filter === 'frontend' && 'Frontend'}
                 {filter === 'backend' && 'Backend'}
+                {filter === 'testing' && 'Testing'}
+                {filter === 'algorithms' && 'Algorithms'}
               </h3>
             </div>
           )}

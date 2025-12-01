@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap, Code, Rocket, Trophy, LucideIcon, MapPin } from 'lucide-react';
+import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap, Code, Rocket, Trophy, LucideIcon, MapPin, BookmarkIcon } from 'lucide-react';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -11,6 +11,7 @@ import Link from 'next/link';
 import type { Language, Topic } from '@/data/languages';
 import { ModuleCompletionCelebration } from '@/components/shared/modals/module-completion-celebration';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
+import { VideoNotesDrawer } from '@/components/video-notes/video-notes-drawer';
 
 // Shared brand color (Coder Pod blue) using theme-friendly classes
 const LOGO_COLOR_CLASS = 'text-primary';
@@ -91,12 +92,29 @@ export const GenericLearningPath = ({
   categoryIcons = {},
   totalTopicCount
 }: GenericLearningPathProps) => {
-  const { completedTopics, handleToggleComplete, isProgressLoading } = contextHooks;
+  const { completedTopics: rawCompletedTopics, handleToggleComplete, isProgressLoading } = contextHooks;
+  
+  // Ensure completedTopics is always a Set (defensive programming)
+  const completedTopics = React.useMemo(() => {
+    if (rawCompletedTopics instanceof Set) {
+      return rawCompletedTopics;
+    }
+    // Fallback: convert array to Set if needed
+    if (Array.isArray(rawCompletedTopics)) {
+      console.warn('completedTopics was an array, converting to Set');
+      return new Set(rawCompletedTopics);
+    }
+    console.warn('completedTopics was neither Set nor Array, using empty Set');
+    return new Set<string>();
+  }, [rawCompletedTopics]);
+  
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
   const [isChartModalOpen, setIsChartModalOpen] = useState(false);
+  const [showVideoNotes, setShowVideoNotes] = useState(false);
+  const [videoNotesCount, setVideoNotesCount] = useState(0);
 
   const isUserAuthenticated = user && !user.isAnonymous;
 
@@ -141,6 +159,23 @@ export const GenericLearningPath = ({
       setExpandedModule(modules[0].id);
     }
   }, [modules.length]);
+
+  // Load video notes count for this language
+  useEffect(() => {
+    const STORAGE_KEY = 'video_notes';
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const allNotes = JSON.parse(stored);
+        const count = allNotes.filter((note: any) => note.language === language.slug).length;
+        setVideoNotesCount(count);
+      } catch (error) {
+        setVideoNotesCount(0);
+      }
+    } else {
+      setVideoNotesCount(0);
+    }
+  }, [language.slug]);
 
   const toggleTopic = (topicId: string) => {
     if (!isUserAuthenticated) return;
@@ -278,6 +313,40 @@ export const GenericLearningPath = ({
         <div className="absolute bottom-1/4 -left-32 w-[480px] h-[480px] bg-primary/7 dark:bg-primary/3 rounded-full blur-3xl animate-wave" style={{ animationDelay: '3s', animationDuration: '15s' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/6 dark:bg-primary/3 rounded-full blur-3xl animate-breathe" style={{ animationDelay: '1.5s', animationDuration: '8s' }} />
       </div>
+
+      {/* Floating Video Notes Button with Animation */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50">
+        <div className="relative">
+          {/* Animated pulse ring */}
+          <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+          <div className="absolute inset-0 rounded-full bg-primary/30 animate-pulse" />
+          
+          <Button
+            onClick={() => setShowVideoNotes(true)}
+            size="lg"
+            className="gap-2 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-full h-auto py-4 px-5 flex-col bg-primary text-primary-foreground hover:scale-110 active:scale-95 relative"
+          >
+            <div className="relative">
+              <BookmarkIcon className="w-6 h-6" />
+              {videoNotesCount > 0 && (
+                <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center text-xs font-bold rounded-full bg-red-500 text-white border-2 border-white animate-bounce">
+                  {videoNotesCount}
+                </span>
+              )}
+            </div>
+            <span className="text-xs font-medium whitespace-nowrap">
+              Resources
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      {/* Video Notes Drawer */}
+      <VideoNotesDrawer
+        open={showVideoNotes}
+        onOpenChange={setShowVideoNotes}
+        languageSlug={language.slug}
+      />
 
       <ModuleCompletionCelebration 
         isOpen={!!completedModule}

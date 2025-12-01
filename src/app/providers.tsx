@@ -8,6 +8,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseProvider } from '@/firebase';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
+import { PlayerProvider } from '@/contexts/PlayerContext';
+import { FloatingPlayer } from '@/components/shared/FloatingPlayer';
 import { Loader2 } from 'lucide-react';
 
 function GlobalLoadingIndicator() {
@@ -31,11 +33,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <TooltipProvider>
                     <SidebarProvider>
                         <LoadingProvider>
-                            <WebPlaygroundProvider>
-                                {children}
-                            </WebPlaygroundProvider>
-                            <GlobalLoadingIndicator />
-                            <Toaster />
+                            <PlayerProvider>
+                                <WebPlaygroundProvider>
+                                    {children}
+                                </WebPlaygroundProvider>
+                                <FloatingPlayer />
+                                <GlobalLoadingIndicator />
+                                <Toaster />
+                            </PlayerProvider>
                         </LoadingProvider>
                     </SidebarProvider>
                 </TooltipProvider>

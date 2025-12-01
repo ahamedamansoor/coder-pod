@@ -141,6 +141,54 @@ const defaultJs = `function logMessage() {
 logMessage();
 `;
 
+const defaultTs = `// TypeScript with type annotations
+interface User {
+  name: string;
+  id: number;
+}
+
+function greetUser(user: User): string {
+  console.log(\`Hello, \${user.name}! ID: \${user.id}\`);
+  return \`Welcome \${user.name}\`;
+}
+
+const currentUser: User = {
+  name: "Developer",
+  id: 42
+};
+
+greetUser(currentUser);
+`;
+
+const defaultTailwindHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <title>Tailwind Playground</title>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-8">
+  <div class="max-w-md w-full">
+    <div class="bg-white rounded-lg shadow-lg p-8">
+      <h1 class="text-3xl font-bold text-blue-600 mb-4">Welcome to Tailwind!</h1>
+      <p class="text-gray-700 mb-4">
+        Edit the HTML and use Tailwind utility classes for styling.
+      </p>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+        Click Me
+      </button>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+const defaultTailwindCss = `/* Tailwind CSS via CDN - Add custom CSS here if needed */
+@layer components {
+  .custom-button {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300;
+  }
+}
+`;
+
 const consoleScript = `
   const originalLog = console.log;
   const originalError = console.error;
@@ -195,7 +243,8 @@ type ConsoleLog = {
   timestamp: string;
 };
 
-type StyleLang = 'css' | 'scss';
+type StyleLang = 'css' | 'scss' | 'tailwind';
+type ScriptLang = 'javascript' | 'typescript';
 
 export function WebPlaygroundModal({ children, initialLanguage }: { children: React.ReactNode, initialLanguage?: string }) {
   const { open, setOpen, content, setContent } = useWebPlayground();
@@ -204,10 +253,14 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
   const [styleCode, setStyleCode] = useState('');
   const [jsCode, setJsCode] = useState('');
   const [compiledCss, setCompiledCss] = useState('');
+  const [compiledJs, setCompiledJs] = useState('');
   const [isCompiling, setIsCompiling] = useState(false);
   
-  const initialStyleLang = initialLanguage === 'scss' ? 'scss' : 'css';
+  const initialStyleLang: StyleLang = initialLanguage === 'scss' ? 'scss' : initialLanguage === 'tailwind' ? 'tailwind' : 'css';
   const [styleLang, setStyleLang] = useState<StyleLang>(initialStyleLang);
+  
+  const initialScriptLang: ScriptLang = initialLanguage === 'typescript' ? 'typescript' : 'javascript';
+  const [scriptLang, setScriptLang] = useState<ScriptLang>(initialScriptLang);
 
   const [outputSrc, setOutputSrc] = useState('about:blank');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
@@ -248,16 +301,36 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
         setHtmlCode(content.html || defaultHtml);
         setJsCode(content.js || defaultJs);
     } else {
-        // Use initialLanguage to determine default - prioritize SCSS for SCSS pages
-        const defaultLang = initialLanguage === 'scss' ? 'scss' : 'css';
-        setStyleLang(defaultLang);
-        setStyleCode(defaultLang === 'scss' ? defaultScss : defaultCss);
-        setHtmlCode(defaultHtml);
-        setJsCode(defaultJs);
+        // Use initialLanguage to determine defaults
+        const defaultStyleLang: StyleLang = 
+          initialLanguage === 'scss' ? 'scss' : 
+          initialLanguage === 'tailwind' ? 'tailwind' : 
+          'css';
+        
+        const defaultScriptLang: ScriptLang = 
+          initialLanguage === 'typescript' ? 'typescript' : 
+          'javascript';
+        
+        setStyleLang(defaultStyleLang);
+        setScriptLang(defaultScriptLang);
+        
+        // Set appropriate default code based on language
+        if (defaultStyleLang === 'tailwind') {
+          setHtmlCode(defaultTailwindHtml);
+          setStyleCode(defaultTailwindCss);
+        } else if (defaultStyleLang === 'scss') {
+          setHtmlCode(defaultHtml);
+          setStyleCode(defaultScss);
+        } else {
+          setHtmlCode(defaultHtml);
+          setStyleCode(defaultCss);
+        }
+        
+        setJsCode(defaultScriptLang === 'typescript' ? defaultTs : defaultJs);
     }
   }, [content, initialLanguage, open]);
 
-  // Debounced SCSS compilation
+  // Debounced SCSS compilation and style processing
   useEffect(() => {
     if (!open) return;
     
@@ -316,6 +389,10 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
       }, 500);
 
       return () => clearTimeout(handler);
+    } else if (styleLang === 'tailwind') {
+      // Tailwind uses CDN, no compilation needed
+      setCompiledCss('/* Tailwind CSS loaded via CDN */');
+      setIsCompiling(false);
     } else {
       setCompiledCss(styleCode);
       setIsCompiling(false);
@@ -343,13 +420,30 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     if (open) {
       setConsoleLogs([]); // Clear logs when modal opens
       // Add welcome message based on mode
-      const defaultLang = initialLanguage === 'scss' ? 'scss' : 'css';
-      if (defaultLang === 'scss') {
-        setConsoleLogs([{
-          type: 'info',
+      const messages = [];
+      
+      if (initialLanguage === 'scss') {
+        messages.push({
+          type: 'info' as const,
           message: ['🎨 SCSS Mode Active - Use variables, nesting, mixins and more!'],
           timestamp: new Date().toLocaleTimeString()
-        }]);
+        });
+      } else if (initialLanguage === 'tailwind') {
+        messages.push({
+          type: 'info' as const,
+          message: ['⚡ Tailwind CSS Active - Use utility classes directly in HTML!'],
+          timestamp: new Date().toLocaleTimeString()
+        });
+      } else if (initialLanguage === 'typescript') {
+        messages.push({
+          type: 'info' as const,
+          message: ['📘 TypeScript Mode - Type annotations available!'],
+          timestamp: new Date().toLocaleTimeString()
+        });
+      }
+      
+      if (messages.length > 0) {
+        setConsoleLogs(messages);
       }
     }
   }, [open, initialLanguage]);
@@ -368,24 +462,35 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
     
     // Small delay to ensure iframe unmounts before updating source
     setTimeout(() => {
+      // Add Tailwind CDN if Tailwind is selected
+      const tailwindCDN = styleLang === 'tailwind' 
+        ? '<script src="https://cdn.tailwindcss.com"></script>' 
+        : '';
+      
+      // Add TypeScript compilation note (browser will treat as JS)
+      const scriptToRun = scriptLang === 'typescript' 
+        ? `// TypeScript code (running as JavaScript)\n${jsCode}` 
+        : jsCode;
+      
       // Update the output source
       setOutputSrc(`
         data:text/html;charset=utf-8,${encodeURIComponent(`
           <html>
             <head>
+              ${tailwindCDN}
               <style>${compiledCss}</style>
               <script>${consoleScript}</script>
             </head>
             <body>
               ${htmlCode}
-              <script>${jsCode}</script>
+              <script>${scriptToRun}</script>
             </body>
           </html>
         `)}
       `);
       setHasChanges(false);
     }, 50);
-  }, [htmlCode, compiledCss, jsCode]);
+  }, [htmlCode, compiledCss, jsCode, styleLang, scriptLang]);
 
   // Track code changes
   useEffect(() => {
@@ -448,7 +553,7 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] flex flex-col p-0 gap-0" showCloseButton={false}>
+      <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] flex flex-col p-0 m-0 gap-0 rounded-none border-0" showCloseButton={false}>
         {/* Clean, Structured Header */}
         <DialogHeader className="px-6 py-3 border-b bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900 flex-row items-center justify-between">
           <div className="flex items-center gap-4">
@@ -468,10 +573,10 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
                 HTML
               </Badge>
               <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/30 dark:border-blue-800 dark:text-blue-400">
-                {styleLang.toUpperCase()}
+                {styleLang === 'tailwind' ? 'TAILWIND' : styleLang.toUpperCase()}
               </Badge>
               <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-yellow-50 border-yellow-200 text-yellow-700 dark:bg-yellow-950/30 dark:border-yellow-800 dark:text-yellow-400">
-                JS
+                {scriptLang === 'typescript' ? 'TS' : 'JS'}
               </Badge>
             </div>
           </div>
@@ -667,7 +772,7 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
                           <Braces className="h-3 w-3 text-white" />
                         </div>
                         <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">
-                          {styleLang === 'scss' ? 'SCSS' : 'CSS'}
+                          {styleLang === 'scss' ? 'SCSS' : styleLang === 'tailwind' ? 'Tailwind CSS' : 'CSS'}
                         </span>
                         {styleLang === 'scss' && isCompiling && (
                           <div className="flex items-center gap-1">
@@ -678,21 +783,22 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className="text-[10px] h-5 px-1.5">
-                          styles.{styleLang}
+                          styles.{styleLang === 'tailwind' ? 'css' : styleLang}
                         </Badge>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => setStyleLang(styleLang === 'css' ? 'scss' : 'css')}
-                          className="h-6 text-[10px] px-2"
+                        <select 
+                          value={styleLang}
+                          onChange={(e) => setStyleLang(e.target.value as StyleLang)}
+                          className="h-6 text-[10px] px-2 rounded border bg-background"
                         >
-                          Switch to {styleLang === 'css' ? 'SCSS' : 'CSS'}
-                        </Button>
+                          <option value="css">CSS</option>
+                          <option value="scss">SCSS</option>
+                          <option value="tailwind">Tailwind</option>
+                        </select>
                       </div>
                     </div>
                        <div className="flex-1">
                          <Editor
-                           language={styleLang}
+                           language={styleLang === 'tailwind' ? 'css' : styleLang}
                            value={styleCode}
                            onChange={(value) => setStyleCode(value || '')}
                            theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}
@@ -726,15 +832,27 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
                           <div className="p-1 bg-yellow-500 rounded">
                             <Code className="h-3 w-3 text-white" />
                           </div>
-                          <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-300">JavaScript</span>
+                          <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-300">
+                            {scriptLang === 'typescript' ? 'TypeScript' : 'JavaScript'}
+                          </span>
                         </div>
-                        <Badge variant="outline" className="text-[10px] h-5 px-1.5">
-                          script.js
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                            script.{scriptLang === 'typescript' ? 'ts' : 'js'}
+                          </Badge>
+                          <select 
+                            value={scriptLang}
+                            onChange={(e) => setScriptLang(e.target.value as ScriptLang)}
+                            className="h-6 text-[10px] px-2 rounded border bg-background"
+                          >
+                            <option value="javascript">JS</option>
+                            <option value="typescript">TS</option>
+                          </select>
+                        </div>
                       </div>
                       <div className="flex-1">
                         <Editor
-                          language="javascript"
+                          language={scriptLang === 'typescript' ? 'typescript' : 'javascript'}
                           value={jsCode}
                           onChange={(value) => setJsCode(value || '')}
                           theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}

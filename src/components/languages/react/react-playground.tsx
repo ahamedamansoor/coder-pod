@@ -4,14 +4,13 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
-import { Terminal, Loader2, AlertTriangle, Play, PanelTop, X } from 'lucide-react';
+import { Terminal, Loader2, AlertTriangle, Play, PanelTop, X, Trash2 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { transpileReactCode } from '@/ai/flows/transpile-react-code';
 import { Button } from '@/components/ui/button';
 import { DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 
-const initialCode = `import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+const initialCode = `// React and ReactDOM are available globally
+const { useState } = React;
 
 function App() {
   const [count, setCount] = useState(0);
@@ -20,8 +19,9 @@ function App() {
     <div className="card">
       <h1>Hello React!</h1>
       <p>Click the Run button to see your changes.</p>
-      <h2>{count}</h2>
+      <h2>Count: {count}</h2>
       <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
     </div>
   );
 }
@@ -30,7 +30,40 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
 `;
 
-const htmlTemplate = (code: string) => `
+// Helper function to preprocess code and remove ES6 imports
+const preprocessCode = (code: string): string => {
+  // Remove import statements and replace with comments
+  let processedCode = code;
+  
+  // Remove: import React from 'react'
+  processedCode = processedCode.replace(/import\s+React\s*,?\s*{?\s*([^}]*)\s*}?\s*from\s*['"]react['"];?/gi, 
+    (match, hooks) => {
+      if (hooks && hooks.trim()) {
+        return `// React is available globally\nconst { ${hooks.trim()} } = React;`;
+      }
+      return '// React is available globally';
+    }
+  );
+  
+  // Remove: import { useState, useEffect } from 'react'
+  processedCode = processedCode.replace(/import\s*{([^}]+)}\s*from\s*['"]react['"];?/gi, 
+    (match, hooks) => `const { ${hooks.trim()} } = React;`
+  );
+  
+  // Remove: import ReactDOM from 'react-dom/client'
+  processedCode = processedCode.replace(/import\s+ReactDOM\s+from\s*['"]react-dom\/client['"];?/gi, 
+    '// ReactDOM is available globally'
+  );
+  
+  // Remove any other import statements
+  processedCode = processedCode.replace(/import\s+.+from\s*['"][^'"]+['"];?/gi, 
+    '// External imports not supported in playground'
+  );
+  
+  return processedCode;
+};
+
+const htmlTemplate = (code: string, captureConsole: boolean = true) => `
   <html>
     <head>
       <style>
@@ -93,8 +126,45 @@ const htmlTemplate = (code: string) => `
     <body>
       <div id="root"></div>
       <script>
+        // Console capture - send logs to parent window
+        ${captureConsole ? `
+        const originalConsole = {
+          log: console.log,
+          warn: console.warn,
+          error: console.error,
+          info: console.info
+        };
+        
+        ['log', 'warn', 'error', 'info'].forEach(method => {
+          console[method] = function(...args) {
+            // Call original console
+            originalConsole[method].apply(console, args);
+            
+            // Send to parent window
+            window.parent.postMessage({
+              type: 'console',
+              method: method,
+              args: args.map(arg => {
+                try {
+                  return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+                } catch (e) {
+                  return String(arg);
+                }
+              })
+            }, '*');
+          };
+        });
+        ` : ''}
+        
         // Error handling for the playground
         window.onerror = function(msg, url, lineNo, columnNo, error) {
+          // Send error to parent
+          window.parent.postMessage({
+            type: 'console',
+            method: 'error',
+            args: ['Runtime Error: ' + msg]
+          }, '*');
+          
           const errorDiv = document.createElement('div');
           errorDiv.className = 'error';
           errorDiv.innerHTML = '<strong>Runtime Error:</strong><br>' + msg;
@@ -131,40 +201,61 @@ const htmlTemplate = (code: string) => `
   </html>
 `;
 
+type ConsoleMessage = {
+  method: 'log' | 'warn' | 'error' | 'info';
+  args: string[];
+  timestamp: number;
+};
+
 export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
   const [code, setCode] = useState(defaultCode || initialCode);
-  const [output, setOutput] = useState<{ code: string; err: string }>({ code: '', err: '' });
-  const [isBuilding, setIsBuilding] = useState(true);
+  const [output, setOutput] = useState<{ code: string; err: string }>({ 
+    code: preprocessCode(defaultCode || initialCode), 
+    err: '' 
+  });
+  const [isRunning, setIsRunning] = useState(false);
+  const [consoleOutput, setConsoleOutput] = useState<ConsoleMessage[]>([]);
   const { theme } = useTheme();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const buildCode = useCallback(async (newCode: string) => {
-    setIsBuilding(true);
-    setOutput({ code: '', err: '' });
+  // Handle running the code (preprocess imports, then pass to iframe where Babel transpiles)
+  const handleRun = useCallback(() => {
+    setIsRunning(true);
+    setConsoleOutput([]);
+    
+    // Preprocess code to remove ES6 imports
+    const processedCode = preprocessCode(code);
+    setOutput({ code: processedCode, err: '' });
+    
+    // Small delay to show "running" state
+    setTimeout(() => {
+      setIsRunning(false);
+    }, 300);
+  }, [code]);
 
-    try {
-      const result = await transpileReactCode({ code: newCode });
-      if (result.success && result.transpiledCode) {
-        setOutput({ code: result.transpiledCode, err: '' });
-      } else {
-        setOutput({ code: '', err: result.error || 'Unknown compilation error' });
+  // Listen for console messages from iframe
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'console') {
+        const { method, args } = event.data;
+        setConsoleOutput(prev => [...prev, {
+          method,
+          args,
+          timestamp: Date.now()
+        }]);
       }
-    } catch (e: any) {
-      setOutput({ code: '', err: e.message || 'Failed to transpile code.' });
-    } finally {
-      setIsBuilding(false);
-    }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // Initial build
+  // Initial run
   useEffect(() => {
-    buildCode(code);
-  }, [buildCode, code]);
+    handleRun();
+  }, []); // Only on mount
 
-  const handleRun = () => {
-    buildCode(code);
-  };
-
-  const iframeSrcDoc = htmlTemplate(output.code);
+  const iframeSrcDoc = htmlTemplate(output.code, true);
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -174,13 +265,13 @@ export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
               React Playground
             </DialogTitle>
              <div className="flex items-center gap-2">
-                 <Button onClick={handleRun} disabled={isBuilding} size="sm">
-                    {isBuilding ? (
+                 <Button onClick={handleRun} disabled={isRunning} size="sm">
+                    {isRunning ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                       <Play className="mr-2 h-4 w-4" />
                     )}
-                    {isBuilding ? 'Building...' : 'Run'}
+                    {isRunning ? 'Running...' : 'Run'}
                 </Button>
                 <DialogClose asChild>
                     <Button variant="outline" size="icon">
@@ -207,39 +298,78 @@ export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={75}>
                <div className="relative w-full h-full">
-                {(output.err) && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/50">
-                        <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-md text-destructive flex items-center gap-2">
-                            <AlertTriangle className="h-5 w-5" />
-                            <span className="font-semibold">Build Failed</span>
-                        </div>
-                    </div>
-                )}
                  <iframe
+                    ref={iframeRef}
                     srcDoc={iframeSrcDoc}
                     title="output"
                     sandbox="allow-scripts"
                     width="100%"
                     height="100%"
-                    className="bg-white"
+                    className="bg-white border-0"
+                    key={output.code} // Force re-render when code changes
                 />
                </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={25} minSize={10}>
               <div className="h-full flex flex-col">
-                <div className="p-2 border-b text-sm font-semibold flex items-center gap-2">
-                  <Terminal />
-                  Console
+                <div className="p-2 border-b text-sm font-semibold flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Terminal className="w-4 h-4" />
+                    Console
+                    {consoleOutput.length > 0 && (
+                      <span className="text-xs text-muted-foreground">
+                        ({consoleOutput.length})
+                      </span>
+                    )}
+                  </div>
+                  {consoleOutput.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setConsoleOutput([])}
+                      className="h-6 px-2 text-xs"
+                    >
+                      <Trash2 className="w-3 h-3 mr-1" />
+                      Clear
+                    </Button>
+                  )}
                 </div>
                 <ScrollArea className="flex-1 p-2 bg-muted/50">
-                  {output.err && (
-                    <div className="font-mono text-xs text-destructive flex items-start gap-2">
-                      <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-                      <pre className="whitespace-pre-wrap">{output.err}</pre>
+                  {consoleOutput.length > 0 ? (
+                    <div className="font-mono text-xs space-y-1">
+                      {consoleOutput.map((log, i) => {
+                        const colorClass = 
+                          log.method === 'error' ? 'text-red-600 dark:text-red-400' :
+                          log.method === 'warn' ? 'text-yellow-600 dark:text-yellow-400' :
+                          log.method === 'info' ? 'text-blue-600 dark:text-blue-400' :
+                          'text-foreground';
+                        
+                        return (
+                          <div key={i} className={`flex items-start gap-2 ${colorClass} py-1 border-b border-border/50`}>
+                            <span className="text-muted-foreground shrink-0">
+                              {log.method === 'error' ? '❌' : 
+                               log.method === 'warn' ? '⚠️' : 
+                               log.method === 'info' ? 'ℹ️' : '▸'}
+                            </span>
+                            <span className="flex-1 break-all">
+                              {log.args.join(' ')}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      <p className="font-semibold text-foreground">✨ React Playground - 100% Local</p>
+                      <p>• No API calls required</p>
+                      <p>• Code compiles in browser using Babel</p>
+                      <p>• React & ReactDOM are available globally</p>
+                      <p>• ES6 imports automatically converted</p>
+                      <p>• Try console.log() to see output here!</p>
+                      <p className="text-xs italic pt-1">Tip: Use "const {`{ useState }`} = React;" instead of imports</p>
                     </div>
                   )}
-                  {!output.err && <div className="text-xs text-muted-foreground">Console output will appear here.</div>}
                 </ScrollArea>
               </div>
             </ResizablePanel>

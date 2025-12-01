@@ -187,8 +187,8 @@ export default function CheatsheetBoard() {
                     {category.cheatsheets.map((sheet) => {
                       const Icon = sheet.icon;
                       // Calculate total command count
-                      const commandCount = sheet.sections.reduce((total, section) => total + section.commands.length, 0);
-                      
+                      const commandCount = sheet.sections.reduce((total: number, section) => total + section.commands.length, 0);
+
                       return (
                         <Card
                           key={sheet.id}
