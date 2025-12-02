@@ -10,6 +10,8 @@ import { FirebaseProvider } from '@/firebase';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
 import { PlayerProvider } from '@/contexts/PlayerContext';
 import { FloatingPlayer } from '@/components/shared/FloatingPlayer';
+import { MotivationalLoaderProvider } from '@/contexts/motivational-loader-context';
+import { AutoGuestAuth } from '@/components/shared/auto-guest-auth';
 import { Loader2 } from 'lucide-react';
 
 function GlobalLoadingIndicator() {
@@ -33,14 +35,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <TooltipProvider>
                     <SidebarProvider>
                         <LoadingProvider>
-                            <PlayerProvider>
-                                <WebPlaygroundProvider>
-                                    {children}
-                                </WebPlaygroundProvider>
-                                <FloatingPlayer />
-                                <GlobalLoadingIndicator />
-                                <Toaster />
-                            </PlayerProvider>
+                            <MotivationalLoaderProvider>
+                                <PlayerProvider>
+                                    <WebPlaygroundProvider>
+                                        {children}
+                                    </WebPlaygroundProvider>
+                                    <FloatingPlayer />
+                                    <GlobalLoadingIndicator />
+                                    <Toaster />
+                                    <AutoGuestAuth />
+                                </PlayerProvider>
+                            </MotivationalLoaderProvider>
                         </LoadingProvider>
                     </SidebarProvider>
                 </TooltipProvider>

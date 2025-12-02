@@ -5,7 +5,7 @@ import { MapPin, BookOpen, Target } from 'lucide-react';
 import { languages, roleBasedRoadmaps } from '@/data/languages';
 import { cn } from '@/lib/utils';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
-import { InnovativeHeader } from '@/components/shared';
+import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 
 const languageColors: Record<string, { bg: string; border: string; text: string; iconBg: string }> = {
   html: { 
@@ -206,40 +206,25 @@ export default function RoadmapsPage() {
       {/* Innovative Header */}
       <InnovativeHeader currentPage="roadmaps" />
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-6 sm:p-8 bg-transparent relative">
-        <div className="max-w-7xl mx-auto">
-          {/* Professional Hero Section */}
-          <div className="text-center mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 dark:bg-primary/10 border border-primary/20 dark:border-primary/30 mb-6 backdrop-blur-sm">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold text-primary">Visual Learning Paths</span>
-            </div>
-            
-            {/* Title */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-              Learning Roadmaps
-            </h1>
-            
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Explore role-based career roadmaps and skill-based learning paths. Visualize your journey from beginner to expert.
-            </p>
-            
-            {/* Stats Row */}
-            <div className="flex items-center justify-center gap-6">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/50 border border-border/50">
-                <BookOpen className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold text-foreground">{languages.length + (roleBasedRoadmaps?.length || 0)} Roadmaps</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/50 border border-border/50">
-                <Target className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold text-foreground">
-                  {[...languages, ...(roleBasedRoadmaps || [])].reduce((acc, lang) => acc + (lang.topics?.filter(t => t.slug !== 'learning-plan').length ?? 0), 0)}+ Topics
-                </span>
-              </div>
-            </div>
-          </div>
+      {/* Page Title - Fixed */}
+      <div className="flex-shrink-0">
+        <LearningPathTitle
+          icon={MapPin}
+          title="Learning Roadmaps"
+          subtitle={`Explore role-based career roadmaps and skill-based learning paths. Visualize your journey from beginner to expert — ${languages.length + (roleBasedRoadmaps?.length || 0)} roadmaps with ${[...languages, ...(roleBasedRoadmaps || [])].reduce((acc, lang) => acc + (lang.topics?.filter(t => t.slug !== 'learning-plan').length ?? 0), 0)}+ topics`}
+        />
+      </div>
+
+      {/* Main Content - Scrollable */}
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 bg-transparent relative overflow-y-auto">
+        {/* Subtle animated background gradients */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl animate-float" style={{ animationDuration: '20s' }} />
+          <div className="absolute top-1/4 right-0 w-80 h-80 bg-gradient-to-bl from-blue-500/5 to-transparent rounded-full blur-3xl animate-float" style={{ animationDuration: '25s', animationDelay: '5s' }} />
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-gradient-to-tr from-purple-500/5 to-transparent rounded-full blur-3xl animate-float" style={{ animationDuration: '30s', animationDelay: '10s' }} />
+        </div>
+        
+        <div className="w-full relative z-10">
 
           {/* Categorized Language Cards */}
           <div className="space-y-12">
@@ -250,30 +235,49 @@ export default function RoadmapsPage() {
                 style={{ animationDelay: `${categoryIndex * 100}ms` }}
               >
                 {/* Category Header */}
-                <div className="mb-6">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h2 className="text-2xl font-bold text-foreground">{category.title}</h2>
-                    <div className="flex-1 h-px bg-gradient-to-r from-border to-transparent" />
+                <div className="mb-8 relative">
+                  <div className="relative">
+                    <div className="flex items-center gap-4 mb-3">
+                      {/* Category icon */}
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center border border-primary/10">
+                        <div className="w-5 h-5 rounded-lg bg-primary/60" />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <h2 className="text-2xl font-bold text-foreground">
+                          {category.title}
+                        </h2>
+                      </div>
+                      
+                      {/* Simple gradient line */}
+                      <div className="flex-1 h-px bg-gradient-to-r from-border via-border/50 to-transparent" />
+                    </div>
+                    
+                    {category.title === 'Role-Based Roadmaps' && (
+                      <p className="text-sm text-muted-foreground pl-14">
+                        Visual reference guides showing complete skill trees for career paths (view only)
+                      </p>
+                    )}
+                    {category.title === 'Frontend' && (
+                      <p className="text-sm text-muted-foreground pl-14">
+                        Interactive learning paths with detailed topic content and progress tracking
+                      </p>
+                    )}
+                    {category.title === 'Backend' && (
+                      <p className="text-sm text-muted-foreground pl-14">
+                        Interactive learning paths with detailed topic content and progress tracking
+                      </p>
+                    )}
+                    {category.title === 'Testing & Tools' && (
+                      <p className="text-sm text-muted-foreground pl-14">
+                        Modern testing frameworks and essential development tools
+                      </p>
+                    )}
                   </div>
-                  {category.title === 'Role-Based Roadmaps' && (
-                    <p className="text-sm text-muted-foreground">
-                      Visual reference guides showing complete skill trees for career paths (view only)
-                    </p>
-                  )}
-                  {category.title === 'Frontend' && (
-                    <p className="text-sm text-muted-foreground">
-                      Interactive learning paths with detailed topic content and progress tracking
-                    </p>
-                  )}
-                  {category.title === 'Backend' && (
-                    <p className="text-sm text-muted-foreground">
-                      Interactive learning paths with detailed topic content and progress tracking
-                    </p>
-                  )}
                 </div>
 
                 {/* Language Cards Grid */}
-                <div className="flex flex-wrap gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-2.5">
                   {category.languages.map((langSlug, index) => {
                     // Check if this is a role-based roadmap or regular language
                     const language = category.title === 'Role-Based Roadmaps' 
@@ -291,29 +295,97 @@ export default function RoadmapsPage() {
                         onMouseEnter={() => setHoveredCard(language.slug)}
                         onMouseLeave={() => setHoveredCard(null)}
                         className={cn(
-                          "cursor-pointer transition-all duration-200",
-                          "animate-in fade-in duration-300"
+                          "group relative cursor-pointer transition-all duration-500 ease-out",
+                          "animate-in fade-in duration-700",
+                          isHovered && "scale-[1.02] z-10"
                         )}
                         style={{ animationDelay: `${(categoryIndex * 100) + (index * 50)}ms` }}
                       >
+                        {/* Animated gradient glow on hover */}
                         <div className={cn(
-                          "px-5 py-3 rounded-xl",
-                          "bg-white dark:bg-slate-900",
-                          "border border-slate-200 dark:border-slate-700",
-                          "transition-all duration-200",
-                          isHovered && "shadow-sm"
+                          "absolute -inset-[2px] rounded-lg opacity-0 transition-all duration-500 blur-sm",
+                          "bg-gradient-to-r",
+                          colors.bg.replace('bg-', 'from-') + '/40',
+                          "to-primary/20",
+                          isHovered && "opacity-100 animate-pulse"
+                        )} style={{ animationDuration: '2s' }} />
+                        
+                        {/* Main card */}
+                        <div className={cn(
+                          "relative px-3 py-2.5 rounded-lg overflow-hidden",
+                          "bg-gradient-to-r from-white/70 to-white/60 dark:from-slate-900/70 dark:to-slate-900/60",
+                          "backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60",
+                          "transition-all duration-500 ease-out",
+                          "group-hover:shadow-lg group-hover:shadow-primary/10",
+                          isHovered && "border-primary/40 from-white/90 to-white/80 dark:from-slate-900/90 dark:to-slate-900/80"
                         )}>
-                          <div className="flex items-center gap-2.5">
-                            {/* Color Indicator */}
+                          {/* Animated shine effect */}
+                          <div className={cn(
+                            "absolute inset-0 -translate-x-full transition-transform duration-700 ease-out",
+                            "bg-gradient-to-r from-transparent via-white/30 dark:via-white/10 to-transparent",
+                            isHovered && "translate-x-full"
+                          )} />
+                          
+                          {/* Colored accent bar with glow */}
+                          <div className={cn(
+                            "absolute left-0 top-1/2 -translate-y-1/2 transition-all duration-500",
+                            isHovered ? "w-1 h-full" : "w-0.5 h-0"
+                          )}>
                             <div className={cn(
-                              "w-2 h-2 rounded-full transition-colors duration-200",
-                              isHovered ? colors.iconBg : "bg-slate-300 dark:bg-slate-600"
+                              "w-full h-full rounded-r-full transition-all duration-500",
+                              isHovered ? colors.iconBg : "bg-slate-300 dark:bg-slate-600",
+                              isHovered && "shadow-lg shadow-current/50"
                             )} />
+                          </div>
+                          
+                          <div className={cn(
+                            "relative flex items-center transition-all duration-500",
+                            isHovered ? "gap-2.5 pl-2" : "gap-2.5"
+                          )}>
+                            {/* Icon badge - appears on hover */}
+                            <div className={cn(
+                              "transition-all duration-500 overflow-hidden",
+                              isHovered ? "w-6 opacity-100" : "w-0 opacity-0"
+                            )}>
+                              <div className={cn(
+                                "w-6 h-6 rounded-md flex items-center justify-center transition-all duration-500",
+                                colors.iconBg,
+                                "shadow-sm"
+                              )}>
+                                <div className="w-3 h-3 rounded-sm bg-white/90" />
+                              </div>
+                            </div>
                             
-                            {/* Language Name */}
-                            <span className="text-sm font-medium text-foreground">
-                              {language.name}
-                            </span>
+                            {/* Content */}
+                            <div className="flex-1 min-w-0">
+                              <h3 className={cn(
+                                "text-xs font-semibold transition-all duration-500 leading-tight truncate",
+                                "text-slate-900 dark:text-slate-100",
+                                isHovered && "translate-x-0.5"
+                              )}>
+                                {language.name}
+                              </h3>
+                              <p className={cn(
+                                "text-[10px] font-medium transition-all duration-500 mt-0.5",
+                                isHovered ? colors.text : "text-muted-foreground"
+                              )}>
+                                {language.topics?.filter(t => t.slug !== 'learning-plan').length || 0} topics
+                              </p>
+                            </div>
+                            
+                            {/* Arrow with bounce */}
+                            <svg 
+                              className={cn(
+                                "w-3.5 h-3.5 transition-all duration-500 flex-shrink-0",
+                                isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2",
+                                colors.text.replace('text-', 'text-')
+                              )} 
+                              fill="none" 
+                              viewBox="0 0 24 24" 
+                              stroke="currentColor"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                            </svg>
                           </div>
                         </div>
                       </div>

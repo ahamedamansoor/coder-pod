@@ -1,15 +1,113 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { usePlayer } from '@/contexts/PlayerContext';
 import { X, Maximize2, Minimize2, Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 
 export function FloatingPlayer() {
   const { content, isMinimized, isPlaying, minimize, maximize, close, togglePlayPause } = usePlayer();
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ bottom: 20, right: 20 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [size, setSize] = useState({ width: 560, height: 315 }); // 16:9 aspect ratio
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
+  // Handle drag start
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragStart({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    });
+  };
+
+  // Handle dragging
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging || typeof window === 'undefined') return;
+    
+    const newX = e.clientX - dragStart.x;
+    const newY = e.clientY - dragStart.y;
+    
+    // Keep within viewport bounds using dynamic size
+    const maxX = window.innerWidth - size.width - 20;
+    const maxY = window.innerHeight - size.height - 72; // 52px header + 20px margin
+    
+    setPosition({
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY)),
+    });
+  };
+
+  // Handle drag end
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setIsResizing(false);
+  };
+
+  // Handle resize start
+  const handleResizeStart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsResizing(true);
+    setResizeStart({
+      x: e.clientX,
+      y: e.clientY,
+      width: size.width,
+      height: size.height,
+    });
+  };
+
+  // Handle resizing
+  const handleResize = (e: MouseEvent) => {
+    if (!isResizing || typeof window === 'undefined') return;
+    
+    const deltaX = e.clientX - resizeStart.x;
+    const deltaY = e.clientY - resizeStart.y;
+    
+    const newWidth = Math.max(400, Math.min(resizeStart.width + deltaX, window.innerWidth - position.x - 20));
+    const newHeight = Math.max(225, Math.min(resizeStart.height + deltaY, window.innerHeight - position.y - 20));
+    
+    setSize({
+      width: newWidth,
+      height: newHeight,
+    });
+  };
+
+  // Set initial position after component mounts (client-side only)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setPosition({
+        x: window.innerWidth - 580,
+        y: window.innerHeight - 380,
+      });
+    }
+  }, []);
+
+  // Add/remove event listeners for dragging and resizing
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, dragStart, position, size]);
+
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleResize);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleResize);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isResizing, resizeStart, size, position]);
+
+  // Early return after all hooks
   if (!content) return null;
 
   // Extract YouTube video ID from URL
@@ -89,15 +187,24 @@ export function FloatingPlayer() {
         <div
           className="fixed z-[9999] group"
           style={{
-            bottom: `${position.bottom}px`,
-            right: `${position.right}px`,
-            width: '480px',
+            left: `${position.x}px`,
+            top: `${position.y}px`,
+            width: `${size.width}px`,
+            height: `${size.height + 52}px`, // +52px for header
             maxWidth: 'calc(100vw - 40px)',
+            cursor: isDragging ? 'grabbing' : 'grab',
           }}
         >
-          <div className="bg-background rounded-lg shadow-2xl border-2 border-primary/20 overflow-hidden">
+          <div className="bg-background rounded-lg shadow-2xl border-2 border-primary/20 overflow-hidden relative h-full flex flex-col">
             {/* Mini Header */}
-            <div className="flex items-center justify-between p-2 bg-card border-b cursor-move hover:bg-muted/50 transition-colors">
+            <div 
+              className="flex items-center justify-between p-3 bg-card border-b hover:bg-muted/50 transition-colors select-none"
+              onMouseDown={handleMouseDown}
+              style={{ 
+                cursor: isDragging ? 'grabbing' : 'grab',
+                userSelect: 'none',
+              }}
+            >
               <div className="flex-1 min-w-0 flex items-center gap-2">
                 {content.coverImage && (
                   <img
@@ -146,9 +253,29 @@ export function FloatingPlayer() {
             </div>
 
             {/* Mini Content */}
-            <div className="relative aspect-video bg-black">
+            <div className="relative flex-1 bg-black" style={{ height: `${size.height}px` }}>
               {renderContent()}
             </div>
+
+            {/* Resize Handles */}
+            {/* Bottom-right corner */}
+            <div
+              onMouseDown={handleResizeStart}
+              className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-0 hover:opacity-100 transition-opacity"
+              style={{
+                background: 'linear-gradient(135deg, transparent 50%, rgb(59 130 246) 50%)',
+              }}
+            />
+            {/* Bottom edge */}
+            <div
+              onMouseDown={handleResizeStart}
+              className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize hover:bg-primary/50 transition-colors"
+            />
+            {/* Right edge */}
+            <div
+              onMouseDown={handleResizeStart}
+              className="absolute top-0 right-0 bottom-0 w-1 cursor-ew-resize hover:bg-primary/50 transition-colors"
+            />
           </div>
         </div>
       )}

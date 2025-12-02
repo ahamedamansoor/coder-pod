@@ -1,8 +1,12 @@
 import Link from 'next/link';
 
-export function Logo() {
-  return (
-    <Link href="/" className="flex flex-col leading-none h-16 justify-center" aria-label="Coder Pod Home">
+interface LogoProps {
+  clickable?: boolean;
+}
+
+export function Logo({ clickable = true }: LogoProps) {
+  const content = (
+    <div className="flex flex-col leading-none h-16 justify-center">
       {/* Main Logo Text */}
       <div className="flex items-baseline gap-1">
         <span className="text-2xl font-bold tracking-tight" style={{ color: '#5B7FFF' }}>
@@ -20,6 +24,16 @@ export function Logo() {
       >
         YOUR LAUNCHPAD FOR LEARNING
       </span>
+    </div>
+  );
+
+  if (!clickable) {
+    return content;
+  }
+
+  return (
+    <Link href="/" aria-label="Coder Pod Home">
+      {content}
     </Link>
   );
 }

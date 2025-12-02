@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { FeatureGateModal } from '@/components/shared/feature-gate-modal';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { languages } from '@/data/languages';
@@ -95,6 +96,7 @@ function DashboardContent() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [showFeatureGate, setShowFeatureGate] = useState(false);
 
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -618,13 +620,24 @@ function DashboardContent() {
 
               {/* CTA Button */}
               <div className="flex flex-col items-center gap-4 justify-center">
-                <InterviewSimulator language="JavaScript">
-                  <Button className="relative group overflow-hidden bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-6 text-lg">
+                {!user || user.isAnonymous ? (
+                  <Button
+                    onClick={() => setShowFeatureGate(true)}
+                    className="relative group overflow-hidden bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-6 text-lg"
+                  >
                     <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <Mic className="mr-3 h-5 w-5 relative z-10" />
                     <span className="relative z-10 font-semibold">Start AI Interview</span>
                   </Button>
-                </InterviewSimulator>
+                ) : (
+                  <InterviewSimulator language="JavaScript">
+                    <Button className="relative group overflow-hidden bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-6 text-lg">
+                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <Mic className="mr-3 h-5 w-5 relative z-10" />
+                      <span className="relative z-10 font-semibold">Start AI Interview</span>
+                    </Button>
+                  </InterviewSimulator>
+                )}
                 <p className="text-sm text-muted-foreground text-center max-w-md">
                   Choose from 7 AI providers (Gemini, ChatGPT, Claude, Perplexity, Groq, Mistral, Cohere)
                 </p>
@@ -633,6 +646,13 @@ function DashboardContent() {
           </Card>
         </div>
       </div>
+
+      {/* Feature Gate Modal */}
+      <FeatureGateModal 
+        isOpen={showFeatureGate}
+        onClose={() => setShowFeatureGate(false)}
+        featureName="AI Interview"
+      />
 
       {/* Quick Stats Section */}
       <div className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/10 dark:to-indigo-950/10 py-12 sm:py-16 lg:py-20">

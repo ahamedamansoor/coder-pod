@@ -1,8 +1,11 @@
 'use client';
 
 import { Suspense, lazy } from 'react';
+import { useUser, useAuth } from '@/firebase';
+import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { InnovativeHeader } from '@/components/shared';
+import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
+import { Loader2, BookOpen } from 'lucide-react';
 
 // Lazy load the cheatsheet board content
 const CheatsheetBoardContent = lazy(() => import('@/components/cheatsheets/cheatsheet-board'));
@@ -27,6 +30,25 @@ function CheatsheetBoardLoading() {
 }
 
 export default function CheatsheetBoardPage() {
+  const { user, isUserLoading } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    if (auth) {
+      await auth.signOut();
+      router.push('/login');
+    }
+  };
+
+  if (isUserLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div 
       style={{ width: '100vw', height: '100vh' }}
@@ -45,12 +67,27 @@ export default function CheatsheetBoardPage() {
       </div>
       
       {/* Innovative Header */}
-      <InnovativeHeader currentPage="cheatsheets" />
+      <InnovativeHeader
+        currentPage="cheatsheets"
+        user={user}
+        onLogout={handleLogout}
+      />
 
-      {/* Main Content */}
-      <Suspense fallback={<CheatsheetBoardLoading />}>
-        <CheatsheetBoardContent />
-      </Suspense>
+      {/* Page Title - Fixed */}
+      <div className="flex-shrink-0">
+        <LearningPathTitle
+          icon={BookOpen}
+          title="Quick Reference"
+          subtitle="Search for specific commands or situations. Click any card to view detailed usage examples — your essential command line reference"
+        />
+      </div>
+
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 overflow-y-auto">
+        <Suspense fallback={<CheatsheetBoardLoading />}>
+          <CheatsheetBoardContent />
+        </Suspense>
+      </div>
     </div>
   );
 }

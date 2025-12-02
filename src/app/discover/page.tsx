@@ -8,15 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Loader2, Search, Bookmark, BookmarkCheck, ExternalLink, 
+  Loader2, Search, ExternalLink, 
   Newspaper, TrendingUp, Code, X, Filter, Clock, Heart, Video, Podcast, Sparkles
 } from 'lucide-react';
-import { InnovativeHeader } from '@/components/shared';
+import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 interface DevToArticle {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   url: string;
@@ -34,20 +34,6 @@ interface DevToArticle {
   reading_time_minutes?: number;
 }
 
-interface BookmarkedArticle {
-  id: number;
-  title: string;
-  url: string;
-  cover_image: string | null;
-  published_at: string;
-  tag_list: string[];
-  user: {
-    name: string;
-    username: string;
-  };
-  bookmarkedAt: number;
-}
-
 export default function DiscoverPage() {
   const [articles, setArticles] = useState<DevToArticle[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<DevToArticle[]>([]);
@@ -55,18 +41,17 @@ export default function DiscoverPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [contentType, setContentType] = useState<'all' | 'article' | 'video' | 'podcast'>('all');
-  const [bookmarkedIds, setBookmarkedIds] = useState<Set<number>>(new Set());
   const [page, setPage] = useState(1);
   const [isSearching, setIsSearching] = useState(false);
+  const [videoPage, setVideoPage] = useState(1);
+  const [hasMoreVideos, setHasMoreVideos] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
-
-  const STORAGE_KEY = 'bookmarked_tech_news';
-  const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || '';
   
   // Tech-related keywords for content filtering
   const TECH_KEYWORDS = [
@@ -87,81 +72,286 @@ export default function DiscoverPage() {
   const CONTENT_TYPES = [
     { name: 'All', value: 'all', icon: Sparkles },
     { name: 'Articles', value: 'article', icon: Newspaper },
-    { name: 'Videos', value: 'video', icon: Video },
     { name: 'Podcasts', value: 'podcast', icon: Podcast },
   ];
   const POPULAR_TAGS = [
     { name: 'All', slug: '', icon: TrendingUp },
     { name: 'JavaScript', slug: 'javascript', icon: Code },
     { name: 'React', slug: 'react', icon: Code },
+    { name: 'Angular', slug: 'angular', icon: Code },
+    { name: 'Vue', slug: 'vue', icon: Code },
+    { name: 'Next.js', slug: 'nextjs', icon: Code },
+    { name: 'React Native', slug: 'react-native', icon: Code },
     { name: 'Python', slug: 'python', icon: Code },
     { name: 'TypeScript', slug: 'typescript', icon: Code },
     { name: 'Web Dev', slug: 'webdev', icon: Code },
+    { name: 'UI/UX', slug: 'ui-ux', icon: Code },
+    { name: 'Frontend Design', slug: 'frontend-design', icon: Code },
+    { name: 'System Design', slug: 'system-design', icon: Code },
     { name: 'DevOps', slug: 'devops', icon: Code },
     { name: 'AI/ML', slug: 'ai', icon: Code },
   ];
 
-  // Fetch YouTube videos
-  const fetchYouTubeVideos = async (query: string) => {
-    if (!YOUTUBE_API_KEY) {
-      console.warn('YouTube API key not configured');
-      return [];
-    }
+  // Import channel database (250+ channels organized efficiently)
+  const { getChannelsForTag, getDefaultChannels } = require('@/data/youtube-channels');
 
+  // Fetch YouTube videos using Invidious API (no API key, no limits!)
+  const fetchYouTubeVideos = async (query: string): Promise<DevToArticle[]> => {
     try {
-      // Build tech-focused search query
+      // Build search query based on tag and user input
       let searchQuery = '';
-      if (selectedTag) {
-        searchQuery = `${selectedTag} programming tutorial coding`;
+      if (query) {
+        searchQuery = `${query} full course tutorial`;
+      } else if (selectedTag) {
+        searchQuery = `${selectedTag} full course tutorial programming`;
       } else {
-        searchQuery = 'programming tutorial software development coding';
+        searchQuery = 'programming full course tutorial';
       }
       
-      // YouTube Category 28 = Science & Technology
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=30&videoCategoryId=28&q=${encodeURIComponent(searchQuery)}&key=${YOUTUBE_API_KEY}`
-      );
-
-      if (!response.ok) return [];
-
-      const data = await response.json();
+      // Simplified: Use RSS feeds directly - most reliable method
+      console.log('Fetching videos from curated YouTube channels via RSS feeds...');
+      const channelIds = selectedTag 
+        ? getChannelsForTag(selectedTag) 
+        : getDefaultChannels();
+      return await fetchFromRSSFeeds(channelIds, query);
       
-      // Filter and map results
-      const videos = data.items?.map((item: any) => ({
-        id: item.id.videoId,
-        title: item.snippet.title,
-        description: item.snippet.description,
-        url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-        cover_image: item.snippet.thumbnails.medium.url,
-        published_at: item.snippet.publishedAt,
-        tag_list: [selectedTag || 'programming'],
-        type_of: 'video_article' as const,
-        user: {
-          name: item.snippet.channelTitle,
-          username: item.snippet.channelId,
-          profile_image: item.snippet.thumbnails.default.url,
-        },
-      })) || [];
-      
-      // Extra filter to ensure tech relevance
-      return videos.filter(video => 
-        isTechRelated(video.title, video.description)
-      );
     } catch (error) {
-      console.error('Error fetching YouTube videos:', error);
+      console.error('Error fetching videos:', error);
+      toast({
+        title: '❌ Video Fetch Error',
+        description: 'Failed to load videos.',
+        variant: 'destructive',
+      });
       return [];
     }
   };
 
+  // Fallback: Fetch from RSS feeds if Invidious fails
+  const fetchFromRSSFeeds = async (channelIds: string[], query: string): Promise<DevToArticle[]> => {
+    try {
+      const promises = channelIds.map(async (channelId) => {
+        try {
+          // Use our API route to avoid CORS issues
+          const response = await fetch(`/api/youtube-rss?channelId=${channelId}`);
+          
+          if (!response.ok) {
+            // Silently fail for individual channels - Invidious should be working
+            return [];
+          }
+          
+          const xmlText = await response.text();
+          
+          // Check if XML is valid
+          if (!xmlText || xmlText.trim().length === 0) {
+            console.error(`Empty response for channel ${channelId}`);
+            return [];
+          }
+          
+          // Parse XML to extract video data
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+          
+          // Check for XML parsing errors
+          const parseError = xmlDoc.querySelector('parsererror');
+          if (parseError) {
+            console.error(`XML parse error for channel ${channelId}:`, parseError.textContent);
+            return [];
+          }
+          
+          const entries = xmlDoc.querySelectorAll('entry');
+          
+          if (entries.length === 0) {
+            console.log(`No entries found for channel ${channelId}`);
+            return [];
+          }
+          
+          const videos = Array.from(entries).map((entry) => {
+            const videoId = entry.querySelector('videoId')?.textContent || '';
+            const title = entry.querySelector('title')?.textContent || '';
+            const published = entry.querySelector('published')?.textContent || '';
+            const author = entry.querySelector('author name')?.textContent || '';
+            const mediaGroup = entry.querySelector('group');
+            const description = mediaGroup?.querySelector('description')?.textContent || '';
+            const thumbnail = mediaGroup?.querySelector('thumbnail')?.getAttribute('url') || '';
+            
+            return {
+              id: videoId,
+              title,
+              description,
+              url: `https://www.youtube.com/watch?v=${videoId}`,
+              cover_image: thumbnail,
+              published_at: published,
+              tag_list: [selectedTag || 'programming'],
+              type_of: 'video_article' as const,
+              user: {
+                name: author,
+                username: channelId,
+                // Use UI Avatars to generate profile picture from channel name
+                profile_image: `https://ui-avatars.com/api/?name=${encodeURIComponent(author)}&background=0D8ABC&color=fff&size=128`,
+              },
+            };
+          });
+          
+          return videos;
+        } catch (error) {
+          console.error(`Error fetching from channel ${channelId}:`, error);
+          return [];
+        }
+      });
+      
+      const results = await Promise.all(promises);
+      const allVideos = results.flat();
+      
+      console.log(`Fetched ${allVideos.length} total videos from ${channelIds.length} channels`);
+      
+      if (allVideos.length === 0) {
+        toast({
+          title: '⚠️ No Videos Found',
+          description: 'Could not fetch videos from RSS feeds. Channels might be down.',
+          variant: 'destructive',
+        });
+        return [];
+      }
+      
+      // STRICT keywords for FULL COURSES only
+      const mustHaveKeywords = [
+        'full course', 'complete course', 'full tutorial', 'complete tutorial',
+        'crash course', 'bootcamp', 'full guide', 'complete guide',
+        'from scratch', 'zero to hero', 'beginner to advanced',
+        'step by step course', 'comprehensive tutorial', 'complete training',
+        'full stack course', 'entire course', 'full project', 
+        'hours', 'hour course', 'hour tutorial',
+        'free course', 'complete bootcamp', 'full bootcamp'
+      ];
+      
+      // Keywords to exclude (shorts, clips, quick tips, single concepts)
+      const excludeKeywords = [
+        'short', 'shorts', '#shorts', 'quick tip', 'in 60 seconds',
+        'in 1 minute', 'in 5 minutes', 'in 10 minutes', 'quick', 'fast', 
+        'rapid', 'speedrun', 'brief', 'intro to', 'introduction',
+        'what is', 'explained', 'overview', 'summary', 'part 1', 'episode'
+      ];
+      
+      // STRICT FILTER: Only include videos that are clearly full courses
+      let filteredVideos = allVideos.filter(video => {
+        const titleLower = video.title.toLowerCase();
+        const descLower = video.description.toLowerCase();
+        const text = `${titleLower} ${descLower}`;
+        
+        // Must have at least one "full course" keyword
+        const hasCourseKeyword = mustHaveKeywords.some(keyword => 
+          text.includes(keyword.toLowerCase())
+        );
+        if (!hasCourseKeyword) return false; // STRICT: Exclude if not a course
+        
+        // Exclude shorts and quick videos even if they claim to be courses
+        const hasExcludedKeyword = excludeKeywords.some(keyword => 
+          text.includes(keyword.toLowerCase())
+        );
+        if (hasExcludedKeyword) return false;
+        
+        return true; // Only full courses pass this filter
+      });
+      
+      // Filter by search query if provided
+      if (query) {
+        const searchLower = query.toLowerCase();
+        filteredVideos = filteredVideos.filter(video =>
+          video.title.toLowerCase().includes(searchLower) ||
+          video.description.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      // Extra filter to ensure tech relevance
+      filteredVideos = filteredVideos.filter(video => 
+        isTechRelated(video.title, video.description)
+      );
+      
+      // Sort: Prioritize course content, then by date
+      filteredVideos.sort((a, b) => {
+        const aHasCourse = mustHaveKeywords.some(k => 
+          a.title.toLowerCase().includes(k) || a.description.toLowerCase().includes(k)
+        );
+        const bHasCourse = mustHaveKeywords.some(k => 
+          b.title.toLowerCase().includes(k) || b.description.toLowerCase().includes(k)
+        );
+        
+        // Course content first
+        if (aHasCourse && !bHasCourse) return -1;
+        if (!aHasCourse && bHasCourse) return 1;
+        
+        // Then by date
+        return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+      });
+      
+      console.log(`After filtering: ${filteredVideos.length} FULL COURSES found`);
+      
+      // If no courses found after strict filtering, show helpful message
+      if (filteredVideos.length === 0) {
+        console.log('No full courses found in recent videos. Try different tags or search.');
+        toast({
+          title: '📚 No Full Courses Found',
+          description: 'Try a different tag (JavaScript, Python, React) or search for specific courses.',
+        });
+        return [];
+      }
+      
+      return filteredVideos.slice(0, 30);
+    } catch (error) {
+      console.error('Error fetching from RSS feeds:', error);
+      return [];
+    }
+  };
+
+  // Variety-enhancing helper: Shuffle array randomly
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Variety-enhancing helper: Get random search terms for diversity
+  const getVariedSearchTerms = (baseTag: string) => {
+    const variations = [
+      `${baseTag} tutorial`,
+      `${baseTag} guide`,
+      `${baseTag} development`,
+      `${baseTag} programming`,
+      `${baseTag} tips`,
+      `${baseTag} best practices`,
+      `${baseTag} learning`,
+      baseTag, // Base term
+    ];
+    // Pick a random variation
+    return variations[Math.floor(Math.random() * variations.length)];
+  };
+
   // Fetch Podcasts from iTunes API (free, no API key needed)
-  const fetchPodcasts = async (query: string) => {
+  const fetchPodcasts = async (query: string): Promise<DevToArticle[]> => {
     try {
       // Build tech-focused search query with genre filter
+      // If query is provided (from search), use it; otherwise use tag
       let searchQuery = '';
-      if (selectedTag) {
-        searchQuery = `${selectedTag} programming software development`;
+      if (query) {
+        // User search takes precedence
+        searchQuery = `${query} programming software development`;
+      } else if (selectedTag) {
+        // VARIETY: Use varied search terms for different results each time
+        const variedTerm = getVariedSearchTerms(selectedTag);
+        searchQuery = `${variedTerm} software development`;
       } else {
-        searchQuery = 'software engineering programming developer tech';
+        // VARIETY: Rotate through different default searches
+        const defaultSearches = [
+          'software engineering programming',
+          'web development technology',
+          'coding developer tips',
+          'tech programming best practices',
+          'software developer tutorials',
+        ];
+        searchQuery = defaultSearches[Math.floor(Math.random() * defaultSearches.length)];
       }
       
       // Add technology genre filter (genreId 1318 = Technology)
@@ -191,9 +381,12 @@ export default function DiscoverPage() {
       })) || [];
       
       // Extra filter to ensure tech relevance
-      return podcasts.filter(podcast => 
+      let techPodcasts = podcasts.filter((podcast: any) =>
         isTechRelated(podcast.title, podcast.description)
       );
+      
+      // VARIETY: Shuffle results for different content each time
+      return shuffleArray(techPodcasts);
     } catch (error) {
       console.error('Error fetching podcasts:', error);
       return [];
@@ -210,20 +403,20 @@ export default function DiscoverPage() {
 
       // Fetch DEV.to articles if showing articles or all
       if (contentType === 'all' || contentType === 'article') {
+        // VARIETY: Randomly pick from multiple pages for diverse content
+        const randomPageOffset = Math.floor(Math.random() * 3); // 0, 1, or 2
+        const fetchPage = pageNum + randomPageOffset;
+        
         const response = await fetch(
-          `https://dev.to/api/articles?per_page=50&page=${pageNum}${tagParam}`
+          `https://dev.to/api/articles?per_page=50&page=${fetchPage}${tagParam}`
         );
         
         if (response.ok) {
           const devData: DevToArticle[] = await response.json();
-          allContent = [...allContent, ...devData];
+          // VARIETY: Shuffle articles for different order each time
+          const shuffledData = shuffleArray(devData);
+          allContent = [...allContent, ...shuffledData];
         }
-      }
-
-      // Fetch YouTube videos if showing videos or all
-      if (contentType === 'all' || contentType === 'video') {
-        const youtubeData = await fetchYouTubeVideos(selectedTag);
-        allContent = [...allContent, ...youtubeData];
       }
 
       // Fetch iTunes podcasts if showing podcasts or all
@@ -232,8 +425,24 @@ export default function DiscoverPage() {
         allContent = [...allContent, ...podcastData];
       }
       
-      // Sort by published date
-      allContent.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+      // VARIETY: Mix up sort order occasionally for diversity
+      const sortMethods = [
+        // Sort by date (70% chance)
+        () => allContent.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()),
+        // Sort by reactions if available (15% chance)
+        () => allContent.sort((a, b) => (b.public_reactions_count || 0) - (a.public_reactions_count || 0)),
+        // Random shuffle (15% chance)
+        () => { allContent = shuffleArray(allContent); },
+      ];
+      
+      const rand = Math.random();
+      if (rand < 0.70) {
+        sortMethods[0](); // Date sort
+      } else if (rand < 0.85) {
+        sortMethods[1](); // Reactions sort
+      } else {
+        sortMethods[2](); // Random shuffle
+      }
       
       if (pageNum === 1) {
         setArticles(allContent);
@@ -254,7 +463,7 @@ export default function DiscoverPage() {
     }
   };
 
-  // Search articles using DEV.to API
+  // Search content across all types based on current filter
   const searchArticles = async (query: string) => {
     if (!query.trim()) {
       fetchArticles(1);
@@ -264,38 +473,66 @@ export default function DiscoverPage() {
     setIsSearching(true);
     setIsLoading(true);
     try {
-      // DEV.to doesn't have a direct search API, so we'll use Google Custom Search or filter locally
-      // For now, we'll fetch recent articles and filter by query
-      const response = await fetch(
-        `https://dev.to/api/articles?per_page=100${selectedTag ? `&tag=${selectedTag}` : ''}`
-      );
-      const data: DevToArticle[] = await response.json();
+      let allContent: DevToArticle[] = [];
+
+      // Search DEV.to articles if showing articles or all
+      // Don't use tag filter when searching - search query takes precedence
+      if (contentType === 'all' || contentType === 'article') {
+        // VARIETY: Fetch from multiple pages and combine for diverse search results
+        const pagesToFetch = [1, 2]; // Fetch first 2 pages for more variety
+        const articlePromises = pagesToFetch.map(async (page) => {
+          const response = await fetch(
+            `https://dev.to/api/articles?per_page=50&page=${page}`
+          );
+          if (response.ok) {
+            return await response.json();
+          }
+          return [];
+        });
+        
+        const allArticles = (await Promise.all(articlePromises)).flat();
+        const filtered = allArticles.filter((article: any) => {
+          const searchLower = query.toLowerCase();
+          return (
+            article.title?.toLowerCase().includes(searchLower) ||
+            article.description?.toLowerCase().includes(searchLower) ||
+            article.tag_list?.some((tag: string) => tag.toLowerCase().includes(searchLower)) ||
+            article.user?.name?.toLowerCase().includes(searchLower)
+          );
+        });
+        // VARIETY: Shuffle search results
+        allContent = [...allContent, ...shuffleArray(filtered)];
+      }
+
+      // Search YouTube videos if showing videos or all
+      if (contentType === 'all' || contentType === 'video') {
+        const videos = await fetchYouTubeVideos(query);
+        allContent = [...allContent, ...videos];
+      }
+
+      // Search podcasts if showing podcasts or all
+      if (contentType === 'all' || contentType === 'podcast') {
+        const podcasts = await fetchPodcasts(query);
+        allContent = [...allContent, ...podcasts];
+      }
       
-      // Filter articles by search query (title, description, tags)
-      const filtered = data.filter(article => {
-        const searchLower = query.toLowerCase();
-        return (
-          article.title?.toLowerCase().includes(searchLower) ||
-          article.description?.toLowerCase().includes(searchLower) ||
-          article.tag_list?.some(tag => tag.toLowerCase().includes(searchLower)) ||
-          article.user?.name?.toLowerCase().includes(searchLower)
-        );
-      });
+      // VARIETY: Shuffle search results for diversity
+      allContent = shuffleArray(allContent);
       
-      setArticles(filtered);
-      setFilteredArticles(filtered);
+      setArticles(allContent);
+      setFilteredArticles(allContent);
       
-      if (filtered.length === 0) {
+      if (allContent.length === 0) {
         toast({
           title: '🔍 No Results',
-          description: `No articles found for "${query}". Try different keywords.`,
+          description: `No content found for "${query}". Try different keywords.`,
         });
       }
     } catch (error) {
-      console.error('Error searching articles:', error);
+      console.error('Error searching content:', error);
       toast({
         title: '❌ Search Failed',
-        description: 'Could not search articles. Please try again.',
+        description: 'Could not search content. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -304,16 +541,52 @@ export default function DiscoverPage() {
     }
   };
 
-  // Load bookmarked articles from localStorage
-  const loadBookmarks = () => {
+
+  // Load more videos
+  const loadMoreVideos = async () => {
+    if (!hasMoreVideos || isLoadingMore) return;
+    
+    setIsLoadingMore(true);
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const bookmarked: BookmarkedArticle[] = JSON.parse(stored);
-        setBookmarkedIds(new Set(bookmarked.map(b => b.id)));
+      const newVideos = await fetchYouTubeVideos(searchQuery);
+      
+      if (newVideos.length === 0) {
+        setHasMoreVideos(false);
+        toast({
+          title: '✅ All Videos Loaded',
+          description: 'No more videos available.',
+        });
+      } else {
+        // Filter out duplicates by ID
+        setArticles(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+          const uniqueNewVideos = newVideos.filter(video => !existingIds.has(video.id));
+          
+          if (uniqueNewVideos.length === 0) {
+            setHasMoreVideos(false);
+            return prev;
+          }
+          
+          return [...prev, ...uniqueNewVideos];
+        });
+        
+        setFilteredArticles(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+          const uniqueNewVideos = newVideos.filter(video => !existingIds.has(video.id));
+          return [...prev, ...uniqueNewVideos];
+        });
+        
+        setVideoPage(prev => prev + 1);
       }
     } catch (error) {
-      console.error('Error loading bookmarks:', error);
+      console.error('Error loading more videos:', error);
+      toast({
+        title: '❌ Load More Failed',
+        description: 'Could not load more videos.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoadingMore(false);
     }
   };
 
@@ -321,7 +594,6 @@ export default function DiscoverPage() {
     if (!searchQuery) {
       fetchArticles(1);
     }
-    loadBookmarks();
   }, [selectedTag, contentType]);
 
   // Handle search with debounce
@@ -345,56 +617,6 @@ export default function DiscoverPage() {
     }
   };
 
-  const toggleBookmark = (article: DevToArticle) => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      let bookmarks: BookmarkedArticle[] = stored ? JSON.parse(stored) : [];
-      
-      const isBookmarked = bookmarkedIds.has(article.id);
-      
-      if (isBookmarked) {
-        // Remove bookmark
-        bookmarks = bookmarks.filter(b => b.id !== article.id);
-        setBookmarkedIds(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(article.id);
-          return newSet;
-        });
-        toast({
-          title: '📑 Bookmark Removed',
-          description: 'Article removed from your bookmarks.',
-        });
-      } else {
-        // Add bookmark
-        const newBookmark: BookmarkedArticle = {
-          id: article.id,
-          title: article.title,
-          url: article.url,
-          cover_image: article.cover_image,
-          published_at: article.published_at,
-          tag_list: article.tag_list,
-          user: article.user,
-          bookmarkedAt: Date.now(),
-        };
-        bookmarks.unshift(newBookmark);
-        setBookmarkedIds(prev => new Set(prev).add(article.id));
-        toast({
-          title: '✅ Bookmarked!',
-          description: 'Article saved to your bookmarks.',
-        });
-      }
-      
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
-    } catch (error) {
-      console.error('Error toggling bookmark:', error);
-      toast({
-        title: '❌ Bookmark Failed',
-        description: 'Could not save bookmark. Please try again.',
-        variant: 'destructive',
-      });
-    }
-  };
-
   const loadMoreArticles = () => {
     const nextPage = page + 1;
     setPage(nextPage);
@@ -410,74 +632,24 @@ export default function DiscoverPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen w-screen overflow-x-hidden bg-background">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-background">
       <InnovativeHeader
         currentPage="discover"
         user={user}
         onLogout={handleLogout}
       />
 
-      {/* Header Section */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 border-b bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-pink-950/10">
-        <div className="w-full">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Discover
-                </h1>
-                <p className="text-sm text-muted-foreground">Articles, videos & podcasts from DEV Community</p>
-              </div>
-            </div>
-            <Button 
-              variant="outline"
-              onClick={() => router.push('/bookmarks')}
-              className="gap-2"
-            >
-              <BookmarkCheck className="w-4 h-4" />
-              My Bookmarks
-            </Button>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <p className="text-xs text-muted-foreground font-medium">Total Content</p>
-              </div>
-              <p className="text-2xl font-bold">{articles.length}</p>
-            </div>
-            <div className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <BookmarkCheck className="w-4 h-4 text-purple-600" />
-                <p className="text-xs text-muted-foreground font-medium">Bookmarked</p>
-              </div>
-              <p className="text-2xl font-bold">{bookmarkedIds.size}</p>
-            </div>
-            <div className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <TrendingUp className="w-4 h-4 text-emerald-600" />
-                <p className="text-xs text-muted-foreground font-medium">Trending</p>
-              </div>
-              <p className="text-2xl font-bold">{selectedTag || 'All'}</p>
-            </div>
-            <div className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <Filter className="w-4 h-4 text-orange-600" />
-                <p className="text-xs text-muted-foreground font-medium">Filtered</p>
-              </div>
-              <p className="text-2xl font-bold">{filteredArticles.length}</p>
-            </div>
-          </div>
-        </div>
+      {/* Page Title - Fixed */}
+      <div className="flex-shrink-0">
+        <LearningPathTitle
+          icon={Sparkles}
+          title="Discover"
+          subtitle="A comprehensive collection of articles, videos & podcasts from DEV Community — stay updated with the latest tech content"
+        />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6">
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 overflow-y-auto">
         <div className="w-full">
           {/* Search and Filters */}
           <div className="mb-6 space-y-4">
@@ -562,7 +734,6 @@ export default function DiscoverPage() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
                 {filteredArticles.map((article) => {
-                  const isBookmarked = bookmarkedIds.has(article.id);
                   const publishedDate = new Date(article.published_at);
                   
                   return (
@@ -576,51 +747,10 @@ export default function DiscoverPage() {
                               alt={article.title}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
-                            <div className="absolute top-2 right-2">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleBookmark(article);
-                                }}
-                                className={cn(
-                                  "p-2 rounded-full backdrop-blur-sm transition-all",
-                                  isBookmarked
-                                    ? "bg-yellow-500 text-white shadow-lg"
-                                    : "bg-black/50 text-white hover:bg-black/70"
-                                )}
-                                title={isBookmarked ? "Remove bookmark" : "Bookmark"}
-                              >
-                                {isBookmarked ? (
-                                  <BookmarkCheck className="w-4 h-4" />
-                                ) : (
-                                  <Bookmark className="w-4 h-4" />
-                                )}
-                              </button>
-                            </div>
                           </div>
                         ) : (
                           <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-950 dark:to-purple-950 flex items-center justify-center relative">
                             <Newspaper className="w-16 h-16 text-primary/20" />
-                            <div className="absolute top-2 right-2">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleBookmark(article);
-                                }}
-                                className={cn(
-                                  "p-2 rounded-full backdrop-blur-sm transition-all",
-                                  isBookmarked
-                                    ? "bg-yellow-500 text-white shadow-lg"
-                                    : "bg-black/50 text-white hover:bg-black/70"
-                                )}
-                              >
-                                {isBookmarked ? (
-                                  <BookmarkCheck className="w-4 h-4" />
-                                ) : (
-                                  <Bookmark className="w-4 h-4" />
-                                )}
-                              </button>
-                            </div>
                           </div>
                         )}
                         
@@ -664,7 +794,11 @@ export default function DiscoverPage() {
                                 <img
                                   src={article.user.profile_image}
                                   alt={article.user.name}
-                                  className="w-8 h-8 rounded-full"
+                                  className="w-8 h-8 rounded-full object-cover bg-muted"
+                                  onError={(e) => {
+                                    // Fallback to a colored circle with initials
+                                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(article.user?.name || 'User')}&background=random&color=fff&size=128`;
+                                  }}
                                 />
                                 <div className="min-w-0">
                                   <p className="text-xs font-medium truncate">{article.user.name}</p>
@@ -748,8 +882,10 @@ export default function DiscoverPage() {
                 })}
               </div>
 
-              {/* Load More Button */}
-              {!searchQuery && filteredArticles.length >= 30 * page && (
+              {/* Load More Button - Only for articles */}
+              {!searchQuery && 
+               (contentType === 'all' || contentType === 'article') && 
+               filteredArticles.length >= 30 * page && (
                 <div className="mt-8 text-center">
                   <Button
                     onClick={loadMoreArticles}
@@ -763,7 +899,7 @@ export default function DiscoverPage() {
                       </>
                     ) : (
                       <>
-                        Load More Articles
+                        Load More Content
                         <TrendingUp className="w-4 h-4" />
                       </>
                     )}

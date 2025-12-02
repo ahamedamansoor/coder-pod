@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { 
   PlusCircle, Loader2, Search, Trash2, X, 
-  Youtube, Play, Clock, Filter, Code, BookmarkIcon, Link as LinkIcon, FileText, BookOpen, ExternalLink
+  Youtube, Play, Clock, Filter, Code, BookmarkIcon, Link as LinkIcon, FileText, BookOpen, ExternalLink, Sparkles
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { InnovativeHeader } from '@/components/shared';
+import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { usePlayer } from '@/contexts/PlayerContext';
+import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
 
 interface SavedNote {
   id: string;
@@ -43,8 +45,7 @@ export default function NotesPage() {
   const [filteredNotes, setFilteredNotes] = useState<SavedNote[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [playingVideo, setPlayingVideo] = useState<SavedNote | null>(null);
-  const [iframeError, setIframeError] = useState(false);
+  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
   
   // Form states
   const [title, setTitle] = useState('');
@@ -62,6 +63,7 @@ export default function NotesPage() {
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const { setContent } = usePlayer();
 
   const STORAGE_KEY = 'video_notes';
 
@@ -249,71 +251,45 @@ export default function NotesPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen w-screen overflow-x-hidden bg-background">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-background">
       <InnovativeHeader
         currentPage="notes"
         user={user}
         onLogout={handleLogout}
       />
 
-      {/* Header Section */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 border-b bg-muted/30">
-        <div className="w-full">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
-                <BookmarkIcon className="w-8 h-8 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold">Learning Resources</h1>
-                <p className="text-sm text-muted-foreground">Save videos, blogs, articles & links for quick access</p>
-              </div>
+      {/* Page Title - Fixed */}
+      <div className="flex-shrink-0">
+        <LearningPathTitle
+          icon={BookmarkIcon}
+          title="Learning Resources"
+          subtitle="Save videos, blogs, articles & links for quick access — organize your learning materials in one place"
+          action={
+            <div className="flex items-center gap-3">
+              <Button 
+                onClick={() => setShowAiKeyModal(true)}
+                variant="outline"
+                size="lg"
+                className="gap-2 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-200 dark:border-blue-800 hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-900/50 dark:hover:to-purple-900/50"
+              >
+                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                AI Settings
+              </Button>
+              <Button 
+                onClick={openCreateDialog}
+                size="lg"
+                className="gap-2"
+              >
+                <PlusCircle className="w-4 h-4" />
+                Add Resource
+              </Button>
             </div>
-            <Button 
-              onClick={openCreateDialog}
-              className="gap-2"
-            >
-              <PlusCircle className="w-4 h-4" />
-              Add Resource
-            </Button>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-card rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <BookmarkIcon className="w-4 h-4 text-primary" />
-                <p className="text-xs text-muted-foreground font-medium">Total Resources</p>
-              </div>
-              <p className="text-2xl font-bold">{notes.length}</p>
-            </div>
-            <div className="bg-card rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <Code className="w-4 h-4 text-primary" />
-                <p className="text-xs text-muted-foreground font-medium">Languages</p>
-              </div>
-              <p className="text-2xl font-bold">{new Set(notes.map(n => n.language)).size}</p>
-            </div>
-            <div className="bg-card rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <Youtube className="w-4 h-4 text-primary" />
-                <p className="text-xs text-muted-foreground font-medium">Videos</p>
-              </div>
-              <p className="text-2xl font-bold">{notes.filter(n => n.type === 'video').length}</p>
-            </div>
-            <div className="bg-card rounded-xl p-4 border shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <FileText className="w-4 h-4 text-primary" />
-                <p className="text-xs text-muted-foreground font-medium">Articles/Blogs</p>
-              </div>
-              <p className="text-2xl font-bold">{notes.filter(n => n.type === 'article' || n.type === 'blog').length}</p>
-            </div>
-          </div>
-        </div>
+          }
+        />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 relative">
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 relative overflow-y-auto">
 
         <div className="px-4 sm:px-6 lg:px-8 py-6">
           <div className="w-full">
@@ -424,7 +400,7 @@ export default function NotesPage() {
                 </div>
               </div>
             ) : filteredNotes.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
                 {filteredNotes.map((note) => {
                   const langData = languages.find(l => l.slug === note.language);
                   const ResourceIcon = getResourceIcon(note.type);
@@ -432,65 +408,91 @@ export default function NotesPage() {
                   
                   return (
                     <div key={note.id} className="group">
-                      <div className="rounded-xl border bg-card overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                      <div className="rounded-lg border bg-card overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-primary/50">
                         {/* Thumbnail or Icon */}
                         <div 
                           className="relative aspect-video bg-muted cursor-pointer overflow-hidden flex items-center justify-center"
-                          onClick={() => setPlayingVideo(note)}
+                          onClick={() => {
+                            // Open videos in floating player
+                            if (note.type === 'video' && note.videoId) {
+                              setContent({
+                                id: note.id,
+                                type: 'video',
+                                url: note.url,
+                                title: note.title,
+                              });
+                            } else {
+                              // Open all non-video resources in new tab
+                              window.open(note.url, '_blank', 'noopener,noreferrer');
+                            }
+                          }}
                         >
                           {hasThumb ? (
                             <>
                               <img
                                 src={`https://img.youtube.com/vi/${note.videoId}/mqdefault.jpg`}
                                 alt={note.title}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                               />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-2xl transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                                  <Play className="w-7 h-7 text-white ml-1" fill="currentColor" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                                  <Play className="w-5 h-5 text-white ml-0.5" fill="currentColor" />
                                 </div>
                               </div>
                             </>
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-primary/10">
-                              <ResourceIcon className="w-16 h-16 text-primary/60 group-hover:text-primary transition-colors" />
+                            <div className="w-full h-full flex items-center justify-center bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                              <ResourceIcon className="w-10 h-10 text-primary/60 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
                             </div>
                           )}
                           
                           {/* Type & Language Badges */}
-                          <div className="absolute top-2 left-2 flex gap-2">
-                            <Badge className="bg-black/70 backdrop-blur-sm text-white border-0 text-xs capitalize">
+                          <div className="absolute top-1.5 left-1.5 flex gap-1.5">
+                            <Badge className="bg-black/60 backdrop-blur-sm text-white border-0 text-[10px] px-1.5 py-0.5 capitalize">
                               {note.type}
                             </Badge>
-                            <Badge className="bg-black/70 backdrop-blur-sm text-white border-0 text-xs">
+                            <Badge className="bg-black/60 backdrop-blur-sm text-white border-0 text-[10px] px-1.5 py-0.5">
                               {langData?.name || note.language}
                             </Badge>
                           </div>
                         </div>
                         
                         {/* Info */}
-                        <div className="p-4">
+                        <div className="p-2.5">
                           <h3 
-                            className="font-semibold text-sm line-clamp-2 mb-2 cursor-pointer hover:text-primary transition-colors leading-snug"
-                            onClick={() => setPlayingVideo(note)}
+                            className="font-semibold text-xs line-clamp-2 mb-1.5 cursor-pointer hover:text-primary transition-colors leading-tight"
+                            onClick={() => {
+                              // Open videos in floating player
+                              if (note.type === 'video' && note.videoId) {
+                                setContent({
+                                  id: note.id,
+                                  type: 'video',
+                                  url: note.url,
+                                  title: note.title,
+                                });
+                              } else {
+                                // Open all non-video resources in new tab
+                                window.open(note.url, '_blank', 'noopener,noreferrer');
+                              }
+                            }}
                           >
                             {note.title}
                           </h3>
                           
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                              <Clock className="w-3.5 h-3.5" />
-                              {new Date(note.createdAt).toLocaleDateString()}
+                            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                              <Clock className="w-3 h-3" />
+                              {new Date(note.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                             </div>
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteNote(note.id);
                               }}
-                              className="p-2 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors"
-                              title="Delete video"
+                              className="p-1 rounded hover:bg-destructive/10 hover:text-destructive transition-colors"
+                              title="Delete resource"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3 h-3" />
                             </button>
                           </div>
                         </div>
@@ -639,95 +641,20 @@ export default function NotesPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Resource Viewer Dialog */}
-      <Dialog open={!!playingVideo} onOpenChange={() => {
-        setPlayingVideo(null);
-        setIframeError(false);
-      }}>
-        <DialogContent className="max-w-5xl p-0">
-          {playingVideo && (
-            <div>
-              {/* Video Player or Resource Preview */}
-              {playingVideo.type === 'video' && playingVideo.videoId ? (
-                <div className="aspect-video bg-black rounded-t-lg overflow-hidden">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1`}
-                    title={playingVideo.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-              ) : (
-                <div className="aspect-video bg-muted rounded-t-lg overflow-hidden flex items-center justify-center relative">
-                  {!iframeError ? (
-                    <>
-                      <iframe
-                        src={playingVideo.url}
-                        title={playingVideo.title}
-                        className="w-full h-full border-0"
-                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                        onError={() => setIframeError(true)}
-                      />
-                      {/* Loading overlay */}
-                      <div className="absolute inset-0 bg-muted/50 backdrop-blur-sm flex items-center justify-center pointer-events-none">
-                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-center p-8">
-                      {(() => {
-                        const ResourceIcon = getResourceIcon(playingVideo.type);
-                        return <ResourceIcon className="w-16 h-16 text-primary/60 mx-auto mb-4" />;
-                      })()}
-                      <p className="text-sm font-medium mb-1 capitalize">{playingVideo.type}</p>
-                      <p className="text-xs text-muted-foreground mb-4">This site can't be embedded</p>
-                      <Button asChild>
-                        <a href={playingVideo.url} target="_blank" rel="noopener noreferrer" className="gap-2">
-                          <ExternalLink className="w-4 h-4" />
-                          Open in New Tab
-                        </a>
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Resource Info */}
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <h2 className="text-xl font-bold flex-1">{playingVideo.title}</h2>
-                  <div className="flex gap-2 flex-shrink-0">
-                    <Badge variant="secondary" className="capitalize">
-                      {playingVideo.type}
-                    </Badge>
-                    <Badge variant="outline">
-                      {languages.find(l => l.slug === playingVideo.language)?.name || playingVideo.language}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4" />
-                    {new Date(playingVideo.createdAt).toLocaleDateString()}
-                  </span>
-                  <a
-                    href={playingVideo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 hover:text-primary transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Open in new tab
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* AI Provider Modal */}
+      <AIProviderModal
+        isOpen={showAiKeyModal}
+        onClose={() => setShowAiKeyModal(false)}
+        onSave={(provider, apiKey) => {
+          localStorage.setItem('ai_api_key', apiKey);
+          localStorage.setItem('ai_provider', provider);
+          setShowAiKeyModal(false);
+          toast({
+            title: 'AI Provider Connected!',
+            description: `Successfully configured ${provider}`,
+          });
+        }}
+      />
     </div>
   );
 }

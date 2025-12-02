@@ -124,15 +124,6 @@ export default function CheatsheetBoard() {
     <>
       <main className="flex-1 overflow-y-auto p-6 sm:p-8 bg-transparent relative">
         <div className="w-full relative z-10">
-          {/* Header */}
-          <div className="mb-6 text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-slate-900 dark:text-white">
-              Quick Reference
-            </h1>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
-              Search for specific commands or situations. Click any card to view detailed usage examples.
-            </p>
-          </div>
 
           {/* Search Bar */}
           <div className="mb-4 flex justify-center">

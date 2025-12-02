@@ -1,9 +1,10 @@
 // Shared components barrel export
 export { GenericContentDisplay } from './generic-content-display';
 export { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
-export { PageHeader } from './generic-page-header';
+export { PageHeader } from './page-header';
 export { TopicSidebar } from './topic-sidebar';
 export { TopicTitle } from './topic-title';
+export { LearningPathTitle } from './learning-path-title';
 export { Icons } from './icons';
 export { InteractiveLoading } from './interactive-loading';
 export { PageLoader } from './page-loader';
@@ -13,6 +14,9 @@ export { AiInterviewDemo } from './ai-interview-demo';
 export { AiSimplification } from './ai-simplification';
 export { default as InterviewSimulator } from './interview-simulator';
 export { FirebaseErrorListener } from './FirebaseErrorListener';
+export { MotivationalLoader } from './motivational-loader';
+export { AutoGuestAuth } from './auto-guest-auth';
+export { FeatureGateModal } from './feature-gate-modal';
 
 // Layout components
 export { InnovativeHeader } from './layout/innovative-header';

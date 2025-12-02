@@ -1,14 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Shield, Code, Play, Zap, StickyNote } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Shield, Code, Play, Zap, StickyNote, LogIn, Brain } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { cn } from '@/lib/utils';
 import { isUserAdmin } from '@/lib/admin';
+import { FeatureGateModal } from '@/components/shared/feature-gate-modal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,14 +20,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface InnovativeHeaderProps {
-  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning';
+  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'ai-interview';
   showNavigation?: boolean;
   user?: {
     displayName?: string | null;
     email?: string | null;
     photoURL?: string | null;
+    isAnonymous?: boolean;
   } | null;
   onLogout?: () => void;
   // Learning page specific props
@@ -36,7 +45,10 @@ interface InnovativeHeaderProps {
   onWebPlaygroundOpen?: () => void;
 }
 
-function getUserInitials(displayName?: string | null, email?: string | null): string {
+function getUserInitials(displayName?: string | null, email?: string | null, isAnonymous?: boolean): string {
+  if (isAnonymous) {
+    return 'G';
+  }
   if (displayName) {
     const names = displayName.trim().split(' ');
     if (names.length >= 2) {
@@ -61,18 +73,32 @@ export function InnovativeHeader({
   onPlaygroundOpen,
   onWebPlaygroundOpen
 }: InnovativeHeaderProps) {
+  const isGuest = user?.isAnonymous;
+  const router = useRouter();
+  const [showFeatureGate, setShowFeatureGate] = useState(false);
+  const [gatedFeatureName, setGatedFeatureName] = useState('');
+
   const navItems = [
-    { href: '/', label: 'Home', icon: Home, page: 'home' },
-    { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps' },
-    { href: '/cheatsheets', label: 'Cheatsheets', icon: FileText, page: 'cheatsheets' },
-    { href: '/discover', label: 'Discover', icon: Sparkles, page: 'discover' },
-    { href: '/notes', label: 'Notes', icon: StickyNote, page: 'notes' },
+    { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false },
+    { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false },
+    { href: '/cheatsheets', label: 'Cheatsheets', icon: FileText, page: 'cheatsheets', requiresAuth: false },
+    { href: '/ai-interview', label: 'AI Interview', icon: Brain, page: 'ai-interview', requiresAuth: false },
+    { href: '/notes', label: 'Notes', icon: StickyNote, page: 'notes', requiresAuth: true },
+    { href: '/discover', label: 'Discover', icon: Sparkles, page: 'discover', requiresAuth: false },
   ];
 
+  const handleNavClick = (e: React.MouseEvent, item: typeof navItems[0]) => {
+    if (item.requiresAuth && isGuest) {
+      e.preventDefault();
+      setGatedFeatureName(item.label);
+      setShowFeatureGate(true);
+    }
+  };
+
   return (
-    <header className="relative border-b border-slate-200/50 dark:border-slate-800/50 flex-shrink-0 sticky top-0 z-50 overflow-hidden group">
+    <header className="relative border-b border-slate-200/50 dark:border-slate-800/50 flex-shrink-0 sticky top-0 z-[100] overflow-hidden group">
       {/* Elegant Gradient Background with Glass Morphism */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-blue-50/20 to-purple-50/20 dark:from-slate-950 dark:via-blue-950/10 dark:to-purple-950/10 backdrop-blur-xl">
+      <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-blue-50/30 to-purple-50/30 dark:from-slate-950/95 dark:via-blue-950/20 dark:to-purple-950/20 backdrop-blur-xl">
         {/* Subtle floating orbs */}
         <div className="absolute top-0 left-[10%] w-32 h-32 bg-blue-500/5 dark:bg-blue-400/3 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute top-0 right-[15%] w-40 h-40 bg-purple-500/5 dark:bg-purple-400/3 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
@@ -113,7 +139,7 @@ export function InnovativeHeader({
                 const isActive = currentPage === item.page;
                 
                 return (
-                  <Link key={item.href} href={item.href}>
+                  <Link key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item)}>
                     <button
                       className={cn(
                         "relative group/btn flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-out",
@@ -210,7 +236,7 @@ export function InnovativeHeader({
                 const isActive = currentPage === item.page;
                 
                 return (
-                  <Link key={item.href} href={item.href}>
+                  <Link key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item)}>
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
@@ -233,25 +259,67 @@ export function InnovativeHeader({
             <ThemeToggle />
           </div>
 
+          {/* Sign In Button for Guests */}
+          {!user && (
+            <Link href="/login">
+              <Button
+                className="relative group/signin bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                size="sm"
+              >
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-md opacity-0 group-hover/signin:opacity-30 blur transition-all duration-300" />
+                <span className="relative z-10 font-semibold">Sign In</span>
+              </Button>
+            </Link>
+          )}
+
           {/* User Profile with Modern Dropdown */}
           {user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="relative group/avatar flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:scale-105">
+            user.isAnonymous ? (
+              <Link href="/login">
+                <button className="relative group/signin flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:scale-105 overflow-hidden">
                   {/* Gradient Glow on Hover */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover/avatar:opacity-20 blur transition-all duration-300" />
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover/signin:opacity-20 blur transition-all duration-300" />
                   
-                  {/* Avatar Circle */}
-                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md transition-all duration-300 group-hover/avatar:shadow-lg">
-                    <span className="relative z-10">{getUserInitials(user.displayName, user.email)}</span>
+                  {/* Animated background shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/15 to-purple-500/0 translate-x-[-100%] group-hover/signin:translate-x-[100%] transition-transform duration-700" />
+                  
+                  {/* Avatar Circle with Icon Animation */}
+                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md transition-all duration-300 group-hover/signin:shadow-lg">
+                    <div className="relative w-full h-full flex items-center justify-center">
+                      <span className="absolute transition-all duration-300 group-hover/signin:opacity-0 group-hover/signin:scale-50">G</span>
+                      <LogIn className="absolute h-4 w-4 transition-all duration-300 opacity-0 scale-50 group-hover/signin:opacity-100 group-hover/signin:scale-100" />
+                    </div>
                   </div>
                   
-                  {/* User Name (Hidden on Mobile) */}
-                  <span className="hidden sm:block text-sm font-medium text-slate-700 dark:text-slate-300 relative z-10">
-                    {user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'User'}
-                  </span>
+                  {/* Sliding Text Animation (Hidden on Mobile) */}
+                  <div className="hidden sm:block relative h-5 w-16 overflow-hidden">
+                    <span className="absolute inset-0 flex items-center text-sm font-medium text-slate-700 dark:text-slate-300 transition-all duration-300 group-hover/signin:-translate-y-full group-hover/signin:opacity-0">
+                      Guest
+                    </span>
+                    <span className="absolute inset-0 flex items-center text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 translate-y-full opacity-0 group-hover/signin:translate-y-0 group-hover/signin:opacity-100">
+                      Sign In
+                    </span>
+                  </div>
                 </button>
-              </DropdownMenuTrigger>
+              </Link>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="relative group/avatar flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    {/* Gradient Glow on Hover */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover/avatar:opacity-20 blur transition-all duration-300" />
+                    
+                    {/* Avatar Circle */}
+                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md transition-all duration-300 group-hover/avatar:shadow-lg">
+                      <span className="relative z-10">{getUserInitials(user.displayName, user.email, user.isAnonymous)}</span>
+                    </div>
+                    
+                    {/* User Name (Hidden on Mobile) */}
+                    <span className="hidden sm:block text-sm font-medium text-slate-700 dark:text-slate-300 relative z-10">
+                      {user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'User'}
+                    </span>
+                  </button>
+                </DropdownMenuTrigger>
               
               <DropdownMenuContent className="w-72 mt-2 p-0 overflow-hidden" align="end" forceMount>
                 {/* Profile Header with Gradient */}
@@ -265,13 +333,13 @@ export function InnovativeHeader({
                   <div className="relative flex items-center gap-3">
                     {/* Large Avatar */}
                     <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
-                      {getUserInitials(user.displayName, user.email)}
+                      {getUserInitials(user.displayName, user.email, user.isAnonymous)}
                     </div>
                     
                     {/* User Info */}
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-base truncate">{user.displayName || user.email?.split('@')[0] || 'User'}</p>
-                      <p className="text-sm text-white/80 truncate">{user.email}</p>
+                      <p className="font-semibold text-base truncate">{user.isAnonymous ? 'Guest User' : (user.displayName || user.email?.split('@')[0] || 'User')}</p>
+                      <p className="text-sm text-white/80 truncate">{user.isAnonymous ? 'Browsing as guest' : user.email}</p>
                     </div>
                   </div>
                 </div>
@@ -309,12 +377,20 @@ export function InnovativeHeader({
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
+            )
           )}
         </div>
       </div>
 
       {/* Bottom Border Glow */}
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent dark:via-blue-400/30" />
+
+      {/* Feature Gate Modal */}
+      <FeatureGateModal 
+        isOpen={showFeatureGate}
+        onClose={() => setShowFeatureGate(false)}
+        featureName={gatedFeatureName}
+      />
     </header>
   );
 }

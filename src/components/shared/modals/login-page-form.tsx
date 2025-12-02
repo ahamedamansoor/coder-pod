@@ -173,7 +173,7 @@ export function LoginPageForm() {
     <Card className="w-full max-w-md">
       <CardHeader className="text-center space-y-4">
         <div className="flex justify-center">
-          <Logo />
+          <Logo clickable={false} />
         </div>
         <CardDescription>Sign in to continue your learning journey.</CardDescription>
       </CardHeader>
