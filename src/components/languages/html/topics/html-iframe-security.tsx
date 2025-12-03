@@ -7,7 +7,11 @@ import { FrontendCodePreview } from '@/components/shared';
 import { Shield, Lock, AlertTriangle, CheckCircle, AlertCircle, ShieldAlert, Eye } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlIframeSecurity() {
+interface HtmlIframeSecurityProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlIframeSecurity({ onOpenWebPlayground }: HtmlIframeSecurityProps) {
   const sandboxExample = `<!DOCTYPE html>
 <html lang="en">
 <head>

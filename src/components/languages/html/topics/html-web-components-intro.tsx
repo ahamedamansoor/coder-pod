@@ -2,12 +2,16 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
 import { Puzzle, Component, Code, Sparkles, CheckCircle, Info, Layers } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlWebComponentsIntro() {
+interface HtmlWebComponentsIntroProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlWebComponentsIntro({ onOpenWebPlayground }: HtmlWebComponentsIntroProps) {
   const simpleComponentExample = `<!DOCTYPE html>
 <html lang="en">
 <head>

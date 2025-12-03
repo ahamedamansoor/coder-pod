@@ -7,7 +7,11 @@ import { FrontendCodePreview } from '@/components/shared';
 import { FileVideo, Image as ImageIcon, FileAudio, Code, CheckCircle, AlertCircle, Info, Play } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlEmbedObject() {
+interface HtmlEmbedObjectProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlEmbedObject({ onOpenWebPlayground }: HtmlEmbedObjectProps) {
   const embedExample = `<!DOCTYPE html>
 <html lang="en">
 <head>

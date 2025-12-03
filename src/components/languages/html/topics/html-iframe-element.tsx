@@ -7,7 +7,11 @@ import { FrontendCodePreview } from '@/components/shared';
 import { ExternalLink, Frame, Map, Code, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlIframeElement() {
+interface HtmlIframeElementProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeElementProps) {
   const basicIframeExample = `<!DOCTYPE html>
 <html lang="en">
 <head>

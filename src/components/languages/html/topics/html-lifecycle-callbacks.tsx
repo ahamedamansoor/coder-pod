@@ -7,7 +7,11 @@ import { FrontendCodePreview } from '@/components/shared';
 import { RefreshCw, PlayCircle, StopCircle, Edit, Sparkles, CheckCircle, Info, Activity } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlLifecycleCallbacks() {
+interface HtmlLifecycleCallbacksProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLifecycleCallbacksProps) {
   const basicLifecycleExample = `<!DOCTYPE html>
 <html lang="en">
 <head>

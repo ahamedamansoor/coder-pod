@@ -7,7 +7,11 @@ import { FrontendCodePreview } from '@/components/shared';
 import { Shield, Eye, EyeOff, Sparkles, CheckCircle, AlertCircle, Info, Lock } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlShadowDom() {
+interface HtmlShadowDomProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProps) {
   const basicShadowDOMExample = `<!DOCTYPE html>
 <html lang="en">
 <head>

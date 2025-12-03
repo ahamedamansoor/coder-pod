@@ -7,7 +7,11 @@ import { FrontendCodePreview } from '@/components/shared';
 import { FileCode, Copy, Layers, Sparkles, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function HtmlTemplates() {
+interface HtmlTemplatesProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
+
+export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProps) {
   const basicTemplateWithWebComponentExample = `<!DOCTYPE html>
 <html lang="en">
 <head>
