@@ -30,7 +30,19 @@ interface CheatsheetModalProps {
   onClose: () => void;
   title: string;
   icon: LucideIcon;
-  colorTheme: 'blue' | 'emerald' | 'amber' | 'rose' | 'purple' | 'cyan' | 'red' | 'indigo' | 'teal' | 'slate' | 'orange';
+  colorTheme:
+    | 'blue'
+    | 'emerald'
+    | 'amber'
+    | 'rose'
+    | 'purple'
+    | 'cyan'
+    | 'red'
+    | 'indigo'
+    | 'teal'
+    | 'slate'
+    | 'orange'
+    | 'green';
   sections: CheatsheetSection[];
 }
 

@@ -246,7 +246,13 @@ type ConsoleLog = {
 type StyleLang = 'css' | 'scss' | 'tailwind';
 type ScriptLang = 'javascript' | 'typescript';
 
-export function WebPlaygroundModal({ children, initialLanguage }: { children: React.ReactNode, initialLanguage?: string }) {
+export function WebPlaygroundModal({
+  children,
+  initialLanguage,
+}: {
+  children?: React.ReactNode;
+  initialLanguage?: string;
+}) {
   const { open, setOpen, content, setContent } = useWebPlayground();
 
   const [htmlCode, setHtmlCode] = useState('');
@@ -552,7 +558,7 @@ export function WebPlaygroundModal({ children, initialLanguage }: { children: Re
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
       <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] flex flex-col p-0 m-0 gap-0 rounded-none border-0" showCloseButton={false}>
         {/* Clean, Structured Header */}
         <DialogHeader className="px-6 py-3 border-b bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900 flex-row items-center justify-between">

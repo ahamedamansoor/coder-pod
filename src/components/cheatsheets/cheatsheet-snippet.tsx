@@ -11,7 +11,19 @@ interface CheatsheetSnippetProps {
   description: string;
   usage?: string;
   example?: string;
-  colorTheme?: 'blue' | 'emerald' | 'amber' | 'rose' | 'purple' | 'cyan' | 'red' | 'indigo' | 'teal' | 'slate' | 'orange';
+  colorTheme?:
+    | 'blue'
+    | 'emerald'
+    | 'amber'
+    | 'rose'
+    | 'purple'
+    | 'cyan'
+    | 'red'
+    | 'indigo'
+    | 'teal'
+    | 'slate'
+    | 'orange'
+    | 'green';
 }
 
 export function CheatsheetSnippet({

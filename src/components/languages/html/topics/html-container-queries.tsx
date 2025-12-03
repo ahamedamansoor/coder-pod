@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
 import { Container, Maximize2, Smartphone, Monitor, Layout, CheckCircle, AlertCircle, Sparkles } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -706,8 +706,11 @@ export default function HtmlContainerQueries() {
   return (
     <div className="space-y-8">
       <PageHeader
+        icon={Container}
+        category="HTML · Modern Features"
         title="Container Queries"
         description="Build truly responsive components that adapt based on their container size, not just the viewport"
+        colorTheme="cyan"
       />
 
       {/* What are Container Queries */}

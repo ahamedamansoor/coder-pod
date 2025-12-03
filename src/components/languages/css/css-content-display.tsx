@@ -69,7 +69,7 @@ export function CssContentDisplay({
     <GenericContentDisplay topic={topic} language={language}>
       <React.Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent
-          ? React.createElement(CustomTopicComponent, {
+          ? React.createElement(CustomTopicComponent as any, {
               onOpenWebPlayground: openWithContent,
             })
           : null}

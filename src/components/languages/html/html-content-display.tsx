@@ -148,13 +148,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-syntax': HtmlSyntax,
   'html-comments': HtmlComments,
   
-  // 1.5 SEMANTIC STRUCTURE
-  'block-inline': HtmlBlockInlineNew,
-  'block-vs-inline': BlockVsInline,
-  'semantic-structure': HtmlSemanticStructure,
-  'semantic-elements': HtmlSemanticElementsOld,
-  'semantic-html': HtmlSemanticElementsNew,
-
   // 2. TEXT & CONTENT
   'html-elements-and-tags': HtmlElementsAndTags,
   'html-headings': HtmlHeadingsAndParagraphs,
@@ -162,23 +155,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'character-entities': CharacterEntities,
   'html-attributes': HtmlAttributes,
   'global-attributes': GlobalAttributes,
-  
-  // 1.5 SEMANTIC STRUCTURE
-  'block-inline': HtmlBlockInlineNew,
-  'block-vs-inline': BlockVsInline,
-  'div-span': HtmlDivSpan,
-  'div': HtmlDivSpan,
-  'span': HtmlDivSpan,
-  'semantic-structure': HtmlSemanticStructure,
-  'semantic-elements': HtmlSemanticElementsOld,
-  'header-footer': HtmlHeaderElement,
-  'nav-element': HtmlNavElement,
-  'main-element': HtmlMainElement,
-  'article-element': HtmlArticleElement,
-  'section-element': HtmlSectionElement,
-  'aside-element': HtmlAsideElement,
-  'address-element': HtmlAddressElement,
-  'time-element': HtmlTimeElement,
   
   // 3. LINKS & NAVIGATION
   'html-links': HtmlLinks,
@@ -217,7 +193,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'file-inputs': HtmlFileInputs,
   'form-buttons': HtmlFormButtons,
   'form-structure': HtmlFormStructure,
-  'form-validation': FormValidation,
   'input-text': HtmlTextInputs,
   'input-numbers': HtmlNumberInputs,
   'input-dates': HtmlDateTimeInputs,
@@ -240,9 +215,14 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'progress-meter': ProgressAndMeter,
   
   // 7. SEMANTIC HTML
+  'block-inline': HtmlBlockInlineNew,
   'block-vs-inline': BlockVsInline,
   'div-span': HtmlDivSpan,
+  'div': HtmlDivSpan,
+  'span': HtmlDivSpan,
+  'semantic-structure': HtmlSemanticStructure,
   'semantic-elements': HtmlSemanticElementsOld,
+  'semantic-html': HtmlSemanticElementsNew,
   'header-footer': HtmlHeaderElement,
   'nav-element': HtmlNavElement,
   'main-element': HtmlMainElement,
@@ -354,7 +334,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'interview-questions': HtmlInterviewQuestions,
   'html5-latest-features': Html5LatestFeatures,
   'content-visibility': ContentVisibility,
-  'progress-and-meter': ProgressAndMeter,
   'advanced-tables': HtmlTableStructure,
   'html-document-metadata': HtmlDocumentMetadata,
   'microdata-structured-data': MicrodataStructuredData,

@@ -13,7 +13,9 @@ import {
   Lightbulb,
   Brackets,
   AlertCircle,
-  ArrowRight
+  ArrowRight,
+  Quote,
+  FileCode
 } from 'lucide-react';
 
 interface HtmlSyntaxProps {

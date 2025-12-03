@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared';
-import { FrontendCodePreview } from '@/components/shared';
-import { Component, Code, Sparkles, CheckCircle, AlertCircle, Info, Zap } from 'lucide-react';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
+import { Box, Component, Code, Sparkles, CheckCircle, AlertCircle, Info, Zap, Package, Code2, Lightbulb, RefreshCw, Settings, Layers, XCircle, Globe } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlCustomElementsProps { 

@@ -21,11 +21,12 @@ interface FrontendCodePreviewProps {
   html?: string;
   css?: string;
   js?: string;
-  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan';
+  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan' | 'red' | 'green';
   icon?: React.ComponentType<{ className?: string }>;
   previewHeight?: string;
   codeHeight?: string;
   onOpenPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
@@ -39,6 +40,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   previewHeight = 'auto',
   codeHeight = 'auto',
   onOpenPlayground,
+  onOpenWebPlayground,
 }) => {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>('html');
@@ -161,6 +163,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       tab: 'bg-emerald-500 text-white',
       tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
     },
+    green: {
+      gradient: 'from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20',
+      border: 'border-green-200/60 dark:border-green-700',
+      badge: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+      icon: 'text-green-600 dark:text-green-400',
+      tab: 'bg-green-500 text-white',
+      tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
+    },
     amber: {
       gradient: 'from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20',
       border: 'border-amber-200/60 dark:border-amber-700',
@@ -175,6 +185,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       badge: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
       icon: 'text-orange-600 dark:text-orange-400',
       tab: 'bg-orange-500 text-white',
+      tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
+    },
+    red: {
+      gradient: 'from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20',
+      border: 'border-red-200/60 dark:border-red-700',
+      badge: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+      icon: 'text-red-600 dark:text-red-400',
+      tab: 'bg-red-500 text-white',
       tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
     },
     pink: {
@@ -261,8 +279,9 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 <button
                   onClick={() => {
                     openWithContent(html, css, js);
-                    if (!openWithContent && onOpenPlayground) {
-                      onOpenPlayground(html, css, js);
+                    const openHandler = onOpenPlayground ?? onOpenWebPlayground;
+                    if (!openWithContent && openHandler) {
+                      openHandler(html, css, js);
                     }
                   }}
                   className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
@@ -326,4 +345,3 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     </Card>
   );
 };
-

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
 import { Eye, Zap, Image as ImageIcon, Gauge, CheckCircle, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -453,8 +453,11 @@ export default function HtmlLazyLoadingAdvanced() {
   return (
     <div className="space-y-8">
       <PageHeader
+        icon={Gauge}
+        category="14. Performance"
         title="Advanced Lazy Loading"
         description="Master modern lazy loading techniques with Intersection Observer API for optimal performance"
+        colorTheme="purple"
       />
 
       {/* What is Advanced Lazy Loading */}
