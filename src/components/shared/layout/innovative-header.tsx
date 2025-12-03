@@ -78,7 +78,7 @@ export function InnovativeHeader({
   const [showFeatureGate, setShowFeatureGate] = useState(false);
   const [gatedFeatureName, setGatedFeatureName] = useState('');
 
-  const navItems = [
+  const allNavItems = [
     { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false },
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false },
     { href: '/cheatsheets', label: 'Cheatsheets', icon: FileText, page: 'cheatsheets', requiresAuth: false },
@@ -87,7 +87,12 @@ export function InnovativeHeader({
     { href: '/discover', label: 'Discover', icon: Sparkles, page: 'discover', requiresAuth: false },
   ];
 
-  const handleNavClick = (e: React.MouseEvent, item: typeof navItems[0]) => {
+  // Filter out Discover button when on Learning page
+  const navItems = currentPage === 'learning' 
+    ? allNavItems.filter(item => item.page !== 'discover')
+    : allNavItems;
+
+  const handleNavClick = (e: React.MouseEvent, item: typeof allNavItems[0]) => {
     if (item.requiresAuth && isGuest) {
       e.preventDefault();
       setGatedFeatureName(item.label);

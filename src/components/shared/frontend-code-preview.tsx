@@ -1,9 +1,12 @@
 'use client';
 
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Check, ChevronRight, Eye } from 'lucide-react';
+import { Copy, Check, ChevronRight, Eye, Play } from 'lucide-react';
+import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 
 /**
  * FrontendCodePreview - A component to display frontend code with live preview
@@ -22,6 +25,7 @@ interface FrontendCodePreviewProps {
   icon?: React.ComponentType<{ className?: string }>;
   previewHeight?: string;
   codeHeight?: string;
+  onOpenPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
@@ -34,10 +38,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   icon: Icon = Eye,
   previewHeight = '300px',
   codeHeight = 'auto',
+  onOpenPlayground,
 }) => {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>('html');
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Get web playground context
+  const { openWithContent } = useWebPlayground();
 
   // Detect dark mode
   useEffect(() => {
@@ -251,18 +259,37 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               )}
             </div>
             
-            {/* Copy Button */}
-            <button
-              onClick={handleCopy}
-              className="p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-              title="Copy code"
-            >
-              {copied ? (
-                <Check className="w-4 h-4 text-emerald-600" />
-              ) : (
-                <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-              )}
-            </button>
+            <div className="flex items-center gap-1.5">
+              {/* Play Button - Prominent & Always Visible */}
+              <button
+                onClick={() => {
+                  // Always use web playground context
+                  openWithContent(html, css, js);
+                  // Fallback to legacy prop if context is not available
+                  if (!openWithContent && onOpenPlayground) {
+                    onOpenPlayground(html, css, js);
+                  }
+                }}
+                className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
+                title="Open code in Web Playground for interactive editing"
+              >
+                <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
+                <span className="text-xs font-semibold">Run</span>
+              </button>
+
+              {/* Copy Button */}
+              <button
+                onClick={handleCopy}
+                className="p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                title="Copy code"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-emerald-600" />
+                ) : (
+                  <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Code Display */}

@@ -152,6 +152,422 @@ q::before { content: open-quote; } q::after { content: close-quote; }`,
       js: ''
     };
 
+    // Innovative comprehensive showcase playground
+    const comprehensivePlayground = {
+      html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Formatting Showcase</title>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <h1>✨ Text Formatting Masterclass</h1>
+      <p class="tagline">Explore all HTML text formatting elements in one interactive showcase</p>
+    </header>
+
+    <section class="demo-section">
+      <h2 class="section-title">📝 Semantic Elements</h2>
+      <p>These elements convey <strong>meaning and importance</strong> to browsers and assistive technologies.</p>
+      
+      <div class="element-grid">
+        <div class="element-card">
+          <h3>&lt;strong&gt;</h3>
+          <p>This is <strong>critically important</strong> information!</p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;em&gt;</h3>
+          <p>Please <em>do not</em> ignore this instruction.</p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;mark&gt;</h3>
+          <p>Your search found "<mark>typescript</mark>" results.</p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;code&gt;</h3>
+          <p>Run <code>npm install</code> in terminal.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="section-title">⌨️ Technical & User Input</h2>
+      <p>Elements for representing code, keyboard input, and program output.</p>
+      
+      <div class="element-grid">
+        <div class="element-card">
+          <h3>&lt;kbd&gt;</h3>
+          <p>Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;samp&gt;</h3>
+          <p>Output: <samp>✓ Build completed in 2.3s</samp></p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;var&gt;</h3>
+          <p>Let <var>x</var> = 10, then <var>y</var> = <var>x</var> * 2</p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;sub&gt; / &lt;sup&gt;</h3>
+          <p>H<sub>2</sub>O | E = mc<sup>2</sup></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="section-title">📋 Quotes & Citations</h2>
+      <blockquote>
+        <p>"The best way to predict the future is to invent it."</p>
+        <cite>— Alan Kay</cite>
+      </blockquote>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="section-title">✏️ Editorial Changes</h2>
+      <p>Original: <del datetime="2025-11-20">$99.99</del> New: <ins datetime="2025-11-20">$79.99</ins></p>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="section-title">🎨 Presentational Elements</h2>
+      <div class="element-grid">
+        <div class="element-card">
+          <h3>&lt;b&gt;</h3>
+          <p>Product: <b>CodePod</b></p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;i&gt;</h3>
+          <p>Species: <i>Homo sapiens</i></p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;u&gt;</h3>
+          <p>This is <u>underlined</u></p>
+        </div>
+        <div class="element-card">
+          <h3>&lt;s&gt;</h3>
+          <p><s>Old price</s> On sale!</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Master text formatting to create <strong>accessible</strong>, <em>meaningful</em>, and <mark>beautiful</mark> content.</p>
+    </footer>
+  </main>
+</body>
+</html>`,
+      css: `* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.8;
+  background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%);
+  color: #1e293b;
+}
+
+html.dark body {
+  background: linear-gradient(135deg, #0f172a 0%, #2d1b69 100%);
+  color: #e2e8f0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(120deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border-radius: 12px;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.demo-section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  transition: all 0.3s ease;
+}
+
+html.dark .demo-section {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.demo-section:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.section-title {
+  font-size: 1.75rem;
+  color: #1e40af;
+  margin-bottom: 1rem;
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 0.5rem;
+}
+
+html.dark .section-title {
+  color: #93c5fd;
+  border-bottom-color: #60a5fa;
+}
+
+.element-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.element-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%);
+  border: 2px solid #dbeafe;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+html.dark .element-card {
+  background: linear-gradient(135deg, #1e3a8a20 0%, #2d1b6920 100%);
+  border-color: #3730a3;
+}
+
+.element-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+.element-card h3 {
+  color: #3b82f6;
+  font-family: monospace;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+html.dark .element-card h3 {
+  color: #93c5fd;
+}
+
+.element-card p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+blockquote {
+  background: #f1f5f9;
+  border-left: 5px solid #3b82f6;
+  padding: 2rem 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  font-style: italic;
+}
+
+html.dark blockquote {
+  background: #1e293b;
+  border-left-color: #60a5fa;
+}
+
+blockquote p {
+  margin: 0 0 1rem 0;
+  color: #475569;
+}
+
+html.dark blockquote p {
+  color: #cbd5e1;
+}
+
+cite {
+  display: block;
+  text-align: right;
+  font-style: normal;
+  color: #059669;
+}
+
+html.dark cite {
+  color: #34d399;
+}
+
+strong {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+html.dark strong {
+  color: #f87171;
+}
+
+em {
+  color: #7c3aed;
+  font-style: italic;
+}
+
+html.dark em {
+  color: #c084fc;
+}
+
+mark {
+  background: #fef08a;
+  color: #78350f;
+  padding: 0.125rem 0.25rem;
+  border-radius: 2px;
+}
+
+html.dark mark {
+  background: #854d0e;
+  color: #fef08a;
+}
+
+code {
+  background: #f1f5f9;
+  color: #be123c;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+html.dark code {
+  background: #1e293b;
+  color: #fb7185;
+}
+
+kbd {
+  background: #1e293b;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.35);
+}
+
+html.dark kbd {
+  background: #475569;
+}
+
+samp {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-family: ui-monospace, monospace;
+}
+
+html.dark samp {
+  background: #0c4a6e;
+  color: #38bdf8;
+}
+
+var {
+  font-style: italic;
+  color: #7c3aed;
+}
+
+html.dark var {
+  color: #c084fc;
+}
+
+del {
+  color: #dc2626;
+  text-decoration: line-through;
+}
+
+html.dark del {
+  color: #f87171;
+}
+
+ins {
+  color: #16a34a;
+  text-decoration: underline;
+  background: #dcfce7;
+  padding: 0.125rem 0.25rem;
+}
+
+html.dark ins {
+  color: #4ade80;
+  background: #052e16;
+}
+
+b {
+  font-weight: 700;
+  color: #1e40af;
+}
+
+i {
+  font-style: italic;
+  color: #7c3aed;
+}
+
+u {
+  text-decoration: underline;
+  text-decoration-color: #3b82f6;
+}
+
+s {
+  text-decoration: line-through;
+  color: #6b7280;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 2px solid #e2e8f0;
+  margin-top: 3rem;
+}
+
+html.dark .footer {
+  border-top-color: #334155;
+}
+
+.footer p {
+  font-size: 1.1rem;
+  color: #475569;
+  margin: 0;
+}
+
+html.dark .footer p {
+  color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+  .element-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  
+  .hero h1 {
+    font-size: 1.75rem;
+  }`,
+      js: ``
+    };
+
     return (
       <div className="space-y-8 pb-16">
         <PageHeader
@@ -785,6 +1201,35 @@ html.dark time {
               <Button size="sm" onClick={() => openPlayground(timePlayground.html, timePlayground.css, timePlayground.js)}>Time & Notation</Button>
               <Button size="sm" variant="secondary" onClick={() => openPlayground(fullShowcasePlayground.html, fullShowcasePlayground.css, fullShowcasePlayground.js)}>Full Showcase</Button>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Comprehensive Playground Example */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Comprehensive Playground Example</CardTitle>
+            <CardDescription>Showcasing all elements with interactive styling, visual cards, animations, and comprehensive theming.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <InteractivePlayground
+              title="Comprehensive Text Formatting Showcase"
+              description="All HTML text formatting elements in one interactive, animated showcase"
+              features={[
+                'Semantic Elements',
+                'Technical & User Input',
+                'Quotes & Citations',
+                'Editorial Changes',
+                'Presentational Elements'
+              ]}
+              buttonText="Open Comprehensive Showcase"
+              onLaunchPlayground={openPlayground}
+              playgroundData={{
+                html: comprehensivePlayground.html,
+                css: comprehensivePlayground.css,
+                js: comprehensivePlayground.js
+              }}
+              colorTheme="purple"
+            />
           </CardContent>
         </Card>
 

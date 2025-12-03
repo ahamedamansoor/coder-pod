@@ -1,523 +1,354 @@
-
 'use client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Link, Play, Globe, File, Hash, Mail, Phone, ExternalLink, Download, HelpCircle, ShieldAlert } from 'lucide-react';
+
 import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link as LinkIcon, Info, Zap, Check } from 'lucide-react';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
+import { FrontendCodePreview } from '@/components/shared';
 
-export default function HtmlLinks({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void }) {
-
-    const anatomyCode = `<a href="https://www.example.com">Visit Example.com</a>`;
-    const absoluteLink = `<a href="https://www.google.com">Search on Google</a>`;
-    const relativeLink = `<a href="/about.html">About Us</a>`;
-    const anchorLink = `<h2 id="section1">Section 1</h2>
-<p>Content for section 1...</p>
-
-<a href="#section1">Jump to Section 1</a>`;
-    const mailLink = `<a href="mailto:someone@example.com">Send Email</a>`;
-    const telLink = `<a href="tel:+1234567890">Call Us</a>`;
-
-    const attributeExamples = {
-        target: `<a href="https://example.com" target="_blank" rel="noopener noreferrer">Open in a new tab</a>`,
-        download: `<a href="/files/document.pdf" download>Download PDF</a>`,
-        title: `<a href="/public" title="Go to the homepage">Home</a>`
-    };
-
-    const fullPlaygroundCode = {
-        html: `<h1>Link Showcase</h1>
-
-<h2>External Link</h2>
-<p>
-  This link opens in a new tab.
-  <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">Visit MDN Web Docs</a>
-</p>
-
-<h2>Internal (Relative) Link</h2>
-<p>
-  This link doesn't go anywhere here, but on a real site it would.
-  <a href="javascript:alert('This would go to another page!');">Contact Page</a>
-</p>
-
-<h2>Jump to Section</h2>
-<p><a href="#conclusion">Go to the conclusion</a></p>
-
-<h2>Special Links</h2>
-<p><a href="mailto:info@example.com">Email Us</a> | <a href="tel:555-1234">Call Us</a></p>
-
-<h2>Download Link</h2>
-<p>
-  This link will download a text file.
-  <a 
-    href="data:text/plain;charset=utf-8,Hello world! This is a demo file." 
-    download="demo-file.txt"
-  >
-    Download a file
-  </a>
-</p>
-
-<hr style="margin: 2rem 0;" />
-
-<h2 id="conclusion">Conclusion Section</h2>
-<p>You've successfully jumped to this section using an anchor link!</p>`,
-        css: `body { 
-  font-family: sans-serif;
-  line-height: 1.6;
-  padding-bottom: 50vh; /* Add space to make scrolling visible */
+interface HtmlLinksProps {
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
-a {
-  color: hsl(var(--primary));
-  text-decoration: none;
-  font-weight: bold;
-}
-a:hover {
-  text-decoration: underline;
-}
-h1, h2 {
-  color: hsl(var(--foreground));
-  border-bottom: 1px solid hsl(var(--border));
-  padding-bottom: 4px;
-}`,
-        js: ''
-    };
 
-    return (
-      <div className="space-y-10 pb-16">
-        <PageHeader
-          icon={Link}
-          category="HTML Basics"
-          title="HTML Links (Hyperlinks)"
-          description="Creating doorways to navigate between pages and websites"
-          colorTheme="blue"
-        />
+export default function HtmlLinks({ onOpenWebPlayground }: HtmlLinksProps) {
+  const openPlayground = (html: string, css: string, js: string) => {
+    onOpenWebPlayground?.(html, css, js);
+  };
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Anatomy of a Link</CardTitle>
-                <CardDescription>A link, or anchor tag, is made of three key parts.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="bg-muted p-6 rounded-lg flex flex-col md:flex-row items-center justify-center gap-4 text-center border">
-                    <code className="font-mono text-blue-500 text-lg">&lt;a</code>
-                    <div className="text-sm">
-                        <p className="font-bold">Opening Tag</p>
-                        <p className="text-muted-foreground">The `a` stands for anchor.</p>
-                    </div>
-                    <code className="font-mono text-red-500 text-lg">href="..."</code>
-                    <div className="text-sm">
-                        <p className="font-bold">`href` Attribute</p>
-                        <p className="text-muted-foreground">The destination URL.</p>
-                    </div>
-                     <code className="font-mono text-blue-500 text-lg">&gt;</code>
-                    <code className="font-mono text-green-500 text-lg">Clickable Text</code>
-                    <div className="text-sm">
-                        <p className="font-bold">Content</p>
-                        <p className="text-muted-foreground">What the user sees.</p>
-                    </div>
-                    <code className="font-mono text-blue-500 text-lg">&lt;/a&gt;</code>
-                    <div className="text-sm">
-                        <p className="font-bold">Closing Tag</p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-        
-        <Card>
-            <CardHeader>
-                <CardTitle>Types of Links</CardTitle>
-                <CardDescription>Links can point to different kinds of destinations.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid md:grid-cols-2 gap-6">
-                <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><Globe className="w-5 h-5 text-primary"/>Absolute URLs</h3>
-                    <p className="text-xs text-muted-foreground mb-2">A full web address to an external site.</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded">{absoluteLink}</pre>
-                </div>
-                <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><File className="w-5 h-5 text-primary"/>Relative URLs</h3>
-                    <p className="text-xs text-muted-foreground mb-2">A path to a file within your own website.</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded">{relativeLink}</pre>
-                </div>
-                <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><Hash className="w-5 h-5 text-primary"/>Anchor/Fragment Links</h3>
-                    <p className="text-xs text-muted-foreground mb-2">Jumps to a specific element on the current page (that has an `id` attribute).</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded">{anchorLink}</pre>
-                </div>
-                <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><Mail className="w-5 h-5 text-primary"/>Special Links</h3>
-                    <p className="text-xs text-muted-foreground mb-2">Can trigger actions like opening an email client or phone dialer.</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded">{mailLink}</pre>
-                    <pre className="font-mono text-sm bg-background p-2 rounded mt-2">{telLink}</pre>
-                </div>
-            </CardContent>
-        </Card>
-        
-        {/* HTML Links in Action */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3"><Link className="w-6 h-6 text-blue-600" /> HTML Links in Action</CardTitle>
-            <CardDescription className="text-base">See how different types of links work with dark mode support</CardDescription>
-          </CardHeader>
-          <CardContent>
+  return (
+    <div className="w-full space-y-8 pb-16">
+      {/* Page Header */}
+      <PageHeader
+        icon={LinkIcon}
+        category="HTML · Links"
+        title="Links (Anchor Tags)"
+        description="Master the fundamental <a> tag and navigate through your web pages"
+        colorTheme="blue"
+      />
+
+      {/* Section 1: What is an Anchor Link? */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-indigo-50/30 dark:from-blue-950/20 dark:to-indigo-950/10">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl">
+              <Info className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle className="text-3xl text-blue-600 dark:text-blue-400">
+                What is an Anchor Link?
+              </CardTitle>
+              <CardDescription className="text-base mt-1">
+                Understanding the foundation of web navigation
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-white/70 dark:bg-slate-900/50 p-5 rounded-lg border border-blue-100 dark:border-blue-900">
+            <p className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              An anchor link is a hyperlink that takes you from one place to another on the web.
+            </p>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+              The <code className="bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded text-blue-600 dark:text-blue-400 font-mono">&lt;a&gt;</code> element (anchor) is the most important HTML tag for creating clickable links. It's the foundation of how the web works - connecting pages, websites, and content!
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 mt-5">
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-700">
+              <h4 className="font-bold text-emerald-700 dark:text-emerald-400 mb-2">🌐 Purpose</h4>
+              <p className="text-sm text-slate-700 dark:text-slate-300">Navigate between pages and websites</p>
+            </div>
+            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-700">
+              <h4 className="font-bold text-purple-700 dark:text-purple-400 mb-2">🎯 Key Feature</h4>
+              <p className="text-sm text-slate-700 dark:text-slate-300">The href attribute specifies the destination</p>
+            </div>
+            <div className="p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-700">
+              <h4 className="font-bold text-orange-700 dark:text-orange-400 mb-2">✨ Most Common</h4>
+              <p className="text-sm text-slate-700 dark:text-slate-300">The most used element on the web</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Section 2: The Basic Structure */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400">
+            <Zap className="w-7 h-7" />
+            Basic Structure
+          </CardTitle>
+          <CardDescription className="text-base">
+            Understanding the anatomy of an anchor link
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Visual breakdown */}
+          <div className="bg-slate-50 dark:bg-slate-900/30 p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700">
+            <div className="font-mono text-sm leading-relaxed space-y-2">
+              <div>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">&lt;a</span>
+                <span className="text-orange-600 dark:text-orange-400 font-bold"> href</span>
+                <span className="text-slate-700 dark:text-slate-300">=</span>
+                <span className="text-green-600 dark:text-green-400">"destination.html"</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">&gt;</span>
+              </div>
+              <div className="pl-6">
+                <span className="text-slate-700 dark:text-slate-300">Click me!</span>
+              </div>
+              <div>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">&lt;/a&gt;</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Parts explanation */}
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border-l-4 border-blue-500">
+              <p className="font-mono font-bold text-blue-600 dark:text-blue-400 mb-2">Opening Tag</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300">
+                Marks the start of the link with the &lt;a&gt; tag
+              </p>
+            </div>
+            <div className="p-4 bg-purple-50 dark:bg-purple-950/30 rounded-lg border-l-4 border-purple-500">
+              <p className="font-mono font-bold text-purple-600 dark:text-purple-400 mb-2">href Attribute</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300">
+                Specifies where the link goes (URL or file path)
+              </p>
+            </div>
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg border-l-4 border-emerald-500">
+              <p className="font-mono font-bold text-emerald-600 dark:text-emerald-400 mb-2">Link Text</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300">
+                The visible text users click on
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Section 3: Practical Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400">
+            <Zap className="w-7 h-7" />
+            See It in Action
+          </CardTitle>
+          <CardDescription className="text-base">
+            Real examples of anchor links in use
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Example 1: Simple Text Link */}
+          <div>
+            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-3">
+              1️⃣ Simple Text Link
+            </h4>
             <FrontendCodePreview
-              title="Links Examples"
-              description="Practical demonstration of external, internal, anchor, email, phone, and download links"
-              html={`<div class="container">
-  <h1>HTML Links Demo</h1>
-  
-  <!-- External Link -->
-  <section class="section external-section">
-    <h2>🌍 External Links</h2>
-    <p>
-      Visit <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">MDN Web Docs</a> to learn more about web development.
-    </p>
-    <p class="note">Opens in a new tab with security attributes</p>
-  </section>
-  
-  <!-- Internal/Relative Link -->
-  <section class="section internal-section">
-    <h2>📄 Internal Links</h2>
-    <p>
-      Navigate to <a href="#section-bottom">bottom of this page</a> or
-      <a href="/about">About Page</a> (would work on real site)
-    </p>
-    <p class="note">Relative paths navigate within your website</p>
-  </section>
-  
-  <!-- Anchor Links -->
-  <section class="section anchor-section">
-    <h2>🔗 Anchor Links</h2>
-    <div class="link-box">
-      <a href="#intro">Jump to Introduction</a>
-      <a href="#features">Jump to Features</a>
-      <a href="#contact">Jump to Contact</a>
-    </div>
-    <p class="note">Links to specific sections with id attributes</p>
-  </section>
-  
-  <!-- Email & Phone Links -->
-  <section class="section contact-section">
-    <h2>📧 Contact Links</h2>
-    <div class="link-box">
-      <a href="mailto:hello@example.com">📨 Send Email</a>
-      <a href="tel:+1234567890">📱 Call: +1 (234) 567-890</a>
-    </div>
-    <p class="note">Special protocols for email and phone</p>
-  </section>
-  
-  <!-- Download Link -->
-  <section class="section download-section">
-    <h2>💾 Download Link</h2>
-    <a href="data:text/plain;charset=utf-8,Hello%20World!%20This%20is%20a%20demo%20file." download="demo.txt" class="download-btn">
-      ⬇️ Download Demo File
-    </a>
-    <p class="note">Forces download instead of navigation</p>
-  </section>
-  
-  <!-- Target Sections for Anchors -->
-  <div style="margin-top: 3rem;">
-    <section id="intro" class="target-section">
-      <h3>📖 Introduction</h3>
-      <p>This is the introduction section you jumped to!</p>
-    </section>
-    
-    <section id="features" class="target-section">
-      <h3>✨ Features</h3>
-      <p>This is the features section!</p>
-    </section>
-    
-    <section id="contact" class="target-section">
-      <h3>📞 Contact</h3>
-      <p>This is the contact section!</p>
-    </section>
-    
-    <div id="section-bottom" class="target-section">
-      <h3>🎯 Bottom Section</h3>
-      <p>You made it to the bottom!</p>
-    </div>
-  </div>
-</div>`}
-              css={`body {
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
-  padding: 2rem;
-}
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: #f9fafb;
-  padding: 2rem;
-  border-radius: 12px;
-  transition: background-color 0.3s;
-}
-
-html.dark .container {
-  background: #1e293b;
-}
-
-h1 {
-  color: #1e40af;
-  margin-bottom: 1.5rem;
-  border-bottom: 3px solid #3b82f6;
-  padding-bottom: 0.5rem;
-  transition: color 0.3s, border-color 0.3s;
-}
-
-html.dark h1 {
-  color: #60a5fa;
-  border-bottom-color: #60a5fa;
-}
-
-.section {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  transition: background-color 0.3s;
-}
-
-html.dark .section {
-  background: #334155;
-}
-
-.section h2 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: #475569;
-  transition: color 0.3s;
-}
-
-html.dark .section h2 {
-  color: #cbd5e1;
-}
-
-.external-section {
-  border-left: 4px solid #3b82f6;
-}
-
-html.dark .external-section {
-  border-left-color: #60a5fa;
-}
-
-.internal-section {
-  border-left: 4px solid #10b981;
-}
-
-html.dark .internal-section {
-  border-left-color: #34d399;
-}
-
-.anchor-section {
-  border-left: 4px solid #f59e0b;
-}
-
-html.dark .anchor-section {
-  border-left-color: #fbbf24;
-}
-
-.contact-section {
-  border-left: 4px solid #8b5cf6;
-}
-
-html.dark .contact-section {
-  border-left-color: #a78bfa;
-}
-
-.download-section {
-  border-left: 4px solid #ec4899;
-}
-
-html.dark .download-section {
-  border-left-color: #f472b6;
-}
-
-a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 2px 4px;
-  border-radius: 3px;
-  transition: all 0.2s;
-}
-
-html.dark a {
-  color: #60a5fa;
-}
-
-a:hover {
-  background: #dbeafe;
-  text-decoration: underline;
-}
-
-html.dark a:hover {
-  background: #1e3a8a;
-}
-
-.link-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.link-box a {
-  background: #eff6ff;
-  padding: 0.5rem 1rem;
-  border: 2px solid #3b82f6;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-html.dark .link-box a {
-  background: #1e3a8a;
-  border-color: #60a5fa;
-}
-
-.download-btn {
-  display: inline-block;
-  background: #ec4899;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-html.dark .download-btn {
-  background: #f472b6;
-  color: #1e293b;
-}
-
-.download-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
-  background: #db2777;
-}
-
-.note {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  background: #fef3c7;
-  border-left: 4px solid #f59e0b;
-  font-size: 0.875rem;
-  color: #78350f;
-  border-radius: 4px;
-  transition: all 0.3s;
-}
-
-html.dark .note {
-  background: #713f12;
-  border-left-color: #fbbf24;
-  color: #fef3c7;
-}
-
-.target-section {
-  background: #f0f9ff;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  border-radius: 8px;
-  border: 2px solid #0ea5e9;
-  transition: all 0.3s;
-}
-
-html.dark .target-section {
-  background: #0c4a6e;
-  border-color: #38bdf8;
-}
-
-.target-section h3 {
-  color: #0369a1;
-  margin-bottom: 0.5rem;
-}
-
-html.dark .target-section h3 {
-  color: #7dd3fc;
-}
-
-.target-section:target {
-  background: #dbeafe;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
-  animation: highlight 1s ease-out;
-}
-
-html.dark .target-section:target {
-  background: #1e3a8a;
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
-}
-
-@keyframes highlight {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}`}
+              title="Basic Anchor Link"
+              description="A simple clickable text link to another website"
+              html={`<p>
+  Visit our <a href="https://developer.mozilla.org">documentation site</a> to learn more.
+</p>`}
+              css={`body { font-family: system-ui; padding: 2rem; }\na { color: #3b82f6; text-decoration: none; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.3s; }\na:hover { color: #2563eb; border-bottom-color: #2563eb; }\na:visited { color: #7c3aed; }\n/* Dark mode */\nhtml.dark body { background: #0f172a; }\nhtml.dark a { color: #60a5fa; }\nhtml.dark a:hover { color: #93c5fd; border-bottom-color: #93c5fd; }\nhtml.dark a:visited { color: #a78bfa; }`}
               colorTheme="blue"
-              icon={Link}
-              previewHeight="800px"
+              previewHeight="200px"
+              onOpenPlayground={() => openPlayground(
+                `<p>Visit our <a href="https://developer.mozilla.org">documentation site</a> to learn more.</p>`,
+                `body { font-family: system-ui; padding: 2rem; }\na { color: #3b82f6; text-decoration: none; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.3s; }\na:hover { color: #2563eb; border-bottom-color: #2563eb; }\na:visited { color: #7c3aed; }\n/* Dark mode */\nhtml.dark body { background: #0f172a; }\nhtml.dark a { color: #60a5fa; }\nhtml.dark a:hover { color: #93c5fd; border-bottom-color: #93c5fd; }\nhtml.dark a:visited { color: #a78bfa; }`,
+                ``
+              )}
             />
-          </CardContent>
-        </Card>
+          </div>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Important Link Attributes</CardTitle>
-                <CardDescription>Customize your link's behavior with these powerful attributes.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                 <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><ExternalLink className="w-5 h-5 text-primary"/>`target="_blank"`</h3>
-                    <p className="text-sm text-muted-foreground mb-2">Opens the linked document in a new window or tab. The most common use case.</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded mb-3">{attributeExamples.target}</pre>
-                    <div className="flex items-start gap-3 p-3 rounded-md bg-yellow-500/10 border border-yellow-500/20 text-yellow-700">
-                        <ShieldAlert className="w-5 h-5 mt-1 shrink-0"/>
-                        <p className="text-xs">**Security Note:** Always add `rel="noopener noreferrer"` when using `target="_blank"` to prevent potential security vulnerabilities.</p>
-                    </div>
-                </div>
-                <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><Download className="w-5 h-5 text-primary"/>`download`</h3>
-                    <p className="text-sm text-muted-foreground mb-2">Specifies that the target will be downloaded when a user clicks on the hyperlink. You can optionally provide a value to rename the file.</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded">{attributeExamples.download}</pre>
-                </div>
-                 <div className="bg-muted p-4 rounded-lg border">
-                    <h3 className="font-bold flex items-center gap-2 mb-2"><HelpCircle className="w-5 h-5 text-primary"/>`title`</h3>
-                    <p className="text-sm text-muted-foreground mb-2">Provides extra information about the link, which appears as a tooltip when the user hovers over it.</p>
-                    <pre className="font-mono text-sm bg-background p-2 rounded">{attributeExamples.title}</pre>
-                </div>
-            </CardContent>
-        </Card>
+          {/* Example 2: Link with Icon */}
+          <div>
+            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-3">
+              2️⃣ Link with Visual Style
+            </h4>
+            <FrontendCodePreview
+              title="Styled Link Button"
+              description="A link styled to look like a button"
+              html={`<div class="link-container">
+  <a href="https://example.com" class="btn-link">
+    📖 Learn More
+  </a>
+</div>`}
+              css={`body { font-family: system-ui; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%); }\n.link-container { display: flex; gap: 1rem; }\n.btn-link { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; }\n.btn-link:hover { background: #2563eb; transform: translateY(-2px); }\n/* Dark mode */\nhtml.dark body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }\nhtml.dark .btn-link { background: #60a5fa; color: #0f172a; }\nhtml.dark .btn-link:hover { background: #93c5fd; }`}
+              colorTheme="blue"
+              previewHeight="220px"
+              onOpenPlayground={() => openPlayground(
+                `<a href="https://example.com" class="btn-link">📖 Learn More</a>`,
+                `body { font-family: system-ui; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%); }\n.link-container { display: flex; gap: 1rem; }\n.btn-link { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; }\n.btn-link:hover { background: #2563eb; transform: translateY(-2px); }\n/* Dark mode */\nhtml.dark body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }\nhtml.dark .btn-link { background: #60a5fa; color: #0f172a; }\nhtml.dark .btn-link:hover { background: #93c5fd; }`,
+                ``
+              )}
+            />
+          </div>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Interactive Links Playground</CardTitle>
-                <CardDescription>Experiment with all link types in a live code editor with preview and console.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <InteractivePlayground
-                  title="Complete Links Playground"
-                  description="Explore external, internal, anchor, email, phone, and download links"
-                  features={[
-                    'External Links',
-                    'Anchor Navigation',
-                    'Special Protocols',
-                    'Download Attribute'
-                  ]}
-                  buttonText="Open Links Playground"
-                  onLaunchPlayground={onOpenWebPlayground}
-                  playgroundData={{
-                    html: fullPlaygroundCode.html,
-                    css: fullPlaygroundCode.css,
-                    js: fullPlaygroundCode.js
-                  }}
-                  colorTheme="blue"
-                />
-            </CardContent>
-        </Card>
-      </div>
-    );
+          {/* Example 3: Navigation Menu */}
+          <div>
+            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-3">
+              3️⃣ Navigation Menu
+            </h4>
+            <FrontendCodePreview
+              title="Link Navigation"
+              description="Multiple links organized as a navigation menu"
+              html={`<nav class="navbar">
+  <a href="/" class="nav-link active">Home</a>
+  <a href="/about" class="nav-link">About</a>
+  <a href="/services" class="nav-link">Services</a>
+  <a href="/contact" class="nav-link">Contact</a>
+</nav>`}
+              css={`body { font-family: system-ui; margin: 0; }\n.navbar { background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%); padding: 1rem 2rem; display: flex; gap: 2rem; }\n.nav-link { color: white; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; }\n.nav-link:hover { background: rgba(255, 255, 255, 0.1); }\n.nav-link.active { background: rgba(255, 255, 255, 0.2); border-bottom: 2px solid #fbbf24; }\n/* Dark mode */\nhtml.dark .navbar { background: linear-gradient(90deg, #1e293b 0%, #1e40af 100%); }\nhtml.dark .nav-link:hover { background: rgba(255, 255, 255, 0.15); }`}
+              colorTheme="blue"
+              previewHeight="250px"
+              onOpenPlayground={() => openPlayground(
+                `<nav class="navbar"><a href="/" class="nav-link active">Home</a><a href="/about" class="nav-link">About</a><a href="/services" class="nav-link">Services</a><a href="/contact" class="nav-link">Contact</a></nav>`,
+                `body { font-family: system-ui; margin: 0; }\n.navbar { background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%); padding: 1rem 2rem; display: flex; gap: 2rem; }\n.nav-link { color: white; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; }\n.nav-link:hover { background: rgba(255, 255, 255, 0.1); }\n.nav-link.active { background: rgba(255, 255, 255, 0.2); border-bottom: 2px solid #fbbf24; }\n/* Dark mode */\nhtml.dark .navbar { background: linear-gradient(90deg, #1e293b 0%, #1e40af 100%); }\nhtml.dark .nav-link:hover { background: rgba(255, 255, 255, 0.15); }`,
+                ``
+              )}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Section 4: Key Concepts */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400">
+            <Info className="w-7 h-7" />
+            Key Concepts
+          </CardTitle>
+          <CardDescription className="text-base">
+            Important attributes and behaviors
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* href attribute */}
+            <div className="p-5 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/20 rounded-xl border border-orange-200 dark:border-orange-700">
+              <div className="flex items-start gap-3 mb-3">
+                <LinkIcon className="w-6 h-6 text-orange-600 dark:text-orange-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-lg text-orange-700 dark:text-orange-300">href Attribute</h4>
+                  <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                    Specifies the URL or path where the link goes
+                  </p>
+                  <code className="text-xs bg-white dark:bg-slate-900 px-2 py-1 rounded mt-2 block font-mono text-orange-600 dark:text-orange-400">
+                    href="https://example.com"
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* link states */}
+            <div className="p-5 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/20 rounded-xl border border-purple-200 dark:border-purple-700">
+              <div className="flex items-start gap-3 mb-3">
+                <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-lg text-purple-700 dark:text-purple-300">Link States</h4>
+                  <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                    Links change appearance when hovered, clicked, or visited
+                  </p>
+                  <code className="text-xs bg-white dark:bg-slate-900 px-2 py-1 rounded mt-2 block font-mono text-purple-600 dark:text-purple-400">
+                    a:hover, a:visited, a:active
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* accessibility */}
+            <div className="p-5 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/20 rounded-xl border border-emerald-200 dark:border-emerald-700">
+              <div className="flex items-start gap-3 mb-3">
+                <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">Accessible Links</h4>
+                  <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                    Use descriptive link text that explains the destination
+                  </p>
+                  <code className="text-xs bg-white dark:bg-slate-900 px-2 py-1 rounded mt-2 block font-mono text-emerald-600 dark:text-emerald-400">
+                    &lt;a&gt;Learn More&lt;/a&gt;
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* title attribute */}
+            <div className="p-5 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20 rounded-xl border border-amber-200 dark:border-amber-700">
+              <div className="flex items-start gap-3 mb-3">
+                <Info className="w-6 h-6 text-amber-600 dark:text-amber-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-lg text-amber-700 dark:text-amber-300">Title Tooltip</h4>
+                  <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">
+                    Shows additional info when user hovers over the link
+                  </p>
+                  <code className="text-xs bg-white dark:bg-slate-900 px-2 py-1 rounded mt-2 block font-mono text-amber-600 dark:text-amber-400">
+                    title="Click to visit"
+                  </code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Section 5: Best Practices */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400">
+            <Check className="w-7 h-7" />
+            Best Practices
+          </CardTitle>
+          <CardDescription className="text-base">
+            Writing better anchor links
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          {/* Do's */}
+          <div className="p-5 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+            <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-400 mb-3">✅ Do This</h4>
+            <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                <span>Use descriptive link text like "Learn More" or "Click here to read article"</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                <span>Use full URLs for external links</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                <span>Make links visually distinct from regular text</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                <span>Test all links to ensure they work</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Don'ts */}
+          <div className="p-5 bg-rose-50 dark:bg-rose-950/20 rounded-xl border-2 border-rose-200 dark:border-rose-700">
+            <h4 className="font-bold text-lg text-rose-700 dark:text-rose-400 mb-3">❌ Avoid This</h4>
+            <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 dark:text-rose-400 font-bold">✕</span>
+                <span>Using "Click here" as link text (not descriptive)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 dark:text-rose-400 font-bold">✕</span>
+                <span>Using "javascript:void(0)" (non-functional links)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 dark:text-rose-400 font-bold">✕</span>
+                <span>Forgetting to remove underlines or styling for clarity</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 dark:text-rose-400 font-bold">✕</span>
+                <span>Opening external links without user awareness</span>
+              </li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

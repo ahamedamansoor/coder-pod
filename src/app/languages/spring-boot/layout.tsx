@@ -37,6 +37,7 @@ export default function SpringBootLayout({ children }: { children: React.ReactNo
       <SpringBootLayoutProvider>
         <div className="flex flex-col h-screen overflow-hidden bg-background">
           <InnovativeHeader 
+            currentPage="learning"
             user={user}
             onLogout={handleLogout}
             showSidebarTrigger={true}

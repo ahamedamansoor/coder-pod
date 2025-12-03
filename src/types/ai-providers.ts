@@ -1,4 +1,4 @@
-export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'perplexity' | 'groq' | 'mistral' | 'cohere';
+export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'perplexity' | 'groq' | 'mistral' | 'cohere' | 'huggingface' | 'together' | 'deepseek' | 'meta';
 
 export interface AIProviderConfig {
   id: AIProvider;
@@ -73,5 +73,41 @@ export const AI_PROVIDERS: Record<AIProvider, AIProviderConfig> = {
     keyPlaceholder: 'co-...',
     getApiKeyUrl: 'https://dashboard.cohere.com/api-keys',
     description: 'Enterprise-grade AI with excellent embeddings'
+  },
+  huggingface: {
+    id: 'huggingface',
+    name: 'Hugging Face (FREE)',
+    icon: '🤗',
+    keyLabel: 'Hugging Face API Key',
+    keyPlaceholder: 'hf_...',
+    getApiKeyUrl: 'https://huggingface.co/settings/tokens',
+    description: '🎁 FREE forever! Access thousands of open-source models'
+  },
+  together: {
+    id: 'together',
+    name: 'Together AI (FREE)',
+    icon: '🚀',
+    keyLabel: 'Together AI API Key',
+    keyPlaceholder: '',
+    getApiKeyUrl: 'https://api.together.xyz/settings/api-keys',
+    description: '🎁 $25 FREE credit! Fast inference with open models'
+  },
+  deepseek: {
+    id: 'deepseek',
+    name: 'DeepSeek (FREE)',
+    icon: '🌊',
+    keyLabel: 'DeepSeek API Key',
+    keyPlaceholder: 'sk-...',
+    getApiKeyUrl: 'https://platform.deepseek.com/api_keys',
+    description: '🎁 FREE tier! Powerful Chinese AI with excellent coding capabilities'
+  },
+  meta: {
+    id: 'meta',
+    name: 'Meta AI (FREE)',
+    icon: '🦙',
+    keyLabel: 'Meta AI API Key',
+    keyPlaceholder: 'meta_...',
+    getApiKeyUrl: 'https://developers.facebook.com/docs/llama-api',
+    description: '🎁 FREE access to Llama models! Powerful open-source AI from Meta'
   }
 };

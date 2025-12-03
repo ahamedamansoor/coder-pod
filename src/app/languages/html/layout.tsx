@@ -11,6 +11,8 @@ import { HtmlProvider } from './html-context';
 import { HtmlLayoutProvider, useHtmlLayout } from './html-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser, useAuth } from '@/firebase';
+import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
+import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 
 function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -56,6 +58,7 @@ function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
           <InnovativeHeader
+            currentPage="learning"
             user={user}
             onLogout={handleLogout}
             showSidebarTrigger={true}
@@ -79,9 +82,12 @@ export default function HtmlTopicLayout({
   return (
     <HtmlProvider>
       <HtmlLayoutProvider>
-        <HtmlTopicLayoutContent>
-          {children}
-        </HtmlTopicLayoutContent>
+        <WebPlaygroundProvider>
+          <HtmlTopicLayoutContent>
+            {children}
+          </HtmlTopicLayoutContent>
+          <WebPlaygroundModal />
+        </WebPlaygroundProvider>
       </HtmlLayoutProvider>
     </HtmlProvider>
   );

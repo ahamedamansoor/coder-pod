@@ -35,7 +35,6 @@ function TopicPageContent() {
             <CssContentDisplay
               topic={selectedTopic}
               language={language}
-              onOpenEditor={() => {}}
             />
           )}
         </div>

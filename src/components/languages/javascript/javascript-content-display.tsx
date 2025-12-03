@@ -77,6 +77,7 @@ const JavaScriptDefaultParameters = lazy(() => import('./topics/javascript-defau
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
+  // 1. Fundamentals
   'what-is-javascript': JavaScriptWhatIsJavaScript,
   'js-setup': JavaScriptInstallationSetup,
   'first-program': JavaScriptFirstProgram,

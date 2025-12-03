@@ -16,21 +16,18 @@ export const html: Language = {
 
     // 2. TEXT & CONTENT
     { slug: 'html-elements-and-tags', title: 'Elements and Tags', explanation: 'Understanding HTML elements: opening tags, closing tags, and empty elements.', category: '2. Text & Content' },
-    { slug: 'html-headings', title: 'Headings', explanation: 'Structuring content hierarchy with <h1> through <h6> heading tags.', category: '2. Text & Content' },
-    { slug: 'html-paragraphs', title: 'Paragraphs', explanation: 'Creating paragraphs with <p>, line breaks with <br>, and horizontal rules with <hr>.', category: '2. Text & Content' },
+    { slug: 'html-headings', title: 'Headings & Paragraphs', explanation: 'Structuring content hierarchy with headings (<h1>-<h6>) and paragraphs (<p>, <br>, <hr>).', category: '2. Text & Content' },
     { slug: 'text-formatting', title: 'Text Formatting', explanation: 'Bold (<b>, <strong>), italic (<i>, <em>), underline (<u>), mark (<mark>), small, sub, sup tags.', category: '2. Text & Content' },
-    { slug: 'quotations', title: 'Quotations', explanation: 'Blockquotes (<blockquote>), inline quotes (<q>), citations (<cite>), and abbreviations.', category: '2. Text & Content' },
-    { slug: 'code-elements', title: 'Code Elements', explanation: '<code>, <pre>, <kbd>, <samp>, and <var> for displaying computer code.', category: '2. Text & Content' },
     { slug: 'character-entities', title: 'Character Entities', explanation: 'Special characters: &lt;, &gt;, &amp;, &copy;, &reg;, and Unicode characters.', category: '2. Text & Content' },
     { slug: 'html-attributes', title: 'Attributes', explanation: 'Element attributes: id, class, style, title, data-*, and attribute syntax.', category: '2. Text & Content' },
     { slug: 'global-attributes', title: 'Global Attributes', explanation: 'Universal attributes: contenteditable, hidden, draggable, lang, dir, tabindex.', category: '2. Text & Content' },
 
     // 3. LINKS & NAVIGATION
-    { slug: 'html-links', title: 'Links (Anchor Tags)', explanation: 'Creating hyperlinks with <a>, href attribute, target, download, and link types.', category: '3. Links & Navigation' },
-    { slug: 'link-targets', title: 'Link Targets', explanation: 'Opening links in new tabs (_blank), same window, parent, top frames.', category: '3. Links & Navigation' },
-    { slug: 'internal-links', title: 'Internal Links', explanation: 'Linking to sections within same page using anchors and IDs (#section).', category: '3. Links & Navigation' },
-    { slug: 'email-tel-links', title: 'Email & Tel Links', explanation: 'mailto: and tel: protocols for email and phone number links.', category: '3. Links & Navigation' },
-    
+    { slug: 'html-links', title: 'Links (Anchor Tags)', explanation: 'Master the fundamental <a> tag and create clickable links to navigate through your web pages with full examples and best practices.', category: '3. Links & Navigation' },
+    { slug: 'link-targets', title: 'Link Target Attribute', explanation: 'Control where links open - in the same window, new tab, or new window.', category: '3. Links & Navigation' },
+    { slug: 'internal-links', title: 'Internal Links', explanation: 'Link to different pages and sections within your website using relative and absolute paths.', category: '3. Links & Navigation' },
+    { slug: 'email-tel-links', title: 'Email & Tel Links', explanation: 'Create links for emails and phone calls with mailto: and tel: protocols.', category: '3. Links & Navigation' },
+
     // 4. IMAGES & MEDIA
     { slug: 'html-images', title: 'Images', explanation: 'Embedding images with <img>, src, alt attributes, and image formats (JPEG, PNG, WebP, SVG).', category: '4. Images & Media' },
     { slug: 'image-attributes', title: 'Image Attributes', explanation: 'width, height, loading (lazy/eager), decoding, and crossorigin attributes.', category: '4. Images & Media' },

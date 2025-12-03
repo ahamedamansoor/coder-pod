@@ -55,26 +55,24 @@ function LoadingSkeleton() {
   );
 }
 
-export function CssContentDisplay({ 
-  topic, 
-  language, 
-}: { 
-  topic: Topic, 
-  language: Language, 
-  onOpenEditor: (code: string) => void,
+export function CssContentDisplay({
+  topic,
+  language,
+}: {
+  topic: Topic;
+  language: Language;
 }) {
   const { openWithContent } = useWebPlayground();
   const CustomTopicComponent = TopicComponentMap[topic.slug];
 
   return (
-    <GenericContentDisplay
-      topic={topic}
-      language={language}
-    >
+    <GenericContentDisplay topic={topic} language={language}>
       <React.Suspense fallback={<LoadingSkeleton />}>
-        {CustomTopicComponent ? (
-          <CustomTopicComponent />
-        ) : null}
+        {CustomTopicComponent
+          ? React.createElement(CustomTopicComponent, {
+              onOpenWebPlayground: openWithContent,
+            })
+          : null}
       </React.Suspense>
     </GenericContentDisplay>
   );

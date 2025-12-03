@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,8 +9,9 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mic, MicOff, Volume2, Loader2, Sparkles, Wand2, Send, CornerDownLeft, MessageSquare, Phone, PhoneOff, StopCircle, ArrowRight } from 'lucide-react';
+import { Mic, MicOff, Volume2, Loader2, Sparkles, Wand2, Send, CornerDownLeft, MessageSquare, Phone, PhoneOff, StopCircle, ArrowRight, Search, X } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';
@@ -31,10 +32,11 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface InterviewSimulatorProps {
   language: string; // Language name (e.g., "JavaScript")
+  category?: string; // Optional category to filter topics (e.g., "technical", "behavioral")
   children?: React.ReactNode; // Optional trigger button
 }
 
-const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: languageName, children }) => {
+const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: languageName, category, children }) => {
   const { user } = useUser();
   const { toast } = useToast();
   
@@ -59,11 +61,15 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [showNextButton, setShowNextButton] = useState(false);
+  const [isQuestionSpeaking, setIsQuestionSpeaking] = useState(false);
+  const [isFeedbackSpeaking, setIsFeedbackSpeaking] = useState(false);
   
   // Interview configuration
   const [selectedLanguage, setSelectedLanguage] = useState(languageName);
   const [questionType, setQuestionType] = useState<'theory' | 'coding' | 'mcq'>('theory');
   const [isConfigured, setIsConfigured] = useState(false);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(category || null);
+  const [searchQuery, setSearchQuery] = useState('');
   
   // MCQ state
   const [selectedOption, setSelectedOption] = useState<string>('');
@@ -76,6 +82,173 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   const recognitionRef = useRef<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Category ID to display name mapping
+  const categoryMap: Record<string, string> = {
+    'technical': '💻 Technical / Programming',
+    'behavioral': '👥 Behavioral / HR',
+    'aptitude': '🧮 Aptitude / Reasoning',
+  };
+
+  // Complete topic list organized by categories
+  const allTopics = useMemo(() => [
+    // Technical / Programming - Frontend
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'JavaScript', label: 'JavaScript' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'TypeScript', label: 'TypeScript' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'React', label: 'React' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'Vue', label: 'Vue.js' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'Angular', label: 'Angular' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'Next.js', label: 'Next.js' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'HTML', label: 'HTML' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'CSS', label: 'CSS' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'Tailwind CSS', label: 'Tailwind CSS' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'SCSS', label: 'SCSS' },
+    { category: '🎨 Frontend', categoryId: 'technical', subcategory: 'frontend', value: 'Bootstrap', label: 'Bootstrap' },
+    
+    // Technical / Programming - Backend
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Node.js', label: 'Node.js' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Express.js', label: 'Express.js' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Python', label: 'Python' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Django', label: 'Django' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Flask', label: 'Flask' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Java', label: 'Java' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Spring Boot', label: 'Spring Boot' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'C#', label: 'C#' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: '.NET', label: '.NET' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Go', label: 'Go' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Rust', label: 'Rust' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'PHP', label: 'PHP' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Laravel', label: 'Laravel' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Ruby', label: 'Ruby' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'Ruby on Rails', label: 'Ruby on Rails' },
+    { category: '⚙️ Backend', categoryId: 'technical', subcategory: 'backend', value: 'C++', label: 'C++' },
+    
+    // Technical / Programming - Database
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'SQL', label: 'SQL' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'MySQL', label: 'MySQL' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'PostgreSQL', label: 'PostgreSQL' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'MongoDB', label: 'MongoDB' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'Redis', label: 'Redis' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'Cassandra', label: 'Cassandra' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'DynamoDB', label: 'DynamoDB' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'Oracle', label: 'Oracle' },
+    { category: '🗄️ Database', categoryId: 'technical', subcategory: 'database', value: 'SQLite', label: 'SQLite' },
+    
+    // Technical / Programming - DSA
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'DSA', label: 'General DSA' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Arrays & Strings', label: 'Arrays & Strings' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Linked Lists', label: 'Linked Lists' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Trees & Graphs', label: 'Trees & Graphs' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Dynamic Programming', label: 'Dynamic Programming' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Sorting & Searching', label: 'Sorting & Searching' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Recursion', label: 'Recursion' },
+    { category: '📊 Data Structures & Algorithms', categoryId: 'technical', subcategory: 'dsa', value: 'Backtracking', label: 'Backtracking' },
+    
+    // Technical / Programming - Mobile
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'Swift', label: 'Swift (iOS)' },
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'SwiftUI', label: 'SwiftUI' },
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'Kotlin', label: 'Kotlin (Android)' },
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'Java Android', label: 'Java (Android)' },
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'React Native', label: 'React Native' },
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'Flutter', label: 'Flutter' },
+    { category: '📱 Mobile Development', categoryId: 'technical', subcategory: 'mobile', value: 'Ionic', label: 'Ionic' },
+    
+    // Technical / Programming - DevOps & Cloud
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'Docker', label: 'Docker' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'Kubernetes', label: 'Kubernetes' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'AWS', label: 'AWS' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'Azure', label: 'Azure' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'Google Cloud', label: 'Google Cloud Platform' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'CI/CD', label: 'CI/CD' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'Jenkins', label: 'Jenkins' },
+    { category: '☁️ DevOps & Cloud', categoryId: 'technical', subcategory: 'devops', value: 'Terraform', label: 'Terraform' },
+    
+    // Technical / Programming - System Design
+    { category: '🏗️ System Design', categoryId: 'technical', subcategory: 'system', value: 'System Design', label: 'System Design' },
+    { category: '🏗️ System Design', categoryId: 'technical', subcategory: 'system', value: 'Microservices', label: 'Microservices Architecture' },
+    { category: '🏗️ System Design', categoryId: 'technical', subcategory: 'system', value: 'API Design', label: 'API Design' },
+    { category: '🏗️ System Design', categoryId: 'technical', subcategory: 'system', value: 'Scalability', label: 'Scalability' },
+    { category: '🏗️ System Design', categoryId: 'technical', subcategory: 'system', value: 'Load Balancing', label: 'Load Balancing' },
+    
+    // Behavioral / HR
+    { category: '👥 Behavioral / HR', categoryId: 'behavioral', value: 'HR Round', label: 'HR Round' },
+    { category: '👥 Behavioral / HR', categoryId: 'behavioral', value: 'Behavioral Questions', label: 'Behavioral Questions' },
+    { category: '👥 Behavioral / HR', categoryId: 'behavioral', value: 'Leadership & Management', label: 'Leadership & Management' },
+    { category: '👥 Behavioral / HR', categoryId: 'behavioral', value: 'Conflict Resolution', label: 'Conflict Resolution' },
+    
+    // Aptitude / Reasoning
+    { category: '🧮 Aptitude / Reasoning', categoryId: 'aptitude', value: 'Quantitative Aptitude', label: 'Quantitative Aptitude' },
+    { category: '🧮 Aptitude / Reasoning', categoryId: 'aptitude', value: 'Logical Reasoning', label: 'Logical Reasoning' },
+    { category: '🧮 Aptitude / Reasoning', categoryId: 'aptitude', value: 'Verbal Reasoning', label: 'Verbal Reasoning' },
+  ], []);
+
+  // Filter topics based on category filter and search query
+  const filteredTopics = useMemo(() => {
+    let topics = allTopics;
+    
+    // Filter by category if a category filter is selected
+    if (selectedCategoryFilter) {
+      topics = topics.filter(topic => topic.categoryId === selectedCategoryFilter);
+    }
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      topics = topics.filter(topic => 
+        topic.label.toLowerCase().includes(query) ||
+        topic.category.toLowerCase().includes(query)
+      );
+    }
+    
+    return topics;
+  }, [selectedCategoryFilter, searchQuery, allTopics]);
+
+  // Group filtered topics by category
+  const groupedTopics = useMemo(() => {
+    const groups: Record<string, typeof allTopics> = {};
+    filteredTopics.forEach(topic => {
+      if (!groups[topic.category]) {
+        groups[topic.category] = [];
+      }
+      groups[topic.category].push(topic);
+    });
+    return groups;
+  }, [filteredTopics]);
+
+  // Helper function to get category for selected language
+  const getSelectedCategory = (): 'technical' | 'behavioral' | 'aptitude' => {
+    const topic = allTopics.find(t => t.value === selectedLanguage);
+    return (topic?.categoryId as 'technical' | 'behavioral' | 'aptitude') || 'technical';
+  };
+
+  // Initialize category filter from prop and set first topic as default
+  useEffect(() => {
+    if (category) {
+      setSelectedCategoryFilter(category);
+      // Find first topic in this category and set as default
+      const categoryTopics = allTopics.filter(topic => topic.categoryId === category);
+      if (categoryTopics.length > 0) {
+        setSelectedLanguage(categoryTopics[0].value);
+      }
+    }
+  }, [category, allTopics]);
+
+  // Auto-reset question type if it's not available for the selected category
+  useEffect(() => {
+    // For aptitude, auto-select MCQ (especially for Quantitative Aptitude)
+    if (selectedCategoryFilter === 'aptitude' && questionType === 'coding') {
+      setQuestionType('mcq');
+    } else if (selectedCategoryFilter === 'aptitude' && questionType === 'theory' && selectedLanguage === 'Quantitative Aptitude') {
+      // Auto-select MCQ for Quantitative Aptitude specifically
+      setQuestionType('mcq');
+    } else if (selectedCategoryFilter && selectedCategoryFilter !== 'technical' && selectedCategoryFilter !== 'aptitude' && questionType === 'coding') {
+      setQuestionType('theory');
+    } else if (selectedCategoryFilter !== 'aptitude' && questionType === 'mcq') {
+      // Reset MCQ to theory if category changes away from aptitude
+      setQuestionType('theory');
+    }
+  }, [selectedCategoryFilter, questionType, selectedLanguage]);
 
   // Auto-switch to typing mode when coding or MCQ questions are selected
   useEffect(() => {
@@ -105,12 +278,27 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
 
   const handleSaveKey = async (provider: AIProvider, key: string) => {
     if (!key || key.trim().length === 0) {
+      toast({
+        variant: 'destructive',
+        title: 'Empty API Key',
+        description: 'Please enter your API key.',
+      });
       return false;
     }
+
+    console.log(`[Interview Simulator] Validating ${provider} API key...`);
+    
+    // Show loading toast
+    toast({
+      title: 'Validating API Key',
+      description: `Please wait while we validate your ${provider} API key...`,
+    });
 
     try {
       // Validate the API key with the selected provider
       const validation = await validateApiKey(provider, key.trim());
+      
+      console.log(`[Interview Simulator] Validation result:`, validation);
       
       if (validation.valid) {
         // Key is valid, save it and enable AI
@@ -118,26 +306,31 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
         localStorage.setItem('ai_provider', provider);
         setAiProvider(provider);
         setIsAiEnabled(true);
+        
+        console.log(`[Interview Simulator] API key saved successfully`);
+        
         toast({
-          title: 'AI Features Unlocked!',
-          description: 'Your API key has been validated and AI features are now enabled.',
+          title: '✅ AI Features Unlocked!',
+          description: `Your ${provider} API key has been validated and AI features are now enabled.`,
         });
         return true;
       } else {
         // Key is invalid, show error
+        console.error(`[Interview Simulator] Validation failed:`, validation.error);
+        
         toast({
           variant: 'destructive',
-          title: 'Invalid API Key',
+          title: '❌ Invalid API Key',
           description: validation.error || 'Please check your API key and try again.',
         });
         return false;
       }
     } catch (error) {
-      console.error('Error validating API key:', error);
+      console.error('[Interview Simulator] Error validating API key:', error);
       toast({
         variant: 'destructive',
-        title: 'Validation Failed',
-        description: 'Could not validate your API key. Please try again.',
+        title: '⚠️ Validation Failed',
+        description: error instanceof Error ? error.message : 'Could not validate your API key. Please try again.',
       });
       return false;
     }
@@ -145,6 +338,24 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
 
   // Reset interview state
   const resetInterview = useCallback(() => {
+    // Stop all audio/voice immediately
+    window.speechSynthesis.cancel();
+    
+    // Stop speech recognition if active
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        // Ignore errors if already stopped
+      }
+    }
+    
+    // Reset all speaking states
+    setIsQuestionSpeaking(false);
+    setIsFeedbackSpeaking(false);
+    setIsRecording(false);
+    
+    // Reset interview data
     setQuestion('');
     setUserAnswer('');
     setFeedback('');
@@ -152,26 +363,29 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     setPreviousQuestions([]);
     setIsConfigured(false);
     setShowNextButton(false);
-    setIsRecording(false);
     setTranscript('');
     setInterviewMode('typing');
     setSelectedOption('');
     setIsAnswerCorrect(null);
     setQuestionBank([]);
     setCurrentQuestionIndex(0);
-    window.speechSynthesis.cancel();
-    if (recognitionRef.current && isRecording) {
-      recognitionRef.current.stop();
-    }
-  }, [isRecording]);
+  }, []); // No dependencies needed - always use latest state
 
   // Handle dialog close
   const handleDialogClose = useCallback((open: boolean) => {
     setIsDialogOpen(open);
     if (!open) {
+      // Immediately stop all speech when closing
+      window.speechSynthesis.cancel();
+      
+      // Reset everything
       resetInterview();
+      
+      // Reset category filter and search when closing
+      setSelectedCategoryFilter(category || null);
+      setSearchQuery('');
     }
-  }, [resetInterview]);
+  }, [resetInterview, category]);
 
   const startInitialQuestion = useCallback(async () => {
     if (!user) {
@@ -206,23 +420,54 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
         throw new Error('API configuration not found');
       }
       
-      // For MCQ mode, fetch multiple questions at once (10 at a time for efficiency)
+      // For MCQ mode, fetch multiple questions at once (100 questions for full practice set)
       if (questionType === 'mcq') {
-        const batchSize = 10;
+        const batchSize = 100; // Fetch 100 questions for comprehensive practice
         const questions: string[] = [];
         let previousQs: string[] = [];
         
+        toast({
+          title: 'Preparing MCQ Questions',
+          description: 'Generating 100 multiple choice questions with answers. This may take a moment...',
+        });
+        
         for (let i = 0; i < batchSize; i++) {
-          const result = await conductInterview({
-            provider,
-            apiKey,
-            language: selectedLanguage,
-            question: '',
-            previousQuestions: previousQs,
-            questionType
-          });
-          questions.push(result.nextQuestion);
-          previousQs.push(result.nextQuestion);
+          try {
+            const result = await conductInterview({
+              provider,
+              apiKey,
+              language: selectedLanguage,
+              question: '',
+              previousQuestions: previousQs,
+              questionType,
+              category: getSelectedCategory()
+            });
+            
+            // Validate that the question has the correct MCQ format
+            if (result.nextQuestion && result.nextQuestion.includes('A)') && result.nextQuestion.includes('Correct Answer:')) {
+              questions.push(result.nextQuestion);
+              previousQs.push(result.nextQuestion);
+            } else {
+              console.warn(`Question ${i + 1} has incorrect format, skipping...`);
+              // Try again for this slot
+              i--;
+            }
+            
+            // Update progress every 10 questions
+            if ((i + 1) % 10 === 0) {
+              toast({
+                title: 'Progress',
+                description: `Generated ${i + 1} out of ${batchSize} questions...`,
+              });
+            }
+          } catch (error) {
+            console.error(`Error fetching question ${i + 1}:`, error);
+            // Continue with next question
+          }
+        }
+        
+        if (questions.length === 0) {
+          throw new Error('Failed to generate any valid MCQ questions. Please check your AI configuration.');
         }
         
         setQuestionBank(questions);
@@ -230,6 +475,11 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
         setPreviousQuestions([questions[0]]);
         setCurrentQuestionIndex(0);
         setIsConfigured(true);
+        
+        toast({
+          title: 'MCQ Ready!',
+          description: `Successfully loaded ${questions.length} multiple choice questions!`,
+        });
       } else {
         // For other modes, fetch one question at a time
         const result = await conductInterview({
@@ -238,12 +488,16 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
           language: selectedLanguage,
           question: '',
           previousQuestions: [],
-          questionType
+          questionType,
+          category: getSelectedCategory()
         });
         setQuestion(result.nextQuestion);
         setAnswerHint(result.answerHint);
         setPreviousQuestions([result.nextQuestion]);
         setIsConfigured(true);
+        
+        // Voice recording will auto-start after question is read aloud
+        // (handled in startVoiceConversation's utterance.onend)
       }
     } catch (error) {
       console.error('Failed to start interview:', error);
@@ -332,92 +586,152 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     setIsReading(type);
   };
 
-  // Read feedback and simple answer aloud in voice mode with different voices
+  // Read feedback aloud with natural, human-like voice
   const readFeedbackAloud = useCallback((feedbackText: string, simpleAnswerText?: string) => {
-    if (!feedbackText || interviewMode !== 'voice') return;
+    if (!feedbackText || questionType === 'mcq') return; // Don't read aloud for MCQ
     
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
+    setIsFeedbackSpeaking(true);
     
-    // Extract just the first sentence or summary from feedback (not the full markdown)
-    const simpleFeedback = feedbackText.split('\n')[0].replace(/[*_#]/g, '').trim();
+    // Analyze feedback sentiment to add human reactions
+    const feedbackLower = feedbackText.toLowerCase();
+    const isPositive = feedbackLower.includes('good') || feedbackLower.includes('correct') || 
+                       feedbackLower.includes('great') || feedbackLower.includes('excellent') ||
+                       feedbackLower.includes('right') || feedbackLower.includes('well done') ||
+                       feedbackLower.includes('perfect');
+    const isNegative = feedbackLower.includes('incorrect') || feedbackLower.includes('wrong') ||
+                       feedbackLower.includes('missing') || feedbackLower.includes('not quite') ||
+                       feedbackLower.includes('however') || feedbackLower.includes('but');
+    
+    // Natural human reactions based on answer quality
+    let reaction = '';
+    if (isPositive) {
+      const positiveReactions = ['Wow, ', 'Awesome! ', 'Great! ', 'Excellent! ', 'Nice! ', 'Perfect! ', 'Well done! ', 'Impressive! '];
+      reaction = positiveReactions[Math.floor(Math.random() * positiveReactions.length)];
+    } else if (isNegative) {
+      const negativeReactions = ['Hmm, ', 'Oh, ', 'Uhh, ', 'I see, ', 'Well, ', 'Okay, ', 'Alright, '];
+      reaction = negativeReactions[Math.floor(Math.random() * negativeReactions.length)];
+    } else {
+      const neutralReactions = ['Okay, ', 'Alright, ', 'I see, ', 'Right, ', 'Well, '];
+      reaction = neutralReactions[Math.floor(Math.random() * neutralReactions.length)];
+    }
+    
+    // Extract key points and make more conversational
+    const sentences = feedbackText.split(/[.!?]/).filter(s => s.trim().length > 0);
+    const mainPoint = sentences[0]?.replace(/[*_#]/g, '').trim() || '';
+    
+    // Make it more conversational - simplify and humanize
+    let conversationalFeedback = mainPoint
+      .replace(/Your answer /gi, 'you ')
+      .replace(/The answer /gi, 'that ')
+      .replace(/This demonstrates/gi, 'this shows')
+      .replace(/However, /gi, 'but ')
+      .replace(/Therefore, /gi, 'so ')
+      .trim();
+    
+    // Add reaction at the beginning
+    conversationalFeedback = reaction + conversationalFeedback;
     
     const voices = window.speechSynthesis.getVoices();
     
-    // PART 1: Read simple feedback in normal voice
-    const feedbackUtterance = new SpeechSynthesisUtterance(simpleFeedback);
-    feedbackUtterance.rate = 1.1;
-    feedbackUtterance.pitch = 0.9;
+    // PART 1: Initial feedback (using same voice as question)
+    const feedbackUtterance = new SpeechSynthesisUtterance(conversationalFeedback);
+    feedbackUtterance.rate = 1.1; // Same as question voice
+    feedbackUtterance.pitch = 0.9; // Same as question voice - professional tone
     feedbackUtterance.volume = 1.0;
     
-    // Use male voice for feedback
-    const maleVoice = 
+    // Use the same voice preference as question reading
+    const selectedVoice = 
       voices.find(voice => voice.name.includes('Google US English Male')) ||
       voices.find(voice => voice.name.includes('Google UK English Male')) ||
       voices.find(voice => voice.name.includes('Daniel')) ||
       voices.find(voice => voice.name.includes('Alex')) ||
-      voices.find(voice => voice.name.includes('Male') && voice.lang.startsWith('en'));
+      voices.find(voice => voice.name.includes('Male') && voice.lang.startsWith('en')) ||
+      voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith('en')) ||
+      voices.find(voice => voice.name.includes('Natural') && voice.lang.startsWith('en'));
     
-    if (maleVoice) {
-      feedbackUtterance.voice = maleVoice;
+    if (selectedVoice) {
+      feedbackUtterance.voice = selectedVoice;
     }
     
-    // PART 2: Read "How it can be answered" in different voice (if available)
+    // PART 2: How to answer (if provided)
     if (simpleAnswerText) {
       feedbackUtterance.onend = () => {
-        // Add a clear transition
-        const transitionUtterance = new SpeechSynthesisUtterance("Now, here's how you could have answered this question.");
-        transitionUtterance.rate = 1.0;
-        transitionUtterance.pitch = 1.1; // Slightly higher pitch for distinction
-        transitionUtterance.volume = 1.0;
+        // More casual, human-like transitions
+        const transitions = ['Here\'s a better way to put it. ', 'Let me show you how to answer this. ', 'Here\'s what you could say. ', 'A good answer would be. '];
+        const randomTransition = transitions[Math.floor(Math.random() * transitions.length)];
         
-        // Use female voice or different voice for the answer guide
-        const guideVoice = 
-          voices.find(voice => voice.name.includes('Google US English Female')) ||
-          voices.find(voice => voice.name.includes('Google UK English Female')) ||
-          voices.find(voice => voice.name.includes('Samantha')) ||
-          voices.find(voice => voice.name.includes('Victoria')) ||
-          voices.find(voice => voice.name.includes('Female') && voice.lang.startsWith('en')) ||
-          maleVoice; // Fallback to male if no female voice
+        const howToAnswerUtterance = new SpeechSynthesisUtterance(
+          randomTransition + simpleAnswerText.replace(/[*_#]/g, '').trim()
+        );
+        howToAnswerUtterance.rate = 1.1; // Same as question voice
+        howToAnswerUtterance.pitch = 0.9; // Same as question voice
+        howToAnswerUtterance.volume = 1.0;
         
-        if (guideVoice) {
-          transitionUtterance.voice = guideVoice;
+        if (selectedVoice) {
+          howToAnswerUtterance.voice = selectedVoice;
         }
         
-        transitionUtterance.onend = () => {
-          // Now read the actual simple answer
-          const answerUtterance = new SpeechSynthesisUtterance(simpleAnswerText + ". Please check the detailed ideal answer on the right panel for reference.");
-          answerUtterance.rate = 1.0; // Slower, more clear
-          answerUtterance.pitch = 1.1; // Slightly higher pitch
-          answerUtterance.volume = 1.0;
+        // PART 3: Prompt to check ideal answer
+        howToAnswerUtterance.onend = () => {
+          const verifyPhrases = [
+            'Take a look at the full answer below.',
+            'Check out the detailed answer at the bottom.',
+            'You can see the complete answer down there.',
+            'There\'s more detail in the answer section below.'
+          ];
+          const randomVerify = verifyPhrases[Math.floor(Math.random() * verifyPhrases.length)];
           
-          if (guideVoice) {
-            answerUtterance.voice = guideVoice;
+          const verifyUtterance = new SpeechSynthesisUtterance(randomVerify);
+          verifyUtterance.rate = 1.1; // Same as question voice
+          verifyUtterance.pitch = 0.9; // Same as question voice
+          verifyUtterance.volume = 1.0;
+          
+          if (selectedVoice) {
+            verifyUtterance.voice = selectedVoice;
           }
           
-          window.speechSynthesis.speak(answerUtterance);
+          verifyUtterance.onend = () => {
+            setIsFeedbackSpeaking(false);
+          };
+          
+          window.speechSynthesis.speak(verifyUtterance);
         };
         
-        window.speechSynthesis.speak(transitionUtterance);
+        window.speechSynthesis.speak(howToAnswerUtterance);
       };
     } else {
+      // No simple answer provided, just prompt to check ideal answer
       feedbackUtterance.onend = () => {
-        const closingUtterance = new SpeechSynthesisUtterance("Please check the detailed ideal answer on the right panel for reference.");
-        closingUtterance.rate = 1.1;
-        closingUtterance.pitch = 0.9;
-        closingUtterance.volume = 1.0;
+        const verifyPhrases = [
+          'Take a look at the full answer below.',
+          'Check out the detailed answer at the bottom.',
+          'You can see the complete answer down there.',
+          'There\'s more detail in the answer section below.'
+        ];
+        const randomVerify = verifyPhrases[Math.floor(Math.random() * verifyPhrases.length)];
         
-        if (maleVoice) {
-          closingUtterance.voice = maleVoice;
+        const verifyUtterance = new SpeechSynthesisUtterance(randomVerify);
+        verifyUtterance.rate = 1.1; // Same as question voice
+        verifyUtterance.pitch = 0.9; // Same as question voice
+        verifyUtterance.volume = 1.0;
+        
+        if (selectedVoice) {
+          verifyUtterance.voice = selectedVoice;
         }
         
-        window.speechSynthesis.speak(closingUtterance);
+        verifyUtterance.onend = () => {
+          setIsFeedbackSpeaking(false);
+        };
+        
+        window.speechSynthesis.speak(verifyUtterance);
       };
     }
     
     // Start by reading the feedback
     window.speechSynthesis.speak(feedbackUtterance);
-  }, [interviewMode]);
+  }, [questionType]);
 
   // --- Voice Mode Conversation Logic ---
   const startVoiceConversation = useCallback(() => {
@@ -513,7 +827,12 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       console.log('Using voice:', preferredVoice.name);
     }
     
+    utterance.onstart = () => {
+      setIsQuestionSpeaking(true);
+    };
+    
     utterance.onend = () => {
+      setIsQuestionSpeaking(false);
       // After question is read, start recording user's answer
       setTimeout(() => {
         startVoiceRecording();
@@ -526,6 +845,12 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
 
   const startVoiceRecording = () => {
     if (!recognitionRef.current) return;
+    
+    // Don't start recording if question is still being read
+    if (isQuestionSpeaking) {
+      console.log('Question is still being read, not starting recording');
+      return;
+    }
     
     setIsRecording(true);
     setTranscript('');
@@ -580,30 +905,60 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       setShowNextButton(false);
       delete (window as any).__nextInterviewQuestion;
       delete (window as any).__nextAnswerHint;
+      
+      // Voice recording will auto-start after question is read aloud
+      // (handled in startVoiceConversation's utterance.onend)
     }
   };
 
-  // Auto-play question when it changes in voice mode
+  // Auto-play question when it changes (unified mode)
   useEffect(() => {
-    if (interviewMode === 'voice' && question && !isLoading && !showNextButton) {
+    if (question && !isLoading && !showNextButton && questionType !== 'mcq') {
       startVoiceConversation();
     }
-  }, [question, interviewMode, isLoading, showNextButton, startVoiceConversation]);
+  }, [question, isLoading, showNextButton, questionType, startVoiceConversation]);
 
-  // Cleanup speech on mode change or unmount
+  // Cleanup speech and recognition on unmount
   useEffect(() => {
     return () => {
+      // Cancel all speech synthesis
       window.speechSynthesis.cancel();
-      if (recognitionRef.current && isRecording) {
-        recognitionRef.current.stop();
+      
+      // Stop speech recognition if active
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // Ignore errors if already stopped
+        }
       }
+      
+      // Reset speaking states
+      setIsQuestionSpeaking(false);
+      setIsFeedbackSpeaking(false);
+      setIsRecording(false);
     };
-  }, [interviewMode, isRecording]);
+  }, []); // Empty dependency array - cleanup only on unmount
 
   // --- Form Submission Logic ---
   const handleSubmitAnswer = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userAnswer.trim() || !isAiEnabled) return;
+    
+    // Combine typed answer and voice transcript
+    let combinedAnswer = [userAnswer.trim(), transcript.trim()]
+      .filter(Boolean)
+      .join('\n\n[Voice Input]: ');
+    
+    // If answer contains "don't know" but also has code snippets, add a note to evaluate the code
+    if (combinedAnswer && (combinedAnswer.toLowerCase().includes("don't know") || combinedAnswer.toLowerCase().includes("dont know"))) {
+      // Check if there's code in the answer (look for common code patterns)
+      const hasCode = /[{};=]|let |const |var |function |class |=>/.test(combinedAnswer);
+      if (hasCode) {
+        combinedAnswer = `${combinedAnswer}\n\n[Note: Please evaluate any code snippets provided above, even if the answer includes "I don't know".]`;
+      }
+    }
+    
+    if (!combinedAnswer || !isAiEnabled) return;
 
     setIsLoading(true);
     setFeedback('');
@@ -621,27 +976,30 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
         apiKey,
         language: selectedLanguage,
         question: question,
-        userAnswer: userAnswer,
+        userAnswer: combinedAnswer,
         previousQuestions: previousQuestions,
-        questionType
+        questionType,
+        category: getSelectedCategory()
       });
       
       setFeedback(result.feedback);
       setIdealAnswer(result.idealAnswer);
       
-      // Store next question and hint temporarily for both modes
+      // Store next question and hint temporarily
       setShowNextButton(true);
       (window as any).__nextInterviewQuestion = result.nextQuestion;
       (window as any).__nextAnswerHint = result.answerHint;
       
-      // Read feedback and simple answer aloud in voice mode
-      if (interviewMode === 'voice' && result.feedback) {
+      // Read feedback aloud for non-MCQ questions
+      if (questionType !== 'mcq' && result.feedback) {
         setTimeout(() => {
           readFeedbackAloud(result.feedback, result.simpleAnswer);
         }, 500); // Small delay after receiving feedback
       }
       
+      // Clear both inputs
       setUserAnswer('');
+      setTranscript('');
     } catch (error) {
       console.error('Interview AI error:', error);
       
@@ -677,7 +1035,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
               <Sparkles className="mx-auto h-12 w-12 text-blue-500 mb-4" />
               <h3 className="text-2xl font-bold mb-2">AI Feature Locked</h3>
               <p className="text-muted-foreground mb-6 max-w-md">
-                Choose from 7 AI providers and enter your API key to unlock AI-powered interviews and content
+                Choose from 11 AI providers and enter your API key to unlock AI-powered interviews and content
               </p>
               <Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
                 Choose AI Provider
@@ -696,8 +1054,8 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     // If AI is enabled but interview hasn't started, show configuration screen
     if (isAiEnabled && !question && !isConfigured) {
       return (
-        <Card className="h-full w-full flex flex-col items-center justify-center p-8">
-          <div className="w-full max-w-2xl space-y-8">
+        <Card className="h-full w-full flex flex-col items-center justify-center p-8 overflow-visible relative z-0">
+          <div className="w-full max-w-2xl space-y-8 relative">
             {/* Header */}
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 mb-4">
@@ -714,82 +1072,75 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
               <Label htmlFor="language-select" className="text-lg font-semibold">
                 Select Programming Language / Topic
               </Label>
+
+              {/* Dropdown with filtered results */}
               <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
                 <SelectTrigger id="language-select" className="w-full text-lg h-12 border-2">
                   <SelectValue placeholder="Choose a language or topic" />
                 </SelectTrigger>
-                <SelectContent className="max-h-[400px]">
-                  {/* Frontend */}
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10">
-                    🎨 Frontend
+                <SelectContent 
+                  className="max-h-[400px] !z-[9999]" 
+                  position="popper" 
+                  sideOffset={5}
+                  align="start"
+                  avoidCollisions={true}
+                >
+                  {/* Search Filter inside dropdown */}
+                  <div className="sticky top-0 z-20 bg-background border-b p-2">
+                    <div className="relative">
+                      <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                      <Input
+                        ref={searchInputRef}
+                        type="text"
+                        placeholder="Search topics..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-8 pr-7 h-8 text-sm"
+                        onClick={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        autoFocus
+                      />
+                      {searchQuery && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSearchQuery('');
+                          }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+                    {searchQuery && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {filteredTopics.length} result{filteredTopics.length !== 1 ? 's' : ''}
+                      </div>
+                    )}
                   </div>
-                  <SelectItem value="JavaScript">JavaScript</SelectItem>
-                  <SelectItem value="TypeScript">TypeScript</SelectItem>
-                  <SelectItem value="React">React</SelectItem>
-                  <SelectItem value="Vue">Vue.js</SelectItem>
-                  <SelectItem value="Angular">Angular</SelectItem>
-                  <SelectItem value="HTML">HTML</SelectItem>
-                  <SelectItem value="CSS">CSS</SelectItem>
-                  <SelectItem value="Tailwind CSS">Tailwind CSS</SelectItem>
-                  
-                  {/* Backend */}
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10 mt-2">
-                    ⚙️ Backend
+
+                  {/* Topics List */}
+                  <div className="max-h-[300px] overflow-y-auto">
+                    {Object.keys(groupedTopics).length === 0 ? (
+                      <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+                        {searchQuery ? `No topics found for "${searchQuery}"` : 'No topics found'}
+                      </div>
+                    ) : (
+                      Object.entries(groupedTopics).map(([category, topics], index) => (
+                        <React.Fragment key={category}>
+                          {index > 0 && <div className="my-1" />}
+                          <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10">
+                            {category}
+                          </div>
+                          {topics.map((topic) => (
+                            <SelectItem key={topic.value} value={topic.value}>
+                              {topic.label}
+                            </SelectItem>
+                          ))}
+                        </React.Fragment>
+                      ))
+                    )}
                   </div>
-                  <SelectItem value="Node.js">Node.js</SelectItem>
-                  <SelectItem value="Python">Python</SelectItem>
-                  <SelectItem value="Java">Java</SelectItem>
-                  <SelectItem value="C#">C#</SelectItem>
-                  <SelectItem value="Go">Go</SelectItem>
-                  <SelectItem value="Rust">Rust</SelectItem>
-                  <SelectItem value="PHP">PHP</SelectItem>
-                  <SelectItem value="Ruby">Ruby</SelectItem>
-                  <SelectItem value="C++">C++</SelectItem>
-                  <SelectItem value="Spring Boot">Spring Boot</SelectItem>
-                  <SelectItem value="Django">Django</SelectItem>
-                  <SelectItem value="Express.js">Express.js</SelectItem>
-                  
-                  {/* Database */}
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10 mt-2">
-                    🗄️ Database
-                  </div>
-                  <SelectItem value="SQL">SQL</SelectItem>
-                  <SelectItem value="MySQL">MySQL</SelectItem>
-                  <SelectItem value="PostgreSQL">PostgreSQL</SelectItem>
-                  <SelectItem value="MongoDB">MongoDB</SelectItem>
-                  <SelectItem value="Redis">Redis</SelectItem>
-                  <SelectItem value="Cassandra">Cassandra</SelectItem>
-                  <SelectItem value="DynamoDB">DynamoDB</SelectItem>
-                  
-                  {/* DSA */}
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10 mt-2">
-                    📊 Data Structures & Algorithms
-                  </div>
-                  <SelectItem value="DSA">General DSA</SelectItem>
-                  <SelectItem value="Arrays & Strings">Arrays & Strings</SelectItem>
-                  <SelectItem value="Linked Lists">Linked Lists</SelectItem>
-                  <SelectItem value="Trees & Graphs">Trees & Graphs</SelectItem>
-                  <SelectItem value="Dynamic Programming">Dynamic Programming</SelectItem>
-                  <SelectItem value="Sorting & Searching">Sorting & Searching</SelectItem>
-                  
-                  {/* Mobile */}
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10 mt-2">
-                    📱 Mobile Development
-                  </div>
-                  <SelectItem value="Swift">Swift (iOS)</SelectItem>
-                  <SelectItem value="Kotlin">Kotlin (Android)</SelectItem>
-                  <SelectItem value="React Native">React Native</SelectItem>
-                  <SelectItem value="Flutter">Flutter</SelectItem>
-                  
-                  {/* DevOps & Cloud */}
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0 z-10 mt-2">
-                    ☁️ DevOps & Cloud
-                  </div>
-                  <SelectItem value="Docker">Docker</SelectItem>
-                  <SelectItem value="Kubernetes">Kubernetes</SelectItem>
-                  <SelectItem value="AWS">AWS</SelectItem>
-                  <SelectItem value="Azure">Azure</SelectItem>
-                  <SelectItem value="CI/CD">CI/CD</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -798,39 +1149,51 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
             <div className="space-y-3">
               <Label className="text-lg font-semibold">Question Type</Label>
               <RadioGroup value={questionType} onValueChange={(value: any) => setQuestionType(value)} className="space-y-3">
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:bg-accent cursor-pointer transition-colors">
-                  <RadioGroupItem value="theory" id="theory" />
-                  <Label htmlFor="theory" className="flex-1 cursor-pointer">
-                    <div className="font-semibold text-base">Theory Questions</div>
-                    <div className="text-sm text-muted-foreground">Conceptual questions about programming fundamentals</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:bg-accent cursor-pointer transition-colors">
-                  <RadioGroupItem value="coding" id="coding" />
-                  <Label htmlFor="coding" className="flex-1 cursor-pointer">
-                    <div className="font-semibold text-base">Coding Questions</div>
-                    <div className="text-sm text-muted-foreground">Code snippets, debugging, and implementation problems</div>
-                    <div className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
-                      </svg>
-                      <span className="font-medium">Typing mode only - Voice mode not available</span>
-                    </div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:bg-accent cursor-pointer transition-colors">
-                  <RadioGroupItem value="mcq" id="mcq" />
-                  <Label htmlFor="mcq" className="flex-1 cursor-pointer">
-                    <div className="font-semibold text-base">Multiple Choice Questions (MCQ)</div>
-                    <div className="text-sm text-muted-foreground">Quick knowledge checks with multiple choice options</div>
-                    <div className="text-xs text-blue-600 dark:text-blue-400 mt-1 flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
-                      </svg>
-                      <span className="font-medium">Select answers - No typing required</span>
-                    </div>
-                  </Label>
-                </div>
+                {/* Theory - Not shown for Aptitude */}
+                {selectedCategoryFilter !== 'aptitude' && (
+                  <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:bg-accent cursor-pointer transition-colors">
+                    <RadioGroupItem value="theory" id="theory" />
+                    <Label htmlFor="theory" className="flex-1 cursor-pointer">
+                      <div className="font-semibold text-base">Theory Questions</div>
+                      <div className="text-sm text-muted-foreground">Conceptual questions about programming fundamentals</div>
+                    </Label>
+                  </div>
+                )}
+
+                {/* Coding - Only for Technical or when no filter is set */}
+                {(!selectedCategoryFilter || selectedCategoryFilter === 'technical') && (
+                  <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:bg-accent cursor-pointer transition-colors">
+                    <RadioGroupItem value="coding" id="coding" />
+                    <Label htmlFor="coding" className="flex-1 cursor-pointer">
+                      <div className="font-semibold text-base">Coding Questions</div>
+                      <div className="text-sm text-muted-foreground">Code snippets, debugging, and implementation problems</div>
+                      <div className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                        </svg>
+                        <span className="font-medium">Typing mode only - Voice mode not available</span>
+                      </div>
+                    </Label>
+                  </div>
+                )}
+
+                {/* MCQ - Only for Aptitude */}
+                {selectedCategoryFilter === 'aptitude' && (
+                  <div className="flex items-center space-x-3 p-4 border-2 border-emerald-300 dark:border-emerald-700 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 cursor-pointer transition-colors">
+                    <RadioGroupItem value="mcq" id="mcq" />
+                    <Label htmlFor="mcq" className="flex-1 cursor-pointer">
+                      <div className="font-semibold text-base">Multiple Choice Questions (MCQ)</div>
+                      <div className="text-sm text-muted-foreground">Standard format for aptitude tests - select from 4 options</div>
+                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+                        </svg>
+                        <span className="font-medium">✓ Instant feedback on each answer</span>
+                      </div>
+                    </Label>
+                  </div>
+                )}
+
               </RadioGroup>
             </div>
 
@@ -867,73 +1230,27 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
         </Card>
       );
     }
-
+    
+    // Main interview UI after configuration
     return (
-    <div className="h-full w-full flex flex-col gap-4 p-4 overflow-hidden">
-      {/* Mode Toggle */}
-      <Card className="flex-shrink-0">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-lg">Interview Mode</h3>
-              <p className="text-sm text-muted-foreground">Choose how you want to conduct the interview</p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant={interviewMode === 'typing' ? 'default' : 'outline'}
-                onClick={() => setInterviewMode('typing')}
-                className={cn(
-                  "transition-all",
-                  interviewMode === 'typing' && "bg-blue-600 hover:bg-blue-700"
-                )}
-              >
-                <MessageSquare className="mr-2 h-4 w-4" />
-                Typing Mode
-              </Button>
-              <Button
-                variant={interviewMode === 'voice' ? 'default' : 'outline'}
-                onClick={() => setInterviewMode('voice')}
-                disabled={questionType === 'coding' || questionType === 'mcq'}
-                className={cn(
-                  "transition-all",
-                  interviewMode === 'voice' && "bg-purple-600 hover:bg-purple-700",
-                  (questionType === 'coding' || questionType === 'mcq') && "opacity-50 cursor-not-allowed"
-                )}
-                title={questionType === 'coding' || questionType === 'mcq' ? 'Voice mode is not available for coding/MCQ questions' : ''}
-              >
-                <div className="mr-2 w-4 h-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-500"></div>
-                Voice Mode
-                {(questionType === 'coding' || questionType === 'mcq') && <span className="ml-2 text-xs">(Disabled)</span>}
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
+      <div className="h-full w-full flex flex-col gap-4 p-4 overflow-hidden">
       {/* Interview Content */}
       <div className="flex-1 flex flex-col lg:flex-row gap-6 overflow-hidden min-h-0">
         {/* Left Panel: Questions & Answers */}
         <div className="flex-1 h-full min-h-0 overflow-auto">
-          {interviewMode === 'typing' ? (
-            questionType === 'mcq' ? (
-              // MCQ MODE UI - Full Width
+          {questionType === 'mcq' ? (
+              // MCQ MODE UI - Full Width Centered
               <div className="h-full flex items-center justify-center p-8">
                 {question && (
-                  <Card className="w-full max-w-3xl border-2 border-purple-200 dark:border-purple-800 shadow-lg">
-                    <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30 border-b-2 border-purple-100 dark:border-purple-900">
+                  <Card className="w-full max-w-3xl border-2 border-emerald-200 dark:border-emerald-800 shadow-lg">
+                    <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-b-2 border-emerald-100 dark:border-emerald-900">
                       <div className="flex items-center gap-4">
-                        {/* Animated Gradient Orb */}
-                        <div className="relative w-14 h-14 flex-shrink-0">
-                          {/* Outer glow effect */}
-                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-indigo-500 to-purple-600 opacity-40 blur-xl animate-pulse"></div>
-                          {/* Main orb with multiple gradient layers */}
-                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-indigo-500 to-purple-600 animate-pulse"></div>
-                          {/* Inner highlight */}
-                          <div className="absolute inset-2 rounded-full bg-gradient-to-br from-purple-300 to-transparent opacity-50"></div>
-                          {/* Center shine */}
-                          <div className="absolute inset-4 rounded-full bg-white opacity-20"></div>
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-md">
+                          <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+                          </svg>
                         </div>
-                        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                           Multiple Choice Question
                         </CardTitle>
                       </div>
@@ -947,25 +1264,49 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                       </div>
 
                       {/* Options */}
-                      <RadioGroup value={selectedOption} onValueChange={setSelectedOption} className="space-y-4">
-                        {['A', 'B', 'C', 'D'].map((option) => {
-                          const optionMatch = question.match(new RegExp(`${option}\\)\\s*(.+?)(?=\\n[A-D]\\)|\\n\\nCorrect|$)`, 's'));
-                          const optionText = optionMatch ? optionMatch[1].trim() : '';
+                      <RadioGroup value={selectedOption} onValueChange={(value) => {
+                        setSelectedOption(value);
+                        // Auto-check answer when option is selected
+                        const correctAnswer = question.match(/Correct Answer:\s*([A-D])/i)?.[1];
+                        const isCorrect = value === correctAnswer;
+                        setIsAnswerCorrect(isCorrect);
+                        setShowNextButton(true);
+                      }} className="space-y-4">
+                        {(() => {
+                          const parsedOptions = ['A', 'B', 'C', 'D'].map((option) => {
+                            const optionMatch = question.match(new RegExp(`${option}[\\)\\.:]\s*(.+?)(?=\\n[A-D][\\)\\.:>]|\\nCorrect|$)`, 'si'));
+                            return {
+                              letter: option,
+                              text: optionMatch ? optionMatch[1].trim() : ''
+                            };
+                          });
                           
-                          if (!optionText) return null;
+                          const hasValidOptions = parsedOptions.some(opt => opt.text.length > 0);
                           
-                          const isSelected = selectedOption === option;
-                          const correctAnswer = question.match(/Correct Answer:\s*([A-D])/i)?.[1];
-                          const isCorrectOption = correctAnswer === option;
-                          const showResult = isAnswerCorrect !== null;
+                          if (!hasValidOptions) {
+                            return (
+                              <div className="p-6 border-2 border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/20 rounded-xl">
+                                <p className="text-amber-800 dark:text-amber-200 font-semibold mb-2">⚠️ Unable to parse options</p>
+                                <p className="text-sm text-amber-600 dark:text-amber-400 mb-4">The question format may not be correct.</p>
+                              </div>
+                            );
+                          }
+                          
+                          return parsedOptions.map(({ letter: option, text: optionText }) => {
+                            if (!optionText) return null;
+                            
+                            const isSelected = selectedOption === option;
+                            const correctAnswer = question.match(/Correct Answer:\s*([A-D])/i)?.[1];
+                            const isCorrectOption = correctAnswer === option;
+                            const showResult = isAnswerCorrect !== null;
                           
                           return (
                             <div
                               key={option}
                               className={cn(
                                 "flex items-start space-x-4 p-5 border-2 rounded-xl transition-all cursor-pointer",
-                                isSelected && !showResult && "border-purple-500 bg-purple-50 dark:bg-purple-950/20",
-                                !isSelected && !showResult && "border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:bg-purple-50/50 dark:hover:bg-purple-950/10",
+                                isSelected && !showResult && "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/20",
+                                !isSelected && !showResult && "border-gray-200 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-700 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/10",
                                 showResult && isCorrectOption && "border-green-500 bg-green-50 dark:bg-green-950/20",
                                 showResult && isSelected && !isCorrectOption && "border-red-500 bg-red-50 dark:bg-red-950/20",
                                 showResult && !isSelected && !isCorrectOption && "opacity-50"
@@ -973,41 +1314,34 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                             >
                               <RadioGroupItem value={option} id={option} disabled={showResult} className="mt-1" />
                               <Label htmlFor={option} className="flex-1 cursor-pointer text-base leading-relaxed">
-                                <span className="text-foreground">{optionText}</span>
+                                <span className="text-foreground font-medium">{optionText}</span>
                                 {showResult && isCorrectOption && (
                                   <span className="ml-3 inline-flex items-center text-green-600 dark:text-green-400 font-semibold">
                                     <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                                     </svg>
-                                    Correct Answer
+                                    Correct!
+                                  </span>
+                                )}
+                                {showResult && isSelected && !isCorrectOption && (
+                                  <span className="ml-3 inline-flex items-center text-red-600 dark:text-red-400 font-semibold">
+                                    <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+                                    </svg>
+                                    Incorrect
                                   </span>
                                 )}
                               </Label>
                             </div>
                           );
-                        })}
+                          });
+                        })()}
                       </RadioGroup>
-
-                      {/* Check Answer Button */}
-                      {!showNextButton && (
-                        <Button
-                          onClick={() => {
-                            const correctAnswer = question.match(/Correct Answer:\s*([A-D])/i)?.[1];
-                            const isCorrect = selectedOption === correctAnswer;
-                            setIsAnswerCorrect(isCorrect);
-                            setShowNextButton(true);
-                          }}
-                          disabled={!selectedOption}
-                          className="w-full h-14 text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg"
-                        >
-                          Check Answer
-                        </Button>
-                      )}
 
                       {/* Result Display */}
                       {isAnswerCorrect !== null && (
                         <div className={cn(
-                          "p-6 rounded-xl border-2",
+                          "p-6 rounded-xl border-2 animate-in fade-in slide-in-from-bottom-4 duration-500",
                           isAnswerCorrect 
                             ? "bg-green-50 dark:bg-green-950/20 border-green-500" 
                             : "bg-red-50 dark:bg-red-950/20 border-red-500"
@@ -1015,14 +1349,14 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                           <div className="flex items-center gap-3 mb-3">
                             {isAnswerCorrect ? (
                               <>
-                                <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                                 </svg>
                                 <span className="text-2xl font-bold text-green-700 dark:text-green-400">Correct! 🎉</span>
                               </>
                             ) : (
                               <>
-                                <svg className="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
                                 </svg>
                                 <span className="text-2xl font-bold text-red-700 dark:text-red-400">Incorrect</span>
@@ -1032,7 +1366,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                           <p className="text-base text-muted-foreground">
                             {isAnswerCorrect 
                               ? "Great job! You selected the right answer." 
-                              : `The correct answer was ${question.match(/Correct Answer:\s*([A-D])/i)?.[1]}.`
+                              : `The correct answer is ${question.match(/Correct Answer:\s*([A-D])/i)?.[1]}.`
                             }
                           </p>
                         </div>
@@ -1044,7 +1378,6 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                           onClick={async () => {
                             const nextIndex = currentQuestionIndex + 1;
                             
-                            // If we have questions in the bank, use them
                             if (nextIndex < questionBank.length) {
                               setQuestion(questionBank[nextIndex]);
                               setPreviousQuestions(prev => [...prev, questionBank[nextIndex]]);
@@ -1053,28 +1386,57 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                               setSelectedOption('');
                               setIsAnswerCorrect(null);
                             } else {
-                              // Fetch more questions when we run out
+                              // Need to fetch more questions
                               setIsLoading(true);
                               try {
                                 const apiKey = localStorage.getItem('ai_api_key');
                                 const provider = localStorage.getItem('ai_provider') as AIProvider;
                                 if (!apiKey || !provider) throw new Error('API not configured');
                                 
-                                const batchSize = 10;
+                                toast({
+                                  title: 'Loading More Questions',
+                                  description: 'Generating 50 more MCQ questions...',
+                                });
+                                
+                                const batchSize = 50; // Fetch 50 more questions
                                 const newQuestions: string[] = [];
                                 let previousQs = [...previousQuestions];
                                 
                                 for (let i = 0; i < batchSize; i++) {
-                                  const result = await conductInterview({
-                                    provider,
-                                    apiKey,
-                                    language: selectedLanguage,
-                                    question: '',
-                                    previousQuestions: previousQs,
-                                    questionType
-                                  });
-                                  newQuestions.push(result.nextQuestion);
-                                  previousQs.push(result.nextQuestion);
+                                  try {
+                                    const result = await conductInterview({
+                                      provider,
+                                      apiKey,
+                                      language: selectedLanguage,
+                                      question: '',
+                                      previousQuestions: previousQs,
+                                      questionType,
+                                      category: getSelectedCategory()
+                                    });
+                                    
+                                    // Validate MCQ format
+                                    if (result.nextQuestion && result.nextQuestion.includes('A)') && result.nextQuestion.includes('Correct Answer:')) {
+                                      newQuestions.push(result.nextQuestion);
+                                      previousQs.push(result.nextQuestion);
+                                    } else {
+                                      console.warn(`Question ${i + 1} has incorrect format, retrying...`);
+                                      i--; // Retry this slot
+                                    }
+                                    
+                                    // Progress update every 10 questions
+                                    if ((i + 1) % 10 === 0) {
+                                      toast({
+                                        title: 'Progress',
+                                        description: `Generated ${i + 1} out of ${batchSize} questions...`,
+                                      });
+                                    }
+                                  } catch (err) {
+                                    console.error(`Error fetching question ${i + 1}:`, err);
+                                  }
+                                }
+                                
+                                if (newQuestions.length === 0) {
+                                  throw new Error('Failed to generate valid MCQ questions');
                                 }
                                 
                                 setQuestionBank(newQuestions);
@@ -1084,10 +1446,13 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                                 setShowNextButton(false);
                                 setSelectedOption('');
                                 setIsAnswerCorrect(null);
+                                
+                                toast({
+                                  title: 'Success!',
+                                  description: `Loaded ${newQuestions.length} more questions!`,
+                                });
                               } catch (error) {
                                 console.error('Failed to fetch next questions:', error);
-                                
-                                // Check if error is due to AI configuration
                                 const errorMessage = error instanceof Error ? error.message : '';
                                 if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
                                   toast({
@@ -1124,23 +1489,41 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
               </div>
             ) : (
             // TYPING MODE UI - Horizontal Split
-            <form onSubmit={handleSubmitAnswer} className="h-full flex flex-row gap-4">
+            <form onSubmit={handleSubmitAnswer} className="h-full flex flex-row gap-6">
               {/* Left Side - Question */}
               {question && (
-                <Card className='flex-1 h-full flex flex-col border-2 border-blue-200 dark:border-blue-800 shadow-md overflow-hidden'>
-                  <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 flex flex-row items-center justify-between border-b-2 border-blue-100 dark:border-blue-900 flex-shrink-0">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-md flex-shrink-0">
-                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Card className='flex-1 h-full flex flex-col border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-blue-950/20 dark:to-cyan-950/20 backdrop-blur-sm'>
+                  <CardHeader className="bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10 dark:from-blue-600/20 dark:via-cyan-600/20 dark:to-blue-600/20 flex flex-col border-b border-blue-200/50 dark:border-blue-700/50 flex-shrink-0 backdrop-blur-md">
+                    <div className="flex items-center gap-4 flex-1 w-full">
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 via-cyan-500 to-blue-600 flex items-center justify-center shadow-lg flex-shrink-0 relative",
+                        isQuestionSpeaking && "animate-pulse"
+                      )}>
+                        <div className="absolute inset-0 rounded-2xl bg-white/20 blur-sm"></div>
+                        <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
-                      <CardTitle className="text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                        Question
-                      </CardTitle>
+                      <div className="flex-1">
+                        <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700 bg-clip-text text-transparent">
+                          {isQuestionSpeaking ? '🎙️ Reading Question Aloud' : 'Interview Question'}
+                        </CardTitle>
+                        <p className="text-xs text-blue-600/60 dark:text-blue-400/60 mt-0.5">Listen carefully and provide your best answer</p>
+                      </div>
                     </div>
+                    {isQuestionSpeaking && (
+                      <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 mt-3 px-4 py-2 bg-blue-100/50 dark:bg-blue-900/30 rounded-lg border border-blue-200/50 dark:border-blue-700/50 animate-pulse">
+                        <div className="flex gap-1">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                        </div>
+                        <span className="font-medium">AI is reading the question aloud</span>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardContent className="flex-1 overflow-auto p-6">
+                    {/* Show question with innovative animation when being read */}
                     <div className="prose prose-sm dark:prose-invert max-w-none">
                       <style>{`
                         /* Hide === separator lines */
@@ -1196,6 +1579,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                           font-weight: 600;
                         }
                         .dark .prose code {
+                          background: rgb(59 130 246 / 0.2);
                           color: rgb(96 165 250);
                         }
                         .prose pre code {
@@ -1254,10 +1638,30 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                           color: rgb(96 165 250);
                         }
                       `}</style>
-                      <ReactMarkdown>{question}</ReactMarkdown>
+                      <ReactMarkdown
+                        components={{
+                          code: ({ node, inline, className, children, ...props }: any) => {
+                            if (inline) {
+                              return <code className={className} {...props}>{children}</code>;
+                            }
+                            return (
+                              <>
+                                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-blue-500/10 to-transparent flex items-start justify-center pt-3">
+                                  <Code className="w-4 h-4 text-blue-500" />
+                                </div>
+                                <code className={className} {...props}>
+                                  {children}
+                                </code>
+                              </>
+                            );
+                          }
+                        }}
+                      >
+                        {question}
+                      </ReactMarkdown>
                     </div>
                     
-                    {/* Answer Hint */}
+                    {/* Answer Hint - Always show at top */}
                     {answerHint && (
                       <div className="flex gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-lg border-2 border-emerald-200 dark:border-emerald-800 mt-4">
                         <Wand2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -1271,45 +1675,226 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                         </div>
                       </div>
                     )}
+                    
+                    {/* Smooth Gradient Orb Animation when reading */}
+                    {isQuestionSpeaking && (
+                      <div className="mt-8 flex flex-col items-center justify-center py-12">
+                        {/* Add smooth breathing animation */}
+                        <style>{`
+                          @keyframes breathe {
+                            0%, 100% { transform: scale(1); opacity: 0.9; }
+                            50% { transform: scale(1.05); opacity: 1; }
+                          }
+                          @keyframes breathe-slow {
+                            0%, 100% { transform: scale(1); opacity: 0.6; }
+                            50% { transform: scale(1.1); opacity: 0.8; }
+                          }
+                          @keyframes float-gentle {
+                            0%, 100% { transform: translateY(0); }
+                            50% { transform: translateY(-10px); }
+                          }
+                        `}</style>
+                        
+                        {/* Smooth Gradient Orb */}
+                        <div className="relative w-80 h-80 flex items-center justify-center" style={{animation: 'float-gentle 4s ease-in-out infinite'}}>
+                          {/* Outermost glow - very soft */}
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-b from-cyan-200/20 via-blue-300/30 to-blue-500/40 blur-3xl" style={{animation: 'breathe-slow 3s ease-in-out infinite'}}></div>
+                          
+                          {/* Second layer - medium glow */}
+                          <div className="absolute inset-8 rounded-full bg-gradient-to-b from-cyan-100/40 via-blue-300/50 to-blue-500/60 blur-2xl" style={{animation: 'breathe 2.5s ease-in-out infinite', animationDelay: '0.3s'}}></div>
+                          
+                          {/* Main orb - solid gradient */}
+                          <div className="absolute inset-16 rounded-full bg-gradient-to-b from-cyan-100 via-blue-400 to-blue-600 shadow-2xl" style={{animation: 'breathe 2s ease-in-out infinite'}}></div>
+                          
+                          {/* Inner bright core - pulsing */}
+                          <div className="absolute inset-24 rounded-full bg-gradient-to-b from-white/70 via-cyan-100/50 to-blue-200/30 blur-lg" style={{animation: 'breathe 1.8s ease-in-out infinite', animationDelay: '0.2s'}}></div>
+                          
+                          {/* Top bright spot - focal point */}
+                          <div className="absolute top-24 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full bg-white/50 blur-2xl" style={{animation: 'breathe-slow 2.2s ease-in-out infinite'}}></div>
+                          
+                          {/* Subtle ring accent - adds motion */}
+                          <div className="absolute inset-28 rounded-full border-2 border-white/20 blur-sm" style={{animation: 'breathe 2.3s ease-in-out infinite', animationDelay: '0.5s'}}></div>
+                          
+                          {/* Inner glow spots for organic feel */}
+                          <div className="absolute top-32 right-32 w-16 h-16 rounded-full bg-white/30 blur-xl" style={{animation: 'breathe 1.5s ease-in-out infinite', animationDelay: '0.8s'}}></div>
+                          <div className="absolute bottom-36 left-36 w-12 h-12 rounded-full bg-cyan-200/40 blur-lg" style={{animation: 'breathe-slow 2.8s ease-in-out infinite', animationDelay: '1s'}}></div>
+                        </div>
+                        
+                        <p className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mt-6 animate-pulse">
+                          🎙️ AI is reading the question aloud
+                        </p>
+                        <p className="text-sm text-muted-foreground text-center max-w-md mt-2">
+                          Recording will start automatically once complete
+                        </p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
             
-              {/* Right Side - Answer */}
-            <Card className="flex-1 h-full flex flex-col border-2 border-emerald-200 dark:border-emerald-800 shadow-md overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-b-2 border-emerald-100 dark:border-emerald-900">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-md">
-                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Right Side - Answer (Type + Voice) */}
+            <Card className="flex-1 h-full flex flex-col border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/30 dark:from-slate-900 dark:via-emerald-950/20 dark:to-teal-950/20 backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10 dark:from-emerald-600/20 dark:via-teal-600/20 dark:to-emerald-600/20 border-b border-emerald-200/50 dark:border-emerald-700/50 backdrop-blur-md">
+                    <div className="flex items-center gap-4">
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 flex items-center justify-center shadow-lg relative",
+                        isRecording && "animate-pulse"
+                      )}>
+                        <div className="absolute inset-0 rounded-2xl bg-white/20 blur-sm"></div>
+                        <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </div>
-                      <CardTitle className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                        Your Answer
-                      </CardTitle>
+                      <div className="flex-1">
+                        <CardTitle className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
+                          {isQuestionSpeaking ? '👂 Listen to Question' : isRecording ? '🎤 Recording Your Answer' : 'Your Answer'}
+                        </CardTitle>
+                        <p className="text-xs text-emerald-600/60 dark:text-emerald-400/60 mt-0.5">
+                          {isQuestionSpeaking ? 'Please wait while question is being read' : isRecording ? 'Speak clearly into your microphone' : 'Type or use voice input to respond'}
+                        </p>
+                      </div>
                     </div>
+                    {isQuestionSpeaking ? (
+                      <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 mt-3 px-4 py-2 bg-blue-100/50 dark:bg-blue-900/30 rounded-lg border border-blue-200/50 dark:border-blue-700/50 animate-pulse">
+                        <div className="flex gap-1">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                        </div>
+                        <span className="font-medium">AI is reading the question</span>
+                      </div>
+                    ) : !isRecording ? (
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground mt-3 px-4 py-2 bg-slate-100/50 dark:bg-slate-800/30 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                          <span className="font-medium">Type</span>
+                        </div>
+                        <span className="text-slate-400">or</span>
+                        <div className="flex items-center gap-2">
+                          <Mic className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                          <span className="font-medium">Voice</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 mt-3 px-4 py-2 bg-red-100/50 dark:bg-red-900/30 rounded-lg border border-red-200/50 dark:border-red-700/50 animate-pulse">
+                        <div className="w-2 h-2 rounded-full bg-red-600 dark:bg-red-400 animate-pulse"></div>
+                        <span className="font-semibold">🔴 Recording in progress</span>
+                      </div>
+                    )}
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col gap-4 p-4">
-                    <Textarea
-                        value={userAnswer}
-                        onChange={e => setUserAnswer(e.target.value)}
-                        placeholder="Type your answer here..."
-                        className="flex-1 text-base resize-none border-2 focus:border-emerald-400 dark:focus:border-emerald-600 rounded-lg"
-                        disabled={isLoading || showNextButton}
-                    />
-                    <div className="flex items-center justify-end gap-3">
-                        <Button 
-                          type="submit" 
-                          disabled={isLoading || !userAnswer.trim()}
-                          className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md"
+                    {/* Voice Recording Animation */}
+                    {isRecording && (
+                      <div className="flex-1 flex flex-col items-center justify-center py-8">
+                        {/* Active Recording Orb - Solid Cyan/Blue Glow */}
+                        <div className="relative w-48 h-48 mx-auto mb-6">
+                          {/* Outer glow */}
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-cyan-600 opacity-30 blur-3xl animate-pulse" style={{animationDuration: '2s'}}></div>
+                          {/* Main solid orb */}
+                          <div className="absolute inset-6 rounded-full bg-gradient-to-br from-cyan-300 via-blue-400 to-cyan-500 animate-pulse" style={{animationDuration: '1.5s'}}></div>
+                          {/* Inner bright layer */}
+                          <div className="absolute inset-12 rounded-full bg-gradient-to-br from-cyan-200 via-blue-300 to-cyan-400 blur-sm"></div>
+                          {/* Center highlight */}
+                          <div className="absolute inset-16 rounded-full bg-gradient-to-br from-white to-cyan-100 opacity-60"></div>
+                        </div>
+                        
+                        {/* Live Transcript */}
+                        {transcript && (
+                          <div className="w-full max-w-2xl p-4 bg-white dark:bg-slate-800 rounded-lg border-2 border-purple-200 dark:border-purple-800">
+                            <p className="text-sm text-muted-foreground mb-2">Live Transcript:</p>
+                            <p className="text-lg">{transcript}</p>
+                          </div>
+                        )}
+                        
+                        <p className="text-lg font-semibold text-cyan-600 dark:text-cyan-400 mt-4 animate-pulse">Recording...</p>
+                      </div>
+                    )}
+                    
+                    {/* Show waiting message when question is being read */}
+                    {isQuestionSpeaking ? (
+                      <div className="flex-1 flex flex-col items-center justify-center py-12 text-center">
+                        <div className="relative w-32 h-32 mb-4">
+                          {/* Animated breathing orb without icon */}
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-b from-cyan-200/30 via-blue-400/40 to-blue-600/50 blur-2xl animate-pulse" style={{animationDuration: '2s'}}></div>
+                          <div className="absolute inset-2 rounded-full bg-gradient-to-b from-cyan-100 via-blue-400 to-blue-600 shadow-xl" style={{animation: 'breathe 2s ease-in-out infinite'}}></div>
+                          <div className="absolute inset-6 rounded-full bg-gradient-to-b from-white/50 via-cyan-50/30 to-transparent blur-md"></div>
+                        </div>
+                        <p className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-2">Question Being Read...</p>
+                        <p className="text-sm text-muted-foreground max-w-sm">Recording will start automatically after the question is read. Please listen carefully.</p>
+                      </div>
+                    ) : !isRecording && (
+                      <>
+                        <Textarea
+                            value={userAnswer}
+                            onChange={e => setUserAnswer(e.target.value)}
+                            placeholder="Type your answer here..."
+                            className="flex-1 text-base resize-none border-2 focus:border-emerald-400 dark:focus:border-emerald-600 rounded-lg"
+                            disabled={isLoading || showNextButton || isQuestionSpeaking}
+                        />
+                        
+                        {/* Hint to use voice if no input yet */}
+                        {!userAnswer && !transcript && !isLoading && !showNextButton && (
+                          <div className="text-center py-4 text-sm text-muted-foreground">
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                              <Mic className="h-4 w-4 text-purple-500" />
+                              <span>Tip: Voice recording will start automatically after question is read</span>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    
+                    {/* Voice Transcript Display - Show after recording stops and not reading question */}
+                    {!isRecording && !isQuestionSpeaking && transcript && (
+                      <div className="p-4 bg-purple-50 dark:bg-purple-950/20 border-2 border-purple-200 dark:border-purple-800 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Mic className="h-4 w-4 text-purple-600" />
+                          <span className="text-sm font-semibold text-purple-600">Voice Transcript:</span>
+                        </div>
+                        <p className="text-sm text-foreground">{transcript}</p>
+                      </div>
+                    )}
+                    
+                    {/* Action Buttons - Hide when question is being read */}
+                    {!isQuestionSpeaking && (
+                    <div className="flex items-center justify-between gap-3">
+                      {/* Voice Recording Button */}
+                      {!isRecording ? (
+                        <Button
+                          type="button"
+                          onClick={startVoiceRecording}
+                          disabled={isLoading || showNextButton || isQuestionSpeaking}
+                          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                         >
-                            {isLoading ? (
-                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
-                            ) : (
-                                <><Send className="mr-2 h-4 w-4"/> Submit Answer</>
-                            )}
+                          <Mic className="mr-2 h-4 w-4" />
+                          Start Voice
                         </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          onClick={stopVoiceRecording}
+                          size="lg"
+                          className="bg-red-600 hover:bg-red-700 animate-pulse shadow-lg"
+                        >
+                          <StopCircle className="mr-2 h-5 w-5" />
+                          Stop Recording
+                        </Button>
+                      )}
+                      
+                      {/* Submit Button */}
+                      <Button 
+                        type="submit" 
+                        disabled={isLoading || isQuestionSpeaking || (!userAnswer.trim() && !transcript.trim())}
+                        className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md"
+                      >
+                          {isLoading ? (
+                              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
+                          ) : (
+                              <><Send className="mr-2 h-4 w-4"/> Submit Answer</>
+                          )}
+                      </Button>
                     </div>
+                    )}
                     
                     {/* Next Question Button for Typing Mode */}
                     {showNextButton && feedback && (
@@ -1334,214 +1919,11 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                 </CardContent>
             </Card>
         </form>
-            )
-          ) : (
-            // VOICE MODE UI
-            <div className="h-full flex flex-col gap-4">
-              {question && (
-                <Card className='flex-shrink-0 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800'>
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center mr-2 shadow-md">
-                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                      Interview Question
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="prose prose-sm dark:prose-invert max-w-none prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:border-2 prose-pre:border-purple-400 dark:prose-pre:border-purple-600 prose-pre:rounded-lg prose-pre:shadow-lg prose-code:text-sm prose-code:font-mono">
-                      <style>{`
-                        /* Hide === separator lines */
-                        .prose hr {
-                          display: none;
-                        }
-                        .prose p:has(> strong:only-child) {
-                          display: none;
-                        }
-                        .prose pre {
-                          position: relative;
-                          padding: 1rem;
-                          margin: 1rem 0;
-                          background: linear-gradient(135deg, rgb(15 23 42) 0%, rgb(30 41 59) 100%);
-                        }
-                        .prose pre code {
-                          color: #e2e8f0;
-                          font-size: 0.875rem;
-                          line-height: 1.6;
-                          font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
-                        }
-                        .prose code {
-                          background: rgb(147 51 234 / 0.1);
-                          padding: 0.2rem 0.4rem;
-                          border-radius: 0.25rem;
-                          font-size: 0.85em;
-                          color: rgb(168 85 247);
-                          font-weight: 600;
-                        }
-                        .prose pre code {
-                          background: transparent;
-                          padding: 0;
-                          color: #e2e8f0;
-                          font-weight: normal;
-                        }
-                        .prose pre::after {
-                          content: 'CODE';
-                          position: absolute;
-                          top: 0.5rem;
-                          right: 0.5rem;
-                          font-size: 0.65rem;
-                          font-weight: 700;
-                          letter-spacing: 0.05em;
-                          color: rgb(168 85 247);
-                          background: rgb(30 27 75);
-                          padding: 0.25rem 0.5rem;
-                          border-radius: 0.25rem;
-                        }
-                        .prose strong {
-                          color: rgb(168 85 247);
-                        }
-                      `}</style>
-                      <ReactMarkdown>{question}</ReactMarkdown>
-                    </div>
-                    
-                    {/* Answer Hint */}
-                    {answerHint && (
-                      <div className="flex gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-lg border-2 border-emerald-200 dark:border-emerald-800">
-                        <Wand2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100 mb-1">
-                            💡 How to Answer Simply
-                          </p>
-                          <p className="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">
-                            {answerHint}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground bg-purple-50 dark:bg-purple-950/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
-                      <Volume2 className="h-4 w-4 animate-pulse text-purple-600" />
-                      <span className="font-medium">Question will be read aloud automatically</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            
-              {/* Voice Recording Panel */}
-              <Card className="flex-1 flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold flex items-center">
-                    <Mic className={cn("mr-2 h-5 w-5", isRecording && "text-red-500 animate-pulse")} />
-                    {isRecording ? 'Recording Your Answer...' : 'Your Answer'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col items-center justify-center gap-6">
-                  {!isRecording && !isLoading && !userAnswer && (
-                    <div className="text-center space-y-6">
-                      {/* Siri-like Voice Orb */}
-                      <div className="relative w-48 h-48 mx-auto">
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 opacity-60 blur-xl animate-pulse"></div>
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-300 via-blue-400 to-indigo-500 animate-pulse" style={{animationDuration: '3s'}}></div>
-                        <div className="absolute inset-4 rounded-full bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500 blur-md animate-pulse" style={{animationDuration: '2s'}}></div>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-2xl font-bold">Voice Interview Mode</h3>
-                        <p className="text-muted-foreground max-w-md mx-auto">
-                          The question will be read to you, then you can speak your answer
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {isRecording && (
-                    <div className="text-center space-y-6 w-full max-w-2xl">
-                      {/* Active Recording Orb - Solid Blue/Cyan Glow */}
-                      <div className="relative w-64 h-64 mx-auto">
-                        {/* Outer glow */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-cyan-600 opacity-30 blur-3xl animate-pulse" style={{animationDuration: '2s'}}></div>
-                        {/* Main solid orb */}
-                        <div className="absolute inset-8 rounded-full bg-gradient-to-br from-cyan-300 via-blue-400 to-cyan-500 animate-pulse" style={{animationDuration: '1.5s'}}></div>
-                        {/* Inner bright layer */}
-                        <div className="absolute inset-16 rounded-full bg-gradient-to-br from-cyan-200 via-blue-300 to-cyan-400 blur-sm"></div>
-                        {/* Center highlight */}
-                        <div className="absolute inset-24 rounded-full bg-gradient-to-br from-white to-cyan-100 opacity-60"></div>
-                      </div>
-                      
-                      {transcript && (
-                        <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-2 border-purple-200 dark:border-purple-800">
-                          <p className="text-sm text-muted-foreground mb-2">Live Transcript:</p>
-                          <p className="text-lg">{transcript}</p>
-                        </div>
-                      )}
-                      
-                      <Button
-                        onClick={stopVoiceRecording}
-                        size="lg"
-                        className="bg-red-600 hover:bg-red-700"
-                      >
-                        <StopCircle className="mr-2 h-5 w-5" />
-                        Stop & Submit Answer
-                      </Button>
-                    </div>
-                  )}
-
-                  {!isRecording && userAnswer && !isLoading && !showNextButton && (
-                    <div className="w-full max-w-2xl space-y-4">
-                      <div className="bg-white dark:bg-slate-800 rounded-lg p-6 border-2 border-green-200 dark:border-green-800">
-                        <div className="flex items-center gap-2 mb-3 text-green-600">
-                          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                          </svg>
-                          <span className="font-semibold">Your Recorded Answer:</span>
-                        </div>
-                        <p className="text-lg">{userAnswer}</p>
-                      </div>
-                      <div className="text-center text-sm text-muted-foreground">
-                        <Loader2 className="inline-block h-4 w-4 animate-spin mr-2" />
-                        Getting feedback from AI...
-                      </div>
-                    </div>
-                  )}
-
-                  {showNextButton && feedback && (
-                    <div className="w-full max-w-2xl space-y-6">
-                      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-lg p-6 border-2 border-emerald-200 dark:border-emerald-800">
-                        <div className="flex items-center gap-2 mb-4">
-                          <Sparkles className="h-6 w-6 text-emerald-600" />
-                          <span className="font-bold text-lg text-emerald-700 dark:text-emerald-400">Feedback Received!</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Your feedback is ready. Review it in the panel on the right, then click below to continue.
-                        </p>
-                        <Button
-                          onClick={handleNextQuestion}
-                          size="lg"
-                          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg"
-                        >
-                          <ArrowRight className="mr-2 h-5 w-5" />
-                          Next Question
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-
-                  {isLoading && (
-                    <div className="text-center space-y-4">
-                      <Loader2 className="h-12 w-12 text-purple-600 animate-spin mx-auto" />
-                      <p className="text-muted-foreground">AI is analyzing your answer...</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
           )}
         </div>
 
-        {/* Right Panel: Feedback & Ideal Answer (Hidden for MCQ) */}
-      {questionType !== 'mcq' && (
-      <div className="flex-1 h-full min-w-0">
+        {/* Right Panel: Feedback & Ideal Answer */}
+        <div className="flex-1 h-full min-w-0">
         <Card className="h-full w-full flex flex-col overflow-hidden border-2 border-primary/20 shadow-lg">
             <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border-b-2 border-primary/10 flex-shrink-0">
                 <CardTitle className="text-xl font-bold flex items-center">
@@ -1582,16 +1964,54 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                         <div className="space-y-6">
                           {/* Feedback Section */}
                           <div className="relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-emerald-500 to-teal-500"></div>
+                            <div className={cn(
+                              "absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-emerald-500 to-teal-500",
+                              isFeedbackSpeaking && "animate-pulse"
+                            )}></div>
                             <div className="pl-6">
-                              <div className="flex items-center gap-2 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-sm">
-                                  <Sparkles className="w-4 h-4 text-white" />
+                              <div className="flex flex-col gap-2 mb-3">
+                                <div className="flex items-center gap-2">
+                                  <div className={cn(
+                                    "w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-sm",
+                                    isFeedbackSpeaking && "animate-pulse"
+                                  )}>
+                                    <Sparkles className="w-4 h-4 text-white" />
+                                  </div>
+                                  <h3 className='font-bold text-lg bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent'>
+                                    {isFeedbackSpeaking ? 'Reading Feedback Aloud...' : 'Feedback on Your Answer'}
+                                  </h3>
                                 </div>
-                                <h3 className='font-bold text-lg bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent'>
-                                  Feedback on Your Answer
-                                </h3>
+                                {isFeedbackSpeaking && (
+                                  <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 animate-pulse">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse"></div>
+                                    <span className="font-semibold">AI is reading your feedback - Listen carefully</span>
+                                  </div>
+                                )}
                               </div>
+                              {isFeedbackSpeaking && (
+                                <div className="mb-4 flex items-center justify-center py-6">
+                                  {/* Smooth Gradient Orb - Emerald/Teal Style */}
+                                  <div className="relative w-32 h-32">
+                                    {/* Outer glow layers */}
+                                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-200 via-teal-300 to-emerald-400 opacity-30 blur-2xl animate-pulse" style={{animationDuration: '2s'}}></div>
+                                    <div className="absolute inset-2 rounded-full bg-gradient-to-br from-emerald-300 via-teal-400 to-emerald-500 opacity-40 blur-xl animate-pulse" style={{animationDuration: '1.8s', animationDelay: '0.2s'}}></div>
+                                    
+                                    {/* Main orb with smooth gradient */}
+                                    <div className="absolute inset-4 rounded-full bg-gradient-to-br from-teal-200 via-emerald-400 to-teal-600 opacity-90 animate-pulse shadow-xl" style={{animationDuration: '1.5s'}}></div>
+                                    
+                                    {/* Inner bright highlight */}
+                                    <div className="absolute inset-8 rounded-full bg-gradient-to-br from-white via-emerald-100 to-teal-200 opacity-60 blur-md"></div>
+                                    
+                                    {/* Center white glow */}
+                                    <div className="absolute inset-12 rounded-full bg-white opacity-40 blur-sm animate-pulse" style={{animationDuration: '1.2s'}}></div>
+                                    
+                                    {/* Sparkles icon in center */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                      <Sparkles className="w-10 h-10 text-white drop-shadow-lg animate-pulse" style={{animationDuration: '1.5s'}} />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                               <div className="prose prose-sm dark:prose-invert max-w-none overflow-auto">
                                 <ReactMarkdown>{feedback}</ReactMarkdown>
                               </div>
@@ -1636,8 +2056,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                 </ScrollArea>
             </CardContent>
         </Card>
-      </div>
-      )}
+        </div>
       </div>
     </div>
     );

@@ -127,7 +127,7 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <LinkWrapper href={isUserAuthenticated ? `/${language.slug}/${topic.slug}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
+              <LinkWrapper href={isUserAuthenticated ? `/languages/${language.slug}/${topic.slug}` : '#'} className={cn(isUserAuthenticated && "hover:underline")}>
                 <h3 className="text-lg font-semibold text-foreground">{topic.title}</h3>
               </LinkWrapper>
             </div>

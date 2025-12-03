@@ -1,16 +1,12 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Play, Lightbulb, Code, Ban } from 'lucide-react';
+import { Lightbulb, Code, Ban } from 'lucide-react';
 import React from 'react';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { File, ShieldAlert, Wrench, AlertTriangle, Layers, ListChecks } from 'lucide-react';
-import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
+import { FrontendCodePreview } from '@/components/shared';
 
-export default function HtmlComments({ onOpenWebPlaygroundAction, onOpenWebPlayground }: { onOpenWebPlaygroundAction?: (html: string, css: string, js: string) => void; onOpenWebPlayground?: (html: string, css: string, js: string) => void; }) {
-  const openPlayground = (html: string, css: string, js: string) => {
-    (onOpenWebPlaygroundAction || onOpenWebPlayground)?.(html, css, js);
-  };
+export default function HtmlComments() {
 
     const singleLineExample = `<!-- This is a single-line comment -->
 <p>This paragraph is visible.</p>`;
@@ -25,34 +21,6 @@ export default function HtmlComments({ onOpenWebPlaygroundAction, onOpenWebPlayg
     const commentOutExample = `<!-- <p>This paragraph is commented out and will not be displayed.</p> -->
 <p>But this one will!</p>`;
 
-    const playgroundCode = {
-        html: `<h1>HTML Comments Demo</h1>
-
-<!-- This is a comment explaining the next section -->
-<h2>My Favorite Foods</h2>
-<ul>
-  <li>Pizza</li>
-  <!-- <li>Sushi</li>  <-- Temporarily removed this item -->
-  <li>Tacos</li>
-</ul>
-
-<!--
-  TODO: Add a new section here about hobbies.
-  This is a reminder for later.
--->
-`,
-        css: `body { 
-  font-family: sans-serif;
-  line-height: 1.6;
-}`,
-        js: ''
-    };
-
-    const advancedPlayground = {
-        html: `<!DOCTYPE html>\n<html lang='en'>\n<head>\n  <title>Comment Strategies</title>\n  <!-- Build: Inject analytics script here -->\n  <!-- PROD_ONLY: Remove debug panels -->\n</head>\n<body>\n  <h2>Feature Flags</h2>\n  <!-- EXPERIMENT_A: Button variant test -->\n  <button>Buy Now</button>\n\n  <!--[if IE]>\n    <p>You are using legacy Internet Explorer!</p>\n  <![endif]-->\n\n  <!-- SECURITY: Never place API keys or secrets inside comments. -->\n\n  <div id='output'></div>\n  <script>\n    // This script shows how comments do NOT exist in DOM selection\n    const all = document.body.querySelectorAll('*');\n    document.getElementById('output').textContent = 'Element count (comments excluded): '+all.length;\n  </script>\n</body>\n</html>`,
-        css: `body{font-family:system-ui;padding:1.25rem;line-height:1.5}`,
-        js: ''
-    };
 
     return (
       <div className="space-y-10">
@@ -382,60 +350,7 @@ html.dark footer {
             </ul>
           </CardContent>
         </Card>
-        {/* Existing Putting It All Together */}
-        <Card>
-            <CardHeader>
-                <CardTitle>Putting It All Together</CardTitle>
-                <CardDescription>Open this example in the Web Playground to see how comments work. Notice that the commented-out list item does not appear in the output.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <InteractivePlayground
-                title="Comments Playground"
-                description="Experiment with commenting out code and see how it affects the output"
-                features={[
-                  'Single-line Comments',
-                  'Multi-line Comments',
-                  'Comment Out Code',
-                  'TODO Notes'
-                ]}
-                buttonText="Open Comments Playground"
-                onLaunchPlayground={openPlayground}
-                playgroundData={{
-                  html: playgroundCode.html,
-                  css: playgroundCode.css,
-                  js: playgroundCode.js
-                }}
-                colorTheme="emerald"
-              />
-            </CardContent>
-        </Card>
-        {/* Advanced Demo */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Advanced Demo</CardTitle>
-            <CardDescription>Explore environment markers & legacy conditional form—purely educational.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <InteractivePlayground
-              title="Advanced Comments Playground"
-              description="Explore build markers, legacy IE conditionals, and comment strategies"
-              features={[
-                'Build Directives',
-                'Legacy IE Conditionals',
-                'Environment Markers',
-                'DOM vs Comments'
-              ]}
-              buttonText="Open Advanced Example"
-              onLaunchPlayground={openPlayground}
-              playgroundData={{
-                html: advancedPlayground.html,
-                css: advancedPlayground.css,
-                js: advancedPlayground.js
-              }}
-              colorTheme="purple"
-            />
-          </CardContent>
-        </Card>
+
       </div>
     );
 }

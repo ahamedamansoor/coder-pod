@@ -20,298 +20,983 @@ export default function HtmlHeadingsAndParagraphs({
   // ==================== PLAYGROUND EXAMPLES ====================
 
   const headingHierarchyDemo = {
-    html: `<!-- Proper Heading Hierarchy -->
-<article>
-  <h1>Main Page Title</h1>
-  <p>Introduction to the main topic of the page.</p>
-  
-  <section>
-    <h2>First Major Section</h2>
-    <p>Content about the first major topic.</p>
+    html: `<!-- Interactive Heading Hierarchy -->
+<div class="demo-container">
+  <nav class="hierarchy-nav">
+    <h2 class="nav-title">📑 Jump to Section</h2>
+    <ul>
+      <li><a href="#main">Main Title</a></li>
+      <li><a href="#sec1">Section 1</a></li>
+      <li><a href="#sec1-1">├─ Subsection 1.1</a></li>
+      <li><a href="#sec1-2">├─ Subsection 1.2</a></li>
+      <li><a href="#sec2">Section 2</a></li>
+      <li><a href="#sec2-1">├─ Subsection 2.1</a></li>
+      <li><a href="#sec2-1-1">│  └─ Sub-subsection</a></li>
+    </ul>
+  </nav>
+
+  <article>
+    <h1 id="main" class="level-1">🎯 Master HTML Heading Hierarchy</h1>
+    <p class="intro">Learn the semantic structure that makes content accessible and SEO-friendly.</p>
     
-    <h3>Subsection 1.1</h3>
-    <p>More detailed information about subsection 1.1</p>
+    <section class="section-1">
+      <h2 id="sec1" class="level-2">📚 Core Concepts</h2>
+      <p>Headings create a logical document structure. Screen readers and search engines rely on proper hierarchy.</p>
+      
+      <h3 id="sec1-1" class="level-3">🔵 Understanding H1</h3>
+      <p>The h1 is your page's main topic. Use only ONE per page. It's like your article headline.</p>
+      
+      <h3 id="sec1-2" class="level-3">🟢 Secondary Headings (H2)</h3>
+      <p>H2 elements break content into major sections. Each section can have one h2.</p>
+    </section>
     
-    <h3>Subsection 1.2</h3>
-    <p>More detailed information about subsection 1.2</p>
-  </section>
-  
-  <section>
-    <h2>Second Major Section</h2>
-    <p>Content about the second major topic.</p>
-    
-    <h3>Subsection 2.1</h3>
-    <p>Details about this subsection.</p>
-    
-    <h4>Sub-subsection 2.1.1</h4>
-    <p>Even more specific information.</p>
-  </section>
-</article>`,
-    css: `article { max-width: 800px; margin: 0 auto; padding: 2rem; font-family: system-ui, sans-serif; line-height: 1.6; }
-h1 { color: #1e40af; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #3b82f6; padding-bottom: 0.5rem; }
-h2 { color: #2563eb; font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; border-left: 4px solid #3b82f6; padding-left: 1rem; }
-h3 { color: #3b82f6; font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-h4 { color: #60a5fa; font-size: 1.25rem; margin-top: 1rem; margin-bottom: 0.5rem; }
+    <section class="section-2">
+      <h2 id="sec2" class="level-2">🎨 Visual Hierarchy</h2>
+      <p>Visually, each heading level should be distinguishable and progressively smaller.</p>
+      
+      <h3 id="sec2-1" class="level-3">🟡 Subsection Styling</h3>
+      <p>H3 elements are for detailed topics under h2 sections. They help organize complex information.</p>
+      
+      <h4 id="sec2-1-1" class="level-4">🟠 Deep Nesting (H4)</h4>
+      <p>Use h4 and beyond sparingly. If content needs h4, consider restructuring your outline.</p>
+    </section>
+  </article>
+</div>`,
+    css: `* { box-sizing: border-box; }
+.demo-container { display: flex; gap: 2rem; max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.hierarchy-nav { 
+  flex: 0 0 220px; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+.nav-title { font-size: 1.1rem; margin-bottom: 1rem; margin-top: 0; }
+.hierarchy-nav ul { list-style: none; padding: 0; margin: 0; }
+.hierarchy-nav li { margin: 0.5rem 0; font-size: 0.9rem; }
+.hierarchy-nav a { color: white; text-decoration: none; transition: all 0.2s; }
+.hierarchy-nav a:hover { transform: translateX(5px); text-decoration: underline; }
+article { flex: 1; font-family: system-ui, sans-serif; line-height: 1.8; }
+.intro { font-size: 1.1rem; color: #666; margin-bottom: 2rem; }
+.level-1 { 
+  font-size: 2.5rem; 
+  color: #1e3a8a; 
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 4px solid #3b82f6;
+  background: linear-gradient(120deg, #1e3a8a 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.level-2 { 
+  font-size: 2rem; 
+  color: #2563eb;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1rem;
+  border-left: 5px solid #3b82f6;
+  transition: all 0.3s;
+}
+.level-2:hover { padding-left: 1.25rem; border-left-color: #1e40af; }
+.level-3 { 
+  font-size: 1.5rem; 
+  color: #059669;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  border-left: 3px solid #10b981;
+}
+.level-4 { 
+  font-size: 1.25rem; 
+  color: #d97706;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  padding-left: 2rem;
+  border-left: 2px dashed #f59e0b;
+}
+.section-1, .section-2 { margin-bottom: 2rem; }
 p { color: #374151; margin-bottom: 1rem; }
-section { margin-bottom: 2rem; }`,
-    js: ''
+@media (max-width: 768px) { .demo-container { flex-direction: column; } .hierarchy-nav { position: static; flex: 1; } }`,
+    js: `document.querySelectorAll('.hierarchy-nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if(target) { target.style.backgroundColor = '#fef3c7'; setTimeout(() => target.style.backgroundColor = '', 1500); }
+  });
+});`
   };
 
   const paragraphStylingDemo = {
-    html: `<!-- Various Paragraph Styles -->
-<article>
-  <h1>Article Title</h1>
-  
-  <!-- Lead Paragraph -->
-  <p class="lead">
-    This is a lead paragraph that introduces the article. 
-    It's typically larger and stands out from regular paragraphs.
-  </p>
-  
-  <!-- Regular Paragraphs -->
-  <p>
-    This is a regular paragraph with normal styling. Lorem ipsum dolor sit amet, 
-    consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et 
-    dolore magna aliqua.
-  </p>
-  
-  <p>
-    Another paragraph that continues the discussion. Ut enim ad minim veniam, 
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-  </p>
-  
-  <!-- Highlighted Paragraph -->
-  <p class="highlight">
-    This paragraph is highlighted to draw attention to important information.
-  </p>
-  
-  <!-- Indented Paragraph -->
-  <p class="indented">
-    This paragraph is indented, often used for quotes or special content that 
-    needs to be visually distinguished from the main text flow.
-  </p>
-  
-  <!-- Small Text Paragraph -->
-  <p class="small">
-    This is small text, often used for footnotes, disclaimers, or less important information.
-  </p>
-</article>`,
-    css: `article { max-width: 700px; margin: 0 auto; padding: 2rem; font-family: Georgia, serif; line-height: 1.8; }
-h1 { font-size: 2.5rem; color: #1e293b; margin-bottom: 1.5rem; }
-p { margin-bottom: 1.25rem; color: #334155; }
-.lead { font-size: 1.25rem; font-weight: 500; color: #1e293b; line-height: 1.6; margin-bottom: 1.5rem; }
-.highlight { background: #fef3c7; padding: 1rem; border-left: 4px solid #f59e0b; border-radius: 4px; }
-.indented { margin-left: 2rem; padding-left: 1rem; border-left: 2px solid #94a3b8; font-style: italic; }
-.small { font-size: 0.875rem; color: #64748b; }`,
-    js: ''
+    html: `<!-- Interactive Paragraph Showcase -->
+<div class="article-container">
+  <header class="article-header">
+    <h1>The Art of Web Typography</h1>
+    <p class="meta">📅 December 2025 • ⏱️ <span id="readtime">5</span> min read • 👤 Web Designer</p>
+  </header>
+
+  <main class="article-body">
+    <!-- Lead Paragraph -->
+    <p class="lead">
+      Typography is one of the most overlooked aspects of web design, yet it profoundly impacts user experience. 
+      This guide explores how to make your text more readable and visually appealing.
+    </p>
+
+    <!-- Regular Content -->
+    <section>
+      <h2>Why Typography Matters</h2>
+      <p>
+        Good typography isn't just about making text look pretty. It's about creating a reading experience 
+        that guides the reader through your content effortlessly. Poor typography can frustrate users and drive 
+        them away from your site.
+      </p>
+      <p>
+        When you choose appropriate fonts, sizes, and spacing, you're respecting your reader's time and attention. 
+        You're making a statement that their experience matters to you.
+      </p>
+    </section>
+
+    <!-- Highlighted Section -->
+    <section>
+      <h2>Key Principles</h2>
+      <p class="highlight-box">
+        ⭐ <strong>Readability First:</strong> Your typography should be readable before it's beautiful. 
+        If people can't easily read your content, all other design choices become irrelevant.
+      </p>
+      
+      <h3>Line Length & Spacing</h3>
+      <p>
+        The optimal line length for body text is 50-75 characters. This prevents reader fatigue and maintains focus.
+        Pair this with adequate line-height (1.5-1.8) for comfortable reading.
+      </p>
+
+      <h3>Contrast & Hierarchy</h3>
+      <p class="important">
+        Use visual hierarchy to guide readers through your content. Bold important terms, use different sizes 
+        for different sections, and leverage whitespace to create breathing room.
+      </p>
+    </section>
+
+    <!-- Quote Section -->
+    <blockquote class="quote">
+      <p>
+        "Typography is the art of arranging type to make written language legible, readable, and visually appealing."
+      </p>
+      <footer>— John D. Berry, Typography Designer</footer>
+    </blockquote>
+
+    <!-- Conclusion -->
+    <section>
+      <h2>Best Practices Summary</h2>
+      <p class="conclusion">
+        Remember: good typography is invisible. When it's working properly, readers don't notice it—they just 
+        enjoy a smooth, pleasant reading experience. That's your goal.
+      </p>
+    </section>
+  </main>
+</div>`,
+    css: `.article-container { 
+  max-width: 700px; 
+  margin: 0 auto; 
+  padding: 2rem;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%);
+}
+.article-header { 
+  text-align: center; 
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 2rem;
+}
+.article-header h1 { 
+  font-size: 2.75rem; 
+  color: #0f172a;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+.meta { 
+  font-size: 0.95rem; 
+  color: #64748b;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+.article-body { margin-top: 2rem; }
+.lead { 
+  font-size: 1.3rem; 
+  line-height: 1.7;
+  color: #1e293b;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  border-left: 4px solid #3b82f6;
+  padding-left: 1.5rem;
+  background: #eff6ff;
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-radius: 4px;
+}
+h2 { 
+  font-size: 1.75rem; 
+  color: #0f172a;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.3;
+}
+h3 { 
+  font-size: 1.3rem; 
+  color: #334155;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+p { 
+  line-height: 1.8; 
+  color: #475569;
+  margin-bottom: 1.25rem;
+  font-size: 1.05rem;
+}
+.highlight-box {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 5px solid #f59e0b;
+  margin: 1.5rem 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #78350f;
+}
+.important {
+  font-weight: 600;
+  background: #f0fdf4;
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  border-left: 3px solid #16a34a;
+  color: #166534;
+}
+.quote {
+  border-left: 4px solid #8b5cf6;
+  background: #f5f3ff;
+  padding: 1.5rem;
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  font-style: italic;
+  color: #5b21b6;
+}
+.quote p { margin-bottom: 0.5rem; }
+.quote footer { font-style: normal; font-size: 0.95rem; color: #7c3aed; }
+.conclusion { 
+  background: linear-gradient(120deg, #dbeafe, #dbeafe);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 5px solid #0284c7;
+  color: #0c4a6e;
+  font-weight: 500;
+}
+section { margin-bottom: 2rem; }`,
+    js: `
+    const text = document.querySelector('.article-body').innerText;
+    const wordCount = text.split(/\\s+/).length;
+    const readTime = Math.ceil(wordCount / 200);
+    document.getElementById('readtime').textContent = readTime;
+    `
   };
 
   const accessibilityDemo = {
-    html: `<!-- Accessibility-Focused Markup -->
-<article aria-labelledby="main-heading">
-  <h1 id="main-heading">Accessible Content Structure</h1>
-  
-  <nav aria-label="Table of contents">
-    <h2>Contents</h2>
-    <ul>
-      <li><a href="#section1">Introduction</a></li>
-      <li><a href="#section2">Main Content</a></li>
-      <li><a href="#section3">Conclusion</a></li>
-    </ul>
+    html: `<!-- Accessibility-First Content Structure -->
+<div class="accessible-page">
+  <!-- Skip Links for Keyboard Users -->
+  <nav class="skip-links" aria-label="Skip navigation">
+    <a href="#main-content">Skip to main content</a>
+    <a href="#toc">Skip to table of contents</a>
   </nav>
-  
-  <section id="section1" aria-labelledby="intro-heading">
-    <h2 id="intro-heading">Introduction</h2>
-    <p>
-      Screen readers use headings to navigate content. Proper heading hierarchy 
-      helps users understand document structure and jump between sections.
-    </p>
-  </section>
-  
-  <section id="section2" aria-labelledby="content-heading">
-    <h2 id="content-heading">Main Content</h2>
-    <p>
-      Each paragraph should contain a complete thought. Break content into 
-      digestible chunks for better readability.
-    </p>
-    
-    <h3>Subsection</h3>
-    <p>
-      Use h3 for subsections under h2, maintaining logical hierarchy throughout 
-      your document.
-    </p>
-  </section>
-  
-  <section id="section3" aria-labelledby="conclusion-heading">
-    <h2 id="conclusion-heading">Conclusion</h2>
-    <p>
-      Proper semantic markup ensures your content is accessible to everyone, 
-      including those using assistive technologies.
-    </p>
-  </section>
-</article>`,
-    css: `article { max-width: 800px; margin: 0 auto; padding: 2rem; font-family: system-ui, sans-serif; }
-nav { background: #f1f5f9; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
-nav h2 { font-size: 1.25rem; margin-bottom: 1rem; }
-nav ul { list-style: none; padding: 0; }
-nav li { margin: 0.5rem 0; }
-nav a { color: #2563eb; text-decoration: none; }
-nav a:hover { text-decoration: underline; }
-section { margin-top: 2rem; }
-h1 { font-size: 2.5rem; color: #1e40af; margin-bottom: 1.5rem; }
-h2 { font-size: 2rem; color: #2563eb; margin-top: 2rem; margin-bottom: 1rem; }
-h3 { font-size: 1.5rem; color: #3b82f6; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-p { line-height: 1.7; color: #334155; margin-bottom: 1rem; }`,
-    js: ''
-  };
 
-  const responsiveTypographyDemo = {
-    html: `<!-- Responsive Typography -->
-<article>
-  <h1 class="responsive-h1">Responsive Heading</h1>
-  <p class="responsive-lead">
-    This is a lead paragraph that adjusts its size based on viewport width.
-  </p>
-  
-  <h2 class="responsive-h2">Section Heading</h2>
-  <p class="responsive-text">
-    Regular paragraph text that remains readable across all device sizes. 
-    The font size and line height adjust for optimal readability on mobile, 
-    tablet, and desktop screens.
-  </p>
-  
-  <h3 class="responsive-h3">Subsection</h3>
-  <p class="responsive-text">
-    Responsive typography ensures your content looks great on any device, 
-    from smartphones to large desktop monitors.
-  </p>
-</article>`,
-    css: `article { 
-  max-width: 800px; 
-  margin: 0 auto; 
-  padding: 1rem;
-  font-family: system-ui, sans-serif; 
+  <!-- Main Header -->
+  <header class="page-header">
+    <h1 id="page-title">Accessible Web Content Design</h1>
+    <p class="tagline">Creating experiences for everyone, including users with disabilities</p>
+  </header>
+
+  <!-- Quick Navigation (TOC) -->
+  <nav id="toc" class="toc-nav" aria-label="Table of contents">
+    <h2>Quick Navigation</h2>
+    <ol>
+      <li><a href="#about">About Accessibility</a></li>
+      <li><a href="#wcag">WCAG Guidelines</a></li>
+      <li><a href="#practical">Practical Tips</a></li>
+    </ol>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" role="main">
+    <article aria-labelledby="page-title">
+      
+      <section id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">About Accessibility</h2>
+        <p>
+          Web accessibility means ensuring all people, regardless of disability, can perceive, understand, 
+          navigate, and interact with your website. This includes users with visual, auditory, motor, and 
+          cognitive disabilities.
+        </p>
+        <p>
+          About 15% of the global population experiences some form of disability. Making your site accessible 
+          benefits everyone, not just people with disabilities.
+        </p>
+      </section>
+
+      <section id="wcag" aria-labelledby="wcag-heading">
+        <h2 id="wcag-heading">WCAG 2.1 Guidelines</h2>
+        <p>
+          The Web Content Accessibility Guidelines (WCAG) are the gold standard for web accessibility. They're 
+          organized around four principles:
+        </p>
+        
+        <h3 id="perceivable" tabindex="-1">🔍 Perceivable</h3>
+        <p>Information and UI components must be presentable to users in ways they can perceive.</p>
+        
+        <h3 id="operable" tabindex="-1">⌨️ Operable</h3>
+        <p>UI components and navigation must be operable. All functionality must be available from keyboard.</p>
+        
+        <h3 id="understandable" tabindex="-1">🧠 Understandable</h3>
+        <p>Text and other information must be readable and understandable by everyone.</p>
+        
+        <h3 id="robust" tabindex="-1">🛡️ Robust</h3>
+        <p>Content must work with current and future technologies, including assistive technologies.</p>
+      </section>
+
+      <section id="practical" aria-labelledby="practical-heading">
+        <h2 id="practical-heading">Practical Accessibility Tips</h2>
+        <p>Use these essential techniques to improve your site's accessibility:</p>
+        
+        <ul class="tips-list">
+          <li><strong>Use semantic HTML:</strong> Proper heading hierarchy, landmarks, and form labels</li>
+          <li><strong>Provide alt text:</strong> Describe images for screen reader users</li>
+          <li><strong>Ensure color contrast:</strong> Minimum 4.5:1 ratio for text</li>
+          <li><strong>Support keyboard navigation:</strong> All features accessible via keyboard</li>
+          <li><strong>Test with real users:</strong> Include people with disabilities in testing</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="page-footer" role="contentinfo">
+    <p>Made with ❤️ for accessibility. Last updated: December 2025</p>
+  </footer>
+</div>`,
+    css: `.accessible-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  background: white;
 }
 
-/* Responsive Headings */
-.responsive-h1 { 
-  font-size: clamp(1.75rem, 5vw, 3rem);
+/* Skip Links */
+.skip-links {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: white;
+  padding: 0;
+  z-index: 100;
+}
+.skip-links a {
+  display: inline-block;
+  padding: 8px 16px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+.skip-links a:focus {
+  outline: 2px solid #fbbf24;
+  position: static;
+}
+
+/* Header */
+.page-header {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.page-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
   line-height: 1.2;
-  color: #1e40af;
-  margin-bottom: 1rem;
+}
+.tagline {
+  font-size: 1.1rem;
+  opacity: 0.95;
+  margin: 0;
 }
 
-.responsive-h2 { 
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  line-height: 1.3;
+/* Table of Contents */
+.toc-nav {
+  background: #f1f5f9;
+  border-left: 5px solid #3b82f6;
+  padding: 1.5rem;
+  margin: 2rem;
+  border-radius: 8px;
+}
+.toc-nav h2 {
+  margin-top: 0;
+  color: #1e40af;
+  font-size: 1.3rem;
+}
+.toc-nav ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+.toc-nav li {
+  margin: 0.5rem 0;
+}
+.toc-nav a {
   color: #2563eb;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.toc-nav a:hover,
+.toc-nav a:focus {
+  color: #1e40af;
+  text-decoration: underline;
+  outline: 2px solid transparent;
+}
+
+/* Main Content */
+main {
+  padding: 2rem;
+}
+article {
+  line-height: 1.8;
+  color: #374151;
+}
+section {
+  margin-bottom: 2.5rem;
+}
+h2 {
+  font-size: 1.75rem;
+  color: #1e40af;
   margin-top: 2rem;
   margin-bottom: 1rem;
+  border-bottom: 2px solid #dbeafe;
+  padding-bottom: 0.5rem;
 }
-
-.responsive-h3 { 
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
-  line-height: 1.4;
-  color: #3b82f6;
+h3 {
+  font-size: 1.3rem;
+  color: #2563eb;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
 }
-
-/* Responsive Paragraphs */
-.responsive-lead { 
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  line-height: 1.6;
-  color: #1e293b;
-  margin-bottom: 1.5rem;
-}
-
-.responsive-text { 
-  font-size: clamp(1rem, 2vw, 1.125rem);
-  line-height: clamp(1.6, 2vw, 1.8);
-  color: #334155;
+p {
   margin-bottom: 1rem;
+  font-size: 1.05rem;
 }
 
-/* Mobile optimization */
-@media (max-width: 640px) {
-  article { padding: 1rem; }
-  .responsive-h1 { margin-bottom: 0.75rem; }
-  .responsive-h2 { margin-top: 1.5rem; }
+/* Tips List */
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+.tips-list li {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.75rem;
+  border-radius: 4px;
+  color: #15803d;
+}
+
+/* Footer */
+.page-footer {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.95rem;
 }`,
-    js: ''
+    js: `
+    // Highlight sections when clicking from TOC
+    document.querySelectorAll('.toc-nav a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target) {
+          target.style.animation = 'pulse 1.5s ease-in-out';
+          setTimeout(() => target.style.animation = '', 1500);
+        }
+      });
+    });
+
+    // Add focus visible styles
+    document.addEventListener('keydown', function(e) {
+      if(e.key === 'Tab') {
+        document.body.classList.add('keyboard-nav');
+      }
+    });
+    document.addEventListener('mousedown', function() {
+      document.body.classList.remove('keyboard-nav');
+    });
+    `
+  };
+
+  const responsiveTypographyDemo = {
+    html: `<!-- Fluid & Responsive Typography System -->
+<div class="responsive-doc">
+  <header class="hero">
+    <h1>Responsive Typography Mastery</h1>
+    <p class="subtitle">Modern CSS techniques for beautiful text on all devices</p>
+  </header>
+
+  <main class="content">
+    <article>
+      <h2>What is Fluid Typography?</h2>
+      <p class="intro">
+        Fluid typography scales smoothly between different screen sizes using CSS clamp(), 
+        instead of jumping between fixed breakpoints. This creates a more natural, responsive experience.
+      </p>
+
+      <h2>The Problem with Traditional Approach</h2>
+      <p>
+        Traditional responsive design uses media queries to change font sizes at specific breakpoints. 
+        This can feel jarring and doesn't scale well between breakpoints.
+      </p>
+
+      <p>
+        With fluid typography, your font sizes scale continuously as the viewport changes, 
+        creating a smooth, proportional experience from mobile to ultra-wide screens.
+      </p>
+
+      <h3>Code Example</h3>
+      <p>
+        Use CSS <code>clamp()</code> function: 
+        <code class="block-code">font-size: clamp(1rem, 2.5vw, 2rem);</code>
+      </p>
+
+      <h2>Benefits</h2>
+      <ul class="benefits">
+        <li>✨ Smoother scaling across all devices</li>
+        <li>📱 Less code (fewer media queries)</li>
+        <li>🎯 Better control with min and max values</li>
+        <li>♿ Improved accessibility with flexible sizing</li>
+        <li>🚀 Better performance</li>
+      </ul>
+
+      <h2>Implementation Tips</h2>
+      <div class="tips-container">
+        <div class="tip-card">
+          <h3>Mobile First</h3>
+          <p>Set your minimum font size for mobile devices, then let it scale up smoothly.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Maintain Hierarchy</h3>
+          <p>Keep proportional relationships between heading and body text sizes.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Test Thoroughly</h3>
+          <p>Test on actual devices, not just browser resize. Actual viewport sizes matter.</p>
+        </div>
+      </div>
+
+      <h2>Your Viewport Size</h2>
+      <p id="viewport-info">Resize your browser to see font sizes scale in real-time!</p>
+    </article>
+  </main>
+</div>`,
+    css: `:root {
+  /* Fluid typography scale */
+  --fluid-h1: clamp(2rem, 6vw, 3.5rem);
+  --fluid-h2: clamp(1.5rem, 4.5vw, 2.5rem);
+  --fluid-h3: clamp(1.25rem, 3vw, 1.75rem);
+  --fluid-body: clamp(1rem, 1.8vw, 1.25rem);
+  --fluid-small: clamp(0.875rem, 1.5vw, 1rem);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+
+.responsive-doc {
+  background: linear-gradient(to bottom, #f0f9ff 0%, #ffffff 100%);
+  min-height: 100vh;
+}
+
+.hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  color: white;
+  padding: clamp(2rem, 8vw, 4rem) 1rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: var(--fluid-h1);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: var(--fluid-body);
+  margin: 0;
+  opacity: 0.95;
+  font-weight: 300;
+}
+
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+article {
+  line-height: clamp(1.5, 1.2vw + 0.3rem, 1.9);
+}
+
+h2 {
+  font-size: var(--fluid-h2);
+  color: #0f172a;
+  margin: clamp(2rem, 4vw, 2.5rem) 0 1rem 0;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: var(--fluid-h3);
+  color: #1e40af;
+  margin: clamp(1.25rem, 2.5vw, 1.5rem) 0 0.75rem 0;
+}
+
+p {
+  font-size: var(--fluid-body);
+  color: #334155;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+.intro {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-weight: 500;
+  color: #1e293b;
+  background: #e0e7ff;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: 8px;
+  border-left: 4px solid #4f46e5;
+}
+
+code {
+  background: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Monaco', monospace;
+  font-size: 0.9em;
+  color: #dc2626;
+}
+
+.block-code {
+  display: block;
+  background: #1f2937;
+  color: #10b981;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: var(--fluid-small);
+}
+
+.benefits {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.benefits li {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  margin-bottom: 0.75rem;
+  border-radius: 4px;
+  font-size: var(--fluid-body);
+  color: #15803d;
+}
+
+.tips-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin: clamp(2rem, 4vw, 2.5rem) 0;
+}
+
+.tip-card {
+  background: white;
+  border: 2px solid #dbeafe;
+  border-radius: 8px;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  transition: all 0.3s;
+}
+
+.tip-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.tip-card h3 {
+  margin-top: 0;
+  color: #1e40af;
+}
+
+.tip-card p {
+  margin: 0;
+  font-size: var(--fluid-small);
+}
+
+#viewport-info {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  border-radius: 4px;
+  font-weight: 500;
+}`,
+    js: `
+    function updateViewportInfo() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const info = document.getElementById('viewport-info');
+      info.textContent = \`Resize your browser to see font sizes scale! Current viewport: \${width}x\${height}px\`;
+    }
+
+    window.addEventListener('resize', updateViewportInfo);
+    updateViewportInfo();
+    `
   };
 
   const seoOptimizedDemo = {
-    html: `<!-- SEO-Optimized Content Structure -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Guide to HTML Headings | Web Dev Tutorial</title>
-  <meta name="description" content="Learn how to use HTML headings properly for SEO, accessibility, and document structure in this comprehensive guide.">
-</head>
-<body>
-  <article>
-    <!-- Single H1 per page -->
-    <h1>Complete Guide to HTML Headings</h1>
+    html: `<!-- SEO-Optimized Content Blueprint -->
+<div class="seo-example">
+  <div class="seo-header">
+    <h1>SEO Score: <span id="seo-score" class="score-badge">A+</span></h1>
+    <p>Optimized heading structure for search engines & users</p>
+  </div>
+
+  <article itemscope itemtype="https://schema.org/Article">
+    <!-- Single, Powerful H1 -->
+    <h1 itemprop="headline">The Complete Guide to SEO-Friendly HTML Structure</h1>
     
-    <!-- Lead paragraph with keywords -->
-    <p class="lead">
-      HTML headings are essential for structuring web content, improving SEO, 
-      and enhancing accessibility. This guide covers everything you need to know.
+    <div class="article-meta">
+      <span itemprop="datePublished">Published: December 2025</span>
+      <span itemprop="author">By SEO Expert</span>
+    </div>
+
+    <!-- Lead with Keywords -->
+    <p class="lead" itemprop="description">
+      Discover how to structure your HTML content for maximum SEO impact. 
+      Learn the proven methods that top-ranking websites use to improve visibility in search results.
     </p>
-    
-    <!-- Clear hierarchy -->
+
+    <!-- Section 1 -->
     <section>
-      <h2>What Are HTML Headings?</h2>
+      <h2>Why HTML Structure Matters for SEO</h2>
       <p>
-        Headings (h1-h6) are HTML elements that define the structure and 
-        hierarchy of your content. Search engines use them to understand 
-        page content and relevance.
+        Search engines use heading hierarchy to understand content structure and topic relevance. 
+        Proper semantic HTML tells search engines what your content is about and how it's organized.
       </p>
     </section>
-    
+
+    <!-- Section 2: Best Practices -->
     <section>
-      <h2>Best Practices for SEO</h2>
-      
-      <h3>Use One H1 per Page</h3>
-      <p>
-        Your h1 should contain your main keyword and accurately describe 
-        the page content. Think of it as your page title.
-      </p>
-      
-      <h3>Maintain Logical Hierarchy</h3>
-      <p>
-        Don't skip heading levels (e.g., h2 to h4). Follow a logical 
-        progression: h1 → h2 → h3 → h4, etc.
-      </p>
-      
-      <h3>Include Keywords Naturally</h3>
-      <p>
-        Use relevant keywords in your headings, but keep them natural 
-        and user-focused. Avoid keyword stuffing.
-      </p>
+      <h2>SEO Best Practices for Headings</h2>
+      <h3>1. One H1 Per Page (Your Main Topic)</h3>
+      <p>Your h1 should be unique, descriptive, and contain your primary keyword.</p>
+
+      <h3>2. Use H2 for Major Sections</h3>
+      <p>Break your content into logical sections with descriptive h2 headings.</p>
+
+      <h3>3. Keep Hierarchy Logical</h3>
+      <p>Never jump from h1 directly to h3. Follow: h1 → h2 → h3.</p>
+
+      <h3>4. Include Keywords Naturally</h3>
+      <p>Add relevant keywords to headings, but keep them natural and user-focused.</p>
     </section>
-    
-    <section>
-      <h2>Conclusion</h2>
-      <p>
-        Proper heading structure improves both user experience and search 
-        engine rankings. Follow these guidelines for optimal results.
-      </p>
+
+    <!-- Checklist -->
+    <section class="seo-checklist">
+      <h2>✅ SEO Heading Checklist</h2>
+      <div class="checklist-items">
+        <div class="check-item">
+          <input type="checkbox" id="check1" checked>
+          <label for="check1">✓ Exactly one &lt;h1&gt; per page</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="check2" checked>
+          <label for="check2">✓ H1 contains primary keyword</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="check3" checked>
+          <label for="check3">✓ Logical heading hierarchy</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="check4" checked>
+          <label for="check4">✓ Headings are descriptive</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="check5" checked>
+          <label for="check5">✓ Content matches heading promises</label>
+        </div>
+      </div>
     </section>
   </article>
-</body>
-</html>`,
-    css: `body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.7; }
-h1 { font-size: 2.5rem; color: #1e40af; margin-bottom: 1rem; }
-.lead { font-size: 1.25rem; color: #1e293b; margin-bottom: 2rem; line-height: 1.6; }
-h2 { font-size: 2rem; color: #2563eb; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
-h3 { font-size: 1.5rem; color: #3b82f6; margin-top: 2rem; margin-bottom: 0.75rem; }
-p { color: #374151; margin-bottom: 1rem; }
-section { margin-bottom: 2rem; }`,
-    js: ''
+</div>`,
+    css: `.seo-example {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(to bottom, #f0f9ff, #ffffff);
+}
+
+.seo-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.seo-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+}
+
+.score-badge {
+  background: #10b981;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+article {
+  padding: 2rem;
+  line-height: 1.8;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #0f172a;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 1rem;
+}
+
+.article-meta {
+  display: flex;
+  gap: 1.5rem;
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f1f5f9;
+  border-radius: 6px;
+}
+
+.lead {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #1e293b;
+  font-weight: 500;
+  background: #e0e7ff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #4f46e5;
+  margin-bottom: 2rem;
+}
+
+section {
+  margin-bottom: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #1e40af;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid #3b82f6;
+  padding-left: 1.25rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  color: #2563eb;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+}
+
+p {
+  color: #334155;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.seo-checklist {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 2px solid #16a34a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.seo-checklist h2 {
+  color: #15803d;
+  border-left-color: #16a34a;
+  margin-top: 0;
+}
+
+.checklist-items {
+  margin-top: 1rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  color: #166534;
+  font-weight: 500;
+}
+
+.check-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #16a34a;
+}
+
+.check-item label {
+  cursor: pointer;
+  flex: 1;
+  margin: 0;
+}`,
+    js: `
+    function calculateSEOScore() {
+      const checks = document.querySelectorAll('.check-item input[type="checkbox"]:checked');
+      const totalChecks = document.querySelectorAll('.check-item input[type="checkbox"]');
+      const score = Math.round((checks.length / totalChecks.length) * 100);
+      
+      const scoreBadge = document.getElementById('seo-score');
+      if(score === 100) {
+        scoreBadge.textContent = 'A+';
+        scoreBadge.style.background = '#10b981';
+      } else if(score >= 80) {
+        scoreBadge.textContent = 'A';
+        scoreBadge.style.background = '#06b6d4';
+      } else {
+        scoreBadge.textContent = 'B';
+        scoreBadge.style.background = '#f59e0b';
+      }
+    }
+
+    document.querySelectorAll('.check-item input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', calculateSEOScore);
+    });
+    `
   };
 
   return (

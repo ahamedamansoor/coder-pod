@@ -20,20 +20,225 @@ export default function HtmlElementsAndTags({
   // ==================== PLAYGROUND EXAMPLES ====================
 
   const anatomyExample = {
-    html: `<!-- Opening Tag + Content + Closing Tag = Element -->
-<h1>Welcome to HTML</h1>
-<p>This is a paragraph with <strong>bold text</strong> inside.</p>
+    html: `<!-- Interactive Element Anatomy Breakdown -->
+<div class="anatomy-demo">
+  <h2>Understanding HTML Element Structure</h2>
+  
+  <div class="anatomy-item">
+    <h3>📦 Simple Heading Element</h3>
+    <div class="code-breakdown">
+      <span class="tag-part opening">&lt;h1&gt;</span>
+      <span class="content-part">Welcome to HTML!</span>
+      <span class="tag-part closing">&lt;/h1&gt;</span>
+    </div>
+    <div class="explanation">
+      <p><strong>Opening Tag:</strong> Tells browser "heading level 1 starts here"</p>
+      <p><strong>Content:</strong> The actual text that displays on the page</p>
+      <p><strong>Closing Tag:</strong> Signals the end of this heading</p>
+    </div>
+  </div>
 
-<!-- Self-closing (void) elements -->
-<img src="https://via.placeholder.com/200" alt="Demo image" />
-<br />
-<hr />`,
-    css: `body { font-family: system-ui, sans-serif; padding: 2rem; line-height: 1.6; }
-h1 { color: #2563eb; }
-p { font-size: 1rem; }
-strong { color: #dc2626; }
-img { border-radius: 8px; margin: 1rem 0; }`,
-    js: ''
+  <div class="anatomy-item">
+    <h3>🎨 Element with Attributes</h3>
+    <div class="code-breakdown">
+      <span class="tag-part opening">&lt;a href="https://example.com"&gt;</span>
+      <span class="content-part">Click me!</span>
+      <span class="tag-part closing">&lt;/a&gt;</span>
+    </div>
+    <div class="explanation">
+      <p><strong>Opening Tag:</strong> Contains the tag name &lt;a&gt; and attribute href</p>
+      <p><strong>Attribute:</strong> href="https://example.com" tells where to link</p>
+      <p><strong>Content:</strong> The clickable text shown to users</p>
+      <p><strong>Closing Tag:</strong> Ends the link element</p>
+    </div>
+  </div>
+
+  <div class="anatomy-item">
+    <h3>⚡ Self-Closing (Void) Elements</h3>
+    <div class="code-breakdown">
+      <span class="tag-part void">&lt;img src="photo.jpg" alt="My Photo" /&gt;</span>
+    </div>
+    <div class="explanation">
+      <p><strong>Void Element:</strong> No closing tag needed (img, input, br, hr)</p>
+      <p><strong>Forward Slash:</strong> The "/" indicates this element is self-closing</p>
+      <p><strong>Attributes:</strong> src (source) and alt (alternative text)</p>
+      <p>✅ Valid: &lt;img ... /&gt; or &lt;img ...&gt;</p>
+    </div>
+  </div>
+
+  <div class="anatomy-item">
+    <h3>🏗️ Nested Elements (Element Inside Element)</h3>
+    <div class="code-breakdown">
+      <span class="tag-part opening">&lt;p&gt;</span>
+      This is <span class="nested-part opening">&lt;strong&gt;</span><span class="nested-content">important</span><span class="nested-part closing">&lt;/strong&gt;</span> text.
+      <span class="tag-part closing">&lt;/p&gt;</span>
+    </div>
+    <div class="explanation">
+      <p><strong>Parent Element:</strong> &lt;p&gt; contains the paragraph</p>
+      <p><strong>Child Element:</strong> &lt;strong&gt; is nested inside &lt;p&gt;</p>
+      <p><strong>Rule:</strong> Inner tags must close before outer tags</p>
+      <p><strong>Order:</strong> &lt;p&gt; opens → &lt;strong&gt; opens → &lt;strong&gt; closes → &lt;p&gt; closes</p>
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <h3>✅ Element Anatomy Summary</h3>
+    <ul>
+      <li><strong>&lt;tagname&gt;</strong> = Opening tag (starts the element)</li>
+      <li><strong>Content</strong> = What goes inside (text or other elements)</li>
+      <li><strong>&lt;/tagname&gt;</strong> = Closing tag (ends the element)</li>
+      <li><strong>Attributes</strong> = Additional info in the opening tag</li>
+      <li><strong>Void Elements</strong> = Self-closing tags (no content)</li>
+    </ul>
+  </div>
+</div>`,
+    css: `.anatomy-demo {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(to bottom, #f0f9ff, #ffffff);
+}
+
+.anatomy-demo > h2 {
+  text-align: center;
+  color: #0f172a;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.anatomy-item {
+  background: white;
+  border: 2px solid #dbeafe;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s;
+}
+
+.anatomy-item:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.1);
+}
+
+.anatomy-item h3 {
+  color: #1e40af;
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.code-breakdown {
+  background: #1f2937;
+  color: #10b981;
+  padding: 1.25rem;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tag-part {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.tag-part.opening {
+  background: #3b82f6;
+  color: white;
+}
+
+.tag-part.closing {
+  background: #ef4444;
+  color: white;
+}
+
+.tag-part.void {
+  background: #f59e0b;
+  color: white;
+}
+
+.content-part {
+  background: #059669;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.nested-part.opening {
+  background: #a855f7;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+
+.nested-part.closing {
+  background: #dc2626;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+
+.nested-content {
+  background: #7c3aed;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+
+.explanation {
+  background: #eff6ff;
+  padding: 1rem;
+  border-left: 4px solid #3b82f6;
+  border-radius: 4px;
+}
+
+.explanation p {
+  margin: 0.5rem 0;
+  color: #1e40af;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.explanation p:last-child {
+  margin-bottom: 0;
+}
+
+.summary-box {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 2px solid #16a34a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.summary-box h3 {
+  color: #15803d;
+  margin-top: 0;
+}
+
+.summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.summary-box li {
+  padding: 0.75rem 0;
+  color: #166534;
+  border-bottom: 1px solid #86efac;
+  font-size: 1rem;
+}
+
+.summary-box li:last-child {
+  border-bottom: none;
+}`,
+    js: ``
   };
 
   const semanticExample = {

@@ -373,7 +373,7 @@ export function TopicSidebar({
                   )}
                 >
                   <Link 
-                    href={`/${language.slug}/${topic.slug}`} 
+                    href={`/languages/${language.slug}/${topic.slug}`} 
                     ref={isActive ? activeItemRef : null} 
                     className={cn(
                       "flex items-center gap-2 w-full transition-colors",
@@ -426,7 +426,7 @@ export function TopicSidebar({
       )}
       disabled={!isUserAuthenticated}
     >
-       <Link href={`/${language.slug}/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null} className={cn(
+       <Link href={`/languages/${language.slug}/${learningPlanTopic?.slug}`} ref={selectedTopicSlug === learningPlanTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
         selectedTopicSlug === learningPlanTopic?.slug && brandTheme.activeMenuLink
        )}>
@@ -449,7 +449,7 @@ export function TopicSidebar({
         )
       )}
     >
-       <Link href={`/${language.slug}/${interviewTopic?.slug}`} ref={selectedTopicSlug === interviewTopic?.slug ? activeItemRef : null} className={cn(
+       <Link href={`/languages/${language.slug}/${interviewTopic?.slug}`} ref={selectedTopicSlug === interviewTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
         selectedTopicSlug === interviewTopic?.slug && brandTheme.activeMenuLink
        )}>
@@ -472,7 +472,7 @@ export function TopicSidebar({
         )
       )}
     >
-      <Link href={`/${language.slug}/${reactUpdatesTopic?.slug}`} ref={selectedTopicSlug === reactUpdatesTopic?.slug ? activeItemRef : null} className={cn(
+      <Link href={`/languages/${language.slug}/${reactUpdatesTopic?.slug}`} ref={selectedTopicSlug === reactUpdatesTopic?.slug ? activeItemRef : null} className={cn(
         "flex items-center gap-2 transition-colors",
         selectedTopicSlug === reactUpdatesTopic?.slug && brandTheme.activeMenuLink
       )}>

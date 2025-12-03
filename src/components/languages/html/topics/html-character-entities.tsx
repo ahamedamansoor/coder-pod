@@ -827,6 +827,528 @@ html.dark .note {
             />
           </CardContent>
         </Card>
+
+        {/* Example: International Content */}
+        <Card>
+          <CardContent className='pt-6'>
+            <FrontendCodePreview
+              title="7. International & Accented Characters"
+              description="Display accented letters and international text using entities"
+              html={`<h2>European Languages</h2>
+<p>&Aacute;lbum (Spanish) - Musical recording</p>
+<p>Caf&eacute; (French) - Coffee house</p>
+<p>Na&iuml;ve (French) - Lacking experience</p>
+<p>M&uuml;nchen (German) - City in Bavaria</p>
+
+<h2>Scandinavian Letters</h2>
+<p>&Oslash;resund (Danish/Swedish) - Strait/Bridge</p>
+<p>&Aring;rhus (Danish) - City in Denmark</p>
+
+<h2>German Special</h2>
+<p>Stra&szlig;e (German) - Street</p>
+
+<h2>Ligatures</h2>
+<p>&AElig; (Ash ligature)</p>
+<p>&oelig; (oe ligature)</p>
+
+<p class="note">🌍 Modern best practice: Use UTF-8 directly instead of entities for international text</p>`}
+              css={`body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 100%);
+}
+
+html.dark body {
+  background: linear-gradient(135deg, #2d1b69 0%, #3d0d54 100%);
+}
+
+h2 {
+  color: #d946ef;
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.75rem 0;
+  border-bottom: 2px solid #f0e1ff;
+  padding-bottom: 0.5rem;
+}
+
+html.dark h2 {
+  color: #f472b6;
+  border-bottom-color: #5b21b6;
+}
+
+p {
+  margin-bottom: 0.75rem;
+  color: #581c87;
+  font-size: 1.05rem;
+}
+
+html.dark p {
+  color: #f3e8ff;
+}
+
+.note {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background: rgba(236, 72, 153, 0.1);
+  color: #be185d;
+  border-radius: 6px;
+  border-left: 4px solid #ec4899;
+  font-size: 0.9rem;
+}
+
+html.dark .note {
+  background: rgba(236, 72, 153, 0.2);
+  color: #fbcfe8;
+}`}
+              colorTheme="purple"
+              previewHeight="450px"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Comprehensive Entity Showcase Playground */}
+        <Card>
+          <CardHeader>
+            <CardTitle>🎨 Comprehensive Entity Showcase</CardTitle>
+            <CardDescription>Interactive showcase featuring all entity categories with beautiful styling</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <InteractivePlayground
+              title="Complete Character Entities Showcase"
+              description="Explore all HTML entity categories: reserved, symbols, typography, arrows, math, currency, and more in one beautiful interactive playground"
+              features={[
+                'Reserved Characters',
+                'Math Symbols',
+                'Currency & Marks',
+                'Smart Typography',
+                'Arrows & Indicators',
+                'International Letters',
+                'Whitespace Control'
+              ]}
+              buttonText="Open Complete Showcase"
+              onLaunchPlayground={openPlayground}
+              playgroundData={{
+                html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Character Entities Showcase</title>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>✨ Character Entities Masterclass</h1>
+      <p class="subtitle">Master HTML special characters and symbols</p>
+    </header>
+
+    <section class="showcase-section">
+      <h2 class="section-title">🔐 Reserved Characters</h2>
+      <p>Essential for displaying HTML code literally:</p>
+      <div class="entity-grid">
+        <div class="entity-card">
+          <span class="entity-char">&lt;</span>
+          <code>&amp;lt;</code>
+          <p>Less than</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&gt;</span>
+          <code>&amp;gt;</code>
+          <p>Greater than</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&amp;</span>
+          <code>&amp;amp;</code>
+          <p>Ampersand</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&quot;</span>
+          <code>&amp;quot;</code>
+          <p>Double quote</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section">
+      <h2 class="section-title">📐 Math & Science</h2>
+      <p>Mathematical operations and scientific notation:</p>
+      <div class="entity-grid">
+        <div class="entity-card">
+          <span class="entity-char">&times;</span>
+          <code>&amp;times;</code>
+          <p>Multiplication</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&divide;</span>
+          <code>&amp;divide;</code>
+          <p>Division</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&plusmn;</span>
+          <code>&amp;plusmn;</code>
+          <p>Plus-Minus</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&deg;</span>
+          <code>&amp;deg;</code>
+          <p>Degree</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&ne;</span>
+          <code>&amp;ne;</code>
+          <p>Not equal</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&le;</span>
+          <code>&amp;le;</code>
+          <p>Less or equal</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section">
+      <h2 class="section-title">💰 Currency & Legal</h2>
+      <p>Currency symbols and trademark marks:</p>
+      <div class="entity-grid">
+        <div class="entity-card">
+          <span class="entity-char">&euro;</span>
+          <code>&amp;euro;</code>
+          <p>Euro</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&pound;</span>
+          <code>&amp;pound;</code>
+          <p>Pound</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&yen;</span>
+          <code>&amp;yen;</code>
+          <p>Yen</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&cent;</span>
+          <code>&amp;cent;</code>
+          <p>Cent</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&copy;</span>
+          <code>&amp;copy;</code>
+          <p>Copyright</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&reg;</span>
+          <code>&amp;reg;</code>
+          <p>Registered</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section">
+      <h2 class="section-title">✍️ Smart Typography</h2>
+      <p>Professional quotation marks and dashes:</p>
+      <div class="entity-grid">
+        <div class="entity-card">
+          <span class="entity-char">&ldquo;</span>
+          <code>&amp;ldquo;</code>
+          <p>Left quote</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&rdquo;</span>
+          <code>&amp;rdquo;</code>
+          <p>Right quote</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&lsquo;</span>
+          <code>&amp;lsquo;</code>
+          <p>Left single</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&rsquo;</span>
+          <code>&amp;rsquo;</code>
+          <p>Right single</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&mdash;</span>
+          <code>&amp;mdash;</code>
+          <p>Em dash</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&ndash;</span>
+          <code>&amp;ndash;</code>
+          <p>En dash</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section">
+      <h2 class="section-title">➡️ Directional Arrows</h2>
+      <p>Navigation and logical operators:</p>
+      <div class="entity-grid">
+        <div class="entity-card">
+          <span class="entity-char">&larr;</span>
+          <code>&amp;larr;</code>
+          <p>Left</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&rarr;</span>
+          <code>&amp;rarr;</code>
+          <p>Right</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&uarr;</span>
+          <code>&amp;uarr;</code>
+          <p>Up</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&darr;</span>
+          <code>&amp;darr;</code>
+          <p>Down</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&rArr;</span>
+          <code>&amp;rArr;</code>
+          <p>Double right</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&lArr;</span>
+          <code>&amp;lArr;</code>
+          <p>Double left</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section">
+      <h2 class="section-title">🌍 International</h2>
+      <p>Accented letters and special characters:</p>
+      <div class="entity-grid">
+        <div class="entity-card">
+          <span class="entity-char">&eacute;</span>
+          <code>&amp;eacute;</code>
+          <p>é (acute)</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&ntilde;</span>
+          <code>&amp;ntilde;</code>
+          <p>ñ (tilde)</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&aelig;</span>
+          <code>&amp;aelig;</code>
+          <p>æ (ligature)</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&oslash;</span>
+          <code>&amp;oslash;</code>
+          <p>ø (slash)</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&szlig;</span>
+          <code>&amp;szlig;</code>
+          <p>ß (eszett)</p>
+        </div>
+        <div class="entity-card">
+          <span class="entity-char">&hellip;</span>
+          <code>&amp;hellip;</code>
+          <p>Ellipsis</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Master character entities to create <strong>professional</strong>, <em>accessible</em>, and <mark>semantic</mark> HTML content.</p>
+    </footer>
+  </div>
+</body>
+</html>`,
+                css: `* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.8;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+  color: #1e293b;
+}
+
+html.dark body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  color: #e2e8f0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  background: linear-gradient(120deg, #3b82f6 0%, #6366f1 100%);
+  color: white;
+  border-radius: 12px;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.showcase-section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e0e7ff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  transition: all 0.3s ease;
+}
+
+html.dark .showcase-section {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.showcase-section:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.section-title {
+  font-size: 1.75rem;
+  color: #1e40af;
+  margin-bottom: 1rem;
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 0.5rem;
+}
+
+html.dark .section-title {
+  color: #93c5fd;
+  border-bottom-color: #60a5fa;
+}
+
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.entity-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%);
+  border: 2px solid #dbeafe;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+html.dark .entity-card {
+  background: linear-gradient(135deg, #1e3a8a20 0%, #2d1b6920 100%);
+  border-color: #3730a3;
+}
+
+.entity-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+.entity-char {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 0.5rem;
+}
+
+html.dark .entity-char {
+  color: #93c5fd;
+}
+
+.entity-card code {
+  display: block;
+  background: #1e293b;
+  color: #10b981;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+  margin: 0.5rem 0;
+  overflow-x: auto;
+}
+
+.entity-card p {
+  font-size: 0.85rem;
+  color: #475569;
+  margin: 0.5rem 0 0 0;
+}
+
+html.dark .entity-card p {
+  color: #cbd5e1;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 2px solid #e0e7ff;
+  margin-top: 3rem;
+}
+
+html.dark .footer {
+  border-top-color: #334155;
+}
+
+.footer p {
+  font-size: 1.1rem;
+  color: #475569;
+  margin: 0;
+}
+
+html.dark .footer p {
+  color: #cbd5e1;
+}
+
+strong {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+em {
+  color: #7c3aed;
+  font-style: italic;
+}
+
+mark {
+  background: #fef08a;
+  color: #78350f;
+  padding: 0.125rem 0.25rem;
+  border-radius: 2px;
+}
+
+html.dark mark {
+  background: #854d0e;
+  color: #fef08a;
+}`,
+                js: ''
+              }}
+              colorTheme="blue"
+            />
+          </CardContent>
+        </Card>
       </div>
     );
 }

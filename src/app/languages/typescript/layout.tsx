@@ -56,6 +56,7 @@ function TypeScriptTopicLayoutContent({ children }: { children: React.ReactNode 
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
           <InnovativeHeader
+            currentPage="learning"
             user={user}
             onLogout={handleLogout}
             showSidebarTrigger={true}

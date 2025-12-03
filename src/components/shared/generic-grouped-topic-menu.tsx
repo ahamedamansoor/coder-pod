@@ -131,7 +131,7 @@ export function GenericGroupedTopicMenu({
                       )}
                     >
                       <Link
-                        href={`/${languageSlug}/${topic.slug}`}
+                        href={`/languages/${languageSlug}/${topic.slug}`}
                         ref={isActive ? activeItemRef : null}
                         className={cn(
                           "flex items-center gap-2 w-full transition-colors",

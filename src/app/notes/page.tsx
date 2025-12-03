@@ -645,14 +645,19 @@ export default function NotesPage() {
       <AIProviderModal
         isOpen={showAiKeyModal}
         onClose={() => setShowAiKeyModal(false)}
-        onSave={(provider, apiKey) => {
+        onSave={async (provider, apiKey) => {
+          // Persist locally (client-side only)
           localStorage.setItem('ai_api_key', apiKey);
           localStorage.setItem('ai_provider', provider);
-          setShowAiKeyModal(false);
-          toast({
-            title: 'AI Provider Connected!',
-            description: `Successfully configured ${provider}`,
-          });
+          // Basic non-empty validation
+          const isValid = !!apiKey && apiKey.trim().length > 0;
+          if (isValid) {
+            toast({
+              title: 'AI Provider Connected!',
+              description: `Successfully configured ${provider}`,
+            });
+          }
+          return isValid;
         }}
       />
     </div>

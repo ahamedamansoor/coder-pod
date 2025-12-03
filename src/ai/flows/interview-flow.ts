@@ -17,11 +17,12 @@ import { AIProvider } from '@/types/ai-providers';
 const ConductInterviewInputSchema = z.object({
   provider: z.enum(['gemini', 'openai', 'anthropic', 'perplexity', 'groq', 'mistral', 'cohere']).describe('The AI provider to use.'),
   apiKey: z.string().describe('The API key for authentication.'),
-  language: z.string().describe('The programming language for the interview.'),
+  language: z.string().describe('The topic for the interview (e.g., JavaScript, HR Round, Logical Reasoning).'),
   question: z.string().describe('The interview question that was asked. If empty, generate the first question.'),
   userAnswer: z.string().optional().describe("The user's answer to the question."),
   previousQuestions: z.array(z.string()).describe('A list of questions already asked in this session to avoid repetition.'),
   questionType: z.enum(['theory', 'coding', 'mcq']).optional().describe('The type of questions to ask: theory (conceptual), coding (with code snippets), or mcq (multiple choice).'),
+  category: z.enum(['technical', 'behavioral', 'aptitude']).optional().describe('The category of interview: technical (programming), behavioral (HR/soft skills), or aptitude (reasoning/logic).'),
 });
 export type ConductInterviewInput = z.infer<typeof ConductInterviewInputSchema>;
 
@@ -122,7 +123,7 @@ Example:
 
 Use markdown code blocks with \`\`\`${input.language} for any code examples.`
     : input.questionType === 'mcq'
-    ? `Focus on MCQ (Multiple Choice Questions) only. Format questions using this structure:
+    ? `Focus on MCQ (Multiple Choice Questions) only. STRICTLY follow this EXACT format:
 
 [Clear question text]
 
@@ -133,7 +134,14 @@ D) [Option 4]
 
 Correct Answer: [Letter]
 
-IMPORTANT: Include the correct answer at the end. Make options clear and distinct. Questions should test ${input.language} knowledge.`
+CRITICAL REQUIREMENTS:
+1. MUST include exactly 4 options labeled A), B), C), D)
+2. MUST include "Correct Answer: [Letter]" at the end (e.g., "Correct Answer: B")
+3. Use proper spacing and line breaks as shown above
+4. Make options clear, distinct, and realistic
+5. Questions should test ${input.language} knowledge comprehensively
+6. Ensure one and only one correct answer
+7. Make distractors plausible but clearly wrong`
     : 'Focus on THEORY questions only - conceptual understanding, definitions, and explanations. Do NOT include code snippets in questions.';
 
   const prompt = ai.definePrompt({
@@ -145,10 +153,20 @@ IMPORTANT: Include the correct answer at the end. Make options clear and distinc
       userAnswer: z.string().optional(),
       previousQuestions: z.array(z.string()),
       questionType: z.string(),
+      category: z.string(),
     })
   },
   output: { schema: ConductInterviewOutputSchema },
-  prompt: `You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on {{{language}}}.
+  prompt: `{{#if (eq category "behavioral")}}You are a friendly and experienced HR interviewer conducting a behavioral interview focused on {{{language}}}.
+
+**Interview Style:** Focus on behavioral questions, soft skills, situational scenarios, past experiences, and HR topics. DO NOT ask programming or technical questions.
+{{else if (eq category "aptitude")}}You are a friendly and experienced interviewer conducting an aptitude assessment focused on {{{language}}}.
+
+**Interview Style:** Focus on logical reasoning, problem-solving, quantitative aptitude, puzzles, and analytical thinking. DO NOT ask programming questions unless specifically about algorithmic thinking.
+{{else}}You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on {{{language}}}.
+
+**Interview Style:** Focus on technical knowledge, programming concepts, and software engineering practices.
+{{/if}}
 
 **Question Style:** {{{questionType}}}
 
@@ -171,7 +189,10 @@ IMPORTANT: Include the correct answer at the end. Make options clear and distinc
     *   Use proper markdown formatting: \`\`\`{{{language}}}\` for code blocks
 4.  **Generate a new, relevant {{{language}}} interview question**:
     *   Make it different from any of the previous questions
-    *   Progress in difficulty if appropriate
+    *   **Progress from simple to complex**: Start with fundamentals, gradually increase difficulty
+    *   **Cover diverse topics**: Ensure comprehensive coverage of all {{{language}}} topics (basics, intermediate, advanced)
+    *   **Topic variety**: If previous questions focused on one area, explore a different topic
+    *   **Question progression**: Consider how many questions have been asked and adjust complexity accordingly
     *   **Follow the question style specified above**
     *   If coding question: include code snippet using markdown \`\`\`{{{language}}}\` blocks with output as comments
     *   Example formats: "What does this code output?", "What's wrong with this code?", "Explain this concept"
@@ -193,10 +214,22 @@ IMPORTANT: Include the correct answer at the end. Make options clear and distinc
 *   **Questions Already Asked:** {{{previousQuestions}}}
 {{else}}
 **Your Task:**
-1.  **Generate the first interview question** for a {{{language}}} mock interview following the question style specified above.
-    *   IMPORTANT: Pick a RANDOM fundamental topic each time (e.g., variables, data types, functions, loops, scope, closures, etc.)
-    *   DO NOT always start with the same topic - vary the starting questions
-    *   The question should be fundamental but different from typical first questions
+1.  **Generate the first interview question** for a {{{language}}} {{#if (eq category "behavioral")}}behavioral interview{{else if (eq category "aptitude")}}aptitude test{{else}}mock interview{{/if}} following the question style specified above.
+    {{#if (eq category "behavioral")}}
+    *   IMPORTANT: Ask about past experiences, teamwork, conflict resolution, leadership, communication, or other soft skills
+    *   Focus on "Tell me about a time when..." or "How would you handle..." questions
+    *   Questions should assess behavioral competencies, not technical knowledge
+    {{else if (eq category "aptitude")}}
+    *   IMPORTANT: Focus on logical puzzles, numerical reasoning, pattern recognition, or analytical problems
+    *   Questions should test problem-solving ability and reasoning skills
+    *   Vary between quantitative, logical, and verbal reasoning
+    {{else}}
+    *   **CRITICAL: RANDOMIZE starting topics** - Pick from: variables, data types, operators, functions, loops, conditionals, scope, closures, arrays, objects, strings, etc.
+    *   **DO NOT always ask the same first question** - Each interview should start differently
+    *   **Start SIMPLE**: First question should be fundamental but accessible
+    *   **Topic diversity**: Choose a topic that will allow for good progression in subsequent questions
+    *   **Coverage strategy**: Consider all major areas of {{{language}}} for comprehensive assessment
+    {{/if}}
 2.  The \`feedback\`, \`idealAnswer\`, and \`simpleAnswer\` fields should be empty strings.
 3.  **Provide a helpful answer hint** with 2-3 brief suggestions on how to approach answering the question simply.
 
@@ -216,6 +249,7 @@ Please provide your response in the requested JSON format.`,
         userAnswer: z.string().optional(),
         previousQuestions: z.array(z.string()),
         questionType: z.string(),
+        category: z.string(),
       }),
       outputSchema: ConductInterviewOutputSchema,
     },
@@ -227,7 +261,8 @@ Please provide your response in the requested JSON format.`,
 
   return interviewFlow({
     ...input,
-    questionType: questionTypeInstruction
+    questionType: questionTypeInstruction,
+    category: input.category || 'technical'
   });
 }
 
@@ -257,7 +292,7 @@ Example:
 
 Use markdown code blocks for any code examples.`
       : input.questionType === 'mcq'
-      ? `Focus on MCQ (Multiple Choice Questions) only. Format questions using this structure:
+      ? `Focus on MCQ (Multiple Choice Questions) only. STRICTLY follow this EXACT format:
 
 [Clear question text]
 
@@ -268,7 +303,14 @@ D) [Option 4]
 
 Correct Answer: [Letter]
 
-IMPORTANT: Include the correct answer at the end. Make options clear and distinct.`
+CRITICAL REQUIREMENTS:
+1. MUST include exactly 4 options labeled A), B), C), D)
+2. MUST include "Correct Answer: [Letter]" at the end (e.g., "Correct Answer: B")
+3. Use proper spacing and line breaks as shown above
+4. Make options clear, distinct, and realistic
+5. Questions should test ${input.language} knowledge comprehensively
+6. Ensure one and only one correct answer
+7. Make distractors plausible but clearly wrong`
       : 'Focus on THEORY questions only - conceptual understanding, definitions, explanations. Do NOT include code snippets in questions.';
     
     const systemPrompt = `You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on ${input.language}.
@@ -294,7 +336,10 @@ Your Task:
    - Use proper markdown formatting with \`\`\`${input.language} for code blocks
 4. Generate a new, relevant ${input.language} interview question:
    - Make it different from any of the previous questions
-   - Progress in difficulty if appropriate
+   - **Progress from simple to complex**: Start with fundamentals, gradually increase difficulty
+   - **Cover diverse topics**: Ensure comprehensive coverage of all ${input.language} topics (basics, intermediate, advanced)
+   - **Topic variety**: If previous questions focused on one area, explore a different topic
+   - **Question progression**: Consider how many questions have been asked and adjust complexity accordingly
    - If the question involves code, include a code snippet using markdown \`\`\`${input.language} blocks
    - If the code produces output, include the expected output as a comment in the code or ask about it
    - Examples: "What does this code output?", "What's wrong with this code?", "Predict the output"
@@ -316,9 +361,11 @@ Context:
 ` : `
 Your Task:
 1. Generate the first interview question for a ${input.language} mock interview.
-   - IMPORTANT: Pick a RANDOM fundamental topic each time (variables, data types, functions, loops, scope, closures, etc.)
-   - DO NOT always start with the same topic - vary the starting questions
-   - The question should be fundamental but different from typical first questions
+   - **CRITICAL: RANDOMIZE starting topics** - Pick from: variables, data types, operators, functions, loops, conditionals, scope, closures, arrays, objects, strings, etc.
+   - **DO NOT always ask the same first question** - Each interview should start differently
+   - **Start SIMPLE**: First question should be fundamental but accessible
+   - **Topic diversity**: Choose a topic that will allow for good progression in subsequent questions
+   - **Coverage strategy**: Consider all major areas of ${input.language} for comprehensive assessment
 2. The feedback, idealAnswer, and simpleAnswer fields should be empty strings.
 `}
 
@@ -395,7 +442,7 @@ Example:
 
 Use markdown code blocks for any code examples.`
       : input.questionType === 'mcq'
-      ? `Focus on MCQ (Multiple Choice Questions) only. Format questions using this structure:
+      ? `Focus on MCQ (Multiple Choice Questions) only. STRICTLY follow this EXACT format:
 
 [Clear question text]
 
@@ -406,7 +453,14 @@ D) [Option 4]
 
 Correct Answer: [Letter]
 
-IMPORTANT: Include the correct answer at the end. Make options clear and distinct.`
+CRITICAL REQUIREMENTS:
+1. MUST include exactly 4 options labeled A), B), C), D)
+2. MUST include "Correct Answer: [Letter]" at the end (e.g., "Correct Answer: B")
+3. Use proper spacing and line breaks as shown above
+4. Make options clear, distinct, and realistic
+5. Questions should test ${input.language} knowledge comprehensively
+6. Ensure one and only one correct answer
+7. Make distractors plausible but clearly wrong`
       : 'Focus on THEORY questions only - conceptual understanding, definitions, explanations. Do NOT include code snippets in questions.';
     
     const systemPrompt = `You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on ${input.language}.
@@ -432,7 +486,10 @@ Your Task:
    - Use proper markdown formatting with \`\`\`${input.language} for code blocks
 4. Generate a new, relevant ${input.language} interview question:
    - Make it different from any of the previous questions
-   - Progress in difficulty if appropriate
+   - **Progress from simple to complex**: Start with fundamentals, gradually increase difficulty
+   - **Cover diverse topics**: Ensure comprehensive coverage of all ${input.language} topics (basics, intermediate, advanced)
+   - **Topic variety**: If previous questions focused on one area, explore a different topic
+   - **Question progression**: Consider how many questions have been asked and adjust complexity accordingly
    - If the question involves code, include a code snippet using markdown \`\`\`${input.language} blocks
    - If the code produces output, include the expected output as a comment in the code or ask about it
    - Examples: "What does this code output?", "What's wrong with this code?", "Predict the output"
@@ -454,9 +511,11 @@ Context:
 ` : `
 Your Task:
 1. Generate the first interview question for a ${input.language} mock interview.
-   - IMPORTANT: Pick a RANDOM fundamental topic each time (variables, data types, functions, loops, scope, closures, etc.)
-   - DO NOT always start with the same topic - vary the starting questions
-   - The question should be fundamental but different from typical first questions
+   - **CRITICAL: RANDOMIZE starting topics** - Pick from: variables, data types, operators, functions, loops, conditionals, scope, closures, arrays, objects, strings, etc.
+   - **DO NOT always ask the same first question** - Each interview should start differently
+   - **Start SIMPLE**: First question should be fundamental but accessible
+   - **Topic diversity**: Choose a topic that will allow for good progression in subsequent questions
+   - **Coverage strategy**: Consider all major areas of ${input.language} for comprehensive assessment
 2. The feedback, idealAnswer, and simpleAnswer fields should be empty strings.
 `}
 
@@ -519,7 +578,8 @@ async function conductPerplexityInterview(
     input,
     'https://api.perplexity.ai/chat/completions',
     'llama-3.1-sonar-large-128k-online',
-    'Perplexity'
+    'Perplexity',
+    true // Perplexity supports JSON mode
   );
 }
 
@@ -532,7 +592,8 @@ async function conductGroqInterview(
     input,
     'https://api.groq.com/openai/v1/chat/completions',
     'llama-3.3-70b-versatile',
-    'Groq'
+    'Groq',
+    true // Groq supports JSON mode
   );
 }
 
@@ -544,8 +605,9 @@ async function conductMistralInterview(
     apiKey,
     input,
     'https://api.mistral.ai/v1/chat/completions',
-    'mistral-large-latest',
-    'Mistral'
+    'mistral-small-latest', // Using mistral-small-latest for better availability
+    'Mistral',
+    true // Mistral supports JSON mode
   );
 }
 
@@ -575,7 +637,7 @@ Example:
 
 Use markdown code blocks for any code examples.`
       : input.questionType === 'mcq'
-      ? `Focus on MCQ (Multiple Choice Questions) only. Format questions using this structure:
+      ? `Focus on MCQ (Multiple Choice Questions) only. STRICTLY follow this EXACT format:
 
 [Clear question text]
 
@@ -586,7 +648,14 @@ D) [Option 4]
 
 Correct Answer: [Letter]
 
-IMPORTANT: Include the correct answer at the end. Make options clear and distinct.`
+CRITICAL REQUIREMENTS:
+1. MUST include exactly 4 options labeled A), B), C), D)
+2. MUST include "Correct Answer: [Letter]" at the end (e.g., "Correct Answer: B")
+3. Use proper spacing and line breaks as shown above
+4. Make options clear, distinct, and realistic
+5. Questions should test ${input.language} knowledge comprehensively
+6. Ensure one and only one correct answer
+7. Make distractors plausible but clearly wrong`
       : 'Focus on THEORY questions only - conceptual understanding, definitions, explanations. Do NOT include code snippets in questions.';
     
     const systemPrompt = `You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on ${input.language}.
@@ -606,6 +675,10 @@ Your Task:
    - Use proper markdown formatting with \`\`\`${input.language} for code blocks
 4. Generate a new interview question:
    - Make it different from previous questions
+   - **Progress from simple to complex**: Start with fundamentals, gradually increase difficulty
+   - **Cover diverse topics**: Ensure comprehensive coverage of all ${input.language} topics (basics, intermediate, advanced)
+   - **Topic variety**: If previous questions focused on one area, explore a different topic
+   - **Question progression**: Consider how many questions have been asked and adjust complexity accordingly
    - If it involves code, include a code snippet using markdown \`\`\`${input.language} blocks
    - If the code produces output, show expected output as comment or ask about it
    - Format with output: \`\`\`${input.language}\\nconst x = 5;\\nconsole.log(x);\\n// Output: ?\\n\`\`\`
@@ -621,9 +694,11 @@ Context:
 ` : `
 Your Task:
 1. Generate the first interview question for a ${input.language} mock interview.
-   - IMPORTANT: Pick a RANDOM fundamental topic each time
-   - Vary the starting questions - don't always ask the same thing
-   - Choose from: variables, data types, functions, loops, scope, closures, etc.
+   - **CRITICAL: RANDOMIZE starting topics** - Pick from: variables, data types, operators, functions, loops, conditionals, scope, closures, arrays, objects, strings, etc.
+   - **DO NOT always ask the same first question** - Each interview should start differently
+   - **Start SIMPLE**: First question should be fundamental but accessible
+   - **Topic diversity**: Choose a topic that will allow for good progression in subsequent questions
+   - **Coverage strategy**: Consider all major areas of ${input.language} for comprehensive assessment
 2. Leave feedback, idealAnswer, and simpleAnswer as empty strings.
 `}
 
@@ -675,9 +750,15 @@ async function conductOpenAICompatibleInterview(
   input: Omit<ConductInterviewInput, 'apiKey' | 'provider'>,
   apiUrl: string,
   model: string,
-  providerName: string
+  providerName: string,
+  useJsonMode: boolean = true
 ): Promise<ConductInterviewOutput> {
   try {
+    console.log(`[${providerName}] Starting interview request`);
+    console.log(`[${providerName}] API URL: ${apiUrl}`);
+    console.log(`[${providerName}] Model: ${model}`);
+    console.log(`[${providerName}] JSON Mode: ${useJsonMode}`);
+    
     const questionTypeInstruction = input.questionType === 'coding'
       ? `Focus on CODING questions only. Format questions using this EXACT structure:
 
@@ -699,7 +780,7 @@ Example:
 
 Use markdown code blocks for any code examples.`
       : input.questionType === 'mcq'
-      ? `Focus on MCQ (Multiple Choice Questions) only. Format questions using this structure:
+      ? `Focus on MCQ (Multiple Choice Questions) only. STRICTLY follow this EXACT format:
 
 [Clear question text]
 
@@ -710,7 +791,14 @@ D) [Option 4]
 
 Correct Answer: [Letter]
 
-IMPORTANT: Include the correct answer at the end. Make options clear and distinct.`
+CRITICAL REQUIREMENTS:
+1. MUST include exactly 4 options labeled A), B), C), D)
+2. MUST include "Correct Answer: [Letter]" at the end (e.g., "Correct Answer: B")
+3. Use proper spacing and line breaks as shown above
+4. Make options clear, distinct, and realistic
+5. Questions should test ${input.language} knowledge comprehensively
+6. Ensure one and only one correct answer
+7. Make distractors plausible but clearly wrong`
       : 'Focus on THEORY questions only - conceptual understanding, definitions, explanations. Do NOT include code snippets in questions.';
     
     const systemPrompt = `You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on ${input.language}.
@@ -730,6 +818,10 @@ Your Task:
    - Use proper markdown formatting with \`\`\`${input.language} for code blocks
 4. Generate a new interview question:
    - Make it different from previous questions
+   - **Progress from simple to complex**: Start with fundamentals, gradually increase difficulty
+   - **Cover diverse topics**: Ensure comprehensive coverage of all ${input.language} topics (basics, intermediate, advanced)
+   - **Topic variety**: If previous questions focused on one area, explore a different topic
+   - **Question progression**: Consider how many questions have been asked and adjust complexity accordingly
    - If it involves code, include a code snippet using markdown \`\`\`${input.language} blocks
    - If the code produces output, show expected output as comment or ask about it
    - Examples: "What does this code output?", "Fix this bug", "Predict the output"
@@ -746,12 +838,29 @@ Context:
 ` : `
 Your Task:
 1. Generate the first interview question for a ${input.language} mock interview.
-   - Pick a RANDOM fundamental topic (variables, functions, data types, loops, scope, etc.)
-   - Vary the questions - don't repeat the same starting topic
+   - **CRITICAL: RANDOMIZE starting topics** - Pick from: variables, data types, operators, functions, loops, conditionals, scope, closures, arrays, objects, strings, etc.
+   - **DO NOT always ask the same first question** - Each interview should start differently
+   - **Start SIMPLE**: First question should be fundamental but accessible
+   - **Topic diversity**: Choose a topic that will allow for good progression in subsequent questions
+   - **Coverage strategy**: Consider all major areas of ${input.language} for comprehensive assessment
 2. Leave feedback, idealAnswer, and simpleAnswer empty.
 `}
 
 Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code examples in markdown", "nextQuestion": "string", "answerHint": "string - 2-3 brief approach suggestions", "simpleAnswer": "string - brief spoken answer to ORIGINAL question"}`;
+
+    const requestBody: any = {
+      model: model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: 'Generate the interview response.' }
+      ],
+      temperature: 0.7,
+    };
+    
+    // Only add response_format if provider supports it
+    if (useJsonMode) {
+      requestBody.response_format = { type: 'json_object' };
+    }
 
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -759,24 +868,60 @@ Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code 
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: 'Generate the interview response.' }
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.7,
-      })
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
-      throw new Error(`${providerName} API request failed`);
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = errorData.error?.message || errorData.message || `HTTP ${response.status}: ${response.statusText}`;
+      console.error(`${providerName} API Error:`, errorData);
+      throw new Error(`${providerName} API Error: ${errorMessage}`);
     }
 
     const data = await response.json();
-    const result = JSON.parse(data.choices[0].message.content);
+    console.log(`[${providerName}] Response received:`, data);
+    
+    // Validate response structure
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error(`[${providerName}] Unexpected response structure:`, data);
+      throw new Error(`${providerName} returned unexpected response format`);
+    }
 
+    let content = data.choices[0].message.content;
+    console.log(`[${providerName}] Content received:`, content.substring(0, 200) + '...');
+    
+    // Try to extract JSON from the content (handles cases where AI wraps JSON in text/markdown)
+    let result;
+    try {
+      // First, try parsing as-is
+      result = JSON.parse(content);
+      console.log(`[${providerName}] Successfully parsed JSON directly`);
+    } catch (e) {
+      console.log(`[${providerName}] Direct JSON parse failed, trying to extract...`);
+      // If that fails, try to extract JSON from markdown code blocks or text
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          result = JSON.parse(jsonMatch[0]);
+          console.log(`[${providerName}] Successfully extracted and parsed JSON`);
+        } catch (parseError) {
+          console.error(`[${providerName}] Failed to parse extracted JSON:`, parseError);
+          console.error(`[${providerName}] Extracted content:`, jsonMatch[0]);
+          throw new Error(`${providerName} returned invalid JSON: ${parseError}`);
+        }
+      } else {
+        console.error(`[${providerName}] No JSON found in content:`, content);
+        throw new Error(`${providerName} did not return valid JSON format. Response: ${content.substring(0, 100)}`);
+      }
+    }
+
+    // Validate required fields
+    if (!result.nextQuestion) {
+      console.error(`[${providerName}] Missing nextQuestion in result:`, result);
+      throw new Error(`${providerName} returned incomplete data - missing nextQuestion`);
+    }
+
+    console.log(`[${providerName}] Successfully returning interview data`);
     return {
       feedback: result.feedback || '',
       idealAnswer: result.idealAnswer || '',
@@ -786,6 +931,70 @@ Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code 
     };
   } catch (error: any) {
     console.error(`${providerName} interview error:`, error);
-    throw new Error(`${providerName} Error: ${error.message}`);
+    // Provide more detailed error message
+    if (error.message.includes('API Error')) {
+      throw error; // Re-throw API errors with their detailed message
+    }
+    throw new Error(`${providerName} Error: ${error.message || 'Unknown error occurred'}`);
   }
+}
+
+// Hugging Face (FREE forever!)
+async function conductHuggingFaceInterview(
+  apiKey: string,
+  input: Omit<ConductInterviewInput, 'apiKey' | 'provider'>
+): Promise<ConductInterviewOutput> {
+  return await conductOpenAICompatibleInterview(
+    apiKey,
+    input,
+    'https://api-inference.huggingface.co/v1/chat/completions',
+    'meta-llama/Meta-Llama-3-8B-Instruct',
+    'HuggingFace',
+    false // HuggingFace doesn't support response_format json_object yet
+  );
+}
+
+// Together AI ($25 FREE credit!)
+async function conductTogetherInterview(
+  apiKey: string,
+  input: Omit<ConductInterviewInput, 'apiKey' | 'provider'>
+): Promise<ConductInterviewOutput> {
+  return await conductOpenAICompatibleInterview(
+    apiKey,
+    input,
+    'https://api.together.xyz/v1/chat/completions',
+    'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
+    'Together',
+    true // Together supports JSON mode
+  );
+}
+
+// DeepSeek (FREE tier!)
+async function conductDeepSeekInterview(
+  apiKey: string,
+  input: Omit<ConductInterviewInput, 'apiKey' | 'provider'>
+): Promise<ConductInterviewOutput> {
+  return await conductOpenAICompatibleInterview(
+    apiKey,
+    input,
+    'https://api.deepseek.com/v1/chat/completions',
+    'deepseek-chat',
+    'DeepSeek',
+    true // DeepSeek supports JSON mode
+  );
+}
+
+// Meta AI (FREE - Llama models!)
+async function conductMetaInterview(
+  apiKey: string,
+  input: Omit<ConductInterviewInput, 'apiKey' | 'provider'>
+): Promise<ConductInterviewOutput> {
+  return await conductOpenAICompatibleInterview(
+    apiKey,
+    input,
+    'https://www.llama-api.com/chat/completions',
+    'llama3.1-70b',
+    'Meta',
+    true // Meta/Llama API supports JSON mode
+  );
 }

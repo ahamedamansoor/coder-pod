@@ -10,7 +10,7 @@ export const javascript: Language = {
     { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A comprehensive roadmap for mastering JavaScript from fundamentals to ES2024+ features.' },
     
     // 1. FUNDAMENTALS
-    { slug: 'what-is-javascript', title: 'What is JavaScript?', explanation: 'Introduction to JavaScript, its history, ecosystem, and role in modern web development.', category: '1. Fundamentals' },
+    { slug: 'what-is-javascript', title: 'What is JavaScript?', explanation: 'A beginner-friendly tour of JavaScript, highlighting its history and how it powers interactive, connected web experiences.', category: '1. Fundamentals' },
     { slug: 'js-setup', title: 'Installation & Setup', explanation: 'Setting up your JavaScript development environment: browser console, Node.js, and IDEs.', category: '1. Fundamentals' },
     { slug: 'first-program', title: 'First JavaScript Program', explanation: 'Writing and running your first JavaScript program with Hello World examples.', category: '1. Fundamentals' },
     { slug: 'js-in-html', title: 'JavaScript in HTML', explanation: 'Integrating JavaScript with HTML using script tags, linking files, and execution order.', category: '1. Fundamentals' },
