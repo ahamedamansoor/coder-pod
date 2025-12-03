@@ -25,6 +25,12 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      }
+    }
     
     .container {
       max-width: 900px;
@@ -34,11 +40,23 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+      }
+    }
     
     h1 {
       color: #667eea;
       text-align: center;
       margin-bottom: 30px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #a5b4fc;
+      }
     }
     
     button {
@@ -64,17 +82,35 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
       border-radius: 12px;
       border-left: 4px solid #f59e0b;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .info {
+        background: linear-gradient(135deg, #78350f 0%, #5a2e0d 100%);
+      }
+    }
     
     .info strong {
       color: #92400e;
       display: block;
       margin-bottom: 8px;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .info strong {
+        color: #fcd34d;
+      }
+    }
     
     .info p {
       color: #78350f;
       font-size: 14px;
       line-height: 1.6;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .info p {
+        color: #fde68a;
+      }
     }
   </style>
 </head>
@@ -93,12 +129,24 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
           margin: 16px 0;
           box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+
+        @media (prefers-color-scheme: dark) {
+          .product-card {
+            background: linear-gradient(135deg, #082f49 0%, #0c4a6e 100%);
+          }
+        }
         
         .product-name {
           font-size: 1.5rem;
           font-weight: bold;
           color: #1e40af;
           margin-bottom: 8px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .product-name {
+            color: #93c5fd;
+          }
         }
         
         .product-price {
@@ -107,10 +155,22 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
           font-weight: bold;
           margin-bottom: 12px;
         }
+
+        @media (prefers-color-scheme: dark) {
+          .product-price {
+            color: #6ee7b7;
+          }
+        }
         
         .product-description {
           color: #475569;
           line-height: 1.6;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .product-description {
+            color: #cbd5e1;
+          }
         }
       </style>
       
@@ -204,6 +264,12 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
       padding: 40px 20px;
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #064e3b 0%, #0a2e1a 100%);
+      }
+    }
     
     .container {
       max-width: 1000px;
@@ -224,6 +290,12 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
       margin-bottom: 24px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+
+    @media (prefers-color-scheme: dark) {
+      .controls {
+        background: #1e293b;
+      }
+    }
     
     input, select {
       width: 100%;
@@ -232,6 +304,14 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
       border: 2px solid #e5e7eb;
       border-radius: 8px;
       font-size: 14px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      input, select {
+        background: #0f172a;
+        color: #f1f5f9;
+        border-color: #334155;
+      }
     }
     
     input:focus, select:focus {

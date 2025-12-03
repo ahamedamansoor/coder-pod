@@ -43,14 +43,88 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   onOpenWebPlayground,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>('html');
+  const [mounted, setMounted] = useState(false);
+  
+  // Extract CSS from HTML <style> tags
+  const extractCSSFromHTML = (htmlContent: string): string => {
+    const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+    const matches = htmlContent.match(styleRegex);
+    if (!matches) return '';
+    
+    return matches
+      .map(match => {
+        const contentMatch = match.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        return contentMatch ? contentMatch[1].trim() : '';
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  };
+
+  // Extract JS from HTML <script> tags
+  const extractJSFromHTML = (htmlContent: string): string => {
+    const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+    const matches = htmlContent.match(scriptRegex);
+    if (!matches) return '';
+    
+    return matches
+      .map(match => {
+        const contentMatch = match.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+        return contentMatch ? contentMatch[1].trim() : '';
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  };
+
+  // Get extracted or provided content
+  const extractedCSS = css || extractCSSFromHTML(html);
+  const extractedJS = js || extractJSFromHTML(html);
+  const hasCSS = !!extractedCSS;
+  const hasJS = !!extractedJS;
+  
+  // Get display HTML (full or with extracted parts removed for cleaner display)
+  const getDisplayHTML = (): string => {
+    // If no extraction happened, show HTML as-is
+    if (!extractedCSS && !extractedJS) return html;
+    
+    // Remove extracted <style> and <script> tags from HTML display for cleaner view
+    let cleanedHTML = html;
+    
+    // Remove <style> tags if CSS was extracted
+    if (extractedCSS) {
+      cleanedHTML = cleanedHTML.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+    }
+    
+    // Remove <script> tags if JS was extracted
+    if (extractedJS) {
+      cleanedHTML = cleanedHTML.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+    }
+    
+    // Clean up extra whitespace/newlines left after removal
+    cleanedHTML = cleanedHTML
+      .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace multiple blank lines with double newline
+      .trim();
+    
+    return cleanedHTML;
+  };
+  
+  // Determine initial tab based on what's provided
+  const getInitialTab = (): 'html' | 'css' | 'js' => {
+    if (html) return 'html';
+    if (hasCSS) return 'css';
+    if (hasJS) return 'js';
+    return 'html';
+  };
+  
+  const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>(getInitialTab());
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Get web playground context
   const { openWithContent } = useWebPlayground();
 
-  // Detect dark mode
+  // Handle mounting and dark mode detection
   useEffect(() => {
+    setMounted(true);
+    
     const checkDarkMode = () => {
       setIsDarkMode(document.documentElement.classList.contains('dark'));
     };
@@ -67,15 +141,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     return () => observer.disconnect();
   }, []);
 
-  // Determine which code to show based on what's provided
-  useEffect(() => {
-    if (html) setActiveTab('html');
-    else if (css) setActiveTab('css');
-    else if (js) setActiveTab('js');
-  }, [html, css, js]);
-
   const handleCopy = async () => {
-    const codeToCopy = activeTab === 'html' ? html : activeTab === 'css' ? css : js;
+    const codeToCopy = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
     await navigator.clipboard.writeText(codeToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -83,6 +150,12 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
   // Create the full HTML document for preview
   const getPreviewContent = () => {
+    // If HTML already contains complete document structure, use it as-is
+    if (html.trim().toLowerCase().startsWith('<!doctype')) {
+      return html;
+    }
+    
+    // Otherwise, build complete document from parts
     const bgColor = isDarkMode ? '#0f172a' : '#ffffff';
     const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
     
@@ -121,14 +194,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     }
     ` : ''}
     
-    ${css}
+    ${extractedCSS}
   </style>
 </head>
 <body>
   ${html}
   <script>
     try {
-      ${js}
+      ${extractedJS}
     } catch(e) {
       console.error('Error:', e);
     }
@@ -214,7 +287,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
 
   const theme = themeColors[colorTheme] ?? themeColors.orange;
-  const currentCode = activeTab === 'html' ? html : activeTab === 'css' ? css : js;
+  const currentCode = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
 
   return (
     <Card className="overflow-hidden">
@@ -254,7 +327,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                     HTML
                   </button>
                 )}
-                {css && (
+                {hasCSS && (
                   <button
                     onClick={() => setActiveTab('css')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
@@ -264,7 +337,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                     CSS
                   </button>
                 )}
-                {js && (
+                {hasJS && (
                   <button
                     onClick={() => setActiveTab('js')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
@@ -278,10 +351,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => {
-                    openWithContent(html, css, js);
+                    openWithContent(html, extractedCSS, extractedJS);
                     const openHandler = onOpenPlayground ?? onOpenWebPlayground;
                     if (!openWithContent && openHandler) {
-                      openHandler(html, css, js);
+                      openHandler(html, extractedCSS, extractedJS);
                     }
                   }}
                   className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
@@ -303,9 +376,9 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 </button>
               </div>
             </div>
-            <div className="flex-1 min-h-[320px]">
+            <div className="max-h-[600px] overflow-auto">
               <pre 
-                className="p-5 h-full overflow-auto bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100"
+                className="p-5 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100"
               >
                 <code
                   className="text-[13px] leading-relaxed font-mono"
@@ -328,16 +401,25 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               </span>
             </div>
             <div 
-              className="flex-1 p-4 overflow-auto bg-white dark:bg-slate-950"
+              className="h-[600px] p-4 overflow-auto bg-white dark:bg-slate-950"
               style={previewHeight === 'auto' ? undefined : { height: previewHeight }}
             >
-              <iframe
-                key={isDarkMode ? 'dark' : 'light'}
-                srcDoc={getPreviewContent()}
-                title="Preview"
-                className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
-                sandbox="allow-scripts"
-              />
+              {mounted ? (
+                <iframe
+                  key={isDarkMode ? 'dark' : 'light'}
+                  srcDoc={getPreviewContent()}
+                  title="Preview"
+                  className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
+                  sandbox="allow-scripts"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800">
+                  <div className="text-center text-slate-400 dark:text-slate-500">
+                    <Eye className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Loading preview...</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

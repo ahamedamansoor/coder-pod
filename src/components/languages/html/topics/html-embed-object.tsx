@@ -113,658 +113,208 @@ export default function HtmlEmbedObject({ onOpenWebPlayground }: HtmlEmbedObject
     }
     
     @media (prefers-color-scheme: dark) {
-      body {
+      body,
+      :root.dark body {
         background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
       }
       
-      .container {
+      .container,
+      :root.dark .container {
         background: #1e293b;
         color: #e2e8f0;
       }
       
-      h1 {
+      h1,
+      :root.dark h1 {
         color: #60a5fa;
       }
       
-      .demo-section {
+      .demo-section,
+      :root.dark .demo-section {
         background: #0f172a;
         border-color: #475569;
       }
       
-      .demo-section h2 {
+      .demo-section h2,
+      :root.dark .demo-section h2 {
         color: #f3f4f6;
       }
       
-      .embed-box {
+      .embed-box,
+      :root.dark .embed-box {
         background: #000;
         border-color: #475569;
       }
       
-      .info-box {
+      .info-box,
+      :root.dark .info-box {
         background: #1e3a8a;
         border-color: #3b82f6;
       }
       
-      .info-box strong {
+      .info-box strong,
+      :root.dark .info-box strong {
         color: #93c5fd;
       }
       
-      .info-box p {
+      .info-box p,
+      :root.dark .info-box p {
         color: #bfdbfe;
       }
       
-      code {
+      code,
+      :root.dark code {
         background: #374151;
         color: #60a5fa;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>📎 Embed Element Demo</h1>
-    
-    <div class="demo-grid">
-      <!-- PDF Embed -->
-      <div class="demo-card">
-        <div class="card-header">
-          <h3>📄 PDF Document</h3>
-          <p>Embed PDF files directly</p>
-        </div>
-        <div class="card-body">
-          <embed 
-            src="data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKNCAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDU1Pj5zdHJlYW0KeJwr5HIK4TI2U7AwMgYSphabKhhbWAIANgAGjAplbmRzdHJlYW0KZW5kb2JqCjEgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAzIDAgUi9Db250ZW50cyA0IDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDw+Pj4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWzEgMCBSXT4+CmVuZG9iagoyIDAgb2JqCjw8L1R5cGUvQ2F0YWxvZy9QYWdlcyAzIDAgUj4+CmVuZG9iagp0cmFpbGVyCjw8L1NpemUgNS9Sb290IDIgMCBSPj4Kc3RhcnR4cmVmCjI1MwolJUVPRgo="
-            type="application/pdf"
-            height="300">
-          </embed>
-          <div class="info-box">
-            <strong>💡 Use Case:</strong>
-            <p>Perfect for displaying documents, reports, and forms inline without downloads.</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Image Embed -->
-      <div class="demo-card">
-        <div class="card-header">
-          <h3>🖼️ SVG Image</h3>
-          <p>Embed SVG graphics</p>
-        </div>
-        <div class="card-body">
-          <embed 
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='80' fill='url(%23grad)' /%3E%3Ctext x='100' y='110' text-anchor='middle' fill='white' font-size='40' font-family='Arial'>SVG%3C/text%3E%3C/svg%3E"
-            type="image/svg+xml"
-            height="250">
-          </embed>
-          <div class="info-box">
-            <strong>💡 Use Case:</strong>
-            <p>Embed scalable vector graphics for logos, icons, and illustrations.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div style="margin-top: 24px; padding: 20px; background: white; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
-      <h3 style="color: #667eea; margin-bottom: 16px;">🎯 Embed Syntax</h3>
-      <pre style="background: #f3f4f6; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 14px; color: #1f2937;"><code>&lt;embed 
-  src="file.pdf" 
-  type="application/pdf" 
-  width="600" 
-  height="400"&gt;</code></pre>
-      <p style="margin-top: 12px; color: #6b7280; font-size: 14px;">
-        <strong>Key attributes:</strong> <code>src</code> (file URL), <code>type</code> (MIME type), <code>width</code>, <code>height</code>
-      </p>
-    </div>
-  </div>
-</body>
-</html>`;
-
-  const objectExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Object Element Examples</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      padding: 40px 20px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      min-height: 100vh;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    h1 {
-      text-align: center;
-      color: white;
-      margin-bottom: 40px;
-      font-size: 2.5rem;
-    }
-    
-    .grid {
-      display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    }
-    
-    .card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    .card-header {
-      padding: 20px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
-    }
-    
-    .card-header h3 {
-      margin-bottom: 8px;
-      font-size: 1.4rem;
-    }
-    
-    .card-header p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-    
-    .card-body {
-      padding: 24px;
-    }
-    
-    object {
-      width: 100%;
-      border-radius: 8px;
-      border: 3px solid #e5e7eb;
-    }
-    
-    .fallback {
-      padding: 40px;
-      text-align: center;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-radius: 8px;
-      color: #78350f;
-    }
-    
-    .fallback h4 {
-      margin-bottom: 8px;
-      color: #92400e;
-    }
-    
-    .feature-list {
-      margin-top: 16px;
-      padding: 16px;
-      background: #f0fdf4;
-      border-left: 4px solid #10b981;
-      border-radius: 4px;
-    }
-    
-    .feature-list strong {
-      color: #065f46;
-      display: block;
-      margin-bottom: 8px;
-    }
-    
-    .feature-list ul {
-      margin-left: 20px;
-      color: #047857;
-    }
-    
-    .feature-list li {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-    
-    code {
-      background: #e5e7eb;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: monospace;
-      color: #10b981;
-      font-size: 12px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
+    }@media (prefers-color-scheme: dark) {
+      body,
+      :root.dark body {
         background: linear-gradient(135deg, #065f46 0%, #047857 100%);
       }
       
-      .container {
+      .container,
+      :root.dark .container {
         background: #1e293b;
         color: #e2e8f0;
       }
       
-      h1 {
+      h1,
+      :root.dark h1 {
         color: #34d399;
       }
       
-      .demo-grid {
+      .demo-grid,
+      :root.dark .demo-grid {
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       }
       
-      .demo-card {
+      .demo-card,
+      :root.dark .demo-card {
         background: #0f172a;
         border-color: #475569;
       }
       
-      .demo-card h2 {
+      .demo-card h2,
+      :root.dark .demo-card h2 {
         color: #f3f4f6;
       }
       
-      .object-box {
+      .object-box,
+      :root.dark .object-box {
         background: #000;
         border-color: #475569;
       }
       
-      .feature-list {
+      .feature-list,
+      :root.dark .feature-list {
         background: #14532d;
         border-color: #22c55e;
       }
       
-      .feature-list li {
+      .feature-list li,
+      :root.dark .feature-list li {
         color: #86efac;
       }
       
-      code {
+      code,
+      :root.dark code {
         background: #374151;
         color: #34d399;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>📦 Object Element Demo</h1>
-    
-    <div class="grid">
-      <!-- PDF Object -->
-      <div class="card">
-        <div class="card-header">
-          <h3>📄 PDF with Fallback</h3>
-          <p>Object element with nested fallback content</p>
-        </div>
-        <div class="card-body">
-          <object 
-            data="data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKNCAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDU1Pj5zdHJlYW0KeJwr5HIK4TI2U7AwMgYSphabKhhbWAIANgAGjAplbmRzdHJlYW0KZW5kb2JqCjEgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAzIDAgUi9Db250ZW50cyA0IDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDw+Pj4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWzEgMCBSXT4+CmVuZG9iagoyIDAgb2JqCjw8L1R5cGUvQ2F0YWxvZy9QYWdlcyAzIDAgUj4+CmVuZG9iagp0cmFpbGVyCjw8L1NpemUgNS9Sb290IDIgMCBSPj4Kc3RhcnR4cmVmCjI1MwolJUVPRgo="
-            type="application/pdf"
-            width="100%"
-            height="300">
-            <div class="fallback">
-              <h4>⚠️ PDF Viewer Not Supported</h4>
-              <p>Your browser doesn't support PDF viewing.</p>
-              <p style="margin-top: 8px;"><a href="#" style="color: #10b981; font-weight: 600;">Download PDF instead</a></p>
-            </div>
-          </object>
-          <div class="feature-list">
-            <strong>✨ Key Feature:</strong>
-            <ul>
-              <li>Supports fallback content</li>
-              <li>Better than <code>&lt;embed&gt;</code> for this</li>
-              <li>Can nest multiple alternatives</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      
-      <!-- SVG Object -->
-      <div class="card">
-        <div class="card-header">
-          <h3>🎨 SVG Object</h3>
-          <p>Scalable vector graphics with params</p>
-        </div>
-        <div class="card-body">
-          <object 
-            data="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2310b981' /%3E%3Cstop offset='100%25' style='stop-color:%23059669' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='300' height='200' fill='url(%23g)' rx='12' /%3E%3Ctext x='150' y='100' text-anchor='middle' fill='white' font-size='32' font-family='Arial' font-weight='bold'%3EOBJECT%3C/text%3E%3Ctext x='150' y='130' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3ESVG Content%3C/text%3E%3C/svg%3E"
-            type="image/svg+xml"
-            width="100%"
-            height="200">
-            Your browser does not support SVG
-          </object>
-          <div class="feature-list">
-            <strong>✨ Advantages:</strong>
-            <ul>
-              <li>Pass parameters with <code>&lt;param&gt;</code></li>
-              <li>Access DOM of embedded content</li>
-              <li>Supports multiple fallback options</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      
-      <!-- YouTube Embed -->
-      <div class="card">
-        <div class="card-header">
-          <h3>🎥 Video Object</h3>
-          <p>Embed external video content</p>
-        </div>
-        <div class="card-body">
-          <object 
-            data="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            width="100%"
-            height="300">
-            <p class="fallback" style="padding: 60px 20px;">
-              <strong>Video not available</strong><br>
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" style="color: #10b981;">Watch on YouTube</a>
-            </p>
-          </object>
-          <div class="feature-list">
-            <strong>💡 Note:</strong>
-            <ul>
-              <li>For videos, prefer <code>&lt;video&gt;</code> or <code>&lt;iframe&gt;</code></li>
-              <li>Object is mainly for plugins and legacy content</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Image Object -->
-      <div class="card">
-        <div class="card-header">
-          <h3>🖼️ Image Object</h3>
-          <p>With multiple fallback options</p>
-        </div>
-        <div class="card-body">
-          <object 
-            data="https://picsum.photos/400/250"
-            type="image/jpeg"
-            width="100%"
-            height="250">
-            <object 
-              data="fallback-image.png"
-              type="image/png">
-              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%23e5e7eb' /%3E%3Ctext x='200' y='125' text-anchor='middle' fill='%236b7280' font-size='20' font-family='Arial'%3EImage Not Available%3C/text%3E%3C/svg%3E" alt="Final fallback">
-            </object>
-          </object>
-          <div class="feature-list">
-            <strong>✨ Nested Fallbacks:</strong>
-            <ul>
-              <li>Try first image</li>
-              <li>Then second object</li>
-              <li>Finally show img tag</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
-
-  const comparisonExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Embed vs Object Comparison</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      padding: 40px 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    h1 {
-      text-align: center;
-      color: white;
-      margin-bottom: 40px;
-      font-size: 2.5rem;
-    }
-    
-    .comparison {
-      display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      margin-bottom: 40px;
-    }
-    
-    .compare-card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    .card-header {
-      padding: 24px;
-      color: white;
-    }
-    
-    .embed-header {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    }
-    
-    .object-header {
-      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    }
-    
-    .card-header h2 {
-      margin-bottom: 8px;
-      font-size: 1.8rem;
-    }
-    
-    .card-header p {
-      opacity: 0.9;
-      font-size: 14px;
-    }
-    
-    .card-body {
-      padding: 24px;
-    }
-    
-    .feature {
-      padding: 16px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      background: #f9fafb;
-      border-left: 4px solid #3b82f6;
-    }
-    
-    .object-card .feature {
-      border-left-color: #8b5cf6;
-    }
-    
-    .feature h4 {
-      color: #1f2937;
-      margin-bottom: 6px;
-      font-size: 15px;
-    }
-    
-    .feature p {
-      color: #6b7280;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    
-    .pros-cons {
-      margin-top: 24px;
-    }
-    
-    .pros, .cons {
-      padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-    
-    .pros {
-      background: #f0fdf4;
-      border-left: 4px solid #10b981;
-    }
-    
-    .cons {
-      background: #fef2f2;
-      border-left: 4px solid #ef4444;
-    }
-    
-    .pros h4 {
-      color: #065f46;
-      margin-bottom: 8px;
-    }
-    
-    .cons h4 {
-      color: #991b1b;
-      margin-bottom: 8px;
-    }
-    
-    .pros ul, .cons ul {
-      margin-left: 20px;
-      color: #6b7280;
-    }
-    
-    .pros li, .cons li {
-      margin: 4px 0;
-      font-size: 13px;
-    }
-    
-    .recommendation {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    .recommendation h2 {
-      color: #667eea;
-      margin-bottom: 20px;
-      font-size: 2rem;
-    }
-    
-    .rec-grid {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-    
-    .rec-item {
-      padding: 20px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-      border: 2px solid #0ea5e9;
-    }
-    
-    .rec-item h3 {
-      color: #0c4a6e;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-    
-    .rec-item p {
-      color: #075985;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    
-    .modern {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-color: #f59e0b;
-    }
-    
-    .modern h3 {
-      color: #92400e;
-    }
-    
-    .modern p {
-      color: #78350f;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
+    }@media (prefers-color-scheme: dark) {
+      body,
+      :root.dark body {
         background: linear-gradient(135deg, #312e81 0%, #4c1d95 100%);
       }
       
-      h1 {
+      h1,
+      :root.dark h1 {
         color: #c4b5fd;
       }
       
-      .comparison-table {
+      .comparison-table,
+      :root.dark .comparison-table {
         background: #1e293b;
         border-color: #475569;
       }
       
-      .comparison-table th {
+      .comparison-table th,
+      :root.dark .comparison-table th {
         background: #0f172a;
         color: #f3f4f6;
       }
       
-      .comparison-table td {
+      .comparison-table td,
+      :root.dark .comparison-table td {
         border-color: #475569;
         color: #94a3b8;
       }
       
-      .pros {
+      .pros,
+      :root.dark .pros {
         background: #14532d;
         border-color: #22c55e;
       }
       
-      .pros li {
+      .pros li,
+      :root.dark .pros li {
         color: #86efac;
       }
       
-      .cons {
+      .cons,
+      :root.dark .cons {
         background: #7f1d1d;
         border-color: #dc2626;
       }
       
-      .cons li {
+      .cons li,
+      :root.dark .cons li {
         color: #fecaca;
       }
       
-      .recommendation {
+      .recommendation,
+      :root.dark .recommendation {
         background: #1e293b;
       }
       
-      .recommendation h2 {
+      .recommendation h2,
+      :root.dark .recommendation h2 {
         color: #a78bfa;
       }
       
-      .rec-item {
+      .rec-item,
+      :root.dark .rec-item {
         background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         border-color: #3b82f6;
       }
       
-      .rec-item h3 {
+      .rec-item h3,
+      :root.dark .rec-item h3 {
         color: #93c5fd;
       }
       
-      .rec-item p {
+      .rec-item p,
+      :root.dark .rec-item p {
         color: #bfdbfe;
       }
       
-      .modern {
+      .modern,
+      :root.dark .modern {
         background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
         border-color: #f59e0b;
       }
       
-      .modern h3 {
+      .modern h3,
+      :root.dark .modern h3 {
         color: #fde68a;
       }
       
-      .modern p {
+      .modern p,
+      :root.dark .modern p {
         color: #fed7aa;
       }
+    }
     }
   </style>
 </head>
@@ -1006,7 +556,7 @@ export default function HtmlEmbedObject({ onOpenWebPlayground }: HtmlEmbedObject
         </CardHeader>
         <CardContent>
           <FrontendCodePreview
-            html={objectExample}
+            html={embedExample}
             css=""
             title="Object Element Examples"
             colorTheme="purple"
@@ -1053,7 +603,7 @@ export default function HtmlEmbedObject({ onOpenWebPlayground }: HtmlEmbedObject
         </CardHeader>
         <CardContent>
           <FrontendCodePreview
-            html={comparisonExample}
+            html={embedExample}
             css=""
             title="Comparison"
             colorTheme="purple"

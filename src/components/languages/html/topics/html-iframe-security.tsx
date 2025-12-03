@@ -137,6 +137,40 @@ export default function HtmlIframeSecurity({ onOpenWebPlayground }: HtmlIframeSe
         color: #e2e8f0;
       }
     }
+
+    :root.dark body {
+      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+    }
+
+    :root.dark .demo-box {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    :root.dark .demo-body {
+      color: #94a3b8;
+    }
+
+    :root.dark iframe {
+      border-color: #475569;
+    }
+
+    :root.dark .warning {
+      background: #7f1d1d;
+      color: #fecaca;
+      border-left-color: #dc2626;
+    }
+
+    :root.dark .success {
+      background: #14532d;
+      color: #86efac;
+      border-left-color: #22c55e;
+    }
+
+    :root.dark code {
+      background: #374151;
+      color: #e2e8f0;
+    }
   </style>
 </head>
 <body>
@@ -343,6 +377,46 @@ export default function HtmlIframeSecurity({ onOpenWebPlayground }: HtmlIframeSe
         background: #14532d;
         color: #86efac;
       }
+    }
+
+    :root.dark body {
+      background: #0f172a;
+    }
+
+    :root.dark h1 {
+      color: #f3f4f6;
+    }
+
+    :root.dark .option-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    :root.dark .option-card {
+      background: #1e293b;
+      border-color: #475569;
+    }
+
+    :root.dark .option-card h3 {
+      color: #f3f4f6;
+    }
+
+    :root.dark .option-card p {
+      color: #94a3b8;
+    }
+
+    :root.dark .demo-section {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    :root.dark .badge-danger {
+      background: #7f1d1d;
+      color: #fecaca;
+    }
+
+    :root.dark .badge-success {
+      background: #14532d;
+      color: #86efac;
     }
   </style>
 </head>
@@ -558,53 +632,67 @@ export default function HtmlIframeSecurity({ onOpenWebPlayground }: HtmlIframeSe
     }
     
     @media (prefers-color-scheme: dark) {
-      body {
+      body,
+      :root.dark body {
         background: #0f172a;
       }
       
-      h1, h2 {
+      h1,
+      h2,
+      :root.dark h1,
+      :root.dark h2 {
         color: #f3f4f6;
       }
       
-      .security-grid {
+      .security-grid,
+      :root.dark .security-grid {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       }
       
-      .attribute-card {
+      .attribute-card,
+      :root.dark .attribute-card {
         background: #1e293b;
         border-color: #475569;
       }
       
-      .attribute-card h3 {
+      .attribute-card h3,
+      :root.dark .attribute-card h3 {
         color: #f3f4f6;
       }
       
-      .attribute-card p {
+      .attribute-card p,
+      :root.dark .attribute-card p {
         color: #94a3b8;
       }
       
-      .demo-box {
+      .demo-box,
+      :root.dark .demo-box {
         background: #1e293b;
       }
       
-      .tip {
+      .tip,
+      :root.dark .tip {
         background: #78350f;
         color: #fed7aa;
         border-left-color: #fbbf24;
       }
       
-      .tip strong {
+      .tip strong,
+      :root.dark .tip strong {
         color: #fde68a;
       }
       
-      .tip p {
+      .tip p,
+      :root.dark .tip p {
         color: #fed7aa;
       }
       
-      code {
+      code,
+      :root.dark code {
         background: #374151;
         color: #e2e8f0;
       }
+    }
     }
   </style>
 </head>

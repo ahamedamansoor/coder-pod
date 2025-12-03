@@ -75,23 +75,34 @@ const SidebarProvider = React.forwardRef<
   ) => {
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = React.useState(false)
+    const [mounted, setMounted] = React.useState(false)
 
-    // Initialize sidebar width from cookie or default
-    const getInitialWidth = () => {
-      if (typeof document === 'undefined') return 352 // 22rem default
-      const cookie = document.cookie
-        .split('; ')
-        .find(row => row.startsWith(`${SIDEBAR_WIDTH_COOKIE_NAME}=`))
-      return cookie ? parseInt(cookie.split('=')[1]) : 352
-    }
+    // Initialize sidebar width with default, update from cookie after mount
+    const [sidebarWidth, setSidebarWidthState] = React.useState(352) // 22rem default
 
-    const [sidebarWidth, setSidebarWidthState] = React.useState(getInitialWidth)
+    // Load width from cookie after component mounts
+    React.useEffect(() => {
+      setMounted(true)
+      if (typeof document !== 'undefined') {
+        const cookie = document.cookie
+          .split('; ')
+          .find(row => row.startsWith(`${SIDEBAR_WIDTH_COOKIE_NAME}=`))
+        if (cookie) {
+          const width = parseInt(cookie.split('=')[1])
+          if (!isNaN(width)) {
+            setSidebarWidthState(width)
+          }
+        }
+      }
+    }, [])
 
     const setSidebarWidth = React.useCallback((width: number) => {
       const clampedWidth = Math.max(SIDEBAR_WIDTH_MIN, Math.min(SIDEBAR_WIDTH_MAX, width))
       setSidebarWidthState(clampedWidth)
-      // Save to cookie
-      document.cookie = `${SIDEBAR_WIDTH_COOKIE_NAME}=${clampedWidth}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+      // Save to cookie (only on client)
+      if (typeof document !== 'undefined') {
+        document.cookie = `${SIDEBAR_WIDTH_COOKIE_NAME}=${clampedWidth}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+      }
     }, [])
 
     // This is the internal state of the sidebar.
@@ -107,8 +118,10 @@ const SidebarProvider = React.forwardRef<
           _setOpen(openState)
         }
 
-        // This sets the cookie to keep the sidebar state.
-        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        // This sets the cookie to keep the sidebar state (only on client)
+        if (typeof document !== 'undefined') {
+          document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        }
       },
       [setOpenProp, open]
     )

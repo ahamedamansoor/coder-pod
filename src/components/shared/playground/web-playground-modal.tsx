@@ -288,6 +288,56 @@ export function WebPlaygroundModal({
     setVisiblePanels(prev => ({ ...prev, [panel]: !prev[panel] }));
   };
 
+  // Extract CSS from HTML <style> tags
+  const extractCSSFromHTML = (htmlContent: string): string => {
+    const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+    const matches = htmlContent.match(styleRegex);
+    if (!matches) return '';
+    
+    return matches
+      .map(match => {
+        const contentMatch = match.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        return contentMatch ? contentMatch[1].trim() : '';
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  };
+
+  // Extract JS from HTML <script> tags
+  const extractJSFromHTML = (htmlContent: string): string => {
+    const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+    const matches = htmlContent.match(scriptRegex);
+    if (!matches) return '';
+    
+    return matches
+      .map(match => {
+        const contentMatch = match.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+        return contentMatch ? contentMatch[1].trim() : '';
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  };
+
+  // Remove <style> and <script> tags from HTML
+  const cleanHTML = (htmlContent: string, hasCSS: boolean, hasJS: boolean): string => {
+    let cleanedHTML = htmlContent;
+    
+    if (hasCSS) {
+      cleanedHTML = cleanedHTML.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+    }
+    
+    if (hasJS) {
+      cleanedHTML = cleanedHTML.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+    }
+    
+    // Clean up extra whitespace/newlines
+    cleanedHTML = cleanedHTML
+      .replace(/\n\s*\n\s*\n/g, '\n\n')
+      .trim();
+    
+    return cleanedHTML;
+  };
+
   // Sync editor theme with main app theme
   useEffect(() => {
     setEditorTheme(theme === 'dark' ? 'dark' : 'light');
@@ -301,11 +351,27 @@ export function WebPlaygroundModal({
     hasInitialRunRef.current = false;
     
     if (content.html || content.css || content.js) {
-        const lang = content.css.includes('$') || content.css.includes('@mixin') ? 'scss' : 'css';
+        // Extract CSS and JS from HTML if not provided separately
+        const extractedCSS = content.css || extractCSSFromHTML(content.html);
+        const extractedJS = content.js || extractJSFromHTML(content.html);
+        
+        // Determine style language
+        const lang = extractedCSS.includes('$') || extractedCSS.includes('@mixin') ? 'scss' : 'css';
         setStyleLang(lang);
-        setStyleCode(content.css || (lang === 'scss' ? defaultScss : defaultCss));
-        setHtmlCode(content.html || defaultHtml);
-        setJsCode(content.js || defaultJs);
+        
+        // Set CSS (extracted or provided)
+        setStyleCode(extractedCSS || (lang === 'scss' ? defaultScss : defaultCss));
+        
+        // Set JS (extracted or provided)
+        setJsCode(extractedJS || defaultJs);
+        
+        // Clean HTML by removing <style> and <script> tags if they were extracted
+        const cleanedHTML = cleanHTML(
+          content.html || defaultHtml,
+          !!extractedCSS && !content.css, // Only clean if extracted (not provided separately)
+          !!extractedJS && !content.js    // Only clean if extracted (not provided separately)
+        );
+        setHtmlCode(cleanedHTML);
     } else {
         // Use initialLanguage to determine defaults
         const defaultStyleLang: StyleLang = 

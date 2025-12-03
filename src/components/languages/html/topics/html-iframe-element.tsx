@@ -82,6 +82,24 @@ export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeEle
         color: #e2e8f0;
       }
     }
+
+    :root.dark .container {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    :root.dark h1 {
+      color: #60a5fa;
+    }
+
+    :root.dark p {
+      color: #94a3b8;
+    }
+
+    :root.dark code {
+      background: #374151;
+      color: #e2e8f0;
+    }
   </style>
 </head>
 <body>
@@ -149,6 +167,14 @@ export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeEle
         color: #f3f4f6;
       }
     }
+
+    :root.dark body {
+      background: #0f172a;
+    }
+
+    :root.dark h1 {
+      color: #f3f4f6;
+    }
     
     /* Responsive iframe wrapper with 16:9 aspect ratio */
     .iframe-container {
@@ -202,6 +228,44 @@ export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeEle
       border-radius: 4px;
       font-family: 'Courier New', monospace;
       color: #667eea;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .card {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
+      
+      .card h3 {
+        color: #60a5fa;
+      }
+      
+      .card p {
+        color: #94a3b8;
+      }
+      
+      code {
+        background: #374151;
+        color: #60a5fa;
+      }
+    }
+
+    :root.dark .card {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    :root.dark .card h3 {
+      color: #60a5fa;
+    }
+
+    :root.dark .card p {
+      color: #94a3b8;
+    }
+
+    :root.dark code {
+      background: #374151;
+      color: #60a5fa;
     }
   </style>
 </head>
@@ -337,6 +401,68 @@ export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeEle
       font-size: 12px;
       margin: 4px 4px 4px 0;
       font-family: monospace;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
+      }
+      
+      .demo-card {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
+      
+      .demo-body {
+        color: #e2e8f0;
+      }
+      
+      iframe {
+        background: #0f172a;
+      }
+      
+      .feature-list {
+        background: #0f172a;
+        border-left-color: #60a5fa;
+      }
+      
+      .feature-list li {
+        color: #94a3b8;
+      }
+      
+      .feature-list strong {
+        color: #e2e8f0;
+      }
+    }
+
+    :root.dark body {
+      background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
+    }
+
+    :root.dark .demo-card {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    :root.dark .demo-body {
+      color: #e2e8f0;
+    }
+
+    :root.dark iframe {
+      background: #0f172a;
+    }
+
+    :root.dark .feature-list {
+      background: #0f172a;
+      border-left-color: #60a5fa;
+    }
+
+    :root.dark .feature-list li {
+      color: #94a3b8;
+    }
+
+    :root.dark .feature-list strong {
+      color: #e2e8f0;
     }
   </style>
 </head>

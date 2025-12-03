@@ -1,193 +1,457 @@
 'use client';
-import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { File, Cpu, SplitSquareHorizontal, Network, Timer, ShieldCheck, Play, Rocket } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { FrontendCodePreview } from '@/components/shared';
+import { Cpu, Zap, AlertCircle, CheckCircle, Info, Activity } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-interface HtmlWebWorkersApiProps { onOpenWebPlayground?: (html:string, css:string, js:string)=>void }
+interface HtmlWebWorkersApiProps {
+  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+}
 
-// Playground demos
-const basicWorkerDemo = {
-  html:`<h2>Basic Web Worker</h2>\n<button id='start'>Start Heavy Task</button>\n<pre id='log'></pre>`,
-  css:`body{font-family:system-ui;padding:1.25rem}button{background:#2563eb;color:#fff;border:none;padding:.75rem 1rem;border-radius:6px;font-weight:600}pre{background:#0f172a;color:#fff;padding:.75rem;border-radius:6px;margin-top:1rem;white-space:pre-wrap}`,
-  js:`// Create worker from inline blob for playground convenience\nconst workerCode = \
-  \`self.onmessage = (e) => {\\n  const count = e.data.count;\\n  let sum = 0;\\n  for (let i=0;i<count;i++){ sum += Math.sqrt(i); }\\n  postMessage({ type: 'done', result: sum });\\n};\`;\nconst blob = new Blob([workerCode], { type: 'text/javascript' });\nconst worker = new Worker(URL.createObjectURL(blob));\nconst log = document.getElementById('log');\nworker.onmessage = (e)=>{ log.textContent = 'Result: '+ e.data.result; };\ndocument.getElementById('start').onclick=()=>{ log.textContent='Working...'; worker.postMessage({count: 500000}); };`
-};
+export default function HtmlWebWorkersApi({ onOpenWebPlayground }: HtmlWebWorkersApiProps) {
+  const basicExample = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Worker Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 20px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    
+    h1 {
+      color: #f59e0b;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    
+    .controls {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-start {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+    
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+    
+    .btn-start:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .status {
+      padding: 16px;
+      background: #fef3c7;
+      border-radius: 8px;
+      border-left: 4px solid #f59e0b;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #92400e;
+    }
+    
+    .result-box {
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 2px solid #e5e7eb;
+      min-height: 100px;
+    }
+    
+    .result-title {
+      font-weight: 600;
+      color: #f59e0b;
+      margin-bottom: 12px;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    
+    .result-value {
+      color: #1f2937;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .spinner {
+      border: 3px solid #fef3c7;
+      border-top: 3px solid #f59e0b;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
+      
+      h1 {
+        color: #fbbf24;
+      }
+      
+      .subtitle {
+        color: #94a3b8;
+      }
+      
+      .status {
+        background: #78350f;
+        color: #fde68a;
+        border-left-color: #f59e0b;
+      }
+      
+      .result-box {
+        background: #0f172a;
+        border-color: #475569;
+      }
+      
+      .result-title {
+        color: #fbbf24;
+      }
+      
+      .result-value {
+        color: #e2e8f0;
+      }
+    }
+    
+    :root.dark .container {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+    
+    :root.dark h1 {
+      color: #fbbf24;
+    }
+    
+    :root.dark .subtitle {
+      color: #94a3b8;
+    }
+    
+    :root.dark .status {
+      background: #78350f;
+      color: #fde68a;
+      border-left-color: #f59e0b;
+    }
+    
+    :root.dark .result-box {
+      background: #0f172a;
+      border-color: #475569;
+    }
+    
+    :root.dark .result-title {
+      color: #fbbf24;
+    }
+    
+    :root.dark .result-value {
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚙️ Web Worker Demo</h1>
+    <p class="subtitle">Run heavy calculations without freezing the UI</p>
+    
+    <div class="status">
+      <strong>💡 How it works:</strong> Click the button to start a heavy calculation in a background thread. The UI will remain responsive!
+    </div>
+    
+    <div class="controls">
+      <button class="btn-start" id="startBtn">🚀 Start Heavy Calculation</button>
+    </div>
+    
+    <div class="result-box" id="resultBox">
+      <div class="result-title">Result</div>
+      <div class="result-value">Click the button to start...</div>
+    </div>
+  </div>
+  
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const resultBox = document.getElementById('resultBox');
+    
+    // Create worker from inline code (using Blob)
+    const workerCode = \`
+      self.onmessage = function(e) {
+        const iterations = e.data.iterations;
+        let result = 0;
+        
+        // Heavy calculation
+        for (let i = 0; i < iterations; i++) {
+          result += Math.sqrt(i) * Math.sin(i) * Math.cos(i);
+          
+          // Send progress updates
+          if (i % 100000 === 0) {
+            self.postMessage({
+              type: 'progress',
+              progress: (i / iterations * 100).toFixed(1),
+              current: i
+            });
+          }
+        }
+        
+        // Send final result
+        self.postMessage({
+          type: 'complete',
+          result: result.toFixed(2),
+          iterations: iterations
+        });
+      };
+    \`;
+    
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    const worker = new Worker(URL.createObjectURL(blob));
+    
+    // Handle messages from worker
+    worker.onmessage = function(e) {
+      const data = e.data;
+      
+      if (data.type === 'progress') {
+        resultBox.innerHTML = \`
+          <div class="result-title">Processing...</div>
+          <div class="spinner"></div>
+          <div class="result-value" style="text-align: center;">
+            Progress: \${data.progress}%<br>
+            Iterations: \${data.current.toLocaleString()}
+          </div>
+        \`;
+      } else if (data.type === 'complete') {
+        resultBox.innerHTML = \`
+          <div class="result-title">✅ Calculation Complete!</div>
+          <div class="result-value">
+            <strong>Final Result:</strong> \${data.result}<br>
+            <strong>Iterations:</strong> \${data.iterations.toLocaleString()}<br>
+            <br>
+            <small style="color: #6b7280;">The UI remained responsive during the entire calculation!</small>
+          </div>
+        \`;
+        startBtn.disabled = false;
+        startBtn.textContent = '🔄 Run Again';
+      }
+    };
+    
+    // Handle errors
+    worker.onerror = function(e) {
+      resultBox.innerHTML = \`
+        <div class="result-title" style="color: #dc2626;">❌ Error</div>
+        <div class="result-value" style="color: #dc2626;">
+          \${e.message}
+        </div>
+      \`;
+      startBtn.disabled = false;
+    };
+    
+    // Start calculation
+    startBtn.addEventListener('click', () => {
+      startBtn.disabled = true;
+      startBtn.textContent = '⏳ Processing...';
+      
+      resultBox.innerHTML = \`
+        <div class="result-title">Starting calculation...</div>
+        <div class="spinner"></div>
+      \`;
+      
+      // Send task to worker
+      worker.postMessage({ iterations: 1000000 });
+    });
+  </script>
+</body>
+</html>`;
 
-const transferableDemo = {
-  html:`<h2>Transferable Objects</h2>\n<button id='calc'>Process Large Array</button>\n<pre id='out'></pre>`,
-  css:`body{font-family:system-ui;padding:1.25rem}button{background:#9333ea;color:#fff;border:none;padding:.65rem 1rem;border-radius:6px;font-weight:600}pre{background:#1e293b;color:#fff;padding:.75rem;border-radius:6px;margin-top:1rem;white-space:pre-wrap}`,
-  js:`const workerCode = \`self.onmessage = (e)=>{ const buf = e.data; const view = new Float64Array(buf); for (let i=0;i<view.length;i++){ view[i] = Math.sin(view[i]); } postMessage(buf, [buf]); };\`;\nconst blob = new Blob([workerCode],{type:'text/javascript'});\nconst worker = new Worker(URL.createObjectURL(blob));\nconst out = document.getElementById('out');\nworker.onmessage=(e)=>{ const view = new Float64Array(e.data); out.textContent = 'First 5 transformed values: '+ Array.from(view.slice(0,5)).map(v=>v.toFixed(4)).join(', '); };\ndocument.getElementById('calc').onclick=()=>{ const arr = new Float64Array(200000); for(let i=0;i<arr.length;i++){arr[i]=i/10;} worker.postMessage(arr.buffer, [arr.buffer]); out.textContent='Sent buffer...'; };`
-};
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Cpu}
+        category="9. HTML APIs"
+        title="Web Workers API"
+        description="Run JavaScript in background threads without blocking the UI"
+        colorTheme="amber"
+      />
 
-const sharedWorkerDemo = {
-  html:`<h2>Shared Worker Counter</h2>\n<button id='inc'>Increment (Shared)</button>\n<pre id='state'></pre>\n<p>Open this playground in two tabs to see shared state.</p>`,
-  css:`body{font-family:system-ui;padding:1.25rem}button{background:#10b981;color:#fff;border:none;padding:.65rem 1rem;border-radius:6px;font-weight:600}pre{background:#022c22;color:#d1fae5;padding:.75rem;border-radius:6px;margin-top:1rem;white-space:pre-wrap}`,
-  js:`const sharedCode = \`let count=0; onconnect = (e)=>{ const port = e.ports[0]; port.onmessage=(msg)=>{ if(msg.data==='inc'){ count++; } port.postMessage(count); }; };\`;\nconst blob = new Blob([sharedCode],{type:'text/javascript'});\nconst worker = new SharedWorker(URL.createObjectURL(blob));\nconst state = document.getElementById('state');\nworker.port.onmessage=(e)=>{ state.textContent = 'Shared count: '+ e.data; };\ndocument.getElementById('inc').onclick=()=>{ worker.port.postMessage('inc'); };\nworker.port.start();`
-};
+      {/* What are Web Workers */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-amber-500/10 rounded-lg">
+              <Cpu className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            </div>
+            What are Web Workers?
+          </CardTitle>
+          <CardDescription>
+            JavaScript threads that run in the background without blocking the UI
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-muted-foreground leading-relaxed">
+            <code className="px-2 py-1 bg-muted rounded">Web Workers</code> allow you to run JavaScript in background threads, preventing CPU-intensive tasks from freezing the user interface. Perfect for heavy calculations, data processing, or complex algorithms.
+          </p>
 
-export default function HtmlWebWorkersApi({ onOpenWebPlayground }: HtmlWebWorkersApiProps){
-  const [activeDemo, setActiveDemo] = useState<'basic'|'transferable'|'shared'>('basic');
-  const currentDemo = activeDemo==='basic' ? basicWorkerDemo : activeDemo==='transferable' ? transferableDemo : sharedWorkerDemo;
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <h4 className="font-semibold text-amber-900 dark:text-amber-100">Non-Blocking</h4>
+              </div>
+              <p className="text-sm text-amber-800 dark:text-amber-200">
+                UI stays responsive during heavy tasks
+              </p>
+            </div>
 
-  return <div className='space-y-10'>
-    <PageHeader icon={File} category='HTML Basics' title='Web Workers API' description='Run JavaScript in background threads for smoother UIs' colorTheme='blue'/>
+            <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Parallel Processing</h4>
+              </div>
+              <p className="text-sm text-blue-800 dark:text-blue-200">
+                Run multiple workers simultaneously
+              </p>
+            </div>
 
-    <Card>
-      <CardHeader>
-        <CardTitle>Why Web Workers?</CardTitle>
-        <CardDescription>Prevent long-running computations from freezing the main (UI) thread.</CardDescription>
-      </CardHeader>
-      <CardContent className='grid md:grid-cols-2 gap-6 text-sm'>
-        <div className='space-y-3'>
-          <h4 className='font-semibold flex items-center gap-2'><Cpu className='w-4 h-4 text-primary'/>Main Thread vs Worker</h4>
-          <p>The browser UI, layout, rendering, and user input all share the single main thread. Heavy loops here cause jank.</p>
-          <ul className='list-disc list-inside space-y-1'>
-            <li><strong>Web Worker:</strong> Dedicated background thread.</li>
-            <li><strong>Shared Worker:</strong> Shared among multiple tabs/windows of same origin.</li>
-            <li><strong>Service Worker:</strong> Network proxy, offline caching (separate concern).</li>
+            <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <h4 className="font-semibold text-green-900 dark:text-green-100">Message Passing</h4>
+              </div>
+              <p className="text-sm text-green-800 dark:text-green-200">
+                Communicate via postMessage API
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Basic Example */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-amber-500/10 rounded-lg">
+              <Cpu className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            </div>
+            Background Calculation with Progress
+          </CardTitle>
+          <CardDescription>
+            Run heavy calculations without freezing the interface
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={basicExample}
+            title="Web Worker with Progress Updates"
+            colorTheme="amber"
+          />
+        </CardContent>
+      </Card>
+
+      {/* Core API */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Core API Methods</CardTitle>
+          <CardDescription>
+            Essential methods for working with Web Workers
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="p-4 rounded-lg bg-muted border">
+              <code className="text-sm font-mono text-amber-600 dark:text-amber-400 block mb-2">new Worker(url)</code>
+              <p className="text-sm text-muted-foreground">Create a new worker from a script file</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted border">
+              <code className="text-sm font-mono text-amber-600 dark:text-amber-400 block mb-2">worker.postMessage(data)</code>
+              <p className="text-sm text-muted-foreground">Send data to the worker</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted border">
+              <code className="text-sm font-mono text-amber-600 dark:text-amber-400 block mb-2">worker.onmessage</code>
+              <p className="text-sm text-muted-foreground">Receive messages from worker</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted border">
+              <code className="text-sm font-mono text-amber-600 dark:text-amber-400 block mb-2">worker.terminate()</code>
+              <p className="text-sm text-muted-foreground">Stop the worker immediately</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Limitations */}
+      <Alert>
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Worker Limitations</AlertTitle>
+        <AlertDescription>
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>No DOM Access:</strong> Workers can't manipulate the DOM directly</li>
+            <li><strong>No window object:</strong> Limited access to browser APIs</li>
+            <li><strong>Data Copying:</strong> Data is copied (not shared) between threads by default</li>
+            <li><strong>Same-origin policy:</strong> Worker scripts must be from the same origin</li>
           </ul>
-        </div>
-        <div className='space-y-3'>
-          <h4 className='font-semibold flex items-center gap-2'><SplitSquareHorizontal className='w-4 h-4 text-primary'/>Limitations</h4>
-          <ul className='list-disc list-inside space-y-1'>
-            <li>No direct DOM access inside workers.</li>
-            <li>Communicate via <code>postMessage()</code> and message events.</li>
-            <li>Must serialize or transfer data (structured clone).</li>
-            <li>Still pay cost for copying large objects unless transferred.</li>
+        </AlertDescription>
+      </Alert>
+
+      {/* Use Cases */}
+      <Alert className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/20">
+        <Info className="h-4 w-4 text-amber-600" />
+        <AlertTitle className="text-amber-900 dark:text-amber-100">Common Use Cases</AlertTitle>
+        <AlertDescription className="text-amber-800 dark:text-amber-200">
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>Image Processing:</strong> Apply filters, resize images without UI lag</li>
+            <li><strong>Data Analysis:</strong> Process large datasets, perform calculations</li>
+            <li><strong>Encryption/Decryption:</strong> Handle crypto operations in background</li>
+            <li><strong>File Parsing:</strong> Parse large CSV, JSON, or XML files</li>
+            <li><strong>Ray Tracing:</strong> Render 3D graphics using parallel workers</li>
           </ul>
-        </div>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader>
-        <CardTitle>Core APIs & Attributes</CardTitle>
-        <CardDescription>Essential properties, lifecycle, and messaging patterns.</CardDescription>
-      </CardHeader>
-      <CardContent className='text-sm space-y-4'>
-        <div className='grid md:grid-cols-2 gap-6'>
-          <div className='bg-muted p-4 rounded border space-y-2'>
-            <h5 className='font-semibold'>Dedicated Worker</h5>
-            <ul className='list-disc list-inside space-y-1'>
-              <li><code>{"new Worker(url, { type: 'module' })"}</code> ES module support.</li>
-              <li><code>worker.postMessage(data)</code> send data.</li>
-              <li><code>worker.onmessage = fn</code> receive messages.</li>
-              <li><code>worker.terminate()</code> stop execution.</li>
-            </ul>
-          </div>
-          <div className='bg-muted p-4 rounded border space-y-2'>
-            <h5 className='font-semibold'>Shared Worker</h5>
-            <ul className='list-disc list-inside space-y-1'>
-              <li><code>new SharedWorker(url)</code> returns worker with <code>.port</code>.</li>
-              <li><code>port.postMessage()</code> / <code>port.onmessage</code>.</li>
-              <li><code>onconnect</code> event inside worker script.</li>
-              <li>State persists across tabs.</li>
-            </ul>
-          </div>
-        </div>
-        <div className='grid md:grid-cols-3 gap-4 text-xs'>
-          <div className='bg-primary/5 border rounded p-3'>
-            <strong className='block mb-1'>Transferable Objects</strong>
-            <p>Pass ownership of <code>ArrayBuffer</code> to avoid copying.</p>
-          </div>
-          <div className='bg-primary/5 border rounded p-3'>
-            <strong className='block mb-1'>Structured Clone</strong>
-            <p>Automatically copies objects (Maps, Dates, etc.).</p>
-          </div>
-          <div className='bg-primary/5 border rounded p-3'>
-            <strong className='block mb-1'>Error Handling</strong>
-            <p><code>worker.onerror</code> & <code>worker.onmessageerror</code>.</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader>
-        <CardTitle>Performance & Patterns</CardTitle>
-        <CardDescription>Design strategies for CPU heavy tasks.</CardDescription>
-      </CardHeader>
-      <CardContent className='text-sm space-y-3'>
-        <ul className='list-disc list-inside space-y-1'>
-          <li>Chunk long loops into batches for progress updates.</li>
-          <li>Use transferable buffers for large numeric arrays.</li>
-          <li>Pool workers for parallel tasks (limit concurrency).</li>
-          <li>Terminate idle workers to reclaim memory.</li>
-        </ul>
-        <div className='flex flex-wrap gap-2 mt-2'>
-          <Badge variant='secondary'>Transferables</Badge>
-          <Badge variant='secondary'>Progress Messages</Badge>
-          <Badge variant='secondary'>Pooling</Badge>
-          <Badge variant='secondary'>Cancellation</Badge>
-        </div>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader>
-        <CardTitle>Security Considerations</CardTitle>
-        <CardDescription>Keep your background code safe & predictable.</CardDescription>
-      </CardHeader>
-      <CardContent className='text-sm grid md:grid-cols-2 gap-6'>
-        <div className='space-y-2'>
-          <h4 className='font-semibold flex items-center gap-2'><ShieldCheck className='w-4 h-4 text-primary'/>Isolation</h4>
-          <p>Workers run in isolated global scope: no direct DOM, limited APIs. Helps contain logic.</p>
-        </div>
-        <div className='space-y-2'>
-          <h4 className='font-semibold flex items-center gap-2'><Network className='w-4 h-4 text-primary'/>Communication Hygiene</h4>
-          <p>Validate structured messages. Prefer explicit <code>type</code> fields to avoid confusion.</p>
-        </div>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader>
-        <CardTitle>Interactive Playground</CardTitle>
-        <CardDescription>Switch scenarios and open runnable example.</CardDescription>
-      </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='flex gap-2 flex-wrap'>
-          <Button variant={activeDemo==='basic'? 'default':'secondary'} size='sm' onClick={()=>setActiveDemo('basic')}>Basic Worker</Button>
-          <Button variant={activeDemo==='transferable'? 'default':'secondary'} size='sm' onClick={()=>setActiveDemo('transferable')}>Transferable Buffer</Button>
-          <Button variant={activeDemo==='shared'? 'default':'secondary'} size='sm' onClick={()=>setActiveDemo('shared')}>Shared Worker</Button>
-        </div>
-        <div className='text-xs bg-muted p-4 rounded border space-y-2'>
-          <p className='font-semibold'>Selected Demo: {activeDemo.replace(/\b\w/g,c=>c.toUpperCase())}</p>
-          <p>Click "Open Demo" to run this scenario in an isolated playground.</p>
-        </div>
-        <Button onClick={()=>onOpenWebPlayground?.(currentDemo.html,currentDemo.css,currentDemo.js)}><Play className='mr-2 w-4 h-4'/>Open Demo</Button>
-      </CardContent>
-    </Card>
-
-    <Card className='border-primary bg-primary/5'>
-      <CardHeader>
-        <CardTitle className='text-primary flex items-center gap-2'><Timer className='w-5 h-5'/>Checklist: When To Use</CardTitle>
-      </CardHeader>
-      <CardContent className='text-xs'>
-        <ul className='list-disc list-inside space-y-1'>
-          <li>Large data transforms (image processing, parsing).</li>
-          <li>Mathematical simulations or crypto operations.</li>
-          <li>Continuous streaming calculations (FFT, audio).</li>
-          <li>Format conversions (CSV → JSON) without blocking UI.</li>
-        </ul>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader>
-        <CardTitle className='flex items-center gap-2'><Rocket className='w-5 h-5 text-primary'/>Advanced Tips</CardTitle>
-      </CardHeader>
-      <CardContent className='text-xs space-y-2'>
-        <ul className='list-disc list-inside space-y-1'>
-          <li>Use <code>Atomics</code> & <code>SharedArrayBuffer</code> for low-latency shared memory (cross-tab sync).</li>
-          <li>Consider WASM inside workers for maximum performance.</li>
-          <li>Stream partial results back (e.g. progress bars).</li>
-          <li>Bundle worker scripts separately to avoid main bundle bloat.</li>
-        </ul>
-      </CardContent>
-    </Card>
-  </div>;
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
 }

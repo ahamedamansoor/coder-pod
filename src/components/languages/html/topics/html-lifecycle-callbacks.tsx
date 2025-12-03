@@ -25,6 +25,12 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      }
+    }
     
     .container {
       max-width: 900px;
@@ -34,11 +40,23 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+      }
+    }
     
     h1 {
       color: #667eea;
       text-align: center;
       margin-bottom: 30px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #a5b4fc;
+      }
     }
     
     .controls {
@@ -78,6 +96,12 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       border-radius: 12px;
       margin: 20px 0;
     }
+
+    @media (prefers-color-scheme: dark) {
+      #element-container {
+        background: #0f172a;
+      }
+    }
     
     #log {
       margin-top: 30px;
@@ -88,6 +112,13 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       overflow-y: auto;
       font-family: monospace;
       font-size: 13px;
+      color: #e2e8f0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #log {
+        background: #0f172a;
+      }
     }
     
     .log-entry {
@@ -244,6 +275,12 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       padding: 40px 20px;
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #064e3b 0%, #0a2e1a 100%);
+      }
+    }
     
     .container {
       max-width: 1000px;
@@ -264,10 +301,22 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       margin-bottom: 30px;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .controls {
+        background: #1e293b;
+      }
+    }
     
     .controls h2 {
       color: #10b981;
       margin-bottom: 20px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .controls h2 {
+        color: #6ee7b7;
+      }
     }
     
     .control-group {
@@ -280,6 +329,12 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       margin-bottom: 8px;
       font-weight: 600;
     }
+
+    @media (prefers-color-scheme: dark) {
+      label {
+        color: #cbd5e1;
+      }
+    }
     
     select, input {
       width: 100%;
@@ -287,6 +342,14 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       border: 2px solid #e5e7eb;
       border-radius: 8px;
       font-size: 14px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      select, input {
+        background: #0f172a;
+        color: #f1f5f9;
+        border-color: #334155;
+      }
     }
     
     select:focus, input:focus {
@@ -315,6 +378,18 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       display: flex;
       justify-content: center;
       margin-bottom: 30px;
+    }
+
+    .console-log {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .console-log {
+        background: #0f172a;
+        color: #cbd5e1;
+      }
     }
   </style>
 </head>
@@ -359,7 +434,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       <reactive-card theme="blue" size="medium" title="Hello World"></reactive-card>
     </div>
     
-    <div style="background: #1e293b; padding: 20px; border-radius: 16px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 13px; color: #93c5fd;" id="console"></div>
+    <div style="background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 16px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 13px;" id="console" class="console-log"></div>
   </div>
 
   <script>
@@ -432,12 +507,24 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
               transition: all 0.3s ease;
               box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             }
+
+            @media (prefers-color-scheme: dark) {
+              .card {
+                filter: brightness(0.85);
+              }
+            }
             
             .title {
               font-size: \${currentSize.fontSize};
               font-weight: bold;
               color: \${currentTheme.text};
               margin-bottom: 12px;
+            }
+
+            @media (prefers-color-scheme: dark) {
+              .title {
+                filter: brightness(1.3);
+              }
             }
             
             .badge {
@@ -502,6 +589,12 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       padding: 40px 20px;
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      }
+    }
     
     .container {
       max-width: 1200px;
@@ -529,9 +622,21 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       min-height: 300px;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .doc-container {
+        background: #1e293b;
+      }
+    }
     
     .doc-container h2 {
       margin-bottom: 20px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .doc-container h2 {
+        color: #6ee7b7;
+      }
     }
     
     button {
@@ -556,10 +661,22 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+
+    @media (prefers-color-scheme: dark) {
+      #log {
+        background: #1e293b;
+      }
+    }
     
     #log h2 {
       color: #667eea;
       margin-bottom: 16px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #log h2 {
+        color: #a5b4fc;
+      }
     }
     
     .log-content {
@@ -571,6 +688,13 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       font-family: monospace;
       font-size: 13px;
       color: #93c5fd;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .log-content {
+        background: #0f172a;
+        color: #cbd5e1;
+      }
     }
     
     .log-entry {
@@ -591,7 +715,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       
       <div class="doc-container" id="doc2">
         <h2 style="color: #10b981;">📄 Document 2 (iframe)</h2>
-        <iframe id="iframe" style="width: 100%; height: 150px; border: 2px solid #e5e7eb; border-radius: 8px;"></iframe>
+        <iframe id="iframe" style="width: 100%; height: 150px; border: 2px solid #e5e7eb; border-radius: 8px; background: white;"></iframe>
         <button onclick="moveToDoc1()">← Move Element to Document 1</button>
       </div>
     </div>
@@ -649,15 +773,34 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
               border-radius: 12px;
               text-align: center;
             }
+
+            @media (prefers-color-scheme: dark) {
+              .box {
+                background: linear-gradient(135deg, #082f49 0%, #0c4a6e 100%);
+                border-color: #60a5fa;
+              }
+            }
             
             h3 {
               color: #1e40af;
               margin-bottom: 8px;
             }
+
+            @media (prefers-color-scheme: dark) {
+              h3 {
+                color: #93c5fd;
+              }
+            }
             
             p {
               color: #3b82f6;
               font-size: 14px;
+            }
+
+            @media (prefers-color-scheme: dark) {
+              p {
+                color: #93c5fd;
+              }
             }
           </style>
           
@@ -673,35 +816,77 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
     
     // Initialize iframe
     const iframe = document.getElementById('iframe');
-    iframe.onload = function() {
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      iframeDoc.body.innerHTML = '<div id="iframe-container" style="padding: 20px;"></div>';
-      
-      // Create initial element
-      element = document.createElement('document-aware-element');
-      document.getElementById('container1').appendChild(element);
-      log('🚀 Demo initialized');
-    };
+    
+    function initializeIframe() {
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.body.innerHTML = '<div id="iframe-container" style="padding: 20px; background: white; height: 100%; color: #1f2937; font-family: system-ui, -apple-system, sans-serif;"><style>@media (prefers-color-scheme: dark) { #iframe-container { background: #1e293b !important; color: #f1f5f9 !important; } }</style></div>';
+        
+        // Create initial element in main document
+        element = document.createElement('document-aware-element');
+        document.getElementById('container1').appendChild(element);
+        log('🚀 Demo initialized - Element created in main document');
+      } catch (e) {
+        console.error('iframe initialization error:', e);
+        log('⚠️ iframe initialization error - retrying...');
+        setTimeout(initializeIframe, 500);
+      }
+    }
+    
+    iframe.onload = initializeIframe;
     iframe.src = 'about:blank';
     
     function moveToDoc2() {
-      if (!element) return;
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      const container = iframeDoc.getElementById('iframe-container');
+      if (!element) {
+        log('⚠️ No element to move');
+        return;
+      }
       
-      // adoptNode triggers adoptedCallback
-      const adoptedElement = iframeDoc.adoptNode(element);
-      container.appendChild(adoptedElement);
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!iframeDoc) {
+          log('⚠️ Cannot access iframe document');
+          return;
+        }
+        
+        const container = iframeDoc.getElementById('iframe-container');
+        if (!container) {
+          log('⚠️ iframe container not found');
+          return;
+        }
+        
+        // adoptNode triggers adoptedCallback
+        const adoptedElement = iframeDoc.adoptNode(element);
+        container.appendChild(adoptedElement);
+        log('📤 Element adopted by iframe document');
+      } catch (e) {
+        console.error('Move to doc2 error:', e);
+        log('⚠️ Error moving element to document 2: ' + e.message);
+      }
     }
     
     function moveToDoc1() {
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      const iframeElement = iframeDoc.querySelector('document-aware-element');
-      if (!iframeElement) return;
-      
-      // adoptNode triggers adoptedCallback again
-      element = document.adoptNode(iframeElement);
-      document.getElementById('container1').appendChild(element);
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!iframeDoc) {
+          log('⚠️ Cannot access iframe document');
+          return;
+        }
+        
+        const iframeElement = iframeDoc.querySelector('document-aware-element');
+        if (!iframeElement) {
+          log('⚠️ No element found in iframe');
+          return;
+        }
+        
+        // adoptNode triggers adoptedCallback again
+        element = document.adoptNode(iframeElement);
+        document.getElementById('container1').appendChild(element);
+        log('📥 Element adopted back to main document');
+      } catch (e) {
+        console.error('Move to doc1 error:', e);
+        log('⚠️ Error moving element to document 1: ' + e.message);
+      }
     }
   </script>
 </body>
@@ -863,6 +1048,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
             css=""
             title="Lifecycle Basics"
             colorTheme="blue"
+            onOpenPlayground={onOpenWebPlayground}
           />
           
           <div className="mt-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
@@ -904,6 +1090,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
             css=""
             title="Reactive Attributes"
             colorTheme="green"
+            onOpenPlayground={onOpenWebPlayground}
           />
           
           <div className="mt-4 space-y-3">
@@ -940,6 +1127,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
             css=""
             title="Adopted Callback"
             colorTheme="amber"
+            onOpenPlayground={onOpenWebPlayground}
           />
           
           <div className="mt-4 p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">

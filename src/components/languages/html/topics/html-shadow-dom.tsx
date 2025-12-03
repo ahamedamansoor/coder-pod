@@ -32,6 +32,12 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      }
+    }
     
     .container {
       max-width: 900px;
@@ -41,11 +47,23 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+      }
+    }
     
     h1 {
       color: #667eea;
       text-align: center;
       margin-bottom: 30px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #a5b4fc;
+      }
     }
     
     /* These global styles will affect regular DOM */
@@ -62,10 +80,22 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       background: #f8fafc;
       border-radius: 12px;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .demo-section {
+        background: #0f172a;
+      }
+    }
     
     .demo-section h3 {
       margin-bottom: 16px;
       color: #334155;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .demo-section h3 {
+        color: #cbd5e1;
+      }
     }
   </style>
 </head>
@@ -139,6 +169,12 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       padding: 40px 20px;
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #064e3b 0%, #0a2e1a 100%);
+      }
+    }
     
     .container {
       max-width: 1000px;
@@ -204,6 +240,12 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
               gap: 24px;
               align-items: start;
             }
+
+            @media (prefers-color-scheme: dark) {
+              .card {
+                background: #1e293b;
+              }
+            }
             
             .avatar-container {
               text-align: center;
@@ -233,6 +275,12 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
               color: #1f2937;
               margin-bottom: 4px;
             }
+
+            @media (prefers-color-scheme: dark) {
+              ::slotted([slot="name"]) {
+                color: #f1f5f9;
+              }
+            }
             
             ::slotted([slot="role"]) {
               display: inline-block;
@@ -249,11 +297,23 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
               padding-top: 16px;
               border-top: 2px solid #f3f4f6;
             }
+
+            @media (prefers-color-scheme: dark) {
+              .bio {
+                border-top-color: #334155;
+              }
+            }
             
             ::slotted([slot="bio"]) {
               color: #6b7280;
               line-height: 1.6;
               margin: 0;
+            }
+
+            @media (prefers-color-scheme: dark) {
+              ::slotted([slot="bio"]) {
+                color: #cbd5e1;
+              }
             }
           </style>
           
@@ -299,6 +359,12 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       padding: 40px 20px;
       min-height: 100vh;
     }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      }
+    }
     
     .container {
       max-width: 1200px;
@@ -324,6 +390,13 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       border-radius: 16px;
       padding: 30px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .demo-card {
+        background: #1e293b;
+        color: #f1f5f9;
+      }
     }
     
     .demo-card h2 {
@@ -371,6 +444,13 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
       background: #f9fafb;
       color: #1f2937;
       min-height: 60px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .result {
+        background: #0f172a;
+        color: #cbd5e1;
+      }
     }
   </style>
 </head>
