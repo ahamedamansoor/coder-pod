@@ -1,27 +1,11 @@
 'use client';
+
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { 
-  Box, 
-  Info, 
-  Code2, 
-  Layers,
-  Zap,
-  ArrowRight,
-  CheckCircle,
-  XCircle,
-  Lightbulb,
-  Globe,
-  Package,
-  RefreshCw,
-  Settings,
-  Link as LinkIcon,
-  FileCode
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared';
+import { FrontendCodePreview } from '@/components/shared';
+import { Component, Code, Sparkles, CheckCircle, AlertCircle, Info, Zap } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
 
 interface HtmlCustomElementsProps { 
   onOpenWebPlayground?: (h:string,c:string,j:string)=>void 
@@ -69,7 +53,7 @@ export default function HtmlCustomElements({ onOpenWebPlayground }: HtmlCustomEl
     <div className='space-y-10 pb-16'>
       <PageHeader 
         icon={Box} 
-        category='Web Components' 
+        category='12. Web Components' 
         title='Custom Elements' 
         description='Create your own HTML tags with custom behavior using native JavaScript APIs'
         colorTheme='blue'

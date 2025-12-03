@@ -142,7 +142,180 @@ Every HTML topic component starts with a `PageHeader`:
 - Always include `onOpenPlayground` prop for play button
 - CSS can use light tones (emerald, purple, amber) for visual interest
 - Keep examples simple and beginner-friendly
-- Add dark mode support in CSS with `@media (prefers-color-scheme: dark)`
+- **CRITICAL:** Add dark mode support in CSS with `@media (prefers-color-scheme: dark)` (see Dark Mode section below)
+
+---
+
+## 🌙 Dark Mode Support (REQUIRED)
+
+### HTML Example Dark Mode Requirements
+**ALL HTML examples in `FrontendCodePreview` MUST support dark mode.** The component automatically handles iframe backgrounds, but your HTML/CSS must adapt.
+
+### Implementation Rules
+
+#### 1. Body & Background Colors
+```css
+body {
+  margin: 0;
+  padding: 0;
+  /* Light mode background */
+  background: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;  /* Dark slate background */
+  }
+}
+```
+
+#### 2. Text Colors
+```css
+h1, h2, h3 {
+  color: #1f2937;  /* Light mode text */
+}
+
+p {
+  color: #4b5563;  /* Light mode muted text */
+}
+
+@media (prefers-color-scheme: dark) {
+  h1, h2, h3 {
+    color: #f3f4f6;  /* Dark mode text */
+  }
+  
+  p {
+    color: #94a3b8;  /* Dark mode muted text */
+  }
+}
+```
+
+#### 3. Card & Container Backgrounds
+```css
+.card {
+  background: white;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: #1e293b;  /* Dark slate card */
+    color: #e2e8f0;       /* Light text */
+    border-color: #374151; /* Dark border */
+  }
+}
+```
+
+#### 4. Skeleton Loaders & Placeholders
+```css
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  }
+}
+```
+
+#### 5. Interactive Elements
+```css
+button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    background: #60a5fa;
+    color: #0f172a;
+  }
+  
+  button:hover {
+    background: #93c5fd;
+  }
+}
+```
+
+#### 6. Inline Styles (Dynamic Dark Mode)
+For inline styles that need to adapt, use JavaScript:
+```javascript
+<script>
+  // Detect dark mode
+  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Apply dynamic colors
+  if (isDark) {
+    document.querySelector('h1').style.color = '#60a5fa';
+    document.body.style.background = '#0f172a';
+  }
+</script>
+```
+
+### Color Reference for Dark Mode
+
+#### Backgrounds
+```css
+/* Light Mode */
+background: #ffffff;      /* Pure white */
+background: #f9fafb;      /* Gray 50 */
+background: #f3f4f6;      /* Gray 100 */
+
+/* Dark Mode */
+background: #0f172a;      /* Slate 900 - body */
+background: #1e293b;      /* Slate 800 - cards */
+background: #374151;      /* Gray 700 - secondary */
+```
+
+#### Text Colors
+```css
+/* Light Mode */
+color: #1f2937;          /* Gray 800 - headings */
+color: #4b5563;          /* Gray 600 - body */
+color: #6b7280;          /* Gray 500 - muted */
+
+/* Dark Mode */
+color: #f3f4f6;          /* Gray 100 - headings */
+color: #e2e8f0;          /* Slate 200 - body */
+color: #94a3b8;          /* Slate 400 - muted */
+```
+
+#### Borders
+```css
+/* Light Mode */
+border-color: #e5e7eb;   /* Gray 200 */
+border-color: #d1d5db;   /* Gray 300 */
+
+/* Dark Mode */
+border-color: #374151;   /* Gray 700 */
+border-color: #4b5563;   /* Gray 600 */
+```
+
+### Testing Dark Mode
+1. **Browser DevTools:** Toggle prefers-color-scheme in DevTools
+2. **System Settings:** Change system theme and verify iframe updates
+3. **Both Modes:** Every example must look good in light AND dark mode
+4. **Contrast:** Use browser accessibility tools to check contrast ratios
+
+### Common Pitfalls to Avoid
+❌ **Don't:** Use only light colors without dark mode variants
+❌ **Don't:** Rely on FrontendCodePreview's iframe background only
+❌ **Don't:** Use hardcoded colors in inline styles without JS detection
+❌ **Don't:** Forget to test in both modes
+
+✅ **Do:** Add `@media (prefers-color-scheme: dark)` for all colors
+✅ **Do:** Use semantic color variables (headings, body, muted)
+✅ **Do:** Test contrast in both light and dark modes
+✅ **Do:** Ensure gradients work well in both themes
 
 ---
 
@@ -374,8 +547,15 @@ Before submitting a component, verify:
 
 ### Interactive Features
 - [ ] All FrontendCodePreview have `onOpenPlayground` prop
-- [ ] CSS includes dark mode media queries
-- [ ] Examples are runnable and tested
+- [ ] **ALL HTML examples include `@media (prefers-color-scheme: dark)` for:**
+  - [ ] Body/background colors
+  - [ ] Text colors (headings and paragraphs)
+  - [ ] Card/container backgrounds
+  - [ ] Skeleton loaders/placeholders
+  - [ ] Buttons and interactive elements
+  - [ ] Border colors
+- [ ] Inline styles use JavaScript dark mode detection if needed
+- [ ] Examples tested in BOTH light and dark modes
 - [ ] Playground data is complete
 
 ### Structure
@@ -482,11 +662,214 @@ export default function HtmlTopic({ onOpenWebPlayground }: HtmlTopicProps) {
 - Use blue everywhere (only for main titles)
 - Use saturated/bright colors (stick to 50/100 shades)
 - Mix too many colors in a single card
-- Forget dark mode support
+- **Forget dark mode support in HTML examples** (CRITICAL)
+- **Skip `@media (prefers-color-scheme: dark)` in CSS** (REQUIRED)
 - Include topics covered elsewhere
 - Use technical jargon without explanation
 - Create long walls of text
 - Skip interactive examples
+- Test only in light mode without checking dark mode
+
+---
+
+## ⚠️ Common Errors & Troubleshooting
+
+### Hydration Errors
+
+**Error Message:**
+```
+Hydration failed because the server rendered HTML didn't match the client. 
+As a result this tree will be regenerated on the client. 
+This can happen if a SSR-ed Client Component used:
+```
+
+#### Common Causes & Solutions
+
+**1. Browser Extensions Modifying DOM**
+```tsx
+// ❌ Problem: Extensions inject scripts/styles
+<head>
+  <script src="chrome-extension://..."></script>
+</head>
+
+// ✅ Solution: Suppress hydration warnings for known issues
+'use client';
+import { useEffect, useState } from 'react';
+
+// Or use suppressHydrationWarning on specific elements
+<html suppressHydrationWarning>
+```
+
+**2. Date/Time Mismatches**
+```tsx
+// ❌ Problem: Server and client times differ
+<p>Current time: {new Date().toLocaleTimeString()}</p>
+
+// ✅ Solution: Use useEffect for client-only content
+const [mounted, setMounted] = useState(false);
+useEffect(() => setMounted(true), []);
+if (!mounted) return null;
+return <p>Current time: {new Date().toLocaleTimeString()}</p>;
+```
+
+**3. Random Values/IDs**
+```tsx
+// ❌ Problem: Different IDs on server vs client
+const id = Math.random().toString();
+
+// ✅ Solution: Use useId hook (React 18+)
+import { useId } from 'react';
+const id = useId();
+```
+
+**4. Conditional Rendering Based on Window**
+```tsx
+// ❌ Problem: window is undefined on server
+const isMobile = window.innerWidth < 768;
+
+// ✅ Solution: Check for window existence
+const [isMobile, setIsMobile] = useState(false);
+useEffect(() => {
+  setIsMobile(window.innerWidth < 768);
+}, []);
+```
+
+**5. Theme/Dark Mode Issues**
+```tsx
+// ❌ Problem: Theme class added by JavaScript after SSR
+<html className={isDark ? 'dark' : ''}>
+
+// ✅ Solution: Use suppressHydrationWarning
+<html suppressHydrationWarning className={resolvedTheme === 'dark' ? 'dark' : ''}>
+```
+
+**6. Third-Party Scripts**
+```tsx
+// ❌ Problem: Analytics/ads inject content
+<script src="https://analytics.example.com"></script>
+
+// ✅ Solution: Load in useEffect
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com';
+  document.body.appendChild(script);
+}, []);
+```
+
+### FrontendCodePreview Specific Issues
+
+**1. Dark Mode Not Working in Preview**
+```tsx
+// ❌ Missing: No dark mode CSS
+body { background: white; }
+
+// ✅ Fixed: Add prefers-color-scheme
+body { background: white; }
+@media (prefers-color-scheme: dark) {
+  body { background: #0f172a; }
+}
+```
+
+**2. Preview Content Overflowing**
+```tsx
+// ❌ Missing: No container constraints
+<div style="width: 2000px;">
+
+// ✅ Fixed: Use max-width and responsive units
+<div style="max-width: 100%; padding: 20px;">
+```
+
+**3. Styles Not Applied**
+```tsx
+// ❌ Problem: Missing CSS in preview
+<FrontendCodePreview
+  html={`<div class="card">Content</div>`}
+  css=""  // Empty!
+/>
+
+// ✅ Fixed: Include all necessary CSS
+<FrontendCodePreview
+  html={`<div class="card">Content</div>`}
+  css={`.card { padding: 1rem; background: white; }`}
+/>
+```
+
+### Build Errors
+
+**1. Module Not Found**
+```bash
+# Error: Cannot find module '@/components/ui/card'
+
+# Solution: Check import paths and case sensitivity
+import { Card } from '@/components/ui/card';  // Correct
+import { Card } from '@/components/ui/Card';  // Wrong (case)
+```
+
+**2. Lazy Loading Issues**
+```tsx
+// ❌ Problem: Component not found
+const HtmlTopic = lazy(() => import('./html-topic'));
+
+// ✅ Solution: Check file exists and path is correct
+const HtmlTopic = lazy(() => import('@/components/languages/html/topics/html-topic'));
+```
+
+### Performance Issues
+
+**1. Large HTML Examples**
+```tsx
+// ❌ Problem: Massive HTML string
+const hugeExample = `<!-- 10000 lines of HTML -->`;
+
+// ✅ Solution: Split into smaller examples
+const example1 = `<!-- Focused 50 lines -->`;
+const example2 = `<!-- Another 50 lines -->`;
+```
+
+**2. Too Many Components**
+```tsx
+// ❌ Problem: 20 FrontendCodePreview in one page
+{examples.map(ex => <FrontendCodePreview ... />)}
+
+// ✅ Solution: Use tabs or pagination
+<Tabs>
+  <TabsList>
+    <TabsTrigger value="ex1">Example 1</TabsTrigger>
+    <TabsTrigger value="ex2">Example 2</TabsTrigger>
+  </TabsList>
+</Tabs>
+```
+
+### Debugging Tips
+
+**1. Check Browser Console**
+```javascript
+// Look for hydration warnings
+// Check for JavaScript errors
+// Verify fetch/API calls
+```
+
+**2. Use React DevTools**
+```
+- Inspect component tree
+- Check props and state
+- Profile component renders
+- Identify performance issues
+```
+
+**3. Test Dark Mode**
+```javascript
+// In browser DevTools
+// More tools > Rendering > Emulate CSS prefers-color-scheme
+```
+
+**4. Validate HTML**
+```
+- Use W3C HTML Validator
+- Check for unclosed tags
+- Verify proper nesting
+- Test accessibility
+```
 
 ---
 
@@ -498,4 +881,4 @@ export default function HtmlTopic({ onOpenWebPlayground }: HtmlTopicProps) {
 ---
 
 **Last Updated:** December 2024  
-**Version:** 2.0 (Blue Theme)
+**Version:** 2.1 (Blue Theme + Dark Mode Requirements)

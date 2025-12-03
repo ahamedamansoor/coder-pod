@@ -108,13 +108,13 @@ export const html: Language = {
     { slug: 'iframe-element', title: 'Iframe Element', explanation: '<iframe> for embedding external content, src, sandbox, loading attributes.', category: '11. Iframes & Embedding' },
     { slug: 'iframe-security', title: 'Iframe Security', explanation: 'sandbox attribute, CSP, and iframe security best practices.', category: '11. Iframes & Embedding' },
     { slug: 'embed-object', title: 'Embed & Object', explanation: '<embed> and <object> for embedding plugins and external content.', category: '11. Iframes & Embedding' },
-    { slug: 'template-element', title: 'Template Element', explanation: '<template> for inert HTML fragments and reusable content.', category: '11. Iframes & Embedding' },
     
     // 12. WEB COMPONENTS
-    { slug: 'web-components-intro', title: 'Web Components Intro', explanation: 'Introduction to Web Components: Custom Elements, Shadow DOM, Templates.', category: '12. Web Components' },
+    { slug: 'web-components-intro', title: 'Web Components Introduction', explanation: 'Introduction to Web Components: Custom Elements, Shadow DOM, Templates.', category: '12. Web Components' },
     { slug: 'custom-elements', title: 'Custom Elements', explanation: 'Creating custom HTML elements with the Custom Elements API.', category: '12. Web Components' },
     { slug: 'shadow-dom', title: 'Shadow DOM', explanation: 'Encapsulation with Shadow DOM for style and markup isolation.', category: '12. Web Components' },
     { slug: 'html-templates', title: 'HTML Templates', explanation: '<template> and <slot> for reusable component templates.', category: '12. Web Components' },
+    { slug: 'template-element', title: 'Template Element', explanation: '<template> for inert HTML fragments and reusable content.', category: '12. Web Components' },
     { slug: 'web-component-lifecycle', title: 'Lifecycle Callbacks', explanation: 'connectedCallback, disconnectedCallback, attributeChangedCallback.', category: '12. Web Components' },
 
     // 13. HTML5 APIS

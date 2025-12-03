@@ -2,60 +2,42 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { Shield, Lightbulb, CheckCircle2 } from 'lucide-react';
+import { Upload, Lightbulb, CheckCircle2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { FrontendCodePreview } from '@/components/shared';
 
-interface HtmlValidationProps {
+interface HtmlFileInputsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const validationExample = {
-  html: `<h2>HTML5 Form Validation</h2>
-<form class="form-container">
-  <!-- Required Field -->
+const fileInputExample = {
+  html: `<h2>File Upload Input</h2>
+<form class="form-container" enctype="multipart/form-data">
   <div class="form-group">
-    <label for="name">Full Name (Required):</label>
-    <input type="text" id="name" name="name" required>
-    <small>Try submitting empty</small>
+    <label for="avatar">Upload Avatar (Image only):</label>
+    <input type="file" id="avatar" name="avatar" accept="image/*">
+    <small>Accepts: JPG, PNG, GIF, WebP</small>
   </div>
 
-  <!-- Email Validation -->
   <div class="form-group">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <small>Must be valid email format</small>
+    <label for="document">Upload Document (PDF):</label>
+    <input type="file" id="document" name="document" accept=".pdf">
+    <small>PDF files only</small>
   </div>
 
-  <!-- Min/Max Length -->
   <div class="form-group">
-    <label for="password">Password (8-20 chars):</label>
-    <input type="password" id="password" name="password" minlength="8" maxlength="20" required>
-    <small>Between 8 and 20 characters</small>
+    <label for="multiple">Upload Multiple Files:</label>
+    <input type="file" id="multiple" name="files" multiple>
+    <small>Hold Ctrl/Cmd to select multiple files</small>
   </div>
 
-  <!-- Min/Max Numbers -->
   <div class="form-group">
-    <label for="age">Age (18-100):</label>
-    <input type="number" id="age" name="age" min="18" max="100" required>
-    <small>Must be between 18 and 100</small>
+    <label for="capture">Capture from Camera:</label>
+    <input type="file" id="capture" name="photo" accept="image/*" capture="environment">
+    <small>Mobile: Opens camera app</small>
   </div>
 
-  <!-- URL Validation -->
-  <div class="form-group">
-    <label for="website">Website URL:</label>
-    <input type="url" id="website" name="website">
-    <small>Must be valid URL (https://example.com)</small>
-  </div>
-
-  <!-- Pattern Validation -->
-  <div class="form-group">
-    <label for="phone">Phone (XXX-XXX-XXXX):</label>
-    <input type="tel" id="phone" name="phone" pattern="\\d{3}-\\d{3}-\\d{4}" placeholder="123-456-7890">
-    <small>Format: 123-456-7890</small>
-  </div>
-
-  <button type="submit" class="btn">Submit</button>
+  <button type="submit" class="btn">Upload Files</button>
 </form>`,
   css: `body {
   font-family: system-ui, -apple-system, sans-serif;
@@ -113,42 +95,34 @@ label {
   }
 }
 
-input {
+input[type="file"] {
   width: 100%;
   padding: 0.75rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 1rem;
-  color: #1e293b;
-  transition: all 0.3s;
+  cursor: pointer;
+  color: #475569;
 }
 
-input:focus {
-  outline: none;
-  border-color: #06b6d4;
+input[type="file"]::-webkit-file-upload-button {
+  padding: 0.5rem 1rem;
+  background: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-input:valid {
-  border-color: #10b981;
-}
-
-input:invalid:not(:placeholder-shown) {
-  border-color: #ef4444;
+input[type="file"]::-webkit-file-upload-button:hover {
+  background: #d97706;
 }
 
 @media (prefers-color-scheme: dark) {
-  input {
+  input[type="file"] {
     background: #0f172a;
     border-color: #334155;
-    color: #f1f5f9;
-  }
-  
-  input:valid {
-    border-color: #10b981;
-  }
-  
-  input:invalid:not(:placeholder-shown) {
-    border-color: #ef4444;
+    color: #cbd5e1;
   }
 }
 
@@ -168,7 +142,7 @@ small {
 .btn {
   width: 100%;
   padding: 0.75rem;
-  background: #06b6d4;
+  background: #f59e0b;
   color: white;
   border: none;
   border-radius: 8px;
@@ -178,29 +152,29 @@ small {
 }
 
 .btn:hover {
-  background: #0891b2;
+  background: #d97706;
 }
 
 @media (prefers-color-scheme: dark) {
   .btn {
-    background: #0891b2;
+    background: #b45309;
   }
   
   .btn:hover {
-    background: #0e7490;
+    background: #92400e;
   }
 }`,
   js: ``,
 };
 
-export default function HtmlValidation({ onOpenWebPlayground }: HtmlValidationProps) {
+export default function HtmlFileInputs({ onOpenWebPlayground }: HtmlFileInputsProps) {
   return (
     <div className="space-y-10 pb-16">
       <PageHeader
-        icon={Shield}
+        icon={Upload}
         category="HTML · Forms"
-        title="HTML5 Validation"
-        description="Built-in form validation without JavaScript"
+        title="File Inputs"
+        description="Learn to handle file uploads in forms"
         colorTheme="blue"
       />
 
@@ -209,69 +183,65 @@ export default function HtmlValidation({ onOpenWebPlayground }: HtmlValidationPr
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl">
-              <Shield className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+              <Upload className="w-7 h-7 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <CardTitle className="text-3xl text-blue-600 dark:text-blue-400">
-                HTML5 Validation
+                File Inputs
               </CardTitle>
               <CardDescription className="text-base mt-1">
-                Built-in browser validation attributes
+                Allow users to upload files
               </CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-            HTML5 provides built-in validation attributes that browsers enforce before form submission. These provide immediate feedback without JavaScript.
+            File input allows users to select files from their device to upload. Use accept attribute to restrict file types.
           </p>
 
           <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
             <Lightbulb className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <AlertTitle className="text-blue-700 dark:text-blue-300">Important</AlertTitle>
             <AlertDescription className="text-blue-600 dark:text-blue-400">
-              Always validate on the server too! Client-side validation can be bypassed. Use it for UX, not security.
+              Use enctype="multipart/form-data" on forms with file inputs. Always validate files on the server!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Validation Attributes */}
+      {/* File Inputs */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400">
-            <Shield className="w-7 h-7" />
-            Validation Attributes
+            <Upload className="w-7 h-7" />
+            File Input Examples
           </CardTitle>
           <CardDescription className="text-base">
-            Different validation constraints
+            Different file input configurations
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <FrontendCodePreview
-            title="HTML5 Validation Examples"
-            description="Various validation attributes in action"
-            html={validationExample.html}
-            css={validationExample.css}
-            js={validationExample.js}
+            title="File Input Types"
+            description="Single, multiple, and filtered file uploads"
+            html={fileInputExample.html}
+            css={fileInputExample.css}
+            js={fileInputExample.js}
             colorTheme="blue"
-            previewHeight="650px"
+            previewHeight="450px"
             onOpenPlayground={onOpenWebPlayground}
           />
 
           <div className="grid gap-3 mt-4">
             {[
-              { attr: 'required', desc: 'Field must be filled' },
-              { attr: 'type="email"', desc: 'Must match email format' },
-              { attr: 'type="url"', desc: 'Must match URL format' },
-              { attr: 'minlength', desc: 'Minimum string length' },
-              { attr: 'maxlength', desc: 'Maximum string length' },
-              { attr: 'min', desc: 'Minimum numeric value' },
-              { attr: 'max', desc: 'Maximum numeric value' },
-              { attr: 'pattern', desc: 'Match regex pattern' },
+              { attr: 'accept', desc: 'File types allowed (e.g., "image/*", ".pdf")' },
+              { attr: 'multiple', desc: 'Allow selecting multiple files' },
+              { attr: 'capture', desc: 'Mobile: "user" (front) or "environment" (back) camera' },
+              { attr: 'required', desc: 'File must be selected before submit' },
             ].map((item, idx) => (
-              <div key={idx} className="p-3 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg border border-cyan-200 dark:border-cyan-700">
-                <h4 className="font-mono font-semibold text-cyan-600 dark:text-cyan-400 mb-1">{item.attr}</h4>
+              <div key={idx} className="p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-700">
+                <h4 className="font-mono font-semibold text-amber-600 dark:text-amber-400 mb-1">{item.attr}</h4>
                 <p className="text-sm text-slate-700 dark:text-slate-300">{item.desc}</p>
               </div>
             ))}
@@ -292,20 +262,20 @@ export default function HtmlValidation({ onOpenWebPlayground }: HtmlValidationPr
             <div className="p-5 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-700">
               <h4 className="font-bold text-lg text-emerald-600 dark:text-emerald-400 mb-3">✅ Do This</h4>
               <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
-                <li>✓ Use appropriate input types</li>
-                <li>✓ Set validation attributes</li>
-                <li>✓ Validate on server too</li>
-                <li>✓ Show clear error messages</li>
+                <li>✓ Use multipart/form-data</li>
+                <li>✓ Restrict file types</li>
+                <li>✓ Show file size limits</li>
+                <li>✓ Validate on server</li>
               </ul>
             </div>
 
             <div className="p-5 bg-rose-50 dark:bg-rose-950/20 rounded-xl border border-rose-200 dark:border-rose-700">
               <h4 className="font-bold text-lg text-rose-600 dark:text-rose-400 mb-3">❌ Avoid This</h4>
               <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
-                <li>✗ Only client validation</li>
-                <li>✗ Overly restrictive patterns</li>
-                <li>✗ No error feedback</li>
-                <li>✗ Ignoring HTML5 types</li>
+                <li>✗ No file type filtering</li>
+                <li>✗ Client-only validation</li>
+                <li>✗ Unlimited file size</li>
+                <li>✗ No user feedback</li>
               </ul>
             </div>
           </div>

@@ -36,7 +36,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   js = '',
   colorTheme = 'orange',
   icon: Icon = Eye,
-  previewHeight = '300px',
+  previewHeight = 'auto',
   codeHeight = 'auto',
   onOpenPlayground,
 }) => {
@@ -195,7 +195,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     },
   };
 
-  const theme = themeColors[colorTheme];
+  const theme = themeColors[colorTheme] ?? themeColors.orange;
   const currentCode = activeTab === 'html' ? html : activeTab === 'css' ? css : js;
 
   return (
@@ -222,117 +222,108 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       </div>
 
       <CardContent className="p-0">
-        {/* Code Section */}
-        <div className="border-b dark:border-slate-800">
-          {/* Tabs */}
-          <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 px-4 py-2 border-b dark:border-slate-800">
-            <div className="flex gap-2">
-              {html && (
-                <button
-                  onClick={() => setActiveTab('html')}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-                    activeTab === 'html' ? theme.tab : theme.tabInactive
-                  }`}
-                >
-                  HTML
-                </button>
-              )}
-              {css && (
-                <button
-                  onClick={() => setActiveTab('css')}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-                    activeTab === 'css' ? theme.tab : theme.tabInactive
-                  }`}
-                >
-                  CSS
-                </button>
-              )}
-              {js && (
-                <button
-                  onClick={() => setActiveTab('js')}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-                    activeTab === 'js' ? theme.tab : theme.tabInactive
-                  }`}
-                >
-                  JavaScript
-                </button>
-              )}
-            </div>
-            
-            <div className="flex items-center gap-1.5">
-              {/* Play Button - Prominent & Always Visible */}
-              <button
-                onClick={() => {
-                  // Always use web playground context
-                  openWithContent(html, css, js);
-                  // Fallback to legacy prop if context is not available
-                  if (!openWithContent && onOpenPlayground) {
-                    onOpenPlayground(html, css, js);
-                  }
-                }}
-                className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
-                title="Open code in Web Playground for interactive editing"
-              >
-                <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
-                <span className="text-xs font-semibold">Run</span>
-              </button>
-
-              {/* Copy Button */}
-              <button
-                onClick={handleCopy}
-                className="p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-                title="Copy code"
-              >
-                {copied ? (
-                  <Check className="w-4 h-4 text-emerald-600" />
-                ) : (
-                  <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+        <div className="flex flex-col gap-4 lg:flex-row">
+          <div className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm">
+            <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 px-4 py-2 border-b dark:border-slate-800">
+              <div className="flex gap-2">
+                {html && (
+                  <button
+                    onClick={() => setActiveTab('html')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'html' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    HTML
+                  </button>
                 )}
-              </button>
+                {css && (
+                  <button
+                    onClick={() => setActiveTab('css')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'css' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    CSS
+                  </button>
+                )}
+                {js && (
+                  <button
+                    onClick={() => setActiveTab('js')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'js' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    JavaScript
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => {
+                    openWithContent(html, css, js);
+                    if (!openWithContent && onOpenPlayground) {
+                      onOpenPlayground(html, css, js);
+                    }
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
+                  title="Open code in Web Playground for interactive editing"
+                >
+                  <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
+                  <span className="text-xs font-semibold">Run</span>
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className="p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                  title="Copy code"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-emerald-600" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 min-h-[320px]">
+              <pre 
+                className="p-5 h-full overflow-auto bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100"
+              >
+                <code
+                  className="text-[13px] leading-relaxed font-mono"
+                  style={{
+                    fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", Cascadia Code, Menlo, Monaco, Consolas, monospace',
+                    fontFeatureSettings: '"liga", "calt"',
+                  }}
+                >
+                  {currentCode}
+                </code>
+              </pre>
             </div>
           </div>
 
-          {/* Code Display */}
-          <div className="relative">
-            <pre 
-              className="p-5 overflow-auto bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100"
-              style={{ maxHeight: codeHeight, overflowY: codeHeight !== 'auto' ? 'auto' : undefined }}
+          <div className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm">
+            <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
+              <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+              <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
+                Live Preview
+              </span>
+            </div>
+            <div 
+              className="flex-1 p-4 overflow-auto bg-white dark:bg-slate-950"
+              style={previewHeight === 'auto' ? undefined : { height: previewHeight }}
             >
-              <code
-                className="text-[13px] leading-relaxed font-mono"
-                style={{
-                  fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-                  fontFeatureSettings: '"liga", "calt"',
-                }}
-              >
-                {currentCode}
-              </code>
-            </pre>
-          </div>
-        </div>
-
-        {/* Preview Section */}
-        <div className="bg-white dark:bg-slate-900">
-          <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
-            <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
-              Live Preview
-            </span>
-          </div>
-          <div 
-            className="p-4 overflow-auto border-t dark:border-slate-800 bg-white dark:bg-slate-950"
-            style={{ height: previewHeight }}
-          >
-            <iframe
-              key={isDarkMode ? 'dark' : 'light'}
-              srcDoc={getPreviewContent()}
-              title="Preview"
-              className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
-              sandbox="allow-scripts"
-            />
+              <iframe
+                key={isDarkMode ? 'dark' : 'light'}
+                srcDoc={getPreviewContent()}
+                title="Preview"
+                className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
+                sandbox="allow-scripts"
+              />
+            </div>
           </div>
         </div>
       </CardContent>
     </Card>
   );
 };
+

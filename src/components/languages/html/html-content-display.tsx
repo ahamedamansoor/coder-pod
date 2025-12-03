@@ -28,17 +28,32 @@ const HtmlImages = lazy(() => import('@/components/languages/html/topics/html-im
 const HtmlImageAttributes = lazy(() => import('@/components/languages/html/topics/html-image-attributes'));
 const HtmlImageMaps = lazy(() => import('@/components/languages/html/topics/html-image-maps'));
 const HtmlFigureFigcaption = lazy(() => import('@/components/languages/html/topics/html-figure-figcaption'));
-const BlockVsInline = lazy(() => import('@/components/languages/html/topics/html-block-vs-inline'));
 const HtmlBasicTables = lazy(() => import('@/components/languages/html/topics/html-basic-tables'));
 const HtmlTableStructure = lazy(() => import('@/components/languages/html/topics/html-table-structure'));
 const HtmlTableAttributes = lazy(() => import('@/components/languages/html/topics/html-table-attributes'));
 const HtmlTableCaptions = lazy(() => import('@/components/languages/html/topics/html-table-captions'));
-const HtmlSemanticElements = lazy(() => import('@/components/languages/html/topics/html-semantic-elements'));
 const CharacterEntities = lazy(() => import('@/components/languages/html/topics/html-character-entities'));
 const HtmlForms = lazy(() => import('@/components/languages/html/topics/html-forms'));
 const FormInputTypes = lazy(() => import('@/components/languages/html/topics/html-form-input-types'));
 const FormAttributes = lazy(() => import('@/components/languages/html/topics/html-form-attributes'));
 const FormValidation = lazy(() => import('@/components/languages/html/topics/html-form-validation'));
+const HtmlFormBasics = lazy(() => import('@/components/languages/html/topics/html-form-basics'));
+const HtmlTextInputs = lazy(() => import('@/components/languages/html/topics/html-text-inputs'));
+const HtmlNumberInputs = lazy(() => import('@/components/languages/html/topics/html-number-inputs'));
+const HtmlDateTimeInputs = lazy(() => import('@/components/languages/html/topics/html-date-time-inputs'));
+const HtmlChoiceInputs = lazy(() => import('@/components/languages/html/topics/html-choice-inputs'));
+const HtmlFileInputs = lazy(() => import('@/components/languages/html/topics/html-file-inputs'));
+const HtmlFormButtons = lazy(() => import('@/components/languages/html/topics/html-form-buttons'));
+const HtmlFormStructure = lazy(() => import('@/components/languages/html/topics/html-form-structure'));
+const HtmlTextarea = lazy(() => import('@/components/languages/html/topics/html-textarea'));
+const HtmlButtonsDetailed = lazy(() => import('@/components/languages/html/topics/html-buttons'));
+const HtmlFieldsetLegends = lazy(() => import('@/components/languages/html/topics/html-fieldset-legend'));
+const HtmlBlockInlineNew = lazy(() => import('@/components/languages/html/topics/html-block-inline-new'));
+const HtmlDivSpan = lazy(() => import('@/components/languages/html/topics/html-div-span'));
+const BlockVsInline = lazy(() => import('@/components/languages/html/topics/html-block-vs-inline'));
+const HtmlSemanticStructure = lazy(() => import('@/components/languages/html/topics/html-semantic-structure'));
+const HtmlSemanticElementsNew = lazy(() => import('@/components/languages/html/topics/html-semantic-elements-new'));
+const HtmlSemanticElementsOld = lazy(() => import('@/components/languages/html/topics/html-semantic-elements'));
 const HtmlAudioElement = lazy(() => import('@/components/languages/html/topics/html-audio-element'));
 const HtmlVideoElement = lazy(() => import('@/components/languages/html/topics/html-video-element'));
 const HtmlVideoSubtitles = lazy(() => import('@/components/languages/html/topics/html-video-subtitles'));
@@ -64,19 +79,65 @@ const MicrodataStructuredData = lazy(() => import('@/components/languages/html/t
 const HtmlBestPractices = lazy(() => import('@/components/languages/html/topics/html-best-practices'));
 const GlobalAttributes = lazy(() => import('@/components/languages/html/topics/html-global-attributes'));
 const DatalistElement = lazy(() => import('@/components/languages/html/topics/html-datalist-element'));
+const HtmlDataList = lazy(() => import('@/components/languages/html/topics/html-datalist'));
 const OutputElement = lazy(() => import('@/components/languages/html/topics/html-output-element'));
 const Accessibility = lazy(() => import('@/components/languages/html/topics/html-accessibility'));
 const HtmlInterviewQuestions = lazy(() => import('@/components/languages/html/topics/html-interview-questions'));
 const Html5LatestFeatures = lazy(() => import('@/components/languages/html/topics/html5-latest-features'));
 const MetaTagsAndSeo = lazy(() => import('@/components/languages/html/topics/html-meta-tags-and-seo'));
 const HtmlDocumentMetadata = lazy(() => import('@/components/languages/html/topics/html-document-metadata'));
-const WebComponentsIntroduction = lazy(() => import('@/components/languages/html/topics/html-web-components-introduction'));
+// Removed old import - using HtmlWebComponentsIntro instead
 const CustomElements = lazy(() => import('@/components/languages/html/topics/html-custom-elements'));
 const ShadowDom = lazy(() => import('@/components/languages/html/topics/html-shadow-dom'));
 const HtmlTemplates = lazy(() => import('@/components/languages/html/topics/html-templates'));
 const HtmlSlots = lazy(() => import('@/components/languages/html/topics/html-slots'));
 const HtmlLifecycleCallbacks = lazy(() => import('@/components/languages/html/topics/html-lifecycle-callbacks'));
 const HtmlAttributesProperties = lazy(() => import('@/components/languages/html/topics/html-attributes-properties'));
+
+// NEW SEMANTIC ELEMENT COMPONENTS
+const HtmlHeaderElement = lazy(() => import('@/components/languages/html/topics/html-header-element'));
+const HtmlFooterElement = lazy(() => import('@/components/languages/html/topics/html-footer-element'));
+const HtmlNavElement = lazy(() => import('@/components/languages/html/topics/html-nav-element'));
+// placeholders for yet to be created
+const HtmlMainElement = lazy(() => import('@/components/languages/html/topics/html-main-element'));
+const HtmlArticleElement = lazy(() => import('@/components/languages/html/topics/html-article-element'));
+const HtmlSectionElement = lazy(() => import('@/components/languages/html/topics/html-section-element'));
+const HtmlAsideElement = lazy(() => import('@/components/languages/html/topics/html-aside-element'));
+const HtmlAddressElement = lazy(() => import('@/components/languages/html/topics/html-address-element'));
+const HtmlTimeElement = lazy(() => import('@/components/languages/html/topics/html-time-element'));
+
+// DOCUMENT HEAD COMPONENTS
+const HtmlHeadElement = lazy(() => import('@/components/languages/html/topics/html-head-element'));
+const HtmlTitleElement = lazy(() => import('@/components/languages/html/topics/html-title-element'));
+const HtmlCharsetElement = lazy(() => import('@/components/languages/html/topics/html-charset-element'));
+const HtmlViewportMeta = lazy(() => import('@/components/languages/html/topics/html-viewport-meta'));
+const HtmlMetaDescriptionElement = lazy(() => import('@/components/languages/html/topics/html-meta-description'));
+const HtmlMetaKeywordsElement = lazy(() => import('@/components/languages/html/topics/html-meta-keywords'));
+const HtmlLinkElement = lazy(() => import('@/components/languages/html/topics/html-link-element'));
+const HtmlFavicon = lazy(() => import('@/components/languages/html/topics/html-favicon'));
+const HtmlBaseElement = lazy(() => import('@/components/languages/html/topics/html-base-element'));
+
+// SCRIPTS & STYLES COMPONENTS
+const HtmlScriptElement = lazy(() => import('@/components/languages/html/topics/html-script-element'));
+const HtmlScriptPlacement = lazy(() => import('@/components/languages/html/topics/html-script-placement'));
+const HtmlStyleElement = lazy(() => import('@/components/languages/html/topics/html-style-element'));
+const HtmlNoscriptElement = lazy(() => import('@/components/languages/html/topics/html-noscript-element'));
+
+// INTERACTIVE ELEMENTS
+const HtmlDraggable = lazy(() => import('@/components/languages/html/topics/html-draggable'));
+
+// MODERN HTML FEATURES
+const HtmlLazyLoadingAdvanced = lazy(() => import('@/components/languages/html/topics/html-lazy-loading-advanced'));
+const HtmlContainerQueries = lazy(() => import('@/components/languages/html/topics/html-container-queries'));
+
+// IFRAMES & EMBEDDING
+const HtmlIframeElement = lazy(() => import('@/components/languages/html/topics/html-iframe-element'));
+const HtmlIframeSecurity = lazy(() => import('@/components/languages/html/topics/html-iframe-security'));
+const HtmlEmbedObject = lazy(() => import('@/components/languages/html/topics/html-embed-object'));
+const HtmlTemplateElement = lazy(() => import('@/components/languages/html/topics/html-template-element'));
+
+// WEB COMPONENTS
+const HtmlWebComponentsIntro = lazy(() => import('@/components/languages/html/topics/html-web-components-intro'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -87,6 +148,13 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-syntax': HtmlSyntax,
   'html-comments': HtmlComments,
   
+  // 1.5 SEMANTIC STRUCTURE
+  'block-inline': HtmlBlockInlineNew,
+  'block-vs-inline': BlockVsInline,
+  'semantic-structure': HtmlSemanticStructure,
+  'semantic-elements': HtmlSemanticElementsOld,
+  'semantic-html': HtmlSemanticElementsNew,
+
   // 2. TEXT & CONTENT
   'html-elements-and-tags': HtmlElementsAndTags,
   'html-headings': HtmlHeadingsAndParagraphs,
@@ -94,6 +162,23 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'character-entities': CharacterEntities,
   'html-attributes': HtmlAttributes,
   'global-attributes': GlobalAttributes,
+  
+  // 1.5 SEMANTIC STRUCTURE
+  'block-inline': HtmlBlockInlineNew,
+  'block-vs-inline': BlockVsInline,
+  'div-span': HtmlDivSpan,
+  'div': HtmlDivSpan,
+  'span': HtmlDivSpan,
+  'semantic-structure': HtmlSemanticStructure,
+  'semantic-elements': HtmlSemanticElementsOld,
+  'header-footer': HtmlHeaderElement,
+  'nav-element': HtmlNavElement,
+  'main-element': HtmlMainElement,
+  'article-element': HtmlArticleElement,
+  'section-element': HtmlSectionElement,
+  'aside-element': HtmlAsideElement,
+  'address-element': HtmlAddressElement,
+  'time-element': HtmlTimeElement,
   
   // 3. LINKS & NAVIGATION
   'html-links': HtmlLinks,
@@ -123,68 +208,82 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'table-captions': HtmlTableCaptions,
 
   // 6. FORMS
-  'html-forms': HtmlForms,
-  'input-text': FormInputTypes,
-  'input-numbers': FormInputTypes,
-  'input-dates': FormInputTypes,
-  'input-choice': FormInputTypes,
-  'input-files': FormInputTypes,
-  'input-advanced': FormInputTypes,
-  'textarea-element': HtmlForms,
-  'button-element': HtmlForms,
-  'label-element': HtmlForms,
-  'fieldset-legend': HtmlForms,
+  'form-basics': HtmlFormBasics,
+  'html-forms': HtmlFormBasics,
+  'text-inputs': HtmlTextInputs,
+  'number-inputs': HtmlNumberInputs,
+  'date-time-inputs': HtmlDateTimeInputs,
+  'choice-inputs': HtmlChoiceInputs,
+  'file-inputs': HtmlFileInputs,
+  'form-buttons': HtmlFormButtons,
+  'form-structure': HtmlFormStructure,
+  'form-validation': FormValidation,
+  'input-text': HtmlTextInputs,
+  'input-numbers': HtmlNumberInputs,
+  'input-dates': HtmlDateTimeInputs,
+  'input-choice': HtmlChoiceInputs,
+  'input-files': HtmlFileInputs,
+  'input-advanced': HtmlDateTimeInputs,
+  'textarea': HtmlTextarea,
+  'textarea-element': HtmlTextarea,
+  'buttons': HtmlButtonsDetailed,
+  'button-element': HtmlButtonsDetailed,
+  'fieldset-legend': HtmlFieldsetLegends,
+  'fieldset-legends': HtmlFieldsetLegends,
+  'label-element': HtmlFormStructure,
+  'datalist': HtmlDataList,
+  'output-element': OutputElement,
+  'progress-and-meter': ProgressAndMeter,
   'form-attributes': FormAttributes,
   'form-validation': FormValidation,
   'datalist-element': DatalistElement,
-  'output-element': OutputElement,
   'progress-meter': ProgressAndMeter,
   
   // 7. SEMANTIC HTML
   'block-vs-inline': BlockVsInline,
-  'div-span': BlockVsInline,
-  'semantic-elements': HtmlSemanticElements,
-  'header-footer': HtmlSemanticElements,
-  'nav-element': HtmlSemanticElements,
-  'main-element': HtmlSemanticElements,
-  'article-element': HtmlSemanticElements,
-  'section-element': HtmlSemanticElements,
-  'aside-element': HtmlSemanticElements,
-  'address-element': HtmlSemanticElements,
-  'time-element': HtmlSemanticElements,
+  'div-span': HtmlDivSpan,
+  'semantic-elements': HtmlSemanticElementsOld,
+  'header-footer': HtmlHeaderElement,
+  'nav-element': HtmlNavElement,
+  'main-element': HtmlMainElement,
+  'article-element': HtmlArticleElement,
+  'section-element': HtmlSectionElement,
+  'aside-element': HtmlAsideElement,
+  'address-element': HtmlAddressElement,
+  'time-element': HtmlTimeElement,
   
   // 8. DOCUMENT HEAD
-  'head-element': HtmlDocumentMetadata,
-  'title-element': HtmlDocumentMetadata,
-  'meta-charset': HtmlDocumentMetadata,
-  'meta-viewport': HtmlDocumentMetadata,
-  'meta-description': MetaTagsAndSeo,
-  'meta-keywords': MetaTagsAndSeo,
-  'link-element': HtmlDocumentMetadata,
-  'base-element': HtmlDocumentMetadata,
-  'favicon': HtmlDocumentMetadata,
+  'head-element': HtmlHeadElement,
+  'title-element': HtmlTitleElement,
+  'meta-charset': HtmlCharsetElement,
+  'meta-viewport': HtmlViewportMeta,
+  'meta-description': HtmlMetaDescriptionElement,
+  'meta-keywords': HtmlMetaKeywordsElement,
+  'link-element': HtmlLinkElement,
+  'base-element': HtmlBaseElement,
+  'favicon': HtmlFavicon,
   
   // 9. SCRIPTS & STYLES
-  'script-element': HtmlDocumentMetadata,
-  'script-placement': HtmlDocumentMetadata,
-  'style-element': HtmlDocumentMetadata,
-  'noscript-element': HtmlDocumentMetadata,
+  'script-element': HtmlScriptElement,
+  'script-placement': HtmlScriptPlacement,
+  'style-element': HtmlStyleElement,
+  'noscript-element': HtmlNoscriptElement,
   
   // 10. INTERACTIVE ELEMENTS
   'details-summary': DetailsAndSummary,
   'dialog-element': DialogElement,
   'content-editable': ContentEditable,
   'data-attributes': DataAttributes,
-  'draggable': ContentEditable,
+  'draggable': HtmlDraggable,
   
   // 11. IFRAMES & EMBEDDING
-  'iframe-element': Iframes,
-  'iframe-security': Iframes,
-  'embed-object': Iframes,
-  'template-element': HtmlTemplates,
+  'iframe-element': HtmlIframeElement,
+  'iframe-security': HtmlIframeSecurity,
+  'embed-object': HtmlEmbedObject,
+  'template-element': HtmlTemplateElement,
   
   // 12. WEB COMPONENTS
-  'web-components-intro': WebComponentsIntroduction,
+  'web-components-intro': HtmlWebComponentsIntro,
   'custom-elements': CustomElements,
   'shadow-dom': ShadowDom,
   'html-templates': HtmlTemplates,
@@ -229,8 +328,8 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'dialog-modal': DialogElement,
   'popover-api': PopoverApi,
   'declarative-shadow-dom': ShadowDom,
-  'lazy-loading-advanced': LazyLoading,
-  'container-queries': Html5LatestFeatures,
+  'lazy-loading-advanced': HtmlLazyLoadingAdvanced,
+  'container-queries': HtmlContainerQueries,
   
   // 18. BEST PRACTICES
   'html-validation': HtmlBestPractices,
@@ -246,7 +345,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   
   // LEGACY MAPPINGS (for backwards compatibility)
   'html-headings-and-paragraphs': HtmlHeadingsAndParagraphs,
-  'html-semantic-elements': HtmlSemanticElements,
+  'html-semantic-elements': HtmlSemanticElementsNew,
   'iframes': Iframes,
   'svg-and-canvas': SvgBasics,
   'html5-apis': Html5Apis,
@@ -262,7 +361,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'html-best-practices': HtmlBestPractices,
   'web-storage-api': WebStorageApi,
   'drag-and-drop-api': DragAndDropApi,
-  'web-components-introduction': WebComponentsIntroduction,
+  'web-components-introduction': HtmlWebComponentsIntro,
   'web-component-templates': HtmlTemplates,
   'web-component-slots': HtmlSlots,
   'web-component-attributes': HtmlAttributesProperties,
