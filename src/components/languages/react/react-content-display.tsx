@@ -119,7 +119,7 @@ export function ReactContentDisplay({
       
       <Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (
-          <CustomTopicComponent onOpenEditor={handleOpenEditor} />
+          React.createElement(CustomTopicComponent as any, { onOpenEditor: handleOpenEditor })
         ) : null}
       </Suspense>
     </GenericContentDisplay>

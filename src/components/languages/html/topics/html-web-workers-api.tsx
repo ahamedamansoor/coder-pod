@@ -8,7 +8,7 @@ import { Cpu, Zap, AlertCircle, CheckCircle, Info, Activity } from 'lucide-react
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlWebWorkersApiProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlWebWorkersApi({ onOpenWebPlayground }: HtmlWebWorkersApiProps) {
@@ -314,7 +314,7 @@ export default function HtmlWebWorkersApi({ onOpenWebPlayground }: HtmlWebWorker
     <div className="space-y-8">
       <PageHeader
         icon={Cpu}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="Web Workers API"
         description="Run JavaScript in background threads without blocking the UI"
         colorTheme="amber"

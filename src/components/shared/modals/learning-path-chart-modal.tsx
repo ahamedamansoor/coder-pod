@@ -19,7 +19,7 @@ export const LearningPathChartModal = ({
   isOpen,
   onClose,
   language,
-  completedTopics = new Set(),
+  completedTopics = new Set<string>(),
   showProgress = true,
 }: LearningPathChartModalProps) => {
   // Check if this is a role-based roadmap (reference only, not learnable)

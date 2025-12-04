@@ -95,7 +95,7 @@ export const GenericLearningPath = ({
   const { completedTopics: rawCompletedTopics, handleToggleComplete, isProgressLoading } = contextHooks;
   
   // Ensure completedTopics is always a Set (defensive programming)
-  const completedTopics = React.useMemo(() => {
+  const completedTopics = React.useMemo<Set<string>>(() => {
     if (rawCompletedTopics instanceof Set) {
       return rawCompletedTopics;
     }

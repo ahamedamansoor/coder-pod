@@ -8,7 +8,7 @@ import { Move, Hand, GripVertical, CheckCircle, AlertCircle, Info } from 'lucide
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlDragAndDropApiProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlDragAndDropApi({ onOpenWebPlayground }: HtmlDragAndDropApiProps) {
@@ -619,7 +619,7 @@ export default function HtmlDragAndDropApi({ onOpenWebPlayground }: HtmlDragAndD
     <div className="space-y-8">
       <PageHeader
         icon={Move}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="Drag and Drop API"
         description="Create interactive drag-and-drop interfaces with native HTML5"
         colorTheme="purple"

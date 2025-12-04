@@ -8,7 +8,7 @@ import { History, ArrowLeft, ArrowRight, AlertCircle, CheckCircle, Info } from '
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlHistoryApiProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlHistoryApi({ onOpenWebPlayground }: HtmlHistoryApiProps) {
@@ -282,10 +282,10 @@ export default function HtmlHistoryApi({ onOpenWebPlayground }: HtmlHistoryApiPr
     <div className="space-y-8">
       <PageHeader
         icon={History}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="History API"
         description="Manipulate browser history and create single-page app navigation"
-        colorTheme="indigo"
+        colorTheme="blue"
       />
 
       {/* What is History API */}
@@ -357,7 +357,8 @@ export default function HtmlHistoryApi({ onOpenWebPlayground }: HtmlHistoryApiPr
           <FrontendCodePreview
             html={basicExample}
             title="Single-Page Navigation with History API"
-            colorTheme="indigo"
+            colorTheme="purple"
+            onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>

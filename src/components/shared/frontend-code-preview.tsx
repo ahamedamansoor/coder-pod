@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Copy, Check, ChevronRight, Eye, Play } from 'lucide-react';
@@ -44,6 +44,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [iframeHeight, setIframeHeight] = useState<number>(500);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   
   // Extract CSS from HTML <style> tags
   const extractCSSFromHTML = (htmlContent: string): string => {
@@ -141,6 +143,46 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     return () => observer.disconnect();
   }, []);
 
+  // Auto-resize iframe to fit content
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe || previewHeight !== 'auto') return;
+
+    const resizeIframe = () => {
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (iframeDoc?.body) {
+          // Get the maximum height to ensure all content is visible
+          const bodyHeight = Math.max(
+            iframeDoc.body.scrollHeight,
+            iframeDoc.body.offsetHeight,
+            iframeDoc.documentElement.scrollHeight,
+            iframeDoc.documentElement.offsetHeight
+          );
+          setIframeHeight(bodyHeight + 80); // Add extra padding for safety
+        }
+      } catch (e) {
+        // Cross-origin or access issues, use default
+        setIframeHeight(500);
+      }
+    };
+
+    // Resize after content loads
+    iframe.addEventListener('load', resizeIframe);
+    
+    // Multiple resize attempts to ensure content (including images/video) is fully rendered
+    const timer1 = setTimeout(resizeIframe, 100);
+    const timer2 = setTimeout(resizeIframe, 300);
+    const timer3 = setTimeout(resizeIframe, 500);
+
+    return () => {
+      iframe.removeEventListener('load', resizeIframe);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, [html, css, js, previewHeight, isDarkMode]);
+
   const handleCopy = async () => {
     const codeToCopy = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
     await navigator.clipboard.writeText(codeToCopy);
@@ -150,9 +192,22 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
   // Create the full HTML document for preview
   const getPreviewContent = () => {
-    // If HTML already contains complete document structure, use it as-is
+    // If HTML already contains complete document structure, inject theme detection
     if (html.trim().toLowerCase().startsWith('<!doctype')) {
-      return html;
+      // Inject dark mode detection script into the HTML
+      const injectedHTML = html.replace(
+        '</head>',
+        `<script>
+          (function() {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (isDark) {
+              document.documentElement.classList.add('dark');
+            }
+          })();
+        </script>
+        </head>`
+      );
+      return injectedHTML;
     }
     
     // Otherwise, build complete document from parts
@@ -180,22 +235,30 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     }
     
     /* Dark mode support for common elements */
-    ${isDarkMode ? `
-    a { color: #60a5fa; }
-    a:visited { color: #a78bfa; }
-    button:not([style*="background"]) {
-      background: #3b82f6;
-      color: white;
+    @media (prefers-color-scheme: dark) {
+      a { color: #60a5fa; }
+      a:visited { color: #a78bfa; }
+      button:not([style*="background"]) {
+        background: #3b82f6;
+        color: white;
+      }
+      input, textarea, select {
+        background: #1e293b;
+        color: #e2e8f0;
+        border-color: #475569;
+      }
     }
-    input, textarea, select {
-      background: #1e293b;
-      color: #e2e8f0;
-      border-color: #475569;
-    }
-    ` : ''}
     
     ${extractedCSS}
   </style>
+  <script>
+    (function() {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
 </head>
 <body>
   ${html}
@@ -287,6 +350,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
 
   const theme = themeColors[colorTheme] ?? themeColors.orange;
+  const panelHeight = previewHeight === 'auto' ? 'auto' : previewHeight;
   const currentCode = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
 
   return (
@@ -314,7 +378,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
       <CardContent className="p-0">
         <div className="flex flex-col gap-4 lg:flex-row">
-          <div className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm">
+          <div
+            className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
+            style={previewHeight === 'auto' ? { maxHeight: '1000px' } : { height: panelHeight, maxHeight: '1000px' }}
+          >
             <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 px-4 py-2 border-b dark:border-slate-800">
               <div className="flex gap-2">
                 {html && (
@@ -376,9 +443,9 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 </button>
               </div>
             </div>
-            <div className="max-h-[600px] overflow-auto">
+            <div className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-950">
               <pre 
-                className="p-5 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100"
+                className="p-5 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-full"
               >
                 <code
                   className="text-[13px] leading-relaxed font-mono"
@@ -393,7 +460,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
             </div>
           </div>
 
-          <div className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm">
+          <div
+            className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
+            style={previewHeight === 'auto' ? { maxHeight: '1000px' } : { height: panelHeight, maxHeight: '1000px' }}
+          >
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
               <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
               <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
@@ -401,15 +471,17 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               </span>
             </div>
             <div 
-              className="h-[600px] p-4 overflow-auto bg-white dark:bg-slate-950"
-              style={previewHeight === 'auto' ? undefined : { height: previewHeight }}
+              className="flex-1 p-4 bg-white dark:bg-slate-950 overflow-auto"
+              style={previewHeight === 'auto' ? { minHeight: '700px', maxHeight: '950px' } : {}}
             >
               {mounted ? (
                 <iframe
+                  ref={iframeRef}
                   key={isDarkMode ? 'dark' : 'light'}
                   srcDoc={getPreviewContent()}
                   title="Preview"
-                  className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
+                  className="w-full border-0 bg-white dark:bg-slate-950 rounded"
+                  style={previewHeight === 'auto' ? { height: `${iframeHeight}px` } : { height: '100%' }}
                   sandbox="allow-scripts"
                 />
               ) : (

@@ -8,7 +8,7 @@ import { Puzzle, Component, Code, Sparkles, CheckCircle, Info, Layers } from 'lu
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlWebComponentsIntroProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlWebComponentsIntro({ onOpenWebPlayground }: HtmlWebComponentsIntroProps) {
@@ -717,7 +717,7 @@ const template =
     <div className="space-y-8">
       <PageHeader
         icon={Puzzle}
-        category="12. Web Components"
+        category="HTML · Web Components"
         title="Web Components Introduction"
         description="Learn the fundamentals of Web Components - the future of reusable web development"
         colorTheme="blue"

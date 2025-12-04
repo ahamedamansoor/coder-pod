@@ -8,7 +8,7 @@ import { FileCode, Copy, Layers, Sparkles, CheckCircle, AlertCircle, Info } from
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlTemplatesProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProps) {
@@ -726,7 +726,7 @@ export default function HtmlTemplates({ onOpenWebPlayground }: HtmlTemplatesProp
     <div className="space-y-8">
       <PageHeader
         icon={Layers}
-        category="12. Web Components"
+        category="HTML · Web Components"
         title="HTML Templates in Web Components"
         description="Learn how to use HTML templates with Web Components for powerful, reusable patterns"
         colorTheme="blue"

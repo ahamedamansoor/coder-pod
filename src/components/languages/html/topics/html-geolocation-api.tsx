@@ -8,7 +8,7 @@ import { MapPin, Navigation, AlertCircle, CheckCircle, Info, Compass } from 'luc
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlGeolocationApiProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlGeolocationApi({ onOpenWebPlayground }: HtmlGeolocationApiProps) {
@@ -693,7 +693,7 @@ export default function HtmlGeolocationApi({ onOpenWebPlayground }: HtmlGeolocat
     <div className="space-y-8">
       <PageHeader
         icon={MapPin}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="Geolocation API"
         description="Access user's geographic location with their permission"
         colorTheme="green"

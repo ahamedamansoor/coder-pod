@@ -12,155 +12,100 @@ interface HtmlAudioElementProps {
 }
 
 const basicAudioExample = {
-  html: `<h2>Audio Element Examples</h2>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Audio Element Examples</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 0; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    h2 { color: #1e293b; text-align: center; margin-bottom: 2rem; }
+    @media (prefers-color-scheme: dark) { h2 { color: #f1f5f9; } }
+    .audio-container { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-left: 4px solid #a78bfa; }
+    @media (prefers-color-scheme: dark) { .audio-container { background: #1e293b; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); } }
+    .audio-container h3 { color: #a78bfa; margin-top: 0; margin-bottom: 1rem; }
+    @media (prefers-color-scheme: dark) { .audio-container h3 { color: #d8b4fe; } }
+    .audio-player { width: 100%; max-width: 500px; border-radius: 8px; background: #f3f4f6; transition: all 0.3s; }
+    @media (prefers-color-scheme: dark) { .audio-player { background: #374151; } }
+    .audio-player:hover { box-shadow: 0 4px 8px rgba(167, 139, 250, 0.2); }
+    .info { color: #6b7280; font-size: 0.9rem; margin: 0.75rem 0 0; padding: 0.75rem 1rem; background: #f0f4ff; border-radius: 6px; border-left: 3px solid #a78bfa; }
+    @media (prefers-color-scheme: dark) { .info { background: #312e81; color: #d8b4fe; border-left-color: #a78bfa; } }
+    .label { color: #475569; font-weight: bold; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    @media (prefers-color-scheme: dark) { .label { color: #cbd5e1; } }
+  </style>
+</head>
+<body>
+<h2>🎵 Audio Element Examples</h2>
 
-<!-- Simple Audio with Controls -->
 <div class="audio-container">
   <h3>1. Basic Audio Player</h3>
   <audio controls class="audio-player">
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
-  <p class="info">↑ Click play to listen</p>
+  <p class="info">✅ Click play to listen to sample audio</p>
 </div>
 
-<!-- Audio with Multiple Formats (Fallback) -->
 <div class="audio-container">
-  <h3>2. Multiple Format Support</h3>
+  <h3>2. Multiple Format Support (Fallback)</h3>
   <audio controls class="audio-player">
-    <source src="https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
     <source src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Example.ogg" type="audio/ogg">
-    <source src="https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav" type="audio/wav">
     Your browser does not support audio playback.
   </audio>
-  <p class="info">Browsers use first supported format</p>
+  <p class="info">🔄 Browser uses first supported format - MP3 or OGG</p>
 </div>
 
-<!-- Audio with Autoplay & Loop -->
 <div class="audio-container">
   <h3>3. Autoplay & Loop</h3>
   <audio controls autoplay loop class="audio-player">
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
   </audio>
-  <p class="info">⚠️ May require user interaction</p>
+  <p class="info">⚠️ May require user interaction in some browsers</p>
 </div>
 
-<!-- Audio with Preload -->
 <div class="audio-container">
   <h3>4. Preload Strategy</h3>
   <div>
-    <p class="label">preload="metadata"</p>
+    <p class="label">preload="metadata" - Load metadata only</p>
     <audio controls preload="metadata" class="audio-player">
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" type="audio/mpeg">
     </audio>
   </div>
-</div>`,
-  css: `* {
-  box-sizing: border-box;
-}
+  <div style="margin-top: 1rem;">
+    <p class="label">preload="auto" - Load entire file</p>
+    <audio controls preload="auto" class="audio-player">
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+</div>
 
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  margin: 0;
-}
+<div class="audio-container">
+  <h3>5. No Controls (Silent Background)</h3>
+  <p class="label" style="margin-bottom: 1rem;">Audio plays without user controls</p>
+  <audio autoplay muted class="audio-player">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+  <p class="info">🔇 Background audio (muted by default)</p>
+</div>
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  }
-}
-
-h2 {
-  color: #1e293b;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  h2 {
-    color: #f1f5f9;
-  }
-}
-
-.audio-container {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #a78bfa;
-}
-
-@media (prefers-color-scheme: dark) {
-  .audio-container {
-    background: #1e293b;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-}
-
-.audio-container h3 {
-  color: #a78bfa;
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .audio-container h3 {
-    color: #d8b4fe;
-  }
-}
-
-.audio-player {
-  width: 100%;
-  max-width: 500px;
-  border-radius: 8px;
-  background: #f3f4f6;
-  transition: all 0.3s;
-}
-
-@media (prefers-color-scheme: dark) {
-  .audio-player {
-    background: #374151;
-  }
-}
-
-.audio-player:hover {
-  box-shadow: 0 4px 8px rgba(167, 139, 250, 0.2);
-}
-
-.info {
-  color: #6b7280;
-  font-size: 0.9rem;
-  margin: 0.75rem 0 0;
-  padding: 0.75rem 1rem;
-  background: #f0f4ff;
-  border-radius: 6px;
-  border-left: 3px solid #a78bfa;
-}
-
-@media (prefers-color-scheme: dark) {
-  .info {
-    background: #312e81;
-    color: #d8b4fe;
-    border-left-color: #a78bfa;
-  }
-}
-
-.label {
-  color: #475569;
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .label {
-    color: #cbd5e1;
-  }
-}`,
-  js: ''
+<script>
+  // Track audio playback
+  document.querySelectorAll('audio').forEach(audio => {
+    audio.addEventListener('play', function() {
+      console.log('Audio playing');
+    });
+    audio.addEventListener('pause', function() {
+      console.log('Audio paused');
+    });
+  });
+</script>
+</body>
+</html>`,
+  css: ``,
 };
 
 export default function HtmlAudioElement({ onOpenWebPlayground }: HtmlAudioElementProps) {

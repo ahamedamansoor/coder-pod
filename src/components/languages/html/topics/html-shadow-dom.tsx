@@ -8,7 +8,7 @@ import { Shield, Eye, EyeOff, Sparkles, CheckCircle, AlertCircle, Info, Lock } f
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlShadowDomProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProps) {
@@ -575,7 +575,7 @@ export default function HtmlShadowDom({ onOpenWebPlayground }: HtmlShadowDomProp
     <div className="space-y-8">
       <PageHeader
         icon={Shield}
-        category="12. Web Components"
+        category="HTML · Web Components"
         title="Shadow DOM"
         description="Learn how to encapsulate styles and markup for true component isolation"
         colorTheme="blue"

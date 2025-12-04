@@ -16,88 +16,113 @@ const mdnFlowerWebm = 'https://interactive-examples.mdn.mozilla.net/media/cc0-vi
 const mdnFlowerOgg = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.ogg';
 
 const basicVideoExample = {
-  html: `<h2>Video Element Examples</h2>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Video Element Examples</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 0; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    h2 { color: #1e293b; text-align: center; margin-bottom: 2rem; }
+    @media (prefers-color-scheme: dark) { h2 { color: #f1f5f9; } }
+    .video-container { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-left: 4px solid #3b82f6; }
+    @media (prefers-color-scheme: dark) { .video-container { background: #1e293b; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); } }
+    .video-container h3 { color: #3b82f6; margin-top: 0; margin-bottom: 1rem; }
+    @media (prefers-color-scheme: dark) { .video-container h3 { color: #60a5fa; } }
+    .video-player { width: 100%; max-width: 600px; height: auto; border-radius: 8px; background: #000; display: block; transition: all 0.3s; }
+    .video-player:hover { box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); }
+    .info { color: #6b7280; font-size: 0.9rem; margin: 0.75rem 0 0; padding: 0.75rem 1rem; background: #eff6ff; border-radius: 6px; border-left: 3px solid #3b82f6; }
+    @media (prefers-color-scheme: dark) { .info { background: #1e3a8a; color: #93c5fd; border-left-color: #3b82f6; } }
+    .label { color: #475569; font-weight: bold; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    @media (prefers-color-scheme: dark) { .label { color: #cbd5e1; } }
+    ::cue { background: rgba(0, 0, 0, 0.8); color: white; }
+  </style>
+</head>
+<body>
+<h2>🎬 Video Element Examples</h2>
 
-<!-- Basic Video Player -->
 <div class="video-container">
-  <h3>1. Simple Video Player</h3>
-  <video width="500" height="300" controls class="video-player" poster="https://picsum.photos/500/300?image=50">
-    <source src="https://commondatastorage.googleapis.com/gtv-videos-library/sample/big_buck_bunny.mp4" type="video/mp4">
+  <h3>1. Basic Video Player</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-  <p class="info">↑ Click play to watch</p>
+  <p class="info">✅ Click play to watch Big Buck Bunny</p>
 </div>
 
-<!-- Video with Multiple Formats -->
 <div class="video-container">
-    <h3>2. Multiple Format Support</h3>
-    <video width="500" height="300" controls class="video-player">
-      <source src="${mdnFlowerMp4}" type="video/mp4">
-      <source src="${mdnFlowerWebm}" type="video/webm">
-      <source src="${mdnFlowerOgg}" type="video/ogg">
+  <h3>2. Multiple Format Support (Fallback)</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
     Your browser does not support video playback.
   </video>
-  <p class="info">Browsers use first supported format</p>
+  <p class="info">🔄 Browser uses first supported format</p>
 </div>
 
-<!-- Video with Subtitles/Captions -->
 <div class="video-container">
-  <h3>3. Video with Subtitles</h3>
-  <video width="500" height="300" controls class="video-player" poster="https://picsum.photos/500/300?image=51">
-    <source src="https://commondatastorage.googleapis.com/gtv-videos-library/sample/big_buck_bunny.mp4" type="video/mp4">
-    <track kind="subtitles" src="subtitles.vtt" srclang="en" label="English">
-    <track kind="captions" src="captions.vtt" srclang="en" label="Captions">
+  <h3>3. Video with Subtitles/Captions</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+    <track kind="subtitles" src="data:text/vtt;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAzLjAwMApTdWJ0aXRsZSBsaW5lIDEKCjAwOjAwOjAzLjAwMCAtLT4gMDA6MDA6MDYuMDAwClN1YnRpdGxlIGxpbmUgMgoKMDA6MDA6MDYuMDAwIC0tPiAwMDowMDowOS4wMDAKU3VidGl0bGUgbGluZSAzCgowMDowMDowOS4wMDAgLS0+IDAwOjAwOjEyLjAwMApTdWJ0aXRsZSBsaW5lIDQK" srclang="en" label="English">
+    <track kind="captions" src="data:text/vtt;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAzLjAwMApbTXVzaWMgcGxheWluZ10KCjAwOjAwOjAzLjAwMCAtLT4gMDA6MDA6MDYuMDAwClsQb3RlICBncmFzcyBydXN0bGluZ10KCjAwOjAwOjA2LjAwMCAtLT4gMDA6MDA6MDkuMDAwCltCaXJkIGNoaXBpbmddCgowMDowMDowOS4wMDAgLS0+IDAwOjAwOjEyLjAwMApbQ2lyY2xlcyBmcm9tIHNvdW5kd2F2ZXNdCg==" srclang="en" label="Captions">
   </video>
-  <p class="info">📝 Captions available (when enabled)</p>
+  <p class="info">📝 Click CC button to enable subtitles/captions</p>
 </div>
 
-<!-- Video with Autoplay & Loop -->
 <div class="video-container">
-  <h3>4. Autoplay & Loop Behavior</h3>
-  <video width="500" height="300" autoplay muted loop class="video-player" poster="https://picsum.photos/500/300?image=52">
-    <source src="https://commondatastorage.googleapis.com/gtv-videos-library/sample/big_buck_bunny.mp4" type="video/mp4">
+  <h3>4. Autoplay & Loop (Muted)</h3>
+  <video width="600" height="360" autoplay muted loop class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" type="video/mp4">
   </video>
-  <p class="info">⚠️ Requires muted attribute for autoplay</p>
+  <p class="info">⚠️ Autoplay requires muted attribute</p>
 </div>
 
-<!-- Video with Preload -->
 <div class="video-container">
-  <h3>5. Preload Strategy</h3>
+  <h3>5. Preload Strategies</h3>
   <div>
-    <p class="label">preload="metadata"</p>
-    <video width="500" height="300" controls preload="metadata" class="video-player" poster="https://picsum.photos/500/300?image=53">
-      <source src="https://commondatastorage.googleapis.com/gtv-videos-library/sample/big_buck_bunny.mp4" type="video/mp4">
+    <p class="label">preload="metadata" - Load only duration info</p>
+    <video width="600" height="360" controls preload="metadata" class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4">
     </video>
   </div>
-</div>`,
-  css: `* {
-  box-sizing: border-box;
-}
+  <div style="margin-top: 1.5rem;">
+    <p class="label">preload="auto" - Load entire video file</p>
+    <video width="600" height="360" controls preload="auto" class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  margin: 0;
-}
+<div class="video-container">
+  <h3>6. Multiple Videos with Subtitles</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+    <track kind="subtitles" src="data:text/vtt;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAyLjAwMApBY3Rpb24gc2NlbmUgc3RhcnRzCgowMDowMDowMi4wMDAgLS0+IDAwOjAwOjA0LjAwMApIaWdoLWludGVuc2l0eSBmaWdodAoKMDA6MDA6MDQuMDAwIC0tPiAwMDowMDowNi4wMDAKRHJhbWF0aWMgbW9tZW50CgowMDowMDowNi4wMDAgLS0+IDAwOjAwOjA4LjAwMApDbG91ZHkgc2t5IHNob3Q=" srclang="en" label="English">
+  </video>
+  <p class="info">🌟 High-quality animation with embedded subtitles</p>
+</div>
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  }
-}
-
-h2 {
-  color: #1e293b;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  h2 {
-    color: #f1f5f9;
-  }
-}
+<script>
+  // Track video events
+  document.querySelectorAll('video').forEach(video => {
+    video.addEventListener('play', function() {
+      console.log('Video playing:', this.src);
+    });
+    video.addEventListener('pause', function() {
+      console.log('Video paused');
+    });
+    video.addEventListener('timeupdate', function() {
+      console.log('Current time:', this.currentTime.toFixed(2) + 's');
+    });
+  });
+</script>
+</body>
+</html>`,
+  css: ``,
 
 .video-container {
   background: white;

@@ -13,7 +13,6 @@ import {
   Lightbulb,
   Brackets,
   AlertCircle,
-  ArrowRight,
   Quote,
   FileCode
 } from 'lucide-react';
@@ -216,68 +215,182 @@ export default function HtmlSyntax({ onOpenWebPlayground }: HtmlSyntaxProps) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tag Types</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 2rem;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
+      }
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      color: white;
+      text-align: center;
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      line-height: 1.6;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      p {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
+    }
+
+    .media-container {
+      margin: 1.5rem 0;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    img {
+      border-radius: 12px;
+      width: 100%;
+      height: auto;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      img {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    video {
+      border-radius: 12px;
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      video {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    input {
+      padding: 1rem;
+      border: 3px solid white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      margin: 1rem auto;
+      display: block;
+      font-size: 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      input {
+        background: #1e293b;
+        color: #e2e8f0;
+        border-color: #475569;
+      }
+    }
+
+    .tip {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+      margin: 1.5rem auto;
+      font-weight: 600;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .tip {
+        background: linear-gradient(135deg, #7f1d1d, #5f2c5c);
+      }
+    }
+
+    .tag-label {
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.5rem;
+      border-radius: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .tag-label {
+        background: rgba(0, 0, 0, 0.3);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>HTML Tag Types</h1>
-  <p>This paragraph uses paired tags.</p>
+  <h1>🏷️ HTML Tag Types</h1>
   
-  <img src="https://via.placeholder.com/300x150/667eea/ffffff?text=Self-Closing" alt="Demo">
-  <br>
-  <input type="text" placeholder="Type here...">
-  
+  <h2>Paired Tags Example</h2>
+  <p>This paragraph uses <strong>paired tags</strong>. It has an opening &lt;p&gt; and closing &lt;/p&gt; tag. Content goes between them!</p>
+
+  <h2>Self-Closing Image Tag</h2>
+  <div class="media-container">
+    <img src="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg" alt="Self-closing tag demonstration - Beautiful landscape photo">
+    <div class="tag-label">&lt;img src="..." alt="..."&gt; ← No closing tag!</div>
+  </div>
+
+  <h2>Self-Closing Video Tag</h2>
+  <div class="media-container">
+    <video controls width="100%">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
+      Your browser doesn't support HTML5 video. Please upgrade to a modern browser.
+    </video>
+    <div class="tag-label">&lt;video&gt; with paired tags for controls</div>
+  </div>
+
+  <h2>Form Input - Self-Closing</h2>
+  <input type="text" placeholder="Type here... This is a self-closing &lt;input&gt; tag!">
+
   <div class="tip">
-    <strong>Remember:</strong> Always close paired tags!
+    <strong>💡 Remember:</strong><br>
+    Paired tags need closing. Self-closing tags don't!
   </div>
 </body>
 </html>`}
-            css={`body {
-  font-family: system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
-  margin: 0;
-}
-
-h1 {
-  color: white;
-  text-align: center;
-  font-size: 2rem;
-}
-
-p {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin: 1rem 0;
-}
-
-img {
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  margin: 1rem auto;
-  display: block;
-}
-
-input {
-  padding: 1rem;
-  border: 3px solid white;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  margin: 1rem auto;
-  display: block;
-}
-
-.tip {
-  background: linear-gradient(135deg, #f093fb, #f5576c);
-  color: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  text-align: center;
-}`}
             colorTheme="blue"
-            previewHeight="450px"
+            previewHeight="850px"
             onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>

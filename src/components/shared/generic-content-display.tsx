@@ -45,7 +45,7 @@ function useLanguageContext(language: Language) {
         case 'rxjs': return useRxjs();
         case 'playwright': return usePlaywright();
         case 'nextjs': return useNextjsContext();
-        default: return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
+        default: return { completedTopics: new Set<string>(), handleToggleComplete: () => {}, isProgressLoading: true };
     }
 }
 

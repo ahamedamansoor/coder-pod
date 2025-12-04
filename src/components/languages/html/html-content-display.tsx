@@ -64,16 +64,22 @@ const ResponsiveImages = lazy(() => import('@/components/languages/html/topics/h
 const DialogElement = lazy(() => import('@/components/languages/html/topics/html-dialog-element'));
 const PopoverApi = lazy(() => import('@/components/languages/html/topics/html-popover-api'));
 const LazyLoading = lazy(() => import('@/components/languages/html/topics/html-lazy-loading'));
+const ResourcePreloading = lazy(() => import('@/components/languages/html/topics/html-resource-preloading'));
+const AsyncDefer = lazy(() => import('@/components/languages/html/topics/html-async-defer'));
+const CriticalRenderingPath = lazy(() => import('@/components/languages/html/topics/html-critical-rendering-path'));
 const DataAttributes = lazy(() => import('@/components/languages/html/topics/html-data-attributes'));
 const ContentVisibility = lazy(() => import('@/components/languages/html/topics/html-content-visibility'));
 const ContentEditable = lazy(() => import('@/components/languages/html/topics/html-content-editable'));
 const ProgressAndMeter = lazy(() => import('@/components/languages/html/topics/html-progress-and-meter'));
 const WebStorageApi = lazy(() => import('@/components/languages/html/topics/html-web-storage-api'));
+const LocalStorageApi = lazy(() => import('@/components/languages/html/topics/html-local-storage'));
+const SessionStorageApi = lazy(() => import('@/components/languages/html/topics/html-session-storage'));
 const FetchApi = lazy(() => import('@/components/languages/html/topics/html-fetch-api'));
 const GeolocationApi = lazy(() => import('@/components/languages/html/topics/html-geolocation-api'));
 const DragAndDropApi = lazy(() => import('@/components/languages/html/topics/html-drag-and-drop-api'));
 const Html5Apis = lazy(() => import('@/components/languages/html/topics/html5-apis'));
 const WebWorkersApi = lazy(() => import('@/components/languages/html/topics/html-web-workers-api'));
+const HistoryApi = lazy(() => import('@/components/languages/html/topics/html-history-api'));
 const DetailsAndSummary = lazy(() => import('@/components/languages/html/topics/html-details-and-summary').then(m => ({ default: m.default })));
 const MicrodataStructuredData = lazy(() => import('@/components/languages/html/topics/html-microdata-structured-data'));
 const HtmlBestPractices = lazy(() => import('@/components/languages/html/topics/html-best-practices'));
@@ -138,6 +144,37 @@ const HtmlTemplateElement = lazy(() => import('@/components/languages/html/topic
 
 // WEB COMPONENTS
 const HtmlWebComponentsIntro = lazy(() => import('@/components/languages/html/topics/html-web-components-intro'));
+
+// SEO & METADATA COMPONENTS
+const HtmlSeoBasics = lazy(() => import('@/components/languages/html/topics/html-seo-basics'));
+const HtmlMetaTagsSeo = lazy(() => import('@/components/languages/html/topics/html-meta-tags-seo'));
+const HtmlOpenGraph = lazy(() => import('@/components/languages/html/topics/html-open-graph'));
+const HtmlTwitterCards = lazy(() => import('@/components/languages/html/topics/html-twitter-cards'));
+const HtmlStructuredData = lazy(() => import('@/components/languages/html/topics/html-structured-data'));
+const HtmlCanonicalUrls = lazy(() => import('@/components/languages/html/topics/html-canonical-urls'));
+const HtmlHreflang = lazy(() => import('@/components/languages/html/topics/html-hreflang'));
+
+// ACCESSIBILITY COMPONENTS
+const HtmlAccessibilityBasics = lazy(() => import('@/components/languages/html/topics/html-accessibility-basics'));
+const HtmlAriaBasics = lazy(() => import('@/components/languages/html/topics/html-aria-basics'));
+const HtmlAriaRoles = lazy(() => import('@/components/languages/html/topics/html-aria-roles'));
+const HtmlAriaStates = lazy(() => import('@/components/languages/html/topics/html-aria-states'));
+const HtmlKeyboardNavigation = lazy(() => import('@/components/languages/html/topics/html-keyboard-navigation'));
+const HtmlSkipLinks = lazy(() => import('@/components/languages/html/topics/html-skip-links'));
+const HtmlAltText = lazy(() => import('@/components/languages/html/topics/html-alt-text'));
+const HtmlAccessibleForms = lazy(() => import('@/components/languages/html/topics/html-accessible-forms'));
+
+// BEST PRACTICES COMPONENTS
+const HtmlValidation = lazy(() => import('@/components/languages/html/topics/html-validation'));
+const HtmlSemanticMarkupPractices = lazy(() => import('@/components/languages/html/topics/html-semantic-markup-practices'));
+const HtmlCodeOrganization = lazy(() => import('@/components/languages/html/topics/html-code-organization'));
+const HtmlNamingConventions = lazy(() => import('@/components/languages/html/topics/html-naming-conventions'));
+const HtmlDocumentation = lazy(() => import('@/components/languages/html/topics/html-documentation'));
+const HtmlCrossBrowser = lazy(() => import('@/components/languages/html/topics/html-cross-browser'));
+const HtmlDebugging = lazy(() => import('@/components/languages/html/topics/html-debugging'));
+const HtmlProgressiveEnhancement = lazy(() => import('@/components/languages/html/topics/html-progressive-enhancement'));
+const HtmlMinification = lazy(() => import('@/components/languages/html/topics/html-minification'));
+const HtmlSecurity = lazy(() => import('@/components/languages/html/topics/html-security'));
 
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -270,39 +307,40 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'web-component-lifecycle': HtmlLifecycleCallbacks,
   
   // 13. HTML5 APIS
-  'local-storage': WebStorageApi,
-  'session-storage': WebStorageApi,
+  'local-storage': LocalStorageApi,
+  'session-storage': SessionStorageApi,
   'geolocation-api': GeolocationApi,
   'drag-drop-api': DragAndDropApi,
   'web-workers': WebWorkersApi,
-  'history-api': Html5Apis,
+  'history-api': HistoryApi,
   'fetch-api': FetchApi,
   
   // 14. PERFORMANCE
   'lazy-loading': LazyLoading,
-  'preloading': LazyLoading,
-  'async-defer': LazyLoading,
-  'critical-rendering': LazyLoading,
+  'preloading': ResourcePreloading,
+  'resource-preloading': ResourcePreloading,
+  'async-defer': AsyncDefer,
+  'critical-rendering': CriticalRenderingPath,
+  'critical-rendering-path': CriticalRenderingPath,
   
   // 15. SEO & METADATA
-  'seo-basics': MetaTagsAndSeo,
-  'meta-tags-seo': MetaTagsAndSeo,
-  'open-graph': MetaTagsAndSeo,
-  'twitter-cards': MetaTagsAndSeo,
-  'structured-data': MicrodataStructuredData,
-  'canonical-urls': MetaTagsAndSeo,
-  'hreflang': MetaTagsAndSeo,
+  'seo-basics': HtmlSeoBasics,
+  'meta-tags-seo': HtmlMetaTagsSeo,
+  'open-graph': HtmlOpenGraph,
+  'twitter-cards': HtmlTwitterCards,
+  'structured-data': HtmlStructuredData,
+  'canonical-urls': HtmlCanonicalUrls,
+  'hreflang': HtmlHreflang,
   
   // 16. ACCESSIBILITY
-  'accessibility-basics': Accessibility,
-  'aria-basics': Accessibility,
-  'aria-roles': Accessibility,
-  'aria-properties': Accessibility,
-  'aria-states': Accessibility,
-  'keyboard-navigation': Accessibility,
-  'skip-links': Accessibility,
-  'alt-text': Accessibility,
-  'accessible-forms': Accessibility,
+  'accessibility-basics': HtmlAccessibilityBasics,
+  'aria-basics': HtmlAriaBasics,
+  'aria-roles': HtmlAriaRoles,
+  'aria-states': HtmlAriaStates,
+  'keyboard-navigation': HtmlKeyboardNavigation,
+  'skip-links': HtmlSkipLinks,
+  'alt-text': HtmlAltText,
+  'accessible-forms': HtmlAccessibleForms,
   
   // 17. MODERN HTML FEATURES
   'dialog-modal': DialogElement,
@@ -312,16 +350,16 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'container-queries': HtmlContainerQueries,
   
   // 18. BEST PRACTICES
-  'html-validation': HtmlBestPractices,
-  'semantic-markup': HtmlBestPractices,
-  'html-naming': HtmlBestPractices,
-  'code-organization': HtmlBestPractices,
-  'html-comments-docs': HtmlComments,
-  'cross-browser': HtmlBestPractices,
-  'html-debugging': HtmlBestPractices,
-  'progressive-enhancement': HtmlBestPractices,
-  'html-minification': HtmlBestPractices,
-  'html-security': HtmlBestPractices,
+  'html-validation': HtmlValidation,
+  'semantic-markup': HtmlSemanticMarkupPractices,
+  'html-naming': HtmlNamingConventions,
+  'code-organization': HtmlCodeOrganization,
+  'html-comments-docs': HtmlDocumentation,
+  'cross-browser': HtmlCrossBrowser,
+  'html-debugging': HtmlDebugging,
+  'progressive-enhancement': HtmlProgressiveEnhancement,
+  'html-minification': HtmlMinification,
+  'html-security': HtmlSecurity,
   
   // LEGACY MAPPINGS (for backwards compatibility)
   'html-headings-and-paragraphs': HtmlHeadingsAndParagraphs,

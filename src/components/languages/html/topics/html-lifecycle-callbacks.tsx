@@ -8,7 +8,7 @@ import { RefreshCw, PlayCircle, StopCircle, Edit, Sparkles, CheckCircle, Info, A
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlLifecycleCallbacksProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLifecycleCallbacksProps) {
@@ -896,7 +896,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
     <div className="space-y-8">
       <PageHeader
         icon={RefreshCw}
-        category="12. Web Components"
+        category="HTML · Web Components"
         title="Lifecycle Callbacks"
         description="Learn how to react to element changes throughout its lifetime with lifecycle methods"
         colorTheme="blue"

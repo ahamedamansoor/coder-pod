@@ -15,7 +15,7 @@ import { z } from 'genkit';
 import { AIProvider } from '@/types/ai-providers';
 
 const ConductInterviewInputSchema = z.object({
-  provider: z.enum(['gemini', 'openai', 'anthropic', 'perplexity', 'groq', 'mistral', 'cohere']).describe('The AI provider to use.'),
+  provider: z.enum(['gemini', 'openai', 'anthropic', 'perplexity', 'groq', 'mistral', 'cohere', 'huggingface', 'together', 'deepseek', 'meta']).describe('The AI provider to use.'),
   apiKey: z.string().describe('The API key for authentication.'),
   language: z.string().describe('The topic for the interview (e.g., JavaScript, HR Round, Logical Reasoning).'),
   question: z.string().describe('The interview question that was asked. If empty, generate the first question.'),

@@ -8,7 +8,7 @@ import { Clock, Database, RefreshCw, CheckCircle, AlertCircle, Info, XCircle } f
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlSessionStorageProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlSessionStorage({ onOpenWebPlayground }: HtmlSessionStorageProps) {
@@ -809,7 +809,7 @@ export default function HtmlSessionStorage({ onOpenWebPlayground }: HtmlSessionS
     <div className="space-y-8">
       <PageHeader
         icon={Clock}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="sessionStorage API"
         description="Learn how to store temporary data that persists only for the browser session"
         colorTheme="amber"
@@ -914,6 +914,7 @@ export default function HtmlSessionStorage({ onOpenWebPlayground }: HtmlSessionS
             html={basicExample}
             title="sessionStorage Demo"
             colorTheme="amber"
+            onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>
@@ -936,6 +937,7 @@ export default function HtmlSessionStorage({ onOpenWebPlayground }: HtmlSessionS
             html={multiStepFormExample}
             title="Multi-Step Form with Progress Saving"
             colorTheme="pink"
+            onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>

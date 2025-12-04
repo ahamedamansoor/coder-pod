@@ -8,7 +8,7 @@ import { FileCode, Copy, Layers, Code, CheckCircle, AlertCircle, Info, Sparkles 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlTemplateElementProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlTemplateElement({ onOpenWebPlayground }: HtmlTemplateElementProps) {
@@ -816,7 +816,7 @@ export default function HtmlTemplateElement({ onOpenWebPlayground }: HtmlTemplat
     <div className="space-y-8">
       <PageHeader
         icon={FileCode}
-        category="12. Web Components"
+        category="HTML · Web Components"
         title="Template Element"
         description="Learn how to use the HTML template element for reusable content patterns"
         colorTheme="blue"

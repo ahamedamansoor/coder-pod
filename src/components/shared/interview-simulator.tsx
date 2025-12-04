@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mic, MicOff, Volume2, Loader2, Sparkles, Wand2, Send, CornerDownLeft, MessageSquare, Phone, PhoneOff, StopCircle, ArrowRight, Search, X } from 'lucide-react';
+import { Mic, MicOff, Volume2, Loader2, Sparkles, Wand2, Send, CornerDownLeft, MessageSquare, Phone, PhoneOff, StopCircle, ArrowRight, Search, X, Code } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';

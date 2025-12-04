@@ -8,7 +8,7 @@ import { ExternalLink, Frame, Map, Code, CheckCircle, AlertCircle, Info } from '
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlIframeElementProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeElementProps) {
@@ -572,8 +572,8 @@ export default function HtmlIframeElement({ onOpenWebPlayground }: HtmlIframeEle
     <div className="space-y-8">
       <PageHeader
         icon={Frame}
-        category="11. Iframes & Embedding"
-        title="Iframe Element"
+        category="HTML · Iframes & Embedding"
+        title="What is the Iframe Element?"
         description="Learn how to embed external content within your web pages using iframes"
         colorTheme="blue"
       />

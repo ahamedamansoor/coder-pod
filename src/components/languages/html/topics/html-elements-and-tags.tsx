@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import {
-  Code, Play, Layers, Box, Type, List, Image,
+  Code, Layers, Box, Type, List, Image,
   FormInput, Table, Network, Accessibility,
   AlertCircle, CheckCircle, XCircle, Info
 } from 'lucide-react';
@@ -507,36 +506,90 @@ button:hover { background: #2563eb; }`,
           <FrontendCodePreview
             title="Basic HTML Elements"
             description="See how opening tags, content, and closing tags work together"
-            html={`<h1>Welcome to HTML!</h1>
-<p>This is a <strong>paragraph</strong> with some <em>emphasis</em>.</p>
-<p>Elements can be <span style="color: blue;">styled</span> and <span style="background: yellow; padding: 2px 4px;">highlighted</span>.</p>`}
-            css={`body {
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
-}
+            html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic HTML Elements</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-h1 {
-  color: #3b82f6;
-  border-bottom: 3px solid #3b82f6;
-  padding-bottom: 0.5rem;
-}
+    body {
+      font-family: system-ui, sans-serif;
+      line-height: 1.6;
+      padding: 2rem;
+      background: #f9fafb;
+      color: #1f2937;
+    }
 
-p {
-  margin: 1rem 0;
-}
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+    }
 
-strong {
-  color: #dc2626;
-  font-weight: 700;
-}
+    h1 {
+      color: #3b82f6;
+      border-bottom: 3px solid #3b82f6;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
 
-em {
-  color: #059669;
-  font-style: italic;
-}`}
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #60a5fa;
+        border-bottom-color: #60a5fa;
+      }
+    }
+
+    p {
+      margin: 1rem 0;
+    }
+
+    strong {
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      strong {
+        color: #fca5a5;
+      }
+    }
+
+    em {
+      color: #059669;
+      font-style: italic;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      em {
+        color: #6ee7b7;
+      }
+    }
+
+    span {
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to HTML!</h1>
+  <p>This is a <strong>paragraph</strong> with some <em>emphasis</em>.</p>
+  <p>Elements can be <span style="color: blue;">styled</span> and <span style="background: yellow; padding: 2px 4px;">highlighted</span>.</p>
+</body>
+</html>`}
             colorTheme="blue"
             icon={Code}
             previewHeight="250px"
+            onOpenPlayground={onOpenWebPlayground}
           />
 
           {/* Void Elements */}
@@ -1094,6 +1147,53 @@ em {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog Post - HTML Elements</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+    @media (prefers-color-scheme: dark) { body { color: #e2e8f0; background: #1e293b; } }
+    header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    header h1 { font-size: 2rem; margin-bottom: 1rem; }
+    nav { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; font-weight: 500; }
+    nav a:hover { opacity: 0.8; text-decoration: underline; }
+    main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+    article { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    @media (prefers-color-scheme: dark) { article { background: #334155; box-shadow: 0 2px 8px rgba(0,0,0,0.3); } }
+    article h2 { color: #667eea; font-size: 2rem; margin-bottom: 1rem; }
+    @media (prefers-color-scheme: dark) { article h2 { color: #93a5fa; } }
+    article h3 { color: #764ba2; font-size: 1.5rem; margin: 1.5rem 0 1rem; }
+    @media (prefers-color-scheme: dark) { article h3 { color: #c084fc; } }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f0f0; }
+    @media (prefers-color-scheme: dark) { .meta { color: #94a3b8; border-bottom-color: #475569; } }
+    article p { margin-bottom: 1rem; }
+    figure { margin: 2rem 0; }
+    figure img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    figcaption { text-align: center; font-style: italic; color: #666; margin-top: 0.5rem; font-size: 0.9rem; }
+    @media (prefers-color-scheme: dark) { figcaption { color: #94a3b8; } }
+    ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.5rem; }
+    blockquote { background: #f9f9f9; border-left: 4px solid #667eea; padding: 1rem 1.5rem; margin: 2rem 0; font-style: italic; color: #555; }
+    @media (prefers-color-scheme: dark) { blockquote { background: #1e293b; border-left-color: #93a5fa; color: #cbd5e1; } }
+    cite { display: block; text-align: right; margin-top: 0.5rem; font-size: 0.9rem; color: #888; }
+    @media (prefers-color-scheme: dark) { cite { color: #94a3b8; } }
+    article a { color: #667eea; text-decoration: none; font-weight: 500; }
+    @media (prefers-color-scheme: dark) { article a { color: #93a5fa; } }
+    article a:hover { text-decoration: underline; }
+    aside { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: fit-content; }
+    @media (prefers-color-scheme: dark) { aside { background: #334155; box-shadow: 0 2px 8px rgba(0,0,0,0.3); } }
+    aside h3 { color: #764ba2; margin-bottom: 1rem; }
+    @media (prefers-color-scheme: dark) { aside h3 { color: #c084fc; } }
+    aside ul { list-style: none; margin-left: 0; }
+    aside li { margin-bottom: 0.75rem; }
+    aside a { color: #667eea; text-decoration: none; }
+    @media (prefers-color-scheme: dark) { aside a { color: #93a5fa; } }
+    aside a:hover { text-decoration: underline; }
+    footer { background: #2d3748; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+    @media (prefers-color-scheme: dark) { footer { background: #0c1425; } }
+    footer p { margin-bottom: 0.5rem; }
+    small { font-size: 0.85rem; opacity: 0.8; }
+    @media (max-width: 768px) { main { grid-template-columns: 1fr; } header h1 { font-size: 1.5rem; } nav { gap: 1rem; } }
+  </style>
 </head>
 <body>
   <header>
@@ -1109,32 +1209,18 @@ em {
   <main>
     <article>
       <h2>Understanding HTML Elements</h2>
-      
-      <p class="meta">
-        <time datetime="2025-01-15">January 15, 2025</time> • 
-        <span>By John Doe</span>
-      </p>
-
-      <p>
-        <strong>HTML elements</strong> are the foundation of web development. 
-        They provide <em>structure</em> and <em>meaning</em> to your content.
-      </p>
-
+      <p class="meta"><time datetime="2025-01-15">January 15, 2025</time> • <span>By John Doe</span></p>
+      <p><strong>HTML elements</strong> are the foundation of web development. They provide <em>structure</em> and <em>meaning</em> to your content.</p>
       <figure>
-        <img src="https://via.placeholder.com/600x300/3b82f6/ffffff?text=HTML+Elements" 
-             alt="HTML Elements Diagram" 
-             width="600" 
-             height="300" />
-        <figcaption>Figure 1: HTML document structure visualization</figcaption>
+        <img src="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg" alt="Professional web development image" width="600" height="300" />
+        <figcaption>Figure 1: Professional web development</figcaption>
       </figure>
-
       <h3>Key Concepts</h3>
       <ul>
         <li><strong>Semantic HTML</strong> - Using meaningful tags</li>
         <li><strong>Accessibility</strong> - Making content available to all</li>
         <li><strong>SEO</strong> - Helping search engines understand content</li>
       </ul>
-
       <h3>Common Elements</h3>
       <ol>
         <li>Headings (h1-h6) for titles and sections</li>
@@ -1143,23 +1229,11 @@ em {
         <li>Links (a) for navigation</li>
         <li>Images (img) for visuals</li>
       </ol>
-
       <blockquote>
-        "The best way to learn HTML is by building real projects and 
-        experimenting with different elements."
+        "The best way to learn HTML is by building real projects and experimenting with different elements."
         <cite>- Web Developer's Handbook</cite>
       </blockquote>
-
-      <p>
-        For more information, visit 
-        <a href="https://developer.mozilla.org" target="_blank" rel="noopener">
-          MDN Web Docs
-        </a> 
-        or check out 
-        <a href="https://www.w3.org" target="_blank" rel="noopener">
-          W3C Standards
-        </a>.
-      </p>
+      <p>For more information, visit <a href="https://developer.mozilla.org" target="_blank" rel="noopener">MDN Web Docs</a> or check out <a href="https://www.w3.org" target="_blank" rel="noopener">W3C Standards</a>.</p>
     </article>
 
     <aside>
@@ -1174,285 +1248,13 @@ em {
 
   <footer>
     <p>&copy; 2025 Web Dev Blog. All rights reserved.</p>
-    <p>
-      <small>Built with HTML, CSS, and JavaScript</small>
-    </p>
+    <p><small>Built with HTML, CSS, and JavaScript</small></p>
   </footer>
 </body>
 </html>`}
-            css={`* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background: #f5f5f5;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* Dark mode body */
-html.dark body {
-  color: #e2e8f0;
-  background: #1e293b;
-}
-
-/* Header */
-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-header h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 1rem;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.3s;
-}
-
-nav a:hover {
-  opacity: 0.8;
-  text-decoration: underline;
-}
-
-/* Main Content */
-main {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-}
-
-article {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-html.dark article {
-  background: #334155;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-article h2 {
-  color: #667eea;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  transition: color 0.3s;
-}
-
-html.dark article h2 {
-  color: #93a5fa;
-}
-
-article h3 {
-  color: #764ba2;
-  font-size: 1.5rem;
-  margin: 1.5rem 0 1rem;
-  transition: color 0.3s;
-}
-
-html.dark article h3 {
-  color: #c084fc;
-}
-
-.meta {
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
-  transition: color 0.3s, border-color 0.3s;
-}
-
-html.dark .meta {
-  color: #94a3b8;
-  border-bottom-color: #475569;
-}
-
-article p {
-  margin-bottom: 1rem;
-}
-
-figure {
-  margin: 2rem 0;
-}
-
-figure img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-figcaption {
-  text-align: center;
-  font-style: italic;
-  color: #666;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  transition: color 0.3s;
-}
-
-html.dark figcaption {
-  color: #94a3b8;
-}
-
-ul, ol {
-  margin-left: 2rem;
-  margin-bottom: 1rem;
-}
-
-li {
-  margin-bottom: 0.5rem;
-}
-
-blockquote {
-  background: #f9f9f9;
-  border-left: 4px solid #667eea;
-  padding: 1rem 1.5rem;
-  margin: 2rem 0;
-  font-style: italic;
-  color: #555;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-}
-
-html.dark blockquote {
-  background: #1e293b;
-  border-left-color: #93a5fa;
-  color: #cbd5e1;
-}
-
-cite {
-  display: block;
-  text-align: right;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #888;
-  transition: color 0.3s;
-}
-
-html.dark cite {
-  color: #94a3b8;
-}
-
-article a {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-html.dark article a {
-  color: #93a5fa;
-}
-
-article a:hover {
-  text-decoration: underline;
-}
-
-/* Aside */
-aside {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  height: fit-content;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-html.dark aside {
-  background: #334155;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-aside h3 {
-  color: #764ba2;
-  margin-bottom: 1rem;
-  transition: color 0.3s;
-}
-
-html.dark aside h3 {
-  color: #c084fc;
-}
-
-aside ul {
-  list-style: none;
-  margin-left: 0;
-}
-
-aside li {
-  margin-bottom: 0.75rem;
-}
-
-aside a {
-  color: #667eea;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-html.dark aside a {
-  color: #93a5fa;
-}
-
-aside a:hover {
-  text-decoration: underline;
-}
-
-/* Footer */
-footer {
-  background: #2d3748;
-  color: white;
-  text-align: center;
-  padding: 2rem;
-  margin-top: 2rem;
-}
-
-footer p {
-  margin-bottom: 0.5rem;
-}
-
-small {
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  main {
-    grid-template-columns: 1fr;
-  }
-  
-  nav {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}`}
-            colorTheme="purple"
-            icon={Code}
-            previewHeight="500px"
+            colorTheme="blue"
+            previewHeight="850px"
+            onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>

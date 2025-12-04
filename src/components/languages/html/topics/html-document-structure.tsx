@@ -10,12 +10,10 @@ import {
   FileCode, 
   Sparkles, 
   Layers, 
-  ArrowRight, 
-  CheckCircle2, 
+  CheckCircle2,
   Lightbulb,
   Code2,
   FileType,
-  Globe,
   Eye,
   Zap
 } from 'lucide-react';
@@ -114,48 +112,50 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My First Page</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
+      }
+    }
+
+    h1 {
+      color: white;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    p {
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem 2rem;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 <body>
   <h1>Hello, World!</h1>
   <p>This is my first properly structured HTML page.</p>
 </body>
 </html>`}
-            css={`body {
-  font-family: system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  margin: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
-  }
-}
-
-h1 {
-  color: white;
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-p {
-  color: white;
-  font-size: 1.2rem;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem 2rem;
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}`}
             colorTheme="blue"
             previewHeight="350px"
             onOpenPlayground={onOpenWebPlayground}
@@ -288,6 +288,86 @@ p {
   <meta name="description" content="Master HTML document structure with easy-to-follow examples and interactive tutorials.">
   <meta name="author" content="Your Name">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #4c1d95 0%, #7f1d1d 100%);
+      }
+    }
+
+    main {
+      background: white;
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      main {
+        background: #1e293b;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    h1 {
+      color: #f5576c;
+      margin-bottom: 1.5rem;
+      font-size: 2.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #fda4af;
+      }
+    }
+
+    p {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      p {
+        color: #cbd5e1;
+      }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      color: #475569;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      background: #fef2f2;
+      border-radius: 8px;
+      border-left: 4px solid #f5576c;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      li {
+        color: #e2e8f0;
+        background: #334155;
+        border-left-color: #fda4af;
+      }
+    }
+  </style>
 </head>
 <body>
   <main>
@@ -303,84 +383,6 @@ p {
   </main>
 </body>
 </html>`}
-            css={`body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  margin: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #4c1d95 0%, #7f1d1d 100%);
-  }
-}
-
-main {
-  background: white;
-  padding: 3rem;
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
-}
-
-@media (prefers-color-scheme: dark) {
-  main {
-    background: #1e293b;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  }
-}
-
-h1 {
-  color: #f5576c;
-  margin-bottom: 1.5rem;
-  font-size: 2.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  h1 {
-    color: #fda4af;
-  }
-}
-
-p {
-  color: #64748b;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  p {
-    color: #cbd5e1;
-  }
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  color: #475569;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  background: #fef2f2;
-  border-radius: 8px;
-  border-left: 4px solid #f5576c;
-}
-
-@media (prefers-color-scheme: dark) {
-  li {
-    color: #e2e8f0;
-    background: #334155;
-    border-left-color: #fda4af;
-  }
-}`}
             colorTheme="blue"
             previewHeight="450px"
             onOpenPlayground={onOpenWebPlayground}
@@ -455,6 +457,140 @@ li {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semantic HTML Example</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1.5rem 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.3s;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+    }
+
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    article {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      article {
+        background: #1e293b;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    h1 {
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #a78bfa;
+      }
+    }
+
+    h2 {
+      color: #764ba2;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h2 {
+        color: #c4b5fd;
+      }
+    }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: #475569;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      p {
+        color: #cbd5e1;
+      }
+    }
+
+    ul {
+      list-style-position: inside;
+      color: #64748b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      ul {
+        color: #94a3b8;
+      }
+    }
+
+    li {
+      padding: 0.5rem 0;
+    }
+
+    footer {
+      background: #1e293b;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      footer {
+        background: #0c1425;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -491,138 +627,6 @@ li {
   </footer>
 </body>
 </html>`}
-            css={`* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #f8fafc;
-  color: #1e293b;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #0f172a;
-    color: #e2e8f0;
-  }
-}
-
-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1.5rem 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-nav {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  transition: opacity 0.3s;
-}
-
-nav a:hover {
-  opacity: 0.8;
-}
-
-main {
-  flex: 1;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-}
-
-article {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-@media (prefers-color-scheme: dark) {
-  article {
-    background: #1e293b;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-}
-
-h1 {
-  color: #667eea;
-  margin-bottom: 1rem;
-  font-size: 2.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  h1 {
-    color: #a78bfa;
-  }
-}
-
-h2 {
-  color: #764ba2;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  h2 {
-    color: #c4b5fd;
-  }
-}
-
-p {
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  color: #475569;
-}
-
-@media (prefers-color-scheme: dark) {
-  p {
-    color: #cbd5e1;
-  }
-}
-
-ul {
-  list-style-position: inside;
-  color: #64748b;
-}
-
-@media (prefers-color-scheme: dark) {
-  ul {
-    color: #94a3b8;
-  }
-}
-
-li {
-  padding: 0.5rem 0;
-}
-
-footer {
-  background: #1e293b;
-  color: white;
-  padding: 2rem;
-  text-align: center;
-  margin-top: auto;
-}
-
-@media (prefers-color-scheme: dark) {
-  footer {
-    background: #0c1425;
-  }
-}`}
             colorTheme="blue"
             previewHeight="500px"
             onOpenPlayground={onOpenWebPlayground}

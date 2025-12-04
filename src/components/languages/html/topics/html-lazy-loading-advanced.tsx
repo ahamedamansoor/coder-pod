@@ -454,7 +454,7 @@ export default function HtmlLazyLoadingAdvanced() {
     <div className="space-y-8">
       <PageHeader
         icon={Gauge}
-        category="14. Performance"
+        category="HTML · Performance"
         title="Advanced Lazy Loading"
         description="Master modern lazy loading techniques with Intersection Observer API for optimal performance"
         colorTheme="purple"

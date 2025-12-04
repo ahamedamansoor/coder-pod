@@ -8,7 +8,7 @@ import { Shield, Lock, AlertTriangle, CheckCircle, AlertCircle, ShieldAlert, Eye
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlIframeSecurityProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlIframeSecurity({ onOpenWebPlayground }: HtmlIframeSecurityProps) {
@@ -804,8 +804,8 @@ export default function HtmlIframeSecurity({ onOpenWebPlayground }: HtmlIframeSe
     <div className="space-y-8">
       <PageHeader
         icon={Shield}
-        category="11. Iframes & Embedding"
-        title="Iframe Security"
+        category="HTML · Iframes & Embedding"
+        title="What is Iframe Security?"
         description="Learn how to safely use iframes and protect against security vulnerabilities"
         colorTheme="blue"
       />

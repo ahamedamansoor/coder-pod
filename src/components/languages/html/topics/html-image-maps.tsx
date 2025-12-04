@@ -56,235 +56,106 @@ const shapesImageUrl = svgToDataUrl(`
 `);
 
 const basicExample = {
-  html: `<h2>Image Maps Demo</h2>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Maps Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    h2 { color: #1e293b; text-align: center; margin-bottom: 2rem; font-size: 2rem; }
+    @media (prefers-color-scheme: dark) { h2 { color: #f1f5f9; } }
+    .container { max-width: 800px; margin: 0 auto; }
+    .section { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-left: 4px solid #3b82f6; }
+    @media (prefers-color-scheme: dark) { .section { background: #1e293b; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); border-left-color: #60a5fa; } }
+    .section h3 { color: #3b82f6; margin-top: 0; margin-bottom: 1rem; }
+    @media (prefers-color-scheme: dark) { .section h3 { color: #60a5fa; } }
+    .map-img { width: 100%; height: auto; border-radius: 8px; cursor: pointer; display: block; border: 2px solid #3b82f6; transition: all 0.3s; }
+    .map-img:hover { box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3); transform: scale(1.01); }
+    area { cursor: pointer; transition: all 0.2s; }
+    .info { color: #475569; font-size: 0.9rem; margin: 0.75rem 0 0; padding: 0.75rem 1rem; background: #eff6ff; border-radius: 6px; border: 2px solid #bfdbfe; font-weight: 500; }
+    @media (prefers-color-scheme: dark) { .info { background: #1e3a8a; color: #93c5fd; border-color: #3b82f6; } }
+  </style>
+</head>
+<body>
+<h2>Interactive Image Maps Demo</h2>
 
 <div class="container">
-  <!-- Shape Types Example -->
   <div class="section">
-    <h3>1. Interactive Solar System</h3>
+    <h3>🌍 Interactive Solar System</h3>
     <img 
-      src="${solarSystemImageUrl}" 
+      src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Cdefs%3E%3CradialGradient id='space' cx='50%25' cy='50%25' r='70%25'%3E%3Cstop offset='0%25' stop-color='%230b1220'/%3E%3Cstop offset='100%25' stop-color='%23020617'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='600' height='400' fill='url(%23space)'/%3E%3Ccircle cx='300' cy='200' r='60' fill='%23facc15'/%3E%3Ccircle cx='370' cy='200' r='14' fill='%23f97316'/%3E%3Ccircle cx='430' cy='200' r='18' fill='%233b82f6'/%3E%3Ccircle cx='490' cy='200' r='16' fill='%2322c55e'/%3E%3Cg stroke='%2394a3b8' stroke-width='1' fill='none'%3E%3Ccircle cx='300' cy='200' r='110'/%3E%3Ccircle cx='300' cy='200' r='150'/%3E%3Ccircle cx='300' cy='200' r='190'/%3E%3C/g%3E%3C/svg%3E"
       usemap="#solar-system"
       alt="Click on planets to learn more"
       class="map-img"
     />
     <map name="solar-system">
-      <!-- Circle: Sun (center) -->
-      <area 
-        shape="circle" 
-        coords="300,200,50" 
-        href="#sun" 
-        alt="Sun"
-        title="Click to learn about the Sun"
-      />
-      <!-- Circle: Mercury -->
-      <area 
-        shape="circle" 
-        coords="370,200,15" 
-        href="#mercury" 
-        alt="Mercury"
-        title="Mercury - Closest to Sun"
-      />
-      <!-- Circle: Venus -->
-      <area 
-        shape="circle" 
-        coords="430,200,20" 
-        href="#venus" 
-        alt="Venus"
-        title="Venus - Morning Star"
-      />
-      <!-- Circle: Earth -->
-      <area 
-        shape="circle" 
-        coords="490,200,18" 
-        href="#earth" 
-        alt="Earth"
-        title="Earth - Our Home"
-      />
+      <area shape="circle" coords="300,200,50" onclick="alert('☀️ The Sun - Our Star'); return false;" alt="Sun" title="Click to learn about the Sun"/>
+      <area shape="circle" coords="370,200,15" onclick="alert('🔴 Mercury - Closest planet to the Sun and smallest'); return false;" alt="Mercury" title="Mercury - Closest to Sun"/>
+      <area shape="circle" coords="430,200,20" onclick="alert('🟡 Venus - The hottest planet in our solar system'); return false;" alt="Venus" title="Venus - Morning Star"/>
+      <area shape="circle" coords="490,200,18" onclick="alert('🌍 Earth - Our home planet with life'); return false;" alt="Earth" title="Earth - Our Home"/>
     </map>
-    <p class="info">✓ Click on the planets</p>
+    <p class="info">✅ Click on the Sun and planets to learn about them</p>
   </div>
 
-  <!-- Rectangle Shapes -->
   <div class="section">
-    <h3>2. Product Image Map</h3>
+    <h3>💻 Product Image Map</h3>
     <img 
-      src="${laptopImageUrl}" 
+      src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='300'%3E%3Crect x='0' y='0' width='500' height='300' rx='30' fill='%230f172a'/%3E%3Crect x='40' y='40' width='420' height='200' rx='16' fill='%23152238' stroke='%2338bdf8' stroke-width='4'/%3E%3Crect x='60' y='220' width='380' height='30' rx='6' fill='%23334155'/%3E%3Ccircle cx='90' cy='235' r='6' fill='%2338bdf8'/%3E%3Crect x='120' y='225' width='260' height='10' rx='5' fill='%2364748b'/%3E%3Crect x='400' y='225' width='20' height='10' rx='3' fill='%2394a3b8'/%3E%3C/svg%3E"
       usemap="#laptop"
       alt="Click on laptop features"
       class="map-img"
     />
     <map name="laptop">
-      <!-- Screen area -->
-      <area 
-        shape="rect" 
-        coords="100,50,400,200" 
-        href="#screen" 
-        alt="Display"
-        title="High Resolution Display"
-      />
-      <!-- Keyboard area -->
-      <area 
-        shape="rect" 
-        coords="100,210,400,280" 
-        href="#keyboard" 
-        alt="Keyboard"
-        title="Mechanical Keyboard"
-      />
-      <!-- Trackpad area -->
-      <area 
-        shape="rect" 
-        coords="200,260,300,295" 
-        href="#trackpad" 
-        alt="Trackpad"
-        title="Precision Trackpad"
-      />
+      <area shape="rect" coords="100,50,400,200" onclick="alert('📺 4K High Resolution Display - Crystal clear visuals with 120Hz refresh rate'); return false;" alt="Display" title="High Resolution Display"/>
+      <area shape="rect" coords="100,210,400,280" onclick="alert('⌨️ Mechanical Keyboard - Premium RGB switches with tactile feedback'); return false;" alt="Keyboard" title="Mechanical Keyboard"/>
+      <area shape="rect" coords="200,260,300,295" onclick="alert('🖱️ Precision Trackpad - Smooth glass surface with gesture support'); return false;" alt="Trackpad" title="Precision Trackpad"/>
     </map>
-    <p class="info">✓ Click on different parts</p>
+    <p class="info">✅ Click on the Display, Keyboard, and Trackpad to see features</p>
   </div>
 
-  <!-- Polygon Shapes -->
   <div class="section">
-    <h3>3. Triangle Navigation Map</h3>
+    <h3>🎨 Interactive Shapes Navigation</h3>
     <img 
-      src="${shapesImageUrl}" 
+      src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23ecfccb'/%3E%3Cpolygon points='200,30 320,170 80,170' fill='%237c3aed' opacity='0.8'/%3E%3Cpolygon points='50,195 140,285 50,285' fill='%230ea5e9'/%3E%3Cpolygon points='260,195 350,285 260,285' fill='%23f97316'/%3E%3Ccircle cx='200' cy='200' r='30' fill='%2322c55e' opacity='0.6'/%3E%3C/svg%3E"
       usemap="#shapes"
       alt="Click on shapes for navigation"
       class="map-img"
     />
     <map name="shapes">
-      <!-- Top triangle -->
-      <area 
-        shape="poly" 
-        coords="200,20,320,150,80,150" 
-        href="#top" 
-        alt="Top Triangle"
-        title="Go to Top"
-      />
-      <!-- Bottom left triangle -->
-      <area 
-        shape="poly" 
-        coords="50,150,140,280,50,280" 
-        href="#left" 
-        alt="Bottom Left"
-        title="Go to Left"
-      />
-      <!-- Bottom right triangle -->
-      <area 
-        shape="poly" 
-        coords="260,150,350,280,260,280" 
-        href="#right" 
-        alt="Bottom Right"
-        title="Go to Right"
-      />
+      <area shape="poly" coords="200,20,320,150,80,150" onclick="alert('🔝 Purple Triangle - Pointing to Top'); return false;" alt="Top Triangle" title="Go to Top"/>
+      <area shape="poly" coords="50,150,140,280,50,280" onclick="alert('⬅️ Cyan Triangle - Left navigation'); return false;" alt="Bottom Left" title="Go to Left"/>
+      <area shape="poly" coords="260,150,350,280,260,280" onclick="alert('➡️ Orange Triangle - Right navigation'); return false;" alt="Bottom Right" title="Go to Right"/>
+      <area shape="circle" coords="200,200,30" onclick="alert('🟢 Green Circle - Center point'); return false;" alt="Center" title="Center Circle"/>
     </map>
-    <p class="info">✓ Click on the triangles</p>
+    <p class="info">✅ Click on the shapes (triangles and circle) to navigate</p>
   </div>
-</div>`,
-  css: `body {
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  margin: 0;
-}
+</div>
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  }
-}
-
-h2 {
-  color: #1e293b;
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  h2 {
-    color: #f1f5f9;
-  }
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.section {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #3b82f6;
-}
-
-@media (prefers-color-scheme: dark) {
-  .section {
-    background: #1e293b;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border-left-color: #60a5fa;
-  }
-}
-
-.section h3 {
-  color: #3b82f6;
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .section h3 {
-    color: #60a5fa;
-  }
-}
-
-.map-img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  cursor: pointer;
-  display: block;
-  border: 2px solid #3b82f6;
-  transition: all 0.3s;
-}
-
-.map-img:hover {
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
-  transform: scale(1.01);
-}
-
-area {
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-area:hover {
-  opacity: 0.8;
-}
-
-.info {
-  color: #475569;
-  font-size: 0.9rem;
-  margin: 0.75rem 0 0;
-  padding: 0.75rem 1rem;
-  background: #eff6ff;
-  border-radius: 6px;
-  border: 2px solid #bfdbfe;
-  font-weight: 500;
-}
-
-@media (prefers-color-scheme: dark) {
-  .info {
-    background: #1e3a8a;
-    color: #93c5fd;
-    border-color: #3b82f6;
-  }
-}`,
-  js: ''
+<script>
+  // Add visual feedback on hover
+  document.querySelectorAll('area').forEach(area => {
+    area.addEventListener('mouseenter', function() {
+      const img = document.querySelector('img[usemap="#' + this.closest('map').name + '"]');
+      if (img) img.style.opacity = '0.9';
+    });
+    area.addEventListener('mouseleave', function() {
+      const img = document.querySelector('img[usemap="#' + this.closest('map').name + '"]');
+      if (img) img.style.opacity = '1';
+    });
+  });
+</script>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
+
+// Previous content was using template variables that weren't being substituted
+// Now using complete HTML documents with embedded SVG data URLs and interactive handlers
 
 export default function HtmlImageMaps({ onOpenWebPlayground }: HtmlImageMapsProps) {
   return (

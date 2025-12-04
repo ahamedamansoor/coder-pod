@@ -8,7 +8,7 @@ import { FileVideo, Image as ImageIcon, FileAudio, Code, CheckCircle, AlertCircl
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlEmbedObjectProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlEmbedObject({ onOpenWebPlayground }: HtmlEmbedObjectProps) {
@@ -439,8 +439,8 @@ export default function HtmlEmbedObject({ onOpenWebPlayground }: HtmlEmbedObject
     <div className="space-y-8">
       <PageHeader
         icon={FileVideo}
-        category="11. Iframes & Embedding"
-        title="Embed & Object Elements"
+        category="HTML · Iframes & Embedding"
+        title="What are Embed & Object Elements?"
         description="Learn how to embed external content using embed and object elements"
         colorTheme="blue"
       />

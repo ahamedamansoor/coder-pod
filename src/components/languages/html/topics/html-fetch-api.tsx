@@ -8,7 +8,7 @@ import { Network, Download, Upload, AlertCircle, CheckCircle, Info, Zap } from '
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlFetchApiProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlFetchApi({ onOpenWebPlayground }: HtmlFetchApiProps) {
@@ -612,7 +612,7 @@ export default function HtmlFetchApi({ onOpenWebPlayground }: HtmlFetchApiProps)
     <div className="space-y-8">
       <PageHeader
         icon={Network}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="Fetch API"
         description="Modern, promise-based API for making HTTP requests"
         colorTheme="pink"

@@ -8,7 +8,7 @@ import { Database, Save, Trash2, CheckCircle, AlertCircle, Info, HardDrive } fro
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface HtmlLocalStorageProps {
-  onOpenWebPlayground?: (content: { html: string; css?: string; js?: string }) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function HtmlLocalStorage({ onOpenWebPlayground }: HtmlLocalStorageProps) {
@@ -660,7 +660,7 @@ export default function HtmlLocalStorage({ onOpenWebPlayground }: HtmlLocalStora
     <div className="space-y-8">
       <PageHeader
         icon={Database}
-        category="9. HTML APIs"
+        category="HTML · APIs"
         title="localStorage API"
         description="Learn how to store data persistently in the browser using localStorage"
         colorTheme="blue"
@@ -736,6 +736,7 @@ export default function HtmlLocalStorage({ onOpenWebPlayground }: HtmlLocalStora
             html={basicExample}
             title="localStorage CRUD Operations"
             colorTheme="blue"
+            onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>
@@ -758,6 +759,7 @@ export default function HtmlLocalStorage({ onOpenWebPlayground }: HtmlLocalStora
             html={storageEventsExample}
             title="Storage Event Listener"
             colorTheme="green"
+            onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>
