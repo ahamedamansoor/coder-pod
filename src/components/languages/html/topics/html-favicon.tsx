@@ -30,28 +30,59 @@ const faviconExample = {
   <link rel="manifest" href="/manifest.json">
   
   <title>Favicon Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin: 0; text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); } }
+    h1 { color: #0369a1; font-size: 2rem; margin: 0 0 0.5rem 0; }
+    @media (prefers-color-scheme: dark) { h1 { color: #7dd3fc; } }
+    p { color: #475569; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+  </style>
 </head>
 <body>
   <h1>🎨 Favicons</h1>
   <p>The small icon in your browser tab!</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1;font-size:2rem}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="favicon-demo">
-  <div class="browser-bar">
-    <div class="tab">
-      <span class="favicon">🌐</span>
-      <span class="title">My Website</span>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .favicon-demo { font-family: sans-serif; text-align: center; padding: 1rem; }
+    .browser-bar { background: #e2e8f0; border-radius: 8px 8px 0 0; padding: 0.75rem; max-width: 300px; margin: 0 auto; }
+    @media (prefers-color-scheme: dark) { .browser-bar { background: #334155; } }
+    .tab { display: inline-flex; align-items: center; gap: 0.5rem; background: white; padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-size: 0.9rem; }
+    @media (prefers-color-scheme: dark) { .tab { background: #1e293b; } }
+    .favicon { font-size: 1rem; }
+    .title { color: #1e293b; font-weight: 500; }
+    @media (prefers-color-scheme: dark) { .title { color: #f1f5f9; } }
+    .arrow { margin-top: 1rem; color: #0369a1; font-weight: 600; font-size: 1.1rem; }
+    @media (prefers-color-scheme: dark) { .arrow { color: #7dd3fc; } }
+  </style>
+</head>
+<body>
+  <div class="favicon-demo">
+    <div class="browser-bar">
+      <div class="tab">
+        <span class="favicon">🌐</span>
+        <span class="title">My Website</span>
+      </div>
     </div>
+    <div class="arrow">↑ Favicon appears here</div>
   </div>
-  <div class="arrow">↑ Favicon appears here</div>
-</div>`,
-  css: `.favicon-demo{font-family:sans-serif;text-align:center;padding:1rem}.browser-bar{background:#e2e8f0;border-radius:8px 8px 0 0;padding:.5rem;max-width:300px;margin:0 auto}.tab{display:inline-flex;align-items:center;gap:.5rem;background:#fff;padding:.5rem 1rem;border-radius:6px 6px 0 0;font-size:.9rem}.favicon{font-size:1rem}.title{color:#1e293b}.arrow{margin-top:1rem;color:#3b82f6;font-weight:600}@media(prefers-color-scheme:dark){.browser-bar{background:#334155}.tab{background:#1e293b}.title{color:#f1f5f9}.arrow{color:#60a5fa}}`,
-  js: ``,
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlFavicon({ onOpenWebPlayground }: HtmlFaviconProps) {

@@ -15,6 +15,7 @@ const headPlacementExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Script in Head</title>
   
   <!-- Script in head with defer -->
@@ -30,8 +31,45 @@ const headPlacementExample = {
   <p id="msg">Loading...</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}#msg{color:#059669;font-weight:600}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}#msg{color:#6ee7b7}}`,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+#msg {
+  color: #059669;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  #msg {
+    color: #6ee7b7;
+  }
+}`,
+  js: ``
 };
 
 const bodyEndExample = {
@@ -39,6 +77,7 @@ const bodyEndExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Script at Body End</title>
 </head>
 <body>
@@ -52,8 +91,45 @@ const bodyEndExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}#result{color:#2563eb;font-weight:600}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}#result{color:#7dd3fc}}`,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+#result {
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  #result {
+    color: #7dd3fc;
+  }
+}`,
+  js: ``
 };
 
 const asyncDeferExample = {
@@ -61,6 +137,7 @@ const asyncDeferExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Async vs Defer</title>
   
   <!-- Async: download in parallel, execute ASAP -->
@@ -82,32 +159,185 @@ const asyncDeferExample = {
   </div>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}.info{background:#fff;padding:1rem;border-radius:8px;margin-top:1rem;text-align:left;max-width:500px;margin-left:auto;margin-right:auto}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}.info{background:#1e293b}}`,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+.info {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: left;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .info {
+    background: #1e293b;
+    border-color: #334155;
+  }
+}`,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="placements">
-  <div class="place-card head">
-    <h3>&lt;head&gt;</h3>
-    <p>With defer/async</p>
-    <code>Non-blocking</code>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script Placement Options</title>
+</head>
+<body>
+  <div class="placements">
+    <div class="place-card head">
+      <h3>&lt;head&gt;</h3>
+      <p>With defer/async</p>
+      <code>Non-blocking</code>
+    </div>
+    <div class="arrow">→</div>
+    <div class="place-card body-start">
+      <h3>Body Start</h3>
+      <p>Rare use case</p>
+      <code>Blocks rendering</code>
+    </div>
+    <div class="arrow">→</div>
+    <div class="place-card body-end">
+      <h3>Body End ✓</h3>
+      <p>Best practice</p>
+      <code>HTML ready</code>
+    </div>
   </div>
-  <div class="arrow">→</div>
-  <div class="place-card body-start">
-    <h3>Body Start</h3>
-    <p>Rare use case</p>
-    <code>Blocks rendering</code>
-  </div>
-  <div class="arrow">→</div>
-  <div class="place-card body-end">
-    <h3>Body End ✓</h3>
-    <p>Best practice</p>
-    <code>HTML ready</code>
-  </div>
-</div>`,
-  css: `.placements{display:flex;align-items:center;justify-content:center;gap:1rem;font-family:sans-serif;padding:1rem;flex-wrap:wrap}.place-card{background:#fff;padding:1.5rem;border-radius:8px;text-align:center;min-width:150px;box-shadow:0 2px 4px rgba(0,0,0,.1)}.head{border-top:4px solid #f59e0b}.body-start{border-top:4px solid #ef4444}.body-end{border-top:4px solid #10b981}h3{margin:0 0 .5rem;font-size:1rem;color:#1e293b}p{margin:.25rem 0;font-size:.8rem;color:#64748b}code{display:block;background:#f1f5f9;color:#3b82f6;padding:.25rem .5rem;border-radius:4px;font-size:.75rem;margin-top:.5rem}.arrow{font-size:1.5rem;color:#94a3b8}@media(prefers-color-scheme:dark){.place-card{background:#1e293b}h3{color:#f1f5f9}p{color:#94a3b8}code{background:#0f172a;color:#7dd3fc}}`,
-  js: ``,
+</body>
+</html>`,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 1rem;
+  margin: 0;
+  background: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+  }
+}
+
+.placements {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.place-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .place-card {
+    background: #1e293b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.head {
+  border-top: 4px solid #f59e0b;
+}
+
+.body-start {
+  border-top: 4px solid #ef4444;
+}
+
+.body-end {
+  border-top: 4px solid #10b981;
+}
+
+h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+@media (prefers-color-scheme: dark) {
+  h3 {
+    color: #f1f5f9;
+  }
+}
+
+p {
+  margin: 0.25rem 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #94a3b8;
+  }
+}
+
+code {
+  display: block;
+  background: #f1f5f9;
+  color: #3b82f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  code {
+    background: #0f172a;
+    color: #7dd3fc;
+  }
+}
+
+.arrow {
+  font-size: 1.5rem;
+  color: #94a3b8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .arrow {
+    color: #64748b;
+  }
+}`,
+  js: ``
 };
 
 export default function HtmlScriptPlacement({ onOpenWebPlayground }: HtmlScriptPlacementProps) {

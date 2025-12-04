@@ -15,39 +15,95 @@ const basicTitleExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Awesome Website - Home</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin: 0; text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); } }
+    h1 { color: #0369a1; margin: 0 0 1rem 0; }
+    @media (prefers-color-scheme: dark) { h1 { color: #7dd3fc; } }
+    p { color: #475569; font-size: 1.1rem; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+  </style>
 </head>
 <body>
   <h1>Welcome!</h1>
   <p>Check the browser tab to see the title.</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="diagram">
-  <div class="browser-tab">📄 My Website - Home</div>
-  <div class="arrow">↑</div>
-  <code>&lt;title&gt;My Website - Home&lt;/title&gt;</code>
-</div>`,
-  css: `.diagram{text-align:center;font-family:sans-serif;padding:1rem}.browser-tab{display:inline-block;background:#e2e8f0;padding:.5rem 1rem;border-radius:6px 6px 0 0;font-size:.9rem;border:1px solid #94a3b8}.arrow{font-size:1.5rem;margin:.5rem 0;color:#3b82f6}code{background:#1e293b;color:#7dd3fc;padding:.5rem 1rem;border-radius:6px;display:inline-block}`,
-  js: ``,
+  html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .diagram { max-width: 600px; margin: 0 auto; }
+    .browser-tab { display: inline-block; background: #e2e8f0; color: #1e293b; padding: 0.75rem 1.5rem; border-radius: 6px 6px 0 0; font-size: 0.95rem; border: 2px solid #94a3b8; margin-bottom: 1rem; font-weight: bold; }
+    @media (prefers-color-scheme: dark) { .browser-tab { background: #334155; color: #f1f5f9; border-color: #64748b; } }
+    .arrow { font-size: 1.5rem; margin: 0.75rem 0; color: #3b82f6; }
+    @media (prefers-color-scheme: dark) { .arrow { color: #60a5fa; } }
+    code { background: #1e293b; color: #7dd3fc; padding: 0.75rem 1.5rem; border-radius: 6px; display: inline-block; font-family: monospace; font-size: 0.95rem; }
+    @media (prefers-color-scheme: dark) { code { background: #0f172a; color: #a5f3fc; } }
+  </style>
+</head>
+<body>
+  <div class="diagram">
+    <div class="browser-tab">📄 My Awesome Website - Home</div>
+    <div class="arrow">↑</div>
+    <code>&lt;title&gt;My Awesome Website - Home&lt;/title&gt;</code>
+  </div>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 const seoExample = {
-  html: `<!-- Good Title Examples -->
-<title>Learn HTML - Free Tutorials | CoderPod</title>
-<title>Buy Running Shoes - Free Shipping | ShoeStore</title>
-<title>Contact Us - Get Support | MyCompany</title>
-
-<!-- Bad Title Examples (too vague) -->
-<title>Home</title>
-<title>Page 1</title>
-<title>Welcome</title>`,
+  html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .example { background: white; margin: 1rem auto; padding: 1.5rem; border-radius: 8px; max-width: 600px; border-left: 4px solid #10b981; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    @media (prefers-color-scheme: dark) { .example { background: #1e293b; box-shadow: 0 2px 8px rgba(0,0,0,0.3); } }
+    .good { border-left-color: #10b981; }
+    .bad { border-left-color: #ef4444; }
+    .good h4 { color: #10b981; }
+    .bad h4 { color: #ef4444; }
+    @media (prefers-color-scheme: dark) { .good h4 { color: #86efac; } .bad h4 { color: #fca5a5; } }
+    code { background: #f3f4f6; color: #1e293b; padding: 0.25rem 0.5rem; border-radius: 3px; font-size: 0.9rem; }
+    @media (prefers-color-scheme: dark) { code { background: #0f172a; color: #a5f3fc; } }
+    p { color: #475569; margin: 0; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+  </style>
+</head>
+<body>
+  <div class="example good">
+    <h4>✓ Good Title Examples</h4>
+    <p><code>Learn HTML - Free Tutorials | CoderPod</code></p>
+    <p><code>Buy Running Shoes - Free Shipping | ShoeStore</code></p>
+    <p><code>Contact Us - Get Support | MyCompany</code></p>
+  </div>
+  
+  <div class="example bad">
+    <h4>✗ Bad Title Examples (too vague)</h4>
+    <p><code>Home</code></p>
+    <p><code>Page 1</code></p>
+    <p><code>Welcome</code></p>
+  </div>
+</body>
+</html>`,
   css: ``,
-  js: ``,
+  js: ``
 };
 
 export default function HtmlTitleElement({ onOpenWebPlayground }: HtmlTitleElementProps) {

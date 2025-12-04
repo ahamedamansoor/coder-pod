@@ -15,6 +15,7 @@ const inlineScriptExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inline Script</title>
 </head>
 <body>
@@ -28,8 +29,58 @@ const inlineScriptExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}button{background:#2563eb;color:#fff;border:none;padding:.75rem 1.5rem;border-radius:6px;cursor:pointer;font-size:1rem}button:hover{background:#1d4ed8}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+  margin-bottom: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    background: #3b82f6;
+  }
+  
+  button:hover {
+    background: #2563eb;
+  }
+}`,
+  js: ``
 };
 
 const externalScriptExample = {
@@ -37,6 +88,7 @@ const externalScriptExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>External Script</title>
 </head>
 <body>
@@ -54,8 +106,45 @@ const externalScriptExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}#output{color:#059669;font-weight:600;font-size:1.1rem}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}#output{color:#6ee7b7}}`,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+#output {
+  color: #059669;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  #output {
+    color: #6ee7b7;
+  }
+}`,
+  js: ``
 };
 
 const typeModuleExample = {
@@ -63,6 +152,7 @@ const typeModuleExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ES6 Module</title>
 </head>
 <body>
@@ -73,35 +163,157 @@ const typeModuleExample = {
   <script type="module">
     // Modern import/export syntax
     const greeting = 'Hello from ES6 Module!';
-    document.getElementById('result').innerHTML = 
-      '<p style="color:#2563eb;font-weight:600">' + greeting + '</p>';
+    const p = document.createElement('p');
+    p.className = 'module-output';
+    p.textContent = greeting;
+    document.getElementById('result').appendChild(p);
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+.module-output {
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .module-output {
+    color: #60a5fa;
+  }
+}`,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="types">
-  <div class="type-card">
-    <h3>Inline Script</h3>
-    <code>&lt;script&gt;code here&lt;/script&gt;</code>
-    <p>JavaScript inside HTML</p>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script Types</title>
+</head>
+<body>
+  <div class="types">
+    <div class="type-card">
+      <h3>Inline Script</h3>
+      <code>&lt;script&gt;code here&lt;/script&gt;</code>
+      <p>JavaScript inside HTML</p>
+    </div>
+    <div class="type-card">
+      <h3>External Script</h3>
+      <code>&lt;script src="file.js"&gt;</code>
+      <p>Separate .js file</p>
+    </div>
+    <div class="type-card">
+      <h3>ES6 Module</h3>
+      <code>&lt;script type="module"&gt;</code>
+      <p>Import/export syntax</p>
+    </div>
   </div>
-  <div class="type-card">
-    <h3>External Script</h3>
-    <code>&lt;script src="file.js"&gt;</code>
-    <p>Separate .js file</p>
-  </div>
-  <div class="type-card">
-    <h3>ES6 Module</h3>
-    <code>&lt;script type="module"&gt;</code>
-    <p>Import/export syntax</p>
-  </div>
-</div>`,
-  css: `.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;font-family:sans-serif;padding:1rem}.type-card{background:#fff;padding:1.5rem;border-radius:8px;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.1)}h3{margin:0 0 .5rem;color:#3b82f6}code{display:block;background:#1e293b;color:#7dd3fc;padding:.5rem;border-radius:4px;font-size:.75rem;margin:.5rem 0;word-wrap:break-word}p{margin:.5rem 0 0;color:#64748b;font-size:.85rem}@media(prefers-color-scheme:dark){.type-card{background:#1e293b}h3{color:#60a5fa}code{background:#0f172a}p{color:#94a3b8}}`,
-  js: ``,
+</body>
+</html>`,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 1rem;
+  margin: 0;
+  background: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+  }
+}
+
+.types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.type-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .type-card {
+    background: #1e293b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+h3 {
+  margin: 0 0 0.5rem;
+  color: #3b82f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  h3 {
+    color: #60a5fa;
+  }
+}
+
+code {
+  display: block;
+  background: #1e293b;
+  color: #7dd3fc;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin: 0.5rem 0;
+  word-wrap: break-word;
+}
+
+@media (prefers-color-scheme: dark) {
+  code {
+    background: #0f172a;
+    color: #7dd3fc;
+  }
+}
+
+p {
+  margin: 0.5rem 0 0;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #94a3b8;
+  }
+}`,
+  js: ``
 };
 
 export default function HtmlScriptElement({ onOpenWebPlayground }: HtmlScriptElementProps) {

@@ -28,7 +28,34 @@ export const WebPlaygroundProvider = ({ children }: { children: ReactNode }) => 
   });
 
   const openWithContent = useCallback((html: string, css: string, js: string) => {
-    setContent({ html, css, js });
+    // Ensure HTML has proper document structure
+    const ensureProperHTMLStructure = (htmlContent: string): string => {
+      const trimmed = htmlContent.trim();
+      
+      // If already has DOCTYPE and html tags, return as-is
+      if (trimmed.toLowerCase().startsWith('<!doctype') && trimmed.includes('<html')) {
+        return htmlContent;
+      }
+      
+      // If it's just body content, wrap it in proper structure
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Playground</title>
+</head>
+<body>
+${htmlContent}
+</body>
+</html>`;
+    };
+    
+    setContent({ 
+      html: ensureProperHTMLStructure(html), 
+      css, 
+      js 
+    });
     setOpen(true);
   }, []);
 

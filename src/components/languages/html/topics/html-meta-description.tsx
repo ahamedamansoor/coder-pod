@@ -18,24 +18,54 @@ const descriptionExample = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Learn HTML from scratch with our free tutorials. Master semantic elements, forms, and modern HTML5 features.">
   <title>Learn HTML - Free Tutorials | CoderPod</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin: 0; text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); } }
+    h1 { color: #0369a1; margin: 0 0 1rem 0; }
+    @media (prefers-color-scheme: dark) { h1 { color: #7dd3fc; } }
+    p { color: #475569; font-size: 1.1rem; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+  </style>
 </head>
 <body>
   <h1>Learn HTML</h1>
   <p>The description above appears in search results!</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="search-result">
-  <div class="title">Learn HTML - Free Tutorials | CoderPod</div>
-  <div class="url">https://coderpod.com/html</div>
-  <div class="description">Learn HTML from scratch with our free tutorials. Master semantic elements, forms, and modern HTML5 features.</div>
-</div>`,
-  css: `.search-result{font-family:Arial,sans-serif;max-width:600px;margin:1rem auto;padding:1rem;background:#fff;border-radius:8px;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,.1)}.title{color:#1a0dab;font-size:1.2rem;margin-bottom:.3rem;cursor:pointer}.title:hover{text-decoration:underline}.url{color:#006621;font-size:.85rem;margin-bottom:.3rem}.description{color:#545454;font-size:.9rem;line-height:1.4}@media(prefers-color-scheme:dark){.search-result{background:#1e293b}.title{color:#8ab4f8}.url{color:#bdc1c6}.description{color:#bdc1c6}}`,
-  js: ``,
+  html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 2rem; font-family: Arial, system-ui, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .search-result { max-width: 600px; margin: 0 auto; padding: 1.5rem; background: white; border-radius: 8px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    @media (prefers-color-scheme: dark) { .search-result { background: #1e293b; box-shadow: 0 2px 8px rgba(0,0,0,0.3); } }
+    .title { color: #1a0dab; font-size: 1.2rem; margin-bottom: 0.3rem; cursor: pointer; font-weight: bold; }
+    @media (prefers-color-scheme: dark) { .title { color: #8ab4f8; } }
+    .title:hover { text-decoration: underline; }
+    .url { color: #006621; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    @media (prefers-color-scheme: dark) { .url { color: #86efac; } }
+    .description { color: #545454; font-size: 0.9rem; line-height: 1.4; margin: 0; }
+    @media (prefers-color-scheme: dark) { .description { color: #cbd5e1; } }
+  </style>
+</head>
+<body>
+  <div class="search-result">
+    <div class="title">Learn HTML - Free Tutorials | CoderPod</div>
+    <div class="url">https://coderpod.com/html</div>
+    <div class="description">Learn HTML from scratch with our free tutorials. Master semantic elements, forms, and modern HTML5 features.</div>
+  </div>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlMetaDescription({ onOpenWebPlayground }: HtmlMetaDescriptionProps) {

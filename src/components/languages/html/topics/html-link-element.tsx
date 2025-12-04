@@ -16,28 +16,24 @@ const linkExample = {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
-  
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico">
-  
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://example.com/page">
-  
   <title>Link Element Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin: 0; text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); } }
+    h1 { color: #0369a1; margin: 0 0 1rem 0; }
+    @media (prefers-color-scheme: dark) { h1 { color: #7dd3fc; } }
+    p { color: #475569; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+  </style>
 </head>
 <body>
   <h1>Link Element</h1>
   <p>Check the head section for various link uses!</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 const diagramExample = {
@@ -63,8 +59,8 @@ const diagramExample = {
     <span class="desc">Primary URL</span>
   </div>
 </div>`,
-  css: `.link-types{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;font-family:sans-serif;padding:1rem}.link-card{background:#fff;padding:1rem;border-radius:8px;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.1)}.icon{font-size:1.5rem;display:block;margin-bottom:.5rem}code{display:block;background:#e0f2fe;color:#0369a1;padding:.25rem .5rem;border-radius:4px;font-size:.75rem;margin-bottom:.5rem}.desc{color:#64748b;font-size:.8rem}@media(prefers-color-scheme:dark){.link-card{background:#1e293b}code{background:#0c4a6e;color:#7dd3fc}.desc{color:#94a3b8}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlLinkElement({ onOpenWebPlayground }: HtmlLinkElementProps) {

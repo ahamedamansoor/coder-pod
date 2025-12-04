@@ -85,10 +85,6 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   
   // Get display HTML (full or with extracted parts removed for cleaner display)
   const getDisplayHTML = (): string => {
-    // If no extraction happened, show HTML as-is
-    if (!extractedCSS && !extractedJS) return html;
-    
-    // Remove extracted <style> and <script> tags from HTML display for cleaner view
     let cleanedHTML = html;
     
     // Remove <style> tags if CSS was extracted
@@ -103,8 +99,55 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     
     // Clean up extra whitespace/newlines left after removal
     cleanedHTML = cleanedHTML
-      .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace multiple blank lines with double newline
+      .replace(/\n\s*\n\s*\n+/g, '\n\n') // Replace multiple blank lines with double newline
+      .replace(/>\s+</g, '>\n<') // Add line breaks between tags
       .trim();
+    
+    // Format HTML with proper indentation for better readability
+    const formatHTML = (htmlString: string): string => {
+      const lines = htmlString.split('\n');
+      let formatted = '';
+      let indent = 0;
+      const indentSize = 2;
+      
+      lines.forEach((line) => {
+        const trimmedLine = line.trim();
+        if (!trimmedLine) return;
+        
+        // Decrease indent for closing tags
+        if (trimmedLine.startsWith('</')) {
+          indent = Math.max(0, indent - indentSize);
+        }
+        
+        // Add indented line
+        formatted += ' '.repeat(indent) + trimmedLine + '\n';
+        
+        // Increase indent for opening tags (but not self-closing or closing tags)
+        if (
+          trimmedLine.startsWith('<') && 
+          !trimmedLine.startsWith('</') && 
+          !trimmedLine.endsWith('/>') &&
+          !trimmedLine.match(/<(img|input|br|hr|meta|link|area|base|col|embed|param|source|track|wbr)[^>]*>/i)
+        ) {
+          // Check if it's not a self-closing tag
+          const tagMatch = trimmedLine.match(/<(\w+)/);
+          if (tagMatch) {
+            const tagName = tagMatch[1];
+            const hasClosingTag = trimmedLine.includes(`</${tagName}>`);
+            if (!hasClosingTag) {
+              indent += indentSize;
+            }
+          }
+        }
+      });
+      
+      return formatted.trim();
+    };
+    
+    // Only format if we removed CSS/JS to keep structure clean
+    if (extractedCSS || extractedJS) {
+      cleanedHTML = formatHTML(cleanedHTML);
+    }
     
     return cleanedHTML;
   };

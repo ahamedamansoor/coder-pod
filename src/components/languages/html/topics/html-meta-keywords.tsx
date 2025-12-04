@@ -26,31 +26,50 @@ const keywordsExample = {
   <p>Various meta tags for page information</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="meta-list">
-  <div class="meta-item">
-    <span class="name">keywords</span>
-    <span class="desc">Page topics (legacy)</span>
+  html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .meta-list { max-width: 600px; margin: 0 auto; }
+    .meta-item { background: white; margin: 1rem 0; padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #3b82f6; }
+    @media (prefers-color-scheme: dark) { .meta-item { background: #1e293b; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-left-color: #60a5fa; } }
+    .name { background: #3b82f6; color: white; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; font-family: monospace; }
+    @media (prefers-color-scheme: dark) { .name { background: #1e40af; } }
+    .desc { color: #64748b; font-size: 0.9rem; }
+    @media (prefers-color-scheme: dark) { .desc { color: #cbd5e1; } }
+  </style>
+</head>
+<body>
+  <div class="meta-list">
+    <div class="meta-item">
+      <span class="name">keywords</span>
+      <span class="desc">Page topics (legacy)</span>
+    </div>
+    <div class="meta-item">
+      <span class="name">author</span>
+      <span class="desc">Content creator</span>
+    </div>
+    <div class="meta-item">
+      <span class="name">robots</span>
+      <span class="desc">Search engine instructions</span>
+    </div>
+    <div class="meta-item">
+      <span class="name">generator</span>
+      <span class="desc">Software used</span>
+    </div>
   </div>
-  <div class="meta-item">
-    <span class="name">author</span>
-    <span class="desc">Content creator</span>
-  </div>
-  <div class="meta-item">
-    <span class="name">robots</span>
-    <span class="desc">Search engine instructions</span>
-  </div>
-  <div class="meta-item">
-    <span class="name">generator</span>
-    <span class="desc">Software used</span>
-  </div>
-</div>`,
-  css: `.meta-list{font-family:sans-serif;max-width:400px;margin:0 auto}.meta-item{display:flex;justify-content:space-between;padding:.75rem;border-bottom:1px solid #e2e8f0;align-items:center}.name{background:#3b82f6;color:#fff;padding:.25rem .75rem;border-radius:4px;font-size:.85rem;font-weight:600}.desc{color:#64748b;font-size:.85rem}@media(prefers-color-scheme:dark){.meta-item{border-color:#334155}.desc{color:#94a3b8}}`,
-  js: ``,
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlMetaKeywords({ onOpenWebPlayground }: HtmlMetaKeywordsProps) {

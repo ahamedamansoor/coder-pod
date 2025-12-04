@@ -30,6 +30,8 @@ import { AiSimplification } from './ai-simplification';
 import AIProviderModal from '../dashboard/GeminiKeyModal';
 import { AIProvider } from '@/types/ai-providers';
 import { conductInterview } from '@/ai/flows/interview-flow';
+import { AIAnswerDisplay } from './ai-answer-display';
+import { useWebPlayground } from './playground/web-playground-context';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -114,6 +116,7 @@ export function GenericContentDisplay({
   const isUserAuthenticated = user && !user.isAnonymous;
   
   const { toast } = useToast();
+  const { openWithContent } = useWebPlayground();
 
   // Check if AI key is available
   React.useEffect(() => {
@@ -152,8 +155,203 @@ export function GenericContentDisplay({
         throw new Error('API configuration not found');
       }
       
-      // Create a simple, focused prompt for clear answers
-      const structuredPrompt = `You are a helpful programming tutor. Answer this question clearly and simply.
+      // Create language-specific structured prompts
+      const isHTMLLanguage = language.slug === 'html';
+      const isCSSLanguage = language.slug === 'css' || language.slug === 'scss';
+      const isJSLanguage = language.slug === 'javascript' || language.slug === 'react';
+      
+      const structuredPrompt = isHTMLLanguage 
+        ? `You are an expert HTML tutor. Answer this question with clear, structured examples that follow HTML best practices.
+
+**Question:** ${question}
+
+**Topic Context:** ${topic.title} - ${topic.explanation}
+
+**CRITICAL: You MUST separate HTML, CSS, and JavaScript into THREE distinct code blocks for live preview.**
+
+**Format your answer EXACTLY like this:**
+
+## 🎯 Quick Answer
+[Direct 1-2 sentence answer to the question]
+
+## 📖 Detailed Explanation
+[Explain the concept clearly in 2-3 short paragraphs. Use simple language suitable for beginners.]
+
+## 💻 Live Preview Code
+
+### HTML:
+\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${topic.title} Example</title>
+</head>
+<body>
+  <!-- Add complete, working HTML example here -->
+  <!-- Include comments explaining each important part -->
+  <div class="container">
+    <!-- Your HTML structure here -->
+  </div>
+</body>
+</html>
+\`\`\`
+
+### CSS:
+\`\`\`css
+/* Base styles that support both light and dark modes */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f5f5f5;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+}
+
+/* Your component styles here with comments */
+.container {
+  /* Styles */
+}
+\`\`\`
+
+### JavaScript (if needed):
+\`\`\`javascript
+// Add JavaScript functionality if required
+// Include comments explaining the logic
+document.addEventListener('DOMContentLoaded', function() {
+  // Your JavaScript code here
+});
+\`\`\`
+
+### Key Points:
+- Explain each important element
+- Describe the structure and hierarchy
+- Mention semantic meaning if applicable
+
+## ✅ Best Practices
+- **Practice 1:** [Describe good practice with example]
+- **Practice 2:** [Describe good practice with example]
+- **Practice 3:** [Describe good practice with example]
+
+## ❌ Common Mistakes to Avoid
+- **Mistake 1:** [What not to do and why]
+- **Mistake 2:** [What not to do and why]
+
+## 🎨 Practical Use Cases
+- **Use Case 1:** [When and where to use this]
+- **Use Case 2:** [Real-world application]
+
+## 📚 Summary
+[2-3 sentence recap emphasizing the key takeaway]
+
+**CRITICAL REQUIREMENTS:**
+- SEPARATE HTML, CSS, and JavaScript into THREE distinct code blocks
+- HTML block: Complete document structure with DOCTYPE
+- CSS block: Styles with BOTH light and dark mode support
+- JavaScript block: Only if functionality is needed (can be empty)
+- Use semantic HTML elements when appropriate
+- Include helpful comments in ALL code blocks
+- Keep explanations simple and beginner-friendly
+- Use emojis for section headers as shown above`
+        : isCSSLanguage || isJSLanguage
+        ? `You are an expert ${isCSSLanguage ? 'CSS' : 'JavaScript'} tutor. Answer this question with clear, structured examples.
+
+**Question:** ${question}
+
+**Topic Context:** ${topic.title} - ${topic.explanation}
+
+**CRITICAL: Provide a complete working example with HTML, CSS${isJSLanguage ? ', and JavaScript' : ''} separated into distinct code blocks.**
+
+**Format your answer EXACTLY like this:**
+
+## 🎯 Quick Answer
+[Direct 1-2 sentence answer]
+
+## 📖 Detailed Explanation
+[Explain clearly in 2-3 short paragraphs. Use simple language.]
+
+## 💻 Live Preview Code
+
+### HTML:
+\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${topic.title} Demo</title>
+</head>
+<body>
+  <div class="demo-container">
+    <!-- HTML structure for the demo -->
+  </div>
+</body>
+</html>
+\`\`\`
+
+### CSS:
+\`\`\`css
+/* Base styles with dark mode support */
+body {
+  font-family: system-ui, sans-serif;
+  padding: 2rem;
+  background: #f5f5f5;
+  color: #1e293b;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+}
+
+/* Your ${isCSSLanguage ? 'CSS' : 'styling'} example here with comments */
+.demo-container {
+  /* Styles */
+}
+\`\`\`
+
+${isJSLanguage ? `### JavaScript:
+\`\`\`javascript
+// JavaScript functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Your code here with explanatory comments
+});
+\`\`\`` : ''}
+
+## ✅ Best Practices
+- **Practice 1:** [Good practice with explanation]
+- **Practice 2:** [Good practice with explanation]
+- **Practice 3:** [Good practice with explanation]
+
+## ❌ Common Mistakes
+- **Mistake 1:** [What to avoid and why]
+- **Mistake 2:** [What to avoid and why]
+
+## 🎨 Practical Use Cases
+- **Use Case 1:** [When to use this]
+- **Use Case 2:** [Real-world application]
+
+## 📚 Summary
+[2-3 sentence recap]
+
+**REQUIREMENTS:**
+- Provide COMPLETE working code with proper HTML structure
+- Include dark mode CSS support
+${isJSLanguage ? '- Add functional JavaScript with clear comments\n' : ''}- Keep code simple and beginner-friendly
+- Use emojis for section headers`
+        : `You are a helpful programming tutor. Answer this question clearly and simply.
 
 **Question:** ${question}
 
@@ -161,24 +359,34 @@ export function GenericContentDisplay({
 
 **Format your answer like this:**
 
-## Quick Answer
+## 🎯 Quick Answer
 [Direct 1-2 sentence answer]
 
-## Explanation
+## 📖 Explanation
 [Explain clearly in simple terms. Use short paragraphs.]
 
-## Code Example
+## 💻 Code Example
 \`\`\`${language.name.toLowerCase()}
 // Practical example with comments
+// Show complete, working code
 \`\`\`
 
-## Key Points
+## ✅ Best Practices
+- **Practice 1:** [Good practice with explanation]
+- **Practice 2:** [Good practice with explanation]
+- **Practice 3:** [Good practice with explanation]
+
+## ❌ Common Mistakes
+- **Mistake 1:** [What to avoid and why]
+- **Mistake 2:** [What to avoid and why]
+
+## 📚 Key Takeaways
 - Important point 1
 - Important point 2
 - Important point 3
 
-## Summary
-[Brief recap]
+## 🎯 Summary
+[Brief recap in 2-3 sentences]
 
 Keep it simple and easy to understand.`;
 
@@ -284,16 +492,16 @@ Keep it simple and easy to understand.`;
       {!isLearningPlanTopic && (
           <div className="relative mt-8">
             <Card className={cn(
-              "transition-all duration-200 animate-in fade-in-50",
+              "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
               !isUserAuthenticated && "blur-sm pointer-events-none",
-              isUserAuthenticated && "hover:shadow-lg"
+              isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
             )}>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
                   <HelpCircle className="w-6 h-6 text-primary" />
                   Ask a Question
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-slate-600 dark:text-slate-400">
                   Have a question about {topic.title}? Ask our AI assistant.
                 </CardDescription>
               </CardHeader>
@@ -303,7 +511,7 @@ Keep it simple and easy to understand.`;
                   value={question} 
                   onChange={(e) => setQuestion(e.target.value)} 
                   disabled={isAsking || !isUserAuthenticated}
-                  className="transition-colors focus:ring-2"
+                  className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
                 <Button 
                   onClick={handleAskQuestionAction}
@@ -317,9 +525,9 @@ Keep it simple and easy to understand.`;
             
             {/* Guest User Overlay - Simple & Subtle */}
             {!isUserAuthenticated ? (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm rounded-lg">
+              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
                 <div className="text-center space-y-3 px-6">
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                     🔐 Login to use AI Assistant
                   </p>
                   <Button 
@@ -332,9 +540,9 @@ Keep it simple and easy to understand.`;
                 </div>
               </div>
             ) : !isAiEnabled && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm rounded-lg">
+              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
                 <div className="text-center space-y-3 px-6">
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                     ⚙️ AI Provider Not Configured
                   </p>
                   <Button 
@@ -351,64 +559,21 @@ Keep it simple and easy to understand.`;
       )}
       
       {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50">
+        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
           <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
+            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
+            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
           </CardContent>
         </Card>
       )}
 
       {qaResult && (
-        <div className="relative animate-in fade-in-50 slide-in-from-bottom-3 duration-500">
-          <Card className="relative border-0 shadow-lg overflow-hidden bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-900 dark:to-slate-800/50">
-            {/* Elegant Header */}
-            <CardHeader className="relative bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-500/5 dark:via-teal-500/5 dark:to-cyan-500/5 border-b border-gray-200/50 dark:border-slate-700/50 backdrop-blur-sm">
-              <CardTitle className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg blur opacity-40"></div>
-                  <div className="relative w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-lg font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                    AI Answer
-                  </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 font-normal">Powered by artificial intelligence</div>
-                </div>
-              </CardTitle>
-            </CardHeader>
-
-            {/* Beautiful Content Area */}
-            <CardContent className="p-8 sm:p-10 lg:p-12">
-              <div 
-                className="prose prose-base sm:prose-lg max-w-none
-                prose-headings:font-semibold prose-headings:tracking-tight
-                prose-h2:text-xl prose-h2:bg-gradient-to-r prose-h2:from-emerald-600 prose-h2:to-teal-600 dark:prose-h2:from-emerald-400 dark:prose-h2:to-teal-400 prose-h2:bg-clip-text prose-h2:text-transparent prose-h2:mt-8 prose-h2:first:mt-0 prose-h2:mb-4
-                prose-h3:text-lg prose-h3:text-gray-800 dark:prose-h3:text-gray-200 prose-h3:mt-6 prose-h3:mb-3
-                prose-h4:text-base prose-h4:text-gray-700 dark:prose-h4:text-gray-300 prose-h4:mt-4 prose-h4:mb-2
-                prose-p:text-gray-800 dark:prose-p:text-gray-200 prose-p:leading-relaxed prose-p:my-3
-                prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-semibold
-                prose-code:text-emerald-700 dark:prose-code:text-emerald-400 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-950/30 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:border prose-code:border-emerald-200 dark:prose-code:border-emerald-800 prose-code:before:content-[''] prose-code:after:content-['']
-                prose-pre:bg-gradient-to-br prose-pre:from-gray-50 prose-pre:to-gray-100 dark:prose-pre:from-slate-900 dark:prose-pre:to-slate-800 prose-pre:border-2 prose-pre:border-gray-200 dark:prose-pre:border-slate-700 prose-pre:rounded-xl prose-pre:text-gray-900 dark:prose-pre:text-gray-100 prose-pre:p-6 prose-pre:my-6 prose-pre:overflow-x-auto prose-pre:shadow-inner prose-pre:font-mono
-                prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:underline-offset-2
-                prose-blockquote:border-l-4 prose-blockquote:border-emerald-400 dark:prose-blockquote:border-emerald-600 prose-blockquote:pl-4 prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300 prose-blockquote:bg-gradient-to-r prose-blockquote:from-emerald-50 prose-blockquote:to-transparent dark:prose-blockquote:from-emerald-950/20 dark:prose-blockquote:to-transparent prose-blockquote:py-3 prose-blockquote:pr-4 prose-blockquote:rounded-r-lg prose-blockquote:my-4 prose-blockquote:italic
-                prose-ul:my-4 prose-ul:text-gray-800 dark:prose-ul:text-gray-200 prose-ul:space-y-2
-                prose-ol:my-4 prose-ol:text-gray-800 dark:prose-ol:text-gray-200 prose-ol:space-y-2
-                prose-li:leading-relaxed prose-li:marker:text-emerald-500 dark:prose-li:marker:text-emerald-400
-                prose-table:border-collapse prose-table:border-2 prose-table:border-gray-200 dark:prose-table:border-slate-700 prose-table:rounded-lg prose-table:overflow-hidden prose-table:my-6 prose-table:shadow-sm
-                prose-thead:bg-gradient-to-r prose-thead:from-emerald-50 prose-thead:to-teal-50 dark:prose-thead:from-emerald-950/30 dark:prose-thead:to-teal-950/30
-                prose-th:text-gray-900 dark:prose-th:text-gray-100 prose-th:font-semibold prose-th:p-3 prose-th:border prose-th:border-gray-200 dark:prose-th:border-slate-700
-                prose-td:p-3 prose-td:border prose-td:border-gray-200 dark:prose-td:border-slate-700 prose-td:text-gray-800 dark:prose-td:text-gray-200
-                prose-hr:border-2 prose-hr:border-gray-200 dark:prose-hr:border-slate-700 prose-hr:my-8 prose-hr:rounded-full
-                prose-img:rounded-xl prose-img:shadow-md prose-img:border prose-img:border-gray-200 dark:prose-img:border-slate-700" 
-                dangerouslySetInnerHTML={{ __html: qaResult.answer }} 
-              />
-            </CardContent>
-          </Card>
-        </div>
+        <AIAnswerDisplay 
+          answer={qaResult.answer} 
+          language={language.slug}
+          onOpenWebPlayground={openWithContent}
+        />
       )}
       
       {/* AI Provider Modal */}

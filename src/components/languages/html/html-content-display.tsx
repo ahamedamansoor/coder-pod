@@ -56,7 +56,7 @@ const HtmlSemanticElementsNew = lazy(() => import('@/components/languages/html/t
 const HtmlSemanticElementsOld = lazy(() => import('@/components/languages/html/topics/html-semantic-elements'));
 const HtmlAudioElement = lazy(() => import('@/components/languages/html/topics/html-audio-element'));
 const HtmlVideoElement = lazy(() => import('@/components/languages/html/topics/html-video-element'));
-const HtmlVideoSubtitles = lazy(() => import('@/components/languages/html/topics/html-video-subtitles'));
+const HtmlVideoSubtitles = lazy(() => import('@/components/languages/html/topics/html-video-subtitles').then(m => ({ default: m.default })));
 const Iframes = lazy(() => import('@/components/languages/html/topics/html-iframes'));
 const SvgBasics = lazy(() => import('@/components/languages/html/topics/html-svg-basics'));
 const CanvasBasics = lazy(() => import('@/components/languages/html/topics/html-canvas-basics'));

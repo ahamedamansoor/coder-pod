@@ -18,23 +18,51 @@ const basicHeadExample = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Website</title>
   <meta name="description" content="A sample website">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin: 0; text-align: center; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); } }
+    h1 { color: #0369a1; margin: 0; }
+    @media (prefers-color-scheme: dark) { h1 { color: #7dd3fc; } }
+    p { color: #475569; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+  </style>
 </head>
 <body>
   <h1>Hello World!</h1>
+  <p>This page has proper head metadata</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
-  js: ``,
+  css: ``,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="diagram">
-  <div class="box head">&lt;head&gt;<br/><small>Metadata (invisible)</small></div>
-  <div class="box body">&lt;body&gt;<br/><small>Content (visible)</small></div>
-</div>`,
-  css: `.diagram{display:flex;gap:1rem;justify-content:center;font-family:sans-serif;padding:1rem}.box{padding:1.5rem 2rem;border-radius:8px;text-align:center}.head{background:#3b82f6;color:#fff}.body{background:#10b981;color:#fff}small{opacity:.8}`,
-  js: ``,
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .diagram { display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .box { padding: 1.5rem 2rem; border-radius: 8px; text-align: center; font-weight: bold; min-width: 150px; }
+    .head { background: #3b82f6; color: white; border: 2px solid #1e40af; }
+    @media (prefers-color-scheme: dark) { .head { background: #1e40af; border-color: #60a5fa; } }
+    .body { background: #10b981; color: white; border: 2px solid #065f46; }
+    @media (prefers-color-scheme: dark) { .body { background: #065f46; border-color: #6ee7b7; } }
+    small { display: block; opacity: 0.9; font-size: 0.9rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="diagram">
+    <div class="box head">&lt;head&gt;<br/><small>Metadata (invisible)</small></div>
+    <div class="box body">&lt;body&gt;<br/><small>Content (visible)</small></div>
+  </div>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlHeadElement({ onOpenWebPlayground }: HtmlHeadElementProps) {

@@ -80,7 +80,7 @@ const SidebarProvider = React.forwardRef<
     // Initialize sidebar width with default, update from cookie after mount
     const [sidebarWidth, setSidebarWidthState] = React.useState(352) // 22rem default
 
-    // Load width from cookie after component mounts
+    // Load width from cookie and set mounted after client hydration
     React.useEffect(() => {
       setMounted(true)
       if (typeof document !== 'undefined') {
@@ -126,12 +126,13 @@ const SidebarProvider = React.forwardRef<
       [setOpenProp, open]
     )
 
-    // Helper to toggle the sidebar.
+    // Helper to toggle the sidebar - use mounted state to ensure proper hydration
     const toggleSidebar = React.useCallback(() => {
+      if (!mounted) return
       return isMobile
         ? setOpenMobile((open) => !open)
         : setOpen((open) => !open)
-    }, [isMobile, setOpen, setOpenMobile])
+    }, [isMobile, setOpen, setOpenMobile, mounted])
 
     // Adds a keyboard shortcut to toggle the sidebar.
     React.useEffect(() => {
@@ -158,14 +159,14 @@ const SidebarProvider = React.forwardRef<
         state,
         open,
         setOpen,
-        isMobile,
+        isMobile: mounted ? isMobile : false,
         openMobile,
         setOpenMobile,
         toggleSidebar,
         sidebarWidth,
         setSidebarWidth,
       }),
-      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, sidebarWidth, setSidebarWidth]
+      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, sidebarWidth, setSidebarWidth, mounted]
     )
 
     return (

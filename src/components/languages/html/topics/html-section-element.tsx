@@ -10,18 +10,62 @@ interface HtmlSectionElementProps {
 }
 
 const example = {
-  html: `<section class="chapter">
-  <h2>Chapter 1: Getting Started</h2>
-  <p>This section groups related content under a common heading.</p>
-</section>`,
-  css: `.chapter{max-width:600px;margin:2rem auto;padding:1.5rem;background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);} .chapter h2{margin-top:0;color:#3b82f6;} @media(prefers-color-scheme:dark){.chapter{background:#1e293b;color:#e2e8f0;} .chapter h2{color:#60a5fa;}}`,
-  js: ``,
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section Element</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .chapter { max-width: 600px; margin: 0 auto; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); border-left: 4px solid #3b82f6; }
+    @media (prefers-color-scheme: dark) { .chapter { background: #1e293b; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); border-left-color: #60a5fa; } }
+    .chapter h2 { margin-top: 0; color: #3b82f6; }
+    @media (prefers-color-scheme: dark) { .chapter h2 { color: #60a5fa; } }
+    .chapter p { color: #1e293b; line-height: 1.6; }
+    @media (prefers-color-scheme: dark) { .chapter p { color: #f1f5f9; } }
+  </style>
+</head>
+<body>
+  <section class="chapter">
+    <h2>Chapter 1: Getting Started</h2>
+    <p>This section groups related content under a common heading. The &lt;section&gt; element is used for thematic grouping of content, typically with a heading.</p>
+    <p>Use &lt;section&gt; to organize content into chapters, sections, or logical parts of your document.</p>
+  </section>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 const diagram = {
-  html: `<section style='border:2px dashed #3b82f6;padding:1rem;text-align:center;font-family:sans-serif'>Section<br/><article style='margin-top:.5rem;padding:.5rem;background:#e0f2fe'>Article</article></section>`,
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Diagram</title>
+  <style>
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .section { border: 2px dashed #3b82f6; padding: 1.5rem; text-align: center; font-family: sans-serif; max-width: 400px; margin: 0 auto; border-radius: 8px; background: white; }
+    @media (prefers-color-scheme: dark) { .section { background: #1e293b; border-color: #60a5fa; } }
+    .section { color: #3b82f6; font-weight: bold; }
+    @media (prefers-color-scheme: dark) { .section { color: #60a5fa; } }
+    .article { margin-top: 1rem; padding: 1rem; background: #e0f2fe; border-radius: 6px; color: #0c4a6e; font-weight: bold; }
+    @media (prefers-color-scheme: dark) { .article { background: #082f49; border: 1px solid #0ea5e9; color: #cffafe; } }
+  </style>
+</head>
+<body>
+  <div class="section">
+    Section
+    <div class="article">Article</div>
+  </div>
+</body>
+</html>`,
   css: ``,
-  js: ``,
+  js: ``
 };
 
 export default function HtmlSectionElement({ onOpenWebPlayground }: HtmlSectionElementProps) {

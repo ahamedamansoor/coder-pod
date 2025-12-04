@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { FileText, Box, Code, Lightbulb } from 'lucide-react';
+import { FileText, Box, Code } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared';
 
 interface HtmlBaseElementProps {
@@ -10,25 +10,33 @@ interface HtmlBaseElementProps {
 }
 
 const demo = {
-  html: `<header>
-  <title>Document Metadata</title>
-</header>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base Element Demo</title>
+  <base href="https://example.com/">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin: 0; }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); } }
+    p { color: #475569; font-size: 1.1rem; }
+    @media (prefers-color-scheme: dark) { p { color: #cbd5e1; } }
+    code { background: #1e293b; color: #7dd3fc; padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; }
+    @media (prefers-color-scheme: dark) { code { background: #0f172a; } }
+    a { color: #0369a1; text-decoration: none; font-weight: 500; margin-left: 0.5rem; }
+    @media (prefers-color-scheme: dark) { a { color: #7dd3fc; } }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
 <body>
   <p>Use <code>&lt;base&gt;</code> to set the default URL for all relative links.</p>
-  <a href="docs.html">Internal docs</a>
-</body>`,
-  css: `body {
-  font-family: system-ui, sans-serif;
-  padding: 2rem;
-}
-
-code {
-  background: #1e293b;
-  color: #fff;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-}`,
-  js: ''
+  <p><a href="docs.html">Internal docs</a></p>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlBaseElement({ onOpenWebPlayground }: HtmlBaseElementProps) {
@@ -68,27 +76,12 @@ export default function HtmlBaseElement({ onOpenWebPlayground }: HtmlBaseElement
         <CardContent>
           <FrontendCodePreview
             title="Base element demo"
-            description="Relative links resolve against the &lt;base&gt; tag."
-            html={`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <base href="https://example.com/docs/" />
-</head>
-<body>
-  <p>Example of base:</p>
-  <a href="guide.html">Open default guide</a>
-</body>
-</html>`}
-            css={`body {
-  font-family: system-ui, sans-serif;
-  padding: 1.5rem;
-}
-
-a {
-  color: #2563eb;
-}`}
-            js=""
-            previewHeight="420px"
+            description="Relative links resolve against the base tag."
+            html={demo.html}
+            css={demo.css}
+            js={demo.js}
+            colorTheme="blue"
+            previewHeight="400px"
             onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>

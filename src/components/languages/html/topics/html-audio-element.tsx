@@ -64,32 +64,34 @@ const basicAudioExample = {
   <audio controls autoplay loop class="audio-player">
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
   </audio>
-  <p class="info">⚠️ May require user interaction in some browsers</p>
+  <p class="info">⚠️ Autoplay may require user interaction in some browsers</p>
 </div>
 
 <div class="audio-container">
-  <h3>4. Preload Strategy</h3>
+  <h3>4. Preload Strategy Comparison</h3>
   <div>
-    <p class="label">preload="metadata" - Load metadata only</p>
+    <p class="label">preload="metadata" - Load duration only</p>
     <audio controls preload="metadata" class="audio-player">
       <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" type="audio/mpeg">
     </audio>
+    <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem;">Faster initial load - only metadata cached, audio loads on play</p>
   </div>
-  <div style="margin-top: 1rem;">
+  <div style="margin-top: 1.5rem;">
     <p class="label">preload="auto" - Load entire file</p>
     <audio controls preload="auto" class="audio-player">
       <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" type="audio/mpeg">
     </audio>
+    <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem;">Downloads entire audio in background for instant playback</p>
   </div>
 </div>
 
 <div class="audio-container">
-  <h3>5. No Controls (Silent Background)</h3>
-  <p class="label" style="margin-bottom: 1rem;">Audio plays without user controls</p>
+  <h3>5. No Controls (Background Audio)</h3>
+  <p class="label" style="margin-bottom: 1rem;">🔇 Audio plays without user controls</p>
   <audio autoplay muted class="audio-player">
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>
-  <p class="info">🔇 Background audio (muted by default)</p>
+  <p class="info">Muted by default - use for background music or notifications</p>
 </div>
 
 <script>
@@ -106,6 +108,7 @@ const basicAudioExample = {
 </body>
 </html>`,
   css: ``,
+  js: ``
 };
 
 export default function HtmlAudioElement({ onOpenWebPlayground }: HtmlAudioElementProps) {

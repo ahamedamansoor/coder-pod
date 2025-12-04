@@ -15,43 +15,64 @@ const basicStyleExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Internal Styles</title>
-  
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      text-align: center;
-      padding: 3rem;
-    }
-    
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    .button {
-      background: white;
-      color: #667eea;
-      padding: 0.75rem 2rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-  </style>
 </head>
 <body>
   <h1>Styled with &lt;style&gt;</h1>
-  <p>All styling defined in the head!</p>
+  <p>All styling defined externally!</p>
   <button class="button">Click Me</button>
 </body>
 </html>`,
-  css: ``,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 3rem;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
+  }
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.button {
+  background: white;
+  color: #667eea;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .button {
+    background: #f3f4f6;
+  }
+}`,
+  js: ``
 };
 
 const multipleStylesExample = {
@@ -59,36 +80,60 @@ const multipleStylesExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multiple Style Tags</title>
-  
-  <!-- Base styles -->
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      padding: 2rem;
-    }
-  </style>
-  
-  <!-- Component-specific styles -->
-  <style>
-    .card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 2rem;
-      border-radius: 12px;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
   <div class="card">
-    <h2>Multiple &lt;style&gt; Tags</h2>
-    <p>You can have multiple style elements!</p>
+    <h2>Styled Elements</h2>
+    <p>CSS applied from external stylesheet!</p>
   </div>
 </body>
 </html>`,
-  css: ``,
-  js: ``,
+  css: `/* Base styles */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  margin: 0;
+  background: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+  }
+}
+
+/* Component-specific styles */
+.card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+}
+
+h2 {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+}
+
+p {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.95;
+}`,
+  js: ``
 };
 
 const mediaQueryExample = {
@@ -96,71 +141,195 @@ const mediaQueryExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Styles</title>
-  
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      padding: 2rem;
-      text-align: center;
-    }
-    
-    .box {
-      background: #3b82f6;
-      color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      margin: 1rem auto;
-      max-width: 400px;
-    }
-    
-    /* Responsive styles */
-    @media (max-width: 768px) {
-      .box {
-        background: #ec4899;
-        font-size: 0.9rem;
-      }
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-  </style>
 </head>
 <body>
   <div class="box">
     <h2>Responsive Design</h2>
     <p>Resize window to see color change!</p>
+    <p class="hint">Also supports dark mode!</p>
   </div>
 </body>
 </html>`,
-  css: ``,
-  js: ``,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  text-align: center;
+  margin: 0;
+  background: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+}
+
+.box {
+  background: #3b82f6;
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 1rem auto;
+  max-width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive styles - changes on smaller screens */
+@media (max-width: 768px) {
+  .box {
+    background: #ec4899;
+    font-size: 0.9rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .box {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+.hint {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}`,
+  js: ``
 };
 
 const diagramExample = {
-  html: `<div class="style-types">
-  <div class="type-box inline">
-    <h3>Inline</h3>
-    <code style="display:block;margin:.5rem 0">style="color:red"</code>
-    <p>Highest priority</p>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Methods</title>
+</head>
+<body>
+  <div class="style-types">
+    <div class="type-box inline">
+      <h3>Inline</h3>
+      <code>style="color:red"</code>
+      <p>Highest priority</p>
+    </div>
+    <div class="type-box internal">
+      <h3>Internal</h3>
+      <code>&lt;style&gt;...&lt;/style&gt;</code>
+      <p>In &lt;head&gt;</p>
+    </div>
+    <div class="type-box external">
+      <h3>External</h3>
+      <code>&lt;link rel="stylesheet"&gt;</code>
+      <p>Separate file</p>
+    </div>
   </div>
-  <div class="type-box internal">
-    <h3>Internal</h3>
-    <code style="display:block;margin:.5rem 0">&lt;style&gt;...&lt;/style&gt;</code>
-    <p>In &lt;head&gt;</p>
-  </div>
-  <div class="type-box external">
-    <h3>External</h3>
-    <code style="display:block;margin:.5rem 0">&lt;link rel="stylesheet"&gt;</code>
-    <p>Separate file</p>
-  </div>
-</div>`,
-  css: `.style-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;font-family:sans-serif;padding:1rem}.type-box{padding:1.5rem;border-radius:8px;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.1)}.inline{background:#fef3c7;color:#92400e}.internal{background:#dbeafe;color:#1e40af}.external{background:#d1fae5;color:#065f46}h3{margin:0 0 .5rem;font-size:1.1rem}code{background:rgba(0,0,0,.1);padding:.25rem .5rem;border-radius:4px;font-size:.75rem}p{margin:.5rem 0 0;font-size:.85rem;opacity:.8}@media(prefers-color-scheme:dark){.inline{background:#78350f;color:#fde68a}.internal{background:#1e3a8a;color:#dbeafe}.external{background:#064e3b;color:#d1fae5}}`,
-  js: ``,
+</body>
+</html>`,
+  css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 1rem;
+  margin: 0;
+  background: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+  }
+}
+
+.style-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.type-box {
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .type-box {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.inline {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+@media (prefers-color-scheme: dark) {
+  .inline {
+    background: #78350f;
+    color: #fde68a;
+  }
+}
+
+.internal {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+@media (prefers-color-scheme: dark) {
+  .internal {
+    background: #1e3a8a;
+    color: #dbeafe;
+  }
+}
+
+.external {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+@media (prefers-color-scheme: dark) {
+  .external {
+    background: #064e3b;
+    color: #d1fae5;
+  }
+}
+
+h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+code {
+  display: block;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin: 0.5rem 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  code {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+p {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}`,
+  js: ``
 };
 
 export default function HtmlStyleElement({ onOpenWebPlayground }: HtmlStyleElementProps) {

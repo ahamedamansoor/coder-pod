@@ -11,10 +11,6 @@ interface HtmlVideoElementProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const mdnFlowerMp4 = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-const mdnFlowerWebm = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm';
-const mdnFlowerOgg = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.ogg';
-
 const basicVideoExample = {
   html: `<!DOCTYPE html>
 <html lang="en">
@@ -38,7 +34,7 @@ const basicVideoExample = {
     @media (prefers-color-scheme: dark) { .info { background: #1e3a8a; color: #93c5fd; border-left-color: #3b82f6; } }
     .label { color: #475569; font-weight: bold; font-size: 0.9rem; margin-bottom: 0.5rem; }
     @media (prefers-color-scheme: dark) { .label { color: #cbd5e1; } }
-    ::cue { background: rgba(0, 0, 0, 0.8); color: white; }
+    ::cue { background: rgba(0, 0, 0, 0.8); color: white; font-size: 16px; }
   </style>
 </head>
 <body>
@@ -46,157 +42,79 @@ const basicVideoExample = {
 
 <div class="video-container">
   <h3>1. Basic Video Player</h3>
-  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+  <video width="600" height="360" controls class="video-player" poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&fm=jpg">
     <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-  <p class="info">✅ Click play to watch Big Buck Bunny</p>
+  <p class="info">✅ Click play to watch Big Buck Bunny - Professional animated short</p>
 </div>
 
 <div class="video-container">
-  <h3>2. Multiple Format Support (Fallback)</h3>
-  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+  <h3>2. Multiple Format Support</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&fm=jpg">
     <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
-    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
     Your browser does not support video playback.
   </video>
-  <p class="info">🔄 Browser uses first supported format</p>
+  <p class="info">🔄 Browser uses first supported format - MP4</p>
 </div>
 
 <div class="video-container">
-  <h3>3. Video with Subtitles/Captions</h3>
-  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
-    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-    <track kind="subtitles" src="data:text/vtt;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAzLjAwMApTdWJ0aXRsZSBsaW5lIDEKCjAwOjAwOjAzLjAwMCAtLT4gMDA6MDA6MDYuMDAwClN1YnRpdGxlIGxpbmUgMgoKMDA6MDA6MDYuMDAwIC0tPiAwMDowMDowOS4wMDAKU3VidGl0bGUgbGluZSAzCgowMDowMDowOS4wMDAgLS0+IDAwOjAwOjEyLjAwMApTdWJ0aXRsZSBsaW5lIDQK" srclang="en" label="English">
-    <track kind="captions" src="data:text/vtt;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAzLjAwMApbTXVzaWMgcGxheWluZ10KCjAwOjAwOjAzLjAwMCAtLT4gMDA6MDA6MDYuMDAwClsQb3RlICBncmFzcyBydXN0bGluZ10KCjAwOjAwOjA2LjAwMCAtLT4gMDA6MDA6MDkuMDAwCltCaXJkIGNoaXBpbmddCgowMDowMDowOS4wMDAgLS0+IDAwOjAwOjEyLjAwMApbQ2lyY2xlcyBmcm9tIHNvdW5kd2F2ZXNdCg==" srclang="en" label="Captions">
+  <h3>3. Video with Subtitles</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&fm=jpg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+    <track kind="subtitles" srclang="en" label="English" src="data:text/vtt;charset=utf-8,WEBVTT%0A%0A00:00:00.000 --> 00:00:03.000%0AEnable captions for subtitles%0A%0A00:00:03.000 --> 00:00:06.000%0AClick the CC button in the video player%0A%0A00:00:06.000 --> 00:00:09.000%0ASubtitles help translations of dialogue">
   </video>
-  <p class="info">📝 Click CC button to enable subtitles/captions</p>
+  <p class="info">📝 Click CC button to enable subtitles - Subtitles show translations of dialogue</p>
 </div>
 
 <div class="video-container">
   <h3>4. Autoplay & Loop (Muted)</h3>
-  <video width="600" height="360" autoplay muted loop class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
-    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" type="video/mp4">
+  <video width="600" height="360" autoplay muted loop class="video-player" poster="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&fm=jpg">
+    <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
   </video>
-  <p class="info">⚠️ Autoplay requires muted attribute</p>
+  <p class="info">⚠️ Autoplay requires muted attribute for browsers to allow playback</p>
 </div>
 
 <div class="video-container">
   <h3>5. Preload Strategies</h3>
   <div>
     <p class="label">preload="metadata" - Load only duration info</p>
-    <video width="600" height="360" controls preload="metadata" class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
-      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4">
+    <video width="600" height="360" controls preload="metadata" class="video-player" poster="https://picsum.photos/800/600.jpg">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
     </video>
+    <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem;">Faster initial load - only metadata is cached, video loads on play</p>
   </div>
   <div style="margin-top: 1.5rem;">
     <p class="label">preload="auto" - Load entire video file</p>
-    <video width="600" height="360" controls preload="auto" class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
-      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4">
+    <video width="600" height="360" controls preload="auto" class="video-player" poster="https://picsum.photos/seed/nature/800/600.jpg">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
     </video>
+    <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem;">Downloads entire video in background for instant playback</p>
   </div>
 </div>
 
 <div class="video-container">
-  <h3>6. Multiple Videos with Subtitles</h3>
-  <video width="600" height="360" controls class="video-player" poster="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg">
+  <h3>6. Video with Interactive Subtitles</h3>
+  <video width="600" height="360" controls class="video-player" poster="https://picsum.photos/seed/city/800/600.jpg">
     <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
-    <track kind="subtitles" src="data:text/vtt;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAyLjAwMApBY3Rpb24gc2NlbmUgc3RhcnRzCgowMDowMDowMi4wMDAgLS0+IDAwOjAwOjA0LjAwMApIaWdoLWludGVuc2l0eSBmaWdodAoKMDA6MDA6MDQuMDAwIC0tPiAwMDowMDowNi4wMDAKRHJhbWF0aWMgbW9tZW50CgowMDowMDowNi4wMDAgLS0+IDAwOjAwOjA4LjAwMApDbG91ZHkgc2t5IHNob3Q=" srclang="en" label="English">
+    <track kind="subtitles" srclang="en" label="English" src="data:text/vtt;charset=utf-8,WEBVTT%0A%0A00:00:00.000 --> 00:00:02.000%0AAction sequence begins%0A%0A00:00:02.000 --> 00:00:04.000%0AHigh-intensity cinematic sequence%0A%0A00:00:04.000 --> 00:00:06.000%0AProfessional production quality%0A%0A00:00:06.000 --> 00:00:09.000%0AMultiple subtitle tracks available">
+    <track kind="captions" srclang="en" label="Captions" src="data:text/vtt;charset=utf-8,WEBVTT%0A%0A00:00:00.000 --> 00:00:02.000%0A[Music playing]%0AAction begins%0A%0A00:00:02.000 --> 00:00:04.000%0A[Sound effects]%0AIntense sequence%0A%0A00:00:04.000 --> 00:00:06.000%0A[Dramatic music]%0AFilm quality%0A%0A00:00:06.000 --> 00:00:09.000%0A[Ambient sound]%0AMultiple tracks">
   </video>
-  <p class="info">🌟 High-quality animation with embedded subtitles</p>
+  <p class="info">🎥 Multiple track options - Both Subtitles and Captions available</p>
 </div>
 
 <script>
   // Track video events
   document.querySelectorAll('video').forEach(video => {
-    video.addEventListener('play', function() {
-      console.log('Video playing:', this.src);
-    });
-    video.addEventListener('pause', function() {
-      console.log('Video paused');
-    });
-    video.addEventListener('timeupdate', function() {
-      console.log('Current time:', this.currentTime.toFixed(2) + 's');
-    });
+    video.addEventListener('play', () => console.log('Video playing'));
+    video.addEventListener('pause', () => console.log('Video paused'));
   });
 </script>
 </body>
 </html>`,
   css: ``,
-
-.video-container {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #3b82f6;
-}
-
-@media (prefers-color-scheme: dark) {
-  .video-container {
-    background: #1e293b;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-}
-
-.video-container h3 {
-  color: #3b82f6;
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .video-container h3 {
-    color: #60a5fa;
-  }
-}
-
-.video-player {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 8px;
-  background: #000;
-  display: block;
-  transition: all 0.3s;
-}
-
-.video-player:hover {
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
-}
-
-.info {
-  color: #6b7280;
-  font-size: 0.9rem;
-  margin: 0.75rem 0 0;
-  padding: 0.75rem 1rem;
-  background: #eff6ff;
-  border-radius: 6px;
-  border-left: 3px solid #3b82f6;
-}
-
-@media (prefers-color-scheme: dark) {
-  .info {
-    background: #1e3a8a;
-    color: #93c5fd;
-    border-left-color: #3b82f6;
-  }
-}
-
-.label {
-  color: #475569;
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .label {
-    color: #cbd5e1;
-  }
-}`,
-  js: ''
+  js: ``
 };
 
 export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoElementProps) {
@@ -229,166 +147,15 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
         </CardHeader>
         <CardContent className='space-y-4'>
           <p className='text-sm text-slate-700 dark:text-slate-300'>
-            The <code className='bg-white dark:bg-slate-950 px-2 py-1 rounded border border-blue-200 dark:border-blue-700'>&lt;video&gt;</code> element allows you to embed video files directly in your HTML. It includes support for captions, subtitles, poster images, and full playback controls without requiring any plugins.
+            The <code className='bg-white dark:bg-slate-950 px-2 py-1 rounded border border-blue-200 dark:border-blue-700'>&lt;video&gt;</code> element allows you to embed video files directly in your HTML without requiring plugins. It provides built-in controls for playing, pausing, adjusting volume, and more.
           </p>
           <Alert className='border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20'>
             <Lightbulb className='h-4 w-4 text-blue-600 dark:text-blue-400' />
             <AlertTitle className='text-blue-700 dark:text-blue-300'>Why Use Video Element?</AlertTitle>
             <AlertDescription className='text-blue-600 dark:text-blue-400'>
-              <strong>Plugin-free:</strong> No Flash needed. <strong>Responsive:</strong> Works on all devices. <strong>Accessible:</strong> Supports captions and multiple formats.
+              <strong>Native support:</strong> Works in all modern browsers. <strong>Full control:</strong> Control playback with JavaScript. <strong>Accessible:</strong> Add captions and subtitles for everyone.
             </AlertDescription>
           </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Basic Syntax */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400'>
-            <Code className='w-7 h-7' />
-            Basic Syntax
-          </CardTitle>
-          <CardDescription className='text-base'>How to embed video files</CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700'>
-            <h4 className='font-semibold text-slate-700 dark:text-slate-300 mb-3'>Simple Video Player</h4>
-            <pre className='text-xs bg-white dark:bg-slate-950 p-3 rounded border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-              <code className='text-slate-800 dark:text-slate-200'>{`<video width="640" height="360" controls>
-  <source src="${mdnFlowerMp4}" type="video/mp4">
-  Your browser does not support the video tag.
-</video>`}</code>
-            </pre>
-          </div>
-
-          <div className='grid md:grid-cols-2 gap-4'>
-            <div className='bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border-2 border-blue-200 dark:border-blue-800'>
-              <h4 className='font-semibold text-blue-700 dark:text-blue-300 mb-3'>Tag Structure</h4>
-              <ul className='text-sm space-y-2 text-slate-700 dark:text-slate-300'>
-                <li className='flex items-start gap-2'>
-                  <span className='text-blue-600 font-bold'>→</span>
-                  <span><code className='bg-white dark:bg-slate-950 px-1.5 py-0.5 rounded text-xs'>&lt;video&gt;</code> - Main container</span>
-                </li>
-                <li className='flex items-start gap-2'>
-                  <span className='text-blue-600 font-bold'>→</span>
-                  <span><code className='bg-white dark:bg-slate-950 px-1.5 py-0.5 rounded text-xs'>&lt;source&gt;</code> - Video file & type</span>
-                </li>
-                <li className='flex items-start gap-2'>
-                  <span className='text-blue-600 font-bold'>→</span>
-                  <span><code className='bg-white dark:bg-slate-950 px-1.5 py-0.5 rounded text-xs'>&lt;track&gt;</code> - Captions/subtitles</span>
-                </li>
-                <li className='flex items-start gap-2'>
-                  <span className='text-blue-600 font-bold'>→</span>
-                  <span>Fallback text for old browsers</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className='bg-orange-50 dark:bg-orange-950/20 p-4 rounded-lg border-2 border-orange-200 dark:border-orange-800'>
-              <h4 className='font-semibold text-orange-700 dark:text-orange-300 mb-3'>Best Practice</h4>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                Always set <strong>width and height</strong> to prevent layout shift:
-              </p>
-              <pre className='text-xs bg-white dark:bg-slate-950 p-2 rounded border border-orange-200 dark:border-orange-700 overflow-x-auto'>
-                <code>{`<video width="640" height="360"
-         controls>
-  ...
-</video>`}</code>
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Core Attributes */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400'>
-            <Settings className='w-7 h-7' />
-            Essential Attributes
-          </CardTitle>
-          <CardDescription className='text-base'>Control video playback behavior</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='grid md:grid-cols-2 gap-4'>
-            {/* width & height */}
-            <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700'>
-              <div className='flex items-center gap-2 mb-2'>
-                <Badge className='bg-blue-600'>width / height</Badge>
-              </div>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Video dimensions</strong> (prevents layout shift)
-              </p>
-              <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-                {`width="640" height="360"`}
-              </code>
-            </div>
-
-            {/* controls */}
-            <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700'>
-              <div className='flex items-center gap-2 mb-2'>
-                <Badge className='bg-blue-600'>controls</Badge>
-              </div>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Shows playback controls</strong> (play, pause, timeline)
-              </p>
-              <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-                {`<video controls>`}
-              </code>
-            </div>
-
-            {/* poster */}
-            <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700'>
-              <div className='flex items-center gap-2 mb-2'>
-                <Badge className='bg-emerald-600'>poster</Badge>
-              </div>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Thumbnail image</strong> shown before playback
-              </p>
-              <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-                {`poster="image.jpg"`}
-              </code>
-            </div>
-
-            {/* autoplay */}
-            <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700'>
-              <div className='flex items-center gap-2 mb-2'>
-                <Badge className='bg-emerald-600'>autoplay</Badge>
-              </div>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Starts playing automatically</strong> (requires muted)
-              </p>
-              <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-                {`<video autoplay muted>`}
-              </code>
-            </div>
-
-            {/* loop */}
-            <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700'>
-              <div className='flex items-center gap-2 mb-2'>
-                <Badge className='bg-purple-600'>loop</Badge>
-              </div>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Repeats playback</strong> when video ends
-              </p>
-              <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-                {`<video loop>`}
-              </code>
-            </div>
-
-            {/* preload */}
-            <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700'>
-              <div className='flex items-center gap-2 mb-2'>
-                <Badge className='bg-cyan-600'>preload</Badge>
-              </div>
-              <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Load strategy:</strong> none, metadata, auto
-              </p>
-              <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-                {`preload="metadata"`}
-              </code>
-            </div>
-          </div>
         </CardContent>
       </Card>
 
@@ -397,17 +164,16 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
         <CardHeader>
           <CardTitle className='flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400'>
             <Film className='w-7 h-7' />
-            Supported Video Formats
+            Video Formats & Codec Support
           </CardTitle>
-          <CardDescription className='text-base'>Different file types and codecs</CardDescription>
+          <CardDescription className='text-base'>Different formats for different browsers</CardDescription>
         </CardHeader>
         <CardContent>
           <div className='grid md:grid-cols-3 gap-4'>
-            {/* MP4 */}
             <div className='bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border-2 border-blue-200 dark:border-blue-800'>
-              <h4 className='font-semibold text-blue-700 dark:text-blue-300 mb-2'>MP4</h4>
+              <h4 className='font-semibold text-blue-700 dark:text-blue-300 mb-2'>MP4 (MPEG-4)</h4>
               <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Most compatible</strong> format. H.264 video codec.
+                Most compatible format. H.264 video codec with AAC audio.
               </p>
               <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-blue-200 dark:border-blue-700'>
                 type="video/mp4"
@@ -415,23 +181,21 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
               <p className='text-xs text-blue-600 dark:text-blue-400 mt-2'>✅ Universal support</p>
             </div>
 
-            {/* WebM */}
             <div className='bg-emerald-50 dark:bg-emerald-950/20 p-4 rounded-lg border-2 border-emerald-200 dark:border-emerald-800'>
               <h4 className='font-semibold text-emerald-700 dark:text-emerald-300 mb-2'>WebM</h4>
               <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                <strong>Modern format</strong> with great compression.
+                Open format with VP8/VP9 codec. Better compression than MP4.
               </p>
               <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-emerald-200 dark:border-emerald-700'>
                 type="video/webm"
               </code>
-              <p className='text-xs text-emerald-600 dark:text-emerald-400 mt-2'>⚠️ No IE support</p>
+              <p className='text-xs text-emerald-600 dark:text-emerald-400 mt-2'>⚠️ No Safari/IE support</p>
             </div>
 
-            {/* OGG */}
             <div className='bg-orange-50 dark:bg-orange-950/20 p-4 rounded-lg border-2 border-orange-200 dark:border-orange-800'>
-              <h4 className='font-semibold text-orange-700 dark:text-orange-300 mb-2'>OGG</h4>
+              <h4 className='font-semibold text-orange-700 dark:text-orange-300 mb-2'>OGG (Ogg Theora)</h4>
               <p className='text-sm text-slate-700 dark:text-slate-300 mb-3'>
-                Open format. Theora video codec.
+                Open format with Theora video codec. Good compression.
               </p>
               <code className='text-xs bg-white dark:bg-slate-950 p-2 rounded block border border-orange-200 dark:border-orange-700'>
                 type="video/ogg"
@@ -442,62 +206,43 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
         </CardContent>
       </Card>
 
-      {/* Captions & Subtitles */}
+      {/* Subtitles & Captions */}
       <Card>
         <CardHeader>
           <CardTitle className='flex items-center gap-3 text-2xl text-blue-600 dark:text-blue-400'>
             <Subtitles className='w-7 h-7' />
-            Captions & Subtitles (Track Element)
+            Subtitles & Captions
           </CardTitle>
           <CardDescription className='text-base'>Add text tracks for accessibility</CardDescription>
         </CardHeader>
         <CardContent className='space-y-4'>
-          <div className='bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700'>
-            <h4 className='font-semibold text-slate-700 dark:text-slate-300 mb-3'>Track Element Syntax</h4>
-            <pre className='text-xs bg-white dark:bg-slate-950 p-3 rounded border border-slate-200 dark:border-slate-800 overflow-x-auto'>
-              <code className='text-slate-800 dark:text-slate-200'>{`<video controls>
-  <source src="${mdnFlowerMp4}" type="video/mp4">
-  <track kind="subtitles" src="en.vtt" srclang="en" label="English">
-  <track kind="captions" src="captions.vtt" srclang="en" label="Captions">
-</video>`}</code>
-            </pre>
-          </div>
-
           <div className='grid md:grid-cols-2 gap-4'>
-            {/* Subtitles */}
             <div className='bg-purple-50 dark:bg-purple-950/20 p-4 rounded-lg border-2 border-purple-200 dark:border-purple-800'>
-              <h4 className='font-semibold text-purple-700 dark:text-purple-300 mb-3 flex items-center gap-2'>
-                <Subtitles className='w-4 h-4' />
-                Subtitles
-              </h4>
+              <h4 className='font-semibold text-purple-700 dark:text-purple-300 mb-3'>Subtitles</h4>
               <ul className='text-sm space-y-2 text-slate-700 dark:text-slate-300'>
-                <li>• Translation of dialogue</li>
-                <li>• Shown at bottom of video</li>
-                <li>• For non-native speakers</li>
-                <li>• kind="subtitles"</li>
+                <li>✓ Translation of dialogue</li>
+                <li>✓ Shown at bottom of video</li>
+                <li>✓ For non-native speakers</li>
+                <li>✓ kind="subtitles"</li>
               </ul>
             </div>
 
-            {/* Captions */}
             <div className='bg-emerald-50 dark:bg-emerald-950/20 p-4 rounded-lg border-2 border-emerald-200 dark:border-emerald-800'>
-              <h4 className='font-semibold text-emerald-700 dark:text-emerald-300 mb-3 flex items-center gap-2'>
-                <Subtitles className='w-4 h-4' />
-                Captions
-              </h4>
+              <h4 className='font-semibold text-emerald-700 dark:text-emerald-300 mb-3'>Captions</h4>
               <ul className='text-sm space-y-2 text-slate-700 dark:text-slate-300'>
-                <li>• Dialogue + sound effects</li>
-                <li>• More detailed descriptions</li>
-                <li>• For deaf/hard of hearing</li>
-                <li>• kind="captions"</li>
+                <li>✓ Dialogue + sound effects</li>
+                <li>✓ More detailed descriptions</li>
+                <li>✓ For deaf/hard of hearing</li>
+                <li>✓ kind="captions"</li>
               </ul>
             </div>
           </div>
 
           <Alert className='border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/20'>
             <AlertCircle className='h-4 w-4 text-amber-600 dark:text-amber-400' />
-            <AlertTitle className='text-amber-700 dark:text-amber-300'>VTT File Format</AlertTitle>
+            <AlertTitle className='text-amber-700 dark:text-amber-300'>WebVTT Format</AlertTitle>
             <AlertDescription className='text-amber-600 dark:text-amber-400'>
-              Create <strong>.vtt files</strong> (WebVTT format) for captions. Simple text format with timestamps!
+              Create <strong>.vtt files</strong> (WebVTT format) for captions with timestamps and styling!
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -510,17 +255,17 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
             <Play className='w-7 h-7' />
             See It in Action
           </CardTitle>
-          <CardDescription className='text-base'>Interactive video player examples</CardDescription>
+          <CardDescription className='text-base'>Interactive video player examples with subtitles</CardDescription>
         </CardHeader>
         <CardContent className='space-y-4'>
           <FrontendCodePreview
             title="Video Element Examples"
-            description="Various video configurations with different features"
+            description="Various video configurations with Google Cloud Storage videos and subtitle support"
             html={basicVideoExample.html}
             css={basicVideoExample.css}
             js={basicVideoExample.js}
             colorTheme="blue"
-            previewHeight="1000px"
+            previewHeight="1200px"
             onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
@@ -536,63 +281,31 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
           <CardDescription className='text-base'>Video implementation tips</CardDescription>
         </CardHeader>
         <CardContent className='grid md:grid-cols-2 gap-4'>
-          {/* Do's */}
           <div className='p-5 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border-2 border-emerald-200 dark:border-emerald-700'>
             <h4 className='font-bold text-lg text-emerald-600 dark:text-emerald-400 mb-3 flex items-center gap-2'>
               <CheckCircle className='w-5 h-5' />
               ✅ Do This
             </h4>
             <ul className='space-y-2 text-sm text-slate-700 dark:text-slate-300'>
-              <li className='flex items-start gap-2'>
-                <span className='text-emerald-600 font-bold'>✓</span>
-                <span>Add <strong>width & height</strong> attributes</span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-emerald-600 font-bold'>✓</span>
-                <span>Use <strong>multiple formats</strong> (MP4 + WebM)</span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-emerald-600 font-bold'>✓</span>
-                <span>Add <strong>captions/subtitles</strong></span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-emerald-600 font-bold'>✓</span>
-                <span>Set <strong>poster image</strong></span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-emerald-600 font-bold'>✓</span>
-                <span>Use <strong>muted</strong> with autoplay</span>
-              </li>
+              <li>✓ Add width & height attributes</li>
+              <li>✓ Use multiple formats (MP4 + WebM)</li>
+              <li>✓ Add captions/subtitles</li>
+              <li>✓ Set poster image</li>
+              <li>✓ Use muted with autoplay</li>
             </ul>
           </div>
 
-          {/* Don'ts */}
           <div className='p-5 bg-rose-50 dark:bg-rose-950/20 rounded-xl border-2 border-rose-200 dark:border-rose-700'>
             <h4 className='font-bold text-lg text-rose-600 dark:text-rose-400 mb-3 flex items-center gap-2'>
               <XCircle className='w-5 h-5' />
               ❌ Avoid This
             </h4>
             <ul className='space-y-2 text-sm text-slate-700 dark:text-slate-300'>
-              <li className='flex items-start gap-2'>
-                <span className='text-rose-600 font-bold'>✗</span>
-                <span>Autoplay without <strong>muted</strong></span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-rose-600 font-bold'>✗</span>
-                <span><strong>Very large files</strong></span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-rose-600 font-bold'>✗</span>
-                <span>No <strong>fallback content</strong></span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-rose-600 font-bold'>✗</span>
-                <span><strong>Missing poster image</strong></span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-rose-600 font-bold'>✗</span>
-                <span>Only <strong>one video format</strong></span>
-              </li>
+              <li>✗ Autoplay without muted</li>
+              <li>✗ Very large files ({'>'}100MB)</li>
+              <li>✗ No fallback content</li>
+              <li>✗ Missing poster image</li>
+              <li>✗ Only one video format</li>
             </ul>
           </div>
         </CardContent>
@@ -602,11 +315,11 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
       {onOpenWebPlayground && (
         <InteractivePlayground
           title="🚀 Try It Yourself"
-          description="Create your own video player with captions and experiment with attributes!"
+          description="Create your own video player with subtitles!"
           features={[
             'Build custom video players',
-            'Add captions and subtitles',
-            'Test different formats',
+            'Add multiple video sources',
+            'Create subtitle tracks',
             'Control playback options'
           ]}
           buttonText="Open Playground"
@@ -618,3 +331,4 @@ export default function HtmlVideoElement({ onOpenWebPlayground }: HtmlVideoEleme
     </div>
   );
 }
+

@@ -11,43 +11,44 @@ interface HtmlNumberInputsProps {
 }
 
 const numberPlayground = {
-  html: `<form class="number-pane">
-  <label for="quantity">Quantity (0-100):</label>
-  <input type="number" id="quantity" name="quantity" min="0" max="100" step="5" value="50" />
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Inputs</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    @media (prefers-color-scheme: dark) { body { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); } }
+    .number-pane { background: white; max-width: 520px; margin: 0 auto; padding: 2rem; border-radius: 1rem; box-shadow: 0 12px 24px rgba(15, 23, 42, 0.15); display: grid; gap: 1rem; }
+    @media (prefers-color-scheme: dark) { .number-pane { background: #1e293b; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); } }
+    .number-pane label { font-weight: 600; color: #1e293b; }
+    @media (prefers-color-scheme: dark) { .number-pane label { color: #f1f5f9; } }
+    .number-pane input { width: 100%; padding: 0.85rem 0.9rem; border-radius: 0.75rem; border: 2px solid #cbd5e1; font-size: 1rem; background: #f8fafc; color: #1e293b; }
+    @media (prefers-color-scheme: dark) { .number-pane input { background: #0f172a; color: #f1f5f9; border-color: #475569; } }
+    .number-pane input[type="range"] { padding: 0; accent-color: #4f46e5; cursor: pointer; }
+    @media (prefers-color-scheme: dark) { .number-pane input[type="range"] { accent-color: #6366f1; } }
+    .number-pane input:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+    @media (prefers-color-scheme: dark) { .number-pane input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); } }
+    .number-pane input:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <form class="number-pane">
+    <label for="quantity">Quantity (0-100):</label>
+    <input type="number" id="quantity" name="quantity" min="0" max="100" step="5" value="50" />
 
-  <label for="range">Range slider</label>
-  <input type="range" id="range" name="range" min="0" max="100" value="75" />
+    <label for="range">Range slider</label>
+    <input type="range" id="range" name="range" min="0" max="100" value="75" />
 
-  <label>Disabled number control</label>
-  <input type="number" disabled value="42" />
-</form>`,
-  css: `.number-pane {
-  background: white;
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.15);
-  display: grid;
-  gap: 1rem;
-}
-.number-pane label {
-  font-weight: 600;
-  color: #1e293b;
-}
-.number-pane input {
-  width: 100%;
-  padding: 0.85rem 0.9rem;
-  border-radius: 0.75rem;
-  border: 2px solid #cbd5f5;
-  font-size: 1rem;
-  background: #f8fafc;
-}
-.number-pane input[type="range"] {
-  padding: 0;
-  accent-color: #4f46e5;
-}`,
-  js: ''
+    <label>Disabled number control</label>
+    <input type="number" disabled value="42" />
+  </form>
+</body>
+</html>`,
+  css: ``,
+  js: ``
 };
 
 export default function HtmlNumberInputs({ onOpenWebPlayground }: HtmlNumberInputsProps) {
