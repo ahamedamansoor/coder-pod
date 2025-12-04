@@ -2,6 +2,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -665,15 +666,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Link className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Combinators</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master element relationships and targeting with descendant, child, sibling, and adjacent selectors.
-                </p>
-            </div>
+            <PageHeader
+                icon={Link}
+                category="CSS · Advanced Selectors"
+                title="Combinators"
+                description="Master element relationships and targeting with descendant, child, sibling, and adjacent selectors"
+                colorTheme="blue"
+            />
 
             {/* Combinator Types Overview */}
             <Card>

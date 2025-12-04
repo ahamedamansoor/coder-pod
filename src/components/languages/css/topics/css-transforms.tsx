@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { 
     Play, Move, RotateCcw, Maximize, Target, Code, Zap, Settings, 
     CheckCircle, AlertTriangle, Palette, Eye, MousePointer, ArrowRight,
@@ -293,15 +294,13 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Move className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Transforms</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Transform elements in 2D and 3D space - move, rotate, scale, and skew with precision.
-                </p>
-            </div>
+            <PageHeader
+                icon={Move}
+                category="CSS · Animations & Effects"
+                title="CSS Transforms"
+                description="Move, rotate, scale, and skew elements in 2D space with crisp control."
+                colorTheme="blue"
+            />
 
             {/* What are CSS Transforms? */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">

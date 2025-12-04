@@ -38,9 +38,7 @@ export const css: Language = {
     { slug: 'css-combinators', title: 'Combinators', explanation: 'Descendant ( ), child (>), adjacent sibling (+), general sibling (~) combinators.', category: 'Advanced Selectors' },
     { slug: 'css-attribute-selectors', title: 'Attribute Selectors', explanation: '[attr], [attr=value], [attr~=value], [attr|=value], [attr^=value], [attr$=value], [attr*=value].', category: 'Advanced Selectors' },
     { slug: 'css-pseudo-classes', title: 'Pseudo-classes', explanation: ':hover, :focus, :active, :visited, :nth-child, :nth-of-type, :first-child, :last-child, :only-child.', category: 'Advanced Selectors' },
-    { slug: 'modern-pseudo-classes', title: 'Modern Pseudo-classes', explanation: ':has(), :is(), :where(), :not(), :focus-visible, :focus-within, :placeholder-shown, :user-invalid.', category: 'Advanced Selectors' },
     { slug: 'css-pseudo-elements', title: 'Pseudo-elements', explanation: '::before, ::after, ::first-line, ::first-letter, ::selection, ::marker, ::placeholder.', category: 'Advanced Selectors' },
-    { slug: 'modern-pseudo-elements', title: 'Modern Pseudo-elements', explanation: '::backdrop, ::cue, ::part(), ::slotted(), ::file-selector-button.', category: 'Advanced Selectors' },
     
     // MODERN LAYOUT
     { slug: 'css-flexbox', title: 'Flexbox', explanation: 'Flex containers, flex items, flex-direction, flex-wrap, flex-grow/shrink/basis, gap, alignment properties.', category: 'Modern Layout' },
@@ -53,18 +51,14 @@ export const css: Language = {
     // RESPONSIVE DESIGN
     { slug: 'css-responsive-design', title: 'Responsive Design', explanation: 'Mobile-first approach, fluid layouts, flexible images, responsive typography, and viewport units.', category: 'Responsive Design' },
     { slug: 'css-media-queries', title: 'Media Queries', explanation: 'Media types, media features (width, height, orientation), print styles, and responsive strategies.', category: 'Responsive Design' },
-    { slug: 'modern-media-queries', title: 'Modern Media Queries', explanation: 'prefers-color-scheme, prefers-reduced-motion, prefers-contrast, hover capability, and user preferences.', category: 'Responsive Design' },
     { slug: 'css-container-queries', title: 'Container Queries', explanation: '@container rules, container-type, container-name, and element-based responsive design.', category: 'Responsive Design' },
     { slug: 'css-aspect-ratio', title: 'Aspect Ratio', explanation: 'aspect-ratio property, maintaining ratios for images/videos, and responsive aspect ratios.', category: 'Responsive Design' },
-    { slug: 'modern-responsive-units', title: 'Modern Responsive Units', explanation: 'clamp(), min(), max(), dvh/lvh/svh viewport units, and fluid design techniques.', category: 'Responsive Design' },
+    { slug: 'css-responsive-units', title: 'Modern Responsive Units', explanation: 'clamp(), min(), max(), dvh/lvh/svh viewport units, and fluid design techniques.', category: 'Responsive Design' },
     
     // ANIMATIONS & EFFECTS
     { slug: 'css-transitions', title: 'Transitions', explanation: 'Transition properties, duration, timing functions (ease, cubic-bezier), delays, and smooth interactions.', category: 'Animations & Effects' },
     { slug: 'css-animations', title: 'Animations', explanation: 'Keyframe animations (@keyframes), animation properties, iteration count, direction, and fill-mode.', category: 'Animations & Effects' },
     { slug: 'css-transforms', title: 'Transforms', explanation: '2D transforms (translate, rotate, scale, skew), transform-origin, and matrix transformations.', category: 'Animations & Effects' },
-    { slug: 'css-3d-transforms', title: '3D Transforms', explanation: 'perspective, transform-style: preserve-3d, translateZ, rotateX/Y/Z, and 3D transform techniques.', category: 'Animations & Effects' },
-    { slug: 'scroll-animations', title: 'Scroll Animations', explanation: 'animation-timeline, scroll-timeline, view-timeline, and scroll-driven animations.', category: 'Animations & Effects' },
-    { slug: 'view-transitions', title: 'View Transitions API', explanation: 'view-transition-name, startViewTransition(), and smooth page transitions.', category: 'Animations & Effects' },
     
     // VISUAL EFFECTS
     { slug: 'css-filters', title: 'Filters', explanation: 'blur(), brightness(), contrast(), grayscale(), hue-rotate(), saturate(), sepia(), drop-shadow().', category: 'Visual Effects' },

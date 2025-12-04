@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -873,15 +874,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Target className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Attribute Selectors</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Target elements based on their attributes and values with powerful and flexible selectors.
-                </p>
-            </div>
+            <PageHeader
+                icon={Target}
+                category="CSS · Advanced Selectors"
+                title="Attribute Selectors"
+                description="Target elements based on their attributes and values with powerful and flexible selectors"
+                colorTheme="blue"
+            />
 
             {/* Attribute Selector Types Overview */}
             <Card>

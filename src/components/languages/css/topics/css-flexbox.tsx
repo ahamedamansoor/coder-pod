@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -769,15 +770,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Layout className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Flexbox</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master modern one-dimensional layouts with comprehensive flexbox techniques and interactive examples.
-                </p>
-            </div>
+            <PageHeader
+                icon={Layout}
+                category="CSS · Modern Layout"
+                title="CSS Flexbox"
+                description="Master modern one-dimensional layouts with comprehensive flexbox techniques and interactive examples"
+                colorTheme="blue"
+            />
 
             {/* Live Flex Direction Demo */}
             <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/20">
@@ -1248,7 +1247,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         {/* Card Grid with Equal Heights */}
                         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
                             <h4 className="font-semibold mb-3">Equal Height Cards</h4>
-                            <div className="flex gap-4">
+                            <div className="flex flex-wrap gap-4">
                                 <div className="flex-1 bg-gradient-to-br from-blue-500 to-purple-600 text-white p-4 rounded-lg">
                                     <h5 className="font-bold mb-2">Card 1</h5>
                                     <p className="text-sm">Short content here.</p>

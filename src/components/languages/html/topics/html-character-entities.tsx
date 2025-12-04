@@ -1,8 +1,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Key, Play, AlertCircle, Sigma, DollarSign, Pilcrow } from 'lucide-react';
+import { Key, AlertCircle, Sigma, DollarSign, Pilcrow } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
@@ -82,8 +81,137 @@ export default function HtmlCharacterEntities({ onOpenWebPlaygroundAction, onOpe
     ];
 
     const playgroundCode = {
-        html: `<!-- Character Entities Playground -->\n<h2>Reserved & Escaped</h2>\n<p>Show literal tags: <code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;</code></p>\n<h2>Math & Currency</h2>\n<p>5 &times; 6 = 30 &nbsp; | &nbsp; Profit &ge; Cost &nbsp; | &nbsp; Price: 12&yen; / 10&euro;</p>\n<h2>Whitespace Control</h2>\n<p>Normal spaces collapse: A B C</p>\n<p>With non-breaking: A&nbsp;B&nbsp;C (no wrap)</p>\n<h2>Typography</h2>\n<p>&ldquo;Smart quotes&rdquo; vs "straight quotes" &mdash; choose based on context.</p>\n<h2>Arrows & Indicators</h2>\n<p>Navigate &larr; Back | Forward &rarr; | Double &rArr;</p>\n<h2>International</h2>\n<p>Crème brûlée, Piñata, façade, coöperate, Straße.</p>`,
-        css: `body { font-family: system-ui; line-height:1.6; padding:1rem; }\nh2 { margin-top:1.5rem; font-size:1.15rem; border-bottom:1px solid #e2e8f0; padding-bottom:4px; }\ncode { background:#f1f5f9; padding:2px 6px; border-radius:4px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }\np { margin:.5rem 0; }`,
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Entities Playground</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      line-height: 1.6;
+      padding: 2rem;
+      background: #f5f7fa;
+      color: #1e293b;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+    }
+    
+    h2 {
+      margin-top: 1.5rem;
+      font-size: 1.25rem;
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 0.5rem;
+      color: #3b82f6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h2 {
+        border-bottom-color: #60a5fa;
+        color: #60a5fa;
+      }
+    }
+    
+    code {
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.875rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      code {
+        background: #1e3a8a;
+        color: #bfdbfe;
+      }
+    }
+    
+    p {
+      margin: 0.75rem 0;
+      color: #475569;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      p {
+        color: #cbd5e1;
+      }
+    }
+    
+    .section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .section {
+        background: #1e293b;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 style="color: #3b82f6; text-align: center; margin-bottom: 2rem;">Character Entities Playground</h1>
+  
+  <div class="section">
+    <h2>Reserved & Escaped</h2>
+    <p>Show literal tags: <code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;</code></p>
+    <p>R&amp;D (Research &amp; Development)</p>
+    <p>Quote: &quot;Hello World&quot;</p>
+  </div>
+  
+  <div class="section">
+    <h2>Math & Currency</h2>
+    <p>5 &times; 6 = 30 (multiplication)</p>
+    <p>10 &divide; 2 = 5 (division)</p>
+    <p>Profit &ge; Cost &nbsp;|&nbsp; x &le; 10</p>
+    <p>Price: 12&yen; / 10&euro; / &pound;5.99</p>
+    <p>Copyright &copy; 2025</p>
+  </div>
+  
+  <div class="section">
+    <h2>Whitespace Control</h2>
+    <p>Normal spaces collapse:  A    B    C  </p>
+    <p>With non-breaking: A&nbsp;B&nbsp;C (no wrap)</p>
+    <p>Phone: 1&nbsp;800&nbsp;123&nbsp;4567</p>
+  </div>
+  
+  <div class="section">
+    <h2>Typography</h2>
+    <p>&ldquo;Smart quotes&rdquo; vs "straight quotes"</p>
+    <p>Em dash &mdash; connects clauses</p>
+    <p>En dash for ranges: 2010&ndash;2020</p>
+    <p>Ellipsis&hellip; trailing thoughts</p>
+  </div>
+  
+  <div class="section">
+    <h2>Arrows & Indicators</h2>
+    <p>Navigate &larr; Back | Forward &rarr;</p>
+    <p>&uarr; Scroll Up | Down &darr;</p>
+    <p>If A &rArr; B (implies)</p>
+  </div>
+  
+  <div class="section">
+    <h2>International Characters</h2>
+    <p>Crème brûlée, Piñata, façade</p>
+    <p>Straße, coöperate, naïve</p>
+    <p>é, ñ, ü, ø, æ</p>
+  </div>
+</body>
+</html>`,
+        css: '',
         js: ''
     };
     
@@ -197,29 +325,26 @@ export default function HtmlCharacterEntities({ onOpenWebPlaygroundAction, onOpe
               <FrontendCodePreview
                 title="1. Reserved Characters"
                 description="Escaping HTML special characters to display them literally"
-              html={`<h2>Displaying HTML Code</h2>
-<p class="code-example">
-  HTML tag: <code>&lt;div class=&quot;box&quot;&gt;Content&lt;/div&gt;</code>
-</p>
-<p>Use <code>&amp;lt;</code> and <code>&amp;gt;</code> to show literal angle brackets!</p>
-
-<h2>Attribute Quotes</h2>
-<p>Attribute with quotes: <code>data-text=&quot;Hello World&quot;</code></p>
-<p>Single quote: <code>It&apos;s working!</code></p>
-
-<h2>Ampersand</h2>
-<p>R&amp;D (Research &amp; Development)</p>
-<p>AT&amp;T Corporation</p>
-
-<p class="note">✅ Always escape <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>&quot;</code> in text content!</p>`}
-              css={`body {
+              html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserved Characters</title>
+  <style>
+    body {
   font-family: system-ui, sans-serif;
   padding: 2rem;
   background: #f5f7fa;
+  color: #1e293b;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: #0f172a;
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
 }
 
 h2 {
@@ -228,8 +353,10 @@ h2 {
   margin: 1.5rem 0 0.75rem 0;
 }
 
-html.dark h2 {
-  color: #60a5fa;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #60a5fa;
+  }
 }
 
 p {
@@ -237,8 +364,10 @@ p {
   color: #475569;
 }
 
-html.dark p {
-  color: #cbd5e1;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #cbd5e1;
+  }
 }
 
 .code-example {
@@ -249,8 +378,10 @@ html.dark p {
   margin-bottom: 0.75rem;
 }
 
-html.dark .code-example {
-  background: #1e3a8a;
+@media (prefers-color-scheme: dark) {
+  .code-example {
+    background: #1e3a8a;
+  }
 }
 
 code {
@@ -262,9 +393,11 @@ code {
   font-size: 0.875rem;
 }
 
-html.dark code {
-  background: #312e81;
-  color: #c7d2fe;
+@media (prefers-color-scheme: dark) {
+  code {
+    background: #312e81;
+    color: #c7d2fe;
+  }
 }
 
 .note {
@@ -276,10 +409,33 @@ html.dark code {
   font-size: 0.9rem;
 }
 
-html.dark .note {
-  background: #1e3a8a;
-  color: #93c5fd;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: #1e3a8a;
+    color: #93c5fd;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>Displaying HTML Code</h2>
+  <p class="code-example">
+    HTML tag: <code>&lt;div class=&quot;box&quot;&gt;Content&lt;/div&gt;</code>
+  </p>
+  <p>Use <code>&amp;lt;</code> and <code>&amp;gt;</code> to show literal angle brackets!</p>
+
+  <h2>Attribute Quotes</h2>
+  <p>Attribute with quotes: <code>data-text=&quot;Hello World&quot;</code></p>
+  <p>Single quote: <code>It&apos;s working!</code></p>
+
+  <h2>Ampersand</h2>
+  <p>R&amp;D (Research &amp; Development)</p>
+  <p>AT&amp;T Corporation</p>
+
+  <p class="note">✅ Always escape <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>&quot;</code> in text content!</p>
+</body>
+</html>`}
+                css=""
                 colorTheme="blue"
                 icon={AlertCircle}
                 previewHeight="400px"
@@ -293,29 +449,26 @@ html.dark .note {
               <FrontendCodePreview
                 title="2. Mathematical Symbols"
                 description="Display mathematical operations and comparisons"
-                html={`<h2>Basic Operations</h2>
-<p>5 &times; 6 = 30 (multiplication)</p>
-<p>10 &divide; 2 = 5 (division)</p>
-<p>x &plusmn; 2 (plus or minus)</p>
-
-<h2>Comparisons</h2>
-<p>x &ge; 5 (greater than or equal)</p>
-<p>y &le; 10 (less than or equal)</p>
-<p>a &ne; b (not equal)</p>
-
-<h2>Other Symbols</h2>
-<p>Temperature: 25&deg;C or 77&deg;F</p>
-<p>Angle: 90&deg; (right angle)</p>
-
-<p class="note">➗ Use math entities for clear, semantic mathematical expressions</p>`}
-                css={`body {
+                html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mathematical Symbols</title>
+  <style>
+    body {
   font-family: system-ui, sans-serif;
   padding: 2rem;
   background: #f5f7fa;
+  color: #1e293b;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: #0f172a;
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
 }
 
 h2 {
@@ -324,8 +477,10 @@ h2 {
   margin: 1.5rem 0 0.75rem 0;
 }
 
-html.dark h2 {
-  color: #a78bfa;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #a78bfa;
+  }
 }
 
 p {
@@ -334,8 +489,10 @@ p {
   font-size: 1.05rem;
 }
 
-html.dark p {
-  color: #cbd5e1;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #cbd5e1;
+  }
 }
 
 .note {
@@ -347,10 +504,33 @@ html.dark p {
   font-size: 0.9rem;
 }
 
-html.dark .note {
-  background: #581c87;
-  color: #e9d5ff;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: #581c87;
+    color: #e9d5ff;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>Basic Operations</h2>
+  <p>5 &times; 6 = 30 (multiplication)</p>
+  <p>10 &divide; 2 = 5 (division)</p>
+  <p>x &plusmn; 2 (plus or minus)</p>
+
+  <h2>Comparisons</h2>
+  <p>x &ge; 5 (greater than or equal)</p>
+  <p>y &le; 10 (less than or equal)</p>
+  <p>a &ne; b (not equal)</p>
+
+  <h2>Other Symbols</h2>
+  <p>Temperature: 25&deg;C or 77&deg;F</p>
+  <p>Angle: 90&deg; (right angle)</p>
+
+  <p class="note">➗ Use math entities for clear, semantic mathematical expressions</p>
+</body>
+</html>`}
+                css=""
                 colorTheme="purple"
                 icon={Sigma}
                 previewHeight="450px"
@@ -364,26 +544,26 @@ html.dark .note {
               <FrontendCodePreview
                 title="3. Currency & Trademark Symbols"
                 description="Display currency symbols and legal marks"
-                html={`<h2>Currency Symbols</h2>
-<p>Price: &euro;99.99 (Euro)</p>
-<p>Cost: &yen;10,000 (Yen)</p>
-<p>Total: &pound;75.50 (Pound Sterling)</p>
-<p>Sale: 50&cent; off!</p>
-
-<h2>Legal & Trademark</h2>
-<p>Copyright &copy; 2025 Company Name</p>
-<p>MyBrand&reg; (Registered Trademark)</p>
-<p>NewProduct&trade; (Trademark)</p>
-
-<p class="note">💰 Use proper currency symbols for international audiences</p>`}
-                css={`body {
+                html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency & Trademark</title>
+  <style>
+    body {
   font-family: system-ui, sans-serif;
   padding: 2rem;
   background: #f5f7fa;
+  color: #1e293b;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: #0f172a;
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
 }
 
 h2 {
@@ -392,8 +572,10 @@ h2 {
   margin: 1.5rem 0 0.75rem 0;
 }
 
-html.dark h2 {
-  color: #fbbf24;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #fbbf24;
+  }
 }
 
 p {
@@ -402,8 +584,10 @@ p {
   font-size: 1.05rem;
 }
 
-html.dark p {
-  color: #cbd5e1;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #cbd5e1;
+  }
 }
 
 .note {
@@ -415,10 +599,30 @@ html.dark p {
   font-size: 0.9rem;
 }
 
-html.dark .note {
-  background: #713f12;
-  color: #fef3c7;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: #713f12;
+    color: #fef3c7;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>Currency Symbols</h2>
+  <p>Price: &euro;99.99 (Euro)</p>
+  <p>Cost: &yen;10,000 (Yen)</p>
+  <p>Total: &pound;75.50 (Pound Sterling)</p>
+  <p>Sale: 50&cent; off!</p>
+
+  <h2>Legal & Trademark</h2>
+  <p>Copyright &copy; 2025 Company Name</p>
+  <p>MyBrand&reg; (Registered Trademark)</p>
+  <p>NewProduct&trade; (Trademark)</p>
+
+  <p class="note">💰 Use proper currency symbols for international audiences</p>
+</body>
+</html>`}
+                css=""
                 colorTheme="amber"
                 icon={DollarSign}
                 previewHeight="400px"
@@ -432,30 +636,27 @@ html.dark .note {
               <FrontendCodePreview
                 title="4. Smart Typography"
                 description="Professional quotes, dashes, and punctuation"
-                html={`<h2>Smart Quotes</h2>
-<p>&ldquo;Smart quotes&rdquo; look better than "straight quotes"</p>
-<p>&lsquo;Single quotes&rsquo; also available</p>
-
-<h2>Dashes</h2>
-<p>Em dash &mdash; connects independent clauses</p>
-<p>En dash &ndash; for ranges (2010&ndash;2020)</p>
-<p>Regular hyphen - for compound words</p>
-
-<h2>Special Punctuation</h2>
-<p>Ellipsis&hellip; for trailing thoughts</p>
-<p>&sect; Section sign</p>
-<p>&para; Paragraph mark</p>
-
-<p class="note">✨ Smart typography makes content look more professional</p>`}
-                css={`body {
+                html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Typography</title>
+  <style>
+    body {
   font-family: Georgia, serif;
   padding: 2rem;
   background: #f5f7fa;
+  color: #1e293b;
   line-height: 1.8;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: #0f172a;
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
 }
 
 h2 {
@@ -464,8 +665,10 @@ h2 {
   margin: 1.5rem 0 0.75rem 0;
 }
 
-html.dark h2 {
-  color: #22d3ee;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #22d3ee;
+  }
 }
 
 p {
@@ -474,8 +677,10 @@ p {
   font-size: 1.05rem;
 }
 
-html.dark p {
-  color: #cbd5e1;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #cbd5e1;
+  }
 }
 
 .note {
@@ -488,10 +693,33 @@ html.dark p {
   font-family: system-ui, sans-serif;
 }
 
-html.dark .note {
-  background: #164e63;
-  color: #cffafe;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: #164e63;
+    color: #cffafe;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>Smart Quotes</h2>
+  <p>&ldquo;Smart quotes&rdquo; look better than "straight quotes"</p>
+  <p>&lsquo;Single quotes&rsquo; also available</p>
+
+  <h2>Dashes</h2>
+  <p>Em dash &mdash; connects independent clauses</p>
+  <p>En dash &ndash; for ranges (2010&ndash;2020)</p>
+  <p>Regular hyphen - for compound words</p>
+
+  <h2>Special Punctuation</h2>
+  <p>Ellipsis&hellip; for trailing thoughts</p>
+  <p>&sect; Section sign</p>
+  <p>&para; Paragraph mark</p>
+
+  <p class="note">✨ Smart typography makes content look more professional</p>
+</body>
+</html>`}
+                css=""
                 colorTheme="cyan"
                 icon={Pilcrow}
                 previewHeight="500px"
@@ -505,28 +733,26 @@ html.dark .note {
               <FrontendCodePreview
                 title="5. Directional Arrows"
                 description="Navigation and logical operators with arrows"
-                html={`<h2>Basic Directions</h2>
-<p>&larr; Go Back | Forward &rarr;</p>
-<p>&uarr; Scroll Up | Down &darr;</p>
-
-<h2>Double Arrows (Implications)</h2>
-<p>If A then B &rArr; (implies)</p>
-<p>&lArr; Reverse implication</p>
-<p>A &hArr; B (if and only if)</p>
-
-<h2>Navigation Examples</h2>
-<p>&larr; Previous | Next &rarr;</p>
-<p>↑ Top | ↓ Bottom</p>
-
-<p class="note">➡️ Perfect for navigation, logic, and flow diagrams</p>`}
-                css={`body {
+                html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directional Arrows</title>
+  <style>
+    body {
   font-family: system-ui, sans-serif;
   padding: 2rem;
   background: #f5f7fa;
+  color: #1e293b;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: #0f172a;
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
 }
 
 h2 {
@@ -535,8 +761,10 @@ h2 {
   margin: 1.5rem 0 0.75rem 0;
 }
 
-html.dark h2 {
-  color: #34d399;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #34d399;
+  }
 }
 
 p {
@@ -546,8 +774,10 @@ p {
   text-align: center;
 }
 
-html.dark p {
-  color: #cbd5e1;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #cbd5e1;
+  }
 }
 
 .note {
@@ -560,10 +790,32 @@ html.dark p {
   text-align: left;
 }
 
-html.dark .note {
-  background: #064e3b;
-  color: #a7f3d0;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: #064e3b;
+    color: #a7f3d0;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>Basic Directions</h2>
+  <p>&larr; Go Back | Forward &rarr;</p>
+  <p>&uarr; Scroll Up | Down &darr;</p>
+
+  <h2>Double Arrows (Implications)</h2>
+  <p>If A then B &rArr; (implies)</p>
+  <p>&lArr; Reverse implication</p>
+  <p>A &hArr; B (if and only if)</p>
+
+  <h2>Navigation Examples</h2>
+  <p>&larr; Previous | Next &rarr;</p>
+  <p>↑ Top | ↓ Bottom</p>
+
+  <p class="note">➡️ Perfect for navigation, logic, and flow diagrams</p>
+</body>
+</html>`}
+                css=""
                 colorTheme="emerald"
                 icon={Key}
                 previewHeight="450px"
@@ -577,30 +829,26 @@ html.dark .note {
               <FrontendCodePreview
                 title="6. Whitespace Control"
                 description="Non-breaking spaces for units and proper wrapping"
-                html={`<h2>Normal Spaces (Collapse)</h2>
-<p>Multiple    spaces    collapse    into    one</p>
-<p>A B C D E (normal wrapping)</p>
-
-<h2>Non-Breaking Spaces</h2>
-<p>Weight: 10&nbsp;kg (stays together)</p>
-<p>Company: Apple&nbsp;Inc. (no break)</p>
-<p>Date: January&nbsp;15,&nbsp;2025</p>
-<p>Phone: 1&nbsp;800&nbsp;123&nbsp;4567</p>
-
-<h2>When to Use</h2>
-<p>Units: 100&nbsp;mph, 25&nbsp;°C</p>
-<p>Names: Dr.&nbsp;Smith, Mr.&nbsp;Johnson</p>
-<p>Numbers: $&nbsp;1,234.56</p>
-
-<p class="note">🔒 Non-breaking spaces prevent awkward line breaks in units and names</p>`}
-                css={`body {
+                html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whitespace Control</title>
+  <style>
+    body {
   font-family: system-ui, sans-serif;
   padding: 2rem;
   background: #f5f7fa;
+  color: #1e293b;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: #0f172a;
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
 }
 
 h2 {
@@ -609,8 +857,10 @@ h2 {
   margin: 1.5rem 0 0.75rem 0;
 }
 
-html.dark h2 {
-  color: #f472b6;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #f472b6;
+  }
 }
 
 p {
@@ -619,8 +869,10 @@ p {
   font-size: 1.05rem;
 }
 
-html.dark p {
-  color: #cbd5e1;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #cbd5e1;
+  }
 }
 
 .note {
@@ -632,10 +884,34 @@ html.dark p {
   font-size: 0.9rem;
 }
 
-html.dark .note {
-  background: #831843;
-  color: #fecdd3;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: #831843;
+    color: #fecdd3;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>Normal Spaces (Collapse)</h2>
+  <p>Multiple    spaces    collapse    into    one</p>
+  <p>A B C D E (normal wrapping)</p>
+
+  <h2>Non-Breaking Spaces</h2>
+  <p>Weight: 10&nbsp;kg (stays together)</p>
+  <p>Company: Apple&nbsp;Inc. (no break)</p>
+  <p>Date: January&nbsp;15,&nbsp;2025</p>
+  <p>Phone: 1&nbsp;800&nbsp;123&nbsp;4567</p>
+
+  <h2>When to Use</h2>
+  <p>Units: 100&nbsp;mph, 25&nbsp;°C</p>
+  <p>Names: Dr.&nbsp;Smith, Mr.&nbsp;Johnson</p>
+  <p>Numbers: $&nbsp;1,234.56</p>
+
+  <p class="note">🔒 Non-breaking spaces prevent awkward line breaks in units and names</p>
+</body>
+</html>`}
+                css=""
                 colorTheme="pink"
                 icon={Key}
                 previewHeight="550px"
@@ -834,32 +1110,26 @@ html.dark .note {
             <FrontendCodePreview
               title="7. International & Accented Characters"
               description="Display accented letters and international text using entities"
-              html={`<h2>European Languages</h2>
-<p>&Aacute;lbum (Spanish) - Musical recording</p>
-<p>Caf&eacute; (French) - Coffee house</p>
-<p>Na&iuml;ve (French) - Lacking experience</p>
-<p>M&uuml;nchen (German) - City in Bavaria</p>
-
-<h2>Scandinavian Letters</h2>
-<p>&Oslash;resund (Danish/Swedish) - Strait/Bridge</p>
-<p>&Aring;rhus (Danish) - City in Denmark</p>
-
-<h2>German Special</h2>
-<p>Stra&szlig;e (German) - Street</p>
-
-<h2>Ligatures</h2>
-<p>&AElig; (Ash ligature)</p>
-<p>&oelig; (oe ligature)</p>
-
-<p class="note">🌍 Modern best practice: Use UTF-8 directly instead of entities for international text</p>`}
-              css={`body {
+              html={`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>International Characters</title>
+  <style>
+    body {
   font-family: 'Segoe UI', system-ui, sans-serif;
   padding: 2rem;
   background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 100%);
+  color: #581c87;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-html.dark body {
-  background: linear-gradient(135deg, #2d1b69 0%, #3d0d54 100%);
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #2d1b69 0%, #3d0d54 100%);
+    color: #f3e8ff;
+  }
 }
 
 h2 {
@@ -870,9 +1140,11 @@ h2 {
   padding-bottom: 0.5rem;
 }
 
-html.dark h2 {
-  color: #f472b6;
-  border-bottom-color: #5b21b6;
+@media (prefers-color-scheme: dark) {
+  h2 {
+    color: #f472b6;
+    border-bottom-color: #5b21b6;
+  }
 }
 
 p {
@@ -881,8 +1153,10 @@ p {
   font-size: 1.05rem;
 }
 
-html.dark p {
-  color: #f3e8ff;
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #f3e8ff;
+  }
 }
 
 .note {
@@ -895,10 +1169,36 @@ html.dark p {
   font-size: 0.9rem;
 }
 
-html.dark .note {
-  background: rgba(236, 72, 153, 0.2);
-  color: #fbcfe8;
-}`}
+@media (prefers-color-scheme: dark) {
+  .note {
+    background: rgba(236, 72, 153, 0.2);
+    color: #fbcfe8;
+  }
+}
+  </style>
+</head>
+<body>
+  <h2>European Languages</h2>
+  <p>&Aacute;lbum (Spanish) - Musical recording</p>
+  <p>Caf&eacute; (French) - Coffee house</p>
+  <p>Na&iuml;ve (French) - Lacking experience</p>
+  <p>M&uuml;nchen (German) - City in Bavaria</p>
+
+  <h2>Scandinavian Letters</h2>
+  <p>&Oslash;resund (Danish/Swedish) - Strait/Bridge</p>
+  <p>&Aring;rhus (Danish) - City in Denmark</p>
+
+  <h2>German Special</h2>
+  <p>Stra&szlig;e (German) - Street</p>
+
+  <h2>Ligatures</h2>
+  <p>&AElig; (Ash ligature)</p>
+  <p>&oelig; (oe ligature)</p>
+
+  <p class="note">🌍 Modern best practice: Use UTF-8 directly instead of entities for international text</p>
+</body>
+</html>`}
+              css=""
               colorTheme="purple"
               previewHeight="450px"
             />
@@ -932,6 +1232,222 @@ html.dark .note {
 <head>
   <meta charset="UTF-8">
   <title>Character Entities Showcase</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.8;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+      color: #1e293b;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        color: #e2e8f0;
+      }
+    }
+    
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2.5rem;
+      background: linear-gradient(120deg, #3b82f6 0%, #6366f1 100%);
+      color: white;
+      border-radius: 12px;
+      animation: slideDown 0.6s ease-out;
+    }
+    
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+    
+    .showcase-section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e0e7ff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      transition: all 0.3s ease;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .showcase-section {
+        background: #1e293b;
+        border-color: #334155;
+      }
+    }
+    
+    .showcase-section:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+    
+    .section-title {
+      font-size: 1.75rem;
+      color: #1e40af;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #3b82f6;
+      padding-bottom: 0.5rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .section-title {
+        color: #93c5fd;
+        border-bottom-color: #60a5fa;
+      }
+    }
+    
+    .entity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .entity-card {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%);
+      border: 2px solid #dbeafe;
+      border-radius: 8px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .entity-card {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d1b4e 100%);
+        border-color: #334155;
+      }
+    }
+    
+    .entity-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+      border-color: #3b82f6;
+    }
+    
+    .entity-char {
+      display: block;
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      color: #3b82f6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .entity-char {
+        color: #60a5fa;
+      }
+    }
+    
+    .entity-card code {
+      display: block;
+      background: #1e293b;
+      color: #7dd3fc;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Courier New', monospace;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .entity-card code {
+        background: #0f172a;
+        color: #7dd3fc;
+      }
+    }
+    
+    .entity-card p {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .entity-card p {
+        color: #cbd5e1;
+      }
+    }
+    
+    .example-text {
+      padding: 1.5rem;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      border-radius: 6px;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .example-text {
+        background: #0f172a;
+        border-left-color: #60a5fa;
+      }
+    }
+    
+    strong {
+      color: #2563eb;
+      font-weight: 600;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      strong {
+        color: #60a5fa;
+      }
+    }
+    
+    em {
+      color: #7c3aed;
+      font-style: italic;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      em {
+        color: #a78bfa;
+      }
+    }
+    
+    mark {
+      background: #fef08a;
+      color: #78350f;
+      padding: 0.125rem 0.25rem;
+      border-radius: 2px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      mark {
+        background: #854d0e;
+        color: #fef08a;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -1158,191 +1674,7 @@ html.dark .note {
   </div>
 </body>
 </html>`,
-                css: `* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1.8;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-  color: #1e293b;
-}
-
-html.dark body {
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-  color: #e2e8f0;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.hero {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2.5rem;
-  background: linear-gradient(120deg, #3b82f6 0%, #6366f1 100%);
-  color: white;
-  border-radius: 12px;
-  animation: slideDown 0.6s ease-out;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.subtitle {
-  font-size: 1.1rem;
-  opacity: 0.95;
-}
-
-.showcase-section {
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  border: 2px solid #e0e7ff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-  transition: all 0.3s ease;
-}
-
-html.dark .showcase-section {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-.showcase-section:hover {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
-}
-
-.section-title {
-  font-size: 1.75rem;
-  color: #1e40af;
-  margin-bottom: 1rem;
-  border-bottom: 3px solid #3b82f6;
-  padding-bottom: 0.5rem;
-}
-
-html.dark .section-title {
-  color: #93c5fd;
-  border-bottom-color: #60a5fa;
-}
-
-.entity-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.entity-card {
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%);
-  border: 2px solid #dbeafe;
-  border-radius: 8px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-html.dark .entity-card {
-  background: linear-gradient(135deg, #1e3a8a20 0%, #2d1b6920 100%);
-  border-color: #3730a3;
-}
-
-.entity-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
-}
-
-.entity-char {
-  display: block;
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #3b82f6;
-  margin-bottom: 0.5rem;
-}
-
-html.dark .entity-char {
-  color: #93c5fd;
-}
-
-.entity-card code {
-  display: block;
-  background: #1e293b;
-  color: #10b981;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-family: ui-monospace, monospace;
-  margin: 0.5rem 0;
-  overflow-x: auto;
-}
-
-.entity-card p {
-  font-size: 0.85rem;
-  color: #475569;
-  margin: 0.5rem 0 0 0;
-}
-
-html.dark .entity-card p {
-  color: #cbd5e1;
-}
-
-.footer {
-  text-align: center;
-  padding: 2rem;
-  border-top: 2px solid #e0e7ff;
-  margin-top: 3rem;
-}
-
-html.dark .footer {
-  border-top-color: #334155;
-}
-
-.footer p {
-  font-size: 1.1rem;
-  color: #475569;
-  margin: 0;
-}
-
-html.dark .footer p {
-  color: #cbd5e1;
-}
-
-strong {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-em {
-  color: #7c3aed;
-  font-style: italic;
-}
-
-mark {
-  background: #fef08a;
-  color: #78350f;
-  padding: 0.125rem 0.25rem;
-  border-radius: 2px;
-}
-
-html.dark mark {
-  background: #854d0e;
-  color: #fef08a;
-}`,
+                css: '',
                 js: ''
               }}
               colorTheme="blue"

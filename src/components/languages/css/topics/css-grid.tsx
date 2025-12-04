@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -776,15 +777,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Grid className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Grid</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master two-dimensional layouts with comprehensive grid techniques and interactive examples.
-                </p>
-            </div>
+            <PageHeader
+                icon={Grid}
+                category="CSS · Modern Layout"
+                title="CSS Grid"
+                description="Master two-dimensional layouts with comprehensive grid techniques and interactive examples"
+                colorTheme="blue"
+            />
 
             {/* Live Grid Template Columns Demo */}
             <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/20">

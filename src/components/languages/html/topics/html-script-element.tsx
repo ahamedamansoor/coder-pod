@@ -17,19 +17,8 @@ const inlineScriptExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inline Script</title>
-</head>
-<body>
-  <h1 id="greeting">Hello!</h1>
-  <button onclick="changeText()">Click Me</button>
-  
-  <script>
-    function changeText() {
-      document.getElementById('greeting').textContent = 'JavaScript Works! 🎉';
-    }
-  </script>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   background: #f0f9ff;
@@ -79,7 +68,21 @@ button:hover {
   button:hover {
     background: #2563eb;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <h1 id="greeting">Hello!</h1>
+  <button onclick="changeText()">Click Me</button>
+  
+  <script>
+    function changeText() {
+      document.getElementById('greeting').textContent = 'JavaScript Works! 🎉';
+    }
+  </script>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -90,23 +93,8 @@ const externalScriptExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>External Script</title>
-</head>
-<body>
-  <h1>External JavaScript</h1>
-  <p id="output">Waiting for script...</p>
-  
-  <!-- External script -->
-  <script src="script.js"></script>
-  
-  <!-- Inline script to demonstrate -->
-  <script>
-    setTimeout(() => {
-      document.getElementById('output').textContent = 'Script loaded successfully! ✓';
-    }, 500);
-  </script>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   background: #f0f9ff;
@@ -143,7 +131,25 @@ h1 {
   #output {
     color: #6ee7b7;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <h1>External JavaScript</h1>
+  <p id="output">Waiting for script...</p>
+  
+  <!-- External script -->
+  <script src="script.js"></script>
+  
+  <!-- Inline script to demonstrate -->
+  <script>
+    setTimeout(() => {
+      document.getElementById('output').textContent = 'Script loaded successfully! ✓';
+    }, 500);
+  </script>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -154,23 +160,8 @@ const typeModuleExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ES6 Module</title>
-</head>
-<body>
-  <h1>ES6 Module Script</h1>
-  <div id="result"></div>
-  
-  <!-- Modern ES6 module -->
-  <script type="module">
-    // Modern import/export syntax
-    const greeting = 'Hello from ES6 Module!';
-    const p = document.createElement('p');
-    p.className = 'module-output';
-    p.textContent = greeting;
-    document.getElementById('result').appendChild(p);
-  </script>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   background: #f0f9ff;
@@ -207,7 +198,25 @@ h1 {
   .module-output {
     color: #60a5fa;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <h1>ES6 Module Script</h1>
+  <div id="result"></div>
+  
+  <!-- Modern ES6 module -->
+  <script type="module">
+    // Modern import/export syntax
+    const greeting = 'Hello from ES6 Module!';
+    const p = document.createElement('p');
+    p.className = 'module-output';
+    p.textContent = greeting;
+    document.getElementById('result').appendChild(p);
+  </script>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -218,28 +227,8 @@ const diagramExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Script Types</title>
-</head>
-<body>
-  <div class="types">
-    <div class="type-card">
-      <h3>Inline Script</h3>
-      <code>&lt;script&gt;code here&lt;/script&gt;</code>
-      <p>JavaScript inside HTML</p>
-    </div>
-    <div class="type-card">
-      <h3>External Script</h3>
-      <code>&lt;script src="file.js"&gt;</code>
-      <p>Separate .js file</p>
-    </div>
-    <div class="type-card">
-      <h3>ES6 Module</h3>
-      <code>&lt;script type="module"&gt;</code>
-      <p>Import/export syntax</p>
-    </div>
-  </div>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 1rem;
   margin: 0;
@@ -312,7 +301,30 @@ p {
   p {
     color: #94a3b8;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <div class="types">
+    <div class="type-card">
+      <h3>Inline Script</h3>
+      <code>&lt;script&gt;code here&lt;/script&gt;</code>
+      <p>JavaScript inside HTML</p>
+    </div>
+    <div class="type-card">
+      <h3>External Script</h3>
+      <code>&lt;script src="file.js"&gt;</code>
+      <p>Separate .js file</p>
+    </div>
+    <div class="type-card">
+      <h3>ES6 Module</h3>
+      <code>&lt;script type="module"&gt;</code>
+      <p>Import/export syntax</p>
+    </div>
+  </div>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 

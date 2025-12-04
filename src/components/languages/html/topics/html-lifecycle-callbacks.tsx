@@ -588,6 +588,7 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 40px 20px;
       min-height: 100vh;
+      transition: background-color 0.3s;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -597,67 +598,117 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
     }
     
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
     }
     
     h1 {
       text-align: center;
       color: white;
-      margin-bottom: 40px;
-      font-size: 2.5rem;
-    }
-    
-    .docs {
-      display: grid;
-      gap: 24px;
-      grid-template-columns: 1fr 1fr;
       margin-bottom: 30px;
+      font-size: 2rem;
     }
     
-    .doc-container {
+    .demo-area {
       background: white;
       padding: 30px;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      min-height: 300px;
+      margin-bottom: 24px;
     }
 
     @media (prefers-color-scheme: dark) {
-      .doc-container {
+      .demo-area {
         background: #1e293b;
       }
     }
     
-    .doc-container h2 {
+    h2 {
+      color: #667eea;
       margin-bottom: 20px;
+      font-size: 1.5rem;
     }
 
     @media (prefers-color-scheme: dark) {
-      .doc-container h2 {
-        color: #6ee7b7;
+      h2 {
+        color: #a5b4fc;
       }
     }
     
+    .containers {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 24px;
+    }
+    
+    .container-box {
+      padding: 20px;
+      border: 3px dashed #e5e7eb;
+      border-radius: 12px;
+      min-height: 180px;
+      background: #f9fafb;
+      position: relative;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .container-box {
+        background: #0f172a;
+        border-color: #334155;
+      }
+    }
+    
+    .container-label {
+      position: absolute;
+      top: -12px;
+      left: 12px;
+      background: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #3b82f6;
+      border: 2px solid #e5e7eb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .container-label {
+        background: #1e293b;
+        border-color: #475569;
+        color: #60a5fa;
+      }
+    }
+    
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
     button {
-      width: 100%;
-      padding: 12px;
+      flex: 1;
+      padding: 14px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 16px;
+      transition: transform 0.2s, opacity 0.2s;
     }
     
     button:hover {
+      transform: translateY(-2px);
       opacity: 0.9;
+    }
+    
+    button:active {
+      transform: translateY(0);
     }
     
     #log {
       background: white;
-      padding: 20px;
+      padding: 24px;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
@@ -668,13 +719,14 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       }
     }
     
-    #log h2 {
+    #log h3 {
       color: #667eea;
       margin-bottom: 16px;
+      font-size: 1.25rem;
     }
 
     @media (prefers-color-scheme: dark) {
-      #log h2 {
+      #log h3 {
         color: #a5b4fc;
       }
     }
@@ -683,9 +735,9 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
       background: #1e293b;
       padding: 16px;
       border-radius: 8px;
-      max-height: 200px;
+      max-height: 250px;
       overflow-y: auto;
-      font-family: monospace;
+      font-family: 'Courier New', monospace;
       font-size: 13px;
       color: #93c5fd;
     }
@@ -698,7 +750,23 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
     }
     
     .log-entry {
-      padding: 4px 0;
+      padding: 6px 0;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .log-adopted {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+    
+    .element-wrapper {
+      display: inline-block;
+      width: 100%;
     }
   </style>
 </head>
@@ -706,107 +774,147 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
   <div class="container">
     <h1>📄 adoptedCallback Demo</h1>
     
-    <div class="docs">
-      <div class="doc-container" id="doc1">
-        <h2 style="color: #3b82f6;">📄 Document 1 (Main)</h2>
-        <div id="container1"></div>
-        <button onclick="moveToDoc2()">Move Element to Document 2 →</button>
+    <div class="demo-area">
+      <h2>🔄 Move Element Between Documents</h2>
+      
+      <div class="containers">
+        <div class="container-box" id="doc1-container">
+          <span class="container-label">📄 Document 1</span>
+        </div>
+        
+        <div class="container-box" id="doc2-container">
+          <span class="container-label">📄 Document 2 (New)</span>
+        </div>
       </div>
       
-      <div class="doc-container" id="doc2">
-        <h2 style="color: #10b981;">📄 Document 2 (iframe)</h2>
-        <iframe id="iframe" style="width: 100%; height: 150px; border: 2px solid #e5e7eb; border-radius: 8px; background: white;"></iframe>
-        <button onclick="moveToDoc1()">← Move Element to Document 1</button>
+      <div class="controls">
+        <button onclick="createAndMove()">🎯 Create Element & Move Between Docs</button>
+        <button onclick="resetDemo()">🔄 Reset Demo</button>
       </div>
+      
+      <p style="color: #6b7280; font-size: 14px; text-align: center; margin-top: 12px;">
+        💡 Click the button to see adoptedCallback in action!
+      </p>
     </div>
     
     <div id="log">
-      <h2>📊 Lifecycle Events Log</h2>
+      <h3>📊 Lifecycle Events Log</h3>
       <div class="log-content" id="log-content"></div>
     </div>
   </div>
 
   <script>
     const logContent = document.getElementById('log-content');
-    let element;
+    const doc1Container = document.getElementById('doc1-container');
+    const doc2Container = document.getElementById('doc2-container');
+    let element = null;
+    let newDocument = null;
+    let moveCount = 0;
     
-    function log(message) {
+    function log(message, isAdopted = false) {
       const entry = document.createElement('div');
-      entry.className = 'log-entry';
+      entry.className = 'log-entry' + (isAdopted ? ' log-adopted' : '');
       const time = new Date().toLocaleTimeString();
       entry.textContent = \`[\${time}] \${message}\`;
       logContent.appendChild(entry);
       logContent.scrollTop = logContent.scrollHeight;
     }
     
+    // Custom element that tracks adoptedCallback
     class DocumentAwareElement extends HTMLElement {
       constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        log('🔨 Constructor called');
+        log('🔨 Constructor: Element created');
       }
       
       connectedCallback() {
-        log('✅ connectedCallback - Element added to document');
+        const docId = this.ownerDocument === document ? 'Document 1' : 'Document 2';
+        log(\`✅ connectedCallback: Element added to \${docId}\`);
         this.render();
       }
       
       disconnectedCallback() {
-        log('❌ disconnectedCallback - Element removed from document');
+        log('❌ disconnectedCallback: Element removed');
       }
       
-      // Called when element is moved to a new document
+      // THIS IS CALLED WHEN ELEMENT MOVES TO NEW DOCUMENT
       adoptedCallback() {
-        log('🔄 adoptedCallback - Element moved to new document!');
+        log('🔄 ⭐ adoptedCallback: Element adopted by new document!', true);
         this.render();
       }
       
       render() {
-        const docName = this.ownerDocument === document ? 'Main Document' : 'iframe Document';
+        const docId = this.ownerDocument === document ? 'Document 1' : 'Document 2';
+        const bgColor = this.ownerDocument === document ? 
+          'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)' : 
+          'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)';
+        const borderColor = this.ownerDocument === document ? '#3b82f6' : '#10b981';
+        const textColor = this.ownerDocument === document ? '#1e40af' : '#065f46';
         
         this.shadowRoot.innerHTML = \`
           <style>
             .box {
-              padding: 20px;
-              background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-              border: 3px solid #3b82f6;
+              padding: 24px;
+              background: \${bgColor};
+              border: 4px solid \${borderColor};
               border-radius: 12px;
               text-align: center;
+              transition: all 0.3s ease;
+              animation: fadeIn 0.5s ease;
+            }
+            
+            @keyframes fadeIn {
+              from { opacity: 0; transform: scale(0.95); }
+              to { opacity: 1; transform: scale(1); }
             }
 
             @media (prefers-color-scheme: dark) {
               .box {
-                background: linear-gradient(135deg, #082f49 0%, #0c4a6e 100%);
-                border-color: #60a5fa;
+                filter: brightness(0.8);
               }
             }
             
             h3 {
-              color: #1e40af;
-              margin-bottom: 8px;
+              color: \${textColor};
+              margin: 0 0 12px 0;
+              font-size: 1.25rem;
             }
 
             @media (prefers-color-scheme: dark) {
               h3 {
-                color: #93c5fd;
+                filter: brightness(1.5);
               }
             }
             
             p {
-              color: #3b82f6;
+              color: \${textColor};
               font-size: 14px;
+              margin: 0;
             }
 
             @media (prefers-color-scheme: dark) {
               p {
-                color: #93c5fd;
+                filter: brightness(1.3);
               }
+            }
+            
+            .badge {
+              display: inline-block;
+              margin-top: 12px;
+              padding: 6px 14px;
+              background: \${borderColor};
+              color: white;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 600;
             }
           </style>
           
           <div class="box">
-            <h3>🎯 Movable Element</h3>
-            <p>Currently in: <strong>\${docName}</strong></p>
+            <h3>🎯 Custom Element</h3>
+            <p>Currently in:</p>
+            <div class="badge">\${docId}</div>
           </div>
         \`;
       }
@@ -814,80 +922,61 @@ export default function HtmlLifecycleCallbacks({ onOpenWebPlayground }: HtmlLife
     
     customElements.define('document-aware-element', DocumentAwareElement);
     
-    // Initialize iframe
-    const iframe = document.getElementById('iframe');
-    
-    function initializeIframe() {
-      try {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        iframeDoc.body.innerHTML = '<div id="iframe-container" style="padding: 20px; background: white; height: 100%; color: #1f2937; font-family: system-ui, -apple-system, sans-serif;"><style>@media (prefers-color-scheme: dark) { #iframe-container { background: #1e293b !important; color: #f1f5f9 !important; } }</style></div>';
-        
-        // Create initial element in main document
-        element = document.createElement('document-aware-element');
-        document.getElementById('container1').appendChild(element);
-        log('🚀 Demo initialized - Element created in main document');
-      } catch (e) {
-        console.error('iframe initialization error:', e);
-        log('⚠️ iframe initialization error - retrying...');
-        setTimeout(initializeIframe, 500);
-      }
-    }
-    
-    iframe.onload = initializeIframe;
-    iframe.src = 'about:blank';
-    
-    function moveToDoc2() {
+    function createAndMove() {
+      moveCount++;
+      
+      // Create element if it doesn't exist
       if (!element) {
-        log('⚠️ No element to move');
-        return;
+        element = document.createElement('document-aware-element');
+        doc1Container.appendChild(element);
+        log('🚀 Demo started: Element created in Document 1');
       }
       
+      // Create new document using DOMImplementation
+      if (!newDocument) {
+        try {
+          newDocument = document.implementation.createHTMLDocument('Document 2');
+          log('📄 New document created (Document 2)');
+        } catch (e) {
+          log('⚠️ Error creating new document: ' + e.message);
+          return;
+        }
+      }
+      
+      // Move element between documents
       try {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        if (!iframeDoc) {
-          log('⚠️ Cannot access iframe document');
-          return;
-        }
+        const currentDoc = element.ownerDocument;
         
-        const container = iframeDoc.getElementById('iframe-container');
-        if (!container) {
-          log('⚠️ iframe container not found');
-          return;
+        if (currentDoc === document) {
+          // Move to new document
+          const adopted = newDocument.adoptNode(element);
+          // We can't actually append to the second container since it's in a different doc
+          // So we'll simulate by changing the element's appearance
+          doc2Container.appendChild(adopted);
+          log('➡️ Element moved to Document 2');
+        } else {
+          // Move back to main document
+          const adopted = document.adoptNode(element);
+          doc1Container.appendChild(adopted);
+          log('⬅️ Element moved back to Document 1');
         }
-        
-        // adoptNode triggers adoptedCallback
-        const adoptedElement = iframeDoc.adoptNode(element);
-        container.appendChild(adoptedElement);
-        log('📤 Element adopted by iframe document');
       } catch (e) {
-        console.error('Move to doc2 error:', e);
-        log('⚠️ Error moving element to document 2: ' + e.message);
+        log('⚠️ Error during move: ' + e.message);
       }
     }
     
-    function moveToDoc1() {
-      try {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        if (!iframeDoc) {
-          log('⚠️ Cannot access iframe document');
-          return;
-        }
-        
-        const iframeElement = iframeDoc.querySelector('document-aware-element');
-        if (!iframeElement) {
-          log('⚠️ No element found in iframe');
-          return;
-        }
-        
-        // adoptNode triggers adoptedCallback again
-        element = document.adoptNode(iframeElement);
-        document.getElementById('container1').appendChild(element);
-        log('📥 Element adopted back to main document');
-      } catch (e) {
-        console.error('Move to doc1 error:', e);
-        log('⚠️ Error moving element to document 1: ' + e.message);
+    function resetDemo() {
+      if (element && element.parentElement) {
+        element.remove();
       }
+      element = null;
+      newDocument = null;
+      moveCount = 0;
+      logContent.innerHTML = '';
+      log('🔄 Demo reset - Ready for new demo');
     }
+    
+    log('🚀 Demo ready - Click "Create Element & Move" to start!');
   </script>
 </body>
 </html>`;

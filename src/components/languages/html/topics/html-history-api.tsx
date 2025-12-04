@@ -235,45 +235,73 @@ export default function HtmlHistoryApi({ onOpenWebPlayground }: HtmlHistoryApiPr
   <script>
     function updateDisplay(page) {
       const pageContent = {
-        home: \`<strong>Page:</strong> Home<br><strong>URL:</strong> \${location.pathname}<br><strong>State:</strong> { page: 'home' }\`,
-        about: \`<strong>Page:</strong> About<br><strong>URL:</strong> \${location.pathname}<br><strong>State:</strong> { page: 'about' }\`,
-        contact: \`<strong>Page:</strong> Contact<br><strong>URL:</strong> \${location.pathname}<br><strong>State:</strong> { page: 'contact' }\`
+        home: \`<strong>Page:</strong> Home<br><strong>URL:</strong> #\${page}<br><strong>State:</strong> { page: 'home', timestamp: \${Date.now()} }<br><strong>Title:</strong> Home Page\`,
+        about: \`<strong>Page:</strong> About<br><strong>URL:</strong> #\${page}<br><strong>State:</strong> { page: 'about', timestamp: \${Date.now()} }<br><strong>Title:</strong> About Page\`,
+        contact: \`<strong>Page:</strong> Contact<br><strong>URL:</strong> #\${page}<br><strong>State:</strong> { page: 'contact', timestamp: \${Date.now()} }<br><strong>Title:</strong> Contact Page\`
       };
       
       document.getElementById('currentPage').innerHTML = pageContent[page] || 'Unknown page';
+      
+      // Update page title
+      document.title = \`\${page.charAt(0).toUpperCase() + page.slice(1)} Page - History API Demo\`;
     }
     
     function navigateTo(page) {
-      // Push new state to history
-      history.pushState(
-        { page: page },
-        \`\${page.charAt(0).toUpperCase() + page.slice(1)} Page\`,
-        \`/\${page}\`
-      );
+      // Push new state to history with hash-based URL
+      const url = \`#\${page}\`;
+      const state = { 
+        page: page,
+        timestamp: Date.now()
+      };
+      const title = \`\${page.charAt(0).toUpperCase() + page.slice(1)} Page\`;
+      
+      history.pushState(state, title, url);
       
       updateDisplay(page);
+      
+      console.log('Pushed state:', state, 'URL:', url);
     }
     
     function goBack() {
       history.back();
+      console.log('Going back...');
     }
     
     function goForward() {
       history.forward();
+      console.log('Going forward...');
     }
     
     // Listen for popstate event (back/forward navigation)
     window.addEventListener('popstate', (event) => {
+      console.log('Popstate event:', event.state);
+      
       if (event.state && event.state.page) {
         updateDisplay(event.state.page);
       } else {
-        updateDisplay('home');
+        // Handle initial state or direct URL access
+        const hash = location.hash.substring(1);
+        const page = hash || 'home';
+        updateDisplay(page);
       }
     });
     
-    // Initialize with home page
-    history.replaceState({ page: 'home' }, 'Home Page', '/home');
-    updateDisplay('home');
+    // Initialize on load
+    window.addEventListener('load', () => {
+      // Check if there's a hash in URL
+      const hash = location.hash.substring(1);
+      const initialPage = hash || 'home';
+      
+      // Set initial state
+      history.replaceState(
+        { page: initialPage, timestamp: Date.now() },
+        \`\${initialPage.charAt(0).toUpperCase() + initialPage.slice(1)} Page\`,
+        \`#\${initialPage}\`
+      );
+      
+      updateDisplay(initialPage);
+      console.log('History API initialized. Current state:', history.state);
+    });
   </script>
 </body>
 </html>`;

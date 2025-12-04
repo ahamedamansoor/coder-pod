@@ -17,21 +17,8 @@ const headPlacementExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Script in Head</title>
-  
-  <!-- Script in head with defer -->
-  <script defer>
-    // Runs after HTML is parsed
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('msg').textContent = 'Script from <head> executed! ✓';
-    });
-  </script>
-</head>
-<body>
-  <h1>Script Placement</h1>
-  <p id="msg">Loading...</p>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   background: #f0f9ff;
@@ -68,7 +55,23 @@ h1 {
   #msg {
     color: #6ee7b7;
   }
-}`,
+}
+  </style>
+  
+  <!-- Script in head with defer -->
+  <script defer>
+    // Runs after HTML is parsed
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('msg').textContent = 'Script from <head> executed! ✓';
+    });
+  </script>
+</head>
+<body>
+  <h1>Script Placement</h1>
+  <p id="msg">Loading...</p>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -79,19 +82,8 @@ const bodyEndExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Script at Body End</title>
-</head>
-<body>
-  <h1>Best Practice</h1>
-  <p id="result">Waiting...</p>
-  
-  <!-- Script at end of body -->
-  <script>
-    // HTML already loaded, can access elements directly
-    document.getElementById('result').textContent = 'Script at end executed! ✓';
-  </script>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   background: #f0f9ff;
@@ -128,7 +120,21 @@ h1 {
   #result {
     color: #7dd3fc;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <h1>Best Practice</h1>
+  <p id="result">Waiting...</p>
+  
+  <!-- Script at end of body -->
+  <script>
+    // HTML already loaded, can access elements directly
+    document.getElementById('result').textContent = 'Script at end executed! ✓';
+  </script>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -139,27 +145,8 @@ const asyncDeferExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Async vs Defer</title>
-  
-  <!-- Async: download in parallel, execute ASAP -->
-  <script async>
-    console.log('Async script executed');
-  </script>
-  
-  <!-- Defer: download in parallel, execute after HTML -->
-  <script defer>
-    console.log('Defer script executed');
-  </script>
-</head>
-<body>
-  <h1>Async vs Defer</h1>
-  <p>Check console for execution order</p>
-  <div class="info">
-    <strong>Async:</strong> Executes immediately when downloaded<br>
-    <strong>Defer:</strong> Waits until HTML is fully parsed
-  </div>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   background: #f0f9ff;
@@ -203,7 +190,29 @@ h1 {
     background: #1e293b;
     border-color: #334155;
   }
-}`,
+}
+  </style>
+  
+  <!-- Async: download in parallel, execute ASAP -->
+  <script async>
+    console.log('Async script executed');
+  </script>
+  
+  <!-- Defer: download in parallel, execute after HTML -->
+  <script defer>
+    console.log('Defer script executed');
+  </script>
+</head>
+<body>
+  <h1>Async vs Defer</h1>
+  <p>Check console for execution order</p>
+  <div class="info">
+    <strong>Async:</strong> Executes immediately when downloaded<br>
+    <strong>Defer:</strong> Waits until HTML is fully parsed
+  </div>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -214,30 +223,8 @@ const diagramExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Script Placement Options</title>
-</head>
-<body>
-  <div class="placements">
-    <div class="place-card head">
-      <h3>&lt;head&gt;</h3>
-      <p>With defer/async</p>
-      <code>Non-blocking</code>
-    </div>
-    <div class="arrow">→</div>
-    <div class="place-card body-start">
-      <h3>Body Start</h3>
-      <p>Rare use case</p>
-      <code>Blocks rendering</code>
-    </div>
-    <div class="arrow">→</div>
-    <div class="place-card body-end">
-      <h3>Body End ✓</h3>
-      <p>Best practice</p>
-      <code>HTML ready</code>
-    </div>
-  </div>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 1rem;
   margin: 0;
@@ -336,7 +323,32 @@ code {
   .arrow {
     color: #64748b;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <div class="placements">
+    <div class="place-card head">
+      <h3>&lt;head&gt;</h3>
+      <p>With defer/async</p>
+      <code>Non-blocking</code>
+    </div>
+    <div class="arrow">→</div>
+    <div class="place-card body-start">
+      <h3>Body Start</h3>
+      <p>Rare use case</p>
+      <code>Blocks rendering</code>
+    </div>
+    <div class="arrow">→</div>
+    <div class="place-card body-end">
+      <h3>Body End ✓</h3>
+      <p>Best practice</p>
+      <code>HTML ready</code>
+    </div>
+  </div>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 

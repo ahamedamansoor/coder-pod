@@ -2,6 +2,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -798,15 +799,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Puzzle className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Pseudo-elements</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master virtual elements and content generation with comprehensive pseudo-element selectors.
-                </p>
-            </div>
+            <PageHeader
+                icon={Puzzle}
+                category="CSS · Advanced Selectors"
+                title="Pseudo-elements"
+                description="Master virtual elements and content generation with comprehensive pseudo-element selectors"
+                colorTheme="blue"
+            />
 
             {/* Pseudo-element Categories Overview */}
             <Card>

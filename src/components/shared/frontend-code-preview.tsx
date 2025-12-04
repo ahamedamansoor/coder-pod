@@ -393,7 +393,6 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
 
   const theme = themeColors[colorTheme] ?? themeColors.orange;
-  const panelHeight = previewHeight === 'auto' ? 'auto' : previewHeight;
   const currentCode = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
 
   return (
@@ -420,10 +419,12 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       </div>
 
       <CardContent className="p-0">
-        <div className="flex flex-col gap-4 lg:flex-row">
+        <div 
+          className="flex flex-col gap-4 lg:flex-row"
+          style={previewHeight === 'auto' ? { height: '600px' } : { height: previewHeight }}
+        >
           <div
             className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
-            style={previewHeight === 'auto' ? { maxHeight: '1000px' } : { height: panelHeight, maxHeight: '1000px' }}
           >
             <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 px-4 py-2 border-b dark:border-slate-800">
               <div className="flex gap-2">
@@ -461,10 +462,18 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => {
-                    openWithContent(html, extractedCSS, extractedJS);
                     const openHandler = onOpenPlayground ?? onOpenWebPlayground;
-                    if (!openWithContent && openHandler) {
-                      openHandler(html, extractedCSS, extractedJS);
+                    const htmlContent = html || '';
+                    const cssContent = extractedCSS || '';
+                    const jsContent = extractedJS || '';
+
+                    if (typeof openWithContent === 'function') {
+                      openWithContent(htmlContent, cssContent, jsContent);
+                      return;
+                    }
+
+                    if (openHandler) {
+                      openHandler(htmlContent, cssContent, jsContent);
                     }
                   }}
                   className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
@@ -505,7 +514,6 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
           <div
             className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
-            style={previewHeight === 'auto' ? { maxHeight: '1000px' } : { height: panelHeight, maxHeight: '1000px' }}
           >
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
               <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
@@ -515,7 +523,6 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
             </div>
             <div 
               className="flex-1 p-4 bg-white dark:bg-slate-950 overflow-auto"
-              style={previewHeight === 'auto' ? { minHeight: '700px', maxHeight: '950px' } : {}}
             >
               {mounted ? (
                 <iframe
@@ -523,9 +530,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                   key={isDarkMode ? 'dark' : 'light'}
                   srcDoc={getPreviewContent()}
                   title="Preview"
-                  className="w-full border-0 bg-white dark:bg-slate-950 rounded"
-                  style={previewHeight === 'auto' ? { height: `${iframeHeight}px` } : { height: '100%' }}
-                  sandbox="allow-scripts"
+                  className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
+                  sandbox="allow-scripts allow-same-origin"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800">

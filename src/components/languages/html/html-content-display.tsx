@@ -16,7 +16,7 @@ const HtmlElementsAndTags = lazy(() => import('@/components/languages/html/topic
 const HtmlHeadingsAndParagraphs = lazy(() => import('@/components/languages/html/topics/html-headings-and-paragraphs'));
 const TextFormatting = lazy(() => import('@/components/languages/html/topics/html-text-formatting'));
 const HtmlComments = lazy(() => import('@/components/languages/html/topics/html-comments'));
-const HtmlCharacterEntities = lazy(() => import('@/components/languages/html/topics/html-character-entities'));
+const CharacterEntities = lazy(() => import('@/components/languages/html/topics/html-character-entities'));
 const HtmlOrderedLists = lazy(() => import('@/components/languages/html/topics/html-ordered-lists'));
 const HtmlUnorderedLists = lazy(() => import('@/components/languages/html/topics/html-unordered-lists'));
 const HtmlDescriptionLists = lazy(() => import('@/components/languages/html/topics/html-description-lists'));
@@ -32,7 +32,6 @@ const HtmlBasicTables = lazy(() => import('@/components/languages/html/topics/ht
 const HtmlTableStructure = lazy(() => import('@/components/languages/html/topics/html-table-structure'));
 const HtmlTableAttributes = lazy(() => import('@/components/languages/html/topics/html-table-attributes'));
 const HtmlTableCaptions = lazy(() => import('@/components/languages/html/topics/html-table-captions'));
-const CharacterEntities = lazy(() => import('@/components/languages/html/topics/html-character-entities'));
 const HtmlForms = lazy(() => import('@/components/languages/html/topics/html-forms'));
 const FormInputTypes = lazy(() => import('@/components/languages/html/topics/html-form-input-types'));
 const FormAttributes = lazy(() => import('@/components/languages/html/topics/html-form-attributes'));
@@ -157,6 +156,7 @@ const HtmlHreflang = lazy(() => import('@/components/languages/html/topics/html-
 // ACCESSIBILITY COMPONENTS
 const HtmlAccessibilityBasics = lazy(() => import('@/components/languages/html/topics/html-accessibility-basics'));
 const HtmlAriaBasics = lazy(() => import('@/components/languages/html/topics/html-aria-basics'));
+const HtmlAriaProperties = lazy(() => import('@/components/languages/html/topics/html-aria-properties'));
 const HtmlAriaRoles = lazy(() => import('@/components/languages/html/topics/html-aria-roles'));
 const HtmlAriaStates = lazy(() => import('@/components/languages/html/topics/html-aria-states'));
 const HtmlKeyboardNavigation = lazy(() => import('@/components/languages/html/topics/html-keyboard-navigation'));
@@ -335,6 +335,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   // 16. ACCESSIBILITY
   'accessibility-basics': HtmlAccessibilityBasics,
   'aria-basics': HtmlAriaBasics,
+  'aria-properties': HtmlAriaProperties,
   'aria-roles': HtmlAriaRoles,
   'aria-states': HtmlAriaStates,
   'keyboard-navigation': HtmlKeyboardNavigation,

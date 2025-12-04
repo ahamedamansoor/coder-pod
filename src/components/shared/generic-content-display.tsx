@@ -3,7 +3,7 @@
 import type { Language, Topic } from '@/data/languages';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, Sparkles, BookmarkIcon } from 'lucide-react';
+import { HelpCircle, BookmarkIcon, CheckCircle } from 'lucide-react';
 import React from 'react';
 import { VideoNotesDrawer } from '@/components/video-notes/video-notes-drawer';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -117,6 +117,25 @@ export function GenericContentDisplay({
   
   const { toast } = useToast();
   const { openWithContent } = useWebPlayground();
+
+  const isLearningPlanTopic = topic.slug === 'learning-plan' || topic.slug === 'interview-questions' || topic.slug === 'react-version-updates';
+  const isTrackableTopic = !isLearningPlanTopic;
+  const isTopicComplete = completedTopics.has(topic.slug);
+  const statusLabel = isTopicComplete ? 'Completed' : 'Mark as completed';
+  const checkboxId = `mark-complete-${topic.slug}`;
+
+  const handleMarkCompleteChange = React.useCallback(() => {
+    if (!isUserAuthenticated) {
+      toast({
+        variant: 'destructive',
+        title: 'Login required',
+        description: 'Sign in to track progress and mark topics as completed.',
+      });
+      return;
+    }
+
+    handleToggleComplete(topic.slug);
+  }, [handleToggleComplete, isUserAuthenticated, toast, topic.slug]);
 
   // Check if AI key is available
   React.useEffect(() => {
@@ -445,8 +464,6 @@ Keep it simple and easy to understand.`;
     }
   };
   
-  const isLearningPlanTopic = topic.slug === 'learning-plan' || topic.slug === 'interview-questions' || topic.slug === 'react-version-updates';
-
   return (
     <div className="space-y-8 min-h-screen">
       {/* Floating Video Notes Button with Animation */}
@@ -476,11 +493,31 @@ Keep it simple and easy to understand.`;
         </div>
       </div>
 
-      {children ? (
-        children
-      ) : (
-        <AiSimplification topic={topic} language={language} />
-      )}
+      <div className="relative" data-testid="topic-content">
+        {isTrackableTopic && isUserAuthenticated && (
+          <div
+            className="absolute right-0 top-4 flex items-center gap-2 rounded-2xl border border-transparent bg-gradient-to-r from-primary/80 to-primary/60 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:scale-105"
+          >
+            <Checkbox
+              id={checkboxId}
+              checked={isTopicComplete}
+              onCheckedChange={handleMarkCompleteChange}
+              className="border-white bg-white/20 text-primary transition-colors data-[state=checked]:border-white data-[state=checked]:bg-primary data-[state=checked]:text-white"
+            />
+            <Label htmlFor={checkboxId} className="cursor-pointer leading-none text-white">
+              Mark as completed
+            </Label>
+            {isTopicComplete && (
+              <CheckCircle className="h-4 w-4 text-emerald-300" />
+            )}
+          </div>
+        )}
+        {children ? (
+          children
+        ) : (
+          <AiSimplification topic={topic} language={language} />
+        )}
+      </div>
       
       {/* Video Notes Drawer */}
       <VideoNotesDrawer

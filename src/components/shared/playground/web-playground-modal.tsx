@@ -1,6 +1,6 @@
 
 'use client';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -246,6 +246,27 @@ type ConsoleLog = {
 type StyleLang = 'css' | 'scss' | 'tailwind';
 type ScriptLang = 'javascript' | 'typescript';
 
+const STYLE_LANG_LABELS: Record<StyleLang, string> = {
+  css: 'CSS',
+  scss: 'SCSS',
+  tailwind: 'Tailwind',
+};
+
+const CSS_ONLY_LANGUAGE_SLUGS = new Set(['html', 'css', 'javascript', 'typescript']);
+
+const getAllowedStyleLangs = (languageSlug?: string): StyleLang[] => {
+  if (languageSlug === 'scss') {
+    return ['scss'];
+  }
+  if (languageSlug === 'tailwind') {
+    return ['tailwind'];
+  }
+  if (languageSlug && CSS_ONLY_LANGUAGE_SLUGS.has(languageSlug)) {
+    return ['css'];
+  }
+  return ['css', 'scss', 'tailwind'];
+};
+
 export function WebPlaygroundModal({
   children,
   initialLanguage,
@@ -255,6 +276,9 @@ export function WebPlaygroundModal({
 }) {
   const { open, setOpen, content, setContent } = useWebPlayground();
 
+  const allowedStyleLangs = useMemo(() => getAllowedStyleLangs(initialLanguage), [initialLanguage]);
+  const defaultStyleLang = allowedStyleLangs[0] ?? 'css';
+
   const [htmlCode, setHtmlCode] = useState('');
   const [styleCode, setStyleCode] = useState('');
   const [jsCode, setJsCode] = useState('');
@@ -262,8 +286,7 @@ export function WebPlaygroundModal({
   const [compiledJs, setCompiledJs] = useState('');
   const [isCompiling, setIsCompiling] = useState(false);
   
-  const initialStyleLang: StyleLang = initialLanguage === 'scss' ? 'scss' : initialLanguage === 'tailwind' ? 'tailwind' : 'css';
-  const [styleLang, setStyleLang] = useState<StyleLang>(initialStyleLang);
+  const [styleLang, setStyleLang] = useState<StyleLang>(defaultStyleLang);
   
   const initialScriptLang: ScriptLang = initialLanguage === 'typescript' ? 'typescript' : 'javascript';
   const [scriptLang, setScriptLang] = useState<ScriptLang>(initialScriptLang);
@@ -287,6 +310,12 @@ export function WebPlaygroundModal({
   const togglePanel = (panel: keyof typeof visiblePanels) => {
     setVisiblePanels(prev => ({ ...prev, [panel]: !prev[panel] }));
   };
+
+  useEffect(() => {
+    if (!allowedStyleLangs.includes(styleLang)) {
+      setStyleLang(defaultStyleLang);
+    }
+  }, [allowedStyleLangs, defaultStyleLang, styleLang]);
 
   // Extract CSS from HTML <style> tags
   const extractCSSFromHTML = (htmlContent: string): string => {
@@ -356,11 +385,20 @@ export function WebPlaygroundModal({
         const extractedJS = content.js || extractJSFromHTML(content.html);
         
         // Determine style language
-        const lang = extractedCSS.includes('$') || extractedCSS.includes('@mixin') ? 'scss' : 'css';
-        setStyleLang(lang);
+        const detectedLang: StyleLang = extractedCSS.includes('$') || extractedCSS.includes('@mixin') ? 'scss' : 'css';
+        const normalizedStyleLang = allowedStyleLangs.includes(detectedLang)
+          ? detectedLang
+          : defaultStyleLang;
+        setStyleLang(normalizedStyleLang);
         
         // Set CSS (extracted or provided)
-        setStyleCode(extractedCSS || (lang === 'scss' ? defaultScss : defaultCss));
+        const fallbackStyleCode =
+          normalizedStyleLang === 'scss'
+            ? defaultScss
+            : normalizedStyleLang === 'tailwind'
+              ? defaultTailwindCss
+              : defaultCss;
+        setStyleCode(extractedCSS || fallbackStyleCode);
         
         // Set JS (extracted or provided)
         setJsCode(extractedJS || defaultJs);
@@ -374,11 +412,6 @@ export function WebPlaygroundModal({
         setHtmlCode(cleanedHTML);
     } else {
         // Use initialLanguage to determine defaults
-        const defaultStyleLang: StyleLang = 
-          initialLanguage === 'scss' ? 'scss' : 
-          initialLanguage === 'tailwind' ? 'tailwind' : 
-          'css';
-        
         const defaultScriptLang: ScriptLang = 
           initialLanguage === 'typescript' ? 'typescript' : 
           'javascript';
@@ -861,10 +894,13 @@ export function WebPlaygroundModal({
                           value={styleLang}
                           onChange={(e) => setStyleLang(e.target.value as StyleLang)}
                           className="h-6 text-[10px] px-2 rounded border bg-background"
+                          disabled={allowedStyleLangs.length === 1}
                         >
-                          <option value="css">CSS</option>
-                          <option value="scss">SCSS</option>
-                          <option value="tailwind">Tailwind</option>
+                          {allowedStyleLangs.map((option) => (
+                            <option key={option} value={option}>
+                              {STYLE_LANG_LABELS[option]}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>

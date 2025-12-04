@@ -2,8 +2,8 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
 import { 
     Play, Clapperboard, Clock, Forward, Timer, Target, Code, 
     Zap, Settings, CheckCircle, AlertTriangle, Palette, Move,
@@ -70,18 +70,176 @@ export default function CssTransitions({ onOpenWebPlayground }: CssTransitionsPr
         }
     ];
 
-    const playgroundCode = {
-        html: `<!DOCTYPE html>
-<html>
+    const playgroundCode = `<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>CSS Transitions Complete Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    line-height: 1.6;
+    padding: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+        color: #e5e7eb;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .container {
+        background: rgba(30, 41, 55, 0.95);
+        color: #e5e7eb;
+    }
+}
+
+h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; color: #1e293b; }
+h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: #334155; }
+
+@media (prefers-color-scheme: dark) {
+    h1 { color: #f1f5f9; }
+    h2 { color: #cbd5e1; }
+}
+
+.demo-section { margin-bottom: 3rem; }
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.demo-box {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* Transform Transitions */
+.scale-box:hover,
+.scale-box.active { transform: scale(1.2); }
+
+.rotate-box:hover,
+.rotate-box.active { transform: rotate(45deg); }
+
+.translate-box:hover,
+.translate-box.active { transform: translateY(-20px); }
+
+/* Color Transitions */
+.color-box:hover,
+.color-box.active { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+
+.border-box {
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+.border-box:hover,
+.border-box.active { border-color: #ff6b6b; }
+
+.shadow-box:hover,
+.shadow-box.active {
+    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+}
+
+/* Timing Functions Demo */
+.timing-demo {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.timing-box {
+    width: 100px;
+    height: 50px;
+    background: #667eea;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.ease-demo { transition: transform 1s ease; }
+.linear-demo { transition: transform 1s linear; }
+.ease-in-demo { transition: transform 1s ease-in; }
+.ease-out-demo { transition: transform 1s ease-out; }
+
+.timing-box:hover,
+.timing-box.moving { transform: translateX(200px); }
+
+/* Multiple Properties */
+.multi-demo {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.multi-box {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.multi-box:hover,
+.multi-box.active {
+    transform: scale(1.1) rotate(10deg);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 50%;
+    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+}
+
+@media (max-width: 768px) {
+    .demo-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+    .demo-box { width: 120px; height: 120px; }
+    .timing-box:hover,
+    .timing-box.moving { transform: translateX(100px); }
+}
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>🎬 CSS Transitions Demo</h1>
-        <p>Hover over the elements to see smooth transitions in action!</p>
+        <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">
+            <strong>👆 Click or Hover</strong> over the elements to see smooth transitions in action!
+        </p>
         
         <section class="demo-section">
             <h2>🎯 Transform Transitions</h2>
@@ -115,6 +273,9 @@ export default function CssTransitions({ onOpenWebPlayground }: CssTransitionsPr
 
         <section class="demo-section">
             <h2>⏱️ Timing Functions</h2>
+            <p style="text-align: center; color: #6366f1; font-weight: 600; margin-bottom: 1rem;">
+                👉 Click anywhere below to race the timing functions!
+            </p>
             <div class="timing-demo">
                 <div class="timing-box ease-demo">ease</div>
                 <div class="timing-box linear-demo">linear</div>
@@ -132,156 +293,60 @@ export default function CssTransitions({ onOpenWebPlayground }: CssTransitionsPr
             </div>
         </section>
     </div>
-</body>
-</html>`,
-        css: `* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #333;
-    line-height: 1.6;
-    padding: 1rem;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; }
-h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
-
-.demo-section { margin-bottom: 3rem; }
-
-.demo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 2rem;
-    margin-top: 1rem;
-}
-
-.demo-box {
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-/* Transform Transitions */
-.scale-box:hover { transform: scale(1.2); }
-.rotate-box:hover { transform: rotate(45deg); }
-.translate-box:hover { transform: translateY(-20px); }
-
-/* Color Transitions */
-.color-box:hover { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-.border-box {
-    border: 3px solid transparent;
-    transition: all 0.3s ease;
-}
-.border-box:hover { border-color: #ff6b6b; }
-
-.shadow-box:hover {
-    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
-}
-
-/* Timing Functions Demo */
-.timing-demo {
-    display: grid;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.timing-box {
-    width: 100px;
-    height: 50px;
-    background: #667eea;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.ease-demo { transition: transform 1s ease; }
-.linear-demo { transition: transform 1s linear; }
-.ease-in-demo { transition: transform 1s ease-in; }
-.ease-out-demo { transition: transform 1s ease-out; }
-
-.timing-box:hover { transform: translateX(200px); }
-
-/* Multiple Properties */
-.multi-demo {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-.multi-box {
-    width: 200px;
-    height: 200px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.multi-box:hover {
-    transform: scale(1.1) rotate(10deg);
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    border-radius: 50%;
-    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
-}
-
-@media (max-width: 768px) {
-    .demo-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
-    .demo-box { width: 120px; height: 120px; }
-    .timing-box:hover { transform: translateX(100px); }
-}`,
-        js: `document.addEventListener('DOMContentLoaded', function() {
-    console.log('CSS Transitions Demo loaded!');
     
-    // Add click handlers for mobile
-    const boxes = document.querySelectorAll('.demo-box, .timing-box, .multi-box');
-    
-    boxes.forEach(box => {
-        box.addEventListener('click', function() {
-            this.classList.toggle('active');
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('CSS Transitions Demo loaded!');
+        
+        // Add click handlers to toggle active state
+        const demoBoxes = document.querySelectorAll('.demo-box');
+        const timingBoxes = document.querySelectorAll('.timing-box');
+        const multiBox = document.querySelector('.multi-box');
+        
+        // Transform transitions - click to toggle
+        demoBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
         });
+        
+        // Timing functions - auto-animate on click
+        const timingContainer = document.querySelector('.timing-demo');
+        
+        if (timingContainer) {
+            timingContainer.addEventListener('click', function() {
+                // Add active class to trigger animation
+                timingBoxes.forEach(box => box.classList.add('moving'));
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    timingBoxes.forEach(box => box.classList.remove('moving'));
+                }, 2000);
+            });
+        }
+        
+        // Multi-box - click to toggle
+        if (multiBox) {
+            multiBox.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        }
+        
+        console.log('Click any element to see transitions in action!');
     });
-});`
-    };
+    </script>
+</body>
+</html>`;
     
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Clapperboard className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Transitions</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Creating smooth animations when an element changes state - from simple hover effects to complex multi-property transitions.
-                </p>
-            </div>
+            <PageHeader
+                icon={Clapperboard}
+                category="CSS · Animations & Effects"
+                title="CSS Transitions"
+                description="Create smooth animations when elements change state - from simple hover effects to complex multi-property transitions."
+                colorTheme="blue"
+            />
 
             {/* What are CSS Transitions? */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
@@ -302,43 +367,49 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
                     <div className="grid lg:grid-cols-3 gap-6">
                         {/* Interactive Demo */}
                         <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                                    <Zap className="w-5 h-5" />
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer group">
+                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+                                    <Zap className="w-5 h-5 animate-pulse" />
                                     🎯 Instant vs Smooth Changes
                                 </h4>
                                 
-                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div className="space-y-4">
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">⚡ Without Transition</div>
-                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">⚡ WITHOUT Transition (Instant Jump)</div>
+                                        <div className="relative h-24 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg overflow-hidden border-2 border-red-300 dark:border-red-700">
                                             <div 
-                                                className="w-12 h-12 bg-gradient-to-r from-red-400 to-pink-500 rounded-lg absolute top-4 left-4 cursor-pointer hover:left-16"
+                                                className="w-12 h-12 bg-gradient-to-r from-red-400 to-pink-500 rounded-full absolute top-6 left-4 group-hover:left-[calc(100%-4rem)] flex items-center justify-center text-white font-bold shadow-lg"
                                                 style={{ transition: 'none' }}
                                             >
+                                                A
                                             </div>
+                                            <div className="absolute top-6 right-4 text-2xl">🏁</div>
                                         </div>
-                                        <div className="text-xs text-red-500 mt-1">❌ Jarring Jump</div>
+                                        <div className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium">❌ Jarring, instant teleport!</div>
                                     </div>
                                     
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">🎬 With Transition</div>
-                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">🎬 WITH Transition (Smooth Animation)</div>
+                                        <div className="relative h-24 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg overflow-hidden border-2 border-green-300 dark:border-green-700">
                                             <div 
-                                                className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg absolute top-4 left-4 cursor-pointer hover:left-16 transition-all duration-500 ease-out"
+                                                className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full absolute top-6 left-4 group-hover:left-[calc(100%-4rem)] transition-all duration-1000 ease-in-out flex items-center justify-center text-white font-bold shadow-lg"
                                             >
+                                                A
                                             </div>
+                                            <div className="absolute top-6 right-4 text-2xl">🏁</div>
                                         </div>
-                                        <div className="text-xs text-green-500 mt-1">✅ Smooth Glide</div>
+                                        <div className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">✅ Smooth, graceful journey from A to Z!</div>
                                     </div>
                                 </div>
 
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
-                                        🎪 Try it yourself - Hover over the boxes above!
+                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50 mt-4">
+                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
+                                        <MousePointer className="w-4 h-4" />
+                                        🎪 Try it yourself!
                                     </div>
                                     <div className="text-xs text-green-600 dark:text-green-400">
-                                        Feel the difference between instant changes and smooth transitions.
+                                        <strong>Hover over this entire card</strong> to see both circles travel from A to the finish flag (🏁). 
+                                        Notice how the <span className="text-red-600 dark:text-red-400 font-semibold">red circle</span> jumps instantly while the <span className="text-blue-600 dark:text-blue-400 font-semibold">blue circle</span> glides smoothly with a transition!
                                     </div>
                                 </div>
                             </div>
@@ -630,6 +701,98 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
                 </CardContent>
             </Card>
 
+            {/* Transform vs Layout Properties */}
+            <Card className="border-emerald-200 bg-emerald-50/50 dark:bg-emerald-950/20">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                        <Zap className="w-5 h-5" />
+                        Transform vs Layout Properties (Performance)
+                    </CardTitle>
+                    <CardDescription>
+                        See the difference between GPU-accelerated transforms and layout-triggering properties.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-emerald-200/50 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-emerald-400 dark:hover:border-emerald-600 cursor-pointer group">
+                        <h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+                            <Target className="w-5 h-5 animate-pulse" />
+                            ⚡ Performance Comparison
+                        </h4>
+                        
+                        <div className="grid md:grid-cols-2 gap-6 mb-4">
+                            <div className="text-center space-y-3">
+                                <div className="text-xs font-semibold text-red-600 dark:text-red-400 mb-2">
+                                    ❌ Layout Property (left/margin)
+                                </div>
+                                <div className="relative h-24 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg overflow-hidden border-2 border-red-300 dark:border-red-700">
+                                    <div className="w-12 h-12 bg-gradient-to-r from-red-400 to-pink-500 rounded-lg absolute top-6 left-4 group-hover:left-[calc(100%-4rem)] transition-all duration-500 ease-in-out flex items-center justify-center text-white font-bold text-xs shadow-lg">
+                                        L
+                                    </div>
+                                    <div className="absolute top-6 right-2 text-xl">🐌</div>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="text-xs text-red-600 dark:text-red-400 font-semibold">Triggers Layout Reflow</div>
+                                    <div className="text-xs text-gray-600 dark:text-gray-400">CPU-intensive, affects surrounding elements</div>
+                                </div>
+                                <div className="bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-800">
+                                    <code className="text-xs text-red-700 dark:text-red-300 font-mono">
+                                        left: 100px
+                                    </code>
+                                </div>
+                            </div>
+                            
+                            <div className="text-center space-y-3">
+                                <div className="text-xs font-semibold text-green-600 dark:text-green-400 mb-2">
+                                    ✅ Transform Property (translateX)
+                                </div>
+                                <div className="relative h-24 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg overflow-hidden border-2 border-green-300 dark:border-green-700">
+                                    <div className="transform-demo-box w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg absolute top-6 left-4 transition-transform duration-500 ease-in-out flex items-center justify-center text-white font-bold text-xs shadow-lg">
+                                        T
+                                    </div>
+                                    <div className="absolute top-6 right-2 text-xl">⚡</div>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="text-xs text-green-600 dark:text-green-400 font-semibold">GPU Accelerated</div>
+                                    <div className="text-xs text-gray-600 dark:text-gray-400">Smooth, performant, isolated to element</div>
+                                </div>
+                                <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-800">
+                                    <code className="text-xs text-green-700 dark:text-green-300 font-mono">
+                                        transform: translateX(100px)
+                                    </code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-emerald-200/50">
+                            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-2 flex items-center gap-2">
+                                <MousePointer className="w-4 h-4" />
+                                💡 Pro Tip - Always Use Transform!
+                            </div>
+                            <div className="text-xs text-emerald-600 dark:text-emerald-400">
+                                <strong>Hover over this card</strong> to see both animations. The <span className="text-red-600 dark:text-red-400 font-semibold">left property</span> (L) triggers expensive layout reflows, while <span className="text-green-600 dark:text-green-400 font-semibold">transform</span> (T) uses GPU acceleration for buttery-smooth 60fps performance!
+                            </div>
+                        </div>
+
+                        <div className="mt-4 grid md:grid-cols-2 gap-3">
+                            <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-200/50 dark:border-red-800/50">
+                                <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                                <div>
+                                    <div className="text-xs font-semibold text-red-700 dark:text-red-300">Avoid These</div>
+                                    <code className="text-xs text-red-600 dark:text-red-400 font-mono">left, right, top, bottom, margin, width, height</code>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-2 p-3 bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200/50 dark:border-green-800/50">
+                                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                <div>
+                                    <div className="text-xs font-semibold text-green-700 dark:text-green-300">Use These</div>
+                                    <code className="text-xs text-green-600 dark:text-green-400 font-mono">transform, opacity, filter</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
             {/* Live Interactive Examples */}
             <Card className="border-indigo-200 bg-indigo-50/50 dark:bg-indigo-950/20">
                 <CardHeader>
@@ -792,10 +955,12 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
             </Card>
 
             {/* Interactive Playground */}
-            <Card className="border-primary bg-primary/5">
+            <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <Play className="w-5 h-5" />
+                        <div className="p-2 bg-blue-500/10 rounded-lg">
+                            <Play className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        </div>
                         Complete CSS Transitions Playground
                     </CardTitle>
                     <CardDescription>
@@ -803,19 +968,27 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                        <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                            <Play className="mr-2 h-4 w-4" />
-                            Open Interactive Demo
-                        </Button>
-                        <Badge variant="secondary">🎯 Transform Effects</Badge>
-                        <Badge variant="secondary">🎨 Color Transitions</Badge>
-                        <Badge variant="secondary">⏱️ Timing Functions</Badge>
-                        <Badge variant="secondary">🔄 Multi-Property</Badge>
-                        <Badge variant="secondary">📱 Mobile Friendly</Badge>
-                    </div>
+                    <FrontendCodePreview
+                        html={playgroundCode}
+                        title="CSS Transitions Playground"
+                        colorTheme="blue"
+                        onOpenPlayground={onOpenWebPlayground}
+                    />
                 </CardContent>
             </Card>
+
+            {/* Custom CSS for transform demo */}
+            <style jsx>{`
+                .group:hover .transform-demo-box {
+                    transform: translateX(calc(100% + 11rem)) !important;
+                }
+                
+                @media (min-width: 768px) {
+                    .group:hover .transform-demo-box {
+                        transform: translateX(calc(100% + 13rem)) !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 }

@@ -16,6 +16,52 @@ const basicNoscriptExample = {
 <head>
   <meta charset="UTF-8">
   <title>Noscript Example</title>
+  <style>
+    body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+.warning {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  color: #991b1b;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 1rem auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .warning {
+    background: #450a0a;
+    border-color: #991b1b;
+    color: #fecaca;
+  }
+}
+  </style>
 </head>
 <body>
   <h1>JavaScript Detection</h1>
@@ -33,7 +79,7 @@ const basicNoscriptExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}.warning{background:#fee2e2;border:2px solid#ef4444;color:#991b1b;padding:2rem;border-radius:8px;max-width:500px;margin:1rem auto}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}.warning{background:#450a0a;border-color:#991b1b;color:#fecaca}}`,
+  css: ``,
   js: ``,
 };
 
@@ -43,6 +89,38 @@ const headNoscriptExample = {
 <head>
   <meta charset="UTF-8">
   <title>Noscript in Head</title>
+  <style>
+    body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+#js-check {
+  font-weight: 600;
+}
+  </style>
   
   <!-- Redirect if JS disabled -->
   <noscript>
@@ -65,7 +143,7 @@ const headNoscriptExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}#js-check{font-weight:600}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
+  css: ``,
   js: ``,
 };
 
@@ -75,6 +153,104 @@ const alternativeContentExample = {
 <head>
   <meta charset="UTF-8">
   <title>Accessible Alternative</title>
+  <style>
+    body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f0f9ff;
+  color: #1e293b;
+  text-align: center;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+h1 {
+  color: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #7dd3fc;
+  }
+}
+
+button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    background: #3b82f6;
+  }
+  
+  button:hover {
+    background: #2563eb;
+  }
+}
+
+#count {
+  color: #059669;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  #count {
+    color: #6ee7b7;
+  }
+}
+
+.fallback {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  color: #92400e;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fallback {
+    background: #78350f;
+    border-color: #f59e0b;
+    color: #fde68a;
+  }
+}
+
+.fallback h3 {
+  margin-top: 0;
+}
+
+.fallback a {
+  color: #78350f;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fallback a {
+    color: #fbbf24;
+  }
+}
+  </style>
 </head>
 <body>
   <h1>Interactive Counter</h1>
@@ -87,8 +263,8 @@ const alternativeContentExample = {
   
   <!-- Fallback for no JS -->
   <noscript>
-    <div style="background:#fef3c7;border:2px solid #f59e0b;padding:1.5rem;border-radius:8px;margin-top:1rem">
-      <h3 style="margin-top:0">📱 Alternative Version</h3>
+    <div class="fallback">
+      <h3>📱 Alternative Version</h3>
       <p>This interactive feature requires JavaScript.</p>
       <p>You can still view our content in <a href="/static-version">static mode</a>.</p>
     </div>
@@ -103,29 +279,146 @@ const alternativeContentExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}button{background:#2563eb;color:#fff;border:none;padding:.75rem 1.5rem;border-radius:6px;cursor:pointer;font-size:1rem}button:hover{background:#1d4ed8}#count{color:#059669;font-weight:700;font-size:1.5rem}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
+  css: ``,
   js: ``,
 };
 
 const diagramExample = {
-  html: `<div class="flow">
-  <div class="box start">Page Loads</div>
-  <div class="arrow">↓</div>
-  <div class="decision">
-    <div class="question">JavaScript Enabled?</div>
-    <div class="paths">
-      <div class="path yes">
-        <div class="label">✓ YES</div>
-        <div class="result">Run scripts normally</div>
-      </div>
-      <div class="path no">
-        <div class="label">✗ NO</div>
-        <div class="result">Show &lt;noscript&gt; content</div>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Noscript Logic</title>
+  <style>
+    .flow {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 1rem;
+}
+
+.box {
+  background: #3b82f6;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .box {
+    background: #1e40af;
+  }
+}
+
+.arrow {
+  font-size: 2rem;
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .arrow {
+    color: #94a3b8;
+  }
+}
+
+.decision {
+  margin-top: 1rem;
+}
+
+.question {
+  background: #f1f5f9;
+  color: #1e293b;
+  padding: 1rem;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .question {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+}
+
+.paths {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.path {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .path {
+    background: #1e293b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.yes {
+  border-top: 4px solid #10b981;
+}
+
+.no {
+  border-top: 4px solid #ef4444;
+}
+
+.label {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+@media (prefers-color-scheme: dark) {
+  .label {
+    color: #f1f5f9;
+  }
+}
+
+.result {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+@media (prefers-color-scheme: dark) {
+  .result {
+    color: #94a3b8;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="flow">
+    <div class="box start">Page Loads</div>
+    <div class="arrow">↓</div>
+    <div class="decision">
+      <div class="question">JavaScript Enabled?</div>
+      <div class="paths">
+        <div class="path yes">
+          <div class="label">✓ YES</div>
+          <div class="result">Run scripts normally</div>
+        </div>
+        <div class="path no">
+          <div class="label">✗ NO</div>
+          <div class="result">Show &lt;noscript&gt; content</div>
+        </div>
       </div>
     </div>
   </div>
-</div>`,
-  css: `.flow{font-family:sans-serif;text-align:center;padding:1rem}.box{background:#3b82f6;color:#fff;padding:1rem;border-radius:8px;display:inline-block;margin-bottom:.5rem}.arrow{font-size:2rem;color:#64748b;margin:.5rem 0}.decision{margin-top:1rem}.question{background:#f1f5f9;color:#1e293b;padding:1rem;border-radius:8px;display:inline-block;font-weight:600;margin-bottom:1rem}.paths{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}.path{background:#fff;padding:1rem;border-radius:8px;min-width:150px;box-shadow:0 2px 4px rgba(0,0,0,.1)}.yes{border-top:4px solid #10b981}.no{border-top:4px solid #ef4444}.label{font-weight:700;margin-bottom:.5rem}.result{font-size:.85rem;color:#64748b}@media(prefers-color-scheme:dark){.box{background:#1e40af}.question{background:#1e293b;color:#f1f5f9}.path{background:#1e293b}.result{color:#94a3b8}}`,
+</body>
+</html>`,
+  css: ``,
   js: ``,
 };
 

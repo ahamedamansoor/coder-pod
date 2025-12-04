@@ -17,14 +17,8 @@ const basicStyleExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Internal Styles</title>
-</head>
-<body>
-  <h1>Styled with &lt;style&gt;</h1>
-  <p>All styling defined externally!</p>
-  <button class="button">Click Me</button>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -71,7 +65,16 @@ p {
   .button {
     background: #f3f4f6;
   }
-}`,
+}
+  </style>
+</head>
+<body>
+  <h1>Styled with &lt;style&gt;</h1>
+  <p>All styling defined externally!</p>
+  <button class="button">Click Me</button>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -82,15 +85,8 @@ const multipleStylesExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multiple Style Tags</title>
-</head>
-<body>
-  <div class="card">
-    <h2>Styled Elements</h2>
-    <p>CSS applied from external stylesheet!</p>
-  </div>
-</body>
-</html>`,
-  css: `/* Base styles */
+  <style>
+    /* Base styles */
 body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
@@ -132,7 +128,17 @@ p {
   margin: 0;
   font-size: 1.1rem;
   opacity: 0.95;
-}`,
+}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Styled Elements</h2>
+    <p>CSS applied from external stylesheet!</p>
+  </div>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -143,16 +149,8 @@ const mediaQueryExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Styles</title>
-</head>
-<body>
-  <div class="box">
-    <h2>Responsive Design</h2>
-    <p>Resize window to see color change!</p>
-    <p class="hint">Also supports dark mode!</p>
-  </div>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 2rem;
   text-align: center;
@@ -204,7 +202,18 @@ p {
 .hint {
   font-size: 0.9rem;
   opacity: 0.9;
-}`,
+}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Responsive Design</h2>
+    <p>Resize window to see color change!</p>
+    <p class="hint">Also supports dark mode!</p>
+  </div>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 
@@ -215,28 +224,8 @@ const diagramExample = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSS Methods</title>
-</head>
-<body>
-  <div class="style-types">
-    <div class="type-box inline">
-      <h3>Inline</h3>
-      <code>style="color:red"</code>
-      <p>Highest priority</p>
-    </div>
-    <div class="type-box internal">
-      <h3>Internal</h3>
-      <code>&lt;style&gt;...&lt;/style&gt;</code>
-      <p>In &lt;head&gt;</p>
-    </div>
-    <div class="type-box external">
-      <h3>External</h3>
-      <code>&lt;link rel="stylesheet"&gt;</code>
-      <p>Separate file</p>
-    </div>
-  </div>
-</body>
-</html>`,
-  css: `body {
+  <style>
+    body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 1rem;
   margin: 0;
@@ -328,7 +317,30 @@ p {
   margin: 0.5rem 0 0;
   font-size: 0.85rem;
   opacity: 0.8;
-}`,
+}
+  </style>
+</head>
+<body>
+  <div class="style-types">
+    <div class="type-box inline">
+      <h3>Inline</h3>
+      <code>style="color:red"</code>
+      <p>Highest priority</p>
+    </div>
+    <div class="type-box internal">
+      <h3>Internal</h3>
+      <code>&lt;style&gt;...&lt;/style&gt;</code>
+      <p>In &lt;head&gt;</p>
+    </div>
+    <div class="type-box external">
+      <h3>External</h3>
+      <code>&lt;link rel="stylesheet"&gt;</code>
+      <p>Separate file</p>
+    </div>
+  </div>
+</body>
+</html>`,
+  css: ``,
   js: ``
 };
 

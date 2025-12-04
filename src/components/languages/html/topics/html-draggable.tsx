@@ -15,7 +15,84 @@ const basicDraggableExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Basic Draggable</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+      background: #f0f9ff;
+      text-align: center;
+      margin: 0;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0c4a6e;
+        color: #e0f2fe;
+      }
+    }
+    
+    h1 {
+      color: #0369a1;
+      margin-bottom: 2rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #7dd3fc;
+      }
+    }
+    
+    .items {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .box {
+      background: #2563eb;
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      cursor: move;
+      user-select: none;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+    }
+    
+    .box[draggable="false"] {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .box[draggable="false"] {
+        background: #64748b;
+      }
+    }
+    
+    .note {
+      color: #64748b;
+      font-style: italic;
+      margin-top: 2rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .note {
+        color: #94a3b8;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Drag These Elements</h1>
@@ -29,7 +106,7 @@ const basicDraggableExample = {
   <p class="note">Try dragging the boxes!</p>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}.items{display:flex;gap:1rem;justify-content:center;margin:2rem 0}.box{background:#2563eb;color:#fff;padding:1.5rem;border-radius:8px;cursor:move;user-select:none;font-weight:600}.box[draggable="false"]{background:#94a3b8;cursor:not-allowed}.note{color:#64748b;font-style:italic}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}}`,
+  css: ``,
   js: ``,
 };
 
@@ -38,7 +115,92 @@ const dragDropExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drag and Drop</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+      background: #f0f9ff;
+      text-align: center;
+      margin: 0;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0c4a6e;
+        color: #e0f2fe;
+      }
+    }
+    
+    h1 {
+      color: #0369a1;
+      margin-bottom: 2rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #7dd3fc;
+      }
+    }
+    
+    .source {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .item {
+      background: #2563eb;
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      cursor: move;
+      user-select: none;
+      font-weight: 600;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    
+    .item:hover {
+      transform: scale(1.05);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .item {
+        background: #3b82f6;
+      }
+    }
+    
+    .dropzone {
+      margin: 2rem auto;
+      max-width: 400px;
+      min-height: 150px;
+      background: #f1f5f9;
+      border: 3px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .dropzone {
+        background: #1e293b;
+        border-color: #475569;
+        color: #94a3b8;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Drag Items to Drop Zone</h1>
@@ -70,11 +232,13 @@ const dragDropExample = {
     
     dropzone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      dropzone.style.background = '#dbeafe';
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      dropzone.style.background = isDark ? '#334155' : '#dbeafe';
     });
     
     dropzone.addEventListener('dragleave', () => {
-      dropzone.style.background = '#f1f5f9';
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      dropzone.style.background = isDark ? '#1e293b' : '#f1f5f9';
     });
     
     dropzone.addEventListener('drop', (e) => {
@@ -82,12 +246,13 @@ const dragDropExample = {
       const id = e.dataTransfer.getData('text/plain');
       const item = document.getElementById(id);
       dropzone.appendChild(item);
-      dropzone.style.background = '#f1f5f9';
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      dropzone.style.background = isDark ? '#1e293b' : '#f1f5f9';
     });
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}.source{display:flex;gap:1rem;justify-content:center;margin:2rem 0}.item{background:#2563eb;color:#fff;padding:1rem 1.5rem;border-radius:8px;cursor:move;user-select:none;font-weight:600}.dropzone{margin:2rem auto;max-width:400px;min-height:150px;background:#f1f5f9;border:3px dashed #94a3b8;border-radius:12px;padding:2rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:center;color:#64748b;font-size:1.1rem;transition:all .2s}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}.dropzone{background:#1e293b;border-color:#475569;color:#94a3b8}}`,
+  css: ``,
   js: ``,
 };
 
@@ -96,7 +261,74 @@ const sortableListExample = {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sortable List</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+      background: #f0f9ff;
+      text-align: center;
+      margin: 0;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0c4a6e;
+        color: #e0f2fe;
+      }
+    }
+    
+    h1 {
+      color: #0369a1;
+      margin-bottom: 2rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #7dd3fc;
+      }
+    }
+    
+    .task-list {
+      list-style: none;
+      padding: 0;
+      max-width: 400px;
+      margin: 2rem auto;
+    }
+    
+    li {
+      background: #fff;
+      padding: 1.25rem;
+      margin: 0.75rem 0;
+      border-radius: 8px;
+      cursor: move;
+      user-select: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #2563eb;
+      font-size: 1.05rem;
+      transition: all 0.2s;
+    }
+    
+    li:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      li {
+        background: #1e293b;
+        border-color: #60a5fa;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      li:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Drag to Reorder Tasks</h1>
@@ -148,37 +380,142 @@ const sortableListExample = {
   </script>
 </body>
 </html>`,
-  css: `body{font-family:system-ui;padding:2rem;background:#f0f9ff;text-align:center}h1{color:#0369a1}.task-list{list-style:none;padding:0;max-width:400px;margin:2rem auto}li{background:#fff;padding:1.25rem;margin:.75rem 0;border-radius:8px;cursor:move;user-select:none;box-shadow:0 2px 4px rgba(0,0,0,.1);border-left:4px solid #2563eb;font-size:1.05rem;transition:all .2s}li:hover{transform:translateX(5px);box-shadow:0 4px 8px rgba(0,0,0,.15)}@media(prefers-color-scheme:dark){body{background:#0c4a6e;color:#e0f2fe}h1{color:#7dd3fc}li{background:#1e293b;border-color:#60a5fa}}`,
+  css: ``,
   js: ``,
 };
 
 const diagramExample = {
-  html: `<div class="drag-flow">
-  <div class="step">
-    <div class="num">1</div>
-    <div class="label">dragstart</div>
-    <div class="desc">User starts dragging</div>
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag Event Flow</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #f8fafc;
+      transition: background-color 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0f172a;
+      }
+    }
+    
+    .drag-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .step {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 120px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .step {
+        background: #1e293b;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    .num {
+      background: #2563eb;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      font-weight: 700;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .num {
+        background: #60a5fa;
+      }
+    }
+    
+    .label {
+      font-weight: 600;
+      color: #1e293b;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .label {
+        color: #f1f5f9;
+      }
+    }
+    
+    .desc {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .desc {
+        color: #94a3b8;
+      }
+    }
+    
+    .arrow {
+      font-size: 1.5rem;
+      color: #94a3b8;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .arrow {
+        color: #64748b;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="drag-flow">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="label">dragstart</div>
+      <div class="desc">User starts dragging</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="label">drag</div>
+      <div class="desc">Element is being dragged</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="label">dragover</div>
+      <div class="desc">Dragged over drop zone</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="label">drop</div>
+      <div class="desc">Released in drop zone</div>
+    </div>
   </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <div class="num">2</div>
-    <div class="label">drag</div>
-    <div class="desc">Element is being dragged</div>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <div class="num">3</div>
-    <div class="label">dragover</div>
-    <div class="desc">Dragged over drop zone</div>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <div class="num">4</div>
-    <div class="label">drop</div>
-    <div class="desc">Released in drop zone</div>
-  </div>
-</div>`,
-  css: `.drag-flow{display:flex;align-items:center;justify-content:center;gap:1rem;font-family:sans-serif;padding:1rem;flex-wrap:wrap}.step{background:#fff;padding:1rem;border-radius:8px;text-align:center;min-width:120px;box-shadow:0 2px 4px rgba(0,0,0,.1)}.num{background:#2563eb;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .5rem;font-weight:700}.label{font-weight:600;color:#1e293b;font-size:.9rem;margin-bottom:.25rem}.desc{font-size:.75rem;color:#64748b}.arrow{font-size:1.5rem;color:#94a3b8}@media(prefers-color-scheme:dark){.step{background:#1e293b}.num{background:#60a5fa}.label{color:#f1f5f9}.desc{color:#94a3b8}}`,
+</body>
+</html>`,
+  css: ``,
   js: ``,
 };
 

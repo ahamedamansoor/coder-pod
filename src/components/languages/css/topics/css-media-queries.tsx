@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { 
     Play, Smartphone, Tablet, Laptop, Monitor, Tv, Settings, Target,
     CheckCircle, AlertTriangle, Code, Hash, Plus, Zap, Grid, Layout,
@@ -148,15 +149,13 @@ export default function CssMediaQueries({ onOpenWebPlayground }: CssMediaQueries
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Settings className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Media Queries</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master responsive design with media queries - from basic breakpoints to advanced user preference detection.
-                </p>
-            </div>
+            <PageHeader
+                icon={Settings}
+                category="CSS · Responsive Design"
+                title="CSS Media Queries"
+                description="Master breakpoints and advanced feature queries that keep layouts smart across devices."
+                colorTheme="blue"
+            />
 
             {/* What are Media Queries? */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
@@ -726,6 +725,13 @@ body {
     overflow-x: hidden;
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+        color: #e5e7eb;
+    }
+}
+
 /* Animated Background */
 .bg-animation {
     position: fixed;
@@ -737,6 +743,12 @@ body {
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
     z-index: -1;
+}
+
+@media (prefers-color-scheme: dark) {
+    .bg-animation {
+        background: linear-gradient(45deg, #1e3a8a, #581c87, #7c2d12, #991b1b);
+    }
 }
 
 @keyframes gradientShift {
@@ -825,6 +837,15 @@ body {
     margin: 0 auto 2rem;
 }
 
+@media (prefers-color-scheme: dark) {
+    .description {
+        color: #d1d5db;
+    }
+    .subtitle-text {
+        color: #9ca3af;
+    }
+}
+
 .feature-pills {
     display: flex;
     justify-content: center;
@@ -851,7 +872,7 @@ body {
 .pill-purple {
     background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(126, 34, 206, 0.1));
     border-color: rgba(147, 51, 234, 0.3);
-    color: #7c2d12;
+    color: #6b21a8;
 }
 
 .pill-green {
@@ -899,6 +920,12 @@ body {
     border: 2px solid transparent;
     transition: all 0.3s ease;
     min-width: 150px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .indicator {
+        background: rgba(55, 65, 81, 0.9);
+    }
 }
 
 .indicator-icon {
@@ -973,6 +1000,13 @@ body {
     border-radius: 15px;
     padding: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+    .grid-container {
+        background: rgba(31, 41, 55, 0.5);
+        border-color: rgba(75, 85, 99, 0.3);
+    }
 }
 
 .grid {
@@ -1143,6 +1177,17 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+@media (prefers-color-scheme: dark) {
+    .print-demo {
+        background: rgba(55, 65, 81, 0.9);
+        border-color: rgba(75, 85, 99, 0.3);
+        color: #e5e7eb;
+    }
+    .print-feature {
+        background: rgba(0, 0, 0, 0.2);
+    }
+}
+
 .print-features {
     display: grid;
     gap: 1rem;
@@ -1177,6 +1222,15 @@ body {
     color: #374151;
 }
 
+@media (prefers-color-scheme: dark) {
+    .footer-content p {
+        color: #e5e7eb;
+    }
+    .footer-link {
+        color: #9ca3af;
+    }
+}
+
 .footer-links {
     display: flex;
     justify-content: center;
@@ -1190,17 +1244,19 @@ body {
     font-weight: 500;
 }
 
-/* Dark Mode Support */
+/* Dark Mode Support - Comprehensive */
 @media (prefers-color-scheme: dark) {
     .container {
-        background: rgba(30, 30, 30, 0.95);
+        background: rgba(17, 24, 39, 0.95);
         color: #e5e7eb;
+        border-color: rgba(75, 85, 99, 0.3);
     }
     
     .gradient-text {
         background: linear-gradient(135deg, #93c5fd 0%, #c084fc 50%, #fbbf24 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     .feature-card {
@@ -1212,10 +1268,46 @@ body {
         color: #f3f4f6;
     }
     
+    .feature-card p {
+        color: #d1d5db;
+    }
+    
     .section-title {
         background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .indicator-range {
+        color: #9ca3af;
+    }
+    
+    .pill-blue {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.2));
+        border-color: rgba(59, 130, 246, 0.5);
+        color: #93c5fd;
+    }
+    
+    .pill-purple {
+        background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(126, 34, 206, 0.2));
+        border-color: rgba(147, 51, 234, 0.5);
+        color: #c084fc;
+    }
+    
+    .pill-green {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(21, 128, 61, 0.2));
+        border-color: rgba(34, 197, 94, 0.5);
+        color: #86efac;
+    }
+    
+    .hover-target {
+        background: linear-gradient(135deg, #374151, #1f2937);
+        color: #e5e7eb;
+    }
+    
+    .theme-toggle {
+        background: rgba(0, 0, 0, 0.3);
     }
 }
 

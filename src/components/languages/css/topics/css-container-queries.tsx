@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { 
     Play, Layout, Code, Target, CheckCircle, AlertTriangle, 
     Zap, Grid, Settings, Monitor, Smartphone, Tablet
@@ -257,15 +258,13 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Layout className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Container Queries</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Create components that respond to their container size, not just the viewport - the future of responsive design.
-                </p>
-            </div>
+            <PageHeader
+                icon={Layout}
+                category="CSS · Responsive Design"
+                title="Container Queries"
+                description="Build components that adapt to their container size instead of just the viewport."
+                colorTheme="blue"
+            />
 
             {/* What are Container Queries? */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">

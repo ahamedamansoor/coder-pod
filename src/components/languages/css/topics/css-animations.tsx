@@ -2,8 +2,9 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
 import { 
     Play, Film, Repeat, Lightbulb, Target, Code, Zap, Settings, 
     CheckCircle, AlertTriangle, Palette, Move, RotateCcw, Maximize, 
@@ -95,76 +96,15 @@ export default function CssAnimations({ onOpenWebPlayground }: CssAnimationsProp
         }
     ];
 
-    const playgroundCode = {
-        html: `<!DOCTYPE html>
-<html>
+    const playgroundCode = `<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>CSS Animations Complete Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1>🎬 CSS Animations Showcase</h1>
-        <p>Watch these amazing CSS animations in action!</p>
-        
-        <section class="demo-section">
-            <h2>🎯 Basic Animations</h2>
-            <div class="animation-grid">
-                <div class="animation-demo">
-                    <div class="bounce-ball"></div>
-                    <p>Bounce</p>
-                </div>
-                <div class="animation-demo">
-                    <div class="spin-wheel">⚙️</div>
-                    <p>Spin</p>
-                </div>
-                <div class="animation-demo">
-                    <div class="pulse-heart">❤️</div>
-                    <p>Pulse</p>
-                </div>
-                <div class="animation-demo">
-                    <div class="slide-box">📦</div>
-                    <p>Slide</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🌈 Complex Multi-Step Animations</h2>
-            <div class="complex-animations">
-                <div class="morphing-shape"></div>
-                <div class="floating-text">Floating Text</div>
-                <div class="loading-spinner">
-                    <div class="spinner-dot"></div>
-                    <div class="spinner-dot"></div>
-                    <div class="spinner-dot"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🎭 Animation Timing Functions</h2>
-            <div class="timing-demo">
-                <div class="timing-ball ease">ease</div>
-                <div class="timing-ball linear">linear</div>
-                <div class="timing-ball ease-in-out">ease-in-out</div>
-                <div class="timing-ball cubic">cubic-bezier</div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🔄 Animation Directions</h2>
-            <div class="direction-demo">
-                <div class="direction-box normal">Normal</div>
-                <div class="direction-box reverse">Reverse</div>
-                <div class="direction-box alternate">Alternate</div>
-            </div>
-        </section>
-    </div>
-</body>
-</html>`,
-        css: `* { margin: 0; padding: 0; box-sizing: border-box; }
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Inter', sans-serif;
@@ -172,6 +112,13 @@ body {
     color: #333;
     line-height: 1.6;
     padding: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+        color: #e5e7eb;
+    }
 }
 
 .container {
@@ -183,8 +130,20 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; }
-h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
+@media (prefers-color-scheme: dark) {
+    .container {
+        background: rgba(30, 41, 55, 0.95);
+        color: #e5e7eb;
+    }
+}
+
+h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; color: #1e293b; }
+h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: #334155; }
+
+@media (prefers-color-scheme: dark) {
+    h1 { color: #f1f5f9; }
+    h2 { color: #cbd5e1; }
+}
 
 .demo-section { margin-bottom: 3rem; }
 
@@ -201,6 +160,12 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .animation-demo {
+        background: rgba(55, 65, 81, 0.5);
+    }
 }
 
 .bounce-ball {
@@ -383,38 +348,101 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
     .animation-grid { grid-template-columns: repeat(2, 1fr); }
     .complex-animations { flex-direction: column; }
     .direction-demo { flex-direction: column; align-items: center; }
-}`,
-        js: `document.addEventListener('DOMContentLoaded', function() {
-    console.log('CSS Animations Demo loaded!');
-    
-    // Add pause/play functionality on click
-    const animatedElements = document.querySelectorAll('[class*="animation"], [class*="bounce"], [class*="spin"], [class*="pulse"], [class*="slide"], [class*="morph"], [class*="float"], [class*="timing"], [class*="direction"]');
-    
-    animatedElements.forEach(element => {
-        element.addEventListener('click', function() {
-            if (this.style.animationPlayState === 'paused') {
-                this.style.animationPlayState = 'running';
-            } else {
-                this.style.animationPlayState = 'paused';
-            }
-        });
-    });
-    
-    console.log('Click any animated element to pause/play!');
-});`
-    };
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 CSS Animations Showcase</h1>
+        <p>Watch these amazing CSS animations in action!</p>
+        
+        <section class="demo-section">
+            <h2>🎯 Basic Animations</h2>
+            <div class="animation-grid">
+                <div class="animation-demo">
+                    <div class="bounce-ball"></div>
+                    <p>Bounce</p>
+                </div>
+                <div class="animation-demo">
+                    <div class="spin-wheel">⚙️</div>
+                    <p>Spin</p>
+                </div>
+                <div class="animation-demo">
+                    <div class="pulse-heart">❤️</div>
+                    <p>Pulse</p>
+                </div>
+                <div class="animation-demo">
+                    <div class="slide-box">📦</div>
+                    <p>Slide</p>
+                </div>
+            </div>
+        </section>
 
+        <section class="demo-section">
+            <h2>🌈 Complex Multi-Step Animations</h2>
+            <div class="complex-animations">
+                <div class="morphing-shape"></div>
+                <div class="floating-text">Floating Text</div>
+                <div class="loading-spinner">
+                    <div class="spinner-dot"></div>
+                    <div class="spinner-dot"></div>
+                    <div class="spinner-dot"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo-section">
+            <h2>🎭 Animation Timing Functions</h2>
+            <div class="timing-demo">
+                <div class="timing-ball ease">ease</div>
+                <div class="timing-ball linear">linear</div>
+                <div class="timing-ball ease-in-out">ease-in-out</div>
+                <div class="timing-ball cubic">cubic-bezier</div>
+            </div>
+        </section>
+
+        <section class="demo-section">
+            <h2>🔄 Animation Directions</h2>
+            <div class="direction-demo">
+                <div class="direction-box normal">Normal</div>
+                <div class="direction-box reverse">Reverse</div>
+                <div class="direction-box alternate">Alternate</div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('CSS Animations Demo loaded!');
+        
+        // Add pause/play functionality on click
+        const animatedElements = document.querySelectorAll('[class*="animation"], [class*="bounce"], [class*="spin"], [class*="pulse"], [class*="slide"], [class*="morph"], [class*="float"], [class*="timing"], [class*="direction"]');
+        
+        animatedElements.forEach(element => {
+            element.addEventListener('click', function() {
+                if (this.style.animationPlayState === 'paused') {
+                    this.style.animationPlayState = 'running';
+                } else {
+                    this.style.animationPlayState = 'paused';
+                }
+            });
+        });
+        
+        console.log('Click any animated element to pause/play!');
+    });
+    </script>
+</body>
+</html>`;
+    
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Film className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Animations</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Creating complex, multi-step animations with keyframes - from simple effects to advanced sequences.
-                </p>
-            </div>
+            <PageHeader
+                icon={Film}
+                category="CSS · Animations & Effects"
+                title="CSS Animations"
+                description="Create complex, multi-step animations with keyframes - from simple effects to advanced sequences."
+                colorTheme="blue"
+            />
 
             {/* What are CSS Animations? */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
@@ -435,40 +463,44 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
                     <div className="grid lg:grid-cols-3 gap-6">
                         {/* Interactive Demo */}
                         <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                                    <Zap className="w-5 h-5" />
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer group">
+                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+                                    <Zap className="w-5 h-5 animate-pulse" />
                                     🎯 Animations vs Transitions
                                 </h4>
                                 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">⚡ Transition (A → B)</div>
-                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">⚡ Transition (A → B)</div>
+                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
                                             <div 
-                                                className="w-8 h-8 bg-gradient-to-r from-red-400 to-pink-500 rounded-full absolute top-6 left-4 cursor-pointer hover:left-16 transition-all duration-500"
+                                                className="w-8 h-8 bg-gradient-to-r from-red-400 to-pink-500 rounded-full absolute top-6 left-4 group-hover:left-[calc(100%-3rem)] transition-all duration-1000 ease-in-out flex items-center justify-center text-white font-bold text-xs shadow-lg"
                                             >
+                                                A
                                             </div>
+                                            <div className="absolute top-6 right-2 text-xl">🏁</div>
                                         </div>
-                                        <div className="text-xs text-red-500 mt-1">Simple Start → End</div>
+                                        <div className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium">Simple A → B movement</div>
                                     </div>
                                     
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">🎬 Animation (Multi-Step)</div>
-                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
-                                            <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full absolute top-6 left-4 animate-bounce">
+                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">🎬 Animation (Multi-Step)</div>
+                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
+                                            <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full absolute top-6 left-4 group-hover:animate-bounce flex items-center justify-center text-white font-bold text-xs shadow-lg">
+                                                A
                                             </div>
                                         </div>
-                                        <div className="text-xs text-green-500 mt-1">✅ Complex Sequence</div>
+                                        <div className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">✅ Complex bounce sequence</div>
                                     </div>
                                 </div>
 
                                 <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
-                                        🎪 Watch the difference!
+                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
+                                        <MousePointer className="w-4 h-4" />
+                                        🎪 Try it yourself!
                                     </div>
                                     <div className="text-xs text-green-600 dark:text-green-400">
-                                        Animations can have multiple keyframes with different properties at each step.
+                                        <strong>Hover over this entire card</strong> to see both examples animate! Notice how the <span className="text-red-600 dark:text-red-400 font-semibold">transition</span> moves smoothly from A to finish flag, while the <span className="text-blue-600 dark:text-blue-400 font-semibold">animation</span> bounces with keyframes.
                                     </div>
                                 </div>
                             </div>
@@ -791,10 +823,12 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
             </Card>
 
             {/* Interactive Playground */}
-            <Card className="border-primary bg-primary/5">
+            <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <Play className="w-5 h-5" />
+                        <div className="p-2 bg-blue-500/10 rounded-lg">
+                            <Play className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        </div>
                         Complete CSS Animations Playground
                     </CardTitle>
                     <CardDescription>
@@ -802,17 +836,12 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                        <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                            <Play className="mr-2 h-4 w-4" />
-                            Open Interactive Demo
-                        </Button>
-                        <Badge variant="secondary">🎯 Basic Animations</Badge>
-                        <Badge variant="secondary">🌈 Multi-Step Keyframes</Badge>
-                        <Badge variant="secondary">⏱️ Timing Functions</Badge>
-                        <Badge variant="secondary">🔄 Animation Directions</Badge>
-                        <Badge variant="secondary">🎮 Interactive Controls</Badge>
-                    </div>
+                    <FrontendCodePreview
+                        html={playgroundCode}
+                        title="CSS Animations Playground"
+                        colorTheme="blue"
+                        onOpenPlayground={onOpenWebPlayground}
+                    />
                 </CardContent>
             </Card>
 

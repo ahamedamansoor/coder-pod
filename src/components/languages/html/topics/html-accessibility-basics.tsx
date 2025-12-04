@@ -33,10 +33,13 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
       padding: 20px;
       min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
     }
     
-    :root.dark body {
-      background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+      }
     }
     
     .container {
@@ -48,9 +51,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
     
-    :root.dark .container {
-      background: #1e293b;
-      color: #e2e8f0;
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
     }
     
     h1 {
@@ -60,8 +65,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       text-align: center;
     }
     
-    :root.dark h1 {
-      color: #22d3ee;
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #22d3ee;
+      }
     }
     
     .comparison {
@@ -82,9 +89,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       border: 3px solid #ef4444;
     }
     
-    :root.dark .bad-example {
-      background: #7f1d1d;
-      border-color: #f87171;
+    @media (prefers-color-scheme: dark) {
+      .bad-example {
+        background: #7f1d1d;
+        border-color: #f87171;
+      }
     }
     
     .good-example {
@@ -92,9 +101,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       border: 3px solid #10b981;
     }
     
-    :root.dark .good-example {
-      background: #064e3b;
-      border-color: #34d399;
+    @media (prefers-color-scheme: dark) {
+      .good-example {
+        background: #064e3b;
+        border-color: #34d399;
+      }
     }
     
     .badge {
@@ -130,16 +141,20 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       color: #991b1b;
     }
     
-    :root.dark .bad-example .example-title {
-      color: #fca5a5;
+    @media (prefers-color-scheme: dark) {
+      .bad-example .example-title {
+        color: #fca5a5;
+      }
     }
     
     .good-example .example-title {
       color: #065f46;
     }
     
-    :root.dark .good-example .example-title {
-      color: #6ee7b7;
+    @media (prefers-color-scheme: dark) {
+      .good-example .example-title {
+        color: #6ee7b7;
+      }
     }
     
     .demo-button {
@@ -181,8 +196,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       border-radius: 8px;
     }
     
-    :root.dark .issue-list {
-      background: #334155;
+    @media (prefers-color-scheme: dark) {
+      .issue-list {
+        background: #334155;
+      }
     }
     
     .issue-list h4 {
@@ -198,8 +215,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       line-height: 1.5;
     }
     
-    :root.dark .issue-list li {
-      color: #cbd5e1;
+    @media (prefers-color-scheme: dark) {
+      .issue-list li {
+        color: #cbd5e1;
+      }
     }
     
     .bad-example .issue-list li::before {
@@ -305,10 +324,13 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
       padding: 20px;
       min-height: 100vh;
+      transition: background-color 0.3s;
     }
     
-    :root.dark body {
-      background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+      }
     }
     
     .page-container {
@@ -320,8 +342,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
     
-    :root.dark .page-container {
-      background: #1e293b;
+    @media (prefers-color-scheme: dark) {
+      .page-container {
+        background: #1e293b;
+      }
     }
     
     header {
@@ -342,9 +366,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       border-bottom: 2px solid #8b5cf6;
     }
     
-    :root.dark nav {
-      background: #334155;
-      border-bottom-color: #a78bfa;
+    @media (prefers-color-scheme: dark) {
+      nav {
+        background: #334155;
+        border-bottom-color: #a78bfa;
+      }
     }
     
     nav ul {
@@ -363,8 +389,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       transition: background 0.2s;
     }
     
-    :root.dark nav a {
-      color: #c4b5fd;
+    @media (prefers-color-scheme: dark) {
+      nav a {
+        color: #c4b5fd;
+      }
     }
     
     nav a:hover,
@@ -373,17 +401,21 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       outline: none;
     }
     
-    :root.dark nav a:hover,
-    :root.dark nav a:focus {
-      background: #5b21b6;
+    @media (prefers-color-scheme: dark) {
+      nav a:hover,
+      nav a:focus {
+        background: #5b21b6;
+      }
     }
     
     main {
       padding: 40px;
     }
     
-    :root.dark main {
-      color: #e2e8f0;
+    @media (prefers-color-scheme: dark) {
+      main {
+        color: #e2e8f0;
+      }
     }
     
     article {
@@ -394,9 +426,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       border-left: 4px solid #8b5cf6;
     }
     
-    :root.dark article {
-      background: #4c1d95;
-      border-left-color: #a78bfa;
+    @media (prefers-color-scheme: dark) {
+      article {
+        background: #4c1d95;
+        border-left-color: #a78bfa;
+      }
     }
     
     article h2 {
@@ -405,8 +439,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       font-size: 1.8rem;
     }
     
-    :root.dark article h2 {
-      color: #c4b5fd;
+    @media (prefers-color-scheme: dark) {
+      article h2 {
+        color: #c4b5fd;
+      }
     }
     
     article p {
@@ -415,8 +451,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       margin-bottom: 15px;
     }
     
-    :root.dark article p {
-      color: #cbd5e1;
+    @media (prefers-color-scheme: dark) {
+      article p {
+        color: #cbd5e1;
+      }
     }
     
     aside {
@@ -426,8 +464,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       margin: 30px 0;
     }
     
-    :root.dark aside {
-      background: #5b21b6;
+    @media (prefers-color-scheme: dark) {
+      aside {
+        background: #5b21b6;
+      }
     }
     
     aside h3 {
@@ -435,8 +475,61 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       margin-bottom: 15px;
     }
     
-    :root.dark aside h3 {
-      color: #ddd6fe;
+    @media (prefers-color-scheme: dark) {
+      aside h3 {
+        color: #ddd6fe;
+      }
+    }
+    
+    aside p {
+      color: #1e293b;
+      margin: 0;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      aside p {
+        color: #e0e7ff;
+      }
+    }
+    
+    section {
+      background: #f3f4f6;
+      padding: 25px;
+      border-radius: 12px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      section {
+        background: #334155;
+      }
+    }
+    
+    section h2 {
+      color: #1f2937;
+      margin-bottom: 15px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      section h2 {
+        color: #e2e8f0;
+      }
+    }
+    
+    section ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      padding: 0;
+    }
+    
+    section li {
+      color: #374151;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      section li {
+        color: #cbd5e1;
+      }
     }
     
     footer {
@@ -499,18 +592,18 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
           💡 Quick Tip
           <span class="semantic-badge">&lt;aside&gt;</span>
         </h3>
-        <p style="color: #1e293b; margin: 0;">
+        <p>
           Using semantic HTML is one of the easiest ways to improve accessibility.
           It costs nothing and provides immediate benefits!
         </p>
       </aside>
       
-      <section style="background: #f3f4f6; padding: 25px; border-radius: 12px;">
-        <h2 style="color: #1f2937; margin-bottom: 15px;">
+      <section>
+        <h2>
           Key Semantic Elements
           <span class="semantic-badge">&lt;section&gt;</span>
         </h2>
-        <ul style="list-style: none; display: grid; gap: 10px;">
+        <ul>
           <li>✅ &lt;header&gt; - Page or section header</li>
           <li>✅ &lt;nav&gt; - Navigation links</li>
           <li>✅ &lt;main&gt; - Primary content</li>
@@ -549,10 +642,13 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       padding: 20px;
       min-height: 100vh;
+      transition: background-color 0.3s;
     }
     
-    :root.dark body {
-      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      }
     }
     
     .container {
@@ -564,9 +660,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
     
-    :root.dark .container {
-      background: #1e293b;
-      color: #e2e8f0;
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
     }
     
     h1 {
@@ -576,8 +674,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       text-align: center;
     }
     
-    :root.dark h1 {
-      color: #34d399;
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #34d399;
+      }
     }
     
     .subtitle {
@@ -587,8 +687,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       font-size: 1.1rem;
     }
     
-    :root.dark .subtitle {
-      color: #94a3b8;
+    @media (prefers-color-scheme: dark) {
+      .subtitle {
+        color: #94a3b8;
+      }
     }
     
     .checklist-section {
@@ -606,9 +708,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       gap: 10px;
     }
     
-    :root.dark .section-title {
-      color: #6ee7b7;
-      border-bottom-color: #34d399;
+    @media (prefers-color-scheme: dark) {
+      .section-title {
+        color: #6ee7b7;
+        border-bottom-color: #34d399;
+      }
     }
     
     .checklist-item {
@@ -623,9 +727,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       transition: transform 0.2s;
     }
     
-    :root.dark .checklist-item {
-      background: #064e3b;
-      border-left-color: #34d399;
+    @media (prefers-color-scheme: dark) {
+      .checklist-item {
+        background: #064e3b;
+        border-left-color: #34d399;
+      }
     }
     
     .checklist-item:hover {
@@ -645,9 +751,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       background: white;
     }
     
-    :root.dark .checkbox {
-      background: #334155;
-      border-color: #34d399;
+    @media (prefers-color-scheme: dark) {
+      .checkbox {
+        background: #334155;
+        border-color: #34d399;
+      }
     }
     
     .checkbox::after {
@@ -663,8 +771,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       font-size: 1.1rem;
     }
     
-    :root.dark .item-content h4 {
-      color: #a7f3d0;
+    @media (prefers-color-scheme: dark) {
+      .item-content h4 {
+        color: #a7f3d0;
+      }
     }
     
     .item-content p {
@@ -673,8 +783,10 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       font-size: 0.95rem;
     }
     
-    :root.dark .item-content p {
-      color: #cbd5e1;
+    @media (prefers-color-scheme: dark) {
+      .item-content p {
+        color: #cbd5e1;
+      }
     }
     
     .priority-badge {
@@ -691,9 +803,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       color: #dc2626;
     }
     
-    :root.dark .priority-high {
-      background: #7f1d1d;
-      color: #fca5a5;
+    @media (prefers-color-scheme: dark) {
+      .priority-high {
+        background: #7f1d1d;
+        color: #fca5a5;
+      }
     }
     
     .priority-medium {
@@ -701,9 +815,11 @@ export default function HtmlAccessibilityBasics({ onOpenWebPlayground }: HtmlAcc
       color: #d97706;
     }
     
-    :root.dark .priority-medium {
-      background: #78350f;
-      color: #fcd34d;
+    @media (prefers-color-scheme: dark) {
+      .priority-medium {
+        background: #78350f;
+        color: #fcd34d;
+      }
     }
   </style>
 </head>

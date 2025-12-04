@@ -11,6 +11,8 @@ import { CssProvider } from './css-context';
 import { CssLayoutProvider, useCssLayout } from './css-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser, useAuth } from '@/firebase';
+import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
+import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 
 function CssTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -80,9 +82,12 @@ export default function CssTopicLayout({
   return (
     <CssProvider>
       <CssLayoutProvider>
-        <CssTopicLayoutContent>
-          {children}
-        </CssTopicLayoutContent>
+        <WebPlaygroundProvider>
+          <CssTopicLayoutContent>
+            {children}
+          </CssTopicLayoutContent>
+          <WebPlaygroundModal />
+        </WebPlaygroundProvider>
       </CssLayoutProvider>
     </CssProvider>
   );
