@@ -1,17 +1,20 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { 
     Play, Calculator, Target, Code, Zap, Settings, 
     CheckCircle, AlertTriangle, Palette, Eye, MousePointer, 
     Layers, RefreshCw, Sun, Moon, Paintbrush, Sliders,
-    Maximize, Move, RotateCcw, Grid3X3, Hash
+    Maximize, Move, RotateCcw, Grid3X3, Hash, Sparkles, Info
 } from 'lucide-react';
 
 interface CssFunctionsProps {
-    onOpenWebPlayground: (html: string, css: string, js: string) => void;
+    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssFunctions({ onOpenWebPlayground }: CssFunctionsProps) {
@@ -50,13 +53,265 @@ export default function CssFunctions({ onOpenWebPlayground }: CssFunctionsProps)
         }
     ];
 
-    const playgroundCode = {
-        html: `<!DOCTYPE html>
-<html>
+    const playgroundCode = `<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>CSS Functions Complete Guide</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Functions Complete Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+    * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        line-height: 1.6;
+        padding: 1rem;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+            color: #e2e8f0;
+        }
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .container {
+            background: #1f2937;
+            color: #e2e8f0;
+        }
+    }
+
+    h1 { 
+        font-size: 2.5rem; 
+        text-align: center; 
+        margin-bottom: 1rem; 
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        h1 {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    }
+
+    h2 { 
+        font-size: 1.5rem; 
+        margin: 2rem 0 1rem; 
+        color: #667eea;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        h2 {
+            color: #60a5fa;
+        }
+    }
+
+    h3 { 
+        font-size: 1rem; 
+        margin-bottom: 0.5rem; 
+        color: #667eea; 
+    }
+
+    @media (prefers-color-scheme: dark) {
+        h3 {
+            color: #a78bfa;
+        }
+    }
+
+    p {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .demo-section { 
+        margin-bottom: 3rem;
+        overflow: hidden;
+    }
+
+    .function-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .function-demo {
+        text-align: center;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .function-demo {
+            background: #374151;
+            border-color: #4b5563;
+        }
+    }
+
+    .function-demo:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Math Functions */
+    .calc-box {
+        width: calc(100% - 40px);
+        max-width: 100%;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    .min-box {
+        width: min(300px, 100%);
+        max-width: 100%;
+        height: 60px;
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    .max-box {
+        width: max(200px, 50%);
+        max-width: 100%;
+        height: 60px;
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    .clamp-box {
+        width: clamp(200px, 50%, 400px);
+        max-width: 100%;
+        height: 60px;
+        background: linear-gradient(135deg, #a8edea, #fed6e3);
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    /* Color Functions */
+    .color-box {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        border: 3px solid white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .rgb-box { background: rgb(59, 130, 246); }
+    .hsl-box { background: hsl(220, 91%, 60%); }
+    .rgba-box { background: rgba(16, 185, 129, 0.7); }
+    .hsla-box { background: hsla(45, 93%, 47%, 0.8); }
+
+    /* Transform Functions */
+    .transform-box {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .translate-box:hover { transform: translate(10px, -10px); }
+    .rotate-box:hover { transform: rotate(45deg); }
+    .scale-box:hover { transform: scale(1.2); }
+    .skew-box:hover { transform: skew(15deg, 5deg); }
+
+    /* Filter Functions */
+    .filter-box {
+        width: 120px;
+        height: 80px;
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: filter 0.3s ease;
+    }
+
+    .blur-box:hover { filter: blur(3px); }
+    .brightness-box:hover { filter: brightness(1.5); }
+    .contrast-box:hover { filter: contrast(1.5); }
+    .saturate-box:hover { filter: saturate(2); }
+
+    @media (max-width: 768px) {
+        .function-grid { grid-template-columns: repeat(2, 1fr); }
+        .calc-box, .min-box, .max-box, .clamp-box { font-size: 0.8rem; }
+    }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -171,199 +426,52 @@ export default function CssFunctions({ onOpenWebPlayground }: CssFunctionsProps)
             </div>
         </section>
     </div>
-</body>
-</html>`,
-        css: `* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #333;
-    line-height: 1.6;
-    padding: 1rem;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; }
-h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
-h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #667eea; }
-
-.demo-section { margin-bottom: 3rem; }
-
-.function-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.function-demo {
-    text-align: center;
-    padding: 1.5rem;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 2px solid #e9ecef;
-}
-
-/* Math Functions */
-.calc-box {
-    width: calc(100% - 40px);
-    height: 60px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin: 0 auto 1rem;
-    font-weight: bold;
-}
-
-.min-box {
-    width: min(300px, 100%);
-    height: 60px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin: 0 auto 1rem;
-    font-weight: bold;
-}
-
-.max-box {
-    width: max(200px, 50%);
-    height: 60px;
-    background: linear-gradient(135deg, #4ecdc4, #44a08d);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin: 0 auto 1rem;
-    font-weight: bold;
-}
-
-.clamp-box {
-    width: clamp(200px, 50%, 400px);
-    height: 60px;
-    background: linear-gradient(135deg, #a8edea, #fed6e3);
-    color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin: 0 auto 1rem;
-    font-weight: bold;
-}
-
-/* Color Functions */
-.color-box {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    border: 3px solid white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.rgb-box { background: rgb(59, 130, 246); }
-.hsl-box { background: hsl(220, 91%, 60%); }
-.rgba-box { background: rgba(16, 185, 129, 0.7); }
-.hsla-box { background: hsla(45, 93%, 47%, 0.8); }
-
-/* Transform Functions */
-.transform-box {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin: 0 auto 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.translate-box:hover { transform: translate(10px, -10px); }
-.rotate-box:hover { transform: rotate(45deg); }
-.scale-box:hover { transform: scale(1.2); }
-.skew-box:hover { transform: skew(15deg, 5deg); }
-
-/* Filter Functions */
-.filter-box {
-    width: 120px;
-    height: 80px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin: 0 auto 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: filter 0.3s ease;
-}
-
-.blur-box:hover { filter: blur(3px); }
-.brightness-box:hover { filter: brightness(1.5); }
-.contrast-box:hover { filter: contrast(1.5); }
-.saturate-box:hover { filter: saturate(2); }
-
-@media (max-width: 768px) {
-    .function-grid { grid-template-columns: repeat(2, 1fr); }
-    .calc-box, .min-box, .max-box, .clamp-box { font-size: 0.8rem; }
-}`,
-        js: `document.addEventListener('DOMContentLoaded', function() {
-    console.log('CSS Functions Demo loaded!');
-    
-    // Add click effects for mobile
-    const boxes = document.querySelectorAll('.transform-box, .filter-box');
-    
-    boxes.forEach(box => {
-        box.addEventListener('click', function() {
-            this.style.transform = this.style.transform ? '' : 
-                this.classList.contains('translate-box') ? 'translate(10px, -10px)' :
-                this.classList.contains('rotate-box') ? 'rotate(45deg)' :
-                this.classList.contains('scale-box') ? 'scale(1.2)' :
-                this.classList.contains('skew-box') ? 'skew(15deg, 5deg)' : '';
-                
-            if (this.classList.contains('filter-box')) {
-                this.style.filter = this.style.filter ? '' :
-                    this.classList.contains('blur-box') ? 'blur(3px)' :
-                    this.classList.contains('brightness-box') ? 'brightness(1.5)' :
-                    this.classList.contains('contrast-box') ? 'contrast(1.5)' :
-                    this.classList.contains('saturate-box') ? 'saturate(2)' : '';
-            }
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('CSS Functions Demo loaded!');
+        
+        // Add click effects for mobile
+        const boxes = document.querySelectorAll('.transform-box, .filter-box');
+        
+        boxes.forEach(box => {
+            box.addEventListener('click', function() {
+                this.style.transform = this.style.transform ? '' : 
+                    this.classList.contains('translate-box') ? 'translate(10px, -10px)' :
+                    this.classList.contains('rotate-box') ? 'rotate(45deg)' :
+                    this.classList.contains('scale-box') ? 'scale(1.2)' :
+                    this.classList.contains('skew-box') ? 'skew(15deg, 5deg)' : '';
+                    
+                if (this.classList.contains('filter-box')) {
+                    this.style.filter = this.style.filter ? '' :
+                        this.classList.contains('blur-box') ? 'blur(3px)' :
+                        this.classList.contains('brightness-box') ? 'brightness(1.5)' :
+                        this.classList.contains('contrast-box') ? 'contrast(1.5)' :
+                        this.classList.contains('saturate-box') ? 'saturate(2)' : '';
+                }
+            });
         });
     });
-});`
+    </script>
+</body>
+</html>`;
+
+    const handleOpenPlayground = () => {
+        if (onOpenWebPlayground) {
+            onOpenWebPlayground(playgroundCode, '', '');
+        }
     };
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Calculator className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Functions</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master CSS functions for calculations, colors, transforms, and visual effects.
-                </p>
-            </div>
+            {/* PAGE HEADER */}
+            <PageHeader
+                icon={Calculator}
+                category="CSS · Core Concepts"
+                title="CSS Functions"
+                description="Master powerful built-in functions for calculations, colors, transforms, and visual effects - unlock advanced CSS capabilities."
+                colorTheme="blue"
+            />
 
             {/* What are CSS Functions */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
@@ -523,25 +631,25 @@ h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #667eea; }
                     </div>
 
                     {/* Interactive Code Example */}
-                    <div className="mt-6 bg-gray-900 rounded-xl p-4 border border-gray-700 shadow-xl">
+                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
                         <div className="flex items-center gap-2 mb-3">
                             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-400 text-sm ml-2">CSS Functions Demo</span>
+                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">CSS Functions Demo</span>
                         </div>
                         <div className="font-mono text-sm">
                             <div className="text-gray-500">/* 🧮 Math Functions */</div>
-                            <div className="text-blue-400">.responsive-width</div>
-                            <div className="text-white"> {'{'} <span className="text-green-400">width</span>: <span className="text-yellow-400">calc(100% - 2rem)</span>; {'}'}</div>
+                            <div className="text-blue-600 dark:text-blue-400">.responsive-width</div>
+                            <div className="text-gray-900 dark:text-white"> {'{'} <span className="text-green-600 dark:text-green-400">width</span>: <span className="text-yellow-600 dark:text-yellow-400">calc(100% - 2rem)</span>; {'}'}</div>
                             <br />
                             <div className="text-gray-500">/* 🎨 Color Functions */</div>
-                            <div className="text-blue-400">.dynamic-color</div>
-                            <div className="text-white"> {'{'} <span className="text-green-400">background</span>: <span className="text-yellow-400">hsl(220, 91%, 60%)</span>; {'}'}</div>
+                            <div className="text-blue-600 dark:text-blue-400">.dynamic-color</div>
+                            <div className="text-gray-900 dark:text-white"> {'{'} <span className="text-green-600 dark:text-green-400">background</span>: <span className="text-yellow-600 dark:text-yellow-400">hsl(220, 91%, 60%)</span>; {'}'}</div>
                             <br />
                             <div className="text-gray-500">/* 🔄 Transform Functions */</div>
-                            <div className="text-blue-400">.animated-element</div>
-                            <div className="text-white"> {'{'} <span className="text-green-400">transform</span>: <span className="text-yellow-400">translate(50px, -20px)</span>; {'}'}</div>
+                            <div className="text-blue-600 dark:text-blue-400">.animated-element</div>
+                            <div className="text-gray-900 dark:text-white"> {'{'} <span className="text-green-600 dark:text-green-400">transform</span>: <span className="text-yellow-600 dark:text-yellow-400">translate(50px, -20px)</span>; {'}'}</div>
                         </div>
                     </div>
                 </CardContent>
@@ -734,19 +842,38 @@ h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #667eea; }
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                        <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                            <Play className="mr-2 h-4 w-4" />
-                            Open Interactive Demo
-                        </Button>
-                        <Badge variant="secondary">🧮 Math Functions</Badge>
-                        <Badge variant="secondary">🎨 Color Functions</Badge>
-                        <Badge variant="secondary">🔄 Transform Functions</Badge>
-                        <Badge variant="secondary">🎭 Filter Functions</Badge>
-                        <Badge variant="secondary">📱 Mobile Friendly</Badge>
-                    </div>
+                    <FrontendCodePreview
+                        html={playgroundCode}
+                        title="CSS Functions Playground"
+                        colorTheme="blue"
+                        onOpenPlayground={handleOpenPlayground}
+                    />
                 </CardContent>
             </Card>
+
+            {/* BEST PRACTICES */}
+            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <AlertTitle className="text-green-900 dark:text-green-100">Best Practices</AlertTitle>
+                <AlertDescription className="text-green-800 dark:text-green-200">
+                    <ul className="list-disc list-inside space-y-1 mt-2">
+                        <li><strong>Use calc() for dynamic sizing</strong> - Perfect for responsive layouts with mixed units</li>
+                        <li><strong>Prefer clamp() for fluid typography</strong> - Creates responsive text without media queries</li>
+                        <li><strong>Use hsl() for color manipulation</strong> - Easier to adjust hue, saturation, and lightness</li>
+                        <li><strong>Combine functions</strong> - Stack multiple functions for powerful effects</li>
+                        <li><strong>Performance</strong> - Most CSS functions are GPU-accelerated</li>
+                    </ul>
+                </AlertDescription>
+            </Alert>
+
+            {/* BROWSER SUPPORT */}
+            <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
+                <Info className="h-4 w-4 text-blue-600" />
+                <AlertTitle className="text-blue-900 dark:text-blue-100">Browser Support</AlertTitle>
+                <AlertDescription className="text-blue-800 dark:text-blue-200">
+                    <strong>Excellent support for most CSS functions!</strong> calc(), rgb(), hsl(), and transform functions work in all modern browsers. Math functions like min(), max(), and clamp() are supported in Chrome 79+, Firefox 75+, Safari 13.1+, and Edge 79+.
+                </AlertDescription>
+            </Alert>
         </div>
     );
 }

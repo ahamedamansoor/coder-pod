@@ -8,9 +8,12 @@ import { useWebPlayground } from '@/components/shared/playground/web-playground-
 
 // Lazy load all the topic components
 const WhatIsSass = lazy(() => import('./topics/what-is-sass'));
+const SassVsScss = lazy(() => import('./topics/sass-vs-scss'));
 const SassInstallation = lazy(() => import('./topics/sass-installation'));
+const SassCompilation = lazy(() => import('./topics/sass-compilation'));
 const SassComments = lazy(() => import('./topics/sass-comments'));
 const SassVariables = lazy(() => import('./topics/sass-variables'));
+const SassDataTypes = lazy(() => import('./topics/sass-data-types'));
 const SassNesting = lazy(() => import('./topics/sass-nesting'));
 const SassParentSelector = lazy(() => import('./topics/sass-parent-selector'));
 const SassImport = lazy(() => import('./topics/sass-import'));
@@ -41,9 +44,12 @@ const SassAdvancedPatterns = lazy(() => import('./topics/sass-advanced-patterns'
 // Map slugs to their lazy-loaded components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'what-is-sass': WhatIsSass,
+  'sass-vs-scss': SassVsScss,
   'sass-installation': SassInstallation,
+  'sass-compilation': SassCompilation,
   'sass-comments': SassComments,
   'sass-variables': SassVariables,
+  'sass-data-types': SassDataTypes,
   'sass-nesting': SassNesting,
   'sass-parent-selector': SassParentSelector,
   'sass-import': SassImport,
@@ -95,6 +101,10 @@ export function ScssContentDisplay({
   const CustomTopicComponent = topicComponentMap[topic.slug];
   const { openWithContent } = useWebPlayground();
 
+  const handleOpenWebPlayground = (html: string, css: string, js: string) => {
+    openWithContent(html, css, js);
+  };
+
   return (
     <GenericContentDisplay
       topic={topic}
@@ -102,7 +112,7 @@ export function ScssContentDisplay({
     >
       <Suspense fallback={<LoadingSkeleton />}>
         {CustomTopicComponent ? (
-          <CustomTopicComponent />
+          <CustomTopicComponent onOpenWebPlayground={handleOpenWebPlayground} />
         ) : null}
       </Suspense>
     </GenericContentDisplay>

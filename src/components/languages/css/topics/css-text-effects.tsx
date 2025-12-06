@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { 
     Sparkles, Play, Type, Zap, Palette, Eye, 
     Layers, Settings, Circle, CheckCircle, 
@@ -608,15 +609,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Sparkles className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Text Effects</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Create stunning visual text effects with shadows, gradients, animations, and advanced CSS techniques.
-                </p>
-            </div>
+            <PageHeader
+                icon={Sparkles}
+                category="CSS · Typography"
+                title="CSS Text Effects"
+                description="Create stunning visual text effects with shadows, gradients, transforms, and animation tricks."
+                colorTheme="pink"
+            />
 
             {/* Text Shadow Effects */}
             <Card>

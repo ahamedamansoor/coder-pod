@@ -9,6 +9,8 @@ import { languages } from '@/data/languages';
 import { notFound, useParams, useRouter } from 'next/navigation';
 import { TailwindProvider } from './tailwind-context';
 import { TailwindLayoutProvider, useTailwindLayout } from './tailwind-layout-context';
+import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
+import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser, useAuth } from '@/firebase';
 
@@ -66,6 +68,7 @@ function TailwindTopicLayoutContent({ children }: { children: React.ReactNode })
           </main>
         </div>
       </div>
+      <WebPlaygroundModal initialLanguage="tailwind" />
     </SidebarProvider>
   );
 }
@@ -77,12 +80,14 @@ export default function TailwindTopicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TailwindProvider>
-      <TailwindLayoutProvider>
-        <TailwindTopicLayoutContent>
-          {children}
-        </TailwindTopicLayoutContent>
-      </TailwindLayoutProvider>
-    </TailwindProvider>
+    <WebPlaygroundProvider>
+      <TailwindProvider>
+        <TailwindLayoutProvider>
+          <TailwindTopicLayoutContent>
+            {children}
+          </TailwindTopicLayoutContent>
+        </TailwindLayoutProvider>
+      </TailwindProvider>
+    </WebPlaygroundProvider>
   );
 }

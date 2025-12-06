@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Sparkles, ExternalLink, Check, Shield, Info, AlertCircle } from 'lucide-react';
+import { Sparkles, ExternalLink, Check, Shield, Info, AlertCircle, Loader2, XCircle } from 'lucide-react';
 import { AIProvider, AI_PROVIDERS } from '@/types/ai-providers';
 import { cn } from '@/lib/utils';
 
@@ -26,20 +26,106 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
   const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<'invalid' | 'network' | 'rate-limit' | 'server' | 'generic'>('generic');
 
   const provider = AI_PROVIDERS[selectedProvider];
 
+  // Clear error when provider changes
+  useEffect(() => {
+    setError(null);
+    setApiKey('');
+  }, [selectedProvider]);
+
+  // Clear error when dialog closes
+  useEffect(() => {
+    if (!isOpen) {
+      setError(null);
+      setApiKey('');
+    }
+  }, [isOpen]);
+
+  const getErrorMessage = (errorType: string, providerName: string): { title: string; description: string } => {
+    switch (errorType) {
+      case 'invalid':
+        return {
+          title: 'Invalid API Key',
+          description: `The API key you entered is not valid for ${providerName}. Please double-check your key and try again.`
+        };
+      case 'network':
+        return {
+          title: 'Connection Failed',
+          description: `Could not connect to ${providerName}. Please check your internet connection and try again.`
+        };
+      case 'rate-limit':
+        return {
+          title: 'Rate Limit Exceeded',
+          description: `${providerName} is temporarily limiting requests. Please wait a moment and try again.`
+        };
+      case 'server':
+        return {
+          title: 'Server Error',
+          description: `${providerName} is experiencing issues. Please try again later or choose a different provider.`
+        };
+      default:
+        return {
+          title: 'Validation Failed',
+          description: 'Could not validate your API key. Please check your key and try again.'
+        };
+    }
+  };
+
   const handleSave = async () => {
+    if (!apiKey.trim()) {
+      setError('Please enter your API key.');
+      setErrorType('generic');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
-    const isValid = await onSave(selectedProvider, apiKey);
-    if (isValid) {
-      setApiKey('');
-      onClose();
-    } else {
-      setError('Invalid API Key. Please check your key and try again.');
+
+    try {
+      const isValid = await onSave(selectedProvider, apiKey);
+      if (isValid) {
+        setApiKey('');
+        setError(null);
+        onClose();
+      } else {
+        // Default to invalid key if onSave returns false without throwing
+        setErrorType('invalid');
+        setError(getErrorMessage('invalid', provider.name).description);
+      }
+    } catch (err: any) {
+      const errorMessage = err?.message || '';
+
+      // Determine error type from message
+      if (errorMessage.includes('401') || errorMessage.includes('403') ||
+          errorMessage.toLowerCase().includes('invalid') ||
+          errorMessage.toLowerCase().includes('unauthorized')) {
+        setErrorType('invalid');
+      } else if (errorMessage.includes('429') || errorMessage.toLowerCase().includes('rate')) {
+        setErrorType('rate-limit');
+      } else if (errorMessage.toLowerCase().includes('network') ||
+                 errorMessage.toLowerCase().includes('connection') ||
+                 errorMessage.toLowerCase().includes('fetch')) {
+        setErrorType('network');
+      } else if (errorMessage.includes('500') || errorMessage.includes('502') ||
+                 errorMessage.includes('503')) {
+        setErrorType('server');
+      } else {
+        setErrorType('generic');
+      }
+
+      setError(errorMessage || getErrorMessage(errorType, provider.name).description);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && apiKey.trim() && !isLoading) {
+      handleSave();
+    }
   };
 
   return (
@@ -133,13 +219,32 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
             <Input
               id="api-key"
               value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
+              onChange={(e) => {
+                setApiKey(e.target.value);
+                if (error) setError(null); // Clear error when user starts typing
+              }}
+              onKeyDown={handleKeyDown}
               placeholder={provider.keyPlaceholder}
               disabled={isLoading}
               type="password"
+              className={cn(error && "border-red-500 focus:ring-red-500")}
             />
           </div>
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+          {/* Error Display */}
+          {error && (
+            <div className="flex gap-3 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800 animate-in fade-in slide-in-from-top-1 duration-200">
+              <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 space-y-1">
+                <p className="text-sm font-medium text-red-900 dark:text-red-100">
+                  {getErrorMessage(errorType, provider.name).title}
+                </p>
+                <p className="text-xs text-red-700 dark:text-red-300">
+                  {error}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <DialogFooter className="flex flex-col sm:flex-row sm:justify-between items-center gap-2">
@@ -153,7 +258,14 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
             <ExternalLink className="w-4 h-4" />
           </a>
           <Button onClick={handleSave} disabled={isLoading || !apiKey.trim()}>
-            {isLoading ? 'Validating...' : 'Save & Enable AI'}
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Validating...
+              </>
+            ) : (
+              'Save & Enable AI'
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,834 +1,708 @@
-
 'use client';
+
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-    Play, Variable, Lightbulb, Palette, File, Hash, Text,
-    Target, Zap, Settings, Globe, Lock, Eye, EyeOff,
-    CheckCircle, AlertTriangle, Copy, ArrowRight, Code,
-    Layers, RefreshCw, Wrench, BookOpen, Star, Rocket
-} from 'lucide-react';
-import React, { useState } from 'react';
-import { PageHeader } from './page-header';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
+import { Variable, DollarSign, RefreshCw, CheckCircle, AlertCircle, Info, Sparkles, Code } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function SassVariables({ onOpenWebPlayground }: { onOpenWebPlayground: (html: string, css: string, js: string) => void; }) {
-    const [selectedExample, setSelectedExample] = useState('basic');
-    const [showOutput, setShowOutput] = useState(false);
+interface SassVariablesProps {
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+}
 
-    const scssCode = `$primary-color: #3b82f6;
-$font-stack: Helvetica, sans-serif;
-$base-padding: 1rem;
+export default function SassVariables({ onOpenWebPlayground }: SassVariablesProps) {
+  
+  // Basic Variables Example - HTML
+  const basicVariablesHtml = `<div class="demo">
+  <h2>Color Buttons</h2>
+  <div class="buttons">
+    <button class="btn btn-primary">Primary</button>
+    <button class="btn btn-success">Success</button>
+    <button class="btn btn-danger">Danger</button>
+  </div>
+  <p class="note">All buttons use variables for consistent theming!</p>
+</div>`;
 
+  // Basic Variables Example - SCSS
+  const basicVariablesScss = `// Basic styling
 body {
-  font-family: $font-stack;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
 }
 
-.container {
-  padding: $base-padding;
-  background: $primary-color;
-  color: white;
-}
-`;
-
-    const dataTypes = [
-        {
-            type: 'Colors',
-            icon: Palette,
-            color: 'text-pink-600',
-            bgColor: 'bg-pink-50 dark:bg-pink-950/20',
-            borderColor: 'border-pink-200',
-            examples: [
-                '$primary: #3b82f6;',
-                '$secondary: rgb(100, 116, 139);',
-                '$accent: hsl(210, 40%, 60%);',
-                '$transparent: rgba(0, 0, 0, 0.5);'
-            ]
-        },
-        {
-            type: 'Numbers',
-            icon: Hash,
-            color: 'text-blue-600',
-            bgColor: 'bg-blue-50 dark:bg-blue-950/20',
-            borderColor: 'border-blue-200',
-            examples: [
-                '$font-size: 16px;',
-                '$line-height: 1.6;',
-                '$margin: 2rem;',
-                '$z-index: 1000;'
-            ]
-        },
-        {
-            type: 'Strings',
-            icon: Text,
-            color: 'text-green-600',
-            bgColor: 'bg-green-50 dark:bg-green-950/20',
-            borderColor: 'border-green-200',
-            examples: [
-                '$font-family: "Inter";',
-                '$image-path: "/images/";',
-                '$prefix: "app-";',
-                '$content: "★";'
-            ]
-        },
-        {
-            type: 'Booleans',
-            icon: CheckCircle,
-            color: 'text-purple-600',
-            bgColor: 'bg-purple-50 dark:bg-purple-950/20',
-            borderColor: 'border-purple-200',
-            examples: [
-                '$enable-rounded: true;',
-                '$debug-mode: false;',
-                '$rtl-support: true;',
-                '$print-styles: false;'
-            ]
-        },
-        {
-            type: 'Lists',
-            icon: File,
-            color: 'text-orange-600',
-            bgColor: 'bg-orange-50 dark:bg-orange-950/20',
-            borderColor: 'border-orange-200',
-            examples: [
-                '$margins: 0 auto;',
-                '$font-stack: Arial, sans-serif;',
-                '$breakpoints: 768px 1024px;',
-                '$shadows: 0 2px 4px rgba(0,0,0,0.1);'
-            ]
-        },
-        {
-            type: 'Maps',
-            icon: Layers,
-            color: 'text-indigo-600',
-            bgColor: 'bg-indigo-50 dark:bg-indigo-950/20',
-            borderColor: 'border-indigo-200',
-            examples: [
-                '$colors: (primary: #3b82f6, secondary: #64748b);',
-                '$breakpoints: (sm: 640px, md: 768px);',
-                '$z-indexes: (modal: 1000, tooltip: 1001);',
-                '$fonts: (heading: "Inter", body: "System");'
-            ]
-        }
-    ];
-
-    const interactiveExamples = {
-        basic: {
-            title: 'Basic Variables',
-            html: '<div class="card"><h2>Welcome</h2><p>This is a card component.</p><button class="btn">Click me</button></div>',
-            scss: `// Basic variable usage
+// Define variables with $
 $primary-color: #3b82f6;
-$secondary-color: #64748b;
-$font-size-base: 16px;
+$success-color: #10b981;
+$danger-color: #ef4444;
 $border-radius: 8px;
-$spacing: 1rem;
+$padding: 0.75rem 1.5rem;
 
-.card {
+// Use variables in your styles
+.demo {
   background: white;
-  border: 1px solid $secondary-color;
-  border-radius: $border-radius;
-  padding: $spacing * 2;
-  margin: $spacing;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
   
   h2 {
-    color: $primary-color;
-    font-size: $font-size-base * 1.5;
-    margin-bottom: $spacing;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
   }
-  
-  .btn {
-    background: $primary-color;
-    color: white;
-    padding: $spacing * 0.5 $spacing;
-    border: none;
-    border-radius: $border-radius * 0.5;
-    cursor: pointer;
-  }
-}`,
-            css: `.card {
-  background: white;
-  border: 1px solid #64748b;
-  border-radius: 8px;
-  padding: 2rem;
-  margin: 1rem;
 }
 
-.card h2 {
-  color: #3b82f6;
-  font-size: 24px;
+.buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
-.card .btn {
-  background: #3b82f6;
-  color: white;
-  padding: 0.5rem 1rem;
+.btn {
+  padding: $padding;  // Using variable
+  border-radius: $border-radius;  // Using variable
   border: none;
-  border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
-}`
-        },
-        defaults: {
-            title: 'Default Values',
-            html: '<div class="theme-card primary"><h3>Primary Theme</h3></div><div class="theme-card secondary"><h3>Secondary Theme</h3></div>',
-            scss: `// Default values with !default
-$primary-color: #3b82f6 !default;
-$secondary-color: #64748b !default;
-$card-padding: 1.5rem !default;
-$card-radius: 12px !default;
-
-// These won't override if already defined
-$primary-color: #ef4444 !default;  // Won't apply
-$secondary-color: #10b981 !default; // Won't apply
-
-.theme-card {
-  padding: $card-padding;
-  border-radius: $card-radius;
-  margin: 1rem 0;
-  
-  &.primary {
-    background: $primary-color;
-    color: white;
-  }
-  
-  &.secondary {
-    background: $secondary-color;
-    color: white;
-  }
-}`,
-            css: `.theme-card {
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin: 1rem 0;
-}
-
-.theme-card.primary {
-  background: #3b82f6;
+  transition: all 0.2s;
   color: white;
-}
-
-.theme-card.secondary {
-  background: #64748b;
-  color: white;
-}`
-        },
-        interpolation: {
-            title: 'Variable Interpolation',
-            html: '<div class="app-header"><h1>App Header</h1></div><div class="app-sidebar">Sidebar</div><div class="app-content">Main Content</div>',
-            scss: `// Variable interpolation with #{}
-$prefix: "app";
-$property: "margin";
-$side: "top";
-$value: 2rem;
-
-// Using interpolation in selectors
-.#{$prefix}-header {
-  background: #3b82f6;
-  color: white;
-  padding: 1rem;
-}
-
-.#{$prefix}-sidebar {
-  background: #f8fafc;
-  padding: 1rem;
   
-  // Using interpolation in properties
-  #{$property}-#{$side}: $value;
-}
-
-.#{$prefix}-content {
-  padding: 1rem;
-  #{$property}: $value 0;
-}`,
-            css: `.app-header {
-  background: #3b82f6;
-  color: white;
-  padding: 1rem;
-}
-
-.app-sidebar {
-  background: #f8fafc;
-  padding: 1rem;
-  margin-top: 2rem;
-}
-
-.app-content {
-  padding: 1rem;
-  margin: 2rem 0;
-}`
-        }
-    };
-
-    const globalScopeCode = `// _variables.scss
-$primary-color: #3b82f6;
-$base-font-size: 16px;
-
-// main.scss
-@import 'variables';
-
-body {
-  font-size: $base-font-size;
-  color: $primary-color;
-}
-`;
-
-    const localScopeCode = `.card {
-  $card-padding: 1.5rem; // Local variable
-
-  padding: $card-padding;
-  
-  h2 {
-    // This works because h2 is inside .card
-    padding-bottom: $card-padding;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
 }
 
-.footer {
-  // This would cause an error! 
-  // $card-padding is not available here.
-  // padding: $card-padding;
-}
-`;
-
-    return (
-        <div className="w-full space-y-8 min-h-screen pb-16">
-            <PageHeader
-                icon={Variable}
-                category="SCSS Variables"
-                title="Sass Variables Mastery"
-                description="Master the art of storing reusable values to keep your stylesheets DRY and maintainable"
-                colorTheme="blue"
-            />
-
-            {/* Quick Start Overview */}
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-                        <Target className="w-6 h-6" />
-                        The Power of Variables
-                    </CardTitle>
-                    <CardDescription>
-                        Variables are like labeled containers that store values you want to reuse throughout your stylesheets.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <span className="text-xl font-bold text-blue-600">1</span>
-                            </div>
-                            <h3 className="font-semibold mb-2">Define Once</h3>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">$primary: #3b82f6;</code>
-                        </div>
-                        <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <span className="text-xl font-bold text-green-600">2</span>
-                            </div>
-                            <h3 className="font-semibold mb-2">Use Everywhere</h3>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">color: $primary;</code>
-                        </div>
-                        <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <span className="text-xl font-bold text-purple-600">3</span>
-                            </div>
-                            <h3 className="font-semibold mb-2">Change Once</h3>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Updates everywhere!</code>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Data Types Overview */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Layers className="w-6 h-6 text-primary" />
-                        Variable Data Types
-                    </CardTitle>
-                    <CardDescription>
-                        Sass variables can store different types of data, each with specific use cases.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {dataTypes.map((dataType, index) => {
-                            const Icon = dataType.icon;
-                            return (
-                                <div key={index} className={`p-4 rounded-lg border ${dataType.bgColor} ${dataType.borderColor}`}>
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Icon className={`w-6 h-6 ${dataType.color}`} />
-                                        <h3 className="font-bold">{dataType.type}</h3>
-                                    </div>
-                                    <div className="space-y-2">
-                                        {dataType.examples.map((example, idx) => (
-                                            <code key={idx} className="text-xs bg-white dark:bg-gray-800 px-2 py-1 rounded block">
-                                                {example}
-                                            </code>
-                                        ))}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Interactive Examples */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Play className="w-6 h-6 text-primary" />
-                        Interactive Variable Examples
-                    </CardTitle>
-                    <CardDescription>
-                        See how variables work in real Sass code with live examples.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                        {Object.entries(interactiveExamples).map(([key, example]) => (
-                            <Button
-                                key={key}
-                                variant={selectedExample === key ? "default" : "outline"}
-                                onClick={() => setSelectedExample(key)}
-                                size="sm"
-                            >
-                                {example.title}
-                            </Button>
-                        ))}
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-semibold flex items-center gap-2">
-                                    <Code className="w-5 h-5 text-blue-600" />
-                                    SCSS Input
-                                </h3>
-                            </div>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">
-                                    {interactiveExamples[selectedExample as keyof typeof interactiveExamples].scss}
-                                </pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-semibold flex items-center gap-2">
-                                    <File className="w-5 h-5 text-green-600" />
-                                    CSS Output
-                                </h3>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setShowOutput(!showOutput)}
-                                >
-                                    {showOutput ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                </Button>
-                            </div>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-green-600 dark:text-green-400 font-mono text-sm whitespace-pre-wrap">
-                                    {showOutput ? interactiveExamples[selectedExample as keyof typeof interactiveExamples].css : 'Click the eye icon to reveal CSS output'}
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="mt-6">
-                        <Button 
-                            onClick={() => onOpenWebPlayground(
-                                interactiveExamples[selectedExample as keyof typeof interactiveExamples].html,
-                                interactiveExamples[selectedExample as keyof typeof interactiveExamples].scss,
-                                ''
-                            )}
-                            className="flex items-center gap-2"
-                        >
-                            <Play className="w-4 h-4" />
-                            Try in Playground
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Variable Scope */}
-            <Card className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-950/20 dark:to-teal-950/20 border-green-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                        <Globe className="w-6 h-6" />
-                        Variable Scope & Visibility
-                    </CardTitle>
-                    <CardDescription>
-                        Understanding where variables can be accessed is crucial for maintainable code.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h3 className="font-semibold mb-2 flex items-center gap-2">
-                                    <Globe className="w-5 h-5 text-blue-600" />
-                                    Global Scope
-                                </h3>
-                                <p className="text-sm text-muted-foreground mb-3">
-                                    Variables defined outside selectors are available everywhere.
-                                </p>
-                                <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                    <pre className="text-gray-800 dark:text-white font-mono text-xs whitespace-pre-wrap">{globalScopeCode}</pre>
-                                </div>
-                            </div>
-                            
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h3 className="font-semibold mb-2 flex items-center gap-2">
-                                    <Lock className="w-5 h-5 text-orange-600" />
-                                    Local Scope
-                                </h3>
-                                <p className="text-sm text-muted-foreground mb-3">
-                                    Variables defined inside selectors are only available within that context.
-                                </p>
-                                <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                    <pre className="text-gray-800 dark:text-white font-mono text-xs whitespace-pre-wrap">{localScopeCode}</pre>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 className="font-semibold mb-3">Scope Rules</h3>
-                            <div className="space-y-3 text-sm">
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Global variables</strong> can be accessed from anywhere in your stylesheet
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Local variables</strong> are only available within their containing block
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Nested selectors</strong> can access parent scope variables
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <AlertTriangle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Local variables</strong> shadow global ones with the same name
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Default Values */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Settings className="w-6 h-6 text-primary" />
-                        Default Values & !default Flag
-                    </CardTitle>
-                    <CardDescription>
-                        Create configurable variables that can be overridden when needed.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <h3 className="font-semibold mb-3">How !default Works</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`// Library defaults
-$primary-color: #3b82f6 !default;
-$font-size: 16px !default;
-
-// User overrides (defined before import)
-$primary-color: #ef4444;
-
-// Result: $primary-color will be #ef4444
-// because it was already defined`}</pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 className="font-semibold mb-3">Use Cases</h3>
-                            <div className="space-y-3 text-sm">
-                                <div className="flex items-start gap-2">
-                                    <Star className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Library development</strong> - Provide sensible defaults
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-2">
-                                    <Star className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Theme systems</strong> - Allow customization
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-2">
-                                    <Star className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Configuration files</strong> - Safe fallback values
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-2">
-                                    <Star className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Component libraries</strong> - Flexible styling
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Variable Interpolation */}
-            <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Hash className="w-6 h-6" />
-                        Variable Interpolation
-                    </CardTitle>
-                    <CardDescription>
-                        Use variables in selectors, property names, and string values with #{} syntax.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-6">
-                        <div>
-                            <h3 className="font-semibold mb-3">Interpolation Examples</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`$prefix: "app";
-$property: "margin";
-$side: "top";
-$size: "large";
-
-// In selectors
-.#{$prefix}-header { }          // .app-header
-.#{$prefix}-#{$size} { }        // .app-large
-
-// In property names  
-#{$property}-#{$side}: 1rem;    // margin-top: 1rem;
-
-// In values
-content: "Welcome to #{$prefix}"; // content: "Welcome to app";
-background: url("images/#{$prefix}-logo.png");`}</pre>
-                            </div>
-                        </div>
-                        
-                        <div className="grid md:grid-cols-3 gap-4">
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h4 className="font-semibold mb-2">✅ Selectors</h4>
-                                <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded block">
-                                    .#{'#{'}$prefix{'}'}-btn
-                                </code>
-                            </div>
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h4 className="font-semibold mb-2">✅ Properties</h4>
-                                <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded block">
-                                    #{'#{'}$property{'}'}: value;
-                                </code>
-                            </div>
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h4 className="font-semibold mb-2">✅ Values</h4>
-                                <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded block">
-                                    content: "#{'#{'}$text{'}'}";
-                                </code>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Best Practices */}
-            <Card className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-                        <Lightbulb className="w-6 h-6" />
-                        Variable Best Practices
-                    </CardTitle>
-                    <CardDescription>
-                        Professional tips for organizing and naming your Sass variables.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                <CheckCircle className="w-5 h-5 text-green-600" />
-                                Do's
-                            </h4>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Use descriptive names: <code>$primary-color</code> not <code>$blue</code></span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Group related variables in separate files</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Use consistent naming conventions (kebab-case)</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Define variables at the top of files</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Use !default for library variables</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div>
-                            <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                <AlertTriangle className="w-5 h-5 text-red-600" />
-                                Don'ts
-                            </h4>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Don't use overly generic names like <code>$color</code></span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Don't define variables you'll only use once</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Don't mix naming conventions in one project</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Don't create deeply nested variable dependencies</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Don't forget to document complex variable systems</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Advanced Techniques */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Rocket className="w-6 h-6 text-primary" />
-                        Advanced Variable Techniques
-                    </CardTitle>
-                    <CardDescription>
-                        Expert-level patterns for complex Sass projects.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-6">
-                        <div>
-                            <h3 className="font-semibold mb-3">1. Variable Maps for Theming</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`$theme-colors: (
-  primary: #3b82f6,
-  secondary: #64748b,
-  success: #10b981,
-  danger: #ef4444,
-  warning: #f59e0b
-);
-
-// Usage with map-get
+// Different button variations using color variables
 .btn-primary {
-  background: map-get($theme-colors, primary);
+  background: $primary-color;  // Using variable
 }
 
-// Or with @each loop
-@each $name, $color in $theme-colors {
-  .btn-#{$name} {
-    background: $color;
-    color: white;
+.btn-success {
+  background: $success-color;  // Using variable
+}
+
+.btn-danger {
+  background: $danger-color;  // Using variable
+}
+
+.note {
+  background: #eff6ff;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #1e40af;
+}`;
+
+  // Variable Types Example - HTML
+  const variableTypesHtml = `<div class="types-demo">
+  <h3>Variable Types Demo</h3>
+  <div class="type-card color-type">
+    <strong>Colors:</strong> #3b82f6, rgb(59, 130, 246)
+  </div>
+  <div class="type-card number-type">
+    <strong>Numbers:</strong> 16px, 1.5rem, 100%
+  </div>
+  <div class="type-card string-type">
+    <strong>Strings:</strong> "Arial", sans-serif
+  </div>
+  <div class="type-card list-type">
+    <strong>Lists:</strong> 10px 20px 30px 40px (margins)
+  </div>
+</div>`;
+
+  // Variable Types Example - SCSS
+  const variableTypesScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+// Different variable types in SCSS
+$text-color: #1e293b;           // Color
+$font-size: 16px;                // Number with unit
+$line-height: 1.6;               // Unitless number
+$font-family: 'Georgia', serif;  // String
+$box-shadow: 0 2px 8px rgba(0,0,0,0.1);  // List
+$enable-rounded: true;           // Boolean
+$content: null;                  // Null
+
+.types-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: $box-shadow;  // Using list variable
+  max-width: 600px;
+  
+  h3 {
+    color: $text-color;  // Using color variable
+    margin-bottom: 1.5rem;
+    font-size: $font-size * 1.5;  // Math with variables!
   }
-}`}</pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 className="font-semibold mb-3">2. Calculated Variables</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`$base-font-size: 16px;
-$scale-ratio: 1.25;
+}
 
-// Calculated typography scale
-$font-size-sm: $base-font-size / $scale-ratio;    // 12.8px
-$font-size-lg: $base-font-size * $scale-ratio;    // 20px
-$font-size-xl: $font-size-lg * $scale-ratio;      // 25px
-
-// Spacing system
-$base-spacing: 1rem;
-$spacing-xs: $base-spacing * 0.25;  // 0.25rem
-$spacing-sm: $base-spacing * 0.5;   // 0.5rem
-$spacing-lg: $base-spacing * 2;     // 2rem`}</pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 className="font-semibold mb-3">3. Environment-Based Variables</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`$env: 'development' !default;
-
-$debug-mode: if($env == 'development', true, false);
-$api-url: if($env == 'production', 'https://api.example.com', 'http://localhost:3000');
-
-// Conditional styles
-@if $debug-mode {
-  .debug-info {
-    position: fixed;
-    top: 0;
-    right: 0;
-    background: red;
-    color: white;
-    padding: 0.5rem;
+.type-card {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  font-size: $font-size;  // Using number variable
+  line-height: $line-height;  // Using unitless number
+  
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
   }
-}`}</pre>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+}
 
-            {/* Quick Reference */}
-            <Card className="border-indigo-500 bg-indigo-50 dark:bg-indigo-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
-                        <BookOpen className="w-6 h-6" />
-                        Quick Reference
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-3 gap-4 text-sm">
-                        <div>
-                            <h4 className="font-semibold mb-2">Basic Syntax</h4>
-                            <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-1">$variable: value;</code>
-                            <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-1">color: $variable;</code>
-                        </div>
-                        <div>
-                            <h4 className="font-semibold mb-2">Special Flags</h4>
-                            <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-1">$var: value !default;</code>
-                            <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-1">$var: value !global;</code>
-                        </div>
-                        <div>
-                            <h4 className="font-semibold mb-2">Interpolation</h4>
-                            <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-1">.#{'#{'}$prefix{'}'}-class</code>
-                            <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-1">#{'#{'}$property{'}'}: value;</code>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-    );
+.color-type {
+  background: #dbeafe;
+  border-left: 4px solid #3b82f6;
+}
+
+.number-type {
+  background: #dcfce7;
+  border-left: 4px solid #10b981;
+}
+
+.string-type {
+  background: #fce7f3;
+  border-left: 4px solid #ec4899;
+}
+
+.list-type {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+}`;
+
+  // Variable Scope Example - HTML
+  const scopeHtml = `<div class="scope-demo">
+  <div class="global-scope">
+    <h3>Global Scope</h3>
+    <p>Global variables are defined outside any selector and can be used anywhere.</p>
+  </div>
+  <div class="local-scope">
+    <h3>Local Scope</h3>
+    <p>Local variables are defined inside a selector and only accessible within that scope.</p>
+  </div>
+</div>`;
+
+  // Variable Scope Example - SCSS
+  const scopeScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+// Global variable - accessible everywhere
+$global-color: #3b82f6;
+$global-padding: 1.5rem;
+
+.scope-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+
+.global-scope {
+  // Can use global variable here
+  border: 2px solid $global-color;
+  padding: $global-padding;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  
+  h3 {
+    color: $global-color;  // Global variable works here
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #64748b;
+    margin: 0;
+  }
+}
+
+.local-scope {
+  // Local variable - only accessible within this block
+  $local-color: #10b981;  // Local to .local-scope
+  $local-padding: 1rem;   // Local to .local-scope
+  
+  border: 2px solid $local-color;
+  padding: $local-padding;
+  border-radius: 8px;
+  
+  h3 {
+    color: $local-color;   // Local variable works here
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #64748b;
+    margin: 0;
+  }
+}
+
+// $local-color is NOT accessible here - it's scoped to .local-scope
+// But $global-color IS accessible everywhere`;
+
+  // Default Values Example - HTML
+  const defaultValuesHtml = `<div class="default-demo">
+  <h3>Default Values (!default)</h3>
+  <div class="card">
+    <div class="card-header">
+      Custom Theme
+    </div>
+    <div class="card-body">
+      Use <code>!default</code> to set variables that can be overridden by users.
+    </div>
+  </div>
+</div>`;
+
+  // Default Values Example - SCSS
+  const defaultValuesScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+// Default variables - can be overridden before import
+$theme-color: #3b82f6 !default;
+$card-padding: 1.5rem !default;
+$card-radius: 8px !default;
+
+// If user defines $theme-color before importing this file,
+// their value will be used instead of the default
+
+.default-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  
+  h3 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+  }
+  
+  code {
+    background: #f1f5f9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #ec4899;
+  }
+}
+
+.card {
+  border: 1px solid #e2e8f0;
+  border-radius: $card-radius;  // Using default variable
+  overflow: hidden;
+}
+
+.card-header {
+  background: $theme-color;  // Using default variable
+  color: white;
+  padding: $card-padding;  // Using default variable
+  font-weight: 600;
+}
+
+.card-body {
+  padding: $card-padding;  // Using default variable
+  color: #64748b;
+}`;
+
+  // Variable Interpolation Example - HTML
+  const interpolationHtml = `<div class="interpolation-demo">
+  <h3>Variable Interpolation #{}</h3>
+  <div class="dynamic-left">Left sidebar</div>
+  <div class="dynamic-right">Right sidebar</div>
+  <p class="info">Variables can be interpolated into selectors, property names, and strings!</p>
+</div>`;
+
+  // Variable Interpolation Example - SCSS
+  const interpolationScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+$side: left;  // Variable to interpolate
+$property: border;  // Variable for property name
+
+.interpolation-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  
+  h3 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Interpolate variable into selector
+.dynamic-#{$side} {
+  // This becomes .dynamic-left
+  padding: 1rem;
+  background: #dbeafe;
+  border-#{$side}: 4px solid #3b82f6;  // border-left
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.dynamic-right {
+  padding: 1rem;
+  background: #dcfce7;
+  border-right: 4px solid #10b981;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.info {
+  background: #fef3c7;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #92400e;
+  margin: 0;
+}
+
+// Interpolation in strings
+$font-path: "/fonts";
+@import url("#{$font-path}/custom-font.woff2");`;
+
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Variable}
+        category="Sass/SCSS · Fundamentals"
+        title="Variables"
+        description="Store and reuse values with $ variables for maintainable stylesheets"
+        colorTheme="pink"
+      />
+
+      {/* Overview */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-pink-500/10 rounded-lg">
+              <DollarSign className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+            </div>
+            What are Sass Variables?
+          </CardTitle>
+          <CardDescription>
+            Store values and reuse them throughout your stylesheet
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <strong className="text-foreground">Variables</strong> in Sass let you store values (colors, fonts, sizes, etc.) 
+            and reuse them throughout your stylesheet. Variables start with a <code className="bg-pink-100 dark:bg-pink-900 px-2 py-1 rounded">$</code> symbol.
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <Variable className="h-5 w-5 text-blue-600 dark:text-blue-400 mb-2" />
+              <h4 className="font-semibold mb-2">Define Once</h4>
+              <p className="text-sm text-muted-foreground">
+                Set a value in one place
+              </p>
+            </div>
+            
+            <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+              <RefreshCw className="h-5 w-5 text-green-600 dark:text-green-400 mb-2" />
+              <h4 className="font-semibold mb-2">Use Everywhere</h4>
+              <p className="text-sm text-muted-foreground">
+                Reference throughout your code
+              </p>
+            </div>
+            
+            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400 mb-2" />
+              <h4 className="font-semibold mb-2">Easy Updates</h4>
+              <p className="text-sm text-muted-foreground">
+                Change once, update everywhere
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Basic Variables */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <DollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            Basic Variables
+          </CardTitle>
+          <CardDescription>
+            Define once, use many times
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={basicVariablesHtml}
+            css={basicVariablesScss}
+            title="Variables in Action"
+            description="Define colors once, use them everywhere"
+            colorTheme="blue"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <div className="mt-4 grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800">
+              <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">❌ Without Variables:</h4>
+              <div className="text-sm font-mono text-red-700 dark:text-red-300 space-y-1">
+                <div>.btn-primary {'{'} background: <span className="text-red-600">#3b82f6</span>; {'}'}</div>
+                <div>.link {'{'} color: <span className="text-red-600">#3b82f6</span>; {'}'}</div>
+                <div>.border {'{'} border: 1px solid <span className="text-red-600">#3b82f6</span>; {'}'}</div>
+              </div>
+              <p className="text-xs text-red-600 dark:text-red-400 mt-2">Repetitive and hard to update</p>
+            </div>
+            
+            <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">✅ With Variables:</h4>
+              <div className="text-sm font-mono text-green-700 dark:text-green-300 space-y-1">
+                <div><span className="text-pink-600 dark:text-pink-400">$primary</span>: #3b82f6;</div>
+                <div>.btn-primary {'{'} background: <span className="text-pink-600 dark:text-pink-400">$primary</span>; {'}'}</div>
+                <div>.link {'{'} color: <span className="text-pink-600 dark:text-pink-400">$primary</span>; {'}'}</div>
+                <div>.border {'{'} border: 1px solid <span className="text-pink-600 dark:text-pink-400">$primary</span>; {'}'}</div>
+              </div>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-2">DRY (Don't Repeat Yourself)</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variable Types */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-purple-500/10 rounded-lg">
+              <Code className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            Variable Types
+          </CardTitle>
+          <CardDescription>
+            Variables can store different data types
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={variableTypesHtml}
+            css={variableTypesScss}
+            title="Different Variable Types"
+            description="Colors, numbers, strings, lists, booleans, and null"
+            colorTheme="purple"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <div className="mt-4 grid md:grid-cols-2 gap-4 text-sm">
+            <div className="p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h4 className="font-semibold mb-2">Common Types:</h4>
+              <ul className="space-y-1 text-muted-foreground">
+                <li><strong>Colors:</strong> <code>#3b82f6</code>, <code>rgb(59, 130, 246)</code></li>
+                <li><strong>Numbers:</strong> <code>16px</code>, <code>1.5rem</code>, <code>100%</code></li>
+                <li><strong>Strings:</strong> <code>"Arial"</code>, <code>sans-serif</code></li>
+                <li><strong>Lists:</strong> <code>10px 20px 30px 40px</code></li>
+                <li><strong>Booleans:</strong> <code>true</code>, <code>false</code></li>
+                <li><strong>Null:</strong> <code>null</code></li>
+              </ul>
+            </div>
+            
+            <div className="p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h4 className="font-semibold mb-2">Variable Operations:</h4>
+              <ul className="space-y-1 text-muted-foreground font-mono text-xs">
+                <li><code>$size * 2</code> → Math operations</li>
+                <li><code>$color + #111</code> → Color operations</li>
+                <li><code>$font + ", Arial"</code> → String concat</li>
+                <li><code>join($list1, $list2)</code> → List operations</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variable Scope */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-green-500/10 rounded-lg">
+              <Variable className="h-5 w-5 text-green-600 dark:text-green-400" />
+            </div>
+            Variable Scope
+          </CardTitle>
+          <CardDescription>
+            Global vs local variables
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={scopeHtml}
+            css={scopeScss}
+            title="Understanding Scope"
+            description="Global variables work everywhere, local variables only in their scope"
+            colorTheme="green"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <Alert className="mt-4 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
+            <Info className="h-4 w-4 text-green-600" />
+            <AlertTitle className="text-green-900 dark:text-green-100">Scope Rules</AlertTitle>
+            <AlertDescription className="text-green-800 dark:text-green-200">
+              <ul className="list-disc list-inside space-y-1 mt-2">
+                <li><strong>Global:</strong> Defined outside any selector, accessible everywhere</li>
+                <li><strong>Local:</strong> Defined inside a selector, only accessible within that block</li>
+                <li><strong>Shadowing:</strong> Local variables can shadow global ones</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Default Values */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-orange-500/10 rounded-lg">
+              <RefreshCw className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            Default Values (!default)
+          </CardTitle>
+          <CardDescription>
+            Set variables that can be overridden
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={defaultValuesHtml}
+            css={defaultValuesScss}
+            title="Default Values Demo"
+            description="Use !default to allow users to override your variables"
+            colorTheme="orange"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <div className="mt-4 p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-800">
+            <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-3">How !default Works:</h4>
+            <div className="text-sm font-mono text-orange-700 dark:text-orange-300 space-y-2">
+              <div className="bg-white dark:bg-orange-900/30 p-2 rounded">
+                <div className="text-gray-500">// Library code:</div>
+                <div>$theme-color: #3b82f6 <span className="text-pink-600">!default</span>;</div>
+                <div className="text-gray-500 mt-1">// If $theme-color is already defined, use that</div>
+                <div className="text-gray-500">// Otherwise, use #3b82f6</div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variable Interpolation */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-pink-500/10 rounded-lg">
+              <Sparkles className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+            </div>
+            Variable Interpolation #{'{}'}
+          </CardTitle>
+          <CardDescription>
+            Use variables in selectors and property names
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={interpolationHtml}
+            css={interpolationScss}
+            title="Interpolation Examples"
+            description="Use #{$variable} to interpolate variables anywhere"
+            colorTheme="pink"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <div className="mt-4 p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
+            <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-3">Interpolation Uses:</h4>
+            <ul className="text-sm text-pink-800 dark:text-pink-200 space-y-2">
+              <li><strong>Selectors:</strong> <code className="bg-white dark:bg-pink-900 px-2 py-1 rounded">.dynamic-#{'{'} $side {'}'}</code></li>
+              <li><strong>Property names:</strong> <code className="bg-white dark:bg-pink-900 px-2 py-1 rounded">border-#{'{'} $side {'}'}: 1px solid</code></li>
+              <li><strong>Strings:</strong> <code className="bg-white dark:bg-pink-900 px-2 py-1 rounded">url("#{'{'} $path {'}'}/image.png")</code></li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Best Practices */}
+      <Alert>
+        <CheckCircle className="h-4 w-4" />
+        <AlertTitle>Variable Best Practices</AlertTitle>
+        <AlertDescription>
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>Use descriptive names:</strong> <code>$primary-color</code> instead of <code>$blue</code></li>
+            <li><strong>Group related variables:</strong> Keep colors together, sizes together</li>
+            <li><strong>Use !default for libraries:</strong> Allow users to customize</li>
+            <li><strong>Avoid deep nesting:</strong> Keep variables at global or module level</li>
+            <li><strong>Document your variables:</strong> Add comments explaining their purpose</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
+
+      {/* Common Patterns */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Common Variable Patterns</CardTitle>
+          <CardDescription>
+            Typical ways to organize variables
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4 text-sm font-mono">
+            <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded border">
+              <div className="font-semibold mb-2 text-blue-600">Colors:</div>
+              <div>$primary: #3b82f6;</div>
+              <div>$secondary: #64748b;</div>
+              <div>$success: #10b981;</div>
+              <div>$danger: #ef4444;</div>
+            </div>
+            <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded border">
+              <div className="font-semibold mb-2 text-green-600">Spacing:</div>
+              <div>$spacing-sm: 0.5rem;</div>
+              <div>$spacing-md: 1rem;</div>
+              <div>$spacing-lg: 1.5rem;</div>
+              <div>$spacing-xl: 2rem;</div>
+            </div>
+            <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded border">
+              <div className="font-semibold mb-2 text-purple-600">Typography:</div>
+              <div>$font-body: 'Arial', sans-serif;</div>
+              <div>$font-heading: 'Georgia', serif;</div>
+              <div>$font-mono: 'Courier', monospace;</div>
+            </div>
+            <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded border">
+              <div className="font-semibold mb-2 text-orange-600">Breakpoints:</div>
+              <div>$screen-sm: 640px;</div>
+              <div>$screen-md: 768px;</div>
+              <div>$screen-lg: 1024px;</div>
+              <div>$screen-xl: 1280px;</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

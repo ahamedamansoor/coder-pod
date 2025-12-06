@@ -494,24 +494,40 @@ Keep it simple and easy to understand.`;
       </div>
 
       <div className="relative" data-testid="topic-content">
+        {/* Mark as Complete - Side of Title */}
         {isTrackableTopic && isUserAuthenticated && (
-          <div
-            className="absolute right-0 top-4 flex items-center gap-2 rounded-2xl border border-transparent bg-gradient-to-r from-primary/80 to-primary/60 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:scale-105"
-          >
-            <Checkbox
-              id={checkboxId}
-              checked={isTopicComplete}
-              onCheckedChange={handleMarkCompleteChange}
-              className="border-white bg-white/20 text-primary transition-colors data-[state=checked]:border-white data-[state=checked]:bg-primary data-[state=checked]:text-white"
-            />
-            <Label htmlFor={checkboxId} className="cursor-pointer leading-none text-white">
-              Mark as completed
-            </Label>
-            {isTopicComplete && (
-              <CheckCircle className="h-4 w-4 text-emerald-300" />
-            )}
+          <div className="absolute right-4 top-8 z-10">
+            <div
+              className="inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50 relative overflow-hidden group cursor-pointer"
+              style={{
+                backgroundColor: '#4A7BF5',
+                borderColor: '#4A7BF5',
+                animation: 'badge-pulse 3s ease-in-out infinite'
+              }}
+            >
+              {/* Shimmer effect */}
+              <div 
+                className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)'
+                }}
+              />
+              <Checkbox
+                id={checkboxId}
+                checked={isTopicComplete}
+                onCheckedChange={handleMarkCompleteChange}
+                className="border-white bg-white/20 transition-colors data-[state=checked]:border-white data-[state=checked]:bg-white data-[state=checked]:text-[#4A7BF5] relative z-10"
+              />
+              <Label htmlFor={checkboxId} className="cursor-pointer leading-none text-white relative z-10">
+                Mark as completed
+              </Label>
+              {isTopicComplete && (
+                <CheckCircle className="h-4 w-4 text-white relative z-10" />
+              )}
+            </div>
           </div>
         )}
+        
         {children ? (
           children
         ) : (
@@ -629,6 +645,18 @@ Keep it simple and easy to understand.`;
           return true;
         }}
       />
+      
+      {/* Keyframe animation for badge pulse */}
+      <style jsx>{`
+        @keyframes badge-pulse {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(74, 123, 245, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(74, 123, 245, 0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

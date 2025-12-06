@@ -7,6 +7,12 @@ type WebPlaygroundContentType = {
   html: string;
   css: string;
   js: string;
+  initialLanguage?: string;
+  visiblePanels?: {
+    html?: boolean;
+    css?: boolean;
+    js?: boolean;
+  };
 };
 
 interface WebPlaygroundContextType {
@@ -14,7 +20,8 @@ interface WebPlaygroundContextType {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   content: WebPlaygroundContentType;
   setContent: React.Dispatch<React.SetStateAction<WebPlaygroundContentType>>;
-  openWithContent: (html: string, css: string, js: string) => void;
+  defaultFocusedPanel: 'html' | 'css' | 'js' | null;
+  openWithContent: (html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string) => void;
 }
 
 const WebPlaygroundContext = createContext<WebPlaygroundContextType | undefined>(undefined);
@@ -26,8 +33,9 @@ export const WebPlaygroundProvider = ({ children }: { children: ReactNode }) => 
     css: '',
     js: ''
   });
+  const [defaultFocusedPanel, setDefaultFocusedPanel] = useState<'html' | 'css' | 'js' | null>(null);
 
-  const openWithContent = useCallback((html: string, css: string, js: string) => {
+  const openWithContent = useCallback((html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string) => {
     // Ensure HTML has proper document structure
     const ensureProperHTMLStructure = (htmlContent: string): string => {
       const trimmed = htmlContent.trim();
@@ -51,16 +59,29 @@ ${htmlContent}
 </html>`;
     };
     
+    // Determine if focusedPanel is a language (tailwind, scss, css) or a panel name
+    const isLanguage = focusedPanel && !['html', 'css', 'js'].includes(focusedPanel);
+    
+    // For Tailwind, only show HTML panel (CSS and JS are hidden since styles are in class attributes)
+    const visiblePanels = focusedPanel === 'tailwind' ? {
+      html: true,
+      css: false,
+      js: false
+    } : undefined;
+    
     setContent({ 
       html: ensureProperHTMLStructure(html), 
       css, 
-      js 
+      js,
+      initialLanguage: isLanguage ? focusedPanel : undefined,
+      visiblePanels
     });
+    setDefaultFocusedPanel(isLanguage ? 'html' : (focusedPanel as 'html' | 'css' | 'js' | null) || null);
     setOpen(true);
   }, []);
 
   return (
-    <WebPlaygroundContext.Provider value={{ open, setOpen, content, setContent, openWithContent }}>
+    <WebPlaygroundContext.Provider value={{ open, setOpen, content, setContent, defaultFocusedPanel, openWithContent }}>
       {children}
     </WebPlaygroundContext.Provider>
   );

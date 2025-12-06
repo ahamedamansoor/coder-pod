@@ -2,12 +2,12 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-    Play, Layout, Grid, Columns, Rows, Monitor, Smartphone,
-    ArrowRightLeft, ArrowUpDown, Maximize, Settings, Target,
-    CheckCircle, AlertTriangle, Code, Hash, Plus, Zap
+    Play, Layout, Grid, Columns, Monitor,
+    Settings, CheckCircle, AlertTriangle, Zap
 } from 'lucide-react';
 
 interface CssLayoutPatternsProps {
@@ -272,6 +272,285 @@ h1 {
     background: #0056b3;
 }`,
         js: `console.log('CSS Layout Patterns Demo loaded successfully!');`
+    };
+
+    const layoutEssentialsPlayground = {
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Layout Essentials Playground</title>
+</head>
+<body>
+  <div class="playground">
+    <header class="playground-header">
+      <div>
+        <p class="eyebrow">Layout Essentials</p>
+        <h2>Spacing, Display, Positioning &amp; Flexbox</h2>
+      </div>
+      <button id="theme-toggle" class="theme-toggle">Switch to dark mode</button>
+    </header>
+
+    <section class="section spacing-system">
+      <h3>Spacing System</h3>
+      <div class="spacing-grid">
+        <div class="spacing-card">
+          <span class="spacing-value">0.5rem</span>
+          <p class="spacing-label">Extra-tight</p>
+        </div>
+        <div class="spacing-card">
+          <span class="spacing-value">1rem</span>
+          <p class="spacing-label">Base spacing</p>
+        </div>
+        <div class="spacing-card">
+          <span class="spacing-value">1.5rem</span>
+          <p class="spacing-label">Comfortable</p>
+        </div>
+        <div class="spacing-card">
+          <span class="spacing-value">2.5rem</span>
+          <p class="spacing-label">Loose</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section display-system">
+      <h3>Display Modes</h3>
+      <div class="display-row">
+        <div class="display-demo display-block">block</div>
+        <div class="display-demo display-inline">inline</div>
+        <div class="display-demo display-inline-block">inline-block</div>
+        <div class="display-demo display-grid">grid</div>
+      </div>
+    </section>
+
+    <section class="section position-system">
+      <h3>Positioning Playground</h3>
+      <div class="position-stage">
+        <div class="position-card top-left">Top Left</div>
+        <div class="position-card bottom-right">Bottom Right</div>
+        <div class="position-card center">Centered</div>
+      </div>
+    </section>
+
+    <section class="section flexbox-system">
+      <h3>Flexbox Layout</h3>
+      <div class="flexbox-demo">
+        <span class="flex-item">1</span>
+        <span class="flex-item">2</span>
+        <span class="flex-item">3</span>
+        <span class="flex-item">4</span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>`,
+        css: `:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --border: #e5e7eb;
+  --muted: #475569;
+}
+.dark {
+  --bg: #0f172a;
+  --card: #111827;
+  --text: #f8fafc;
+  --border: #334155;
+  --muted: #cbd5f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top, #e0f2fe, #3b82f6 45%, #0f172a);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  padding: 2.5rem;
+  transition: background 0.4s ease;
+}
+.dark body {
+  background: radial-gradient(circle at top, #0b1120, #111827 60%, #0f172a);
+}
+
+.playground {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 25px 40px rgba(15, 23, 42, 0.25);
+}
+
+.playground-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.playground-header h2 {
+  margin: 0;
+  font-size: 1.9rem;
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.theme-toggle {
+  padding: 0.6rem 1rem;
+  background: #6366f1;
+  border: none;
+  border-radius: 999px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  background: #4f46e5;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+.section h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.spacing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+.spacing-card {
+  border-radius: 1rem;
+  border: 1px dashed var(--border);
+  padding: 1rem;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.12);
+  text-align: center;
+}
+.spacing-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: block;
+  color: #4338ca;
+}
+.spacing-label {
+  margin: 0;
+  color: var(--muted);
+}
+
+.display-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.display-demo {
+  flex: 1;
+  min-width: 140px;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  text-align: center;
+  font-weight: 600;
+}
+.display-block {
+  background: rgba(59, 130, 246, 0.15);
+}
+.display-inline {
+  background: rgba(34, 197, 94, 0.15);
+}
+.display-inline-block {
+  background: rgba(234, 179, 8, 0.15);
+}
+.display-grid {
+  background: rgba(236, 72, 153, 0.15);
+}
+
+.position-stage {
+  position: relative;
+  height: 220px;
+  border: 2px dashed var(--border);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(14,116,144,0.08));
+  overflow: hidden;
+}
+.position-card {
+  position: absolute;
+  padding: 0.7rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border);
+}
+.position-card.top-left {
+  top: 1rem;
+  left: 1rem;
+}
+.position-card.bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+.position-card.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(15, 23, 42, 0.85);
+  color: white;
+}
+
+.flexbox-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.flex-item {
+  min-width: 120px;
+  padding: 0.8rem 1rem;
+  border-radius: 0.7rem;
+  background: linear-gradient(135deg, #38bdf8, #9333ea);
+  color: white;
+  text-align: center;
+  font-weight: 700;
+}`,
+        js: `document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('theme-toggle');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (prefersDark) {
+    document.documentElement.classList.add('dark');
+  }
+
+  const updateLabel = () => {
+    if (!toggle) return;
+    const isDark = document.documentElement.classList.contains('dark');
+    toggle.textContent = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+  };
+
+  toggle?.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    updateLabel();
+  });
+
+  updateLabel();
+});`
     };
 
     return (
@@ -712,6 +991,39 @@ h1 {
                             <Zap className="w-3 h-3" />
                             Interactive Demos
                         </Badge>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Layout Essentials Playground */}
+            <Card className="border-sky-200 bg-sky-50/50 dark:bg-sky-950/20">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+                        <Play className="w-5 h-5" />
+                        Layout Essentials Playground
+                    </CardTitle>
+                    <CardDescription>
+                        Hands-on sandbox for spacing, display, positioning, and flexbox where you can toggle light/dark mode.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <FrontendCodePreview
+                        html={layoutEssentialsPlayground.html}
+                        css={layoutEssentialsPlayground.css}
+                        js={layoutEssentialsPlayground.js}
+                        title="Spacing, Display &amp; Flexbox"
+                        colorTheme="cyan"
+                    />
+                    <div className="mt-4 flex flex-wrap gap-2">
+                        <Button onClick={() => onOpenWebPlayground(layoutEssentialsPlayground.html, layoutEssentialsPlayground.css, layoutEssentialsPlayground.js)}>
+                            <Play className="mr-2 h-4 w-4" />
+                            Open Layout Essentials Playground
+                        </Button>
+                        <Badge variant="secondary">Spacing</Badge>
+                        <Badge variant="secondary">Display</Badge>
+                        <Badge variant="secondary">Position</Badge>
+                        <Badge variant="secondary">Flexbox</Badge>
+                        <Badge variant="secondary">Dark Mode Ready</Badge>
                     </div>
                 </CardContent>
             </Card>

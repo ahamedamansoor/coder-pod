@@ -1,732 +1,637 @@
 'use client';
+
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-    MessageSquare, Code, Play, Eye, EyeOff, FileText, 
-    Lightbulb, AlertTriangle, CheckCircle, Copy, ArrowRight,
-    Hash, Slash, Star, Zap, Settings, BookOpen, Target
-} from 'lucide-react';
-import React, { useState } from 'react';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
+import { MessageSquare, Slash, Hash, Star, CheckCircle, AlertCircle, Info, Code } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function SassComments({ onOpenEditor, onOpenWebPlayground }: {
-  onOpenEditor?: (code: string) => void;
+interface SassCommentsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-} = {}) {
-    const [selectedExample, setSelectedExample] = useState('basic');
-    const [showOutput, setShowOutput] = useState(false);
+}
 
-    const singleLineExample = `// This is a single-line comment
-// It won't appear in the compiled CSS
+export default function SassComments({ onOpenWebPlayground }: SassCommentsProps) {
+  
+  // Single-line Comments Example - HTML
+  const singleLineHtml = `<div class="comment-demo">
+  <h2>Single-Line Comments</h2>
+  <div class="example-box">
+    <p>Single-line comments are removed during compilation and won't appear in the CSS output.</p>
+  </div>
+</div>`;
 
-$primary-color: #3b82f6; // You can also add comments at the end of a line
+  // Single-line Comments Example - SCSS
+  const singleLineScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
 
-.button {
-  background: $primary-color;
-  // This comment explains why we set this padding
-  padding: 10px 20px;
-}`;
+// Single-line comments start with //
+// These comments are REMOVED during compilation
+// They won't appear in the final CSS file
 
-    const multiLineExample = `/* 
- * Multi-line comments are preserved in the compiled CSS
- * Use them for important documentation
+.comment-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  
+  h2 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    // This is a comment inside a nested selector
+    // It's also removed from the output
+  }
+}
+
+.example-box {
+  // Variables can be documented with comments
+  $box-color: #dbeafe;  // Light blue background
+  $border-color: #3b82f6;  // Primary blue border
+  
+  background: $box-color;
+  padding: 1.5rem;
+  border-left: 4px solid $border-color;
+  border-radius: 8px;
+  
+  p {
+    color: #1e40af;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+// You can use // comments for:
+// - Temporary notes
+// - TODO items
+// - Debugging notes
+// - Code that you want to hide from users`;
+
+  // Multi-line Comments Example - HTML
+  const multiLineHtml = `<div class="multi-comment-demo">
+  <h2>Multi-Line Comments</h2>
+  <div class="info-box">
+    <p>Multi-line comments are preserved in the CSS output and appear in the compiled file.</p>
+  </div>
+</div>`;
+
+  // Multi-line Comments Example - SCSS
+  const multiLineScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+/*
+ * Multi-line comments use /* and */
+ * These comments ARE PRESERVED in the CSS output
+ * Use them for copyright notices, authorship, or public documentation
+ */
+
+/**
+ * Component: Multi-Comment Demo
+ * Description: Shows how multi-line comments work
  * Author: Your Name
- * Date: 2025
+ * Version: 1.0.0
  */
-
-$theme-colors: (
-  primary: #3b82f6,
-  secondary: #64748b,
-  success: #10b981
-);
-
-.header {
-  /* This will appear in the final CSS */
-  background: map-get($theme-colors, primary);
-}`;
-
-    const compressedExample = `// SCSS Input:
-.button {
-  /* This comment stays */
-  background: blue;
-  // This comment is removed
-  padding: 10px;
+.multi-comment-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  
+  h2 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+  }
 }
 
-/* Output (compressed mode): */
-.button{background:blue;padding:10px}
-
-/* Output (expanded mode): */
-.button {
-  /* This comment stays */
-  background: blue;
-  padding: 10px;
-}`;
-
-    const commentInterpolation = `$version: "1.0.0";
-
-/* 
- * Theme Version: #{$version}
- * This uses interpolation to insert the version
- */
-
-.app {
-  // Generated on: #{current-date()} - This won't work in real Sass
-  content: "Version: #{$version}"; // This is in the CSS
-}`;
-
-    const documentationExample = `//
-// Typography System
-// =============================================================================
-// 
-// This file contains all typography-related variables and mixins.
-// Last updated: 2025-11-22
-//
-
-// Font Families
-// -----------------------------------------------------------------------------
-$font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-$font-mono: 'Fira Code', 'Courier New', monospace;
-
-// Font Sizes
-// -----------------------------------------------------------------------------
-$font-size-base: 16px;    // Body text
-$font-size-lg: 18px;      // Large text
-$font-size-xl: 24px;      // Headings
-$font-size-sm: 14px;      // Small text
-
-// Line Heights
-// -----------------------------------------------------------------------------
-$line-height-base: 1.6;   // Comfortable reading
-$line-height-tight: 1.2;  // Headings
-$line-height-loose: 2;    // Spacious text
-
-/**
- * Typography Mixin
- * 
- * @param {String} $size - Font size keyword (sm, base, lg, xl)
- * @param {Number} $line-height - Line height value
- * 
- * @example
- *   .heading {
- *     @include typography(xl, $line-height-tight);
- *   }
- */
-@mixin typography($size: base, $line-height: $line-height-base) {
-  @if $size == xl {
-    font-size: $font-size-xl;
-  } @else if $size == lg {
-    font-size: $font-size-lg;
-  } @else if $size == sm {
-    font-size: $font-size-sm;
-  } @else {
-    font-size: $font-size-base;
-  }
-  line-height: $line-height;
-}`;
-
-    const interactiveExamples = {
-        basic: {
-            title: 'Basic Comments',
-            scss: `// Single-line comment (won't appear in CSS)
-$primary: #3b82f6;
-
-/* Multi-line comment (will appear in CSS) */
-.button {
-  background: $primary; // Inline comment
-  padding: 10px 20px;
-}`,
-            css: `/* Multi-line comment (will appear in CSS) */
-.button {
-  background: #3b82f6;
-  padding: 10px 20px;
-}`
-        },
-        advanced: {
-            title: 'Advanced Documentation',
-            scss: `/*!
- * Button Component Library v2.1.0
- * Copyright (c) 2025 Your Company
- * Licensed under MIT
- */
-
-// =============================================================================
-// BUTTON VARIABLES
-// =============================================================================
-
-$btn-padding-y: 0.75rem !default;  // Vertical padding
-$btn-padding-x: 1.5rem !default;   // Horizontal padding
-$btn-border-radius: 0.375rem !default; // Border radius
-
-// Button Colors
-// -----------------------------------------------------------------------------
-$btn-primary: #3b82f6 !default;    // Primary button color
-$btn-secondary: #6b7280 !default;  // Secondary button color
-
-/**
- * Button Mixin
- * Creates a button with specified color and hover effect
- * 
- * @param {Color} $bg-color - Background color
- * @param {Color} $text-color - Text color  
- * @param {Color} $hover-color - Hover background color
- */
-@mixin button-variant($bg-color, $text-color: white, $hover-color: darken($bg-color, 10%)) {
-  background-color: $bg-color;
-  color: $text-color;
+/* This comment will appear in the compiled CSS */
+.info-box {
+  background: #dcfce7;
+  padding: 1.5rem;
+  border-left: 4px solid #10b981;
+  border-radius: 8px;
   
+  p {
+    color: #166534;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+/*
+ * Use multi-line comments for:
+ * - Copyright notices
+ * - License information
+ * - Public API documentation
+ * - Important user-facing notes
+ */`;
+
+  // Comparison Example - HTML
+  const comparisonHtml = `<div class="comparison-demo">
+  <h2>Comments Comparison</h2>
+  <div class="grid">
+    <div class="card silent">
+      <h3>// Silent Comments</h3>
+      <p>Removed from output</p>
+      <code>// This won't appear in CSS</code>
+    </div>
+    <div class="card loud">
+      <h3>/* Loud Comments */</h3>
+      <p>Preserved in output</p>
+      <code>/* This will appear in CSS */</code>
+    </div>
+  </div>
+</div>`;
+
+  // Comparison Example - SCSS
+  const comparisonScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+.comparison-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  
+  h2 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+// This is a silent comment - won't be in CSS
+/* This is a loud comment - will be in CSS */
+
+.card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  
+  h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #64748b;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  code {
+    background: #f1f5f9;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    display: block;
+  }
+}
+
+// Silent comment example card
+.silent {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  
+  h3 {
+    color: #92400e;
+  }
+  
+  code {
+    color: #92400e;
+  }
+}
+
+/* Loud comment example card */
+.loud {
+  background: #fce7f3;
+  border-left: 4px solid #ec4899;
+  
+  h3 {
+    color: #9f1239;
+  }
+  
+  code {
+    color: #9f1239;
+  }
+}`;
+
+  // Documentation Example - HTML
+  const documentationHtml = `<div class="doc-demo">
+  <h2>Documentation Comments</h2>
+  <div class="component">
+    <div class="component-header">
+      Button Component
+    </div>
+    <div class="component-body">
+      <button class="btn btn-primary">Primary Button</button>
+      <p>Well-documented SCSS makes maintenance easier!</p>
+    </div>
+  </div>
+</div>`;
+
+  // Documentation Example - SCSS
+  const documentationScss = `// Basic styling
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+/**
+ * ==============================================
+ * BUTTON COMPONENT
+ * ==============================================
+ * A reusable button component with multiple variants
+ * 
+ * Usage:
+ * <button class="btn btn-primary">Click me</button>
+ * 
+ * Available variants:
+ * - btn-primary: Primary action button
+ * - btn-secondary: Secondary action button
+ * - btn-success: Success state button
+ * ==============================================
+ */
+
+// Color palette for buttons
+$btn-primary: #3b82f6;    // Blue
+$btn-secondary: #64748b;  // Gray
+$btn-success: #10b981;    // Green
+
+// Button dimensions
+$btn-padding: 0.75rem 1.5rem;
+$btn-radius: 8px;
+
+.doc-demo {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  
+  h2 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.component {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.component-header {
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.component-body {
+  padding: 1.5rem;
+  
+  p {
+    color: #64748b;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+}
+
+/**
+ * Base button styles
+ * Applied to all button variants
+ */
+.btn {
+  padding: $btn-padding;
+  border-radius: $btn-radius;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+  
+  // Hover effect for all buttons
   &:hover {
-    background-color: $hover-color;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
-}`,
-            css: `/*!
- * Button Component Library v2.1.0
- * Copyright (c) 2025 Your Company
- * Licensed under MIT
- */`
-        },
-        conditional: {
-            title: 'Conditional Comments',
-            scss: `$debug-mode: true;
-
-// Debug comments only appear when debug mode is on
-@if $debug-mode {
-  /* DEBUG: Button styles loaded */
+  
+  // Active state
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-.button {
-  padding: 10px 20px;
-  
-  // TODO: Add focus styles
-  // FIXME: Border radius not working in IE11
-  // NOTE: This uses flexbox for alignment
-  
-  @if $debug-mode {
-    /* DEBUG: Button base styles applied */
-  }
-}`,
-            css: `/* DEBUG: Button styles loaded */
-.button {
-  padding: 10px 20px;
-  /* DEBUG: Button base styles applied */
-}`
-        }
-    };
+// Primary button variant
+.btn-primary {
+  background: $btn-primary;
+}
 
-    const commentTypes = [
-        {
-            type: '//',
-            name: 'Single-line',
-            icon: Slash,
-            color: 'text-blue-600',
-            bgColor: 'bg-blue-50 dark:bg-blue-950/20',
-            borderColor: 'border-blue-200',
-            description: 'Silent comments removed from CSS',
-            features: ['Development notes', 'TODOs and FIXMEs', 'Code explanations', 'Temporary comments']
-        },
-        {
-            type: '/* */',
-            name: 'Multi-line',
-            icon: Hash,
-            color: 'text-green-600',
-            bgColor: 'bg-green-50 dark:bg-green-950/20',
-            borderColor: 'border-green-200',
-            description: 'Preserved in compiled CSS',
-            features: ['Copyright notices', 'File headers', 'Public documentation', 'License information']
-        },
-        {
-            type: '/*! */',
-            name: 'Important',
-            icon: Star,
-            color: 'text-orange-600',
-            bgColor: 'bg-orange-50 dark:bg-orange-950/20',
-            borderColor: 'border-orange-200',
-            description: 'Always preserved, even in compressed mode',
-            features: ['Legal notices', 'Attribution', 'Critical information', 'Library headers']
-        }
-    ];
+// Secondary button variant
+.btn-secondary {
+  background: $btn-secondary;
+}
 
-    return (
-        <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <MessageSquare className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">Sass Comments Mastery</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master the art of commenting in Sass - from basic syntax to advanced documentation patterns.
-                </p>
+// Success button variant
+.btn-success {
+  background: $btn-success;
+}`;
+
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={MessageSquare}
+        category="Sass/SCSS · Fundamentals"
+        title="Comments"
+        description="Learn about single-line and multi-line comments in SCSS"
+        colorTheme="pink"
+      />
+
+      {/* Overview */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-pink-500/10 rounded-lg">
+              <MessageSquare className="h-5 w-5 text-pink-600 dark:text-pink-400" />
             </div>
+            Two Types of Comments
+          </CardTitle>
+          <CardDescription>
+            Silent comments and loud comments
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Sass supports two types of comments: <strong className="text-foreground">single-line comments (//) </strong> 
+            which are removed during compilation, and <strong className="text-foreground">multi-line comments (/* */)</strong> which are preserved in the output CSS.
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <Slash className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mb-2" />
+              <h4 className="font-semibold mb-2">// Silent Comments</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Removed from compiled CSS
+              </p>
+              <code className="text-xs bg-yellow-100 dark:bg-yellow-900 px-2 py-1 rounded block">
+                // This won't appear in output
+              </code>
+            </div>
+            
+            <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
+              <Star className="h-5 w-5 text-pink-600 dark:text-pink-400 mb-2" />
+              <h4 className="font-semibold mb-2">/* Loud Comments */</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Preserved in compiled CSS
+              </p>
+              <code className="text-xs bg-pink-100 dark:bg-pink-900 px-2 py-1 rounded block">
+                /* This will appear in output */
+              </code>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            {/* Quick Overview */}
-            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-                        <Target className="w-6 h-6" />
-                        Comment Types at a Glance
-                    </CardTitle>
-                    <CardDescription>
-                        Sass offers three types of comments, each serving different purposes in your development workflow.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        {commentTypes.map((comment, index) => {
-                            const Icon = comment.icon;
-                            return (
-                                <div key={index} className={`p-4 rounded-lg border ${comment.bgColor} ${comment.borderColor}`}>
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Icon className={`w-6 h-6 ${comment.color}`} />
-                                        <h3 className="font-bold">{comment.name}</h3>
-                                    </div>
-                                    <code className="text-sm bg-white dark:bg-gray-800 px-2 py-1 rounded block mb-2">
-                                        {comment.type}
-                                    </code>
-                                    <p className="text-sm text-muted-foreground mb-3">{comment.description}</p>
-                                    <ul className="text-xs space-y-1">
-                                        {comment.features.map((feature, idx) => (
-                                            <li key={idx} className="flex items-center gap-1">
-                                                <CheckCircle className="w-3 h-3 text-green-500" />
-                                                {feature}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </CardContent>
-            </Card>
+      {/* Single-line Comments */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-yellow-500/10 rounded-lg">
+              <Slash className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            Single-Line Comments (//)
+          </CardTitle>
+          <CardDescription>
+            Silent comments removed during compilation
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={singleLineHtml}
+            css={singleLineScss}
+            title="Silent Comments Demo"
+            description="These comments won't appear in compiled CSS"
+            colorTheme="yellow"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <Alert className="mt-4 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-950/20">
+            <Info className="h-4 w-4 text-yellow-600" />
+            <AlertTitle className="text-yellow-900 dark:text-yellow-100">Best Use Cases</AlertTitle>
+            <AlertDescription className="text-yellow-800 dark:text-yellow-200">
+              <ul className="list-disc list-inside space-y-1 mt-2">
+                <li>Temporary notes and TODO items</li>
+                <li>Debugging information</li>
+                <li>Internal documentation for developers</li>
+                <li>Code you want to hide from end users</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
 
-            {/* Interactive Examples */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Play className="w-6 h-6 text-primary" />
-                        Interactive Comment Examples
-                    </CardTitle>
-                    <CardDescription>
-                        See how different comment types behave in real Sass compilation.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                        {Object.entries(interactiveExamples).map(([key, example]) => (
-                            <Button
-                                key={key}
-                                variant={selectedExample === key ? "default" : "outline"}
-                                onClick={() => setSelectedExample(key)}
-                                size="sm"
-                            >
-                                {example.title}
-                            </Button>
-                        ))}
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-semibold flex items-center gap-2">
-                                    <Code className="w-5 h-5 text-blue-600" />
-                                    SCSS Input
-                                </h3>
-                            </div>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">
-                                    {interactiveExamples[selectedExample as keyof typeof interactiveExamples].scss}
-                                </pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-semibold flex items-center gap-2">
-                                    <FileText className="w-5 h-5 text-green-600" />
-                                    CSS Output
-                                </h3>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setShowOutput(!showOutput)}
-                                >
-                                    {showOutput ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                </Button>
-                            </div>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-green-600 dark:text-green-400 font-mono text-sm whitespace-pre-wrap">
-                                    {showOutput ? interactiveExamples[selectedExample as keyof typeof interactiveExamples].css : 'Click the eye icon to reveal CSS output'}
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {onOpenWebPlayground && (
-                        <div className="mt-6">
-                            <Button 
-                                onClick={() => onOpenWebPlayground(
-                                    '<h1>Comment Example</h1>\n<div class="button">Button</div>',
-                                    interactiveExamples[selectedExample as keyof typeof interactiveExamples].scss,
-                                    ''
-                                )}
-                                className="flex items-center gap-2"
-                            >
-                                <Play className="w-4 h-4" />
-                                Try in Playground
-                            </Button>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+      {/* Multi-line Comments */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-pink-500/10 rounded-lg">
+              <Star className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+            </div>
+            Multi-Line Comments (/* */)
+          </CardTitle>
+          <CardDescription>
+            Loud comments preserved in compiled CSS
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={multiLineHtml}
+            css={multiLineScss}
+            title="Loud Comments Demo"
+            description="These comments will appear in compiled CSS"
+            colorTheme="pink"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <Alert className="mt-4 border-pink-200 dark:border-pink-800 bg-pink-50 dark:bg-pink-950/20">
+            <Info className="h-4 w-4 text-pink-600" />
+            <AlertTitle className="text-pink-900 dark:text-pink-100">Best Use Cases</AlertTitle>
+            <AlertDescription className="text-pink-800 dark:text-pink-200">
+              <ul className="list-disc list-inside space-y-1 mt-2">
+                <li>Copyright and license information</li>
+                <li>Author and version details</li>
+                <li>Public API documentation</li>
+                <li>Important notes for CSS users</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
 
-            {/* Compilation Behavior */}
-            <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border-yellow-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
-                        <Settings className="w-6 h-6" />
-                        Compilation Behavior
-                    </CardTitle>
-                    <CardDescription>
-                        Understanding how different output styles affect comment preservation.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h3 className="font-semibold mb-2 flex items-center gap-2">
-                                    <Eye className="w-5 h-5 text-green-600" />
-                                    Expanded Mode
-                                </h3>
-                                <p className="text-sm text-muted-foreground mb-3">
-                                    Preserves multi-line comments for debugging and documentation.
-                                </p>
-                                <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                    <code className="text-green-400 text-xs">
-                                        sass --style=expanded input.scss output.css
-                                    </code>
-                                </div>
-                            </div>
-                            
-                            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                                <h3 className="font-semibold mb-2 flex items-center gap-2">
-                                    <Zap className="w-5 h-5 text-orange-600" />
-                                    Compressed Mode
-                                </h3>
-                                <p className="text-sm text-muted-foreground mb-3">
-                                    Removes most comments for production optimization.
-                                </p>
-                                <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                    <code className="text-green-400 text-xs">
-                                        sass --style=compressed input.scss output.css
-                                    </code>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 className="font-semibold mb-3">Comment Preservation Rules</h3>
-                            <div className="space-y-3 text-sm">
-                                <div className="flex items-start gap-3">
-                                    <EyeOff className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Single-line comments (//)</strong> - Always removed from output
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Eye className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Multi-line comments (/* */)</strong> - Kept in expanded mode, removed in compressed
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Star className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <strong>Important comments (/*! */)</strong> - Always preserved in all modes
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+      {/* Comparison */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            Side-by-Side Comparison
+          </CardTitle>
+          <CardDescription>
+            See both comment types in action
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={comparisonHtml}
+            css={comparisonScss}
+            title="Comments Comparison"
+            description="Silent vs Loud comments"
+            colorTheme="blue"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <div className="mt-4 grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">// Silent (SCSS only)</h4>
+              <div className="text-sm font-mono text-yellow-700 dark:text-yellow-300 space-y-1">
+                <div>// TODO: Refactor this</div>
+                <div>// $color: red;</div>
+                <div>// Debug: Check margin</div>
+              </div>
+              <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-2">❌ Not in CSS output</p>
+            </div>
+            
+            <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
+              <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-2">/* Loud (CSS compatible) */</h4>
+              <div className="text-sm font-mono text-pink-700 dark:text-pink-300 space-y-1">
+                <div>/* MIT License */</div>
+                <div>/* Author: John Doe */</div>
+                <div>/* Version: 1.0.0 */</div>
+              </div>
+              <p className="text-xs text-pink-600 dark:text-pink-400 mt-2">✅ Appears in CSS output</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            {/* Comment Interpolation */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Hash className="w-6 h-6 text-primary" />
-                        Comment Interpolation
-                    </CardTitle>
-                    <CardDescription>
-                        Inject dynamic values into comments using Sass interpolation syntax.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-4">
-                        <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{commentInterpolation}</pre>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200">
-                            <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">✅ Works in Multi-line</h4>
-                            <code className="text-sm bg-white dark:bg-gray-800 px-2 py-1 rounded block">
-                                /* Version: #{'#{'}$version{'}'} */
-                            </code>
-                        </div>
-                        <div className="p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200">
-                            <h4 className="font-semibold text-red-700 dark:text-red-300 mb-2">❌ Doesn't Work in Single-line</h4>
-                            <code className="text-sm bg-white dark:bg-gray-800 px-2 py-1 rounded block">
-                                // Version: #{'#{'}$version{'}'} (not processed)
-                            </code>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+      {/* Documentation Example */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-purple-500/10 rounded-lg">
+              <MessageSquare className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            Documentation Comments
+          </CardTitle>
+          <CardDescription>
+            Professional comment structure for components
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={documentationHtml}
+            css={documentationScss}
+            title="Well-Documented Component"
+            description="Use comments to document your components"
+            colorTheme="purple"
+            styleLanguage="scss"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+          
+          <div className="mt-4 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">Documentation Structure:</h4>
+            <div className="text-sm font-mono text-purple-700 dark:text-purple-300 space-y-2">
+              <div className="bg-white dark:bg-purple-900/30 p-2 rounded">
+                <div className="text-gray-500">/** Component Header */</div>
+                <div className="text-gray-500">// Variable definitions</div>
+                <div className="text-gray-500">/** Section comments */</div>
+                <div className="text-gray-500">// Inline explanations</div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            {/* Documentation Best Practices */}
-            <Card className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-950/20 dark:to-teal-950/20 border-green-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                        <BookOpen className="w-6 h-6" />
-                        Professional Documentation Patterns
-                    </CardTitle>
-                    <CardDescription>
-                        Learn industry-standard commenting patterns for maintainable Sass codebases.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-6">
-                        <pre className="text-gray-800 dark:text-white font-mono text-xs whitespace-pre-wrap">{documentationExample}</pre>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                <CheckCircle className="w-5 h-5 text-green-600" />
-                                Best Practices
-                            </h4>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Use <code>//</code> for internal development notes</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Use <code>/* */</code> for public API documentation</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Document mixin/function parameters with @param</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Include usage examples with @example</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600 font-bold">✓</span>
-                                    <span>Use section dividers for organization</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div>
-                            <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                <AlertTriangle className="w-5 h-5 text-red-600" />
-                                Common Mistakes
-                            </h4>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Over-commenting obvious code</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Leaving outdated comments in code</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Using multi-line comments for temporary notes</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Forgetting to document complex logic</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-red-600 font-bold">✗</span>
-                                    <span>Inconsistent comment formatting</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+      {/* Best Practices */}
+      <Alert>
+        <CheckCircle className="h-4 w-4" />
+        <AlertTitle>Comment Best Practices</AlertTitle>
+        <AlertDescription>
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>Use // for temporary notes:</strong> Debug info, TODOs, internal docs</li>
+            <li><strong>Use /* */ for public info:</strong> Copyright, licenses, API docs</li>
+            <li><strong>Comment the "why", not the "what":</strong> Explain reasoning, not obvious code</li>
+            <li><strong>Keep comments updated:</strong> Remove outdated comments</li>
+            <li><strong>Be concise but clear:</strong> Write helpful, meaningful comments</li>
+            <li><strong>Document complex logic:</strong> Help future maintainers understand</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
 
-            {/* Advanced Techniques */}
-            <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/20 dark:to-indigo-950/20 border-purple-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Zap className="w-6 h-6" />
-                        Advanced Comment Techniques
-                    </CardTitle>
-                    <CardDescription>
-                        Expert-level commenting strategies for large-scale projects.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-6">
-                        <div>
-                            <h4 className="font-semibold mb-3">1. Conditional Documentation</h4>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`$debug: true;
-
-@if $debug {
-  /* DEBUG MODE: Additional styles for development */
-  .debug-grid {
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(255,0,0,0.1) 10px,
-      rgba(255,0,0,0.1) 20px
-    );
-  }
-}`}</pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 className="font-semibold mb-3">2. Version-Aware Comments</h4>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`$library-version: "2.1.0";
-$build-date: "2025-11-22";
-
-/*!
- * Component Library v#{$library-version}
- * Built on #{$build-date}
- * 
- * @license MIT
- * @author Your Team
- */`}</pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 className="font-semibold mb-3">3. TODO Management System</h4>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                                <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{`// TODO: [Priority] Description - @author - date
-// TODO: [HIGH] Add dark mode support - @john - 2025-11-22
-// FIXME: [CRITICAL] IE11 compatibility issue - @sarah - 2025-11-20
-// NOTE: This mixin will be deprecated in v3.0
-// HACK: Temporary fix for Safari bug, remove when fixed`}</pre>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Quick Reference */}
-            <Card className="border-indigo-500 bg-indigo-50 dark:bg-indigo-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
-                        <Target className="w-6 h-6" />
-                        Quick Reference Guide
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        <div className="space-y-3">
-                            <h4 className="font-semibold">Comment Types</h4>
-                            <div className="space-y-2 text-sm">
-                                <div className="flex items-center gap-2">
-                                    <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">//</code>
-                                    <span>Silent (dev only)</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">/* */</code>
-                                    <span>Standard (preserved)</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded text-xs">/*! */</code>
-                                    <span>Important (always kept)</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className="space-y-3">
-                            <h4 className="font-semibold">Use Cases</h4>
-                            <div className="space-y-2 text-sm">
-                                <div><strong>Development:</strong> //, TODOs, notes</div>
-                                <div><strong>Documentation:</strong> /* */, API docs</div>
-                                <div><strong>Legal:</strong> /*! */, licenses</div>
-                            </div>
-                        </div>
-                        
-                        <div className="space-y-3">
-                            <h4 className="font-semibold">Output Modes</h4>
-                            <div className="space-y-2 text-sm">
-                                <div><strong>Expanded:</strong> Keeps /* */</div>
-                                <div><strong>Compressed:</strong> Removes /* */</div>
-                                <div><strong>All modes:</strong> Keep /*! */</div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Pro Tips */}
-            <Card className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-                        <Lightbulb className="w-6 h-6" />
-                        Pro Tips for Comment Mastery
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                        <div className="space-y-3">
-                            <div className="flex items-start gap-2">
-                                <span className="text-amber-600 font-bold">💡</span>
-                                <div>
-                                    <strong>Use comment headers</strong> to create visual sections in large files
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <span className="text-amber-600 font-bold">💡</span>
-                                <div>
-                                    <strong>Document browser quirks</strong> and workarounds for future reference
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <span className="text-amber-600 font-bold">💡</span>
-                                <div>
-                                    <strong>Include performance notes</strong> for expensive operations
-                                </div>
-                            </div>
-                        </div>
-                        <div className="space-y-3">
-                            <div className="flex items-start gap-2">
-                                <span className="text-amber-600 font-bold">💡</span>
-                                <div>
-                                    <strong>Use interpolation</strong> for dynamic documentation
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <span className="text-amber-600 font-bold">💡</span>
-                                <div>
-                                    <strong>Comment complex calculations</strong> with step-by-step explanations
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <span className="text-amber-600 font-bold">💡</span>
-                                <div>
-                                    <strong>Keep a consistent style</strong> across your team and projects
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-    );
+      {/* Quick Reference */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Reference</CardTitle>
+          <CardDescription>
+            When to use each comment type
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4 text-sm">
+            <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded border">
+              <div className="font-semibold mb-2 flex items-center gap-2">
+                <Slash className="h-4 w-4" />
+                Use // for:
+              </div>
+              <ul className="space-y-1 text-muted-foreground">
+                <li>✓ Temporary notes</li>
+                <li>✓ Commented-out code</li>
+                <li>✓ TODOs and FIXMEs</li>
+                <li>✓ Developer notes</li>
+                <li>✓ Debugging info</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-pink-50 dark:bg-pink-900/20 rounded border">
+              <div className="font-semibold mb-2 flex items-center gap-2">
+                <Star className="h-4 w-4" />
+                Use /* */ for:
+              </div>
+              <ul className="space-y-1 text-muted-foreground">
+                <li>✓ Copyright notices</li>
+                <li>✓ License info</li>
+                <li>✓ Author/version details</li>
+                <li>✓ Public API docs</li>
+                <li>✓ Component headers</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
-

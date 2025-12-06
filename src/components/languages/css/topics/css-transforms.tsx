@@ -328,36 +328,53 @@ h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
                                 </h4>
                                 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">🔄 CSS Transform</div>
-                                        <div className="relative h-24 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden p-2">
-                                            <div className="w-8 h-8 bg-blue-500 rounded absolute top-2 left-2"></div>
-                                            <div className="w-8 h-8 bg-green-500 rounded absolute top-2 left-12"></div>
+                                    <div className="text-center group cursor-pointer">
+                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 transition-colors group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                                            🔄 CSS Transform
+                                        </div>
+                                        <div className="relative h-32 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg overflow-hidden p-3 border-2 border-transparent transition-all duration-300 group-hover:border-purple-400 group-hover:shadow-lg group-hover:shadow-purple-200/50 dark:group-hover:shadow-purple-500/20">
+                                            <div className="w-10 h-10 bg-blue-500 rounded-md absolute top-3 left-3 shadow-sm"></div>
+                                            <div className="w-10 h-10 bg-green-500 rounded-md absolute top-3 left-16 shadow-sm"></div>
                                             <div 
-                                                className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded absolute top-2 left-2 cursor-pointer transition-transform duration-500 ease-out hover:translate-x-8 hover:rotate-45 hover:scale-125"
+                                                className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-md absolute top-3 left-3 transition-transform duration-700 ease-out group-hover:translate-x-12 group-hover:rotate-180 group-hover:scale-110 shadow-lg flex items-center justify-center text-white text-xs font-bold"
                                             >
+                                                ✨
+                                            </div>
+                                            <div className="absolute bottom-2 left-2 right-2 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <div className="text-xs font-semibold text-purple-600 dark:text-purple-400 bg-white/90 dark:bg-gray-900/90 rounded px-2 py-1 inline-block">
+                                                    Hovering! 🎯
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="text-xs text-green-500 mt-1">✅ No Layout Disruption</div>
+                                        <div className="text-xs text-green-600 dark:text-green-400 font-medium mt-2 flex items-center justify-center gap-1">
+                                            <CheckCircle className="w-3 h-3" />
+                                            No Layout Disruption
+                                        </div>
                                     </div>
                                     
                                     <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">📐 Layout Property</div>
-                                        <div className="relative h-24 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden p-2">
-                                            <div className="w-8 h-8 bg-blue-500 rounded mb-1"></div>
-                                            <div className="w-8 h-8 bg-green-500 rounded mb-1"></div>
-                                            <div className="w-8 h-8 bg-red-500 rounded"></div>
+                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                                            📐 Layout Property
                                         </div>
-                                        <div className="text-xs text-red-500 mt-1">❌ Affects Document Flow</div>
+                                        <div className="relative h-32 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg overflow-hidden p-3 border-2 border-gray-200 dark:border-gray-600">
+                                            <div className="w-10 h-10 bg-blue-500 rounded-md mb-2 shadow-sm"></div>
+                                            <div className="w-10 h-10 bg-green-500 rounded-md mb-2 shadow-sm"></div>
+                                            <div className="w-10 h-10 bg-red-500 rounded-md shadow-sm"></div>
+                                        </div>
+                                        <div className="text-xs text-red-600 dark:text-red-400 font-medium mt-2 flex items-center justify-center gap-1">
+                                            <AlertTriangle className="w-3 h-3" />
+                                            Affects Document Flow
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
-                                        🎪 Try it yourself - Hover over the purple square!
+                                <div className="bg-gradient-to-r from-purple-50 via-blue-50 to-indigo-50 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 p-4 rounded-xl border-2 border-purple-200/50 dark:border-purple-700/50 shadow-sm">
+                                    <div className="text-sm font-bold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
+                                        <MousePointer className="w-4 h-4" />
+                                        🎪 Try it yourself - Hover over the left demo area!
                                     </div>
-                                    <div className="text-xs text-green-600 dark:text-green-400">
-                                        Notice how transforms don't push other elements around - they're purely visual!
+                                    <div className="text-xs text-purple-600 dark:text-purple-400 leading-relaxed">
+                                        Notice how transforms don't push other elements around - they're purely visual! The blue and green boxes stay in place while the purple box transforms smoothly. ✨
                                     </div>
                                 </div>
                             </div>

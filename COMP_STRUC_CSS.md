@@ -57,35 +57,129 @@ export default function CssTopicName({ onOpenWebPlayground }: CssTopicNameProps)
         colorTheme="blue" // or purple, green, orange, pink, cyan, red
       />
 
-      {/* INTRODUCTION CARD */}
+      {/* INTRODUCTION CARD - Enhanced with Animation Style */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <CardHeader className="relative">
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
+            <div className="relative">
+              <Icon1 className="w-8 h-8" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
             </div>
             What is [Topic Name]?
           </CardTitle>
-          <CardDescription>
-            Simple explanation of the concept
+          <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
+            🚀 Engaging description with emoji that captures attention and explains the core concept!
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground leading-relaxed">
-            Beginner-friendly explanation with <strong className="text-foreground">key terms highlighted</strong>.
-            Use clear language and avoid jargon when possible.
-          </p>
+        <CardContent className="relative">
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Interactive Demo Section */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Main Interactive Card */}
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer group">
+                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+                  <Zap className="w-5 h-5 animate-pulse" />
+                  🎯 Key Concept Demonstration
+                </h4>
+                
+                {/* Visual comparison or interactive demo */}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">Without Feature</div>
+                    <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
+                      {/* Demo visualization */}
+                    </div>
+                    <div className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium">❌ Limited/Basic</div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">With Feature</div>
+                    <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
+                      {/* Demo visualization */}
+                    </div>
+                    <div className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">✅ Enhanced/Powerful</div>
+                  </div>
+                </div>
 
-          {/* OPTIONAL: Feature Grid */}
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <Icon2 className="h-6 w-6 text-blue-600 dark:text-blue-400 mb-2" />
-              <h4 className="font-semibold mb-2">Feature Name</h4>
-              <p className="text-sm text-muted-foreground">
-                Description of this feature or aspect
-              </p>
+                {/* Interactive hint */}
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
+                  <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
+                    <MousePointer className="w-4 h-4" />
+                    🎪 Try it yourself!
+                  </div>
+                  <div className="text-xs text-green-600 dark:text-green-400">
+                    Hover or interact with elements to see the feature in action!
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature Capabilities Grid */}
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
+                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
+                  <Settings className="w-5 h-5" />
+                  🎨 Key Capabilities
+                </h4>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
+                    <Icon2 className="w-6 h-6 text-blue-500" />
+                    <div>
+                      <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Feature 1</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400">Brief description</div>
+                    </div>
+                  </div>
+                  {/* Repeat for 2-4 capabilities */}
+                </div>
+              </div>
             </div>
-            {/* Repeat for 2-4 features */}
+
+            {/* Side Comparison Card */}
+            <div className="space-y-4">
+              <div className="bg-gradient-to-br from-purple-100 via-blue-100 to-indigo-100 dark:from-purple-900/30 dark:via-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
+                <div className="text-center space-y-4">
+                  <div className="relative">
+                    <div className="text-4xl mb-2 animate-bounce">🎯</div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
+                  </div>
+                  <div className="font-bold text-lg text-purple-700 dark:text-purple-300">[Topic Name]</div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                      <CheckCircle className="w-4 h-4" />
+                      Key Benefit 1
+                    </div>
+                    {/* More benefits */}
+                  </div>
+                </div>
+              </div>
+
+              {/* Pro Tip Card */}
+              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">🚀</div>
+                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
+                  <div className="text-sm text-orange-600 dark:text-orange-400">
+                    Practical advice or key insight about using this feature effectively
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Terminal Code Example */}
+          <div className="mt-6 bg-gray-900 rounded-xl p-4 border border-gray-700 shadow-xl">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span className="text-gray-400 text-sm ml-2">[Topic] Example</span>
+            </div>
+            <div className="font-mono text-sm">
+              <div className="text-gray-500">/* 🎨 Basic syntax example */</div>
+              <div className="text-purple-400">selector</div>
+              <div className="text-white"> {'{'}</div>
+              <div className="text-white">   <span className="text-blue-400">property</span>: <span className="text-yellow-400">value</span>;</div>
+              <div className="text-white"> {'}'}</div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -399,7 +493,182 @@ Always include responsive considerations:
 
 ---
 
-## 🎯 **Innovative Design Patterns**
+## 🎯 **Innovative Design Patterns - Animation Style**
+
+### **Key Visual Enhancements (Follow CSS Animations Component Pattern)**
+
+#### **1. Enhanced Card Headers**
+Use relative positioning with animated indicators:
+
+```tsx
+<CardHeader className="relative">
+  <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
+    <div className="relative">
+      <Film className="w-8 h-8" />
+      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+    </div>
+    What is [Topic]?
+  </CardTitle>
+  <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
+    🚀 Engaging description with strategically placed emoji!
+  </CardDescription>
+</CardHeader>
+```
+
+#### **2. Backdrop Blur Interactive Cards**
+Create glass-morphism effect cards with hover animations:
+
+```tsx
+{/* Parent must have overflow-hidden and padding to prevent scale overflow */}
+<CardContent className="relative overflow-hidden">
+  <div className="grid lg:grid-cols-3 gap-6 p-2">
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer group">
+      <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+        <Zap className="w-5 h-5 animate-pulse" />
+        🎯 Interactive Feature Name
+      </h4>
+      {/* Content with visual demonstrations */}
+    </div>
+  </div>
+</CardContent>
+```
+
+**⚠️ Important:** 
+- Use `hover:scale-[1.01]` (not 1.02) to prevent overflow
+- Add `overflow-hidden` to parent `CardContent`
+- Add `p-2` padding to grid container for scale breathing room
+- Use `duration-300` for smooth, performant animations
+
+#### **3. Side-by-Side Visual Comparisons**
+Show before/after or comparison demonstrations:
+
+```tsx
+<div className="grid grid-cols-2 gap-4 mb-4">
+  <div className="text-center">
+    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">⚡ Traditional</div>
+    <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
+      {/* Visual demo with hover effects */}
+    </div>
+    <div className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium">❌ Limited</div>
+  </div>
+  
+  <div className="text-center">
+    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">🎬 Modern</div>
+    <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
+      {/* Enhanced visual demo */}
+    </div>
+    <div className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">✅ Powerful</div>
+  </div>
+</div>
+```
+
+#### **4. Animated Emoji Cards**
+Use large emojis with pulsing badges for visual impact:
+
+```tsx
+<div className="bg-gradient-to-br from-purple-100 via-blue-100 to-indigo-100 dark:from-purple-900/30 dark:via-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
+  <div className="text-center space-y-4">
+    <div className="relative">
+      <div className="text-4xl mb-2 animate-bounce">🎯</div>
+      <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
+    </div>
+    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Feature Name</div>
+    {/* Benefits list with CheckCircle icons */}
+  </div>
+</div>
+```
+
+#### **5. Terminal-Style Code Blocks**
+MacOS-style terminal windows with syntax highlighting (light/dark mode support):
+
+```tsx
+<div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
+  <div className="flex items-center gap-2 mb-3">
+    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+    <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Code Example</span>
+  </div>
+  <div className="font-mono text-sm">
+    <div className="text-gray-500">/* 🎨 Comment with emoji */</div>
+    <div className="text-purple-700 dark:text-purple-400">@keyframes</div>
+    <div className="text-gray-900 dark:text-white"> {'{'}</div>
+    <div className="text-gray-900 dark:text-white">   <span className="text-blue-600 dark:text-blue-400">0%</span>: <span className="text-yellow-600 dark:text-yellow-400">transform: scale(1)</span>;</div>
+    <div className="text-gray-900 dark:text-white"> {'}'}</div>
+  </div>
+</div>
+```
+
+**Light/Dark Mode Colors:**
+- Background: `bg-gray-50 dark:bg-gray-900`
+- Border: `border-gray-200 dark:border-gray-700`
+- Title: `text-gray-600 dark:text-gray-400`
+- Code text: `text-gray-900 dark:text-white`
+- Selectors: `text-blue-600 dark:text-blue-400`
+- Keywords: `text-purple-700 dark:text-purple-400`
+- Properties: `text-green-600 dark:text-green-400`
+- Values: `text-yellow-600 dark:text-yellow-400`
+- Comments: `text-gray-500` (same in both modes)
+
+#### **6. Capability Grid with Icons**
+Show features in color-coded grid with icons:
+
+```tsx
+<div className="grid grid-cols-2 gap-3">
+  <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
+    <Target className="w-6 h-6 text-blue-500" />
+    <div>
+      <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Capability Name</div>
+      <div className="text-xs text-blue-600 dark:text-blue-400">Brief description</div>
+    </div>
+  </div>
+  {/* Repeat for multiple capabilities with different colors */}
+</div>
+```
+
+#### **7. Pro Tip Gradient Cards**
+Highlight important tips with gradient backgrounds:
+
+```tsx
+<div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
+  <div className="text-center">
+    <div className="text-2xl mb-2">🚀</div>
+    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
+    <div className="text-sm text-orange-600 dark:text-orange-400">
+      Practical advice that adds value to the learning experience
+    </div>
+  </div>
+</div>
+```
+
+#### **8. Interactive Hover States**
+Always include group hover effects for interactivity (with proper overflow handling):
+
+```tsx
+{/* Parent container with overflow control */}
+<div className="overflow-hidden p-2">
+  <div className="group cursor-pointer transition-all duration-300 hover:scale-[1.01]">
+    <h4 className="transition-transform duration-300 group-hover:scale-105">
+      {/* Content that scales on hover */}
+    </h4>
+    <div className="group-hover:border-blue-400 transition-colors">
+      {/* Elements that change on hover */}
+    </div>
+  </div>
+</div>
+```
+
+**Best Practices for Hover Effects:**
+- ✅ Use `scale-[1.01]` (1% scale) for card hover - subtle and no overflow
+- ✅ Use `scale-105` (5% scale) for text/icons - more noticeable
+- ✅ Always add `overflow-hidden` to parent container
+- ✅ Add `p-2` padding to give scale breathing room
+- ✅ Use `duration-300` for smooth, performant animations
+- ❌ Avoid `scale-[1.02]` or higher on cards - causes overflow issues
+
+---
+
+## 🎯 **Additional Interactive Patterns**
 
 For layout and advanced topics (Flexbox, Grid, Positioning, etc.), create **engaging interactive demonstrations**:
 
@@ -632,5 +901,57 @@ Every component must:
 
 ---
 
+## ✨ **Animation-Style Component Checklist**
+
+Every CSS component should now follow the enhanced Animation-style pattern:
+
+### **Visual Elements** ✓
+- [ ] Enhanced card headers with `text-2xl` titles and animated ping indicators
+- [ ] Backdrop blur cards (`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm`)
+- [ ] Large animated emojis (4xl) with pulsing badges
+- [ ] Terminal-style code blocks with MacOS dots
+- [ ] Gradient backgrounds for special sections
+- [ ] Pro tip cards with gradient borders
+
+### **Interactive Features** ✓
+- [ ] Group hover effects with `hover:scale-[1.01]` (not 1.02 to prevent overflow)
+- [ ] Parent containers have `overflow-hidden` and `p-2` padding
+- [ ] Side-by-side visual comparisons
+- [ ] Capability grid with color-coded icons
+- [ ] Interactive demonstrations with visual feedback
+- [ ] Smooth transitions (`duration-300` for performance)
+
+### **Layout Structure** ✓
+- [ ] 3-column grid for introduction (2 columns + sidebar)
+- [ ] Space-y-6 spacing for sections
+- [ ] Rounded-xl borders with shadows
+- [ ] Proper overflow and max-width handling
+
+### **Color & Theme** ✓
+- [ ] Professional toned-down gradients
+- [ ] Consistent color scheme per category
+- [ ] Full dark mode support with `@media (prefers-color-scheme: dark)`
+- [ ] Border opacity (`border-blue-200/50`)
+- [ ] Background opacity (`bg-blue-50 dark:bg-blue-900/20`)
+
+### **Typography** ✓
+- [ ] Strategic emoji placement (in titles, not excessive)
+- [ ] Font size hierarchy (`text-2xl` headers, `text-lg` descriptions)
+- [ ] Color-coded text (`text-blue-700 dark:text-blue-300`)
+- [ ] Mono font for code (`font-mono text-sm`)
+
+### **Reference Components** 📚
+**Follow these components for Animation-style patterns:**
+- `css-animations.tsx` - Master example with all patterns
+- `css-variables.tsx` - Enhanced visual comparisons
+- `css-functions.tsx` - Interactive demonstrations
+- `css-nesting.tsx` - Live visual examples (NEW)
+- `css-cascade-layers.tsx` - Animated layer stack (NEW)
+- `css-counters.tsx` - Step-by-step visualization (NEW)
+- `css-generated-content.tsx` - Pseudo-element demos (NEW)
+- `css-scoping.tsx` - Scope boundary visualization (NEW)
+
+---
+
 **Last Updated:** December 2025
-**Version:** 1.0
+**Version:** 2.0 - Animation Style Enhanced

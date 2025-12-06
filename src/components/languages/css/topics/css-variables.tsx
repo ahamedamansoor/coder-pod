@@ -2,16 +2,19 @@
 'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { 
     Play, Variable, Lightbulb, BoxSelect, Target, Code, Zap, Settings, 
     CheckCircle, AlertTriangle, Palette, Eye, MousePointer, Globe,
-    Layers, RefreshCw, Sun, Moon, Paintbrush, Sliders
+    Layers, RefreshCw, Sun, Moon, Paintbrush, Sliders, Sparkles, Info
 } from 'lucide-react';
 
 interface CssVariablesProps {
-    onOpenWebPlayground: (html: string, css: string, js: string) => void;
+    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssVariables({ onOpenWebPlayground }: CssVariablesProps) {
@@ -50,27 +53,291 @@ export default function CssVariables({ onOpenWebPlayground }: CssVariablesProps)
         }
     ];
 
-    const playgroundCode = {
-        html: `<!DOCTYPE html>
-<html>
+    const playgroundCode = `<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>CSS Variables Complete Guide</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Variables Complete Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+    * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+    }
+
+    /* CSS Variables - Light Theme (Default) */
+    :root {
+        --primary-color: #3b82f6;
+        --secondary-color: #10b981;
+        --accent-color: #f59e0b;
+        --bg-color: #ffffff;
+        --text-color: #1f2937;
+        --border-color: #e5e7eb;
+        --card-bg: #f8f9fa;
+        
+        --spacing-xs: 4px;
+        --spacing-sm: 8px;
+        --spacing-md: 16px;
+        --spacing-lg: 24px;
+        --spacing-xl: 32px;
+        
+        --font-size-sm: 0.875rem;
+        --font-size-md: 1rem;
+        --font-size-lg: 1.25rem;
+        --font-size-xl: 1.5rem;
+        --font-weight-normal: 400;
+        --font-weight-bold: 600;
+        --line-height: 1.6;
+        
+        --border-radius: 8px;
+        --container-width: 1200px;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: 0.3s ease;
+    }
+
+    /* CRITICAL: Dark Mode using @media query */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --primary-color: #60a5fa;
+            --secondary-color: #34d399;
+            --accent-color: #fbbf24;
+            --bg-color: #1f2937;
+            --text-color: #f9fafb;
+            --border-color: #374151;
+            --card-bg: #374151;
+        }
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: var(--text-color);
+        line-height: var(--line-height);
+        padding: var(--spacing-lg);
+        min-height: 100vh;
+        transition: all var(--transition);
+        overflow-x: hidden;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+        }
+    }
+
+    .container {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        background: var(--bg-color);
+        border-radius: 16px;
+        padding: var(--spacing-xl);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+
+    h1 { 
+        font-size: var(--font-size-xl); 
+        text-align: center; 
+        margin-bottom: var(--spacing-md);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    h2 { 
+        font-size: var(--font-size-lg); 
+        margin: var(--spacing-xl) 0 var(--spacing-md);
+        color: var(--primary-color);
+    }
+
+    h3 {
+        font-size: var(--font-size-md);
+        margin-bottom: var(--spacing-sm);
+        color: var(--primary-color);
+    }
+
+    p {
+        text-align: center;
+        color: var(--text-color);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .demo-section { 
+        margin-bottom: var(--spacing-xl);
+        overflow: hidden;
+    }
+
+    .variable-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-lg);
+        margin-top: var(--spacing-md);
+        width: 100%;
+    }
+
+    .variable-demo {
+        padding: var(--spacing-lg);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        transition: all var(--transition);
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .variable-demo:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .variable-demo h3 {
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-md);
+        font-size: var(--font-size-md);
+    }
+
+    .color-swatches {
+        display: flex;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .swatch {
+        width: 60px;
+        height: 60px;
+        border-radius: var(--border-radius);
+        border: 2px solid var(--border-color);
+    }
+
+    .swatch.primary { background: var(--primary-color); }
+    .swatch.secondary { background: var(--secondary-color); }
+    .swatch.accent { background: var(--accent-color); }
+
+    .spacing-example {
+        display: flex;
+        gap: var(--spacing-sm);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .box {
+        background: var(--primary-color);
+        color: white;
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-sm);
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    .box.small { 
+        padding: var(--spacing-xs);
+        width: 40px;
+        height: 40px;
+        max-width: 100%;
+    }
+
+    .box.medium { 
+        padding: var(--spacing-sm);
+        width: 50px;
+        height: 50px;
+        max-width: 100%;
+    }
+
+    .box.large { 
+        padding: var(--spacing-md);
+        width: 60px;
+        height: 60px;
+        max-width: 100%;
+    }
+
+    .text-small { font-size: var(--font-size-sm); }
+    .text-medium { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); }
+    .text-large { font-size: var(--font-size-lg); color: var(--primary-color); }
+
+    .layout-box {
+        background: var(--secondary-color);
+        color: white;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        margin-bottom: var(--spacing-sm);
+        text-align: center;
+        font-weight: var(--font-weight-bold);
+        word-wrap: break-word;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .layout-card {
+        background: var(--accent-color);
+        color: white;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        text-align: center;
+        font-weight: var(--font-weight-bold);
+        word-wrap: break-word;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .dynamic-demo {
+        text-align: center;
+        padding: var(--spacing-lg);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: var(--card-bg);
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .slider-container {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .slider-container label {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        font-weight: var(--font-weight-bold);
+    }
+
+    .slider-container input {
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    .dynamic-box {
+        background: var(--primary-color);
+        color: white;
+        padding: var(--dynamic-spacing, var(--spacing-md));
+        border-radius: var(--dynamic-radius, var(--border-radius));
+        margin: var(--spacing-lg) auto 0;
+        width: 200px;
+        max-width: 100%;
+        text-align: center;
+        font-weight: var(--font-weight-bold);
+        transition: all var(--transition);
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .variable-grid { grid-template-columns: 1fr; }
+        .spacing-example { flex-direction: column; }
+    }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>🎨 CSS Variables Showcase</h1>
         <p>See how CSS variables create maintainable and themeable designs!</p>
-        
-        <section class="theme-switcher">
-            <h2>🌓 Theme Switcher</h2>
-            <div class="theme-buttons">
-                <button onclick="setTheme('light')" class="theme-btn light-theme">Light</button>
-                <button onclick="setTheme('dark')" class="theme-btn dark-theme">Dark</button>
-                <button onclick="setTheme('colorful')" class="theme-btn colorful-theme">Colorful</button>
-            </div>
-        </section>
 
         <section class="demo-section">
             <h2>🎯 Variable Categories</h2>
@@ -123,295 +390,42 @@ export default function CssVariables({ onOpenWebPlayground }: CssVariablesProps)
             </div>
         </section>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('CSS Variables Demo loaded!');
+    });
+
+    function updateRadius(value) {
+        document.documentElement.style.setProperty('--dynamic-radius', value + 'px');
+        document.getElementById('radius-value').textContent = value + 'px';
+    }
+
+    function updateSpacing(value) {
+        document.documentElement.style.setProperty('--dynamic-spacing', value + 'px');
+        document.getElementById('spacing-value').textContent = value + 'px';
+    }
+    </script>
 </body>
-</html>`,
-        css: `:root {
-    /* Light Theme Variables */
-    --primary-color: #3b82f6;
-    --secondary-color: #10b981;
-    --accent-color: #f59e0b;
-    --bg-color: #ffffff;
-    --text-color: #1f2937;
-    --border-color: #e5e7eb;
-    
-    /* Spacing Variables */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-    
-    /* Typography Variables */
-    --font-size-sm: 0.875rem;
-    --font-size-md: 1rem;
-    --font-size-lg: 1.25rem;
-    --font-size-xl: 1.5rem;
-    --font-weight-normal: 400;
-    --font-weight-bold: 600;
-    --line-height: 1.6;
-    
-    /* Layout Variables */
-    --border-radius: 8px;
-    --container-width: 1200px;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --transition: 0.3s ease;
-}
+</html>`;
 
-/* Dark Theme */
-[data-theme="dark"] {
-    --primary-color: #60a5fa;
-    --secondary-color: #34d399;
-    --accent-color: #fbbf24;
-    --bg-color: #1f2937;
-    --text-color: #f9fafb;
-    --border-color: #374151;
-}
 
-/* Colorful Theme */
-[data-theme="colorful"] {
-    --primary-color: #ec4899;
-    --secondary-color: #8b5cf6;
-    --accent-color: #06b6d4;
-    --bg-color: #fef3c7;
-    --text-color: #7c2d12;
-    --border-color: #f59e0b;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg-color);
-    color: var(--text-color);
-    line-height: var(--line-height);
-    padding: var(--spacing-md);
-    transition: all var(--transition);
-}
-
-.container {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: var(--spacing-lg);
-}
-
-h1 { 
-    font-size: var(--font-size-xl); 
-    text-align: center; 
-    margin-bottom: var(--spacing-md);
-    color: var(--primary-color);
-}
-
-h2 { 
-    font-size: var(--font-size-lg); 
-    margin: var(--spacing-xl) 0 var(--spacing-md);
-    color: var(--secondary-color);
-}
-
-.demo-section { margin-bottom: var(--spacing-xl); }
-
-/* Theme Switcher */
-.theme-switcher {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.theme-buttons {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-    margin-top: var(--spacing-md);
-}
-
-.theme-btn {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background: var(--bg-color);
-    color: var(--text-color);
-    cursor: pointer;
-    transition: all var(--transition);
-    font-weight: var(--font-weight-bold);
-}
-
-.theme-btn:hover {
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
-/* Variable Demos */
-.variable-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-md);
-}
-
-.variable-demo {
-    padding: var(--spacing-lg);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background: var(--bg-color);
-    box-shadow: var(--shadow);
-}
-
-.variable-demo h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-    font-size: var(--font-size-md);
-}
-
-/* Color Swatches */
-.color-swatches {
-    display: flex;
-    gap: var(--spacing-sm);
-}
-
-.swatch {
-    width: 60px;
-    height: 60px;
-    border-radius: var(--border-radius);
-    border: 2px solid var(--border-color);
-}
-
-.swatch.primary { background: var(--primary-color); }
-.swatch.secondary { background: var(--secondary-color); }
-.swatch.accent { background: var(--accent-color); }
-
-/* Spacing Examples */
-.spacing-example {
-    display: flex;
-    gap: var(--spacing-sm);
-    align-items: center;
-}
-
-.box {
-    background: var(--primary-color);
-    color: white;
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-sm);
-}
-
-.box.small { 
-    padding: var(--spacing-xs);
-    width: 40px;
-    height: 40px;
-}
-
-.box.medium { 
-    padding: var(--spacing-sm);
-    width: 50px;
-    height: 50px;
-}
-
-.box.large { 
-    padding: var(--spacing-md);
-    width: 60px;
-    height: 60px;
-}
-
-/* Typography Examples */
-.text-small { font-size: var(--font-size-sm); }
-.text-medium { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); }
-.text-large { font-size: var(--font-size-lg); color: var(--primary-color); }
-
-/* Layout Examples */
-.layout-box {
-    background: var(--secondary-color);
-    color: white;
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    margin-bottom: var(--spacing-sm);
-    text-align: center;
-    font-weight: var(--font-weight-bold);
-}
-
-.layout-card {
-    background: var(--accent-color);
-    color: white;
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    text-align: center;
-    font-weight: var(--font-weight-bold);
-}
-
-/* Dynamic Demo */
-.dynamic-demo {
-    text-align: center;
-    padding: var(--spacing-lg);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background: var(--bg-color);
-}
-
-.slider-container {
-    margin-bottom: var(--spacing-md);
-}
-
-.slider-container label {
-    display: block;
-    margin-bottom: var(--spacing-xs);
-    font-weight: var(--font-weight-bold);
-}
-
-.slider-container input {
-    width: 200px;
-    margin: 0 auto;
-}
-
-.dynamic-box {
-    background: var(--primary-color);
-    color: white;
-    padding: var(--dynamic-spacing, var(--spacing-md));
-    border-radius: var(--dynamic-radius, var(--border-radius));
-    margin: var(--spacing-lg) auto 0;
-    width: 200px;
-    text-align: center;
-    font-weight: var(--font-weight-bold);
-    transition: all var(--transition);
-}
-
-@media (max-width: 768px) {
-    .variable-grid { grid-template-columns: 1fr; }
-    .theme-buttons { flex-direction: column; align-items: center; }
-    .spacing-example { flex-direction: column; }
-}`,
-        js: `document.addEventListener('DOMContentLoaded', function() {
-    console.log('CSS Variables Demo loaded!');
-});
-
-function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    console.log('Theme changed to:', theme);
-}
-
-function updateRadius(value) {
-    document.documentElement.style.setProperty('--dynamic-radius', value + 'px');
-    document.getElementById('radius-value').textContent = value + 'px';
-}
-
-function updateSpacing(value) {
-    document.documentElement.style.setProperty('--dynamic-spacing', value + 'px');
-    document.getElementById('spacing-value').textContent = value + 'px';
-}`
+    const handleOpenPlayground = () => {
+        if (onOpenWebPlayground) {
+            onOpenWebPlayground(playgroundCode, '', '');
+        }
     };
-
 
     return (
         <div className="space-y-8">
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Variable className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Variables</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Creating reusable values in your stylesheets for better maintainability and dynamic theming.
-                </p>
-            </div>
+            {/* PAGE HEADER */}
+            <PageHeader
+                icon={Variable}
+                category="CSS · Core Concepts"
+                title="CSS Variables"
+                description="Create reusable, maintainable values in your stylesheets with CSS Custom Properties - the foundation of modern design systems."
+                colorTheme="blue"
+            />
 
             {/* What are CSS Variables? */}
             <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
@@ -576,27 +590,27 @@ function updateSpacing(value) {
                     </div>
 
                     {/* Interactive Code Example */}
-                    <div className="mt-6 bg-gray-900 rounded-xl p-4 border border-gray-700 shadow-xl">
+                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
                         <div className="flex items-center gap-2 mb-3">
                             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-400 text-sm ml-2">CSS Variables Demo</span>
+                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">CSS Variables Demo</span>
                         </div>
                         <div className="font-mono text-sm">
                             <div className="text-gray-500">/* 🎨 Define Variables */</div>
-                            <div className="text-purple-400">:root</div>
-                            <div className="text-white"> {'{'}</div>
-                            <div className="text-white">   <span className="text-blue-400">--primary-color</span>: <span className="text-yellow-400">#3b82f6</span>;</div>
-                            <div className="text-white">   <span className="text-blue-400">--spacing-lg</span>: <span className="text-yellow-400">2rem</span>;</div>
-                            <div className="text-white"> {'}'}</div>
+                            <div className="text-purple-700 dark:text-purple-400">:root</div>
+                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
+                            <div className="text-gray-900 dark:text-white">   <span className="text-blue-600 dark:text-blue-400">--primary-color</span>: <span className="text-yellow-600 dark:text-yellow-400">#3b82f6</span>;</div>
+                            <div className="text-gray-900 dark:text-white">   <span className="text-blue-600 dark:text-blue-400">--spacing-lg</span>: <span className="text-yellow-600 dark:text-yellow-400">2rem</span>;</div>
+                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
                             <br />
                             <div className="text-gray-500">/* 🎯 Use Variables */</div>
-                            <div className="text-blue-400">.button</div>
-                            <div className="text-white"> {'{'}</div>
-                            <div className="text-white">   <span className="text-green-400">background</span>: <span className="text-yellow-400">var(--primary-color)</span>;</div>
-                            <div className="text-white">   <span className="text-green-400">padding</span>: <span className="text-yellow-400">var(--spacing-lg)</span>;</div>
-                            <div className="text-white"> {'}'}</div>
+                            <div className="text-blue-600 dark:text-blue-400">.button</div>
+                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
+                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">background</span>: <span className="text-yellow-600 dark:text-yellow-400">var(--primary-color)</span>;</div>
+                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">padding</span>: <span className="text-yellow-600 dark:text-yellow-400">var(--spacing-lg)</span>;</div>
+                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
                         </div>
                     </div>
                 </CardContent>
@@ -898,19 +912,38 @@ function updateSpacing(value) {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                        <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                            <Play className="mr-2 h-4 w-4" />
-                            Open Interactive Demo
-                        </Button>
-                        <Badge variant="secondary">🌓 Theme Switching</Badge>
-                        <Badge variant="secondary">🎨 Color Variables</Badge>
-                        <Badge variant="secondary">📏 Spacing System</Badge>
-                        <Badge variant="secondary">🔄 Dynamic Updates</Badge>
-                        <Badge variant="secondary">📱 Responsive Design</Badge>
-                    </div>
+                    <FrontendCodePreview
+                        html={playgroundCode}
+                        title="CSS Variables Playground"
+                        colorTheme="blue"
+                        onOpenPlayground={handleOpenPlayground}
+                    />
                 </CardContent>
             </Card>
+
+            {/* BEST PRACTICES */}
+            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <AlertTitle className="text-green-900 dark:text-green-100">Best Practices</AlertTitle>
+                <AlertDescription className="text-green-800 dark:text-green-200">
+                    <ul className="list-disc list-inside space-y-1 mt-2">
+                        <li><strong>Use :root for globals</strong> - Define system-wide variables at the root level</li>
+                        <li><strong>Naming convention</strong> - Use descriptive names like --primary-color, not --color-1</li>
+                        <li><strong>Fallback values</strong> - Always provide fallbacks: var(--color, #000)</li>
+                        <li><strong>Organize by category</strong> - Group colors, spacing, typography, etc.</li>
+                        <li><strong>Document your system</strong> - Comment variable purposes and acceptable values</li>
+                    </ul>
+                </AlertDescription>
+            </Alert>
+
+            {/* BROWSER SUPPORT */}
+            <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
+                <Info className="h-4 w-4 text-blue-600" />
+                <AlertTitle className="text-blue-900 dark:text-blue-100">Browser Support</AlertTitle>
+                <AlertDescription className="text-blue-800 dark:text-blue-200">
+                    <strong>Excellent support across all modern browsers!</strong> CSS Custom Properties (Variables) are supported in Chrome 49+, Firefox 31+, Safari 9.1+, and Edge 15+. Internet Explorer does not support CSS variables.
+                </AlertDescription>
+            </Alert>
         </div>
     );
 }

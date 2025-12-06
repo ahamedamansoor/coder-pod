@@ -5,8 +5,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Check, ChevronRight, Eye, Play } from 'lucide-react';
+import { Copy, Check, ChevronRight, Eye, Play, Code2, EyeOff } from 'lucide-react';
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
+import { compileScss } from '@/lib/scss-compiler';
 
 /**
  * FrontendCodePreview - A component to display frontend code with live preview
@@ -25,6 +26,7 @@ interface FrontendCodePreviewProps {
   icon?: React.ComponentType<{ className?: string }>;
   previewHeight?: string;
   codeHeight?: string;
+  styleLanguage?: 'css' | 'scss' | 'tailwind';
   onOpenPlayground?: (html: string, css: string, js: string) => void;
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
@@ -39,6 +41,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   icon: Icon = Eye,
   previewHeight = 'auto',
   codeHeight = 'auto',
+  styleLanguage = 'css',
   onOpenPlayground,
   onOpenWebPlayground,
 }) => {
@@ -46,6 +49,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   const [mounted, setMounted] = useState(false);
   const [iframeHeight, setIframeHeight] = useState<number>(500);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [compiledCss, setCompiledCss] = useState<string>('');
   
   // Extract CSS from HTML <style> tags
   const extractCSSFromHTML = (htmlContent: string): string => {
@@ -153,18 +157,45 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
   
   // Determine initial tab based on what's provided
+  // Prioritize CSS for CSS learning content
   const getInitialTab = (): 'html' | 'css' | 'js' => {
-    if (html) return 'html';
     if (hasCSS) return 'css';
+    if (html) return 'html';
     if (hasJS) return 'js';
     return 'html';
   };
   
   const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>(getInitialTab());
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showCode, setShowCode] = useState(false);
 
   // Get web playground context
   const { openWithContent } = useWebPlayground();
+
+  // Compile SCSS to CSS if needed
+  useEffect(() => {
+    const compileStyleCode = async () => {
+      if (styleLanguage === 'scss' && extractedCSS) {
+        try {
+          const result = await compileScss(extractedCSS);
+          if (result.error) {
+            console.error('SCSS Compilation Error:', result.error);
+            setCompiledCss(`/* SCSS Compilation Error: ${result.error} */`);
+          } else {
+            setCompiledCss(result.css);
+          }
+        } catch (error) {
+          console.error('SCSS Compilation Failed:', error);
+          setCompiledCss(`/* SCSS Compilation Failed */`);
+        }
+      } else {
+        // Regular CSS or no styles
+        setCompiledCss(extractedCSS);
+      }
+    };
+
+    compileStyleCode();
+  }, [extractedCSS, styleLanguage]);
 
   // Handle mounting and dark mode detection
   useEffect(() => {
@@ -224,7 +255,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
-  }, [html, css, js, previewHeight, isDarkMode]);
+  }, [html, compiledCss, js, previewHeight, isDarkMode]);
 
   const handleCopy = async () => {
     const codeToCopy = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
@@ -235,12 +266,18 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
   // Create the full HTML document for preview
   const getPreviewContent = () => {
-    // If HTML already contains complete document structure, inject theme detection
+    // Add Tailwind CDN if styleLanguage is tailwind
+    const tailwindCDN = styleLanguage === 'tailwind' 
+      ? '<script src="https://cdn.tailwindcss.com"></script>' 
+      : '';
+      
+    // If HTML already contains complete document structure, inject theme detection and Tailwind
     if (html.trim().toLowerCase().startsWith('<!doctype')) {
-      // Inject dark mode detection script into the HTML
+      // Inject Tailwind CDN and dark mode detection script into the HTML
       const injectedHTML = html.replace(
         '</head>',
-        `<script>
+        `${tailwindCDN}
+        <script>
           (function() {
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (isDark) {
@@ -254,15 +291,13 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     }
     
     // Otherwise, build complete document from parts
-    const bgColor = isDarkMode ? '#0f172a' : '#ffffff';
+    const bgColor = isDarkMode ? '#0f172a' : '#f8fafc';
     const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
     
-    return `<!DOCTYPE html>
-<html lang="en" class="${isDarkMode ? 'dark' : ''}">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
+    // For Tailwind, we don't need the default body styling
+    const defaultBodyStyles = styleLanguage === 'tailwind' 
+      ? '' 
+      : `
     * { 
       box-sizing: border-box; 
       margin: 0; 
@@ -291,8 +326,17 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
         border-color: #475569;
       }
     }
+    `;
     
-    ${extractedCSS}
+    return `<!DOCTYPE html>
+<html lang="en" class="${isDarkMode ? 'dark' : ''}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  ${tailwindCDN}
+  <style>
+    ${defaultBodyStyles}
+    ${compiledCss}
   </style>
   <script>
     (function() {
@@ -423,9 +467,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
           className="flex flex-col gap-4 lg:flex-row"
           style={previewHeight === 'auto' ? { height: '600px' } : { height: previewHeight }}
         >
-          <div
-            className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
-          >
+          {showCode && (
+            <div
+              className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
+            >
             <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 px-4 py-2 border-b dark:border-slate-800">
               <div className="flex gap-2">
                 {html && (
@@ -445,7 +490,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                       activeTab === 'css' ? theme.tab : theme.tabInactive
                     }`}
                   >
-                    CSS
+                    {styleLanguage === 'scss' ? 'SCSS' : 'CSS'}
                   </button>
                 )}
                 {hasJS && (
@@ -459,41 +504,17 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                   </button>
                 )}
               </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => {
-                    const openHandler = onOpenPlayground ?? onOpenWebPlayground;
-                    const htmlContent = html || '';
-                    const cssContent = extractedCSS || '';
-                    const jsContent = extractedJS || '';
-
-                    if (typeof openWithContent === 'function') {
-                      openWithContent(htmlContent, cssContent, jsContent);
-                      return;
-                    }
-
-                    if (openHandler) {
-                      openHandler(htmlContent, cssContent, jsContent);
-                    }
-                  }}
-                  className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
-                  title="Open code in Web Playground for interactive editing"
-                >
-                  <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
-                  <span className="text-xs font-semibold">Run</span>
-                </button>
-                <button
-                  onClick={handleCopy}
-                  className="p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-                  title="Copy code"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-emerald-600" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-                  )}
-                </button>
-              </div>
+              <button
+                onClick={handleCopy}
+                className="p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                title="Copy code"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-emerald-600" />
+                ) : (
+                  <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                )}
+              </button>
             </div>
             <div className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-950">
               <pre 
@@ -511,15 +532,69 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               </pre>
             </div>
           </div>
+          )}
 
           <div
-            className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
+            className={`${showCode ? 'lg:w-1/2' : 'w-full'} flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm`}
           >
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
-              <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
-                Live Preview
-              </span>
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
+                  Live Preview
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    try {
+                      const htmlContent = html || '';
+                      const cssContent = extractedCSS || '';
+                      const jsContent = extractedJS || '';
+
+                      // Always use the context's openWithContent function
+                      if (openWithContent) {
+                        openWithContent(htmlContent, cssContent, jsContent, styleLanguage);
+                        return;
+                      }
+
+                      // Fallback to legacy handlers if provided
+                      const openHandler = onOpenPlayground ?? onOpenWebPlayground;
+                      if (openHandler) {
+                        openHandler(htmlContent, cssContent, jsContent);
+                      }
+                    } catch (error) {
+                      console.error('Error opening web playground:', error);
+                    }
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
+                  title="Open code in Web Playground for interactive editing"
+                >
+                  <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
+                  <span className="text-xs font-semibold">Run</span>
+                </button>
+                <button
+                  onClick={() => setShowCode(!showCode)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded transition-all flex items-center gap-1.5 ${
+                    showCode 
+                      ? 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700' 
+                      : `${theme.tab} shadow-sm hover:shadow-md`
+                  }`}
+                  title={showCode ? "Hide Code" : "Show Code"}
+                >
+                  {showCode ? (
+                    <>
+                      <EyeOff className="w-4 h-4" />
+                      Hide Code
+                    </>
+                  ) : (
+                    <>
+                      <Code2 className="w-4 h-4" />
+                      Show Code
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
             <div 
               className="flex-1 p-4 bg-white dark:bg-slate-950 overflow-auto"

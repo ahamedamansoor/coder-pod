@@ -79,6 +79,17 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   const [questionBank, setQuestionBank] = useState<string[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+  // Interview Performance Tracking
+  const [interviewStats, setInterviewStats] = useState({
+    totalQuestions: 0,
+    correctAnswers: 0,
+    partialAnswers: 0,
+    incorrectAnswers: 0,
+    skippedQuestions: 0,
+  });
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [interviewResult, setInterviewResult] = useState<'selected' | 'not-selected' | 'needs-improvement' | null>(null);
+
   const recognitionRef = useRef<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -336,6 +347,25 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     }
   };
 
+  // Calculate interview result based on performance
+  const calculateInterviewResult = useCallback(() => {
+    const { totalQuestions, correctAnswers, partialAnswers, incorrectAnswers } = interviewStats;
+
+    if (totalQuestions === 0) return null;
+
+    // Calculate score: correct = 1 point, partial = 0.5 points
+    const score = correctAnswers + (partialAnswers * 0.5);
+    const percentage = (score / totalQuestions) * 100;
+
+    if (percentage >= 70) {
+      return 'selected';
+    } else if (percentage >= 50) {
+      return 'needs-improvement';
+    } else {
+      return 'not-selected';
+    }
+  }, [interviewStats]);
+
   // Reset interview state
   const resetInterview = useCallback(() => {
     // Stop all audio/voice immediately
@@ -369,12 +399,35 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     setIsAnswerCorrect(null);
     setQuestionBank([]);
     setCurrentQuestionIndex(0);
+
+    // Reset interview stats
+    setInterviewStats({
+      totalQuestions: 0,
+      correctAnswers: 0,
+      partialAnswers: 0,
+      incorrectAnswers: 0,
+      skippedQuestions: 0,
+    });
+    setInterviewResult(null);
   }, []); // No dependencies needed - always use latest state
 
-  // Handle dialog close
+  // Handle dialog close - show results if interview was in progress
   const handleDialogClose = useCallback((open: boolean) => {
-    setIsDialogOpen(open);
-    if (!open) {
+    if (!open && isConfigured && interviewStats.totalQuestions > 0) {
+      // Calculate and show results before closing
+      const result = calculateInterviewResult();
+      setInterviewResult(result);
+      setShowResultsModal(true);
+
+      // Stop speech
+      window.speechSynthesis.cancel();
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {}
+      }
+    } else if (!open) {
+      setIsDialogOpen(false);
       // Immediately stop all speech when closing
       window.speechSynthesis.cancel();
       
@@ -384,7 +437,18 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       // Reset category filter and search when closing
       setSelectedCategoryFilter(category || null);
       setSearchQuery('');
+    } else {
+      setIsDialogOpen(open);
     }
+  }, [resetInterview, category, isConfigured, interviewStats.totalQuestions, calculateInterviewResult]);
+
+  // Close results modal and then close main dialog
+  const handleResultsModalClose = useCallback(() => {
+    setShowResultsModal(false);
+    setIsDialogOpen(false);
+    resetInterview();
+    setSelectedCategoryFilter(category || null);
+    setSearchQuery('');
   }, [resetInterview, category]);
 
   const startInitialQuestion = useCallback(async () => {
@@ -502,23 +566,81 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     } catch (error) {
       console.error('Failed to start interview:', error);
       
-      // Check if error is due to AI configuration
-      const errorMessage = error instanceof Error ? error.message : '';
-      if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
-        toast({
-          variant: 'destructive',
-          title: 'AI Connection Failed',
-          description: 'Your AI key may be invalid or expired. Please update your API key.',
-        });
+      // Get error details
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const provider = localStorage.getItem('ai_provider') || 'AI';
+
+      // Determine error type and provide helpful message
+      let errorTitle = 'Interview Failed to Start';
+      let errorDescription = 'An unexpected error occurred. Please try again.';
+      let shouldResetAI = false;
+      let shouldOpenModal = false;
+
+      // API key / authentication errors
+      if (errorMessage.includes('401') || errorMessage.includes('403') ||
+          errorMessage.toLowerCase().includes('invalid') && errorMessage.toLowerCase().includes('key') ||
+          errorMessage.toLowerCase().includes('unauthorized') ||
+          errorMessage.toLowerCase().includes('authentication')) {
+        errorTitle = `${provider} API Key Invalid`;
+        errorDescription = 'Your API key appears to be invalid or expired. Please enter a valid API key.';
+        shouldResetAI = true;
+        shouldOpenModal = true;
+      }
+      // Rate limit errors
+      else if (errorMessage.includes('429') || errorMessage.toLowerCase().includes('rate limit') ||
+               errorMessage.toLowerCase().includes('quota') || errorMessage.toLowerCase().includes('exceeded')) {
+        errorTitle = `${provider} Rate Limit Reached`;
+        errorDescription = 'You\'ve exceeded the API rate limit. Please wait a moment and try again, or switch to a different AI provider.';
+        shouldOpenModal = true;
+      }
+      // Model not found errors
+      else if (errorMessage.includes('404') || errorMessage.toLowerCase().includes('model not found') ||
+               errorMessage.toLowerCase().includes('not supported')) {
+        errorTitle = `${provider} Model Unavailable`;
+        errorDescription = 'The AI model is temporarily unavailable. Please try again later or switch to a different provider.';
+        shouldOpenModal = true;
+      }
+      // Network / connection errors
+      else if (errorMessage.toLowerCase().includes('network') || errorMessage.toLowerCase().includes('connection') ||
+               errorMessage.toLowerCase().includes('fetch') || errorMessage.toLowerCase().includes('timeout')) {
+        errorTitle = 'Connection Failed';
+        errorDescription = 'Could not connect to the AI service. Please check your internet connection and try again.';
+      }
+      // Server errors
+      else if (errorMessage.includes('500') || errorMessage.includes('502') || errorMessage.includes('503')) {
+        errorTitle = `${provider} Server Error`;
+        errorDescription = 'The AI service is experiencing issues. Please try again later or switch to a different provider.';
+        shouldOpenModal = true;
+      }
+      // Unsupported provider
+      else if (errorMessage.toLowerCase().includes('unsupported')) {
+        errorTitle = 'Unsupported AI Provider';
+        errorDescription = errorMessage;
+        shouldResetAI = true;
+        shouldOpenModal = true;
+      }
+      // Generic API errors
+      else if (errorMessage.includes('API') || errorMessage.includes('Error')) {
+        errorTitle = `${provider} Error`;
+        errorDescription = errorMessage;
+        shouldOpenModal = true;
+      }
+      // Fallback
+      else {
+        errorDescription = errorMessage || 'Could not start the interview. Please try again.';
+      }
+
+      toast({
+        variant: 'destructive',
+        title: errorTitle,
+        description: errorDescription,
+      });
+
+      if (shouldResetAI) {
         setIsAiEnabled(false);
+      }
+      if (shouldOpenModal) {
         setIsModalOpen(true);
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Failed to Start Interview',
-          description: error instanceof Error ? error.message : 'Could not fetch the first question. Please try again.',
-        });
-        setIsAiEnabled(false);
       }
     } finally {
       setIsLoading(false);
@@ -985,6 +1107,36 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       setFeedback(result.feedback);
       setIdealAnswer(result.idealAnswer);
       
+      // Analyze feedback to determine answer quality
+      const feedbackLower = result.feedback.toLowerCase();
+      const isCorrect = feedbackLower.includes('correct') ||
+                        feedbackLower.includes('excellent') ||
+                        feedbackLower.includes('perfect') ||
+                        feedbackLower.includes('great answer') ||
+                        feedbackLower.includes('well done') ||
+                        feedbackLower.includes('spot on') ||
+                        feedbackLower.includes('you got it');
+      const isPartial = feedbackLower.includes('partially') ||
+                        feedbackLower.includes('close') ||
+                        feedbackLower.includes('on the right track') ||
+                        feedbackLower.includes('good start') ||
+                        feedbackLower.includes('almost') ||
+                        feedbackLower.includes('missing some') ||
+                        feedbackLower.includes('could include');
+      const isIncorrect = feedbackLower.includes('incorrect') ||
+                          feedbackLower.includes('wrong') ||
+                          feedbackLower.includes('not quite') ||
+                          feedbackLower.includes('that\'s not');
+
+      // Update interview stats
+      setInterviewStats(prev => ({
+        ...prev,
+        totalQuestions: prev.totalQuestions + 1,
+        correctAnswers: prev.correctAnswers + (isCorrect && !isPartial ? 1 : 0),
+        partialAnswers: prev.partialAnswers + (isPartial ? 1 : 0),
+        incorrectAnswers: prev.incorrectAnswers + (isIncorrect && !isPartial ? 1 : 0),
+      }));
+
       // Store next question and hint temporarily
       setShowNextButton(true);
       (window as any).__nextInterviewQuestion = result.nextQuestion;
@@ -1003,21 +1155,58 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     } catch (error) {
       console.error('Interview AI error:', error);
       
-      // Check if error is due to AI configuration
-      const errorMessage = error instanceof Error ? error.message : '';
-      if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
-        toast({
-          variant: 'destructive',
-          title: 'AI Connection Failed',
-          description: 'Your AI key may be invalid or expired. Please update your API key.',
-        });
+      // Get error details
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const provider = localStorage.getItem('ai_provider') || 'AI';
+
+      // Determine error type and provide helpful message
+      let errorTitle = 'Failed to Get Feedback';
+      let errorDescription = 'An unexpected error occurred. Please try again.';
+      let shouldOpenModal = false;
+
+      // API key / authentication errors
+      if (errorMessage.includes('401') || errorMessage.includes('403') ||
+          errorMessage.toLowerCase().includes('invalid') && errorMessage.toLowerCase().includes('key') ||
+          errorMessage.toLowerCase().includes('unauthorized')) {
+        errorTitle = `${provider} API Key Invalid`;
+        errorDescription = 'Your API key appears to be invalid or expired. Please enter a valid API key.';
+        shouldOpenModal = true;
+      }
+      // Rate limit errors
+      else if (errorMessage.includes('429') || errorMessage.toLowerCase().includes('rate limit') ||
+               errorMessage.toLowerCase().includes('quota')) {
+        errorTitle = `${provider} Rate Limit Reached`;
+        errorDescription = 'You\'ve exceeded the API rate limit. Please wait a moment and try again.';
+      }
+      // Network errors
+      else if (errorMessage.toLowerCase().includes('network') || errorMessage.toLowerCase().includes('connection') ||
+               errorMessage.toLowerCase().includes('fetch')) {
+        errorTitle = 'Connection Failed';
+        errorDescription = 'Could not connect to the AI service. Please check your internet connection.';
+      }
+      // Server errors
+      else if (errorMessage.includes('500') || errorMessage.includes('502') || errorMessage.includes('503')) {
+        errorTitle = `${provider} Server Error`;
+        errorDescription = 'The AI service is experiencing issues. Please try again later.';
+      }
+      // Generic API errors
+      else if (errorMessage.includes('API') || errorMessage.includes('Error')) {
+        errorTitle = `${provider} Error`;
+        errorDescription = errorMessage;
+      }
+      // Fallback
+      else {
+        errorDescription = errorMessage || 'Could not get feedback from the AI. Please try again.';
+      }
+
+      toast({
+        variant: 'destructive',
+        title: errorTitle,
+        description: errorDescription,
+      });
+
+      if (shouldOpenModal) {
         setIsModalOpen(true);
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'An Error Occurred',
-          description: error instanceof Error ? error.message : 'Could not get feedback from the AI. Please try again.',
-        });
       }
     } finally {
       setIsLoading(false);
@@ -1234,6 +1423,61 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     // Main interview UI after configuration
     return (
       <div className="h-full w-full flex flex-col gap-4 p-4 overflow-hidden">
+      {/* Live Interview Stats Bar */}
+      {interviewStats.totalQuestions > 0 && (
+        <div className="flex-shrink-0 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/50 dark:to-gray-900/50 rounded-xl p-3 border border-gray-200 dark:border-gray-800 shadow-sm">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center">
+                <MessageSquare className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground">Progress</div>
+                <div className="font-semibold text-sm">{interviewStats.totalQuestions} Questions</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">{interviewStats.correctAnswers} Correct</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                <div className="w-2 h-2 rounded-full bg-amber-500"></div>
+                <span className="text-xs font-semibold text-amber-700 dark:text-amber-400">{interviewStats.partialAnswers} Partial</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <span className="text-xs font-semibold text-red-700 dark:text-red-400">{interviewStats.incorrectAnswers} Wrong</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="text-right">
+                <div className="text-xs text-muted-foreground">Score</div>
+                <div className="font-bold text-sm">
+                  {interviewStats.totalQuestions > 0
+                    ? Math.round(((interviewStats.correctAnswers + interviewStats.partialAnswers * 0.5) / interviewStats.totalQuestions) * 100)
+                    : 0}%
+                </div>
+              </div>
+              <div className={cn(
+                "w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs",
+                interviewStats.totalQuestions > 0 && ((interviewStats.correctAnswers + interviewStats.partialAnswers * 0.5) / interviewStats.totalQuestions) >= 0.7
+                  ? "bg-gradient-to-br from-emerald-500 to-green-600"
+                  : interviewStats.totalQuestions > 0 && ((interviewStats.correctAnswers + interviewStats.partialAnswers * 0.5) / interviewStats.totalQuestions) >= 0.5
+                  ? "bg-gradient-to-br from-amber-500 to-orange-600"
+                  : "bg-gradient-to-br from-red-500 to-rose-600"
+              )}>
+                {interviewStats.totalQuestions > 0
+                  ? Math.round(((interviewStats.correctAnswers + interviewStats.partialAnswers * 0.5) / interviewStats.totalQuestions) * 100)
+                  : 0}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Interview Content */}
       <div className="flex-1 flex flex-col lg:flex-row gap-6 overflow-hidden min-h-0">
         {/* Left Panel: Questions & Answers */}
@@ -1271,6 +1515,14 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                         const isCorrect = value === correctAnswer;
                         setIsAnswerCorrect(isCorrect);
                         setShowNextButton(true);
+
+                        // Track MCQ answer in interview stats
+                        setInterviewStats(prev => ({
+                          ...prev,
+                          totalQuestions: prev.totalQuestions + 1,
+                          correctAnswers: prev.correctAnswers + (isCorrect ? 1 : 0),
+                          incorrectAnswers: prev.incorrectAnswers + (isCorrect ? 0 : 1),
+                        }));
                       }} className="space-y-4">
                         {(() => {
                           const parsedOptions = ['A', 'B', 'C', 'D'].map((option) => {
@@ -2062,49 +2314,201 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
     );
   };
 
+  // Interview Results Modal Component
+  const InterviewResultsModal = () => {
+    const { totalQuestions, correctAnswers, partialAnswers, incorrectAnswers, skippedQuestions } = interviewStats;
+    const score = correctAnswers + (partialAnswers * 0.5);
+    const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+
+    const getResultConfig = () => {
+      switch (interviewResult) {
+        case 'selected':
+          return {
+            title: '🎉 Congratulations! You\'re Selected!',
+            subtitle: 'Outstanding performance! You demonstrated excellent knowledge.',
+            bgGradient: 'from-emerald-500 to-green-600',
+            borderColor: 'border-emerald-500',
+            bgColor: 'bg-emerald-50 dark:bg-emerald-950/30',
+            icon: (
+              <svg className="w-20 h-20 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+              </svg>
+            ),
+            message: 'You have successfully passed this interview round. Your answers showed strong understanding of the concepts.',
+          };
+        case 'needs-improvement':
+          return {
+            title: '📚 Keep Practicing!',
+            subtitle: 'You\'re on the right track but need more preparation.',
+            bgGradient: 'from-amber-500 to-orange-600',
+            borderColor: 'border-amber-500',
+            bgColor: 'bg-amber-50 dark:bg-amber-950/30',
+            icon: (
+              <svg className="w-20 h-20 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+              </svg>
+            ),
+            message: 'Your performance shows potential, but you need to strengthen your fundamentals. Review the topics where you struggled.',
+          };
+        case 'not-selected':
+        default:
+          return {
+            title: '💪 Not Selected This Time',
+            subtitle: 'Don\'t give up! Every expert was once a beginner.',
+            bgGradient: 'from-red-500 to-rose-600',
+            borderColor: 'border-red-500',
+            bgColor: 'bg-red-50 dark:bg-red-950/30',
+            icon: (
+              <svg className="w-20 h-20 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+              </svg>
+            ),
+            message: 'You need more preparation before your next interview. Focus on understanding core concepts and practice regularly.',
+          };
+      }
+    };
+
+    const config = getResultConfig();
+
+    return (
+      <Dialog open={showResultsModal} onOpenChange={(open) => !open && handleResultsModalClose()}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden">
+          <VisuallyHidden>
+            <DialogTitle>Interview Results</DialogTitle>
+          </VisuallyHidden>
+
+          {/* Header with gradient */}
+          <div className={`bg-gradient-to-r ${config.bgGradient} p-6 text-white text-center`}>
+            <div className="flex justify-center mb-4">
+              <div className="bg-white/20 rounded-full p-4 backdrop-blur-sm">
+                {config.icon}
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold mb-2">{config.title}</h2>
+            <p className="text-white/90 text-sm">{config.subtitle}</p>
+          </div>
+
+          {/* Stats Section */}
+          <div className="p-6 space-y-6">
+            {/* Score Circle */}
+            <div className="flex justify-center">
+              <div className={`relative w-32 h-32 rounded-full border-8 ${config.borderColor} ${config.bgColor} flex items-center justify-center`}>
+                <div className="text-center">
+                  <div className="text-3xl font-bold">{percentage}%</div>
+                  <div className="text-xs text-muted-foreground">Score</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
+                <div className="text-2xl font-bold text-emerald-600">{correctAnswers}</div>
+                <div className="text-xs text-emerald-700 dark:text-emerald-400">Correct</div>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                <div className="text-2xl font-bold text-amber-600">{partialAnswers}</div>
+                <div className="text-xs text-amber-700 dark:text-amber-400">Partial</div>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800">
+                <div className="text-2xl font-bold text-red-600">{incorrectAnswers}</div>
+                <div className="text-xs text-red-700 dark:text-red-400">Incorrect</div>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+                <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">{totalQuestions}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">Total</div>
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className={`p-4 rounded-lg ${config.bgColor} border ${config.borderColor}`}>
+              <p className="text-sm text-center">{config.message}</p>
+            </div>
+
+            {/* Topic & Category */}
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Badge variant="outline">{selectedLanguage}</Badge>
+              <span>•</span>
+              <Badge variant="outline">{questionType === 'mcq' ? 'MCQ' : questionType === 'coding' ? 'Coding' : 'Theory'}</Badge>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={handleResultsModalClose}
+              >
+                Close
+              </Button>
+              <Button
+                className={`flex-1 bg-gradient-to-r ${config.bgGradient} text-white hover:opacity-90`}
+                onClick={() => {
+                  setShowResultsModal(false);
+                  resetInterview();
+                  // Keep dialog open to start new interview
+                }}
+              >
+                Try Again
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   // If children provided, wrap in Dialog (for dashboard usage)
   if (children) {
     return (
-      <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
-        <DialogTrigger asChild>
-          {children}
-        </DialogTrigger>
-        <DialogContent 
-          className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] p-0 m-0" 
-          onPointerDownOutside={(e) => e.preventDefault()}
-          showCloseButton={false}
-        >
-          <VisuallyHidden>
-            <DialogTitle>AI Interview Simulator for {languageName}</DialogTitle>
-          </VisuallyHidden>
-          
-          {/* Custom Close Button */}
-          <button
-            onClick={() => handleDialogClose(false)}
-            className="absolute right-6 top-6 z-50 rounded-full w-12 h-12 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all hover:scale-110 hover:rotate-90 focus:outline-none focus:ring-4 focus:ring-red-500/50 group"
-            aria-label="Close interview"
+      <>
+        <InterviewResultsModal />
+        <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
+          <DialogTrigger asChild>
+            {children}
+          </DialogTrigger>
+          <DialogContent
+            className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] p-0 m-0"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            showCloseButton={false}
           >
-            <svg 
-              className="w-6 h-6 mx-auto text-gray-600 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            <VisuallyHidden>
+              <DialogTitle>AI Interview Simulator for {languageName}</DialogTitle>
+            </VisuallyHidden>
+
+            {/* Custom Close Button */}
+            <button
+              onClick={() => handleDialogClose(false)}
+              className="absolute right-6 top-6 z-50 rounded-full w-12 h-12 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all hover:scale-110 hover:rotate-90 focus:outline-none focus:ring-4 focus:ring-red-500/50 group"
+              aria-label="Close interview"
             >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-          
-          {renderContent()}
-        </DialogContent>
-      </Dialog>
+              <svg
+                className="w-6 h-6 mx-auto text-gray-600 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+
+            {renderContent()}
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
   // Otherwise render directly (for page usage)
-  return renderContent();
+  return (
+    <>
+      <InterviewResultsModal />
+      {renderContent()}
+    </>
+  );
 };
 
 export default InterviewSimulator;

@@ -274,9 +274,12 @@ export function WebPlaygroundModal({
   children?: React.ReactNode;
   initialLanguage?: string;
 }) {
-  const { open, setOpen, content, setContent } = useWebPlayground();
+  const { open, setOpen, content, setContent, defaultFocusedPanel } = useWebPlayground();
 
-  const allowedStyleLangs = useMemo(() => getAllowedStyleLangs(initialLanguage), [initialLanguage]);
+  // Use content.initialLanguage if available, otherwise fall back to initialLanguage prop
+  const effectiveLanguage = content.initialLanguage || initialLanguage;
+  
+  const allowedStyleLangs = useMemo(() => getAllowedStyleLangs(effectiveLanguage), [effectiveLanguage]);
   const defaultStyleLang = allowedStyleLangs[0] ?? 'css';
 
   const [htmlCode, setHtmlCode] = useState('');
@@ -288,7 +291,7 @@ export function WebPlaygroundModal({
   
   const [styleLang, setStyleLang] = useState<StyleLang>(defaultStyleLang);
   
-  const initialScriptLang: ScriptLang = initialLanguage === 'typescript' ? 'typescript' : 'javascript';
+  const initialScriptLang: ScriptLang = effectiveLanguage === 'typescript' ? 'typescript' : 'javascript';
   const [scriptLang, setScriptLang] = useState<ScriptLang>(initialScriptLang);
 
   const [outputSrc, setOutputSrc] = useState('about:blank');
@@ -296,13 +299,59 @@ export function WebPlaygroundModal({
   const [iframeKey, setIframeKey] = useState(0);
   const [autoRun, setAutoRun] = useState(false); // Default to manual run
   const [hasChanges, setHasChanges] = useState(false);
-  const [visiblePanels, setVisiblePanels] = useState({
-    html: true,
-    css: true,
-    js: true,
-    preview: true,
-    console: true,
-  });
+  
+  // Initialize visible panels based on defaultFocusedPanel or content.visiblePanels
+  const getInitialVisiblePanels = () => {
+    // If content has explicit visiblePanels configuration, use that
+    if (content.visiblePanels) {
+      return {
+        html: content.visiblePanels.html ?? true,
+        css: content.visiblePanels.css ?? true,
+        js: content.visiblePanels.js ?? true,
+        preview: true,
+        console: false,
+      };
+    }
+    
+    if (defaultFocusedPanel === 'css') {
+      // For CSS-focused content, show CSS, Preview, and Console by default
+      return {
+        html: false,
+        css: true,
+        js: false,
+        preview: true,
+        console: true,
+      };
+    } else if (defaultFocusedPanel === 'js') {
+      // For JS-focused content, show JS, Preview, and Console by default
+      return {
+        html: false,
+        css: false,
+        js: true,
+        preview: true,
+        console: true,
+      };
+    } else if (defaultFocusedPanel === 'html') {
+      // For HTML-focused content, show HTML and Preview by default
+      return {
+        html: true,
+        css: false,
+        js: false,
+        preview: true,
+        console: false,
+      };
+    }
+    // Default: show all panels
+    return {
+      html: true,
+      css: true,
+      js: true,
+      preview: true,
+      console: true,
+    };
+  };
+  
+  const [visiblePanels, setVisiblePanels] = useState(getInitialVisiblePanels());
   const { theme } = useTheme();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>(theme === 'dark' ? 'dark' : 'light');
   const hasInitialRunRef = useRef(false);
@@ -310,6 +359,13 @@ export function WebPlaygroundModal({
   const togglePanel = (panel: keyof typeof visiblePanels) => {
     setVisiblePanels(prev => ({ ...prev, [panel]: !prev[panel] }));
   };
+
+  // Reset visible panels when modal opens with a specific focused panel
+  useEffect(() => {
+    if (open && defaultFocusedPanel) {
+      setVisiblePanels(getInitialVisiblePanels());
+    }
+  }, [open, defaultFocusedPanel]);
 
   useEffect(() => {
     if (!allowedStyleLangs.includes(styleLang)) {
@@ -384,8 +440,16 @@ export function WebPlaygroundModal({
         const extractedCSS = content.css || extractCSSFromHTML(content.html);
         const extractedJS = content.js || extractJSFromHTML(content.html);
         
-        // Determine style language
-        const detectedLang: StyleLang = extractedCSS.includes('$') || extractedCSS.includes('@mixin') ? 'scss' : 'css';
+        // Determine style language - check for SCSS indicators
+        const hasScssIndicators = 
+          extractedCSS.includes('$') || // Variables
+          extractedCSS.includes('@mixin') || // Mixins
+          extractedCSS.includes('@include') || // Include statements
+          extractedCSS.includes('@extend') || // Extend statements
+          /&[:\-_a-zA-Z]/.test(extractedCSS) || // Parent selector with pseudo-class/element/modifier
+          /\w+\s*{[^}]*\w+\s*{/.test(extractedCSS); // Nested selectors
+        
+        const detectedLang: StyleLang = hasScssIndicators ? 'scss' : 'css';
         const normalizedStyleLang = allowedStyleLangs.includes(detectedLang)
           ? detectedLang
           : defaultStyleLang;
@@ -411,9 +475,9 @@ export function WebPlaygroundModal({
         );
         setHtmlCode(cleanedHTML);
     } else {
-        // Use initialLanguage to determine defaults
+        // Use effectiveLanguage to determine defaults
         const defaultScriptLang: ScriptLang = 
-          initialLanguage === 'typescript' ? 'typescript' : 
+          effectiveLanguage === 'typescript' ? 'typescript' : 
           'javascript';
         
         setStyleLang(defaultStyleLang);
@@ -433,7 +497,18 @@ export function WebPlaygroundModal({
         
         setJsCode(defaultScriptLang === 'typescript' ? defaultTs : defaultJs);
     }
-  }, [content, initialLanguage, open]);
+    
+    // Update visible panels based on content configuration
+    if (content.visiblePanels) {
+      setVisiblePanels({
+        html: content.visiblePanels.html ?? true,
+        css: content.visiblePanels.css ?? true,
+        js: content.visiblePanels.js ?? true,
+        preview: true,
+        console: false,
+      });
+    }
+  }, [content, effectiveLanguage, open]);
 
   // Debounced SCSS compilation and style processing
   useEffect(() => {
@@ -651,6 +726,14 @@ export function WebPlaygroundModal({
       setContent({ html: '', css: '', js: '' });
       // Reset initial run flag for next open
       hasInitialRunRef.current = false;
+      // Reset visible panels to default
+      setVisiblePanels({
+        html: true,
+        css: true,
+        js: true,
+        preview: true,
+        console: true,
+      });
     }
   };
 

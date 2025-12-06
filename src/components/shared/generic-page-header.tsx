@@ -162,6 +162,12 @@ const colorClasses: Record<ColorTheme, {
  * A reusable header component for all topic pages across different languages
  * (HTML, CSS, JavaScript, React, Java, Spring, etc.)
  * 
+ * IMPORTANT: All colors are fixed to logo branding and cannot be overridden:
+ * - Badge background/border: Solid #4A7BF5 (vibrant logo blue)
+ * - Icon & category text: White (#FFFFFF) on blue background
+ * - Title: #5B7FFF (logo blue)
+ * The colorTheme prop is ignored for consistent branding across all pages.
+ * 
  * @example
  * ```tsx
  * import { PageHeader } from '@/components/shared/generic-page-header';
@@ -172,7 +178,7 @@ const colorClasses: Record<ColorTheme, {
  *   category="HTML Basics"
  *   title="HTML Document Structure"
  *   description="The essential boilerplate for every web page"
- *   colorTheme="blue"
+ *   colorTheme="blue" // Note: colorTheme is now ignored for consistent branding
  * />
  * ```
  */
@@ -187,16 +193,45 @@ export function PageHeader({
 
   return (
     <div className="text-center space-y-4 py-8">
-      {/* Category Badge with Icon */}
-      <div className={`inline-flex items-center gap-2 ${colors.badgeBg} px-6 py-3 rounded-full border ${colors.badgeBorder} animate-in fade-in slide-in-from-top-4 duration-500`}>
-        <Icon className={`h-6 w-6 ${colors.icon}`} />
-        <span className={`text-sm font-semibold ${colors.text}`}>
+      {/* Category Badge with Icon - Fixed Logo Color */}
+      <div 
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border animate-in fade-in slide-in-from-top-4 duration-500 hover:scale-105 transition-all hover:shadow-lg hover:shadow-blue-500/50 relative overflow-hidden group"
+        style={{ 
+          backgroundColor: '#4A7BF5',
+          borderColor: '#4A7BF5',
+          animation: 'badge-pulse 3s ease-in-out infinite'
+        }}
+      >
+        {/* Shimmer effect */}
+        <div 
+          className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"
+          style={{
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)'
+          }}
+        />
+        <Icon className="h-6 w-6 relative z-10 group-hover:rotate-12 transition-transform duration-300" style={{ color: '#FFFFFF' }} />
+        <span className="text-sm font-semibold relative z-10" style={{ color: '#FFFFFF' }}>
           {category}
         </span>
       </div>
       
-      {/* Main Title with Gradient */}
-      <h1 className={`text-5xl font-bold ${colors.gradient} bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-4 duration-700`}>
+      {/* Keyframe animation */}
+      <style jsx>{`
+        @keyframes badge-pulse {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(74, 123, 245, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(74, 123, 245, 0);
+          }
+        }
+      `}</style>
+      
+      {/* Main Title - Fixed Logo Color */}
+      <h1 
+        className="text-5xl font-bold animate-in fade-in slide-in-from-bottom-4 duration-700"
+        style={{ color: '#5B7FFF' }}
+      >
         {title}
       </h1>
       

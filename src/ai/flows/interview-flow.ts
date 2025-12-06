@@ -87,8 +87,20 @@ export async function conductInterview(
     case 'cohere':
       return await conductCohereInterview(apiKey, interviewInput);
     
+    case 'huggingface':
+      return await conductHuggingFaceInterview(apiKey, interviewInput);
+
+    case 'together':
+      return await conductTogetherInterview(apiKey, interviewInput);
+
+    case 'deepseek':
+      return await conductDeepSeekInterview(apiKey, interviewInput);
+
+    case 'meta':
+      return await conductMetaInterview(apiKey, interviewInput);
+
     default:
-      throw new Error(`Unsupported AI provider: ${provider}`);
+      throw new Error(`Unsupported AI provider: ${provider}. Please choose from: Gemini, OpenAI, Anthropic, Perplexity, Groq, Mistral, Cohere, HuggingFace, Together, DeepSeek, or Meta.`);
   }
 }
 
@@ -105,9 +117,7 @@ async function conductGeminiInterview(
   const questionTypeInstruction = input.questionType === 'coding'
     ? `Focus on CODING questions only. Format questions using this EXACT structure:
 
-==============================================================================
 [Question Title]
-==============================================================================
 
 [Clear description of the problem]
 

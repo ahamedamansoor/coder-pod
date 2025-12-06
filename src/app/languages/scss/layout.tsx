@@ -11,6 +11,8 @@ import { ScssProvider } from './scss-context';
 import { ScssLayoutProvider, useScssLayout } from './scss-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser, useAuth } from '@/firebase';
+import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
+import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 
 function ScssTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -79,9 +81,12 @@ export default function ScssTopicLayout({
   return (
     <ScssProvider>
       <ScssLayoutProvider>
-        <ScssTopicLayoutContent>
-          {children}
-        </ScssTopicLayoutContent>
+        <WebPlaygroundProvider>
+          <ScssTopicLayoutContent>
+            {children}
+          </ScssTopicLayoutContent>
+          <WebPlaygroundModal initialLanguage="scss" />
+        </WebPlaygroundProvider>
       </ScssLayoutProvider>
     </ScssProvider>
   );

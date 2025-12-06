@@ -990,7 +990,7 @@ export default function CssBoxModel({ onOpenWebPlayground }: CssBoxModelProps) {
           <FrontendCodePreview
             html={interactiveBoxModelExample}
             title="Interactive Demo"
-            colorTheme="sky"
+            colorTheme="cyan"
             onOpenWebPlayground={onOpenWebPlayground}
           />
           

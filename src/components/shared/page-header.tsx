@@ -2,6 +2,13 @@ import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+/**
+ * IMPORTANT: All colors are fixed to logo branding and cannot be overridden:
+ * - Icon background/border: Solid #4A7BF5 (vibrant logo blue)
+ * - Icon: White (#FFFFFF) on blue background
+ * - Title: #5B7FFF (logo blue)
+ * This ensures consistent, vibrant branding across all pages.
+ */
 interface PageHeaderProps {
   title: string;
   subtitle?: string;
@@ -42,14 +49,28 @@ export function PageHeader({
             centered && "flex-col sm:flex-row"
           )}>
             {Icon && (
-              <div className={iconBgClassName}>
-                <Icon className={iconClassName} />
+              <div 
+                className={cn(iconBgClassName, "hover:scale-110 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 relative overflow-hidden group")}
+                style={{ 
+                  backgroundColor: '#4A7BF5',
+                  border: '2px solid #4A7BF5',
+                  animation: 'icon-pulse 3s ease-in-out infinite'
+                }}
+              >
+                {/* Shimmer effect */}
+                <div 
+                  className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)'
+                  }}
+                />
+                <Icon className={cn(iconClassName, "relative z-10 group-hover:rotate-6 transition-transform duration-300")} style={{ color: '#FFFFFF' }} />
               </div>
             )}
             <div className={cn(
               centered ? "text-center sm:text-left" : ""
             )}>
-              <h1 className={titleClassName}>
+              <h1 className={titleClassName} style={{ color: '#5B7FFF' }}>
                 {title}
               </h1>
               {subtitle && (
@@ -66,6 +87,18 @@ export function PageHeader({
           )}
         </div>
       </div>
+      
+      {/* Keyframe animation for icon pulse */}
+      <style jsx>{`
+        @keyframes icon-pulse {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(74, 123, 245, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 0 6px rgba(74, 123, 245, 0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

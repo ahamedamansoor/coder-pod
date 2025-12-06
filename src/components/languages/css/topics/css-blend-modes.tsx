@@ -19,21 +19,21 @@ export default function CssBlendModes({ onOpenWebPlayground }: CssBlendModesProp
     const [selectedMode, setSelectedMode] = useState('multiply');
 
     const blendModes = [
-        { name: 'multiply', desc: 'Multiplies colors', color: 'bg-purple-100' },
-        { name: 'screen', desc: 'Inverted multiply', color: 'bg-blue-100' },
-        { name: 'overlay', desc: 'Combines multiply & screen', color: 'bg-pink-100' },
-        { name: 'darken', desc: 'Darker of two colors', color: 'bg-gray-100' },
-        { name: 'lighten', desc: 'Lighter of two colors', color: 'bg-yellow-100' },
-        { name: 'color-dodge', desc: 'Brightens colors', color: 'bg-orange-100' },
-        { name: 'color-burn', desc: 'Darkens colors', color: 'bg-red-100' },
-        { name: 'hard-light', desc: 'Strong overlay', color: 'bg-indigo-100' },
-        { name: 'soft-light', desc: 'Soft overlay', color: 'bg-teal-100' },
-        { name: 'difference', desc: 'Subtracts colors', color: 'bg-green-100' },
-        { name: 'exclusion', desc: 'Lower contrast difference', color: 'bg-cyan-100' },
-        { name: 'hue', desc: 'Hue of top layer', color: 'bg-rose-100' },
-        { name: 'saturation', desc: 'Saturation of top', color: 'bg-fuchsia-100' },
-        { name: 'color', desc: 'Hue & saturation', color: 'bg-violet-100' },
-        { name: 'luminosity', desc: 'Luminosity of top', color: 'bg-amber-100' }
+        { name: 'multiply', desc: 'Multiplies colors', color: 'bg-purple-100 dark:bg-purple-900/30' },
+        { name: 'screen', desc: 'Inverted multiply', color: 'bg-blue-100 dark:bg-blue-900/30' },
+        { name: 'overlay', desc: 'Combines multiply & screen', color: 'bg-pink-100 dark:bg-pink-900/30' },
+        { name: 'darken', desc: 'Darker of two colors', color: 'bg-gray-100 dark:bg-gray-800/50' },
+        { name: 'lighten', desc: 'Lighter of two colors', color: 'bg-yellow-100 dark:bg-yellow-900/30' },
+        { name: 'color-dodge', desc: 'Brightens colors', color: 'bg-orange-100 dark:bg-orange-900/30' },
+        { name: 'color-burn', desc: 'Darkens colors', color: 'bg-red-100 dark:bg-red-900/30' },
+        { name: 'hard-light', desc: 'Strong overlay', color: 'bg-indigo-100 dark:bg-indigo-900/30' },
+        { name: 'soft-light', desc: 'Soft overlay', color: 'bg-teal-100 dark:bg-teal-900/30' },
+        { name: 'difference', desc: 'Subtracts colors', color: 'bg-green-100 dark:bg-green-900/30' },
+        { name: 'exclusion', desc: 'Lower contrast difference', color: 'bg-cyan-100 dark:bg-cyan-900/30' },
+        { name: 'hue', desc: 'Hue of top layer', color: 'bg-rose-100 dark:bg-rose-900/30' },
+        { name: 'saturation', desc: 'Saturation of top', color: 'bg-fuchsia-100 dark:bg-fuchsia-900/30' },
+        { name: 'color', desc: 'Hue & saturation', color: 'bg-violet-100 dark:bg-violet-900/30' },
+        { name: 'luminosity', desc: 'Luminosity of top', color: 'bg-amber-100 dark:bg-amber-900/30' }
     ];
 
     const playgroundCode = `<!DOCTYPE html>
@@ -455,12 +455,12 @@ export default function CssBlendModes({ onOpenWebPlayground }: CssBlendModesProp
                                 key={mode.name}
                                 className={`p-3 rounded-lg border-2 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
                                     selectedMode === mode.name 
-                                        ? 'ring-2 ring-primary ring-offset-2 border-primary shadow-lg' 
-                                        : 'border-gray-200 hover:border-gray-300'
+                                        ? 'ring-2 ring-primary ring-offset-2 dark:ring-offset-gray-900 border-primary shadow-lg' 
+                                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                                 } ${mode.color}`}
                                 onClick={() => setSelectedMode(mode.name)}
                             >
-                                <h3 className="font-bold text-xs mb-1">{mode.name}</h3>
+                                <h3 className="font-bold text-xs mb-1 dark:text-gray-100">{mode.name}</h3>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">{mode.desc}</p>
                             </div>
                         ))}

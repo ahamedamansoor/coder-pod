@@ -1,576 +1,902 @@
 'use client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-    HardHat, Check, ArrowRight, Code, FileCode, Monitor, 
-    Terminal, Download, Settings, Play, Zap, Package,
-    Folder, Globe, Wrench, AlertTriangle, CheckCircle,
-    Copy, ExternalLink, Lightbulb, Rocket, Command
-} from 'lucide-react';
+
 import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { FrontendCodePreview } from '@/components/shared';
+import { Download, CheckCircle, Sparkles, Info, Terminal, Settings, Rocket, Code } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function SassInstallation({ onOpenEditor, onOpenWebPlayground }: {
-  onOpenEditor?: (code: string) => void;
+interface SassInstallationSetupProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-} = {}) {
-    const [selectedMethod, setSelectedMethod] = useState('npm');
-    const [copiedCommand, setCopiedCommand] = useState('');
+}
 
-    const installMethods = {
-        npm: { command: 'npm install sass', label: 'npm', icon: Package },
-        yarn: { command: 'yarn add sass', label: 'Yarn', icon: Package },
-        pnpm: { command: 'pnpm add sass', label: 'pnpm', icon: Package },
-        global: { command: 'npm install -g sass', label: 'Global', icon: Globe }
-    };
+export default function SassInstallationSetup({ onOpenWebPlayground }: SassInstallationSetupProps) {
+  const [selectedMethod, setSelectedMethod] = useState('npm');
 
-    const copyToClipboard = (text: string, method: string) => {
-        navigator.clipboard.writeText(text);
-        setCopiedCommand(method);
-        setTimeout(() => setCopiedCommand(''), 2000);
-    };
-
-    const packageJsonExample = `{
-  "name": "my-sass-project",
-  "version": "1.0.0",
-  "scripts": {
-    "build-css": "sass src/scss:dist/css",
-    "watch-css": "sass --watch src/scss:dist/css",
-    "dev": "sass --watch src/scss:dist/css --style=expanded",
-    "build": "sass src/scss:dist/css --style=compressed"
-  },
-  "devDependencies": {
-    "sass": "^1.69.0"
-  }
-}`;
-
-    const folderStructure = `my-project/
-├── src/
-│   └── scss/
-│       ├── main.scss
-│       ├── _variables.scss
-│       ├── _mixins.scss
-│       └── components/
-│           ├── _buttons.scss
-│           └── _cards.scss
-├── dist/
-│   └── css/
-│       └── main.css
-├── package.json
-└── README.md`;
-
-    const firstScssFile = `// src/scss/main.scss
-@import 'variables';
-@import 'mixins';
-@import 'components/buttons';
-@import 'components/cards';
-
-body {
-  font-family: $font-primary;
-  background: $bg-color;
-  color: $text-color;
-}`;
-
-    const variablesFile = `// src/scss/_variables.scss
-$font-primary: 'Inter', sans-serif;
-$bg-color: #ffffff;
-$text-color: #333333;
-$primary-color: #3b82f6;
-$secondary-color: #64748b;`;
-
-    return (
-      <div className="space-y-8">
-        <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-2">
-                <HardHat className="w-10 h-10 text-primary" />
-                <h1 className="text-4xl font-bold text-foreground">Sass Installation & Setup</h1>
-            </div>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                Complete guide to setting up Sass/SCSS in any project - from beginner to expert level.
-            </p>
+  const npmExample = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPM Installation Guide</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); }
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container { background: #1e293b; color: #e2e8f0; }
+    }
+    
+    h1 {
+      color: #3b82f6;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 2.5rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 { color: #60a5fa; }
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+    
+    .step {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      padding: 25px;
+      border-radius: 12px;
+      border: 3px solid #3b82f6;
+      margin-bottom: 20px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .step {
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        border-color: #60a5fa;
+      }
+    }
+    
+    .step-number {
+      display: inline-block;
+      background: #3b82f6;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+    
+    .step-title {
+      font-weight: 700;
+      color: #1e40af;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .step-title { color: #bfdbfe; }
+    }
+    
+    .step-desc {
+      color: #1e3a8a;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .step-desc { color: #dbeafe; }
+    }
+    
+    .terminal {
+      background: #0f172a;
+      color: #10b981;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      overflow-x: auto;
+      border: 2px solid #3b82f6;
+    }
+    
+    .terminal-header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #eab308; }
+    .dot-green { background: #10b981; }
+    
+    .command { color: #10b981; }
+    .output { color: #60a5fa; margin-left: 20px; }
+    
+    .info-box {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-left: 4px solid #f59e0b;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-box {
+        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+        border-left-color: #fbbf24;
+      }
+    }
+    
+    .info-title {
+      color: #92400e;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-title { color: #fde68a; }
+    }
+    
+    .info-text {
+      color: #78350f;
+      line-height: 1.6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-text { color: #fef3c7; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 NPM Installation</h1>
+    <p class="subtitle">Install Sass using Node Package Manager</p>
+    
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-title">Install Node.js</div>
+      <div class="step-desc">First, ensure you have Node.js installed on your system.</div>
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
         </div>
-
-        {/* Quick Start Overview */}
-        <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 border-green-200">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                    <Rocket className="w-6 h-6" />
-                    Quick Start: 3 Steps to Sass
-                </CardTitle>
-                <CardDescription>
-                    Get Sass running in your project in under 2 minutes!
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="grid md:grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span className="text-xl font-bold text-blue-600">1</span>
-                        </div>
-                        <h3 className="font-semibold mb-2">Install Sass</h3>
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">npm install sass</code>
-                    </div>
-                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span className="text-xl font-bold text-green-600">2</span>
-                        </div>
-                        <h3 className="font-semibold mb-2">Create .scss File</h3>
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">styles.scss</code>
-                    </div>
-                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span className="text-xl font-bold text-purple-600">3</span>
-                        </div>
-                        <h3 className="font-semibold mb-2">Start Coding!</h3>
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">$color: blue;</code>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* Installation Methods */}
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Package className="w-6 h-6 text-primary" />
-                    Installation Methods
-                </CardTitle>
-                <CardDescription>
-                    Choose the installation method that fits your project setup.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    {Object.entries(installMethods).map(([key, method]) => {
-                        const Icon = method.icon;
-                        return (
-                            <Button
-                                key={key}
-                                variant={selectedMethod === key ? "default" : "outline"}
-                                onClick={() => setSelectedMethod(key)}
-                                className="h-auto p-4 flex flex-col items-center gap-2"
-                            >
-                                <Icon className="w-6 h-6" />
-                                <span>{method.label}</span>
-                            </Button>
-                        );
-                    })}
-                </div>
-                
-                <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 relative">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="text-green-400 text-sm">Terminal</span>
-                        <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => copyToClipboard(installMethods[selectedMethod as keyof typeof installMethods].command, selectedMethod)}
-                            className="text-gray-400 hover:text-white"
-                        >
-                            {copiedCommand === selectedMethod ? (
-                                <CheckCircle className="w-4 h-4" />
-                            ) : (
-                                <Copy className="w-4 h-4" />
-                            )}
-                        </Button>
-                    </div>
-                    <code className="text-gray-800 dark:text-white font-mono">
-                        $ {installMethods[selectedMethod as keyof typeof installMethods].command}
-                    </code>
-                </div>
-                
-                <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200">
-                    <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
-                        {selectedMethod === 'global' ? 'Global Installation' : 'Project Installation'}
-                    </h4>
-                    <p className="text-sm text-blue-600 dark:text-blue-400">
-                        {selectedMethod === 'global' 
-                            ? 'Installs Sass globally on your system. Use this for command-line compilation across multiple projects.'
-                            : 'Installs Sass as a project dependency. Recommended for most projects as it ensures version consistency.'
-                        }
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
-        {/* Project Setup */}
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Folder className="w-6 h-6 text-primary" />
-                    Project Structure Setup
-                </CardTitle>
-                <CardDescription>
-                    Organize your Sass files for maintainability and scalability.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <Folder className="w-5 h-5 text-blue-600" />
-                            Recommended Folder Structure
-                        </h3>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                            <pre className="text-green-600 dark:text-green-400 font-mono text-sm whitespace-pre-wrap">{folderStructure}</pre>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <Settings className="w-5 h-5 text-purple-600" />
-                            Package.json Scripts
-                        </h3>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                            <pre className="text-blue-400 font-mono text-xs whitespace-pre-wrap">{packageJsonExample}</pre>
-                        </div>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* Compilation Process */}
-        <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-                    <Zap className="w-6 h-6" />
-                    How Sass Compilation Works
-                </CardTitle>
-                <CardDescription>
-                    Understanding the process from .scss to .css
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6 p-6 bg-white dark:bg-gray-800 rounded-lg border">
-                    <div className="text-center">
-                        <FileCode className="w-12 h-12 text-blue-600 mx-auto mb-2"/>
-                        <p className="font-semibold">Write SCSS</p>
-                        <p className="text-xs text-muted-foreground">Variables, nesting, mixins</p>
-                        <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded mt-1 block">styles.scss</code>
-                    </div>
-                    <ArrowRight className="w-8 h-8 text-muted-foreground shrink-0 md:rotate-0 rotate-90" />
-                    <div className="text-center">
-                        <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full inline-block">
-                           <Settings className="w-12 h-12 text-purple-600"/>
-                        </div>
-                        <p className="font-semibold mt-2">Sass Compiler</p>
-                        <p className="text-xs text-muted-foreground">Processes & optimizes</p>
-                        <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded mt-1 block">Dart Sass</code>
-                    </div>
-                    <ArrowRight className="w-8 h-8 text-muted-foreground shrink-0 md:rotate-0 rotate-90" />
-                    <div className="text-center">
-                        <Monitor className="w-12 h-12 text-green-600 mx-auto mb-2"/>
-                        <p className="font-semibold">Standard CSS</p>
-                        <p className="text-xs text-muted-foreground">Browser-ready output</p>
-                        <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded mt-1 block">styles.css</code>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* First SCSS Files */}
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Code className="w-6 h-6 text-primary" />
-                    Creating Your First SCSS Files
-                </CardTitle>
-                <CardDescription>
-                    Start with these essential files to build a solid foundation.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-6">
-                    <div>
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <FileCode className="w-5 h-5 text-blue-600" />
-                            Main SCSS File
-                        </h3>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                            <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{firstScssFile}</pre>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <Settings className="w-5 h-5 text-green-600" />
-                            Variables File
-                        </h3>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
-                            <pre className="text-gray-800 dark:text-white font-mono text-sm whitespace-pre-wrap">{variablesFile}</pre>
-                        </div>
-                    </div>
-                </div>
-                
-                {onOpenWebPlayground && (
-                    <div className="mt-6">
-                        <Button 
-                            onClick={() => onOpenWebPlayground(
-                                '<h1>Hello Sass!</h1>\n<p>Your first Sass project is ready.</p>',
-                                firstScssFile + '\n\n' + variablesFile,
-                                ''
-                            )}
-                            className="flex items-center gap-2"
-                        >
-                            <Play className="w-4 h-4" />
-                            Try Your First SCSS
-                        </Button>
-                    </div>
-                )}
-            </CardContent>
-        </Card>
-
-        {/* Framework Integration */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                    <Rocket className="w-6 h-6" />
-                    Framework Integration
-                </CardTitle>
-                <CardDescription>
-                    Sass works seamlessly with popular frameworks and build tools.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <h3 className="font-semibold mb-2 flex items-center gap-2">
-                            <div className="w-8 h-8 bg-black rounded flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">N</span>
-                            </div>
-                            Next.js
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-3">Built-in Sass support</p>
-                        <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded block">
-                            npm install sass
-                        </code>
-                        <p className="text-xs text-muted-foreground mt-2">
-                            Import .scss files directly in components
-                        </p>
-                    </div>
-                    
-                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <h3 className="font-semibold mb-2 flex items-center gap-2">
-                            <div className="w-8 h-8 bg-green-500 rounded flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">V</span>
-                            </div>
-                            Vue.js
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-3">Vue CLI & Vite support</p>
-                        <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded block">
-                            {'<style lang="scss">'}
-                        </code>
-                        <p className="text-xs text-muted-foreground mt-2">
-                            Use lang="scss" in components
-                        </p>
-                    </div>
-                    
-                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <h3 className="font-semibold mb-2 flex items-center gap-2">
-                            <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">R</span>
-                            </div>
-                            React
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-3">Create React App support</p>
-                        <code className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded block">
-                            import './App.scss'
-                        </code>
-                        <p className="text-xs text-muted-foreground mt-2">
-                            Import .scss files in components
-                        </p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* Command Line Usage */}
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Terminal className="w-6 h-6 text-primary" />
-                    Command Line Usage
-                </CardTitle>
-                <CardDescription>
-                    Master the Sass CLI for advanced compilation options.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <h3 className="font-semibold mb-2">Basic Compilation</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                <code className="text-green-400 text-sm">
-                                    sass input.scss output.css
-                                </code>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold mb-2">Watch Mode</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                <code className="text-green-400 text-sm">
-                                    sass --watch input.scss:output.css
-                                </code>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <h3 className="font-semibold mb-2">Compressed Output</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                <code className="text-green-400 text-sm">
-                                    sass --style=compressed input.scss output.css
-                                </code>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold mb-2">Source Maps</h3>
-                            <div className="bg-gray-100 dark:bg-gray-900 rounded p-3">
-                                <code className="text-green-400 text-sm">
-                                    sass --source-map input.scss output.css
-                                </code>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200">
-                        <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Pro Tip</h4>
-                        <p className="text-sm text-blue-600 dark:text-blue-400">
-                            Use <code>--watch</code> during development to automatically recompile when files change.
-                            Use <code>--style=compressed</code> for production builds to minimize file size.
-                        </p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* Troubleshooting */}
-        <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-yellow-700 dark:text-yellow-500">
-                    <AlertTriangle className="w-6 h-6" />
-                    Common Issues & Solutions
-                </CardTitle>
-                <CardDescription>
-                    Quick fixes for the most common Sass installation problems.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    <div className="border-l-4 border-red-500 pl-4">
-                        <h4 className="font-semibold text-red-700 dark:text-red-400">Error: "sass command not found"</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
-                            The Sass package isn't installed or not globally accessible.
-                        </p>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded p-2">
-                            <code className="text-green-400 text-xs">npm install -g sass</code>
-                        </div>
-                    </div>
-                    
-                    <div className="border-l-4 border-orange-500 pl-4">
-                        <h4 className="font-semibold text-orange-700 dark:text-orange-400">Error: "Cannot resolve @import"</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
-                            Check file paths and ensure partial files start with underscore (_).
-                        </p>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded p-2">
-                            <code className="text-green-400 text-xs">@import 'variables'; // looks for _variables.scss</code>
-                        </div>
-                    </div>
-                    
-                    <div className="border-l-4 border-blue-500 pl-4">
-                        <h4 className="font-semibold text-blue-700 dark:text-blue-400">Node Sass vs Dart Sass</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
-                            Always use Dart Sass (the 'sass' package). Node Sass is deprecated.
-                        </p>
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded p-2">
-                            <code className="text-green-400 text-xs">npm uninstall node-sass && npm install sass</code>
-                        </div>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* Best Practices */}
-        <Card className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-950/20 dark:to-teal-950/20 border-green-200">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                    <Lightbulb className="w-6 h-6" />
-                    Installation Best Practices
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-3 text-sm">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong>Use project-local installation</strong> - Install Sass as a dev dependency rather than globally for version consistency across team members.
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong>Organize with partials</strong> - Use underscore-prefixed files (_variables.scss) for modular organization.
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong>Set up npm scripts</strong> - Add build and watch commands to package.json for easy development workflow.
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong>Use source maps</strong> - Enable source maps for easier debugging in browser dev tools.
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong>Compress for production</strong> - Use compressed output style for production builds to reduce file size.
-                        </div>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
-        {/* Next Steps */}
-        <Card className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 border-indigo-200">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
-                    <ArrowRight className="w-6 h-6" />
-                    What's Next?
-                </CardTitle>
-                <CardDescription>
-                    Now that Sass is installed, here's what to learn next.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="grid md:grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <Code className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                        <h3 className="font-semibold mb-2">Variables</h3>
-                        <p className="text-sm text-muted-foreground">
-                            Learn to store and reuse values with Sass variables.
-                        </p>
-                    </div>
-                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <Folder className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                        <h3 className="font-semibold mb-2">Nesting</h3>
-                        <p className="text-sm text-muted-foreground">
-                            Write cleaner CSS with nested selectors and parent references.
-                        </p>
-                    </div>
-                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
-                        <Settings className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                        <h3 className="font-semibold mb-2">Mixins</h3>
-                        <p className="text-sm text-muted-foreground">
-                            Create reusable groups of CSS declarations with mixins.
-                        </p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-
+        <div class="command">$ node --version</div>
+        <div class="output">v18.17.0</div>
       </div>
-    );
+    </div>
+    
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-title">Install Sass Package</div>
+      <div class="step-desc">Install Sass globally or in your project.</div>
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+        </div>
+        <div class="command">$ npm install -g sass</div>
+        <div class="output">+ sass@1.69.5</div>
+        <div class="output">added 1 package</div>
+      </div>
+    </div>
+    
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-title">Compile Sass to CSS</div>
+      <div class="step-desc">Run the Sass compiler on your .scss files.</div>
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+        </div>
+        <div class="command">$ sass input.scss output.css</div>
+        <div class="output">Compiled input.scss to output.css.</div>
+      </div>
+    </div>
+    
+    <div class="info-box">
+      <div class="info-title">✨ Watch Mode</div>
+      <p class="info-text">
+        Use <strong>--watch</strong> flag to automatically recompile when files change:<br>
+        <code style="background: #0f172a; color: #10b981; padding: 5px 10px; border-radius: 4px; margin-top: 10px; display: inline-block;">
+          sass --watch input.scss:output.css
+        </code>
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const vscodeExample = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VS Code Setup</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, sans-serif;
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body { background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%); }
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container { background: #1e293b; color: #e2e8f0; }
+    }
+    
+    h1 {
+      color: #8b5cf6;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 { color: #c4b5fd; }
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+    
+    .extension-card {
+      background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+      padding: 25px;
+      border-radius: 12px;
+      border: 3px solid #8b5cf6;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .extension-card {
+        background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
+        border-color: #c4b5fd;
+      }
+    }
+    
+    .extension-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+    }
+    
+    .ext-icon {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .ext-name {
+      font-weight: 700;
+      color: #6b21a8;
+      font-size: 1.3rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .ext-name { color: #ddd6fe; }
+    }
+    
+    .ext-desc {
+      color: #7c3aed;
+      text-align: center;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .ext-desc { color: #ede9fe; }
+    }
+    
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .feature-list li {
+      padding: 8px 0;
+      color: #6b21a8;
+      font-size: 0.95rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .feature-list li { color: #ddd6fe; }
+    }
+    
+    .feature-list li:before {
+      content: "✓ ";
+      color: #10b981;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    
+    .install-btn {
+      background: #8b5cf6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+    
+    .install-btn:hover {
+      background: #7c3aed;
+    }
+    
+    .note {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      color: #78350f;
+      border-left: 4px solid #f59e0b;
+      margin-top: 30px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .note {
+        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+        color: #fef3c7;
+        border-left-color: #fbbf24;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚙️ VS Code Setup</h1>
+    <p class="subtitle">Essential extensions for Sass development</p>
+    
+    <div class="extension-card">
+      <div class="ext-icon">🎨</div>
+      <div class="ext-name">Live Sass Compiler</div>
+      <div class="ext-desc">Auto-compile Sass/SCSS to CSS with live browser reload</div>
+      <ul class="feature-list">
+        <li>Real-time compilation</li>
+        <li>Auto-prefixer support</li>
+        <li>Source maps generation</li>
+        <li>Custom output formats</li>
+      </ul>
+      <button class="install-btn">Install Extension</button>
+    </div>
+    
+    <div class="extension-card">
+      <div class="ext-icon">✨</div>
+      <div class="ext-name">Sass (.sass only)</div>
+      <div class="ext-desc">Indented Sass syntax highlighting</div>
+      <ul class="feature-list">
+        <li>Syntax highlighting for .sass files</li>
+        <li>IntelliSense support</li>
+        <li>Code snippets</li>
+      </ul>
+      <button class="install-btn">Install Extension</button>
+    </div>
+    
+    <div class="note">
+      💡 SCSS syntax highlighting is built into VS Code! You only need extensions for .sass files or compilation.
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const projectExample = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Setup</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, sans-serif;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body { background: linear-gradient(135deg, #065f46 0%, #064e3b 100%); }
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container { background: #1e293b; color: #e2e8f0; }
+    }
+    
+    h1 {
+      color: #10b981;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 { color: #6ee7b7; }
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+    
+    .structure {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      padding: 30px;
+      border-radius: 12px;
+      border: 3px solid #10b981;
+      margin-bottom: 30px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .structure {
+        background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+        border-color: #6ee7b7;
+      }
+    }
+    
+    .folder-tree {
+      background: #0f172a;
+      padding: 25px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    
+    .folder { color: #60a5fa; }
+    .file-sass { color: #ec4899; }
+    .file-css { color: #10b981; }
+    .file-json { color: #fbbf24; }
+    .indent { margin-left: 20px; }
+    
+    .config-section {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      padding: 25px;
+      border-radius: 12px;
+      border: 3px solid #3b82f6;
+      margin-bottom: 20px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .config-section {
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        border-color: #60a5fa;
+      }
+    }
+    
+    .config-title {
+      font-weight: 700;
+      color: #1e40af;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .config-title { color: #bfdbfe; }
+    }
+    
+    .code-block {
+      background: #0f172a;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+    
+    .json-key { color: #60a5fa; }
+    .json-value { color: #10b981; }
+    .json-string { color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📁 Project Structure</h1>
+    <p class="subtitle">Organize your Sass files professionally</p>
+    
+    <div class="structure">
+      <h3 style="color: #059669; margin-bottom: 20px; font-size: 1.3rem; text-align: center;">
+        Recommended Folder Structure
+      </h3>
+      <div class="folder-tree">
+<span class="folder">my-project/</span>
+<span class="indent"><span class="folder">├── scss/</span></span>
+<span class="indent"><span class="indent"><span class="folder">│   ├── abstracts/</span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   ├── _variables.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   ├── _mixins.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   └── _functions.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="folder">│   ├── base/</span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   ├── _reset.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   └── _typography.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="folder">│   ├── components/</span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   ├── _buttons.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   └── _cards.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="folder">│   ├── layout/</span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   ├── _header.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="indent"><span class="file-sass">│   │   └── _footer.scss</span></span></span></span>
+<span class="indent"><span class="indent"><span class="file-sass">│   └── main.scss</span></span></span>
+<span class="indent"><span class="folder">├── css/</span></span>
+<span class="indent"><span class="indent"><span class="file-css">│   └── main.css</span> (generated)</span></span>
+<span class="indent"><span class="file-json">└── package.json</span></span>
+      </div>
+    </div>
+    
+    <div class="config-section">
+      <div class="config-title">📋 package.json Scripts</div>
+      <div class="code-block">
+<span class="json-key">"scripts"</span>: {
+  <span class="json-key">"sass"</span>: <span class="json-string">"sass scss/main.scss css/main.css"</span>,
+  <span class="json-key">"sass:watch"</span>: <span class="json-string">"sass --watch scss:css"</span>,
+  <span class="json-key">"sass:build"</span>: <span class="json-string">"sass scss/main.scss css/main.css --style compressed"</span>
+}
+      </div>
+    </div>
+    
+    <div class="config-section">
+      <div class="config-title">🔧 main.scss (Entry Point)</div>
+      <div class="code-block">
+<span style="color: #64748b;">// Abstracts</span>
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'abstracts/variables'</span>;
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'abstracts/mixins'</span>;
+
+<span style="color: #64748b;">// Base</span>
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'base/reset'</span>;
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'base/typography'</span>;
+
+<span style="color: #64748b;">// Components</span>
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'components/buttons'</span>;
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'components/cards'</span>;
+
+<span style="color: #64748b;">// Layout</span>
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'layout/header'</span>;
+<span style="color: #c4b5fd;">@use</span> <span style="color: #10b981;">'layout/footer'</span>;
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Download}
+        category="CSS · Preprocessors"
+        title="Installation & Setup"
+        description="Get started with Sass: installation methods, VS Code setup, and project configuration"
+        colorTheme="blue"
+      />
+
+      {/* INTRODUCTION CARD */}
+      <Card>
+        <CardHeader className="relative overflow-hidden">
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
+            <div className="relative">
+              <Rocket className="w-8 h-8" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+            </div>
+            Getting Started with Sass
+          </CardTitle>
+          <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
+            🚀 Multiple ways to install and use Sass in your projects!
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="relative overflow-hidden">
+          <div className="grid lg:grid-cols-3 gap-6 p-2">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer group">
+                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+                  <Terminal className="w-5 h-5 animate-pulse" />
+                  📦 Installation Methods
+                </h4>
+                
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
+                    <Download className="w-6 h-6 text-blue-500 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">NPM (Node Package Manager)</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400">Most popular method for web projects</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3 p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg border border-cyan-200/50">
+                    <Settings className="w-6 h-6 text-cyan-500 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-cyan-700 dark:text-cyan-300 text-sm">VS Code Extension</div>
+                      <div className="text-xs text-cyan-600 dark:text-cyan-400">Live compilation with one click</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200/50">
+                    <Code className="w-6 h-6 text-indigo-500 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-indigo-700 dark:text-indigo-300 text-sm">Standalone</div>
+                      <div className="text-xs text-indigo-600 dark:text-indigo-400">Direct download from sass-lang.com</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* System Requirements */}
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
+                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5" />
+                  ✅ What You Need
+                </h4>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
+                    <div className="font-semibold text-green-700 dark:text-green-300 text-sm mb-1">For NPM Method</div>
+                    <div className="text-xs text-green-600 dark:text-green-400">
+                      • Node.js (v14+)<br />
+                      • NPM or Yarn<br />
+                      • Terminal access
+                    </div>
+                  </div>
+                  
+                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
+                    <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm mb-1">For VS Code Method</div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400">
+                      • VS Code editor<br />
+                      • Live Sass Compiler ext.<br />
+                      • No Node.js required!
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Side Card */}
+            <div className="space-y-4">
+              <div className="bg-gradient-to-br from-blue-100 via-cyan-100 to-blue-100 dark:from-blue-900/30 dark:via-cyan-900/30 dark:to-blue-900/30 p-6 rounded-xl border border-blue-200/50 shadow-lg">
+                <div className="text-center space-y-4">
+                  <div className="relative">
+                    <div className="text-4xl mb-2 animate-bounce">⚡</div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
+                  </div>
+                  <div className="font-bold text-lg text-blue-700 dark:text-blue-300">Quick Start</div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                      <CheckCircle className="w-4 h-4" />
+                      5 minutes setup
+                    </div>
+                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                      <CheckCircle className="w-4 h-4" />
+                      Free & Open Source
+                    </div>
+                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                      <CheckCircle className="w-4 h-4" />
+                      Cross-platform
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">💡</div>
+                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
+                  <div className="text-sm text-orange-600 dark:text-orange-400">
+                    Use NPM for professional projects, VS Code extension for quick prototyping!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* INSTALLATION EXAMPLES */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            Installation Guides
+          </CardTitle>
+          <CardDescription>
+            Step-by-step setup for different methods
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4 mb-6 flex-wrap">
+            <button
+              onClick={() => setSelectedMethod('npm')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                selectedMethod === 'npm'
+                  ? 'bg-blue-500 text-white shadow-lg'
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              NPM Method
+            </button>
+            <button
+              onClick={() => setSelectedMethod('vscode')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                selectedMethod === 'vscode'
+                  ? 'bg-purple-500 text-white shadow-lg'
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              VS Code Setup
+            </button>
+            <button
+              onClick={() => setSelectedMethod('project')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                selectedMethod === 'project'
+                  ? 'bg-green-500 text-white shadow-lg'
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              Project Structure
+            </button>
+          </div>
+
+          {selectedMethod === 'npm' && (
+            <FrontendCodePreview
+              html={npmExample}
+              title="NPM Installation Guide"
+              colorTheme="blue"
+              styleLanguage="scss"
+              onOpenPlayground={onOpenWebPlayground}
+            />
+          )}
+
+          {selectedMethod === 'vscode' && (
+            <FrontendCodePreview
+              html={vscodeExample}
+              title="VS Code Extensions"
+              colorTheme="purple"
+              styleLanguage="scss"
+              onOpenPlayground={onOpenWebPlayground}
+            />
+          )}
+
+          {selectedMethod === 'project' && (
+            <FrontendCodePreview
+              html={projectExample}
+              title="Professional Project Structure"
+              colorTheme="green"
+              styleLanguage="scss"
+              onOpenPlayground={onOpenWebPlayground}
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* COMMON COMMANDS */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Common Sass Commands</CardTitle>
+          <CardDescription>
+            Essential CLI commands you'll use frequently
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+              <code className="text-sm font-mono text-blue-600 dark:text-blue-400">sass input.scss output.css</code>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Compile a single Sass file to CSS</p>
+            </div>
+            
+            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+              <code className="text-sm font-mono text-green-600 dark:text-green-400">sass --watch input.scss:output.css</code>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Watch a file and recompile on changes</p>
+            </div>
+            
+            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+              <code className="text-sm font-mono text-purple-600 dark:text-purple-400">sass --watch scss:css</code>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Watch entire folders</p>
+            </div>
+            
+            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+              <code className="text-sm font-mono text-pink-600 dark:text-pink-400">sass input.scss output.css --style compressed</code>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Compile with minified output for production</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* BEST PRACTICES */}
+      <Alert>
+        <CheckCircle className="h-4 w-4" />
+        <AlertTitle>Setup Best Practices</AlertTitle>
+        <AlertDescription>
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>Use npm for projects:</strong> Better for team collaboration and version control</li>
+            <li><strong>Watch mode during development:</strong> Auto-compile changes with --watch flag</li>
+            <li><strong>Organize with partials:</strong> Split code into _partial.scss files</li>
+            <li><strong>Use main.scss as entry:</strong> Import all partials in one main file</li>
+            <li><strong>Add .gitignore:</strong> Ignore node_modules and compiled CSS files</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
+
+      {/* INFO */}
+      <Alert>
+        <Info className="h-4 w-4" />
+        <AlertTitle>Dart Sass vs Node Sass</AlertTitle>
+        <AlertDescription>
+          <strong>Always use Dart Sass (the package called "sass")!</strong> It's the primary implementation, 
+          actively maintained, and supports all modern Sass features. Node Sass is deprecated and no longer 
+          receives updates. When you install "sass" via npm, you're getting Dart Sass compiled to JavaScript.
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
 }

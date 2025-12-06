@@ -1,255 +1,80 @@
-'use client';
-import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-    Play, Zap, Target, Code, Settings, Timer, 
-    CheckCircle, AlertTriangle, TrendingUp, TrendingDown, 
-    Monitor, Smartphone, Tablet, Gauge, Activity,
-    FileText, Image, Layers, RefreshCw, Sun, Moon, 
-    Maximize, Move, RotateCcw, Grid, Compass, Navigation,
-    Cpu, HardDrive, Wifi, Clock, BarChart3, LineChart
-} from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { Gauge, Sparkles, CheckCircle, Code, Zap, Timer, Target, RefreshCw } from 'lucide-react';
 
 interface CssPerformanceProps {
-    onOpenWebPlayground: (html: string, css: string, js: string) => void;
+    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssPerformance({ onOpenWebPlayground }: CssPerformanceProps) {
-    const [selectedMetric, setSelectedMetric] = useState('render-time');
-    const [selectedOptimization, setSelectedOptimization] = useState('critical-css');
-
-    // Performance Metrics
-    const performanceMetrics = [
-        {
-            id: 'render-time',
-            name: 'Render Time',
-            icon: Timer,
-            description: 'Time to first paint and layout',
-            impact: 'High',
-            color: 'red',
-            good: '< 100ms',
-            bad: '> 300ms'
-        },
-        {
-            id: 'css-size',
-            name: 'CSS File Size',
-            icon: FileText,
-            description: 'Total CSS bundle size',
-            impact: 'Medium',
-            color: 'orange',
-            good: '< 50KB',
-            bad: '> 200KB'
-        },
-        {
-            id: 'selector-performance',
-            name: 'Selector Performance',
-            icon: Target,
-            description: 'CSS selector efficiency',
-            impact: 'Medium',
-            color: 'yellow',
-            good: 'Simple selectors',
-            bad: 'Complex nested'
-        },
-        {
-            id: 'reflow-repaint',
-            name: 'Reflow/Repaint',
-            icon: RefreshCw,
-            description: 'Layout recalculation frequency',
-            impact: 'High',
-            color: 'red',
-            good: 'Minimal',
-            bad: 'Frequent'
-        }
-    ];
-
-    // Optimization Techniques
-    const optimizationTechniques = [
-        {
-            id: 'critical-css',
-            name: 'Critical CSS',
-            icon: Zap,
-            description: 'Inline above-the-fold CSS',
-            difficulty: 'Medium',
-            impact: 'High',
-            category: 'Loading'
-        },
-        {
-            id: 'css-minification',
-            name: 'CSS Minification',
-            icon: Maximize,
-            description: 'Remove whitespace and comments',
-            difficulty: 'Easy',
-            impact: 'Medium',
-            category: 'Size'
-        },
-        {
-            id: 'unused-css',
-            name: 'Remove Unused CSS',
-            icon: Target,
-            description: 'Eliminate dead code',
-            difficulty: 'Medium',
-            impact: 'High',
-            category: 'Size'
-        },
-        {
-            id: 'css-sprites',
-            name: 'CSS Sprites',
-            icon: Image,
-            description: 'Combine images to reduce requests',
-            difficulty: 'Hard',
-            impact: 'Medium',
-            category: 'Images'
-        }
-    ];
-
+    
     return (
         <div className="space-y-8">
-            {/* Header */}
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    <Gauge className="w-10 h-10 text-primary" />
-                    <h1 className="text-4xl font-bold text-foreground">CSS Performance</h1>
-                </div>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Master CSS performance optimization techniques to create lightning-fast, efficient web experiences.
-                </p>
-            </div>
+            {/* PAGE HEADER */}
+            <PageHeader
+                icon={Gauge}
+                category="CSS · Performance"
+                title="CSS Performance"
+                description="Master CSS optimization techniques for lightning-fast rendering, efficient selectors, and smooth animations"
+                colorTheme="indigo"
+            />
 
-            {/* Interactive CSS Performance Playground */}
-            <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5"></div>
+            {/* INTRODUCTION - Animation Style */}
+            <Card>
                 <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
+                    <CardTitle className="flex items-center gap-3 text-2xl text-indigo-600 dark:text-indigo-400">
                         <div className="relative">
                             <Gauge className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></div>
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
                         </div>
-                        Interactive CSS Performance Playground
+                        What is CSS Performance?
                     </CardTitle>
-                    <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
-                        Master CSS performance optimization with interactive metrics, live comparisons, and practical techniques.
+                    <CardDescription className="text-lg text-indigo-600 dark:text-indigo-400">
+                        ⚡ Optimize your CSS for blazing-fast page loads, smooth animations, and efficient rendering across all devices!
                     </CardDescription>
-                    
-                    {/* Navigation Buttons */}
-                    <div className="flex flex-wrap gap-2 mt-6 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-blue-200/30">
-                        <Button 
-                            variant={selectedMetric === 'render-time' ? 'default' : 'outline'} 
-                            size="sm"
-                            onClick={() => setSelectedMetric('render-time')}
-                            className="flex items-center gap-2"
-                        >
-                            <Timer className="w-4 h-4" />
-                            Render Time
-                        </Button>
-                        <Button 
-                            variant={selectedMetric === 'css-size' ? 'default' : 'outline'} 
-                            size="sm"
-                            onClick={() => setSelectedMetric('css-size')}
-                            className="flex items-center gap-2"
-                        >
-                            <FileText className="w-4 h-4" />
-                            File Size
-                        </Button>
-                        <Button 
-                            variant={selectedMetric === 'selector-performance' ? 'default' : 'outline'} 
-                            size="sm"
-                            onClick={() => setSelectedMetric('selector-performance')}
-                            className="flex items-center gap-2"
-                        >
-                            <Target className="w-4 h-4" />
-                            Selectors
-                        </Button>
-                        <Button 
-                            variant={selectedOptimization === 'critical-css' ? 'default' : 'outline'} 
-                            size="sm"
-                            onClick={() => setSelectedOptimization('critical-css')}
-                            className="flex items-center gap-2"
-                        >
-                            <Zap className="w-4 h-4" />
-                            Critical CSS
-                        </Button>
-                        <Button 
-                            variant={selectedOptimization === 'minification' ? 'default' : 'outline'} 
-                            size="sm"
-                            onClick={() => setSelectedOptimization('minification')}
-                            className="flex items-center gap-2"
-                        >
-                            <Maximize className="w-4 h-4" />
-                            Minification
-                        </Button>
-                        <Button 
-                            variant={selectedOptimization === 'unused-css' ? 'default' : 'outline'} 
-                            size="sm"
-                            onClick={() => setSelectedOptimization('unused-css')}
-                            className="flex items-center gap-2"
-                        >
-                            <Target className="w-4 h-4" />
-                            Remove Unused
-                        </Button>
-                    </div>
                 </CardHeader>
-                <CardContent className="relative p-6 md:p-8">
-                    <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
-                        {/* Performance Impact Demo */}
+                <CardContent className="relative overflow-hidden">
+                    <div className="grid lg:grid-cols-3 gap-6 p-2">
+                        {/* Interactive Demo Section */}
                         <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                                    <Activity className="w-5 h-5" />
-                                    🎯 Performance Impact Visualization
+                            {/* Main Interactive Card */}
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-indigo-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-indigo-400 dark:hover:border-indigo-600 cursor-pointer group">
+                                <h4 className="font-bold mb-4 text-indigo-600 dark:text-indigo-400 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+                                    <Zap className="w-5 h-5 animate-pulse" />
+                                    ⚡ Speed Optimization
                                 </h4>
                                 
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">🐌 Slow CSS</div>
-                                        <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                                            <div className="space-y-2">
-                                                <div className="h-2 bg-red-500 rounded animate-pulse" style={{ width: '100%' }}></div>
-                                                <div className="h-2 bg-red-400 rounded animate-pulse" style={{ width: '80%', animationDelay: '0.5s' }}></div>
-                                                <div className="h-2 bg-red-300 rounded animate-pulse" style={{ width: '60%', animationDelay: '1s' }}></div>
-                                            </div>
-                                            <div className="text-xs text-red-600 mt-2">Loading: 3.2s</div>
-                                        </div>
-                                        <div className="text-xs text-red-500 mt-1">❌ Poor User Experience</div>
-                                    </div>
-                                    
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">⚡ Optimized CSS</div>
-                                        <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                                            <div className="space-y-2">
-                                                <div className="h-2 bg-green-500 rounded" style={{ width: '100%' }}></div>
-                                                <div className="h-2 bg-green-400 rounded" style={{ width: '100%' }}></div>
-                                                <div className="h-2 bg-green-300 rounded" style={{ width: '100%' }}></div>
-                                            </div>
-                                            <div className="text-xs text-green-600 mt-2">Loading: 0.8s</div>
-                                        </div>
-                                        <div className="text-xs text-green-500 mt-1">✅ Fast & Smooth</div>
-                                    </div>
-                                </div>
+                                <p className="text-sm text-muted-foreground mb-4">
+                                    <strong className="text-foreground">CSS Performance</strong> is critical for user experience. Slow CSS can block rendering, cause layout thrashing, and create janky animations. Optimized CSS loads 3-4x faster, renders smoothly at 60fps, and uses minimal CPU/memory resources.
+                                </p>
 
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
-                                        🎪 Performance Matters!
+                                {/* Performance Visual */}
+                                <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-4 rounded-lg border border-indigo-200/50">
+                                    <div className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 mb-2 flex items-center gap-2">
+                                        <Code className="w-4 h-4" />
+                                        🚀 Performance Impact
                                     </div>
-                                    <div className="text-xs text-green-600 dark:text-green-400">
-                                        A 1-second delay in page load time can reduce conversions by 7% and increase bounce rate by 32%.
+                                    <div className="text-xs text-indigo-600 dark:text-indigo-400">
+                                        Optimized CSS can improve page load time by 40-70% and boost FPS from 30 to 60!
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                                    <BarChart3 className="w-5 h-5" />
-                                    📊 Performance Factors
+                            {/* Capability Grid */}
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-indigo-200/50 shadow-lg transition-all duration-300">
+                                <h4 className="font-bold mb-4 text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+                                    <Sparkles className="w-5 h-5" />
+                                    🎨 Performance Factors
                                 </h4>
                                 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200/50">
-                                        <FileText className="w-6 h-6 text-red-500" />
+                                        <Timer className="w-6 h-6 text-red-500" />
                                         <div>
-                                            <div className="font-semibold text-red-700 dark:text-red-300 text-sm">File Size</div>
-                                            <div className="text-xs text-red-600 dark:text-red-400">Larger = Slower</div>
+                                            <div className="font-semibold text-red-700 dark:text-red-300 text-sm">Load Time</div>
+                                            <div className="text-xs text-red-600 dark:text-red-400">Minimize size</div>
                                         </div>
                                     </div>
                                     
@@ -257,7 +82,7 @@ export default function CssPerformance({ onOpenWebPlayground }: CssPerformancePr
                                         <Target className="w-6 h-6 text-orange-500" />
                                         <div>
                                             <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Selectors</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Complex = Slower</div>
+                                            <div className="text-xs text-orange-600 dark:text-orange-400">Keep simple</div>
                                         </div>
                                     </div>
                                     
@@ -265,502 +90,639 @@ export default function CssPerformance({ onOpenWebPlayground }: CssPerformancePr
                                         <RefreshCw className="w-6 h-6 text-yellow-500" />
                                         <div>
                                             <div className="font-semibold text-yellow-700 dark:text-yellow-300 text-sm">Reflows</div>
-                                            <div className="text-xs text-yellow-600 dark:text-yellow-400">Frequent = Janky</div>
+                                            <div className="text-xs text-yellow-600 dark:text-yellow-400">Avoid triggers</div>
                                         </div>
                                     </div>
                                     
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Layers className="w-6 h-6 text-blue-500" />
+                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
+                                        <Gauge className="w-6 h-6 text-green-500" />
                                         <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Rendering</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Efficient = Smooth</div>
+                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Rendering</div>
+                                            <div className="text-xs text-green-600 dark:text-green-400">GPU accelerate</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Performance Metrics */}
+                        {/* Side Comparison Card */}
                         <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-purple-100 via-blue-100 to-indigo-100 dark:from-purple-900/30 dark:via-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
+                            <div className="bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 dark:from-indigo-900/30 dark:via-purple-900/30 dark:to-blue-900/30 p-6 rounded-xl border border-indigo-200/50 shadow-lg">
                                 <div className="text-center space-y-4">
                                     <div className="relative">
-                                        <div className="text-4xl mb-2">⚡</div>
+                                        <div className="text-4xl mb-2 animate-bounce">⚡</div>
+                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
                                     </div>
-                                    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Key Metrics</div>
+                                    <div className="font-bold text-lg text-indigo-700 dark:text-indigo-300">Optimized CSS</div>
                                     <div className="space-y-2 text-sm">
                                         <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <Timer className="w-4 h-4" />
-                                            Load Time
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
-                                            <Cpu className="w-4 h-4" />
-                                            CPU Usage
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-orange-600 dark:text-orange-400">
-                                            <HardDrive className="w-4 h-4" />
-                                            Memory Usage
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="text-2xl font-bold text-gray-400">+</div>
-                                    
-                                    <div className="text-4xl mb-2">🎯</div>
-                                    <div className="font-bold text-lg text-gray-600 dark:text-gray-400">User Experience</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400">
-                                            <TrendingUp className="w-4 h-4" />
-                                            Smooth Animations
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-teal-600 dark:text-teal-400">
                                             <CheckCircle className="w-4 h-4" />
-                                            Fast Interactions
+                                            Fast load
+                                        </div>
+                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                                            <CheckCircle className="w-4 h-4" />
+                                            Smooth 60fps
+                                        </div>
+                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                                            <CheckCircle className="w-4 h-4" />
+                                            Low CPU usage
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            {/* Pro Tip Card */}
                             <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
                                 <div className="text-center">
-                                    <div className="text-2xl mb-2">🚀</div>
+                                    <div className="text-2xl mb-2">💡</div>
                                     <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
                                     <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Optimize for the critical rendering path - prioritize above-the-fold content!
+                                        Use Chrome DevTools Performance tab to profile CSS rendering!
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
 
-            {/* Performance Metrics Deep Dive */}
-            <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                        <BarChart3 className="w-5 h-5" />
-                        Performance Metrics & Measurement
-                    </CardTitle>
-                    <CardDescription>
-                        Understanding key performance indicators and how to measure CSS performance effectively.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="p-6 md:p-8">
-                    <div className="space-y-6">
-                        {/* Metrics Grid */}
-                        <div className="grid md:grid-cols-2 gap-6">
-                            {performanceMetrics.map((metric) => (
-                                <div 
-                                    key={metric.id}
-                                    className={`bg-white dark:bg-gray-800 p-6 rounded-lg border-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
-                                        selectedMetric === metric.id
-                                            ? 'border-green-500 shadow-lg'
-                                            : 'border-gray-200 hover:border-gray-300'
-                                    }`}
-                                    onClick={() => setSelectedMetric(metric.id)}
-                                >
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <metric.icon className={`w-8 h-8 text-${metric.color}-500`} />
-                                        <div>
-                                            <h3 className="font-bold text-lg">{metric.name}</h3>
-                                            <Badge variant="secondary" className={`bg-${metric.color}-100 text-${metric.color}-800`}>
-                                                {metric.impact} Impact
-                                            </Badge>
-                                        </div>
-                                    </div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                        {metric.description}
-                                    </p>
-                                    <div className="flex justify-between items-center text-xs">
-                                        <div className="text-green-600">Good: {metric.good}</div>
-                                        <div className="text-red-600">Bad: {metric.bad}</div>
-                                    </div>
-                                </div>
-                            ))}
+                    {/* Terminal Code Example */}
+                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
+                        <div className="flex items-center gap-2 mb-3">
+                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Performance Best Practice</span>
                         </div>
-
-                        {/* Live Performance Demo */}
-                        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border">
-                            <h4 className="font-semibold mb-4 text-green-700 dark:text-green-300">📊 Live Performance Comparison</h4>
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <div className="text-sm font-medium mb-2">Inefficient CSS</div>
-                                    <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-200">
-                                        <div className="space-y-2">
-                                            <div className="flex justify-between text-xs">
-                                                <span>Parsing</span>
-                                                <span className="text-red-600">120ms</span>
-                                            </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-2">
-                                                <div className="bg-red-500 h-2 rounded-full" style={{ width: '60%' }}></div>
-                                            </div>
-                                            <div className="flex justify-between text-xs">
-                                                <span>Rendering</span>
-                                                <span className="text-red-600">200ms</span>
-                                            </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-2">
-                                                <div className="bg-red-500 h-2 rounded-full" style={{ width: '80%' }}></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="text-sm font-medium mb-2">Optimized CSS</div>
-                                    <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded border border-green-200">
-                                        <div className="space-y-2">
-                                            <div className="flex justify-between text-xs">
-                                                <span>Parsing</span>
-                                                <span className="text-green-600">45ms</span>
-                                            </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-2">
-                                                <div className="bg-green-500 h-2 rounded-full" style={{ width: '20%' }}></div>
-                                            </div>
-                                            <div className="flex justify-between text-xs">
-                                                <span>Rendering</span>
-                                                <span className="text-green-600">80ms</span>
-                                            </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-2">
-                                                <div className="bg-green-500 h-2 rounded-full" style={{ width: '35%' }}></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="font-mono text-sm">
+                            <div className="text-gray-500">{'/* ⚡ Use GPU-accelerated properties */'}</div>
+                            <div className="text-gray-900 dark:text-white"><span className="text-blue-600 dark:text-blue-400">.animated</span> {'{'}</div>
+                            <div className="text-gray-900 dark:text-white">  <span className="text-green-600 dark:text-green-400">transform</span>: <span className="text-purple-600 dark:text-purple-400">translateX</span>(<span className="text-yellow-600 dark:text-yellow-400">100px</span>);</div>
+                            <div className="text-gray-900 dark:text-white">  <span className="text-green-600 dark:text-green-400">will-change</span>: <span className="text-yellow-600 dark:text-yellow-400">transform</span>;</div>
+                            <div className="text-gray-900 dark:text-white">{'}'}</div>
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Optimization Techniques */}
-            <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20">
+            {/* SELECTOR PERFORMANCE */}
+            <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Zap className="w-5 h-5" />
-                        CSS Optimization Techniques
+                    <CardTitle className="flex items-center gap-2">
+                        <Target className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        Efficient CSS Selectors
                     </CardTitle>
                     <CardDescription>
-                        Proven strategies to improve CSS performance and loading speed.
+                        Simple selectors render faster - avoid deep nesting and complex combinators
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="p-6 md:p-8">
-                    <div className="space-y-8">
-                        {/* Critical CSS Demo */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                                <Zap className="w-5 h-5" />
-                                ⚡ Critical CSS Implementation
-                            </h4>
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-3">
-                                        <div className="text-sm font-medium mb-2">Above-the-fold content loads first</div>
-                                        <div className="space-y-2">
-                                            <div className="h-4 bg-green-500 rounded" style={{ width: '100%' }}></div>
-                                            <div className="h-4 bg-green-400 rounded" style={{ width: '80%' }}></div>
-                                            <div className="h-2 bg-gray-300 rounded" style={{ width: '60%' }}></div>
-                                            <div className="h-2 bg-gray-300 rounded" style={{ width: '40%' }}></div>
-                                        </div>
-                                        <div className="text-xs text-green-600 mt-2">Critical CSS: Loaded instantly</div>
-                                    </div>
-                                </div>
-                                <div className="bg-gray-900 rounded-lg p-4">
-                                    <div className="font-mono text-sm text-white">
-                                        <div className="text-gray-400">/* Critical CSS - Inline */</div>
-                                        <div><span className="text-blue-400">body</span> {'{'}</div>
-                                        <div>  <span className="text-green-400">font-family</span>: <span className="text-yellow-400">Arial</span>;</div>
-                                        <div>  <span className="text-green-400">margin</span>: <span className="text-yellow-400">0</span>;</div>
-                                        <div>{'}'}</div>
-                                        <br />
-                                        <div><span className="text-blue-400">.header</span> {'{'}</div>
-                                        <div>  <span className="text-green-400">background</span>: <span className="text-yellow-400">#333</span>;</div>
-                                        <div>  <span className="text-green-400">height</span>: <span className="text-yellow-400">60px</span>;</div>
-                                        <div>{'}'}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <CardContent>
+                    <FrontendCodePreview
+                        title="Selector Performance Comparison"
+                        html={`<div class="container">
+  <div class="card">
+    <h2 class="card-title">Efficient Selectors</h2>
+    <p class="card-text">Use class selectors for best performance</p>
+  </div>
+  
+  <div class="slow-card">
+    <div>
+      <div>
+        <h2>Nested Selectors</h2>
+        <p>Avoid deep nesting - it's slower!</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-                        {/* CSS Minification Demo */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                                <Maximize className="w-5 h-5" />
-                                🗜️ CSS Minification
-                            </h4>
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <div className="text-sm font-medium mb-2 text-red-600">Before: 2.4KB</div>
-                                    <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-200 font-mono text-xs">
-                                        <div>/* Header styles */</div>
-                                        <div>.header {'{'}</div>
-                                        <div>  background-color: #333333;</div>
-                                        <div>  padding: 20px;</div>
-                                        <div>  margin: 0;</div>
-                                        <div>{'}'}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="text-sm font-medium mb-2 text-green-600">After: 1.1KB</div>
-                                    <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded border border-green-200 font-mono text-xs">
-                                        <div>.header{'{'}background:#333;padding:20px;margin:0{'}'}</div>
-                                    </div>
-                                    <div className="text-xs text-green-600 mt-2">54% size reduction!</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="comparison">
+  <div class="fast">✓ Fast: .card-title</div>
+  <div class="slow">✗ Slow: div > div > div > h2</div>
+</div>`}
+                        css={`/* ✓ EFFICIENT - Direct class selectors */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #6366f1;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.card-text {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ✗ INEFFICIENT - Deep nesting and complex combinators */
+.slow-card div > div > div > h2 {
+  color: #ef4444;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.slow-card div div div p {
+  color: #dc2626;
+  line-height: 1.6;
+}
+
+/* Styles */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  display: grid;
+  gap: 24px;
+}
+
+.slow-card {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.fast {
+  background: #d1fae5;
+  border: 2px solid #10b981;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #065f46;
+  text-align: center;
+}
+
+.slow {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #991b1b;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: #1f2937;
+  }
+  
+  .slow-card {
+    background: #7f1d1d;
+    border-color: #dc2626;
+  }
+}`}
+                        colorTheme="purple"
+                        onOpenPlayground={onOpenWebPlayground}
+                    />
                 </CardContent>
             </Card>
 
-            {/* Interactive Playground */}
-            <Card className="border-pink-200 bg-pink-50/50 dark:bg-pink-950/20">
+            {/* REFLOW/REPAINT */}
+            <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-pink-700 dark:text-pink-300">
-                        <Play className="w-5 h-5" />
-                        Interactive Playground
+                    <CardTitle className="flex items-center gap-2">
+                        <RefreshCw className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        Avoid Layout Thrashing
                     </CardTitle>
                     <CardDescription>
-                        Test and compare different CSS performance optimization techniques in a live, interactive environment.
+                        Minimize reflows and repaints by batching DOM changes
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="p-6 md:p-8">
-                    <Button 
-                        onClick={() => onOpenWebPlayground(
-                            `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Performance Testing</title>
-    <style id="critical-css">
-        /* Critical CSS - Above the fold */
-        body { font-family: Arial, sans-serif; margin: 0; }
-        .header { background: #333; color: white; padding: 1rem; }
-        .hero { background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 4rem 2rem; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="performance-tester">
-        <header class="header">
-            <h1>CSS Performance Tester</h1>
-            <nav>
-                <button onclick="testSelector('efficient')">Test Efficient Selectors</button>
-                <button onclick="testSelector('inefficient')">Test Inefficient Selectors</button>
-                <button onclick="testReflow()">Test Reflow Performance</button>
-                <button onclick="testMinification()">Test Minification</button>
-            </nav>
-        </header>
-        
-        <section class="hero">
-            <h2>Performance Testing Lab</h2>
-            <p>Click buttons above to test different performance scenarios</p>
-        </section>
-        
-        <main class="content">
-            <div class="test-results" id="results">
-                <h3>Test Results</h3>
-                <div id="performance-data"></div>
-            </div>
-            
-            <div class="demo-grid" id="demo-grid">
-                <!-- Dynamic content will be added here -->
-            </div>
-        </main>
+                <CardContent>
+                    <FrontendCodePreview
+                        title="Reflow Optimization"
+                        html={`<div class="demo">
+  <h2>Layout Thrashing Example</h2>
+  
+  <div class="comparison-grid">
+    <div class="method bad">
+      <h3>❌ Causes Multiple Reflows</h3>
+      <p>Reading and writing layout properties repeatedly forces the browser to recalculate layout multiple times.</p>
+      <div class="code-ref">
+        <code>Read → Write → Read → Write</code>
+      </div>
     </div>
     
-    <link rel="stylesheet" href="non-critical.css" media="print" onload="this.media='all'">
-</body>
-</html>`,
-                            `/* Critical CSS is inlined in HTML head */
-
-/* Non-critical CSS - Loaded asynchronously */
-.content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+    <div class="method good">
+      <h3>✓ Batches Changes</h3>
+      <p>Reading all values first, then writing all changes allows the browser to batch calculations efficiently.</p>
+      <div class="code-ref">
+        <code>Read → Read → Write → Write</code>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tip">
+    💡 Use <strong>transform</strong> and <strong>opacity</strong> for animations - they don't trigger layout!
+  </div>
+</div>`}
+                        css={`/* Efficient CSS - No layout triggers */
+.demo {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  font-family: system-ui, sans-serif;
 }
 
-.test-results {
-    background: white;
-    border-radius: 8px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+h2 {
+  color: #3b82f6;
+  font-size: 32px;
+  margin-bottom: 32px;
+  text-align: center;
 }
 
-.demo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
-.demo-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    transition: transform 0.3s ease;
+.method {
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px solid;
 }
 
-.demo-item:hover {
-    transform: translateY(-2px);
+.method.bad {
+  background: #fee2e2;
+  border-color: #ef4444;
 }
 
-/* Efficient selectors */
-.efficient-selector {
-    background: #d4edda;
-    border: 1px solid #c3e6cb;
+.method.bad h3 {
+  color: #dc2626;
+  font-size: 20px;
+  margin-bottom: 16px;
 }
 
-/* Inefficient selectors - avoid these patterns */
-div > div > div > div > .deeply-nested {
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
+.method.good {
+  background: #d1fae5;
+  border-color: #10b981;
 }
 
-.universal-selector * {
-    color: red; /* Avoid universal selector */
+.method.good h3 {
+  color: #059669;
+  font-size: 20px;
+  margin-bottom: 16px;
 }
 
-/* Performance-friendly animations */
-.gpu-accelerated {
-    will-change: transform;
-    transform: translateZ(0);
+.method p {
+  color: #4b5563;
+  line-height: 1.7;
+  margin-bottom: 16px;
 }
 
-.smooth-animation {
-    animation: slideIn 0.3s ease-out;
+.code-ref {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 14px;
 }
 
-@keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+.code-ref code {
+  color: #6366f1;
+  font-weight: 600;
 }
 
-/* Responsive design with performance in mind */
-@media (max-width: 768px) {
-    .demo-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .content {
-        padding: 1rem;
-    }
-}`,
-                            `// Performance testing utilities
-let performanceData = [];
-
-function measurePerformance(testName, testFunction) {
-    const startTime = performance.now();
-    testFunction();
-    const endTime = performance.now();
-    const duration = endTime - startTime;
-    
-    performanceData.push({
-        test: testName,
-        duration: duration.toFixed(2),
-        timestamp: new Date().toLocaleTimeString()
-    });
-    
-    updateResults();
-    return duration;
+.tip {
+  background: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1e40af;
 }
 
-function updateResults() {
-    const resultsDiv = document.getElementById('performance-data');
-    resultsDiv.innerHTML = performanceData.map(data => 
-        \`<div class="result-item">
-            <strong>\${data.test}</strong>: \${data.duration}ms 
-            <small>(\${data.timestamp})</small>
-        </div>\`
-    ).join('');
+/* ⚡ GPU-accelerated animations - performant! */
+.animated-element {
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-function testSelector(type) {
-    const demoGrid = document.getElementById('demo-grid');
-    
-    if (type === 'efficient') {
-        measurePerformance('Efficient Selectors', () => {
-            demoGrid.innerHTML = '';
-            for (let i = 0; i < 100; i++) {
-                const item = document.createElement('div');
-                item.className = 'demo-item efficient-selector';
-                item.textContent = \`Efficient Item \${i + 1}\`;
-                demoGrid.appendChild(item);
-            }
-        });
-    } else {
-        measurePerformance('Inefficient Selectors', () => {
-            demoGrid.innerHTML = '';
-            for (let i = 0; i < 100; i++) {
-                const wrapper = document.createElement('div');
-                const item = document.createElement('div');
-                item.className = 'demo-item deeply-nested';
-                item.textContent = \`Inefficient Item \${i + 1}\`;
-                wrapper.appendChild(item);
-                demoGrid.appendChild(wrapper);
-            }
-        });
-    }
+.animated-element:hover {
+  transform: translateY(-4px) scale(1.02);
+  opacity: 0.95;
 }
 
-function testReflow() {
-    measurePerformance('Reflow Test', () => {
-        const items = document.querySelectorAll('.demo-item');
-        items.forEach((item, index) => {
-            // Force reflow by reading layout properties
-            item.style.width = (200 + Math.random() * 50) + 'px';
-            const width = item.offsetWidth; // This forces reflow
-            item.style.height = (100 + Math.random() * 30) + 'px';
-        });
-    });
-}
-
-function testMinification() {
-    const originalCSS = \`
-    /* Unminified CSS */
-    .test-element {
-        background-color: #ffffff;
-        padding: 20px;
-        margin: 10px;
-        border-radius: 5px;
-    }
-    \`;
-    
-    const minifiedCSS = '.test-element{background:#fff;padding:20px;margin:10px;border-radius:5px}';
-    
-    const savings = ((originalCSS.length - minifiedCSS.length) / originalCSS.length * 100).toFixed(1);
-    
-    document.getElementById('performance-data').innerHTML += 
-        \`<div class="result-item">
-            <strong>Minification Test</strong>: \${savings}% size reduction
-            <br><small>Original: \${originalCSS.length} chars → Minified: \${minifiedCSS.length} chars</small>
-        </div>\`;
-}
-
-// Initialize performance monitoring
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('CSS Performance Testing Lab loaded!');
-    
-    // Measure initial page load performance
-    window.addEventListener('load', function() {
-        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        performanceData.push({
-            test: 'Page Load Time',
-            duration: loadTime,
-            timestamp: new Date().toLocaleTimeString()
-        });
-        updateResults();
-    });
-});`
-                        )}
-                        className="w-full"
-                    >
-                        <Play className="w-4 h-4 mr-2" />
-                        Open Performance Testing Lab
-                    </Button>
+@media (prefers-color-scheme: dark) {
+  .demo {
+    background: #111827;
+  }
+  
+  h2 {
+    color: #60a5fa;
+  }
+  
+  .method.bad {
+    background: #7f1d1d;
+    border-color: #dc2626;
+  }
+  
+  .method.good {
+    background: #064e3b;
+    border-color: #059669;
+  }
+  
+  .method p {
+    color: #d1d5db;
+  }
+  
+  .code-ref {
+    background: #1f2937;
+  }
+  
+  .tip {
+    background: #1e3a8a;
+    border-left-color: #60a5fa;
+    color: #dbeafe;
+  }
+}`}
+                        colorTheme="blue"
+                        onOpenPlayground={onOpenWebPlayground}
+                    />
                 </CardContent>
             </Card>
+
+            {/* GPU ACCELERATION */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Zap className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        GPU-Accelerated Animations
+                    </CardTitle>
+                    <CardDescription>
+                        Use transform and opacity for silky-smooth 60fps animations
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <FrontendCodePreview
+                        title="Performance-Friendly Animations"
+                        html={`<div class="animation-demo">
+  <h2>Animation Performance Comparison</h2>
+  
+  <div class="cards">
+    <div class="card cpu-animated">
+      <div class="badge bad">CPU</div>
+      <h3>❌ Janky Animation</h3>
+      <p>Using left/top/width triggers layout recalculation on every frame.</p>
+      <div class="fps">~30 FPS</div>
+    </div>
+    
+    <div class="card gpu-animated">
+      <div class="badge good">GPU</div>
+      <h3>✓ Smooth Animation</h3>
+      <p>Using transform is hardware-accelerated and runs on the GPU.</p>
+      <div class="fps">60 FPS</div>
+    </div>
+  </div>
+  
+  <div class="properties">
+    <div class="prop-group">
+      <h4>✓ Use These (GPU):</h4>
+      <ul>
+        <li>transform</li>
+        <li>opacity</li>
+        <li>filter</li>
+      </ul>
+    </div>
+    <div class="prop-group">
+      <h4>✗ Avoid These (CPU):</h4>
+      <ul>
+        <li>left, top, right, bottom</li>
+        <li>width, height</li>
+        <li>margin, padding</li>
+      </ul>
+    </div>
+  </div>
+</div>`}
+                        css={`.animation-demo {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  font-family: system-ui, sans-serif;
+}
+
+h2 {
+  color: #059669;
+  font-size: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.card {
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px solid;
+  position: relative;
+  min-height: 200px;
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge.bad {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.badge.good {
+  background: #d1fae5;
+  color: #059669;
+}
+
+/* ❌ CPU Animation - Triggers layout */
+.cpu-animated {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  animation: janky-move 2s ease-in-out infinite;
+}
+
+@keyframes janky-move {
+  0%, 100% { margin-left: 0; }
+  50% { margin-left: 20px; }
+}
+
+/* ✓ GPU Animation - Hardware accelerated */
+.gpu-animated {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  animation: smooth-move 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes smooth-move {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+}
+
+.card h3 {
+  font-size: 20px;
+  margin: 24px 0 12px 0;
+}
+
+.card p {
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.fps {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #10b981;
+}
+
+.cpu-animated .fps {
+  color: #ef4444;
+}
+
+.properties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.prop-group {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.prop-group h4 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.prop-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.prop-group li {
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-family: monospace;
+  color: #4b5563;
+}
+
+@media (prefers-color-scheme: dark) {
+  .animation-demo {
+    background: #111827;
+  }
+  
+  h2 {
+    color: #34d399;
+  }
+  
+  .cpu-animated {
+    background: #7f1d1d;
+    border-color: #dc2626;
+  }
+  
+  .gpu-animated {
+    background: #064e3b;
+    border-color: #059669;
+  }
+  
+  .card p {
+    color: #d1d5db;
+  }
+  
+  .prop-group {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .prop-group li {
+    background: #111827;
+    color: #9ca3af;
+  }
+}`}
+                        colorTheme="green"
+                        onOpenPlayground={onOpenWebPlayground}
+                    />
+                </CardContent>
+            </Card>
+
+            {/* BEST PRACTICES */}
+            <Card className="border-indigo-200 bg-indigo-50/50 dark:bg-indigo-950/20">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
+                        <Sparkles className="w-5 h-5" />
+                        CSS Performance Best Practices
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <div className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                            <strong className="text-indigo-900 dark:text-indigo-200">Keep selectors simple:</strong>
+                            <span className="text-indigo-700 dark:text-indigo-300"> Use single class selectors instead of deep nesting (max 3 levels).</span>
+                        </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                            <strong className="text-indigo-900 dark:text-indigo-200">Animate with GPU:</strong>
+                            <span className="text-indigo-700 dark:text-indigo-300"> Only animate <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 rounded text-xs">transform</code> and <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 rounded text-xs">opacity</code> for 60fps performance.</span>
+                        </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                            <strong className="text-indigo-900 dark:text-indigo-200">Minimize reflows:</strong>
+                            <span className="text-indigo-700 dark:text-indigo-300"> Batch DOM reads and writes, avoid layout thrashing in JavaScript.</span>
+                        </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                            <strong className="text-indigo-900 dark:text-indigo-200">Reduce file size:</strong>
+                            <span className="text-indigo-700 dark:text-indigo-300"> Minify CSS, remove unused styles, and split into critical/non-critical chunks.</span>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* BROWSER SUPPORT */}
+            <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <AlertDescription className="text-green-700 dark:text-green-300">
+                    <strong className="block mb-1">Universal Techniques</strong>
+                    All CSS performance optimizations work across modern browsers. Use Chrome DevTools Performance tab to measure and profile your CSS rendering.
+                </AlertDescription>
+            </Alert>
         </div>
     );
 }
