@@ -21,6 +21,7 @@ This document defines the design system, color palette, component patterns, and 
 12. [Key Design Principles](#key-design-principles)
 13. [Section Organization Pattern](#section-organization-pattern)
 14. [Array Iteration Methods - Complete Reference](#array-iteration-methods---complete-reference)
+15. [Switch Statements - Fall-Through Pattern](#switch-statements---fall-through-pattern)
 
 ---
 
@@ -562,27 +563,188 @@ console.log(example);`}
 - Lines starting with `>` → Blue medium (info)
 - Other lines → Medium weight (regular output)
 
+### CodeSnippet Component (Modern Interactive Pattern)
+
+**Use the CodeSnippet component** for clean, full-width code examples with optional execution:
+
+```tsx
+import { CodeSnippet } from '@/components/shared/code-snippet';
+
+<CodeSnippet
+  title="Example Title"
+  description="Brief description of what this code demonstrates"
+  code={`const data = [1, 2, 3, 4, 5];
+
+// Transform with map
+const doubled = data.map(x => x * 2);
+
+// Filter values
+const filtered = data.filter(x => x > 2);
+
+console.log(doubled);  // [2, 4, 6, 8, 10]
+console.log(filtered); // [3, 4, 5]`}
+  language="javascript"
+  colorTheme="blue"
+  icon={Grid}
+  embedPlayground={false}
+/>
+```
+
+**Features:**
+- 🎨 **Professional Font Stack**: Fira Code, JetBrains Mono, SF Mono, Cascadia Code
+- 📋 **Copy Button**: One-click code copying
+- 🎮 **Optional Embedded Playground**: Live code execution with console output
+- 🌓 **Dark Mode Support**: Fully adaptive theming
+- 📏 **Full Width Layout**: Code section takes full available width
+- 🔤 **Smaller Font**: `text-xs` for compact, professional display
+- ⚡ **Grid Responsive**: Use `grid-cols-1 3xl:grid-cols-2` for wrapping below 1800px
+
+**Props:**
+- `title`: Code example title (required)
+- `description`: Brief explanation (optional)
+- `code`: Code string (required)
+- `language`: 'javascript' | 'html' | 'css' | 'typescript' (default: 'javascript')
+- `colorTheme`: 'blue' | 'purple' | 'emerald' | 'amber' | 'indigo' (default: 'blue')
+- `icon`: Lucide icon component (optional)
+- `features`: Array of feature strings (optional - for documentation only)
+- `tips`: Array of tip strings (optional - for documentation only)
+- `embedPlayground`: boolean - embeds live playground (default: false)
+
+**Layout Best Practice:**
+```tsx
+// For multiple CodeSnippets side by side, use 3xl breakpoint:
+<div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+  <CodeSnippet {...props1} />
+  <CodeSnippet {...props2} />
+</div>
+```
+
+### Pattern: Explain → Show (Recommended)
+
+**Reference:** `javascript-array-methods.tsx`
+
+This modern pattern provides optimal learning: **first explain the concept inline, then show comprehensive code examples.**
+
+#### Structure:
+
+1. **Inline Explanation Section** - Individual cards or grids explaining each concept
+2. **Comprehensive CodeSnippet** - Shows all concepts combined with full examples
+
+#### Example Implementation:
+
+```tsx
+{/* Transform & Search */}
+<Card>
+  <CardHeader>
+    <CardTitle>Transform & Search</CardTitle>
+    <CardDescription>Use map/filter/reduce plus find/some/every</CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-6">
+    {/* Grid of individual explanations */}
+    <div className="grid md:grid-cols-3 gap-4">
+      <div className="p-4 rounded-xl border space-y-2">
+        <h4 className="font-semibold text-blue-700">map()</h4>
+        <p className="text-sm text-muted-foreground">
+          Transform each value and return a brand-new array.
+        </p>
+        <pre 
+          className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
+          style={{
+            fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
+          }}
+        >
+{`const names = ['ada','lin'];
+const upper = names.map((n) => n.toUpperCase());
+console.log(upper); // ["ADA","LIN"]`}
+        </pre>
+      </div>
+      
+      {/* Repeat for filter(), reduce(), find(), some(), every() */}
+    </div>
+    
+    {/* Comprehensive example showing ALL methods together */}
+    <div className="mt-8">
+      <CodeSnippet
+        title="Complete Transform & Search Example"
+        description="See all methods working together in a real scenario"
+        code={`const temps = [18, 22, 25, 28];
+
+// Transform with map
+const cToF = temps.map((c) => c * 1.8 + 32);
+console.log('Fahrenheit:', cToF);
+
+// Filter matching values  
+const warm = temps.filter((c) => c >= 22);
+console.log('Warm days:', warm);
+
+// Reduce to single value
+const average = temps.reduce((sum, c) => sum + c, 0) / temps.length;
+console.log('Average:', average);
+
+// Find, some, every examples...`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Grid}
+        features={[
+          "map() - Transform each element",
+          "filter() - Select matching items",
+          "reduce() - Combine to single value",
+          "find() - Get first match",
+          "some() - Check if any match",
+          "every() - Check if all match"
+        ]}
+        tips={[
+          "Chain methods for powerful pipelines",
+          "Each method serves a specific purpose",
+          "Combine them for complex data processing",
+          "All return new data except find/some/every"
+        ]}
+      />
+    </div>
+  </CardContent>
+</Card>
+```
+
+#### Why This Pattern Works:
+
+✅ **Progressive Learning**: Quick reference first, then deep dive  
+✅ **Visual Scanning**: Users can quickly scan individual concepts  
+✅ **Comprehensive Example**: Shows how everything works together  
+✅ **Professional Presentation**: Clean cards + modern CodeSnippet component  
+✅ **Best of Both Worlds**: Quick lookup + detailed exploration
+
+#### When to Use:
+
+- **Topics with multiple related methods** (array methods, string methods)
+- **Comparison scenarios** (different ways to do same thing)
+- **Progressive complexity** (simple → combined usage)
+- **Method collections** (map/filter/reduce, find/some/every)
+
 ### Inline Code Snippet (Simple Cases)
 
 **For simple inline code without tabs:**
 
 ```tsx
-<pre className="bg-slate-950 rounded-lg p-4 font-mono text-sm overflow-x-auto leading-loose">
-  <code className="text-slate-100">
+<pre 
+  className="bg-slate-950 rounded-lg p-4 text-sm overflow-x-auto leading-loose"
+  style={{
+    fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
+  }}
+>
 {`const variable = 'value';
 
 const result = someFunction(variable);
 
 console.log(result);
 // Output: expected result`}
-  </code>
 </pre>
 ```
 
 **Key Rules:**
 - Always use `<pre>` with template literals for code blocks
+- **Use professional font stack** inline style for consistency
 - Add blank lines between logical sections for vertical expansion
-- Use `text-sm` for better readability (not text-xs)
+- Use `text-sm` or `text-xs` depending on context
 - Use `leading-loose` for better line spacing
 - Include `overflow-x-auto` for horizontal scrolling
 - Show complete examples with variable declarations and outputs
@@ -940,10 +1102,16 @@ Always pair section titles with relevant icons:
 ```
 
 ### 7. Grid Layouts
-- Use `md:grid-cols-2` for two-column layouts
-- Use `md:grid-cols-3` for three-column layouts
-- Always responsive with `md:` prefix
+- Use `md:grid-cols-2` for two-column layouts on medium screens
+- Use `md:grid-cols-3` for three-column layouts on medium screens
+- **Use `grid-cols-1 3xl:grid-cols-2` for CodeSnippet grids** - wraps below 1800px
+- Always responsive with breakpoint prefixes (`md:`, `lg:`, `3xl:`)
 - Mobile shows single column by default
+
+**Custom Breakpoint:**
+- `3xl: 1800px` - Custom breakpoint added for optimal CodeSnippet layout
+- Below 1800px: CodeSnippets stack vertically (full width)
+- Above 1800px: CodeSnippets display side-by-side (50%-50%)
 
 ### 8. Interactive Elements
 - Include playground buttons for code examples
@@ -1396,7 +1564,7 @@ When creating a new component, ensure:
 - [ ] Icons paired with all section headers
 - [ ] **Code blocks use `<pre>` with template literals (not inline JSX spans)**
 - [ ] **Code snippets are vertically expanded with blank lines between statements**
-- [ ] Responsive grid layouts (`md:grid-cols-*`)
+- [ ] Responsive grid layouts (`md:grid-cols-*` for cards, `grid-cols-1 3xl:grid-cols-2` for CodeSnippets)
 - [ ] No tab components used
 - [ ] Comparison cards for Do/Don't patterns
 - [ ] Best practices section at the end
@@ -1404,6 +1572,169 @@ When creating a new component, ensure:
 - [ ] Playground buttons for code examples (if applicable)
 - [ ] Consistent spacing throughout
 - [ ] Professional typography hierarchy
+
+---
+
+## 15. Switch Statements - Fall-Through Pattern
+
+### Overview
+
+The Fall-Through Pattern in switch statements allows multiple cases to share the same code block by intentionally omitting `break` statements. This is particularly useful for grouping related values.
+
+### Fall-Through Pattern Structure
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle className="flex items-center gap-3 text-2xl">
+      <ToggleLeft className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+      Fall-Through Pattern
+    </CardTitle>
+    <CardDescription className="text-base">
+      Multiple cases can share the same code by intentionally omitting break statements
+    </CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-6">
+    <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+      {/* CodeSnippet examples */}
+    </div>
+  </CardContent>
+</Card>
+```
+
+### Example 1: Grouping Weekdays
+
+Use **CodeSnippet** component for the weekday grouping example:
+
+```tsx
+<CodeSnippet
+  title="Grouping Weekdays"
+  description="Stack cases for shared logic - weekdays vs weekend"
+  code={`// Stack cases for shared logic
+const day = 'Monday';
+
+switch (day) {
+  case 'Monday':
+  case 'Tuesday':
+  case 'Wednesday':
+  case 'Thursday':
+  case 'Friday':
+    console.log('Workday');
+    break;
+  case 'Saturday':
+  case 'Sunday':
+    console.log('Weekend!');
+    break;
+  default:
+    console.log('Invalid day');
+}
+
+console.log(day);`}
+  language="javascript"
+  colorTheme="purple"
+  icon={ToggleLeft}
+  features={[
+    "Multiple cases share same code",
+    "No break between stacked cases",
+    "Fall-through is intentional",
+    "Common for grouping similar values"
+  ]}
+  tips={[
+    "Add comments for intentional fall-through",
+    "Group related values together",
+    "Always break after shared code"
+  ]}
+/>
+```
+
+### Example 2: Seasons by Month
+
+Use **CodeSnippet** component for seasonal grouping:
+
+```tsx
+<CodeSnippet
+  title="Seasons by Month"
+  description="Group months by season with fall-through pattern"
+  code={`// Group months by season
+const month = 'March';
+
+switch (month) {
+  case 'December':
+  case 'January':
+  case 'February':
+    console.log('Winter');
+    break;
+  case 'March':
+  case 'April':
+  case 'May':
+    console.log('Spring');
+    break;
+  case 'June':
+  case 'July':
+  case 'August':
+    console.log('Summer');
+    break;
+  case 'September':
+  case 'October':
+  case 'November':
+    console.log('Fall');
+    break;
+  default:
+    console.log('Invalid month');
+}
+
+console.log(month);`}
+  language="javascript"
+  colorTheme="indigo"
+  icon={AlarmClock}
+  features={[
+    "Logical grouping of months",
+    "Four seasonal categories",
+    "Clear fall-through pattern",
+    "Comprehensive coverage"
+  ]}
+  tips={[
+    "Group by logical categories",
+    "Use meaningful groupings",
+    "Cover all cases with default"
+  ]}
+/>
+```
+
+### Key Guidelines
+
+**Fall-Through Pattern Best Practices:**
+- ✅ **Always add comments** when using intentional fall-through
+- ✅ **Group related values** logically (weekdays, seasons, categories)
+- ✅ **Use `break`** after the shared code block
+- ✅ **Include `default` case** for error handling
+
+**Warning Alert:**
+```tsx
+<Alert className="bg-amber-50/60 dark:bg-amber-950/10 border-amber-200/50 dark:border-amber-800/30">
+  <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+  <AlertTitle>Fall-Through is Intentional</AlertTitle>
+  <AlertDescription>
+    When stacking cases, you're deliberately letting execution "fall through" to the next case's code. Always add a comment if this is intentional!
+  </AlertDescription>
+</Alert>
+```
+
+### Layout Requirements
+
+**Grid Layout:**
+- Use `grid-cols-1 3xl:grid-cols-2` for responsive layout
+- Wraps to single column below 1800px
+- Side-by-side display above 1800px
+
+**Color Themes:**
+- Weekdays example: `purple`
+- Seasons example: `indigo`
+
+**Icons:**
+- Fall-Through Pattern section: `ToggleLeft`
+- Weekdays example: `ToggleLeft`
+- Seasons example: `AlarmClock`
 
 ---
 
@@ -1428,8 +1759,9 @@ When generating components based on this design system:
 15. **Real-world focus** - Include practical examples students will actually use
 16. **Progressive learning** - Build from simple to complex, beginner to advanced
 17. **Array Iteration Methods** - When documenting array methods, organize by category (Transform, Aggregate, Search, Boolean, Iterator). Use color-coded badges, show all 15+ methods, include SnippetOutput for each example. See Section 14 for complete reference.
+18. **Use 3xl breakpoint for CodeSnippets** - Always use `grid-cols-1 3xl:grid-cols-2` for CodeSnippet grids. This ensures full-width display below 1800px and side-by-side layout above 1800px.
 
 ---
 
-*Last Updated: November 2025 - Added Array Iteration Methods Complete Reference (Section 14)*
+*Last Updated: December 2025 - Added Switch Statements Fall-Through Pattern (Section 15)*
 *CODER POD Educational Platform*

@@ -32,6 +32,7 @@ import { AIProvider } from '@/types/ai-providers';
 import { conductInterview } from '@/ai/flows/interview-flow';
 import { AIAnswerDisplay } from './ai-answer-display';
 import { useWebPlayground } from './playground/web-playground-context';
+import { ModuleCompletionCelebration } from './modals/module-completion-celebration';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -67,6 +68,7 @@ export function GenericContentDisplay({
   const [showAiKeyModal, setShowAiKeyModal] = React.useState(false);
   const [showVideoNotes, setShowVideoNotes] = React.useState(false);
   const [videoNotesCount, setVideoNotesCount] = React.useState(0);
+  const [completedModule, setCompletedModule] = React.useState<string | null>(null);
 
   // Load video notes count for this language
   const loadVideoNotesCount = React.useCallback(() => {
@@ -135,7 +137,22 @@ export function GenericContentDisplay({
     }
 
     handleToggleComplete(topic.slug);
-  }, [handleToggleComplete, isUserAuthenticated, toast, topic.slug]);
+
+    // Check if this completion completes a module (category)
+    if (topic.category && !isTopicComplete) {
+      // Get all topics in the same category
+      const categoryTopics = language.topics.filter(t => t.category === topic.category);
+      
+      // Check if all topics in this category will be completed after this one
+      const allTopicsCompleted = categoryTopics.every(t => 
+        completedTopics.has(t.slug) || t.slug === topic.slug
+      );
+
+      if (allTopicsCompleted) {
+        setCompletedModule(topic.category);
+      }
+    }
+  }, [handleToggleComplete, isUserAuthenticated, toast, topic.slug, topic.category, isTopicComplete, language.topics, completedTopics]);
 
   // Check if AI key is available
   React.useEffect(() => {
@@ -644,6 +661,13 @@ Keep it simple and easy to understand.`;
           });
           return true;
         }}
+      />
+
+      <ModuleCompletionCelebration
+        isOpen={!!completedModule}
+        moduleName={completedModule || ''}
+        languageSlug={language.slug}
+        onClose={() => setCompletedModule(null)}
       />
       
       {/* Keyframe animation for badge pulse */}

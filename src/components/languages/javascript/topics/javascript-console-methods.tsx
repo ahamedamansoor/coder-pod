@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Terminal,
   Bug,
@@ -21,9 +21,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-interface JavaScriptConsoleMethodsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptConsoleMethodsProps {}
 
 const consoleHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -82,42 +80,62 @@ const consoleHtml = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const consoleJs = `console.clear();
+const consoleJs = `// Console Methods Demo
+console.log('%c=== Console Methods Demo ===', 'color:#2563eb;font-weight:700;font-size:16px;');
 
-console.log('%cWelcome to console methods!', 'color:#2563eb;font-weight:700;font-size:14px;');
+// 1. console.log() - General purpose logging
+console.log('✅ console.log() - Most common method');
+console.log('Data:', { user: 'Alice', age: 25 });
 
-console.log('Plain log:', { user: 'Ada', plan: 'pro' });
-console.info('Info: API call started...');
-console.warn('Warn: Using fallback cache');
-console.error('Error: Something went wrong');
+console.log(''); // Empty line
 
+// 2. console.table() - Display arrays/objects as table
+console.log('📊 console.table() - Tabular data:');
 const users = [
   { name: 'Ada', role: 'admin', active: true },
   { name: 'Grace', role: 'editor', active: false },
-  { name: 'Lin', role: 'viewer', active: true },
+  { name: 'Lin', role: 'viewer', active: true }
 ];
 console.table(users);
 
-console.group('Grouped steps');
-console.log('Step 1: start');
-console.log('Step 2: process');
-console.log('Step 3: finish');
-console.groupEnd();
+console.log(''); // Empty line
 
-console.time('timer-demo');
-for (let i = 0; i < 500000; i++) {}
-console.timeEnd('timer-demo');
+// 3. console.group() - Organize related logs
+console.log('📁 Grouped logs:');
+if (console.group) {
+  console.group('User Actions');
+  console.log('Step 1: Login');
+  console.log('Step 2: Load dashboard');
+  console.log('Step 3: Fetch data');
+  console.groupEnd();
+}
 
-console.log('%cStyled%c message with two parts', 'color:#16a34a;font-weight:700;', 'color:#0f172a;');
+console.log(''); // Empty line
 
-document.getElementById('preview').innerHTML = [
-  'Opened console and printed logs.',
-  'Grouped steps and timed a loop.',
-  'Displayed data as a table.',
-  'Styled messages with %c tokens.'
-].map(text => '<div style="padding:10px 12px;margin:6px 0;border-radius:10px;background:#f8fafc;border:1px dashed #e2e8f0;">'+text+'</div>').join('');`;
+// 4. console.time() - Measure performance
+console.log('⏱️ Performance timing:');
+if (console.time) {
+  console.time('Loop');
+  let sum = 0;
+  for (let i = 0; i < 100000; i++) {
+    sum += i;
+  }
+  console.timeEnd('Loop');
+  console.log('Sum:', sum);
+}
 
-export default function JavaScriptConsoleMethods({ onOpenWebPlayground }: JavaScriptConsoleMethodsProps) {
+console.log(''); // Empty line
+
+// 5. Styled messages with %c
+console.log(
+  '%cSuccess!%c Operation completed', 
+  'color:#16a34a;font-weight:700;font-size:14px;background:#dcfce7;padding:4px 8px;border-radius:4px;', 
+  'color:#64748b;margin-left:8px;'
+);
+
+console.log('%c✅ All console methods demonstrated!', 'color:#10b981;font-weight:600;');`;
+
+export default function JavaScriptConsoleMethods({}: JavaScriptConsoleMethodsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -294,6 +312,41 @@ export default function JavaScriptConsoleMethods({ onOpenWebPlayground }: JavaSc
         </CardContent>
       </Card>
 
+      {/* Console Methods Example */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Terminal className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+            Console Methods in Action
+          </CardTitle>
+          <CardDescription className="text-base">
+            See all console methods demonstrated in one example
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <CodeSnippet
+            title="Complete Console Methods Demo"
+            description="Explore log, warn, error, table, group, time, and styled console messages"
+            code={consoleJs}
+            language="javascript"
+            colorTheme="purple"
+            icon={Terminal}
+            features={[
+              "console.log/warn/error for messages",
+              "console.table for structured data",
+              "console.group for organization",
+              "console.time for performance",
+              "Styled messages with %c"
+            ]}
+            tips={[
+              "Open browser console (F12) to see output",
+              "Use appropriate methods for different message types",
+              "Group related logs for better organization"
+            ]}
+          />
+        </CardContent>
+      </Card>
+
       {/* Best practices */}
       <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
         <CardHeader>
@@ -330,27 +383,6 @@ export default function JavaScriptConsoleMethods({ onOpenWebPlayground }: JavaSc
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try Console Methods"
-          description="Experiment with log, warn, error, table, group, time, and styled console messages"
-          features={[
-            'console.log/warn/error',
-            'console.table',
-            'console.group',
-            'Styled Messages'
-          ]}
-          buttonText="Open Console Methods Demo"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: consoleHtml,
-            css: '',
-            js: consoleJs
-          }}
-          colorTheme="purple"
-        />
-      )}
     </div>
   );
 }

@@ -5,8 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Code2,
   FileCode,
@@ -23,9 +22,7 @@ import {
   Settings,
 } from 'lucide-react';
 
-interface JavaScriptInHtmlProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptInHtmlProps {}
 
 const inlineExample = `<!DOCTYPE html>
 <html lang="en">
@@ -80,7 +77,7 @@ button.addEventListener('click', () => {
   title.style.color = 'green';
 });`;
 
-export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHtmlProps) {
+export default function JavaScriptInHtml({}: JavaScriptInHtmlProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -223,40 +220,26 @@ export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHt
             </div>
           </div>
 
-          {/* Example */}
-          <CodeSnippetWithOutput
+          {/* Code Example */}
+          <CodeSnippet
             title="Inline JavaScript Example"
-            description="JavaScript code written directly in HTML event attributes like onclick"
+            description="JavaScript code written directly in HTML event attributes"
             code={inlineExample}
-            output={[
-              "// When button is clicked:",
-              "Alert appears: 'Hello!'"
-            ]}
             language="html"
             colorTheme="blue"
             icon={Code2}
+            features={[
+              "onclick attribute executes JavaScript",
+              "Simple one-line interactions",
+              "No separate script tags needed",
+              "Quick to implement for demos"
+            ]}
+            tips={[
+              "Only use for learning or quick tests",
+              "Not recommended for production code",
+              "Hard to maintain as code grows"
+            ]}
           />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Inline JavaScript"
-              description="Click the button to see inline JavaScript in action"
-              features={[
-                'onclick Events',
-                'Inline Code',
-                'Quick Testing',
-                'Simple Interactions'
-              ]}
-              buttonText="Open Inline Example"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: inlineExample,
-                css: '',
-                js: ''
-              }}
-              colorTheme="blue"
-            />
-          )}
 
           <Alert>
             <AlertTriangle className="h-4 w-4" />
@@ -339,41 +322,26 @@ export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHt
             </div>
           </div>
 
-          {/* Example */}
-          <CodeSnippetWithOutput
+          {/* Code Example */}
+          <CodeSnippet
             title="Internal JavaScript Example"
             description="JavaScript code organized in <script> tags within the HTML file"
             code={internalExample}
-            output={[
-              "// When button is clicked:",
-              "Alert appears: 'Hello from internal script!'",
-              "// Function defined in <head>, called from button"
-            ]}
             language="html"
             colorTheme="emerald"
             icon={FileCode}
+            features={[
+              "Script tags separate code from content",
+              "Functions can be defined and reused",
+              "Better organization than inline",
+              "Can place in <head> or before </body>"
+            ]}
+            tips={[
+              "Place scripts before </body> for best performance",
+              "All HTML loads before scripts execute",
+              "Good for single-page scripts"
+            ]}
           />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Internal Script"
-              description="See how <script> tags keep JavaScript organized in your HTML"
-              features={[
-                'Script Tags',
-                'Function Definitions',
-                'Organized Code',
-                'Better Structure'
-              ]}
-              buttonText="Open Internal Script"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: internalExample,
-                css: '',
-                js: ''
-              }}
-              colorTheme="emerald"
-            />
-          )}
         </CardContent>
       </Card>
 
@@ -425,41 +393,42 @@ export default function JavaScriptInHtml({ onOpenWebPlayground }: JavaScriptInHt
             </div>
           </div>
 
-          <CodeSnippetWithOutput
+          {/* Code Example */}
+          <CodeSnippet
             title="External JavaScript Example"
-            description="Separate .js files linked to HTML with <script src='app.js'> - the professional approach"
+            description="Separate .js files linked to HTML - the professional approach"
             code={externalJs}
-            output={[
-              "External JS loaded!",
-              "// When button is clicked:",
-              "Title changes to: 'Hello from external JS!'",
-              "Title color changes to green"
-            ]}
             language="javascript"
             colorTheme="purple"
             icon={Link}
+            embedPlayground={true}
+            playgroundConfig={{
+              html: `<div class="demo-container">
+  <header>
+    <h1 id="title">Welcome to External JS Demo</h1>
+    <p class="subtitle">Click the button to see JavaScript change the page</p>
+  </header>
+  
+  <main>
+    <button id="btn" class="action-btn">Click Me!</button>
+  </main>
+</div>`,
+              js: externalJs,
+              visiblePanels: ['preview', 'console']
+            }}
+            features={[
+              "Separate concerns: HTML and JavaScript",
+              "Reusable across multiple pages",
+              "Browser caching for better performance",
+              "Easier to maintain and debug"
+            ]}
+            tips={[
+              "Click the button to see the DOM update",
+              "Watch the console for the log message",
+              "Notice how text and color change dynamically",
+              "This is the professional way to write JavaScript"
+            ]}
           />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try External JavaScript"
-              description="Experience the professional way of organizing JavaScript in separate files"
-              features={[
-                'Separate Files',
-                'Reusability',
-                'Better Organization',
-                'Browser Caching'
-              ]}
-              buttonText="Open External JS Example"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: externalHtml,
-                css: '',
-                js: externalJs
-              }}
-              colorTheme="purple"
-            />
-          )}
 
           {/* Benefits */}
           <div className="grid md:grid-cols-3 gap-4">

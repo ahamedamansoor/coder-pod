@@ -2,141 +2,22 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Type,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Layers,
   Code,
   Copy,
 } from 'lucide-react';
 
-interface JavaScriptStringsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>JavaScript Strings Demo</title>
-  <style>
-    body { 
-      font-family: 'Inter', system-ui; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .panel { 
-      max-width: 800px; 
-      width: 100%;
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.95); 
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px;
-    }
-    p { 
-      color: #64748b; 
-      font-size: 16px;
-      margin-bottom: 24px;
-    }
-    pre { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      overflow-x: auto;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>🔤 JavaScript Strings</h1>
-    <p>Open the browser console to see all string examples!</p>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./strings-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Strings Demo ===\\n');
-
-// 1. String Creation
-console.log('1. STRING CREATION:');
-const single = 'Hello World';
-const double = "JavaScript";
-console.log('  Single quotes:', single);
-console.log('  Double quotes:', double);
-
-// 2. String Concatenation
-console.log('\\n2. CONCATENATION:');
-const firstName = 'John';
-const lastName = 'Doe';
-const fullName = firstName + ' ' + lastName;
-console.log('  First name:', firstName);
-console.log('  Last name:', lastName);
-console.log('  Full name:', fullName);
-
-// 3. Combining strings with numbers
-console.log('\\n3. WITH NUMBERS:');
-const age = 25;
-const message = 'I am ' + age + ' years old';
-console.log('  Message:', message);
-
-// 4. String Length
-console.log('\\n4. STRING LENGTH:');
-const text = 'JavaScript';
-console.log('  Text:', text);
-console.log('  Length:', text.length);
-
-// 5. Character Access
-console.log('\\n5. CHARACTER ACCESS:');
-console.log('  First character:', text[0]);
-console.log('  Last character:', text[text.length - 1]);
-console.log('  Character at index 4:', text[4]);
-
-// Summary
-const summary = [
-  '✓ Single and double quotes work the same',
-  '✓ Use + operator to combine strings',
-  '✓ String + number = string',
-  '✓ Use .length to get string size',
-  '✓ Use [index] to access characters'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n✅ All basic string operations demonstrated!');
-`;
-
-export default function JavaScriptStrings({ onOpenWebPlayground }: JavaScriptStringsProps) {
+export default function JavaScriptStrings() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -228,9 +109,11 @@ const name = 'Alice';
 const message = 'It\\'s a beautiful day';
 
 console.log(greeting);
-console.log(message);`}
+// Output: "Hello World"
+
+console.log(message);
+// Output: "It's a beautiful day"`}
               </pre>
-              <SnippetOutput lines={['greeting -> "Hello World"', 'message -> "It\'s a beautiful day"']} />
             </div>
 
             {/* Double Quotes */}
@@ -248,9 +131,11 @@ const city = "New York";
 const address = "123 Main St.";
 
 console.log(quote);
-console.log(city);`}
+// Output: "She said, 'Hello!'"
+
+console.log(city);
+// Output: "New York"`}
               </pre>
-              <SnippetOutput lines={['quote -> "She said, \'Hello!\'"', 'city -> "New York"']} />
             </div>
           </div>
 
@@ -263,6 +148,37 @@ console.log(city);`}
           </Alert>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Creating Strings"
+        description="All ways to create and use strings"
+        code={`// Single Quotes
+const greeting = 'Hello World';
+const name = 'Alice';
+const message = 'It\\'s a beautiful day';
+
+console.log(greeting);
+// Output: "Hello World"
+
+console.log(message);
+// Output: "It's a beautiful day"
+
+// Double Quotes
+const quote = "She said, 'Hello!'";
+const city = "New York";
+const address = "123 Main St.";
+
+console.log(quote);
+// Output: "She said, 'Hello!'"
+
+console.log(city);
+// Output: "New York"
+
+// Both work the same - pick one style and be consistent`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Code}
+      />
 
       {/* String Length & Character Access */}
       <Card>
@@ -295,9 +211,12 @@ console.log(spaces.length);
 // Useful for validation
 if (message.length > 0) {
   console.log('String is not empty');
-}`}
+}
+// message.length -> 11
+// empty.length -> 0
+// spaces.length -> 3
+// Output: "String is not empty"`}
               </pre>
-              <SnippetOutput lines={['message.length -> 11', 'empty.length -> 0', 'spaces.length -> 3', 'String is not empty']} />
             </div>
 
             {/* Character Access */}
@@ -318,13 +237,64 @@ console.log(word.charAt(0));
 console.log(word.charAt(word.length - 1));
 
 // Last character
-console.log(word[word.length - 1]);`}
+console.log(word[word.length - 1]);
+// word[0] -> "J"
+// word[4] -> "S"
+// charAt(0) -> "J"
+// Last char -> "t"`}
               </pre>
-              <SnippetOutput lines={['word[0] -> "J"', 'word[4] -> "S"', 'charAt(0) -> "J"', 'Last char -> "t"']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: String Length & Character Access"
+        description="Working with string length and accessing characters"
+        code={`// String Length
+const message = 'Hello World';
+const empty = '';
+const spaces = '   ';
+
+console.log(message.length);
+// Output: 11
+
+console.log(empty.length);
+// Output: 0
+
+console.log(spaces.length);
+// Output: 3
+
+// Useful for validation
+if (message.length > 0) {
+  console.log('String is not empty');
+}
+// Output: "String is not empty"
+
+// Character Access
+const word = 'JavaScript';
+
+// Bracket notation
+console.log(word[0]);
+// Output: "J"
+
+console.log(word[4]);
+// Output: "S"
+
+// charAt method
+console.log(word.charAt(0));
+// Output: "J"
+
+console.log(word.charAt(word.length - 1));
+// Output: "t"
+
+// Last character
+console.log(word[word.length - 1]);
+// Output: "t"`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Layers}
+      />
 
       {/* String Concatenation */}
       <Card>
@@ -354,12 +324,49 @@ console.log(fullName);
 // Combining with numbers (converts to string)
 const age = 25;
 const message = 'I am ' + age + ' years old';
-console.log(message);`}
+console.log(message);
+// fullName -> "John Doe"
+// message -> "I am 25 years old"`}
             </pre>
-            <SnippetOutput lines={['fullName -> "John Doe"', 'message -> "I am 25 years old"']} />
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: String Concatenation"
+        description="Combining strings with the + operator"
+        code={`const firstName = 'John';
+const lastName = 'Doe';
+
+// Combining strings
+const fullName = firstName + ' ' + lastName;
+console.log(fullName);
+// Output: "John Doe"
+
+// Combining with numbers (converts to string)
+const age = 25;
+const message = 'I am ' + age + ' years old';
+console.log(message);
+// Output: "I am 25 years old"
+
+// Multiple concatenations
+const greeting = 'Hello, ' + firstName + ' ' + lastName + '!';
+console.log(greeting);
+// Output: "Hello, John Doe!"
+
+// Building dynamic strings
+const item = 'book';
+const quantity = 3;
+const price = 15;
+const total = quantity * price;
+
+const orderSummary = 'Order: ' + quantity + ' ' + item + 's for $' + total;
+console.log(orderSummary);
+// Output: "Order: 3 books for $45"`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Copy}
+      />
 
       {/* Common Use Cases */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -390,9 +397,10 @@ console.log(welcome);
 
 // Build a score message
 const scoreMsg = 'Your score is: ' + score;
-console.log(scoreMsg);`}
+console.log(scoreMsg);
+// welcome -> "Hello, Alice!"
+// scoreMsg -> "Your score is: 95"`}
               </pre>
-              <SnippetOutput lines={['welcome -> "Hello, Alice!"', 'scoreMsg -> "Your score is: 95"']} />
             </div>
 
             {/* Example 2: Storing Text Data */}
@@ -411,9 +419,11 @@ const country = 'USA';
 // Use them together
 const fullName = firstName + ' ' + lastName;
 console.log(fullName);
-console.log(email);`}
+// Output: "John Doe"
+
+console.log(email);
+// Output: "john@example.com"`}
               </pre>
-              <SnippetOutput lines={['fullName -> "John Doe"', 'email -> "john@example.com"']} />
             </div>
 
             {/* Example 3: File Paths */}
@@ -434,9 +444,10 @@ console.log(filePath);
 const domain = 'example.com';
 const page = 'about';
 const url = 'https://' + domain + '/' + page;
-console.log(url);`}
+console.log(url);
+// filePath -> "documents/report.pdf"
+// url -> "https://example.com/about"`}
               </pre>
-              <SnippetOutput lines={['filePath -> "documents/report.pdf"', 'url -> "https://example.com/about"']} />
             </div>
 
             {/* Example 4: Display Text */}
@@ -456,13 +467,72 @@ console.log(priceLabel);
 
 // Create full label
 const label = productName + ': ' + priceLabel;
-console.log(label);`}
+console.log(label);
+// priceLabel -> "$999"
+// label -> "Laptop: $999"`}
               </pre>
-              <SnippetOutput lines={['priceLabel -> "$999"', 'label -> "Laptop: $999"']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Common Use Cases"
+        description="Practical patterns for working with strings"
+        code={`// Building Messages
+const username = 'Alice';
+const score = 95;
+
+const welcome = 'Hello, ' + username + '!';
+console.log(welcome);
+// Output: "Hello, Alice!"
+
+const scoreMsg = 'Your score is: ' + score;
+console.log(scoreMsg);
+// Output: "Your score is: 95"
+
+// Storing User Information
+const firstName = 'John';
+const lastName = 'Doe';
+const email = 'john@example.com';
+
+const fullName = firstName + ' ' + lastName;
+console.log(fullName);
+// Output: "John Doe"
+
+console.log(email);
+// Output: "john@example.com"
+
+// Working with Paths
+const folder = 'documents';
+const filename = 'report.pdf';
+
+const filePath = folder + '/' + filename;
+console.log(filePath);
+// Output: "documents/report.pdf"
+
+const domain = 'example.com';
+const page = 'about';
+const url = 'https://' + domain + '/' + page;
+console.log(url);
+// Output: "https://example.com/about"
+
+// Display Labels
+const productName = 'Laptop';
+const price = '999';
+const currency = '$';
+
+const priceLabel = currency + price;
+console.log(priceLabel);
+// Output: "$999"
+
+const label = productName + ': ' + priceLabel;
+console.log(label);
+// Output: "Laptop: $999"`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Sparkles}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -502,30 +572,6 @@ console.log(label);`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ strings, concatenation, and character access.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights string operations (creation, concatenation, length, character access, and immutability) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

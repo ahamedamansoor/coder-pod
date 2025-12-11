@@ -63,18 +63,24 @@ const preprocessCode = (code: string): string => {
   return processedCode;
 };
 
-const htmlTemplate = (code: string, captureConsole: boolean = true) => `
+const htmlTemplate = (code: string, customCss: string = '', captureConsole: boolean = true) => `
   <html>
     <head>
       <style>
+        /* Reset and base styles */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        /* Only apply default body styles if no custom CSS */
         body { 
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; 
-          margin: 0; 
-          padding: 20px; 
-          background-color: #f8f9fa; 
-          color: #333; 
           line-height: 1.6;
         }
+        
+        /* Default card styles - will be overridden by custom CSS if provided */
         .card { 
           background: white; 
           padding: 2rem; 
@@ -84,21 +90,8 @@ const htmlTemplate = (code: string, captureConsole: boolean = true) => `
           max-width: 600px;
           margin: 0 auto;
         }
-        h1 { color: #007bff; margin-top: 0; }
-        h2 { color: #333; }
-        button { 
-          background: #007bff; 
-          color: white; 
-          border: none; 
-          padding: 12px 20px; 
-          border-radius: 6px; 
-          cursor: pointer; 
-          font-size: 14px;
-          font-weight: 500;
-          transition: background-color 0.2s;
-        }
-        button:hover { background: #0056b3; }
-        button:disabled { background: #6c757d; cursor: not-allowed; }
+        
+        /* Error display */
         .error { 
           background: #f8d7da; 
           color: #721c24; 
@@ -107,17 +100,9 @@ const htmlTemplate = (code: string, captureConsole: boolean = true) => `
           margin: 1rem 0;
           border: 1px solid #f5c6cb;
         }
-        input, textarea { 
-          padding: 8px 12px; 
-          border: 1px solid #ddd; 
-          border-radius: 4px; 
-          font-size: 14px;
-        }
-        input:focus, textarea:focus { 
-          outline: none; 
-          border-color: #007bff; 
-          box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-        }
+        
+        /* Custom CSS - has higher priority */
+        ${customCss}
       </style>
       <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin><\/script>
       <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin><\/script>
@@ -207,8 +192,9 @@ type ConsoleMessage = {
   timestamp: number;
 };
 
-export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
+export function ReactPlayground({ defaultCode, defaultCss }: { defaultCode?: string; defaultCss?: string }) {
   const [code, setCode] = useState(defaultCode || initialCode);
+  const [customCss, setCustomCss] = useState(defaultCss || '');
   const [output, setOutput] = useState<{ code: string; err: string }>({ 
     code: preprocessCode(defaultCode || initialCode), 
     err: '' 
@@ -250,12 +236,26 @@ export function ReactPlayground({ defaultCode }: { defaultCode?: string }) {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // Initial run
+  // Update code when defaultCode changes
+  useEffect(() => {
+    if (defaultCode && defaultCode !== code) {
+      setCode(defaultCode);
+    }
+  }, [defaultCode]);
+
+  // Update CSS when defaultCss changes
+  useEffect(() => {
+    if (defaultCss && defaultCss !== customCss) {
+      setCustomCss(defaultCss);
+    }
+  }, [defaultCss]);
+
+  // Initial run and run when code updates
   useEffect(() => {
     handleRun();
-  }, []); // Only on mount
+  }, [code]); // Run whenever code changes
 
-  const iframeSrcDoc = htmlTemplate(output.code, true);
+  const iframeSrcDoc = htmlTemplate(output.code, customCss, true);
 
   return (
     <div className="h-full w-full flex flex-col">

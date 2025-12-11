@@ -2,159 +2,23 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Layers,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Code,
   Lock,
   Eye,
   AlertCircle,
 } from 'lucide-react';
 
-interface JavaScriptScopeProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Scope Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px; 
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      margin-top: 24px; 
-      font-family: monospace; 
-      font-size: 14px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Scope Demonstration</h1>
-    <p>Open the browser console (F12) to see scope examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./scope-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Scope Demo ===\\n');
-
-// 1. Global Scope
-console.log('1. GLOBAL SCOPE:');
-const globalVar = 'I am global';
-
-function showGlobal() {
-  console.log(globalVar);
-}
-
-showGlobal();
-console.log(globalVar);
-
-// 2. Function Scope
-console.log('\\n2. FUNCTION SCOPE:');
-function outerFunction() {
-  const functionVar = 'I am in function scope';
-  console.log(functionVar);
-  
-  if (true) {
-    console.log(functionVar);
-  }
-}
-
-outerFunction();
-
-// 3. Block Scope (let/const)
-console.log('\\n3. BLOCK SCOPE:');
-if (true) {
-  const blockVar = 'I am in block scope';
-  let anotherBlockVar = 'Me too';
-  console.log(blockVar);
-  console.log(anotherBlockVar);
-}
-
-// 4. Lexical Scope
-console.log('\\n4. LEXICAL SCOPE:');
-function outer() {
-  const outerVar = 'Outer';
-  
-  function inner() {
-    const innerVar = 'Inner';
-    console.log(outerVar + ' accessible from ' + innerVar);
-  }
-  
-  inner();
-}
-
-outer();
-
-// 5. Scope Chain
-console.log('\\n5. SCOPE CHAIN:');
-const level1 = 'Level 1';
-
-function firstLevel() {
-  const level2 = 'Level 2';
-  
-  function secondLevel() {
-    const level3 = 'Level 3';
-    console.log(level1, level2, level3);
-  }
-  
-  secondLevel();
-}
-
-firstLevel();
-
-console.log('\\nAll scope examples demonstrated!');
-`;
-
-export default function JavaScriptScope({ onOpenWebPlayground }: JavaScriptScopeProps) {
+export default function JavaScriptScope() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -260,9 +124,13 @@ function farewell() {
 
 greet();
 farewell();
-console.log(globalName);`}
+console.log(globalName);
+// Output:
+// greet() -> "Hello, Alice"
+// farewell() -> "Goodbye, Alice"
+// globalName -> "Alice"
+// Accessible everywhere!`}
               </pre>
-              <SnippetOutput lines={['greet() -> "Hello, Alice"', 'farewell() -> "Goodbye, Alice"', 'globalName -> "Alice"', 'Accessible everywhere!']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -282,9 +150,12 @@ let localCount = 20;
 console.log(window.localCount);
 
 // Use var sparingly!
-console.log(globalCount);`}
+console.log(globalCount);
+// Output:
+// window.globalCount -> 10
+// window.localCount -> undefined
+// let/const are safer`}
               </pre>
-              <SnippetOutput lines={['window.globalCount -> 10', 'window.localCount -> undefined', 'let/const are safer']} />
             </div>
           </div>
 
@@ -310,6 +181,45 @@ console.log(globalCount);`}
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Global Scope"
+        description="Variables accessible everywhere in your code"
+        code={`// Global variable
+const globalName = 'Alice';
+
+function greet() {
+  // Can access global variable
+  console.log('Hello, ' + globalName);
+}
+
+function farewell() {
+  // Also can access it
+  console.log('Goodbye, ' + globalName);
+}
+
+greet();
+// Output: "Hello, Alice"
+
+farewell();
+// Output: "Goodbye, Alice"
+
+console.log(globalName);
+// Output: "Alice"
+
+// Browser: var creates global property
+var globalCount = 10;
+console.log(window.globalCount);
+// Output: 10
+
+// let/const don't attach to window
+let localCount = 20;
+console.log(window.localCount);
+// Output: undefined`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Code}
+      />
 
       {/* Function Scope */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -344,9 +254,13 @@ calculateTotal();
 
 // Error! Can't access function variables
 console.log(price);
-console.log(total);`}
+console.log(total);
+// Output:
+// calculateTotal() -> 110
+// price -> ReferenceError
+// total -> ReferenceError
+// Variables are private to function`}
               </pre>
-              <SnippetOutput lines={['calculateTotal() -> 110', 'price -> ReferenceError', 'total -> ReferenceError', 'Variables are private to function']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -370,9 +284,12 @@ console.log(total);`}
   console.log(innerVar);
 }
 
-outer();`}
+outer();
+// Output:
+// inner() can see outerVar
+// outer() cannot see innerVar
+// innerVar -> ReferenceError`}
               </pre>
-              <SnippetOutput lines={['inner() can see outerVar', 'outer() cannot see innerVar', 'innerVar -> ReferenceError']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -391,9 +308,12 @@ greet('Alice', 25);
 
 // Error! Parameters not accessible outside
 console.log(name);
-console.log(age);`}
+console.log(age);
+// Output:
+// greet() -> "Hello Alice, age 25"
+// name -> ReferenceError
+// Parameters are local`}
               </pre>
-              <SnippetOutput lines={['greet() -> "Hello Alice, age 25"', 'name -> ReferenceError', 'Parameters are local']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -418,13 +338,68 @@ console.log(age);`}
   console.log(z);
 }
 
-test();`}
+test();
+// Output:
+// x -> 10 (reassigned)
+// y -> 2 (block-scoped)
+// z -> 3 (block-scoped)`}
               </pre>
-              <SnippetOutput lines={['x -> 10 (reassigned)', 'y -> 2 (block-scoped)', 'z -> 3 (block-scoped)']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Function Scope"
+        description="Variables private to functions and nested scopes"
+        code={`// Function Scope - Variables stay inside
+function calculateTotal() {
+  const price = 100;
+  const tax = 10;
+  const total = price + tax;
+  
+  console.log(total);
+  return total;
+}
+
+calculateTotal();
+// Output: 110
+
+// Can't access function variables outside
+// console.log(price); // ReferenceError
+
+// Nested Functions - Inner can access outer
+function outer() {
+  const outerVar = 'I am outer';
+  
+  function inner() {
+    const innerVar = 'I am inner';
+    console.log(outerVar); // Can access outer
+    console.log(innerVar);
+  }
+  
+  inner();
+  // console.log(innerVar); // ReferenceError
+}
+
+outer();
+// Output: "I am outer"
+// Output: "I am inner"
+
+// Parameters are Function-Scoped
+function greet(name, age) {
+  const message = 'Hello ' + name;
+  console.log(message + ', age ' + age);
+}
+
+greet('Alice', 25);
+// Output: "Hello Alice, age 25"
+
+// console.log(name); // ReferenceError`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Code}
+      />
 
       {/* Block Scope */}
       <Card>
@@ -461,9 +436,13 @@ if (age >= 18) {
 
 // Error! Can't access block variables
 console.log(message);
-console.log(status);`}
+console.log(status);
+// Output:
+// Inside if: "You can vote"
+// Inside if: "adult"
+// Outside if: ReferenceError
+// Variables trapped in block`}
               </pre>
-              <SnippetOutput lines={['Inside if: "You can vote"', 'Inside if: "adult"', 'Outside if: ReferenceError', 'Variables trapped in block']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -486,9 +465,13 @@ console.log(i);
 // Each iteration has its own i
 for (let i = 0; i < 2; i++) {
   setTimeout(() => console.log(i), 100);
-}`}
+}
+// Output:
+// Loop: 0, 1, 2
+// Outside: ReferenceError
+// setTimeout: 0, 1
+// let creates new i per iteration`}
               </pre>
-              <SnippetOutput lines={['Loop: 0, 1, 2', 'Outside: ReferenceError', 'setTimeout: 0, 1', 'let creates new i per iteration']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -508,9 +491,12 @@ for (let i = 0; i < 2; i++) {
 
 // Error! Variables are block-scoped
 console.log(blockVar);
-console.log(anotherVar);`}
+console.log(anotherVar);
+// Output:
+// Inside block: works fine
+// Outside block: ReferenceError
+// Useful for organizing code`}
               </pre>
-              <SnippetOutput lines={['Inside block: works fine', 'Outside block: ReferenceError', 'Useful for organizing code']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -530,9 +516,13 @@ console.log(x);
 
 // let/const stay in block
 console.log(y);
-console.log(z);`}
+console.log(z);
+// Output:
+// x -> 10 (leaked out)
+// y -> ReferenceError
+// z -> ReferenceError
+// Always use let/const!`}
               </pre>
-              <SnippetOutput lines={['x -> 10 (leaked out)', 'y -> ReferenceError', 'z -> ReferenceError', 'Always use let/const!']} />
             </div>
           </div>
 
@@ -545,6 +535,61 @@ console.log(z);`}
           </Alert>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Block Scope (ES6+)"
+        description="let/const stay within curly braces, var leaks out"
+        code={`// if Statement Block
+const age = 20;
+
+if (age >= 18) {
+  const message = 'You can vote';
+  let status = 'adult';
+  
+  console.log(message);
+  // Output: "You can vote"
+}
+
+// console.log(message); // ReferenceError
+// console.log(status);  // ReferenceError
+
+// for Loop Block - let creates new binding
+for (let i = 0; i < 3; i++) {
+  console.log(i);
+}
+// Output: 0, 1, 2
+
+// console.log(i); // ReferenceError
+
+// Each iteration has its own i
+for (let i = 0; i < 2; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Output: 0, 1 (correct!)
+
+// Standalone Block
+{
+  const blockVar = 'I am in a block';
+  console.log(blockVar);
+  // Output: "I am in a block"
+}
+
+// console.log(blockVar); // ReferenceError
+
+// var Ignores Block Scope
+if (true) {
+  var x = 10;     // Function-scoped (leaks!)
+  let y = 20;     // Block-scoped
+  const z = 30;   // Block-scoped
+}
+
+console.log(x); // Output: 10 (leaked out!)
+// console.log(y); // ReferenceError
+// console.log(z); // ReferenceError`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Lock}
+      />
 
       {/* Real-World Examples */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -586,9 +631,13 @@ function createModule() {
 const module = createModule();
 console.log(module.increment());
 console.log(module.getCount());
-console.log(module.privateCount);`}
+console.log(module.privateCount);
+// Output:
+// increment() -> 1
+// getCount() -> 1
+// privateCount -> undefined
+// Private variables protected!`}
               </pre>
-              <SnippetOutput lines={['increment() -> 1', 'getCount() -> 1', 'privateCount -> undefined', 'Private variables protected!']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -611,9 +660,12 @@ console.log(module.privateCount);`}
 
 // API_KEY is not accessible
 console.log(typeof API_KEY);
-console.log(api.makeRequest('/users'));`}
+console.log(api.makeRequest('/users'));
+// Output:
+// API_KEY -> undefined
+// makeRequest() -> works
+// Config is encapsulated`}
               </pre>
-              <SnippetOutput lines={['API_KEY -> undefined', 'makeRequest() -> works', 'Config is encapsulated']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
@@ -632,9 +684,13 @@ for (let i = 0; i < buttons.length; i++) {
 }
 
 // Each handler remembers its own i
-// Using var would cause all to log same value`}
+// Using var would cause all to log same value
+// Output:
+// Button 0 clicked
+// Button 1 clicked
+// Button 2 clicked
+// let creates new binding per iteration`}
               </pre>
-              <SnippetOutput lines={['Button 0 clicked', 'Button 1 clicked', 'Button 2 clicked', 'let creates new binding per iteration']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
@@ -654,13 +710,81 @@ for (let i = 0; i < buttons.length; i++) {
 
 // All intermediate variables are gone
 // Only final result is saved
-// Memory is freed automatically`}
+// Memory is freed automatically
+// Output:
+// rawData -> gone after block
+// processed -> gone after block
+// Memory efficient`}
               </pre>
-              <SnippetOutput lines={['rawData -> gone after block', 'processed -> gone after block', 'Memory efficient']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Scope Patterns"
+        description="Practical scope usage in production code"
+        code={`// Module Pattern - Private Variables
+function createModule() {
+  // Private variables (function scope)
+  let privateCount = 0;
+  const privateSecret = 'hidden';
+  
+  // Public API
+  return {
+    increment() {
+      privateCount++;
+      return privateCount;
+    },
+    getCount() {
+      return privateCount;
+    }
+  };
+}
+
+const module = createModule();
+console.log(module.increment()); // Output: 1
+console.log(module.getCount());  // Output: 1
+console.log(module.privateCount); // Output: undefined (private!)
+
+// Config with Block Scope
+{
+  const API_KEY = 'secret-key';
+  const BASE_URL = 'https://api.example.com';
+  
+  function makeRequest(endpoint) {
+    return BASE_URL + endpoint + '?key=' + API_KEY;
+  }
+  
+  window.api = { makeRequest };
+}
+
+console.log(typeof API_KEY); // Output: undefined (encapsulated!)
+console.log(api.makeRequest('/users')); // Works!
+
+// Event Handlers with let (proper closure)
+const buttons = document.querySelectorAll('button');
+
+for (let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', () => {
+    console.log('Button ' + i + ' clicked');
+    // Each handler remembers its own i!
+  });
+}
+
+// Temporary Scope for Cleanup
+{
+  const rawData = fetchData();
+  const processed = processData(rawData);
+  const validated = validateData(processed);
+  
+  saveToDatabase(validated);
+  // All intermediate variables freed after block
+}`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Sparkles}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -694,30 +818,6 @@ for (let i = 0; i < buttons.length; i++) {
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ scope types, variable access, and scope chain.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights scope behavior (global, function, block, and lexical scope) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

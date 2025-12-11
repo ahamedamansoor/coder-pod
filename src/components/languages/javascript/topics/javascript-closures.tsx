@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Package,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Lock,
   Eye,
   Layers,
@@ -20,145 +19,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 
-interface JavaScriptClosuresProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Closures Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px; 
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      margin-top: 24px; 
-      font-family: monospace; 
-      font-size: 14px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>JavaScript Closures</h1>
-    <p>Open the browser console (F12) to see closure examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./closures-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Closures Demo ===\\n');
-
-// 1. Basic Closure
-console.log('1. BASIC CLOSURE:');
-function createCounter() {
-  let count = 0;
-  
-  return function() {
-    count++;
-    return count;
-  };
-}
-
-const counter = createCounter();
-console.log(counter());
-console.log(counter());
-console.log(counter());
-
-// 2. Private Variables
-console.log('\\n2. PRIVATE VARIABLES:');
-function createBankAccount(initialBalance) {
-  let balance = initialBalance;
-  
-  return {
-    deposit(amount) {
-      balance += amount;
-      return balance;
-    },
-    withdraw(amount) {
-      if (amount <= balance) {
-        balance -= amount;
-        return balance;
-      }
-      return 'Insufficient funds';
-    },
-    getBalance() {
-      return balance;
-    }
-  };
-}
-
-const account = createBankAccount(100);
-console.log('Initial:', account.getBalance());
-console.log('Deposit 50:', account.deposit(50));
-console.log('Withdraw 30:', account.withdraw(30));
-console.log('Final:', account.getBalance());
-
-// 3. Function Factory
-console.log('\\n3. FUNCTION FACTORY:');
-function createMultiplier(multiplier) {
-  return function(number) {
-    return number * multiplier;
-  };
-}
-
-const double = createMultiplier(2);
-const triple = createMultiplier(3);
-
-console.log('double(5):', double(5));
-console.log('triple(5):', triple(5));
-
-// 4. Event Handler Closures
-console.log('\\n4. CLOSURE IN LOOPS:');
-for (let i = 1; i <= 3; i++) {
-  setTimeout(function() {
-    console.log('Timer ' + i + ' executed');
-  }, i * 1000);
-}
-
-console.log('\\nAll closure examples demonstrated!');
-console.log('Check timers above - they remember their i values!');
-`;
-
-export default function JavaScriptClosures({ onOpenWebPlayground }: JavaScriptClosuresProps) {
+export default function JavaScriptClosures() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -262,9 +123,12 @@ export default function JavaScriptClosures({ onOpenWebPlayground }: JavaScriptCl
   return inner;
 }
 
-const myFunction = outer();`}
+const myFunction = outer();
+// Output:
+// outer() creates message
+// Returns inner function
+// outer() finishes executing`}
               </pre>
-              <SnippetOutput lines={['outer() creates message', 'Returns inner function', 'outer() finishes executing']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -280,9 +144,12 @@ myFunction();
 
 // Output: "Hello"
 // How? CLOSURE!
-// myFunction "closed over" the message variable`}
+// myFunction "closed over" the message variable
+// Output:
+// myFunction() -> "Hello"
+// message still exists!
+// This is a closure in action`}
               </pre>
-              <SnippetOutput lines={['myFunction() -> "Hello"', 'message still exists!', 'This is a closure in action']} />
             </div>
           </div>
 
@@ -300,6 +167,53 @@ myFunction();
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: How Closures Work"
+        description="Understanding closure mechanics step by step"
+        code={`// Outer function creates variables and inner function
+function outer() {
+  // Step 1: Variable created
+  const message = 'Hello from closure!';
+  
+  // Step 2: Inner function defined
+  function inner() {
+    console.log(message); // References outer var
+  }
+  
+  // Step 3: Return inner function
+  return inner;
+}
+
+// Step 4: outer() executes and returns inner
+const myFunction = outer();
+// Output: outer() finishes executing
+
+// Step 5: Call myFunction
+myFunction();
+// Output: "Hello from closure!"
+// message still exists! This is a CLOSURE
+// myFunction "closed over" the message variable
+
+// Another example showing persistence
+function createCounter() {
+  let count = 0;
+  
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter = createCounter();
+console.log(counter()); // Output: 1
+console.log(counter()); // Output: 2
+console.log(counter()); // Output: 3
+// count is preserved between calls!`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Layers}
+      />
 
       {/* Basic Closure Examples */}
       <Card>
@@ -336,9 +250,14 @@ console.log(counter1());
 console.log(counter1());
 
 const counter2 = createCounter();
-console.log(counter2());`}
+console.log(counter2());
+// Output:
+// counter1: 1
+// counter1: 2
+// counter1: 3
+// counter2: 1 (separate count!)
+// Each closure has own state`}
               </pre>
-              <SnippetOutput lines={['counter1: 1', 'counter1: 2', 'counter1: 3', 'counter2: 1 (separate count!)', 'Each closure has own state']} />
             </div>
 
             {/* Greeting Example */}
@@ -360,9 +279,13 @@ const greetBob = createGreeter('Bob');
 
 console.log(greetAlice('Hello'));
 console.log(greetAlice('Hi'));
-console.log(greetBob('Hey'));`}
+console.log(greetBob('Hey'));
+// Output:
+// greetAlice("Hello") -> "Hello, Alice!"
+// greetAlice("Hi") -> "Hi, Alice!"
+// greetBob("Hey") -> "Hey, Bob!"
+// Each closure remembers its name`}
               </pre>
-              <SnippetOutput lines={['greetAlice("Hello") -> "Hello, Alice!"', 'greetAlice("Hi") -> "Hi, Alice!"', 'greetBob("Hey") -> "Hey, Bob!"', 'Each closure remembers its name']} />
             </div>
 
             {/* Multiplier Example */}
@@ -384,9 +307,13 @@ const quadruple = createMultiplier(4);
 
 console.log(double(5));
 console.log(triple(5));
-console.log(quadruple(5));`}
+console.log(quadruple(5));
+// Output:
+// double(5) -> 10
+// triple(5) -> 15
+// quadruple(5) -> 20
+// Each function "remembers" its multiplier`}
               </pre>
-              <SnippetOutput lines={['double(5) -> 10', 'triple(5) -> 15', 'quadruple(5) -> 20', 'Each function "remembers" its multiplier']} />
             </div>
 
             {/* Private Variable Example */}
@@ -412,13 +339,80 @@ console.log(quadruple(5));`}
 const vault = createSecret();
 console.log(vault.getSecret());
 console.log(vault.tellSecret('Alice'));
-console.log(vault.secret);`}
+console.log(vault.secret);
+// Output:
+// getSecret() -> "My secret value"
+// tellSecret("Alice") -> works
+// vault.secret -> undefined
+// secret is truly private!`}
               </pre>
-              <SnippetOutput lines={['getSecret() -> "My secret value"', 'tellSecret("Alice") -> works', 'vault.secret -> undefined', 'secret is truly private!']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Basic Closure Patterns"
+        description="Foundational closure examples for everyday use"
+        code={`// Counter - State Persistence
+function createCounter() {
+  let count = 0;
+  
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter1 = createCounter();
+console.log(counter1()); // Output: 1
+console.log(counter1()); // Output: 2
+
+const counter2 = createCounter();
+console.log(counter2()); // Output: 1 (separate count!)
+
+// Personalized Greeter - Remembering Context
+function createGreeter(name) {
+  return function(greeting) {
+    return greeting + ', ' + name + '!';
+  };
+}
+
+const greetAlice = createGreeter('Alice');
+console.log(greetAlice('Hello')); // Output: "Hello, Alice!"
+console.log(greetAlice('Hi'));    // Output: "Hi, Alice!"
+
+// Function Factory - Specialized Functions
+function createMultiplier(multiplier) {
+  return function(number) {
+    return number * multiplier;
+  };
+}
+
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+
+console.log(double(5));  // Output: 10
+console.log(triple(5));  // Output: 15
+
+// Private Variables - Data Encapsulation
+function createSecret() {
+  const secret = 'My secret value';
+  
+  return {
+    getSecret() {
+      return secret;
+    }
+  };
+}
+
+const vault = createSecret();
+console.log(vault.getSecret()); // Output: "My secret value"
+console.log(vault.secret);      // Output: undefined (private!)`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Code}
+      />
 
       {/* Real-World Examples */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -469,9 +463,13 @@ console.log(vault.secret);`}
 const account = createBankAccount(1000);
 console.log(account.deposit(500));
 console.log(account.withdraw(200));
-console.log(account.getBalance());`}
+console.log(account.getBalance());
+// Output:
+// deposit(500) -> 1500
+// withdraw(200) -> 1300
+// balance is private!
+// transactions is private!`}
               </pre>
-              <SnippetOutput lines={['deposit(500) -> 1500', 'withdraw(200) -> 1300', 'balance is private!', 'transactions is private!']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -501,9 +499,13 @@ const memoized = createMemoized(expensiveCalculation);
 
 console.log(memoized(5));
 console.log(memoized(5));
-console.log(memoized(10));`}
+console.log(memoized(10));
+// Output:
+// memoized(5) -> Computing... 25
+// memoized(5) -> From cache 25
+// memoized(10) -> Computing... 100
+// Closure remembers cache!`}
               </pre>
-              <SnippetOutput lines={['memoized(5) -> Computing... 25', 'memoized(5) -> From cache 25', 'memoized(10) -> Computing... 100', 'Closure remembers cache!']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
@@ -532,9 +534,13 @@ console.log(memoized(10));`}
   };
 }
 
-const counter = setupCounter('myButton');`}
+const counter = setupCounter('myButton');
+// Output:
+// Each click increments count
+// count is private to handler
+// reset() can access count
+// Perfect for UI components`}
               </pre>
-              <SnippetOutput lines={['Each click increments count', 'count is private to handler', 'reset() can access count', 'Perfect for UI components']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
@@ -568,13 +574,92 @@ const counter = setupCounter('myButton');`}
 }
 
 const api = createAPIClient('https://api.com', 'secret');
-api.get('/users');`}
+api.get('/users');
+// Output:
+// API key is private
+// Config is encapsulated
+// Clean API interface
+// Used in real apps!`}
               </pre>
-              <SnippetOutput lines={['API key is private', 'Config is encapsulated', 'Clean API interface', 'Used in real apps!']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Closure Patterns"
+        description="Production-ready closure patterns for practical use"
+        code={`// Bank Account - Data Privacy & Methods
+function createBankAccount(initialBalance) {
+  let balance = initialBalance;
+  const transactions = [];
+  
+  return {
+    deposit(amount) {
+      balance += amount;
+      transactions.push({ type: 'deposit', amount });
+      return balance;
+    },
+    withdraw(amount) {
+      if (amount <= balance) {
+        balance -= amount;
+        transactions.push({ type: 'withdraw', amount });
+        return balance;
+      }
+      return 'Insufficient funds';
+    },
+    getBalance() {
+      return balance;
+    }
+  };
+}
+
+const account = createBankAccount(1000);
+console.log(account.deposit(500));  // Output: 1500
+console.log(account.withdraw(200)); // Output: 1300
+console.log(account.getBalance());  // Output: 1300
+// balance and transactions are private!
+
+// Memoization - Caching Results
+function createMemoized(fn) {
+  const cache = {};
+  
+  return function(arg) {
+    if (cache[arg] !== undefined) {
+      return cache[arg];
+    }
+    
+    const result = fn(arg);
+    cache[arg] = result;
+    return result;
+  };
+}
+
+const square = n => n * n;
+const memoizedSquare = createMemoized(square);
+
+console.log(memoizedSquare(5));  // Computes: 25
+console.log(memoizedSquare(5));  // From cache: 25
+
+// API Client - Config Encapsulation
+function createAPIClient(baseURL, apiKey) {
+  const config = { baseURL, apiKey };
+  
+  return {
+    get(endpoint) {
+      return fetch(config.baseURL + endpoint, {
+        headers: { 'X-API-Key': config.apiKey }
+      });
+    }
+  };
+}
+
+const api = createAPIClient('https://api.com', 'secret123');
+// apiKey is private and secure!`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Sparkles}
+      />
 
       {/* Common Closure Patterns */}
       <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -615,9 +700,12 @@ api.get('/users');`}
 })();
 
 UserModule.addUser('Alice');
-console.log(UserModule.getAllUsers());`}
+console.log(UserModule.getAllUsers());
+// Output:
+// users array is private
+// Only public methods accessible
+// Clean module interface`}
               </pre>
-              <SnippetOutput lines={['users array is private', 'Only public methods accessible', 'Clean module interface']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -642,9 +730,12 @@ const curriedAdd = curry(add);
 
 console.log(curriedAdd(1)(2)(3));
 console.log(curriedAdd(1, 2)(3));
-console.log(curriedAdd(1)(2, 3));`}
+console.log(curriedAdd(1)(2, 3));
+// Output:
+// curriedAdd(1)(2)(3) -> 6
+// curriedAdd(1, 2)(3) -> 6
+// Flexible argument application`}
               </pre>
-              <SnippetOutput lines={['curriedAdd(1)(2)(3) -> 6', 'curriedAdd(1, 2)(3) -> 6', 'Flexible argument application']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -673,9 +764,12 @@ const initialize = once(() => {
 
 console.log(initialize());
 console.log(initialize());
-console.log(initialize());`}
+console.log(initialize());
+// Output:
+// First call: "Initializing..." + "Initialized"
+// Second call: "Initialized" (cached)
+// Third call: "Initialized" (cached)`}
               </pre>
-              <SnippetOutput lines={['First call: "Initializing..." + "Initialized"', 'Second call: "Initialized" (cached)', 'Third call: "Initialized" (cached)']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -702,13 +796,101 @@ const search = debounce((query) => {
 // Only last call executes after 500ms
 search('a');
 search('ab');
-search('abc');`}
+search('abc');
+// Output:
+// Only "Searching for: abc" logged
+// Previous calls cancelled
+// Perfect for search inputs!`}
               </pre>
-              <SnippetOutput lines={['Only "Searching for: abc" logged', 'Previous calls cancelled', 'Perfect for search inputs!']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Advanced Closure Patterns"
+        description="Powerful patterns for production code"
+        code={`// Module Pattern - Public/Private Interface
+const UserModule = (function() {
+  // Private
+  const users = [];
+  let nextId = 1;
+  
+  // Public API
+  return {
+    addUser(name) {
+      users.push({ id: nextId++, name });
+    },
+    getUser(id) {
+      return users.find(u => u.id === id);
+    },
+    getAllUsers() {
+      return [...users];
+    }
+  };
+})();
+
+UserModule.addUser('Alice');
+console.log(UserModule.getAllUsers());
+// Output: [{ id: 1, name: 'Alice' }]
+
+// Currying - Partial Application
+function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn(...args);
+    }
+    return function(...moreArgs) {
+      return curried(...args, ...moreArgs);
+    };
+  };
+}
+
+const add = (a, b, c) => a + b + c;
+const curriedAdd = curry(add);
+
+console.log(curriedAdd(1)(2)(3)); // Output: 6
+console.log(curriedAdd(1, 2)(3)); // Output: 6
+
+// Once Function - Single Execution
+function once(fn) {
+  let called = false;
+  let result;
+  
+  return function(...args) {
+    if (!called) {
+      called = true;
+      result = fn(...args);
+    }
+    return result;
+  };
+}
+
+const initialize = once(() => 'Initialized');
+console.log(initialize()); // Output: "Initialized"
+console.log(initialize()); // Output: "Initialized" (cached)
+
+// Debounce - Delayed Execution
+function debounce(fn, delay) {
+  let timeoutId;
+  
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const search = debounce((query) => {
+  console.log('Searching:', query);
+}, 500);
+
+search('a');   // Cancelled
+search('ab');  // Cancelled
+search('abc'); // Executes after 500ms`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Code}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -742,30 +924,6 @@ search('abc');`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ closures, private variables, and function factories.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights closure patterns (counters, data privacy, function factories, and memoization) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

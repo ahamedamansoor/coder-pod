@@ -11,6 +11,8 @@ import { AngularProvider } from './angular-context';
 import { AngularLayoutProvider, useAngularLayout } from './angular-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser, useAuth } from '@/firebase';
+import { AngularPlaygroundProvider } from '@/components/shared/playground/angular-playground-context';
+import { AngularPlaygroundModal } from '@/components/shared/playground/angular-playground-modal';
 
 function AngularTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -79,9 +81,12 @@ export default function AngularTopicLayout({
   return (
     <AngularProvider>
       <AngularLayoutProvider>
-        <AngularTopicLayoutContent>
-          {children}
-        </AngularTopicLayoutContent>
+        <AngularPlaygroundProvider>
+          <AngularTopicLayoutContent>
+            {children}
+          </AngularTopicLayoutContent>
+          <AngularPlaygroundModal />
+        </AngularPlaygroundProvider>
       </AngularLayoutProvider>
     </AngularProvider>
   );

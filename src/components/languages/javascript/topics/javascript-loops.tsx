@@ -5,8 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   RefreshCcw,
   ListOrdered,
@@ -21,154 +20,9 @@ import {
   Flag,
 } from 'lucide-react';
 
-interface JavaScriptLoopsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptLoopsProps {}
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-amber-200/60 dark:border-amber-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-amber-100/60 dark:border-amber-900/40 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/50 dark:to-yellow-950/40 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-[10px] font-semibold text-white">
-        IO
-      </span>
-      <span className="text-xs font-semibold text-amber-900 dark:text-amber-100 uppercase tracking-wide">Output</span>
-    </div>
-    <div className="px-4 py-3 space-y-1">
-      {lines.map((line, i) => (
-        <div key={i} className="font-mono text-sm text-gray-700 dark:text-gray-300">
-          {line}
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loops Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🔄 Loops</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Loops Demo ===\\n');
-
-// 1. Classic For Loop
-console.log('1️⃣ CLASSIC FOR LOOP:');
-const numbers = [10, 20, 30, 40, 50];
-
-for (let i = 0; i < numbers.length; i++) {
-  console.log('Index', i + ':', numbers[i]);
-}
-console.log('');
-
-// 2. For...of Loop (values)
-console.log('2️⃣ FOR...OF LOOP (Values):');
-const fruits = ['apple', 'banana', 'cherry'];
-
-for (const fruit of fruits) {
-  console.log('Fruit:', fruit);
-}
-console.log('');
-
-// 3. While Loop
-console.log('3️⃣ WHILE LOOP:');
-let countdown = 5;
-
-while (countdown > 0) {
-  console.log('Countdown:', countdown);
-  countdown--;
-}
-console.log('Liftoff! 🚀');
-console.log('');
-
-// 4. Do...While Loop
-console.log('4️⃣ DO...WHILE LOOP:');
-let attempts = 0;
-
-do {
-  attempts++;
-  console.log('Attempt', attempts);
-} while (attempts < 3);
-console.log('');
-
-// 5. forEach (Array method)
-console.log('5️⃣ FOREACH METHOD:');
-const tasks = ['Plan', 'Code', 'Test', 'Deploy'];
-
-tasks.forEach((task, index) => {
-  console.log(index + 1 + '.', task);
-});
-console.log('');
-
-// 6. Break and Continue
-console.log('6️⃣ BREAK & CONTINUE:');
-for (let i = 1; i <= 10; i++) {
-  if (i === 5) {
-    console.log('Skipping 5...');
-    continue; // Skip this iteration
-  }
-  if (i === 8) {
-    console.log('Breaking at 8!');
-    break; // Exit loop
-  }
-  console.log('Number:', i);
-}
-
-console.log('\\n✅ All loop demos complete!');`;
-
-
-export default function JavaScriptLoops({ onOpenWebPlayground }: JavaScriptLoopsProps) {
+export default function JavaScriptLoops({}: JavaScriptLoopsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -268,7 +122,6 @@ for (const name of names) {
 //         Hello, Bob
 //         Hello, Charlie`}
                 </pre>
-                <SnippetOutput lines={['Hello, Alice', 'Hello, Bob', 'Hello, Charlie']} />
               </div>
             </div>
 
@@ -380,9 +233,9 @@ for (const name of names) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
             {/* Pattern 1: Processing Array Data */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Processing Array Data"
               description="Calculate total price from shopping cart - perfect for summing values from arrays of objects"
               code={`// Pattern: Calculate total price
@@ -398,20 +251,29 @@ for (const item of cart) {
   console.log(item.name + ': $' + item.price);
 }
 
-console.log('Total: $' + total);`}
-              output={[
-                "Book: $15",
-                "Pen: $5",
-                "Bag: $30",
-                "Total: $50"
-              ]}
+console.log('Total: $' + total);
+// Output: Book: $15
+// Output: Pen: $5
+// Output: Bag: $30
+// Output: Total: $50`}
               language="javascript"
               colorTheme="blue"
               icon={CheckCircle2}
+              features={[
+                "for...of loop for clean iteration",
+                "Accumulate values in a variable",
+                "Common in e-commerce calculations",
+                "Works with arrays of objects"
+              ]}
+              tips={[
+                "Initialize accumulator before loop",
+                "Use reduce() for functional approach",
+                "Essential for shopping cart totals"
+              ]}
             />
 
             {/* Pattern 2: Finding Items */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Finding Items (Early Exit)"
               description="Search and stop - use break to exit once you find what you need"
               code={`// Pattern: Search and stop
@@ -429,71 +291,23 @@ for (const user of users) {
   }
 }
 
-console.log('Found:', found.name);`}
-              output={[
-                "Found: Bob",
-                "// Loop exits after match"
-              ]}
+console.log('Found:', found.name);
+// Output: Found: Bob
+// Loop exits after match - no need to check remaining items`}
               language="javascript"
               colorTheme="emerald"
               icon={CheckCircle2}
-            />
-
-            {/* Pattern 3: Retry Logic */}
-            <CodeSnippetWithOutput
-              title="Retry Logic with While"
-              description="Retry until success - common for API calls and network requests"
-              code={`// Pattern: Retry until success
-let attempts = 0;
-let success = false;
-const maxAttempts = 3;
-
-while (!success && attempts < maxAttempts) {
-  attempts++;
-  console.log('Attempt', attempts);
-  
-  // Simulate operation
-  success = attempts === 2; // Success on 2nd try
-  
-  if (success) {
-    console.log('✅ Success!');
-  }
-}`}
-              output={[
-                "Attempt 1",
-                "Attempt 2",
-                "✅ Success!"
+              features={[
+                "break exits loop immediately",
+                "Saves processing time",
+                "Common search pattern",
+                "More efficient than checking all items"
               ]}
-              language="javascript"
-              colorTheme="purple"
-              icon={CheckCircle2}
-            />
-
-            {/* Pattern 4: Building HTML Lists */}
-            <CodeSnippetWithOutput
-              title="Building Dynamic Lists"
-              description="Generate HTML/text lists dynamically from arrays"
-              code={`// Pattern: Generate HTML/text lists
-const todos = ['Write code', 'Test', 'Deploy'];
-let htmlList = '<ul>';
-
-for (let i = 0; i < todos.length; i++) {
-  htmlList += '<li>' + (i + 1) + '. ';
-  htmlList += todos[i] + '</li>';
-}
-htmlList += '</ul>';
-
-console.log(htmlList);`}
-              output={[
-                "<ul>",
-                "  <li>1. Write code</li>",
-                "  <li>2. Test</li>",
-                "  <li>3. Deploy</li>",
-                "</ul>"
+              tips={[
+                "Use break for early exit optimization",
+                "Consider Array.find() for similar logic",
+                "Essential for search operations"
               ]}
-              language="javascript"
-              colorTheme="amber"
-              icon={CheckCircle2}
             />
           </div>
         </CardContent>
@@ -571,27 +385,6 @@ console.log(htmlList);`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try Loops"
-          description="Experiment with for, for...of, for...in, while, do...while, and forEach loops"
-          features={[
-            'for Loop',
-            'for...of & for...in',
-            'while & do...while',
-            'break & continue'
-          ]}
-          buttonText="Open Loops Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="blue"
-        />
-      )}
     </div>
   );
 }

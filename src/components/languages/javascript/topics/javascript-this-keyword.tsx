@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Target,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   AlertTriangle,
   Zap,
   Layers,
@@ -20,161 +19,7 @@ import {
   Code,
 } from 'lucide-react';
 
-interface JavaScriptThisKeywordProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>The "this" Keyword Demo</title>
-  <style>
-    body { 
-      font-family: 'Inter', system-ui; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .panel { 
-      max-width: 800px; 
-      width: 100%;
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.95); 
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px;
-    }
-    p { 
-      color: #64748b; 
-      font-size: 16px;
-      margin-bottom: 24px;
-    }
-    pre { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      overflow-x: auto;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .console-hint {
-      background: #fef3c7;
-      color: #92400e;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 16px;
-      text-align: center;
-      font-size: 13px;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>🎯 The "this" Keyword</h1>
-    <p>Open the browser console to see how "this" works in different contexts!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J to open console</div>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./this-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== The "this" Keyword Demo ===\\n');
-
-// 1. Global Context
-console.log('1. GLOBAL CONTEXT:');
-function globalFunc() {
-  console.log('  this in global function:', this);
-}
-globalFunc(); // Window (browser) or global (Node)
-
-// 2. Object Method
-console.log('\\n2. OBJECT METHOD:');
-const user = {
-  name: 'Alice',
-  greet: function() {
-    console.log('  this.name:', this.name);
-    console.log('  this:', this);
-  }
-};
-user.greet(); // "this" refers to user object
-
-// 3. Arrow Function (Lexical this)
-console.log('\\n3. ARROW FUNCTION:');
-const counter = {
-  count: 0,
-  increment: function() {
-    setTimeout(() => {
-      this.count++;
-      console.log('  count after increment:', this.count);
-    }, 100);
-  }
-};
-counter.increment(); // Arrow function inherits "this"
-
-// 4. Constructor Function
-console.log('\\n4. CONSTRUCTOR:');
-function Person(name) {
-  this.name = name;
-  console.log('  this in constructor:', this);
-}
-const person1 = new Person('Bob');
-
-// 5. Explicit Binding
-console.log('\\n5. EXPLICIT BINDING:');
-function introduce() {
-  console.log('  My name is', this.name);
-}
-const person = { name: 'Carol' };
-introduce.call(person); // Explicitly set "this"
-
-// 6. Lost Context Problem
-console.log('\\n6. LOST CONTEXT:');
-const obj = {
-  value: 42,
-  getValue: function() {
-    return this.value;
-  }
-};
-const extracted = obj.getValue;
-console.log('  Direct call:', obj.getValue()); // 42
-console.log('  Extracted:', extracted()); // undefined (lost context)
-
-// Summary
-const summary = [
-  '✓ Global: "this" = window/global',
-  '✓ Method: "this" = calling object',
-  '✓ Arrow: "this" = lexical context',
-  '✓ Constructor: "this" = new instance',
-  '✓ call/apply/bind: "this" = explicit',
-  '⚠ Lost context = common pitfall'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n✅ All contexts demonstrated!');
-`;
-
-export default function JavaScriptThisKeyword({ onOpenWebPlayground }: JavaScriptThisKeywordProps) {
+export default function JavaScriptThisKeyword() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -215,9 +60,10 @@ export default function JavaScriptThisKeyword({ onOpenWebPlayground }: JavaScrip
 };
 
 person.greet();
+// Output: Hello, I am Alice
+// this.name -> "Alice"
 // "this" refers to person object`}
               </pre>
-              <SnippetOutput lines={['Hello, I am Alice', 'this.name -> "Alice"']} />
             </div>
             
             <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
@@ -317,9 +163,10 @@ person.greet();
 }
 
 const user = new User('Alice');
-console.log(user.name);`}
+console.log(user.name);
+// Output: Alice
+// this = new User instance`}
               </pre>
-              <SnippetOutput lines={['user.name -> \"Alice\"', 'this = new User instance']} />
             </div>
 
             {/* Rule 2: Explicit Binding */}
@@ -337,9 +184,10 @@ console.log(user.name);`}
 }
 
 const person = { name: 'Bob' };
-greet.call(person);`}
+greet.call(person);
+// Output: Hello, Bob
+// this = person object`}
               </pre>
-              <SnippetOutput lines={['Hello, Bob', 'this = person object']} />
             </div>
 
             {/* Rule 3: Implicit Binding */}
@@ -359,9 +207,10 @@ greet.call(person);`}
   }
 };
 
-console.log(obj.getValue());`}
+console.log(obj.getValue());
+// Output: 42
+// this = obj (before the dot)`}
               </pre>
-              <SnippetOutput lines={['42', 'this = obj (before the dot)']} />
             </div>
 
             {/* Rule 4: Default Binding */}
@@ -378,9 +227,10 @@ console.log(obj.getValue());`}
   console.log(this);
 }
 
-show(); // window (browser) or global`}
+show(); // window (browser) or global
+// Output: this -> Window (or global object)
+// undefined in strict mode`}
               </pre>
-              <SnippetOutput lines={['this -> Window (or global object)', 'undefined in strict mode']} />
             </div>
           </div>
 
@@ -393,6 +243,57 @@ show(); // window (browser) or global`}
           </Alert>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Four Binding Rules"
+        description="All binding rules demonstrated together with priority order"
+        code={`// Rule 1: New Binding (Highest Priority)
+function User(name) {
+  this.name = name;
+}
+
+const user = new User('Alice');
+console.log(user.name);
+// Output: "Alice"
+// this = new User instance
+
+// Rule 2: Explicit Binding (High Priority)
+function greet() {
+  console.log('Hello, ' + this.name);
+}
+
+const person = { name: 'Bob' };
+greet.call(person);
+// Output: "Hello, Bob"
+// this = person object
+
+// Rule 3: Implicit Binding (Medium Priority)
+const obj = {
+  value: 42,
+  getValue: function() {
+    return this.value;
+  }
+};
+
+console.log(obj.getValue());
+// Output: 42
+// this = obj (before the dot)
+
+// Rule 4: Default Binding (Lowest Priority)
+function show() {
+  'use strict';
+  console.log(this);
+}
+
+show();
+// Output: undefined (in strict mode)
+// Output: Window object (in non-strict mode)
+
+// Priority Order: new > explicit > implicit > default`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Target}
+      />
 
       {/* Context-by-Context Deep Dive */}
       <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -430,9 +331,11 @@ showThis(); // Window (non-strict) or undefined (strict)
 function strictFunc() {
   console.log(this);
 }
-strictFunc(); // undefined`}
+strictFunc(); // undefined
+// Global this -> Window
+// Function call -> Window or undefined
+// Strict mode prevents global this`}
             </pre>
-            <SnippetOutput lines={['Global this -> Window', 'Function call -> Window or undefined', 'Strict mode prevents global this']} />
           </div>
 
           {/* Object Method Context */}
@@ -459,9 +362,12 @@ strictFunc(); // undefined`}
 console.log(calculator.add(5));
 console.log(calculator.add(3));
 calculator.reset();
-console.log(calculator.value);`}
+console.log(calculator.value);
+// calculator.add(5) -> 5
+// calculator.add(3) -> 8
+// After reset -> 0
+// this = calculator object`}
             </pre>
-            <SnippetOutput lines={['calculator.add(5) -> 5', 'calculator.add(3) -> 8', 'After reset -> 0', 'this = calculator object']} />
           </div>
 
           {/* Constructor Context */}
@@ -487,9 +393,11 @@ const car2 = new Car('BMW', 'i4');
 
 console.log(car1.getInfo());
 console.log(car2.getInfo());
-console.log(car1.brand);`}
+console.log(car1.brand);
+// car1.getInfo() -> "Tesla Model 3"
+// car2.getInfo() -> "BMW i4"
+// Each instance has its own "this"`}
             </pre>
-            <SnippetOutput lines={['car1.getInfo() -> "Tesla Model 3"', 'car2.getInfo() -> "BMW i4"', 'Each instance has its own "this"']} />
           </div>
 
           {/* Explicit Binding Context */}
@@ -517,12 +425,76 @@ introduce.apply(person2, ['Hi', '?']);
 
 // bind - creates new function with fixed this
 const boundIntroduce = introduce.bind(person1);
-boundIntroduce('Hey', '.');`}
+boundIntroduce('Hey', '.');
+// call: "Hello, I am Alice!"
+// apply: "Hi, I am Bob?"
+// bind: "Hey, I am Alice."
+// All three explicitly set "this"`}
             </pre>
-            <SnippetOutput lines={['call: "Hello, I am Alice!"', 'apply: "Hi, I am Bob?"', 'bind: "Hey, I am Alice."', 'All three explicitly set "this"']} />
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Different Contexts"
+        description="How 'this' behaves in various contexts"
+        code={`// Global Context
+function showThis() {
+  'use strict';
+  console.log(this);
+}
+showThis();
+// Output: undefined (strict mode)
+// Output: Window object (non-strict mode)
+
+// Object Method Context
+const calculator = {
+  value: 0,
+  add: function(n) {
+    this.value += n;
+    return this.value;
+  }
+};
+
+console.log(calculator.add(5));
+// Output: 5
+// this = calculator object
+
+// Constructor Context
+function Car(brand, model) {
+  this.brand = brand;
+  this.model = model;
+  this.getInfo = function() {
+    return this.brand + ' ' + this.model;
+  };
+}
+
+const car1 = new Car('Tesla', 'Model 3');
+console.log(car1.getInfo());
+// Output: "Tesla Model 3"
+// this = new Car instance
+
+// Explicit Binding (call, apply, bind)
+function introduce(greeting, punctuation) {
+  console.log(greeting + ', I am ' + this.name + punctuation);
+}
+
+const person1 = { name: 'Alice' };
+const person2 = { name: 'Bob' };
+
+introduce.call(person1, 'Hello', '!');
+// Output: "Hello, I am Alice!"
+
+introduce.apply(person2, ['Hi', '?']);
+// Output: "Hi, I am Bob?"
+
+const boundIntroduce = introduce.bind(person1);
+boundIntroduce('Hey', '.');
+// Output: "Hey, I am Alice."`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Code}
+      />
 
       {/* Common Pitfalls */}
       <Card className="bg-gradient-to-br from-rose-50/60 to-orange-50/60 dark:from-rose-950/10 dark:to-orange-950/10 border border-rose-200/50 dark:border-rose-800/30">
@@ -562,9 +534,11 @@ setTimeout(person.greet, 1000);
 setTimeout(() => person.greet(), 1000);
 
 // ✅ Fix with bind
-setTimeout(person.greet.bind(person), 1000);`}
+setTimeout(person.greet.bind(person), 1000);
+// Direct pass -> undefined
+// Arrow wrapper -> works
+// bind() -> works`}
               </pre>
-              <SnippetOutput lines={['Direct pass -> undefined', 'Arrow wrapper -> works', 'bind() -> works']} />
             </div>
 
             {/* Pitfall 2: Method Assignment */}
@@ -593,9 +567,11 @@ console.log(counter.increment()); // 1
 
 // ✅ Fix 2: Bind permanently
 const boundInc = counter.increment.bind(counter);
-console.log(boundInc()); // 1`}
+console.log(boundInc()); // 1
+// Extracted -> loses "this"
+// Method call -> works
+// Bound function -> works`}
               </pre>
-              <SnippetOutput lines={['Extracted -> loses "this"', 'Method call -> works', 'Bound function -> works']} />
             </div>
 
             {/* Pitfall 3: Nested Functions */}
@@ -641,9 +617,11 @@ const obj3 = {
     return inner();
   }
 };
-console.log(obj3.getValue()); // 42`}
+console.log(obj3.getValue()); // 42
+// Regular inner -> undefined
+// Arrow inner -> 42
+// self variable -> 42`}
               </pre>
-              <SnippetOutput lines={['Regular inner -> undefined', 'Arrow inner -> 42', 'self variable -> 42']} />
             </div>
 
             {/* Pitfall 4: Event Handlers */}
@@ -673,9 +651,11 @@ button.addEventListener('click', () => {
 });
 
 // ✅ Fix 2: bind
-button.addEventListener('click', app.handleClick.bind(app));`}
+button.addEventListener('click', app.handleClick.bind(app));
+// Direct method -> "this" = button
+// Arrow wrapper -> "this" = app
+// bind() -> "this" = app`}
               </pre>
-              <SnippetOutput lines={['Direct method -> "this" = button', 'Arrow wrapper -> "this" = app', 'bind() -> "this" = app']} />
             </div>
           </div>
 
@@ -688,6 +668,100 @@ button.addEventListener('click', app.handleClick.bind(app));`}
           </Alert>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Common Pitfalls"
+        description="How to avoid losing 'this' context"
+        code={`// Pitfall 1: Passing Methods as Callbacks
+const person = {
+  name: 'Alice',
+  greet: function() {
+    console.log('Hi, ' + this.name);
+  }
+};
+
+// ❌ Lost context!
+setTimeout(person.greet, 1000);
+// Output: "Hi, undefined"
+
+// ✅ Fix with arrow function
+setTimeout(() => person.greet(), 1000);
+// Output: "Hi, Alice"
+
+// ✅ Fix with bind
+setTimeout(person.greet.bind(person), 1000);
+// Output: "Hi, Alice"
+
+// Pitfall 2: Method Assignment
+const counter = {
+  count: 0,
+  increment: function() {
+    this.count++;
+    return this.count;
+  }
+};
+
+const inc = counter.increment;
+// console.log(inc()); // ❌ Error or NaN
+
+// ✅ Fix with bind
+const boundInc = counter.increment.bind(counter);
+console.log(boundInc());
+// Output: 1
+
+// Pitfall 3: Nested Functions
+const obj = {
+  value: 42,
+  getValue: function() {
+    function inner() {
+      return this.value; // ❌ undefined!
+    }
+    return inner();
+  }
+};
+
+// ✅ Fix with arrow function
+const obj2 = {
+  value: 42,
+  getValue: function() {
+    const inner = () => this.value;
+    return inner();
+  }
+};
+
+console.log(obj2.getValue());
+// Output: 42
+
+// Pitfall 4: Event Handlers
+const app = {
+  count: 0,
+  handleClick: function() {
+    this.count++;
+    console.log(this.count);
+  }
+};
+
+// Example with DOM button (conceptual)
+// const button = document.querySelector('button');
+// 
+// ❌ button.addEventListener('click', app.handleClick);
+// "this" = button element, not app object
+// 
+// ✅ Fix with arrow function
+// button.addEventListener('click', () => {
+//   app.count++;
+// });
+// 
+// ✅ Fix with bind
+// button.addEventListener('click', app.handleClick.bind(app));
+
+// Direct method call works fine
+app.handleClick();
+// Output: 1`}
+        language="javascript"
+        colorTheme="rose"
+        icon={AlertTriangle}
+      />
 
       {/* Arrow Functions vs Regular Functions */}
       <Card>
@@ -721,9 +795,11 @@ button.addEventListener('click', app.handleClick.bind(app));`}
 
 obj.regular(); // 100
 const fn = obj.regular;
-fn(); // undefined (lost context)`}
+fn(); // undefined (lost context)
+// Method call -> 100
+// Standalone call -> undefined
+// "this" changes with call-site`}
               </pre>
-              <SnippetOutput lines={['Method call -> 100', 'Standalone call -> undefined', '"this" changes with call-site']} />
             </div>
 
             {/* Arrow Function */}
@@ -753,9 +829,11 @@ const obj2 = {
     arrow(); // 100 (inherits from method)
   }
 };
-obj2.method();`}
+obj2.method();
+// Arrow in object -> global "this"
+// Arrow in method -> method "this"
+// "this" never changes once set`}
               </pre>
-              <SnippetOutput lines={['Arrow in object -> global "this"', 'Arrow in method -> method "this"', '"this" never changes once set']} />
             </div>
           </div>
 
@@ -826,9 +904,11 @@ obj2.method();`}
 
 const counter = new Counter();
 button.addEventListener('click', counter.increment);
-// Works! "this" is bound in constructor`}
+// Works! "this" is bound in constructor
+// Bound method works in callbacks
+// Arrow property works automatically
+// Common in React classes`}
               </pre>
-              <SnippetOutput lines={['Bound method works in callbacks', 'Arrow property works automatically', 'Common in React classes']} />
             </div>
 
             {/* Example 2: API Request Handler */}
@@ -857,9 +937,11 @@ button.addEventListener('click', counter.increment);
   }
 };
 
-api.fetchUser(123);`}
+api.fetchUser(123);
+// Arrow in .then() preserves "this"
+// Can access api.baseURL
+// Common in service objects`}
               </pre>
-              <SnippetOutput lines={['Arrow in .then() preserves "this"', 'Can access api.baseURL', 'Common in service objects']} />
             </div>
 
             {/* Example 3: Timer with Context */}
@@ -891,9 +973,11 @@ api.fetchUser(123);`}
   }
 };
 
-game.start();`}
+game.start();
+// Arrow in setInterval preserves "this"
+// Can call this.endGame()
+// Game object maintains state`}
               </pre>
-              <SnippetOutput lines={['Arrow in setInterval preserves "this"', 'Can call this.endGame()', 'Game object maintains state']} />
             </div>
 
             {/* Example 4: Array Methods */}
@@ -920,13 +1004,132 @@ game.start();`}
 };
 
 console.log(processor.process([1, 2, 3]));
-console.log(processor.processAlt([1, 2, 3]));`}
+console.log(processor.processAlt([1, 2, 3]));
+// processor.process() -> [10, 20, 30]
+// Arrow function is cleaner
+// thisArg parameter works too`}
               </pre>
-              <SnippetOutput lines={['processor.process() -> [10, 20, 30]', 'Arrow function is cleaner', 'thisArg parameter works too']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Patterns"
+        description="Practical patterns for using 'this' in production code"
+        code={`// Example 1: Event Handler with Bound Method
+class Counter {
+  constructor() {
+    this.count = 0;
+    // Bind in constructor
+    this.increment = this.increment.bind(this);
+  }
+  
+  increment() {
+    this.count++;
+    console.log(this.count);
+  }
+  
+  // Arrow function property (alternative)
+  decrement = () => {
+    this.count--;
+    console.log(this.count);
+  }
+}
+
+const counter = new Counter();
+
+// Direct calls for demonstration
+counter.increment();
+// Output: 1
+
+counter.decrement();
+// Output: 0
+
+// In real DOM usage:
+// const button = document.querySelector('button');
+// button.addEventListener('click', counter.increment);
+// Works! "this" is bound in constructor
+
+// Example 2: API Request Handler
+const api = {
+  baseURL: 'https://api.example.com',
+  
+  fetchUser: function(userId) {
+    console.log('Fetching from:', this.baseURL);
+    
+    // Simulated async operation
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Arrow function preserves "this"
+        console.log('Response from:', this.baseURL);
+        resolve({ id: userId, name: 'User' + userId });
+      }, 100);
+    });
+  }
+};
+
+api.fetchUser(123);
+// Output: "Fetching from: https://api.example.com"
+// Output: "Response from: https://api.example.com"
+// Arrow in .then() preserves "this"
+
+// Example 3: Timer with Context
+const game = {
+  score: 100,
+  timeLeft: 3,
+  
+  start: function() {
+    console.log('Game started!');
+    const timer = setInterval(() => {
+      this.timeLeft--;
+      console.log('Time left:', this.timeLeft);
+      
+      if (this.timeLeft === 0) {
+        clearInterval(timer);
+        this.endGame();
+      }
+    }, 1000);
+  },
+  
+  endGame: function() {
+    console.log('Game over! Final score:', this.score);
+  }
+};
+
+// Demonstrating the method works
+console.log('Initial time:', game.timeLeft);
+// Output: "Initial time: 3"
+
+game.endGame();
+// Output: "Game over! Final score: 100"
+
+// In real usage: game.start();
+// Arrow in setInterval preserves "this"
+
+// Example 4: Array Methods with Context
+const processor = {
+  multiplier: 10,
+  
+  // Arrow function in map
+  process: function(numbers) {
+    return numbers.map(n => n * this.multiplier);
+  },
+  
+  // Alternative: Use thisArg parameter
+  processAlt: function(numbers) {
+    return numbers.map(function(n) {
+      return n * this.multiplier;
+    }, this); // Pass "this" as second arg
+  }
+};
+
+console.log(processor.process([1, 2, 3]));
+// Output: [10, 20, 30]`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Sparkles}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -966,30 +1169,6 @@ console.log(processor.processAlt([1, 2, 3]));`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ this keyword, context binding, and arrow functions.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights this keyword behavior (global context, object methods, constructors, explicit binding, arrow functions, and lost context) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

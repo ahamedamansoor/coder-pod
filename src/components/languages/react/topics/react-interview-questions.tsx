@@ -262,6 +262,8 @@ root.render(<App />);`
     }
 ];
 
+export const reactInterviewQuestions = allQuestions;
+
 const categories = {
     'Easy': allQuestions.filter(q => q.category === 'Easy'),
     'Medium': allQuestions.filter(q => q.category === 'Medium'),

@@ -925,20 +925,32 @@ Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code 
       }
     }
 
+    const normalizedResult = {
+      feedback: result.feedback ?? result.suggestion ?? result.feedbackText ?? '',
+      idealAnswer: result.idealAnswer ?? result.ideal_answer ?? result.ideal ?? '',
+      nextQuestion:
+        result.nextQuestion ??
+        result.next_question ??
+        result.nextquestion ??
+        result.next ??
+        result.question ??
+        '',
+      answerHint:
+        result.answerHint ??
+        result.answer_hint ??
+        result.hint ??
+        'Focus on key concepts and explain with a simple example.',
+      simpleAnswer: result.simpleAnswer ?? result.simple_answer ?? result.simple ?? ''
+    };
+
     // Validate required fields
-    if (!result.nextQuestion) {
+    if (!normalizedResult.nextQuestion) {
       console.error(`[${providerName}] Missing nextQuestion in result:`, result);
       throw new Error(`${providerName} returned incomplete data - missing nextQuestion`);
     }
 
     console.log(`[${providerName}] Successfully returning interview data`);
-    return {
-      feedback: result.feedback || '',
-      idealAnswer: result.idealAnswer || '',
-      nextQuestion: result.nextQuestion,
-      answerHint: result.answerHint || 'Focus on key concepts and explain with a simple example.',
-      simpleAnswer: result.simpleAnswer || ''
-    };
+    return normalizedResult;
   } catch (error: any) {
     console.error(`${providerName} interview error:`, error);
     // Provide more detailed error message

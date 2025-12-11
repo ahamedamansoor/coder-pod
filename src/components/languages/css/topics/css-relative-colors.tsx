@@ -91,22 +91,27 @@ export default function CssRelativeColors({ onOpenWebPlayground }: CssRelativeCo
     }
     
     .lighter-20 {
+      background: #a27cf8;
       background: color-mix(in srgb, var(--base-color) 80%, white);
     }
     
     .lighter-40 {
+      background: #c4b5fd;
       background: color-mix(in srgb, var(--base-color) 60%, white);
     }
     
     .lighter-60 {
+      background: #e0e7ff;
       background: color-mix(in srgb, var(--base-color) 40%, white);
     }
     
     .darker-20 {
+      background: #6b21a8;
       background: color-mix(in srgb, var(--base-color) 80%, black);
     }
     
     .darker-40 {
+      background: #4c1d95;
       background: color-mix(in srgb, var(--base-color) 60%, black);
     }
     
@@ -230,7 +235,9 @@ export default function CssRelativeColors({ onOpenWebPlayground }: CssRelativeCo
     
     :root {
       --primary: #3b82f6;
+      --primary-light: #7dd3fc;
       --primary-light: color-mix(in srgb, var(--primary) 50%, white);
+      --primary-dark: #1d4ed8;
       --primary-dark: color-mix(in srgb, var(--primary) 70%, black);
     }
     

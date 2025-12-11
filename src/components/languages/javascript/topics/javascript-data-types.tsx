@@ -5,8 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Type,
   Hash,
@@ -24,9 +23,7 @@ import {
   CircleDot,
 } from 'lucide-react';
 
-interface JavaScriptDataTypesProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptDataTypesProps {}
 
 const primitivesHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -231,7 +228,7 @@ console.log('Cloned:', clonedUser); // separate object
 console.log('');
 console.log('✅ Primitives copy by value; reference types need cloning');`;
 
-export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptDataTypesProps) {
+export default function JavaScriptDataTypes({}: JavaScriptDataTypesProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -580,44 +577,6 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
             </div>
           </div>
 
-          <CodeSnippetWithOutput
-            title="Symbol & BigInt"
-            description="Use Symbol for unique identifiers and BigInt for safely handling very large integers"
-            code={symbolBigIntJs}
-            output={[
-              "Symbol: Symbol(id)",
-              "Are they equal? false",
-              "// Each Symbol is unique",
-              "",
-              "BigInt: 9007199254740995n",
-              "Result: 10007199254741000n",
-              "\u2705 Symbol & BigInt for special needs"
-            ]}
-            language="javascript"
-            colorTheme="purple"
-            icon={CircleDot}
-          />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Symbol & BigInt"
-              description="Experiment with unique identifiers and large integers"
-              features={[
-                'Unique Symbols',
-                'Large Numbers',
-                'Object Keys',
-                'Safe Math'
-              ]}
-              buttonText="Open Symbol & BigInt Demo"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: symbolBigIntHtml,
-                css: '',
-                js: symbolBigIntJs
-              }}
-              colorTheme="purple"
-            />
-          )}
         </CardContent>
       </Card>
 
@@ -763,45 +722,6 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
             </div>
           </div>
 
-          <CodeSnippetWithOutput
-            title="Copying Values vs References"
-            description="Primitives copy by value (independent), objects/arrays copy by reference (shared)"
-            code={referenceCopyJs}
-            output={[
-              "Primitive: a=5, b=10",
-              "// Changing b doesn't affect a",
-              "",
-              "Reference: obj1 and obj2 both = { x: 100 }",
-              "// They share the same object!",
-              "",
-              "\u2705 Primitives: value copy",
-              "\u2705 Objects: reference copy"
-            ]}
-            language="javascript"
-            colorTheme="amber"
-            icon={ClipboardCheck}
-          />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Copy Behavior"
-              description="See the difference between copying values and references"
-              features={[
-                'Value Copy',
-                'Reference Copy',
-                'Shared State',
-                'Clone Methods'
-              ]}
-              buttonText="Open Copy Demo"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: referenceCopyHtml,
-                css: '',
-                js: referenceCopyJs
-              }}
-              colorTheme="amber"
-            />
-          )}
         </CardContent>
       </Card>
 
@@ -817,44 +737,26 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <CodeSnippetWithOutput
+          <CodeSnippet
             title="Primitive Data Types"
             description="String, Number, Boolean, Undefined, and Null - the five primitive types in JavaScript"
             code={primitivesJs}
-            output={[
-              "String: Alice Hello",
-              "Number: 25 19.99",
-              "Boolean: true false",
-              "Undefined: undefined",
-              "Null: null",
-              "",
-              "✅ All primitive types shown"
-            ]}
             language="javascript"
             colorTheme="blue"
             icon={Box}
+            features={[
+              "String: text in quotes",
+              "Number: integers and decimals",
+              "Boolean: true or false",
+              "Undefined: no value assigned",
+              "Null: intentionally empty"
+            ]}
+            tips={[
+              "Primitives are immutable (can't be changed)",
+              "Stored directly in memory",
+              "Compared by value, not reference"
+            ]}
           />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Primitive Types"
-              description="Experiment with all five primitive data types in JavaScript"
-              features={[
-                'String Values',
-                'Number Values',
-                'Boolean Logic',
-                'Undefined & Null'
-              ]}
-              buttonText="Open Primitive Types Demo"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: primitivesHtml,
-                css: '',
-                js: primitivesJs
-              }}
-              colorTheme="blue"
-            />
-          )}
         </CardContent>
       </Card>
 
@@ -870,46 +772,25 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <CodeSnippetWithOutput
+          <CodeSnippet
             title="typeof Operator"
             description="Use the typeof operator to check the data type of any value"
             code={typeCheckJs}
-            output={[
-              "String: 'string'",
-              "Number: 'number'",
-              "Boolean: 'boolean'",
-              "Null (quirk): 'object'",
-              "Undefined: 'undefined'",
-              "Object: 'object'",
-              "Function: 'function'",
-              "",
-              "\u2705 Use typeof to check types"
-            ]}
             language="javascript"
             colorTheme="purple"
             icon={Type}
+            features={[
+              "Returns type as a string",
+              "Works with all data types",
+              "Useful for type checking",
+              "Note: typeof null returns 'object' (quirk)"
+            ]}
+            tips={[
+              "Use for runtime type validation",
+              "Be aware of typeof null === 'object'",
+              "typeof function returns 'function'"
+            ]}
           />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try typeof Operator"
-              description="See how typeof works with different data types in JavaScript"
-              features={[
-                'Type Checking',
-                'typeof Operator',
-                'Type Detection',
-                'Runtime Types'
-              ]}
-              buttonText="Open typeof Demo"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: typeCheckHtml,
-                css: '',
-                js: typeCheckJs
-              }}
-              colorTheme="purple"
-            />
-          )}
         </CardContent>
       </Card>
 
@@ -925,43 +806,25 @@ export default function JavaScriptDataTypes({ onOpenWebPlayground }: JavaScriptD
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <CodeSnippetWithOutput
+          <CodeSnippet
             title="Type Conversion"
             description="JavaScript automatically converts between types, or you can convert explicitly"
             code={conversionJs}
-            output={[
-              "String to Number: 42",
-              "Number to String: '100'",
-              "Boolean to Number: 1",
-              "Truthy/Falsy: false",
-              "",
-              "\u2705 Types convert automatically or explicitly"
-            ]}
             language="javascript"
             colorTheme="emerald"
             icon={Code2}
+            features={[
+              "String(): convert to string",
+              "Number(): convert to number",
+              "Boolean(): convert to boolean",
+              "Implicit conversion happens automatically"
+            ]}
+            tips={[
+              "Explicit conversion is more predictable",
+              "Empty strings convert to 0",
+              "Non-empty strings may convert to NaN"
+            ]}
           />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Type Conversion"
-              description="Learn how JavaScript converts between different data types"
-              features={[
-                'String Conversion',
-                'Number Conversion',
-                'Boolean Conversion',
-                'Automatic Conversion'
-              ]}
-              buttonText="Open Conversion Demo"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: conversionHtml,
-                css: '',
-                js: conversionJs
-              }}
-              colorTheme="emerald"
-            />
-          )}
         </CardContent>
       </Card>
 

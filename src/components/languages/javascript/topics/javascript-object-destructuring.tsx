@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Boxes,
   Sparkles,
@@ -14,124 +14,13 @@ import {
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Package,
   Zap,
   ArrowRight,
 } from 'lucide-react';
 
-interface JavaScriptObjectDestructuringProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Object Destructuring Demo</title>
-  <style>
-    body { 
-      font-family: 'Inter', system-ui; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .panel { 
-      max-width: 720px; 
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.95); 
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { color: #667eea; margin-bottom: 16px; font-size: 32px; }
-    p { color: #64748b; font-size: 16px; margin-bottom: 24px; }
-    pre { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      overflow-x: auto;
-      font-size: 14px;
-    }
-    .console-hint {
-      background: #fef3c7;
-      color: #92400e;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 16px;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>🎯 Object Destructuring</h1>
-    <p>Open the browser console to see all examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./object-destructure-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Object Destructuring Demo ===\\n');
-
-// 1. Basic Extraction
-const user = { name: 'Alice', age: 28, role: 'developer' };
-const { name, age, role } = user;
-console.log('1. BASIC:', name, age, role);
-
-// 2. Renaming
-const product = { id: 101, title: 'Laptop', price: 999 };
-const { title: productName, price: cost } = product;
-console.log('2. RENAME:', productName, cost);
-
-// 3. Defaults
-const settings = { theme: 'dark' };
-const { theme, fontSize = 14, autoSave = true } = settings;
-console.log('3. DEFAULTS:', theme, fontSize, autoSave);
-
-// 4. Nested
-const response = {
-  status: 200,
-  data: { username: 'bob', email: 'bob@dev.com' }
-};
-const { status, data: { username, email } } = response;
-console.log('4. NESTED:', status, username, email);
-
-// 5. Rest
-const config = { host: 'localhost', port: 3000, ssl: true, cache: false };
-const { host, port, ...otherConfig } = config;
-console.log('5. REST:', host, port, otherConfig);
-
-// Summary
-const summary = [
-  '✓ Extract properties directly',
-  '✓ Rename with colon syntax',
-  '✓ Provide default values',
-  '✓ Handle nested objects',
-  '✓ Capture rest properties'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n✅ Complete!');
-`;
-
-export default function JavaScriptObjectDestructuring({ onOpenWebPlayground }: JavaScriptObjectDestructuringProps) {
+export default function JavaScriptObjectDestructuring() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -193,9 +82,12 @@ console.log(name, age, role);`}
 
 const { name, age, role } = user;
 
-console.log(name, age, role);`}
+console.log(name, age, role);
+// Output: Alice 28 developer
+// name -> "Alice"
+// age -> 28
+// role -> "developer"`}
               </pre>
-              <SnippetOutput lines={['name -> "Alice"', 'age -> 28', 'role -> "developer"']} />
             </div>
           </div>
         </CardContent>
@@ -276,9 +168,11 @@ console.log(name, age, role);`}
 const { title, author } = book;
 
 console.log(title);
-console.log(author);`}
+// Output: "JavaScript Pro"
+
+console.log(author);
+// Output: "Jane Doe"`}
               </pre>
-              <SnippetOutput lines={['title -> "JavaScript Pro"', 'author -> "Jane Doe"']} />
             </div>
 
             {/* Renaming Variables */}
@@ -299,9 +193,11 @@ console.log(author);`}
 const { id: productId, name: productName } = product;
 
 console.log(productId);
-console.log(productName);`}
+// Output: 101
+
+console.log(productName);
+// Output: "Laptop"`}
               </pre>
-              <SnippetOutput lines={['productId -> 101', 'productName -> "Laptop"']} />
             </div>
 
             {/* Default Values */}
@@ -321,10 +217,14 @@ console.log(productName);`}
 const { theme, fontSize = 16, lineHeight = 1.5 } = config;
 
 console.log(theme);
+// Output: "dark"
+
 console.log(fontSize);
-console.log(lineHeight);`}
+// Output: 16 (default)
+
+console.log(lineHeight);
+// Output: 1.5 (default)`}
               </pre>
-              <SnippetOutput lines={['theme -> "dark"', 'fontSize -> 16 (default)', 'lineHeight -> 1.5 (default)']} />
             </div>
 
             {/* Combining Rename + Default */}
@@ -347,13 +247,83 @@ const {
 } = options;
 
 console.log(backgroundColor);
-console.log(fontSize);`}
+// Output: "blue"
+
+console.log(fontSize);
+// Output: 12 (default)`}
               </pre>
-              <SnippetOutput lines={['backgroundColor -> "blue"', 'fontSize -> 12 (default)']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Basic Syntax"
+        description="All basic destructuring patterns demonstrated together"
+        code={`// Simple Extraction - Extract properties that match variable names
+const book = {
+  title: 'JavaScript Pro',
+  author: 'Jane Doe',
+  year: 2024
+};
+
+const { title, author } = book;
+
+console.log(title);
+// Output: "JavaScript Pro"
+
+console.log(author);
+// Output: "Jane Doe"
+
+// Renaming Variables - Use colon syntax to rename properties
+const product = {
+  id: 101,
+  name: 'Laptop'
+};
+
+const { id: productId, name: productName } = product;
+
+console.log(productId);
+// Output: 101
+
+console.log(productName);
+// Output: "Laptop"
+
+// Default Values - Provide defaults for undefined properties
+const config = {
+  theme: 'dark'
+};
+
+const { theme, fontSize = 16, lineHeight = 1.5 } = config;
+
+console.log(theme);
+// Output: "dark"
+
+console.log(fontSize);
+// Output: 16 (default)
+
+console.log(lineHeight);
+// Output: 1.5 (default)
+
+// Rename + Default - Combine both techniques
+const options = {
+  color: 'blue'
+};
+
+const {
+  color: backgroundColor = 'white',
+  size: textSize = 12
+} = options;
+
+console.log(backgroundColor);
+// Output: "blue"
+
+console.log(textSize);
+// Output: 12 (default)`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Package}
+      />
 
       {/* Advanced Patterns */}
       <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -396,10 +366,14 @@ const {
 } = response;
 
 console.log(status);
+// Output: 200
+
 console.log(id);
-console.log(name);`}
+// Output: 5
+
+console.log(name);
+// Output: "Alice"`}
               </pre>
-              <SnippetOutput lines={['status -> 200', 'id -> 5', 'name -> "Alice"']} />
             </div>
 
             {/* Rest Properties */}
@@ -423,10 +397,14 @@ console.log(name);`}
 const { host, port, ...otherSettings } = settings;
 
 console.log(host);
+// Output: "localhost"
+
 console.log(port);
-console.log(otherSettings);`}
+// Output: 3000
+
+console.log(otherSettings);
+// Output: { ssl: true, cache: false, timeout: 5000 }`}
               </pre>
-              <SnippetOutput lines={['host -> "localhost"', 'port -> 3000', 'otherSettings -> { ssl: true, cache: false, timeout: 5000 }']} />
             </div>
 
             {/* Array of Objects */}
@@ -446,9 +424,11 @@ console.log(otherSettings);`}
 
 users.forEach(({ id, name, role }) => {
   console.log(\`\${id}: \${name} (\${role})\`);
-});`}
+});
+// Output:
+// 1: Alice (admin)
+// 2: Bob (user)`}
               </pre>
-              <SnippetOutput lines={['1: Alice (admin)', '2: Bob (user)']} />
             </div>
 
             {/* Computed Property Names */}
@@ -469,13 +449,92 @@ users.forEach(({ id, name, role }) => {
 const key = 'primary';
 const { [key]: color } = data;
 
-console.log(color);`}
+console.log(color);
+// Output: "#3b82f6"`}
               </pre>
-              <SnippetOutput lines={['color -> "#3b82f6"']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Advanced Patterns"
+        description="All advanced destructuring techniques demonstrated together"
+        code={`// Nested Destructuring - Extract from nested objects
+const response = {
+  status: 200,
+  data: {
+    user: {
+      id: 5,
+      name: 'Alice'
+    }
+  }
+};
+
+const {
+  status,
+  data: {
+    user: { id, name }
+  }
+} = response;
+
+console.log(status);
+// Output: 200
+
+console.log(id);
+// Output: 5
+
+console.log(name);
+// Output: "Alice"
+
+// Rest Properties - Capture remaining properties
+const settings = {
+  host: 'localhost',
+  port: 3000,
+  ssl: true,
+  cache: false,
+  timeout: 5000
+};
+
+const { host, port, ...otherSettings } = settings;
+
+console.log(host);
+// Output: "localhost"
+
+console.log(port);
+// Output: 3000
+
+console.log(otherSettings);
+// Output: { ssl: true, cache: false, timeout: 5000 }
+
+// Array of Objects - Destructure while iterating
+const users = [
+  { id: 1, name: 'Alice', role: 'admin' },
+  { id: 2, name: 'Bob', role: 'user' }
+];
+
+users.forEach(({ id, name, role }) => {
+  console.log(\`\${id}: \${name} (\${role})\`);
+});
+// Output:
+// 1: Alice (admin)
+// 2: Bob (user)
+
+// Computed Properties - Use dynamic property names
+const data = {
+  primary: '#3b82f6',
+  secondary: '#8b5cf6'
+};
+
+const key = 'primary';
+const { [key]: color } = data;
+
+console.log(color);
+// Output: "#3b82f6"`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Layers}
+      />
 
       {/* Function Parameters */}
       <Card>
@@ -511,9 +570,9 @@ const newUser = createUser({
   email: 'alice@dev.com'
 });
 
-console.log(newUser.role);`}
+console.log(newUser.role);
+// Output: "user" (default)`}
               </pre>
-              <SnippetOutput lines={['newUser.role -> "user" (default)']} />
             </div>
 
             {/* Nested Function Params */}
@@ -533,9 +592,9 @@ const location = {
 };
 
 const result = displayLocation(location);
-console.log(result);`}
+console.log(result);
+// Output: "Paris is at 48.8566, 2.3522"`}
               </pre>
-              <SnippetOutput lines={['result -> "Paris is at 48.8566, 2.3522"']} />
             </div>
           </div>
 
@@ -585,9 +644,10 @@ async function getUserData(userId) {
 
 // Usage
 const { user, timestamp } = await getUserData(123);
-console.log(user.name);`}
+console.log(user.name);
+// Output: "Alice"
+// timestamp -> 1637012345678`}
               </pre>
-              <SnippetOutput lines={['user.name -> "Alice"', 'timestamp -> 1637012345678']} />
             </div>
 
             {/* React Component Props */}
@@ -609,9 +669,10 @@ console.log(user.name);`}
 // Usage
 <UserCard 
   user={{ name: 'Alice', email: 'alice@dev.com' }}
-/>`}
+/>
+// Output: Renders card with name and email
+// Default theme "light" applied`}
               </pre>
-              <SnippetOutput lines={['Renders card with name and email', 'Default theme applied']} />
             </div>
 
             {/* Config Object Extraction */}
@@ -638,9 +699,11 @@ const {
 } = appConfig;
 
 console.log(baseURL);
-console.log(darkMode);`}
+// Output: "https://api.example.com"
+
+console.log(darkMode);
+// Output: true`}
               </pre>
-              <SnippetOutput lines={['baseURL -> "https://api.example.com"', 'darkMode -> true']} />
             </div>
 
             {/* Event Handling */}
@@ -663,9 +726,10 @@ form.addEventListener('submit', (event) => {
   
   const { username, email } = elements;
   console.log(username.value, email.value);
-});`}
+});
+// Extracts only needed event data
+// Cleaner, more readable event handlers`}
               </pre>
-              <SnippetOutput lines={['Extracts only needed event data', 'Cleaner event handlers']} />
             </div>
           </div>
         </CardContent>
@@ -707,30 +771,6 @@ form.addEventListener('submit', (event) => {
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ object destructuring, renaming, and nested patterns.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights object destructuring patterns (basic extraction, renaming, defaults, nested, and rest properties) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

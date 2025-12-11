@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Scissors,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Search,
   Zap,
   Copy,
@@ -20,117 +19,7 @@ import {
   Code,
 } from 'lucide-react';
 
-interface JavaScriptStringMethodsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>String Methods Demo</title>
-  <style>
-    body { 
-      font-family: 'Inter', system-ui; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .panel { 
-      max-width: 800px; 
-      width: 100%;
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.95); 
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px;
-    }
-    p { 
-      color: #64748b; 
-      font-size: 16px;
-      margin-bottom: 24px;
-    }
-    pre { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      overflow-x: auto;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>✂️ String Methods</h1>
-    <p>Open the browser console to see all string method examples!</p>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./string-methods-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== String Methods Demo ===\\n');
-
-const text = 'JavaScript is awesome';
-
-// 1. Searching
-console.log('1. SEARCHING:');
-console.log('  includes("Java"):', text.includes('Java'));
-console.log('  indexOf("is"):', text.indexOf('is'));
-console.log('  startsWith("Java"):', text.startsWith('Java'));
-console.log('  endsWith("some"):', text.endsWith('some'));
-
-// 2. Extracting
-console.log('\\n2. EXTRACTING:');
-console.log('  slice(0, 10):', text.slice(0, 10));
-console.log('  substring(0, 10):', text.substring(0, 10));
-console.log('  charAt(0):', text.charAt(0));
-
-// 3. Transform
-console.log('\\n3. TRANSFORMING:');
-console.log('  toUpperCase():', text.toUpperCase());
-console.log('  toLowerCase():', text.toLowerCase());
-console.log('  replace("awesome", "great"):', text.replace('awesome', 'great'));
-
-// 4. Split & Join
-console.log('\\n4. SPLIT & JOIN:');
-const words = text.split(' ');
-console.log('  split(" "):', words);
-console.log('  join("-"):', words.join('-'));
-
-// Summary
-const summary = [
-  '✓ Search: includes, indexOf, startsWith, endsWith',
-  '✓ Extract: slice, substring, charAt',
-  '✓ Transform: toUpperCase, toLowerCase, replace',
-  '✓ Split & Join: split(), join()'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n✅ All string methods demonstrated!');
-`;
-
-export default function JavaScriptStringMethods({ onOpenWebPlayground }: JavaScriptStringMethodsProps) {
+export default function JavaScriptStringMethods() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -243,9 +132,13 @@ console.log(text.includes('Python'));
 console.log(text.includes('JAVA'));
 
 // Case sensitive!
-console.log(text.includes('javascript'));`}
+console.log(text.includes('javascript'));
+// Output:
+// includes("Java") -> true
+// includes("Python") -> false
+// includes("JAVA") -> false
+// includes("javascript") -> false (case matters!)`}
               </pre>
-              <SnippetOutput lines={['includes("Java") -> true', 'includes("Python") -> false', 'includes("JAVA") -> false', 'includes("javascript") -> false (case matters!)']} />
             </div>
 
             {/* indexOf() */}
@@ -265,9 +158,13 @@ console.log(text.indexOf('Script'));
 console.log(text.indexOf('Python'));
 
 // Start searching from position 5
-console.log(text.indexOf('a', 5));`}
+console.log(text.indexOf('a', 5));
+// Output:
+// indexOf("is") -> 11
+// indexOf("Script") -> 4
+// indexOf("Python") -> -1 (not found)
+// indexOf("a", 5) -> 7 (starts from pos 5)`}
               </pre>
-              <SnippetOutput lines={['indexOf("is") -> 11', 'indexOf("Script") -> 4', 'indexOf("Python") -> -1 (not found)', 'indexOf("a", 5) -> 7 (starts from pos 5)']} />
             </div>
 
             {/* lastIndexOf() */}
@@ -286,9 +183,13 @@ console.log(text.indexOf('JavaScript'));
 console.log(text.lastIndexOf('JavaScript'));
 
 console.log(text.indexOf('is'));
-console.log(text.lastIndexOf('is'));`}
+console.log(text.lastIndexOf('is'));
+// Output:
+// indexOf() -> 0 (first occurrence)
+// lastIndexOf() -> 25 (last occurrence)
+// indexOf("is") -> 11
+// lastIndexOf("is") -> 40`}
               </pre>
-              <SnippetOutput lines={['indexOf() -> 0 (first occurrence)', 'lastIndexOf() -> 25 (last occurrence)', 'indexOf("is") -> 11', 'lastIndexOf("is") -> 40']} />
             </div>
 
             {/* startsWith() & endsWith() */}
@@ -308,13 +209,48 @@ console.log(filename.endsWith('.pdf'));
 console.log(filename.endsWith('.doc'));
 
 console.log(url.startsWith('https'));
-console.log(url.startsWith('http'));`}
+console.log(url.startsWith('http'));
+// Output:
+// endsWith(".pdf") -> true
+// endsWith(".doc") -> false
+// startsWith("https") -> true
+// startsWith("http") -> true`}
               </pre>
-              <SnippetOutput lines={['endsWith(".pdf") -> true', 'endsWith(".doc") -> false', 'startsWith("https") -> true', 'startsWith("http") -> true']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Searching Methods"
+        description="Find and check for substrings in your text"
+        code={`const text = 'JavaScript is awesome';
+
+// includes() - Check if substring exists
+console.log(text.includes('Java'));
+// Output: true
+
+// indexOf() - Get position of first occurrence
+console.log(text.indexOf('is'));
+// Output: 11
+
+// lastIndexOf() - Get position of last occurrence
+const repeated = 'JavaScript is awesome and JavaScript is fun';
+console.log(repeated.lastIndexOf('JavaScript'));
+// Output: 25
+
+// startsWith() & endsWith() - Check beginning/end
+const filename = 'document.pdf';
+console.log(filename.endsWith('.pdf'));
+// Output: true
+
+const url = 'https://example.com';
+console.log(url.startsWith('https'));
+// Output: true`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Search}
+      />
 
       {/* Extracting Methods */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -345,9 +281,14 @@ console.log(text.slice(0, 4));
 console.log(text.slice(4));
 console.log(text.slice(-6));
 console.log(text.slice(-6, -2));
-console.log(text.slice(2, -2));`}
+console.log(text.slice(2, -2));
+// Output:
+// slice(0, 4) -> "Java"
+// slice(4) -> "Script"
+// slice(-6) -> "Script"
+// slice(-6, -2) -> "Scri"
+// slice(2, -2) -> "vaScri"`}
               </pre>
-              <SnippetOutput lines={['slice(0, 4) -> "Java"', 'slice(4) -> "Script"', 'slice(-6) -> "Script"', 'slice(-6, -2) -> "Scri"', 'slice(2, -2) -> "vaScri"']} />
             </div>
 
             {/* substring() */}
@@ -369,9 +310,13 @@ console.log(text.substring(4));
 console.log(text.substring(4, 0));
 
 // Negative treated as 0
-console.log(text.substring(-5));`}
+console.log(text.substring(-5));
+// Output:
+// substring(0, 4) -> "Java"
+// substring(4) -> "Script"
+// substring(4, 0) -> "Java" (swapped!)
+// substring(-5) -> "JavaScript" (-5 = 0)`}
               </pre>
-              <SnippetOutput lines={['substring(0, 4) -> "Java"', 'substring(4) -> "Script"', 'substring(4, 0) -> "Java" (swapped!)', 'substring(-5) -> "JavaScript" (-5 = 0)']} />
             </div>
 
             {/* charAt() */}
@@ -391,9 +336,13 @@ console.log(text.charAt(4));
 console.log(text.charAt(text.length - 1));
 
 // Out of range returns empty string
-console.log(text.charAt(100));`}
+console.log(text.charAt(100));
+// Output:
+// charAt(0) -> "J"
+// charAt(4) -> "S"
+// charAt(9) -> "t" (last char)
+// charAt(100) -> "" (empty string)`}
               </pre>
-              <SnippetOutput lines={['charAt(0) -> "J"', 'charAt(4) -> "S"', 'charAt(9) -> "t" (last char)', 'charAt(100) -> "" (empty string)']} />
             </div>
 
             {/* at() - ES2022 */}
@@ -417,9 +366,15 @@ console.log(text.at(-2));  // Second to last
 console.log(text.at(-6));
 
 // Out of range returns undefined
-console.log(text.at(100));`}
+console.log(text.at(100));
+// Output:
+// at(0) -> "J"
+// at(4) -> "S"
+// at(-1) -> "t" (last!)
+// at(-2) -> "p"
+// at(-6) -> "S"
+// at(100) -> undefined`}
               </pre>
-              <SnippetOutput lines={['at(0) -> "J"', 'at(4) -> "S"', 'at(-1) -> "t" (last!)', 'at(-2) -> "p"', 'at(-6) -> "S"', 'at(100) -> undefined']} />
             </div>
 
             {/* split() */}
@@ -439,13 +394,49 @@ console.log(csv.split(','));
 console.log(sentence.split(' '));
 
 // Split every character
-console.log('ABC'.split(''));`}
+console.log('ABC'.split(''));
+// Output:
+// split(",") -> ["apple", "banana", "orange"]
+// split(" ") -> ["Hello", "World"]
+// split("") -> ["A", "B", "C"]`}
               </pre>
-              <SnippetOutput lines={['split(",") -> ["apple", "banana", "orange"]', 'split(" ") -> ["Hello", "World"]', 'split("") -> ["A", "B", "C"]']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Extracting Methods"
+        description="Extract portions and characters from strings"
+        code={`const text = 'JavaScript';
+
+// slice() - Extract with negative indices support
+console.log(text.slice(0, 4));
+// Output: "Java"
+
+console.log(text.slice(-6));
+// Output: "Script"
+
+// substring() - Similar but no negative indices
+console.log(text.substring(0, 4));
+// Output: "Java"
+
+// charAt() - Get single character (classic)
+console.log(text.charAt(0));
+// Output: "J"
+
+// at() - Modern way with negative indices (ES2022)
+console.log(text.at(-1));
+// Output: "t" (last character!)
+
+// split() - Convert string to array
+const csv = 'apple,banana,orange';
+console.log(csv.split(','));
+// Output: ["apple", "banana", "orange"]`}
+        language="javascript"
+        colorTheme="emerald"
+        icon={Copy}
+      />
 
       {/* Transform Methods */}
       <Card>
@@ -477,9 +468,13 @@ console.log(text);
 
 // Case-insensitive comparison
 const input = 'JAVASCRIPT';
-console.log(input.toLowerCase() === 'javascript');`}
+console.log(input.toLowerCase() === 'javascript');
+// Output:
+// toUpperCase() -> "HELLO WORLD"
+// toLowerCase() -> "hello world"
+// Original -> "Hello World"
+// Comparison -> true`}
               </pre>
-              <SnippetOutput lines={['toUpperCase() -> "HELLO WORLD"', 'toLowerCase() -> "hello world"', 'Original -> "Hello World"', 'Comparison -> true']} />
             </div>
 
             {/* Trim Methods */}
@@ -497,9 +492,14 @@ console.log(text.trimEnd());
 
 // Original length vs trimmed
 console.log('Length:', text.length);
-console.log('Trimmed:', text.trim().length);`}
+console.log('Trimmed:', text.trim().length);
+// Output:
+// trim() -> "Hello World"
+// trimStart() -> "Hello World   "
+// trimEnd() -> "   Hello World"
+// Length: 17
+// Trimmed: 11`}
               </pre>
-              <SnippetOutput lines={['trim() -> "Hello World"', 'trimStart() -> "Hello World   "', 'trimEnd() -> "   Hello World"', 'Length: 17', 'Trimmed: 11']} />
             </div>
 
             {/* replace() */}
@@ -519,9 +519,12 @@ console.log(text);
 
 // Case sensitive
 const greeting = 'Hello World';
-console.log(greeting.replace('hello', 'Hi'));`}
+console.log(greeting.replace('hello', 'Hi'));
+// Output:
+// replace() -> "dog and cat and cat"
+// Original -> "cat and cat and cat"
+// No match -> "Hello World" (case sensitive!)`}
               </pre>
-              <SnippetOutput lines={['replace() -> "dog and cat and cat"', 'Original -> "cat and cat and cat"', 'No match -> "Hello World" (case sensitive!)']} />
             </div>
 
             {/* replaceAll() */}
@@ -540,9 +543,12 @@ console.log(text.replaceAll('cat', 'dog'));
 const html = '<div><p>Hello</p></div>';
 const clean = html.replaceAll('<', '[')
                   .replaceAll('>', ']');
-console.log(clean);`}
+console.log(clean);
+// Output:
+// replaceAll() -> "dog and dog and dog"
+// Chained replaceAll() ->
+// [div][p]Hello[/p][/div]`}
               </pre>
-              <SnippetOutput lines={['replaceAll() -> "dog and dog and dog"', 'Chained replaceAll() ->', '[div][p]Hello[/p][/div]']} />
             </div>
 
             {/* repeat() */}
@@ -560,9 +566,12 @@ console.log(dash.repeat(10));
 
 // Create separator
 const separator = '='.repeat(20);
-console.log(separator);`}
+console.log(separator);
+// Output:
+// repeat(5) -> "*****"
+// repeat(10) -> "----------"
+// separator -> "===================="`}
               </pre>
-              <SnippetOutput lines={['repeat(5) -> "*****"', 'repeat(10) -> "----------"', 'separator -> "===================="']} />
             </div>
 
             {/* padStart() & padEnd() */}
@@ -580,9 +589,12 @@ console.log(num.padEnd(3, '0'));
 
 // Credit card masking
 const card = '1234';
-console.log(card.padStart(16, '*'));`}
+console.log(card.padStart(16, '*'));
+// Output:
+// padStart(3, "0") -> "005"
+// padEnd(3, "0") -> "500"
+// padStart(16, "*") -> "************1234"`}
               </pre>
-              <SnippetOutput lines={['padStart(3, "0") -> "005"', 'padEnd(3, "0") -> "500"', 'padStart(16, "*") -> "************1234"']} />
             </div>
 
             {/* concat() */}
@@ -600,13 +612,59 @@ console.log(first.concat(' ', last, '!'));
 
 // Multiple strings
 const result = 'a'.concat('b', 'c', 'd');
-console.log(result);`}
+console.log(result);
+// Output:
+// concat() -> "Hello World"
+// with "!" -> "Hello World!"
+// Multiple -> "abcd"
+// Prefer + or template literals`}
               </pre>
-              <SnippetOutput lines={['concat() -> "Hello World"', 'with "!" -> "Hello World!"', 'Multiple -> "abcd"', 'Prefer + or template literals']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Transform Methods"
+        description="Change case, trim whitespace, replace, pad, and repeat strings"
+        code={`// Case Transformation
+const text = 'Hello World';
+console.log(text.toUpperCase());
+// Output: "HELLO WORLD"
+
+console.log(text.toLowerCase());
+// Output: "hello world"
+
+// Trim Whitespace
+const messy = '   Hello World   ';
+console.log(messy.trim());
+// Output: "Hello World"
+
+// Replace Text
+const original = 'cat and cat and cat';
+console.log(original.replace('cat', 'dog'));
+// Output: "dog and cat and cat"
+
+console.log(original.replaceAll('cat', 'dog'));
+// Output: "dog and dog and dog"
+
+// Repeat & Pad
+console.log('*'.repeat(5));
+// Output: "*****"
+
+const num = '5';
+console.log(num.padStart(3, '0'));
+// Output: "005"
+
+// Concat
+const first = 'Hello';
+const last = 'World';
+console.log(first.concat(' ', last));
+// Output: "Hello World"`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Zap}
+      />
 
       {/* ES2024 Unicode Methods */}
       <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -648,9 +706,12 @@ console.log(brokenText.isWellFormed());
 // Use before encoding or sending to server
 if (userInput.isWellFormed()) {
   sendToServer(userInput);
-}`}
+}
+// Output:
+// validText.isWellFormed() -> true
+// brokenText.isWellFormed() -> false
+// Prevents encoding errors`}
               </pre>
-              <SnippetOutput lines={['validText.isWellFormed() -> true', 'brokenText.isWellFormed() -> false', 'Prevents encoding errors']} />
             </div>
 
             {/* toWellFormed() */}
@@ -672,9 +733,12 @@ console.log(fixed);
 console.log(fixed.isWellFormed());
 
 // Safe to use in APIs/databases
-const safeText = userInput.toWellFormed();`}
+const safeText = userInput.toWellFormed();
+// Output:
+// fixed -> "Hello�World"
+// fixed.isWellFormed() -> true
+// Lone surrogates replaced with �`}
               </pre>
-              <SnippetOutput lines={['fixed -> "Hello�World"', 'fixed.isWellFormed() -> true', 'Lone surrogates replaced with �']} />
             </div>
           </div>
 
@@ -693,6 +757,45 @@ const safeText = userInput.toWellFormed();`}
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: ES2024 Unicode Methods"
+        description="Handle Unicode text correctly (emojis, special characters)"
+        code={`// isWellFormed() - Check if string has valid Unicode
+const validText = 'Hello 👋 World';
+const brokenText = 'Bad\\uD800Text'; // Lone surrogate
+
+console.log(validText.isWellFormed());
+// Output: true
+
+console.log(brokenText.isWellFormed());
+// Output: false
+
+// toWellFormed() - Fix invalid Unicode
+const broken = 'Hello\\uD800World';
+const fixed = broken.toWellFormed();
+
+console.log(fixed);
+// Output: "Hello�World"
+
+console.log(fixed.isWellFormed());
+// Output: true
+
+// Use before encoding or sending to server
+function sendToServer(userInput) {
+  if (!userInput.isWellFormed()) {
+    userInput = userInput.toWellFormed();
+  }
+  // Now safe to send
+  console.log('Sending:', userInput);
+}
+
+sendToServer(validText);
+// Output: Sending: Hello 👋 World`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Sparkles}
+      />
 
       {/* Real-World Examples */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -740,9 +843,13 @@ const safeText = userInput.toWellFormed();`}
 console.log(validateUsername('  john  '));
 console.log(validateUsername('ab'));
 console.log(validateUsername('john doe'));
-console.log(validateUsername('123user'));`}
+console.log(validateUsername('123user'));
+// Output:
+// validateUsername("  john  ") -> "Valid!"
+// validateUsername("ab") -> "Invalid length"
+// validateUsername("john doe") -> "No spaces allowed"
+// validateUsername("123user") -> "Must start with letter"`}
               </pre>
-              <SnippetOutput lines={['validateUsername("  john  ") -> "Valid!"', 'validateUsername("ab") -> "Invalid length"', 'validateUsername("john doe") -> "No spaces allowed"', 'validateUsername("123user") -> "Must start with letter"']} />
             </div>
 
             {/* File Extension Checker */}
@@ -768,9 +875,13 @@ console.log(validateUsername('123user'));`}
 console.log(getFileType('photo.jpg'));
 console.log(getFileType('report.pdf'));
 console.log(getFileType('movie.mp4'));
-console.log(getFileType('data.txt'));`}
+console.log(getFileType('data.txt'));
+// Output:
+// getFileType("photo.jpg") -> "Image"
+// getFileType("report.pdf") -> "Document"
+// getFileType("movie.mp4") -> "Video"
+// getFileType("data.txt") -> "Unknown"`}
               </pre>
-              <SnippetOutput lines={['getFileType("photo.jpg") -> "Image"', 'getFileType("report.pdf") -> "Document"', 'getFileType("movie.mp4") -> "Video"', 'getFileType("data.txt") -> "Unknown"']} />
             </div>
 
             {/* Text Truncation */}
@@ -791,9 +902,14 @@ const longText = 'This is a very long article title that needs to be shortened';
 
 console.log(truncate(longText, 20));
 console.log(truncate(longText, 30));
-console.log(truncate('Short', 20));`}
+console.log(truncate('Short', 20));
+// Output:
+// truncate(longText, 20) ->
+// "This is a very long..."
+// truncate(longText, 30) ->
+// "This is a very long article..."
+// truncate("Short", 20) -> "Short"`}
               </pre>
-              <SnippetOutput lines={['truncate(longText, 20) ->', '"This is a very long..."', 'truncate(longText, 30) ->', '"This is a very long article..."', 'truncate("Short", 20) -> "Short"']} />
             </div>
 
             {/* CSV to Array */}
@@ -812,13 +928,77 @@ const items = parseCSVLine(csvLine);
 
 console.log(items);
 console.log('Items:', items.length);
-console.log('First item:', items[0]);`}
+console.log('First item:', items[0]);
+// Output:
+// items -> ["apple", "banana", "orange", "grape"]
+// Items: 4
+// First item: "apple"`}
               </pre>
-              <SnippetOutput lines={['items -> ["apple", "banana", "orange", "grape"]', 'Items: 4', 'First item: "apple"']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Use Cases"
+        description="Practical applications of string methods"
+        code={`// Username Validation
+function validateUsername(username) {
+  const clean = username.trim();
+  
+  if (clean.length < 3 || clean.length > 20) {
+    return 'Invalid length';
+  }
+  
+  if (clean.includes(' ')) {
+    return 'No spaces allowed';
+  }
+  
+  return 'Valid!';
+}
+
+console.log(validateUsername('  john  '));
+// Output: "Valid!"
+
+// File Type Checker
+function getFileType(filename) {
+  if (filename.endsWith('.jpg') || filename.endsWith('.png')) {
+    return 'Image';
+  }
+  if (filename.endsWith('.pdf')) {
+    return 'Document';
+  }
+  return 'Unknown';
+}
+
+console.log(getFileType('photo.jpg'));
+// Output: "Image"
+
+// Text Truncation
+function truncate(text, maxLength) {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.slice(0, maxLength) + '...';
+}
+
+const longText = 'This is a very long article title';
+console.log(truncate(longText, 20));
+// Output: "This is a very long..."
+
+// CSV Parsing
+function parseCSVLine(line) {
+  return line.split(',').map(item => item.trim());
+}
+
+const csvLine = 'apple, banana, orange';
+const items = parseCSVLine(csvLine);
+console.log(items);
+// Output: ["apple", "banana", "orange"]`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Code}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -860,30 +1040,6 @@ console.log('First item:', items[0]);`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ string methods, searching, and transformation.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights string methods (searching, extracting, transforming, splitting, and trimming) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -1,0 +1,574 @@
+'use client';
+
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
+import {
+  Link2,
+  Sparkles,
+  Clock3,
+  ListChecks,
+  Lightbulb,
+  CheckCircle2,
+  XCircle,
+} from 'lucide-react';
+
+interface JavaScriptCallbackParametersProps {
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+}
+
+export default function JavaScriptCallbackParameters({}: JavaScriptCallbackParametersProps) {
+  return (
+    <div className="w-full min-h-screen space-y-10 pb-16">
+      <PageHeader
+        icon={Link2}
+        category="JavaScript Fundamentals"
+        title="Callback Parameters"
+        description="Understand what arguments callback APIs pass you and how to design clear callback signatures."
+        colorTheme="blue"
+      />
+
+      {/* Overview */}
+      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Why Callback Params Matter
+          </CardTitle>
+          <CardDescription className="text-base">
+            Callbacks receive specific arguments: know the order, name them clearly, and validate before using.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-3 gap-4">
+          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <ListChecks className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
+              <h3 className="font-semibold">Know the shape</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">map gives (value, index, array); setTimeout gives none; custom APIs vary.</p>
+            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">Signature</Badge>
+          </div>
+          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Clock3 className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
+              <h3 className="font-semibold">Async ready</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">Callbacks often signal completion or errors—design both paths.</p>
+            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">Success/Error</Badge>
+          </div>
+          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
+              <h3 className="font-semibold">Name clearly</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">Use descriptive param names (`value`, `index`, `array`, `err`, `result`) to avoid confusion.</p>
+            <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">Clarity</Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Beginner walkthrough */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Lightbulb className="w-6 h-6 text-amber-500/80 dark:text-amber-300/80" />
+            Function Parameters 101
+          </CardTitle>
+          <CardDescription className="text-base">
+            Start with tiny functions, name the inputs, and pass callbacks that expect those inputs.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border space-y-2">
+              <h4 className="font-semibold">Step 1: Plain function</h4>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 text-xs font-mono whitespace-pre-wrap">
+{`function add(a, b) {
+  return a + b;
+}
+
+add(2, 3); // a=2, b=3
+// Output: 5`}
+              </pre>
+              <p className="text-sm text-muted-foreground">Regular parameters are listed inside parentheses. Order matters.</p>
+            </div>
+            <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-2">
+              <h4 className="font-semibold">Step 2: Function as parameter</h4>
+              <pre className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 text-xs font-mono whitespace-pre-wrap border">
+{`function greet(name, formatter) {
+  const message = formatter(name);
+  console.log(message);
+}
+
+greet('Ada', (value) => 'Hi ' + value + '!');
+// Output: Hi Ada!`}
+              </pre>
+              <p className="text-sm text-muted-foreground">Here the second parameter is a callback. It receives the <code>name</code> value.</p>
+            </div>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+              Extra beginner-friendly callback examples
+            </h4>
+            <div className="grid md:grid-cols-2 gap-3 text-xs font-mono">
+              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border">
+                <div>// Timer callback (no parameters)</div>
+                <div>setTimeout(() =&gt; console.log('time!'), 500);</div>
+                <div className="text-slate-500">// callback runs later, but no args</div>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border">
+                <div>// Iterating list (value, index)</div>
+                <div>['JS', 'TS'].forEach((value, index) =&gt; {'{'}</div>
+                <div className="pl-2">console.log(index, value);</div>
+                <div>{'}'});</div>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border md:col-span-2">
+                <div>// Custom helper with success + failure callbacks</div>
+                <div>{`function loadUser(onSuccess, onFailure) {`}</div>
+                <div className="pl-2">{`const ok = true;`}</div>
+                <div className="pl-2">{`if (ok) onSuccess({ name: 'Ada' });`}</div>
+                <div className="pl-2">{`else onFailure('Could not load');`}</div>
+                <div>{`}`}</div>
+                <div>{`loadUser(`}</div>
+                <div className="pl-2">{`(user) => console.log('user', user),`}</div>
+                <div className="pl-2">{`(message) => console.error(message)`}</div>
+                <div>{`);`}</div>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Identify what each callback receives (value, index, event, error) and write descriptive parameter names so the next
+              developer can follow your intent.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Canonical signatures */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Link2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Canonical Callback Signatures
+          </CardTitle>
+          <CardDescription className="text-base">
+            Minimal, runnable snippets showing real callback arguments and outputs.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
+            <h4 className="font-semibold">Array helpers</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>arr.map((value, index, array) =&gt; value + index);</div>
+              <div>arr.filter((value, index, array) =&gt; value {'>'} 10);</div>
+              <div className="text-slate-500">// map log: value, index, same array</div>
+              <div>arr.reduce((total, value, index, array) =&gt; total + value, 0);</div>
+              <div className="text-slate-500">// reduce gets accumulator + value</div>
+            </div>
+            <p className="text-sm text-muted-foreground">Most array callbacks give (value, index, array) in that order.</p>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Node-style (err, result)</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>fs.readFile('file.txt', (err, data) =&gt; {'{'} ... {'}'});</div>
+              <div>callback(new Error('fail'), null);</div>
+              <div>callback(null, data);</div>
+              <div className="text-slate-500">// handle err first, data second</div>
+            </div>
+            <Alert>
+              <AlertTitle>Tip</AlertTitle>
+              <AlertDescription>Design async callbacks to deliver error first, result second, or migrate to Promises.</AlertDescription>
+            </Alert>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Extra practical examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <ListChecks className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Practical Callback Examples
+          </CardTitle>
+          <CardDescription className="text-base">
+            Quick references for everyday APIs and patterns.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
+            <h4 className="font-semibold">DOM events</h4>
+            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>button.addEventListener('click', event =&gt; {'{'} ... {'}'});</div>
+              <div className="text-slate-500">// event carries target, coordinates, etc.</div>
+              <div>{`input.addEventListener('input', ({ target }) => console.log(target.value));`}</div>
+            </div>
+          </div>
+          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
+            <h4 className="font-semibold">Promise-style adapters</h4>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
+              <div>const toPromise = (fn) =&gt;</div>
+              <div className="pl-2">new Promise((resolve, reject) =&gt; fn(resolve, reject));</div>
+              <div>toPromise((res) =&gt; res('done')).then(console.log);</div>
+            </div>
+            <p className="text-sm text-muted-foreground">Wrap callbacks to integrate with Promise/async flows.</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Subscribe & Unsubscribe patterns */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Link2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Subscribe & Unsubscribe
+          </CardTitle>
+          <CardDescription className="text-base">
+            How real-world APIs let you start receiving values with a callback, and then stop them safely when you are done.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Subscribe/Unsubscribe Pattern"
+              description="Register callbacks and get cleanup functions - the foundation of event-driven programming"
+              code={`// Internal list of listeners
+const listeners = [];
+
+// Subscribe: register callback and return unsubscribe function
+function subscribe(listener) {
+  listeners.push(listener);
+
+  return () => {
+    const index = listeners.indexOf(listener);
+    if (index !== -1) {
+      listeners.splice(index, 1); // unsubscribe
+    }
+  };
+}
+
+// Emit values to all listeners
+function emit(value) {
+  listeners.forEach((listener) => listener(value));
+}
+
+// Usage
+const unsubscribe = subscribe((value) => {
+  console.log('listener A saw:', value);
+});
+
+emit(1);
+emit(2);
+unsubscribe();          // stop this listener
+emit(3);                // A will NOT be called now
+
+// Output:
+// listener A saw: 1
+// listener A saw: 2
+// (no log after unsubscribe)`}
+              language="javascript"
+              colorTheme="blue"
+              icon={Link2}
+              features={[
+                "Returns cleanup function",
+                "Multiple subscribers supported",
+                "Used in RxJS, Redux, WebSockets",
+                "Prevents memory leaks"
+              ]}
+              tips={[
+                "Always call unsubscribe when done",
+                "Store unsubscribe function reference",
+                "Common pattern in modern JavaScript"
+              ]}
+            />
+
+            <CodeSnippet
+              title="DOM Event Listeners"
+              description="addEventListener/removeEventListener - must use the same callback reference to unsubscribe"
+              code={`// Subscribe to DOM event
+function handleClick(event) {
+  console.log('Clicked at:', event.clientX, event.clientY);
+}
+
+button.addEventListener('click', handleClick);
+
+// Later: unsubscribe (must pass same function!)
+setTimeout(() => {
+  button.removeEventListener('click', handleClick);
+  console.log('Stopped listening for clicks');
+}, 5000);
+
+// Example output:
+// Clicked at: 120 340
+// Clicked at: 180 250
+// Stopped listening for clicks`}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+              features={[
+                "Classic DOM pattern",
+                "Must use same callback reference",
+                "Prevents ghost listeners",
+                "Essential for cleanup in SPAs"
+              ]}
+              tips={[
+                "Named functions required for removal",
+                "Forgetting removal causes memory leaks",
+                "Use AbortController for modern cleanup"
+              ]}
+            />
+          </div>
+        </CardContent>
+                Many modern APIs treat <code>subscribe</code> as: “start sending values to this callback, and give me a way to stop later”.
+                The most common pattern is to return an <strong>unsubscribe function</strong>.
+              </p>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`// Internal list of listeners
+const listeners = [];
+
+// Subscribe: register callback and return unsubscribe function
+function subscribe(listener) {
+  listeners.push(listener);
+
+  return () => {
+    const index = listeners.indexOf(listener);
+    if (index !== -1) {
+      listeners.splice(index, 1); // unsubscribe
+    }
+  };
+}
+
+// Somewhere in your code: emit a value to all listeners
+function emit(value) {
+  listeners.forEach((listener) => listener(value));
+}
+
+// Usage
+const unsubscribe = subscribe((value) => {
+  console.log('listener A saw:', value);
+});
+
+emit(1);
+emit(2);
+unsubscribe();          // stop this listener
+emit(3);                // A will NOT be called now
+
+// Output:
+// listener A saw: 1
+// listener A saw: 2
+// (no log after unsubscribe)`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                This same shape appears in libraries like RxJS, Redux-style stores, WebSocket helpers, and many custom utilities.
+              </p>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
+              <h4 className="font-semibold">2. Multiple subscribers, one emitter</h4>
+              <p className="text-sm text-muted-foreground">
+                Real systems rarely have just one listener. Subscribe/unsubscribe lets you add and remove many callbacks over time.
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
+{`// Reuse the previous subscribe/emit
+const unsubscribeB = subscribe((value) => {
+  console.log('listener B saw:', value);
+});
+
+emit('online');
+unsubscribeB();
+emit('offline');
+
+// Output:
+// listener A saw: online
+// listener B saw: online
+// listener A saw: offline`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                Always check the documentation: some APIs return an object with <code>unsubscribe()</code>, others return a bare cleanup function.
+              </p>
+            </div>
+          </div>
+
+          {/* 2. DOM events: addEventListener / removeEventListener */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
+              <h4 className="font-semibold text-emerald-800 dark:text-emerald-200">3. Browser events (classic pattern)</h4>
+              <p className="text-sm text-muted-foreground">
+                The DOM uses a subscribe/unsubscribe pair: <code>addEventListener</code> and <code>removeEventListener</code>. You must pass
+                the <strong>same callback</strong> to unsubscribe correctly.
+              </p>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`// Subscribe
+function handleClick(event) {
+  console.log('Clicked at:', event.clientX, event.clientY);
+}
+
+button.addEventListener('click', handleClick);
+
+// Later: unsubscribe
+setTimeout(() => {
+  button.removeEventListener('click', handleClick);
+  console.log('Stopped listening for clicks');
+}, 5000);
+
+// Example output:
+// Clicked at: 120 340
+// Clicked at: 180 250
+// Stopped listening for clicks`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                Forgetting to remove event listeners is a common source of memory leaks and “ghost” callbacks firing on old screens.
+              </p>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
+              <h4 className="font-semibold">4. One-time subscriptions with <code>once</code></h4>
+              <p className="text-sm text-muted-foreground">
+                Modern browsers let you auto-unsubscribe after the first event using the <code>once</code> option. You still pass a callback,
+                but you do not need manual cleanup code.
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
+{`// Fires only on the very first click
+button.addEventListener(
+  'click',
+  () => {
+    console.log('First click only!');
+  },
+  { once: true } // <-- auto-unsubscribe
+);
+
+// Output (no matter how many times you click):
+// First click only!`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                Other useful options include <code>passive: true</code> (performance hint for scroll/touch) and <code>capture: true</code>
+                (listen during the capture phase).
+              </p>
+            </div>
+          </div>
+
+          {/* 3. Modern cancellation with AbortController + signal */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-sky-50/60 dark:from-indigo-950/10 dark:to-sky-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/40 space-y-3">
+              <h4 className="font-semibold text-indigo-800 dark:text-indigo-200">5. AbortSignal for grouped unsubscribe</h4>
+              <p className="text-sm text-muted-foreground">
+                The latest DOM APIs let you subscribe using an <code>AbortSignal</code>. When you call <code>controller.abort()</code>, all
+                listeners using that signal are unsubscribed at once.
+              </p>
+              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+{`const controller = new AbortController();
+const { signal } = controller;
+
+// Subscribe with a signal (modern pattern)
+window.addEventListener(
+  'mousemove',
+  (event) => {
+    console.log('mouse:', event.clientX, event.clientY);
+  },
+  { signal } // auto-removed when controller.abort() is called
+);
+
+// Stop all related listeners after 3 seconds
+setTimeout(() => {
+  controller.abort();
+  console.log('Stopped tracking mouse (via AbortController)');
+}, 3000);
+
+// Output:
+// mouse: 100 220
+// mouse: 130 260
+// ...
+// Stopped tracking mouse (via AbortController)`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                <code>AbortSignal</code> also works with <code>fetch</code>, web streams, and many newer browser APIs—one controller
+                can cancel network requests and event streams together.
+              </p>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
+              <h4 className="font-semibold">6. Subscribe/unsubscribe in async flows</h4>
+              <p className="text-sm text-muted-foreground">
+                In async code, callbacks often subscribe to data, then return a cleanup function that callers <strong>must</strong> run
+                (for example in frameworks or long-lived services).
+              </p>
+              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
+{`// Custom subscribe helper that also returns cleanup
+function subscribeToInterval(ms, onTick) {
+  const id = setInterval(() => {
+    const timestamp = new Date().toISOString();
+    onTick(timestamp);
+  }, ms);
+
+  // Unsubscribe function
+  return () => {
+    clearInterval(id);
+    console.log('Interval cleared');
+  };
+}
+
+// Usage in higher-level code
+const stop = subscribeToInterval(1000, (time) => {
+  console.log('tick at', time);
+});
+
+setTimeout(() => {
+  stop(); // unsubscribe
+}, 3100);
+
+// Sample output:
+// tick at 2024-01-01T10:00:00.000Z
+// tick at 2024-01-01T10:00:01.000Z
+// tick at 2024-01-01T10:00:02.000Z
+// Interval cleared`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                Many libraries follow this idea: <code>subscribe(callback)</code> returns an <code>unsubscribe</code> function or a small
+                object like <code>{'{ unsubscribe() { … } }'}</code>. Always look for that cleanup API and call it when the work is done.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Best practices */}
+      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Lightbulb className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
+            Best Practices
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-4">
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
+            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <CheckCircle2 className="w-5 h-5" />
+              Do This
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>✅ Name callback parameters descriptively (value, index, array).</li>
+              <li>✅ Handle both success and error paths in async callbacks.</li>
+              <li>✅ Keep callbacks pure when possible—avoid unexpected mutations.</li>
+              <li>✅ Prefer Promises/async-await for complex async flows.</li>
+            </ul>
+          </div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
+            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
+              <XCircle className="w-5 h-5" />
+              Avoid This
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>❌ Ignoring the error argument in Node-style callbacks.</li>
+              <li>❌ Over-nesting callbacks; refactor to Promises to avoid callback hell.</li>
+              <li>❌ Relying on implicit globals inside callbacks.</li>
+              <li>❌ Forgetting to return or handle results inside array callbacks.</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

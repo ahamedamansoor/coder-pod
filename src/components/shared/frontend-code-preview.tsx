@@ -1,13 +1,16 @@
 'use client';
 
-'use client';
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Copy, Check, ChevronRight, Eye, Play, Code2, EyeOff } from 'lucide-react';
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
+import { useReactPlayground } from '@/components/languages/react/react-playground-context';
+import { useAngularPlayground } from '@/components/shared/playground/angular-playground-context';
 import { compileScss } from '@/lib/scss-compiler';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { prism, vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useTheme } from 'next-themes';
 
 /**
  * FrontendCodePreview - A component to display frontend code with live preview
@@ -22,6 +25,10 @@ interface FrontendCodePreviewProps {
   html?: string;
   css?: string;
   js?: string;
+  react?: string;
+  angular?: string;
+  vue?: string;
+  next?: string;
   colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan' | 'red' | 'green';
   icon?: React.ComponentType<{ className?: string }>;
   previewHeight?: string;
@@ -37,6 +44,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   html = '',
   css = '',
   js = '',
+  react = '',
+  angular = '',
+  vue = '',
+  next = '',
   colorTheme = 'orange',
   icon: Icon = Eye,
   previewHeight = 'auto',
@@ -50,6 +61,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   const [iframeHeight, setIframeHeight] = useState<number>(500);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [compiledCss, setCompiledCss] = useState<string>('');
+  const [isCompiling, setIsCompiling] = useState(false);
+  const { theme: appTheme } = useTheme();
   
   // Extract CSS from HTML <style> tags
   const extractCSSFromHTML = (htmlContent: string): string => {
@@ -86,6 +99,13 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   const extractedJS = js || extractJSFromHTML(html);
   const hasCSS = !!extractedCSS;
   const hasJS = !!extractedJS;
+  const hasReact = !!react;
+  const hasAngular = !!angular;
+  const hasVue = !!vue;
+  const hasNext = !!next;
+  
+  // Check if any framework code is provided
+  const hasFramework = hasReact || hasAngular || hasVue || hasNext;
   
   // Get display HTML (full or with extracted parts removed for cleaner display)
   const getDisplayHTML = (): string => {
@@ -157,40 +177,70 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
   
   // Determine initial tab based on what's provided
-  // Prioritize CSS for CSS learning content
-  const getInitialTab = (): 'html' | 'css' | 'js' => {
+  // Prioritize framework code when available
+  const getInitialTab = (): 'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next' => {
+    if (hasReact) return 'react';
+    if (hasAngular) return 'angular';
+    if (hasVue) return 'vue';
+    if (hasNext) return 'next';
     if (hasCSS) return 'css';
     if (html) return 'html';
     if (hasJS) return 'js';
     return 'html';
   };
   
-  const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>(getInitialTab());
+  const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next'>(getInitialTab());
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showCode, setShowCode] = useState(false);
+  const [showCode, setShowCode] = useState(hasFramework); // Show code by default for framework examples
 
-  // Get web playground context
+  // Get playground contexts
   const { openWithContent } = useWebPlayground();
+  
+  // Get React playground context (will be undefined in HTML/CSS/JS pages, which is fine)
+  const reactPlayground = useReactPlayground();
+  const openReactPlaygroundWithContent = reactPlayground?.openWithContent;
+  
+  
+  // Note: Angular playground will be added when needed
+  const openAngularPlayground = undefined; // TODO: Add when Angular pages use this component
 
   // Compile SCSS to CSS if needed
   useEffect(() => {
     const compileStyleCode = async () => {
       if (styleLanguage === 'scss' && extractedCSS) {
+        setIsCompiling(true);
+        console.log('🎨 [SCSS] Starting compilation...');
+        console.log('📄 [SCSS] Input length:', extractedCSS.length, 'chars');
+        console.log('📝 [SCSS] Preview:', extractedCSS.substring(0, 150).replace(/\n/g, ' '));
+        
         try {
           const result = await compileScss(extractedCSS);
           if (result.error) {
-            console.error('SCSS Compilation Error:', result.error);
-            setCompiledCss(`/* SCSS Compilation Error: ${result.error} */`);
-          } else {
+            console.error('❌ [SCSS] Compilation Error:', result.error);
+            // Don't use SCSS as fallback - it won't work. Instead show error
+            setCompiledCss(`/* SCSS Compilation Error:\n${result.error}\n\nPlease check your SCSS syntax. */`);
+          } else if (result.css) {
+            console.log('✅ [SCSS] Compilation successful!');
+            console.log('📦 [SCSS] Output length:', result.css.length, 'chars');
+            console.log('📝 [SCSS] Output preview:', result.css.substring(0, 150).replace(/\n/g, ' '));
             setCompiledCss(result.css);
+          } else {
+            console.warn('⚠️ [SCSS] Compilation returned empty CSS');
+            setCompiledCss('/* SCSS compiled but produced no output */');
           }
         } catch (error) {
-          console.error('SCSS Compilation Failed:', error);
-          setCompiledCss(`/* SCSS Compilation Failed */`);
+          console.error('❌ [SCSS] Compilation exception:', error);
+          setCompiledCss(`/* SCSS Compilation Failed: ${error}\n\nPlease refresh the page and try again. */`);
+        } finally {
+          setIsCompiling(false);
         }
       } else {
         // Regular CSS or no styles
+        if (styleLanguage === 'css' && extractedCSS) {
+          console.log('📝 [CSS] Using regular CSS, length:', extractedCSS.length);
+        }
         setCompiledCss(extractedCSS);
+        setIsCompiling(false);
       }
     };
 
@@ -220,7 +270,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   // Auto-resize iframe to fit content
   useEffect(() => {
     const iframe = iframeRef.current;
-    if (!iframe || previewHeight !== 'auto') return;
+    if (!iframe || previewHeight !== 'auto' || isCompiling) return;
 
     const resizeIframe = () => {
       try {
@@ -255,10 +305,16 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
-  }, [html, compiledCss, js, previewHeight, isDarkMode]);
+  }, [html, compiledCss, js, previewHeight, isDarkMode, isCompiling]);
 
   const handleCopy = async () => {
-    const codeToCopy = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
+    const codeToCopy = activeTab === 'html' ? getDisplayHTML() : 
+                       activeTab === 'css' ? extractedCSS : 
+                       activeTab === 'react' ? react :
+                       activeTab === 'angular' ? angular :
+                       activeTab === 'vue' ? vue :
+                       activeTab === 'next' ? next :
+                       extractedJS;
     await navigator.clipboard.writeText(codeToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -266,6 +322,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
   // Create the full HTML document for preview
   const getPreviewContent = () => {
+    // Debug log for SCSS preview
+    if (styleLanguage === 'scss') {
+      console.log('🎬 [Preview] Generating preview content');
+      console.log('📊 [Preview] compiledCss length:', compiledCss.length);
+      console.log('📊 [Preview] extractedCSS length:', extractedCSS.length);
+      console.log('🔍 [Preview] Using CSS:', compiledCss.substring(0, 100));
+    }
+    
     // Add Tailwind CDN if styleLanguage is tailwind
     const tailwindCDN = styleLanguage === 'tailwind' 
       ? '<script src="https://cdn.tailwindcss.com"></script>' 
@@ -294,8 +358,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     const bgColor = isDarkMode ? '#0f172a' : '#f8fafc';
     const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
     
-    // For Tailwind, we don't need the default body styling
-    const defaultBodyStyles = styleLanguage === 'tailwind' 
+    // For Tailwind or SCSS, don't add default styles (SCSS has its own base styles)
+    const defaultBodyStyles = (styleLanguage === 'tailwind' || styleLanguage === 'scss')
       ? '' 
       : `
     * { 
@@ -437,7 +501,13 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
 
   const theme = themeColors[colorTheme] ?? themeColors.orange;
-  const currentCode = activeTab === 'html' ? getDisplayHTML() : activeTab === 'css' ? extractedCSS : extractedJS;
+  const currentCode = activeTab === 'html' ? getDisplayHTML() : 
+                      activeTab === 'css' ? extractedCSS : 
+                      activeTab === 'react' ? react :
+                      activeTab === 'angular' ? angular :
+                      activeTab === 'vue' ? vue :
+                      activeTab === 'next' ? next :
+                      extractedJS;
 
   return (
     <Card className="overflow-hidden">
@@ -469,11 +539,54 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
         >
           {showCode && (
             <div
-              className="lg:w-1/2 flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm"
+              className="lg:w-1/2 flex flex-col border border-[#d0d7de] dark:border-[#30363d] rounded-lg overflow-hidden shadow-sm"
             >
-            <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 px-4 py-2 border-b dark:border-slate-800">
+            <div className="flex items-center justify-between bg-[#f6f8fa] dark:bg-[#161b22] px-4 py-2 border-b border-[#d0d7de] dark:border-[#30363d]">
               <div className="flex gap-2">
-                {html && (
+                {/* Framework tabs - only show when framework code is provided */}
+                {hasReact && (
+                  <button
+                    onClick={() => setActiveTab('react')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'react' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    React
+                  </button>
+                )}
+                {hasAngular && (
+                  <button
+                    onClick={() => setActiveTab('angular')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'angular' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    Angular
+                  </button>
+                )}
+                {hasVue && (
+                  <button
+                    onClick={() => setActiveTab('vue')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'vue' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    Vue
+                  </button>
+                )}
+                {hasNext && (
+                  <button
+                    onClick={() => setActiveTab('next')}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                      activeTab === 'next' ? theme.tab : theme.tabInactive
+                    }`}
+                  >
+                    Next.js
+                  </button>
+                )}
+                
+                {/* Only show HTML/CSS/JS tabs when NO framework code is provided */}
+                {!hasFramework && html && (
                   <button
                     onClick={() => setActiveTab('html')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
@@ -483,17 +596,21 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                     HTML
                   </button>
                 )}
-                {hasCSS && (
+                {!hasFramework && hasCSS && (
                   <button
                     onClick={() => setActiveTab('css')}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+                    className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors flex items-center gap-1.5 ${
                       activeTab === 'css' ? theme.tab : theme.tabInactive
                     }`}
+                    title={styleLanguage === 'scss' ? 'SCSS (compiles to CSS for preview)' : 'CSS'}
                   >
                     {styleLanguage === 'scss' ? 'SCSS' : 'CSS'}
+                    {styleLanguage === 'scss' && (
+                      <span className="text-[10px] opacity-75 font-normal">→ CSS</span>
+                    )}
                   </button>
                 )}
-                {hasJS && (
+                {!hasFramework && hasJS && (
                   <button
                     onClick={() => setActiveTab('js')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
@@ -516,20 +633,35 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 )}
               </button>
             </div>
-            <div className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-950">
-              <pre 
-                className="p-5 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-full"
+            <div className="flex-1 overflow-auto bg-white dark:bg-[#0d1117]">
+              <SyntaxHighlighter
+                language={
+                  activeTab === 'html' ? 'html' :
+                  activeTab === 'css' ? 'css' :
+                  activeTab === 'scss' ? 'scss' :
+                  activeTab === 'js' ? 'javascript' :
+                  activeTab === 'react' || activeTab === 'vue' || activeTab === 'angular' ? 'jsx' :
+                  activeTab === 'next' ? 'jsx' :
+                  'javascript'
+                }
+                style={appTheme === 'dark' ? vscDarkPlus : prism}
+                showLineNumbers={false}
+                customStyle={{
+                  margin: 0,
+                  padding: '1.25rem',
+                  background: appTheme === 'dark' ? '#0d1117' : '#ffffff',
+                  fontSize: '13px',
+                  lineHeight: '1.45',
+                }}
+                codeTagProps={{
+                  style: {
+                    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+                    fontFeatureSettings: '"liga" 0, "calt" 0',
+                  }
+                }}
               >
-                <code
-                  className="text-[13px] leading-relaxed font-mono"
-                  style={{
-                    fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", Cascadia Code, Menlo, Monaco, Consolas, monospace',
-                    fontFeatureSettings: '"liga", "calt"',
-                  }}
-                >
-                  {currentCode}
-                </code>
-              </pre>
+                {currentCode}
+              </SyntaxHighlighter>
             </div>
           </div>
           )}
@@ -543,16 +675,69 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
                   Live Preview
                 </span>
+                {styleLanguage === 'scss' && !isCompiling && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 font-medium">
+                    SCSS → CSS
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => {
                     try {
+                      // Wait for SCSS compilation if still compiling
+                      if (isCompiling) {
+                        console.warn('⏳ Please wait for SCSS compilation to finish...');
+                        return;
+                      }
+
+                      console.log('🚀 Opening playground with CSS:', (compiledCss || extractedCSS).substring(0, 100));
+
+                      // React Playground
+                      if (hasReact && openReactPlaygroundWithContent) {
+                        openReactPlaygroundWithContent(react, compiledCss || extractedCSS);
+                        return;
+                      }
+
+                      // Angular Playground
+                      if (hasAngular && openAngularPlayground) {
+                        openAngularPlayground({
+                          title: title,
+                          description: description,
+                          files: {
+                            'src/app/app.component.ts': angular,
+                            'src/styles.css': compiledCss || extractedCSS || '',
+                          },
+                          openFile: 'src/app/app.component.ts',
+                        });
+                        return;
+                      }
+
+                      // Vue Playground (fallback to web playground for now)
+                      if (hasVue && openWithContent) {
+                        openWithContent(html || '', compiledCss || extractedCSS || '', extractedJS || '', styleLanguage);
+                        return;
+                      }
+
+                      // Next.js Playground (fallback to web playground for now)
+                      if (hasNext && openWithContent) {
+                        openWithContent(html || '', compiledCss || extractedCSS || '', extractedJS || '', styleLanguage);
+                        return;
+                      }
+
+                      // Default: Web Playground for HTML/CSS/JS
                       const htmlContent = html || '';
-                      const cssContent = extractedCSS || '';
+                      // Use compiledCss (SCSS compiled to CSS) instead of extractedCSS
+                      const cssContent = compiledCss || extractedCSS || '';
                       const jsContent = extractedJS || '';
 
-                      // Always use the context's openWithContent function
+                      console.log('📦 Web Playground Content:', {
+                        htmlLength: htmlContent.length,
+                        cssLength: cssContent.length,
+                        jsLength: jsContent.length,
+                        styleLanguage
+                      });
+
                       if (openWithContent) {
                         openWithContent(htmlContent, cssContent, jsContent, styleLanguage);
                         return;
@@ -564,14 +749,28 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                         openHandler(htmlContent, cssContent, jsContent);
                       }
                     } catch (error) {
-                      console.error('Error opening web playground:', error);
+                      console.error('Error opening playground:', error);
                     }
                   }}
-                  className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white transition-all group shadow-sm hover:shadow-md"
-                  title="Open code in Web Playground for interactive editing"
+                  disabled={isCompiling}
+                  className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all group shadow-sm hover:shadow-md ${
+                    isCompiling 
+                      ? 'bg-gray-400 cursor-not-allowed opacity-50'
+                      : 'bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white'
+                  }`}
+                  title={isCompiling ? 'Compiling SCSS...' : `Open in ${hasReact ? 'React' : hasAngular ? 'Angular' : hasVue ? 'Vue' : hasNext ? 'Next.js' : 'Web'} Playground`}
                 >
-                  <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
-                  <span className="text-xs font-semibold">Run</span>
+                  {isCompiling ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-xs font-semibold">Compiling...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" />
+                      <span className="text-xs font-semibold">Run</span>
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={() => setShowCode(!showCode)}
@@ -599,10 +798,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
             <div 
               className="flex-1 p-4 bg-white dark:bg-slate-950 overflow-auto"
             >
-              {mounted ? (
+              {mounted && !isCompiling && (styleLanguage !== 'scss' || compiledCss) ? (
                 <iframe
                   ref={iframeRef}
-                  key={isDarkMode ? 'dark' : 'light'}
+                  key={`${isDarkMode ? 'dark' : 'light'}-${(compiledCss || extractedCSS).substring(0, 50).replace(/[^a-zA-Z0-9]/g, '')}`}
                   srcDoc={getPreviewContent()}
                   title="Preview"
                   className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
@@ -611,8 +810,17 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800">
                   <div className="text-center text-slate-400 dark:text-slate-500">
-                    <Eye className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Loading preview...</p>
+                    {isCompiling ? (
+                      <>
+                        <div className="w-8 h-8 mx-auto mb-2 border-4 border-slate-300 dark:border-slate-700 border-t-pink-500 rounded-full animate-spin"></div>
+                        <p className="text-sm">Compiling SCSS...</p>
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">Loading preview...</p>
+                      </>
+                    )}
                   </div>
                 </div>
               )}

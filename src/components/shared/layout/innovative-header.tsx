@@ -147,7 +147,7 @@ export function InnovativeHeader({
                   <Link key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item)}>
                     <button
                       className={cn(
-                        "relative group/btn flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-out",
+                        "relative group/btn flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out",
                         "hover:scale-105 active:scale-98",
                         isActive
                           ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10"
@@ -156,10 +156,20 @@ export function InnovativeHeader({
                     >
                       {/* Subtle active indicator */}
                       {isActive && (
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-lg" />
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-lg transition-opacity duration-300" />
                       )}
-                      <Icon className={cn("w-4 h-4 relative z-10 transition-transform duration-300", "group-hover/btn:scale-110")} />
-                      <span className="relative z-10 font-medium">{item.label}</span>
+                      <Icon className={cn(
+                        "w-4 h-4 relative z-10 flex-shrink-0 transition-transform duration-300",
+                        "group-hover/btn:scale-110"
+                      )} />
+                      <span className={cn(
+                        "relative z-10 font-medium whitespace-nowrap transition-all duration-300 ease-in-out overflow-hidden",
+                        isActive 
+                          ? "opacity-100 max-w-[200px] ml-0" 
+                          : "opacity-0 max-w-0 -ml-2 group-hover/btn:opacity-100 group-hover/btn:max-w-[200px] group-hover/btn:ml-0"
+                      )}>
+                        {item.label}
+                      </span>
                     </button>
                   </Link>
                 );
@@ -246,12 +256,21 @@ export function InnovativeHeader({
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
                       className={cn(
-                        "gap-2 transition-all duration-300",
-                        isActive && "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md"
+                        "gap-2 transition-all duration-300 ease-in-out group/mobile-btn",
+                        isActive 
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md" 
+                          : "hover:bg-slate-100 dark:hover:bg-slate-800"
                       )}
                     >
-                      <Icon className="h-4 w-4" />
-                      <span className="hidden sm:inline">{item.label}</span>
+                      <Icon className="h-4 w-4 flex-shrink-0" />
+                      <span className={cn(
+                        "transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap",
+                        isActive 
+                          ? "inline max-w-[200px] opacity-100 ml-0" 
+                          : "max-w-0 opacity-0 -ml-2 group-hover/mobile-btn:max-w-[200px] group-hover/mobile-btn:opacity-100 group-hover/mobile-btn:ml-0 sm:inline sm:max-w-[200px] sm:opacity-100 sm:ml-0"
+                      )}>
+                        {item.label}
+                      </span>
                     </Button>
                   </Link>
                 );

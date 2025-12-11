@@ -2,53 +2,25 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Zap,
   Terminal,
-  MonitorSmartphone,
   MousePointerClick,
   Code2,
-  Globe,
   Sparkles,
   Layers,
   Play,
   ArrowRight,
-  Target,
   AlertTriangle,
   CheckCircle2,
   XCircle,
   Lightbulb,
-  BookOpen,
-  TrendingUp,
 } from 'lucide-react';
 
-interface JavaScriptFirstProgramProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const consoleHtml = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello JavaScript</title>
-    <style>
-      body { 
-        font-family: system-ui; 
-        padding: 2rem; 
-        color: #64748b; 
-      }
-    </style>
-  </head>
-  <body>
-    <p>Open the console to see the output</p>
-  </body>
-</html>`;
+interface JavaScriptFirstProgramProps {}
 
 const consoleJs = `// Your First JavaScript Program
 
@@ -63,33 +35,6 @@ console.log('10 × 5 =', 10 * 5);
 console.log('');
 console.log('✅ You just ran your first program!');`;
 
-const domHtml = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Interactive Hello</title>
-    <style>
-      body { 
-        font-family: system-ui; 
-        padding: 2rem; 
-      }
-      button { 
-        padding: 0.75rem 1.5rem; 
-        font-size: 1rem; 
-        cursor: pointer; 
-      }
-      #message { 
-        margin-top: 1rem; 
-        font-size: 1.1rem; 
-      }
-    </style>
-  </head>
-  <body>
-    <button id="btn">Click Me</button>
-    <p id="message"></p>
-  </body>
-</html>`;
-
 const domJs = `// Making Pages Interactive
 
 const button = document.getElementById('btn');
@@ -103,24 +48,6 @@ button.addEventListener('click', () => {
 });
 
 console.log('Ready! Click the button.');`;
-
-const loopHtml = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Looped Messages</title>
-    <style>
-      body { 
-        font-family: system-ui; 
-        padding: 2rem; 
-        color: #64748b; 
-      }
-    </style>
-  </head>
-  <body>
-    <p>Open the console to see the output</p>
-  </body>
-</html>`;
 
 const loopJs = `// Using Loops to Repeat Code
 
@@ -139,7 +66,7 @@ console.log('Done!');
 console.log('');
 console.log('✅ Loops repeat code automatically');`;
 
-export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScriptFirstProgramProps) {
+export default function JavaScriptFirstProgram({}: JavaScriptFirstProgramProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -201,144 +128,102 @@ export default function JavaScriptFirstProgram({ onOpenWebPlayground }: JavaScri
         </CardContent>
       </Card>
 
-      {/* Live Playground – First Programs */}
+      {/* First Programs Examples */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
             <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Run Your First Programs
+            Your First Programs
           </CardTitle>
           <CardDescription className="text-base">
-            Launch curated examples in the Web Playground to see JavaScript run inside a real page.
+            Explore these three essential examples to understand how JavaScript works.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Example 1: Console Hello */}
           <div className="space-y-4">
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="1. Console Hello"
-              description="The classic first program: log a message to the console. This example pairs a simple HTML page with a script."
+              description="The classic first program: log a message to the console."
               code={consoleJs}
-              output={[
-                "Hello, JavaScript!",
-                "Welcome to programming!",
-                "",
-                "You can do math:",
-                "2 + 2 = 4",
-                "10 × 5 = 50",
-                "",
-                "✅ You just ran your first program!"
-              ]}
               language="javascript"
               colorTheme="blue"
               icon={Terminal}
+              features={[
+                "console.log() displays messages",
+                "JavaScript can do math operations",
+                "Empty strings create blank lines",
+                "Results appear in browser console"
+              ]}
+              tips={[
+                "Open browser console with F12",
+                "Try changing the numbers",
+                "Add your own console.log() statements"
+              ]}
             />
-            {onOpenWebPlayground && (
-              <InteractivePlayground
-                title="Try Console Hello"
-                description="Run your first JavaScript program and see console.log in action"
-                features={[
-                  'Console Output',
-                  'Math Operations',
-                  'Text Logging',
-                  'Beginner Friendly'
-                ]}
-                buttonText="Open Console Hello"
-                onLaunchPlayground={onOpenWebPlayground}
-                playgroundData={{
-                  html: consoleHtml,
-                  css: '',
-                  js: consoleJs
-                }}
-                colorTheme="blue"
-              />
-            )}
           </div>
 
           {/* Example 2: Button Click */}
           <div className="space-y-4">
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="2. Button Click Hello"
-              description="Attach JavaScript to the DOM. When the user clicks the button, your code runs and updates the page."
+              description="Attach JavaScript to the DOM and respond to user interactions."
               code={domJs}
-              output={[
-                "Ready! Click the button.",
-                "// After clicking:",
-                "Button clicked!",
-                "// DOM updates: 'Hello from JavaScript!' (text turns green)"
-              ]}
               language="javascript"
               colorTheme="emerald"
               icon={MousePointerClick}
+              embedPlayground={true}
+              playgroundConfig={{
+                html: `<div class="demo-container">
+  <header>
+    <h2 id="heading">Interactive Button Demo</h2>
+    <p class="subtitle">Click the button below to see JavaScript in action</p>
+  </header>
+  
+  <main>
+    <button id="btn" class="action-btn">Click Me!</button>
+    <div id="message" class="output-display" role="status" aria-live="polite"></div>
+  </main>
+</div>`,
+                js: domJs,
+                visiblePanels: ['preview', 'console']
+              }}
+              features={[
+                "getElementById() finds HTML elements",
+                "addEventListener() waits for clicks",
+                "textContent changes element text",
+                "style.color changes text color"
+              ]}
+              tips={[
+                "Try clicking the button multiple times",
+                "Watch the console for logs",
+                "See how the text color changes",
+                "Elements must exist before selecting them"
+              ]}
             />
-            {onOpenWebPlayground && (
-              <InteractivePlayground
-                title="Try Button Click"
-                description="Experience interactive DOM manipulation with click events"
-                features={[
-                  'Event Listeners',
-                  'DOM Updates',
-                  'Style Changes',
-                  'User Interaction'
-                ]}
-                buttonText="Open Button Demo"
-                onLaunchPlayground={onOpenWebPlayground}
-                playgroundData={{
-                  html: domHtml,
-                  css: '',
-                  js: domJs
-                }}
-                colorTheme="emerald"
-              />
-            )}
           </div>
 
           {/* Example 3: Loop */}
           <div className="space-y-4">
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="3. Looped Messages"
-              description="Add a loop to your first program. This prints multiple messages and demonstrates repetition and patterns."
+              description="Use loops to repeat code automatically and create patterns."
               code={loopJs}
-              output={[
-                "Counting up:",
-                "Number 1",
-                "Number 2",
-                "Number 3",
-                "Number 4",
-                "Number 5",
-                "",
-                "Counting down:",
-                "3...",
-                "2...",
-                "1...",
-                "Done!",
-                "",
-                "✅ Loops repeat code automatically"
-              ]}
               language="javascript"
               colorTheme="purple"
               icon={Layers}
+              features={[
+                "for loops repeat code a specific number of times",
+                "i++ increases by 1 each time",
+                "i-- decreases by 1 each time",
+                "Loops are fundamental to programming"
+              ]}
+              tips={[
+                "Change the numbers to see different patterns",
+                "Loops save you from writing repetitive code",
+                "Common for processing lists and arrays"
+              ]}
             />
-            {onOpenWebPlayground && (
-              <InteractivePlayground
-                title="Try Loops"
-                description="Learn how loops work by repeating code automatically"
-                features={[
-                  'For Loops',
-                  'Repetition',
-                  'Counting Logic',
-                  'Pattern Practice'
-                ]}
-                buttonText="Open Loop Demo"
-                onLaunchPlayground={onOpenWebPlayground}
-                playgroundData={{
-                  html: loopHtml,
-                  css: '',
-                  js: loopJs
-                }}
-                colorTheme="purple"
-              />
-            )}
           </div>
         </CardContent>
       </Card>

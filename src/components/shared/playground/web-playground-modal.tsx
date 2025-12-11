@@ -313,17 +313,36 @@ export function WebPlaygroundModal({
       };
     }
     
-    if (defaultFocusedPanel === 'css') {
-      // For CSS-focused content, show CSS, Preview, and Console by default
+    // Check language context for intelligent panel display
+    const isHTMLContext = effectiveLanguage === 'html' || defaultFocusedPanel === 'html';
+    const isCSSContext = effectiveLanguage === 'css' || effectiveLanguage === 'scss' || defaultFocusedPanel === 'css';
+    const isTailwindContext = effectiveLanguage === 'tailwind';
+    const isJSContext = effectiveLanguage === 'javascript' || effectiveLanguage === 'typescript' || defaultFocusedPanel === 'js';
+    
+    // HTML or Tailwind learning: Show HTML, CSS, Preview (HTML focused)
+    if (isHTMLContext || isTailwindContext) {
       return {
-        html: false,
+        html: true,
         css: true,
         js: false,
         preview: true,
-        console: true,
+        console: false,
       };
-    } else if (defaultFocusedPanel === 'js') {
-      // For JS-focused content, show JS, Preview, and Console by default
+    }
+    
+    // CSS/SCSS learning: Show HTML, CSS, Preview (CSS focused)
+    if (isCSSContext) {
+      return {
+        html: true,
+        css: true,
+        js: false,
+        preview: true,
+        console: false,
+      };
+    }
+    
+    // JavaScript learning: Show JS, Preview, Console (JS focused)
+    if (isJSContext) {
       return {
         html: false,
         css: false,
@@ -331,23 +350,15 @@ export function WebPlaygroundModal({
         preview: true,
         console: true,
       };
-    } else if (defaultFocusedPanel === 'html') {
-      // For HTML-focused content, show HTML and Preview by default
-      return {
-        html: true,
-        css: false,
-        js: false,
-        preview: true,
-        console: false,
-      };
     }
+    
     // Default: show all panels
     return {
       html: true,
       css: true,
       js: true,
       preview: true,
-      console: true,
+      console: false,
     };
   };
   
@@ -743,15 +754,15 @@ export function WebPlaygroundModal({
       {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
       <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] flex flex-col p-0 m-0 gap-0 rounded-none border-0" showCloseButton={false}>
         {/* Clean, Structured Header */}
-        <DialogHeader className="px-6 py-3 border-b bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900 flex-row items-center justify-between">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b bg-gradient-to-r from-amber-50/30 to-yellow-50/30 dark:from-amber-950/20 dark:to-yellow-950/20 flex-row items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-500 rounded-lg shadow-sm">
-                <Code className="h-4 w-4 text-white" />
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center shadow-md">
+                <Code className="h-6 w-6 text-white" />
               </div>
               <div>
-                <DialogTitle className="text-base font-bold">Web Playground</DialogTitle>
-                <p className="text-[10px] text-muted-foreground">Live coding environment</p>
+                <DialogTitle className="text-2xl">Web Playground</DialogTitle>
+                <p className="text-sm text-muted-foreground mt-1">Live coding environment with instant preview</p>
               </div>
             </div>
             
@@ -771,9 +782,9 @@ export function WebPlaygroundModal({
           
           <div className="flex items-center gap-3">
             {/* Clean Square Panel Toggles */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-muted-foreground">Panels:</span>
-              <div className="flex gap-1">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Panels</span>
+              <div className="flex gap-1.5">
                 <button
                   onClick={() => togglePanel('html')}
                   className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
@@ -850,10 +861,10 @@ export function WebPlaygroundModal({
             {/* Auto-run Toggle */}
             <button
               onClick={() => setAutoRun(!autoRun)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${
                 autoRun
-                  ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:scale-105 border'
+                  ? 'bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white shadow-lg'
+                  : 'border-amber-200 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-amber-950/20 border'
               }`}
               title={autoRun ? 'Auto-run enabled - Click to disable' : 'Manual run - Click to enable auto-run'}
             >
@@ -896,11 +907,15 @@ export function WebPlaygroundModal({
             
             <div className="h-4 w-px bg-border" />
             
-            {/* Close Button */}
+            {/* Innovative Close Button */}
             <DialogClose asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" aria-label="Close">
-                <X className="h-4 w-4" />
-              </Button>
+              <button
+                className="group relative w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-lg hover:shadow-xl"
+                aria-label="Close playground"
+              >
+                <X className="w-5 h-5 text-white transition-transform duration-300 group-hover:scale-110" />
+                <span className="absolute inset-0 rounded-full bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              </button>
             </DialogClose>
           </div>
         </DialogHeader>
@@ -919,7 +934,7 @@ export function WebPlaygroundModal({
                             </div>
                             <span className="text-xs font-semibold text-orange-700 dark:text-orange-300">HTML</span>
                           </div>
-                          <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-300">
                             index.html
                           </Badge>
                         </div>
@@ -970,7 +985,7 @@ export function WebPlaygroundModal({
                         )}
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300">
                           styles.{styleLang === 'tailwind' ? 'css' : styleLang}
                         </Badge>
                         <select 
@@ -1028,7 +1043,7 @@ export function WebPlaygroundModal({
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-yellow-200 dark:border-yellow-800 text-yellow-700 dark:text-yellow-300">
                             script.{scriptLang === 'typescript' ? 'ts' : 'js'}
                           </Badge>
                           <select 
@@ -1072,8 +1087,11 @@ export function WebPlaygroundModal({
                   <ResizablePanel defaultSize={40} minSize={20}>
                     <div className="h-full flex flex-col">
                       <div className="px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950/20 border-b flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse shadow-lg shadow-emerald-500/50" />
                         <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Live Preview</span>
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
+                          Real-time
+                        </Badge>
                       </div>
                       <div className={`flex-1 relative ${editorTheme === 'dark' ? 'bg-slate-900' : 'bg-white'}`}>
                         <iframe
@@ -1103,7 +1121,7 @@ export function WebPlaygroundModal({
                           <Terminal className="h-3 w-3 text-white" />
                         </div>
                         <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">Console</span>
-                        <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300">
                           {consoleLogs.length} {consoleLogs.length === 1 ? 'msg' : 'msgs'}
                         </Badge>
                       </div>

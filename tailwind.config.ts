@@ -20,6 +20,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        '3xl': '1800px',
+      },
       fontFamily: {
         body: ['PT Sans', 'sans-serif'],
         headline: ['PT Sans', 'sans-serif'],

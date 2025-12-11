@@ -4,6 +4,7 @@ import React, { createContext, useState, useContext, ReactNode, useCallback } fr
 
 type ReactPlaygroundContentType = {
   code: string;
+  css?: string;
 };
 
 interface ReactPlaygroundContextType {
@@ -11,7 +12,7 @@ interface ReactPlaygroundContextType {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   content: ReactPlaygroundContentType;
   setContent: React.Dispatch<React.SetStateAction<ReactPlaygroundContentType>>;
-  openWithContent: (code: string) => void;
+  openWithContent: (code: string, css?: string) => void;
 }
 
 const ReactPlaygroundContext = createContext<ReactPlaygroundContextType | undefined>(undefined);
@@ -20,10 +21,11 @@ export const ReactPlaygroundProvider = ({ children }: { children: ReactNode }) =
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState<ReactPlaygroundContentType>({
     code: '',
+    css: '',
   });
 
-  const openWithContent = useCallback((code: string) => {
-    setContent({ code });
+  const openWithContent = useCallback((code: string, css?: string) => {
+    setContent({ code, css });
     setOpen(true);
   }, []);
 
@@ -34,10 +36,9 @@ export const ReactPlaygroundProvider = ({ children }: { children: ReactNode }) =
   );
 };
 
-export const useReactPlayground = () => {
+export const useReactPlayground = (): ReactPlaygroundContextType | undefined => {
   const context = useContext(ReactPlaygroundContext);
-  if (context === undefined) {
-    throw new Error('useReactPlayground must be used within a ReactPlaygroundProvider');
-  }
+  // Return undefined instead of throwing error to allow usage in non-React pages (HTML/CSS/JS)
+  // Components should check if context exists before using React playground features
   return context;
 };

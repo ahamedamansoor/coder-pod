@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput, InteractivePlayground } from '@/components/shared';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Layers,
   Sparkles,
@@ -24,126 +23,7 @@ interface JavaScriptHigherOrderFunctionsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Higher-Order Functions Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🚀 Higher-Order Functions</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Higher-Order Functions Demo ===\\n');
-
-// 1. Function Returning Function
-console.log('1️⃣ FUNCTION RETURNING FUNCTION:');
-function createMultiplier(factor) {
-  return function(number) {
-    return number * factor;
-  };
-}
-
-const double = createMultiplier(2);
-const triple = createMultiplier(3);
-
-console.log('double(5):', double(5));
-console.log('triple(5):', triple(5));
-console.log('');
-
-// 2. Function Accepting Function
-console.log('2️⃣ FUNCTION ACCEPTING FUNCTION:');
-function repeatAction(times, action) {
-  for (let i = 0; i < times; i++) {
-    action(i);
-  }
-}
-
-let sum = 0;
-repeatAction(5, (i) => { sum += i; });
-console.log('Sum after repeatAction(5):', sum);
-console.log('');
-
-// 3. Array Higher-Order Methods
-console.log('3️⃣ ARRAY HIGHER-ORDER METHODS:');
-const numbers = [1, 2, 3, 4, 5];
-
-const doubled = numbers.map(x => x * 2);
-console.log('map(x => x * 2):', doubled);
-
-const evens = numbers.filter(x => x % 2 === 0);
-console.log('filter(x => x % 2 === 0):', evens);
-
-const total = numbers.reduce((acc, x) => acc + x, 0);
-console.log('reduce(sum):', total);
-console.log('');
-
-// 4. Function Composition
-console.log('4️⃣ FUNCTION COMPOSITION:');
-const addTax = (price) => price * 1.1;
-const addShipping = (price) => price + 5;
-
-function compose(f, g) {
-  return function(x) {
-    return f(g(x));
-  };
-}
-
-const finalPrice = compose(addTax, addShipping);
-const result = finalPrice(100);
-console.log('finalPrice(100):', '$' + result.toFixed(2));
-
-console.log('\\n✅ All demos complete!');`;
-
-export default function JavaScriptHigherOrderFunctions({ onOpenWebPlayground }: JavaScriptHigherOrderFunctionsProps) {
+export default function JavaScriptHigherOrderFunctions({}: JavaScriptHigherOrderFunctionsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -306,89 +186,71 @@ repeatAction(3, (i) => console.log(\`* \${i * 2}\`));
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Real-World: Array Methods</h4>
-            <p className="text-sm text-muted-foreground">
-              JavaScript's built-in array methods are higher-order functions
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-                <h5 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                  <ListFilter className="w-5 h-5" />
-                  map() - Transform
-                </h5>
-                <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const nums = [1, 2, 3];
-
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Array Methods: map & filter"
+              description="Transform and filter arrays - the most common higher-order functions"
+              code={`// map() - Transform each element
+const nums = [1, 2, 3];
 const doubled = nums.map(x => x * 2);
-
 console.log(doubled);
-// Output: [2, 4, 6]`}
-                </pre>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Transforms each element using callback
-                </p>
-              </div>
+// Output: [2, 4, 6]
 
-              <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-                <h5 className="font-semibold mb-3 flex items-center gap-2 text-blue-700 dark:text-blue-300">
-                  <ListFilter className="w-5 h-5" />
-                  filter() - Select
-                </h5>
-                <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const nums = [1, 2, 3, 4];
-
-const evens = nums.filter(x => x % 2 === 0);
-
+// filter() - Keep elements that pass test
+const numbers = [1, 2, 3, 4];
+const evens = numbers.filter(x => x % 2 === 0);
 console.log(evens);
 // Output: [2, 4]`}
-                </pre>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Keeps only elements that pass test
-                </p>
-              </div>
+              language="javascript"
+              colorTheme="emerald"
+              icon={ListFilter}
+              features={[
+                "map() transforms each element",
+                "filter() selects matching elements",
+                "Both return new arrays",
+                "Don't mutate original array"
+              ]}
+              tips={[
+                "Use map() to transform data",
+                "Use filter() to select data",
+                "Chain methods for complex operations"
+              ]}
+            />
 
-              <div className="p-4 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-                <h5 className="font-semibold mb-3 flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                  <ListFilter className="w-5 h-5" />
-                  reduce() - Combine
-                </h5>
-                <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const nums = [1, 2, 3];
-
+            <CodeSnippet
+              title="reduce() - Combine Values"
+              description="Reduce an array to a single value - the most powerful array method"
+              code={`// reduce() - Combine to single value
+const nums = [1, 2, 3, 4, 5];
 const sum = nums.reduce((acc, x) => acc + x, 0);
+console.log('Sum:', sum);
+// Output: Sum: 15
 
-console.log(sum);
-// Output: 6`}
-                </pre>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Reduces array to single value
-                </p>
-              </div>
+// Real-world: Calculate total price
+const cart = [
+  { name: 'Phone', price: 500 },
+  { name: 'Case', price: 20 },
+  { name: 'Charger', price: 30 }
+];
 
-              <div className="p-4 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-                <h5 className="font-semibold mb-3 flex items-center gap-2 text-amber-700 dark:text-amber-300">
-                  <ListFilter className="w-5 h-5" />
-                  forEach() - Iterate
-                </h5>
-                <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const items = ['a', 'b', 'c'];
-
-items.forEach((item, index) => {
-  console.log(\`\${index}:\`, item);
-});
-
-// Output:
-// 0: a
-// 1: b
-// 2: c`}
-                </pre>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Executes callback for each item
-                </p>
-              </div>
-            </div>
+const total = cart.reduce((sum, item) => sum + item.price, 0);
+console.log('Total: $' + total);
+// Output: Total: $550`}
+              language="javascript"
+              colorTheme="purple"
+              icon={ListFilter}
+              features={[
+                "Reduces array to single value",
+                "Accumulator pattern",
+                "Works for any operation",
+                "Can return any type"
+              ]}
+              tips={[
+                "Initial value is crucial",
+                "Perfect for summing values",
+                "Use for complex aggregations"
+              ]}
+            />
           </div>
 
           <Alert>
@@ -487,57 +349,100 @@ console.log(sayBonjour('Marie'));   // "Bonjour, Marie!"`}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Debounce
-              </h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Control function execution rate (search, scroll events)
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function debounce(fn, delay) {
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Debounce - Control Execution Rate"
+              description="Delay function execution until user stops typing - perfect for search inputs"
+              code={`// Debounce function
+function debounce(fn, delay) {
   let timeout;
   return function(...args) {
     clearTimeout(timeout);
-    timeout = setTimeout(
-      () => fn(...args),
-      delay
-    );
+    timeout = setTimeout(() => fn(...args), delay);
   };
 }
 
 // Usage: Search with debouncing
-const search = debounce(
-  (query) => console.log('Searching:', query),
-  300
-);
+const input = document.querySelector('#searchInput');
+const results = document.querySelector('#results');
 
-search('a');    // Cancelled
-search('ap');   // Cancelled
-search('app');  // Executes after 300ms
-// Output: "Searching: app"`}
-              </pre>
-            </div>
+const search = debounce((query) => {
+  results.textContent = 'Searching for: ' + query;
+  console.log('API call for:', query);
+}, 500);
 
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Memoization
-              </h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Cache function results to avoid repeated calculations
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function memoize(fn) {
+input.addEventListener('input', (e) => search(e.target.value));`}
+              language="javascript"
+              colorTheme="blue"
+              icon={Zap}
+              embedPlayground={true}
+              playgroundConfig={{
+                html: `<div style="padding: 30px; max-width: 500px; margin: 0 auto;">
+  <h3 style="margin-bottom: 15px; color: #1e293b;">Debounce Demo</h3>
+  <input 
+    id="searchInput" 
+    type="text" 
+    placeholder="Type to search..." 
+    style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #3b82f6; border-radius: 8px; margin-bottom: 15px;"
+  />
+  <div 
+    id="results" 
+    style="padding: 15px; background: #eff6ff; border: 1px solid #3b82f6; border-radius: 8px; color: #1e40af; min-height: 50px;"
+  >
+    Start typing...
+  </div>
+</div>`,
+                css: '',
+                js: `function debounce(fn, delay) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const input = document.querySelector('#searchInput');
+const results = document.querySelector('#results');
+
+const search = debounce((query) => {
+  if (query) {
+    results.textContent = '🔍 Searching for: ' + query;
+    console.log('API call for:', query);
+  } else {
+    results.textContent = 'Start typing...';
+  }
+}, 500);
+
+input.addEventListener('input', (e) => search(e.target.value));`,
+                visiblePanels: ['preview', 'js', 'console'],
+                layout: 'vertical'
+              }}
+              features={[
+                "Delays execution until user stops",
+                "Prevents excessive API calls",
+                "Common in search inputs",
+                "Returns higher-order function"
+              ]}
+              tips={[
+                "Use 300-500ms delay for search",
+                "Essential for performance",
+                "Prevents rate limiting"
+              ]}
+            />
+
+            <CodeSnippet
+              title="Memoization - Cache Results"
+              description="Cache expensive calculations to avoid recalculating - great for recursive functions"
+              code={`// Memoize function
+function memoize(fn) {
   const cache = {};
   return function(...args) {
     const key = JSON.stringify(args);
     if (key in cache) {
-      console.log('From cache');
+      console.log('✅ From cache');
       return cache[key];
     }
+    console.log('🔄 Calculating...');
     const result = fn(...args);
     cache[key] = result;
     return result;
@@ -545,15 +450,28 @@ search('app');  // Executes after 300ms
 }
 
 // Usage: Expensive calculation
-const square = memoize((n) => {
-  console.log('Calculating...');
-  return n * n;
-});
+const square = memoize((n) => n * n);
 
-square(5);  // Calculating... → 25
-square(5);  // From cache → 25`}
-              </pre>
-            </div>
+console.log(square(5));  
+// Output: 🔄 Calculating... 25
+
+console.log(square(5));  
+// Output: ✅ From cache 25`}
+              language="javascript"
+              colorTheme="purple"
+              icon={Zap}
+              features={[
+                "Caches function results",
+                "Avoids repeated calculations",
+                "Perfect for Fibonacci/factorial",
+                "Trade memory for speed"
+              ]}
+              tips={[
+                "Use for expensive operations",
+                "Great for recursive functions",
+                "Clear cache when needed"
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
@@ -628,28 +546,6 @@ square(5);  // From cache → 25`}
           </Alert>
         </CardContent>
       </Card>
-
-      {/* Interactive Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Interactive Higher-Order Functions Playground"
-          description="Experiment with map, filter, reduce, function composition, currying, and see how HOFs enable powerful abstractions."
-          features={[
-            'Map, Filter, Reduce',
-            'Function Composition',
-            'Currying',
-            'Real-world Patterns'
-          ]}
-          buttonText="Open HOF Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="purple"
-        />
-      )}
       
     </div>
   );

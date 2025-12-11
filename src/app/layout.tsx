@@ -45,6 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Coder Pod" />
+        {/* Sass.js for SCSS compilation in browser */}
+        <script src="https://cdn.jsdelivr.net/npm/sass.js@0.11.1/dist/sass.sync.js" async></script>
         <script src="/register-sw.js" defer></script>
       </head>
       <body className={cn(

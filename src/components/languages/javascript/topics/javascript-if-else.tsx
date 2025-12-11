@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   SplitSquareHorizontal,
   GitCompare,
@@ -17,9 +17,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-interface JavaScriptIfElseProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptIfElseProps {}
 
 const playgroundHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -109,7 +107,7 @@ if (input) {
 
 console.log('Demo complete. Try changing the values above.');`;
 
-export default function JavaScriptIfElse({ onOpenWebPlayground }: JavaScriptIfElseProps) {
+export default function JavaScriptIfElse({}: JavaScriptIfElseProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -265,27 +263,40 @@ export default function JavaScriptIfElse({ onOpenWebPlayground }: JavaScriptIfEl
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try If/Else Statements"
-          description="Experiment with if, else if, else statements and conditional logic"
-          features={[
-            'if Statements',
-            'else if Chains',
-            'else Blocks',
-            'Truthy/Falsy Values'
-          ]}
-          buttonText="Open If/Else Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="emerald"
-        />
-      )}
+      {/* If/Else Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <GitCompare className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
+            If/Else in Action
+          </CardTitle>
+          <CardDescription className="text-base">
+            See how if, else if, and else statements control program flow
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <CodeSnippet
+            title="If/Else Statement Examples"
+            description="Control flow with conditional branching - check conditions and execute different code"
+            code={playgroundJs}
+            language="javascript"
+            colorTheme="emerald"
+            icon={SplitSquareHorizontal}
+            features={[
+              "if checks a condition",
+              "else if provides alternative conditions",
+              "else handles all other cases",
+              "Truthy/falsy values determine flow"
+            ]}
+            tips={[
+              "Always use strict equality (===)",
+              "Order else if from most to least specific",
+              "Use {} braces even for single statements"
+            ]}
+          />
+        </CardContent>
+      </Card>
+
     </div>
   );
 }

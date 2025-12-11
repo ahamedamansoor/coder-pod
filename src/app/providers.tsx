@@ -2,7 +2,11 @@
 'use client';
 
 import { ThemeProvider } from '@/components/shared/layout/theme-provider';
-import { WebPlaygroundProvider } from '@/components/shared/playground';
+import { 
+  WebPlaygroundProvider, 
+  ReactPlaygroundProvider, 
+  AngularPlaygroundProvider 
+} from '@/components/shared/playground';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
@@ -38,7 +42,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
                             <MotivationalLoaderProvider>
                                 <PlayerProvider>
                                     <WebPlaygroundProvider>
-                                        {children}
+                                        <ReactPlaygroundProvider>
+                                            <AngularPlaygroundProvider>
+                                                {children}
+                                            </AngularPlaygroundProvider>
+                                        </ReactPlaygroundProvider>
                                     </WebPlaygroundProvider>
                                     <FloatingPlayer />
                                     <GlobalLoadingIndicator />

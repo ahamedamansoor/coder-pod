@@ -28,7 +28,7 @@ interface InteractivePlaygroundProps {
     css: string;
     js: string;
   };
-  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange';
+  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'red';
 }
 
 export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
@@ -69,6 +69,10 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
     orange: {
       title: 'text-orange-600 dark:text-orange-400',
       button: 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700',
+    },
+    red: {
+      title: 'text-red-600 dark:text-red-400',
+      button: 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700',
     },
   };
 

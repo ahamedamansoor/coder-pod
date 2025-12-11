@@ -14,7 +14,7 @@ export const angular: Language = {
     { slug: 'angular-vs-react-vue', title: 'Angular vs React/Vue', explanation: 'Understanding differences between Angular and other frameworks.', category: '1. Introduction & Setup' },
     { slug: 'angular-cli', title: 'Angular CLI', explanation: 'Command-line interface for creating, building, and managing Angular projects.', category: '1. Introduction & Setup' },
     { slug: 'project-structure', title: 'Project Structure', explanation: 'Understanding Angular project structure and configuration files.', category: '1. Introduction & Setup' },
-    { slug: 'angular-config', title: 'angular.json Configuration', explanation: 'Configuring build, serve, and test options in angular.json.', category: '1. Introduction & Setup' },
+    { slug: 'angular-json-configuration', title: 'angular.json Configuration', explanation: 'Configuring build, serve, and test options in angular.json.', category: '1. Introduction & Setup' },
     { slug: 'typescript-in-angular', title: 'TypeScript in Angular', explanation: 'Using TypeScript features in Angular applications.', category: '1. Introduction & Setup' },
     
     // 2. COMPONENTS

@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput, InteractivePlayground } from '@/components/shared';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   FunctionSquare,
   Code2,
@@ -22,90 +21,7 @@ interface JavaScriptFunctionsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Functions Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>⚡ Functions</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-
-function greet(name = 'Coder') {
-  return 'Hello, ' + name + '!';
-}
-
-const add = function (a, b) {
-  return a + b;
-};
-
-const multiply = (a, b) => a * b;
-
-console.log('greet():', greet());
-console.log('greet(\"Ada\"):', greet('Ada'));
-console.log('add(2, 3):', add(2, 3));
-console.log('multiply(4, 5):', multiply(4, 5));
-
-function applyTwice(fn, value) {
-  return fn(fn(value));
-}
-
-const double = (n) => n * 2;
-console.log('applyTwice(double, 3):', applyTwice(double, 3));
-
-console.log('All function forms executed.');`;
-
-export default function JavaScriptFunctions({ onOpenWebPlayground }: JavaScriptFunctionsProps) {
+export default function JavaScriptFunctions({}: JavaScriptFunctionsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -172,7 +88,7 @@ export default function JavaScriptFunctions({ onOpenWebPlayground }: JavaScriptF
               Think of a function as a recipe: you give it ingredients (inputs), it follows instructions, and produces a result (output). Once defined, you can use it as many times as needed.
             </p>
             
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Simple Function Example"
               description="Define once, use many times"
               code={`// Define the function
@@ -181,17 +97,28 @@ function greet(name) {
 }
 
 // Call the function multiple times
-console.log(greet('Alice'));  // "Hello, Alice!"
-console.log(greet('Bob'));    // "Hello, Bob!"
-console.log(greet('Charlie')); // "Hello, Charlie!"`}
-              output={[
-                'Hello, Alice!',
-                'Hello, Bob!',
-                'Hello, Charlie!'
-              ]}
+console.log(greet('Alice'));
+// Output: Hello, Alice!
+
+console.log(greet('Bob'));
+// Output: Hello, Bob!
+
+console.log(greet('Charlie'));
+// Output: Hello, Charlie!`}
               language="javascript"
               colorTheme="blue"
               icon={FunctionSquare}
+              features={[
+                "Takes input (parameter)",
+                "Returns output value",
+                "Reusable multiple times",
+                "DRY principle in action"
+              ]}
+              tips={[
+                "Use descriptive function names",
+                "Keep functions focused on one task",
+                "Functions save time and reduce errors"
+              ]}
             />
 
             <Alert>
@@ -389,89 +316,66 @@ function getScores() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Form Validation
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function validateEmail(email) {
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Form Validation"
+              description="Validate email addresses with regex - essential for user input validation"
+              code={`// Pattern: Email validation
+function validateEmail(email) {
   const regex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
   return regex.test(email);
 }
 
 console.log(validateEmail('test@example.com'));
-// true
+// Output: true
 
 console.log(validateEmail('invalid-email'));
-// false`}
-              </pre>
-            </div>
+// Output: false`}
+              language="javascript"
+              colorTheme="blue"
+              icon={CheckCircle2}
+              features={[
+                "Regex pattern matching",
+                "Boolean return value",
+                "Common in form validation",
+                "Prevents invalid submissions"
+              ]}
+              tips={[
+                "Use more robust regex for production",
+                "Consider email verification APIs",
+                "Essential for user registration"
+              ]}
+            />
 
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Price Calculation
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function calculatePrice(price, discount = 0) {
+            <CodeSnippet
+              title="Price Calculation"
+              description="Calculate discounted prices with default parameters"
+              code={`// Pattern: Discount calculation
+function calculatePrice(price, discount = 0) {
   const finalPrice = price - (price * discount);
   return finalPrice.toFixed(2);
 }
 
 console.log(calculatePrice(100, 0.2));
-// "80.00"
+// Output: "80.00"
 
 console.log(calculatePrice(50));
-// "50.00" (no discount)`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Array Processing
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function getActiveUsers(users) {
-  return users.filter(user => user.active);
-}
-
-const users = [
-  { name: 'Alice', active: true },
-  { name: 'Bob', active: false },
-  { name: 'Charlie', active: true }
-];
-
-console.log(getActiveUsers(users));
-// [{ name: 'Alice', active: true }, 
-//  { name: 'Charlie', active: true }]`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-orange-50/60 dark:from-amber-950/10 dark:to-orange-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                String Formatting
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function formatName(firstName, lastName) {
-  return \`\${firstName} \${lastName}\`.trim();
-}
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + 
-         str.slice(1).toLowerCase();
-}
-
-console.log(formatName('John', 'Doe'));
-// "John Doe"
-
-console.log(capitalize('hello WORLD'));
-// "Hello world"`}
-              </pre>
-            </div>
+// Output: "50.00" (no discount)`}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+              features={[
+                "Default parameter (discount = 0)",
+                "Decimal handling with toFixed()",
+                "Common in e-commerce",
+                "Returns formatted string"
+              ]}
+              tips={[
+                "Always format currency properly",
+                "Handle edge cases (negative prices)",
+                "Essential for shopping carts"
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
@@ -511,28 +415,6 @@ console.log(capitalize('hello WORLD'));
           </div>
         </CardContent>
       </Card>
-
-      {/* Interactive Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Interactive Functions Playground"
-          description="Experiment with function declarations, expressions, arrow functions, and higher-order functions in a live environment."
-          features={[
-            'Live Code Editor',
-            'Multiple Function Types',
-            'Console Output',
-            'Real-time Execution'
-          ]}
-          buttonText="Open Functions Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="blue"
-        />
-      )}
     </div>
   );
 }

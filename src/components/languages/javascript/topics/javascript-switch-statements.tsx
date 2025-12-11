@@ -5,8 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   PanelsTopLeft,
   GitCompare,
@@ -19,157 +18,9 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-interface JavaScriptSwitchStatementsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptSwitchStatementsProps {}
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Switch Statements Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🎛️ Switch Statements</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Switch Statements Demo ===\\n');
-
-// Example 1: Day of week
-console.log('1️⃣ DAY OF WEEK:');
-const day = 3;
-
-switch (day) {
-  case 1:
-    console.log('Monday');
-    break;
-  case 2:
-    console.log('Tuesday');
-    break;
-  case 3:
-    console.log('Wednesday');
-    break;
-  case 4:
-    console.log('Thursday');
-    break;
-  case 5:
-    console.log('Friday');
-    break;
-  default:
-    console.log('Weekend!');
-}
-console.log('');
-
-// Example 2: Grade evaluation
-console.log('2️⃣ GRADE EVALUATION:');
-const grade = 'B';
-
-switch (grade) {
-  case 'A':
-    console.log('Excellent! 90-100%');
-    break;
-  case 'B':
-    console.log('Good! 80-89%');
-    break;
-  case 'C':
-    console.log('Fair 70-79%');
-    break;
-  default:
-    console.log('Needs improvement');
-}
-console.log('');
-
-// Example 3: Grouped cases
-console.log('3️⃣ GROUPED CASES:');
-const fruit = 'orange';
-
-switch (fruit) {
-  case 'apple':
-  case 'pear':
-    console.log('Pome fruit');
-    break;
-  case 'orange':
-  case 'lemon':
-  case 'lime':
-    console.log('Citrus fruit');
-    break;
-  case 'banana':
-    console.log('Berry fruit');
-    break;
-  default:
-    console.log('Unknown fruit type');
-}
-console.log('');
-
-// Example 4: Return values
-console.log('4️⃣ RETURNING FROM SWITCH:');
-function getActionMessage(action) {
-  switch (action) {
-    case 'save':
-      return 'File saved successfully';
-    case 'delete':
-      return 'File deleted';
-    case 'open':
-      return 'File opened';
-    default:
-      return 'Unknown action';
-  }
-}
-
-console.log(getActionMessage('save'));
-console.log(getActionMessage('open'));
-
-console.log('\\n✅ All demos complete!');`;
-
-export default function JavaScriptSwitchStatements({ onOpenWebPlayground }: JavaScriptSwitchStatementsProps) {
+export default function JavaScriptSwitchStatements({}: JavaScriptSwitchStatementsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -349,11 +200,10 @@ console.log(dayName);
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3">Grouping Weekdays</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Stack cases for shared logic
+          <CodeSnippet
+              title="Grouping Weekdays"
+              description="Stack cases for shared logic - weekdays vs weekend"
+              code={`// Stack cases for shared logic
 const day = 'Monday';
 
 switch (day) {
@@ -373,34 +223,21 @@ switch (day) {
 }
 
 // Output: Workday`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Seasons by Month</h4>
-              <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Group months by season
-const month = 'March';
-
-switch (month) {
-  case 'December':
-  case 'January':
-  case 'February':
-    console.log('Winter');
-    break;
-  case 'March':
-  case 'April':
-  case 'May':
-    console.log('Spring');
-    break;
-  default:
-    console.log('Summer/Fall');
-}
-
-// Output: Spring`}
-              </pre>
-            </div>
-          </div>
+              language="javascript"
+              colorTheme="purple"
+              icon={ToggleLeft}
+              features={[
+                "Multiple cases share same code",
+                "No break between stacked cases",
+                "Fall-through is intentional",
+                "Common for grouping similar values"
+              ]}
+              tips={[
+                "Add comments for intentional fall-through",
+                "Group related values together",
+                "Always break after shared code"
+              ]}
+            />
 
           <Alert className="bg-amber-50/60 dark:bg-amber-950/10 border-amber-200/50 dark:border-amber-800/30">
             <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
@@ -424,9 +261,9 @@ switch (month) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
             {/* Pattern 1: User Role Permissions */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="User Role Permissions"
               description="Role-based access control - common in authentication systems"
               code={`// Pattern: Role-based access control
@@ -451,18 +288,28 @@ function getPermissions(role) {
 }
 
 console.log(getPermissions('editor'));
-console.log(getPermissions('guest'));`}
-              output={[
-                "['read', 'write']",
-                "[]"
-              ]}
+// Output: ['read', 'write']
+
+console.log(getPermissions('guest'));
+// Output: []`}
               language="javascript"
               colorTheme="blue"
               icon={CheckCircle2}
+              features={[
+                "Role-based access patterns",
+                "Returns different permission arrays",
+                "Default case for unknown roles",
+                "Common in authentication systems"
+              ]}
+              tips={[
+                "Use switch for discrete role types",
+                "Always provide default permissions",
+                "Essential for security systems"
+              ]}
             />
 
             {/* Pattern 2: HTTP Status Codes */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="HTTP Status Handler"
               description="API response handling - different status codes require different messages"
               code={`// Pattern: Handle API responses
@@ -486,97 +333,24 @@ function handleResponse(statusCode) {
 }
 
 console.log(handleResponse(200));
-console.log(handleResponse(404));`}
-              output={[
-                "Success!",
-                "Not Found"
-              ]}
+// Output: Success!
+
+console.log(handleResponse(404));
+// Output: Not Found`}
               language="javascript"
               colorTheme="emerald"
               icon={CheckCircle2}
-            />
-
-            {/* Pattern 3: Calculator Operations */}
-            <CodeSnippetWithOutput
-              title="Calculator Operations"
-              description="Operation router - ideal for calculator apps with different operations"
-              code={`// Pattern: Operation router
-function calculate(num1, num2, operator) {
-  let result;
-  
-  switch (operator) {
-    case '+':
-      result = num1 + num2;
-      break;
-    case '-':
-      result = num1 - num2;
-      break;
-    case '*':
-      result = num1 * num2;
-      break;
-    case '/':
-      result = num2 !== 0 
-        ? num1 / num2 
-        : 'Cannot divide by zero';
-      break;
-    default:
-      result = 'Invalid operator';
-  }
-  
-  return result;
-}
-
-console.log(calculate(10, 5, '+'));
-console.log(calculate(10, 5, '/'));`}
-              output={[
-                "15",
-                "2"
+              features={[
+                "Groups success codes (200, 201)",
+                "Groups auth errors (401, 403)",
+                "Essential for API integration",
+                "Clean status code handling"
               ]}
-              language="javascript"
-              colorTheme="purple"
-              icon={CheckCircle2}
-            />
-
-            {/* Pattern 4: Game State Management */}
-            <CodeSnippetWithOutput
-              title="Game State Management"
-              description="Handle game states - used in games and interactive apps"
-              code={`// Pattern: Handle game states
-function updateGame(state) {
-  let message;
-  
-  switch (state) {
-    case 'loading':
-      message = 'Loading game...';
-      break;
-    case 'playing':
-      message = 'Game in progress';
-      break;
-    case 'paused':
-      message = 'Game paused';
-      break;
-    case 'won':
-      message = '🎉 You won!';
-      break;
-    case 'lost':
-      message = '💔 Game over';
-      break;
-    default:
-      message = 'Unknown state';
-  }
-  
-  return message;
-}
-
-console.log(updateGame('won'));
-console.log(updateGame('paused'));`}
-              output={[
-                "🎉 You won!",
-                "Game paused"
+              tips={[
+                "Group related status codes",
+                "Return early from switch",
+                "Common in fetch/axios wrappers"
               ]}
-              language="javascript"
-              colorTheme="amber"
-              icon={CheckCircle2}
             />
           </div>
         </CardContent>
@@ -730,27 +504,6 @@ console.log(updateGame('paused'));`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try Switch Statements"
-          description="Experiment with switch statements, case matching, break statements, and fall-through behavior"
-          features={[
-            'Case Matching',
-            'Break Statements',
-            'Default Cases',
-            'Fall-through'
-          ]}
-          buttonText="Open Switch Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="amber"
-        />
-      )}
     </div>
   );
 }

@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Box,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Code,
   AlertCircle,
   Zap,
@@ -20,131 +19,7 @@ import {
   Settings,
 } from 'lucide-react';
 
-interface JavaScriptConstructorFunctionsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Constructor Functions Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px; 
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      margin-top: 24px; 
-      font-family: monospace; 
-      font-size: 14px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Constructor Functions</h1>
-    <p>Open the browser console (F12) to see constructor examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./constructor-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Constructor Functions Demo ===\\n');
-
-// 1. Basic Constructor Function
-console.log('1. BASIC CONSTRUCTOR:');
-function Person(name, age) {
-  this.name = name;
-  this.age = age;
-}
-
-const person1 = new Person('Alice', 25);
-const person2 = new Person('Bob', 30);
-
-console.log(person1);
-console.log(person2);
-
-// 2. Adding Methods
-console.log('\\n2. CONSTRUCTOR WITH METHODS:');
-function Car(brand, model) {
-  this.brand = brand;
-  this.model = model;
-  this.getInfo = function() {
-    return this.brand + ' ' + this.model;
-  };
-}
-
-const car1 = new Car('Toyota', 'Camry');
-console.log(car1.getInfo());
-
-// 3. Prototype Methods (Better!)
-console.log('\\n3. PROTOTYPE METHODS:');
-function Dog(name, breed) {
-  this.name = name;
-  this.breed = breed;
-}
-
-Dog.prototype.bark = function() {
-  return this.name + ' says Woof!';
-};
-
-const dog1 = new Dog('Max', 'Labrador');
-const dog2 = new Dog('Bella', 'Poodle');
-
-console.log(dog1.bark());
-console.log(dog2.bark());
-
-// 4. Checking instanceof
-console.log('\\n4. INSTANCEOF CHECK:');
-console.log(person1 instanceof Person);
-console.log(car1 instanceof Car);
-console.log(dog1 instanceof Dog);
-
-// 5. Constructor Property
-console.log('\\n5. CONSTRUCTOR PROPERTY:');
-console.log(person1.constructor === Person);
-console.log(car1.constructor === Car);
-
-console.log('\\nAll constructor examples demonstrated!');
-`;
-
-export default function JavaScriptConstructorFunctions({ onOpenWebPlayground }: JavaScriptConstructorFunctionsProps) {
+export default function JavaScriptConstructorFunctions() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -261,9 +136,13 @@ const bob = new Person('Bob', 30);
 console.log(alice);
 console.log(bob);
 console.log(alice.name);
-console.log(bob.age);`}
+console.log(bob.age);
+// Output:
+// alice: { name: "Alice", age: 25 }
+// bob: { name: "Bob", age: 30 }
+// alice.name -> "Alice"
+// bob.age -> 30`}
               </pre>
-              <SnippetOutput lines={['alice: { name: "Alice", age: 25 }', 'bob: { name: "Bob", age: 30 }', 'alice.name -> "Alice"', 'bob.age -> 30']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -282,9 +161,13 @@ const charlie = Person('Charlie', 35);
 
 console.log(charlie);
 console.log(window.name);
-console.log(window.age);`}
+console.log(window.age);
+// Output:
+// charlie -> undefined
+// window.name -> "Charlie" (polluted global!)
+// window.age -> 35 (polluted global!)
+// Always use new!`}
               </pre>
-              <SnippetOutput lines={['charlie -> undefined', 'window.name -> "Charlie" (polluted global!)', 'window.age -> 35 (polluted global!)', 'Always use new!']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -302,9 +185,12 @@ const myCar = new Car('Toyota', 'Camry');
 
 console.log(myCar instanceof Car);
 console.log(myCar instanceof Object);
-console.log(myCar.constructor === Car);`}
+console.log(myCar.constructor === Car);
+// Output:
+// myCar instanceof Car -> true
+// myCar instanceof Object -> true
+// myCar.constructor === Car -> true`}
               </pre>
-              <SnippetOutput lines={['myCar instanceof Car -> true', 'myCar instanceof Object -> true', 'myCar.constructor === Car -> true']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -328,13 +214,72 @@ function BadTest(value) {
 
 const test2 = new BadTest(20);
 console.log(test2.value);
-console.log(test2.different);`}
+console.log(test2.different);
+// Output:
+// test1.value -> 10
+// test2.value -> undefined
+// test2.different -> "object"
+// Explicit object return overrides`}
               </pre>
-              <SnippetOutput lines={['test1.value -> 10', 'test2.value -> undefined', 'test2.different -> "object"', 'Explicit object return overrides']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: The new Keyword"
+        description="How new creates instances from constructor functions"
+        code={`// Basic Constructor Function
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+const alice = new Person('Alice', 25);
+const bob = new Person('Bob', 30);
+
+console.log(alice); // { name: "Alice", age: 25 }
+console.log(bob.name); // "Bob"
+
+// MISTAKE: Forgetting 'new' keyword
+const charlie = Person('Charlie', 35);
+console.log(charlie); // undefined
+console.log(window.name); // "Charlie" (POLLUTED GLOBAL!)
+// Always use 'new'!
+
+// Checking Instance Type
+function Car(brand, model) {
+  this.brand = brand;
+  this.model = model;
+}
+
+const myCar = new Car('Toyota', 'Camry');
+console.log(myCar instanceof Car);    // true
+console.log(myCar instanceof Object); // true
+console.log(myCar.constructor === Car); // true
+
+// Return Value Behavior
+function Test(value) {
+  this.value = value;
+  // No return needed - returns new object automatically
+}
+
+const test1 = new Test(10);
+console.log(test1.value); // 10
+
+function BadTest(value) {
+  this.value = value;
+  return { different: 'object' }; // Override!
+}
+
+const test2 = new BadTest(20);
+console.log(test2.value); // undefined
+console.log(test2.different); // "object"
+// Explicit object return overrides!`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Zap}
+      />
 
       {/* Properties and Methods */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -368,9 +313,13 @@ const user2 = new User('bob', 'bob@email.com');
 
 console.log(user1.username);
 console.log(user2.username);
-console.log(user1.createdAt === user2.createdAt);`}
+console.log(user1.createdAt === user2.createdAt);
+// Output:
+// user1.username -> "alice"
+// user2.username -> "bob"
+// createdAt dates are different
+// Each instance has own properties`}
               </pre>
-              <SnippetOutput lines={['user1.username -> "alice"', 'user2.username -> "bob"', 'createdAt dates are different', 'Each instance has own properties']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -392,9 +341,13 @@ const dog1 = new Dog('Max');
 const dog2 = new Dog('Bella');
 
 console.log(dog1.bark());
-console.log(dog1.bark === dog2.bark);`}
+console.log(dog1.bark === dog2.bark);
+// Output:
+// dog1.bark() -> "Max barks!"
+// dog1.bark === dog2.bark -> false
+// Each instance has different function
+// Memory inefficient!`}
               </pre>
-              <SnippetOutput lines={['dog1.bark() -> "Max barks!"', 'dog1.bark === dog2.bark -> false', 'Each instance has different function', 'Memory inefficient!']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -413,9 +366,12 @@ console.log(dog1.bark === dog2.bark);`}
 
 const rect = new Rectangle(5, 10);
 console.log(rect.area);
-console.log(rect.perimeter);`}
+console.log(rect.perimeter);
+// Output:
+// rect.area -> 50
+// rect.perimeter -> 30
+// Computed once at creation`}
               </pre>
-              <SnippetOutput lines={['rect.area -> 50', 'rect.perimeter -> 30', 'Computed once at creation']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -436,13 +392,80 @@ const product1 = new Product('Laptop', 999);
 const product2 = new Product('Mouse', 25, 'Electronics');
 
 console.log(product1.category);
-console.log(product2.category);`}
+console.log(product2.category);
+// Output:
+// product1.category -> "Uncategorized"
+// product2.category -> "Electronics"
+// Default values provided`}
               </pre>
-              <SnippetOutput lines={['product1.category -> "Uncategorized"', 'product2.category -> "Electronics"', 'Default values provided']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Properties and Methods"
+        description="Adding properties and behavior to constructor functions"
+        code={`// Instance Properties - Each instance gets own copy
+function User(username, email) {
+  this.username = username;
+  this.email = email;
+  this.isActive = true;
+  this.createdAt = new Date();
+}
+
+const user1 = new User('alice', 'alice@email.com');
+const user2 = new User('bob', 'bob@email.com');
+
+console.log(user1.username); // "alice"
+console.log(user2.username); // "bob"
+// Each instance has independent properties
+
+// Instance Methods (NOT RECOMMENDED - memory waste!)
+function Dog(name) {
+  this.name = name;
+  this.bark = function() {
+    return this.name + ' barks!';
+  };
+}
+
+const dog1 = new Dog('Max');
+const dog2 = new Dog('Bella');
+
+console.log(dog1.bark()); // "Max barks!"
+console.log(dog1.bark === dog2.bark); // false
+// Each instance creates NEW function - inefficient!
+
+// Computed Properties
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+  this.area = width * height; // Computed at creation
+  this.perimeter = 2 * (width + height);
+}
+
+const rect = new Rectangle(5, 10);
+console.log(rect.area); // 50
+console.log(rect.perimeter); // 30
+
+// Default Values
+function Product(name, price, category) {
+  this.name = name;
+  this.price = price;
+  this.category = category || 'Uncategorized'; // Default
+  this.inStock = true;
+  this.discount = 0;
+}
+
+const product1 = new Product('Laptop', 999);
+console.log(product1.category); // "Uncategorized"
+
+const product2 = new Product('Mouse', 25, 'Electronics');
+console.log(product2.category); // "Electronics"`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Code}
+      />
 
       {/* Prototype Methods */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -490,9 +513,13 @@ const dog = new Animal('Buddy', 'Dog');
 
 console.log(cat.speak());
 console.log(dog.getInfo());
-console.log(cat.speak === dog.speak);`}
+console.log(cat.speak === dog.speak);
+// Output:
+// cat.speak() -> "Whiskers makes a sound"
+// dog.getInfo() -> "Buddy is a Dog"
+// cat.speak === dog.speak -> true
+// Methods are shared!`}
               </pre>
-              <SnippetOutput lines={['cat.speak() -> "Whiskers makes a sound"', 'dog.getInfo() -> "Buddy is a Dog"', 'cat.speak === dog.speak -> true', 'Methods are shared!']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -523,9 +550,13 @@ const counter = new Counter(5);
 console.log(counter.increment());
 console.log(counter.decrement());
 counter.reset();
-console.log(counter.count);`}
+console.log(counter.count);
+// Output:
+// increment() -> 6
+// decrement() -> 5
+// reset() sets count to 0
+// All methods on prototype`}
               </pre>
-              <SnippetOutput lines={['increment() -> 6', 'decrement() -> 5', 'reset() sets count to 0', 'All methods on prototype']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -548,9 +579,13 @@ const book1 = new Book('1984', 'George Orwell');
 // Check prototype
 console.log(book1.__proto__ === Book.prototype);
 console.log(book1.hasOwnProperty('title'));
-console.log(book1.hasOwnProperty('getSummary'));`}
+console.log(book1.hasOwnProperty('getSummary'));
+// Output:
+// __proto__ === Book.prototype -> true
+// hasOwnProperty("title") -> true
+// hasOwnProperty("getSummary") -> false
+// Method is on prototype, not instance`}
               </pre>
-              <SnippetOutput lines={['__proto__ === Book.prototype -> true', 'hasOwnProperty("title") -> true', 'hasOwnProperty("getSummary") -> false', 'Method is on prototype, not instance']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -573,13 +608,101 @@ const car = new Vehicle('car');
 console.log(car.describe());
 console.log(car instanceof Vehicle);
 console.log(car instanceof Object);
-console.log(Object.getPrototypeOf(car) === Vehicle.prototype);`}
+console.log(Object.getPrototypeOf(car) === Vehicle.prototype);
+// Output:
+// describe() -> "This is a car"
+// instanceof Vehicle -> true
+// instanceof Object -> true
+// Prototype chain: car -> Vehicle.prototype -> Object.prototype`}
               </pre>
-              <SnippetOutput lines={['describe() -> "This is a car"', 'instanceof Vehicle -> true', 'instanceof Object -> true', 'Prototype chain: car -> Vehicle.prototype -> Object.prototype']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Prototype Methods"
+        description="Memory-efficient shared methods via prototype"
+        code={`// Adding Prototype Methods - Shared across all instances
+function Animal(name, species) {
+  this.name = name;
+  this.species = species;
+}
+
+// Methods added to prototype (NOT inside constructor)
+Animal.prototype.speak = function() {
+  return this.name + ' makes a sound';
+};
+
+Animal.prototype.getInfo = function() {
+  return this.name + ' is a ' + this.species;
+};
+
+const cat = new Animal('Whiskers', 'Cat');
+const dog = new Animal('Buddy', 'Dog');
+
+console.log(cat.speak());        // "Whiskers makes a sound"
+console.log(dog.getInfo());      // "Buddy is a Dog"
+console.log(cat.speak === dog.speak); // true - SHARED!
+
+// Multiple Prototype Methods
+function Counter(startValue) {
+  this.count = startValue || 0;
+}
+
+Counter.prototype.increment = function() {
+  this.count++;
+  return this.count;
+};
+
+Counter.prototype.decrement = function() {
+  this.count--;
+  return this.count;
+};
+
+Counter.prototype.reset = function() {
+  this.count = 0;
+};
+
+const counter = new Counter(5);
+console.log(counter.increment()); // 6
+console.log(counter.decrement()); // 5
+counter.reset();
+console.log(counter.count); // 0
+
+// Accessing Prototype
+function Book(title, author) {
+  this.title = title;
+  this.author = author;
+}
+
+Book.prototype.getSummary = function() {
+  return this.title + ' by ' + this.author;
+};
+
+const book1 = new Book('1984', 'George Orwell');
+console.log(book1.__proto__ === Book.prototype); // true
+console.log(book1.hasOwnProperty('title')); // true (own property)
+console.log(book1.hasOwnProperty('getSummary')); // false (on prototype!)
+
+// Prototype Chain
+function Vehicle(type) {
+  this.type = type;
+}
+
+Vehicle.prototype.describe = function() {
+  return 'This is a ' + this.type;
+};
+
+const car = new Vehicle('car');
+console.log(car.describe());   // "This is a car"
+console.log(car instanceof Vehicle); // true
+console.log(car instanceof Object);  // true
+// Prototype chain: car -> Vehicle.prototype -> Object.prototype`}
+        language="javascript"
+        colorTheme="emerald"
+        icon={Package}
+      />
 
       {/* Real-World Examples */}
       <Card>
@@ -625,9 +748,12 @@ User.prototype.updateEmail = function(newEmail) {
 
 const user = new User('alice', 'alice@email.com', 'pass123');
 user.login();
-user.updateEmail('newemail@email.com');`}
+user.updateEmail('newemail@email.com');
+// Output:
+// user.login() -> "alice logged in"
+// updateEmail() -> "Email updated"
+// Clean OOP pattern`}
               </pre>
-              <SnippetOutput lines={['user.login() -> "alice logged in"', 'updateEmail() -> "Email updated"', 'Clean OOP pattern']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -662,9 +788,12 @@ ShoppingCart.prototype.getTotal = function() {
 const cart = new ShoppingCart('user123');
 cart.addItem({ id: 1, name: 'Book', price: 19.99 });
 cart.addItem({ id: 2, name: 'Pen', price: 2.99 });
-console.log(cart.getTotal());`}
+console.log(cart.getTotal());
+// Output:
+// addItem() adds to cart
+// getTotal() -> "$22.98"
+// Stateful object pattern`}
               </pre>
-              <SnippetOutput lines={['addItem() adds to cart', 'getTotal() -> "$22.98"', 'Stateful object pattern']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
@@ -698,9 +827,12 @@ const task1 = new Task('Fix bug', 'high');
 const task2 = new Task('Write docs', 'low');
 task1.complete();
 console.log(task1.getStatus());
-console.log(task2.getStatus());`}
+console.log(task2.getStatus());
+// Output:
+// task1.getStatus() -> "Done"
+// task2.getStatus() -> "Pending"
+// Task management system`}
               </pre>
-              <SnippetOutput lines={['task1.getStatus() -> "Done"', 'task2.getStatus() -> "Pending"', 'Task management system']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
@@ -739,13 +871,104 @@ const validator = new Validator({
 });
 
 console.log(validator.validate({ username: 'ab', email: '' }));
-console.log(validator.errors);`}
+console.log(validator.errors);
+// Output:
+// validate() -> false
+// errors: ["username too short", "email is required"]
+// Flexible validation pattern`}
               </pre>
-              <SnippetOutput lines={['validate() -> false', 'errors: ["username too short", "email is required"]', 'Flexible validation pattern']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Constructor Patterns"
+        description="Production-ready patterns for practical applications"
+        code={`// User Authentication System
+function User(username, email, password) {
+  this.username = username;
+  this.email = email;
+  this.password = password;
+  this.createdAt = new Date();
+  this.isActive = true;
+}
+
+User.prototype.login = function() {
+  console.log(this.username + ' logged in');
+  return true;
+};
+
+User.prototype.logout = function() {
+  console.log(this.username + ' logged out');
+  return true;
+};
+
+User.prototype.updateEmail = function(newEmail) {
+  this.email = newEmail;
+  console.log('Email updated to ' + newEmail);
+};
+
+const user = new User('alice', 'alice@email.com', 'pass123');
+user.login(); // "alice logged in"
+user.updateEmail('newemail@email.com'); // "Email updated"
+
+// Shopping Cart System
+function ShoppingCart(userId) {
+  this.userId = userId;
+  this.items = [];
+  this.total = 0;
+}
+
+ShoppingCart.prototype.addItem = function(item) {
+  this.items.push(item);
+  this.total += item.price;
+};
+
+ShoppingCart.prototype.removeItem = function(itemId) {
+  const index = this.items.findIndex(i => i.id === itemId);
+  if (index > -1) {
+    this.total -= this.items[index].price;
+    this.items.splice(index, 1);
+  }
+};
+
+ShoppingCart.prototype.getTotal = function() {
+  return '$' + this.total.toFixed(2);
+};
+
+const cart = new ShoppingCart('user123');
+cart.addItem({ id: 1, name: 'Book', price: 19.99 });
+cart.addItem({ id: 2, name: 'Pen', price: 2.99 });
+console.log(cart.getTotal()); // "$22.98"
+
+// Task Manager
+function Task(title, priority) {
+  this.id = Date.now();
+  this.title = title;
+  this.priority = priority || 'medium';
+  this.completed = false;
+  this.createdAt = new Date();
+}
+
+Task.prototype.complete = function() {
+  this.completed = true;
+  this.completedAt = new Date();
+};
+
+Task.prototype.getStatus = function() {
+  return this.completed ? 'Done' : 'Pending';
+};
+
+const task1 = new Task('Fix bug', 'high');
+const task2 = new Task('Write docs', 'low');
+task1.complete();
+console.log(task1.getStatus()); // "Done"
+console.log(task2.getStatus()); // "Pending"`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Sparkles}
+      />
 
       {/* Constructor vs ES6 Classes */}
       <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -864,30 +1087,6 @@ console.log(person.greet());`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ constructor functions, prototypes, and the new keyword.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights constructor function usage (basic constructors, prototype methods, and instanceof checks) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

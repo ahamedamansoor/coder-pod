@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
 import {
   MessageSquare,
   Sparkles,
@@ -19,9 +18,7 @@ import {
   ListChecks,
 } from 'lucide-react';
 
-interface JavaScriptCommentsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptCommentsProps {}
 
 const commentsHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -113,7 +110,7 @@ document.getElementById('output').innerHTML = output
   .map(line => '<div class="card">' + line + '</div>')
   .join('');`;
 
-export default function JavaScriptComments({ onOpenWebPlayground }: JavaScriptCommentsProps) {
+export default function JavaScriptComments({}: JavaScriptCommentsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -320,27 +317,6 @@ async function fetchProfile(id) {
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try Comment Styles"
-          description="Experiment with single-line, multi-line, and JSDoc comments in a real coding environment"
-          features={[
-            'Single-line //',
-            'Multi-line /* */',
-            'JSDoc /** */',
-            'Best Practices'
-          ]}
-          buttonText="Open Comments Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: commentsHtml,
-            css: '',
-            js: commentsJs
-          }}
-          colorTheme="blue"
-        />
-      )}
     </div>
   );
 }

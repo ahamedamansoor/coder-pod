@@ -5,8 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Calculator,
   Scale,
@@ -19,141 +18,13 @@ import {
   Lightbulb,
   AlertTriangle,
   XCircle,
+  ShoppingCart,
+  UserCheck,
 } from 'lucide-react';
 
-interface JavaScriptOperatorsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptOperatorsProps {}
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Operators Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🔢 Operators</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Operators Demo ===\\n');
-
-// 1. Arithmetic Operators
-console.log('1️⃣ ARITHMETIC OPERATORS:');
-const price = 100;
-const quantity = 3;
-const tax = 0.08;
-
-const subtotal = price * quantity;
-console.log('Subtotal:', subtotal);
-
-const taxAmount = subtotal * tax;
-console.log('Tax (8%):', taxAmount);
-
-const total = subtotal + taxAmount;
-console.log('Total:', total);
-
-const remainder = total % 10;
-console.log('Remainder when divided by 10:', remainder);
-console.log('');
-
-// 2. Comparison Operators
-console.log('2️⃣ COMPARISON OPERATORS:');
-const userAge = 25;
-const requiredAge = 18;
-
-console.log('userAge >= requiredAge:', userAge >= requiredAge);
-console.log('25 === "25" (strict):', 25 === "25");
-console.log('25 == "25" (loose):', 25 == "25");
-console.log('');
-
-// 3. Logical Operators
-console.log('3️⃣ LOGICAL OPERATORS:');
-const hasAccount = true;
-const isVerified = true;
-const isBanned = false;
-
-const canLogin = hasAccount && isVerified && !isBanned;
-console.log('Can user login?', canLogin);
-
-const needsHelp = !hasAccount || !isVerified;
-console.log('Needs help?', needsHelp);
-console.log('');
-
-// 4. Real-World: Default Values
-console.log('4️⃣ DEFAULT VALUES (OR):');
-function greet(name) {
-  const displayName = name || 'Guest';
-  return 'Hello, ' + displayName;
-}
-
-console.log(greet('Alice'));
-console.log(greet(''));
-console.log(greet());
-console.log('');
-
-// 5. Real-World: Form Validation
-console.log('5️⃣ FORM VALIDATION:');
-function validateForm(email, age) {
-  const hasEmail = email && email.length > 0;
-  const isAdult = age >= 18;
-  return hasEmail && isAdult;
-}
-
-console.log('Valid form:', validateForm('user@test.com', 25));
-console.log('Missing email:', validateForm('', 25));
-console.log('Too young:', validateForm('user@test.com', 16));
-
-console.log('\\n✅ All operator demos complete!');`;
-
-export default function JavaScriptOperators({ onOpenWebPlayground }: JavaScriptOperatorsProps) {
+export default function JavaScriptOperators({}: JavaScriptOperatorsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -512,9 +383,9 @@ console.log(result2);
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
             {/* Pattern 1: Default Values with OR */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Default Values with OR (||)"
               description="Provide fallback values - the OR operator returns the first truthy value"
               code={`// Pattern: Provide fallback values
@@ -524,20 +395,31 @@ function greetUser(name) {
 }
 
 console.log(greetUser('Alice'));
+// Output: Hello, Alice
+
 console.log(greetUser(''));
-console.log(greetUser());`}
-              output={[
-                "Hello, Alice",
-                "Hello, Guest",
-                "Hello, Guest"
-              ]}
+// Output: Hello, Guest
+
+console.log(greetUser());
+// Output: Hello, Guest`}
               language="javascript"
               colorTheme="blue"
               icon={CheckCircle2}
+              features={[
+                "|| returns first truthy value",
+                "Empty string is falsy",
+                "undefined is falsy",
+                "Common for default parameters"
+              ]}
+              tips={[
+                "Use ?? for null/undefined only",
+                "Watch out for 0 and false",
+                "Modern: use default parameters"
+              ]}
             />
 
             {/* Pattern 2: Conditional Execution with AND */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Conditional Execution with AND (&&)"
               description="Execute only if condition is true - AND operator short-circuits"
               code={`// Pattern: Execute only if condition is true
@@ -548,20 +430,29 @@ const user = {
 
 // Only log if user is admin
 user.isAdmin && console.log('Admin access granted');
+// Output: Admin access granted
 
 const normalUser = { isAdmin: false };
-normalUser.isAdmin && console.log('Will not print');`}
-              output={[
-                "Admin access granted",
-                "// Second log doesn't execute"
-              ]}
+normalUser.isAdmin && console.log('Will not print');
+// Output: (nothing - second part not executed)`}
               language="javascript"
               colorTheme="emerald"
-              icon={CheckCircle2}
+              icon={UserCheck}
+              features={[
+                "&& short-circuits at first falsy",
+                "Right side only runs if left is truthy",
+                "Common for conditional execution",
+                "React: condition && <Component />"
+              ]}
+              tips={[
+                "Cleaner than if statements sometimes",
+                "Watch return values",
+                "Popular in JSX rendering"
+              ]}
             />
 
             {/* Pattern 3: Calculate Discounts */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Calculate Discounts"
               description="Arithmetic operators combined for real business logic like pricing and discounts"
               code={`// Pattern: Apply percentage discounts
@@ -580,20 +471,31 @@ const salePrice = applyDiscount(
 );
 
 console.log('Original: $' + originalPrice);
+// Output: Original: $100
+
 console.log('Discount: ' + discountRate + '%');
-console.log('Final: $' + salePrice);`}
-              output={[
-                "Original: $100",
-                "Discount: 20%",
-                "Final: $80"
-              ]}
+// Output: Discount: 20%
+
+console.log('Final: $' + salePrice);
+// Output: Final: $80`}
               language="javascript"
               colorTheme="purple"
-              icon={CheckCircle2}
+              icon={ShoppingCart}
+              features={[
+                "Multiply for percentage calculation",
+                "Subtract discount from original",
+                "Common in e-commerce",
+                "Real business logic example"
+              ]}
+              tips={[
+                "Always validate discount range",
+                "Consider rounding for currency",
+                "Use toFixed() for display"
+              ]}
             />
 
             {/* Pattern 4: Form Validation */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Form Validation"
               description="Combining comparison and logical operators to validate multiple conditions"
               code={`// Pattern: Validate user input
@@ -606,16 +508,27 @@ function validateForm(email, age) {
 }
 
 console.log(validateForm('user@email.com', 25));
+// Output: true
+
 console.log(validateForm('', 25));
-console.log(validateForm('user@email.com', 16));`}
-              output={[
-                "true",
-                "false",
-                "false"
-              ]}
+// Output: false
+
+console.log(validateForm('user@email.com', 16));
+// Output: false`}
               language="javascript"
               colorTheme="amber"
               icon={CheckCircle2}
+              features={[
+                "Combines && and >= operators",
+                "Multiple validation checks",
+                "Returns boolean result",
+                "Real form validation pattern"
+              ]}
+              tips={[
+                "Check each condition separately",
+                "Combine with && for all checks",
+                "Essential for user input"
+              ]}
             />
           </div>
         </CardContent>
@@ -657,27 +570,6 @@ console.log(validateForm('user@email.com', 16));`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try JavaScript Operators"
-          description="Experiment with arithmetic, assignment, comparison, logical, and typeof operators"
-          features={[
-            'Arithmetic (+, -, *, /)',
-            'Comparison (===, !==)',
-            'Logical (&&, ||, !)',
-            'typeof Operator'
-          ]}
-          buttonText="Open Operators Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="blue"
-        />
-      )}
     </div>
   );
 }

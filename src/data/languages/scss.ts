@@ -10,8 +10,8 @@ export const scss: Language = {
     { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A comprehensive roadmap for mastering Sass/SCSS from fundamentals to advanced patterns.' },
 
     // Beginner Level - Fundamentals
-    { slug: 'what-is-sass', title: 'What is Sass/SCSS?', explanation: 'Introduction to Sass, Dart Sass vs LibSass, SCSS vs Sass syntax, and CSS preprocessing.', category: '1. Fundamentals' },
-    { slug: 'sass-vs-scss', title: 'Sass vs SCSS Syntax', explanation: 'Understanding the differences between .sass (indented) and .scss (CSS-like) syntax.', category: '1. Fundamentals' },
+    { slug: 'what-is-sass-scss', title: 'What is Sass/SCSS?', explanation: 'Introduction to Sass, Dart Sass vs LibSass, SCSS vs Sass syntax, and CSS preprocessing.', category: '1. Fundamentals' },
+    { slug: 'sass-vs-scss-syntax', title: 'Sass vs SCSS Syntax', explanation: 'Understanding the differences between .sass (indented) and .scss (CSS-like) syntax.', category: '1. Fundamentals' },
     { slug: 'sass-installation', title: 'Installation & Setup', explanation: 'Installing Dart Sass via npm, standalone, and configuring build tools (Vite, Webpack, Parcel).', category: '1. Fundamentals' },
     { slug: 'sass-compilation', title: 'Compilation', explanation: 'Compiling Sass to CSS: watch mode, source maps, and compilation options.', category: '1. Fundamentals' },
     { slug: 'sass-comments', title: 'Comments', explanation: 'Single-line (//), multi-line (/* */), and documentation comments in Sass.', category: '1. Fundamentals' },

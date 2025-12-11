@@ -21,7 +21,7 @@ interface WebPlaygroundContextType {
   content: WebPlaygroundContentType;
   setContent: React.Dispatch<React.SetStateAction<WebPlaygroundContentType>>;
   defaultFocusedPanel: 'html' | 'css' | 'js' | null;
-  openWithContent: (html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string) => void;
+  openWithContent: (html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string, config?: { visiblePanels?: ('html' | 'css' | 'js' | 'preview' | 'console')[] }) => void;
 }
 
 const WebPlaygroundContext = createContext<WebPlaygroundContextType | undefined>(undefined);
@@ -35,7 +35,7 @@ export const WebPlaygroundProvider = ({ children }: { children: ReactNode }) => 
   });
   const [defaultFocusedPanel, setDefaultFocusedPanel] = useState<'html' | 'css' | 'js' | null>(null);
 
-  const openWithContent = useCallback((html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string) => {
+  const openWithContent = useCallback((html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string, config?: { visiblePanels?: ('html' | 'css' | 'js' | 'preview' | 'console')[] }) => {
     // Ensure HTML has proper document structure
     const ensureProperHTMLStructure = (htmlContent: string): string => {
       const trimmed = htmlContent.trim();
@@ -62,12 +62,24 @@ ${htmlContent}
     // Determine if focusedPanel is a language (tailwind, scss, css) or a panel name
     const isLanguage = focusedPanel && !['html', 'css', 'js'].includes(focusedPanel);
     
-    // For Tailwind, only show HTML panel (CSS and JS are hidden since styles are in class attributes)
-    const visiblePanels = focusedPanel === 'tailwind' ? {
-      html: true,
-      css: false,
-      js: false
-    } : undefined;
+    // Build visible panels configuration
+    let visiblePanels = undefined;
+    
+    if (config?.visiblePanels) {
+      // Use custom config if provided
+      visiblePanels = {
+        html: config.visiblePanels.includes('html'),
+        css: config.visiblePanels.includes('css'),
+        js: config.visiblePanels.includes('js'),
+      };
+    } else if (focusedPanel === 'tailwind') {
+      // For Tailwind, only show HTML panel (CSS and JS are hidden since styles are in class attributes)
+      visiblePanels = {
+        html: true,
+        css: false,
+        js: false
+      };
+    }
     
     setContent({ 
       html: ensureProperHTMLStructure(html), 

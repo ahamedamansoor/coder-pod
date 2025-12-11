@@ -2,147 +2,23 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Search,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Zap,
   Code,
   Filter,
   AlertCircle,
 } from 'lucide-react';
 
-interface JavaScriptRegularExpressionsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Regular Expressions Demo</title>
-  <style>
-    body { 
-      font-family: 'Inter', system-ui; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .panel { 
-      max-width: 800px; 
-      width: 100%;
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.95); 
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px;
-    }
-    p { 
-      color: #64748b; 
-      font-size: 16px;
-      margin-bottom: 24px;
-    }
-    pre { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      overflow-x: auto;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>🔍 Regular Expressions</h1>
-    <p>Open the browser console to see regex examples!</p>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./regex-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Regular Expressions Demo ===\\n');
-
-// 1. Basic Pattern Matching
-console.log('1. BASIC MATCHING:');
-const emailPattern = /\\w+@\\w+\\.\\w+/;
-console.log(emailPattern.test('user@example.com'));
-console.log(emailPattern.test('invalid-email'));
-
-// 2. Character Classes
-console.log('\\n2. CHARACTER CLASSES:');
-const digitPattern = /\\d+/;
-console.log('123'.match(digitPattern));
-console.log('abc'.match(digitPattern));
-
-// 3. Quantifiers
-console.log('\\n3. QUANTIFIERS:');
-const phonePattern = /\\d{3}-\\d{3}-\\d{4}/;
-console.log(phonePattern.test('555-123-4567'));
-console.log(phonePattern.test('555-123'));
-
-// 4. Flags (global, case-insensitive)
-console.log('\\n4. FLAGS:');
-const text = 'The Cat and the cat';
-console.log(text.match(/cat/gi));
-
-// 5. Groups and Capturing
-console.log('\\n5. CAPTURING GROUPS:');
-const datePattern = /(\\d{4})-(\\d{2})-(\\d{2})/;
-const match = '2024-03-15'.match(datePattern);
-console.log('Year:', match[1]);
-console.log('Month:', match[2]);
-console.log('Day:', match[3]);
-
-// 6. Named Capture Groups (ES2018)
-console.log('\\n6. NAMED GROUPS:');
-const namedDatePattern = /(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/;
-const namedMatch = '2024-03-15'.match(namedDatePattern);
-console.log('Year:', namedMatch.groups.year);
-console.log('Month:', namedMatch.groups.month);
-
-// Summary
-const summary = [
-  'Pattern matching with test()',
-  'Character classes',
-  'Quantifiers',
-  'Flags (g, i, m, s, u, d)',
-  'Capturing groups',
-  'Named capture groups (ES2018)'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n All regex patterns demonstrated!');
-`;
-
-export default function JavaScriptRegularExpressions({ onOpenWebPlayground }: JavaScriptRegularExpressionsProps) {
+export default function JavaScriptRegularExpressions() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -245,9 +121,11 @@ const pattern2 = /hello/gi;
 
 // Test the pattern
 console.log(pattern.test('hello world'));
-console.log(pattern.test('Hello world'));`}
+console.log(pattern.test('Hello world'));
+// Output:
+// test("hello world") -> true
+// test("Hello world") -> false (case-sensitive)`}
               </pre>
-              <SnippetOutput lines={['test("hello world") -> true', 'test("Hello world") -> false (case-sensitive)']} />
             </div>
 
             {/* Constructor */}
@@ -269,13 +147,47 @@ const userInput = 'user@example.com';
 const escaped = userInput.replace(/[.*+?^$(){}|\\[\\]\\\\]/g, '\\\\$&');
 const safePattern = new RegExp(escaped);
 
-console.log(pattern.test('Hello World'));`}
+console.log(pattern.test('Hello World'));
+// Output:
+// pattern.test("Hello World") -> true
+// Constructor useful for dynamic patterns`}
               </pre>
-              <SnippetOutput lines={['pattern.test("Hello World") -> true', 'Constructor useful for dynamic patterns']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Basic Regex Syntax"
+        description="Creating and using regular expressions"
+        code={`// Literal notation
+const pattern1 = /hello/;
+const pattern2 = /hello/gi; // with flags
+
+console.log(pattern1.test('hello world'));
+// Output: true
+
+console.log(pattern1.test('Hello world'));
+// Output: false (case-sensitive)
+
+// RegExp Constructor (for dynamic patterns)
+const searchTerm = 'hello';
+const dynamicPattern = new RegExp(searchTerm, 'gi');
+
+console.log(dynamicPattern.test('Hello World'));
+// Output: true
+
+// Escape special characters for literal matching
+const userInput = 'user@example.com';
+const escaped = userInput.replace(/[.*+?^$(){}|\\[\\]\\\\]/g, '\\\\$&');
+const safePattern = new RegExp(escaped);
+
+console.log(safePattern.test('user@example.com'));
+// Output: true`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Search}
+      />
 
       {/* Character Classes */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -331,9 +243,11 @@ console.log(pattern.test('Hello World'));`}
 console.log('123'.match(digitPattern));
 
 const wordPattern = /\\w+/;
-console.log('hello_123'.match(wordPattern));`}
+console.log('hello_123'.match(wordPattern));
+// Output:
+// \\d+ matches "123"
+// \\w+ matches "hello_123"`}
               </pre>
-              <SnippetOutput lines={['\\d+ matches "123"', '\\w+ matches "hello_123"']} />
             </div>
 
             {/* Custom Character Sets */}
@@ -357,9 +271,13 @@ console.log('abc123def'.match(notDigits));
 
 // Multiple ranges
 const alphanumeric = /[a-zA-Z0-9]+/;
-console.log('Test123!@#'.match(alphanumeric));`}
+console.log('Test123!@#'.match(alphanumeric));
+// Output:
+// [aeiou] -> ["e", "o"]
+// [a-z]+ -> "ello"
+// [^0-9]+ -> "abc"
+// [a-zA-Z0-9]+ -> "Test123"`}
               </pre>
-              <SnippetOutput lines={['[aeiou] -> ["e", "o"]', '[a-z]+ -> "ello"', '[^0-9]+ -> "abc"', '[a-zA-Z0-9]+ -> "Test123"']} />
             </div>
           </div>
         </CardContent>
@@ -418,9 +336,12 @@ console.log('aaa'.match(pattern2));
 // Optional
 const pattern3 = /colou?r/;
 console.log('color'.match(pattern3));
-console.log('colour'.match(pattern3));`}
+console.log('colour'.match(pattern3));
+// Output:
+// * matches "", "a", "aaa"
+// + matches "a", "aaa" (not "")
+// ? makes "u" optional`}
               </pre>
-              <SnippetOutput lines={['* matches "", "a", "aaa"', '+ matches "a", "aaa" (not "")', '? makes "u" optional']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -441,9 +362,12 @@ console.log(phone.test('555-123-4567'));
 // 2 to 4 letters
 const name = /[a-z]{2,4}/i;
 console.log('Jo'.match(name));
-console.log('John'.match(name));`}
+console.log('John'.match(name));
+// Output:
+// {5} matches exactly 5
+// {3}-{3}-{4} = phone format
+// {2,4} between 2 and 4`}
               </pre>
-              <SnippetOutput lines={['{5} matches exactly 5', '{3}-{3}-{4} = phone format', '{2,4} between 2 and 4']} />
             </div>
           </div>
 
@@ -456,6 +380,51 @@ console.log('John'.match(name));`}
           </Alert>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Character Classes & Quantifiers"
+        description="Match patterns with character sets and repetition"
+        code={`// Character Classes
+const digitPattern = /\\d+/; // One or more digits
+console.log('Price: $123'.match(digitPattern));
+// Output: ["123"]
+
+const wordPattern = /\\w+/; // Word characters
+console.log('hello_world123'.match(wordPattern));
+// Output: ["hello_world123"]
+
+// Custom Character Sets
+const vowels = /[aeiou]/gi; // All vowels
+console.log('hello world'.match(vowels));
+// Output: ["e", "o", "o"]
+
+const alphanumeric = /[a-zA-Z0-9]+/;
+console.log('Test123!@#'.match(alphanumeric));
+// Output: ["Test123"]
+
+// Quantifiers
+const phonePattern = /\\d{3}-\\d{3}-\\d{4}/;
+console.log(phonePattern.test('555-123-4567'));
+// Output: true
+
+// Optional character (?)
+const colorPattern = /colou?r/;
+console.log(colorPattern.test('color')); // Output: true
+console.log(colorPattern.test('colour')); // Output: true
+
+// One or more (+)
+const namePattern = /[A-Z][a-z]+/;
+console.log('John'.match(namePattern));
+// Output: ["John"]
+
+// Zero or more (*)
+const htmlTagPattern = /<.*?>/;
+console.log('<div>'.match(htmlTagPattern));
+// Output: ["<div>"]`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Filter}
+      />
 
       {/* Anchors and Boundaries */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -489,9 +458,12 @@ console.log(endsWithWorld.test('world Hello'));
 // Both (exact match)
 const exactMatch = /^Hello$/;
 console.log(exactMatch.test('Hello'));
-console.log(exactMatch.test('Hello world'));`}
+console.log(exactMatch.test('Hello world'));
+// Output:
+// ^Hello -> must start with "Hello"
+// world$ -> must end with "world"
+// ^Hello$ -> must be exactly "Hello"`}
               </pre>
-              <SnippetOutput lines={['^Hello -> must start with "Hello"', 'world$ -> must end with "world"', '^Hello$ -> must be exactly "Hello"']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -509,9 +481,12 @@ console.log(wordCat.test('the cat sat'));
 // \\B = NOT a word boundary
 const notBoundary = /\\Bcat\\B/;
 console.log(notBoundary.test('cat'));
-console.log(notBoundary.test('concatenate'));`}
+console.log(notBoundary.test('concatenate'));
+// Output:
+// \\bcat\\b matches "cat" only
+// Not "category" or "concatenate"
+// \\B matches inside words only`}
               </pre>
-              <SnippetOutput lines={['\\bcat\\b matches "cat" only', 'Not "category" or "concatenate"', '\\B matches inside words only']} />
             </div>
           </div>
         </CardContent>
@@ -571,9 +546,12 @@ console.log(text.match(/cat/g));
 console.log(text.match(/cat/i));
 
 // With gi (both)
-console.log(text.match(/cat/gi));`}
+console.log(text.match(/cat/gi));
+// Output:
+// /cat/ -> ["cat"] (first only)
+// /cat/g -> ["cat"] (all lowercase)
+// /cat/gi -> ["Cat", "cat"] (all, any case)`}
               </pre>
-              <SnippetOutput lines={['/cat/ -> ["cat"] (first only)', '/cat/g -> ["cat"] (all lowercase)', '/cat/gi -> ["Cat", "cat"] (all, any case)']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -599,13 +577,48 @@ matches.forEach(match => {
 // Output:
 // Match: "Hello"
 // Start: 0
-// End: 5`}
+// End: 5
+// d flag provides match.indices
+// Get [start, end] positions
+// Useful for precise text replacement`}
               </pre>
-              <SnippetOutput lines={['d flag provides match.indices', 'Get [start, end] positions', 'Useful for precise text replacement']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Anchors, Boundaries & Flags"
+        description="Precise pattern matching with positions and modifiers"
+        code={`// Anchors - Start and End
+const startsWithHello = /^Hello/;
+console.log(startsWithHello.test('Hello world')); // Output: true
+console.log(startsWithHello.test('Say Hello')); // Output: false
+
+const endsWithWorld = /world$/;
+console.log(endsWithWorld.test('Hello world')); // Output: true
+
+// Word Boundaries
+const wordCat = /\\bcat\\b/;
+console.log(wordCat.test('cat')); // Output: true
+console.log(wordCat.test('category')); // Output: false
+console.log(wordCat.test('the cat sat')); // Output: true
+
+// Flags - Global and Case-Insensitive
+const text = 'The Cat and the cat';
+
+console.log(text.match(/cat/)); // Output: ["cat"]
+console.log(text.match(/cat/g)); // Output: ["cat", "cat"]
+console.log(text.match(/cat/gi)); // Output: ["Cat", "cat"]
+
+// ES2022 d flag - Get match indices
+const pattern = /(\\w+)/dg;
+const matches = [...'Hello World'.matchAll(pattern)];
+console.log(matches[0].indices[0]); // Output: [0, 5]`}
+        language="javascript"
+        colorTheme="emerald"
+        icon={Code}
+      />
 
       {/* Real-World Examples */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -637,9 +650,13 @@ const emails = [
 
 emails.forEach(email => {
   console.log(email + ': ' + emailPattern.test(email));
-});`}
+});
+// Output:
+// user@example.com: true
+// test.email@domain.co.uk: true
+// invalid@: false
+// @invalid.com: false`}
               </pre>
-              <SnippetOutput lines={['user@example.com: true', 'test.email@domain.co.uk: true', 'invalid@: false', '@invalid.com: false']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -658,9 +675,11 @@ console.log(formatted);
 // Alternative with named groups
 const namedPattern = /(?<area>\\d{3})(?<prefix>\\d{3})(?<line>\\d{4})/;
 const match = phone.match(namedPattern);
-console.log(match.groups);`}
+console.log(match.groups);
+// Output:
+// formatted: "(555) 123-4567"
+// groups: {area: "555", prefix: "123", line: "4567"}`}
               </pre>
-              <SnippetOutput lines={['formatted: "(555) 123-4567"', 'groups: {area: "555", prefix: "123", line: "4567"}']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
@@ -679,9 +698,12 @@ console.log(urls);
 
 urls.forEach(url => {
   console.log('Found:', url);
-});`}
+});
+// Output:
+// urls: ["https://example.com", "http://test.org"]
+// Found: https://example.com
+// Found: http://test.org`}
               </pre>
-              <SnippetOutput lines={['urls: ["https://example.com", "http://test.org"]', 'Found: https://example.com', 'Found: http://test.org']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
@@ -702,13 +724,59 @@ urls.forEach(url => {
 }
 
 console.log(checkPassword('Pass123!'));
-console.log(checkPassword('weak'));`}
+console.log(checkPassword('weak'));
+// Output:
+// Pass123!: true (strong)
+// weak: false (missing requirements)`}
               </pre>
-              <SnippetOutput lines={['Pass123!: true (strong)', 'weak: false (missing requirements)']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Regex Patterns"
+        description="Practical validation and extraction patterns"
+        code={`// Email Validation
+const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
+
+console.log(emailPattern.test('user@example.com')); // Output: true
+console.log(emailPattern.test('invalid@')); // Output: false
+
+// Phone Number Formatting with Capture Groups
+const phonePattern = /(\\d{3})(\\d{3})(\\d{4})/;
+const phone = '5551234567';
+const formatted = phone.replace(phonePattern, '($1) $2-$3');
+
+console.log(formatted);
+// Output: "(555) 123-4567"
+
+// Extract URLs from Text
+const text = 'Visit https://example.com or http://test.org';
+const urlPattern = /https?:\\/\\/[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/g;
+const urls = text.match(urlPattern);
+
+console.log(urls);
+// Output: ["https://example.com", "http://test.org"]
+
+// Password Strength Check
+function checkPassword(password) {
+  const hasLower = /[a-z]/.test(password);
+  const hasUpper = /[A-Z]/.test(password);
+  const hasDigit = /\\d/.test(password);
+  const hasSpecial = /[!@#$%^&*]/.test(password);
+  const isLongEnough = password.length >= 8;
+  
+  return hasLower && hasUpper && hasDigit && 
+         hasSpecial && isLongEnough;
+}
+
+console.log(checkPassword('Pass123!')); // Output: true
+console.log(checkPassword('weak')); // Output: false`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Sparkles}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -742,30 +810,6 @@ console.log(checkPassword('weak'));`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ regular expressions, patterns, and matching.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights regex patterns (basic syntax, character classes, quantifiers, flags, and capture groups) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -2,147 +2,22 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Code,
   Layers,
   Zap,
   ArrowRight,
 } from 'lucide-react';
 
-interface JavaScriptTemplateLiteralsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Template Literals Demo</title>
-  <style>
-    body { 
-      font-family: 'Inter', system-ui; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .panel { 
-      max-width: 800px; 
-      width: 100%;
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.95); 
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px;
-    }
-    p { 
-      color: #64748b; 
-      font-size: 16px;
-      margin-bottom: 24px;
-    }
-    pre { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      overflow-x: auto;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>✨ Template Literals</h1>
-    <p>Open the browser console to see template literal examples!</p>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./template-literals-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Template Literals Demo ===\\n');
-
-// 1. Variable Interpolation
-console.log('1. VARIABLE INTERPOLATION:');
-const name = 'Alice';
-const age = 25;
-const message = \`Hello, my name is \${name} and I am \${age} years old\`;
-console.log(message);
-
-// 2. Expression Evaluation
-console.log('\\n2. EXPRESSION EVALUATION:');
-const a = 10;
-const b = 5;
-console.log(\`Sum: \${a + b}\`);
-console.log(\`Product: \${a * b}\`);
-console.log(\`Is a > b? \${a > b}\`);
-
-// 3. Multiline Strings
-console.log('\\n3. MULTILINE STRINGS:');
-const email = \`Dear Customer,
-
-Thank you for your order.
-Your package will arrive soon.
-
-Best regards,
-The Team\`;
-console.log(email);
-
-// 4. Function Calls
-console.log('\\n4. FUNCTION CALLS:');
-function getGreeting(time) {
-  return time < 12 ? 'Good morning' : 'Good afternoon';
-}
-const hour = 9;
-console.log(\`\${getGreeting(hour)}, Alice!\`);
-
-// 5. Nested Templates
-console.log('\\n5. NESTED TEMPLATES:');
-const users = ['Alice', 'Bob', 'Charlie'];
-const userList = \`Users: \${users.map(u => \`<\${u}>\`).join(', ')}\`;
-console.log(userList);
-
-// Summary
-const summary = [
-  '✓ Use backticks (\\\`) for template literals',
-  '✓ Embed variables with \${variable}',
-  '✓ Execute expressions with \${expression}',
-  '✓ Create multiline strings naturally',
-  '✓ Call functions inside \${}'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n✅ All template literal features demonstrated!');
-`;
-
-export default function JavaScriptTemplateLiterals({ onOpenWebPlayground }: JavaScriptTemplateLiteralsProps) {
+export default function JavaScriptTemplateLiterals() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -211,9 +86,10 @@ export default function JavaScriptTemplateLiterals({ onOpenWebPlayground }: Java
 {`const name = 'Alice';
 const age = 25;
 const msg = 'Hello ' + name + ', you are ' + age;
-console.log(msg);`}
+console.log(msg);
+// msg -> "Hello Alice, you are 25"
+// Requires concatenation with +`}
               </pre>
-              <SnippetOutput lines={['msg -> "Hello Alice, you are 25"', 'Requires concatenation with +']} />
             </div>
 
             <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
@@ -222,9 +98,10 @@ console.log(msg);`}
 {`const name = 'Alice';
 const age = 25;
 const msg = \`Hello \${name}, you are \${age}\`;
-console.log(msg);`}
+console.log(msg);
+// msg -> "Hello Alice, you are 25"
+// Clean and readable!`}
               </pre>
-              <SnippetOutput lines={['msg -> "Hello Alice, you are 25"', 'Clean and readable!']} />
             </div>
           </div>
         </CardContent>
@@ -258,9 +135,10 @@ console.log(greeting);
 const city = 'New York';
 const country = 'USA';
 const location = \`\${city}, \${country}\`;
-console.log(location);`}
+console.log(location);
+// greeting -> "Hello, John Doe!"
+// location -> "New York, USA"`}
               </pre>
-              <SnippetOutput lines={['greeting -> "Hello, John Doe!"', 'location -> "New York, USA"']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -278,13 +156,54 @@ Price: $\${price}
 Quantity: \${quantity}
 Total: $\${price * quantity}\`;
 
-console.log(orderSummary);`}
+console.log(orderSummary);
+// Output:
+// Product: Laptop
+// Price: $999
+// Quantity: 2
+// Total: $1998`}
               </pre>
-              <SnippetOutput lines={['Product: Laptop', 'Price: $999', 'Quantity: 2', 'Total: $1998']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Variable Interpolation"
+        description="Using template literals to embed variables in strings"
+        code={`const firstName = 'John';
+const lastName = 'Doe';
+
+const greeting = \`Hello, \${firstName} \${lastName}!\`;
+console.log(greeting);
+// Output: "Hello, John Doe!"
+
+const city = 'New York';
+const country = 'USA';
+const location = \`\${city}, \${country}\`;
+console.log(location);
+// Output: "New York, USA"
+
+// With Numbers
+const product = 'Laptop';
+const price = 999;
+const quantity = 2;
+
+const orderSummary = \`Product: \${product}
+Price: $\${price}
+Quantity: \${quantity}
+Total: $\${price * quantity}\`;
+
+console.log(orderSummary);
+// Output:
+// Product: Laptop
+// Price: $999
+// Quantity: 2
+// Total: $1998`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Code}
+      />
 
       {/* Expression Evaluation */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -320,9 +239,14 @@ console.log(\`Sum: \${a + b}\`);
 console.log(\`Difference: \${a - b}\`);
 console.log(\`Product: \${a * b}\`);
 console.log(\`Division: \${a / b}\`);
-console.log(\`Power: \${a ** 2}\`);`}
+console.log(\`Power: \${a ** 2}\`);
+// Output:
+// Sum: 15
+// Difference: 5
+// Product: 50
+// Division: 2
+// Power: 100`}
               </pre>
-              <SnippetOutput lines={['Sum: 15', 'Difference: 5', 'Product: 50', 'Division: 2', 'Power: 100']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -340,9 +264,12 @@ console.log(result);
 
 const hour = 14;
 const greeting = \`Good \${hour < 12 ? 'morning' : 'afternoon'}\`;
-console.log(greeting);`}
+console.log(greeting);
+// Output:
+// Score: 85
+// Status: PASSED
+// greeting -> "Good afternoon"`}
               </pre>
-              <SnippetOutput lines={['Score: 85', 'Status: PASSED', 'greeting -> "Good afternoon"']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -361,9 +288,10 @@ console.log(message);
 
 // Using Math methods
 const pi = 3.14159;
-console.log(\`Rounded: \${Math.round(pi)}\`);`}
+console.log(\`Rounded: \${Math.round(pi)}\`);
+// message -> "Hello, Alice!"
+// Rounded: 3`}
               </pre>
-              <SnippetOutput lines={['message -> "Hello, Alice!"', 'Rounded: 3']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -378,13 +306,60 @@ const isAdult = age >= 18;
 console.log(\`Age: \${age}\`);
 console.log(\`Is adult? \${isAdult}\`);
 console.log(\`Can vote? \${age >= 18}\`);
-console.log(\`Can drink? \${age >= 21}\`);`}
+console.log(\`Can drink? \${age >= 21}\`);
+// Output:
+// Age: 20
+// Is adult? true
+// Can vote? true
+// Can drink? false`}
               </pre>
-              <SnippetOutput lines={['Age: 20', 'Is adult? true', 'Can vote? true', 'Can drink? false']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Expression Evaluation"
+        description="Executing JavaScript expressions inside template literals"
+        code={`// Arithmetic Operations
+const a = 10;
+const b = 5;
+
+console.log(\`Sum: \${a + b}\`);
+// Output: Sum: 15
+
+console.log(\`Product: \${a * b}\`);
+// Output: Product: 50
+
+// Conditional (Ternary) Expressions
+const score = 85;
+const passed = score >= 60;
+
+const result = \`Score: \${score}
+Status: \${passed ? 'PASSED' : 'FAILED'}\`;
+console.log(result);
+// Output:
+// Score: 85
+// Status: PASSED
+
+// Function Calls
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const name = 'alice';
+const message = \`Hello, \${capitalize(name)}!\`;
+console.log(message);
+// Output: "Hello, Alice!"
+
+// Comparison Operations
+const age = 20;
+console.log(\`Can vote? \${age >= 18}\`);
+// Output: "Can vote? true"`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Zap}
+      />
 
       {/* Multiline Strings */}
       <Card>
@@ -414,9 +389,11 @@ const email = 'Dear Customer,\\n' +
   'Best regards,\\n' +
   'The Team';
 
-console.log(email);`}
+console.log(email);
+// Requires \\n for line breaks
+// Needs + for concatenation
+// Hard to read and maintain`}
               </pre>
-              <SnippetOutput lines={['Requires \\\\n for line breaks', 'Needs + for concatenation', 'Hard to read and maintain']} />
             </div>
 
             <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
@@ -434,9 +411,11 @@ Your package will arrive soon.
 Best regards,
 The Team\`;
 
-console.log(email);`}
+console.log(email);
+// No \\n needed!
+// Natural line breaks
+// Easy to read and write`}
               </pre>
-              <SnippetOutput lines={['No \\\\n needed!', 'Natural line breaks', 'Easy to read and write']} />
             </div>
           </div>
 
@@ -460,12 +439,54 @@ const html = \`
   </article>
 \`;
 
-console.log(html);`}
+console.log(html);
+// Generates clean HTML
+// Variables embedded naturally
+// Indentation preserved`}
             </pre>
-            <SnippetOutput lines={['Generates clean HTML', 'Variables embedded naturally', 'Indentation preserved']} />
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Multiline Strings"
+        description="Create clean multiline strings without escape characters"
+        code={`// Email Template
+const email = \`Dear Customer,
+
+Thank you for your order.
+Your package will arrive soon.
+
+Best regards,
+The Team\`;
+
+console.log(email);
+// No \\n needed!
+// Natural line breaks
+
+// HTML Generation
+const title = 'My Article';
+const author = 'John Doe';
+const content = 'This is the article content.';
+
+const html = \`
+  <article>
+    <h1>\${title}</h1>
+    <p class="author">By \${author}</p>
+    <div class="content">
+      \${content}
+    </div>
+  </article>
+\`;
+
+console.log(html);
+// Generates clean HTML
+// Variables embedded naturally
+// Indentation preserved`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Layers}
+      />
 
       {/* Nested Templates & Advanced Patterns */}
       <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -498,9 +519,10 @@ const htmlList = \`
     \${users.map(u => \`<li>\${u}</li>\`).join('')}
   </ul>
 \`;
-console.log(htmlList);`}
+console.log(htmlList);
+// Users: <Alice>, <Bob>, <Charlie>
+// Generated <ul> with 3 <li> items`}
               </pre>
-              <SnippetOutput lines={['Users: <Alice>, <Bob>, <Charlie>', 'Generated <ul> with 3 <li> items']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -524,9 +546,11 @@ const table = \`
   </table>
 \`;
 
-console.log(table);`}
+console.log(table);
+// Generated HTML table
+// Each product as a row
+// Nested templates in map()`}
               </pre>
-              <SnippetOutput lines={['Generated HTML table', 'Each product as a row', 'Nested templates in map()']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -547,9 +571,12 @@ const profile = \`
   \${user.points > 1000 ? \`Reward: \${user.points} points!\` : ''}
 \`;
 
-console.log(profile);`}
+console.log(profile);
+// Output:
+// Name: Alice
+// Status: PREMIUM MEMBER
+// Reward: 1500 points!`}
               </pre>
-              <SnippetOutput lines={['Name: Alice', 'Status: PREMIUM MEMBER', 'Reward: 1500 points!']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -573,13 +600,63 @@ const info = \`
   \${user.address.city}, \${user.address.country}
 \`;
 
-console.log(info);`}
+console.log(info);
+// Output:
+// John lives at:
+// 123 Main St
+// New York, USA`}
               </pre>
-              <SnippetOutput lines={['John lives at:', '123 Main St', 'New York, USA']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Nested Templates & Advanced Patterns"
+        description="Complex patterns using nested template literals"
+        code={`// Nested Array Mapping
+const users = ['Alice', 'Bob', 'Charlie'];
+
+const userList = \`Users: \${users.map(u => \`<\${u}>\`).join(', ')}\`;
+console.log(userList);
+// Output: Users: <Alice>, <Bob>, <Charlie>
+
+// Dynamic Table Generation
+const products = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 25 },
+  { name: 'Keyboard', price: 75 }
+];
+
+const table = \`
+  <table>
+    <tr><th>Product</th><th>Price</th></tr>
+    \${products.map(p => 
+      \`<tr><td>\${p.name}</td><td>$\${p.price}</td></tr>\`
+    ).join('')}
+  </table>
+\`;
+console.log(table);
+// Generated HTML table with nested templates
+
+// Conditional Content
+const user = {
+  name: 'Alice',
+  isPremium: true,
+  points: 1500
+};
+
+const profile = \`
+  Name: \${user.name}
+  \${user.isPremium ? 'Status: PREMIUM MEMBER' : ''}
+  \${user.points > 1000 ? \`Reward: \${user.points} points!\` : ''}
+\`;
+console.log(profile);
+// Output includes conditional sections`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={ArrowRight}
+      />
 
       {/* Real-World Use Cases */}
       <Card className="bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 border border-amber-200/40 dark:border-amber-800/30">
@@ -612,9 +689,10 @@ console.log(apiURL);
 const search = 'javascript';
 const page = 2;
 const searchURL = \`\${baseURL}/search?q=\${search}&page=\${page}\`;
-console.log(searchURL);`}
+console.log(searchURL);
+// apiURL -> "https://api.example.com/users/123"
+// searchURL -> "https://api.example.com/search?q=javascript&page=2"`}
               </pre>
-              <SnippetOutput lines={['apiURL -> "https://api.example.com/users/123"', 'searchURL with query params']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -638,9 +716,11 @@ console.log(searchURL);`}
 }
 
 const email = sendWelcomeEmail('Alice', 'https://app.com/activate/abc123');
-console.log(email);`}
+console.log(email);
+// Personalized email generated
+// Clean and readable template
+// Easy to maintain`}
               </pre>
-              <SnippetOutput lines={['Personalized email generated', 'Clean and readable template', 'Easy to maintain']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
@@ -663,9 +743,11 @@ const query = \`
 
 console.log(query);
 
-// Better: Use prepared statements/parameterized queries`}
+// Better: Use prepared statements/parameterized queries
+// Query built dynamically
+// ⚠️ Use prepared statements!
+// Prevent SQL injection`}
               </pre>
-              <SnippetOutput lines={['Query built dynamically', '⚠️ Use prepared statements!', 'Prevent SQL injection']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
@@ -685,13 +767,72 @@ console.log(query);
   // Process the order...
 }
 
-processOrder('ORD-123', [{}, {}, {}], 299.97);`}
+processOrder('ORD-123', [{}, {}, {}], 299.97);
+// Output:
+// Processing Order #ORD-123
+// Items: 3
+// Total: $299.97
+// Timestamp included`}
               </pre>
-              <SnippetOutput lines={['Processing Order #ORD-123', 'Items: 3', 'Total: $299.97', 'Timestamp included']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Use Cases"
+        description="Practical applications of template literals in production"
+        code={`// URL Building
+const baseURL = 'https://api.example.com';
+const endpoint = 'users';
+const userId = 123;
+
+const apiURL = \`\${baseURL}/\${endpoint}/\${userId}\`;
+console.log(apiURL);
+// Output: "https://api.example.com/users/123"
+
+// With query parameters
+const search = 'javascript';
+const page = 2;
+const searchURL = \`\${baseURL}/search?q=\${search}&page=\${page}\`;
+console.log(searchURL);
+// Output: "https://api.example.com/search?q=javascript&page=2"
+
+// Email Templates
+function sendWelcomeEmail(userName, activationLink) {
+  return \`
+    Subject: Welcome to our platform!
+    
+    Hi \${userName},
+    
+    Thanks for signing up! Click below to activate:
+    \${activationLink}
+    
+    Best regards,
+    The Team
+  \`;
+}
+
+const email = sendWelcomeEmail('Alice', 'https://app.com/activate/abc123');
+console.log(email);
+// Personalized email generated
+
+// Logging & Debugging
+function processOrder(orderId, items, total) {
+  console.log(\`
+    Processing Order #\${orderId}
+    Items: \${items.length}
+    Total: $\${total.toFixed(2)}
+    Time: \${new Date().toISOString()}
+  \`);
+}
+
+processOrder('ORD-123', [{}, {}, {}], 299.97);
+// Structured, readable logging output`}
+        language="javascript"
+        colorTheme="amber"
+        icon={Sparkles}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -731,30 +872,6 @@ processOrder('ORD-123', [{}, {}, {}], 299.97);`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ template literals, interpolation, and multiline strings.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights template literal features (variable interpolation, expressions, multiline strings, and nested templates) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

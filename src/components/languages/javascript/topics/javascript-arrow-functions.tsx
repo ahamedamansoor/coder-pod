@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput, InteractivePlayground } from '@/components/shared';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   ArrowRightCircle,
   Sparkles,
@@ -22,119 +21,7 @@ interface JavaScriptArrowFunctionsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arrow Functions Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🎯 Arrow Functions</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('🎯 Arrow Functions Demo\\n');
-
-// 1. Basic Syntax
-console.log('=== Basic Syntax ===');
-const double = (n) => n * 2;
-const greet = (name = 'Coder') => 'Hi ' + name + '!';
-
-console.log('double(5):', double(5));
-console.log('greet():', greet());
-console.log('greet("Ada"):', greet('Ada'));
-
-// 2. Array Methods
-console.log('\\n=== Array Transformations ===');
-const products = [
-  { name: 'Laptop', price: 999 },
-  { name: 'Mouse', price: 29 },
-  { name: 'Keyboard', price: 79 }
-];
-
-const discounted = products.map(p => p.price * 0.8);
-console.log('Discounted prices:', discounted);
-
-const expensive = products.filter(p => p.price > 50);
-console.log('Expensive items:', expensive);
-
-// 3. Lexical this
-console.log('\\n=== Lexical this ===');
-const report = {
-  total: 0,
-  add: (value) => {
-    report.total += value;
-    return report.total;
-  },
-  log: () => console.log('Total:', report.total),
-};
-
-report.add(3);
-report.add(4);
-report.log();
-
-// 4. Higher-Order Functions
-console.log('\\n=== Higher-Order Functions ===');
-const multiplyBy = (factor) => (num) => num * factor;
-const triple = multiplyBy(3);
-console.log('triple(5):', triple(5));
-
-// 5. Implicit Returns
-console.log('\\n=== Implicit Returns ===');
-const numbers = [1, 2, 3, 4, 5];
-console.log('Squares:', numbers.map(n => n * n));
-console.log('Sum:', numbers.reduce((sum, n) => sum + n, 0));
-
-console.log('\\n✅ Check these examples above!');`;
-
-export default function JavaScriptArrowFunctions({ onOpenWebPlayground }: JavaScriptArrowFunctionsProps) {
+export default function JavaScriptArrowFunctions({}: JavaScriptArrowFunctionsProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -164,7 +51,7 @@ export default function JavaScriptArrowFunctions({ onOpenWebPlayground }: JavaSc
             </p>
           </div>
 
-          <CodeSnippetWithOutput
+          <CodeSnippet
             title="Arrow Function Comparison"
             description="Traditional function vs arrow function syntax"
             code={`// Traditional Function
@@ -177,14 +64,24 @@ const greetArrow = (name) => 'Hello ' + name;
 
 // Testing both
 console.log(greet('Ada'));
-console.log(greetArrow('Bob'));`}
-            output={[
-              'Hello Ada',
-              'Hello Bob'
-            ]}
+// Output: Hello Ada
+
+console.log(greetArrow('Bob'));
+// Output: Hello Bob`}
             language="javascript"
             colorTheme="amber"
             icon={ArrowRightCircle}
+            features={[
+              "Shorter syntax with =>",
+              "Implicit return for single expressions",
+              "No function keyword needed",
+              "More concise and readable"
+            ]}
+            tips={[
+              "Use for simple, short functions",
+              "Great for array methods like map/filter",
+              "Removes boilerplate code"
+            ]}
           />
 
           <Alert className="bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
@@ -320,10 +217,11 @@ console.log(greetArrow('Bob'));`}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <CodeSnippetWithOutput
-            title="Array Transformations"
-            description="Perfect for map, filter, and reduce operations with clean, readable syntax"
-            code={`// Data processing with arrow functions
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Array Transformations"
+              description="Perfect for map, filter, and reduce operations with clean, readable syntax"
+              code={`// Data processing with arrow functions
 const products = [
   { name: 'Laptop', price: 999 },
   { name: 'Mouse', price: 29 },
@@ -333,102 +231,65 @@ const products = [
 // Get discounted prices (20% off)
 const discounted = products.map(p => p.price * 0.8);
 console.log(discounted);
+// Output: [799.2, 23.2, 63.2]
 
 // Filter expensive items
 const expensive = products.filter(p => p.price > 50);
-console.log(expensive);`}
-            output={[
-              '[799.2, 23.2, 63.2]',
-              "[{ name: 'Laptop', price: 999 }, { name: 'Keyboard', price: 79 }]"
-            ]}
-            language="javascript"
-            colorTheme="blue"
-            icon={Activity}
-          />
+console.log(expensive);
+// Output: [{ name: 'Laptop', price: 999 }, { name: 'Keyboard', price: 79 }]`}
+              language="javascript"
+              colorTheme="blue"
+              icon={Activity}
+              features={[
+                "Concise array method callbacks",
+                "Implicit returns for single expressions",
+                "Clean, readable data transformations",
+                "Common in modern JavaScript"
+              ]}
+              tips={[
+                "Perfect for map, filter, reduce",
+                "No need for explicit return keyword",
+                "Essential for functional programming"
+              ]}
+            />
 
-          {/* Example 2: Event Handlers */}
-          <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-            <h4 className="font-semibold text-lg flex items-center gap-2">
-              <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-300/50">2</Badge>
-              Event Handlers with Lexical `this`
-            </h4>
-            <p className="text-sm text-muted-foreground">Arrow functions preserve `this` from the surrounding context—perfect for class methods</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-4 font-mono text-xs border space-y-2">
-              <div>class Counter {'{'}</div>
-              <div>  constructor() {'{'}</div>
-              <div>    this.count = 0;</div>
-              <div>    this.button = document.querySelector('#btn');</div>
-              <div>  {'}'}</div>
-              <div>&nbsp;</div>
-              <div className="text-amber-600 dark:text-amber-400">  // Arrow function preserves `this`</div>
-              <div>  start() {'{'}</div>
-              <div>    this.button.addEventListener('click', () =&gt; {'{'}</div>
-              <div>      this.count++; <span className="text-emerald-600 dark:text-emerald-400">// `this` refers to Counter instance!</span></div>
-              <div>      console.log(this.count);</div>
-              <div>    {'}'});</div>
-              <div>  {'}'}</div>
-              <div>{'}'}</div>
-            </div>
-            <Alert className="bg-purple-50/50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800">
-              <AlertDescription className="text-sm">
-                Without arrow function, you'd need <code>.bind(this)</code> or store <code>this</code> in a variable!
-              </AlertDescription>
-            </Alert>
+            <CodeSnippet
+              title="Event Handlers with Lexical this"
+              description="Arrow functions preserve 'this' from the surrounding context—perfect for class methods"
+              code={`// Arrow function preserves 'this' context
+class Counter {
+  constructor() {
+    this.count = 0;
+    this.button = document.querySelector('#btn');
+  }
+
+  start() {
+    // Arrow function preserves 'this'
+    this.button.addEventListener('click', () => {
+      this.count++; // 'this' refers to Counter instance!
+      console.log(this.count);
+      // Output: 1, 2, 3... (increments on each click)
+    });
+  }
+}
+
+// Without arrow function, you'd need .bind(this) or store this in a variable!`}
+              language="javascript"
+              colorTheme="purple"
+              icon={CheckCircle2}
+              features={[
+                "Lexical 'this' binding",
+                "No need for .bind(this)",
+                "Perfect for event handlers",
+                "Preserves class instance context"
+              ]}
+              tips={[
+                "Use in class methods for events",
+                "Avoids 'this' binding issues",
+                "Cleaner than traditional functions"
+              ]}
+            />
           </div>
-
-          {/* Example 3: Async Operations */}
-          <div className="p-5 bg-gradient-to-br from-amber-50/60 to-orange-50/60 dark:from-amber-950/10 dark:to-orange-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
-            <h4 className="font-semibold text-lg flex items-center gap-2">
-              <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50">3</Badge>
-              Promises & Async/Await
-            </h4>
-            <p className="text-sm text-muted-foreground">Clean, modern async code with arrow functions</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-4 font-mono text-xs border space-y-2">
-              <div className="text-amber-600 dark:text-amber-400">// Fetching user data with arrow functions</div>
-              <div>const fetchUser = async (id) =&gt; {'{'}</div>
-              <div>  const response = await fetch(`/api/users/${'{'}id{'}'}`);</div>
-              <div>  return response.json();</div>
-              <div>{'}'};</div>
-              <div>&nbsp;</div>
-              <div className="text-amber-600 dark:text-amber-400">// Promise chaining</div>
-              <div>fetchUser(1)</div>
-              <div>  .then(user =&gt; console.log(user.name))</div>
-              <div>  .catch(err =&gt; console.error('Error:', err));</div>
-              <div>&nbsp;</div>
-              <div className="text-amber-600 dark:text-amber-400">// Multiple users at once</div>
-              <div>const ids = [1, 2, 3];</div>
-              <div>const users = await Promise.all(ids.map(id =&gt; fetchUser(id)));</div>
-            </div>
-          </div>
-
-          <CodeSnippetWithOutput
-            title="Higher-Order Functions"
-            description="Build reusable function factories and utilities"
-            code={`// Function that returns a function
-const multiplyBy = (factor) => (num) => num * factor;
-
-const double = multiplyBy(2);
-const triple = multiplyBy(3);
-
-console.log(double(5)); // 10
-console.log(triple(5)); // 15
-
-// Debounce utility
-const debounce = (fn, delay) => {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn(...args), delay);
-  };
-};`}
-            output={[
-              '10',
-              '15'
-            ]}
-            language="javascript"
-            colorTheme="emerald"
-            icon={Zap}
-          />
         </CardContent>
       </Card>
 
@@ -467,28 +328,6 @@ const debounce = (fn, delay) => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Interactive Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Interactive Arrow Functions Playground"
-          description="Experiment with arrow function syntax, implicit returns, lexical this binding, and see how they differ from traditional functions."
-          features={[
-            'Concise Syntax',
-            'Implicit Returns',
-            'Lexical This',
-            'Live Examples'
-          ]}
-          buttonText="Open Arrow Functions Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="amber"
-        />
-      )}
     </div>
   );
 }

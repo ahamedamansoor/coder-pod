@@ -2,148 +2,23 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   ArrowUp,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   Code,
   AlertCircle,
   Zap,
   Eye,
 } from 'lucide-react';
 
-interface JavaScriptHoistingProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Hoisting Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px; 
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      margin-top: 24px; 
-      font-family: monospace; 
-      font-size: 14px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>JavaScript Hoisting</h1>
-    <p>Open the browser console (F12) to see hoisting examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./hoisting-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Hoisting Demo ===\\n');
-
-// 1. var Hoisting
-console.log('1. VAR HOISTING:');
-console.log(varVariable);
-var varVariable = 'I am hoisted';
-console.log(varVariable);
-
-// 2. let/const in Temporal Dead Zone
-console.log('\\n2. LET/CONST (TDZ):');
-try {
-  console.log(letVariable);
-} catch (error) {
-  console.log('Error:', error.message);
-}
-let letVariable = 'I am in TDZ before declaration';
-
-// 3. Function Declaration Hoisting
-console.log('\\n3. FUNCTION HOISTING:');
-console.log(hoistedFunction());
-
-function hoistedFunction() {
-  return 'I am fully hoisted!';
-}
-
-// 4. Function Expression NOT Hoisted
-console.log('\\n4. FUNCTION EXPRESSION:');
-try {
-  console.log(notHoisted());
-} catch (error) {
-  console.log('Error:', error.message);
-}
-
-var notHoisted = function() {
-  return 'I am NOT hoisted';
-};
-
-console.log(notHoisted());
-
-// 5. Class Hoisting (also in TDZ)
-console.log('\\n5. CLASS HOISTING:');
-try {
-  const instance = new MyClass();
-} catch (error) {
-  console.log('Error:', error.message);
-}
-
-class MyClass {
-  constructor() {
-    this.name = 'MyClass';
-  }
-}
-
-const instance = new MyClass();
-console.log('After declaration:', instance.name);
-
-console.log('\\nAll hoisting examples demonstrated!');
-`;
-
-export default function JavaScriptHoisting({ onOpenWebPlayground }: JavaScriptHoistingProps) {
+export default function JavaScriptHoisting() {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -236,9 +111,11 @@ export default function JavaScriptHoisting({ onOpenWebPlayground }: JavaScriptHo
               <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
 {`console.log(myVar);
 var myVar = 'Hello';
-console.log(myVar);`}
+console.log(myVar);
+// Output:
+// undefined
+// Hello`}
               </pre>
-              <SnippetOutput lines={['undefined', 'Hello']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -252,9 +129,12 @@ var myVar;
 
 console.log(myVar); // undefined
 myVar = 'Hello';    // Assignment stays here
-console.log(myVar); // Hello`}
+console.log(myVar); // Hello
+// Output:
+// Declaration moves up
+// Initialized with undefined
+// Assignment happens later`}
               </pre>
-              <SnippetOutput lines={['Declaration moves up', 'Initialized with undefined', 'Assignment happens later']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -271,9 +151,13 @@ var a = 1;
 var b = 2;
 var c = 3;
 
-console.log(a, b, c);`}
+console.log(a, b, c);
+// Output:
+// undefined
+// undefined
+// undefined
+// 1 2 3 (after assignments)`}
               </pre>
-              <SnippetOutput lines={['undefined', 'undefined', 'undefined', '1 2 3 (after assignments)']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -292,13 +176,56 @@ console.log(a, b, c);`}
   console.log(x); // 5 (var leaks from block)
 }
 
-example();`}
+example();
+// Output:
+// undefined (declaration hoisted)
+// 5 (var ignores block scope)`}
               </pre>
-              <SnippetOutput lines={['undefined (declaration hoisted)', '5 (var ignores block scope)']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: var Hoisting"
+        description="Declaration hoisted with undefined initialization"
+        code={`// What you write
+console.log(myVar); // Accessing before declaration
+var myVar = 'Hello';
+console.log(myVar);
+// Output: undefined, then "Hello"
+
+// What JavaScript does (conceptually)
+var myVar;           // Declaration hoisted to top
+console.log(myVar);  // undefined
+myVar = 'Hello';     // Assignment stays here
+console.log(myVar);  // "Hello"
+
+// Multiple var declarations
+console.log(a, b, c); // undefined undefined undefined
+var a = 1;
+var b = 2;
+var c = 3;
+console.log(a, b, c); // 1 2 3
+
+// var ignores block scope - leaks out
+function example() {
+  console.log(x); // undefined (hoisted to function top)
+  
+  if (true) {
+    var x = 5;     // Hoisted to function scope
+  }
+  
+  console.log(x); // 5 (var leaks from block)
+}
+
+example();
+// Output: undefined, 5
+// var is function-scoped, not block-scoped!`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Code}
+      />
 
       {/* Temporal Dead Zone */}
       <Card className="bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 border border-rose-200/40 dark:border-rose-800/30">
@@ -337,9 +264,12 @@ let letVar = 'Hello';
 // Cannot access 'letVar' before initialization
 
 // TDZ exists from start of scope
-// until declaration is executed`}
+// until declaration is executed
+// Output:
+// ReferenceError!
+// letVar exists but in TDZ
+// Cannot be accessed`}
               </pre>
-              <SnippetOutput lines={['ReferenceError!', 'letVar exists but in TDZ', 'Cannot be accessed']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -358,9 +288,12 @@ const constVar = 'World';
 // Cannot access 'constVar' before initialization
 
 // const must be initialized
-// when declared`}
+// when declared
+// Output:
+// ReferenceError!
+// constVar exists but in TDZ
+// Must initialize at declaration`}
               </pre>
-              <SnippetOutput lines={['ReferenceError!', 'constVar exists but in TDZ', 'Must initialize at declaration']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -380,9 +313,12 @@ if (true) {
 // END OF TDZ (declaration executed)
 let myVar = 5;
 
-console.log(myVar); // 5 (accessible now)`}
+console.log(myVar); // 5 (accessible now)
+// Output:
+// TDZ from scope start to declaration
+// Any access throws error
+// After declaration: works fine`}
               </pre>
-              <SnippetOutput lines={['TDZ from scope start to declaration', 'Any access throws error', 'After declaration: works fine']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -403,13 +339,61 @@ function processBad(input) {
   console.log(result); // undefined (no error)
   var result = input * 2;
   return result;
-}`}
+}
+// Output:
+// TDZ = better error detection
+// Catches typos and logic errors
+// Safer code!`}
               </pre>
-              <SnippetOutput lines={['TDZ = better error detection', 'Catches typos and logic errors', 'Safer code!']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Temporal Dead Zone (TDZ)"
+        description="let/const hoisted but in TDZ until declaration"
+        code={`// let in Temporal Dead Zone
+console.log(letVar); // ReferenceError!
+let letVar = 'Hello';
+// Cannot access 'letVar' before initialization
+
+// const in Temporal Dead Zone
+console.log(constVar); // ReferenceError!
+const constVar = 'World';
+// Must initialize const at declaration
+
+// TDZ Visualization
+// START OF TDZ for myVar
+console.log(myVar); // ReferenceError
+
+if (true) {
+  console.log(myVar); // Still ReferenceError
+}
+
+// END OF TDZ (declaration executed)
+let myVar = 5;
+console.log(myVar); // 5 (works now!)
+
+// Why TDZ is good - catches bugs early
+function process(input) {
+  console.log(result); // ReferenceError (bug caught!)
+  let result = input * 2;
+  return result;
+}
+
+// Bad with var - hides bugs
+function processBad(input) {
+  console.log(result); // undefined (bug NOT caught)
+  var result = input * 2;
+  return result;
+}
+
+// TDZ = better error detection and safer code!`}
+        language="javascript"
+        colorTheme="rose"
+        icon={AlertCircle}
+      />
 
       {/* Function Hoisting */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -437,9 +421,12 @@ function greet(name) {
   return 'Hello, ' + name;
 }
 
-// Entire function is hoisted to top`}
+// Entire function is hoisted to top
+// Output:
+// greet("Alice") -> "Hello, Alice"
+// Full function definition hoisted
+// Name + Body both hoisted`}
               </pre>
-              <SnippetOutput lines={['greet("Alice") -> "Hello, Alice"', 'Full function definition hoisted', 'Name + Body both hoisted']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -456,9 +443,12 @@ var greet = function(name) {
 };
 
 // Only 'var greet' is hoisted (undefined)
-// Function assigned later`}
+// Function assigned later
+// Output:
+// TypeError!
+// greet is undefined
+// Function expression not hoisted`}
               </pre>
-              <SnippetOutput lines={['TypeError!', 'greet is undefined', 'Function expression not hoisted']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -474,9 +464,12 @@ const greet = (name) => {
   return 'Hello, ' + name;
 };
 
-// Arrow function in TDZ`}
+// Arrow function in TDZ
+// Output:
+// ReferenceError!
+// Arrow function in TDZ
+// Cannot access before declaration`}
               </pre>
-              <SnippetOutput lines={['ReferenceError!', 'Arrow function in TDZ', 'Cannot access before declaration']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -493,13 +486,60 @@ const greet = (name) => {
 console.log(factorial(5));
 
 // Error: fact is not defined (outside)
-console.log(fact);`}
+console.log(fact);
+// Output:
+// factorial(5) -> 120
+// fact only accessible inside function
+// fact not hoisted to outer scope`}
               </pre>
-              <SnippetOutput lines={['factorial(5) -> 120', 'fact only accessible inside function', 'fact not hoisted to outer scope']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Function Hoisting"
+        description="Function declarations fully hoisted, expressions not"
+        code={`// Function Declaration - FULLY HOISTED
+// Can call before declaration
+console.log(greet('Alice')); // "Hello, Alice"
+
+function greet(name) {
+  return 'Hello, ' + name;
+}
+// Entire function (name + body) hoisted to top!
+
+// Function Expression - NOT HOISTED
+console.log(greetExpr('Bob')); // TypeError!
+
+var greetExpr = function(name) {
+  return 'Hello, ' + name;
+};
+// Only 'var greetExpr' hoisted (as undefined)
+// Function assigned later
+
+// Arrow Function - IN TDZ (like let/const)
+console.log(greetArrow('Charlie')); // ReferenceError!
+
+const greetArrow = (name) => {
+  return 'Hello, ' + name;
+};
+// Arrow function in TDZ until declaration
+
+// Named Function Expression
+var factorial = function fact(n) {
+  if (n <= 1) return 1;
+  return n * fact(n - 1); // 'fact' accessible inside
+};
+
+console.log(factorial(5)); // 120
+console.log(fact);          // ReferenceError!
+// 'fact' only accessible inside function
+// Not hoisted to outer scope`}
+        language="javascript"
+        colorTheme="emerald"
+        icon={Code}
+      />
 
       {/* Class Hoisting */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -534,9 +574,12 @@ class Person {
 
 // Must declare before use
 const validPerson = new Person('Bob');
-console.log(validPerson.name);`}
+console.log(validPerson.name);
+// Output:
+// ReferenceError before declaration
+// Classes in TDZ
+// validPerson works after declaration`}
               </pre>
-              <SnippetOutput lines={['ReferenceError before declaration', 'Classes in TDZ', 'validPerson works after declaration']} />
             </div>
 
             <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
@@ -559,13 +602,55 @@ const MyClass = class {
 
 // Works after declaration
 const validInstance = new MyClass();
-console.log(validInstance.value);`}
+console.log(validInstance.value);
+// Output:
+// ReferenceError!
+// Class expression in TDZ
+// Works after declaration`}
               </pre>
-              <SnippetOutput lines={['ReferenceError!', 'Class expression in TDZ', 'Works after declaration']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Class Hoisting (ES6+)"
+        description="Classes in TDZ like let/const - must declare before use"
+        code={`// Class Declaration - IN TDZ
+// Cannot use before declaration
+const person = new Person('Alice'); // ReferenceError!
+
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+// Must declare before use
+const validPerson = new Person('Bob'); // Works!
+console.log(validPerson.name); // "Bob"
+
+// Class Expression - IN TDZ
+// Same behavior as const/let
+const instance = new MyClass(); // ReferenceError!
+
+const MyClass = class {
+  constructor() {
+    this.value = 42;
+  }
+};
+
+// Works after declaration
+const validInstance = new MyClass();
+console.log(validInstance.value); // 42
+
+// Classes are NOT like function declarations
+// They're hoisted but stay in TDZ until declaration
+// Always declare classes before using them!`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Code}
+      />
 
       {/* Real-World Examples */}
       <Card>
@@ -600,9 +685,12 @@ for (let i = 0; i < 3; i++) {
     console.log(i);
   }, 100);
 }
-// Output: 0, 1, 2`}
+// Output: 0, 1, 2
+// Output:
+// var: hoisted to function scope
+// All closures share same i
+// let: creates new binding per iteration`}
               </pre>
-              <SnippetOutput lines={['var: hoisted to function scope', 'All closures share same i', 'let: creates new binding per iteration']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
@@ -625,9 +713,12 @@ function fetchData() {
 
 function validate(data) {
   return data.id && data.name;
-}`}
+}
+// Output:
+// All functions hoisted first
+// Order does not matter
+// Can call before declaration`}
               </pre>
-              <SnippetOutput lines={['All functions hoisted first', 'Order does not matter', 'Can call before declaration']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
@@ -650,9 +741,12 @@ if (condition) {
 // BETTER: Use function expressions
 const doSomething = condition 
   ? function() { return 'A'; }
-  : function() { return 'B'; };`}
+  : function() { return 'B'; };
+// Output:
+// Conditional declarations = unpredictable
+// Use function expressions instead
+// More predictable behavior`}
               </pre>
-              <SnippetOutput lines={['Conditional declarations = unpredictable', 'Use function expressions instead', 'More predictable behavior']} />
             </div>
 
             <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
@@ -681,13 +775,86 @@ const doSomething = condition
 })();
 
 module.increment();
-console.log(module.getCount());`}
+console.log(module.getCount());
+// Output:
+// Functions hoisted in IIFE
+// Can return before definition
+// Clean module pattern`}
               </pre>
-              <SnippetOutput lines={['Functions hoisted in IIFE', 'Can return before definition', 'Clean module pattern']} />
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Real-World Hoisting Patterns"
+        description="Common bugs and best practices with hoisting"
+        code={`// Classic Loop Bug (var)
+// BUG: All timeouts log 3
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Output: 3, 3, 3 (all closures share same i)
+
+// FIX: Use let (block-scoped)
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Output: 0, 1, 2 (each iteration has own i)
+
+// Function Declaration Order - Works!
+processData(); // Can call before declaration
+
+function processData() {
+  const data = fetchData();
+  return validate(data);
+}
+
+function fetchData() {
+  return { id: 1, name: 'Test' };
+}
+
+function validate(data) {
+  return data.id && data.name;
+}
+// All functions hoisted - order doesn't matter
+
+// AVOID: Conditional Function Declarations
+if (condition) {
+  function doSomething() { return 'A'; }
+} else {
+  function doSomething() { return 'B'; }
+}
+// Unpredictable behavior!
+
+// BETTER: Use function expressions
+const doSomething = condition 
+  ? function() { return 'A'; }
+  : function() { return 'B'; };
+// Predictable behavior
+
+// Module Pattern with Hoisting
+const module = (function() {
+  let count = 0;
+  
+  // Can return before function definitions
+  return { increment, getCount };
+  
+  function increment() {
+    count++;
+  }
+  
+  function getCount() {
+    return count;
+  }
+})();
+
+module.increment();
+console.log(module.getCount()); // 1`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Sparkles}
+      />
 
       {/* Best Practices */}
       <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
@@ -721,30 +888,6 @@ console.log(module.getCount());`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ hoisting, var behavior, and temporal dead zone.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights hoisting behavior (var hoisting, TDZ, function declarations, and class hoisting) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

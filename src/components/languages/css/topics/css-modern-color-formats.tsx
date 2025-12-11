@@ -506,10 +506,22 @@ const colorManipulationExample = `<!DOCTYPE html>
     .alpha-25 { background: hsla(210, 100%, 50%, 0.25); }
     
     /* Color mixing with modern color-mix() */
-    .mix-1 { background: color-mix(in srgb, #3b82f6, #10b981); }
-    .mix-2 { background: color-mix(in srgb, #3b82f6 80%, #10b981 20%); }
-    .mix-3 { background: color-mix(in srgb, #3b82f6 50%, #10b981 50%); }
-    .mix-4 { background: color-mix(in srgb, #3b82f6 20%, #10b981 80%); }
+    .mix-1 {
+      background: #1c91ce; /* Fallback for browsers without color-mix */
+      background: color-mix(in srgb, #3b82f6, #10b981);
+    }
+    .mix-2 {
+      background: #2f7fd8;
+      background: color-mix(in srgb, #3b82f6 80%, #10b981 20%);
+    }
+    .mix-3 {
+      background: #269ebc;
+      background: color-mix(in srgb, #3b82f6 50%, #10b981 50%);
+    }
+    .mix-4 {
+      background: #059669;
+      background: color-mix(in srgb, #3b82f6 20%, #10b981 80%);
+    }
     
     .checkerboard {
       background-image: 

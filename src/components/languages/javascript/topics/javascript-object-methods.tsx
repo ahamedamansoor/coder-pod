@@ -3,120 +3,26 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   ClipboardList,
   Sparkles,
-  Columns,
   Layers,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
   ListChecks,
+  Key,
+  Lock,
+  Shuffle,
+  Package,
+  Zap,
+  Columns,
 } from 'lucide-react';
 
-interface JavaScriptObjectMethodsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Object Methods Demo</title>
-  <style>
-    body { font-family: 'Inter', system-ui; background: #f8fafc; color: #0f172a; padding: 24px; }
-    .panel { max-width: 720px; margin: 0 auto; border-radius: 16px; border: 1px solid #e2e8f0; background: #fff; padding: 28px; }
-    pre { background: #0f172a; color: #e2e8f0; padding: 12px; border-radius: 10px; overflow-x: auto; }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>Object Methods</h1>
-    <p>Open DevTools console to inspect each helper.</p>
-    <pre id="summary"></pre>
-  </div>
-  <script src="./object-methods-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Object Methods Demo ===\\n');
-
-// 1. Inspection Methods
-const user = { name: 'Ada', role: 'admin', active: true };
-console.log('1. INSPECTION:');
-console.log('  keys:', Object.keys(user));
-console.log('  values:', Object.values(user));
-console.log('  entries:', Object.entries(user));
-
-// 2. Clone & Merge
-console.log('\\n2. CLONE & MERGE:');
-const defaults = { theme: 'light', fontSize: 14 };
-const prefs = { theme: 'dark' };
-const merged = Object.assign({}, defaults, prefs);
-console.log('  merged config:', merged);
-
-// 3. Convert Entries
-console.log('\\n3. FROM ENTRIES:');
-const pairs = [['env', 'prod'], ['debug', false]];
-const config = Object.fromEntries(pairs);
-console.log('  config object:', config);
-
-// 4. Freeze (Immutable)
-console.log('\\n4. FREEZE:');
-const constants = Object.freeze({ PI: 3.14, MAX: 100 });
-constants.PI = 999; // Ignored
-console.log('  isFrozen:', Object.isFrozen(constants));
-console.log('  PI still:', constants.PI);
-
-// 5. Seal (No Add/Delete)
-console.log('\\n5. SEAL:');
-const record = Object.seal({ id: 5, status: 'open' });
-record.status = 'closed'; // Works
-record.newProp = 'test'; // Ignored
-console.log('  isSealed:', Object.isSealed(record));
-console.log('  record:', record);
-
-// 6. Check Property
-console.log('\\n6. HAS OWN:');
-console.log('  hasOwn name:', Object.hasOwn(user, 'name'));
-console.log('  hasOwn age:', Object.hasOwn(user, 'age'));
-
-// 7. Precise Equality
-console.log('\\n7. OBJECT.IS:');
-console.log('  is(NaN, NaN):', Object.is(NaN, NaN));
-console.log('  is(0, -0):', Object.is(0, -0));
-
-// Summary Display
-const summary = [
-  '✓ Keys/Values/Entries extracted',
-  '✓ Objects merged with assign',
-  '✓ Entries converted to object',
-  '✓ Constants frozen (immutable)',
-  '✓ Record sealed (fixed shape)',
-  '✓ Properties checked with hasOwn',
-  '✓ Precise equality with Object.is'
-].join('\\n');
-
-document.getElementById('summary').textContent = summary;
-console.log('\\n✅ All methods demonstrated!');
-`;
-
-export default function JavaScriptObjectMethods({ onOpenWebPlayground }: JavaScriptObjectMethodsProps) {
+export default function JavaScriptObjectMethods() {
   const methodGroups = [
     { label: 'Inspection', methods: ['Object.keys', 'Object.values', 'Object.entries'] },
     { label: 'Creation', methods: ['Object.assign', 'Object.fromEntries', 'Object.create'] },
@@ -212,41 +118,39 @@ export default function JavaScriptObjectMethods({ onOpenWebPlayground }: JavaScr
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Columns className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Inspecting Properties
-          </CardTitle>
-          <CardDescription className="text-base">Extract keys, values, and entries without manual loops.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          {[
-            {
-              title: 'Object.keys',
-              snippet: `const user = { id: 7, role: 'admin' };
-const keys = Object.keys(user);`,
-              output: ["['id','role']"]
-            },
-            {
-              title: 'Object.values',
-              snippet: `const values = Object.values({ a: 1, b: 2 });`,
-              output: ['[1,2]']
-            },
-            {
-              title: 'Object.entries',
-              snippet: `const entries = Object.entries({ plan: 'pro', seats: 5 });`,
-              output: ["[['plan','pro'],['seats',5]]"]
-            },
-          ].map(({ title, snippet, output }) => (
-            <div key={title} className="rounded-xl border bg-white dark:bg-gray-900 p-4">
-              <h4 className="font-semibold mb-2">{title}</h4>
-              <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{snippet}</pre>
-              <SnippetOutput lines={output} />
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      <CodeSnippet
+        title="Inspecting Properties: Keys, Values, Entries"
+        description="Extract all keys, values, or key-value pairs from an object"
+        code={`const user = {
+  id: 123,
+  name: 'Ada Lovelace',
+  role: 'Developer',
+  active: true
+};
+
+// Get all property names
+const keys = Object.keys(user);
+console.log(keys);
+// ["id", "name", "role", "active"]
+
+// Get all property values
+const values = Object.values(user);
+console.log(values);
+// [123, "Ada Lovelace", "Developer", true]
+
+// Get key-value pairs
+const entries = Object.entries(user);
+console.log(entries);
+// [["id", 123], ["name", "Ada Lovelace"], ["role", "Developer"], ["active", true]]
+
+// Iterate with entries
+for (const [key, value] of Object.entries(user)) {
+  console.log(\`\${key}: \${value}\`);
+}`}
+        language="javascript"
+        colorTheme="blue"
+        icon={Key}
+      />
 
       <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
         <CardHeader>
@@ -266,28 +170,71 @@ const keys = Object.keys(user);`,
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Transform & Clone Objects
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.assign</h4>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const base = { theme: 'light' };
-const merged = Object.assign({}, base, { theme: 'dark', layout: 'grid' });`}</pre>
-            <SnippetOutput lines={["merged.theme -> 'dark'", "merged.layout -> 'grid'"]} />
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.fromEntries</h4>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const pairs = [['env','prod'], ['debug', true]];
-const config = Object.fromEntries(pairs);`}</pre>
-            <SnippetOutput lines={["config.env -> 'prod'", 'config.debug -> true']} />
-          </div>
-        </CardContent>
-      </Card>
+      <CodeSnippet
+        title="Transform & Clone: Object.assign()"
+        description="Merge multiple objects into a target object (shallow copy)"
+        code={`// Merging objects (right side wins on conflicts)
+const defaults = {
+  theme: 'light',
+  fontSize: 14,
+  autoSave: true
+};
+
+const userPrefs = {
+  theme: 'dark',
+  fontSize: 16
+};
+
+// Merge into new object
+const config = Object.assign({}, defaults, userPrefs);
+console.log(config);
+// {
+//   theme: "dark",
+//   fontSize: 16,
+//   autoSave: true
+// }
+
+// Alternative with spread (more common)
+const config2 = { ...defaults, ...userPrefs };
+console.log(config2); // Same result`}
+        language="javascript"
+        colorTheme="emerald"
+        icon={Shuffle}
+      />
+
+      <CodeSnippet
+        title="Convert Entries: Object.fromEntries()"
+        description="Build an object from an array of key-value pairs"
+        code={`// From array of pairs
+const pairs = [
+  ['name', 'Alice'],
+  ['age', 30],
+  ['role', 'Developer']
+];
+
+const user = Object.fromEntries(pairs);
+console.log(user);
+// { name: "Alice", age: 30, role: "Developer" }
+
+// Practical: Convert FormData to object
+const formData = new FormData();
+formData.append('username', 'ada_dev');
+formData.append('email', 'ada@example.com');
+
+const userData = Object.fromEntries(formData.entries());
+console.log(userData);
+// { username: "ada_dev", email: "ada@example.com" }
+
+// Practical: Filter object properties
+const original = { id: 1, password: 'secret', email: 'a@b.com' };
+const filtered = Object.fromEntries(
+  Object.entries(original).filter(([key]) => key !== 'password')
+);
+console.log(filtered); // { id: 1, email: "a@b.com" }`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Package}
+      />
 
       <Card>
         <CardHeader>
@@ -310,9 +257,13 @@ const dog = Object.create(animal);
 dog.name = 'Rex';
 
 console.log(dog.speak());
-console.log(dog.name);`}
+// Output: "Sound"
+
+console.log(dog.name);
+// Output: "Rex"
+
+// Object.getPrototypeOf(dog) === animal -> true`}
             </pre>
-            <SnippetOutput lines={['dog.speak() -> "Sound"', 'dog.name -> "Rex"', 'Object.getPrototypeOf(dog) === animal -> true']} />
           </div>
           <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
             <h4 className="font-semibold">Object.preventExtensions</h4>
@@ -325,9 +276,13 @@ config.newKey = 'test'; // Silently ignored
 config.apiKey = 'updated'; // Works
 
 console.log(Object.isExtensible(config));
-console.log(config.newKey);`}
+// Output: false
+
+console.log(config.newKey);
+// Output: undefined
+
+// config.apiKey -> "updated"`}
             </pre>
-            <SnippetOutput lines={['Object.isExtensible(config) -> false', 'config.newKey -> undefined', 'config.apiKey -> "updated"']} />
           </div>
           <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
             <h4 className="font-semibold">Object.hasOwn</h4>
@@ -336,85 +291,109 @@ console.log(config.newKey);`}
 {`const user = { name: 'Alice', role: 'admin' };
 
 console.log(Object.hasOwn(user, 'name'));
+// Output: true
+
 console.log(Object.hasOwn(user, 'age'));
-console.log(Object.hasOwn(user, 'toString'));`}
+// Output: false
+
+console.log(Object.hasOwn(user, 'toString'));
+// Output: false`}
             </pre>
-            <SnippetOutput lines={['Object.hasOwn(user, "name") -> true', 'Object.hasOwn(user, "age") -> false', 'Object.hasOwn(user, "toString") -> false']} />
           </div>
           <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
             <h4 className="font-semibold">Object.is</h4>
             <p className="text-xs text-muted-foreground">Precise equality check (handles NaN and -0 correctly)</p>
             <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
 {`console.log(Object.is(25, 25));
+// Output: true
+
 console.log(Object.is(NaN, NaN));
+// Output: true
+
 console.log(Object.is(0, -0));
-console.log(Object.is(null, undefined));`}
+// Output: false
+
+console.log(Object.is(null, undefined));
+// Output: false`}
             </pre>
-            <SnippetOutput lines={['Object.is(25, 25) -> true', 'Object.is(NaN, NaN) -> true', 'Object.is(0, -0) -> false', 'Object.is(null, undefined) -> false']} />
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListChecks className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Integrity & Immutability
-          </CardTitle>
-          <CardDescription className="text-base">Lock objects to prevent modifications at different levels.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.freeze</h4>
-            <p className="text-xs text-muted-foreground">Make object completely immutable (no add/update/delete)</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const constants = Object.freeze({
-  PI: 3.14159,
-  MAX: 100
+      <CodeSnippet
+        title="Immutability: Object.freeze()"
+        description="Prevent any modifications to an object (add, update, or delete)"
+        code={`// Create immutable constants
+const API_CONFIG = Object.freeze({
+  BASE_URL: 'https://api.example.com',
+  TIMEOUT: 5000,
+  MAX_RETRIES: 3
 });
 
-constants.PI = 3.14; // Ignored
-constants.E = 2.718; // Ignored
+// Attempts to modify are silently ignored (throws in strict mode)
+API_CONFIG.BASE_URL = 'https://hacked.com'; // Ignored
+API_CONFIG.NEW_PROP = 'value'; // Ignored
+delete API_CONFIG.TIMEOUT; // Ignored
 
-console.log(Object.isFrozen(constants));
-console.log(constants.PI);`}
-            </pre>
-            <SnippetOutput lines={['Object.isFrozen(constants) -> true', 'constants.PI -> 3.14159']} />
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.seal</h4>
-            <p className="text-xs text-muted-foreground">Prevent adding/deleting properties but allow value changes</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const user = Object.seal({
-  id: 5,
+console.log(Object.isFrozen(API_CONFIG)); // true
+console.log(API_CONFIG.BASE_URL); // "https://api.example.com"
+
+// Note: freeze() is shallow
+const config = Object.freeze({
+  api: { url: 'test' }
+});
+
+config.api = {}; // Ignored (frozen)
+config.api.url = 'changed'; // Works! (nested object not frozen)
+
+// Deep freeze nested objects too
+config.api = Object.freeze(config.api);`}
+        language="javascript"
+        colorTheme="amber"
+        icon={Lock}
+      />
+
+      <CodeSnippet
+        title="Controlled Mutability: Object.seal()"
+        description="Allow value changes but prevent adding or deleting properties"
+        code={`// Seal an object (fixed structure, mutable values)
+const user = Object.seal({
+  id: 123,
+  name: 'Alice',
   status: 'active'
 });
 
-user.status = 'inactive'; // Works
-user.newProp = 'test'; // Ignored
-delete user.id; // Ignored
+// Can modify existing properties
+user.name = 'Alice Cooper'; // ✓ Works
+user.status = 'inactive'; // ✓ Works
 
-console.log(Object.isSealed(user));
-console.log(user.status);`}
-            </pre>
-            <SnippetOutput lines={['Object.isSealed(user) -> true', 'user.status -> "inactive"', 'user.id -> 5']} />
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.getOwnPropertyDescriptors</h4>
-            <p className="text-xs text-muted-foreground">Get full property descriptors (writable, enumerable, configurable)</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const obj = { id: 1, name: 'Test' };
+// Cannot add new properties
+user.email = 'alice@dev.com'; // ✗ Ignored
+user.role = 'admin'; // ✗ Ignored
 
-const descriptors = 
-  Object.getOwnPropertyDescriptors(obj);
+// Cannot delete properties
+delete user.status; // ✗ Ignored
 
-console.log(descriptors.id.writable);
-console.log(descriptors.name.enumerable);`}
-            </pre>
-            <SnippetOutput lines={['descriptors.id.writable -> true', 'descriptors.name.enumerable -> true', 'descriptors.id.configurable -> true']} />
-          </div>
-        </CardContent>
-      </Card>
+console.log(Object.isSealed(user)); // true
+console.log(user);
+// { id: 123, name: "Alice Cooper", status: "inactive" }
+
+// Use case: Database record with fixed schema
+const record = Object.seal({
+  id: null,
+  createdAt: null,
+  updatedAt: null
+});
+
+// Can set values
+record.id = 456;
+record.createdAt = new Date();
+// But cannot add extra fields
+record.metadata = {}; // Ignored`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Lock}
+      />
 
       <Card>
         <CardHeader>
@@ -427,33 +406,89 @@ console.log(descriptors.name.enumerable);`}
         <CardContent className="grid md:grid-cols-3 gap-4">
           <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
             <h4 className="font-semibold">Object.defineProperty</h4>
+            <p className="text-xs text-muted-foreground">Define a single property with descriptors</p>
             <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const user = {};
 Object.defineProperty(user, 'id', {
   value: 100,
   writable: false,
-});`}</pre>
-            <SnippetOutput lines={['user.id -> 100', 'user.id = 200 // no effect']} />
+});
+
+console.log(user.id);
+// Output: 100
+
+user.id = 200; // No effect (non-writable)`}</pre>
           </div>
           <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
             <h4 className="font-semibold">Object.defineProperties</h4>
+            <p className="text-xs text-muted-foreground">Define multiple properties at once</p>
             <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const settings = {};
 Object.defineProperties(settings, {
   theme: { value: 'dark', enumerable: true },
   version: { value: 1, writable: true },
-});`}</pre>
-            <SnippetOutput lines={["settings.theme -> 'dark'", 'Object.keys(settings) -> [\"theme\"]']} />
+});
+
+console.log(settings.theme);
+// Output: 'dark'
+
+console.log(Object.keys(settings));
+// Output: ["theme"]`}</pre>
           </div>
           <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
             <h4 className="font-semibold">Object.getOwnPropertyNames</h4>
+            <p className="text-xs text-muted-foreground">Get all property names (including non-enumerable)</p>
             <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const report = Object.create({}, {
   hidden: { value: true, enumerable: false },
   visible: { value: false, enumerable: true },
 });
-const names = Object.getOwnPropertyNames(report);`}</pre>
-            <SnippetOutput lines={["names -> [\"hidden\",\"visible\"]"]} />
+const names = Object.getOwnPropertyNames(report);
+
+console.log(names);
+// Output: ["hidden","visible"]`}</pre>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: Define & Describe Properties"
+        description="All three methods demonstrated together"
+        code={`// Object.defineProperty - Define single property with descriptors
+const user = {};
+Object.defineProperty(user, 'id', {
+  value: 100,
+  writable: false,
+});
+
+console.log(user.id);
+// Output: 100
+
+user.id = 200; // No effect (non-writable)
+
+// Object.defineProperties - Define multiple properties at once
+const settings = {};
+Object.defineProperties(settings, {
+  theme: { value: 'dark', enumerable: true },
+  version: { value: 1, writable: true },
+});
+
+console.log(settings.theme);
+// Output: 'dark'
+
+console.log(Object.keys(settings));
+// Output: ["theme"]
+
+// Object.getOwnPropertyNames - Get all property names (including non-enumerable)
+const report = Object.create({}, {
+  hidden: { value: true, enumerable: false },
+  visible: { value: false, enumerable: true },
+});
+const names = Object.getOwnPropertyNames(report);
+
+console.log(names);
+// Output: ["hidden","visible"]`}
+        language="javascript"
+        colorTheme="purple"
+        icon={Layers}
+      />
 
       {/* ES2024 New Method */}
       <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
@@ -498,9 +533,12 @@ const grouped = Object.groupBy(
   (item) => item.category
 );
 
-console.log(grouped);`}
+console.log(grouped);
+// Output: {
+//   fruit: [Apple, Banana],
+//   vegetable: [Carrot, Broccoli]
+// }`}
               </pre>
-              <SnippetOutput lines={['grouped.fruit -> [Apple, Banana]', 'grouped.vegetable -> [Carrot, Broccoli]', 'Returns object with category keys']} />
             </div>
 
             {/* Grouping by Computation */}
@@ -526,9 +564,11 @@ const byAgeGroup = Object.groupBy(
 );
 
 console.log(byAgeGroup.adult.length);
-console.log(byAgeGroup.minor.length);`}
+// Output: 2 (Alice, Charlie)
+
+console.log(byAgeGroup.minor.length);
+// Output: 2 (Bob, Diana)`}
               </pre>
-              <SnippetOutput lines={['adult -> [Alice, Charlie]', 'minor -> [Bob, Diana]', 'adult.length -> 2']} />
             </div>
 
             {/* Grouping by String Property */}
@@ -554,9 +594,11 @@ const byStatus = Object.groupBy(
 );
 
 console.log(Object.keys(byStatus));
-console.log(byStatus.pending.length);`}
+// Output: ["pending", "shipped", "delivered"]
+
+console.log(byStatus.pending.length);
+// Output: 2`}
               </pre>
-              <SnippetOutput lines={['keys -> ["pending", "shipped", "delivered"]', 'pending.length -> 2', 'shipped.length -> 1']} />
             </div>
 
             {/* Grouping with Fallback */}
@@ -581,9 +623,11 @@ const byPriority = Object.groupBy(
   (task) => task.priority || 'none'
 );
 
-console.log(byPriority.none);`}
+console.log(byPriority.none);
+// Output: [{ title: 'Review PR' }]
+// high -> [Fix bug, Deploy]
+// low -> [Write docs]`}
               </pre>
-              <SnippetOutput lines={['high -> [Fix bug, Deploy]', 'low -> [Write docs]', 'none -> [Review PR]']} />
             </div>
           </div>
 
@@ -621,6 +665,99 @@ const grouped = Object.groupBy(products, item => item.category);`}
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Example: ES2024 Object.groupBy()"
+        description="All grouping patterns demonstrated together"
+        code={`// Example 1: Basic Grouping by Property
+const products = [
+  { name: 'Apple', category: 'fruit' },
+  { name: 'Carrot', category: 'vegetable' },
+  { name: 'Banana', category: 'fruit' },
+  { name: 'Broccoli', category: 'vegetable' }
+];
+
+const grouped = Object.groupBy(
+  products,
+  (item) => item.category
+);
+
+console.log(grouped);
+// Output: {
+//   fruit: [Apple, Banana],
+//   vegetable: [Carrot, Broccoli]
+// }
+
+// Example 2: Grouping by Computation (Dynamic)
+const users = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 17 },
+  { name: 'Charlie', age: 30 },
+  { name: 'Diana', age: 16 }
+];
+
+const byAgeGroup = Object.groupBy(
+  users,
+  (user) => user.age >= 18 ? 'adult' : 'minor'
+);
+
+console.log(byAgeGroup.adult.length);
+// Output: 2 (Alice, Charlie)
+
+console.log(byAgeGroup.minor.length);
+// Output: 2 (Bob, Diana)
+
+// Example 3: Grouping Orders by Status (Practical)
+const orders = [
+  { id: 1, status: 'pending' },
+  { id: 2, status: 'shipped' },
+  { id: 3, status: 'pending' },
+  { id: 4, status: 'delivered' }
+];
+
+const byStatus = Object.groupBy(
+  orders,
+  (order) => order.status
+);
+
+console.log(Object.keys(byStatus));
+// Output: ["pending", "shipped", "delivered"]
+
+console.log(byStatus.pending.length);
+// Output: 2
+
+// Example 4: Grouping with Fallback (Safe)
+const tasks = [
+  { title: 'Fix bug', priority: 'high' },
+  { title: 'Write docs', priority: 'low' },
+  { title: 'Review PR' }, // No priority
+  { title: 'Deploy', priority: 'high' }
+];
+
+const byPriority = Object.groupBy(
+  tasks,
+  (task) => task.priority || 'none'
+);
+
+console.log(byPriority.none);
+// Output: [{ title: 'Review PR' }]
+// high -> [Fix bug, Deploy]
+// low -> [Write docs]
+
+// Old way: using reduce()
+const grouped2 = products.reduce((acc, item) => {
+  const key = item.category;
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(item);
+  return acc;
+}, {});
+
+// New way: much cleaner!
+const grouped3 = Object.groupBy(products, item => item.category);`}
+        language="javascript"
+        colorTheme="indigo"
+        icon={Sparkles}
+      />
 
       {/* Real-World Examples */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
@@ -663,9 +800,13 @@ const config = Object.assign(
 );
 
 console.log(config.theme);
-console.log(config.autoSave);`}
+// Output: "dark"
+
+console.log(config.autoSave);
+// Output: true
+
+// config.fontSize -> 16`}
               </pre>
-              <SnippetOutput lines={['config.theme -> "dark"', 'config.fontSize -> 16', 'config.autoSave -> true']} />
             </div>
 
             {/* Pattern 2: Converting Form Data */}
@@ -685,9 +826,9 @@ const userData = Object.fromEntries(
   formData.entries()
 );
 
-console.log(userData);`}
+console.log(userData);
+// Output: { username: "alice", email: "alice@dev.com" }`}
               </pre>
-              <SnippetOutput lines={['userData -> { username: "alice", email: "alice@dev.com" }']} />
             </div>
 
             {/* Pattern 3: Filtering Object Properties */}
@@ -710,9 +851,11 @@ const publicData = Object.fromEntries(
     .filter(([key]) => key !== 'password')
 );
 
-console.log(Object.keys(publicData));`}
+console.log(Object.keys(publicData));
+// Output: ["id", "name", "email"]
+
+// publicData -> { id: 123, name: "Bob", email: "bob@dev.com" }`}
               </pre>
-              <SnippetOutput lines={['publicData -> { id: 123, name: "Bob", email: "bob@dev.com" }']} />
             </div>
 
             {/* Pattern 4: Creating Immutable Constants */}
@@ -735,9 +878,12 @@ const API_CONFIG = Object.freeze({
 // Attempts to modify are ignored
 API_CONFIG.BASE_URL = 'hacked';
 
-console.log(API_CONFIG.BASE_URL);`}
+console.log(API_CONFIG.BASE_URL);
+// Output: "https://api.example.com"
+
+console.log(Object.isFrozen(API_CONFIG));
+// Output: true`}
               </pre>
-              <SnippetOutput lines={['API_CONFIG.BASE_URL -> "https://api.example.com"', 'Object.isFrozen(API_CONFIG) -> true']} />
             </div>
           </div>
         </CardContent>
@@ -773,30 +919,6 @@ console.log(API_CONFIG.BASE_URL);`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ object methods, manipulation, and ES2024 features.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights object methods (keys, values, entries, assign, freeze, seal, and ES2024 groupBy) with practical examples most developers encounter.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

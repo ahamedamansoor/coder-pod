@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput, InteractivePlayground } from '@/components/shared';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Brackets,
   Sparkles,
@@ -21,112 +20,7 @@ interface JavaScriptFunctionParametersProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Function Parameters Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🎯 Function Parameters</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Function Parameters Demo ===\\n');
-
-// 1. Default Parameters
-console.log('1️⃣ DEFAULT PARAMETERS:');
-function greet(name = 'Guest') {
-  return 'Hello, ' + name;
-}
-
-console.log('greet():', greet());
-console.log('greet("Alice"):', greet('Alice'));
-console.log('');
-
-// 2. Rest Parameters
-console.log('2️⃣ REST PARAMETERS:');
-function sum(...nums) {
-  return nums.reduce((total, n) => total + n, 0);
-}
-
-console.log('sum(1, 2, 3):', sum(1, 2, 3));
-console.log('sum(10, 20, 30, 40):', sum(10, 20, 30, 40));
-console.log('');
-
-// 3. Object Destructuring
-console.log('3️⃣ OBJECT DESTRUCTURING:');
-function formatUser({ name, plan = 'free' }) {
-  return name + ' (' + plan + ')';
-}
-
-console.log('formatUser({ name: "Lin", plan: "pro" }):', 
-  formatUser({ name: 'Lin', plan: 'pro' }));
-console.log('formatUser({ name: "Bob" }):', 
-  formatUser({ name: 'Bob' }));
-console.log('');
-
-// 4. Array Destructuring
-console.log('4️⃣ ARRAY DESTRUCTURING:');
-function getCoordinates([x, y, z = 0]) {
-  return { x, y, z };
-}
-
-console.log('getCoordinates([10, 20, 30]):', 
-  getCoordinates([10, 20, 30]));
-console.log('getCoordinates([5, 15]):', 
-  getCoordinates([5, 15]));
-
-console.log('\\n✅ All demos complete!');`;
-
-export default function JavaScriptFunctionParameters({ onOpenWebPlayground }: JavaScriptFunctionParametersProps) {
+export default function JavaScriptFunctionParameters({}: JavaScriptFunctionParametersProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -485,14 +379,12 @@ console.log(formatAddress(data));
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Options Object Pattern
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function createButton({
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Options Object Pattern"
+              description="Pass multiple parameters as a single object with defaults - perfect for complex configurations"
+              code={`// Options object with destructuring and defaults
+function createButton({
   text,
   color = 'blue',
   size = 'medium',
@@ -507,17 +399,28 @@ const btn = createButton({
 });
 
 console.log(btn);
-// "Button: Click Me (red, medium)"`}
-              </pre>
-            </div>
+// Output: "Button: Click Me (red, medium)"`}
+              language="javascript"
+              colorTheme="blue"
+              icon={CheckCircle2}
+              features={[
+                "Named parameters pattern",
+                "Default values for optional params",
+                "Only pass what you need",
+                "Self-documenting API"
+              ]}
+              tips={[
+                "Essential for complex configurations",
+                "Makes code more readable",
+                "Common in React components and APIs"
+              ]}
+            />
 
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Math Operations
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function average(...numbers) {
+            <CodeSnippet
+              title="Rest Parameters for Math"
+              description="Use rest operator (...) to accept unlimited arguments - perfect for flexible operations"
+              code={`// Rest parameters for variable arguments
+function average(...numbers) {
   if (numbers.length === 0) return 0;
   
   const sum = numbers.reduce(
@@ -529,12 +432,25 @@ console.log(btn);
 }
 
 console.log(average(10, 20, 30));
-// 20
+// Output: 20
 
 console.log(average(5, 15, 25, 35));
-// 20`}
-              </pre>
-            </div>
+// Output: 20`}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+              features={[
+                "Accept unlimited arguments",
+                "Works with all array methods",
+                "Cleaner than 'arguments' object",
+                "Type-safe with TypeScript"
+              ]}
+              tips={[
+                "Use ...rest for flexible functions",
+                "Perfect for math operations",
+                "Combine with other parameters"
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
@@ -574,28 +490,6 @@ console.log(average(5, 15, 25, 35));
           </div>
         </CardContent>
       </Card>
-
-      {/* Interactive Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Interactive Function Parameters Playground"
-          description="Experiment with default parameters, rest operators, destructuring, and see advanced parameter patterns in action."
-          features={[
-            'Default Parameters',
-            'Rest Operators',
-            'Destructuring',
-            'Named Parameters'
-          ]}
-          buttonText="Open Parameters Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="purple"
-        />
-      )}
     </div>
   );
 }

@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Link2,
   Sparkles,
@@ -14,99 +14,13 @@ import {
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
 } from 'lucide-react';
 
 interface JavaScriptCallbackParametersProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/40 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Callback Parameters Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #f1f5f9;
-      color: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .panel {
-      text-align: center;
-      background: #fff;
-      border-radius: 18px;
-      padding: 40px 32px;
-      box-shadow: 0 20px 70px rgba(15, 23, 42, 0.08);
-      max-width: 520px;
-      width: 100%;
-    }
-    h1 {
-      margin-bottom: 12px;
-      font-size: 28px;
-      color: #2563eb;
-    }
-    p {
-      color: #475569;
-      line-height: 1.6;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
-  <div class="panel">
-    <h1>Callback Arguments</h1>
-    <p>Open your browser console to see the exact values passed to each callback.</p>
-  </div>
-  <script src="./callback-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-
-// map passes (value, index, array)
-const numbers = [10, 20, 30];
-const withIndex = numbers.map((value, index, array) => {
-  console.log('map args:', value, index, array === numbers);
-  return value + index;
-});
-
-// setTimeout passes no args; use closure
-setTimeout(() => console.log('timeout fired'), 0);
-
-// Custom async-style callback (err, data)
-function fetchUser(onSuccess, onError) {
-  const ok = true;
-  if (ok) onSuccess({ name: 'Ada', plan: 'pro' });
-  else onError(new Error('Failed'));
-}
-
-fetchUser(
-  (user) => console.log('success user', user),
-  (err) => console.error('error', err.message)
-);
-
-console.log('map result', withIndex); // [10,21,32]
-console.log('Open the console any time to rerun this logic.');`;
-
-export default function JavaScriptCallbackParameters({ onOpenWebPlayground }: JavaScriptCallbackParametersProps) {
+export default function JavaScriptCallbackParameters({}: JavaScriptCallbackParametersProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -176,9 +90,9 @@ export default function JavaScriptCallbackParameters({ onOpenWebPlayground }: Ja
   return a + b;
 }
 
-add(2, 3); // a=2, b=3`}
+add(2, 3); // a=2, b=3
+// Output: 5`}
               </pre>
-              <SnippetOutput lines={['add(2, 3); // returns 5']} />
               <p className="text-sm text-muted-foreground">Regular parameters are listed inside parentheses. Order matters.</p>
             </div>
             <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-2">
@@ -189,9 +103,9 @@ add(2, 3); // a=2, b=3`}
   console.log(message);
 }
 
-greet('Ada', (value) => 'Hi ' + value + '!');`}
+greet('Ada', (value) => 'Hi ' + value + '!');
+// Output: Hi Ada!`}
               </pre>
-              <SnippetOutput lines={["console.log(message); // 'Hi Ada!'"]} />
               <p className="text-sm text-muted-foreground">Here the second parameter is a callback. It receives the <code>name</code> value.</p>
             </div>
           </div>
@@ -317,16 +231,11 @@ greet('Ada', (value) => 'Hi ' + value + '!');`}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* 1. The basic subscribe → unsubscribe contract */}
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-              <h4 className="font-semibold text-blue-800 dark:text-blue-200">1. Return a cleanup function</h4>
-              <p className="text-sm text-muted-foreground">
-                Many modern APIs treat <code>subscribe</code> as: “start sending values to this callback, and give me a way to stop later”.
-                The most common pattern is to return an <strong>unsubscribe function</strong>.
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Internal list of listeners
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
+            <CodeSnippet
+              title="Subscribe/Unsubscribe Pattern"
+              description="Register callbacks and get cleanup functions - the foundation of event-driven programming"
+              code={`// Internal list of listeners
 const listeners = [];
 
 // Subscribe: register callback and return unsubscribe function
@@ -341,7 +250,7 @@ function subscribe(listener) {
   };
 }
 
-// Somewhere in your code: emit a value to all listeners
+// Emit values to all listeners
 function emit(value) {
   listeners.forEach((listener) => listener(value));
 }
@@ -358,215 +267,93 @@ emit(3);                // A will NOT be called now
 
 // Output:
 // listener A saw: 1
-// listener A saw: 2`}
-              </pre>
-              <SnippetOutput
-                lines={[
-                  'listener A saw: 1',
-                  'listener A saw: 2',
-                  '// (no log after unsubscribe)',
-                ]}
-              />
-              <p className="text-xs text-muted-foreground">
-                This same shape appears in libraries like RxJS, Redux-style stores, WebSocket helpers, and many custom utilities.
-              </p>
-            </div>
+// listener A saw: 2
+// (no log after unsubscribe)`}
+              language="javascript"
+              colorTheme="blue"
+              icon={Link2}
+              features={[
+                "Returns cleanup function",
+                "Multiple subscribers supported",
+                "Used in RxJS, Redux, WebSockets",
+                "Prevents memory leaks"
+              ]}
+              tips={[
+                "Always call unsubscribe when done",
+                "Store unsubscribe function reference",
+                "Common pattern in modern JavaScript"
+              ]}
+            />
 
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
-              <h4 className="font-semibold">2. Multiple subscribers, one emitter</h4>
-              <p className="text-sm text-muted-foreground">
-                Real systems rarely have just one listener. Subscribe/unsubscribe lets you add and remove many callbacks over time.
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
-{`// Reuse the previous subscribe/emit
-const unsubscribeB = subscribe((value) => {
-  console.log('listener B saw:', value);
-});
+            <CodeSnippet
+              title="DOM Event Listeners"
+              description="addEventListener/removeEventListener - must use the same callback reference to unsubscribe"
+              code={`// Subscribe to DOM event
+const button = document.querySelector('#myButton');
+const output = document.querySelector('#output');
 
-emit('online');
-unsubscribeB();
-emit('offline');
-
-// Output:
-// listener A saw: online
-// listener B saw: online
-// listener A saw: offline`}
-              </pre>
-              <SnippetOutput
-                lines={[
-                  'listener A saw: online',
-                  'listener B saw: online',
-                  'listener A saw: offline',
-                ]}
-              />
-              <p className="text-xs text-muted-foreground">
-                Always check the documentation: some APIs return an object with <code>unsubscribe()</code>, others return a bare cleanup function.
-              </p>
-            </div>
-          </div>
-
-          {/* 2. DOM events: addEventListener / removeEventListener */}
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-              <h4 className="font-semibold text-emerald-800 dark:text-emerald-200">3. Browser events (classic pattern)</h4>
-              <p className="text-sm text-muted-foreground">
-                The DOM uses a subscribe/unsubscribe pair: <code>addEventListener</code> and <code>removeEventListener</code>. You must pass
-                the <strong>same callback</strong> to unsubscribe correctly.
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Subscribe
 function handleClick(event) {
-  console.log('Clicked at:', event.clientX, event.clientY);
+  const msg = 'Clicked at: ' + event.clientX + ', ' + event.clientY;
+  output.textContent += msg + '\\n';
+  console.log(msg);
 }
 
 button.addEventListener('click', handleClick);
 
-// Later: unsubscribe
+// Unsubscribe after 5 seconds
 setTimeout(() => {
   button.removeEventListener('click', handleClick);
+  output.textContent += 'Stopped listening!\\n';
   console.log('Stopped listening for clicks');
-}, 5000);
+}, 5000);`}
+              language="javascript"
+              colorTheme="emerald"
+              icon={CheckCircle2}
+              embedPlayground={true}
+              playgroundConfig={{
+                html: `<div style="text-align: center; padding: 20px;">
+  <button id="myButton" style="padding: 12px 24px; font-size: 16px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 20px;">
+    Click Me!
+  </button>
+  <div id="output" style="background: #1e293b; color: #22d3ee; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 14px; min-height: 120px; white-space: pre-wrap; text-align: left;">
+Listener is active. Click the button!
+(It will stop listening after 5 seconds)
 
-// Example output:
-// Clicked at: 120 340
-// Clicked at: 180 250
-// Stopped listening for clicks`}
-              </pre>
-              <SnippetOutput
-                lines={[
-                  'Clicked at: 120 340',
-                  'Clicked at: 180 250',
-                  'Stopped listening for clicks',
-                ]}
-              />
-              <p className="text-xs text-muted-foreground">
-                Forgetting to remove event listeners is a common source of memory leaks and “ghost” callbacks firing on old screens.
-              </p>
-            </div>
+</div>
+</div>`,
+                css: '',
+                js: `const button = document.querySelector('#myButton');
+const output = document.querySelector('#output');
 
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
-              <h4 className="font-semibold">4. One-time subscriptions with <code>once</code></h4>
-              <p className="text-sm text-muted-foreground">
-                Modern browsers let you auto-unsubscribe after the first event using the <code>once</code> option. You still pass a callback,
-                but you do not need manual cleanup code.
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
-{`// Fires only on the very first click
-button.addEventListener(
-  'click',
-  () => {
-    console.log('First click only!');
-  },
-  { once: true } // <-- auto-unsubscribe
-);
-
-// Output (no matter how many times you click):
-// First click only!`}
-              </pre>
-              <SnippetOutput lines={['First click only!']} />
-              <p className="text-xs text-muted-foreground">
-                Other useful options include <code>passive: true</code> (performance hint for scroll/touch) and <code>capture: true</code>
-                (listen during the capture phase).
-              </p>
-            </div>
-          </div>
-
-          {/* 3. Modern cancellation with AbortController + signal */}
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-sky-50/60 dark:from-indigo-950/10 dark:to-sky-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/40 space-y-3">
-              <h4 className="font-semibold text-indigo-800 dark:text-indigo-200">5. AbortSignal for grouped unsubscribe</h4>
-              <p className="text-sm text-muted-foreground">
-                The latest DOM APIs let you subscribe using an <code>AbortSignal</code>. When you call <code>controller.abort()</code>, all
-                listeners using that signal are unsubscribed at once.
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const controller = new AbortController();
-const { signal } = controller;
-
-// Subscribe with a signal (modern pattern)
-window.addEventListener(
-  'mousemove',
-  (event) => {
-    console.log('mouse:', event.clientX, event.clientY);
-  },
-  { signal } // auto-removed when controller.abort() is called
-);
-
-// Stop all related listeners after 3 seconds
-setTimeout(() => {
-  controller.abort();
-  console.log('Stopped tracking mouse (via AbortController)');
-}, 3000);
-
-// Output:
-// mouse: 100 220
-// mouse: 130 260
-// ...
-// Stopped tracking mouse (via AbortController)`}
-              </pre>
-              <SnippetOutput
-                lines={[
-                  'mouse: 100 220',
-                  'mouse: 130 260',
-                  '...',
-                  'Stopped tracking mouse (via AbortController)',
-                ]}
-              />
-              <p className="text-xs text-muted-foreground">
-                <code>AbortSignal</code> also works with <code>fetch</code>, web streams, and many newer browser APIs—one controller
-                can cancel network requests and event streams together.
-              </p>
-            </div>
-
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border space-y-3">
-              <h4 className="font-semibold">6. Subscribe/unsubscribe in async flows</h4>
-              <p className="text-sm text-muted-foreground">
-                In async code, callbacks often subscribe to data, then return a cleanup function that callers <strong>must</strong> run
-                (for example in frameworks or long-lived services).
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs whitespace-pre-wrap overflow-x-auto">
-{`// Custom subscribe helper that also returns cleanup
-function subscribeToInterval(ms, onTick) {
-  const id = setInterval(() => {
-    const timestamp = new Date().toISOString();
-    onTick(timestamp);
-  }, ms);
-
-  // Unsubscribe function
-  return () => {
-    clearInterval(id);
-    console.log('Interval cleared');
-  };
+function handleClick(event) {
+  const msg = 'Clicked at: ' + event.clientX + ', ' + event.clientY;
+  output.textContent += msg + '\\n';
+  console.log(msg);
 }
 
-// Usage in higher-level code
-const stop = subscribeToInterval(1000, (time) => {
-  console.log('tick at', time);
-});
+button.addEventListener('click', handleClick);
 
+// Unsubscribe after 5 seconds
 setTimeout(() => {
-  stop(); // unsubscribe
-}, 3100);
-
-// Sample output:
-// tick at 2024-01-01T10:00:00.000Z
-// tick at 2024-01-01T10:00:01.000Z
-// tick at 2024-01-01T10:00:02.000Z
-// Interval cleared`}
-              </pre>
-              <SnippetOutput
-                lines={[
-                  'tick at 2024-01-01T10:00:00.000Z',
-                  'tick at 2024-01-01T10:00:01.000Z',
-                  'tick at 2024-01-01T10:00:02.000Z',
-                  'Interval cleared',
-                ]}
-              />
-              <p className="text-xs text-muted-foreground">
-                Many libraries follow this idea: <code>subscribe(callback)</code> returns an <code>unsubscribe</code> function or a small
-                object like <code>{'{ unsubscribe() { … } }'}</code>. Always look for that cleanup API and call it when the work is done.
-              </p>
-            </div>
+  button.removeEventListener('click', handleClick);
+  output.textContent += '\\n🔴 Stopped listening! (Try clicking now - nothing happens)\\n';
+  console.log('Stopped listening for clicks');
+}, 5000);`,
+                visiblePanels: ['preview', 'js', 'console'],
+                layout: 'vertical'
+              }}
+              features={[
+                "Classic DOM pattern",
+                "Must use same callback reference",
+                "Prevents ghost listeners",
+                "Essential for cleanup in SPAs"
+              ]}
+              tips={[
+                "Named functions required for removal",
+                "Forgetting removal causes memory leaks",
+                "Use AbortController for modern cleanup"
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
@@ -604,31 +391,6 @@ setTimeout(() => {
               <li>❌ Forgetting to return or handle results inside array callbacks.</li>
             </ul>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ callback parameters, signatures, and argument patterns.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights callback parameter patterns (array methods, event handlers, error-first callbacks, and custom signatures) with practical examples most developers encounter.
-          </p>
         </CardContent>
       </Card>
     </div>

@@ -5,8 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   GitCompare,
   ToggleLeft,
@@ -17,133 +16,9 @@ import {
   Lightbulb,
 } from 'lucide-react';
 
-interface JavaScriptTernaryOperatorProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+interface JavaScriptTernaryOperatorProps {}
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ternary Operator Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-    }
-    h1 {
-      color: #667eea;
-      margin-bottom: 16px;
-      font-size: 32px;
-    }
-    p {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .console-hint {
-      background: #0f172a;
-      color: #22d3ee;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-family: 'Monaco', monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>❓ Ternary Operator</h1>
-    <p>Open the browser console to see the results!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== Ternary Operator Demo ===\\n');
-
-// 1. Basic Ternary
-console.log('1️⃣ BASIC TERNARY:');
-const age = 20;
-const status = age >= 18 ? 'Adult' : 'Minor';
-
-console.log('Age:', age);
-console.log('Status:', status);
-console.log('');
-
-// 2. Inline Assignment
-console.log('2️⃣ INLINE ASSIGNMENT:');
-const score = 85;
-const grade = score >= 90 ? 'A' : 
-              score >= 80 ? 'B' : 
-              score >= 70 ? 'C' : 'F';
-
-console.log('Score:', score);
-console.log('Grade:', grade);
-console.log('');
-
-// 3. Function Return
-console.log('3️⃣ FUNCTION RETURN:');
-function getDiscount(isMember) {
-  return isMember ? '20% off' : 'No discount';
-}
-
-console.log('Member:', getDiscount(true));
-console.log('Non-member:', getDiscount(false));
-console.log('');
-
-// 4. JSX/Template Usage
-console.log('4️⃣ CONDITIONAL RENDERING:');
-const isLoggedIn = true;
-const username = 'Alice';
-const message = isLoggedIn 
-  ? 'Welcome back, ' + username 
-  : 'Please log in';
-
-console.log(message);
-console.log('');
-
-// 5. Avoiding Nested Ternaries
-console.log('5️⃣ COMPARISON - NESTED VS IF-ELSE:');
-const points = 150;
-
-// ❌ Hard to read
-const badLevel = points > 200 ? 'Gold' : points > 100 ? 'Silver' : 'Bronze';
-console.log('Nested ternary:', badLevel);
-
-// ✅ Better approach
-let goodLevel;
-if (points > 200) {
-  goodLevel = 'Gold';
-} else if (points > 100) {
-  goodLevel = 'Silver';
-} else {
-  goodLevel = 'Bronze';
-}
-console.log('If-else:', goodLevel);
-
-console.log('\\n✅ All ternary demos complete!');`;
-
-export default function JavaScriptTernaryOperator({ onOpenWebPlayground }: JavaScriptTernaryOperatorProps) {
+export default function JavaScriptTernaryOperator({}: JavaScriptTernaryOperatorProps) {
   return (
     <div className="w-full min-h-screen space-y-10 pb-16">
       <PageHeader
@@ -355,9 +230,9 @@ console.log(message);
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
             {/* Pattern 1: Button States */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Button States & Labels"
               description="Dynamic button text - perfect for toggling between UI states"
               code={`// Pattern: Dynamic button text
@@ -370,18 +245,28 @@ function SubmitButton({ isLoading }) {
 }
 
 console.log(SubmitButton({ isLoading: false }));
-console.log(SubmitButton({ isLoading: true }));`}
-              output={[
-                "Save Changes",
-                "Saving..."
-              ]}
+// Output: Save Changes
+
+console.log(SubmitButton({ isLoading: true }));
+// Output: Saving...`}
               language="javascript"
               colorTheme="blue"
               icon={CheckCircle2}
+              features={[
+                "Condition ? true-value : false-value",
+                "Perfect for dynamic UI text",
+                "Common in button states",
+                "Cleaner than if-else for simple cases"
+              ]}
+              tips={[
+                "Use for simple conditions only",
+                "Keep expressions short and readable",
+                "Common in React/Vue components"
+              ]}
             />
 
             {/* Pattern 2: Default Values */}
-            <CodeSnippetWithOutput
+            <CodeSnippet
               title="Default Values & Fallbacks"
               description="Provide safe defaults - prevents undefined errors in your application"
               code={`// Pattern: Provide safe defaults
@@ -395,60 +280,24 @@ const admin = { name: 'Alice', role: 'admin' };
 const visitor = { name: 'Bob' };
 
 console.log(getUserRole(admin));
-console.log(getUserRole(visitor));`}
-              output={[
-                "admin",
-                "guest"
-              ]}
+// Output: admin
+
+console.log(getUserRole(visitor));
+// Output: guest`}
               language="javascript"
               colorTheme="emerald"
               icon={CheckCircle2}
-            />
-
-            {/* Pattern 3: CSS Classes */}
-            <CodeSnippetWithOutput
-              title="Conditional CSS Classes"
-              description="Toggle CSS classes - common in React/Vue for dynamic styling"
-              code={`// Pattern: Toggle CSS classes
-function getStatusClass(status) {
-  return status === 'active' 
-    ? 'badge-success' 
-    : 'badge-danger';
-}
-
-console.log(getStatusClass('active'));
-console.log(getStatusClass('inactive'));`}
-              output={[
-                "badge-success",
-                "badge-danger"
+              features={[
+                "Check if value exists first",
+                "Provide fallback for missing data",
+                "Prevents undefined errors",
+                "Chain with && for safety"
               ]}
-              language="javascript"
-              colorTheme="purple"
-              icon={CheckCircle2}
-            />
-
-            {/* Pattern 4: Price Display */}
-            <CodeSnippetWithOutput
-              title="Price & Discount Display"
-              description="Handle conditional calculations like discounts, taxes, and shipping"
-              code={`// Pattern: Show discounted price
-function formatPrice(price, hasDiscount) {
-  const finalPrice = hasDiscount 
-    ? price * 0.8 
-    : price;
-  
-  return '$' + finalPrice.toFixed(2);
-}
-
-console.log(formatPrice(100, false));
-console.log(formatPrice(100, true));`}
-              output={[
-                "$100.00",
-                "$80.00"
+              tips={[
+                "Always provide sensible defaults",
+                "Use optional chaining (?.) in modern JS",
+                "Test with null/undefined values"
               ]}
-              language="javascript"
-              colorTheme="amber"
-              icon={CheckCircle2}
             />
           </div>
         </CardContent>
@@ -490,27 +339,6 @@ console.log(formatPrice(100, true));`}
         </CardContent>
       </Card>
 
-      {/* Hands-on Playground */}
-      {onOpenWebPlayground && (
-        <InteractivePlayground
-          title="Try Ternary Operators"
-          description="Experiment with ternary operators, conditional expressions, and nested logic"
-          features={[
-            'Basic Ternary',
-            'Nested Ternaries',
-            'Conditional Returns',
-            'Best Practices'
-          ]}
-          buttonText="Open Ternary Playground"
-          onLaunchPlayground={onOpenWebPlayground}
-          playgroundData={{
-            html: playgroundHtml,
-            css: '',
-            js: playgroundJs
-          }}
-          colorTheme="purple"
-        />
-      )}
     </div>
   );
 }
