@@ -3,6 +3,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { InteractivePlayground } from '@/components/shared';
@@ -17,13 +18,14 @@ import {
   Package,
   Component,
   Rocket,
+  Play,
   Terminal,
   FileCode,
   Workflow,
 } from 'lucide-react';
 
 export default function AngularWhatIsAngular() {
-  const { openPlayground } = useAngularPlayground();
+  const { openPlayground, openInStackBlitz } = useAngularPlayground();
   
   return (
     <div className="w-full min-h-screen space-y-12 pb-16">

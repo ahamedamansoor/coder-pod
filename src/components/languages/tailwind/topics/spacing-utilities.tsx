@@ -1,614 +1,343 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Box, Maximize, Move, CheckCircle, Sparkles, Zap, HelpCircle } from 'lucide-react';
+import { Maximize2, CheckCircle, Lightbulb, ArrowRight, Move } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
-import { cn } from '@/lib/utils';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
-import { AIProvider } from '@/types/ai-providers';
+import { Badge } from '@/components/ui/badge';
 
 export default function SpacingUtilities() {
-  
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [qaResult, setQaResult] = useState<{ answer: string } | null>(null);
-  const [isAiEnabled, setIsAiEnabled] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
-  const { user } = useUser();
-  const isUserAuthenticated = !!user;
-
-  React.useEffect(() => {
-    const apiKey = localStorage.getItem('ai_api_key');
-    const provider = localStorage.getItem('ai_provider');
-    setIsAiEnabled(!!(apiKey && provider));
-  }, []);
-
-  const handleAskQuestionAction = async () => {
-    if (!question.trim()) return;
-    setIsAsking(true);
-    setQaResult(null);
-    
-    try {
-      const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
-      const apiKey = localStorage.getItem('ai_api_key') || '';
-      
-      const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Spacing System',
-        question: question,
-      }, provider, apiKey);
-      
-      setQaResult({ answer: result.answer });
-    } catch (error) {
-      console.error('Error asking question:', error);
-    } finally {
-      setIsAsking(false);
-    }
-  };
 
   // Padding Example
-  const paddingExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Padding Utilities</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        📦 Padding Utilities
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Control internal spacing with padding classes
-      </p>
-      
-      <!-- Padding Scale -->
-      <div class="space-y-4 mb-8">
-        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-lg overflow-hidden">
-          <div class="bg-blue-500 text-white p-2 text-center font-semibold">
-            p-2 (0.5rem / 8px)
-          </div>
-        </div>
-        
-        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-lg overflow-hidden">
-          <div class="bg-blue-500 text-white p-4 text-center font-semibold">
-            p-4 (1rem / 16px)
-          </div>
-        </div>
-        
-        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-lg overflow-hidden">
-          <div class="bg-blue-500 text-white p-6 text-center font-semibold">
-            p-6 (1.5rem / 24px)
-          </div>
-        </div>
-        
-        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-lg overflow-hidden">
-          <div class="bg-blue-500 text-white p-8 text-center font-semibold">
-            p-8 (2rem / 32px)
-          </div>
-        </div>
-      </div>
-      
-      <!-- Directional Padding -->
-      <div class="grid md:grid-cols-2 gap-6 mb-8">
-        <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Horizontal Padding</h3>
-          <div class="bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-            <div class="bg-purple-500 text-white px-8 py-2 text-center font-semibold">
-              px-8
-            </div>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-slate-400">Left and right padding</p>
-        </div>
-        
-        <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Vertical Padding</h3>
-          <div class="bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-            <div class="bg-emerald-500 text-white px-2 py-8 text-center font-semibold">
-              py-8
-            </div>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-slate-400">Top and bottom padding</p>
-        </div>
-      </div>
-      
-      <!-- Individual Sides -->
-      <div class="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-950 dark:to-gray-950 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
-        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Individual Sides</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">pt-4</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">pr-4</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">pb-4</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">pl-4</code>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
+  const paddingHTML = `<div class="bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-950 dark:to-cyan-950 p-8">
+  <div class="bg-blue-500 text-white p-2 mb-4">p-2 = padding: 0.5rem (8px)</div>
+  <div class="bg-blue-500 text-white p-4 mb-4">p-4 = padding: 1rem (16px)</div>
+  <div class="bg-blue-500 text-white p-8">p-8 = padding: 2rem (32px)</div>
+</div>`;
 
-  // Margin Example  
-  const marginExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Margin Utilities</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        🎯 Margin Utilities
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Control external spacing between elements
-      </p>
-      
-      <!-- Margin Examples -->
-      <div class="bg-slate-100 dark:bg-slate-950 rounded-xl p-6 space-y-4">
-        <div class="bg-purple-500 text-white p-4 rounded-lg font-semibold text-center">
-          No Margin
-        </div>
-        
-        <div class="bg-purple-500 text-white p-4 rounded-lg font-semibold text-center m-4">
-          m-4 (All sides)
-        </div>
-        
-        <div class="bg-purple-500 text-white p-4 rounded-lg font-semibold text-center mx-8">
-          mx-8 (Horizontal)
-        </div>
-        
-        <div class="bg-purple-500 text-white p-4 rounded-lg font-semibold text-center my-8">
-          my-8 (Vertical)
-        </div>
-      </div>
-      
-      <!-- Negative Margin -->
-      <div class="mt-8 grid md:grid-cols-2 gap-6">
-        <div class="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 p-6 rounded-xl border border-pink-200 dark:border-pink-800">
-          <h3 class="text-lg font-semibold text-pink-900 dark:text-pink-100 mb-4">Positive Margin</h3>
-          <div class="space-y-2">
-            <div class="bg-pink-500 text-white p-3 rounded font-semibold text-sm">Element 1</div>
-            <div class="bg-pink-500 text-white p-3 rounded font-semibold text-sm mt-4">mt-4</div>
-          </div>
-        </div>
-        
-        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-purple-200 dark:border-purple-800">
-          <h3 class="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-4">Negative Margin</h3>
-          <div class="space-y-2">
-            <div class="bg-purple-500 text-white p-3 rounded font-semibold text-sm">Element 1</div>
-            <div class="bg-purple-500 text-white p-3 rounded font-semibold text-sm -mt-2">-mt-2</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Auto Margin for Centering -->
-      <div class="mt-8 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-950 dark:to-gray-950 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
-        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Auto Margin (Centering)</h3>
-        <div class="bg-purple-500 text-white p-4 rounded-lg font-semibold text-center mx-auto max-w-xs">
-          mx-auto (Centered)
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
+  // Margin Example
+  const marginHTML = `<div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-950 dark:to-pink-950 p-8">
+  <div class="bg-purple-500 text-white p-4 m-2">m-2</div>
+  <div class="bg-purple-500 text-white p-4 m-4">m-4</div>
+  <div class="bg-purple-500 text-white p-4 m-8">m-8</div>
+</div>`;
 
-  // Space Between Example
-  const spaceBetweenExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Space Between Utilities</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        ↔️ Space Between
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Add consistent spacing between child elements
-      </p>
-      
-      <!-- Vertical Space -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Vertical Spacing (space-y-*)</h3>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
-            <div class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">space-y-2</div>
-            <div class="space-y-2">
-              <div class="bg-emerald-500 text-white p-2 rounded text-sm font-semibold text-center">Item 1</div>
-              <div class="bg-emerald-500 text-white p-2 rounded text-sm font-semibold text-center">Item 2</div>
-              <div class="bg-emerald-500 text-white p-2 rounded text-sm font-semibold text-center">Item 3</div>
-            </div>
-          </div>
-          
-          <div class="bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
-            <div class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">space-y-4</div>
-            <div class="space-y-4">
-              <div class="bg-teal-500 text-white p-2 rounded text-sm font-semibold text-center">Item 1</div>
-              <div class="bg-teal-500 text-white p-2 rounded text-sm font-semibold text-center">Item 2</div>
-              <div class="bg-teal-500 text-white p-2 rounded text-sm font-semibold text-center">Item 3</div>
-            </div>
-          </div>
-          
-          <div class="bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
-            <div class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">space-y-6</div>
-            <div class="space-y-6">
-              <div class="bg-cyan-500 text-white p-2 rounded text-sm font-semibold text-center">Item 1</div>
-              <div class="bg-cyan-500 text-white p-2 rounded text-sm font-semibold text-center">Item 2</div>
-              <div class="bg-cyan-500 text-white p-2 rounded text-sm font-semibold text-center">Item 3</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Horizontal Space -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Horizontal Spacing (space-x-*)</h3>
-        <div class="space-y-4">
-          <div class="bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
-            <div class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">space-x-4</div>
-            <div class="flex space-x-4">
-              <div class="bg-emerald-500 text-white px-6 py-3 rounded font-semibold">Item 1</div>
-              <div class="bg-emerald-500 text-white px-6 py-3 rounded font-semibold">Item 2</div>
-              <div class="bg-emerald-500 text-white px-6 py-3 rounded font-semibold">Item 3</div>
-            </div>
-          </div>
-          
-          <div class="bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
-            <div class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">space-x-8</div>
-            <div class="flex space-x-8">
-              <div class="bg-teal-500 text-white px-6 py-3 rounded font-semibold">Item 1</div>
-              <div class="bg-teal-500 text-white px-6 py-3 rounded font-semibold">Item 2</div>
-              <div class="bg-teal-500 text-white px-6 py-3 rounded font-semibold">Item 3</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Spacing Scale Reference -->
-      <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-        <h3 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100 mb-4">💡 Spacing Scale</h3>
-        <div class="grid grid-cols-4 md:grid-cols-8 gap-2 text-xs">
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">0</code><span class="text-slate-600 dark:text-slate-400">0px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">1</code><span class="text-slate-600 dark:text-slate-400">4px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">2</code><span class="text-slate-600 dark:text-slate-400">8px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">4</code><span class="text-slate-600 dark:text-slate-400">16px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">6</code><span class="text-slate-600 dark:text-slate-400">24px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">8</code><span class="text-slate-600 dark:text-slate-400">32px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">12</code><span class="text-slate-600 dark:text-slate-400">48px</span></div>
-          <div class="text-center"><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">16</code><span class="text-slate-600 dark:text-slate-400">64px</span></div>
-        </div>
-      </div>
-    </div>
+  // Directional Spacing
+  const directionalHTML = `<div class="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-950 dark:to-emerald-950 p-8">
+  <!-- Padding Top & Bottom -->
+  <div class="bg-green-500 text-white py-4 px-2 mb-4">
+    py-4 px-2 (vertical 4, horizontal 2)
   </div>
-</body>
-</html>`;
+  
+  <!-- Margin Left & Right -->
+  <div class="bg-green-500 text-white p-4 mx-8">
+    mx-8 (horizontal margins)
+  </div>
+  
+  <!-- Specific Sides -->
+  <div class="bg-green-500 text-white pt-8 pr-4 pb-2 pl-6 mt-4">
+    pt-8 pr-4 pb-2 pl-6 (individual sides)
+  </div>
+</div>`;
+
+  // Spacing Scale
+  const scaleHTML = `<div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 p-8">
+  <div class="space-y-2">
+    <div class="bg-cyan-500 text-white p-1 text-center text-xs">p-1 (4px)</div>
+    <div class="bg-cyan-500 text-white p-2 text-center text-xs">p-2 (8px)</div>
+    <div class="bg-cyan-500 text-white p-3 text-center text-xs">p-3 (12px)</div>
+    <div class="bg-cyan-500 text-white p-4 text-center text-xs">p-4 (16px)</div>
+    <div class="bg-cyan-500 text-white p-6 text-center text-xs">p-6 (24px)</div>
+    <div class="bg-cyan-500 text-white p-8 text-center text-xs">p-8 (32px)</div>
+  </div>
+</div>`;
+
+  // Responsive Spacing
+  const responsiveHTML = `<div class="bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-950 dark:to-amber-950 p-4 md:p-8 lg:p-12">
+  <div class="bg-orange-500 text-white p-4 text-center">
+    <p class="font-bold mb-2">Responsive Padding</p>
+    <p class="text-sm">Container: p-4 on mobile, p-8 on tablet, p-12 on desktop</p>
+    <p class="text-xs mt-2">Resize to see the padding grow!</p>
+  </div>
+</div>`;
+
+  // Space Between
+  const spaceBetweenHTML = `<div class="bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-950 dark:to-purple-950 p-8">
+  <!-- space-y-4: adds margin-top to all children except first -->
+  <div class="space-y-4">
+    <div class="bg-violet-500 text-white p-4">Item 1</div>
+    <div class="bg-violet-500 text-white p-4">Item 2</div>
+    <div class="bg-violet-500 text-white p-4">Item 3</div>
+  </div>
+  
+  <p class="text-sm text-violet-700 dark:text-violet-300 mt-6">
+    ↑ space-y-4 adds vertical spacing between items
+  </p>
+</div>`;
 
   return (
     <div className="space-y-8">
       {/* PAGE HEADER */}
       <PageHeader
-        icon={Box}
+        icon={Maximize2}
         category="Tailwind CSS · Core Concepts"
         title="Spacing System"
-        description="Master padding, margin, and space-between utilities for perfect layouts"
+        description="Master padding, margin, and the spacing scale for perfect layouts"
         colorTheme="blue"
       />
 
-      {/* INTRODUCTION CARD */}
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
-            <div className="relative">
-              <Move className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+      {/* UNDERSTANDING SPACING */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-3xl">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl">
+              <Move className="w-8 h-8 text-white" />
             </div>
-            Tailwind Spacing System
+            Padding vs Margin
           </CardTitle>
-          <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
-            🎯 Consistent spacing scale from 0px to 384px for perfect layouts
+          <CardDescription className="text-base">
+            Two ways to add space - inside and outside
           </CardDescription>
         </CardHeader>
-        <CardContent className="relative overflow-hidden">
-          <div className="grid lg:grid-cols-3 gap-6 p-2">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                  <Zap className="w-5 h-5 animate-pulse" />
-                  📦 Spacing Scale (4px increments)
-                </h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    <code className="bg-blue-100 dark:bg-blue-950 px-3 py-1 rounded font-mono text-blue-700 dark:text-blue-300">0</code>
-                    <span className="text-slate-600 dark:text-slate-400">→ 0px</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <code className="bg-blue-100 dark:bg-blue-950 px-3 py-1 rounded font-mono text-blue-700 dark:text-blue-300">1</code>
-                    <span className="text-slate-600 dark:text-slate-400">→ 4px (0.25rem)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <code className="bg-blue-100 dark:bg-blue-950 px-3 py-1 rounded font-mono text-blue-700 dark:text-blue-300">2</code>
-                    <span className="text-slate-600 dark:text-slate-400">→ 8px (0.5rem)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <code className="bg-blue-100 dark:bg-blue-950 px-3 py-1 rounded font-mono text-blue-700 dark:text-blue-300">4</code>
-                    <span className="text-slate-600 dark:text-slate-400">→ 16px (1rem)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <code className="bg-blue-100 dark:bg-blue-950 px-3 py-1 rounded font-mono text-blue-700 dark:text-blue-300">8</code>
-                    <span className="text-slate-600 dark:text-slate-400">→ 32px (2rem)</span>
-                  </div>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Padding */}
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-6 border-2 border-blue-300 dark:border-blue-700">
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-3">
+                📦 Padding (p-)
+              </h3>
+              <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
+                Space <strong>inside</strong> an element, between content and border
+              </p>
+              <div className="bg-blue-500 p-6 rounded-lg">
+                <div className="bg-white dark:bg-slate-900 p-4 rounded text-center text-sm">
+                  Content
                 </div>
               </div>
-              
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5" />
-                  🎨 Spacing Types
-                </h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200/50">
-                    <div className="font-semibold text-blue-900 dark:text-blue-100 text-sm mb-1">Padding (p-*)</div>
-                    <div className="text-xs text-blue-700 dark:text-blue-300">Internal spacing</div>
-                  </div>
-                  <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200/50">
-                    <div className="font-semibold text-purple-900 dark:text-purple-100 text-sm mb-1">Margin (m-*)</div>
-                    <div className="text-xs text-purple-700 dark:text-purple-300">External spacing</div>
-                  </div>
-                  <div className="bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded-lg border border-emerald-200/50">
-                    <div className="font-semibold text-emerald-900 dark:text-emerald-100 text-sm mb-1">Space (space-*)</div>
-                    <div className="text-xs text-emerald-700 dark:text-emerald-300">Between children</div>
-                  </div>
-                  <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200/50">
-                    <div className="font-semibold text-amber-900 dark:text-amber-100 text-sm mb-1">Gap (gap-*)</div>
-                    <div className="text-xs text-amber-700 dark:text-amber-300">Flex/Grid spacing</div>
-                  </div>
-                </div>
-              </div>
+              <p className="text-xs text-blue-700 dark:text-blue-300 mt-3">
+                ↑ Blue area is padding (p-6)
+              </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="relative">
-                    <div className="text-4xl mb-2 animate-bounce">📏</div>
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                  </div>
-                  <div className="font-bold text-lg text-blue-700 dark:text-blue-300">Why Spacing Matters</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Consistent layouts
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Visual hierarchy
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Better readability
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Design harmony
-                    </div>
-                  </div>
+            {/* Margin */}
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-xl p-6 border-2 border-purple-300 dark:border-purple-700">
+              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100 mb-3">
+                🌊 Margin (m-)
+              </h3>
+              <p className="text-sm text-purple-800 dark:text-purple-200 mb-4">
+                Space <strong>outside</strong> an element, pushes away from neighbors
+              </p>
+              <div className="bg-purple-200 dark:bg-purple-900 p-4 rounded-lg">
+                <div className="bg-purple-500 p-4 rounded text-white text-center text-sm">
+                  Content
                 </div>
               </div>
+              <p className="text-xs text-purple-700 dark:text-purple-300 mt-3">
+                ↑ Light purple area is margin space
+              </p>
+            </div>
+          </div>
 
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Use the spacing scale consistently - stick to 4, 8, 16, 24, 32 for most layouts
-                  </div>
-                </div>
+          {/* Quick Reference */}
+          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+            <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-3">
+              📝 Quick Reference
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Padding:</p>
+                <ul className="space-y-1 text-blue-700 dark:text-blue-300">
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">p-4</code> = all sides</li>
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">px-4</code> = left & right</li>
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">py-4</code> = top & bottom</li>
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">pt-4</code> = top only</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Margin:</p>
+                <ul className="space-y-1 text-blue-700 dark:text-blue-300">
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">m-4</code> = all sides</li>
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">mx-4</code> = left & right</li>
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">my-4</code> = top & bottom</li>
+                  <li><code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">mb-4</code> = bottom only</li>
+                </ul>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* PADDING */}
-      <Card>
+      {/* SPACING SCALE */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Box className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <Maximize2 className="w-6 h-6 text-white" />
             </div>
-            1. Padding Utilities
+            The Spacing Scale
           </CardTitle>
           <CardDescription>
-            Control internal spacing within elements
+            Consistent sizes from tiny to huge
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={paddingExample}
-            title="Padding Examples"
-            description="See how padding creates space inside elements"
-            colorTheme="blue"
-            styleLanguage="tailwind"
-          />
+        <CardContent className="space-y-6">
+          <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
+            <Lightbulb className="w-5 h-5 text-green-600" />
+            <AlertTitle className="text-green-900 dark:text-green-100">How the Scale Works</AlertTitle>
+            <AlertDescription className="text-green-800 dark:text-green-200">
+              Numbers increase by 4px (0.25rem) increments. <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">p-1</code> = 4px, <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">p-2</code> = 8px, <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">p-4</code> = 16px, etc.
+            </AlertDescription>
+          </Alert>
+
+          {/* Common Values */}
+          <div>
+            <h3 className="text-lg font-bold mb-3">Most Common Values:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { value: '0', px: '0px' },
+                { value: '1', px: '4px' },
+                { value: '2', px: '8px' },
+                { value: '3', px: '12px' },
+                { value: '4', px: '16px' },
+                { value: '6', px: '24px' },
+                { value: '8', px: '32px' },
+                { value: '12', px: '48px' },
+              ].map(item => (
+                <div key={item.value} className="bg-green-100 dark:bg-green-900/30 rounded-lg p-3 text-center border border-green-300 dark:border-green-700">
+                  <div className="font-mono font-bold text-lg text-green-900 dark:text-green-100">
+                    {item.value}
+                  </div>
+                  <div className="text-xs text-green-700 dark:text-green-300">
+                    {item.px}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Visual Scale */}
+          <div>
+            <h3 className="text-lg font-bold mb-3">Visual Scale Example:</h3>
+            <FrontendCodePreview
+              html={scaleHTML}
+              title="Spacing Scale"
+              description="See the progression from small to large"
+              colorTheme="cyan"
+              styleLanguage="tailwind"
+            />
+          </div>
         </CardContent>
       </Card>
 
-      {/* MARGIN */}
-      <Card>
+      {/* LIVE EXAMPLES */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Maximize className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
             </div>
-            2. Margin Utilities
+            Live Examples
           </CardTitle>
-          <CardDescription>
-            Control external spacing between elements
-          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={marginExample}
-            title="Margin Examples"
-            description="Create space between elements with margin"
-            colorTheme="purple"
-            styleLanguage="tailwind"
-          />
+        <CardContent className="space-y-8">
+          {/* Padding */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-blue-500">Example 1</Badge>
+              Padding Examples
+            </h3>
+            <FrontendCodePreview
+              html={paddingHTML}
+              title="Padding Sizes"
+              description="Space inside elements"
+              colorTheme="blue"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Margin */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-purple-500">Example 2</Badge>
+              Margin Examples
+            </h3>
+            <FrontendCodePreview
+              html={marginHTML}
+              title="Margin Sizes"
+              description="Space outside elements"
+              colorTheme="purple"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Directional */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-green-500">Example 3</Badge>
+              Directional Spacing
+            </h3>
+            <FrontendCodePreview
+              html={directionalHTML}
+              title="Specific Sides"
+              description="Control individual sides"
+              colorTheme="green"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Responsive */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-orange-500">Example 4</Badge>
+              Responsive Spacing
+            </h3>
+            <FrontendCodePreview
+              html={responsiveHTML}
+              title="Adaptive Spacing"
+              description="Spacing that grows with screen size"
+              colorTheme="orange"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Space Between */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-violet-500">Example 5</Badge>
+              Space Between
+            </h3>
+            <FrontendCodePreview
+              html={spaceBetweenHTML}
+              title="Space Between Children"
+              description="Add spacing between items automatically"
+              colorTheme="violet"
+              styleLanguage="tailwind"
+            />
+          </div>
         </CardContent>
       </Card>
 
-      {/* SPACE BETWEEN */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-emerald-500/10 rounded-lg">
-              <Move className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            3. Space Between
-          </CardTitle>
-          <CardDescription>
-            Add consistent spacing between child elements
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={spaceBetweenExample}
-            title="Space Between Examples"
-            description="Quickly add spacing between children"
-            colorTheme="green"
-            styleLanguage="tailwind"
-          />
-        </CardContent>
-      </Card>
-
-      {/* BEST PRACTICES */}
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Spacing Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Use the scale</strong> - Stick to 4, 8, 16, 24, 32, 48, 64 for consistency</li>
-            <li><strong>Negative margin</strong> - Use sparingly, mainly for overlapping effects</li>
-            <li><strong>Auto margin</strong> - Use mx-auto to center block elements</li>
-            <li><strong>Space vs Gap</strong> - Use space-* for direct children, gap-* for flex/grid</li>
-          </ul>
+      {/* TIPS */}
+      <Alert className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20">
+        <Lightbulb className="w-5 h-5 text-blue-600" />
+        <AlertTitle className="text-2xl text-blue-900 dark:text-blue-100">Pro Tips</AlertTitle>
+        <AlertDescription className="text-blue-800 dark:text-blue-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">p-4</code> for balanced padding in most cards and containers</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">space-y-4</code> for consistent vertical spacing in lists</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Stick to the scale - avoid arbitrary values for consistency!</span>
+          </div>
         </AlertDescription>
       </Alert>
-
-      {/* AI ASSISTANT */}
-      <div className="relative mt-8">
-        <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-          !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-        )}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-              <HelpCircle className="w-6 h-6 text-primary" />
-              Ask a Question
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
-              Have a question about Spacing System? Ask our AI assistant.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea 
-              placeholder={`e.g., "What's the difference between padding and margin?"`} 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <Button 
-              onClick={handleAskQuestionAction}
-              disabled={isAsking || !question.trim() || !isUserAuthenticated}
-              className="transition-all duration-200"
-            >
-              {isAsking ? 'Thinking...' : 'Get Answer'}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        {!isUserAuthenticated ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                🔐 Login to use AI Assistant
-              </p>
-              <Button 
-                onClick={() => window.location.href = '/login'}
-                size="sm"
-                className="shadow-sm"
-              >
-                Login
-              </Button>
-            </div>
-          </div>
-        ) : !isAiEnabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                ⚙️ AI Provider Not Configured
-              </p>
-              <Button 
-                onClick={() => setShowAiKeyModal(true)}
-                size="sm"
-                className="shadow-sm"
-              >
-                Setup AI Key
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
-          </CardContent>
-        </Card>
-      )}
-
-      {qaResult && (
-        <AIAnswerDisplay 
-          answer={qaResult.answer} 
-          language="tailwind"
-        />
-      )}
-      
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider: AIProvider, apiKey: string) => {
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          setIsAiEnabled(true);
-          setShowAiKeyModal(false);
-        }}
-      />
     </div>
   );
 }

@@ -1,467 +1,434 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Maximize2, Minimize2, Square, CheckCircle, Sparkles, Zap, HelpCircle } from 'lucide-react';
+import { Maximize, CheckCircle, Lightbulb, ArrowRight, Ruler } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
-import { cn } from '@/lib/utils';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
-import { AIProvider } from '@/types/ai-providers';
+import { Badge } from '@/components/ui/badge';
 
 export default function SizingUtilities() {
+
+  // Width Examples
+  const widthHTML = `<div class="bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-950 dark:to-cyan-950 p-8 space-y-4">
+  <div class="w-32 bg-blue-500 dark:bg-blue-600 text-white p-4 rounded text-center">
+    w-32 (8rem)
+  </div>
+  <div class="w-48 bg-blue-500 dark:bg-blue-600 text-white p-4 rounded text-center">
+    w-48 (12rem)
+  </div>
+  <div class="w-64 bg-blue-500 dark:bg-blue-600 text-white p-4 rounded text-center">
+    w-64 (16rem)
+  </div>
+  <div class="w-full bg-blue-500 dark:bg-blue-600 text-white p-4 rounded text-center">
+    w-full (100%)
+  </div>
+</div>`;
+
+  // Height Examples
+  const heightHTML = `<div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-950 dark:to-pink-950 p-8">
+  <div class="flex gap-4 items-end">
+    <div class="w-20 h-16 bg-purple-500 dark:bg-purple-600 text-white flex items-center justify-center rounded text-xs">
+      h-16
+    </div>
+    <div class="w-20 h-24 bg-purple-500 dark:bg-purple-600 text-white flex items-center justify-center rounded text-xs">
+      h-24
+    </div>
+    <div class="w-20 h-32 bg-purple-500 dark:bg-purple-600 text-white flex items-center justify-center rounded text-xs">
+      h-32
+    </div>
+    <div class="w-20 h-40 bg-purple-500 dark:bg-purple-600 text-white flex items-center justify-center rounded text-xs">
+      h-40
+    </div>
+  </div>
+</div>`;
+
+  // Percentage Widths
+  const percentageHTML = `<div class="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-950 dark:to-emerald-950 p-8 space-y-4">
+  <div class="w-1/2 bg-green-500 dark:bg-green-600 text-white p-4 rounded text-center">
+    w-1/2 (50%)
+  </div>
+  <div class="w-1/3 bg-green-500 dark:bg-green-600 text-white p-4 rounded text-center">
+    w-1/3 (33.33%)
+  </div>
+  <div class="w-2/3 bg-green-500 dark:bg-green-600 text-white p-4 rounded text-center">
+    w-2/3 (66.66%)
+  </div>
+  <div class="w-1/4 bg-green-500 dark:bg-green-600 text-white p-4 rounded text-center">
+    w-1/4 (25%)
+  </div>
+</div>`;
+
+  // Min/Max Width
+  const minMaxHTML = `<div class="bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-950 dark:to-amber-950 p-8">
+  <!-- Min Width -->
+  <div class="mb-6">
+    <p class="text-sm text-orange-700 dark:text-orange-300 mb-2">min-w-full: Minimum width 100%</p>
+    <div class="min-w-full bg-orange-500 dark:bg-orange-600 text-white p-4 rounded text-center">
+      Always full width, even if content is small
+    </div>
+  </div>
   
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [qaResult, setQaResult] = useState<{ answer: string } | null>(null);
-  const [isAiEnabled, setIsAiEnabled] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
-  const { user } = useUser();
-  const isUserAuthenticated = !!user;
+  <!-- Max Width -->
+  <div>
+    <p class="text-sm text-orange-700 dark:text-orange-300 mb-2">max-w-md: Maximum width 28rem</p>
+    <div class="max-w-md bg-orange-500 dark:bg-orange-600 text-white p-4 rounded">
+      This text is constrained to a maximum width of 28rem, making it easier to read. Long text will wrap instead of stretching too wide.
+    </div>
+  </div>
+</div>`;
 
-  React.useEffect(() => {
-    const apiKey = localStorage.getItem('ai_api_key');
-    const provider = localStorage.getItem('ai_provider');
-    setIsAiEnabled(!!(apiKey && provider));
-  }, []);
+  // Viewport Units
+  const viewportHTML = `<div class="bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-950 dark:to-blue-950 p-8">
+  <!-- 50% of viewport width -->
+  <div class="w-screen max-w-full bg-cyan-500 dark:bg-cyan-600 text-white p-4 rounded mb-4 text-center">
+    w-screen (100vw, but constrained by max-w-full)
+  </div>
+  
+  <!-- Fixed viewport height -->
+  <div class="h-32 bg-cyan-500 dark:bg-cyan-600 text-white flex items-center justify-center rounded">
+    h-32 (8rem height)
+  </div>
+</div>`;
 
-  const handleAskQuestionAction = async () => {
-    if (!question.trim()) return;
-    setIsAsking(true);
-    setQaResult(null);
+  // Responsive Sizing
+  const responsiveHTML = `<div class="bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-950 dark:to-purple-950 p-8">
+  <div class="w-full md:w-2/3 lg:w-1/2 bg-violet-500 dark:bg-violet-600 text-white p-6 rounded text-center mx-auto">
+    <p class="font-bold mb-2">Responsive Width</p>
+    <p class="text-sm">Full width on mobile → 2/3 on tablet → 1/2 on desktop</p>
+    <p class="text-xs mt-2 opacity-80">Resize your browser to see it change!</p>
+  </div>
+</div>`;
+
+  // Square & Aspect Ratio
+  const squareHTML = `<div class="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 p-8">
+  <div class="flex gap-4 flex-wrap">
+    <!-- Square -->
+    <div class="w-24 h-24 bg-pink-500 dark:bg-pink-600 text-white flex items-center justify-center rounded text-xs font-bold">
+      24x24<br/>Square
+    </div>
     
-    try {
-      const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
-      const apiKey = localStorage.getItem('ai_api_key') || '';
-      
-      const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Sizing',
-        question: question,
-      }, provider, apiKey);
-      
-      setQaResult({ answer: result.answer });
-    } catch (error) {
-      console.error('Error asking question:', error);
-    } finally {
-      setIsAsking(false);
-    }
-  };
-
-  const widthHeightExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Width & Height</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-6xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        📐 Width & Height
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Control element dimensions with size utilities
-      </p>
-      
-      <!-- Fixed Sizes -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Fixed Sizes</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-gradient-to-br from-violet-400 to-purple-400 rounded-lg mx-auto flex items-center justify-center text-white font-bold shadow-lg">
-              16
-            </div>
-            <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">w-16 h-16<br/>4rem / 64px</p>
-          </div>
-          <div class="text-center">
-            <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-fuchsia-400 rounded-lg mx-auto flex items-center justify-center text-white font-bold shadow-lg">
-              24
-            </div>
-            <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">w-24 h-24<br/>6rem / 96px</p>
-          </div>
-          <div class="text-center">
-            <div class="w-32 h-32 bg-gradient-to-br from-fuchsia-400 to-pink-400 rounded-lg mx-auto flex items-center justify-center text-white font-bold shadow-lg">
-              32
-            </div>
-            <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">w-32 h-32<br/>8rem / 128px</p>
-          </div>
-          <div class="text-center">
-            <div class="w-40 h-40 bg-gradient-to-br from-pink-400 to-rose-400 rounded-lg mx-auto flex items-center justify-center text-white font-bold shadow-lg">
-              40
-            </div>
-            <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">w-40 h-40<br/>10rem / 160px</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Percentage Sizes -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Percentage Widths</h3>
-        <div class="space-y-3">
-          <div class="w-1/2 bg-violet-500 text-white p-4 rounded-lg font-semibold text-center shadow-lg">
-            w-1/2 (50%)
-          </div>
-          <div class="w-2/3 bg-purple-500 text-white p-4 rounded-lg font-semibold text-center shadow-lg">
-            w-2/3 (66.67%)
-          </div>
-          <div class="w-3/4 bg-fuchsia-500 text-white p-4 rounded-lg font-semibold text-center shadow-lg">
-            w-3/4 (75%)
-          </div>
-          <div class="w-full bg-pink-500 text-white p-4 rounded-lg font-semibold text-center shadow-lg">
-            w-full (100%)
-          </div>
-        </div>
-      </div>
-      
-      <!-- Viewport Units -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Viewport Units</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 p-4 rounded-xl border border-violet-200 dark:border-violet-800">
-            <h4 class="font-semibold text-violet-900 dark:text-violet-100 mb-2">Width</h4>
-            <div class="space-y-2 text-sm">
-              <code class="block bg-white dark:bg-slate-900 px-3 py-2 rounded text-violet-700 dark:text-violet-300">w-screen (100vw)</code>
-              <code class="block bg-white dark:bg-slate-900 px-3 py-2 rounded text-violet-700 dark:text-violet-300">w-svw (100svw)</code>
-            </div>
-          </div>
-          <div class="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-900/20 dark:to-fuchsia-900/20 p-4 rounded-xl border border-purple-200 dark:border-purple-800">
-            <h4 class="font-semibold text-purple-900 dark:text-purple-100 mb-2">Height</h4>
-            <div class="space-y-2 text-sm">
-              <code class="block bg-white dark:bg-slate-900 px-3 py-2 rounded text-purple-700 dark:text-purple-300">h-screen (100vh)</code>
-              <code class="block bg-white dark:bg-slate-900 px-3 py-2 rounded text-purple-700 dark:text-purple-300">h-svh (100svh)</code>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Size Reference -->
-      <div class="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-violet-200 dark:border-violet-800">
-        <h3 class="text-lg font-semibold text-violet-900 dark:text-violet-100 mb-4">💡 Common Sizes</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-px</code><span class="text-slate-600 dark:text-slate-400">1px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-0.5</code><span class="text-slate-600 dark:text-slate-400">2px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-1</code><span class="text-slate-600 dark:text-slate-400">4px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-2</code><span class="text-slate-600 dark:text-slate-400">8px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-4</code><span class="text-slate-600 dark:text-slate-400">16px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-8</code><span class="text-slate-600 dark:text-slate-400">32px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-16</code><span class="text-slate-600 dark:text-slate-400">64px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">w-32</code><span class="text-slate-600 dark:text-slate-400">128px</span></div>
-        </div>
-      </div>
+    <!-- Rectangle -->
+    <div class="w-32 h-24 bg-pink-500 dark:bg-pink-600 text-white flex items-center justify-center rounded text-xs font-bold">
+      32x24<br/>Rectangle
+    </div>
+    
+    <!-- Aspect Ratio 16:9 -->
+    <div class="w-48 aspect-video bg-pink-500 dark:bg-pink-600 text-white flex items-center justify-center rounded text-xs font-bold">
+      aspect-video<br/>(16:9)
     </div>
   </div>
-</body>
-</html>`;
-
-  const minMaxExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Min/Max Sizing</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        ⚖️ Min/Max Constraints
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Set minimum and maximum size constraints for responsive layouts
-      </p>
-      
-      <!-- Min Width -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Minimum Width</h3>
-        <div class="space-y-4">
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">min-w-0 (No minimum)</p>
-            <div class="min-w-0 bg-cyan-500 text-white p-3 rounded inline-block">
-              Content
-            </div>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">min-w-full (100%)</p>
-            <div class="min-w-full bg-blue-500 text-white p-3 rounded text-center">
-              Full Width Content
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Max Width -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Maximum Width</h3>
-        <div class="space-y-4">
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">max-w-sm (24rem / 384px)</p>
-            <div class="max-w-sm bg-cyan-500 text-white p-4 rounded mx-auto text-center">
-              Small Container
-            </div>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">max-w-md (28rem / 448px)</p>
-            <div class="max-w-md bg-blue-500 text-white p-4 rounded mx-auto text-center">
-              Medium Container
-            </div>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">max-w-lg (32rem / 512px)</p>
-            <div class="max-w-lg bg-indigo-500 text-white p-4 rounded mx-auto text-center">
-              Large Container
-            </div>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">max-w-prose (65ch)</p>
-            <div class="max-w-prose bg-purple-500 text-white p-4 rounded mx-auto">
-              Ideal for readable text content. This class limits the width to approximately 65 characters for optimal readability.
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Min/Max Height -->
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 p-6 rounded-xl border border-cyan-200 dark:border-cyan-800">
-          <h3 class="text-lg font-semibold text-cyan-900 dark:text-cyan-100 mb-4">Min Height</h3>
-          <div class="space-y-3 text-sm">
-            <div class="min-h-24 bg-cyan-500 text-white p-3 rounded flex items-center justify-center">
-              min-h-24
-            </div>
-            <div class="min-h-32 bg-cyan-600 text-white p-3 rounded flex items-center justify-center">
-              min-h-32
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800">
-          <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">Max Height</h3>
-          <div class="space-y-3 text-sm">
-            <div class="max-h-24 bg-blue-500 text-white p-3 rounded overflow-auto">
-              max-h-24: This content will scroll if it exceeds 6rem (96px) in height. Add more content to see scrolling.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
+</div>`;
 
   return (
     <div className="space-y-8">
+      {/* PAGE HEADER */}
       <PageHeader
-        icon={Maximize2}
+        icon={Maximize}
         category="Tailwind CSS · Core Concepts"
-        title="Sizing"
-        description="Control width, height, min/max sizing, and dimensions with precision"
-        colorTheme="purple"
+        title="Sizing Utilities"
+        description="Control width, height, and dimensions with ease"
+        colorTheme="blue"
       />
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-purple-700 dark:text-purple-300">
-            <div className="relative">
-              <Square className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+      {/* WIDTH BASICS */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-3xl">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl">
+              <Ruler className="w-8 h-8 text-white" />
             </div>
-            Sizing Utilities
+            Width Utilities
           </CardTitle>
-          <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-            📏 Control element dimensions with width, height, and constraint utilities
+          <CardDescription className="text-base">
+            Control the width of elements
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300">📐 Size Types</h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    <span className="font-semibold text-purple-900 dark:text-purple-100 min-w-24">Fixed:</span>
-                    <code className="bg-purple-100 dark:bg-purple-950 px-2 py-1 rounded text-purple-700 dark:text-purple-300">w-16, h-32</code>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-semibold text-purple-900 dark:text-purple-100 min-w-24">Percentage:</span>
-                    <code className="bg-purple-100 dark:bg-purple-950 px-2 py-1 rounded text-purple-700 dark:text-purple-300">w-1/2, w-full</code>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-semibold text-purple-900 dark:text-purple-100 min-w-24">Viewport:</span>
-                    <code className="bg-purple-100 dark:bg-purple-950 px-2 py-1 rounded text-purple-700 dark:text-purple-300">w-screen, h-screen</code>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-semibold text-purple-900 dark:text-purple-100 min-w-24">Auto:</span>
-                    <code className="bg-purple-100 dark:bg-purple-950 px-2 py-1 rounded text-purple-700 dark:text-purple-300">w-auto, h-auto</code>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <CardContent className="space-y-6">
+          <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
+            <Lightbulb className="w-5 h-5 text-blue-600" />
+            <AlertTitle className="text-blue-900 dark:text-blue-100">Width Scale</AlertTitle>
+            <AlertDescription className="text-blue-800 dark:text-blue-200">
+              Width utilities follow the same 4px scale as spacing. <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">w-4</code> = 1rem (16px), <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">w-8</code> = 2rem (32px), etc.
+            </AlertDescription>
+          </Alert>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-purple-100 via-fuchsia-100 to-pink-100 dark:from-purple-900/30 dark:via-fuchsia-900/30 dark:to-pink-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <div className="text-center space-y-3">
-                  <div className="text-3xl">📦</div>
-                  <div className="font-bold text-purple-700 dark:text-purple-300">Key Benefits</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Responsive layouts
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Consistent sizing
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Flexible constraints
-                    </div>
+          {/* Common Width Values */}
+          <div>
+            <h3 className="text-lg font-bold mb-3">Common Width Classes:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { class: 'w-auto', desc: 'Auto width' },
+                { class: 'w-full', desc: '100%' },
+                { class: 'w-screen', desc: '100vw' },
+                { class: 'w-min', desc: 'Min content' },
+                { class: 'w-max', desc: 'Max content' },
+                { class: 'w-fit', desc: 'Fit content' },
+                { class: 'w-32', desc: '8rem (128px)' },
+                { class: 'w-64', desc: '16rem (256px)' }
+              ].map(item => (
+                <div key={item.class} className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3 text-center border border-blue-300 dark:border-blue-700">
+                  <div className="font-mono font-bold text-sm text-blue-900 dark:text-blue-100">
+                    {item.class}
+                  </div>
+                  <div className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                    {item.desc}
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
+          </div>
+
+          {/* Width Example */}
+          <div>
+            <h3 className="text-lg font-bold mb-3">Width Examples:</h3>
+            <FrontendCodePreview
+              html={widthHTML}
+              title="Fixed Widths"
+              description="Different width values in action"
+              colorTheme="blue"
+              styleLanguage="tailwind"
+            />
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      {/* HEIGHT UTILITIES */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Maximize2 className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <Maximize className="w-6 h-6 text-white" />
             </div>
-            1. Width & Height
+            Height Utilities
           </CardTitle>
-          <CardDescription>Fixed, percentage, and viewport-based sizing</CardDescription>
+          <CardDescription>
+            Control the height of elements
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+            <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-3">
+              💡 Height Works the Same
+            </h3>
+            <p className="text-sm text-purple-800 dark:text-purple-200">
+              Height utilities (<code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">h-*</code>) use the same scale as width. 
+              Just replace <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">w-</code> with <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">h-</code>!
+            </p>
+          </div>
+
           <FrontendCodePreview
-            html={widthHeightExample}
-            title="Width & Height Utilities"
-            description="Control element dimensions with various sizing options"
+            html={heightHTML}
+            title="Height Examples"
+            description="Different height values"
             colorTheme="purple"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* PERCENTAGE WIDTHS */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-cyan-500/10 rounded-lg">
-              <Minimize2 className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
             </div>
-            2. Min/Max Constraints
+            Percentage Widths
           </CardTitle>
-          <CardDescription>Set minimum and maximum size limits</CardDescription>
+          <CardDescription>
+            Flexible widths based on parent container
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+              <code className="text-sm font-mono text-green-700 dark:text-green-300">w-1/2</code>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">50% width</p>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+              <code className="text-sm font-mono text-green-700 dark:text-green-300">w-1/3</code>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">33.33% width</p>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+              <code className="text-sm font-mono text-green-700 dark:text-green-300">w-1/4</code>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">25% width</p>
+            </div>
+          </div>
+
           <FrontendCodePreview
-            html={minMaxExample}
-            title="Min/Max Sizing"
-            description="Control size boundaries for responsive layouts"
-            colorTheme="cyan"
+            html={percentageHTML}
+            title="Percentage Widths"
+            description="Fractional width utilities"
+            colorTheme="green"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Sizing Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Use max-w-*</strong> for readable content containers</li>
-            <li><strong>min-h-screen</strong> for full-height sections</li>
-            <li><strong>w-full</strong> for responsive, full-width elements</li>
-            <li><strong>Combine with responsive prefixes</strong> for adaptive layouts</li>
-          </ul>
+      {/* MIN/MAX WIDTH */}
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-orange-500 rounded-lg">
+              <Ruler className="w-6 h-6 text-white" />
+            </div>
+            Min & Max Width
+          </CardTitle>
+          <CardDescription>
+            Set minimum and maximum constraints
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
+            <h3 className="text-lg font-bold text-orange-900 dark:text-orange-100 mb-3">
+              When to Use
+            </h3>
+            <ul className="space-y-2 text-sm text-orange-800 dark:text-orange-200">
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-orange-600" />
+                <span><strong>max-w-*:</strong> Keep text readable (limit line length)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-orange-600" />
+                <span><strong>min-w-*:</strong> Ensure buttons don't get too small</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-orange-600" />
+                <span><strong>max-h-*:</strong> Limit scrollable areas</span>
+              </li>
+            </ul>
+          </div>
+
+          <FrontendCodePreview
+            html={minMaxHTML}
+            title="Min & Max Constraints"
+            description="Control size boundaries"
+            colorTheme="orange"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* LIVE EXAMPLES */}
+      <Card className="border-2 border-cyan-200 dark:border-cyan-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-cyan-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            More Examples
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* Viewport Units */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-cyan-500">Example 1</Badge>
+              Viewport Units
+            </h3>
+            <FrontendCodePreview
+              html={viewportHTML}
+              title="Viewport-Based Sizing"
+              description="w-screen and viewport heights"
+              colorTheme="cyan"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Responsive */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-violet-500">Example 2</Badge>
+              Responsive Sizing
+            </h3>
+            <FrontendCodePreview
+              html={responsiveHTML}
+              title="Adaptive Width"
+              description="Width changes based on screen size"
+              colorTheme="violet"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Aspect Ratio */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-pink-500">Example 3</Badge>
+              Squares & Aspect Ratios
+            </h3>
+            <FrontendCodePreview
+              html={squareHTML}
+              title="Fixed Dimensions"
+              description="Creating squares and maintaining aspect ratios"
+              colorTheme="pink"
+              styleLanguage="tailwind"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* QUICK REFERENCE */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-blue-500 rounded-lg">
+              <Lightbulb className="w-6 h-6 text-white" />
+            </div>
+            Quick Reference
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Width */}
+            <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+              <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-3">Width</h4>
+              <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200 font-mono">
+                <li>w-{'{'}number{'}'} → Fixed width</li>
+                <li>w-full → 100%</li>
+                <li>w-1/2 → 50%</li>
+                <li>w-screen → 100vw</li>
+                <li>max-w-md → Max 28rem</li>
+                <li>min-w-0 → Min 0</li>
+              </ul>
+            </div>
+
+            {/* Height */}
+            <div className="bg-purple-50 dark:bg-purple-950/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+              <h4 className="font-bold text-purple-900 dark:text-purple-100 mb-3">Height</h4>
+              <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200 font-mono">
+                <li>h-{'{'}number{'}'} → Fixed height</li>
+                <li>h-full → 100%</li>
+                <li>h-screen → 100vh</li>
+                <li>max-h-96 → Max 24rem</li>
+                <li>min-h-full → Min 100%</li>
+                <li>aspect-video → 16:9 ratio</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* TIPS */}
+      <Alert className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+        <CheckCircle className="w-5 h-5 text-green-600" />
+        <AlertTitle className="text-2xl text-green-900 dark:text-green-100">Pro Tips</AlertTitle>
+        <AlertDescription className="text-green-800 dark:text-green-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">max-w-prose</code> for readable text (65ch)</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Combine with responsive prefixes: <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">w-full md:w-1/2</code></span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">aspect-video</code> for 16:9 responsive containers</span>
+          </div>
         </AlertDescription>
       </Alert>
-
-      {/* AI ASSISTANT */}
-      <div className="relative mt-8">
-        <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-          !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-        )}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-              <HelpCircle className="w-6 h-6 text-primary" />
-              Ask a Question
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
-              Have a question about Sizing? Ask our AI assistant.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea 
-              placeholder={`e.g., "When should I use max-w-prose?"`} 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <Button 
-              onClick={handleAskQuestionAction}
-              disabled={isAsking || !question.trim() || !isUserAuthenticated}
-              className="transition-all duration-200"
-            >
-              {isAsking ? 'Thinking...' : 'Get Answer'}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        {!isUserAuthenticated ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">🔐 Login to use AI Assistant</p>
-              <Button onClick={() => window.location.href = '/login'} size="sm" className="shadow-sm">Login</Button>
-            </div>
-          </div>
-        ) : !isAiEnabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">⚙️ AI Provider Not Configured</p>
-              <Button onClick={() => setShowAiKeyModal(true)} size="sm" className="shadow-sm">Setup AI Key</Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
-          </CardContent>
-        </Card>
-      )}
-
-      {qaResult && <AIAnswerDisplay answer={qaResult.answer} language="tailwind" />}
-      
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider: AIProvider, apiKey: string) => {
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          setIsAiEnabled(true);
-          setShowAiKeyModal(false);
-        }}
-      />
     </div>
   );
 }

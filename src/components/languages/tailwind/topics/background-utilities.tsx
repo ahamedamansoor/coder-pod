@@ -1,478 +1,302 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Image, Layers, CheckCircle, Sparkles, HelpCircle } from 'lucide-react';
+import { Image, CheckCircle, Lightbulb, ArrowRight, Layers } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
-import { cn } from '@/lib/utils';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
-import { AIProvider } from '@/types/ai-providers';
+import { Badge } from '@/components/ui/badge';
 
 export default function BackgroundUtilities() {
+
+  const gradientHTML = `<div class="p-8 space-y-4">
+  <!-- Linear Gradients -->
+  <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-lg text-center font-semibold">
+    Left to Right Gradient
+  </div>
   
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [qaResult, setQaResult] = useState<{ answer: string } | null>(null);
-  const [isAiEnabled, setIsAiEnabled] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
-  const { user } = useUser();
-  const isUserAuthenticated = !!user;
+  <div class="bg-gradient-to-b from-green-400 to-blue-500 text-white p-6 rounded-lg text-center font-semibold">
+    Top to Bottom Gradient
+  </div>
+  
+  <div class="bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 text-white p-6 rounded-lg text-center font-semibold">
+    Diagonal with Via Color
+  </div>
+  
+  <div class="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white p-6 rounded-lg text-center font-semibold">
+    Three Color Gradient
+  </div>
+</div>`;
 
-  React.useEffect(() => {
-    const apiKey = localStorage.getItem('ai_api_key');
-    const provider = localStorage.getItem('ai_provider');
-    setIsAiEnabled(!!(apiKey && provider));
-  }, []);
-
-  const handleAskQuestionAction = async () => {
-    if (!question.trim()) return;
-    setIsAsking(true);
-    setQaResult(null);
-    
-    try {
-      const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
-      const apiKey = localStorage.getItem('ai_api_key') || '';
-      
-      const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Backgrounds',
-        question: question,
-      }, provider, apiKey);
-      
-      setQaResult({ answer: result.answer });
-    } catch (error) {
-      console.error('Error asking question:', error);
-    } finally {
-      setIsAsking(false);
-    }
-  };
-
-  const gradientExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Background Gradients</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-6xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        🌈 Background Gradients
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Create beautiful gradients with simple utility classes
-      </p>
-      
-      <!-- Linear Gradients -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Linear Gradients</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Right Direction</div>
-            <code class="text-sm opacity-90">bg-gradient-to-r from-cyan-500 to-blue-500</code>
-          </div>
-          
-          <div class="bg-gradient-to-l from-purple-500 to-pink-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Left Direction</div>
-            <code class="text-sm opacity-90">bg-gradient-to-l from-purple-500 to-pink-500</code>
-          </div>
-          
-          <div class="bg-gradient-to-b from-emerald-500 to-teal-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Bottom Direction</div>
-            <code class="text-sm opacity-90">bg-gradient-to-b from-emerald-500 to-teal-500</code>
-          </div>
-          
-          <div class="bg-gradient-to-t from-orange-500 to-amber-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Top Direction</div>
-            <code class="text-sm opacity-90">bg-gradient-to-t from-orange-500 to-amber-500</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Diagonal Gradients -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Diagonal Gradients</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Bottom Right</div>
-            <code class="text-sm opacity-90">bg-gradient-to-br</code>
-          </div>
-          
-          <div class="bg-gradient-to-tr from-rose-500 to-pink-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Top Right</div>
-            <code class="text-sm opacity-90">bg-gradient-to-tr</code>
-          </div>
-          
-          <div class="bg-gradient-to-bl from-blue-500 to-indigo-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Bottom Left</div>
-            <code class="text-sm opacity-90">bg-gradient-to-bl</code>
-          </div>
-          
-          <div class="bg-gradient-to-tl from-green-500 to-emerald-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Top Left</div>
-            <code class="text-sm opacity-90">bg-gradient-to-tl</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Multi-Stop Gradients -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Multi-Stop Gradients</h3>
-        <div class="space-y-4">
-          <div class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Three Color Gradient</div>
-            <code class="text-sm opacity-90">from-purple-500 via-pink-500 to-red-500</code>
-          </div>
-          
-          <div class="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Cool Color Blend</div>
-            <code class="text-sm opacity-90">from-cyan-400 via-blue-500 to-purple-600</code>
-          </div>
-          
-          <div class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl p-6 text-white text-center shadow-lg">
-            <div class="font-bold text-lg mb-2">Warm Color Blend</div>
-            <code class="text-sm opacity-90">from-yellow-400 via-orange-500 to-red-500</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Gradient Reference -->
-      <div class="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-950 dark:to-gray-950 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
-        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">💡 Gradient Directions</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-r (right)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-l (left)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-t (top)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-b (bottom)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-tr (top-right)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-tl (top-left)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-br (bottom-right)</code>
-          <code class="bg-white dark:bg-slate-900 px-3 py-2 rounded text-slate-700 dark:text-slate-300">to-bl (bottom-left)</code>
-        </div>
-      </div>
+  const bgImageHTML = `<div class="p-8 space-y-6">
+  <!-- Cover -->
+  <div class="h-48 bg-cover bg-center rounded-lg" 
+       style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800')">
+    <div class="h-full bg-black/50 flex items-center justify-center rounded-lg">
+      <p class="text-white text-2xl font-bold">bg-cover</p>
     </div>
   </div>
-</body>
-</html>`;
-
-  const solidColorsExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solid Backgrounds</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-6xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        🎨 Solid Backgrounds
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Simple solid color backgrounds
-      </p>
-      
-      <!-- Color Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="bg-red-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">❤️</div>
-          <div class="font-bold">Red</div>
-          <code class="text-xs opacity-90">bg-red-500</code>
-        </div>
-        
-        <div class="bg-blue-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💙</div>
-          <div class="font-bold">Blue</div>
-          <code class="text-xs opacity-90">bg-blue-500</code>
-        </div>
-        
-        <div class="bg-green-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💚</div>
-          <div class="font-bold">Green</div>
-          <code class="text-xs opacity-90">bg-green-500</code>
-        </div>
-        
-        <div class="bg-yellow-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💛</div>
-          <div class="font-bold">Yellow</div>
-          <code class="text-xs opacity-90">bg-yellow-500</code>
-        </div>
-        
-        <div class="bg-purple-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💜</div>
-          <div class="font-bold">Purple</div>
-          <code class="text-xs opacity-90">bg-purple-500</code>
-        </div>
-        
-        <div class="bg-pink-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💗</div>
-          <div class="font-bold">Pink</div>
-          <code class="text-xs opacity-90">bg-pink-500</code>
-        </div>
-        
-        <div class="bg-indigo-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💠</div>
-          <div class="font-bold">Indigo</div>
-          <code class="text-xs opacity-90">bg-indigo-500</code>
-        </div>
-        
-        <div class="bg-teal-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
-          <div class="text-3xl mb-2">💎</div>
-          <div class="font-bold">Teal</div>
-          <code class="text-xs opacity-90">bg-teal-500</code>
-        </div>
-      </div>
-      
-      <!-- Opacity Backgrounds -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Background Opacity</h3>
-        <div class="space-y-3">
-          <div class="bg-blue-500/10 border-2 border-blue-500 p-4 rounded-lg">
-            <p class="text-slate-900 dark:text-white font-semibold">bg-blue-500/10 - 10% opacity</p>
-          </div>
-          <div class="bg-blue-500/30 border-2 border-blue-500 p-4 rounded-lg">
-            <p class="text-slate-900 dark:text-white font-semibold">bg-blue-500/30 - 30% opacity</p>
-          </div>
-          <div class="bg-blue-500/50 border-2 border-blue-500 p-4 rounded-lg">
-            <p class="text-white font-semibold">bg-blue-500/50 - 50% opacity</p>
-          </div>
-          <div class="bg-blue-500 p-4 rounded-lg">
-            <p class="text-white font-semibold">bg-blue-500 - 100% opacity</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Special Backgrounds -->
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-transparent border-2 border-dashed border-blue-500 p-6 rounded-xl text-center">
-          <h4 class="font-bold text-blue-600 dark:text-blue-400 mb-2">Transparent</h4>
-          <code class="text-sm text-slate-600 dark:text-slate-400">bg-transparent</code>
-        </div>
-        
-        <div class="bg-current text-blue-600 dark:text-blue-400 border-2 border-blue-500 p-6 rounded-xl text-center">
-          <h4 class="font-bold mb-2">Current Color</h4>
-          <code class="text-sm opacity-75">bg-current</code>
-        </div>
-      </div>
-    </div>
+  
+  <!-- Contain -->
+  <div class="h-48 bg-contain bg-center bg-no-repeat bg-gray-100 dark:bg-gray-800 rounded-lg" 
+       style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400')">
   </div>
-</body>
-</html>`;
+</div>`;
+
+  const bgPositionHTML = `<div class="p-8 grid md:grid-cols-3 gap-4">
+  <div class="h-32 bg-cover bg-top rounded-lg border-2 border-gray-300 dark:border-gray-600" 
+       style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400')">
+    <div class="bg-black/50 text-white text-xs p-2 rounded-tl-lg font-semibold">bg-top</div>
+  </div>
+  
+  <div class="h-32 bg-cover bg-center rounded-lg border-2 border-gray-300 dark:border-gray-600" 
+       style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400')">
+    <div class="bg-black/50 text-white text-xs p-2 rounded-tl-lg font-semibold">bg-center</div>
+  </div>
+  
+  <div class="h-32 bg-cover bg-bottom rounded-lg border-2 border-gray-300 dark:border-gray-600" 
+       style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400')">
+    <div class="bg-black/50 text-white text-xs p-2 rounded-tl-lg font-semibold">bg-bottom</div>
+  </div>
+</div>`;
+
+  const bgRepeatHTML = `<div class="p-8 space-y-4">
+  <div class="h-32 bg-repeat rounded-lg border-2 border-gray-300 dark:border-gray-600" 
+       style="background-image: url('https://via.placeholder.com/50')">
+    <div class="bg-black/50 text-white text-xs p-2 rounded-tl-lg font-semibold">bg-repeat</div>
+  </div>
+  
+  <div class="h-32 bg-no-repeat bg-center rounded-lg border-2 border-gray-300 dark:border-gray-600" 
+       style="background-image: url('https://via.placeholder.com/50')">
+    <div class="bg-black/50 text-white text-xs p-2 rounded-tl-lg font-semibold">bg-no-repeat</div>
+  </div>
+</div>`;
+
+  const heroSectionHTML = `<div class="relative h-96 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl overflow-hidden">
+  <!-- Pattern Overlay -->
+  <div class="absolute inset-0 bg-black/20"></div>
+  
+  <!-- Content -->
+  <div class="relative h-full flex flex-col items-center justify-center text-center p-8">
+    <h1 class="text-5xl font-black text-white mb-4">
+      Beautiful Backgrounds
+    </h1>
+    <p class="text-xl text-white/90 mb-6 max-w-2xl">
+      Create stunning designs with gradients, images, and overlays
+    </p>
+    <button class="bg-white text-purple-600 font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition">
+      Get Started
+    </button>
+  </div>
+  
+  <!-- Decorative Elements -->
+  <div class="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+  <div class="absolute bottom-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+</div>`;
 
   return (
     <div className="space-y-8">
       <PageHeader
-        icon={Layers}
+        icon={Image}
         category="Tailwind CSS · Core Concepts"
-        title="Backgrounds"
-        description="Master background colors, gradients, and visual effects"
-        colorTheme="cyan"
+        title="Background Utilities"
+        description="Master background colors, gradients, images, and positioning"
+        colorTheme="blue"
       />
 
-      <Card>
+      {/* GRADIENTS */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl text-cyan-700 dark:text-cyan-300">
-            <div className="relative">
-              <Image className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+          <CardTitle className="flex items-center gap-3 text-3xl">
+            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl">
+              <Layers className="w-8 h-8 text-white" />
             </div>
-            Background Utilities
+            Gradient Backgrounds
           </CardTitle>
-          <CardDescription className="text-lg text-cyan-600 dark:text-cyan-400">
-            🎨 Create stunning visual effects with colors and gradients
+          <CardDescription className="text-base">
+            Create beautiful color transitions
           </CardDescription>
         </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
+            <Lightbulb className="w-5 h-5 text-purple-600" />
+            <AlertTitle className="text-purple-900 dark:text-purple-100">Gradient Directions</AlertTitle>
+            <AlertDescription className="text-purple-800 dark:text-purple-200">
+              <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">bg-gradient-to-r</code> = right, 
+              <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded ml-1">bg-gradient-to-b</code> = bottom, 
+              <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded ml-1">bg-gradient-to-br</code> = bottom-right
+            </AlertDescription>
+          </Alert>
+
+          <div>
+            <h3 className="text-lg font-bold mb-3">Gradient Syntax:</h3>
+            <div className="bg-purple-50 dark:bg-purple-950/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+              <ol className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+                <li className="flex items-start gap-2">
+                  <span className="font-bold">1.</span>
+                  <span>Direction: <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">bg-gradient-to-r</code></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-bold">2.</span>
+                  <span>Start color: <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">from-blue-500</code></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-bold">3.</span>
+                  <span>Middle (optional): <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">via-purple-500</code></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-bold">4.</span>
+                  <span>End color: <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">to-pink-500</code></span>
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <FrontendCodePreview
+            html={gradientHTML}
+            title="Gradient Examples"
+            description="Different gradient directions and colors"
+            colorTheme="purple"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* BACKGROUND IMAGES */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-blue-500 rounded-lg">
+              <Image className="w-6 h-6 text-white" />
+            </div>
+            Background Images
+          </CardTitle>
+          <CardDescription>
+            Control image sizing and positioning
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-blue-500">Example 1</Badge>
+              Background Size
+            </h3>
+            <FrontendCodePreview
+              html={bgImageHTML}
+              title="Background Size"
+              description="bg-cover fills the container, bg-contain fits inside"
+              colorTheme="blue"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-cyan-500">Example 2</Badge>
+              Background Position
+            </h3>
+            <FrontendCodePreview
+              html={bgPositionHTML}
+              title="Background Position"
+              description="Control image alignment"
+              colorTheme="cyan"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-indigo-500">Example 3</Badge>
+              Background Repeat
+            </h3>
+            <FrontendCodePreview
+              html={bgRepeatHTML}
+              title="Background Repeat"
+              description="Control image repetition"
+              colorTheme="indigo"
+              styleLanguage="tailwind"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* COMPLETE EXAMPLE */}
+      <Card className="border-2 border-pink-200 dark:border-pink-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-pink-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Hero Section Example
+          </CardTitle>
+        </CardHeader>
         <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-cyan-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-cyan-700 dark:text-cyan-300">🌈 Background Types</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-cyan-50 dark:bg-cyan-900/20 p-3 rounded-lg border border-cyan-200/50">
-                    <div className="font-semibold text-cyan-900 dark:text-cyan-100 text-sm mb-1">Solid Colors</div>
-                    <code className="text-xs text-cyan-700 dark:text-cyan-300">bg-color-shade</code>
-                  </div>
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200/50">
-                    <div className="font-semibold text-blue-900 dark:text-blue-100 text-sm mb-1">Gradients</div>
-                    <code className="text-xs text-blue-700 dark:text-blue-300">bg-gradient-to-*</code>
-                  </div>
-                  <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-200/50">
-                    <div className="font-semibold text-indigo-900 dark:text-indigo-100 text-sm mb-1">Opacity</div>
-                    <code className="text-xs text-indigo-700 dark:text-indigo-300">bg-color/opacity</code>
-                  </div>
-                  <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200/50">
-                    <div className="font-semibold text-purple-900 dark:text-purple-100 text-sm mb-1">Special</div>
-                    <code className="text-xs text-purple-700 dark:text-purple-300">bg-transparent</code>
-                  </div>
-                </div>
-              </div>
+          <FrontendCodePreview
+            html={heroSectionHTML}
+            title="Complete Hero Section"
+            description="Gradient + overlay + content"
+            colorTheme="pink"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* QUICK REFERENCE */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <Lightbulb className="w-6 h-6 text-white" />
+            </div>
+            Quick Reference
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+              <h4 className="font-bold text-green-900 dark:text-green-100 mb-3">Gradients</h4>
+              <ul className="space-y-2 text-sm text-green-800 dark:text-green-200 font-mono">
+                <li>bg-gradient-to-r</li>
+                <li>bg-gradient-to-b</li>
+                <li>bg-gradient-to-br</li>
+                <li>from-{'{'}color{'}'}</li>
+                <li>via-{'{'}color{'}'}</li>
+                <li>to-{'{'}color{'}'}</li>
+              </ul>
             </div>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-cyan-100 via-blue-100 to-indigo-100 dark:from-cyan-900/30 dark:via-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-cyan-200/50 shadow-lg">
-                <div className="text-center space-y-3">
-                  <div className="text-3xl">🎨</div>
-                  <div className="font-bold text-cyan-700 dark:text-cyan-300">Benefits</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Visual hierarchy
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Brand identity
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Modern aesthetics
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+              <h4 className="font-bold text-green-900 dark:text-green-100 mb-3">Images</h4>
+              <ul className="space-y-2 text-sm text-green-800 dark:text-green-200 font-mono">
+                <li>bg-cover / bg-contain</li>
+                <li>bg-center / bg-top</li>
+                <li>bg-repeat / bg-no-repeat</li>
+                <li>bg-fixed / bg-scroll</li>
+              </ul>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-cyan-500/10 rounded-lg">
-              <Layers className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
-            </div>
-            1. Background Gradients
-          </CardTitle>
-          <CardDescription>Linear, diagonal, and multi-stop gradients</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={gradientExample}
-            title="Gradient Backgrounds"
-            description="8 directions with from, via, to color stops"
-            colorTheme="cyan"
-            styleLanguage="tailwind"
-          />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Image className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            2. Solid Colors
-          </CardTitle>
-          <CardDescription>Solid backgrounds with opacity control</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={solidColorsExample}
-            title="Solid Backgrounds"
-            description="All colors with opacity modifiers"
-            colorTheme="blue"
-            styleLanguage="tailwind"
-          />
-        </CardContent>
-      </Card>
-
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Background Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Gradients</strong> - Use for hero sections and cards</li>
-            <li><strong>Opacity</strong> - Use /10 to /30 for subtle overlays</li>
-            <li><strong>Contrast</strong> - Ensure text is readable on backgrounds</li>
-            <li><strong>Dark mode</strong> - Test gradients in both themes</li>
-          </ul>
+      <Alert className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20">
+        <Layers className="w-5 h-5 text-blue-600" />
+        <AlertTitle className="text-2xl text-blue-900 dark:text-blue-100">Pro Tips</AlertTitle>
+        <AlertDescription className="text-blue-800 dark:text-blue-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Layer gradients over images with overlays</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">bg-black/50</code> for dark overlays</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Combine <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">bg-cover</code> with <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">bg-center</code></span>
+          </div>
         </AlertDescription>
       </Alert>
-
-      {/* AI ASSISTANT */}
-      <div className="relative mt-8">
-        <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-          !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-        )}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-              <HelpCircle className="w-6 h-6 text-primary" />
-              Ask a Question
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
-              Have a question about Backgrounds? Ask our AI assistant.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea 
-              placeholder={`e.g., "How do I create a diagonal gradient?"`} 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <Button 
-              onClick={handleAskQuestionAction}
-              disabled={isAsking || !question.trim() || !isUserAuthenticated}
-              className="transition-all duration-200"
-            >
-              {isAsking ? 'Thinking...' : 'Get Answer'}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        {!isUserAuthenticated ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">🔐 Login to use AI Assistant</p>
-              <Button onClick={() => window.location.href = '/login'} size="sm" className="shadow-sm">Login</Button>
-            </div>
-          </div>
-        ) : !isAiEnabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">⚙️ AI Provider Not Configured</p>
-              <Button onClick={() => setShowAiKeyModal(true)} size="sm" className="shadow-sm">Setup AI Key</Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
-          </CardContent>
-        </Card>
-      )}
-
-      {qaResult && <AIAnswerDisplay answer={qaResult.answer} language="tailwind" />}
-      
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider: AIProvider, apiKey: string) => {
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          setIsAiEnabled(true);
-          setShowAiKeyModal(false);
-        }}
-      />
     </div>
   );
 }

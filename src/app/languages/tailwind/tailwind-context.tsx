@@ -25,39 +25,73 @@ export const TailwindProvider = ({ children }: { children: ReactNode }) => {
   const [completedTopics, setCompletedTopics] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (userData && userData.completedTailwindTopics) {
-      setCompletedTopics(new Set(userData.completedTailwindTopics));
+    if (userData?.completedTopics?.tailwind) {
+      setCompletedTopics(new Set(userData.completedTopics.tailwind));
+    } else {
+      setCompletedTopics(new Set<string>());
     }
   }, [userData]);
 
-  const handleToggleComplete = async (topicSlug: string) => {
-    if (!user || !userDocRef) return;
+  // Migration: Move old completedTailwindTopics to new nested structure
+  useEffect(() => {
+    const migrateOldData = async () => {
+      if (!userDocRef || !userData) return;
+      
+      // Check if old field exists and new field doesn't
+      if (userData.completedTailwindTopics && !userData.completedTopics?.tailwind) {
+        try {
+          console.log('Migrating Tailwind completion data to new structure...');
+          await updateDoc(userDocRef, {
+            'completedTopics.tailwind': userData.completedTailwindTopics
+          });
+          console.log('Migration complete!');
+        } catch (error) {
+          console.error('Error migrating Tailwind completion data:', error);
+        }
+      }
+    };
+    
+    migrateOldData();
+  }, [userDocRef, userData]);
 
-    const newCompletedTopics = new Set(completedTopics);
-    if (completedTopics.has(topicSlug)) {
-      newCompletedTopics.delete(topicSlug);
+  const handleToggleComplete = React.useCallback(async (topicSlug: string) => {
+    if (!userDocRef) return;
+
+    const newCompleted = new Set(completedTopics);
+    const isCompleted = newCompleted.has(topicSlug);
+
+    if (isCompleted) {
+      newCompleted.delete(topicSlug);
     } else {
-      newCompletedTopics.add(topicSlug);
+      newCompleted.add(topicSlug);
     }
 
-    setCompletedTopics(newCompletedTopics);
+    setCompletedTopics(newCompleted); // Optimistic update
 
     try {
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists()) {
+      const fieldName = 'completedTopics.tailwind';
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
         await updateDoc(userDocRef, {
-          completedTailwindTopics: Array.from(newCompletedTopics),
+          [fieldName]: Array.from(newCompleted),
         });
       } else {
-        await setDoc(userDocRef, {
-          completedTailwindTopics: Array.from(newCompletedTopics),
-        });
+        await setDoc(userDocRef, { completedTopics: { tailwind: Array.from(newCompleted) } }, { merge: true });
       }
     } catch (error) {
-      console.error('Error updating completed topics:', error);
-      setCompletedTopics(completedTopics);
+      console.error("Error updating completed topics: ", error);
+      // Revert optimistic update on error
+      setCompletedTopics(prev => {
+        const reverted = new Set(prev);
+        if (newCompleted.has(topicSlug)) { // If we added it, remove it
+          reverted.delete(topicSlug);
+        } else { // If we removed it, add it back
+          reverted.add(topicSlug);
+        }
+        return reverted;
+      });
     }
-  };
+  }, [userDocRef, completedTopics]);
 
   const isProgressLoading = isUserLoading || isUserDataLoading;
 

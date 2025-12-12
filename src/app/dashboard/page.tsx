@@ -443,10 +443,20 @@ function DashboardContent() {
               
               // Calculate completion status from Firestore
               const completedTopicsArray = userData?.completedTopics?.[lang.slug] || [];
-              const completedCount = Array.isArray(completedTopicsArray) ? completedTopicsArray.length : 0;
-              // Exclude 'learning-plan' from total count
-              const actualTopicCount = lang.topics?.filter(t => t.slug !== 'learning-plan').length ?? 0;
-              const completionPercentage = actualTopicCount > 0 ? Math.round((completedCount / actualTopicCount) * 100) : 0;
+              
+              // Get valid topic slugs (exclude 'learning-plan')
+              const validTopicSlugs = new Set(
+                lang.topics?.filter(t => t.slug !== 'learning-plan').map(t => t.slug) ?? []
+              );
+              const actualTopicCount = validTopicSlugs.size;
+              
+              // Filter completed topics to only include valid ones (removes duplicates, invalid slugs, and learning-plan)
+              const validCompletedTopics = Array.isArray(completedTopicsArray) 
+                ? Array.from(new Set(completedTopicsArray)).filter(slug => validTopicSlugs.has(slug))
+                : [];
+              const completedCount = validCompletedTopics.length;
+              
+              const completionPercentage = actualTopicCount > 0 ? Math.min(100, Math.round((completedCount / actualTopicCount) * 100)) : 0;
               const isStarted = completedCount > 0;
               const isCompleted = completionPercentage === 100;
 
@@ -478,15 +488,20 @@ function DashboardContent() {
                   <div className="relative p-5">
                   {/* Progress Badge - Top Right */}
                   <div className="absolute top-3 right-3">
-                    <div className={cn(
-                      "flex items-center justify-center w-12 h-12 rounded-full",
-                      "border-2 font-bold text-sm",
-                      completionPercentage === 0 && "border-slate-600 text-slate-400",
-                      completionPercentage > 0 && completionPercentage < 100 && "border-blue-500 text-blue-400",
-                      completionPercentage === 100 && "border-green-500 text-green-400"
-                    )}>
-                      {completionPercentage}%
-                    </div>
+                    {completionPercentage === 100 ? (
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-green-500 bg-green-500/20 text-green-400 font-bold text-lg animate-bounce">
+                        <Trophy className="w-6 h-6" />
+                      </div>
+                    ) : (
+                      <div className={cn(
+                        "flex items-center justify-center w-12 h-12 rounded-full",
+                        "border-2 font-bold text-sm",
+                        completionPercentage === 0 && "border-slate-600 text-slate-400",
+                        completionPercentage > 0 && "border-blue-500 text-blue-400"
+                      )}>
+                        {completionPercentage}%
+                      </div>
+                    )}
                   </div>
 
                   {/* Language Title */}
@@ -498,8 +513,8 @@ function DashboardContent() {
                   {/* Status Badge */}
                   <div className="mb-3">
                     {isCompleted && (
-                      <Badge className="bg-green-500/10 text-green-400 border border-green-500/30 text-xs px-2 py-0.5">
-                        Active
+                      <Badge className="bg-green-500/10 text-green-400 border border-green-500/30 text-xs px-2 py-0.5 animate-pulse">
+                        🎉 Completed
                       </Badge>
                     )}
                     {isStarted && !isCompleted && (

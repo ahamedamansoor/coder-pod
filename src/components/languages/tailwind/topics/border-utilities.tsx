@@ -1,510 +1,392 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Square, Circle, CheckCircle, Sparkles, HelpCircle } from 'lucide-react';
+import { Square, CheckCircle, Lightbulb, ArrowRight, Circle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
-import { cn } from '@/lib/utils';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
-import { AIProvider } from '@/types/ai-providers';
+import { Badge } from '@/components/ui/badge';
 
 export default function BorderUtilities() {
+
+  const borderWidthHTML = `<div class="bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-950 dark:to-cyan-950 p-8">
+  <div class="grid md:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 p-4 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">1px</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-2 border-gray-300 dark:border-gray-600 p-4 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-2</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">2px</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-4 border-gray-300 dark:border-gray-600 p-4 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-4</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">4px</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-8 border-gray-300 dark:border-gray-600 p-4 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-8</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">8px</p>
+    </div>
+  </div>
+</div>`;
+
+  const borderColorHTML = `<div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-950 dark:to-pink-950 p-8">
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="bg-white dark:bg-slate-800 border-4 border-red-500 dark:border-red-400 p-6 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Red Border</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-4 border-blue-500 dark:border-blue-400 p-6 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Blue Border</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-4 border-green-500 dark:border-green-400 p-6 rounded text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Green Border</p>
+    </div>
+  </div>
+</div>`;
+
+  const borderRadiusHTML = `<div class="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-950 dark:to-emerald-950 p-8">
+  <div class="grid md:grid-cols-4 gap-4">
+    <div class="bg-blue-500 text-white p-6 text-center font-semibold">
+      <p>rounded-none</p>
+      <p class="text-xs opacity-80">0px</p>
+    </div>
+    <div class="bg-blue-500 text-white p-6 rounded text-center font-semibold">
+      <p>rounded</p>
+      <p class="text-xs opacity-80">4px</p>
+    </div>
+    <div class="bg-blue-500 text-white p-6 rounded-lg text-center font-semibold">
+      <p>rounded-lg</p>
+      <p class="text-xs opacity-80">8px</p>
+    </div>
+    <div class="bg-blue-500 text-white p-6 rounded-full text-center font-semibold">
+      <p>rounded-full</p>
+      <p class="text-xs opacity-80">9999px</p>
+    </div>
+  </div>
+</div>`;
+
+  const borderSidesHTML = `<div class="bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-950 dark:to-amber-950 p-8">
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="bg-white dark:bg-slate-800 border-t-4 border-blue-500 dark:border-blue-400 p-6">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-t-4</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400">Top border only</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-b-4 border-red-500 dark:border-red-400 p-6">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-b-4</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400">Bottom border only</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-l-4 border-green-500 dark:border-green-400 p-6">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-l-4</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400">Left border only</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border-r-4 border-purple-500 dark:border-purple-400 p-6">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">border-r-4</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400">Right border only</p>
+    </div>
+  </div>
+</div>`;
+
+  const roundedCornersHTML = `<div class="bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-950 dark:to-blue-950 p-8">
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="bg-purple-500 text-white p-6 rounded-tl-3xl">
+      <p class="font-semibold">rounded-tl-3xl</p>
+      <p class="text-xs opacity-80">Top-left corner only</p>
+    </div>
+    <div class="bg-purple-500 text-white p-6 rounded-tr-3xl">
+      <p class="font-semibold">rounded-tr-3xl</p>
+      <p class="text-xs opacity-80">Top-right corner only</p>
+    </div>
+    <div class="bg-purple-500 text-white p-6 rounded-bl-3xl">
+      <p class="font-semibold">rounded-bl-3xl</p>
+      <p class="text-xs opacity-80">Bottom-left corner only</p>
+    </div>
+    <div class="bg-purple-500 text-white p-6 rounded-br-3xl">
+      <p class="font-semibold">rounded-br-3xl</p>
+      <p class="text-xs opacity-80">Bottom-right corner only</p>
+    </div>
+  </div>
+</div>`;
+
+  const divideHTML = `<div class="bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-950 dark:to-purple-950 p-8">
+  <div class="bg-white dark:bg-slate-800 rounded-lg overflow-hidden">
+    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+      <div class="p-4">
+        <p class="font-semibold text-gray-800 dark:text-gray-200">Item 1</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">divide-y adds borders between items</p>
+      </div>
+      <div class="p-4">
+        <p class="font-semibold text-gray-800 dark:text-gray-200">Item 2</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">No manual borders needed!</p>
+      </div>
+      <div class="p-4">
+        <p class="font-semibold text-gray-800 dark:text-gray-200">Item 3</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Perfect for lists</p>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+  const cardExampleHTML = `<div class="max-w-sm mx-auto bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden hover:border-blue-500 dark:hover:border-blue-400 transition">
+  <!-- Image -->
+  <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Card" class="w-full h-48 object-cover">
   
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [qaResult, setQaResult] = useState<{ answer: string } | null>(null);
-  const [isAiEnabled, setIsAiEnabled] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
-  const { user } = useUser();
-  const isUserAuthenticated = !!user;
-
-  React.useEffect(() => {
-    const apiKey = localStorage.getItem('ai_api_key');
-    const provider = localStorage.getItem('ai_provider');
-    setIsAiEnabled(!!(apiKey && provider));
-  }, []);
-
-  const handleAskQuestionAction = async () => {
-    if (!question.trim()) return;
-    setIsAsking(true);
-    setQaResult(null);
+  <!-- Content -->
+  <div class="p-6">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-semibold border border-blue-200 dark:border-blue-700">
+        New
+      </span>
+      <span class="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 px-3 py-1 rounded-full text-xs font-semibold border border-green-200 dark:border-green-700">
+        Featured
+      </span>
+    </div>
     
-    try {
-      const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
-      const apiKey = localStorage.getItem('api_key') || '';
-      
-      const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Borders',
-        question: question,
-      }, provider, apiKey);
-      
-      setQaResult({ answer: result.answer });
-    } catch (error) {
-      console.error('Error asking question:', error);
-    } finally {
-      setIsAsking(false);
-    }
-  };
-
-  const borderExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Border Utilities</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-6xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        🔲 Border Utilities
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Control border width, style, and color
-      </p>
-      
-      <!-- Border Width -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Border Width</h3>
-        <div class="grid md:grid-cols-4 gap-4">
-          <div class="border border-blue-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">border (1px)</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border</code>
-          </div>
-          <div class="border-2 border-purple-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">border-2 (2px)</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-2</code>
-          </div>
-          <div class="border-4 border-pink-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">border-4 (4px)</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-4</code>
-          </div>
-          <div class="border-8 border-red-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">border-8 (8px)</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-8</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Individual Sides -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Individual Sides</h3>
-        <div class="grid md:grid-cols-4 gap-4">
-          <div class="border-t-4 border-emerald-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">Top Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-t-4</code>
-          </div>
-          <div class="border-r-4 border-teal-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">Right Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-r-4</code>
-          </div>
-          <div class="border-b-4 border-cyan-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">Bottom Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-b-4</code>
-          </div>
-          <div class="border-l-4 border-sky-500 bg-white dark:bg-slate-900 p-6 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white mb-2">Left Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-l-4</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Border Colors -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Border Colors</h3>
-        <div class="grid md:grid-cols-4 gap-4">
-          <div class="border-4 border-red-500 bg-white dark:bg-slate-900 p-4 rounded-lg text-center">
-            <div class="text-2xl mb-2">❤️</div>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-red-500</code>
-          </div>
-          <div class="border-4 border-blue-500 bg-white dark:bg-slate-900 p-4 rounded-lg text-center">
-            <div class="text-2xl mb-2">💙</div>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-blue-500</code>
-          </div>
-          <div class="border-4 border-green-500 bg-white dark:bg-slate-900 p-4 rounded-lg text-center">
-            <div class="text-2xl mb-2">💚</div>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-green-500</code>
-          </div>
-          <div class="border-4 border-purple-500 bg-white dark:bg-slate-900 p-4 rounded-lg text-center">
-            <div class="text-2xl mb-2">💜</div>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-purple-500</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Border Style -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Border Styles</h3>
-        <div class="space-y-4">
-          <div class="border-4 border-solid border-indigo-500 bg-white dark:bg-slate-900 p-4 rounded-lg">
-            <p class="font-semibold text-slate-900 dark:text-white">Solid Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-solid</code>
-          </div>
-          <div class="border-4 border-dashed border-purple-500 bg-white dark:bg-slate-900 p-4 rounded-lg">
-            <p class="font-semibold text-slate-900 dark:text-white">Dashed Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-dashed</code>
-          </div>
-          <div class="border-4 border-dotted border-pink-500 bg-white dark:bg-slate-900 p-4 rounded-lg">
-            <p class="font-semibold text-slate-900 dark:text-white">Dotted Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-dotted</code>
-          </div>
-          <div class="border-4 border-double border-blue-500 bg-white dark:bg-slate-900 p-4 rounded-lg">
-            <p class="font-semibold text-slate-900 dark:text-white">Double Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-double</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Border Reference -->
-      <div class="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-indigo-200 dark:border-indigo-800">
-        <h3 class="text-lg font-semibold text-indigo-900 dark:text-indigo-100 mb-4">💡 Border Widths</h3>
-        <div class="grid grid-cols-4 md:grid-cols-8 gap-2 text-xs text-center">
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">border-0</code><span class="text-slate-600 dark:text-slate-400">0px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">border</code><span class="text-slate-600 dark:text-slate-400">1px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">border-2</code><span class="text-slate-600 dark:text-slate-400">2px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">border-4</code><span class="text-slate-600 dark:text-slate-400">4px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">border-8</code><span class="text-slate-600 dark:text-slate-400">8px</span></div>
-        </div>
-      </div>
-    </div>
+    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+      Beautiful Card Design
+    </h3>
+    <p class="text-gray-600 dark:text-gray-300 mb-4">
+      Using borders, rounded corners, and shadows to create depth
+    </p>
+    
+    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg border-2 border-blue-600 dark:border-blue-400 transition">
+      Learn More
+    </button>
   </div>
-</body>
-</html>`;
-
-  const radiusExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Border Radius & Divide</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-6xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        ⭕ Border Radius & Divide
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Round corners and divide elements
-      </p>
-      
-      <!-- Border Radius -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Border Radius</h3>
-        <div class="grid md:grid-cols-4 gap-4">
-          <div class="rounded-none bg-gradient-to-br from-rose-400 to-pink-400 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">None</p>
-            <code class="text-xs opacity-90">rounded-none</code>
-          </div>
-          <div class="rounded bg-gradient-to-br from-pink-400 to-fuchsia-400 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Small</p>
-            <code class="text-xs opacity-90">rounded</code>
-          </div>
-          <div class="rounded-lg bg-gradient-to-br from-fuchsia-400 to-purple-400 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Large</p>
-            <code class="text-xs opacity-90">rounded-lg</code>
-          </div>
-          <div class="rounded-full bg-gradient-to-br from-purple-400 to-indigo-400 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Full</p>
-            <code class="text-xs opacity-90">rounded-full</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Individual Corners -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Individual Corners</h3>
-        <div class="grid md:grid-cols-4 gap-4">
-          <div class="rounded-tl-3xl bg-rose-500 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Top Left</p>
-            <code class="text-xs opacity-90">rounded-tl-3xl</code>
-          </div>
-          <div class="rounded-tr-3xl bg-pink-500 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Top Right</p>
-            <code class="text-xs opacity-90">rounded-tr-3xl</code>
-          </div>
-          <div class="rounded-br-3xl bg-fuchsia-500 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Bottom Right</p>
-            <code class="text-xs opacity-90">rounded-br-3xl</code>
-          </div>
-          <div class="rounded-bl-3xl bg-purple-500 p-6 text-white text-center shadow-lg">
-            <p class="font-semibold mb-2">Bottom Left</p>
-            <code class="text-xs opacity-90">rounded-bl-3xl</code>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Divide Utilities -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Divide Between Elements</h3>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-            <p class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">divide-y (Vertical)</p>
-            <div class="divide-y divide-rose-300 dark:divide-rose-700">
-              <div class="py-3 text-slate-900 dark:text-white">Item 1</div>
-              <div class="py-3 text-slate-900 dark:text-white">Item 2</div>
-              <div class="py-3 text-slate-900 dark:text-white">Item 3</div>
-            </div>
-          </div>
-          
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-            <p class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">divide-x (Horizontal)</p>
-            <div class="flex divide-x divide-pink-300 dark:divide-pink-700">
-              <div class="px-4 py-3 text-slate-900 dark:text-white">Item 1</div>
-              <div class="px-4 py-3 text-slate-900 dark:text-white">Item 2</div>
-              <div class="px-4 py-3 text-slate-900 dark:text-white">Item 3</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Ring Utilities -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Ring (Focus States)</h3>
-        <div class="grid md:grid-cols-3 gap-4">
-          <button class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-lg ring-2 ring-rose-300 dark:ring-rose-700 ring-offset-2 dark:ring-offset-slate-900">
-            ring-2
-          </button>
-          <button class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-lg ring-4 ring-pink-300 dark:ring-pink-700 ring-offset-2 dark:ring-offset-slate-900">
-            ring-4
-          </button>
-          <button class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg ring ring-purple-300 dark:ring-purple-700 ring-offset-4 dark:ring-offset-slate-900">
-            ring-offset-4
-          </button>
-        </div>
-      </div>
-      
-      <!-- Radius Scale -->
-      <div class="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-rose-200 dark:border-rose-800">
-        <h3 class="text-lg font-semibold text-rose-900 dark:text-rose-100 mb-4">💡 Radius Scale</h3>
-        <div class="grid grid-cols-3 md:grid-cols-6 gap-2 text-xs text-center">
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">rounded-sm</code><span class="text-slate-600 dark:text-slate-400">2px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">rounded</code><span class="text-slate-600 dark:text-slate-400">4px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">rounded-md</code><span class="text-slate-600 dark:text-slate-400">6px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">rounded-lg</code><span class="text-slate-600 dark:text-slate-400">8px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">rounded-xl</code><span class="text-slate-600 dark:text-slate-400">12px</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-2 py-1 rounded block">rounded-2xl</code><span class="text-slate-600 dark:text-slate-400">16px</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
+</div>`;
 
   return (
     <div className="space-y-8">
       <PageHeader
         icon={Square}
         category="Tailwind CSS · Core Concepts"
-        title="Borders"
-        description="Master border width, style, radius, and decorative effects"
-        colorTheme="emerald"
+        title="Border Utilities"
+        description="Master borders, rounded corners, and dividers"
+        colorTheme="blue"
       />
 
-      <Card>
+      {/* BORDER WIDTH */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl text-emerald-700 dark:text-emerald-300">
-            <div className="relative">
-              <Circle className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+          <CardTitle className="flex items-center gap-3 text-3xl">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl">
+              <Square className="w-8 h-8 text-white" />
             </div>
-            Border System
+            Border Width
           </CardTitle>
-          <CardDescription className="text-lg text-emerald-600 dark:text-emerald-400">
-            🔲 Complete border control from width to rounded corners
+          <CardDescription className="text-base">
+            Control border thickness
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-emerald-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300">🔲 Border Properties</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded-lg border border-emerald-200/50">
-                    <div className="font-semibold text-emerald-900 dark:text-emerald-100 text-sm mb-1">Width</div>
-                    <code className="text-xs text-emerald-700 dark:text-emerald-300">border-0 to border-8</code>
-                  </div>
-                  <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg border border-teal-200/50">
-                    <div className="font-semibold text-teal-900 dark:text-teal-100 text-sm mb-1">Color</div>
-                    <code className="text-xs text-teal-700 dark:text-teal-300">border-color-shade</code>
-                  </div>
-                  <div className="bg-cyan-50 dark:bg-cyan-900/20 p-3 rounded-lg border border-cyan-200/50">
-                    <div className="font-semibold text-cyan-900 dark:text-cyan-100 text-sm mb-1">Style</div>
-                    <code className="text-xs text-cyan-700 dark:text-cyan-300">solid, dashed, dotted</code>
-                  </div>
-                  <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200/50">
-                    <div className="font-semibold text-green-900 dark:text-green-100 text-sm mb-1">Radius</div>
-                    <code className="text-xs text-green-700 dark:text-green-300">rounded-* to rounded-full</code>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <CardContent className="space-y-6">
+          <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
+            <Lightbulb className="w-5 h-5 text-blue-600" />
+            <AlertTitle className="text-blue-900 dark:text-blue-100">Border Syntax</AlertTitle>
+            <AlertDescription className="text-blue-800 dark:text-blue-200">
+              <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">border</code> = 1px, 
+              <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded ml-1">border-2</code> = 2px, 
+              <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded ml-1">border-4</code> = 4px
+            </AlertDescription>
+          </Alert>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-emerald-100 via-teal-100 to-cyan-100 dark:from-emerald-900/30 dark:via-teal-900/30 dark:to-cyan-900/30 p-6 rounded-xl border border-emerald-200/50 shadow-lg">
-                <div className="text-center space-y-3">
-                  <div className="text-3xl">🔲</div>
-                  <div className="font-bold text-emerald-700 dark:text-emerald-300">Use Cases</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Card separation
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Focus states
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Visual accents
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <FrontendCodePreview
+            html={borderWidthHTML}
+            title="Border Widths"
+            description="From thin to thick borders"
+            colorTheme="blue"
+            styleLanguage="tailwind"
+          />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* BORDER COLORS */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-indigo-500/10 rounded-lg">
-              <Square className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <Circle className="w-6 h-6 text-white" />
             </div>
-            1. Border Width, Color & Style
+            Border Colors
           </CardTitle>
-          <CardDescription>Control border appearance and thickness</CardDescription>
         </CardHeader>
         <CardContent>
           <FrontendCodePreview
-            html={borderExample}
-            title="Border Utilities"
-            description="Width, color, style, and individual sides"
+            html={borderColorHTML}
+            title="Colored Borders"
+            description="border-{color}-{shade}"
             colorTheme="purple"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* BORDER RADIUS */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-rose-500/10 rounded-lg">
-              <Circle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <Circle className="w-6 h-6 text-white" />
             </div>
-            2. Border Radius & Divide
+            Rounded Corners
           </CardTitle>
-          <CardDescription>Rounded corners, divide elements, and ring effects</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-green-500">Example 1</Badge>
+              Border Radius Sizes
+            </h3>
+            <FrontendCodePreview
+              html={borderRadiusHTML}
+              title="Rounded Corners"
+              description="From square to fully rounded"
+              colorTheme="green"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-cyan-500">Example 2</Badge>
+              Individual Corners
+            </h3>
+            <FrontendCodePreview
+              html={roundedCornersHTML}
+              title="Corner-Specific Rounding"
+              description="Round specific corners only"
+              colorTheme="cyan"
+              styleLanguage="tailwind"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* BORDER SIDES */}
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-orange-500 rounded-lg">
+              <Square className="w-6 h-6 text-white" />
+            </div>
+            Individual Sides
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <FrontendCodePreview
-            html={radiusExample}
-            title="Radius & Divide"
-            description="Round corners and add dividers between elements"
+            html={borderSidesHTML}
+            title="Border Sides"
+            description="Add borders to specific sides"
+            colorTheme="orange"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* DIVIDE UTILITIES */}
+      <Card className="border-2 border-violet-200 dark:border-violet-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-violet-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Divide Utilities
+          </CardTitle>
+          <CardDescription>
+            Add borders between child elements automatically
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={divideHTML}
+            title="Divide Utilities"
+            description="Perfect for lists and menus"
+            colorTheme="violet"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* COMPLETE EXAMPLE */}
+      <Card className="border-2 border-pink-200 dark:border-pink-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-pink-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Complete Card Example
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={cardExampleHTML}
+            title="Professional Card"
+            description="Borders, rounded corners, and hover effects"
             colorTheme="pink"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Border Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Subtle borders</strong> - Use border with light colors for most cases</li>
-            <li><strong>Rounded corners</strong> - rounded-lg for modern, friendly feel</li>
-            <li><strong>Focus rings</strong> - ring-2 ring-offset-2 for accessibility</li>
-            <li><strong>Divide utilities</strong> - Better than individual borders for lists</li>
-          </ul>
+      {/* QUICK REFERENCE */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-blue-500 rounded-lg">
+              <Lightbulb className="w-6 h-6 text-white" />
+            </div>
+            Quick Reference
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+              <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-3">Width</h4>
+              <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200 font-mono">
+                <li>border / border-0</li>
+                <li>border-2 / border-4</li>
+                <li>border-8</li>
+              </ul>
+            </div>
+
+            <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+              <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-3">Radius</h4>
+              <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200 font-mono">
+                <li>rounded / rounded-lg</li>
+                <li>rounded-full</li>
+                <li>rounded-t-lg</li>
+              </ul>
+            </div>
+
+            <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+              <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-3">Sides</h4>
+              <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200 font-mono">
+                <li>border-t-4</li>
+                <li>border-b-4</li>
+                <li>border-x-4</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Alert className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+        <Square className="w-5 h-5 text-green-600" />
+        <AlertTitle className="text-2xl text-green-900 dark:text-green-100">Border Tips</AlertTitle>
+        <AlertDescription className="text-green-800 dark:text-green-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">rounded-lg</code> for modern, friendly designs</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Combine with hover: <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">hover:border-blue-500</code></span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-green-200 dark:bg-green-900 px-2 py-1 rounded">divide-y</code> for clean lists</span>
+          </div>
         </AlertDescription>
       </Alert>
-
-      {/* AI ASSISTANT */}
-      <div className="relative mt-8">
-        <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-          !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-        )}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-              <HelpCircle className="w-6 h-6 text-primary" />
-              Ask a Question
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
-              Have a question about Borders? Ask our AI assistant.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea 
-              placeholder={`e.g., "How do I create a focus ring?"`} 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <Button 
-              onClick={handleAskQuestionAction}
-              disabled={isAsking || !question.trim() || !isUserAuthenticated}
-              className="transition-all duration-200"
-            >
-              {isAsking ? 'Thinking...' : 'Get Answer'}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        {!isUserAuthenticated ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">🔐 Login to use AI Assistant</p>
-              <Button onClick={() => window.location.href = '/login'} size="sm" className="shadow-sm">Login</Button>
-            </div>
-          </div>
-        ) : !isAiEnabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">⚙️ AI Provider Not Configured</p>
-              <Button onClick={() => setShowAiKeyModal(true)} size="sm" className="shadow-sm">Setup AI Key</Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
-          </CardContent>
-        </Card>
-      )}
-
-      {qaResult && <AIAnswerDisplay answer={qaResult.answer} language="tailwind" />}
-      
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider: AIProvider, apiKey: string) => {
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          setIsAiEnabled(true);
-          setShowAiKeyModal(false);
-        }}
-      />
     </div>
   );
 }

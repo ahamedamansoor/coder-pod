@@ -663,13 +663,41 @@ export function WebPlaygroundModal({
         ? `// TypeScript code (running as JavaScript)\n${jsCode}` 
         : jsCode;
       
+      const previewBackground = theme === 'dark' ? '#0f172a' : '#f8fafc';
+      const previewTextColor = theme === 'dark' ? '#e2e8f0' : '#0f172a';
+      const themeStyles = `
+        body {
+          margin: 0;
+          min-height: 100vh;
+          background-color: ${previewBackground};
+          color: ${previewTextColor};
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        html {
+          background-color: ${previewBackground};
+        }
+      `;
+      const combinedCss = `${themeStyles}\n${compiledCss}`;
+      const themeScript = `
+        (function() {
+          const html = document.documentElement;
+          html.classList.remove('dark');
+          html.classList.remove('light');
+          html.classList.add('${theme === 'dark' ? 'dark' : 'light'}');
+        })();
+      `;
+
       // Update the output source
       setOutputSrc(`
         data:text/html;charset=utf-8,${encodeURIComponent(`
           <html>
             <head>
               ${tailwindCDN}
-              <style>${compiledCss}</style>
+              <style>${combinedCss}</style>
+              <script>${themeScript}</script>
               <script>${consoleScript}</script>
             </head>
             <body>
@@ -681,7 +709,7 @@ export function WebPlaygroundModal({
       `);
       setHasChanges(false);
     }, 50);
-  }, [htmlCode, compiledCss, jsCode, styleLang, scriptLang]);
+  }, [htmlCode, compiledCss, jsCode, styleLang, scriptLang, theme]);
 
   // Track code changes
   useEffect(() => {

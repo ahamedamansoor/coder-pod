@@ -8,6 +8,7 @@ import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger }
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import type { Language, Topic } from '@/data/languages';
+import { CourseCompletionCelebration } from '@/components/shared/modals';
 import { useJava } from '@/app/languages/java/java-context';
 import { useSpring } from '@/app/languages/spring/spring-context';
 import { useJavascript } from '@/app/languages/javascript/javascript-context';
@@ -15,6 +16,7 @@ import { useReact } from '@/app/languages/react/react-context';
 import { useHtml } from '@/app/languages/html/html-context';
 import { useCss } from '@/app/languages/css/css-context';
 import { useScss } from '@/app/languages/scss/scss-context';
+import { useTailwind } from '@/app/languages/tailwind/tailwind-context';
 
 // Shared brand color used in the logo ("CODER")
 const LOGO_COLOR_CLASS = 'text-[#5B7FFF]';
@@ -30,6 +32,7 @@ function useLanguageContext(language: Language) {
         case 'html': return useHtml();
         case 'css': return useCss();
         case 'scss': return useScss();
+        case 'tailwind': return useTailwind();
         default: return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
     }
 }
@@ -40,6 +43,8 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const [completedModule, setCompletedModule] = useState<string | null>(null);
+  const [showCourseCompletion, setShowCourseCompletion] = useState(false);
+  const hasShownCelebrationRef = React.useRef(false);
   
   const isUserAuthenticated = user && !user.isAnonymous;
 
@@ -62,6 +67,22 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
 
   const allTopics = modules.flatMap(m => m.topics);
   
+  // Check if course is already 100% complete on mount
+  useEffect(() => {
+    if (!isUserAuthenticated || !completedTopics.size || hasShownCelebrationRef.current) return;
+    
+    const allCourseTopicsCompleted = allTopics.every(t => completedTopics.has(t.slug));
+    
+    if (allCourseTopicsCompleted && allTopics.length > 0) {
+      // Small delay to ensure page is loaded before showing celebration
+      const timer = setTimeout(() => {
+        setShowCourseCompletion(true);
+        hasShownCelebrationRef.current = true; // Mark as shown
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isUserAuthenticated, completedTopics, allTopics]);
+  
   const toggleTopic = (topicId: string) => {
     if (!isUserAuthenticated) return;
     handleToggleComplete(topicId);
@@ -79,6 +100,12 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
             setExpandedModule(modules[currentModuleIndex + 1].id);
           }
         }
+        
+        // Check if entire course is complete
+        const allCourseTopicsCompleted = allTopics.every(t => completedTopics.has(t.slug) || t.slug === topicId);
+        if (allCourseTopicsCompleted) {
+          setShowCourseCompletion(true);
+        }
     }
   };
 
@@ -86,7 +113,14 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
     if (!isUserAuthenticated) return 0;
     const totalTopics = allTopics.length;
     if (totalTopics === 0) return 0;
-    return Math.round((completedTopics.size / totalTopics) * 100);
+    
+    // Create a set of valid topic slugs
+    const validTopicSlugs = new Set(allTopics.map(t => t.slug));
+    
+    // Count only completed topics that actually exist in the course
+    const validCompletedCount = Array.from(completedTopics).filter(slug => validTopicSlugs.has(slug)).length;
+    
+    return Math.min(100, Math.round((validCompletedCount / totalTopics) * 100));
   };
 
   if (isUserLoading || isProgressLoading) {
@@ -100,7 +134,11 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
     );
   }
   
-  const completedCount = isUserAuthenticated ? completedTopics.size : 0;
+  // Create a set of valid topic slugs and count only valid completed topics
+  const validTopicSlugs = new Set(allTopics.map(t => t.slug));
+  const completedCount = isUserAuthenticated 
+    ? Array.from(completedTopics).filter(slug => validTopicSlugs.has(slug)).length 
+    : 0;
   const totalTopicCount = allTopics.length;
   
   const TopicItem = ({ topic }: { topic: Topic }) => {
@@ -145,7 +183,13 @@ export const GenericLearningRoadmap = ({ language }: { language: Language }) => 
 
   return (
     <div className="p-2 md:p-6 max-w-none">
-      {/* ModuleCompletionCelebration removed pending implementation */}
+      <CourseCompletionCelebration
+        isOpen={showCourseCompletion}
+        languageName={language.name}
+        languageSlug={language.slug}
+        onClose={() => setShowCourseCompletion(false)}
+      />
+      
       <div className="mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">

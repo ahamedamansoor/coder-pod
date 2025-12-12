@@ -1,871 +1,343 @@
-
 'use client';
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
 import { 
-    Play, Film, Repeat, Lightbulb, Target, Code, Zap, Settings, 
-    CheckCircle, AlertTriangle, Palette, Move, RotateCcw, Maximize, 
-    Eye, MousePointer, Clock, Forward, Timer, Infinity, ArrowRight, RefreshCw
+  Film, Sparkles, Lightbulb, ArrowRight, 
+  CheckCircle, Info, Play, Repeat
 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssAnimationsProps {
-    onOpenWebPlayground: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssAnimations({ onOpenWebPlayground }: CssAnimationsProps) {
-    const [selectedAnimation, setSelectedAnimation] = useState('bounce');
-    const [selectedProperty, setSelectedProperty] = useState('animation-duration');
+  
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Film}
+        category="CSS · Animations & Effects"
+        title="CSS Animations"
+        description="Create complex multi-step animations with keyframes"
+        colorTheme="indigo"
+      />
 
-    // Animation Examples
-    const animationExamples = [
-        {
-            name: 'bounce',
-            title: 'Bounce Effect',
-            icon: ArrowRight,
-            desc: 'Bouncing ball animation',
-            keyframes: `@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-50px); }
-}`
-        },
-        {
-            name: 'spin',
-            title: 'Spin Animation',
-            icon: RotateCcw,
-            desc: 'Continuous rotation',
-            keyframes: `@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}`
-        },
-        {
-            name: 'pulse',
-            title: 'Pulse Effect',
-            icon: Maximize,
-            desc: 'Scaling pulse animation',
-            keyframes: `@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.7; }
-  100% { transform: scale(1); opacity: 1; }
-}`
-        },
-        {
-            name: 'slide',
-            title: 'Slide In',
-            icon: Move,
-            desc: 'Sliding entrance effect',
-            keyframes: `@keyframes slideIn {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}`
-        }
-    ];
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <Film className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">CSS Animations</CardTitle>
+              <CardDescription className="text-base">Multi-step keyframe animations</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Animations vs Transitions</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              <strong>Transitions:</strong> Simple A → B changes (hover effects)<br />
+              <strong>Animations:</strong> Complex multi-step sequences with full control (keyframes)
+            </AlertDescription>
+          </Alert>
 
-    // Animation Properties
-    const animationProperties = [
-        {
-            name: 'animation-duration',
-            icon: Clock,
-            desc: 'How long the animation takes',
-            values: ['1s', '2s', '0.5s', '3s'],
-            example: 'animation-duration: 2s;'
-        },
-        {
-            name: 'animation-timing-function',
-            icon: Forward,
-            desc: 'Speed curve of the animation',
-            values: ['ease', 'linear', 'ease-in-out', 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'],
-            example: 'animation-timing-function: ease-in-out;'
-        },
-        {
-            name: 'animation-iteration-count',
-            icon: Infinity,
-            desc: 'How many times to repeat',
-            values: ['1', '3', 'infinite', '2'],
-            example: 'animation-iteration-count: infinite;'
-        },
-        {
-            name: 'animation-direction',
-            icon: Repeat,
-            desc: 'Direction of animation playback',
-            values: ['normal', 'reverse', 'alternate', 'alternate-reverse'],
-            example: 'animation-direction: alternate;'
-        }
-    ];
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+              <h3 className="font-bold mb-2">Step 1: Define @keyframes</h3>
+              <p className="text-sm text-blue-800 dark:text-blue-200">
+                Create animation sequence with multiple steps
+              </p>
+            </div>
+            <div className="p-5 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+              <h3 className="font-bold mb-2">Step 2: Apply animation</h3>
+              <p className="text-sm text-green-800 dark:text-green-200">
+                Use animation property on element
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-    const playgroundCode = `<!DOCTYPE html>
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Play className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Creating Keyframes
+          </CardTitle>
+          <CardDescription>Define animation steps</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-2 border-purple-300 dark:border-purple-700">
+            <h3 className="font-bold text-lg text-purple-900 dark:text-purple-100 mb-3">
+              Basic Keyframes Example
+            </h3>
+            <div className="bg-purple-900 dark:bg-purple-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-purple-100 block">
+{`@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(200px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.box {
+  animation: slide 2s ease infinite;
+}`}
+              </code>
+            </div>
+            <p className="text-sm text-purple-800 dark:text-purple-200">
+              Box slides right, then returns to start, repeating forever!
+            </p>
+          </div>
+
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CSS Animations Complete Guide</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #333;
-    line-height: 1.6;
-    padding: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-        background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
-        color: #e5e7eb;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-@media (prefers-color-scheme: dark) {
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
+      }
+    }
+    
     .container {
-        background: rgba(30, 41, 55, 0.95);
-        color: #e5e7eb;
+      background: white;
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 600px;
     }
-}
-
-h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; color: #1e293b; }
-h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: #334155; }
-
-@media (prefers-color-scheme: dark) {
-    h1 { color: #f1f5f9; }
-    h2 { color: #cbd5e1; }
-}
-
-.demo-section { margin-bottom: 3rem; }
-
-/* Basic Animations */
-.animation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 2rem;
-    margin-top: 1rem;
-}
-
-.animation-demo {
-    text-align: center;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .animation-demo {
-        background: rgba(55, 65, 81, 0.5);
+    
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1a1a2e;
+        color: #e5e5e5;
+      }
     }
-}
-
-.bounce-ball {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px); }
-}
-
-.spin-wheel {
-    font-size: 3rem;
-    animation: spin 2s linear infinite;
-    display: inline-block;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.pulse-heart {
-    font-size: 3rem;
-    animation: pulse 1.5s ease-in-out infinite;
-    display: inline-block;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-.slide-box {
-    font-size: 3rem;
-    animation: slideIn 3s ease-in-out infinite;
-    display: inline-block;
-}
-
-@keyframes slideIn {
-    0% { transform: translateX(-50px); opacity: 0; }
-    50% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(50px); opacity: 0; }
-}
-
-/* Complex Animations */
-.complex-animations {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.morphing-shape {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    animation: morph 4s ease-in-out infinite;
-}
-
-@keyframes morph {
-    0% { border-radius: 0; transform: rotate(0deg) scale(1); }
-    25% { border-radius: 50%; transform: rotate(90deg) scale(1.2); }
-    50% { border-radius: 0; transform: rotate(180deg) scale(0.8); }
-    75% { border-radius: 50%; transform: rotate(270deg) scale(1.1); }
-    100% { border-radius: 0; transform: rotate(360deg) scale(1); }
-}
-
-.floating-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #667eea;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    33% { transform: translateY(-10px) rotate(2deg); }
-    66% { transform: translateY(5px) rotate(-1deg); }
-}
-
-.loading-spinner {
-    display: flex;
-    gap: 10px;
-}
-
-.spinner-dot {
-    width: 15px;
-    height: 15px;
-    background: #ff6b6b;
-    border-radius: 50%;
-    animation: wave 1.4s ease-in-out infinite;
-}
-
-.spinner-dot:nth-child(2) { animation-delay: 0.2s; }
-.spinner-dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes wave {
-    0%, 60%, 100% { transform: scale(1); opacity: 1; }
-    30% { transform: scale(1.5); opacity: 0.7; }
-}
-
-/* Timing Functions Demo */
-.timing-demo {
-    display: grid;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.timing-ball {
-    width: 60px;
-    height: 60px;
-    background: #667eea;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: bold;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    animation-name: moveRight;
-}
-
-.ease { animation-timing-function: ease; }
-.linear { animation-timing-function: linear; }
-.ease-in-out { animation-timing-function: ease-in-out; }
-.cubic { animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-
-@keyframes moveRight {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(200px); }
-    100% { transform: translateX(0); }
-}
-
-/* Direction Demo */
-.direction-demo {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-}
-
-.direction-box {
-    width: 100px;
-    height: 60px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    font-weight: bold;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-    animation-name: scaleRotate;
-}
-
-.normal { animation-direction: normal; }
-.reverse { animation-direction: reverse; }
-.alternate { animation-direction: alternate; }
-
-@keyframes scaleRotate {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.2) rotate(180deg); }
-    100% { transform: scale(1) rotate(360deg); }
-}
-
-@media (max-width: 768px) {
-    .animation-grid { grid-template-columns: repeat(2, 1fr); }
-    .complex-animations { flex-direction: column; }
-    .direction-demo { flex-direction: column; align-items: center; }
-}
-    </style>
+    
+    h1 {
+      text-align: center;
+      color: #667eea;
+      margin-bottom: 40px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #a78bfa;
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+    
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+    
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    
+    .demo-box {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      margin: 0 auto;
+    }
+    
+    .bounce {
+      animation: bounce 1s ease infinite;
+    }
+    
+    .spin {
+      animation: spin 2s linear infinite;
+    }
+    
+    .pulse {
+      animation: pulse 1.5s ease infinite;
+    }
+    
+    .label {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #667eea;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .label {
+        color: #a78bfa;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎬 CSS Animations Showcase</h1>
-        <p>Watch these amazing CSS animations in action!</p>
-        
-        <section class="demo-section">
-            <h2>🎯 Basic Animations</h2>
-            <div class="animation-grid">
-                <div class="animation-demo">
-                    <div class="bounce-ball"></div>
-                    <p>Bounce</p>
-                </div>
-                <div class="animation-demo">
-                    <div class="spin-wheel">⚙️</div>
-                    <p>Spin</p>
-                </div>
-                <div class="animation-demo">
-                    <div class="pulse-heart">❤️</div>
-                    <p>Pulse</p>
-                </div>
-                <div class="animation-demo">
-                    <div class="slide-box">📦</div>
-                    <p>Slide</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🌈 Complex Multi-Step Animations</h2>
-            <div class="complex-animations">
-                <div class="morphing-shape"></div>
-                <div class="floating-text">Floating Text</div>
-                <div class="loading-spinner">
-                    <div class="spinner-dot"></div>
-                    <div class="spinner-dot"></div>
-                    <div class="spinner-dot"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🎭 Animation Timing Functions</h2>
-            <div class="timing-demo">
-                <div class="timing-ball ease">ease</div>
-                <div class="timing-ball linear">linear</div>
-                <div class="timing-ball ease-in-out">ease-in-out</div>
-                <div class="timing-ball cubic">cubic-bezier</div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🔄 Animation Directions</h2>
-            <div class="direction-demo">
-                <div class="direction-box normal">Normal</div>
-                <div class="direction-box reverse">Reverse</div>
-                <div class="direction-box alternate">Alternate</div>
-            </div>
-        </section>
+  <div class="container">
+    <h1>🎬 Keyframe Animations</h1>
+    
+    <div class="demo-grid">
+      <div>
+        <div class="demo-box bounce"></div>
+        <div class="label">Bounce</div>
+      </div>
+      
+      <div>
+        <div class="demo-box spin"></div>
+        <div class="label">Spin</div>
+      </div>
+      
+      <div>
+        <div class="demo-box pulse"></div>
+        <div class="label">Pulse</div>
+      </div>
     </div>
-    
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('CSS Animations Demo loaded!');
-        
-        // Add pause/play functionality on click
-        const animatedElements = document.querySelectorAll('[class*="animation"], [class*="bounce"], [class*="spin"], [class*="pulse"], [class*="slide"], [class*="morph"], [class*="float"], [class*="timing"], [class*="direction"]');
-        
-        animatedElements.forEach(element => {
-            element.addEventListener('click', function() {
-                if (this.style.animationPlayState === 'paused') {
-                    this.style.animationPlayState = 'running';
-                } else {
-                    this.style.animationPlayState = 'paused';
-                }
-            });
-        });
-        
-        console.log('Click any animated element to pause/play!');
-    });
-    </script>
+  </div>
 </body>
-</html>`;
-    
-    return (
-        <div className="space-y-8">
-            <PageHeader
-                icon={Film}
-                category="CSS · Animations & Effects"
-                title="CSS Animations"
-                description="Create complex, multi-step animations with keyframes - from simple effects to advanced sequences."
-                colorTheme="blue"
-            />
+</html>`}
+            title="Keyframe Animations"
+            colorTheme="indigo"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+        </CardContent>
+      </Card>
 
-            {/* What are CSS Animations? */}
-            <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 animate-pulse"></div>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
-                        <div className="relative">
-                            <Film className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are CSS Animations?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
-                        🚀 Create cinematic multi-step sequences with keyframes - from simple loops to complex choreographed performances!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative">
-                    <div className="grid lg:grid-cols-3 gap-6">
-                        {/* Interactive Demo */}
-                        <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Zap className="w-5 h-5 animate-pulse" />
-                                    🎯 Animations vs Transitions
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div className="text-center">
-                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">⚡ Transition (A → B)</div>
-                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
-                                            <div 
-                                                className="w-8 h-8 bg-gradient-to-r from-red-400 to-pink-500 rounded-full absolute top-6 left-4 group-hover:left-[calc(100%-3rem)] transition-all duration-1000 ease-in-out flex items-center justify-center text-white font-bold text-xs shadow-lg"
-                                            >
-                                                A
-                                            </div>
-                                            <div className="absolute top-6 right-2 text-xl">🏁</div>
-                                        </div>
-                                        <div className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium">Simple A → B movement</div>
-                                    </div>
-                                    
-                                    <div className="text-center">
-                                        <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">🎬 Animation (Multi-Step)</div>
-                                        <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600">
-                                            <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full absolute top-6 left-4 group-hover:animate-bounce flex items-center justify-center text-white font-bold text-xs shadow-lg">
-                                                A
-                                            </div>
-                                        </div>
-                                        <div className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">✅ Complex bounce sequence</div>
-                                    </div>
-                                </div>
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Repeat className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            Animation Properties
+          </CardTitle>
+          <CardDescription>Control animation behavior</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { prop: 'animation-name', desc: 'Which keyframes to use', example: 'slide' },
+              { prop: 'animation-duration', desc: 'How long', example: '2s' },
+              { prop: 'animation-timing-function', desc: 'Speed curve', example: 'ease' },
+              { prop: 'animation-delay', desc: 'Wait before start', example: '1s' },
+              { prop: 'animation-iteration-count', desc: 'How many times', example: 'infinite' },
+              { prop: 'animation-direction', desc: 'Play direction', example: 'alternate' }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+                <code className="font-mono font-bold text-blue-700 dark:text-blue-400 block mb-2">{item.prop}</code>
+                <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">{item.desc}</p>
+                <code className="text-xs bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">{item.example}</code>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                                        <MousePointer className="w-4 h-4" />
-                                        🎪 Try it yourself!
-                                    </div>
-                                    <div className="text-xs text-green-600 dark:text-green-400">
-                                        <strong>Hover over this entire card</strong> to see both examples animate! Notice how the <span className="text-red-600 dark:text-red-400 font-semibold">transition</span> moves smoothly from A to finish flag, while the <span className="text-blue-600 dark:text-blue-400 font-semibold">animation</span> bounces with keyframes.
-                                    </div>
-                                </div>
-                            </div>
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Animation Shorthand
+          </CardTitle>
+          <CardDescription>All properties in one line</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-300 dark:border-green-700">
+            <div className="bg-green-900 dark:bg-green-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-green-100 block">
+{`/* name | duration | timing | delay | iteration | direction */
+animation: slide 2s ease 0s infinite alternate;
 
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                                    <Settings className="w-5 h-5" />
-                                    🎨 Animation Capabilities
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Target className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Keyframe Control</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">0%, 25%, 50%, 75%, 100%</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-                                        <RefreshCw className="w-6 h-6 text-pink-500" />
-                                        <div>
-                                            <div className="font-semibold text-pink-700 dark:text-pink-300 text-sm">Infinite Loops</div>
-                                            <div className="text-xs text-pink-600 dark:text-pink-400">Continuous playback</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <Timer className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Timing Control</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">Duration, delay, direction</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Palette className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Multi-Property</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Color, size, position</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+/* Shorthand */
+animation: bounce 1s ease-in-out infinite;`}
+              </code>
+            </div>
+          </div>
 
-                        {/* Animated Comparison */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-purple-100 via-blue-100 to-indigo-100 dark:from-purple-900/30 dark:via-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">🎭</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">
-                                            ✨
-                                        </div>
-                                    </div>
-                                    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">CSS Animations</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Multi-Step Sequences
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Keyframe Precision
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Complex Choreography
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="text-2xl font-bold text-gray-400">vs</div>
-                                    
-                                    <div className="text-4xl mb-2">⚡</div>
-                                    <div className="font-bold text-lg text-gray-600 dark:text-gray-400">Transitions</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-orange-500 dark:text-orange-400">
-                                            <AlertTriangle className="w-4 h-4" />
-                                            Simple A → B
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-orange-500 dark:text-orange-400">
-                                            <AlertTriangle className="w-4 h-4" />
-                                            State-Triggered Only
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-orange-500 dark:text-orange-400">
-                                            <AlertTriangle className="w-4 h-4" />
-                                            Limited Control
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+          <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
+            <Lightbulb className="w-5 h-5 text-green-600" />
+            <AlertTitle className="text-green-900 dark:text-green-100">Common Pattern</AlertTitle>
+            <AlertDescription className="text-green-800 dark:text-green-200">
+              <code className="px-2 py-1 bg-green-100 dark:bg-green-900 rounded">infinite alternate</code> makes 
+              animations play forward then backward continuously - perfect for smooth loops!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
 
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">🚀</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Use animations for loading spinners, attention-grabbing effects, and complex visual storytelling!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Interactive Code Example */}
-                    <div className="mt-6 bg-gray-900 rounded-xl p-4 border border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-400 text-sm ml-2">CSS Animations Demo</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">/* 🎬 Define Keyframes */</div>
-                            <div className="text-purple-400">@keyframes bounce</div>
-                            <div className="text-white"> {'{'}</div>
-                            <div className="text-white">   <span className="text-yellow-400">0%</span> {'{'} <span className="text-green-400">transform</span>: <span className="text-blue-400">translateY(0)</span>; {'}'}</div>
-                            <div className="text-white">   <span className="text-yellow-400">50%</span> {'{'} <span className="text-green-400">transform</span>: <span className="text-blue-400">translateY(-20px)</span>; {'}'}</div>
-                            <div className="text-white">   <span className="text-yellow-400">100%</span> {'{'} <span className="text-green-400">transform</span>: <span className="text-blue-400">translateY(0)</span>; {'}'}</div>
-                            <div className="text-white"> {'}'}</div>
-                            <br />
-                            <div className="text-gray-500">/* 🎯 Apply Animation */</div>
-                            <div className="text-blue-400">.bouncing-ball</div>
-                            <div className="text-white"> {'{'}</div>
-                            <div className="text-white">   <span className="text-green-400">animation</span>: <span className="text-yellow-400">bounce 2s infinite</span>;</div>
-                            <div className="text-white"> {'}'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-
-            {/* Keyframes Fundamentals */}
-            <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                        <Code className="w-5 h-5" />
-                        @keyframes - The Heart of Animations
-                    </CardTitle>
-                    <CardDescription>
-                        Learn how to define animation sequences using keyframes and percentages.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {animationExamples.map((animation) => (
-                                <div 
-                                    key={animation.name}
-                                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-1 ${
-                                        selectedAnimation === animation.name 
-                                            ? 'ring-2 ring-primary ring-offset-2 border-primary shadow-lg' 
-                                            : 'border-gray-200 hover:border-gray-300'
-                                    }`}
-                                    onClick={() => setSelectedAnimation(animation.name)}
-                                >
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <animation.icon className="w-5 h-5 text-primary" />
-                                        <h3 className="font-bold text-sm">{animation.title}</h3>
-                                    </div>
-                                    <p className="text-xs text-gray-600 mb-2">{animation.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                        
-                        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
-                            <h4 className="font-semibold mb-3">{animationExamples.find(a => a.name === selectedAnimation)?.title} Keyframes</h4>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block whitespace-pre-line">
-                                {animationExamples.find(a => a.name === selectedAnimation)?.keyframes}
-                            </code>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Animation Properties */}
-            <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Settings className="w-5 h-5" />
-                        Animation Properties
-                    </CardTitle>
-                    <CardDescription>
-                        Master the properties that control how animations behave and play.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        <div className="grid md:grid-cols-2 gap-4">
-                            {animationProperties.map((property) => (
-                                <div 
-                                    key={property.name}
-                                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-1 ${
-                                        selectedProperty === property.name 
-                                            ? 'ring-2 ring-primary ring-offset-2 border-primary shadow-lg' 
-                                            : 'border-gray-200 hover:border-gray-300'
-                                    }`}
-                                    onClick={() => setSelectedProperty(property.name)}
-                                >
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <property.icon className="w-5 h-5 text-primary" />
-                                        <h3 className="font-bold text-sm">{property.name}</h3>
-                                    </div>
-                                    <p className="text-xs text-gray-600 mb-2">{property.desc}</p>
-                                    <div className="flex flex-wrap gap-1">
-                                        {property.values.slice(0, 3).map((value, idx) => (
-                                            <Badge key={idx} variant="secondary" className="text-xs">{value}</Badge>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        
-                        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
-                            <h4 className="font-semibold mb-3">{selectedProperty} Example</h4>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block">
-                                {animationProperties.find(p => p.name === selectedProperty)?.example}
-                            </code>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Live Interactive Examples */}
-            <Card className="border-indigo-200 bg-indigo-50/50 dark:bg-indigo-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
-                        <MousePointer className="w-5 h-5" />
-                        Live Animation Examples
-                    </CardTitle>
-                    <CardDescription>
-                        Interactive CSS animations you can see in action right here on the page!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-8">
-                        {/* Basic Animations */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-indigo-700 dark:text-indigo-300">🎯 Basic Animations</h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-full mx-auto mb-2 animate-bounce"></div>
-                                    <p className="text-xs font-medium">Bounce</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg mx-auto mb-2 animate-spin"></div>
-                                    <p className="text-xs font-medium">Spin</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-600 rounded-full mx-auto mb-2 animate-pulse"></div>
-                                    <p className="text-xs font-medium">Pulse</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg mx-auto mb-2 animate-ping"></div>
-                                    <p className="text-xs font-medium">Ping</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Custom Animations */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-indigo-700 dark:text-indigo-300">🌟 Custom Keyframe Animations</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mb-3 rounded-lg"
-                                        style={{
-                                            animation: 'morphShape 3s ease-in-out infinite'
-                                        }}
-                                    ></div>
-                                    <p className="text-sm font-medium">Morphing Shape</p>
-                                    <p className="text-xs text-gray-600 dark:text-gray-400">Border-radius + scale changes</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="text-2xl mx-auto mb-3"
-                                        style={{
-                                            animation: 'floatText 2s ease-in-out infinite'
-                                        }}
-                                    >
-                                        ✨
-                                    </div>
-                                    <p className="text-sm font-medium">Floating Element</p>
-                                    <p className="text-xs text-gray-600 dark:text-gray-400">Translate + rotate combo</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="flex justify-center gap-1 mb-3">
-                                        <div 
-                                            className="w-3 h-3 bg-blue-500 rounded-full"
-                                            style={{
-                                                animation: 'wave 1.4s ease-in-out infinite'
-                                            }}
-                                        ></div>
-                                        <div 
-                                            className="w-3 h-3 bg-blue-500 rounded-full"
-                                            style={{
-                                                animation: 'wave 1.4s ease-in-out infinite 0.2s'
-                                            }}
-                                        ></div>
-                                        <div 
-                                            className="w-3 h-3 bg-blue-500 rounded-full"
-                                            style={{
-                                                animation: 'wave 1.4s ease-in-out infinite 0.4s'
-                                            }}
-                                        ></div>
-                                    </div>
-                                    <p className="text-sm font-medium">Loading Dots</p>
-                                    <p className="text-xs text-gray-600 dark:text-gray-400">Staggered animation delays</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Interactive Playground */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <div className="p-2 bg-blue-500/10 rounded-lg">
-                            <Play className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                        </div>
-                        Complete CSS Animations Playground
-                    </CardTitle>
-                    <CardDescription>
-                        Comprehensive playground with keyframes, timing functions, directions, and complex multi-step animations.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        html={playgroundCode}
-                        title="CSS Animations Playground"
-                        colorTheme="blue"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* Add custom keyframes for live examples */}
-            <style jsx>{`
-                @keyframes morphShape {
-                    0% { border-radius: 0; transform: scale(1) rotate(0deg); }
-                    25% { border-radius: 50%; transform: scale(1.1) rotate(90deg); }
-                    50% { border-radius: 0; transform: scale(0.9) rotate(180deg); }
-                    75% { border-radius: 50%; transform: scale(1.1) rotate(270deg); }
-                    100% { border-radius: 0; transform: scale(1) rotate(360deg); }
-                }
-                
-                @keyframes floatText {
-                    0%, 100% { transform: translateY(0) rotate(0deg); }
-                    33% { transform: translateY(-8px) rotate(2deg); }
-                    66% { transform: translateY(4px) rotate(-1deg); }
-                }
-                
-                @keyframes wave {
-                    0%, 60%, 100% { transform: scale(1); opacity: 1; }
-                    30% { transform: scale(1.4); opacity: 0.7; }
-                }
-            `}</style>
-        </div>
-    );
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>@keyframes</strong> defines animation steps</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>animation</strong> property applies the animation</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>infinite</strong> loops animation forever</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use percentages (0%, 50%, 100%) for steps</span>
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
 }

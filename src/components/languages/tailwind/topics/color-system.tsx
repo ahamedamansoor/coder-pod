@@ -1,457 +1,515 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Palette, Droplet, CheckCircle, Sparkles, HelpCircle } from 'lucide-react';
+import { Palette, CheckCircle, Lightbulb, ArrowRight, Droplet } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
-import { cn } from '@/lib/utils';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
-import { AIProvider } from '@/types/ai-providers';
+import { Badge } from '@/components/ui/badge';
 
 export default function ColorSystem() {
-  
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [qaResult, setQaResult] = useState<{ answer: string } | null>(null);
-  const [isAiEnabled, setIsAiEnabled] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
-  const { user } = useUser();
-  const isUserAuthenticated = !!user;
 
-  React.useEffect(() => {
-    const apiKey = localStorage.getItem('ai_api_key');
-    const provider = localStorage.getItem('ai_provider');
-    setIsAiEnabled(!!(apiKey && provider));
-  }, []);
-
-  const handleAskQuestionAction = async () => {
-    if (!question.trim()) return;
-    setIsAsking(true);
-    setQaResult(null);
+  // Color Palette
+  const colorPaletteHTML = `<div class="bg-gradient-to-r from-gray-100 to-slate-100 dark:from-gray-900 dark:to-slate-900 p-8">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- Red -->
+    <div>
+      <div class="bg-red-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Red</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-red-500</p>
+    </div>
     
-    try {
-      const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
-      const apiKey = localStorage.getItem('ai_api_key') || '';
-      
-      const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Color System',
-        question: question,
-      }, provider, apiKey);
-      
-      setQaResult({ answer: result.answer });
-    } catch (error) {
-      console.error('Error asking question:', error);
-    } finally {
-      setIsAsking(false);
-    }
-  };
+    <!-- Orange -->
+    <div>
+      <div class="bg-orange-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Orange</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-orange-500</p>
+    </div>
+    
+    <!-- Yellow -->
+    <div>
+      <div class="bg-yellow-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Yellow</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-yellow-500</p>
+    </div>
+    
+    <!-- Green -->
+    <div>
+      <div class="bg-green-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Green</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-green-500</p>
+    </div>
+    
+    <!-- Blue -->
+    <div>
+      <div class="bg-blue-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Blue</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-blue-500</p>
+    </div>
+    
+    <!-- Purple -->
+    <div>
+      <div class="bg-purple-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Purple</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-purple-500</p>
+    </div>
+    
+    <!-- Pink -->
+    <div>
+      <div class="bg-pink-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Pink</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-pink-500</p>
+    </div>
+    
+    <!-- Gray -->
+    <div>
+      <div class="bg-gray-500 h-20 rounded-lg mb-2"></div>
+      <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">Gray</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">bg-gray-500</p>
+    </div>
+  </div>
+</div>`;
 
-  const colorPaletteExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Color Palette</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-7xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        🎨 Color Palette
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Each color has 10 shades from 50 (lightest) to 950 (darkest)
-      </p>
-      
-      <!-- Blue Palette -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Blue Palette</h3>
-        <div class="grid grid-cols-5 md:grid-cols-10 gap-2">
-          <div class="text-center">
-            <div class="bg-blue-50 dark:bg-blue-950 h-16 rounded flex items-center justify-center text-xs font-mono text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700">50</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-100 dark:bg-blue-900 h-16 rounded flex items-center justify-center text-xs font-mono text-slate-900 dark:text-white">100</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-200 dark:bg-blue-800 h-16 rounded flex items-center justify-center text-xs font-mono text-slate-900 dark:text-white">200</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-300 dark:bg-blue-700 h-16 rounded flex items-center justify-center text-xs font-mono text-white">300</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-400 dark:bg-blue-600 h-16 rounded flex items-center justify-center text-xs font-mono text-white">400</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-500 h-16 rounded flex items-center justify-center text-xs font-mono text-white">500</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-600 h-16 rounded flex items-center justify-center text-xs font-mono text-white">600</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-700 h-16 rounded flex items-center justify-center text-xs font-mono text-white">700</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-800 h-16 rounded flex items-center justify-center text-xs font-mono text-white">800</div>
-          </div>
-          <div class="text-center">
-            <div class="bg-blue-900 dark:bg-blue-100 h-16 rounded flex items-center justify-center text-xs font-mono text-white dark:text-slate-900">900</div>
-          </div>
-        </div>
+  // Color Shades
+  const shadesHTML = `<div class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 p-8">
+  <div class="space-y-2">
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-50 dark:bg-blue-950 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-gray-800 dark:text-gray-200">50</div>
+      <span class="text-xs text-gray-600 dark:text-gray-400">Lightest</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-100 dark:bg-blue-900 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-gray-800 dark:text-gray-200">100</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-200 dark:bg-blue-800 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-gray-800 dark:text-gray-200">200</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-300 dark:bg-blue-700 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-gray-800 dark:text-white">300</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-400 dark:bg-blue-600 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-white">400</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-500 dark:bg-blue-500 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-white">500</div>
+      <span class="text-xs text-gray-600 dark:text-gray-400">Default</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-600 dark:bg-blue-400 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-white">600</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-700 dark:bg-blue-300 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-white dark:text-gray-800">700</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-800 dark:bg-blue-200 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-white dark:text-gray-800">800</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-900 dark:bg-blue-100 h-12 flex-1 rounded flex items-center justify-center text-xs font-semibold text-white dark:text-gray-800">900</div>
+      <span class="text-xs text-gray-600 dark:text-gray-400">Darkest</span>
+    </div>
+  </div>
+</div>`;
+
+  // Background Colors
+  const backgroundHTML = `<div class="p-8 space-y-4 bg-white dark:bg-slate-900">
+  <div class="bg-red-500 text-white p-6 rounded-lg text-center font-semibold">
+    bg-red-500
+  </div>
+  <div class="bg-green-500 text-white p-6 rounded-lg text-center font-semibold">
+    bg-green-500
+  </div>
+  <div class="bg-blue-500 text-white p-6 rounded-lg text-center font-semibold">
+    bg-blue-500
+  </div>
+  <div class="bg-purple-500 text-white p-6 rounded-lg text-center font-semibold">
+    bg-purple-500
+  </div>
+</div>`;
+
+  // Text Colors
+  const textColorHTML = `<div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-950 dark:to-pink-950 p-8 space-y-3">
+  <p class="text-red-600 dark:text-red-400 text-xl font-bold">Red Text</p>
+  <p class="text-orange-600 dark:text-orange-400 text-xl font-bold">Orange Text</p>
+  <p class="text-yellow-600 dark:text-yellow-400 text-xl font-bold">Yellow Text</p>
+  <p class="text-green-600 dark:text-green-400 text-xl font-bold">Green Text</p>
+  <p class="text-blue-600 dark:text-blue-400 text-xl font-bold">Blue Text</p>
+  <p class="text-purple-600 dark:text-purple-400 text-xl font-bold">Purple Text</p>
+  <p class="text-pink-600 dark:text-pink-400 text-xl font-bold">Pink Text</p>
+</div>`;
+
+  // Border Colors
+  const borderColorHTML = `<div class="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-950 dark:to-emerald-950 p-8">
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="bg-white dark:bg-slate-800 border-4 border-red-500 dark:border-red-400 p-6 rounded-lg text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Red Border</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">border-red-500</p>
+    </div>
+    
+    <div class="bg-white dark:bg-slate-800 border-4 border-blue-500 dark:border-blue-400 p-6 rounded-lg text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Blue Border</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">border-blue-500</p>
+    </div>
+    
+    <div class="bg-white dark:bg-slate-800 border-4 border-green-500 dark:border-green-400 p-6 rounded-lg text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Green Border</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">border-green-500</p>
+    </div>
+    
+    <div class="bg-white dark:bg-slate-800 border-4 border-purple-500 dark:border-purple-400 p-6 rounded-lg text-center">
+      <p class="font-semibold text-gray-800 dark:text-gray-200">Purple Border</p>
+      <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">border-purple-500</p>
+    </div>
+  </div>
+</div>`;
+
+  // Opacity
+  const opacityHTML = `<div class="bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-950 dark:to-blue-950 p-8">
+  <div class="relative bg-white dark:bg-slate-800 rounded-xl p-8">
+    <img src="https://via.placeholder.com/800x300" alt="Background" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+    
+    <!-- Overlays with different opacity -->
+    <div class="relative space-y-4">
+      <div class="bg-blue-500/25 text-white p-4 rounded text-center font-semibold">
+        25% Opacity (bg-blue-500/25)
       </div>
-      
-      <!-- Color Showcase -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="bg-red-500 rounded-xl p-6 text-white text-center shadow-lg">
-          <div class="text-3xl mb-2">❤️</div>
-          <div class="font-bold text-lg">Red</div>
-          <code class="text-xs opacity-90">bg-red-500</code>
-        </div>
-        <div class="bg-green-500 rounded-xl p-6 text-white text-center shadow-lg">
-          <div class="text-3xl mb-2">💚</div>
-          <div class="font-bold text-lg">Green</div>
-          <code class="text-xs opacity-90">bg-green-500</code>
-        </div>
-        <div class="bg-purple-500 rounded-xl p-6 text-white text-center shadow-lg">
-          <div class="text-3xl mb-2">💜</div>
-          <div class="font-bold text-lg">Purple</div>
-          <code class="text-xs opacity-90">bg-purple-500</code>
-        </div>
-        <div class="bg-amber-500 rounded-xl p-6 text-white text-center shadow-lg">
-          <div class="text-3xl mb-2">💛</div>
-          <div class="font-bold text-lg">Amber</div>
-          <code class="text-xs opacity-90">bg-amber-500</code>
-        </div>
+      <div class="bg-blue-500/50 text-white p-4 rounded text-center font-semibold">
+        50% Opacity (bg-blue-500/50)
       </div>
-      
-      <!-- Text Colors -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Text Colors</h3>
-        <div class="space-y-2 text-lg">
-          <p class="text-blue-600 dark:text-blue-400 font-semibold">text-blue-600 • Blue text</p>
-          <p class="text-red-600 dark:text-red-400 font-semibold">text-red-600 • Red text for errors</p>
-          <p class="text-green-600 dark:text-green-400 font-semibold">text-green-600 • Green text for success</p>
-          <p class="text-amber-600 dark:text-amber-400 font-semibold">text-amber-600 • Amber text for warnings</p>
-        </div>
+      <div class="bg-blue-500/75 text-white p-4 rounded text-center font-semibold">
+        75% Opacity (bg-blue-500/75)
       </div>
-      
-      <!-- Border Colors -->
-      <div class="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-950 dark:to-gray-950 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
-        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">💡 Color Utilities</h3>
-        <div class="grid md:grid-cols-3 gap-4">
-          <div class="border-4 border-blue-500 bg-white dark:bg-slate-900 p-4 rounded-lg text-center">
-            <p class="font-semibold text-slate-900 dark:text-white">Border</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">border-blue-500</code>
-          </div>
-          <div class="bg-purple-100 dark:bg-purple-900/30 p-4 rounded-lg text-center">
-            <p class="font-semibold text-purple-900 dark:text-purple-100">Background</p>
-            <code class="text-xs text-purple-700 dark:text-purple-300">bg-purple-100</code>
-          </div>
-          <div class="bg-white dark:bg-slate-900 p-4 rounded-lg text-center">
-            <p class="font-semibold text-green-600 dark:text-green-400">Text Color</p>
-            <code class="text-xs text-slate-600 dark:text-slate-400">text-green-600</code>
-          </div>
-        </div>
+      <div class="bg-blue-500 text-white p-4 rounded text-center font-semibold">
+        100% Opacity (bg-blue-500)
       </div>
     </div>
   </div>
-</body>
-</html>`;
+</div>`;
 
-  const opacityExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Color Opacity</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        🎭 Color Opacity
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Control transparency with opacity modifiers
-      </p>
-      
-      <!-- Opacity Scale -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Background Opacity</h3>
-        <div class="space-y-3">
-          <div class="bg-blue-500/10 p-4 rounded-lg">
-            <p class="text-slate-900 dark:text-white font-semibold">bg-blue-500/10 - 10% opacity</p>
-          </div>
-          <div class="bg-blue-500/25 p-4 rounded-lg">
-            <p class="text-slate-900 dark:text-white font-semibold">bg-blue-500/25 - 25% opacity</p>
-          </div>
-          <div class="bg-blue-500/50 p-4 rounded-lg">
-            <p class="text-white font-semibold">bg-blue-500/50 - 50% opacity</p>
-          </div>
-          <div class="bg-blue-500/75 p-4 rounded-lg">
-            <p class="text-white font-semibold">bg-blue-500/75 - 75% opacity</p>
-          </div>
-          <div class="bg-blue-500 p-4 rounded-lg">
-            <p class="text-white font-semibold">bg-blue-500 - 100% opacity (default)</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Text Opacity -->
-      <div class="mb-8">
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Text Opacity</h3>
-        <div class="bg-slate-100 dark:bg-slate-950 p-6 rounded-xl space-y-2">
-          <p class="text-purple-600/25 dark:text-purple-400/25 text-lg font-semibold">text-purple-600/25</p>
-          <p class="text-purple-600/50 dark:text-purple-400/50 text-lg font-semibold">text-purple-600/50</p>
-          <p class="text-purple-600/75 dark:text-purple-400/75 text-lg font-semibold">text-purple-600/75</p>
-          <p class="text-purple-600 dark:text-purple-400 text-lg font-semibold">text-purple-600 (100%)</p>
-        </div>
-      </div>
-      
-      <!-- Layered Opacity -->
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="relative h-64 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-xl overflow-hidden">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="bg-white/90 dark:bg-slate-900/90 p-6 rounded-xl text-center">
-              <h4 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Glassmorphism</h4>
-              <p class="text-sm text-slate-600 dark:text-slate-300">bg-white/90</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="relative h-64 bg-gradient-to-br from-pink-400 to-rose-400 rounded-xl overflow-hidden">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="bg-black/50 backdrop-blur-sm p-6 rounded-xl text-center">
-              <h4 class="font-bold text-lg text-white mb-2">Overlay Effect</h4>
-              <p class="text-sm text-white/90">bg-black/50</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Opacity Reference -->
-      <div class="mt-8 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-indigo-200 dark:border-indigo-800">
-        <h3 class="text-lg font-semibold text-indigo-900 dark:text-indigo-100 mb-4">💡 Opacity Values</h3>
-        <div class="grid grid-cols-5 md:grid-cols-10 gap-2 text-xs text-center">
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/0</code><span class="text-slate-600 dark:text-slate-400">0%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/5</code><span class="text-slate-600 dark:text-slate-400">5%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/10</code><span class="text-slate-600 dark:text-slate-400">10%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/20</code><span class="text-slate-600 dark:text-slate-400">20%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/30</code><span class="text-slate-600 dark:text-slate-400">30%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/40</code><span class="text-slate-600 dark:text-slate-400">40%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/50</code><span class="text-slate-600 dark:text-slate-400">50%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/60</code><span class="text-slate-600 dark:text-slate-400">60%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/75</code><span class="text-slate-600 dark:text-slate-400">75%</span></div>
-          <div><code class="bg-white dark:bg-slate-900 px-1 py-1 rounded block">/100</code><span class="text-slate-600 dark:text-slate-400">100%</span></div>
-        </div>
-      </div>
-    </div>
+  // Complete Color Card
+  const colorCardHTML = `<div class="max-w-md mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-2xl overflow-hidden">
+  <!-- Header with gradient -->
+  <div class="bg-white/10 backdrop-blur-sm p-6 border-b border-white/20">
+    <h2 class="text-2xl font-bold text-white mb-1">Colorful Card</h2>
+    <p class="text-white/80 text-sm">Using Tailwind's color system</p>
   </div>
-</body>
-</html>`;
+  
+  <!-- Content -->
+  <div class="p-6 text-white">
+    <p class="mb-4 leading-relaxed">
+      This card demonstrates multiple color utilities working together:
+    </p>
+    
+    <!-- Color badges -->
+    <div class="flex flex-wrap gap-2 mb-4">
+      <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-semibold">
+        Gradient Background
+      </span>
+      <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-semibold">
+        Backdrop Blur
+      </span>
+      <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-semibold">
+        Opacity Layers
+      </span>
+    </div>
+    
+    <!-- Button -->
+    <button class="w-full bg-white text-purple-600 dark:text-purple-700 font-semibold py-3 px-6 rounded-lg hover:bg-white/90 transition">
+      Get Started
+    </button>
+  </div>
+</div>`;
 
   return (
     <div className="space-y-8">
+      {/* PAGE HEADER */}
       <PageHeader
         icon={Palette}
         category="Tailwind CSS · Core Concepts"
         title="Color System"
-        description="Master Tailwind's comprehensive color palette with shades and opacity"
-        colorTheme="pink"
+        description="Master Tailwind's comprehensive color palette and utilities"
+        colorTheme="purple"
       />
 
-      <Card>
+      {/* COLOR PALETTE */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl text-pink-700 dark:text-pink-300">
-            <div className="relative">
-              <Droplet className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+          <CardTitle className="flex items-center gap-3 text-3xl">
+            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl">
+              <Palette className="w-8 h-8 text-white" />
             </div>
-            Tailwind Color System
+            Tailwind Color Palette
           </CardTitle>
-          <CardDescription className="text-lg text-pink-600 dark:text-pink-400">
-            🎨 Rich palette with 22 colors, each with 10 shades (50-950)
+          <CardDescription className="text-base">
+            22 colors, each with 10 shades
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-pink-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-pink-700 dark:text-pink-300">🎨 Color Categories</h4>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="space-y-2">
-                    <p className="font-semibold text-slate-900 dark:text-white">Neutral</p>
-                    <p className="text-slate-600 dark:text-slate-400">slate, gray, zinc, stone</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="font-semibold text-slate-900 dark:text-white">Primary</p>
-                    <p className="text-slate-600 dark:text-slate-400">red, blue, green, yellow</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="font-semibold text-slate-900 dark:text-white">Extended</p>
-                    <p className="text-slate-600 dark:text-slate-400">purple, pink, indigo, cyan</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="font-semibold text-slate-900 dark:text-white">Special</p>
-                    <p className="text-slate-600 dark:text-slate-400">emerald, teal, amber, rose</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <CardContent className="space-y-6">
+          <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
+            <Lightbulb className="w-5 h-5 text-purple-600" />
+            <AlertTitle className="text-purple-900 dark:text-purple-100">Color Naming</AlertTitle>
+            <AlertDescription className="text-purple-800 dark:text-purple-200">
+              Colors range from 50 (lightest) to 900 (darkest). 
+              The middle value (500) is the default: <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">bg-blue-500</code>
+            </AlertDescription>
+          </Alert>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-pink-100 via-rose-100 to-red-100 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-red-900/30 p-6 rounded-xl border border-pink-200/50 shadow-lg">
-                <div className="text-center space-y-3">
-                  <div className="text-3xl">🎨</div>
-                  <div className="font-bold text-pink-700 dark:text-pink-300">22 Colors</div>
-                  <div className="text-2xl font-black text-pink-600 dark:text-pink-400">220+</div>
-                  <div className="text-sm text-pink-600 dark:text-pink-400">Total shades</div>
+          <div>
+            <h3 className="text-lg font-bold mb-3">Available Colors:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { name: 'Slate', class: 'bg-slate-500' },
+                { name: 'Gray', class: 'bg-gray-500' },
+                { name: 'Zinc', class: 'bg-zinc-500' },
+                { name: 'Red', class: 'bg-red-500' },
+                { name: 'Orange', class: 'bg-orange-500' },
+                { name: 'Amber', class: 'bg-amber-500' },
+                { name: 'Yellow', class: 'bg-yellow-500' },
+                { name: 'Lime', class: 'bg-lime-500' },
+                { name: 'Green', class: 'bg-green-500' },
+                { name: 'Emerald', class: 'bg-emerald-500' },
+                { name: 'Teal', class: 'bg-teal-500' },
+                { name: 'Cyan', class: 'bg-cyan-500' },
+                { name: 'Sky', class: 'bg-sky-500' },
+                { name: 'Blue', class: 'bg-blue-500' },
+                { name: 'Indigo', class: 'bg-indigo-500' },
+                { name: 'Violet', class: 'bg-violet-500' },
+                { name: 'Purple', class: 'bg-purple-500' },
+                { name: 'Fuchsia', class: 'bg-fuchsia-500' },
+                { name: 'Pink', class: 'bg-pink-500' },
+                { name: 'Rose', class: 'bg-rose-500' }
+              ].map(color => (
+                <div key={color.name} className="flex items-center gap-2 bg-white dark:bg-slate-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">
+                  <div className={`w-8 h-8 rounded ${color.class}`}></div>
+                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">{color.name}</span>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-pink-500/10 rounded-lg">
-              <Palette className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-            </div>
-            1. Color Palette
-          </CardTitle>
-          <CardDescription>Complete color system with all shades</CardDescription>
-        </CardHeader>
-        <CardContent>
           <FrontendCodePreview
-            html={colorPaletteExample}
+            html={colorPaletteHTML}
             title="Color Palette"
-            description="22 colors with 10 shades each (50-950)"
-            colorTheme="pink"
-            styleLanguage="tailwind"
-          />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-indigo-500/10 rounded-lg">
-              <Droplet className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            2. Opacity Modifiers
-          </CardTitle>
-          <CardDescription>Control transparency with slash notation</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={opacityExample}
-            title="Color Opacity"
-            description="Add transparency to any color with /0 to /100"
+            description="Main color families"
             colorTheme="purple"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Color Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Use 500</strong> as the base shade for most applications</li>
-            <li><strong>Dark mode</strong> - Use lighter shades (100-400) in dark mode</li>
-            <li><strong>Opacity</strong> - Use /50 or /75 for overlays and glass effects</li>
-            <li><strong>Consistency</strong> - Stick to one color family for related elements</li>
-          </ul>
+      {/* COLOR SHADES */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-blue-500 rounded-lg">
+              <Droplet className="w-6 h-6 text-white" />
+            </div>
+            Color Shades (50-900)
+          </CardTitle>
+          <CardDescription>
+            Each color has 10 shades from light to dark
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+            <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-3">
+              Understanding Shades
+            </h3>
+            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-blue-600" />
+                <span><strong>50-400:</strong> Light shades, good for backgrounds</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-blue-600" />
+                <span><strong>500:</strong> Default shade, balanced and vibrant</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-blue-600" />
+                <span><strong>600-900:</strong> Dark shades, good for text and borders</span>
+              </li>
+            </ul>
+          </div>
+
+          <FrontendCodePreview
+            html={shadesHTML}
+            title="Blue Color Shades"
+            description="From lightest (50) to darkest (900)"
+            colorTheme="blue"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* COLOR UTILITIES */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Color Utilities
+          </CardTitle>
+          <CardDescription>
+            Apply colors to backgrounds, text, and borders
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* Background */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-red-500">Example 1</Badge>
+              Background Colors
+            </h3>
+            <FrontendCodePreview
+              html={backgroundHTML}
+              title="Background Colors"
+              description="bg-{color}-{shade}"
+              colorTheme="red"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Text */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-purple-500">Example 2</Badge>
+              Text Colors
+            </h3>
+            <FrontendCodePreview
+              html={textColorHTML}
+              title="Text Colors"
+              description="text-{color}-{shade}"
+              colorTheme="purple"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          {/* Border */}
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-green-500">Example 3</Badge>
+              Border Colors
+            </h3>
+            <FrontendCodePreview
+              html={borderColorHTML}
+              title="Border Colors"
+              description="border-{color}-{shade}"
+              colorTheme="green"
+              styleLanguage="tailwind"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* OPACITY */}
+      <Card className="border-2 border-cyan-200 dark:border-cyan-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-cyan-500 rounded-lg">
+              <Droplet className="w-6 h-6 text-white" />
+            </div>
+            Color Opacity
+          </CardTitle>
+          <CardDescription>
+            Control transparency with opacity modifiers
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-cyan-200 dark:border-cyan-800 bg-cyan-50 dark:bg-cyan-950/20">
+            <Lightbulb className="w-5 h-5 text-cyan-600" />
+            <AlertTitle className="text-cyan-900 dark:text-cyan-100">Opacity Syntax</AlertTitle>
+            <AlertDescription className="text-cyan-800 dark:text-cyan-200">
+              Add opacity with a slash: <code className="bg-cyan-200 dark:bg-cyan-900 px-2 py-1 rounded">bg-blue-500/50</code> = 50% opacity. 
+              Works with any color utility!
+            </AlertDescription>
+          </Alert>
+
+          <FrontendCodePreview
+            html={opacityHTML}
+            title="Opacity Levels"
+            description="Create overlays and transparent layers"
+            colorTheme="cyan"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* COMPLETE EXAMPLE */}
+      <Card className="border-2 border-pink-200 dark:border-pink-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-pink-500 rounded-lg">
+              <Palette className="w-6 h-6 text-white" />
+            </div>
+            Complete Color Example
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={colorCardHTML}
+            title="Colorful Card Design"
+            description="Combining gradients, opacity, and color utilities"
+            colorTheme="pink"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* QUICK REFERENCE */}
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-orange-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Quick Reference
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-orange-50 dark:bg-orange-950/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800">
+              <h4 className="font-bold text-orange-900 dark:text-orange-100 mb-3">Utility Types</h4>
+              <ul className="space-y-2 text-sm text-orange-800 dark:text-orange-200 font-mono">
+                <li>bg-{'{'}color{'}'}-{'{'}shade{'}'}</li>
+                <li>text-{'{'}color{'}'}-{'{'}shade{'}'}</li>
+                <li>border-{'{'}color{'}'}-{'{'}shade{'}'}</li>
+                <li>ring-{'{'}color{'}'}-{'{'}shade{'}'}</li>
+                <li>shadow-{'{'}color{'}'}-{'{'}shade{'}'}</li>
+              </ul>
+            </div>
+
+            <div className="bg-orange-50 dark:bg-orange-950/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800">
+              <h4 className="font-bold text-orange-900 dark:text-orange-100 mb-3">Opacity</h4>
+              <ul className="space-y-2 text-sm text-orange-800 dark:text-orange-200 font-mono">
+                <li>bg-blue-500/25 → 25%</li>
+                <li>bg-blue-500/50 → 50%</li>
+                <li>bg-blue-500/75 → 75%</li>
+                <li>text-red-600/80 → 80%</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* TIPS */}
+      <Alert className="border-2 border-purple-200 dark:border-purple-800 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20">
+        <Palette className="w-5 h-5 text-purple-600" />
+        <AlertTitle className="text-2xl text-purple-900 dark:text-purple-100">Color Tips</AlertTitle>
+        <AlertDescription className="text-purple-800 dark:text-purple-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">gray-500 dark:gray-400</code> for adaptive colors</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Stick to 2-3 colors for consistency</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use opacity for overlays: <code className="bg-purple-200 dark:bg-purple-900 px-2 py-1 rounded">bg-black/50</code></span>
+          </div>
         </AlertDescription>
       </Alert>
-
-      {/* AI ASSISTANT */}
-      <div className="relative mt-8">
-        <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-          !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-        )}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-              <HelpCircle className="w-6 h-6 text-primary" />
-              Ask a Question
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
-              Have a question about Color System? Ask our AI assistant.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea 
-              placeholder={`e.g., "What shade should I use for buttons?"`} 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <Button 
-              onClick={handleAskQuestionAction}
-              disabled={isAsking || !question.trim() || !isUserAuthenticated}
-              className="transition-all duration-200"
-            >
-              {isAsking ? 'Thinking...' : 'Get Answer'}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        {!isUserAuthenticated ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">🔐 Login to use AI Assistant</p>
-              <Button onClick={() => window.location.href = '/login'} size="sm" className="shadow-sm">Login</Button>
-            </div>
-          </div>
-        ) : !isAiEnabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">⚙️ AI Provider Not Configured</p>
-              <Button onClick={() => setShowAiKeyModal(true)} size="sm" className="shadow-sm">Setup AI Key</Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
-          </CardContent>
-        </Card>
-      )}
-
-      {qaResult && <AIAnswerDisplay answer={qaResult.answer} language="tailwind" />}
-      
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider: AIProvider, apiKey: string) => {
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          setIsAiEnabled(true);
-          setShowAiKeyModal(false);
-        }}
-      />
     </div>
   );
 }

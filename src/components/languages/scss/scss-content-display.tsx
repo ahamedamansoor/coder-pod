@@ -115,6 +115,11 @@ const SassTestingNew = lazy(() => import('./topics/sass-testing-new'));
 const SassDocumentationNew = lazy(() => import('./topics/sass-documentation-new'));
 const SassMigrationNew = lazy(() => import('./topics/sass-migration-new'));
 const SassModuleMigrationNew = lazy(() => import('./topics/sass-module-migration-new'));
+const SassToCSSNew = lazy(() => import('./topics/sass-to-css-new'));
+const SassCommonMistakesNew = lazy(() => import('./topics/sass-common-mistakes-new'));
+const SassRefactoringNew = lazy(() => import('./topics/sass-refactoring-new'));
+const SassTeamWorkflowsNew = lazy(() => import('./topics/sass-team-workflows-new'));
+const SassResourcesNew = lazy(() => import('./topics/sass-resources-new'));
 const SassModulesNew = lazy(() => import('./topics/sass-modules-new'));
 const SassArchitecture = lazy(() => import('./topics/sass-architecture'));
 const SassPerformance = lazy(() => import('./topics/sass-performance'));
@@ -215,6 +220,11 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'sass-documentation': SassDocumentationNew,
   'sass-migration': SassMigrationNew,
   'sass-module-migration': SassModuleMigrationNew,
+  'sass-to-css': SassToCSSNew,
+  'sass-common-mistakes': SassCommonMistakesNew,
+  'sass-refactoring': SassRefactoringNew,
+  'sass-team-workflows': SassTeamWorkflowsNew,
+  'sass-resources': SassResourcesNew,
   'sass-modules': SassModulesNew,
   'sass-architecture': SassArchitecture,
   'sass-advanced-patterns': SassAdvancedPatterns,

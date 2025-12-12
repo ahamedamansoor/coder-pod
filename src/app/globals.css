@@ -90,6 +90,13 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  pre {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid hsl(var(--border));
+  }
 }
 
 @layer utilities {

@@ -1,22 +1,251 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Move, Pin, Anchor, Sparkles, CheckCircle, Info, AlertTriangle } from 'lucide-react';
+import { 
+  Move, Sparkles, Lightbulb, Anchor, 
+  CheckCircle, Info, ArrowRight, Pin,
+  Navigation, Layers, StickyNote
+} from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssPositioningProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-const positioningTypesExample = `<!DOCTYPE html>
+export default function CssPositioning({ onOpenWebPlayground }: CssPositioningProps) {
+  
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <PageHeader
+        icon={Move}
+        category="CSS · Box Model & Layout"
+        title="CSS Positioning"
+        description="Control exactly where elements appear on the page"
+        colorTheme="indigo"
+      />
+
+      {/* Introduction */}
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <Move className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">CSS Positioning</CardTitle>
+              <CardDescription className="text-base">Taking elements out of normal flow</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Position = Placement Control</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              The <code className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 rounded">position</code> property 
+              determines how an element is positioned in the document. You can make elements stay in place, 
+              move relative to their normal position, float over content, or stick to the viewport.
+            </AlertDescription>
+          </Alert>
+
+          <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-2 border-blue-200 dark:border-blue-800">
+            <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+              <Layers className="w-5 h-5 text-blue-600" />
+              The Five Position Values
+            </h3>
+            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">static</Badge>
+                <span>Default - normal flow</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">relative</Badge>
+                <span>Offset from normal position</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">absolute</Badge>
+                <span>Positioned relative to parent</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">fixed</Badge>
+                <span>Stays in viewport</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">sticky</Badge>
+                <span>Scrolls then sticks</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Five Position Types */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Pin className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Position Types Explained
+          </CardTitle>
+          <CardDescription>Each position value behaves differently</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-4">
+            {/* Static */}
+            <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-gray-600 text-white text-lg">static</Badge>
+                <Badge variant="outline" className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300">
+                  Default
+                </Badge>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                Normal document flow. Elements stack naturally. Cannot use top/right/bottom/left.
+              </p>
+              <div className="bg-gray-900 dark:bg-black p-4 rounded-lg mb-4">
+                <code className="text-sm text-gray-100">
+                  position: static; /* Default */
+                </code>
+              </div>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                💡 This is how elements naturally behave without any positioning
+              </p>
+            </div>
+
+            {/* Relative */}
+            <div className="p-6 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-blue-600 text-white text-lg">relative</Badge>
+              </div>
+              <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
+                Positioned relative to its normal position. Original space is preserved. Can use top/right/bottom/left to offset.
+              </p>
+              <div className="bg-blue-900 dark:bg-blue-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-blue-100">
+                  position: relative;<br />
+                  top: 20px;<br />
+                  left: 30px;
+                </code>
+              </div>
+              <div className="flex gap-3">
+                <div className="w-20 h-20 bg-blue-200 dark:bg-blue-800 rounded flex items-center justify-center text-xs">
+                  Normal
+                </div>
+                <div className="w-20 h-20 bg-blue-400 dark:bg-blue-600 rounded flex items-center justify-center text-xs font-bold relative" style={{top: '10px', left: '10px'}}>
+                  Relative
+                </div>
+              </div>
+              <p className="text-xs text-blue-700 dark:text-blue-300 mt-3">
+                ✅ Use case: Small adjustments, creating positioning context for children
+              </p>
+            </div>
+
+            {/* Absolute */}
+            <div className="p-6 rounded-xl bg-purple-50 dark:bg-purple-950/20 border-2 border-purple-200 dark:border-purple-800">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-purple-600 text-white text-lg">absolute</Badge>
+                <Badge variant="outline" className="bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300">
+                  Popular
+                </Badge>
+              </div>
+              <p className="text-sm text-purple-800 dark:text-purple-200 mb-4">
+                Removed from normal flow. Positioned relative to nearest positioned ancestor (or body). No space reserved.
+              </p>
+              <div className="bg-purple-900 dark:bg-purple-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-purple-100">
+                  position: absolute;<br />
+                  top: 10px;<br />
+                  right: 10px;
+                </code>
+              </div>
+              <div className="relative h-32 bg-purple-100 dark:bg-purple-900/30 rounded-lg border-2 border-purple-300 dark:border-purple-700 p-4">
+                <span className="text-xs text-purple-700 dark:text-purple-300">Parent (position: relative)</span>
+                <div className="absolute top-2 right-2 w-16 h-16 bg-purple-500 rounded flex items-center justify-center text-xs text-white font-bold">
+                  Absolute
+                </div>
+              </div>
+              <p className="text-xs text-purple-700 dark:text-purple-300 mt-3">
+                ✅ Use case: Tooltips, badges, overlays, dropdowns
+              </p>
+            </div>
+
+            {/* Fixed */}
+            <div className="p-6 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-green-600 text-white text-lg">fixed</Badge>
+              </div>
+              <p className="text-sm text-green-800 dark:text-green-200 mb-4">
+                Positioned relative to the viewport. Stays in place when scrolling. Removed from normal flow.
+              </p>
+              <div className="bg-green-900 dark:bg-green-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-green-100">
+                  position: fixed;<br />
+                  bottom: 20px;<br />
+                  right: 20px;
+                </code>
+              </div>
+              <div className="p-4 bg-green-100 dark:bg-green-900/30 rounded-lg border-2 border-green-300 dark:border-green-700 text-center">
+                <p className="text-xs text-green-800 dark:text-green-200 mb-2">Imagine scrolling the page...</p>
+                <div className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold">
+                  Fixed Element (Always visible)
+                </div>
+              </div>
+              <p className="text-xs text-green-700 dark:text-green-300 mt-3">
+                ✅ Use case: Navigation bars, chat widgets, back-to-top buttons
+              </p>
+            </div>
+
+            {/* Sticky */}
+            <div className="p-6 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-2 border-orange-300 dark:border-orange-700 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-orange-600 text-white text-lg">sticky</Badge>
+                <Badge className="bg-orange-700 text-white">⭐ Modern</Badge>
+              </div>
+              <p className="text-sm text-orange-800 dark:text-orange-200 mb-4">
+                Hybrid of relative and fixed. Scrolls normally until threshold, then sticks in place.
+              </p>
+              <div className="bg-orange-900 dark:bg-orange-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-orange-100">
+                  position: sticky;<br />
+                  top: 0; /* Sticks when reaching top */
+                </code>
+              </div>
+              <div className="space-y-2 text-xs text-orange-700 dark:text-orange-300">
+                <div className="flex items-center gap-2">
+                  <StickyNote className="w-4 h-4" />
+                  <span>Scrolls with content at first</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Pin className="w-4 h-4" />
+                  <span>Sticks when reaching threshold (e.g., top: 0)</span>
+                </div>
+              </div>
+              <p className="text-xs text-orange-700 dark:text-orange-300 mt-3">
+                ✅ Use case: Sticky headers, table headers, sidebar navigation
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Interactive Demo */}
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            Interactive Positioning Demo
+          </CardTitle>
+          <CardDescription>See position values in action</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Positioning</title>
   <style>
     * {
       margin: 0;
@@ -26,937 +255,326 @@ const positioningTypesExample = `<!DOCTYPE html>
     
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 40px 20px;
-      min-height: 100vh;
+      min-height: 200vh;
     }
     
     @media (prefers-color-scheme: dark) {
       body {
-        background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%);
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
       }
     }
     
     .container {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
       background: white;
       padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      position: relative;
     }
     
     @media (prefers-color-scheme: dark) {
       .container {
-        background: #1e293b;
-        color: #e2e8f0;
+        background: #1a1a2e;
+        color: #e5e5e5;
       }
     }
     
     h1 {
-      color: #a855f7;
       text-align: center;
-      margin-bottom: 40px;
+      color: #667eea;
+      margin-bottom: 30px;
     }
     
     @media (prefers-color-scheme: dark) {
       h1 {
-        color: #c084fc;
+        color: #a78bfa;
       }
     }
     
-    .example-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-    
-    .example-box {
-      background: #f8fafc;
-      padding: 30px;
+    .demo-box {
+      margin-bottom: 40px;
+      padding: 20px;
+      background: #f9fafb;
       border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      min-height: 300px;
       position: relative;
+      min-height: 150px;
     }
     
     @media (prefers-color-scheme: dark) {
-      .example-box {
-        background: #0f172a;
-        border-color: #334155;
+      .demo-box {
+        background: #374151;
       }
     }
     
-    .example-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 20px;
+    .label {
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 15px;
+      font-size: 13px;
     }
     
-    @media (prefers-color-scheme: dark) {
-      .example-title {
-        color: #e2e8f0;
-      }
-    }
-    
-    .demo-element {
-      background: #a855f7;
-      color: white;
-      padding: 15px 20px;
+    .box {
+      width: 100px;
+      height: 100px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 8px;
       font-weight: 600;
+      color: white;
+      font-size: 12px;
       text-align: center;
-      width: fit-content;
     }
     
-    .static-demo {
-      position: static;
-    }
-    
+    /* Relative positioning */
     .relative-demo {
+      background: #dbeafe;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .relative-demo {
+        background: #1e3a8a;
+      }
+    }
+    
+    .relative-demo .label {
+      background: #3b82f6;
+      color: white;
+    }
+    
+    .relative-box {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
       position: relative;
       top: 20px;
       left: 30px;
-      background: #3b82f6;
     }
     
+    /* Absolute positioning */
     .absolute-demo {
-      position: absolute;
-      top: 80px;
-      right: 30px;
-      background: #10b981;
+      background: #f3e8ff;
+      position: relative;
     }
     
-    .fixed-demo {
+    @media (prefers-color-scheme: dark) {
+      .absolute-demo {
+        background: #581c87;
+      }
+    }
+    
+    .absolute-demo .label {
+      background: #8b5cf6;
+      color: white;
+    }
+    
+    .absolute-box {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      position: absolute;
+      top: 50px;
+      right: 20px;
+    }
+    
+    /* Fixed positioning */
+    .fixed-box {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #f59e0b;
+      width: 120px;
+      height: 60px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       z-index: 1000;
+      font-size: 13px;
     }
     
-    .sticky-demo {
+    /* Sticky positioning */
+    .sticky-header {
       position: sticky;
-      top: 20px;
-      background: #ec4899;
+      top: 0;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    .code-label {
+    .scroll-content {
+      height: 300px;
+      background: linear-gradient(to bottom, #fef3c7, #fde68a);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .scroll-content {
+        background: linear-gradient(to bottom, #78350f, #92400e);
+      }
+    }
+    
+    .note {
       margin-top: 15px;
       padding: 10px;
-      background: #fef3c7;
+      background: white;
       border-radius: 6px;
-      font-size: 13px;
-      font-family: monospace;
-      color: #92400e;
+      font-size: 12px;
+      color: #4b5563;
     }
     
     @media (prefers-color-scheme: dark) {
-      .code-label {
-        background: #451a03;
-        color: #fbbf24;
+      .note {
+        background: #1f2937;
+        color: #d1d5db;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📍 CSS Positioning</h1>
+    <h1>📍 Positioning Demo</h1>
     
-    <div class="example-grid">
-      <div class="example-box">
-        <div class="example-title">Static (Default)</div>
-        <div class="demo-element static-demo">Static</div>
-        <p style="margin-top: 15px; font-size: 14px; color: #64748b;">
-          Normal flow, cannot use top/right/bottom/left
-        </p>
-        <div class="code-label">position: static;</div>
-      </div>
-      
-      <div class="example-box">
-        <div class="example-title">Relative</div>
-        <div class="demo-element relative-demo">Relative</div>
-        <p style="margin-top: 15px; font-size: 14px; color: #64748b;">
-          Moved from its normal position (top: 20px, left: 30px)
-        </p>
-        <div class="code-label">position: relative;<br>top: 20px; left: 30px;</div>
-      </div>
-      
-      <div class="example-box">
-        <div class="example-title">Absolute</div>
-        <div class="demo-element absolute-demo">Absolute</div>
-        <p style="margin-top: 15px; font-size: 14px; color: #64748b;">
-          Positioned relative to parent (top: 80px, right: 30px)
-        </p>
-        <div class="code-label">position: absolute;<br>top: 80px; right: 30px;</div>
-      </div>
-      
-      <div class="example-box">
-        <div class="example-title">Sticky</div>
-        <div class="demo-element sticky-demo">Sticky</div>
-        <p style="margin-top: 15px; font-size: 14px; color: #64748b;">
-          Sticks when scrolling past threshold
-        </p>
-        <div class="code-label">position: sticky;<br>top: 20px;</div>
+    <div class="demo-box relative-demo">
+      <div class="label">position: relative</div>
+      <div class="box" style="background: #e5e7eb; color: #333;">Normal</div>
+      <div class="box relative-box">Relative<br>(+20px, +30px)</div>
+      <div class="note">
+        Notice: Relative box is offset but original space is preserved
       </div>
     </div>
     
-    <div class="demo-element fixed-demo">
-      Fixed (bottom-right)
+    <div class="demo-box absolute-demo">
+      <div class="label">position: absolute</div>
+      <div class="absolute-box">Absolute<br>top: 50px<br>right: 20px</div>
+      <div class="note">
+        Notice: Absolute box is positioned relative to this parent container
+      </div>
     </div>
-  </div>
-</body>
-</html>`;
-
-const stickyHeaderExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sticky Header Demo</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f1f5f9;
-    }
+    <div class="demo-box">
+      <div class="label" style="background: #f59e0b; color: white;">position: sticky (Scroll to see!)</div>
+      <div class="scroll-content">
+        <div class="sticky-header">
+          Sticky Header - Scroll inside this box!
+        </div>
+        <p style="margin-bottom: 15px;">Keep scrolling...</p>
+        <p style="margin-bottom: 15px;">The header will stick to the top</p>
+        <p style="margin-bottom: 15px;">Keep going...</p>
+        <p style="margin-bottom: 15px;">Notice how it sticks!</p>
+        <p style="margin-bottom: 15px;">This is position: sticky</p>
+        <p style="margin-bottom: 15px;">Very useful for headers</p>
+        <p style="margin-bottom: 15px;">And navigation menus</p>
+        <p>Bottom of scrollable content</p>
+      </div>
+    </div>
     
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-    }
+    <p style="text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px;">
+      Scroll down to see more... 👇
+    </p>
     
-    .header {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: 700;
-      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
-      z-index: 100;
-    }
-    
-    .content {
-      padding: 40px 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    
-    .section {
-      margin-bottom: 40px;
-      padding: 30px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .section {
-        background: #1e293b;
-      }
-    }
-    
-    .section h2 {
-      color: #a855f7;
-      margin-bottom: 15px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .section h2 {
-        color: #c084fc;
-      }
-    }
-    
-    .section p {
-      line-height: 1.6;
-      color: #64748b;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .section p {
-        color: #94a3b8;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    🧲 Sticky Header - Scroll Down!
+    <div style="height: 400px; display: flex; align-items: center; justify-content: center; color: #6b7280;">
+      <p>Keep scrolling to see the fixed box...</p>
+    </div>
   </div>
   
-  <div class="content">
-    <div class="section">
-      <h2>Section 1</h2>
-      <p>
-        The header above is sticky! It stays at the top of the viewport when you scroll. 
-        This is perfect for navigation menus, toolbars, and important UI elements that should 
-        always be accessible.
-      </p>
-    </div>
-    
-    <div class="section">
-      <h2>Section 2</h2>
-      <p>
-        Sticky positioning is a hybrid of relative and fixed positioning. The element is 
-        treated as relative positioned until it crosses a specified threshold (like top: 0), 
-        at which point it becomes fixed.
-      </p>
-    </div>
-    
-    <div class="section">
-      <h2>Section 3</h2>
-      <p>
-        Keep scrolling to see the sticky header in action. Notice how it "sticks" to the 
-        top of the page while you scroll through the content. This is much easier than 
-        using JavaScript to achieve the same effect!
-      </p>
-    </div>
-    
-    <div class="section">
-      <h2>Section 4</h2>
-      <p>
-        Sticky positioning works great for table headers, section headings, and sidebar 
-        navigation. It's supported in all modern browsers and provides a smooth user 
-        experience without any JavaScript.
-      </p>
-    </div>
-    
-    <div class="section">
-      <h2>Section 5</h2>
-      <p>
-        The key properties for sticky positioning are: position: sticky and a threshold 
-        (top, right, bottom, or left). The element will stick when scrolling reaches 
-        that threshold value.
-      </p>
-    </div>
+  <div class="fixed-box">
+    Fixed Box<br>
+    <small style="font-size: 10px;">Always visible!</small>
   </div>
 </body>
-</html>`;
-
-// Interactive position tester
-const interactivePositionExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Position Tester</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    @media (prefers-color-scheme: dark) {
-      body { background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%); }
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    @media (prefers-color-scheme: dark) {
-      .container { background: #1e293b; color: #e2e8f0; }
-    }
-    h1 { color: #a855f7; text-align: center; margin-bottom: 40px; }
-    @media (prefers-color-scheme: dark) {
-      h1 { color: #c084fc; }
-    }
-    .tester { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-    .controls {
-      background: #f8fafc;
-      padding: 25px;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-    }
-    @media (prefers-color-scheme: dark) {
-      .controls { background: #0f172a; border-color: #334155; }
-    }
-    .control-group {
-      margin-bottom: 20px;
-    }
-    .control-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      display: block;
-      color: #1e293b;
-    }
-    @media (prefers-color-scheme: dark) {
-      .control-label { color: #e2e8f0; }
-    }
-    select, .slider {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 2px solid #e2e8f0;
-    }
-    @media (prefers-color-scheme: dark) {
-      select { background: #0f172a; color: #e2e8f0; border-color: #334155; }
-    }
-    .slider {
-      height: 6px;
-      background: #e2e8f0;
-      outline: none;
-      -webkit-appearance: none;
-      padding: 0;
-    }
-    @media (prefers-color-scheme: dark) {
-      .slider { background: #334155; }
-    }
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #a855f7;
-      cursor: pointer;
-    }
-    .slider::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #a855f7;
-      cursor: pointer;
-      border: none;
-    }
-    .value-display {
-      margin-top: 8px;
-      padding: 6px 12px;
-      background: #f3e8ff;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #7e22ce;
-      display: inline-block;
-    }
-    @media (prefers-color-scheme: dark) {
-      .value-display { background: #581c87; color: #e9d5ff; }
-    }
-    .test-area {
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 20px;
-      border: 2px solid #e2e8f0;
-      position: relative;
-      min-height: 400px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .test-area { background: #0f172a; border-color: #334155; }
-    }
-    .test-parent {
-      position: relative;
-      background: white;
-      border: 2px dashed #a855f7;
-      border-radius: 8px;
-      padding: 20px;
-      height: 350px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .test-parent { background: #1e293b; border-color: #c084fc; }
-    }
-    #testBox {
-      width: 100px;
-      height: 60px;
-      background: linear-gradient(135deg, #a855f7, #9333ea);
-      color: white;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      transition: all 0.3s;
-      position: static;
-    }
-    .reference {
-      width: 80px;
-      height: 50px;
-      background: #64748b;
-      color: white;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      margin-top: 10px;
-    }
-    @media (max-width: 768px) {
-      .tester { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🎮 Interactive Position Tester</h1>
-    <div class="tester">
-      <div class="controls">
-        <div class="control-group">
-          <label class="control-label">Position</label>
-          <select id="positionSelect">
-            <option value="static">static</option>
-            <option value="relative">relative</option>
-            <option value="absolute">absolute</option>
-            <option value="fixed">fixed</option>
-            <option value="sticky">sticky</option>
-          </select>
-        </div>
-        <div class="control-group">
-          <label class="control-label">Top</label>
-          <input type="range" class="slider" id="topRange" min="-100" max="100" value="0">
-          <div class="value-display" id="topValue">0px</div>
-        </div>
-        <div class="control-group">
-          <label class="control-label">Left</label>
-          <input type="range" class="slider" id="leftRange" min="-100" max="100" value="0">
-          <div class="value-display" id="leftValue">0px</div>
-        </div>
-        <div class="control-group">
-          <label class="control-label">Z-Index</label>
-          <input type="range" class="slider" id="zIndexRange" min="-5" max="10" value="0">
-          <div class="value-display" id="zIndexValue">0</div>
-        </div>
-      </div>
-      <div class="test-area">
-        <div class="test-parent">
-          <div id="testBox">Test Box</div>
-          <div class="reference">Reference</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    const testBox = document.getElementById('testBox');
-    const positionSelect = document.getElementById('positionSelect');
-    const topRange = document.getElementById('topRange');
-    const leftRange = document.getElementById('leftRange');
-    const zIndexRange = document.getElementById('zIndexRange');
-    
-    function updateBox() {
-      testBox.style.position = positionSelect.value;
-      testBox.style.top = topRange.value + 'px';
-      testBox.style.left = leftRange.value + 'px';
-      testBox.style.zIndex = zIndexRange.value;
-      
-      document.getElementById('topValue').textContent = topRange.value + 'px';
-      document.getElementById('leftValue').textContent = leftRange.value + 'px';
-      document.getElementById('zIndexValue').textContent = zIndexRange.value;
-    }
-    
-    positionSelect.addEventListener('change', updateBox);
-    topRange.addEventListener('input', updateBox);
-    leftRange.addEventListener('input', updateBox);
-    zIndexRange.addEventListener('input', updateBox);
-  </script>
-</body>
-</html>`;
-
-// Centered modal pattern
-const centeredModalExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centered Modal Pattern</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    @media (prefers-color-scheme: dark) {
-      body { background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%); }
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    @media (prefers-color-scheme: dark) {
-      .container { background: #1e293b; color: #e2e8f0; }
-    }
-    h1 { color: #a855f7; text-align: center; margin-bottom: 20px; }
-    @media (prefers-color-scheme: dark) {
-      h1 { color: #c084fc; }
-    }
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 40px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .subtitle { color: #94a3b8; }
-    }
-    .demo-area {
-      position: relative;
-      background: #f8fafc;
-      border-radius: 12px;
-      height: 400px;
-      border: 2px solid #e2e8f0;
-      overflow: hidden;
-    }
-    @media (prefers-color-scheme: dark) {
-      .demo-area { background: #0f172a; border-color: #334155; }
-    }
-    .modal-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal {
-      position: relative;
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-    }
-    @media (prefers-color-scheme: dark) {
-      .modal { background: #1e293b; color: #e2e8f0; }
-    }
-    .modal h3 {
-      color: #a855f7;
-      margin-bottom: 15px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .modal h3 { color: #c084fc; }
-    }
-    .modal p {
-      color: #64748b;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-    @media (prefers-color-scheme: dark) {
-      .modal p { color: #94a3b8; }
-    }
-    .modal-button {
-      background: #a855f7;
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .modal-button:hover {
-      background: #9333ea;
-      transform: translateY(-2px);
-    }
-    .code-section {
-      margin-top: 30px;
-      padding: 20px;
-      background: #fef3c7;
-      border-radius: 12px;
-      border: 2px solid #fbbf24;
-    }
-    @media (prefers-color-scheme: dark) {
-      .code-section { background: #451a03; border-color: #d97706; }
-    }
-    .code-section h4 {
-      color: #92400e;
-      margin-bottom: 15px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .code-section h4 { color: #fbbf24; }
-    }
-    .code-snippet {
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 15px;
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    @media (prefers-color-scheme: dark) {
-      .code-snippet { background: #020617; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🎯 Perfect Centering Pattern</h1>
-    <p class="subtitle">Absolute positioning + transform for perfect centering</p>
-    
-    <div class="demo-area">
-      <div class="modal-overlay">
-        <div class="modal">
-          <h3>Perfectly Centered!</h3>
-          <p>This modal is centered both horizontally and vertically using absolute positioning and transform.</p>
-          <button class="modal-button">Got it!</button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="code-section">
-      <h4>💡 How It Works</h4>
-      <div class="code-snippet">
-.modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* OR use flexbox on the container */
-.modal-overlay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
-
-export default function CssPositioning({ onOpenWebPlayground }: CssPositioningProps) {
-  return (
-    <div className="space-y-8">
-      <PageHeader
-        icon={Move}
-        category="CSS · Box Model & Layout"
-        title="Positioning"
-        description="Control where elements appear on the page"
-        colorTheme="blue"
-      />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            What is Positioning?
-          </CardTitle>
-          <CardDescription>
-            Take elements out of normal flow and place them precisely
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground leading-relaxed">
-            The <code className="px-2 py-1 bg-muted rounded">position</code> property lets you <strong className="text-foreground">control exactly where elements appear</strong>. 
-            You can move elements relative to their normal position, place them at fixed positions on the screen, or make them stick when scrolling!
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-              <Move className="h-6 w-6 text-purple-600 dark:text-purple-400 mb-2" />
-              <h4 className="font-semibold mb-2">Relative</h4>
-              <p className="text-sm text-muted-foreground">
-                Move from normal position
-              </p>
-            </div>
-            
-            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-              <Pin className="h-6 w-6 text-purple-600 dark:text-purple-400 mb-2" />
-              <h4 className="font-semibold mb-2">Absolute</h4>
-              <p className="text-sm text-muted-foreground">
-                Position relative to parent
-              </p>
-            </div>
-            
-            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-              <Anchor className="h-6 w-6 text-purple-600 dark:text-purple-400 mb-2" />
-              <h4 className="font-semibold mb-2">Sticky</h4>
-              <p className="text-sm text-muted-foreground">
-                Stick when scrolling
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Move className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            1. Position Types
-          </CardTitle>
-          <CardDescription>
-            Static, relative, absolute, fixed, and sticky
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={positioningTypesExample}
-            title="Position Types"
-            colorTheme="purple"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-          
-          <div className="mt-4 p-4 rounded-lg bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
-            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">💡 Position Explained:</h4>
-            <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>static:</strong> Default, normal flow, top/left don't work</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>relative:</strong> Offset from normal position, space reserved</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>absolute:</strong> Relative to nearest positioned ancestor</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>fixed:</strong> Relative to viewport, stays on screen</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>sticky:</strong> Relative until threshold, then fixed</span>
-              </li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-fuchsia-500/10 rounded-lg">
-              <Anchor className="h-5 w-5 text-fuchsia-600 dark:text-fuchsia-400" />
-            </div>
-            2. Sticky Positioning
-          </CardTitle>
-          <CardDescription>
-            Perfect for sticky headers and navigation
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={stickyHeaderExample}
-            title="Sticky Header"
-            colorTheme="fuchsia"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Interactive Position Tester */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Move className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            3. Interactive Position Tester
-          </CardTitle>
-          <CardDescription>
-            Experiment with position, top, left, and z-index in real-time
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={interactivePositionExample}
-            title="Interactive Position Tester"
-            colorTheme="purple"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-          
-          <Alert className="mt-4">
-            <Info className="h-4 w-4" />
-            <AlertTitle>Try It!</AlertTitle>
-            <AlertDescription>
-              Select different position values and adjust the sliders to see how each positioning type behaves. 
-              Watch how the test box moves relative to its parent container!
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Centered Modal Pattern */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-indigo-500/10 rounded-lg">
-              <Pin className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            4. Centered Modal Pattern
-          </CardTitle>
-          <CardDescription>
-            Learn the perfect centering technique for modals and overlays
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={centeredModalExample}
-            title="Centered Modal"
+</html>`}
+            title="CSS Positioning Examples"
             colorTheme="indigo"
             onOpenWebPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* Positioning Properties */}
+      <Card className="border-2 border-cyan-200 dark:border-cyan-800">
         <CardHeader>
-          <CardTitle>Quick Reference</CardTitle>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Navigation className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+            Positioning Properties
+          </CardTitle>
+          <CardDescription>Control exact placement with top, right, bottom, left</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-3">
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-purple-600 dark:text-purple-400">position: relative; top: 20px;</code>
-              <p className="text-sm text-muted-foreground mt-1">Move 20px down from normal position</p>
-            </div>
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-purple-600 dark:text-purple-400">position: absolute; top: 0; right: 0;</code>
-              <p className="text-sm text-muted-foreground mt-1">Position at top-right of nearest positioned parent</p>
-            </div>
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-purple-600 dark:text-purple-400">position: fixed; bottom: 20px;</code>
-              <p className="text-sm text-muted-foreground mt-1">Always 20px from bottom of viewport</p>
-            </div>
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-purple-600 dark:text-purple-400">position: sticky; top: 0;</code>
-              <p className="text-sm text-muted-foreground mt-1">Sticks to top when scrolling reaches it</p>
-            </div>
+        <CardContent className="space-y-4">
+          <p className="text-gray-700 dark:text-gray-300">
+            Once you set <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">position</code> to anything 
+            except <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">static</code>, you can use these properties:
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { prop: 'top', desc: 'Distance from top edge', example: 'top: 20px;' },
+              { prop: 'right', desc: 'Distance from right edge', example: 'right: 10px;' },
+              { prop: 'bottom', desc: 'Distance from bottom edge', example: 'bottom: 0;' },
+              { prop: 'left', desc: 'Distance from left edge', example: 'left: 50%;' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-lg bg-cyan-50 dark:bg-cyan-950/20 border border-cyan-200 dark:border-cyan-800">
+                <code className="font-mono font-bold text-cyan-700 dark:text-cyan-400">{item.prop}</code>
+                <p className="text-sm text-cyan-800 dark:text-cyan-200 mt-1">{item.desc}</p>
+                <code className="text-xs text-cyan-600 dark:text-cyan-400 mt-2 block">{item.example}</code>
+              </div>
+            ))}
           </div>
+
+          <Alert className="border-cyan-200 dark:border-cyan-800 bg-cyan-50 dark:bg-cyan-950/20">
+            <Lightbulb className="w-5 h-5 text-cyan-600" />
+            <AlertTitle className="text-cyan-900 dark:text-cyan-100">Pro Tip</AlertTitle>
+            <AlertDescription className="text-cyan-800 dark:text-cyan-200">
+              To center an absolutely positioned element, use:
+              <code className="block mt-2 bg-cyan-900 dark:bg-cyan-950 text-cyan-100 p-2 rounded text-sm">
+                position: absolute;<br />
+                top: 50%;<br />
+                left: 50%;<br />
+                transform: translate(-50%, -50%);
+              </code>
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Absolute needs a positioned parent:</strong> Add <code className="px-1.5 py-0.5 bg-muted rounded text-xs">position: relative</code> to parent</li>
-            <li><strong>Fixed stays in viewport:</strong> Perfect for modals, notifications, floating buttons</li>
-            <li><strong>Sticky needs a threshold:</strong> Must set top, bottom, left, or right</li>
-            <li><strong>Use z-index:</strong> Control stacking order of positioned elements</li>
-          </ul>
+      {/* Key Takeaways */}
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>static</strong> - Default, normal flow</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>relative</strong> - Offset from normal position, space preserved</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>absolute</strong> - Positioned relative to nearest positioned parent</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>fixed</strong> - Stays in viewport when scrolling</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>sticky</strong> - Scrolls until threshold, then sticks</span>
+          </div>
         </AlertDescription>
       </Alert>
     </div>

@@ -1,412 +1,420 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Type, AlignLeft, Bold, CheckCircle, Sparkles, HelpCircle } from 'lucide-react';
+import { Type, CheckCircle, Lightbulb, ArrowRight, Palette } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
-import { cn } from '@/lib/utils';
-import { conductInterview } from '@/ai/flows/interview-flow';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
-import { AIProvider } from '@/types/ai-providers';
+import { Badge } from '@/components/ui/badge';
 
 export default function TypographyUtilities() {
+
+  // Font Size Examples
+  const fontSizeHTML = `<div class="bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-950 dark:to-cyan-950 p-8 space-y-4">
+  <p class="text-xs text-gray-800 dark:text-gray-200">text-xs: Extra small text (0.75rem)</p>
+  <p class="text-sm text-gray-800 dark:text-gray-200">text-sm: Small text (0.875rem)</p>
+  <p class="text-base text-gray-800 dark:text-gray-200">text-base: Base text (1rem)</p>
+  <p class="text-lg text-gray-800 dark:text-gray-200">text-lg: Large text (1.125rem)</p>
+  <p class="text-xl text-gray-800 dark:text-gray-200">text-xl: Extra large (1.25rem)</p>
+  <p class="text-2xl text-gray-800 dark:text-gray-200">text-2xl: 2X large (1.5rem)</p>
+  <p class="text-3xl text-gray-800 dark:text-gray-200">text-3xl: 3X large (1.875rem)</p>
+</div>`;
+
+  // Font Weight Examples
+  const fontWeightHTML = `<div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-950 dark:to-pink-950 p-8 space-y-3">
+  <p class="font-thin text-gray-800 dark:text-gray-200">font-thin: Thin weight (100)</p>
+  <p class="font-light text-gray-800 dark:text-gray-200">font-light: Light weight (300)</p>
+  <p class="font-normal text-gray-800 dark:text-gray-200">font-normal: Normal weight (400)</p>
+  <p class="font-medium text-gray-800 dark:text-gray-200">font-medium: Medium weight (500)</p>
+  <p class="font-semibold text-gray-800 dark:text-gray-200">font-semibold: Semibold (600)</p>
+  <p class="font-bold text-gray-800 dark:text-gray-200">font-bold: Bold weight (700)</p>
+  <p class="font-extrabold text-gray-800 dark:text-gray-200">font-extrabold: Extra bold (800)</p>
+</div>`;
+
+  // Text Alignment
+  const textAlignHTML = `<div class="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-950 dark:to-emerald-950 p-8 space-y-4">
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-left text-gray-800 dark:text-gray-200">text-left: Left aligned text</p>
+  </div>
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-center text-gray-800 dark:text-gray-200">text-center: Center aligned text</p>
+  </div>
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-right text-gray-800 dark:text-gray-200">text-right: Right aligned text</p>
+  </div>
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-justify text-gray-800 dark:text-gray-200">text-justify: Justified text spreads evenly across the line. This is useful for longer paragraphs where you want consistent spacing.</p>
+  </div>
+</div>`;
+
+  // Text Colors
+  const textColorHTML = `<div class="bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-950 dark:to-amber-950 p-8 space-y-3">
+  <p class="text-red-500 dark:text-red-400 font-semibold">text-red-500: Red text</p>
+  <p class="text-orange-500 dark:text-orange-400 font-semibold">text-orange-500: Orange text</p>
+  <p class="text-yellow-600 dark:text-yellow-400 font-semibold">text-yellow-600: Yellow text</p>
+  <p class="text-green-500 dark:text-green-400 font-semibold">text-green-500: Green text</p>
+  <p class="text-blue-500 dark:text-blue-400 font-semibold">text-blue-500: Blue text</p>
+  <p class="text-purple-500 dark:text-purple-400 font-semibold">text-purple-500: Purple text</p>
+  <p class="text-pink-500 dark:text-pink-400 font-semibold">text-pink-500: Pink text</p>
+  <p class="text-gray-600 dark:text-gray-400">text-gray-600: Muted text</p>
+</div>`;
+
+  // Line Height & Spacing
+  const lineHeightHTML = `<div class="bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-950 dark:to-blue-950 p-8 space-y-6">
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">leading-tight (1.25)</p>
+    <p class="leading-tight text-gray-800 dark:text-gray-200">
+      This paragraph has tight line height. Lines are close together. 
+      Good for headlines or compact text displays.
+    </p>
+  </div>
   
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [qaResult, setQaResult] = useState<{ answer: string } | null>(null);
-  const [isAiEnabled, setIsAiEnabled] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
-  const { user } = useUser();
-  const isUserAuthenticated = !!user;
-
-  React.useEffect(() => {
-    const apiKey = localStorage.getItem('ai_api_key');
-    const provider = localStorage.getItem('ai_provider');
-    setIsAiEnabled(!!(apiKey && provider));
-  }, []);
-
-  const handleAskQuestionAction = async () => {
-    if (!question.trim()) return;
-    setIsAsking(true);
-    setQaResult(null);
-    
-    try {
-      const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
-      const apiKey = localStorage.getItem('ai_api_key') || '';
-      
-      const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Typography',
-        question: question,
-      }, provider, apiKey);
-      
-      setQaResult({ answer: result.answer });
-    } catch (error) {
-      console.error('Error asking question:', error);
-    } finally {
-      setIsAsking(false);
-    }
-  };
-
-  const fontSizeExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Font Sizes & Weights</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        📝 Typography Utilities
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Complete control over text styling
-      </p>
-      
-      <!-- Font Sizes -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Font Sizes</h3>
-        <div class="space-y-3">
-          <p class="text-xs text-slate-600 dark:text-slate-400">text-xs - Extra small (0.75rem / 12px)</p>
-          <p class="text-sm text-slate-600 dark:text-slate-400">text-sm - Small (0.875rem / 14px)</p>
-          <p class="text-base text-slate-700 dark:text-slate-300">text-base - Base (1rem / 16px)</p>
-          <p class="text-lg text-slate-800 dark:text-slate-200">text-lg - Large (1.125rem / 18px)</p>
-          <p class="text-xl text-slate-900 dark:text-white">text-xl - Extra large (1.25rem / 20px)</p>
-          <p class="text-2xl font-semibold text-slate-900 dark:text-white">text-2xl - 2X large (1.5rem / 24px)</p>
-          <p class="text-3xl font-bold text-slate-900 dark:text-white">text-3xl - 3X large (1.875rem / 30px)</p>
-          <p class="text-4xl font-black text-slate-900 dark:text-white">text-4xl - 4X large (2.25rem / 36px)</p>
-        </div>
-      </div>
-      
-      <!-- Font Weights -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Font Weights</h3>
-        <div class="space-y-2">
-          <p class="font-thin text-lg text-slate-700 dark:text-slate-300">font-thin - Thin (100)</p>
-          <p class="font-extralight text-lg text-slate-700 dark:text-slate-300">font-extralight - Extra light (200)</p>
-          <p class="font-light text-lg text-slate-700 dark:text-slate-300">font-light - Light (300)</p>
-          <p class="font-normal text-lg text-slate-700 dark:text-slate-300">font-normal - Normal (400)</p>
-          <p class="font-medium text-lg text-slate-800 dark:text-slate-200">font-medium - Medium (500)</p>
-          <p class="font-semibold text-lg text-slate-800 dark:text-slate-200">font-semibold - Semibold (600)</p>
-          <p class="font-bold text-lg text-slate-900 dark:text-white">font-bold - Bold (700)</p>
-          <p class="font-extrabold text-lg text-slate-900 dark:text-white">font-extrabold - Extra bold (800)</p>
-          <p class="font-black text-lg text-slate-900 dark:text-white">font-black - Black (900)</p>
-        </div>
-      </div>
-      
-      <!-- Combining Size & Weight -->
-      <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-amber-200 dark:border-amber-800">
-        <h3 class="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-4">💡 Combining Size & Weight</h3>
-        <div class="space-y-3">
-          <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">
-            Heading: text-3xl font-bold
-          </div>
-          <div class="text-xl font-semibold text-amber-700 dark:text-amber-300">
-            Subheading: text-xl font-semibold
-          </div>
-          <div class="text-base font-normal text-amber-800 dark:text-amber-200">
-            Body text: text-base font-normal
-          </div>
-          <div class="text-sm font-medium text-amber-600 dark:text-amber-400">
-            Small text: text-sm font-medium
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">leading-normal (1.5)</p>
+    <p class="leading-normal text-gray-800 dark:text-gray-200">
+      This paragraph has normal line height. This is the default and 
+      works well for most body text.
+    </p>
   </div>
-</body>
-</html>`;
-
-  const textAlignExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Alignment & Decorations</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-        ↔️ Text Alignment & Style
-      </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
-        Align and style your text content
-      </p>
-      
-      <!-- Text Alignment -->
-      <div class="mb-8 space-y-4">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Text Alignment</h3>
-        <div class="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-lg border border-rose-200 dark:border-rose-800">
-          <p class="text-left text-rose-900 dark:text-rose-100 font-semibold">text-left - Left aligned text</p>
-        </div>
-        <div class="bg-pink-50 dark:bg-pink-900/20 p-4 rounded-lg border border-pink-200 dark:border-pink-800">
-          <p class="text-center text-pink-900 dark:text-pink-100 font-semibold">text-center - Center aligned text</p>
-        </div>
-        <div class="bg-fuchsia-50 dark:bg-fuchsia-900/20 p-4 rounded-lg border border-fuchsia-200 dark:border-fuchsia-800">
-          <p class="text-right text-fuchsia-900 dark:text-fuchsia-100 font-semibold">text-right - Right aligned text</p>
-        </div>
-        <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
-          <p class="text-justify text-purple-900 dark:text-purple-100">text-justify - Justified text that stretches to fill the line width. This creates even edges on both sides of the paragraph.</p>
-        </div>
-      </div>
-      
-      <!-- Text Decorations -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Text Decorations</h3>
-        <div class="space-y-3 text-lg">
-          <p class="underline text-slate-700 dark:text-slate-300">underline - Underlined text</p>
-          <p class="overline text-slate-700 dark:text-slate-300">overline - Overlined text</p>
-          <p class="line-through text-slate-700 dark:text-slate-300">line-through - Strikethrough text</p>
-          <p class="no-underline text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">no-underline (hover to underline)</p>
-        </div>
-      </div>
-      
-      <!-- Text Transform -->
-      <div class="mb-8">
-        <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Text Transform</h3>
-        <div class="space-y-3 text-lg">
-          <p class="uppercase text-slate-700 dark:text-slate-300">uppercase - uppercase text</p>
-          <p class="lowercase text-slate-700 dark:text-slate-300">LOWERCASE - lowercase text</p>
-          <p class="capitalize text-slate-700 dark:text-slate-300">capitalize - capitalize each word</p>
-          <p class="normal-case text-slate-700 dark:text-slate-300">Normal Case Text</p>
-        </div>
-      </div>
-      
-      <!-- Line Height -->
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-rose-200 dark:border-rose-800">
-          <h4 class="font-semibold text-rose-900 dark:text-rose-100 mb-2">leading-tight</h4>
-          <p class="leading-tight text-sm text-rose-700 dark:text-rose-300">
-            This text has tight line height. The lines are closer together for a compact look. Great for headings.
-          </p>
-        </div>
-        <div class="bg-gradient-to-br from-pink-50 to-fuchsia-50 dark:from-pink-900/20 dark:to-fuchsia-900/20 p-6 rounded-xl border border-pink-200 dark:border-pink-800">
-          <h4 class="font-semibold text-pink-900 dark:text-pink-100 mb-2">leading-relaxed</h4>
-          <p class="leading-relaxed text-sm text-pink-700 dark:text-pink-300">
-            This text has relaxed line height. The lines have more space for better readability in body text.
-          </p>
-        </div>
-      </div>
-    </div>
+  
+  <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">leading-loose (2)</p>
+    <p class="leading-loose text-gray-800 dark:text-gray-200">
+      This paragraph has loose line height. Lines have more space. 
+      Good for readability in longer content.
+    </p>
   </div>
-</body>
-</html>`;
+</div>`;
+
+  // Text Decoration
+  const decorationHTML = `<div class="bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-950 dark:to-purple-950 p-8 space-y-4">
+  <p class="underline text-gray-800 dark:text-gray-200">underline: Underlined text</p>
+  <p class="line-through text-gray-800 dark:text-gray-200">line-through: Strikethrough text</p>
+  <p class="no-underline text-blue-600 dark:text-blue-400 underline">
+    <span class="no-underline">no-underline:</span> Remove decoration
+  </p>
+  <p class="underline decoration-wavy decoration-red-500 text-gray-800 dark:text-gray-200">
+    decoration-wavy: Wavy underline
+  </p>
+  <p class="underline decoration-2 decoration-blue-500 text-gray-800 dark:text-gray-200">
+    decoration-2: Thicker underline
+  </p>
+</div>`;
+
+  // Complete Typography Card
+  const typographyCardHTML = `<div class="max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
+  <!-- Heading -->
+  <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+    Beautiful Typography
+  </h1>
+  
+  <!-- Subtitle -->
+  <p class="text-xl text-gray-600 dark:text-gray-400 mb-6">
+    Making text look great with Tailwind utilities
+  </p>
+  
+  <!-- Body Text -->
+  <p class="text-base leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
+    This is body text with <span class="font-semibold text-blue-600 dark:text-blue-400">semantic highlighting</span> 
+    and perfect <span class="italic">readability</span>. Notice how the line height and font size 
+    work together for comfortable reading.
+  </p>
+  
+  <!-- Quote -->
+  <blockquote class="border-l-4 border-blue-500 dark:border-blue-400 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">
+    "Typography is the craft of endowing human language with a durable visual form."
+  </blockquote>
+  
+  <!-- Small Text -->
+  <p class="text-sm text-gray-500 dark:text-gray-500">
+    Small text for captions, footnotes, or secondary information.
+  </p>
+</div>`;
+
+  // Responsive Typography
+  const responsiveHTML = `<div class="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 p-8">
+  <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center">
+    <h1 class="text-2xl md:text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4">
+      Responsive Heading
+    </h1>
+    <p class="text-sm md:text-base lg:text-lg text-gray-600 dark:text-gray-400">
+      Text grows with screen size: small on mobile, medium on tablet, large on desktop
+    </p>
+    <p class="text-xs mt-4 text-gray-500 dark:text-gray-500">
+      Resize your browser to see it change!
+    </p>
+  </div>
+</div>`;
 
   return (
     <div className="space-y-8">
+      {/* PAGE HEADER */}
       <PageHeader
         icon={Type}
         category="Tailwind CSS · Core Concepts"
-        title="Typography"
-        description="Master font sizes, weights, alignment, and text styling utilities"
-        colorTheme="orange"
+        title="Typography Utilities"
+        description="Control font size, weight, color, and text styling"
+        colorTheme="purple"
       />
 
-      <Card>
+      {/* FONT SIZE */}
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl text-orange-700 dark:text-orange-300">
-            <div className="relative">
-              <Bold className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+          <CardTitle className="flex items-center gap-3 text-3xl">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl">
+              <Type className="w-8 h-8 text-white" />
             </div>
-            Typography System
+            Font Size
           </CardTitle>
-          <CardDescription className="text-lg text-orange-600 dark:text-orange-400">
-            ✍️ Complete text styling toolkit from fonts to decorations
+          <CardDescription className="text-base">
+            Control text size from tiny to huge
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-orange-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-orange-700 dark:text-orange-300">📝 Typography Categories</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200/50">
-                    <div className="font-semibold text-amber-900 dark:text-amber-100 text-sm mb-1">Font Size</div>
-                    <code className="text-xs text-amber-700 dark:text-amber-300">text-xs to text-9xl</code>
-                  </div>
-                  <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg border border-orange-200/50">
-                    <div className="font-semibold text-orange-900 dark:text-orange-100 text-sm mb-1">Font Weight</div>
-                    <code className="text-xs text-orange-700 dark:text-orange-300">font-thin to font-black</code>
-                  </div>
-                  <div className="bg-rose-50 dark:bg-rose-900/20 p-3 rounded-lg border border-rose-200/50">
-                    <div className="font-semibold text-rose-900 dark:text-rose-100 text-sm mb-1">Alignment</div>
-                    <code className="text-xs text-rose-700 dark:text-rose-300">text-left, center, right</code>
-                  </div>
-                  <div className="bg-pink-50 dark:bg-pink-900/20 p-3 rounded-lg border border-pink-200/50">
-                    <div className="font-semibold text-pink-900 dark:text-pink-100 text-sm mb-1">Line Height</div>
-                    <code className="text-xs text-pink-700 dark:text-pink-300">leading-tight to loose</code>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <CardContent className="space-y-6">
+          <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
+            <Lightbulb className="w-5 h-5 text-blue-600" />
+            <AlertTitle className="text-blue-900 dark:text-blue-100">Font Size Scale</AlertTitle>
+            <AlertDescription className="text-blue-800 dark:text-blue-200">
+              Tailwind provides sizes from <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">text-xs</code> (12px) 
+              to <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">text-9xl</code> (128px). Use <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">text-base</code> for body text.
+            </AlertDescription>
+          </Alert>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 dark:from-amber-900/30 dark:via-orange-900/30 dark:to-rose-900/30 p-6 rounded-xl border border-orange-200/50 shadow-lg">
-                <div className="text-center space-y-3">
-                  <div className="text-3xl">✍️</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300">Best Practices</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Use text-base for body
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Combine size + weight
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Use leading-relaxed
-                    </div>
+          <div>
+            <h3 className="text-lg font-bold mb-3">Common Sizes:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { class: 'text-xs', size: '0.75rem' },
+                { class: 'text-sm', size: '0.875rem' },
+                { class: 'text-base', size: '1rem' },
+                { class: 'text-lg', size: '1.125rem' },
+                { class: 'text-xl', size: '1.25rem' },
+                { class: 'text-2xl', size: '1.5rem' },
+                { class: 'text-3xl', size: '1.875rem' },
+                { class: 'text-4xl', size: '2.25rem' }
+              ].map(item => (
+                <div key={item.class} className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3 text-center border border-blue-300 dark:border-blue-700">
+                  <div className="font-mono font-bold text-sm text-blue-900 dark:text-blue-100">
+                    {item.class}
+                  </div>
+                  <div className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                    {item.size}
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
+
+          <FrontendCodePreview
+            html={fontSizeHTML}
+            title="Font Size Examples"
+            description="See all the different text sizes"
+            colorTheme="blue"
+            styleLanguage="tailwind"
+          />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* FONT WEIGHT */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-amber-500/10 rounded-lg">
-              <Type className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <Type className="w-6 h-6 text-white" />
             </div>
-            1. Font Sizes & Weights
+            Font Weight
           </CardTitle>
-          <CardDescription>Control text size and weight for visual hierarchy</CardDescription>
+          <CardDescription>
+            Make text lighter or bolder
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+            <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-3">
+              When to Use Each Weight
+            </h3>
+            <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-purple-600" />
+                <span><strong>font-normal:</strong> Body text, paragraphs</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-purple-600" />
+                <span><strong>font-semibold:</strong> Subheadings, emphasis</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 text-purple-600" />
+                <span><strong>font-bold:</strong> Headlines, important text</span>
+              </li>
+            </ul>
+          </div>
+
+          <FrontendCodePreview
+            html={fontWeightHTML}
+            title="Font Weight Examples"
+            description="From thin to extra bold"
+            colorTheme="purple"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* TEXT ALIGNMENT */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Text Alignment
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <FrontendCodePreview
-            html={fontSizeExample}
-            title="Font Sizes & Weights"
-            description="Complete scale from text-xs to text-4xl with all weight options"
+            html={textAlignHTML}
+            title="Text Alignment"
+            description="Align text left, center, right, or justify"
+            colorTheme="green"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* TEXT COLORS */}
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-orange-500 rounded-lg">
+              <Palette className="w-6 h-6 text-white" />
+            </div>
+            Text Colors
+          </CardTitle>
+          <CardDescription>
+            Colorful text with semantic meaning
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/20">
+            <Lightbulb className="w-5 h-5 text-orange-600" />
+            <AlertTitle className="text-orange-900 dark:text-orange-100">Dark Mode Colors</AlertTitle>
+            <AlertDescription className="text-orange-800 dark:text-orange-200">
+              Use lighter shades for dark mode: <code className="bg-orange-200 dark:bg-orange-900 px-2 py-1 rounded">text-blue-500 dark:text-blue-400</code>
+            </AlertDescription>
+          </Alert>
+
+          <FrontendCodePreview
+            html={textColorHTML}
+            title="Text Colors"
+            description="Full color palette for text"
             colorTheme="orange"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* LINE HEIGHT */}
+      <Card className="border-2 border-cyan-200 dark:border-cyan-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-rose-500/10 rounded-lg">
-              <AlignLeft className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-cyan-500 rounded-lg">
+              <Type className="w-6 h-6 text-white" />
             </div>
-            2. Text Alignment & Decorations
+            Line Height & Spacing
           </CardTitle>
-          <CardDescription>Align, transform, and decorate your text</CardDescription>
         </CardHeader>
         <CardContent>
           <FrontendCodePreview
-            html={textAlignExample}
-            title="Text Styling"
-            description="Alignment, decorations, transforms, and line height"
-            colorTheme="pink"
+            html={lineHeightHTML}
+            title="Line Height"
+            description="Control spacing between lines"
+            colorTheme="cyan"
             styleLanguage="tailwind"
           />
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Typography Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Hierarchy</strong> - Use text-4xl+ font-bold for headings</li>
-            <li><strong>Readability</strong> - text-base with leading-relaxed for body text</li>
-            <li><strong>Consistency</strong> - Stick to a limited set of sizes</li>
-            <li><strong>Contrast</strong> - Ensure text is readable in both light/dark modes</li>
-          </ul>
+      {/* TEXT DECORATION */}
+      <Card className="border-2 border-violet-200 dark:border-violet-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-violet-500 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            Text Decoration
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={decorationHTML}
+            title="Text Decoration"
+            description="Underlines, strikethrough, and more"
+            colorTheme="violet"
+            styleLanguage="tailwind"
+          />
+        </CardContent>
+      </Card>
+
+      {/* COMPLETE EXAMPLE */}
+      <Card className="border-2 border-pink-200 dark:border-pink-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 bg-pink-500 rounded-lg">
+              <Palette className="w-6 h-6 text-white" />
+            </div>
+            Complete Typography Example
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-pink-500">Example 1</Badge>
+              Beautiful Content Card
+            </h3>
+            <FrontendCodePreview
+              html={typographyCardHTML}
+              title="Typography Card"
+              description="Professional text styling"
+              colorTheme="pink"
+              styleLanguage="tailwind"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Badge className="bg-rose-500">Example 2</Badge>
+              Responsive Typography
+            </h3>
+            <FrontendCodePreview
+              html={responsiveHTML}
+              title="Responsive Text"
+              description="Text that adapts to screen size"
+              colorTheme="pink"
+              styleLanguage="tailwind"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* TIPS */}
+      <Alert className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20">
+        <Type className="w-5 h-5 text-blue-600" />
+        <AlertTitle className="text-2xl text-blue-900 dark:text-blue-100">Typography Tips</AlertTitle>
+        <AlertDescription className="text-blue-800 dark:text-blue-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">text-gray-700 dark:text-gray-300</code> for body text</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Combine size + weight: <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">text-2xl font-bold</code></span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <code className="bg-blue-200 dark:bg-blue-900 px-2 py-1 rounded">leading-relaxed</code> for better readability</span>
+          </div>
         </AlertDescription>
       </Alert>
-
-      {/* AI ASSISTANT */}
-      <div className="relative mt-8">
-        <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-          !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-        )}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-              <HelpCircle className="w-6 h-6 text-primary" />
-              Ask a Question
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
-              Have a question about Typography? Ask our AI assistant.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea 
-              placeholder={`e.g., "What font size should I use for headings?"`} 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <Button 
-              onClick={handleAskQuestionAction}
-              disabled={isAsking || !question.trim() || !isUserAuthenticated}
-              className="transition-all duration-200"
-            >
-              {isAsking ? 'Thinking...' : 'Get Answer'}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        {!isUserAuthenticated ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">🔐 Login to use AI Assistant</p>
-              <Button onClick={() => window.location.href = '/login'} size="sm" className="shadow-sm">Login</Button>
-            </div>
-          </div>
-        ) : !isAiEnabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-            <div className="text-center space-y-3 px-6">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">⚙️ AI Provider Not Configured</p>
-              <Button onClick={() => setShowAiKeyModal(true)} size="sm" className="shadow-sm">Setup AI Key</Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {isAsking && (
-        <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
-          </CardContent>
-        </Card>
-      )}
-
-      {qaResult && <AIAnswerDisplay answer={qaResult.answer} language="tailwind" />}
-      
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider: AIProvider, apiKey: string) => {
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          setIsAiEnabled(true);
-          setShowAiKeyModal(false);
-        }}
-      />
     </div>
   );
 }

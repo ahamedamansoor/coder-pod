@@ -9,7 +9,7 @@ import { useWebPlayground } from '@/components/shared/playground/web-playground-
 const TopicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'introduction-to-css': React.lazy(() => import('./topics/css-introduction')),
   'css-introduction': React.lazy(() => import('./topics/css-introduction')),
-  'css-syntax-and-selectors': React.lazy(() => import('./topics/css-syntax-selectors')),
+  'css-syntax-and-selectors': React.lazy(() => import('./topics/css-syntax-and-selectors')),
   'css-specificity': React.lazy(() => import('./topics/css-specificity-cascade')),
   'css-units': React.lazy(() => import('./topics/css-units-values')),
   'css-box-sizing': React.lazy(() => import('./topics/css-box-sizing')),

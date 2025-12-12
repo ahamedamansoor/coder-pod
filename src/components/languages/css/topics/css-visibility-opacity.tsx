@@ -1,11 +1,16 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Eye, EyeOff, Sparkles, MousePointer, CheckCircle, AlertTriangle, Info } from 'lucide-react';
+import { 
+  Eye, EyeOff, Sparkles, Lightbulb, Ghost, 
+  CheckCircle, Info, ArrowRight, Layers,
+  MousePointer, Zap
+} from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssVisibilityOpacityProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
@@ -13,233 +18,168 @@ interface CssVisibilityOpacityProps {
 
 export default function CssVisibilityOpacity({ onOpenWebPlayground }: CssVisibilityOpacityProps) {
   
-  const visibilityExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Visibility</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-      transition: background-color 0.3s;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
-      }
-    }
-    
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    h1 {
-      color: #8b5cf6;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #a78bfa;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #6b7280;
-      margin-bottom: 30px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .subtitle {
-        color: #94a3b8;
-      }
-    }
-    
-    .demo-section {
-      background: #f5f3ff;
-      padding: 25px;
-      border-radius: 12px;
-      margin: 25px 0;
-      border-left: 4px solid #8b5cf6;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .demo-section {
-        background: #4c1d95;
-        border-left-color: #a78bfa;
-      }
-    }
-    
-    .demo-section h2 {
-      color: #7c3aed;
-      margin-bottom: 15px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .demo-section h2 {
-        color: #c4b5fd;
-      }
-    }
-    
-    .box {
-      width: 200px;
-      height: 100px;
-      background: #ddd6fe;
-      border: 2px solid #8b5cf6;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      color: #5b21b6;
-      margin: 15px auto;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .box {
-        background: #5b21b6;
-        color: #e9d5ff;
-        border-color: #a78bfa;
-      }
-    }
-    
-    .hidden-box {
-      visibility: hidden;
-    }
-    
-    .spacer {
-      height: 20px;
-      background: repeating-linear-gradient(
-        45deg,
-        #fbbf24,
-        #fbbf24 10px,
-        #fef3c7 10px,
-        #fef3c7 20px
-      );
-      border-radius: 4px;
-      margin: 15px 0;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .spacer {
-        background: repeating-linear-gradient(
-          45deg,
-          #78350f,
-          #78350f 10px,
-          #451a03 10px,
-          #451a03 20px
-        );
-      }
-    }
-    
-    .note {
-      background: #fef3c7;
-      padding: 15px;
-      border-radius: 8px;
-      color: #78350f;
-      margin: 15px 0;
-      border: 2px solid #fbbf24;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .note {
-        background: #78350f;
-        color: #fef3c7;
-        border-color: #fcd34d;
-      }
-    }
-    
-    .code {
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 15px;
-      border-radius: 8px;
-      font-family: monospace;
-      font-size: 14px;
-      margin: 15px 0;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .code {
-        background: #0f172a;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>👻 CSS Visibility</h1>
-    <p class="subtitle">Hiding elements while keeping their space</p>
-    
-    <div class="demo-section">
-      <h2>visibility: visible (default)</h2>
-      <div class="box">Visible Box</div>
-      <div class="spacer"></div>
-      <p style="text-align: center; color: #6b7280;">Normal element, takes up space</p>
-    </div>
-    
-    <div class="demo-section">
-      <h2>visibility: hidden</h2>
-      <div class="box hidden-box">Hidden Box</div>
-      <div class="spacer"></div>
-      <p style="text-align: center; color: #6b7280;">
-        Element is invisible but STILL takes up space!<br>
-        Notice the gap above?
-      </p>
-      
-      <div class="code">
-.hidden {
-  visibility: hidden;
-}
-      </div>
-    </div>
-    
-    <div class="note">
-      <strong>🔑 Key Point:</strong><br>
-      visibility: hidden makes the element invisible, but it still occupies space in the layout. 
-      Other elements don't move to fill the gap.
-    </div>
-    
-    <div class="note" style="background: #ecfdf5; color: #065f46; border-color: #10b981;">
-      <strong>💡 Common Use Case:</strong><br>
-      Use visibility: hidden when you want to toggle elements without causing layout shifts. 
-      Perfect for creating smooth animations where elements appear/disappear without jumping.
-    </div>
-  </div>
-</body>
-</html>`;
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <PageHeader
+        icon={Eye}
+        category="CSS · Fundamentals"
+        title="Visibility & Opacity"
+        description="Different ways to hide elements and control their transparency"
+        colorTheme="indigo"
+      />
 
-  const opacityExample = `<!DOCTYPE html>
+      {/* Introduction */}
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <Eye className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Hiding Elements in CSS</CardTitle>
+              <CardDescription className="text-base">Three different approaches</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Different Ways to Hide</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              CSS offers multiple ways to hide elements, each with different behaviors. 
+              Choose based on whether you want to keep space, allow interactions, or completely remove the element.
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 text-center">
+              <EyeOff className="w-6 h-6 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+              <h3 className="font-bold mb-1">visibility</h3>
+              <p className="text-xs text-blue-800 dark:text-blue-200">Hidden but space remains</p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-purple-50 dark:bg-purple-950/20 border-2 border-purple-200 dark:border-purple-800 text-center">
+              <Ghost className="w-6 h-6 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+              <h3 className="font-bold mb-1">opacity</h3>
+              <p className="text-xs text-purple-800 dark:text-purple-200">Transparent (0 to 1)</p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800 text-center">
+              <Layers className="w-6 h-6 text-red-600 dark:text-red-400 mx-auto mb-2" />
+              <h3 className="font-bold mb-1">display: none</h3>
+              <p className="text-xs text-red-800 dark:text-red-200">Completely removed</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Three Methods Comparison */}
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Layers className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Three Ways to Hide Elements
+          </CardTitle>
+          <CardDescription>Each method behaves differently</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-4">
+            {/* Visibility: hidden */}
+            <div className="p-6 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-blue-600 text-white text-lg">visibility: hidden</Badge>
+              </div>
+              <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
+                Element is invisible but still takes up space. Cannot be clicked.
+              </p>
+              <div className="bg-blue-900 dark:bg-blue-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-blue-100">
+                  visibility: hidden;
+                </code>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-blue-200 dark:border-blue-800">
+                  <strong className="text-blue-700 dark:text-blue-400">✅ Space:</strong> Yes
+                </div>
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-blue-200 dark:border-blue-800">
+                  <strong className="text-blue-700 dark:text-blue-400">❌ Clickable:</strong> No
+                </div>
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-blue-200 dark:border-blue-800">
+                  <strong className="text-blue-700 dark:text-blue-400">🔍 SEO:</strong> Yes
+                </div>
+              </div>
+            </div>
+
+            {/* Opacity: 0 */}
+            <div className="p-6 rounded-xl bg-purple-50 dark:bg-purple-950/20 border-2 border-purple-200 dark:border-purple-800">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-purple-600 text-white text-lg">opacity: 0</Badge>
+              </div>
+              <p className="text-sm text-purple-800 dark:text-purple-200 mb-4">
+                Element is invisible, takes up space, and can still be clicked!
+              </p>
+              <div className="bg-purple-900 dark:bg-purple-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-purple-100">
+                  opacity: 0;
+                </code>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-purple-200 dark:border-purple-800">
+                  <strong className="text-purple-700 dark:text-purple-400">✅ Space:</strong> Yes
+                </div>
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-purple-200 dark:border-purple-800">
+                  <strong className="text-purple-700 dark:text-purple-400">✅ Clickable:</strong> Yes!
+                </div>
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-purple-200 dark:border-purple-800">
+                  <strong className="text-purple-700 dark:text-purple-400">🔍 SEO:</strong> Yes
+                </div>
+              </div>
+            </div>
+
+            {/* Display: none */}
+            <div className="p-6 rounded-xl bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800">
+              <div className="flex items-center gap-3 mb-3">
+                <Badge className="bg-red-600 text-white text-lg">display: none</Badge>
+              </div>
+              <p className="text-sm text-red-800 dark:text-red-200 mb-4">
+                Element is completely removed from layout. No space, no interaction.
+              </p>
+              <div className="bg-red-900 dark:bg-red-950 p-4 rounded-lg mb-4">
+                <code className="text-sm text-red-100">
+                  display: none;
+                </code>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800">
+                  <strong className="text-red-700 dark:text-red-400">❌ Space:</strong> No
+                </div>
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800">
+                  <strong className="text-red-700 dark:text-red-400">❌ Clickable:</strong> No
+                </div>
+                <div className="p-3 rounded bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800">
+                  <strong className="text-red-700 dark:text-red-400">🔍 SEO:</strong> Ignored
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Interactive Demo */}
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            Interactive Comparison
+          </CardTitle>
+          <CardDescription>See the difference in behavior</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Opacity</title>
   <style>
     * {
       margin: 0;
@@ -249,15 +189,14 @@ export default function CssVisibilityOpacity({ onOpenWebPlayground }: CssVisibil
     
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
-      padding: 40px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px;
       min-height: 100vh;
-      transition: background-color 0.3s;
     }
     
     @media (prefers-color-scheme: dark) {
       body {
-        background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
       }
     }
     
@@ -266,697 +205,340 @@ export default function CssVisibilityOpacity({ onOpenWebPlayground }: CssVisibil
       margin: 0 auto;
       background: white;
       padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
     
     @media (prefers-color-scheme: dark) {
       .container {
-        background: #1e293b;
-        color: #e2e8f0;
+        background: #1a1a2e;
+        color: #e5e5e5;
       }
     }
     
     h1 {
-      color: #06b6d4;
       text-align: center;
-      margin-bottom: 15px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #22d3ee;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #6b7280;
+      color: #667eea;
       margin-bottom: 30px;
     }
     
     @media (prefers-color-scheme: dark) {
-      .subtitle {
-        color: #94a3b8;
+      h1 {
+        color: #a78bfa;
       }
     }
     
-    .opacity-demo {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
-    }
-    
-    .opacity-box {
-      height: 120px;
-      background: #06b6d4;
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background: #f9fafb;
       border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 18px;
     }
     
-    .opacity-100 { opacity: 1; }
-    .opacity-75 { opacity: 0.75; }
-    .opacity-50 { opacity: 0.5; }
-    .opacity-25 { opacity: 0.25; }
-    .opacity-0 { opacity: 0; }
+    @media (prefers-color-scheme: dark) {
+      .section {
+        background: #374151;
+      }
+    }
     
     .label {
-      font-size: 12px;
-      margin-top: 5px;
-      font-weight: normal;
-    }
-    
-    .interactive-section {
-      background: #ecfeff;
-      padding: 30px;
-      border-radius: 12px;
-      margin: 30px 0;
-      border-left: 4px solid #06b6d4;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .interactive-section {
-        background: #164e63;
-        border-left-color: #22d3ee;
-      }
-    }
-    
-    .interactive-section h2 {
-      color: #0891b2;
-      margin-bottom: 20px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .interactive-section h2 {
-        color: #67e8f9;
-      }
-    }
-    
-    .hover-box {
-      width: 200px;
-      height: 100px;
-      background: #06b6d4;
+      font-weight: 700;
+      padding: 8px 15px;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      margin: 20px auto;
-      cursor: pointer;
-      transition: opacity 0.3s ease;
-    }
-    
-    .hover-box:hover {
-      opacity: 0.7;
-    }
-    
-    .code {
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 15px;
-      border-radius: 8px;
-      font-family: monospace;
+      display: inline-block;
+      margin-bottom: 15px;
       font-size: 14px;
-      margin: 15px 0;
+    }
+    
+    .label-blue {
+      background: #dbeafe;
+      color: #1e40af;
     }
     
     @media (prefers-color-scheme: dark) {
-      .code {
-        background: #0f172a;
+      .label-blue {
+        background: #1e3a8a;
+        color: #93c5fd;
       }
     }
     
-    .info {
-      background: #fef3c7;
-      padding: 15px;
-      border-radius: 8px;
-      color: #78350f;
-      margin: 20px 0;
-      border: 2px solid #fbbf24;
+    .label-purple {
+      background: #f3e8ff;
+      color: #6b21a8;
     }
     
     @media (prefers-color-scheme: dark) {
-      .info {
-        background: #78350f;
-        color: #fef3c7;
-        border-color: #fcd34d;
+      .label-purple {
+        background: #581c87;
+        color: #e9d5ff;
       }
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>💫 CSS Opacity</h1>
-    <p class="subtitle">Make elements transparent (0 to 1)</p>
     
-    <div class="opacity-demo">
-      <div class="opacity-box opacity-100">
-        100%
-        <span class="label">opacity: 1</span>
-      </div>
-      <div class="opacity-box opacity-75">
-        75%
-        <span class="label">opacity: 0.75</span>
-      </div>
-      <div class="opacity-box opacity-50">
-        50%
-        <span class="label">opacity: 0.5</span>
-      </div>
-      <div class="opacity-box opacity-25">
-        25%
-        <span class="label">opacity: 0.25</span>
-      </div>
-      <div class="opacity-box opacity-0">
-        0%
-        <span class="label">opacity: 0</span>
-      </div>
-    </div>
-    
-    <div class="interactive-section">
-      <h2>🖱️ Interactive Hover Effect</h2>
-      <div class="hover-box">
-        Hover over me!
-      </div>
-      <div class="code">
-.hover-box {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.hover-box:hover {
-  opacity: 0.7;
-}
-      </div>
-      <p style="text-align: center; color: #0c4a6e;">
-        Hover effects with opacity are smooth and professional
-      </p>
-    </div>
-    
-    <div class="info">
-      <strong>🎯 Key Facts:</strong><br>
-      • Opacity values range from 0 (invisible) to 1 (fully visible)<br>
-      • Affects the entire element AND all children<br>
-      • Element still takes up space even at opacity: 0<br>
-      • Great for fade-in/fade-out animations
-    </div>
-  </div>
-</body>
-</html>`;
-
-  const comparisonExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>display vs visibility vs opacity</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-      transition: background-color 0.3s;
+    .label-red {
+      background: #fee;
+      color: #991b1b;
     }
     
     @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+      .label-red {
+        background: #7f1d1d;
+        color: #fca5a5;
       }
     }
     
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    h1 {
-      color: #f97316;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #fb923c;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #6b7280;
-      margin-bottom: 30px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .subtitle {
-        color: #94a3b8;
-      }
-    }
-    
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
-    }
-    
-    .example {
-      background: #fff7ed;
-      padding: 20px;
-      border-radius: 12px;
-      border: 2px solid #f97316;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .example {
-        background: #7c2d12;
-        border-color: #fb923c;
-      }
-    }
-    
-    .example h3 {
-      color: #ea580c;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .example h3 {
-        color: #fdba74;
-      }
-    }
-    
-    .demo-container {
-      background: white;
-      padding: 15px;
-      border-radius: 8px;
-      min-height: 150px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .demo-container {
-        background: #1e293b;
-      }
+    .boxes {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
     }
     
     .box {
-      width: 100%;
-      height: 80px;
-      background: #f97316;
-      border-radius: 8px;
+      width: 150px;
+      height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      border-radius: 12px;
       font-weight: 600;
-      margin: 10px 0;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
     
-    .box-display-none {
-      display: none;
+    .box:hover {
+      transform: scale(1.05);
     }
     
-    .box-visibility-hidden {
+    .box-1 {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+    
+    .box-2 {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       visibility: hidden;
     }
     
-    .box-opacity-0 {
+    .box-3 {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+    
+    .note {
+      margin-top: 15px;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #4b5563;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .note {
+        background: #1f2937;
+        color: #d1d5db;
+      }
+    }
+    
+    /* Opacity demo */
+    .opacity-box {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
       opacity: 0;
     }
     
-    .feature-list {
-      background: #fef3c7;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-size: 14px;
-      color: #78350f;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .feature-list {
-        background: #78350f;
-        color: #fef3c7;
-      }
-    }
-    
-    .feature-list ul {
-      margin: 10px 0;
-      padding-left: 20px;
-    }
-    
-    .feature-list li {
-      line-height: 1.8;
-    }
-    
-    .comparison-table {
-      width: 100%;
-      margin: 30px 0;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .comparison-table {
-        background: #334155;
-      }
-    }
-    
-    .comparison-table th {
-      background: #f97316;
-      color: white;
-      padding: 15px;
-      text-align: left;
-      font-weight: 600;
-    }
-    
-    .comparison-table td {
-      padding: 15px;
-      border-bottom: 1px solid #fed7aa;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .comparison-table td {
-        border-bottom-color: #7c2d12;
-        color: #e2e8f0;
-      }
-    }
-    
-    .comparison-table tr:last-child td {
-      border-bottom: none;
-    }
-    
-    .yes {
-      color: #10b981;
-      font-weight: 600;
-    }
-    
-    .no {
-      color: #ef4444;
-      font-weight: 600;
+    /* Display none demo */
+    .display-box {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      display: none;
     }
   </style>
+  
+  <script>
+    function handleClick(method) {
+      alert('You clicked the box with: ' + method);
+    }
+  </script>
 </head>
 <body>
   <div class="container">
-    <h1>⚖️ display vs visibility vs opacity</h1>
-    <p class="subtitle">Understanding the differences</p>
+    <h1>👁️ Visibility & Opacity Demo</h1>
     
-    <div class="comparison-grid">
-      <div class="example">
-        <h3>display: none</h3>
-        <div class="demo-container">
-          <div class="box">Box 1</div>
-          <div class="box box-display-none">Hidden Box</div>
-          <div class="box">Box 3</div>
-        </div>
-        <div class="feature-list">
-          <ul>
-            <li>❌ Not visible</li>
-            <li>❌ Takes NO space</li>
-            <li>❌ Not clickable</li>
-            <li>⚡ Layout reflows</li>
-          </ul>
-        </div>
+    <div class="section">
+      <div class="label label-blue">visibility: hidden</div>
+      <div class="boxes">
+        <div class="box box-1" onclick="handleClick('Box 1')">Box 1<br>Visible</div>
+        <div class="box box-2" onclick="handleClick('Box 2 - visibility:hidden')">Box 2<br>Hidden</div>
+        <div class="box box-3" onclick="handleClick('Box 3')">Box 3<br>Visible</div>
       </div>
-      
-      <div class="example">
-        <h3>visibility: hidden</h3>
-        <div class="demo-container">
-          <div class="box">Box 1</div>
-          <div class="box box-visibility-hidden">Hidden Box</div>
-          <div class="box">Box 3</div>
-        </div>
-        <div class="feature-list">
-          <ul>
-            <li>❌ Not visible</li>
-            <li>✅ Takes space</li>
-            <li>❌ Not clickable</li>
-            <li>🎯 No layout shift</li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="example">
-        <h3>opacity: 0</h3>
-        <div class="demo-container">
-          <div class="box">Box 1</div>
-          <div class="box box-opacity-0">Hidden Box</div>
-          <div class="box">Box 3</div>
-        </div>
-        <div class="feature-list">
-          <ul>
-            <li>❌ Not visible</li>
-            <li>✅ Takes space</li>
-            <li>✅ Still clickable!</li>
-            <li>💫 Good for fades</li>
-          </ul>
-        </div>
+      <div class="note">
+        ⚠️ Notice: Box 2 is hidden but its space remains. Other boxes don't shift.
+        Try clicking where Box 2 should be - nothing happens!
       </div>
     </div>
     
-    <table class="comparison-table">
-      <thead>
-        <tr>
-          <th>Property</th>
-          <th>Visible</th>
-          <th>Takes Space</th>
-          <th>Clickable</th>
-          <th>Best For</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>display: none</strong></td>
-          <td class="no">No</td>
-          <td class="no">No</td>
-          <td class="no">No</td>
-          <td>Removing from layout</td>
-        </tr>
-        <tr>
-          <td><strong>visibility: hidden</strong></td>
-          <td class="no">No</td>
-          <td class="yes">Yes</td>
-          <td class="no">No</td>
-          <td>Hiding without layout shift</td>
-        </tr>
-        <tr>
-          <td><strong>opacity: 0</strong></td>
-          <td class="no">No</td>
-          <td class="yes">Yes</td>
-          <td class="yes">Yes</td>
-          <td>Fade animations</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="section">
+      <div class="label label-purple">opacity: 0</div>
+      <div class="boxes">
+        <div class="box box-1" onclick="handleClick('Box 1')">Box 1<br>Visible</div>
+        <div class="box opacity-box" onclick="handleClick('Box 2 - opacity:0')">Box 2<br>Invisible</div>
+        <div class="box box-3" onclick="handleClick('Box 3')">Box 3<br>Visible</div>
+      </div>
+      <div class="note">
+        ⚠️ Notice: Box 2 is invisible but takes space AND you can still click it! 
+        Try clicking where Box 2 should be - the alert will fire!
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="label label-red">display: none</div>
+      <div class="boxes">
+        <div class="box box-1" onclick="handleClick('Box 1')">Box 1<br>Visible</div>
+        <div class="box display-box" onclick="handleClick('Box 2 - display:none')">Box 2<br>Removed</div>
+        <div class="box box-3" onclick="handleClick('Box 3')">Box 3<br>Visible</div>
+      </div>
+      <div class="note">
+        ✅ Notice: Box 2 is completely gone! Box 3 shifts left. No space, no interaction.
+      </div>
+    </div>
   </div>
 </body>
-</html>`;
-
-  return (
-    <div className="space-y-8">
-      <PageHeader
-        icon={Eye}
-        category="CSS · Fundamentals"
-        title="Visibility & Opacity"
-        description="Control element visibility with different techniques and understand the differences"
-        colorTheme="blue"
-      />
-
-      {/* Introduction */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            Hiding Elements in CSS
-          </CardTitle>
-          <CardDescription>
-            Three different ways to make elements invisible
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground leading-relaxed">
-            CSS provides multiple ways to hide elements, each with different behavior. Understanding these 
-            differences is crucial for creating smooth animations, interactive UIs, and responsive layouts.
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800">
-              <EyeOff className="h-6 w-6 text-red-600 dark:text-red-400 mb-2" />
-              <h4 className="font-semibold mb-2">display: none</h4>
-              <p className="text-sm text-muted-foreground">
-                Removes from layout completely
-              </p>
-            </div>
-            
-            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-              <Eye className="h-6 w-6 text-purple-600 dark:text-purple-400 mb-2" />
-              <h4 className="font-semibold mb-2">visibility: hidden</h4>
-              <p className="text-sm text-muted-foreground">
-                Invisible but keeps space
-              </p>
-            </div>
-            
-            <div className="p-4 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg border border-cyan-200 dark:border-cyan-800">
-              <Sparkles className="h-6 w-6 text-cyan-600 dark:text-cyan-400 mb-2" />
-              <h4 className="font-semibold mb-2">opacity: 0</h4>
-              <p className="text-sm text-muted-foreground">
-                Transparent but interactive
-              </p>
-            </div>
-          </div>
+</html>`}
+            title="Visibility & Opacity Comparison"
+            colorTheme="indigo"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
         </CardContent>
       </Card>
 
-      {/* Visibility Property */}
-      <Card>
+      {/* Opacity Levels */}
+      <Card className="border-2 border-green-200 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <EyeOff className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            visibility Property
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Ghost className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Opacity Levels
           </CardTitle>
-          <CardDescription>
-            Hide elements while preserving layout space
-          </CardDescription>
+          <CardDescription>Control transparency from 0 to 1</CardDescription>
         </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={visibilityExample}
-            title="visibility: hidden Example"
-            colorTheme="purple"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-          
-          <div className="mt-4 p-4 rounded-lg bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
-            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">When to Use visibility: hidden:</h4>
-            <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+        <CardContent className="space-y-6">
+          <p className="text-gray-700 dark:text-gray-300">
+            The <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">opacity</code> property accepts 
+            values from <strong>0</strong> (fully transparent) to <strong>1</strong> (fully opaque).
+          </p>
+
+          <div className="grid md:grid-cols-5 gap-3">
+            {[
+              { value: '0', percent: '0%', desc: 'Invisible' },
+              { value: '0.25', percent: '25%', desc: 'Very faint' },
+              { value: '0.5', percent: '50%', desc: 'Half transparent' },
+              { value: '0.75', percent: '75%', desc: 'Slightly transparent' },
+              { value: '1', percent: '100%', desc: 'Fully opaque' }
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div 
+                  className="h-24 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 mb-2"
+                  style={{ opacity: parseFloat(item.value) }}
+                ></div>
+                <code className="text-sm font-bold">{item.value}</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-5 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+            <h4 className="font-bold mb-3">Common Use Cases:</h4>
+            <ul className="space-y-2 text-sm text-green-800 dark:text-green-200">
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>Toggle elements without causing layout shifts</span>
+                <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0" />
+                <span><strong>Fade effects:</strong> Animate from 0 to 1</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>Maintain spacing in grid/flex layouts</span>
+                <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0" />
+                <span><strong>Disabled states:</strong> opacity: 0.5 for disabled buttons</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>Prevent cumulative layout shift (CLS) issues</span>
+                <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0" />
+                <span><strong>Overlays:</strong> Semi-transparent backgrounds</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0" />
+                <span><strong>Watermarks:</strong> Low opacity for subtle branding</span>
               </li>
             </ul>
           </div>
         </CardContent>
       </Card>
 
-      {/* Opacity Property */}
-      <Card>
+      {/* Pointer Events */}
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-cyan-500/10 rounded-lg">
-              <Sparkles className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
-            </div>
-            opacity Property
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <MousePointer className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            Bonus: pointer-events
           </CardTitle>
-          <CardDescription>
-            Control transparency level from 0 to 1
-          </CardDescription>
+          <CardDescription>Control click interactions</CardDescription>
         </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={opacityExample}
-            title="Opacity Values & Hover Effects"
-            colorTheme="cyan"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-          
-          <Alert className="mt-4 border-cyan-200 dark:border-cyan-800 bg-cyan-50 dark:bg-cyan-950/20">
-            <Info className="h-4 w-4 text-cyan-600" />
-            <AlertTitle className="text-cyan-900 dark:text-cyan-100">Opacity Affects Children</AlertTitle>
-            <AlertDescription className="text-cyan-800 dark:text-cyan-200">
-              When you set <code className="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 rounded">opacity</code> on 
-              a parent, ALL child elements inherit that transparency. You can't make children more opaque than their parent!
+        <CardContent className="space-y-4">
+          <p className="text-gray-700 dark:text-gray-300">
+            The <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">pointer-events</code> property 
+            controls whether an element can be clicked or not.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-orange-50 dark:bg-orange-950/20 border-2 border-orange-200 dark:border-orange-800">
+              <Badge className="bg-orange-600 text-white mb-3">pointer-events: none</Badge>
+              <p className="text-sm text-orange-800 dark:text-orange-200 mb-3">
+                Element cannot be clicked, even if visible. Clicks pass through to elements below.
+              </p>
+              <div className="bg-orange-900 dark:bg-orange-950 p-3 rounded-lg">
+                <code className="text-sm text-orange-100">
+                  pointer-events: none;
+                </code>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-orange-50 dark:bg-orange-950/20 border-2 border-orange-200 dark:border-orange-800">
+              <Badge className="bg-orange-600 text-white mb-3">pointer-events: auto</Badge>
+              <p className="text-sm text-orange-800 dark:text-orange-200 mb-3">
+                Default - element can be clicked normally.
+              </p>
+              <div className="bg-orange-900 dark:bg-orange-950 p-3 rounded-lg">
+                <code className="text-sm text-orange-100">
+                  pointer-events: auto;
+                </code>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/20">
+            <Lightbulb className="w-5 h-5 text-orange-600" />
+            <AlertTitle className="text-orange-900 dark:text-orange-100">Pro Tip</AlertTitle>
+            <AlertDescription className="text-orange-800 dark:text-orange-200">
+              Combine <code>opacity: 0</code> with <code>pointer-events: none</code> to completely 
+              hide an element while keeping it in the DOM (useful for animations).
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Comparison */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-orange-500/10 rounded-lg">
-              <MousePointer className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-            </div>
-            Complete Comparison
-          </CardTitle>
-          <CardDescription>
-            display: none vs visibility: hidden vs opacity: 0
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={comparisonExample}
-            title="Side-by-Side Comparison"
-            colorTheme="orange"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Best Practices */}
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Visibility & Opacity Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Use display: none</strong> - When element should not exist in layout</li>
-            <li><strong>Use visibility: hidden</strong> - When you want to prevent layout shifts</li>
-            <li><strong>Use opacity: 0</strong> - For smooth fade animations with transitions</li>
-            <li><strong>Combine with transitions</strong> - opacity works great with CSS transitions</li>
-            <li><strong>Consider accessibility</strong> - Hidden elements aren't read by screen readers</li>
-            <li><strong>Watch for clickability</strong> - opacity: 0 elements are still interactive!</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      {/* Browser Support */}
-      <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
-        <CheckCircle className="h-4 w-4 text-green-600" />
-        <AlertTitle className="text-green-900 dark:text-green-100">Perfect Browser Support</AlertTitle>
-        <AlertDescription className="text-green-800 dark:text-green-200">
-          Both <code className="px-2 py-1 bg-green-100 dark:bg-green-900 rounded">visibility</code> and 
-          <code className="px-2 py-1 bg-green-100 dark:bg-green-900 rounded mx-1">opacity</code> are supported 
-          in all browsers including IE9+. These are fundamental CSS properties you can use with confidence!
+      {/* Key Takeaways */}
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>visibility: hidden</strong> - Invisible, takes space, not clickable</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>opacity: 0</strong> - Invisible, takes space, still clickable!</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>display: none</strong> - Completely removed from layout</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <strong>pointer-events: none</strong> to disable clicks on visible elements</span>
+          </div>
         </AlertDescription>
       </Alert>
     </div>

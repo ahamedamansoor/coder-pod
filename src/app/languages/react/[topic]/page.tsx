@@ -18,7 +18,8 @@ import { useReactPlayground } from '@/components/languages/react/react-playgroun
 function TopicPageContent() {
   const params = useParams();
   const { topic: topicSlug } = params;
-  const { openWithContent } = useReactPlayground();
+  const playground = useReactPlayground();
+  const openWithContent = playground?.openWithContent;
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'react');
   if (!language) notFound();
@@ -27,7 +28,7 @@ function TopicPageContent() {
   if (!selectedTopic) notFound();
 
   const handleOpenEditor = useCallback((code?: string) => {
-    if (code) {
+    if (code && openWithContent) {
       openWithContent(code);
     }
   }, [openWithContent]);
