@@ -2,906 +2,758 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   GitBranch,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
-  Code,
-  AlertCircle,
-  Layers,
   ArrowUp,
-  Share2,
+  Layers,
+  Users,
 } from 'lucide-react';
 
-interface JavaScriptClassInheritanceProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
+export default function JavaScriptClassInheritance() {
+  return (
+    <div className="w-full space-y-8 pb-16">
+      <PageHeader
+        icon={GitBranch}
+        category="JavaScript Fundamentals"
+        title="Class Inheritance"
+        description="Create specialized classes that inherit from parent classes"
+        colorTheme="yellow"
+      />
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
+      {/* What is Class Inheritance */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What is Class Inheritance?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Inheritance lets you create a <strong className="text-yellow-700 dark:text-yellow-400">specialized class</strong> based on an existing one. The new class gets all properties and methods from the parent, plus its own unique features!
+              </p>
+            </div>
+          </div>
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Class Inheritance Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px; 
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      margin-top: 24px; 
-      font-family: monospace; 
-      font-size: 14px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Class Inheritance</h1>
-    <p>Open the browser console (F12) to see inheritance examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./inheritance-demo.js"></script>
-</body>
-</html>`;
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <GitBranch className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Parent-Child Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Like a child inheriting traits from parents! A "Dog" class can inherit from "Animal" - it gets all Animal features, plus Dog-specific behaviors like barking.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
 
-const playgroundJs = `console.clear();
-console.log('=== Class Inheritance Demo ===\\n');
-
-// 1. Basic Inheritance
-console.log('1. BASIC INHERITANCE:');
+      {/* Basic Inheritance */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <ArrowUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Basic Inheritance with extends</CardTitle>
+              <CardDescription>Use extends keyword to inherit from parent class</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Parent → Child</h4>
+            </div>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Parent class
 class Animal {
   constructor(name) {
     this.name = name;
   }
   
   speak() {
-    return this.name + ' makes a sound';
+    console.log(\`\${this.name} makes a sound\`);
   }
 }
 
+// Child class inherits from Animal
 class Dog extends Animal {
   bark() {
-    return this.name + ' barks!';
+    console.log(\`\${this.name} barks!\`);
   }
 }
 
-const dog = new Dog('Max');
-console.log(dog.speak());
-console.log(dog.bark());
-console.log(dog instanceof Dog);
-console.log(dog instanceof Animal);
-
-// 2. super Keyword
-console.log('\\n2. SUPER KEYWORD:');
-class Cat extends Animal {
-  constructor(name, color) {
-    super(name); // Call parent constructor
-    this.color = color;
-  }
-  
-  speak() {
-    return super.speak() + ' and meows!';
-  }
-}
-
-const cat = new Cat('Whiskers', 'orange');
-console.log(cat.speak());
-console.log(cat.color);
-
-// 3. Method Overriding
-console.log('\\n3. METHOD OVERRIDING:');
-class Bird extends Animal {
-  speak() {
-    return this.name + ' chirps!';
-  }
-  
-  fly() {
-    return this.name + ' is flying';
-  }
-}
-
-const bird = new Bird('Tweety');
-console.log(bird.speak());
-console.log(bird.fly());
-
-// 4. Multi-level Inheritance
-console.log('\\n4. MULTI-LEVEL INHERITANCE:');
-class Mammal extends Animal {
-  nurse() {
-    return this.name + ' nurses young';
-  }
-}
-
-class Dolphin extends Mammal {
-  swim() {
-    return this.name + ' swims';
-  }
-}
-
-const dolphin = new Dolphin('Flipper');
-console.log(dolphin.speak());
-console.log(dolphin.nurse());
-console.log(dolphin.swim());
-
-console.log('\\nAll inheritance examples demonstrated!');
-`;
-
-export default function JavaScriptClassInheritance({ onOpenWebPlayground }: JavaScriptClassInheritanceProps) {
-  return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
-      <PageHeader
-        icon={GitBranch}
-        category="JavaScript · Object-Oriented"
-        title="Class Inheritance"
-        description="Master inheritance with extends and super - create class hierarchies, override methods, call parent constructors, and build reusable object-oriented code."
-        colorTheme="blue"
-      />
-
-      {/* What is Class Inheritance */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What is Class Inheritance?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Inheritance allows a class to inherit properties and methods from another class.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Think of inheritance like a <strong>family tree</strong>. A child class inherits from its parent but can add unique features or modify inherited ones.
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <GitBranch className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold text-sm">extends Keyword</h4>
+const dog = new Dog('Buddy');
+dog.speak();  // 'Buddy makes a sound' (inherited)
+dog.bark();   // 'Buddy barks!' (own method)`}</pre>
               </div>
-              <p className="text-xs text-muted-foreground">Create child classes from parents</p>
-              <Badge className="mt-2 bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 text-xs">ES6</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <ArrowUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                <h4 className="font-semibold text-sm">super Keyword</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">Access parent constructor and methods</p>
-              <Badge className="mt-2 bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 text-xs">Access Parent</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Share2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold text-sm">Method Override</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">Customize inherited behavior</p>
-              <Badge className="mt-2 bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 text-xs">Polymorphism</Badge>
             </div>
           </div>
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>IS-A Relationship</AlertTitle>
-            <AlertDescription>
-              Use inheritance for "IS-A" relationships. Dog IS-A Animal, Car IS-A Vehicle.
-            </AlertDescription>
-          </Alert>
         </CardContent>
       </Card>
 
-      {/* The extends Keyword */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <GitBranch className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            The extends Keyword - Creating Child Classes
-          </CardTitle>
-          <CardDescription className="text-base">
-            Use extends to create a subclass that inherits from a parent class.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Basic Inheritance</h4>
-              <p className="text-xs text-muted-foreground">
-                Child class inherits all parent methods
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Animal {
+      <CodeSnippet
+        title="Basic Inheritance Example"
+        description="Child class inherits from parent"
+        code={`// Parent class
+class Animal {
   constructor(name) {
     this.name = name;
   }
   
   eat() {
-    return this.name + ' is eating';
+    console.log(\`\${this.name} is eating\`);
   }
   
   sleep() {
-    return this.name + ' is sleeping';
+    console.log(\`\${this.name} is sleeping\`);
   }
 }
 
-// Dog extends Animal
+// Child class inherits all Animal methods
 class Dog extends Animal {
   bark() {
-    return this.name + ' barks!';
+    console.log(\`\${this.name} says Woof!\`);
   }
 }
 
-const dog = new Dog('Max');
-console.log(dog.eat());
-console.log(dog.sleep());
-console.log(dog.bark());`}
-              </pre>
-              <SnippetOutput lines={['dog.eat() -> "Max is eating"', 'dog.sleep() -> "Max is sleeping"', 'dog.bark() -> "Max barks!"', 'Dog inherits from Animal']} />
+class Cat extends Animal {
+  meow() {
+    console.log(\`\${this.name} says Meow!\`);
+  }
+}
+
+// Create instances
+const dog = new Dog('Buddy');
+const cat = new Cat('Whiskers');
+
+// Use inherited methods
+dog.eat();    // 'Buddy is eating' (from Animal)
+dog.sleep();  // 'Buddy is sleeping' (from Animal)
+dog.bark();   // 'Buddy says Woof!' (own method)
+
+cat.eat();    // 'Whiskers is eating' (from Animal)
+cat.meow();   // 'Whiskers says Meow!' (own method)
+
+// Check inheritance
+console.log(dog instanceof Dog);     // true
+console.log(dog instanceof Animal);  // true
+console.log(cat instanceof Animal);  // true`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* super() in Constructor */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Layers className="w-5 h-5 text-green-600 dark:text-green-400" />
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">instanceof Check</h4>
-              <p className="text-xs text-muted-foreground">
-                Verify inheritance relationships
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Vehicle {
-  constructor(type) {
-    this.type = type;
-  }
-}
-
-class Car extends Vehicle {
-  constructor(brand) {
-    super('car');
-    this.brand = brand;
-  }
-}
-
-const myCar = new Car('Toyota');
-
-console.log(myCar instanceof Car);
-console.log(myCar instanceof Vehicle);
-console.log(myCar instanceof Object);
-
-console.log(Car.prototype instanceof Vehicle);`}
-              </pre>
-              <SnippetOutput lines={['myCar instanceof Car -> true', 'myCar instanceof Vehicle -> true', 'myCar instanceof Object -> true', 'Prototype chain verified']} />
+            <div>
+              <CardTitle>super() - Call Parent Constructor</CardTitle>
+              <CardDescription>Initialize parent class properties</CardDescription>
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Multiple Properties</h4>
-              <p className="text-xs text-muted-foreground">
-                Inherit and add your own properties
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Calling Parent Constructor</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use <code className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">super()</code> to call the parent's constructor
               </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Person {
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`class Animal {
   constructor(name, age) {
     this.name = name;
     this.age = age;
   }
-  
-  introduce() {
-    return 'I am ' + this.name;
+}
+
+class Dog extends Animal {
+  constructor(name, age, breed) {
+    super(name, age);  // Call parent constructor
+    this.breed = breed;  // Add child property
   }
 }
 
-class Employee extends Person {
-  constructor(name, age, jobTitle) {
-    super(name, age);
-    this.jobTitle = jobTitle;
-  }
-  
-  work() {
-    return this.name + ' is working as ' + this.jobTitle;
-  }
-}
-
-const emp = new Employee('Alice', 30, 'Developer');
-console.log(emp.introduce());
-console.log(emp.work());
-console.log(emp.jobTitle);`}
-              </pre>
-              <SnippetOutput lines={['emp.introduce() -> "I am Alice"', 'emp.work() -> "Alice is working as Developer"', 'emp.jobTitle -> "Developer"', 'Combined parent & child properties']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Inheriting Static Methods</h4>
-              <p className="text-xs text-muted-foreground">
-                Static methods are also inherited
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Shape {
-  static getDescription() {
-    return 'A geometric shape';
-  }
-  
-  static count = 0;
-}
-
-class Circle extends Shape {
-  static getType() {
-    return 'Circle';
-  }
-}
-
-// Child class inherits static methods
-console.log(Circle.getDescription());
-console.log(Circle.getType());
-
-// Child can access parent's static properties
-Circle.count++;
-console.log(Circle.count);`}
-              </pre>
-              <SnippetOutput lines={['Circle.getDescription() -> "A geometric shape"', 'Circle.getType() -> "Circle"', 'Circle.count -> 1', 'Static members inherited!']} />
+const dog = new Dog('Buddy', 3, 'Golden Retriever');
+console.log(dog.name);   // 'Buddy' (from parent)
+console.log(dog.age);    // 3 (from parent)
+console.log(dog.breed);  // 'Golden Retriever' (own)`}</pre>
+              </div>
+              <Alert className="mt-4 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/30">
+                <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <AlertDescription className="text-sm">
+                  <strong>Important:</strong> If child has constructor, you <strong>must</strong> call <code className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded text-xs">super()</code> before using <code className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded text-xs">this</code>!
+                </AlertDescription>
+              </Alert>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* The super Keyword */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ArrowUp className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            The super Keyword
-          </CardTitle>
-          <CardDescription className="text-base">
-            Access parent class constructor and methods using super.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Two Uses of super</AlertTitle>
-            <AlertDescription>
-              1) <code className="font-mono text-xs">super()</code> - Call parent constructor (must be first in child constructor)
-              <br />
-              2) <code className="font-mono text-xs">super.method()</code> - Call parent methods
-            </AlertDescription>
-          </Alert>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">super() in Constructor</h4>
-              <p className="text-xs text-muted-foreground">
-                Initialize parent class properties
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Rectangle {
-  constructor(width, height) {
-    this.width = width;
-    this.height = height;
+      <CodeSnippet
+        title="super() Examples"
+        description="Initializing parent and child properties"
+        code={`// Parent class
+class Person {
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
   }
   
-  getArea() {
-    return this.width * this.height;
+  getFullName() {
+    return \`\${this.firstName} \${this.lastName}\`;
   }
 }
 
-class Square extends Rectangle {
-  constructor(size) {
-    super(size, size);
-    this.size = size;
+// Child class
+class Employee extends Person {
+  constructor(firstName, lastName, jobTitle, salary) {
+    super(firstName, lastName);  // Initialize parent properties
+    this.jobTitle = jobTitle;    // Child property
+    this.salary = salary;        // Child property
+  }
+  
+  getInfo() {
+    return \`\${this.getFullName()} - \${this.jobTitle}\`;
   }
 }
 
-const square = new Square(5);
-console.log(square.getArea());
-console.log(square.width);
-console.log(square.height);
-console.log(square.size);`}
-              </pre>
-              <SnippetOutput lines={['square.getArea() -> 25', 'square.width -> 5', 'square.height -> 5', 'square.size -> 5', 'super() initializes parent']} />
+const emp = new Employee('John', 'Doe', 'Developer', 80000);
+console.log(emp.getFullName());  // 'John Doe' (inherited)
+console.log(emp.getInfo());      // 'John Doe - Developer'
+console.log(emp.salary);         // 80000
+
+// Real-world: Vehicle hierarchy
+class Vehicle {
+  constructor(make, model, year) {
+    this.make = make;
+    this.model = model;
+    this.year = year;
+  }
+  
+  getInfo() {
+    return \`\${this.year} \${this.make} \${this.model}\`;
+  }
+}
+
+class Car extends Vehicle {
+  constructor(make, model, year, doors) {
+    super(make, model, year);
+    this.doors = doors;
+  }
+  
+  getDetails() {
+    return \`\${this.getInfo()} (\${this.doors} doors)\`;
+  }
+}
+
+const car = new Car('Toyota', 'Camry', 2020, 4);
+console.log(car.getDetails());
+// '2020 Toyota Camry (4 doors)'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Method Overriding */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Must Call super() First</h4>
-              <p className="text-xs text-muted-foreground">
-                super() required before using this
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Parent {
-  constructor(name) {
-    this.name = name;
-  }
-}
-
-class Child extends Parent {
-  constructor(name, age) {
-    // Must call super() first
-    super(name);
-    
-    // NOW we can use 'this'
-    this.age = age;
-  }
-}
-
-const child = new Child('Alice', 10);
-console.log(child.name);
-console.log(child.age);`}
-              </pre>
-              <SnippetOutput lines={['child.name -> "Alice"', 'child.age -> 10', 'super() must come first!', 'Then you can use this']} />
+            <div>
+              <CardTitle>Method Overriding</CardTitle>
+              <CardDescription>Replace parent method with child's version</CardDescription>
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">super.method() Call</h4>
-              <p className="text-xs text-muted-foreground">
-                Call parent class methods
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Override Parent Methods</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Child class can define its own version of a parent method
               </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
 {`class Animal {
   speak() {
-    return 'Animal makes a sound';
+    console.log('Animal makes a sound');
+  }
+}
+
+class Dog extends Animal {
+  speak() {
+    console.log('Dog barks!');  // Override parent method
   }
 }
 
 class Cat extends Animal {
   speak() {
-    const parentSound = super.speak();
-    return parentSound + ' - specifically meows';
+    console.log('Cat meows!');  // Override parent method
   }
 }
 
-const cat = new Cat();
-console.log(cat.speak());
-
-class Dog extends Animal {
-  speak() {
-    return 'Dog barks';
-  }
-}
-
+const animal = new Animal();
 const dog = new Dog();
-console.log(dog.speak());`}
-              </pre>
-              <SnippetOutput lines={['cat.speak() -> "Animal makes a sound - specifically meows"', 'dog.speak() -> "Dog barks"', 'super.method() extends behavior', 'Without super, complete override']} />
-            </div>
+const cat = new Cat();
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">super in Static Methods</h4>
-              <p className="text-xs text-muted-foreground">
-                Call parent static methods
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Base {
-  static greet() {
-    return 'Hello from Base';
-  }
-}
-
-class Derived extends Base {
-  static greet() {
-    const baseGreeting = super.greet();
-    return baseGreeting + ' and Derived';
-  }
-}
-
-console.log(Base.greet());
-console.log(Derived.greet());
-
-class Extended extends Base {
-  static farewell() {
-    return 'Goodbye';
-  }
-}
-
-console.log(Extended.greet());
-console.log(Extended.farewell());`}
-              </pre>
-              <SnippetOutput lines={['Base.greet() -> "Hello from Base"', 'Derived.greet() -> "Hello from Base and Derived"', 'Extended has both methods', 'super works in static context']} />
+animal.speak();  // 'Animal makes a sound'
+dog.speak();     // 'Dog barks!' (overridden)
+cat.speak();     // 'Cat meows!' (overridden)`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Method Overriding */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Method Overriding & Polymorphism
-          </CardTitle>
-          <CardDescription className="text-base">
-            Child classes can override parent methods to provide specialized behavior.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Complete Override
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`class Vehicle {
-  start() {
-    return 'Vehicle starting...';
+      <CodeSnippet
+        title="Method Overriding Examples"
+        description="Customizing parent methods"
+        code={`class Shape {
+  constructor(name) {
+    this.name = name;
   }
   
-  stop() {
-    return 'Vehicle stopping...';
+  getArea() {
+    return 0;  // Default implementation
+  }
+  
+  getInfo() {
+    return \`\${this.name}: Area = \${this.getArea()}\`;
   }
 }
 
-class ElectricCar extends Vehicle {
-  start() {
-    return 'Electric motor powering on silently';
+class Rectangle extends Shape {
+  constructor(width, height) {
+    super('Rectangle');
+    this.width = width;
+    this.height = height;
   }
-}
-
-const tesla = new ElectricCar();
-console.log(tesla.start());
-console.log(tesla.stop());`}
-              </pre>
-              <SnippetOutput lines={['tesla.start() -> "Electric motor powering on silently"', 'tesla.stop() -> "Vehicle stopping..."', 'start() overridden, stop() inherited']} />
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Extend with super
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`class Logger {
-  log(message) {
-    console.log('[LOG]:', message);
-  }
-}
-
-class TimestampLogger extends Logger {
-  log(message) {
-    const timestamp = new Date().toISOString();
-    const enhanced = timestamp + ' - ' + message;
-    super.log(enhanced);
-  }
-}
-
-const logger = new TimestampLogger();
-logger.log('User logged in');`}
-              </pre>
-              <SnippetOutput lines={['[LOG]: 2024-01-01T12:00:00.000Z - User logged in', 'Extended parent behavior with timestamp']} />
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Polymorphism in Action
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`class Shape {
-  area() {
-    return 0;
+  
+  // Override getArea()
+  getArea() {
+    return this.width * this.height;
   }
 }
 
 class Circle extends Shape {
   constructor(radius) {
-    super();
+    super('Circle');
     this.radius = radius;
   }
   
-  area() {
+  // Override getArea()
+  getArea() {
     return Math.PI * this.radius ** 2;
   }
 }
 
-class Square extends Shape {
-  constructor(side) {
-    super();
-    this.side = side;
+const rect = new Rectangle(5, 10);
+const circle = new Circle(7);
+
+console.log(rect.getInfo());
+// 'Rectangle: Area = 50'
+
+console.log(circle.getInfo());
+// 'Circle: Area = 153.93...'
+
+// Real-world: Employee types
+class Employee {
+  constructor(name, baseSalary) {
+    this.name = name;
+    this.baseSalary = baseSalary;
   }
   
-  area() {
-    return this.side ** 2;
+  getSalary() {
+    return this.baseSalary;
   }
 }
 
-const shapes = [new Circle(5), new Square(4)];
-shapes.forEach(shape => {
-  console.log('Area:', shape.area().toFixed(2));
-});`}
-              </pre>
-              <SnippetOutput lines={['Area: 78.54 (Circle)', 'Area: 16.00 (Square)', 'Same interface, different implementations', 'Polymorphism!']} />
+class Manager extends Employee {
+  constructor(name, baseSalary, bonus) {
+    super(name, baseSalary);
+    this.bonus = bonus;
+  }
+  
+  // Override getSalary()
+  getSalary() {
+    return this.baseSalary + this.bonus;
+  }
+}
+
+const emp = new Employee('John', 50000);
+const mgr = new Manager('Jane', 60000, 10000);
+
+console.log(emp.getSalary());  // 50000
+console.log(mgr.getSalary());  // 70000 (overridden)`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* super.method() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <ArrowUp className="w-5 h-5 text-orange-600 dark:text-orange-400" />
             </div>
-
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                Multi-Level Override
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+            <div>
+              <CardTitle>super.method() - Call Parent Method</CardTitle>
+              <CardDescription>Extend parent method instead of replacing</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Extend Parent Behavior</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Call parent method and add child behavior
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
 {`class Animal {
-  move() {
-    return 'Animal moves';
+  speak() {
+    console.log(\`\${this.name} makes a sound\`);
   }
 }
 
-class Mammal extends Animal {
-  move() {
-    return super.move() + ' on land';
-  }
-}
-
-class Dog extends Mammal {
-  move() {
-    return super.move() + ' by running';
+class Dog extends Animal {
+  speak() {
+    super.speak();  // Call parent method first
+    console.log('Woof woof!');  // Then add child behavior
   }
 }
 
 const dog = new Dog();
-console.log(dog.move());`}
-              </pre>
-              <SnippetOutput lines={['dog.move() -> "Animal moves on land by running"', 'Each level extends the previous', 'Multi-level inheritance chain']} />
+dog.name = 'Buddy';
+dog.speak();
+// 'Buddy makes a sound' (parent)
+// 'Woof woof!' (child)`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Real-World Examples */}
+      <CodeSnippet
+        title="super.method() Examples"
+        description="Extending parent methods"
+        code={`class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  introduce() {
+    console.log(\`Hi, I'm \${this.name}\`);
+  }
+}
+
+class Student extends Person {
+  constructor(name, grade) {
+    super(name);
+    this.grade = grade;
+  }
+  
+  introduce() {
+    super.introduce();  // Call parent method
+    console.log(\`I'm in grade \${this.grade}\`);  // Add more info
+  }
+}
+
+const student = new Student('Alice', 10);
+student.introduce();
+// 'Hi, I'm Alice' (from parent)
+// 'I'm in grade 10' (from child)
+
+// Real-world: Logger hierarchy
+class Logger {
+  log(message) {
+    console.log(\`[\${new Date().toISOString()}] \${message}\`);
+  }
+}
+
+class ErrorLogger extends Logger {
+  log(message) {
+    super.log('ERROR: ' + message);  // Call parent with prefix
+    // Could also save to error log file
+  }
+}
+
+const logger = new Logger();
+const errorLogger = new ErrorLogger();
+
+logger.log('Normal message');
+// '[2024-12-13...] Normal message'
+
+errorLogger.log('Something went wrong');
+// '[2024-12-13...] ERROR: Something went wrong'
+
+// Real-world: Extended functionality
+class BankAccount {
+  constructor(balance) {
+    this.balance = balance;
+  }
+  
+  withdraw(amount) {
+    this.balance -= amount;
+    console.log(\`Withdrew $\${amount}\`);
+  }
+}
+
+class SavingsAccount extends BankAccount {
+  constructor(balance, interestRate) {
+    super(balance);
+    this.interestRate = interestRate;
+  }
+  
+  withdraw(amount) {
+    if (this.balance - amount < 100) {
+      console.log('Must maintain minimum $100');
+      return;
+    }
+    super.withdraw(amount);  // Call parent withdraw
+  }
+}
+
+const savings = new SavingsAccount(500, 0.02);
+savings.withdraw(450);  // 'Must maintain minimum $100'
+savings.withdraw(200);  // 'Withdrew $200'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Real-World Example */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical inheritance patterns used in production applications.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Real-World: User Hierarchy</CardTitle>
+              <CardDescription>Complete inheritance example</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Error Handling Hierarchy</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class AppError extends Error {
-  constructor(message, statusCode) {
-    super(message);
-    this.statusCode = statusCode;
-    this.isOperational = true;
-  }
-}
-
-class ValidationError extends AppError {
-  constructor(message) {
-    super(message, 400);
-    this.name = 'ValidationError';
-  }
-}
-
-class NotFoundError extends AppError {
-  constructor(resource) {
-    super(resource + ' not found', 404);
-    this.name = 'NotFoundError';
-  }
-}
-
-try {
-  throw new ValidationError('Invalid email');
-} catch (error) {
-  console.log(error.name);
-  console.log(error.message);
-  console.log(error.statusCode);
-}`}
-              </pre>
-              <SnippetOutput lines={['error.name -> "ValidationError"', 'error.message -> "Invalid email"', 'error.statusCode -> 400', 'Clean error hierarchy']} />
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">User Types</h4>
             </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">UI Component Hierarchy</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Component {
-  constructor(props) {
-    this.props = props;
-    this.state = {};
-  }
-  
-  render() {
-    return '<div>Component</div>';
-  }
-}
-
-class Button extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { clicked: false };
-  }
-  
-  handleClick() {
-    this.state.clicked = true;
-    console.log('Button clicked!');
-  }
-  
-  render() {
-    return '<button>' + this.props.text + '</button>';
-  }
-}
-
-const btn = new Button({ text: 'Click me' });
-console.log(btn.render());
-btn.handleClick();`}
-              </pre>
-              <SnippetOutput lines={['btn.render() -> "<button>Click me</button>"', 'btn.handleClick() -> "Button clicked!"', 'Component hierarchy']} />
-            </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Database Model Hierarchy</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Model {
-  constructor(data) {
-    this.data = data;
-    this.createdAt = new Date();
-  }
-  
-  save() {
-    console.log('Saving to database...');
-    return true;
-  }
-  
-  validate() {
-    return true;
-  }
-}
-
-class User extends Model {
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`class User {
   constructor(username, email) {
-    super({ username, email });
-    this.role = 'user';
-  }
-  
-  validate() {
-    return this.data.email.includes('@');
+    this.username = username;
+    this.email = email;
   }
   
   login() {
-    console.log(this.data.username + ' logged in');
+    console.log(\`\${this.username} logged in\`);
   }
 }
 
-const user = new User('alice', 'alice@email.com');
-console.log(user.validate());
-user.save();
-user.login();`}
-              </pre>
-              <SnippetOutput lines={['user.validate() -> true', 'Saving to database...', 'alice logged in', 'Model base class']} />
-            </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Payment Processing System</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`class Payment {
-  constructor(amount) {
-    this.amount = amount;
-    this.status = 'pending';
+class AdminUser extends User {
+  constructor(username, email) {
+    super(username, email);
+    this.isAdmin = true;
   }
   
-  process() {
-    throw new Error('Must implement process()');
-  }
-  
-  refund() {
-    this.status = 'refunded';
-    return 'Refund processed';
+  deleteUser(user) {
+    console.log(\`Admin deleted \${user}\`);
   }
 }
 
-class CreditCardPayment extends Payment {
-  constructor(amount, cardNumber) {
-    super(amount);
-    this.cardNumber = cardNumber;
-  }
-  
-  process() {
-    console.log('Processing credit card...');
-    this.status = 'completed';
-    return 'Payment successful';
+class GuestUser extends User {
+  login() {
+    console.log('Guest has limited access');
   }
 }
 
-const payment = new CreditCardPayment(100, '1234');
-console.log(payment.process());`}
-              </pre>
-              <SnippetOutput lines={['Processing credit card...', 'payment.process() -> "Payment successful"', 'Strategy pattern with inheritance']} />
+const admin = new AdminUser('admin', 'admin@site.com');
+admin.login();  // 'admin logged in'
+admin.deleteUser('baduser');  // 'Admin deleted baduser'
+
+const guest = new GuestUser('guest', 'guest@site.com');
+guest.login();  // 'Guest has limited access'`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Complete Real-World Example"
+        description="E-commerce product hierarchy"
+        code={`// Base Product class
+class Product {
+  constructor(name, price) {
+    this.name = name;
+    this.price = price;
+  }
+  
+  getInfo() {
+    return \`\${this.name} - $\${this.price}\`;
+  }
+  
+  calculatePrice(quantity) {
+    return this.price * quantity;
+  }
+}
+
+// Digital Product (can be downloaded)
+class DigitalProduct extends Product {
+  constructor(name, price, fileSize) {
+    super(name, price);
+    this.fileSize = fileSize;
+  }
+  
+  getInfo() {
+    return \`\${super.getInfo()} (File: \${this.fileSize}MB)\`;
+  }
+  
+  download() {
+    console.log(\`Downloading \${this.name}...\`);
+  }
+}
+
+// Physical Product (needs shipping)
+class PhysicalProduct extends Product {
+  constructor(name, price, weight) {
+    super(name, price);
+    this.weight = weight;
+  }
+  
+  getInfo() {
+    return \`\${super.getInfo()} (Weight: \${this.weight}kg)\`;
+  }
+  
+  calculatePrice(quantity) {
+    const basePrice = super.calculatePrice(quantity);
+    const shipping = this.weight * 5;  // $5 per kg
+    return basePrice + shipping;
+  }
+}
+
+// Usage
+const ebook = new DigitalProduct('JavaScript Guide', 29.99, 5);
+const laptop = new PhysicalProduct('Laptop', 999, 2);
+
+console.log(ebook.getInfo());
+// 'JavaScript Guide - $29.99 (File: 5MB)'
+
+console.log(laptop.getInfo());
+// 'Laptop - $999 (Weight: 2kg)'
+
+console.log(ebook.calculatePrice(2));    // 59.98
+console.log(laptop.calculatePrice(1));   // 1009 (999 + 10 shipping)
+
+ebook.download();  // 'Downloading JavaScript Guide...'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-emerald-700 dark:text-emerald-300"><CheckCircle2 className="w-5 h-5" /> Do This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>✅ Use inheritance for clear "IS-A" relationships</li>
-              <li>✅ Always call <code className="font-mono text-xs">super()</code> first in child constructor</li>
-              <li>✅ Use <code className="font-mono text-xs">super.method()</code> to extend parent behavior</li>
-              <li>✅ Keep inheritance hierarchies shallow (max 2-3 levels)</li>
-              <li>✅ Override methods to provide specialized behavior</li>
-            </ul>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-rose-700 dark:text-rose-300"><XCircle className="w-5 h-5" /> Avoid This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>❌ Don't use inheritance when composition is better</li>
-              <li>❌ Don't forget to call <code className="font-mono text-xs">super()</code> in child constructor</li>
-              <li>❌ Don't create deep inheritance chains (hard to maintain)</li>
-              <li>❌ Don't override without understanding parent behavior</li>
-              <li>❌ Don't use inheritance just to share code (use composition)</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use <strong>extends</strong> to inherit from parent</li>
+                <li>• Call <strong>super()</strong> in child constructor</li>
+                <li>• Use <strong>super.method()</strong> to extend parent methods</li>
+                <li>• Override methods when child needs different behavior</li>
+                <li>• Check types with <strong>instanceof</strong></li>
+              </ul>
+            </div>
 
-      {/* Hands-on Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ class inheritance, extends, and super keyword.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights inheritance patterns (extends keyword, super usage, method overriding, and multi-level chains) with practical examples most developers encounter.
-          </p>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't forget <strong>super()</strong> in constructor</li>
+                <li>• Don't use <strong>this</strong> before <strong>super()</strong></li>
+                <li>• Don't create deep inheritance chains (3+ levels)</li>
+                <li>• Don't inherit just to reuse code (use composition)</li>
+                <li>• Don't override without good reason</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Inheritance Pattern</h4>
+            <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`class Parent {
+  constructor(param1) {
+    this.property1 = param1;
+  }
+  
+  method1() {
+    // parent implementation
+  }
+}
+
+class Child extends Parent {
+  constructor(param1, param2) {
+    super(param1);  // Call parent constructor
+    this.property2 = param2;
+  }
+  
+  method1() {
+    super.method1();  // Call parent method (optional)
+    // child implementation
+  }
+  
+  method2() {
+    // child-only method
+  }
+}`}</pre>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Design Tip</AlertTitle>
+            <AlertDescription className="text-base">
+              Prefer <strong>composition over inheritance</strong> when possible. Only inherit when there's a true "is-a" relationship (Dog IS-A Animal). For "has-a" relationships, use composition!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
     </div>

@@ -2,1044 +2,852 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
-  Scissors,
+  Type,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
   Search,
-  Zap,
-  Copy,
-  Type,
-  Code,
+  Scissors,
+  Repeat,
+  ArrowUpDown,
 } from 'lucide-react';
 
 export default function JavaScriptStringMethods() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
-        icon={Scissors}
-        category="JavaScript · Strings & Regex"
+        icon={Type}
+        category="JavaScript Fundamentals"
         title="String Methods"
-        description="Master JavaScript string methods including ES2022 at() and ES2024 Unicode methods—learn to search, extract, transform, and manipulate text."
-        colorTheme="blue"
+        description="Essential methods to search, extract, transform, and manipulate text"
+        colorTheme="yellow"
       />
 
-      {/* What are String Methods? */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are String Methods?
-          </CardTitle>
-          <CardDescription className="text-base">
-            String methods are built-in functions that let you manipulate and analyze strings without changing the original.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            JavaScript strings come with <strong>35+ built-in methods</strong> including the latest ES2022 <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">at()</code> and ES2024 Unicode methods. Since strings are <strong>immutable</strong>, these methods always return <strong>new values</strong> without modifying the original string. This makes them safe to use repeatedly.
-          </p>
-          
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Search className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold text-sm">Searching</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Find substrings and check positions
-              </p>
-              <Badge className="mt-2 bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 text-xs">5+ methods</Badge>
+      {/* What are String Methods */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Copy className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                <h4 className="font-semibold text-sm">Extracting</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Get portions of strings
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are String Methods?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                String methods are <strong className="text-yellow-700 dark:text-yellow-400">built-in functions</strong> that help you work with text. Search, slice, replace, change case - all without changing the original string!
               </p>
-              <Badge className="mt-2 bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 text-xs">6 methods</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold text-sm">Transforming</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Change case, trim, replace
-              </p>
-              <Badge className="mt-2 bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 text-xs">10+ methods</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Scissors className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                <h4 className="font-semibold text-sm">Splitting</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Convert to arrays
-              </p>
-              <Badge className="mt-2 bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 text-xs">split()</Badge>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Concept: Immutability</AlertTitle>
-            <AlertDescription>
-              String methods <strong>never change the original string</strong>. They always return a new value. You must store the result or use it immediately.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Strings are Immutable</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              String methods <strong>never change the original</strong> string. They always return a new value. Think of it like photocopying - the original stays intact!
             </AlertDescription>
           </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Method Categories */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Method Categories</CardTitle>
+          <CardDescription>Different methods for different tasks</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <div className="text-3xl mb-3">🔍</div>
+              <h4 className="font-bold text-lg mb-2">Search</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">indexOf, includes, startsWith, endsWith</p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <div className="text-3xl mb-3">✂️</div>
+              <h4 className="font-bold text-lg mb-2">Extract</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">slice, substring, charAt</p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <div className="text-3xl mb-3">🔄</div>
+              <h4 className="font-bold text-lg mb-2">Transform</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">replace, trim, toUpperCase, toLowerCase</p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-200 dark:border-orange-800/30">
+              <div className="text-3xl mb-3">📋</div>
+              <h4 className="font-bold text-lg mb-2">Split</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">split, join (array method)</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
       {/* Searching Methods */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Search className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Searching Methods
-          </CardTitle>
-          <CardDescription className="text-base">
-            Find substrings, check if text exists, and get positions within strings.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Search className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Searching Strings</CardTitle>
+              <CardDescription>Find text within strings</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* includes() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">includes()</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">Returns boolean</Badge>
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Search Methods</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">indexOf() - Find position</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Returns the index of first occurrence, or -1 if not found
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Hello World';
+console.log(text.indexOf('World'));  // 6
+console.log(text.indexOf('xyz'));    // -1`}</pre>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Check if a string contains a substring (case-sensitive)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">includes() - Check if exists</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Returns true if substring exists, false otherwise
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
 {`const text = 'JavaScript is awesome';
-
-console.log(text.includes('Java'));
-console.log(text.includes('Python'));
-console.log(text.includes('JAVA'));
-
-// Case sensitive!
-console.log(text.includes('javascript'));
-// Output:
-// includes("Java") -> true
-// includes("Python") -> false
-// includes("JAVA") -> false
-// includes("javascript") -> false (case matters!)`}
-              </pre>
-            </div>
-
-            {/* indexOf() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">indexOf()</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Returns number</Badge>
+console.log(text.includes('Java'));  // true
+console.log(text.includes('Python')); // false`}</pre>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Get the position of first occurrence (-1 if not found)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'JavaScript is awesome';
 
-console.log(text.indexOf('is'));
-console.log(text.indexOf('Script'));
-console.log(text.indexOf('Python'));
-
-// Start searching from position 5
-console.log(text.indexOf('a', 5));
-// Output:
-// indexOf("is") -> 11
-// indexOf("Script") -> 4
-// indexOf("Python") -> -1 (not found)
-// indexOf("a", 5) -> 7 (starts from pos 5)`}
-              </pre>
-            </div>
-
-            {/* lastIndexOf() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">lastIndexOf()</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">Returns number</Badge>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">startsWith() & endsWith()</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Check if string starts or ends with specific text
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const file = 'image.png';
+console.log(file.startsWith('image'));  // true
+console.log(file.endsWith('.png'));     // true
+console.log(file.endsWith('.jpg'));     // false`}</pre>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Get the position of last occurrence (searches backwards)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'JavaScript is awesome and JavaScript is fun';
-
-console.log(text.indexOf('JavaScript'));
-console.log(text.lastIndexOf('JavaScript'));
-
-console.log(text.indexOf('is'));
-console.log(text.lastIndexOf('is'));
-// Output:
-// indexOf() -> 0 (first occurrence)
-// lastIndexOf() -> 25 (last occurrence)
-// indexOf("is") -> 11
-// lastIndexOf("is") -> 40`}
-              </pre>
-            </div>
-
-            {/* startsWith() & endsWith() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">startsWith() & endsWith()</h4>
-                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">Returns boolean</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Check if string starts or ends with specific characters
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const filename = 'document.pdf';
-const url = 'https://example.com';
-
-console.log(filename.endsWith('.pdf'));
-console.log(filename.endsWith('.doc'));
-
-console.log(url.startsWith('https'));
-console.log(url.startsWith('http'));
-// Output:
-// endsWith(".pdf") -> true
-// endsWith(".doc") -> false
-// startsWith("https") -> true
-// startsWith("http") -> true`}
-              </pre>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: Searching Methods"
-        description="Find and check for substrings in your text"
-        code={`const text = 'JavaScript is awesome';
+        title="Searching Examples"
+        description="Finding text in strings"
+        code={`const email = 'user@example.com';
 
-// includes() - Check if substring exists
-console.log(text.includes('Java'));
-// Output: true
+// Check if it's a valid email format
+if (email.includes('@') && email.includes('.')) {
+  console.log('Valid email format');
+}
 
-// indexOf() - Get position of first occurrence
-console.log(text.indexOf('is'));
-// Output: 11
+// Find position of @
+const atIndex = email.indexOf('@');
+console.log('@ is at position:', atIndex);  // 4
 
-// lastIndexOf() - Get position of last occurrence
-const repeated = 'JavaScript is awesome and JavaScript is fun';
-console.log(repeated.lastIndexOf('JavaScript'));
-// Output: 25
+// Check domain
+if (email.endsWith('.com')) {
+  console.log('This is a .com email');
+}
 
-// startsWith() & endsWith() - Check beginning/end
+// Real-world: File validation
 const filename = 'document.pdf';
-console.log(filename.endsWith('.pdf'));
-// Output: true
 
+if (filename.endsWith('.pdf')) {
+  console.log('PDF file detected');
+} else if (filename.endsWith('.doc') || filename.endsWith('.docx')) {
+  console.log('Word document detected');
+}
+
+// Check if URL is HTTPS
 const url = 'https://example.com';
-console.log(url.startsWith('https'));
-// Output: true`}
+if (url.startsWith('https://')) {
+  console.log('Secure connection');
+}
+
+// Search from specific position
+const text = 'Hello Hello Hello';
+console.log(text.indexOf('Hello'));      // 0 (first occurrence)
+console.log(text.indexOf('Hello', 1));   // 6 (search from index 1)
+console.log(text.lastIndexOf('Hello'));  // 12 (last occurrence)`}
         language="javascript"
-        colorTheme="blue"
-        icon={Search}
+        colorTheme="yellow"
       />
 
       {/* Extracting Methods */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Copy className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Extracting Methods
-          </CardTitle>
-          <CardDescription className="text-base">
-            Get specific portions or characters from strings.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* slice() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">slice(start, end)</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Most flexible</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Extract a section of string (supports negative indices)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'JavaScript';
-
-console.log(text.slice(0, 4));
-console.log(text.slice(4));
-console.log(text.slice(-6));
-console.log(text.slice(-6, -2));
-console.log(text.slice(2, -2));
-// Output:
-// slice(0, 4) -> "Java"
-// slice(4) -> "Script"
-// slice(-6) -> "Script"
-// slice(-6, -2) -> "Scri"
-// slice(2, -2) -> "vaScri"`}
-              </pre>
-            </div>
-
-            {/* substring() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">substring(start, end)</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">No negatives</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Similar to slice but treats negative values as 0
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'JavaScript';
-
-console.log(text.substring(0, 4));
-console.log(text.substring(4));
-
-// Swaps if start > end
-console.log(text.substring(4, 0));
-
-// Negative treated as 0
-console.log(text.substring(-5));
-// Output:
-// substring(0, 4) -> "Java"
-// substring(4) -> "Script"
-// substring(4, 0) -> "Java" (swapped!)
-// substring(-5) -> "JavaScript" (-5 = 0)`}
-              </pre>
-            </div>
-
-            {/* charAt() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">charAt(index)</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">Classic</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Get character at specific position (no negative indices)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'JavaScript';
-
-console.log(text.charAt(0));
-console.log(text.charAt(4));
-console.log(text.charAt(text.length - 1));
-
-// Out of range returns empty string
-console.log(text.charAt(100));
-// Output:
-// charAt(0) -> "J"
-// charAt(4) -> "S"
-// charAt(9) -> "t" (last char)
-// charAt(100) -> "" (empty string)`}
-              </pre>
-            </div>
-
-            {/* at() - ES2022 */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">at(index)</h4>
-                <Badge className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30">ES2022 - Modern</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Get character at position (supports negative indices!)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'JavaScript';
-
-console.log(text.at(0));
-console.log(text.at(4));
-
-// Negative indices work! (count from end)
-console.log(text.at(-1));  // Last character
-console.log(text.at(-2));  // Second to last
-console.log(text.at(-6));
-
-// Out of range returns undefined
-console.log(text.at(100));
-// Output:
-// at(0) -> "J"
-// at(4) -> "S"
-// at(-1) -> "t" (last!)
-// at(-2) -> "p"
-// at(-6) -> "S"
-// at(100) -> undefined`}
-              </pre>
-            </div>
-
-            {/* split() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">split(separator)</h4>
-                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">Returns array</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Split string into array based on separator
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const csv = 'apple,banana,orange';
-const sentence = 'Hello World';
-
-console.log(csv.split(','));
-console.log(sentence.split(' '));
-
-// Split every character
-console.log('ABC'.split(''));
-// Output:
-// split(",") -> ["apple", "banana", "orange"]
-// split(" ") -> ["Hello", "World"]
-// split("") -> ["A", "B", "C"]`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: Extracting Methods"
-        description="Extract portions and characters from strings"
-        code={`const text = 'JavaScript';
-
-// slice() - Extract with negative indices support
-console.log(text.slice(0, 4));
-// Output: "Java"
-
-console.log(text.slice(-6));
-// Output: "Script"
-
-// substring() - Similar but no negative indices
-console.log(text.substring(0, 4));
-// Output: "Java"
-
-// charAt() - Get single character (classic)
-console.log(text.charAt(0));
-// Output: "J"
-
-// at() - Modern way with negative indices (ES2022)
-console.log(text.at(-1));
-// Output: "t" (last character!)
-
-// split() - Convert string to array
-const csv = 'apple,banana,orange';
-console.log(csv.split(','));
-// Output: ["apple", "banana", "orange"]`}
-        language="javascript"
-        colorTheme="emerald"
-        icon={Copy}
-      />
-
-      {/* Transform Methods */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Zap className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Transform Methods
-          </CardTitle>
-          <CardDescription className="text-base">
-            Change case, trim whitespace, and replace text.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Scissors className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>Extracting Parts of Strings</CardTitle>
+              <CardDescription>Get portions of text</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Case Methods */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">toUpperCase() & toLowerCase()</h4>
-              <p className="text-xs text-muted-foreground">
-                Convert entire string to upper or lower case
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'Hello World';
-
-console.log(text.toUpperCase());
-console.log(text.toLowerCase());
-
-// Original unchanged (immutable!)
-console.log(text);
-
-// Case-insensitive comparison
-const input = 'JAVASCRIPT';
-console.log(input.toLowerCase() === 'javascript');
-// Output:
-// toUpperCase() -> "HELLO WORLD"
-// toLowerCase() -> "hello world"
-// Original -> "Hello World"
-// Comparison -> true`}
-              </pre>
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Extract Methods</h4>
             </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">slice() - Extract portion</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Extract from start to end (supports negative indexes)
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'JavaScript';
+console.log(text.slice(0, 4));   // 'Java'
+console.log(text.slice(4));      // 'Script'
+console.log(text.slice(-6));     // 'Script' (from end)`}</pre>
+              </div>
 
-            {/* Trim Methods */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">trim(), trimStart(), trimEnd()</h4>
-              <p className="text-xs text-muted-foreground">
-                Remove whitespace from beginning, end, or both
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = '   Hello World   ';
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">substring() - Similar to slice</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Extract between two indexes (no negative indexes)
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'JavaScript';
+console.log(text.substring(0, 4));  // 'Java'
+console.log(text.substring(4));     // 'Script'`}</pre>
+              </div>
 
-console.log(text.trim());
-console.log(text.trimStart());
-console.log(text.trimEnd());
-
-// Original length vs trimmed
-console.log('Length:', text.length);
-console.log('Trimmed:', text.trim().length);
-// Output:
-// trim() -> "Hello World"
-// trimStart() -> "Hello World   "
-// trimEnd() -> "   Hello World"
-// Length: 17
-// Trimmed: 11`}
-              </pre>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">charAt() - Get character at index</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Returns character at specific position
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Hello';
+console.log(text.charAt(0));  // 'H'
+console.log(text.charAt(4));  // 'o'
+console.log(text[0]);         // 'H' (bracket notation works too)`}</pre>
+              </div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            {/* replace() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">replace()</h4>
-              <p className="text-xs text-muted-foreground">
-                Replace first occurrence of substring
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'cat and cat and cat';
+      <CodeSnippet
+        title="Extracting Examples"
+        description="Getting parts of strings"
+        code={`const text = 'JavaScript Programming';
 
-// Replace first occurrence only
-console.log(text.replace('cat', 'dog'));
+// Get first word
+const firstWord = text.slice(0, 10);
+console.log(firstWord);  // 'JavaScript'
+
+// Get last word
+const lastWord = text.slice(11);
+console.log(lastWord);  // 'Programming'
+
+// Get last 4 characters (negative index)
+const last4 = text.slice(-4);
+console.log(last4);  // 'ming'
+
+// Real-world: Extract username from email
+const email = 'john.doe@example.com';
+const atIndex = email.indexOf('@');
+const username = email.slice(0, atIndex);
+console.log(username);  // 'john.doe'
+
+// Real-world: Get file extension
+const filename = 'document.pdf';
+const dotIndex = filename.lastIndexOf('.');
+const extension = filename.slice(dotIndex + 1);
+console.log(extension);  // 'pdf'
+
+// Get initials
+const fullName = 'John Doe';
+const spaceIndex = fullName.indexOf(' ');
+const firstName = fullName.slice(0, spaceIndex);
+const lastName = fullName.slice(spaceIndex + 1);
+const initials = firstName[0] + lastName[0];
+console.log(initials);  // 'JD'
+
+// Extract domain from URL
+const url = 'https://www.example.com/page';
+const start = url.indexOf('//') + 2;
+const end = url.indexOf('/', start);
+const domain = url.slice(start, end);
+console.log(domain);  // 'www.example.com'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Case Methods */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <ArrowUpDown className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Changing Case</CardTitle>
+              <CardDescription>Convert to uppercase or lowercase</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Case Methods</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">toUpperCase() - All caps</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'hello';
+console.log(text.toUpperCase());  // 'HELLO'`}</pre>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">toLowerCase() - All lowercase</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'HELLO';
+console.log(text.toLowerCase());  // 'hello'`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Case Conversion Examples"
+        description="Changing text case"
+        code={`const text = 'JavaScript';
+
+// Convert to uppercase
+console.log(text.toUpperCase());  // 'JAVASCRIPT'
+
+// Convert to lowercase
+console.log(text.toLowerCase());  // 'javascript'
+
+// Real-world: Case-insensitive comparison
+const input = 'HELLO';
+const expected = 'hello';
+
+if (input.toLowerCase() === expected.toLowerCase()) {
+  console.log('Match!');  // This runs
+}
+
+// Real-world: Capitalize first letter
+const name = 'alice';
+const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+console.log(capitalized);  // 'Alice'
+
+// Capitalize all words
+const title = 'javascript is awesome';
+const words = title.split(' ');
+const capitalizedWords = words.map(word => 
+  word.charAt(0).toUpperCase() + word.slice(1)
+);
+const result = capitalizedWords.join(' ');
+console.log(result);  // 'Javascript Is Awesome'
+
+// Real-world: Email validation (case-insensitive)
+const email1 = 'USER@EXAMPLE.COM';
+const email2 = 'user@example.com';
+
+if (email1.toLowerCase() === email2.toLowerCase()) {
+  console.log('Same email!');
+}
+
+// Constant names (convention)
+const status = 'success';
+const constantName = status.toUpperCase();
+console.log(constantName);  // 'SUCCESS'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* trim() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <Scissors className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>trim() - Remove Whitespace</CardTitle>
+              <CardDescription>Clean up spaces at start and end</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Trim Methods</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">trim() - Both ends</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = '   Hello   ';
+console.log(text.trim());  // 'Hello'`}</pre>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">trimStart() - Left side only</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = '   Hello';
+console.log(text.trimStart());  // 'Hello'`}</pre>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">trimEnd() - Right side only</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Hello   ';
+console.log(text.trimEnd());  // 'Hello'`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="trim() Examples"
+        description="Cleaning up whitespace"
+        code={`// Remove spaces from both ends
+const text = '   Hello World   ';
+console.log(text.trim());  // 'Hello World'
+
+// Real-world: Clean user input
+const userInput = '  alice@example.com  ';
+const cleanEmail = userInput.trim();
+console.log(cleanEmail);  // 'alice@example.com'
+
+// Form validation
+const username = '  john  ';
+if (username.trim() === '') {
+  console.log('Username is required!');
+} else {
+  console.log('Username:', username.trim());
+}
+
+// Clean multiple inputs
+const inputs = ['  Alice  ', '  Bob  ', '  Charlie  '];
+const cleaned = inputs.map(input => input.trim());
+console.log(cleaned);  // ['Alice', 'Bob', 'Charlie']
+
+// trimStart() - Keep trailing spaces
+const code = '    const x = 5;';
+console.log(code.trimStart());  // 'const x = 5;'
+
+// trimEnd() - Keep leading spaces
+const text2 = 'Hello    ';
+console.log(text2.trimEnd());  // 'Hello'
+
+// Real-world: Clean CSV data
+const csvRow = '  John  ,  25  ,  Developer  ';
+const values = csvRow.split(',').map(v => v.trim());
+console.log(values);  // ['John', '25', 'Developer']`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* replace() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Repeat className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>replace() - Replace Text</CardTitle>
+              <CardDescription>Substitute one text with another</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Replace Methods</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">replace() - First occurrence</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Replaces only the first match
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Hello Hello';
+console.log(text.replace('Hello', 'Hi'));
+// 'Hi Hello' (only first replaced)`}</pre>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">replaceAll() - All occurrences</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Replaces all matches (ES2021)
+                </p>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Hello Hello Hello';
+console.log(text.replaceAll('Hello', 'Hi'));
+// 'Hi Hi Hi' (all replaced)`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="replace() Examples"
+        description="Substituting text"
+        code={`const text = 'I love JavaScript';
+
+// Replace one word
+const newText = text.replace('love', 'enjoy');
+console.log(newText);  // 'I enjoy JavaScript'
 
 // Original unchanged
-console.log(text);
-
-// Case sensitive
-const greeting = 'Hello World';
-console.log(greeting.replace('hello', 'Hi'));
-// Output:
-// replace() -> "dog and cat and cat"
-// Original -> "cat and cat and cat"
-// No match -> "Hello World" (case sensitive!)`}
-              </pre>
-            </div>
-
-            {/* replaceAll() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">replaceAll()</h4>
-              <p className="text-xs text-muted-foreground">
-                Replace all occurrences of substring
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const text = 'cat and cat and cat';
+console.log(text);  // 'I love JavaScript'
 
 // Replace all occurrences
-console.log(text.replaceAll('cat', 'dog'));
+const repeated = 'apple apple apple';
+const allReplaced = repeated.replaceAll('apple', 'orange');
+console.log(allReplaced);  // 'orange orange orange'
 
-// Chain multiple replacements
-const html = '<div><p>Hello</p></div>';
-const clean = html.replaceAll('<', '[')
-                  .replaceAll('>', ']');
-console.log(clean);
-// Output:
-// replaceAll() -> "dog and dog and dog"
-// Chained replaceAll() ->
-// [div][p]Hello[/p][/div]`}
-              </pre>
+// Real-world: Mask credit card
+const cardNumber = '1234-5678-9012-3456';
+const masked = cardNumber.replace(/\\d(?=\\d{4})/g, '*');
+console.log(masked);  // '****-****-****-3456'
+
+// Or simpler masking
+const last4 = cardNumber.slice(-4);
+const maskedSimple = '****-****-****-' + last4;
+console.log(maskedSimple);  // '****-****-****-3456'
+
+// Replace spaces with dashes
+const title = 'My Blog Post Title';
+const slug = title.toLowerCase().replaceAll(' ', '-');
+console.log(slug);  // 'my-blog-post-title'
+
+// Real-world: Clean phone number
+const phone = '(123) 456-7890';
+const cleaned = phone.replaceAll('(', '')
+                     .replaceAll(')', '')
+                     .replaceAll(' ', '')
+                     .replaceAll('-', '');
+console.log(cleaned);  // '1234567890'
+
+// Replace with function
+const prices = 'Item costs $10';
+const updated = prices.replace('$10', '$20');
+console.log(updated);  // 'Item costs $20'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* split() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+              <Scissors className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
             </div>
-
-            {/* repeat() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">repeat(count)</h4>
-              <p className="text-xs text-muted-foreground">
-                Repeat string a specified number of times
+            <div>
+              <CardTitle>split() - String to Array</CardTitle>
+              <CardDescription>Break string into array of parts</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-cyan-200 dark:border-cyan-800/30 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-cyan-600 dark:bg-cyan-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Split & Join</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Converts string to array (use array <code className="px-1.5 py-0.5 bg-cyan-100 dark:bg-cyan-900/30 rounded text-xs">join()</code> to reverse)
               </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const star = '*';
-console.log(star.repeat(5));
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-cyan-200 dark:border-cyan-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const text = 'apple,banana,orange';
 
-const dash = '-';
-console.log(dash.repeat(10));
+// Split by comma
+const fruits = text.split(',');
+console.log(fruits);
+// ['apple', 'banana', 'orange']
+
+// Join back
+const joined = fruits.join(', ');
+console.log(joined);
+// 'apple, banana, orange'`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="split() Examples"
+        description="Converting strings to arrays"
+        code={`// Split by space
+const sentence = 'Hello World JavaScript';
+const words = sentence.split(' ');
+console.log(words);  // ['Hello', 'World', 'JavaScript']
+
+// Count words
+console.log('Word count:', words.length);  // Word count: 3
+
+// Split by comma
+const csv = 'John,25,Developer';
+const data = csv.split(',');
+console.log(data);  // ['John', '25', 'Developer']
+
+// Split into characters
+const word = 'Hello';
+const chars = word.split('');
+console.log(chars);  // ['H', 'e', 'l', 'l', 'o']
+
+// Reverse a string
+const reversed = word.split('').reverse().join('');
+console.log(reversed);  // 'olleH'
+
+// Split with limit
+const text = 'a-b-c-d-e';
+const limited = text.split('-', 3);
+console.log(limited);  // ['a', 'b', 'c']
+
+// Real-world: Parse URL path
+const url = 'https://example.com/blog/post/123';
+const parts = url.split('/');
+console.log(parts);
+// ['https:', '', 'example.com', 'blog', 'post', '123']
+
+const postId = parts[parts.length - 1];
+console.log('Post ID:', postId);  // Post ID: 123
+
+// Real-world: Process CSV line
+const csvLine = 'Alice,30,Engineer,New York';
+const [name, age, job, city] = csvLine.split(',');
+console.log(\`\${name} is a \${age} year old \${job} from \${city}\`);
+// Alice is a 30 year old Engineer from New York
+
+// Split by multiple spaces
+const messyText = 'Hello    World';
+const cleaned = messyText.split(/\\s+/);  // regex for one or more spaces
+console.log(cleaned);  // ['Hello', 'World']
+
+// Get domain from email
+const email = 'user@example.com';
+const domain = email.split('@')[1];
+console.log(domain);  // 'example.com'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* repeat() & padStart()/padEnd() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-pink-100 dark:bg-pink-900/30">
+              <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+            </div>
+            <div>
+              <CardTitle>Other Useful Methods</CardTitle>
+              <CardDescription>repeat(), padStart(), padEnd()</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20 overflow-hidden">
+            <div className="bg-pink-600 dark:bg-pink-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Bonus Methods</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">repeat() - Repeat string</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Ha';
+console.log(text.repeat(3));  // 'HaHaHa'`}</pre>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">padStart() - Add padding to start</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const num = '5';
+console.log(num.padStart(3, '0'));  // '005'`}</pre>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <h5 className="font-semibold mb-2">padEnd() - Add padding to end</h5>
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const text = 'Hi';
+console.log(text.padEnd(5, '!'));  // 'Hi!!!'`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Other Methods Examples"
+        description="repeat(), padStart(), padEnd()"
+        code={`// repeat() - Repeat string n times
+const star = '*';
+const line = star.repeat(10);
+console.log(line);  // '**********'
 
 // Create separator
-const separator = '='.repeat(20);
-console.log(separator);
-// Output:
-// repeat(5) -> "*****"
-// repeat(10) -> "----------"
-// separator -> "===================="`}
-              </pre>
-            </div>
+const separator = '-'.repeat(20);
+console.log(separator);  // '--------------------'
 
-            {/* padStart() & padEnd() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">padStart() & padEnd()</h4>
-              <p className="text-xs text-muted-foreground">
-                Pad string to target length with characters
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const num = '5';
+// padStart() - Add to beginning
+const id = '42';
+const paddedId = id.padStart(5, '0');
+console.log(paddedId);  // '00042'
 
-// Pad with zeros
-console.log(num.padStart(3, '0'));
-console.log(num.padEnd(3, '0'));
+// Real-world: Format time
+const hours = '5';
+const minutes = '7';
+const time = \`\${hours.padStart(2, '0')}:\${minutes.padStart(2, '0')}\`;
+console.log(time);  // '05:07'
 
-// Credit card masking
-const card = '1234';
-console.log(card.padStart(16, '*'));
-// Output:
-// padStart(3, "0") -> "005"
-// padEnd(3, "0") -> "500"
-// padStart(16, "*") -> "************1234"`}
-              </pre>
-            </div>
+// padEnd() - Add to end
+const name = 'Alice';
+const padded = name.padEnd(10, '.');
+console.log(padded);  // 'Alice.....'
 
-            {/* concat() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">concat()</h4>
-              <p className="text-xs text-muted-foreground">
-                Combine multiple strings (+ operator is more common)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const first = 'Hello';
-const last = 'World';
+// Create aligned text
+const items = ['Apple', 'Banana', 'Cherry'];
+items.forEach(item => {
+  console.log(item.padEnd(10, '.') + '$5');
+});
+// Apple.....$5
+// Banana....$5
+// Cherry....$5
 
-console.log(first.concat(' ', last));
-console.log(first.concat(' ', last, '!'));
+// Real-world: Format invoice
+const products = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 25 },
+  { name: 'Keyboard', price: 75 }
+];
 
-// Multiple strings
-const result = 'a'.concat('b', 'c', 'd');
-console.log(result);
-// Output:
-// concat() -> "Hello World"
-// with "!" -> "Hello World!"
-// Multiple -> "abcd"
-// Prefer + or template literals`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+products.forEach(p => {
+  const line = p.name.padEnd(15, '.') + '$' + p.price;
+  console.log(line);
+});
+// Laptop.........$999
+// Mouse...........$25
+// Keyboard........$75
 
-      <CodeSnippet
-        title="Complete Example: Transform Methods"
-        description="Change case, trim whitespace, replace, pad, and repeat strings"
-        code={`// Case Transformation
-const text = 'Hello World';
-console.log(text.toUpperCase());
-// Output: "HELLO WORLD"
-
-console.log(text.toLowerCase());
-// Output: "hello world"
-
-// Trim Whitespace
-const messy = '   Hello World   ';
-console.log(messy.trim());
-// Output: "Hello World"
-
-// Replace Text
-const original = 'cat and cat and cat';
-console.log(original.replace('cat', 'dog'));
-// Output: "dog and cat and cat"
-
-console.log(original.replaceAll('cat', 'dog'));
-// Output: "dog and dog and dog"
-
-// Repeat & Pad
-console.log('*'.repeat(5));
-// Output: "*****"
-
-const num = '5';
-console.log(num.padStart(3, '0'));
-// Output: "005"
-
-// Concat
-const first = 'Hello';
-const last = 'World';
-console.log(first.concat(' ', last));
-// Output: "Hello World"`}
+// Combine methods
+const code = '123'.padStart(6, '0').toUpperCase();
+console.log(code);  // '000123'`}
         language="javascript"
-        colorTheme="blue"
-        icon={Zap}
-      />
-
-      {/* ES2024 Unicode Methods */}
-      <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            ES2024 Unicode Methods
-          </CardTitle>
-          <CardDescription className="text-base">
-            New methods for handling Unicode text correctly (emojis, special characters).
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Why Unicode Matters</AlertTitle>
-            <AlertDescription>
-              Modern apps handle international text and emojis. These methods help ensure strings are properly formed for display and processing.
-            </AlertDescription>
-          </Alert>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* isWellFormed() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">isWellFormed()</h4>
-                <Badge className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30">ES2024</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Check if string contains valid Unicode (no lone surrogates)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const validText = 'Hello 👋 World';
-const brokenText = 'Bad\\uD800Text'; // Lone surrogate
-
-console.log(validText.isWellFormed());
-console.log(brokenText.isWellFormed());
-
-// Use before encoding or sending to server
-if (userInput.isWellFormed()) {
-  sendToServer(userInput);
-}
-// Output:
-// validText.isWellFormed() -> true
-// brokenText.isWellFormed() -> false
-// Prevents encoding errors`}
-              </pre>
-            </div>
-
-            {/* toWellFormed() */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">toWellFormed()</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">ES2024</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Fix invalid Unicode by replacing lone surrogates with �
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const brokenText = 'Hello\\uD800World';
-
-// Fix the broken text
-const fixed = brokenText.toWellFormed();
-
-console.log(fixed);
-console.log(fixed.isWellFormed());
-
-// Safe to use in APIs/databases
-const safeText = userInput.toWellFormed();
-// Output:
-// fixed -> "Hello�World"
-// fixed.isWellFormed() -> true
-// Lone surrogates replaced with �`}
-              </pre>
-            </div>
-          </div>
-
-          <div className="p-4 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800">
-            <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5" />
-              When to Use Unicode Methods
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Before encoding strings to send to APIs</li>
-              <li>✅ When handling user-generated content with emojis</li>
-              <li>✅ Processing international text (Chinese, Arabic, etc.)</li>
-              <li>✅ Validating form inputs before database storage</li>
-              <li>✅ Preventing encoding errors in web applications</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: ES2024 Unicode Methods"
-        description="Handle Unicode text correctly (emojis, special characters)"
-        code={`// isWellFormed() - Check if string has valid Unicode
-const validText = 'Hello 👋 World';
-const brokenText = 'Bad\\uD800Text'; // Lone surrogate
-
-console.log(validText.isWellFormed());
-// Output: true
-
-console.log(brokenText.isWellFormed());
-// Output: false
-
-// toWellFormed() - Fix invalid Unicode
-const broken = 'Hello\\uD800World';
-const fixed = broken.toWellFormed();
-
-console.log(fixed);
-// Output: "Hello�World"
-
-console.log(fixed.isWellFormed());
-// Output: true
-
-// Use before encoding or sending to server
-function sendToServer(userInput) {
-  if (!userInput.isWellFormed()) {
-    userInput = userInput.toWellFormed();
-  }
-  // Now safe to send
-  console.log('Sending:', userInput);
-}
-
-sendToServer(validText);
-// Output: Sending: Hello 👋 World`}
-        language="javascript"
-        colorTheme="indigo"
-        icon={Sparkles}
-      />
-
-      {/* Real-World Examples */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical use cases where string methods solve common problems.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Username Validation */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Username Validation
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function validateUsername(username) {
-  // Remove whitespace
-  const clean = username.trim();
-  
-  // Check length
-  if (clean.length < 3 || clean.length > 20) {
-    return 'Invalid length';
-  }
-  
-  // No spaces allowed
-  if (clean.includes(' ')) {
-    return 'No spaces allowed';
-  }
-  
-  // Must start with letter
-  const firstChar = clean.charAt(0);
-  if (!'abcdefghijklmnopqrstuvwxyz'.includes(firstChar.toLowerCase())) {
-    return 'Must start with letter';
-  }
-  
-  return 'Valid!';
-}
-
-console.log(validateUsername('  john  '));
-console.log(validateUsername('ab'));
-console.log(validateUsername('john doe'));
-console.log(validateUsername('123user'));
-// Output:
-// validateUsername("  john  ") -> "Valid!"
-// validateUsername("ab") -> "Invalid length"
-// validateUsername("john doe") -> "No spaces allowed"
-// validateUsername("123user") -> "Must start with letter"`}
-              </pre>
-            </div>
-
-            {/* File Extension Checker */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                File Type Checker
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function getFileType(filename) {
-  if (filename.endsWith('.jpg') || filename.endsWith('.png')) {
-    return 'Image';
-  }
-  if (filename.endsWith('.pdf')) {
-    return 'Document';
-  }
-  if (filename.endsWith('.mp4') || filename.endsWith('.avi')) {
-    return 'Video';
-  }
-  return 'Unknown';
-}
-
-console.log(getFileType('photo.jpg'));
-console.log(getFileType('report.pdf'));
-console.log(getFileType('movie.mp4'));
-console.log(getFileType('data.txt'));
-// Output:
-// getFileType("photo.jpg") -> "Image"
-// getFileType("report.pdf") -> "Document"
-// getFileType("movie.mp4") -> "Video"
-// getFileType("data.txt") -> "Unknown"`}
-              </pre>
-            </div>
-
-            {/* Text Truncation */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Text Truncation with Ellipsis
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function truncate(text, maxLength) {
-  if (text.length <= maxLength) {
-    return text;
-  }
-  return text.slice(0, maxLength) + '...';
-}
-
-const longText = 'This is a very long article title that needs to be shortened';
-
-console.log(truncate(longText, 20));
-console.log(truncate(longText, 30));
-console.log(truncate('Short', 20));
-// Output:
-// truncate(longText, 20) ->
-// "This is a very long..."
-// truncate(longText, 30) ->
-// "This is a very long article..."
-// truncate("Short", 20) -> "Short"`}
-              </pre>
-            </div>
-
-            {/* CSV to Array */}
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                CSV Parsing
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function parseCSVLine(line) {
-  return line.split(',').map(item => item.trim());
-}
-
-const csvLine = 'apple, banana,  orange,  grape';
-const items = parseCSVLine(csvLine);
-
-console.log(items);
-console.log('Items:', items.length);
-console.log('First item:', items[0]);
-// Output:
-// items -> ["apple", "banana", "orange", "grape"]
-// Items: 4
-// First item: "apple"`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: Real-World Use Cases"
-        description="Practical applications of string methods"
-        code={`// Username Validation
-function validateUsername(username) {
-  const clean = username.trim();
-  
-  if (clean.length < 3 || clean.length > 20) {
-    return 'Invalid length';
-  }
-  
-  if (clean.includes(' ')) {
-    return 'No spaces allowed';
-  }
-  
-  return 'Valid!';
-}
-
-console.log(validateUsername('  john  '));
-// Output: "Valid!"
-
-// File Type Checker
-function getFileType(filename) {
-  if (filename.endsWith('.jpg') || filename.endsWith('.png')) {
-    return 'Image';
-  }
-  if (filename.endsWith('.pdf')) {
-    return 'Document';
-  }
-  return 'Unknown';
-}
-
-console.log(getFileType('photo.jpg'));
-// Output: "Image"
-
-// Text Truncation
-function truncate(text, maxLength) {
-  if (text.length <= maxLength) {
-    return text;
-  }
-  return text.slice(0, maxLength) + '...';
-}
-
-const longText = 'This is a very long article title';
-console.log(truncate(longText, 20));
-// Output: "This is a very long..."
-
-// CSV Parsing
-function parseCSVLine(line) {
-  return line.split(',').map(item => item.trim());
-}
-
-const csvLine = 'apple, banana, orange';
-const items = parseCSVLine(csvLine);
-console.log(items);
-// Output: ["apple", "banana", "orange"]`}
-        language="javascript"
-        colorTheme="purple"
-        icon={Code}
+        colorTheme="yellow"
       />
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" /> Do This
-            </h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>✅ Always store the result—methods don't modify the original.</li>
-              <li>✅ Use <code className="font-mono text-xs">trim()</code> on user input before validation.</li>
-              <li>✅ Use <code className="font-mono text-xs">includes()</code> instead of <code className="font-mono text-xs">indexOf() !== -1</code>.</li>
-              <li>✅ Use <code className="font-mono text-xs">at()</code> for negative indices (ES2022).</li>
-              <li>✅ Use <code className="font-mono text-xs">slice()</code> for most extraction (supports negatives).</li>
-              <li>✅ Use <code className="font-mono text-xs">toLowerCase()</code> for case-insensitive comparisons.</li>
-              <li>✅ Validate Unicode with <code className="font-mono text-xs">isWellFormed()</code> before sending to APIs.</li>
-              <li>✅ Chain methods when appropriate: <code className="font-mono text-xs">trim().toLowerCase()</code>.</li>
-            </ul>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Quick Reference & Best Practices</h3>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" /> Avoid This
-            </h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>❌ Don't expect methods to modify the original string.</li>
-              <li>❌ Don't forget string methods are case-sensitive by default.</li>
-              <li>❌ Don't use <code className="font-mono text-xs">substring()</code> when you need negative indices.</li>
-              <li>❌ Don't chain too many methods—it hurts readability.</li>
-              <li>❌ Don't use <code className="font-mono text-xs">replace()</code> when you mean <code className="font-mono text-xs">replaceAll()</code>.</li>
-              <li>❌ Don't forget to check if string is empty before using methods.</li>
-            </ul>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Store result: <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">const upper = text.toUpperCase()</code></li>
+                <li>• Use <strong>trim()</strong> on user input</li>
+                <li>• Use <strong>toLowerCase()</strong> for comparisons</li>
+                <li>• Use <strong>split()</strong> to process CSV data</li>
+                <li>• Chain methods for complex operations</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't forget methods return new strings</li>
+                <li>• Don't compare without <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">toLowerCase()</code></li>
+                <li>• Don't use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">replace()</code> for all occurrences (use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">replaceAll()</code>)</li>
+                <li>• Don't forget to trim user input</li>
+                <li>• Don't assume method support (check compatibility)</li>
+              </ul>
+            </div>
           </div>
+
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Method Categories</h4>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <strong>Search:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• indexOf() → position</div>
+                  <div>• includes() → true/false</div>
+                  <div>• startsWith() / endsWith()</div>
+                </div>
+              </div>
+              <div>
+                <strong>Extract:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• slice() → portion</div>
+                  <div>• substring() → portion</div>
+                  <div>• charAt() → character</div>
+                </div>
+              </div>
+              <div>
+                <strong>Transform:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• toUpperCase() / toLowerCase()</div>
+                  <div>• trim() / trimStart() / trimEnd()</div>
+                  <div>• replace() / replaceAll()</div>
+                </div>
+              </div>
+              <div>
+                <strong>Split/Join:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• split() → array</div>
+                  <div>• Array.join() → string</div>
+                  <div>• repeat() → repeated string</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Remember: Immutability</AlertTitle>
+            <AlertDescription className="text-base">
+              Strings are <strong>immutable</strong> - methods never change the original. Always use the returned value: <code className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">const result = text.toUpperCase()</code>
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
-
     </div>
   );
 }

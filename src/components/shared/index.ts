@@ -25,6 +25,7 @@ export { InnovativeHeader } from './layout/innovative-header';
 // Reusable code display components
 export { CodeSnippetWithOutput } from './code-snippet-with-output';
 export { CodeSnippet } from './code-snippet';
+export { SmartCodeSnippet } from './smart-code-snippet';
 export { InteractivePlayground } from './interactive-playground';
 export { FrontendCodePreview } from './frontend-code-preview';
 export { InteractiveReactPlayground } from './interactive-react-playground';

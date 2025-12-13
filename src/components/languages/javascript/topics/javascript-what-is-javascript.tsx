@@ -3,888 +3,459 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
-import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 import {
   Code2,
-  Globe,
   Sparkles,
-  Zap,
-  Rocket,
-  Heart,
-  Smartphone,
-  Server,
-  Gamepad2,
-  ShoppingCart,
-  Video,
-  MessageCircle,
-  TrendingUp,
-  Users,
-  Clock,
-  CheckCircle,
   Lightbulb,
-  Layers,
-  Box,
-  Cpu,
-  Play,
-  FileCode,
-  Database,
+  Rocket,
+  Zap,
+  Globe,
+  Smartphone,
+  Monitor,
+  Heart,
 } from 'lucide-react';
 
 export default function JavaScriptWhatIsJavaScript() {
-  const { openWithContent } = useWebPlayground();
-
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full min-h-screen space-y-8 pb-16">
       <PageHeader
         icon={Code2}
-        category="JavaScript · Fundamentals"
+        category="JavaScript Fundamentals"
         title="What is JavaScript?"
-        description="The programming language that powers the modern web - from interactive websites to full-stack applications"
-        colorTheme="amber"
+        description="The programming language that powers modern web interactivity"
+        colorTheme="yellow"
       />
 
-      {/* What is JavaScript? */}
-      <Card className="bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 border border-amber-200/50 dark:border-amber-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            The Language of the Web
-          </CardTitle>
-          <CardDescription className="text-base">
-            JavaScript makes websites interactive, dynamic, and alive.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            <strong>JavaScript</strong> is a <strong>high-level, interpreted programming language</strong> that runs in web browsers and enables you to create interactive web pages. It's one of the three core technologies of the web, alongside HTML (structure) and CSS (styling). While HTML defines what content appears on a page and CSS defines how it looks, <strong>JavaScript defines how it behaves</strong>.
-          </p>
-          
-          <p className="text-sm text-muted-foreground">
-            Created in 1995 by Brendan Eich in just 10 days, JavaScript has evolved into the <strong>most popular programming language in the world</strong>. Today, it powers not just websites, but also servers (Node.js), mobile apps (React Native), desktop applications (Electron), and even IoT devices.
-          </p>
-
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border text-center">
-              <div className="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">#1</div>
-              <div className="text-xs font-semibold text-muted-foreground">Most Popular Language</div>
+      {/* Simple Introduction */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border text-center">
-              <div className="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">98%</div>
-              <div className="text-xs font-semibold text-muted-foreground">Websites Use JS</div>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border text-center">
-              <div className="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">17M+</div>
-              <div className="text-xs font-semibold text-muted-foreground">Developers Worldwide</div>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border text-center">
-              <div className="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">29</div>
-              <div className="text-xs font-semibold text-muted-foreground">Years Old (1995)</div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                JavaScript Makes Web Pages Come Alive
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Think about your favorite websites. When you click a button and something happens, when you fill out a form and it checks your input, when images slide across the screen - that's <strong className="text-yellow-700 dark:text-yellow-400">JavaScript</strong> working behind the scenes.
+              </p>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Why "JavaScript"?</AlertTitle>
-            <AlertDescription>
-              Despite the name, JavaScript has <strong>no relation to Java</strong>! It was originally called "Mocha," then "LiveScript," but was renamed to "JavaScript" for marketing reasons when Java was popular. The official name is <strong>ECMAScript</strong> (the specification), but everyone calls it JavaScript.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              If building a website is like building a house:<br/>
+              <strong>HTML</strong> is the structure (walls, rooms, doors)<br/>
+              <strong>CSS</strong> is the decoration (colors, furniture, style)<br/>
+              <strong>JavaScript</strong> is the electricity and plumbing (makes everything work)
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* First Code Example */}
-      <CodeSnippet
-        title="Your First JavaScript Code"
-        description="See how simple JavaScript is - just a few lines to create interactivity"
-        code={`// Display a message
-console.log('Hello, JavaScript!');
-
-// Perform calculations
-const sum = 5 + 3;
-console.log('5 + 3 =', sum);  // 8
-
-// Make decisions
-const temperature = 25;
-if (temperature > 20) {
-  console.log('It\\'s a warm day!');
-} else {
-  console.log('It\\'s a bit cold.');
-}
-
-// Work with text
-const name = 'Alice';
-const greeting = \`Hello, \${name}! Welcome to JavaScript.\`;
-console.log(greeting);
-
-// Output:
-// Hello, JavaScript!
-// 5 + 3 = 8
-// It's a warm day!
-// Hello, Alice! Welcome to JavaScript.`}
-        language="javascript"
-        colorTheme="amber"
-        icon={Code2}
-      />
-
-      {/* Try in Playground */}
-      <Card className="bg-gradient-to-br from-amber-50/80 to-yellow-50/80 dark:from-amber-950/20 dark:to-yellow-950/20 border-2 border-amber-200 dark:border-amber-800">
-        <CardContent className="pt-6">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-yellow-600 flex items-center justify-center flex-shrink-0">
-              <Play className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                Try JavaScript Live!
-                <Badge variant="secondary" className="text-xs">Interactive</Badge>
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Open this example in our interactive playground and see JavaScript in action. Change the code and see instant results!
-              </p>
-              <Button
-                onClick={() => {
-                  openWithContent(
-                    `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First JavaScript</title>
-</head>
-<body>
-  <div class="container">
-    <h1 id="title">Hello, JavaScript!</h1>
-    <p id="output">Click the button to see magic! ✨</p>
-    <button id="myButton">Click Me!</button>
-  </div>
-</body>
-</html>`,
-                    `.container {
-  max-width: 600px;
-  margin: 50px auto;
-  text-align: center;
-  padding: 40px;
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  color: white;
-}
-
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  animation: fadeIn 1s ease-in;
-}
-
-#output {
-  font-size: 1.2rem;
-  margin: 30px 0;
-  min-height: 60px;
-}
-
-button {
-  background: white;
-  color: #f59e0b;
-  border: none;
-  padding: 15px 40px;
-  font-size: 1.1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}`,
-                    `// Get elements
-const button = document.getElementById('myButton');
-const output = document.getElementById('output');
-const title = document.getElementById('title');
-
-let clickCount = 0;
-
-// Add click event
-button.addEventListener('click', function() {
-  clickCount++;
-  
-  // Change content dynamically
-  output.textContent = \`You've clicked \${clickCount} times! 🎉\`;
-  
-  // Change colors
-  const colors = ['#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-  document.querySelector('.container').style.background = 
-    \`linear-gradient(135deg, \${randomColor} 0%, #f59e0b 100%)\`;
-  
-  // Animate title
-  title.style.transform = 'scale(1.1)';
-  setTimeout(() => {
-    title.style.transform = 'scale(1)';
-  }, 200);
-  
-  console.log('Button clicked! Count:', clickCount);
-});
-
-console.log('JavaScript is ready! Click the button to see magic! ✨');`,
-                    'js'
-                  );
-                }}
-                className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                Open in Playground
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* The Web Trinity */}
+      {/* What Does JavaScript Do? */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            The Web Technology Trinity
-          </CardTitle>
-          <CardDescription className="text-base">
-            How JavaScript works together with HTML and CSS
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Zap className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>What Does JavaScript Actually Do?</CardTitle>
+              <CardDescription>Real examples you see every day</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <FileCode className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                  HTML
-                </h4>
-                <Badge className="bg-orange-100 text-orange-700 dark:bg-orange-900/30">Structure</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Defines the content and structure - headings, paragraphs, images, links. It's the <strong>skeleton</strong> of the webpage.
+        <CardContent>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-white dark:bg-slate-900 hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">🖱️</div>
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Responds to Clicks</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Buttons that add items to cart, "Like" buttons, menu dropdowns, pop-ups, and notifications
               </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div className="text-orange-600 dark:text-orange-400">&lt;h1&gt;Title&lt;/h1&gt;</div>
-                <div className="text-muted-foreground mt-1">WHAT is on the page</div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-white dark:bg-slate-900 hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">✅</div>
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Validates Forms</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Checks if email format is correct, password is strong enough, all required fields are filled
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-white dark:bg-slate-900 hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">🎬</div>
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Creates Animations</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Image sliders, smooth scrolling, loading spinners, interactive charts and graphs
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-white dark:bg-slate-900 hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">🔄</div>
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Updates Content</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Shows new messages without refreshing, loads more posts as you scroll, updates prices in real-time
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Animated Analogy */}
+      <Card className="border-0 shadow-lg bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 overflow-hidden">
+        <CardContent className="pt-8 pb-8">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+              Understanding JavaScript: A Visual Analogy
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Think of building a website like creating a person
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* HTML - Skeleton */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-200 to-red-200 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+              <div className="relative bg-white dark:bg-slate-900 p-8 rounded-2xl border-2 border-orange-300 dark:border-orange-700 hover:scale-105 transition-transform">
+                <div className="text-6xl mb-4 text-center">🦴</div>
+                <h4 className="text-xl font-bold mb-3 text-center text-orange-700 dark:text-orange-400">HTML</h4>
+                <div className="text-center mb-4">
+                  <Badge className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-0 text-sm">
+                    The Skeleton
+                  </Badge>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  Provides the <strong>structure and bones</strong>. Headings, paragraphs, images, buttons - the basic framework.
+                </p>
               </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  CSS
-                </h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">Style</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Controls appearance and layout - colors, fonts, spacing. It's the <strong>skin and clothing</strong> that makes it beautiful.
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div className="text-blue-600 dark:text-blue-400">color: blue;</div>
-                <div className="text-muted-foreground mt-1">HOW it looks</div>
+            {/* CSS - Dress/Style */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-900/30 dark:to-purple-900/30 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+              <div className="relative bg-white dark:bg-slate-900 p-8 rounded-2xl border-2 border-blue-300 dark:border-blue-700 hover:scale-105 transition-transform">
+                <div className="text-6xl mb-4 text-center">👗</div>
+                <h4 className="text-xl font-bold mb-3 text-center text-blue-700 dark:text-blue-400">CSS</h4>
+                <div className="text-center mb-4">
+                  <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-0 text-sm">
+                    The Dress
+                  </Badge>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  Makes it <strong>look beautiful</strong>. Colors, fonts, spacing, layouts - the styling and appearance.
+                </p>
               </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                  JavaScript
-                </h4>
-                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">Behavior</Badge>
+            {/* JavaScript - Movement */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 to-amber-200 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+              <div className="relative bg-white dark:bg-slate-900 p-8 rounded-2xl border-2 border-yellow-300 dark:border-yellow-700 hover:scale-105 transition-transform shadow-lg">
+                <div className="text-6xl mb-4 text-center animate-bounce">🏃</div>
+                <h4 className="text-xl font-bold mb-3 text-center text-yellow-700 dark:text-yellow-400">JavaScript</h4>
+                <div className="text-center mb-4">
+                  <Badge className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-0 text-sm">
+                    The Movement
+                  </Badge>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  Brings it to <strong>life with actions</strong>. Walking, running, responding - the behavior and interactivity.
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Makes it interactive and alive - responds to clicks, validates forms, animates. It's the <strong>brain and muscles</strong>.
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div className="text-amber-600 dark:text-amber-400">button.click()</div>
-                <div className="text-muted-foreground mt-1">HOW it behaves</div>
+            </div>
+          </div>
+
+          <div className="mt-8 p-6 bg-white/60 dark:bg-slate-900/60 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 max-w-3xl mx-auto">
+            <div className="flex items-start gap-4">
+              <div className="text-3xl">💡</div>
+              <div>
+                <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">The Complete Picture</h4>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  A skeleton alone is just bones. Add a dress and it looks nice. But add <strong className="text-yellow-700 dark:text-yellow-400">movement (JavaScript)</strong> and suddenly it's alive! It can walk, dance, respond when you talk to it. That's what JavaScript does to websites - it makes them <strong>interactive and alive</strong>.
+                </p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
+      {/* Interactive Examples */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Rocket className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>See JavaScript in Action!</CardTitle>
+              <CardDescription>Try these interactive examples - click and interact!</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
+
       <CodeSnippet
-        title="Complete Example: HTML + CSS + JavaScript"
-        description="See how all three technologies work together"
-        code={`<!-- HTML: Structure -->
-<div class="counter">
-  <h2 id="display">Count: 0</h2>
-  <button id="incrementBtn">Increase</button>
-  <button id="decrementBtn">Decrease</button>
-  <button id="resetBtn">Reset</button>
-</div>
+        title="Example 1: Click Counter"
+        description="Every click updates the number - this is JavaScript responding to your actions!"
+        code={`const button = document.getElementById('clickBtn');
+const counter = document.getElementById('counter');
 
-/* CSS: Style */
-.counter {
-  text-align: center;
-  padding: 30px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 15px;
-  color: white;
-}
-
-button {
-  margin: 5px;
-  padding: 10px 20px;
-  background: white;
-  color: #667eea;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-
-// JavaScript: Behavior
 let count = 0;
-const display = document.getElementById('display');
 
-document.getElementById('incrementBtn').addEventListener('click', () => {
-  count++;
-  display.textContent = \`Count: \${count}\`;
-});
-
-document.getElementById('decrementBtn').addEventListener('click', () => {
-  count--;
-  display.textContent = \`Count: \${count}\`;
-});
-
-document.getElementById('resetBtn').addEventListener('click', () => {
-  count = 0;
-  display.textContent = 'Count: 0';
-});
-
-// Result: Interactive counter that responds to button clicks!`}
+button.addEventListener('click', () => {
+  count = count + 1;
+  counter.textContent = count;
+  console.log('Clicked! Count is now:', count);
+});`}
         language="javascript"
-        colorTheme="blue"
-        icon={Layers}
-      />
-
-      {/* What JavaScript Powers */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Rocket className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What JavaScript Powers
-          </CardTitle>
-          <CardDescription className="text-base">
-            Real-world applications built with JavaScript
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <Globe className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-3" />
-              <h4 className="font-semibold mb-2">Web Applications</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Gmail, Google Maps, Facebook, Twitter - all powered by JavaScript for rich, interactive experiences
-              </p>
-              <Badge variant="outline" className="text-xs">React, Vue, Angular</Badge>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <Server className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mb-3" />
-              <h4 className="font-semibold mb-2">Backend & APIs</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Node.js powers servers, REST APIs, GraphQL, and microservices at companies like Netflix and Uber
-              </p>
-              <Badge variant="outline" className="text-xs">Node.js, Express</Badge>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <Smartphone className="w-8 h-8 text-purple-600 dark:text-purple-400 mb-3" />
-              <h4 className="font-semibold mb-2">Mobile Apps</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Instagram, Discord, Walmart - iOS & Android apps built with React Native and JavaScript
-              </p>
-              <Badge variant="outline" className="text-xs">React Native, Ionic</Badge>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <Cpu className="w-8 h-8 text-amber-600 dark:text-amber-400 mb-3" />
-              <h4 className="font-semibold mb-2">Desktop Software</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                VS Code, Slack, Discord, Spotify - desktop apps built with Electron framework
-              </p>
-              <Badge variant="outline" className="text-xs">Electron</Badge>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-red-50/60 to-rose-50/60 dark:from-red-950/10 dark:to-rose-950/10 rounded-xl border border-red-200/50 dark:border-red-800/30">
-              <Gamepad2 className="w-8 h-8 text-red-600 dark:text-red-400 mb-3" />
-              <h4 className="font-semibold mb-2">Browser Games</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                2D/3D games, simulations, and interactive experiences using WebGL, Canvas, and game engines
-              </p>
-              <Badge variant="outline" className="text-xs">Phaser, Three.js</Badge>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-cyan-50/60 to-teal-50/60 dark:from-cyan-950/10 dark:to-teal-950/10 rounded-xl border border-cyan-200/50 dark:border-cyan-800/30">
-              <Database className="w-8 h-8 text-cyan-600 dark:text-cyan-400 mb-3" />
-              <h4 className="font-semibold mb-2">Databases</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                MongoDB, CouchDB - NoSQL databases that use JavaScript for queries and operations
-              </p>
-              <Badge variant="outline" className="text-xs">MongoDB, Firebase</Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Key JavaScript Features */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Key Features of JavaScript
-          </CardTitle>
-          <CardDescription className="text-base">
-            What makes JavaScript powerful and unique
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Dynamically Typed
-              </h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                No need to declare variable types - JavaScript figures it out automatically
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>let x = 5;        <span className="text-muted-foreground">// number</span></div>
-                <div>x = "hello";     <span className="text-muted-foreground">// now string!</span></div>
-                <div>x = true;        <span className="text-muted-foreground">// now boolean!</span></div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Event-Driven
-              </h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Responds to user actions like clicks, key presses, mouse movements
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>button.addEventListener('click', () => {"{"}</div>
-                <div className="ml-4">console.log('Clicked!');</div>
-                <div>{"}"});</div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Asynchronous
-              </h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Handle multiple operations without blocking - fetch data, timers, animations
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>async function getData() {"{"}</div>
-                <div className="ml-4">const data = await fetch(url);</div>
-                <div className="ml-4">return data;</div>
-                <div>{"}"}</div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Object-Oriented
-              </h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Everything is an object - functions, arrays, even functions are objects!
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>const person = {"{"}</div>
-                <div className="ml-4">name: 'Alice',</div>
-                <div className="ml-4">greet() {"{"} return 'Hi!'; {"}"}</div>
-                <div>{"}"};</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="JavaScript Superpowers"
-        description="See key features in action"
-        code={`// 1. Dynamic Typing - Variables can change types
-let data = 42;              // number
-data = "now a string";      // string
-data = [1, 2, 3];          // array
-console.log(typeof data);   // "object"
-
-// 2. Event-Driven Programming
-document.querySelector('#myButton').addEventListener('click', function() {
-  console.log('Button was clicked!');
-  alert('Hello from JavaScript!');
-});
-
-// 3. Asynchronous Operations (Promises & Async/Await)
-async function fetchUserData() {
-  console.log('Fetching user data...');
-  
-  const response = await fetch('https://api.example.com/user/1');
-  const user = await response.json();
-  
-  console.log('User:', user.name);
-  return user;
+        colorTheme="yellow"
+        embedPlayground={true}
+        playgroundConfig={{
+          html: `<div style="text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px;">
+  <h2 style="color: #92400e; margin-bottom: 16px; font-size: 24px;">Click Counter</h2>
+  <div style="font-size: 72px; font-weight: bold; color: #b45309; margin: 24px 0;" id="counter">0</div>
+  <button id="clickBtn" style="padding: 16px 40px; font-size: 18px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); transition: all 0.2s;">Click Me!</button>
+</div>`,
+          css: `button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4) !important;
 }
 
-// 4. First-Class Functions (Functions as values)
-const greet = function(name) {
-  return \`Hello, \${name}!\`;
-};
+button:active {
+  transform: translateY(0);
+}`,
+          js: `const button = document.getElementById('clickBtn');
+const counter = document.getElementById('counter');
 
-const sayHi = greet;  // Assign function to variable
-console.log(sayHi('Alice'));  // "Hello, Alice!"
+let count = 0;
 
-// 5. Object-Oriented
-const car = {
-  brand: 'Tesla',
-  model: 'Model 3',
-  year: 2024,
-  start() {
-    console.log(\`\${this.brand} \${this.model} started!\`);
-  }
-};
-
-car.start();  // "Tesla Model 3 started!"
-
-// 6. Array Methods (Functional Programming)
-const numbers = [1, 2, 3, 4, 5];
-const doubled = numbers.map(n => n * 2);
-const evens = numbers.filter(n => n % 2 === 0);
-const sum = numbers.reduce((acc, n) => acc + n, 0);
-
-console.log('Doubled:', doubled);  // [2, 4, 6, 8, 10]
-console.log('Evens:', evens);      // [2, 4]
-console.log('Sum:', sum);          // 15`}
-        language="javascript"
-        colorTheme="purple"
-        icon={Zap}
+button.addEventListener('click', () => {
+  count = count + 1;
+  counter.textContent = count;
+  console.log('Clicked! Count is now:', count);
+});`,
+          layout: 'horizontal',
+        }}
       />
-
-      {/* Why JavaScript is Special */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Heart className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Why JavaScript is Unique
-          </CardTitle>
-          <CardDescription className="text-base">
-            What sets JavaScript apart from other programming languages
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-xl border bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20">
-              <div className="flex items-start gap-4">
-                <div className="bg-emerald-100 dark:bg-emerald-900/30 p-3 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Runs Everywhere</h4>
-                  <p className="text-sm text-muted-foreground">
-                    The <strong>only language</strong> that runs natively in every web browser. No installation, no compilation, no configuration - just open the browser and start coding instantly.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl border bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20">
-              <div className="flex items-start gap-4">
-                <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
-                  <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Massive Ecosystem</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Over <strong>2.5 million packages</strong> on npm (Node Package Manager). Find a library for anything - animations, charts, date handling, testing, and more.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl border bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20">
-              <div className="flex items-start gap-4">
-                <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
-                  <Rocket className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Beginner-Friendly</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Simple syntax, forgiving nature, and <strong>instant feedback</strong> in the browser console. Perfect for learning programming - see results immediately without complex setup.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl border bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20">
-              <div className="flex items-start gap-4">
-                <div className="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg">
-                  <Layers className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Full-Stack Power</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Use <strong>one language for everything</strong> - frontend (React), backend (Node.js), mobile (React Native), desktop (Electron). No need to learn multiple languages.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl border bg-gradient-to-br from-rose-50 to-red-50 dark:from-rose-950/20 dark:to-red-950/20">
-              <div className="flex items-start gap-4">
-                <div className="bg-rose-100 dark:bg-rose-900/30 p-3 rounded-lg">
-                  <TrendingUp className="w-6 h-6 text-rose-600 dark:text-rose-400" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Career Opportunities</h4>
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Most in-demand tech skill</strong> globally. Every company needs JavaScript developers - from startups to FAANG. Average salary: $110k+ in the US.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl border bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-950/20 dark:to-teal-950/20">
-              <div className="flex items-start gap-4">
-                <div className="bg-cyan-100 dark:bg-cyan-900/30 p-3 rounded-lg">
-                  <Clock className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Active Community</h4>
-                  <p className="text-sm text-muted-foreground">
-                    <strong>17+ million developers</strong> worldwide. Massive Stack Overflow presence, GitHub repos, YouTube tutorials, and conferences. Help is always available.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Latest JavaScript Features (ES2024) */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/40 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Modern JavaScript (ES2024)
-          </CardTitle>
-          <CardDescription className="text-base">
-            Latest features in JavaScript - constantly evolving
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            JavaScript follows the <strong>ECMAScript specification</strong> and receives yearly updates. Each year brings new features that make coding easier and more powerful. Here are some modern features you'll love:
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Optional Chaining (?.)</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">ES2020</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Safely access nested properties without errors
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>const name = user?.profile?.name;</div>
-                <div className="text-muted-foreground mt-1">// No error if user is null!</div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Nullish Coalescing (??)</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">ES2020</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Default values only for null/undefined
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>const count = value ?? 0;</div>
-                <div className="text-muted-foreground mt-1">// Use 0 only if value is null/undefined</div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Array Methods</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">ES2023</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                New methods like findLast, toSorted, toReversed
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>const last = arr.findLast(x => x > 10);</div>
-                <div className="text-muted-foreground mt-1">// Find from end of array</div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Top-Level Await</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">ES2022</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Use await at the top level in modules
-              </p>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
-                <div>const data = await fetch(url);</div>
-                <div className="text-muted-foreground mt-1">// No async wrapper needed!</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       <CodeSnippet
-        title="Modern JavaScript Features"
-        description="Latest syntax and capabilities (ES2020-2024)"
-        code={`// 1. Optional Chaining (?.) - Safe property access
-const user = { name: 'Alice', address: { city: 'NYC' } };
-console.log(user?.address?.city);  // "NYC"
-console.log(user?.phone?.number);  // undefined (no error!)
+        title="Example 2: Greeting Generator"
+        description="Type your name and get a personalized greeting!"
+        code={`const input = document.getElementById('nameInput');
+const button = document.getElementById('greetBtn');
+const greeting = document.getElementById('greeting');
 
-// 2. Nullish Coalescing (??) - Better default values
-const count = 0;
-console.log(count || 100);   // 100 (wrong! 0 is falsy)
-console.log(count ?? 100);   // 0 (correct! only null/undefined trigger default)
-
-// 3. Array.at() - Negative indexing
-const fruits = ['apple', 'banana', 'orange'];
-console.log(fruits.at(-1));  // "orange" (last item)
-console.log(fruits.at(-2));  // "banana" (second to last)
-
-// 4. Object.hasOwn() - Better property checking
-const obj = { name: 'Alice' };
-console.log(Object.hasOwn(obj, 'name'));  // true
-console.log(Object.hasOwn(obj, 'age'));   // false
-
-// 5. Array.findLast() - Find from end
-const numbers = [1, 5, 10, 15, 20];
-const lastOver10 = numbers.findLast(n => n > 10);
-console.log(lastOver10);  // 20
-
-// 6. Top-Level Await (in modules)
-const response = await fetch('https://api.example.com/data');
-const data = await response.json();
-console.log(data);
-
-// 7. Private Class Fields (#)
-class BankAccount {
-  #balance = 0;  // Private field
+button.addEventListener('click', () => {
+  const name = input.value;
   
-  deposit(amount) {
-    this.#balance += amount;
+  if (name) {
+    greeting.textContent = \`Hello, \${name}! Welcome to JavaScript! 👋\`;
+    greeting.style.color = '#15803d';
+    console.log('Greeting created for:', name);
+  } else {
+    greeting.textContent = 'Please enter your name first!';
+    greeting.style.color = '#dc2626';
+    console.log('No name entered');
   }
-  
-  getBalance() {
-    return this.#balance;
-  }
+});`}
+        language="javascript"
+        colorTheme="yellow"
+        embedPlayground={true}
+        playgroundConfig={{
+          html: `<div style="text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 12px;">
+  <h2 style="color: #92400e; margin-bottom: 24px; font-size: 24px;">What's Your Name?</h2>
+  <input id="nameInput" type="text" placeholder="Enter your name..." style="padding: 14px 20px; font-size: 16px; border: 3px solid #f59e0b; border-radius: 10px; width: 260px; margin-right: 12px;" />
+  <button id="greetBtn" style="padding: 14px 32px; font-size: 16px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">Greet Me!</button>
+  <p id="greeting" style="margin-top: 32px; font-size: 22px; font-weight: 600; min-height: 30px; color: #78350f;"></p>
+</div>`,
+          css: `input:focus {
+  outline: none;
+  border-color: #d97706;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
 }
 
-const account = new BankAccount();
-account.deposit(100);
-console.log(account.getBalance());  // 100
-// console.log(account.#balance);   // ERROR: Private field!
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4) !important;
+}`,
+          js: `const input = document.getElementById('nameInput');
+const button = document.getElementById('greetBtn');
+const greeting = document.getElementById('greeting');
 
-// 8. Logical Assignment (&&= ||= ??=)
-let x = 5;
-x ||= 10;  // x = x || 10 (if x is falsy, set to 10)
-console.log(x);  // 5 (x was truthy)
-
-let y = null;
-y ??= 100;  // y = y ?? 100
-console.log(y);  // 100 (y was null)`}
-        language="javascript"
-        colorTheme="blue"
-        icon={Sparkles}
+button.addEventListener('click', () => {
+  const name = input.value;
+  
+  if (name) {
+    greeting.textContent = \`Hello, \${name}! Welcome to JavaScript! 👋\`;
+    greeting.style.color = '#15803d';
+    console.log('Greeting created for:', name);
+  } else {
+    greeting.textContent = 'Please enter your name first!';
+    greeting.style.color = '#dc2626';
+    console.log('No name entered');
+  }
+});`,
+          layout: 'horizontal',
+        }}
       />
 
-      {/* Evolution Timeline */}
+      <CodeSnippet
+        title="Example 3: Background Color Changer"
+        description="Click the button to randomly change the background color"
+        code={`const button = document.getElementById('changeBtn');
+const box = document.getElementById('colorBox');
+const colorName = document.getElementById('colorName');
+
+const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'];
+const colorNames = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Pink'];
+
+button.addEventListener('click', () => {
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  box.style.background = colors[randomIndex];
+  colorName.textContent = colorNames[randomIndex];
+  console.log('Color changed to:', colorNames[randomIndex]);
+});`}
+        language="javascript"
+        colorTheme="yellow"
+        embedPlayground={true}
+        playgroundConfig={{
+          html: `<div style="text-align: center; padding: 40px; background: #fffbeb; border-radius: 12px;">
+  <div id="colorBox" style="width: 200px; height: 200px; margin: 0 auto 24px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 20px; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.1);"></div>
+  <h3 id="colorName" style="font-size: 28px; font-weight: bold; margin-bottom: 24px; color: #78350f;">Yellow</h3>
+  <button id="changeBtn" style="padding: 14px 32px; font-size: 16px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">Change Color</button>
+</div>`,
+          css: `button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4) !important;
+}`,
+          js: `const button = document.getElementById('changeBtn');
+const box = document.getElementById('colorBox');
+const colorName = document.getElementById('colorName');
+
+const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'];
+const colorNames = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Pink'];
+
+button.addEventListener('click', () => {
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  box.style.background = colors[randomIndex];
+  colorName.textContent = colorNames[randomIndex];
+  console.log('Color changed to:', colorNames[randomIndex]);
+});`,
+          layout: 'horizontal',
+        }}
+      />
+
+      {/* Where JavaScript Runs */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Clock className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            JavaScript Through the Years
-          </CardTitle>
-          <CardDescription className="text-base">
-            From simple scripts to powering the entire web
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Globe className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Where Can You Use JavaScript?</CardTitle>
+              <CardDescription>JavaScript is everywhere on the web and beyond</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <Monitor className="w-10 h-10 text-blue-600 dark:text-blue-400 mb-4" />
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Websites</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Interactive features, animations, form validation, and dynamic content
+              </p>
+              <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-0">
+                Most Common
+              </Badge>
+            </div>
+
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <Smartphone className="w-10 h-10 text-purple-600 dark:text-purple-400 mb-4" />
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Mobile Apps</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Build iOS and Android apps using React Native or similar frameworks
+              </p>
+              <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-0">
+                Very Popular
+              </Badge>
+            </div>
+
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 border-emerald-200 dark:border-emerald-800/30">
+              <Code2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400 mb-4" />
+              <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Servers</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Build backend systems with Node.js to handle databases and APIs
+              </p>
+              <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-0">
+                Powerful
+              </Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Why JavaScript? */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Heart className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Why Should You Learn JavaScript?</CardTitle>
+              <CardDescription>Perfect for beginners and professionals alike</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
           <div className="space-y-4">
-            <div className="flex gap-4 p-4 rounded-lg border bg-white dark:bg-slate-900/50">
-              <div className="bg-amber-100 dark:bg-amber-900/30 px-4 py-2 rounded-lg font-bold text-amber-700 dark:text-amber-400 h-fit">
-                1995
-              </div>
+            <div className="flex gap-4 p-5 rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/10 dark:to-emerald-950/10">
+              <div className="text-3xl">🎯</div>
               <div className="flex-1">
-                <h4 className="font-bold mb-1">Birth of JavaScript</h4>
-                <p className="text-sm text-muted-foreground">
-                  Created by Brendan Eich at Netscape in just <strong>10 days</strong>. Originally called "Mocha," then "LiveScript," finally renamed to "JavaScript" for marketing.
+                <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Easy to Get Started</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  No complicated setup. Every computer has a web browser. Just open the browser console (press F12), type JavaScript, and see results instantly. It's that simple!
                 </p>
               </div>
             </div>
 
-            <div className="flex gap-4 p-4 rounded-lg border bg-white dark:bg-slate-900/50">
-              <div className="bg-amber-100 dark:bg-amber-900/30 px-4 py-2 rounded-lg font-bold text-amber-700 dark:text-amber-400 h-fit">
-                2009
-              </div>
+            <div className="flex gap-4 p-5 rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/10 dark:to-cyan-950/10">
+              <div className="text-3xl">💼</div>
               <div className="flex-1">
-                <h4 className="font-bold mb-1">Node.js Revolution</h4>
-                <p className="text-sm text-muted-foreground">
-                  Ryan Dahl created <strong>Node.js</strong>, allowing JavaScript to run on servers. This changed everything - JavaScript became a full-stack language.
+                <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">High Job Demand</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  JavaScript is the #1 most used programming language. Every company building websites or apps needs JavaScript developers. Great career opportunities and salaries.
                 </p>
               </div>
             </div>
 
-            <div className="flex gap-4 p-4 rounded-lg border bg-white dark:bg-slate-900/50">
-              <div className="bg-amber-100 dark:bg-amber-900/30 px-4 py-2 rounded-lg font-bold text-amber-700 dark:text-amber-400 h-fit">
-                2015
-              </div>
+            <div className="flex gap-4 p-5 rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/10 dark:to-pink-950/10">
+              <div className="text-3xl">🚀</div>
               <div className="flex-1">
-                <h4 className="font-bold mb-1">ES6/ES2015 - Modern JavaScript</h4>
-                <p className="text-sm text-muted-foreground">
-                  Major update with <strong>classes, arrow functions, promises, modules</strong>, and more. Made JavaScript truly modern and powerful.
+                <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Build Anything</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  From simple interactive buttons to complex web apps like Gmail, mobile apps like Instagram, or even games. One language for everything!
                 </p>
               </div>
             </div>
 
-            <div className="flex gap-4 p-4 rounded-lg border bg-white dark:bg-slate-900/50">
-              <div className="bg-amber-100 dark:bg-amber-900/30 px-4 py-2 rounded-lg font-bold text-amber-700 dark:text-amber-400 h-fit">
-                2024
-              </div>
+            <div className="flex gap-4 p-5 rounded-xl border-2 border-amber-200 dark:border-amber-800/30 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/10 dark:to-yellow-950/10">
+              <div className="text-3xl">🌍</div>
               <div className="flex-1">
-                <h4 className="font-bold mb-1">JavaScript Everywhere</h4>
-                <p className="text-sm text-muted-foreground">
-                  Powers web, mobile, desktop, IoT, AI/ML, blockchain, and more. The most <strong>versatile and popular language</strong> ever created.
+                <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Massive Community</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Millions of developers worldwide. Tons of free resources, tutorials, libraries, and frameworks. Someone has probably solved any problem you'll face!
                 </p>
               </div>
             </div>
@@ -893,54 +464,61 @@ console.log(y);  // 100 (y was null)`}
       </Card>
 
       {/* Key Takeaways */}
-      <Card className="border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50/50 to-yellow-50/50 dark:from-amber-950/20 dark:to-yellow-950/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3">
-            <Badge className="bg-amber-600 text-white text-base px-4 py-2">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Essential Takeaways
-            </Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-white dark:bg-slate-900/50">
-              <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block mb-1">The Web's Native Language</strong>
-                <span className="text-sm text-muted-foreground">
-                  JavaScript is built into every browser - no installation needed to start building interactive websites
-                </span>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">⚡</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Makes Websites Interactive</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    JavaScript responds to user actions like clicks, typing, and scrolling
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-white dark:bg-slate-900/50">
-              <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block mb-1">Beyond the Browser</strong>
-                <span className="text-sm text-muted-foreground">
-                  With Node.js, JavaScript now powers servers, APIs, mobile apps, and even desktop software
-                </span>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🎓</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Beginner Friendly</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    No installation needed - just open browser console and start coding
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-white dark:bg-slate-900/50">
-              <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block mb-1">Beginner-Friendly</strong>
-                <span className="text-sm text-muted-foreground">
-                  Simple syntax, instant feedback, and a forgiving nature make it perfect for learning programming
-                </span>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🌐</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Works Everywhere</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Websites, mobile apps, servers, games - JavaScript does it all
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-white dark:bg-slate-900/50">
-              <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block mb-1">Career Powerhouse</strong>
-                <span className="text-sm text-muted-foreground">
-                  Most in-demand programming skill with millions of job opportunities worldwide
-                </span>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">💰</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Great Career Path</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    High demand, excellent salaries, remote work opportunities
+                  </p>
+                </div>
               </div>
             </div>
           </div>

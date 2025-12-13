@@ -2,89 +2,52 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Layers,
   Sparkles,
+  Code2,
   Lightbulb,
-  CheckCircle2,
-  XCircle,
-  Code,
+  Home,
   Lock,
-  Eye,
-  AlertCircle,
 } from 'lucide-react';
 
 export default function JavaScriptScope() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Layers}
-        category="JavaScript · Scope & Closures"
+        category="JavaScript Fundamentals"
         title="Scope"
-        description="Master lexical scope, block scope, function scope, and the scope chain - the foundation of JavaScript variable accessibility."
-        colorTheme="blue"
+        description="Where can you use your variables? Understanding visibility rules"
+        colorTheme="yellow"
       />
 
       {/* What is Scope? */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What is Scope?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Scope determines where variables are accessible in your code - the visibility rules of JavaScript.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            <strong>Scope</strong> is like a set of rules that determines which parts of your code can "see" and use which variables. Think of it as rooms in a house - you can see what's in your current room, but you might not be able to see what's in other rooms. Understanding scope is <strong>critical</strong> for avoiding bugs, managing memory, and writing clean code.
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold text-sm">Visibility</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Where can I access this variable?
-              </p>
-              <Badge className="mt-2 bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 text-xs">Access control</Badge>
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-purple-50/50 via-indigo-50/30 to-blue-50/20 dark:from-purple-950/10 dark:via-indigo-950/5 dark:to-blue-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-400 to-indigo-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Lock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                <h4 className="font-semibold text-sm">Protection</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Prevents naming conflicts and data leaks
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Scope: Where Variables Live
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Scope is like <strong className="text-purple-700 dark:text-purple-400">rooms in a house</strong>. A variable created in one room might not be visible in another room. Scope determines where you can use your variables!
               </p>
-              <Badge className="mt-2 bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 text-xs">Security</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold text-sm">Hierarchy</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Variables exist in nested levels (scope chain)
-              </p>
-              <Badge className="mt-2 bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 text-xs">Layered</Badge>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Why Scope Matters</AlertTitle>
-            <AlertDescription>
-              Poor understanding of scope leads to bugs like variable collisions, memory leaks, and unexpected behavior. Mastering scope helps you write predictable, maintainable code.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-purple-200 dark:border-purple-800/30">
+            <Home className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <AlertTitle className="text-lg">Think of a House</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              <strong>Global</strong> = Living room (everyone can access)<br/>
+              <strong>Local</strong> = Your bedroom (only you can access)
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -93,731 +56,359 @@ export default function JavaScriptScope() {
       {/* Global Scope */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Global Scope
-          </CardTitle>
-          <CardDescription className="text-base">
-            Variables declared outside any function or block - accessible everywhere in your code.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Basic Global Variable</h4>
-              <p className="text-xs text-muted-foreground">
-                Declared at the top level, accessible anywhere
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Global variable
-const globalName = 'Alice';
-
-function greet() {
-  // Can access global variable
-  console.log('Hello, ' + globalName);
-}
-
-function farewell() {
-  // Also can access it
-  console.log('Goodbye, ' + globalName);
-}
-
-greet();
-farewell();
-console.log(globalName);
-// Output:
-// greet() -> "Hello, Alice"
-// farewell() -> "Goodbye, Alice"
-// globalName -> "Alice"
-// Accessible everywhere!`}
-              </pre>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Home className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Window Object (Browser)</h4>
-              <p className="text-xs text-muted-foreground">
-                Global variables attach to the <code className="font-mono text-xs">window</code> object
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Using var creates global property
-var globalCount = 10;
-
-// Same as window.globalCount
-console.log(window.globalCount);
-
-// let/const don't attach to window
-let localCount = 20;
-console.log(window.localCount);
-
-// Use var sparingly!
-console.log(globalCount);
-// Output:
-// window.globalCount -> 10
-// window.localCount -> undefined
-// let/const are safer`}
-              </pre>
+            <div>
+              <CardTitle>Global Scope</CardTitle>
+              <CardDescription>Variables accessible everywhere in your code</CardDescription>
             </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Global Variables</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Variables declared <strong>outside functions</strong> are global - they can be used anywhere in your entire program
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Global variable (outside everything)
+const userName = 'Alice';
 
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Global Scope Warning</AlertTitle>
-            <AlertDescription>
-              Avoid polluting the global scope! Too many global variables can cause naming conflicts and make debugging difficult. Use modules, closures, or IIFEs to contain your variables.
-            </AlertDescription>
-          </Alert>
+function greet() {
+  console.log('Hello, ' + userName);
+}
 
-          <div className="p-4 bg-amber-50 dark:bg-amber-950/20 rounded-xl border border-amber-200 dark:border-amber-800">
-            <h4 className="font-semibold mb-2 text-amber-700 dark:text-amber-300 flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" />
-              Global Scope Best Practices
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Use <code className="font-mono text-xs">const</code> or <code className="font-mono text-xs">let</code> instead of <code className="font-mono text-xs">var</code></li>
-              <li>✅ Minimize global variables - use modules or functions</li>
-              <li>✅ Prefix globals with descriptive names (APP_CONFIG)</li>
-              <li>❌ Avoid implicit globals (variables without declaration)</li>
-            </ul>
+function sayGoodbye() {
+  console.log('Bye, ' + userName);
+}
+
+greet();       // Can use userName
+sayGoodbye();  // Can use userName
+console.log(userName);  // Can use it here too`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: Global Scope"
-        description="Variables accessible everywhere in your code"
+        title="Global Scope Example"
+        description="Variables declared at the top level are accessible everywhere"
         code={`// Global variable
-const globalName = 'Alice';
+const appName = 'My App';
+const version = '1.0';
 
-function greet() {
-  // Can access global variable
-  console.log('Hello, ' + globalName);
+function displayInfo() {
+  // Can access global variables
+  console.log(appName + ' v' + version);
 }
 
-function farewell() {
-  // Also can access it
-  console.log('Goodbye, ' + globalName);
+function getDetails() {
+  // Also can access them here
+  return 'Running ' + appName;
 }
 
-greet();
-// Output: "Hello, Alice"
+displayInfo();  // My App v1.0
+console.log(getDetails());  // Running My App
 
-farewell();
-// Output: "Goodbye, Alice"
-
-console.log(globalName);
-// Output: "Alice"
-
-// Browser: var creates global property
-var globalCount = 10;
-console.log(window.globalCount);
-// Output: 10
-
-// let/const don't attach to window
-let localCount = 20;
-console.log(window.localCount);
-// Output: undefined`}
+// Can even access directly
+console.log('App: ' + appName);  // App: My App`}
         language="javascript"
-        colorTheme="blue"
-        icon={Code}
+        colorTheme="yellow"
       />
 
-      {/* Function Scope */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
+      {/* Local Scope */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Function Scope
-          </CardTitle>
-          <CardDescription className="text-base">
-            Variables declared inside a function are only accessible within that function.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Basic Function Scope</h4>
-              <p className="text-xs text-muted-foreground">
-                Variables stay inside the function
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function calculateTotal() {
-  // Function-scoped variables
-  const price = 100;
-  const tax = 10;
-  const total = price + tax;
-  
-  console.log(total);
-  return total;
-}
-
-calculateTotal();
-
-// Error! Can't access function variables
-console.log(price);
-console.log(total);
-// Output:
-// calculateTotal() -> 110
-// price -> ReferenceError
-// total -> ReferenceError
-// Variables are private to function`}
-              </pre>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Lock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Nested Functions</h4>
-              <p className="text-xs text-muted-foreground">
-                Inner functions can access outer function variables
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function outer() {
-  const outerVar = 'I am outer';
-  
-  function inner() {
-    // Can access outer's variable
-    const innerVar = 'I am inner';
-    console.log(outerVar);
-    console.log(innerVar);
-  }
-  
-  inner();
-  // Can't access innerVar
-  console.log(innerVar);
-}
-
-outer();
-// Output:
-// inner() can see outerVar
-// outer() cannot see innerVar
-// innerVar -> ReferenceError`}
-              </pre>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Parameters are Function-Scoped</h4>
-              <p className="text-xs text-muted-foreground">
-                Function parameters act like local variables
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function greet(name, age) {
-  // name and age are function-scoped
-  const message = 'Hello ' + name;
-  console.log(message + ', age ' + age);
-}
-
-greet('Alice', 25);
-
-// Error! Parameters not accessible outside
-console.log(name);
-console.log(age);
-// Output:
-// greet() -> "Hello Alice, age 25"
-// name -> ReferenceError
-// Parameters are local`}
-              </pre>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">var vs let/const in Functions</h4>
-              <p className="text-xs text-muted-foreground">
-                All are function-scoped, but behave differently in blocks
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function test() {
-  var x = 1;
-  let y = 2;
-  const z = 3;
-  
-  if (true) {
-    var x = 10;  // Same x!
-    let y = 20;  // New y
-    const z = 30; // New z
-  }
-  
-  console.log(x);
-  console.log(y);
-  console.log(z);
-}
-
-test();
-// Output:
-// x -> 10 (reassigned)
-// y -> 2 (block-scoped)
-// z -> 3 (block-scoped)`}
-              </pre>
+            <div>
+              <CardTitle>Local Scope (Function Scope)</CardTitle>
+              <CardDescription>Variables only accessible inside their function</CardDescription>
             </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Local Variables</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Variables declared <strong>inside functions</strong> are local - they only exist within that function
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function greet() {
+  // Local variable (inside function)
+  const message = 'Hello!';
+  console.log(message);  // Works!
+}
+
+greet();  // Hello!
+
+// Try to use message outside function
+console.log(message);  // ❌ ERROR!
+// message is not defined`}</pre>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="bg-purple-50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800/30">
+            <Lightbulb className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <AlertTitle>Local Variables Are Private</AlertTitle>
+            <AlertDescription className="text-base">
+              Local variables are like secrets - they only exist inside their function and disappear when the function ends!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: Function Scope"
-        description="Variables private to functions and nested scopes"
-        code={`// Function Scope - Variables stay inside
-function calculateTotal() {
-  const price = 100;
-  const tax = 10;
+        title="Local Scope Example"
+        description="Variables declared inside functions stay inside"
+        code={`function calculateTotal() {
+  // Local variables
+  const price = 50;
+  const tax = 5;
   const total = price + tax;
   
-  console.log(total);
+  console.log('Total: $' + total);
   return total;
 }
 
-calculateTotal();
-// Output: 110
+calculateTotal();  // Total: $55
 
-// Can't access function variables outside
-// console.log(price); // ReferenceError
+// Try to use local variables outside
+console.log(price);  // ❌ ERROR! price is not defined
+console.log(total);  // ❌ ERROR! total is not defined
 
-// Nested Functions - Inner can access outer
-function outer() {
-  const outerVar = 'I am outer';
-  
-  function inner() {
-    const innerVar = 'I am inner';
-    console.log(outerVar); // Can access outer
-    console.log(innerVar);
-  }
-  
-  inner();
-  // console.log(innerVar); // ReferenceError
+// Each function has its own scope
+function orderItem() {
+  const price = 100;  // Different variable!
+  console.log(price);
 }
 
-outer();
-// Output: "I am outer"
-// Output: "I am inner"
-
-// Parameters are Function-Scoped
-function greet(name, age) {
-  const message = 'Hello ' + name;
-  console.log(message + ', age ' + age);
-}
-
-greet('Alice', 25);
-// Output: "Hello Alice, age 25"
-
-// console.log(name); // ReferenceError`}
+orderItem();  // 100 (this function's price)`}
         language="javascript"
-        colorTheme="purple"
-        icon={Code}
+        colorTheme="yellow"
       />
 
       {/* Block Scope */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lock className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Block Scope (ES6+)
-          </CardTitle>
-          <CardDescription className="text-base">
-            Variables declared with let/const inside curly braces are only accessible within that block.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Code2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>Block Scope</CardTitle>
+              <CardDescription>Variables inside {'{ }'} are block-scoped</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">if Statement Block</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">ES6+</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Variables stay inside the if block
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const age = 20;
-
-if (age >= 18) {
-  // Block-scoped variable
-  const message = 'You can vote';
-  let status = 'adult';
-  
-  console.log(message);
-  console.log(status);
-}
-
-// Error! Can't access block variables
-console.log(message);
-console.log(status);
-// Output:
-// Inside if: "You can vote"
-// Inside if: "adult"
-// Outside if: ReferenceError
-// Variables trapped in block`}
-              </pre>
+          <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 overflow-hidden">
+            <div className="bg-emerald-600 dark:bg-emerald-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Variables Inside {'{ }'}</h4>
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">for Loop Block</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Common</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Loop variables stay in the loop
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                With <code className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 rounded text-xs">let</code> and <code className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 rounded text-xs">const</code>, variables inside curly braces {'{ }'} stay inside those braces
               </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Block-scoped loop variable
-for (let i = 0; i < 3; i++) {
-  console.log(i);
-}
-
-// Error! i not accessible
-console.log(i);
-
-// Each iteration has its own i
-for (let i = 0; i < 2; i++) {
-  setTimeout(() => console.log(i), 100);
-}
-// Output:
-// Loop: 0, 1, 2
-// Outside: ReferenceError
-// setTimeout: 0, 1
-// let creates new i per iteration`}
-              </pre>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Standalone Block</h4>
-              <p className="text-xs text-muted-foreground">
-                You can create blocks without if/for/while
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Standalone block scope
-{
-  const blockVar = 'I am in a block';
-  let anotherVar = 'Me too';
-  
-  console.log(blockVar);
-  console.log(anotherVar);
-}
-
-// Error! Variables are block-scoped
-console.log(blockVar);
-console.log(anotherVar);
-// Output:
-// Inside block: works fine
-// Outside block: ReferenceError
-// Useful for organizing code`}
-              </pre>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">var Ignores Block Scope</h4>
-              <p className="text-xs text-muted-foreground">
-                var is only function-scoped, not block-scoped
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-emerald-200 dark:border-emerald-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
 {`if (true) {
-  var x = 10;     // Function-scoped
-  let y = 20;     // Block-scoped
-  const z = 30;   // Block-scoped
+  const greeting = 'Hello!';
+  console.log(greeting);  // Works!
 }
 
-// var leaks out!
-console.log(x);
-
-// let/const stay in block
-console.log(y);
-console.log(z);
-// Output:
-// x -> 10 (leaked out)
-// y -> ReferenceError
-// z -> ReferenceError
-// Always use let/const!`}
-              </pre>
+// Outside the block
+console.log(greeting);  // ❌ ERROR!
+// greeting only exists inside the if block`}</pre>
+              </div>
             </div>
           </div>
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Block Scope Best Practice</AlertTitle>
-            <AlertDescription>
-              Always use <code className="font-mono text-xs">let</code> or <code className="font-mono text-xs">const</code> instead of <code className="font-mono text-xs">var</code> to avoid variable leakage from blocks. This prevents bugs and makes code more predictable.
-            </AlertDescription>
-          </Alert>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: Block Scope (ES6+)"
-        description="let/const stay within curly braces, var leaks out"
-        code={`// if Statement Block
-const age = 20;
-
-if (age >= 18) {
-  const message = 'You can vote';
-  let status = 'adult';
-  
-  console.log(message);
-  // Output: "You can vote"
-}
-
-// console.log(message); // ReferenceError
-// console.log(status);  // ReferenceError
-
-// for Loop Block - let creates new binding
-for (let i = 0; i < 3; i++) {
-  console.log(i);
-}
-// Output: 0, 1, 2
-
-// console.log(i); // ReferenceError
-
-// Each iteration has its own i
-for (let i = 0; i < 2; i++) {
-  setTimeout(() => console.log(i), 100);
-}
-// Output: 0, 1 (correct!)
-
-// Standalone Block
-{
-  const blockVar = 'I am in a block';
-  console.log(blockVar);
-  // Output: "I am in a block"
-}
-
-// console.log(blockVar); // ReferenceError
-
-// var Ignores Block Scope
+        title="Block Scope Example"
+        description="let and const are block-scoped"
+        code={`// Block scope with if
 if (true) {
-  var x = 10;     // Function-scoped (leaks!)
-  let y = 20;     // Block-scoped
-  const z = 30;   // Block-scoped
+  const x = 10;
+  console.log(x);  // 10 - works inside block
 }
+console.log(x);  // ❌ ERROR! x not defined outside
 
-console.log(x); // Output: 10 (leaked out!)
-// console.log(y); // ReferenceError
-// console.log(z); // ReferenceError`}
-        language="javascript"
-        colorTheme="blue"
-        icon={Lock}
-      />
-
-      {/* Real-World Examples */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll use in production code every day.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Module Pattern (Private Variables)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Using function scope for privacy
-function createModule() {
-  // Private variables
-  let privateCount = 0;
-  const privateSecret = 'hidden';
-  
-  // Public API
-  return {
-    increment() {
-      privateCount++;
-      return privateCount;
-    },
-    getCount() {
-      return privateCount;
-    }
-  };
+// Block scope with loops
+for (let i = 0; i < 3; i++) {
+  console.log(i);  // 0, 1, 2
 }
+console.log(i);  // ❌ ERROR! i not defined outside loop
 
-const module = createModule();
-console.log(module.increment());
-console.log(module.getCount());
-console.log(module.privateCount);
-// Output:
-// increment() -> 1
-// getCount() -> 1
-// privateCount -> undefined
-// Private variables protected!`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Config Object with Scope
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Using block scope for organization
+// Each block has its own scope
 {
-  const API_KEY = 'secret-key';
-  const BASE_URL = 'https://api.example.com';
-  
-  function makeRequest(endpoint) {
-    return BASE_URL + endpoint + '?key=' + API_KEY;
-  }
-  
-  window.api = { makeRequest };
+  const message = 'First block';
+  console.log(message);  // First block
 }
 
-// API_KEY is not accessible
-console.log(typeof API_KEY);
-console.log(api.makeRequest('/users'));
-// Output:
-// API_KEY -> undefined
-// makeRequest() -> works
-// Config is encapsulated`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Event Handlers with let
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Using let for proper closure
-const buttons = document.querySelectorAll('button');
-
-for (let i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', () => {
-    console.log('Button ' + i + ' clicked');
-  });
-}
-
-// Each handler remembers its own i
-// Using var would cause all to log same value
-// Output:
-// Button 0 clicked
-// Button 1 clicked
-// Button 2 clicked
-// let creates new binding per iteration`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                Temporary Scope for Cleanup
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Process data without polluting global scope
 {
-  const rawData = fetchData();
-  const processed = processData(rawData);
-  const validated = validateData(processed);
-  
-  saveToDatabase(validated);
-}
-
-// All intermediate variables are gone
-// Only final result is saved
-// Memory is freed automatically
-// Output:
-// rawData -> gone after block
-// processed -> gone after block
-// Memory efficient`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: Real-World Scope Patterns"
-        description="Practical scope usage in production code"
-        code={`// Module Pattern - Private Variables
-function createModule() {
-  // Private variables (function scope)
-  let privateCount = 0;
-  const privateSecret = 'hidden';
-  
-  // Public API
-  return {
-    increment() {
-      privateCount++;
-      return privateCount;
-    },
-    getCount() {
-      return privateCount;
-    }
-  };
-}
-
-const module = createModule();
-console.log(module.increment()); // Output: 1
-console.log(module.getCount());  // Output: 1
-console.log(module.privateCount); // Output: undefined (private!)
-
-// Config with Block Scope
-{
-  const API_KEY = 'secret-key';
-  const BASE_URL = 'https://api.example.com';
-  
-  function makeRequest(endpoint) {
-    return BASE_URL + endpoint + '?key=' + API_KEY;
-  }
-  
-  window.api = { makeRequest };
-}
-
-console.log(typeof API_KEY); // Output: undefined (encapsulated!)
-console.log(api.makeRequest('/users')); // Works!
-
-// Event Handlers with let (proper closure)
-const buttons = document.querySelectorAll('button');
-
-for (let i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', () => {
-    console.log('Button ' + i + ' clicked');
-    // Each handler remembers its own i!
-  });
-}
-
-// Temporary Scope for Cleanup
-{
-  const rawData = fetchData();
-  const processed = processData(rawData);
-  const validated = validateData(processed);
-  
-  saveToDatabase(validated);
-  // All intermediate variables freed after block
+  const message = 'Second block';  // Different variable!
+  console.log(message);  // Second block
 }`}
         language="javascript"
-        colorTheme="purple"
-        icon={Sparkles}
+        colorTheme="yellow"
       />
 
-      {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
+      {/* Scope Chain */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-emerald-700 dark:text-emerald-300"><CheckCircle2 className="w-5 h-5" /> Do This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>✅ Use <code className="font-mono text-xs">const</code> by default, <code className="font-mono text-xs">let</code> when needed</li>
-              <li>✅ Declare variables at the top of their scope</li>
-              <li>✅ Keep scope as narrow as possible (block over function)</li>
-              <li>✅ Use modules to avoid global scope pollution</li>
-              <li>✅ Use IIFEs or blocks for temporary scope</li>
-            </ul>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Scope Chain - Looking Outward</CardTitle>
+              <CardDescription>Inner scopes can access outer scopes</CardDescription>
+            </div>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-rose-700 dark:text-rose-300"><XCircle className="w-5 h-5" /> Avoid This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>❌ Never use <code className="font-mono text-xs">var</code> (use <code className="font-mono text-xs">let</code>/<code className="font-mono text-xs">const</code> instead)</li>
-              <li>❌ Avoid creating global variables unnecessarily</li>
-              <li>❌ Don't rely on hoisting - declare before use</li>
-              <li>❌ Avoid variable shadowing (same name in nested scopes)</li>
-              <li>❌ Don't create implicit globals (variables without declaration)</li>
-            </ul>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">JavaScript Looks Outward</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                If JavaScript can't find a variable in the current scope, it looks in the outer scope, then the next outer scope, and so on...
+              </p>
+              
+              <div className="space-y-3">
+                <div className="p-4 bg-red-100 dark:bg-red-900/30 rounded-lg border-2 border-red-200 dark:border-red-800">
+                  <div className="font-bold text-red-700 dark:text-red-300 mb-2">🌍 Level 3: Global Scope</div>
+                  <code className="text-xs font-mono">const country = 'USA';</code>
+                </div>
+                
+                <div className="p-4 bg-orange-100 dark:bg-orange-900/30 rounded-lg border-2 border-orange-200 dark:border-orange-800 ml-6">
+                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">🏠 Level 2: Outer Function</div>
+                  <code className="text-xs font-mono">const city = 'Boston';</code>
+                </div>
+                
+                <div className="p-4 bg-green-100 dark:bg-green-900/30 rounded-lg border-2 border-green-200 dark:border-green-800 ml-12">
+                  <div className="font-bold text-green-700 dark:text-green-300 mb-2">🚪 Level 1: Inner Function</div>
+                  <code className="text-xs font-mono">const name = 'Alice';</code>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">Can access: name, city, country</p>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
+      <CodeSnippet
+        title="Scope Chain Example"
+        description="Inner functions can access outer variables"
+        code={`// Global scope
+const country = 'USA';
+
+function outer() {
+  // Outer function scope
+  const city = 'Boston';
+  
+  function inner() {
+    // Inner function scope
+    const name = 'Alice';
+    
+    // Can access all three!
+    console.log(name);     // Alice (own scope)
+    console.log(city);     // Boston (outer scope)
+    console.log(country);  // USA (global scope)
+  }
+  
+  inner();
+  // Can't access name here
+  console.log(city);     // Works
+  console.log(country);  // Works
+}
+
+outer();
+// Can't access name or city here
+console.log(country);  // Works`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Key Takeaways */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🌍</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Global = Everywhere</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Variables outside functions work anywhere
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🔒</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Local = Private</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Variables inside functions stay inside
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">📦</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Block = {'{ }'} Scope</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    let/const inside {'{ }'} stay in that block
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🔍</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Looks Outward</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Inner scopes can see outer variables
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

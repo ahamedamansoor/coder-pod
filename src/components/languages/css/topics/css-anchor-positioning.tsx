@@ -1,18 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
+import React from 'react';
+import { Anchor, Link2, Target, Layers, AlertTriangle, Sparkles } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared';
-import { Anchor, CheckCircle, Sparkles, Info, AlertTriangle } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  PropertyTable,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssAnchorPositioningProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssAnchorPositioning({ onOpenWebPlayground }: CssAnchorPositioningProps) {
-  const [selectedExample, setSelectedExample] = useState('basic');
 
   const basicExample = `<!DOCTYPE html>
 <html lang="en">
@@ -28,6 +33,9 @@ export default function CssAnchorPositioning({ onOpenWebPlayground }: CssAnchorP
       background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
       padding: 40px 20px;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -35,12 +43,13 @@ export default function CssAnchorPositioning({ onOpenWebPlayground }: CssAnchorP
     }
     
     .container {
-      max-width: 1000px;
-      margin: 0 auto;
+      max-width: 800px;
+      width: 100%;
       background: white;
-      padding: 40px;
+      padding: 50px;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      position: relative;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -51,7 +60,7 @@ export default function CssAnchorPositioning({ onOpenWebPlayground }: CssAnchorP
       color: #ec4899;
       margin-bottom: 10px;
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -61,129 +70,147 @@ export default function CssAnchorPositioning({ onOpenWebPlayground }: CssAnchorP
     .subtitle {
       text-align: center;
       color: #64748b;
+      margin-bottom: 40px;
+      font-size: 0.95rem;
+    }
+    
+    .demo-wrapper {
+      position: relative;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 30px;
     }
     
-    .demo-area {
-      position: relative;
-      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-      padding: 80px 40px;
-      border-radius: 12px;
-      margin: 20px 0;
-      border: 3px dashed #ec4899;
-      min-height: 300px;
+    /* THE ANCHOR - Define anchor element */
+    .anchor-button {
+      /* NEW: Define this element as an anchor */
+      anchor-name: --my-anchor;
+      
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: white;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+      transition: transform 0.2s;
+    }
+    
+    .anchor-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
     }
     
     @media (prefers-color-scheme: dark) {
-      .demo-area {
-        background: linear-gradient(135deg, #be185d 0%, #9f1239 100%);
-        border-color: #f9a8d4;
+      .anchor-button {
+        background: linear-gradient(135deg, #f9a8d4, #ec4899);
+        color: #1e293b;
       }
     }
     
-    /* Anchor element */
-    .anchor-element {
-      background: white;
-      padding: 20px 30px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 700;
-      color: #be185d;
-      border: 3px solid #ec4899;
-      display: inline-block;
-      position: relative;
+    /* THE POSITIONED ELEMENT - Links to anchor */
+    .popup {
+      /* NEW: Link to the anchor */
+      position-anchor: --my-anchor;
+      
+      /* NEW: Position above the anchor */
+      inset-area: top;
+      
+      /* Traditional positioning (fallback) */
+      position: absolute;
+      bottom: calc(100% + 10px);
       left: 50%;
       transform: translateX(-50%);
+      
+      /* Styling */
+      background: #1e293b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease-out;
     }
     
     @media (prefers-color-scheme: dark) {
-      .anchor-element {
-        background: #0f172a;
-        color: #f9a8d4;
-        border-color: #f9a8d4;
-      }
+      .popup { background: #f9a8d4; color: #1e293b; font-weight: 600; }
     }
     
-    .badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-top: 8px;
-      background: #ec4899;
-      color: white;
+    /* Arrow pointing to anchor */
+    .popup::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: #1e293b;
     }
     
-    .info-box {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-left: 4px solid #f59e0b;
+    @media (prefers-color-scheme: dark) {
+      .popup::after { border-top-color: #f9a8d4; }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    
+    .code-display {
+      background: #f8fafc;
       padding: 20px;
       border-radius: 8px;
-      margin-top: 20px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-box {
-        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
-        border-left-color: #fbbf24;
-      }
-    }
-    
-    .info-title {
-      color: #92400e;
-      font-weight: 700;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-title { color: #fde68a; }
-    }
-    
-    .info-text {
-      color: #78350f;
+      border: 2px solid #e2e8f0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
       line-height: 1.6;
     }
     
     @media (prefers-color-scheme: dark) {
-      .info-text { color: #fef3c7; }
+      .code-display { background: #0f172a; border-color: #334155; color: #e2e8f0; }
     }
     
-    code {
-      background: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
+    .code-display .comment {
+      color: #64748b;
+      font-style: italic;
+    }
+    
+    .code-display .property {
       color: #ec4899;
       font-weight: 600;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      code { background: #0f172a; color: #f9a8d4; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>⚓ CSS Anchor Positioning</h1>
-    <p class="subtitle">Position elements relative to anchor elements</p>
+    <p class="subtitle">The popup is positioned relative to the button!</p>
     
-    <div class="demo-area">
-      <div class="anchor-element">
-        ⚓ Anchor Element
-        <br>
-        <span class="badge">CSS 2024</span>
+    <div class="demo-wrapper">
+      <button class="anchor-button">
+        I'm the Anchor
+      </button>
+      <div class="popup">
+        📍 Positioned with anchor-name & position-anchor
       </div>
     </div>
     
-    <div class="info-box">
-      <div class="info-title">🆕 New CSS 2024 Feature</div>
-      <p class="info-text">
-        CSS Anchor Positioning allows you to position elements relative to other elements 
-        using properties like <code>anchor-name</code> and <code>position-anchor</code>. 
-        This eliminates complex JavaScript calculations for tooltips, dropdowns, and popovers!
-      </p>
+    <div class="code-display">
+      <div><span class="comment">/* Define the anchor */</span></div>
+      <div>.anchor-button {</div>
+      <div>  <span class="property">anchor-name</span>: --my-anchor;</div>
+      <div>}</div>
+      <br>
+      <div><span class="comment">/* Position relative to anchor */</span></div>
+      <div>.popup {</div>
+      <div>  <span class="property">position-anchor</span>: --my-anchor;</div>
+      <div>  <span class="property">inset-area</span>: top;</div>
+      <div>}</div>
     </div>
   </div>
 </body>
@@ -193,334 +220,519 @@ export default function CssAnchorPositioning({ onOpenWebPlayground }: CssAnchorP
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Anchor Positioning - Tooltip</title>
+  <title>Anchor Positioning - Interactive Tooltip</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: -apple-system, sans-serif;
       background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
       padding: 40px 20px;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    
     @media (prefers-color-scheme: dark) {
       body { background: linear-gradient(135deg, #be185d 0%, #9f1239 100%); }
     }
+    
     .container {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 900px;
+      width: 100%;
       background: white;
-      padding: 40px;
+      padding: 50px;
       border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+    
     @media (prefers-color-scheme: dark) {
       .container { background: #1e293b; color: #e2e8f0; }
     }
-    h1 { color: #ec4899; text-align: center; margin-bottom: 30px; }
+    
+    h1 {
+      color: #ec4899;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 2rem;
+    }
+    
     @media (prefers-color-scheme: dark) {
       h1 { color: #f9a8d4; }
     }
     
-    .demo-section {
-      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-      padding: 60px;
-      border-radius: 12px;
+    .subtitle {
       text-align: center;
+      color: #64748b;
+      margin-bottom: 40px;
+      font-size: 0.95rem;
+    }
+    
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+      padding: 40px;
+      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+      border-radius: 12px;
     }
     
     @media (prefers-color-scheme: dark) {
-      .demo-section { background: linear-gradient(135deg, #be185d 0%, #9f1239 100%); }
+      .demo-grid { background: linear-gradient(135deg, #831843 0%, #881337 100%); }
     }
     
-    .button {
-      background: white;
-      color: #be185d;
+    .button-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100px;
+    }
+    
+    /* Define anchors for each button */
+    .btn-1 { anchor-name: --btn-1; }
+    .btn-2 { anchor-name: --btn-2; }
+    .btn-3 { anchor-name: --btn-3; }
+    
+    .action-button {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: white;
       padding: 12px 24px;
-      border: 3px solid #ec4899;
+      border: none;
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+    }
+    
+    .action-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
     }
     
     @media (prefers-color-scheme: dark) {
-      .button {
-        background: #0f172a;
-        color: #f9a8d4;
-        border-color: #f9a8d4;
+      .action-button {
+        background: linear-gradient(135deg, #f9a8d4, #ec4899);
+        color: #1e293b;
       }
     }
     
-    .note {
-      margin-top: 20px;
-      padding: 16px;
-      background: #fef3c7;
-      border-radius: 8px;
-      color: #78350f;
-      font-weight: 600;
+    /* Tooltips - positioned relative to their anchors */
+    .tooltip {
+      position: absolute;
+      background: #1e293b;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
     
     @media (prefers-color-scheme: dark) {
-      .note { background: #78350f; color: #fef3c7; }
+      .tooltip { background: #f9a8d4; color: #1e293b; font-weight: 600; }
+    }
+    
+    .button-wrapper:hover .tooltip {
+      opacity: 1;
+    }
+    
+    /* Position tooltips using anchor positioning with fallback */
+    .tooltip-1 {
+      position-anchor: --btn-1;
+      inset-area: top;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .tooltip-2 {
+      position-anchor: --btn-2;
+      inset-area: right;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .tooltip-3 {
+      position-anchor: --btn-3;
+      inset-area: bottom;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    /* Tooltip arrows */
+    .tooltip-1::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1e293b;
+    }
+    
+    .tooltip-2::after {
+      content: '';
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 6px solid transparent;
+      border-right-color: #1e293b;
+    }
+    
+    .tooltip-3::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-bottom-color: #1e293b;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .tooltip-1::after { border-top-color: #f9a8d4; }
+      .tooltip-2::after { border-right-color: #f9a8d4; }
+      .tooltip-3::after { border-bottom-color: #f9a8d4; }
+    }
+    
+    .info-banner {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #f59e0b;
+      font-size: 0.9rem;
+      color: #78350f;
+      line-height: 1.6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-banner {
+        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+        color: #fef3c7;
+        border-left-color: #fbbf24;
+      }
+    }
+    
+    .info-banner strong {
+      color: #92400e;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-banner strong { color: #fde68a; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>⚓ Tooltip with Anchor</h1>
+    <h1>⚓ Interactive Tooltips</h1>
+    <p class="subtitle">Hover over buttons to see anchor-positioned tooltips!</p>
     
-    <div class="demo-section">
-      <button class="button">
-        Hover for Tooltip
-      </button>
+    <div class="demo-grid">
+      <div class="button-wrapper">
+        <button class="action-button btn-1">Top Tooltip</button>
+        <div class="tooltip tooltip-1">Positioned above 👆</div>
+      </div>
+      
+      <div class="button-wrapper">
+        <button class="action-button btn-2">Right Tooltip</button>
+        <div class="tooltip tooltip-2">Positioned right 👉</div>
+      </div>
+      
+      <div class="button-wrapper">
+        <button class="action-button btn-3">Bottom Tooltip</button>
+        <div class="tooltip tooltip-3">Positioned below 👇</div>
+      </div>
     </div>
     
-    <div class="note">
-      💡 In browsers with full support, tooltips would automatically position relative to the button using anchor positioning!
+    <div class="info-banner">
+      <strong>💡 How it works:</strong> Each button has an <code>anchor-name</code>, 
+      and its tooltip uses <code>position-anchor</code> to link to it. The <code>inset-area</code> 
+      property positions the tooltip (top, right, bottom). Traditional positioning is used as fallback 
+      for browsers without anchor positioning support.
     </div>
   </div>
 </body>
 </html>`;
 
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={Anchor}
+      title="CSS Anchor Positioning"
+      description="Position elements relative to other elements without JavaScript"
+      category="Modern CSS (2024)"
+      whatIsIt={{
+        title: "What is Anchor Positioning?",
+        description: "Revolutionary CSS feature for element-to-element positioning",
+        keyPoints: [
+          "Position elements relative to other elements (anchors)",
+          "Pure CSS solution - no JavaScript calculations needed",
+          "Perfect for tooltips, dropdowns, and popovers",
+          "Automatically adapts to anchor element position",
+          "Part of CSS Anchoring Module Level 1",
+          "Cutting-edge feature with evolving browser support"
+        ]
+      }}
+    >
+
+      {/* Browser Support Warning */}
+      <InfoAlert type="warning" title="⚠️ Limited Browser Support (2024)">
+        <div className="space-y-2">
+          <p><strong>Chrome 125+:</strong> Experimental support (flag required)</p>
+          <p><strong>Firefox:</strong> Under development</p>
+          <p><strong>Safari:</strong> Under consideration</p>
+          <p className="mt-3 pt-3 border-t border-amber-200 dark:border-amber-700">
+            <strong>💡 Recommendation:</strong> Use as progressive enhancement with JavaScript fallback
+          </p>
+        </div>
+      </InfoAlert>
+
+      {/* How It Works */}
+      <SectionCard
+        title="How Anchor Positioning Works"
+        description="Understanding the relationship between anchors and positioned elements"
+        icon={Link2}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "Define Anchor",
+              description: "Name an element as an anchor point for other elements to reference",
+              example: "anchor-name: --my-anchor;"
+            },
+            {
+              title: "Link to Anchor",
+              description: "Connect a positioned element to the anchor using its name",
+              example: "position-anchor: --my-anchor;"
+            },
+            {
+              title: "Set Position",
+              description: "Specify where to position relative to the anchor (top, bottom, left, right)",
+              example: "inset-area: top;"
+            },
+            {
+              title: "Auto-Adjust",
+              description: "Browser automatically updates position when anchor moves or resizes",
+              example: "/* No JavaScript needed! */"
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* Syntax */}
+      <SectionCard
+        title="Basic Syntax"
+        description="How to implement anchor positioning"
+        icon={Layers}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Step 1: Define the Anchor"
+            code={`.button {
+  /* Define this element as an anchor */
+  anchor-name: --my-button;
+  
+  /* Position it normally */
+  position: relative;
+}`}
+          />
+
+          <SyntaxBlock
+            title="Step 2: Position Element Relative to Anchor"
+            code={`.tooltip {
+  /* Link to the anchor */
+  position-anchor: --my-button;
+  
+  /* Must use absolute positioning */
+  position: absolute;
+  
+  /* Position above the anchor */
+  inset-area: top;
+  
+  /* Optional: Add margin */
+  margin-bottom: 10px;
+}`}
+          />
+
+          <SyntaxBlock
+            title="Complete Example"
+            code={`/* Anchor element */
+.button {
+  anchor-name: --my-button;
+}
+
+/* Positioned element */
+.tooltip {
+  position: absolute;
+  position-anchor: --my-button;
+  inset-area: top;
+  margin-bottom: 10px;
+  
+  /* Styling */
+  background: #1e293b;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+}`}
+          />
+        </div>
+
+        <InfoAlert type="tip" title="Pro Tip">
+          The positioned element will automatically move when the anchor element moves or scrolls. 
+          No JavaScript or scroll listeners needed!
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Properties */}
+      <SectionCard
+        title="Anchor Properties"
+        description="Key properties for anchor positioning"
+        icon={Target}
+      >
+        <PropertyTable
+          properties={[
+            {
+              property: 'anchor-name',
+              values: '--custom-name',
+              description: 'Defines an element as an anchor with a custom name'
+            },
+            {
+              property: 'position-anchor',
+              values: '--custom-name',
+              description: 'Links positioned element to a specific anchor'
+            },
+            {
+              property: 'inset-area',
+              values: 'top, bottom, left, right, center, etc.',
+              description: 'Specifies position relative to anchor'
+            },
+            {
+              property: 'anchor()',
+              values: 'function',
+              description: 'Function to reference anchor positions in calculations'
+            },
+            {
+              property: 'position-fallback',
+              values: 'fallback-name',
+              description: 'Defines fallback positions if primary doesn\'t fit'
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* Basic Example */}
+      <SectionCard
+        title="Basic Example"
+        description="Understanding anchor positioning"
         icon={Anchor}
-        category="CSS · Modern Features"
-        title="CSS Anchor Positioning"
-        description="Position elements relative to other elements without JavaScript calculations"
-        colorTheme="pink"
-      />
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={basicExample}
+          title="Basic Anchor Positioning"
+          colorTheme="indigo"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-pink-700 dark:text-pink-300">
-            <div className="relative">
-              <Anchor className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            CSS Anchor Positioning
-          </CardTitle>
-          <CardDescription className="text-lg text-pink-600 dark:text-pink-400">
-            ⚓ New CSS 2024 feature - position elements relative to anchors!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-pink-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-pink-700 dark:text-pink-300">
-                  What is Anchor Positioning?
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  CSS Anchor Positioning is a revolutionary new feature that allows elements to be positioned 
-                  relative to other elements (called "anchors") using pure CSS, without JavaScript calculations. 
-                  Perfect for tooltips, dropdowns, popovers, and context menus!
-                </p>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg">
-                    <Sparkles className="w-5 h-5 text-pink-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-pink-700 dark:text-pink-300">No JavaScript Needed</div>
-                      <div className="text-sm text-pink-600 dark:text-pink-400">
-                        Pure CSS solution for complex positioning
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-purple-700 dark:text-purple-300">Dynamic Positioning</div>
-                      <div className="text-sm text-purple-600 dark:text-purple-400">
-                        Automatically adjusts based on anchor element
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Tooltip Example */}
+      <SectionCard
+        title="Tooltip Example"
+        description="Practical use case with tooltips"
+        icon={Sparkles}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={tooltipExample}
+          title="Tooltip with Anchor"
+          colorTheme="indigo"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 p-6 rounded-xl border border-pink-200/50">
-                <h4 className="font-bold mb-4 text-pink-700 dark:text-pink-300">
-                  Key Properties
-                </h4>
-                
-                <div className="grid gap-3">
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                      anchor-name: --my-anchor;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Defines an element as an anchor
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-rose-600 dark:text-rose-400">
-                      position-anchor: --my-anchor;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Links positioned element to anchor
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-purple-600 dark:text-purple-400">
-                      inset-area: top;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Specifies position relative to anchor
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Use Cases */}
+      <SectionCard
+        title="Common Use Cases"
+        description="When to use anchor positioning"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Tooltips"
+            description="Position tooltips precisely relative to buttons and interactive elements"
+            icon={Sparkles}
+            gradient="from-blue-500 to-cyan-600"
+          />
+          <UseCaseCard
+            title="Dropdown Menus"
+            description="Align dropdown menus perfectly with trigger buttons"
+            icon={Layers}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Popovers"
+            description="Context menus and popup content positioned dynamically"
+            icon={Target}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Floating Labels"
+            description="Dynamic form field labels that follow input elements"
+            icon={Anchor}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-pink-100 via-rose-100 to-pink-100 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-pink-900/30 p-6 rounded-xl border border-pink-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">⚓</div>
-                  <div className="font-bold text-lg text-pink-700 dark:text-pink-300">2024 Feature</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <Sparkles className="w-4 h-4" />
-                      Pure CSS
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400">
-                      <CheckCircle className="w-4 h-4" />
-                      No JS needed
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Benefits & Considerations */}
+      <SectionCard
+        title="Benefits & Best Practices"
+        description="Why and how to use anchor positioning"
+        icon={AlertTriangle}
+        variant="success"
+      >
+        <div className="space-y-4">
+          <InfoAlert type="success" title="✅ Key Benefits">
+            <ul className="list-disc list-inside space-y-2 mt-2">
+              <li><strong>No JavaScript:</strong> Pure CSS solution for complex positioning</li>
+              <li><strong>Performant:</strong> Browser-optimized with no calculation overhead</li>
+              <li><strong>Responsive:</strong> Automatically adapts to viewport and anchor changes</li>
+              <li><strong>Accessible:</strong> Works seamlessly with screen readers</li>
+              <li><strong>Maintainable:</strong> Cleaner code without positioning scripts</li>
+            </ul>
+          </InfoAlert>
 
-              <div className="bg-gradient-to-r from-orange-50 via-red-50 to-pink-50 dark:from-orange-900/20 dark:via-red-900/20 dark:to-pink-900/20 p-4 rounded-xl border border-orange-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">⚠️</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Limited Support</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Cutting-edge feature with evolving browser support
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          <InfoAlert type="warning" title="⚠️ Important Considerations">
+            <ul className="list-disc list-inside space-y-2 mt-2">
+              <li><strong>Browser Support:</strong> Very limited - use with caution in production</li>
+              <li><strong>Fallback Required:</strong> Always provide JavaScript fallback for unsupported browsers</li>
+              <li><strong>Progressive Enhancement:</strong> Treat as an enhancement, not core functionality</li>
+              <li><strong>Testing:</strong> Test thoroughly across different browsers and devices</li>
+              <li><strong>Polyfills:</strong> Consider using polyfills for wider compatibility</li>
+            </ul>
+          </InfoAlert>
+        </div>
+      </SectionCard>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-pink-500/10 rounded-lg">
-              <Anchor className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-            </div>
-            Live Examples
-          </CardTitle>
-          <CardDescription>
-            Explore anchor positioning use cases
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 mb-6">
-            <button
-              onClick={() => setSelectedExample('basic')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'basic'
-                  ? 'bg-pink-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Basic Example
-            </button>
-            <button
-              onClick={() => setSelectedExample('tooltip')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'tooltip'
-                  ? 'bg-pink-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Tooltip
-            </button>
-          </div>
+      {/* Final Info */}
+      <InfoAlert type="info" title="CSS Anchoring Module Level 1">
+        CSS Anchor Positioning is part of the CSS Anchoring Module Level 1 specification. 
+        Check the latest browser compatibility at <strong>caniuse.com</strong> before using in production. 
+        Consider using polyfills or JavaScript fallbacks for broader support. This is a cutting-edge 
+        feature that will revolutionize UI component positioning once widely supported!
+      </InfoAlert>
 
-          {selectedExample === 'basic' && (
-            <FrontendCodePreview
-              html={basicExample}
-              title="Basic Anchor Positioning"
-              colorTheme="pink"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
-
-          {selectedExample === 'tooltip' && (
-            <FrontendCodePreview
-              html={tooltipExample}
-              title="Tooltip with Anchor"
-              colorTheme="pink"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-            Use Cases
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-              <h4 className="font-bold text-pink-700 dark:text-pink-300 mb-3">Perfect For:</h4>
-              <ul className="text-sm space-y-2 text-pink-600 dark:text-pink-400">
-                <li>• <strong>Tooltips</strong> - Position tooltips relative to buttons</li>
-                <li>• <strong>Dropdowns</strong> - Align dropdown menus precisely</li>
-                <li>• <strong>Popovers</strong> - Context menus and popups</li>
-                <li>• <strong>Floating labels</strong> - Dynamic form field labels</li>
-              </ul>
-            </div>
-            
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-3">Benefits:</h4>
-              <ul className="text-sm space-y-2 text-purple-600 dark:text-purple-400">
-                <li>• <strong>No JavaScript</strong> - Pure CSS solution</li>
-                <li>• <strong>Performant</strong> - Browser-optimized positioning</li>
-                <li>• <strong>Responsive</strong> - Adapts automatically</li>
-                <li>• <strong>Accessible</strong> - Works with screen readers</li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Alert className="border-pink-200 dark:border-pink-800 bg-pink-50 dark:bg-pink-950/20">
-        <AlertTriangle className="h-4 w-4 text-pink-600" />
-        <AlertTitle className="text-pink-900 dark:text-pink-100">Browser Support (2024)</AlertTitle>
-        <AlertDescription className="text-pink-800 dark:text-pink-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>⚠️ Limited Support:</strong> This is a cutting-edge CSS feature</div>
-            <div><strong>Chrome 125+:</strong> Experimental support (flag required)</div>
-            <div><strong>Firefox:</strong> Under development</div>
-            <div><strong>Safari:</strong> Under consideration</div>
-            <div className="mt-3 pt-3 border-t border-pink-200 dark:border-pink-700">
-              <strong>💡 Recommendation:</strong> Use as progressive enhancement with JavaScript fallback
-            </div>
-          </div>
-        </AlertDescription>
-      </Alert>
-
-      <Alert>
-        <Info className="h-4 w-4" />
-        <AlertTitle>Learn More</AlertTitle>
-        <AlertDescription>
-          CSS Anchor Positioning is part of the CSS Anchoring Module Level 1 specification. 
-          Check the latest browser compatibility before using in production. Consider using 
-          polyfills or JavaScript fallbacks for broader support.
-        </AlertDescription>
-      </Alert>
-    </div>
+    </CssTopicLayout>
   );
 }

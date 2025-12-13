@@ -2,354 +2,135 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Type,
-  Hash,
-  Binary,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Lightbulb,
-  Code2,
   Sparkles,
-  Braces,
-  Box,
-  ClipboardCheck,
-  DivideSquare,
-  CircleDot,
+  Lightbulb,
+  CheckCircle2,
+  Hash,
+  FileText,
+  Binary,
+  HelpCircle,
+  Circle,
 } from 'lucide-react';
 
-interface JavaScriptDataTypesProps {}
-
-const primitivesHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Primitive Types</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see the output</p>
-</body>
-</html>`;
-
-const primitivesJs = `// Primitive Data Types in JavaScript
-
-// 1. String
-const name = 'Alice';
-const greeting = "Hello";
-console.log('String:', name, greeting);
-
-// 2. Number
-const age = 25;
-const price = 19.99;
-console.log('Number:', age, price);
-
-// 3. Boolean
-const isActive = true;
-const hasAccess = false;
-console.log('Boolean:', isActive, hasAccess);
-
-// 4. Undefined
-let notAssigned;
-console.log('Undefined:', notAssigned);
-
-// 5. Null
-const empty = null;
-console.log('Null:', empty);
-
-console.log('');
-console.log('✅ All primitive types shown');`;
-
-const typeCheckHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Type Checking</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see the output</p>
-</body>
-</html>`;
-
-const typeCheckJs = `// Checking Data Types with typeof
-
-const text = 'Hello';
-const num = 42;
-const bool = true;
-const nothing = null;
-const undef = undefined;
-
-console.log('typeof "Hello":', typeof text);
-console.log('typeof 42:', typeof num);
-console.log('typeof true:', typeof bool);
-console.log('typeof null:', typeof nothing); // ⚠️ Returns "object"
-console.log('typeof undefined:', typeof undef);
-
-console.log('');
-console.log('✅ Use typeof to check data types');`;
-
-const conversionHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Type Conversion</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see the output</p>
-</body>
-</html>`;
-
-const conversionJs = `// Type Conversion Examples
-
-// String to Number
-const strNum = '42';
-const converted = Number(strNum);
-console.log('String "42" to Number:', converted);
-console.log('Type:', typeof converted);
-
-// Number to String
-const num = 100;
-const strVersion = String(num);
-console.log('Number 100 to String:', strVersion);
-console.log('Type:', typeof strVersion);
-
-// Boolean conversion
-console.log('');
-console.log('Boolean conversions:');
-console.log('Boolean(1):', Boolean(1));
-console.log('Boolean(0):', Boolean(0));
-console.log('Boolean(""):', Boolean(""));
-console.log('Boolean("text"):', Boolean("text"));
-
-console.log('');
-console.log('✅ JavaScript can convert between types');`;
-
-const symbolBigIntHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Symbol & BigInt</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see unique symbols and BigInt math</p>
-</body>
-</html>`;
-
-const symbolBigIntJs = `// Symbol and BigInt examples
-
-const userId = Symbol('user');
-const productId = Symbol('product');
-const user = { [userId]: 101, name: 'Ada' };
-const product = { [productId]: 202, name: 'Keyboard' };
-
-console.log('Symbols are unique:', userId === productId); // false
-console.log('Symbol key access:', user[userId]);
-
-const maxSafe = Number.MAX_SAFE_INTEGER; // 9007199254740991
-const bigOrderCount = 9007199254740993n;
-const incremented = bigOrderCount + 2n;
-
-console.log('Number MAX_SAFE_INTEGER:', maxSafe);
-console.log('BigInt math works past the limit:', incremented);
-
-console.log('');
-console.log('✅ Symbol gives unique keys, BigInt handles huge integers');`;
-
-const referenceCopyHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Value vs Reference</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see how copying works</p>
-</body>
-</html>`;
-
-const referenceCopyJs = `// Copying primitives vs objects
-
-let score = 80;
-const copiedScore = score; // value copy
-score += 20;
-
-console.log('Original score:', score);       // 100
-console.log('Copied score:', copiedScore);   // 80 (unchanged)
-
-const originalUser = { name: 'Mina', level: 'beginner' };
-const aliasUser = originalUser; // reference copy
-const clonedUser = { ...originalUser }; // shallow copy
-
-aliasUser.level = 'intermediate';
-clonedUser.name = 'Leo';
-
-console.log('Original (via alias):', originalUser); // level changed
-console.log('Alias:', aliasUser); // same object
-console.log('Cloned:', clonedUser); // separate object
-
-console.log('');
-console.log('✅ Primitives copy by value; reference types need cloning');`;
-
-export default function JavaScriptDataTypes({}: JavaScriptDataTypesProps) {
+export default function JavaScriptDataTypes() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Type}
         category="JavaScript Fundamentals"
         title="Data Types"
-        description="Learn about primitive and reference types in JavaScript and how to work with different kinds of data."
-        colorTheme="blue"
+        description="Learn the different types of data you can work with in JavaScript"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Two Categories of Data Types
-          </CardTitle>
-          <CardDescription className="text-base">
-            JavaScript has primitive types and reference types (objects).
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Hash className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">Primitive Types</h3>
+      {/* What are Data Types */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-muted-foreground text-sm">
-              Simple, immutable values stored directly.
-            </p>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                String
-              </Badge>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                Number
-              </Badge>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                Boolean
-              </Badge>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                Null
-              </Badge>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                Undefined
-              </Badge>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                Symbol
-              </Badge>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                BigInt
-              </Badge>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Data Types?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Data types are <strong className="text-yellow-700 dark:text-yellow-400">categories</strong> that tell JavaScript what kind of data you're working with. Just like organizing items in drawers - numbers go in one drawer, text in another!
+              </p>
             </div>
           </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Binary className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              <h3 className="font-semibold">Reference Types</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Complex values stored by reference.
-            </p>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
-                Object
-              </Badge>
-              <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
-                Array
-              </Badge>
-              <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
-                Function
-              </Badge>
-            </div>
-          </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Type className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Think of a fruit basket 🍎, a number counter 🔢, and a light switch 💡. Each holds different types of things - that's what data types are!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* Primitive Highlights */}
+      {/* 7 Primitive Types */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Type className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Primitive Types Quick Guide
-          </CardTitle>
-          <CardDescription className="text-base">
-            Seven built-in primitives that power everyday JavaScript code.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Hash className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>7 Primitive Data Types</CardTitle>
+              <CardDescription>The basic building blocks of JavaScript</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <div className="flex items-center gap-2">
-              <Hash className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h4 className="font-semibold">String & Number</h4>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <div className="text-3xl mb-2">📝</div>
+              <h4 className="font-bold text-lg">String</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Text data</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                'Hello'
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">Text and numeric values. Numbers cover integers and decimals.</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const title = <span className="text-green-600 dark:text-green-400">'Docs'</span>;</div>
-              <div>const rating = <span className="text-blue-600 dark:text-blue-400">4.8</span>;</div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <div className="text-3xl mb-2">🔢</div>
+              <h4 className="font-bold text-lg">Number</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Numbers</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                42
+              </div>
             </div>
-          </div>
-          <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-            <div className="flex items-center gap-2">
-              <Binary className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              <h4 className="font-semibold">Boolean & Empty</h4>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <div className="text-3xl mb-2">✓</div>
+              <h4 className="font-bold text-lg">Boolean</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">true/false</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                true
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">`true` or `false`, plus `null` and `undefined` to represent "no value".</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const isLoggedIn = <span className="text-emerald-600">true</span>;</div>
-              <div>let note; <span className="text-slate-500">// undefined</span></div>
-              <div>const user = <span className="text-rose-600">null</span>;</div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/20 dark:to-slate-950/20 border-gray-200 dark:border-gray-800/30">
+              <div className="text-3xl mb-2">❔</div>
+              <h4 className="font-bold text-lg">Undefined</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Not set yet</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                undefined
+              </div>
             </div>
-          </div>
-          <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-            <div className="flex items-center gap-2">
-              <CircleDot className="w-5 h-5 text-purple-600/80 dark:text-purple-400/80" />
-              <h4 className="font-semibold">Symbol & BigInt</h4>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-950/20 dark:to-gray-950/20 border-slate-200 dark:border-slate-800/30">
+              <div className="text-3xl mb-2">⭕</div>
+              <h4 className="font-bold text-lg">Null</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Intentionally empty</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                null
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">Unique identifiers and safe big integers beyond Number limits.</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const id = <span className="text-purple-600">Symbol</span>(<span className="text-green-600">'id'</span>);</div>
-              <div>const total = <span className="text-purple-600">987654321n</span>;</div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20 border-pink-200 dark:border-pink-800/30">
+              <div className="text-3xl mb-2">🔑</div>
+              <h4 className="font-bold text-lg">Symbol</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Unique identifier</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                Symbol()
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-cyan-200 dark:border-cyan-800/30">
+              <div className="text-3xl mb-2">🔢+</div>
+              <h4 className="font-bold text-lg">BigInt</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Very large numbers</p>
+              <div className="mt-2 bg-white dark:bg-slate-900 rounded p-1.5 font-mono text-xs border">
+                123n
+              </div>
             </div>
           </div>
         </CardContent>
@@ -358,519 +139,390 @@ export default function JavaScriptDataTypes({}: JavaScriptDataTypesProps) {
       {/* String Type */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            String - Text Data
-          </CardTitle>
-          <CardDescription className="text-base">
-            Used for storing text. Can use single quotes, double quotes, or backticks.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>1. String - Text Data</CardTitle>
+              <CardDescription>For words, sentences, and any text</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border">
-              <h4 className="font-semibold mb-2 text-sm">Single Quotes</h4>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs">
-                <span className="text-blue-600 dark:text-blue-400">const</span>{' '}
-                <span className="text-amber-700 dark:text-amber-300">name</span> ={' '}
-                <span className="text-green-600 dark:text-green-400">'Alice'</span>;
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Text in Quotes</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Strings are text wrapped in quotes. You can use single quotes, double quotes, or backticks!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const name = 'Alice';        // Single quotes
+const city = "New York";     // Double quotes
+const message = \`Hello!\`;    // Backticks
+
+console.log(name);     // Alice
+console.log(typeof name);  // string`}</pre>
               </div>
             </div>
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border">
-              <h4 className="font-semibold mb-2 text-sm">Double Quotes</h4>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs">
-                <span className="text-blue-600 dark:text-blue-400">const</span>{' '}
-                <span className="text-amber-700 dark:text-amber-300">name</span> ={' '}
-                <span className="text-green-600 dark:text-green-400">"Alice"</span>;
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="String Examples"
+        description="Different ways to create strings"
+        code={`const firstName = 'John';
+const lastName = "Doe";
+const greeting = \`Hello, World!\`;
+
+// Strings can contain numbers
+const age = "25";  // This is a string, not a number!
+
+// Empty string
+const empty = '';
+
+// Multi-line strings with backticks
+const address = \`123 Main St
+New York, NY
+10001\`;
+
+console.log(typeof firstName);  // string`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Number Type */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Hash className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>2. Number - Numeric Data</CardTitle>
+              <CardDescription>For counting, calculations, and measurements</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Integers and Decimals</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                JavaScript has one number type for all numbers - whole numbers, decimals, negative numbers, all use the same type!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const age = 25;           // Whole number
+const price = 19.99;      // Decimal
+const temperature = -5;   // Negative
+
+console.log(typeof age);     // number
+console.log(typeof price);   // number`}</pre>
               </div>
             </div>
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border">
-              <h4 className="font-semibold mb-2 text-sm">Template Literals</h4>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs">
-                <span className="text-blue-600 dark:text-blue-400">const</span>{' '}
-                <span className="text-amber-700 dark:text-amber-300">name</span> ={' '}
-                <span className="text-green-600 dark:text-green-400">`Alice`</span>;
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Number Examples"
+        description="Working with numbers"
+        code={`const score = 100;
+const pi = 3.14159;
+const negative = -42;
+
+// Math operations
+const sum = 10 + 5;        // 15
+const product = 10 * 5;    // 50
+const quotient = 10 / 5;   // 2
+
+// Special numbers
+const infinity = Infinity;
+const notANumber = NaN;
+
+console.log(typeof score);      // number
+console.log(typeof infinity);   // number
+console.log(typeof notANumber); // number`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Boolean Type */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>3. Boolean - True or False</CardTitle>
+              <CardDescription>For yes/no questions and conditions</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Only Two Values</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Booleans have only two possible values: <code className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">true</code> or <code className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">false</code>. Like a light switch - on or off!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const isLoggedIn = true;
+const hasPermission = false;
+const isAdult = true;
+
+console.log(typeof isLoggedIn);  // boolean
+
+// Used in conditions
+if (isLoggedIn) {
+  console.log('Welcome!');
+}`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Boolean Examples"
+        description="True/false values in action"
+        code={`const isOnline = true;
+const hasAccount = false;
+
+// Comparison results are booleans
+const isEqual = 5 === 5;        // true
+const isGreater = 10 > 5;       // true
+const isLess = 3 < 2;           // false
+
+console.log(typeof isOnline);   // boolean
+console.log(typeof isEqual);    // boolean
+
+// Used in if statements
+if (isOnline) {
+  console.log('User is online');
+}
+
+if (!hasAccount) {
+  console.log('Create an account');
+}`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Undefined vs Null */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900/30">
+              <HelpCircle className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            </div>
+            <div>
+              <CardTitle>4. Undefined & 5. Null - "Nothing" Values</CardTitle>
+              <CardDescription>Two different ways to represent emptiness</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="rounded-xl border-2 border-gray-200 dark:border-gray-800/30 bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/20 dark:to-slate-950/20 overflow-hidden">
+              <div className="bg-gray-600 dark:bg-gray-700 px-4 py-3">
+                <h4 className="text-white font-semibold">Undefined - Automatically Empty</h4>
+              </div>
+              <div className="p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Variables that are declared but not assigned a value are automatically <code className="px-2 py-0.5 bg-gray-100 dark:bg-gray-900/30 rounded text-xs">undefined</code>
+                </p>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-gray-200 dark:border-gray-800/30">
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`let name;
+console.log(name);  // undefined
+
+let age;
+console.log(typeof age);  // undefined
+
+// Not set yet!`}</pre>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl border-2 border-slate-200 dark:border-slate-800/30 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-950/20 dark:to-gray-950/20 overflow-hidden">
+              <div className="bg-slate-600 dark:bg-slate-700 px-4 py-3">
+                <h4 className="text-white font-semibold">Null - Intentionally Empty</h4>
+              </div>
+              <div className="p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  You set a variable to <code className="px-2 py-0.5 bg-slate-100 dark:bg-slate-900/30 rounded text-xs">null</code> on purpose to say "this is empty by design"
+                </p>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-slate-200 dark:border-slate-800/30">
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`let user = null;
+console.log(user);  // null
+
+console.log(typeof user);  // object
+// (this is a JS quirk!)
+
+// Cleared on purpose!`}</pre>
+                </div>
               </div>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Best Practice</AlertTitle>
-            <AlertDescription>
-              Use single quotes or double quotes for simple strings. Use backticks (``) for template literals with variables.
+          <Alert className="bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle>Key Difference</AlertTitle>
+            <AlertDescription className="text-base">
+              <strong>undefined</strong> = "No value assigned yet" (automatic)<br/>
+              <strong>null</strong> = "Intentionally set to nothing" (on purpose)
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Number Type */}
+      <CodeSnippet
+        title="Undefined vs Null in Action"
+        description="Understanding the difference"
+        code={`// Undefined - not assigned
+let username;
+console.log(username);        // undefined
+console.log(typeof username); // undefined
+
+// Null - deliberately empty
+let currentUser = null;
+console.log(currentUser);        // null
+console.log(typeof currentUser); // object (quirk!)
+
+// Common uses
+let data = null;  // "No data yet"
+
+function getUser(id) {
+  if (id === 0) {
+    return null;  // "No user found"
+  }
+  return { id: id, name: 'Alice' };
+}`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Checking Types */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Hash className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Number - Numeric Data
-          </CardTitle>
-          <CardDescription className="text-base">
-            Represents both integers and floating-point numbers.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-purple-600" />
-                Valid Numbers
-              </h4>
-              <div className="space-y-2 text-sm font-mono">
-                <div>const age = <span className="text-purple-600">25</span>;</div>
-                <div>const price = <span className="text-purple-600">19.99</span>;</div>
-                <div>const negative = <span className="text-purple-600">-10</span>;</div>
-                <div>const large = <span className="text-purple-600">1e6</span>; // 1 million</div>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Binary className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             </div>
-
-            <div className="p-4 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-rose-600" />
-                Special Values
-              </h4>
-              <div className="space-y-2 text-sm font-mono">
-                <div>const inf = <span className="text-rose-600">Infinity</span>;</div>
-                <div>const negInf = <span className="text-rose-600">-Infinity</span>;</div>
-                <div>const notNum = <span className="text-rose-600">NaN</span>; // Not a Number</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Boolean Type */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Binary className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Boolean - True or False
-          </CardTitle>
-          <CardDescription className="text-base">
-            Logical type with only two values: true or false.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-emerald-200 dark:border-emerald-800">
-              <h4 className="font-semibold mb-3 text-emerald-700 dark:text-emerald-300">Common Uses</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                  <span>Checking conditions (if statements)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                  <span>Toggling features on/off</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                  <span>Loop conditions</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border">
-              <h4 className="font-semibold mb-3">Examples</h4>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-2">
-                <div>const isActive = <span className="text-emerald-600">true</span>;</div>
-                <div>const hasPermission = <span className="text-rose-600">false</span>;</div>
-                <div className="text-slate-500">// From comparison</div>
-                <div>const isAdult = age {'>'} 18;</div>
-              </div>
+            <div>
+              <CardTitle>Checking Data Types with typeof</CardTitle>
+              <CardDescription>Find out what type your data is</CardDescription>
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Null and Undefined */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <XCircle className="w-6 h-6 text-slate-600/80 dark:text-slate-400/80" />
-            Null & Undefined - Empty Values
-          </CardTitle>
-          <CardDescription className="text-base">
-            Two ways to represent "no value" in JavaScript.
-          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-slate-100 dark:bg-slate-900">
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">Type</th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">Meaning</th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">Example</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                <tr>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-mono font-semibold">undefined</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    Variable declared but not assigned
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-mono text-xs">
-                    let x;
-                  </td>
-                </tr>
-                <tr className="bg-slate-50 dark:bg-slate-900/50">
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-mono font-semibold">null</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    Intentionally empty or missing
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-mono text-xs">
-                    const user = null;
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Symbol & BigInt */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <CircleDot className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Symbol & BigInt
-          </CardTitle>
-          <CardDescription className="text-base">
-            Extra primitives for unique identifiers and safely handling huge integers.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-2">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-purple-600/80 dark:text-purple-400/80" />
-                Symbol
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Always unique. Great for object keys that shouldn&apos;t collide with other properties.
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The typeof Operator</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use <code className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 rounded text-xs">typeof</code> to check what type a value is!
               </p>
-              <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-                <div>const unique = Symbol(<span className="text-green-600 dark:text-green-400">'id'</span>);</div>
-                <div>const user = {'{'} [unique]: 1, name: <span className="text-green-600 dark:text-green-400">'Mia'</span> {'}'};</div>
-              </div>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:to-blue-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/30 space-y-2">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Hash className="w-4 h-4 text-indigo-600/80 dark:text-indigo-400/80" />
-                BigInt
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Represents integers larger than <code className="font-mono">Number.MAX_SAFE_INTEGER</code> using an <code className="font-mono">n</code> suffix.
-              </p>
-              <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-                <div>const max = Number.MAX_SAFE_INTEGER; <span className="text-slate-500">// 9007199254740991</span></div>
-                <div>const huge = <span className="text-indigo-600">9007199254740995n</span>;</div>
-                <div>console.log(huge + <span className="text-indigo-600">5n</span>);</div>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`console.log(typeof 'Hello');    // string
+console.log(typeof 42);         // number
+console.log(typeof true);       // boolean
+console.log(typeof undefined);  // undefined
+console.log(typeof null);       // object (quirk!)
+console.log(typeof Symbol());   // symbol
+console.log(typeof 123n);       // bigint`}</pre>
               </div>
             </div>
           </div>
-
         </CardContent>
       </Card>
 
-      {/* Truthy vs Falsy */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <DivideSquare className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            Truthy vs Falsy Values
-          </CardTitle>
-          <CardDescription className="text-base">
-            JavaScript treats some values as false in conditions. Everything else is truthy.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-slate-100 dark:bg-slate-900">
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">
-                    Falsy Values
-                  </th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">
-                    Examples of Truthy Values
-                  </th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">
-                    Why It Matters
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                <tr>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-mono text-xs">
-                    false, 0, -0, 0n, &quot;&quot;, null, undefined, NaN
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-mono text-xs">
-                    Non-empty strings, [], {'{}'}, numbers other than 0, functions
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    Conditionals like <code className="font-mono">if (value)</code> rely on this conversion.
-                  </td>
-                </tr>
-                <tr className="bg-slate-50 dark:bg-slate-900/50">
-                  <td className="border border-slate-300 dark:border-slate-700 p-3" colSpan={3}>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Lightbulb className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                      <span>Check for empty strings or arrays explicitly to avoid accidental truthy checks.</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+      <CodeSnippet
+        title="typeof in Real Code"
+        description="Checking types before using values"
+        code={`function processData(value) {
+  console.log('Type:', typeof value);
+  
+  if (typeof value === 'string') {
+    console.log('Length:', value.length);
+  }
+  
+  if (typeof value === 'number') {
+    console.log('Doubled:', value * 2);
+  }
+  
+  if (typeof value === 'boolean') {
+    console.log('Opposite:', !value);
+  }
+}
 
-      {/* Reference Types */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Braces className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Reference Types: Objects, Arrays, Functions
-          </CardTitle>
-          <CardDescription className="text-base">
-            Collections of data stored by reference—mutating them changes all references.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-2">
-            <div className="flex items-center gap-2">
-              <Box className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              <h4 className="font-semibold">Objects</h4>
-            </div>
-            <p className="text-sm text-muted-foreground">Key-value pairs. Order is not guaranteed.</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const user = {'{'} name: <span className="text-green-600 dark:text-green-400">'Asha'</span>, age: 20 {'}'};</div>
-              <div>user.city = <span className="text-green-600 dark:text-green-400">'Lagos'</span>;</div>
-            </div>
-          </div>
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-2">
-            <div className="flex items-center gap-2">
-              <Hash className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h4 className="font-semibold">Arrays</h4>
-            </div>
-            <p className="text-sm text-muted-foreground">Ordered lists of values of any type.</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const scores = [10, 20, 30];</div>
-              <div>scores.push(40);</div>
-              <div>const first = scores[0];</div>
-            </div>
-          </div>
-          <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-2">
-            <div className="flex items-center gap-2">
-              <Code2 className="w-5 h-5 text-purple-600/80 dark:text-purple-400/80" />
-              <h4 className="font-semibold">Functions</h4>
-            </div>
-            <p className="text-sm text-muted-foreground">First-class citizens—store them in variables or pass as arguments.</p>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>
-                const greet = (name) =&gt; <span className="text-green-600 dark:text-green-400">{'`Hi ${name}`'}</span>;
-              </div>
-              <div>const fnList = [greet];</div>
-              <div>fnList[0](<span className="text-green-600 dark:text-green-400">'Sam'</span>);</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Value vs Reference Copying */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ClipboardCheck className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Copying Values vs References
-          </CardTitle>
-          <CardDescription className="text-base">
-            Primitives copy by value; objects/arrays/functions copy by reference unless you clone them.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                Do This (Primitives)
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>✅ Copying numbers/strings/booleans creates a new independent value.</li>
-                <li>✅ Safe to modify the original without affecting the copy.</li>
-                <li>✅ Reassign variables freely; no shared state.</li>
-              </ul>
-            </div>
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                Avoid This (References)
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>❌ Assigning an object or array copies the reference, not the data.</li>
-                <li>❌ Mutations through any reference update the original too.</li>
-                <li>✅ Use spread/structuredClone/libraries for clones when needed.</li>
-              </ul>
-            </div>
-          </div>
-
-        </CardContent>
-      </Card>
-
-      {/* Primitive Types Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Box className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Try Primitive Types
-          </CardTitle>
-          <CardDescription className="text-base">
-            See all primitive data types in action.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <CodeSnippet
-            title="Primitive Data Types"
-            description="String, Number, Boolean, Undefined, and Null - the five primitive types in JavaScript"
-            code={primitivesJs}
-            language="javascript"
-            colorTheme="blue"
-            icon={Box}
-            features={[
-              "String: text in quotes",
-              "Number: integers and decimals",
-              "Boolean: true or false",
-              "Undefined: no value assigned",
-              "Null: intentionally empty"
-            ]}
-            tips={[
-              "Primitives are immutable (can't be changed)",
-              "Stored directly in memory",
-              "Compared by value, not reference"
-            ]}
-          />
-        </CardContent>
-      </Card>
-
-      {/* typeof Operator */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Type className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            typeof Operator
-          </CardTitle>
-          <CardDescription className="text-base">
-            Check the data type of any value using typeof.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <CodeSnippet
-            title="typeof Operator"
-            description="Use the typeof operator to check the data type of any value"
-            code={typeCheckJs}
-            language="javascript"
-            colorTheme="purple"
-            icon={Type}
-            features={[
-              "Returns type as a string",
-              "Works with all data types",
-              "Useful for type checking",
-              "Note: typeof null returns 'object' (quirk)"
-            ]}
-            tips={[
-              "Use for runtime type validation",
-              "Be aware of typeof null === 'object'",
-              "typeof function returns 'function'"
-            ]}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Type Conversion */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code2 className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Type Conversion
-          </CardTitle>
-          <CardDescription className="text-base">
-            JavaScript can convert between different data types.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <CodeSnippet
-            title="Type Conversion"
-            description="JavaScript automatically converts between types, or you can convert explicitly"
-            code={conversionJs}
-            language="javascript"
-            colorTheme="emerald"
-            icon={Code2}
-            features={[
-              "String(): convert to string",
-              "Number(): convert to number",
-              "Boolean(): convert to boolean",
-              "Implicit conversion happens automatically"
-            ]}
-            tips={[
-              "Explicit conversion is more predictable",
-              "Empty strings convert to 0",
-              "Non-empty strings may convert to NaN"
-            ]}
-          />
-        </CardContent>
-      </Card>
+processData('Hello');  // Type: string, Length: 5
+processData(42);       // Type: number, Doubled: 84
+processData(true);     // Type: boolean, Opposite: false`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Key Takeaways
-          </CardTitle>
-          <CardDescription className="text-base">
-            Remember these important points about data types.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-medium">JavaScript is dynamically typed</p>
-              <p className="text-sm text-muted-foreground">Variables can hold any type and change types</p>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">7 Primitive Types</h4>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• <strong>String</strong> - text in quotes</li>
+                <li>• <strong>Number</strong> - any number</li>
+                <li>• <strong>Boolean</strong> - true/false</li>
+                <li>• <strong>Undefined</strong> - not set</li>
+                <li>• <strong>Null</strong> - empty on purpose</li>
+                <li>• <strong>Symbol</strong> - unique ID</li>
+                <li>• <strong>BigInt</strong> - huge numbers</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Remember</h4>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">typeof</code> to check types</li>
+                <li>• Strings need quotes</li>
+                <li>• Numbers don't need quotes</li>
+                <li>• <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">undefined</code> ≠ <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">null</code></li>
+                <li>• Booleans are always lowercase</li>
+              </ul>
             </div>
           </div>
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-medium">Use typeof to check types</p>
-              <p className="text-sm text-muted-foreground">Helps avoid type-related bugs</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-medium">Null vs Undefined</p>
-              <p className="text-sm text-muted-foreground">Null is intentional, undefined means not set yet</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-medium">Be careful with type conversion</p>
-              <p className="text-sm text-muted-foreground">JavaScript automatically converts types, which can cause unexpected results</p>
-            </div>
-          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Circle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>What About Objects and Arrays?</AlertTitle>
+            <AlertDescription className="text-base">
+              Objects and Arrays are NOT primitive types - they're <strong>reference types</strong>. We'll learn about them in separate topics!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
-
     </div>
   );
 }

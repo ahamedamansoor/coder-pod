@@ -5,9 +5,17 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Youtube, Play, Clock, Search, X, Video, BookOpen, FileText, Link as LinkIcon, ExternalLink, Loader2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Youtube, Play, Clock, Search, X, Video, BookOpen, FileText, Link as LinkIcon, ExternalLink, Loader2, PlusCircle } from 'lucide-react';
 import { languages } from '@/data/languages';
+import { useToast } from '@/hooks/use-toast';
+import { usePlayer } from '@/contexts/PlayerContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface SavedNote {
   id: string;
@@ -30,7 +38,16 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   const [searchQuery, setSearchQuery] = useState('');
   const [playingVideo, setPlayingVideo] = useState<SavedNote | null>(null);
   const [iframeError, setIframeError] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  // Form states
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
+  const [resourceType, setResourceType] = useState<SavedNote['type']>('video');
 
+  const { toast } = useToast();
+  const { setContent } = usePlayer();
   const languageData = languages.find(l => l.slug === languageSlug);
   const STORAGE_KEY = 'video_notes';
 
@@ -57,7 +74,115 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     : notes;
 
   const handlePlayVideo = (note: SavedNote) => {
-    setPlayingVideo(note);
+    // If it's a video with videoId, use the minimizable FloatingPlayer
+    if (note.type === 'video' && note.videoId) {
+      setContent({
+        id: note.id,
+        title: note.title,
+        url: note.url,
+        type: 'video',
+      });
+      // Close the drawer to show the floating player
+      onOpenChange(false);
+    } else {
+      // For other resources, use the dialog
+      setPlayingVideo(note);
+    }
+  };
+
+  // Extract YouTube video ID from URL
+  const extractVideoId = (url: string): string | null => {
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    ];
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
+  };
+
+  const resetForm = () => {
+    setTitle('');
+    setUrl('');
+    setResourceType('video');
+  };
+
+  const openAddDialog = () => {
+    resetForm();
+    setIsAddDialogOpen(true);
+  };
+
+  const handleSaveNote = () => {
+    if (!title.trim()) {
+      toast({
+        title: "Title Required",
+        description: "Please enter a title.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!url.trim()) {
+      toast({
+        title: "URL Required",
+        description: "Please enter a URL.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      let videoId: string | undefined;
+      
+      // Extract video ID if it's a YouTube video
+      if (resourceType === 'video') {
+        videoId = extractVideoId(url) || undefined;
+      }
+
+      const newNote: SavedNote = {
+        id: Date.now().toString(),
+        title: title.trim(),
+        url: url.trim(),
+        type: resourceType,
+        videoId,
+        language: languageSlug,
+        createdAt: Date.now(),
+      };
+
+      // Get all notes from storage
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const allNotes: SavedNote[] = stored ? JSON.parse(stored) : [];
+      
+      // Add new note and save
+      const updatedNotes = [newNote, ...allNotes];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNotes));
+      
+      // Update local state with filtered notes
+      const languageNotes = updatedNotes
+        .filter(note => note.language === languageSlug)
+        .sort((a, b) => b.createdAt - a.createdAt);
+      setNotes(languageNotes);
+      
+      toast({
+        title: "✅ Resource Saved!",
+        description: `Your ${resourceType} has been saved successfully.`,
+      });
+      
+      setIsAddDialogOpen(false);
+      resetForm();
+    } catch (error) {
+      console.error("Error saving note:", error);
+      toast({
+        title: "❌ Save Failed",
+        description: "Failed to save resource. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Get icon based on resource type
@@ -187,10 +312,27 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                       ? `No resources found matching "${searchQuery}"`
                       : `No ${languageData?.name || languageSlug} resources saved yet`}
                   </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Found an interesting video, blog, or article?<br />
-                    Save it from the Notes page for quick access!
-                  </p>
+                  {!searchQuery && (
+                    <>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                        Found an interesting video, blog, or article?<br />
+                        Add it here for quick access!
+                      </p>
+                      <Button
+                        onClick={openAddDialog}
+                        size="sm"
+                        className="gap-2"
+                      >
+                        <PlusCircle className="w-4 h-4" />
+                        Add Resource
+                      </Button>
+                    </>
+                  )}
+                  {searchQuery && (
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Try adjusting your search or add new resources from the Notes page.
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -285,6 +427,102 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Resource Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Add Learning Resource</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            {/* Resource Type */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Resource Type</label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between capitalize">
+                    {resourceType}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full">
+                  <DropdownMenuItem onClick={() => setResourceType('video')}>
+                    <Youtube className="w-4 h-4 mr-2" />
+                    Video
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setResourceType('blog')}>
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Blog
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setResourceType('article')}>
+                    <FileText className="w-4 h-4 mr-2" />
+                    Article
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setResourceType('documentation')}>
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Documentation
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setResourceType('link')}>
+                    <LinkIcon className="w-4 h-4 mr-2" />
+                    Link
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* Title */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Title *</label>
+              <Input
+                placeholder="Enter title..."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+
+            {/* URL */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">URL *</label>
+              <Input
+                placeholder="https://..."
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+              />
+            </div>
+
+            {/* Language Badge */}
+            <div className="pt-2">
+              <Badge variant="secondary" className="gap-1">
+                <BookOpen className="w-3 h-3" />
+                {languageData?.name || languageSlug}
+              </Badge>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddDialogOpen(false)}
+              disabled={isSaving}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSaveNote} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Save Resource
+                </>
+              )}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

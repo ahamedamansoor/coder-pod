@@ -2,867 +2,534 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Link as LinkIcon,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Play,
-  Code,
-  AlertCircle,
-  Layers,
   GitBranch,
   Share2,
+  Layers,
 } from 'lucide-react';
 
-interface JavaScriptPrototypesProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
-
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Prototypes Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px; 
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      margin-top: 24px; 
-      font-family: monospace; 
-      font-size: 14px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>JavaScript Prototypes</h1>
-    <p>Open the browser console (F12) to see prototype examples!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-  <script src="./prototypes-demo.js"></script>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log('=== JavaScript Prototypes Demo ===\\n');
-
-// 1. Basic Prototype
-console.log('1. PROTOTYPE BASICS:');
-function Person(name) {
-  this.name = name;
-}
-
-Person.prototype.greet = function() {
-  return 'Hello, I am ' + this.name;
-};
-
-const person1 = new Person('Alice');
-console.log(person1.greet());
-console.log(person1.__proto__ === Person.prototype);
-
-// 2. Prototype Chain
-console.log('\\n2. PROTOTYPE CHAIN:');
-const obj = { a: 1 };
-console.log(obj.toString());
-console.log(obj.hasOwnProperty('a'));
-console.log('toString and hasOwnProperty are from Object.prototype');
-
-// 3. Object.create()
-console.log('\\n3. OBJECT.CREATE():');
-const animal = {
-  type: 'Animal',
-  describe() {
-    return 'I am a ' + this.type;
-  }
-};
-
-const dog = Object.create(animal);
-dog.type = 'Dog';
-console.log(dog.describe());
-console.log(Object.getPrototypeOf(dog) === animal);
-
-// 4. Checking Prototypes
-console.log('\\n4. CHECKING PROTOTYPES:');
-console.log(person1 instanceof Person);
-console.log(person1 instanceof Object);
-console.log(Person.prototype.isPrototypeOf(person1));
-
-// 5. Prototype Methods
-console.log('\\n5. MODERN PROTOTYPE METHODS:');
-const parent = { x: 10 };
-const child = Object.create(parent);
-child.y = 20;
-
-console.log('child.x:', child.x);
-console.log('child.y:', child.y);
-console.log('child.hasOwnProperty("x"):', child.hasOwnProperty('x'));
-console.log('child.hasOwnProperty("y"):', child.hasOwnProperty('y'));
-
-console.log('\\nAll prototype examples demonstrated!');
-`;
-
-export default function JavaScriptPrototypes({ onOpenWebPlayground }: JavaScriptPrototypesProps) {
+export default function JavaScriptPrototypes() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={LinkIcon}
-        category="JavaScript · Object-Oriented"
+        category="JavaScript Fundamentals"
         title="Prototypes"
-        description="Master JavaScript's prototype system - the backbone of inheritance, the prototype chain, and how objects share methods and properties."
-        colorTheme="blue"
+        description="Understanding JavaScript's prototype chain and inheritance"
+        colorTheme="yellow"
       />
 
-      {/* What are Prototypes? */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Prototypes?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Prototypes are the mechanism by which JavaScript objects inherit features from one another.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Think of prototypes like a <strong>family tree</strong> or <strong>inheritance chain</strong>. Every object in JavaScript has a hidden link to another object called its "prototype". If you try to access a property that doesn't exist on an object, JavaScript automatically looks for it in the object's prototype, then that prototype's prototype, and so on. This is the foundation of JavaScript's inheritance system!
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <LinkIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold text-sm">Hidden Link</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Every object has a secret connection to its prototype
-              </p>
-              <Badge className="mt-2 bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 text-xs">[[Prototype]]</Badge>
+      {/* What are Prototypes */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Layers className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                <h4 className="font-semibold text-sm">Prototype Chain</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Objects can inherit from other objects in a chain
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Prototypes?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                In JavaScript, every object has a hidden link to another object called its <strong className="text-yellow-700 dark:text-yellow-400">prototype</strong>. Think of it as a parent that objects can inherit properties and methods from!
               </p>
-              <Badge className="mt-2 bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 text-xs">Inheritance</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Share2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold text-sm">Shared Methods</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Methods can be shared across all instances
-              </p>
-              <Badge className="mt-2 bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 text-xs">Efficient</Badge>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Concept</AlertTitle>
-            <AlertDescription>
-              Prototypes enable JavaScript's <strong>prototypal inheritance</strong> - a different model than class-based inheritance in languages like Java. Objects inherit directly from other objects, not from classes (though ES6 classes are syntactic sugar over prototypes).
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <GitBranch className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Family Tree Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Like inheriting traits from your parents, objects inherit properties from their prototype. If an object doesn't have something, JavaScript looks up the chain to find it!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* prototype vs __proto__ */}
+      {/* Every Object Has a Prototype */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            prototype vs __proto__ - Understanding the Difference
-          </CardTitle>
-          <CardDescription className="text-base">
-            Two different but related concepts that often confuse developers.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <LinkIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>The Prototype Link</CardTitle>
+              <CardDescription>Every object connects to a prototype</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-4 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl border border-amber-200 dark:border-amber-800">
-            <h4 className="font-semibold mb-3 text-amber-700 dark:text-amber-300 flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" />
-              The Confusion Explained
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><strong>prototype:</strong> Property on <strong>constructor functions</strong> - it's the object that will become the <code className="font-mono text-xs">__proto__</code> of instances</li>
-              <li><strong>__proto__:</strong> Property on <strong>object instances</strong> - it references the prototype object</li>
-              <li>Constructor's <code className="font-mono text-xs">.prototype</code> becomes instance's <code className="font-mono text-xs">__proto__</code></li>
-            </ul>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">prototype (on Functions)</h4>
-              <p className="text-xs text-muted-foreground">
-                Only functions have .prototype property
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function Animal(name) {
-  this.name = name;
-}
-
-// prototype is on the constructor
-console.log(Animal.prototype);
-
-// Add method to prototype
-Animal.prototype.speak = function() {
-  return this.name + ' makes a sound';
-};
-
-const dog = new Animal('Dog');
-console.log(dog.speak());`}
-              </pre>
-              <SnippetOutput lines={['Animal.prototype -> { constructor: Animal }', 'Added speak method to prototype', 'dog.speak() -> "Dog makes a sound"', 'Instance uses prototype method']} />
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Hidden Connection</h4>
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">__proto__ (on Objects)</h4>
-              <p className="text-xs text-muted-foreground">
-                All objects have __proto__ linking to prototype
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Every object has a hidden property called <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">__proto__</code> that links to its prototype
               </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function Animal(name) {
-  this.name = name;
-}
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const person = { name: 'Alice' };
 
-Animal.prototype.speak = function() {
-  return this.name + ' makes a sound';
-};
+// Check the prototype
+console.log(person.__proto__);
+// Object.prototype (the base object)
 
-const dog = new Animal('Dog');
-
-// __proto__ is on the instance
-console.log(dog.__proto__ === Animal.prototype);
-console.log(dog.__proto__.speak === dog.speak);`}
-              </pre>
-              <SnippetOutput lines={['dog.__proto__ === Animal.prototype -> true', 'Instance __proto__ points to constructor prototype', 'Methods are shared via __proto__']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Visual Relationship</h4>
-              <p className="text-xs text-muted-foreground">
-                How they connect together
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function Car() {}
-
-const myCar = new Car();
-
-// The relationship:
-console.log(myCar.__proto__ === Car.prototype);
-
-// myCar.__proto__ ──┐
-//                   ↓
-//         Car.prototype
-
-// Constructor's prototype becomes
-// instance's __proto__`}
-              </pre>
-              <SnippetOutput lines={['myCar.__proto__ === Car.prototype -> true', 'They point to the same object!', 'This is how inheritance works']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Modern Alternative</h4>
-              <p className="text-xs text-muted-foreground">
-                Use Object.getPrototypeOf() instead of __proto__
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function Person(name) {
-  this.name = name;
-}
-
-const person = new Person('Alice');
-
-// Modern way (recommended)
-console.log(Object.getPrototypeOf(person) === Person.prototype);
-
-// Old way (deprecated but still works)
-console.log(person.__proto__ === Person.prototype);`}
-              </pre>
-              <SnippetOutput lines={['Object.getPrototypeOf(person) === Person.prototype -> true', '__proto__ still works but use getPrototypeOf', 'More standardized approach']} />
+// Access inherited methods
+console.log(person.toString());  // '[object Object]'
+// toString() comes from Object.prototype!`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Prototype Chain */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
+      <CodeSnippet
+        title="Prototype Chain Basics"
+        description="How objects find properties"
+        code={`const person = { name: 'Alice' };
+
+// person has 'name' directly
+console.log(person.name);  // 'Alice'
+
+// person doesn't have toString(), but finds it in prototype
+console.log(person.toString());  // '[object Object]'
+
+// How? JavaScript looks up the chain:
+// 1. Check person object - no toString()
+// 2. Check person.__proto__ (Object.prototype) - found!
+
+// Check what's in the prototype
+console.log(Object.getPrototypeOf(person));
+// Shows Object.prototype with: toString, valueOf, hasOwnProperty, etc.
+
+// Every object inherits from Object.prototype
+const obj = {};
+console.log(obj.hasOwnProperty('name'));  // false
+// hasOwnProperty() comes from Object.prototype`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Constructor Function Prototypes */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <GitBranch className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            The Prototype Chain
-          </CardTitle>
-          <CardDescription className="text-base">
-            How JavaScript looks up properties through a chain of prototypes.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Share2 className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>Constructor Function Prototypes</CardTitle>
+              <CardDescription>Share methods across instances</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>How Property Lookup Works</AlertTitle>
-            <AlertDescription>
-              When you access a property, JavaScript checks: 1) The object itself, 2) Its prototype, 3) That prototype's prototype, and so on, until it reaches <code className="font-mono text-xs">null</code>. This chain is called the <strong>prototype chain</strong>.
-            </AlertDescription>
-          </Alert>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Basic Prototype Chain</h4>
-              <p className="text-xs text-muted-foreground">
-                Every object ultimately inherits from Object.prototype
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const obj = { a: 1 };
-
-// Property lookup chain:
-// 1. Check obj itself
-console.log(obj.a);
-
-// 2. Check obj's prototype (Object.prototype)
-console.log(obj.toString());
-
-// 3. Object.prototype has no prototype
-console.log(Object.getPrototypeOf(Object.prototype));
-
-// Chain: obj -> Object.prototype -> null`}
-              </pre>
-              <SnippetOutput lines={['obj.a -> 1 (found on obj)', 'obj.toString() -> "[object Object]" (from Object.prototype)', 'Object.prototype.__proto__ -> null', 'End of chain']} />
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Efficient Method Sharing</h4>
             </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Constructor Prototype Chain</h4>
-              <p className="text-xs text-muted-foreground">
-                Instances inherit from constructor prototype
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                When you create a constructor function, JavaScript automatically creates a <code className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">prototype</code> property where you can add shared methods
               </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
 {`function Person(name) {
   this.name = name;
 }
 
+// Add method to prototype
 Person.prototype.greet = function() {
-  return 'Hello ' + this.name;
+  console.log('Hi, I am ' + this.name);
 };
 
 const alice = new Person('Alice');
+const bob = new Person('Bob');
 
-// Chain: alice -> Person.prototype -> Object.prototype -> null
-console.log(alice.name);
-console.log(alice.greet());
-console.log(alice.toString());`}
-              </pre>
-              <SnippetOutput lines={['alice.name -> "Alice" (on instance)', 'alice.greet() -> from Person.prototype', 'alice.toString() -> from Object.prototype', '3-level chain']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Checking the Chain</h4>
-              <p className="text-xs text-muted-foreground">
-                Verify prototype relationships
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function Animal() {}
-Animal.prototype.eat = function() {};
-
-function Dog() {}
-Dog.prototype = Object.create(Animal.prototype);
-Dog.prototype.bark = function() {};
-
-const myDog = new Dog();
-
-// Check chain
-console.log(myDog instanceof Dog);
-console.log(myDog instanceof Animal);
-console.log(myDog instanceof Object);
-
-// Chain: myDog -> Dog.prototype -> Animal.prototype -> Object.prototype -> null`}
-              </pre>
-              <SnippetOutput lines={['myDog instanceof Dog -> true', 'myDog instanceof Animal -> true', 'myDog instanceof Object -> true', 'Multi-level inheritance chain']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Property Shadowing</h4>
-              <p className="text-xs text-muted-foreground">
-                Own properties shadow prototype properties
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function Car() {}
-Car.prototype.color = 'red';
-
-const myCar = new Car();
-console.log(myCar.color);
-
-// Add own property (shadows prototype)
-myCar.color = 'blue';
-console.log(myCar.color);
-
-// Prototype value unchanged
-console.log(Car.prototype.color);
-
-// Check property location
-console.log(myCar.hasOwnProperty('color'));`}
-              </pre>
-              <SnippetOutput lines={['myCar.color -> "red" (from prototype)', 'myCar.color = "blue" (own property)', 'myCar.color -> "blue" (own takes precedence)', 'Car.prototype.color still "red"']} />
+// Both use the same method from prototype
+alice.greet();  // 'Hi, I am Alice'
+bob.greet();    // 'Hi, I am Bob'`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Object.create() */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Object.create() - Prototypal Inheritance
-          </CardTitle>
-          <CardDescription className="text-base">
-            Create objects with a specific prototype - the purest form of prototypal inheritance.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Pure Prototypal Inheritance</AlertTitle>
-            <AlertDescription>
-              <code className="font-mono text-xs">Object.create(proto)</code> creates a new object with <code className="font-mono text-xs">proto</code> as its prototype. This is more direct than constructor functions and is the foundation of the "delegation" pattern.
-            </AlertDescription>
-          </Alert>
+      <CodeSnippet
+        title="Adding Methods to Prototype"
+        description="Shared methods for all instances"
+        code={`function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Basic Object.create()</h4>
-              <p className="text-xs text-muted-foreground">
-                Create object inheriting from another
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const animal = {
-  type: 'Animal',
-  describe() {
-    return 'I am a ' + this.type;
-  }
+// Add methods to prototype (shared by ALL instances)
+Person.prototype.greet = function() {
+  console.log(\`Hello, I'm \${this.name}\`);
 };
 
-// Create dog inheriting from animal
-const dog = Object.create(animal);
-dog.type = 'Dog';
-
-console.log(dog.describe());
-console.log(dog.type);
-console.log(Object.getPrototypeOf(dog) === animal);`}
-              </pre>
-              <SnippetOutput lines={['dog.describe() -> "I am a Dog"', 'dog.type -> "Dog"', 'getPrototypeOf(dog) === animal -> true', 'dog inherits from animal']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">With Property Descriptors</h4>
-              <p className="text-xs text-muted-foreground">
-                Add properties during creation
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const parent = {
-  greet() {
-    return 'Hello';
-  }
+Person.prototype.getAge = function() {
+  return this.age;
 };
 
-const child = Object.create(parent, {
-  name: {
-    value: 'Alice',
-    writable: true,
-    enumerable: true
-  },
-  age: {
-    value: 25,
-    writable: true,
-    enumerable: true
-  }
-});
-
-console.log(child.name);
-console.log(child.age);
-console.log(child.greet());`}
-              </pre>
-              <SnippetOutput lines={['child.name -> "Alice"', 'child.age -> 25', 'child.greet() -> "Hello" (inherited)', 'Properties defined with descriptors']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Creating Empty Object</h4>
-              <p className="text-xs text-muted-foreground">
-                Object with no prototype chain
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Normal object has Object.prototype
-const normal = {};
-console.log(normal.toString);
-
-// Object with null prototype
-const empty = Object.create(null);
-console.log(empty.toString);
-
-// No prototype chain at all
-console.log(Object.getPrototypeOf(empty));
-
-// Useful for dictionaries/maps`}
-              </pre>
-              <SnippetOutput lines={['normal.toString -> [Function]', 'empty.toString -> undefined', 'getPrototypeOf(empty) -> null', 'No inherited methods']} />
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Inheritance Chain</h4>
-              <p className="text-xs text-muted-foreground">
-                Build multi-level inheritance
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const grandparent = {
-  familyName: 'Smith'
+Person.prototype.haveBirthday = function() {
+  this.age++;
+  console.log(\`Happy birthday! Now \${this.age} years old\`);
 };
 
-const parent = Object.create(grandparent);
-parent.role = 'Parent';
+// Create instances
+const alice = new Person('Alice', 25);
+const bob = new Person('Bob', 30);
 
-const child = Object.create(parent);
-child.age = 10;
+// All instances share the same methods
+alice.greet();  // 'Hello, I'm Alice'
+bob.greet();    // 'Hello, I'm Bob'
 
-console.log(child.age);
-console.log(child.role);
-console.log(child.familyName);
+// Verify they're the same function
+console.log(alice.greet === bob.greet);  // true
 
-// Chain: child -> parent -> grandparent -> Object.prototype -> null`}
-              </pre>
-              <SnippetOutput lines={['child.age -> 10 (own)', 'child.role -> "Parent" (from parent)', 'child.familyName -> "Smith" (from grandparent)', 'Multi-level chain']} />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+// Check prototype
+console.log(alice.__proto__ === Person.prototype);  // true
+console.log(Object.getPrototypeOf(alice) === Person.prototype);  // true`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-      {/* Modern Prototype Methods */}
+      {/* Prototype Chain */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Modern Prototype Methods (ES5+)
-          </CardTitle>
-          <CardDescription className="text-base">
-            Modern JavaScript methods for working with prototypes safely and effectively.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>The Prototype Chain</CardTitle>
+              <CardDescription>Multiple levels of inheritance</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Object.getPrototypeOf()
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Looking Up the Chain</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                When you access a property, JavaScript searches in order:
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-sm">1</div>
+                  <div className="flex-1 bg-white dark:bg-slate-900 rounded p-3 border">
+                    <strong>The object itself</strong> - Check if property exists directly
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-sm">2</div>
+                  <div className="flex-1 bg-white dark:bg-slate-900 rounded p-3 border">
+                    <strong>The prototype</strong> - Check object's prototype
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-sm">3</div>
+                  <div className="flex-1 bg-white dark:bg-slate-900 rounded p-3 border">
+                    <strong>Object.prototype</strong> - Check the base object
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-sm">4</div>
+                  <div className="flex-1 bg-white dark:bg-slate-900 rounded p-3 border">
+                    <strong>undefined</strong> - Not found anywhere
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Prototype Chain in Action"
+        description="How property lookup works"
+        code={`function Person(name) {
+  this.name = name;  // Own property
+}
+
+Person.prototype.species = 'Human';  // Prototype property
+
+const alice = new Person('Alice');
+
+// 1. Check alice object - has 'name'
+console.log(alice.name);  // 'Alice' (found on object)
+
+// 2. Check alice object - no 'species', check prototype
+console.log(alice.species);  // 'Human' (found on Person.prototype)
+
+// 3. Check all the way up to Object.prototype
+console.log(alice.toString());  // '[object Object]' (from Object.prototype)
+
+// 4. Property not found anywhere
+console.log(alice.notExists);  // undefined
+
+// Visualize the chain
+console.log(alice.__proto__ === Person.prototype);  // true
+console.log(Person.prototype.__proto__ === Object.prototype);  // true
+console.log(Object.prototype.__proto__);  // null (end of chain)
+
+// The chain:
+// alice -> Person.prototype -> Object.prototype -> null`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* hasOwnProperty */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <CheckCircle2 className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>hasOwnProperty()</CardTitle>
+              <CardDescription>Check if property belongs to object directly</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Own vs Inherited</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use <code className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 rounded text-xs">hasOwnProperty()</code> to check if a property exists directly on the object (not inherited)
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
 {`function Person(name) {
   this.name = name;
 }
 
-const person = new Person('Alice');
+Person.prototype.species = 'Human';
 
-// Modern way to get prototype
-const proto = Object.getPrototypeOf(person);
-console.log(proto === Person.prototype);
+const alice = new Person('Alice');
 
-// Instead of person.__proto__
-console.log(proto.constructor.name);`}
-              </pre>
-              <SnippetOutput lines={['getPrototypeOf(person) === Person.prototype -> true', 'proto.constructor.name -> "Person"', 'Safer than __proto__']} />
+// 'name' is own property
+console.log(alice.hasOwnProperty('name'));     // true
+
+// 'species' is inherited from prototype
+console.log(alice.hasOwnProperty('species'));  // false
+
+// But alice can still access it
+console.log(alice.species);  // 'Human'`}</pre>
+              </div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Object.setPrototypeOf()
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const animal = {
-  speak() {
-    return 'Animal sound';
-  }
-};
-
-const dog = { name: 'Dog' };
-
-// Change prototype (not recommended for performance)
-Object.setPrototypeOf(dog, animal);
-
-console.log(dog.speak());
-console.log(Object.getPrototypeOf(dog) === animal);`}
-              </pre>
-              <SnippetOutput lines={['dog.speak() -> "Animal sound"', 'getPrototypeOf(dog) === animal -> true', 'Prototype changed dynamically', 'Performance impact!']} />
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Object.prototype.isPrototypeOf()
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function Animal() {}
-function Dog() {}
-
-Dog.prototype = Object.create(Animal.prototype);
-
-const myDog = new Dog();
-
-// Check if object is in prototype chain
-console.log(Animal.prototype.isPrototypeOf(myDog));
-console.log(Dog.prototype.isPrototypeOf(myDog));
-console.log(Object.prototype.isPrototypeOf(myDog));`}
-              </pre>
-              <SnippetOutput lines={['Animal.prototype.isPrototypeOf(myDog) -> true', 'Dog.prototype.isPrototypeOf(myDog) -> true', 'Object.prototype.isPrototypeOf(myDog) -> true', 'All are in the chain']} />
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                hasOwnProperty()
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function Car(brand) {
-  this.brand = brand;
+      <CodeSnippet
+        title="hasOwnProperty() Examples"
+        description="Distinguishing own vs inherited properties"
+        code={`function Car(make, model) {
+  this.make = make;
+  this.model = model;
 }
 
-Car.prototype.type = 'vehicle';
+Car.prototype.wheels = 4;
 
-const myCar = new Car('Toyota');
+const myCar = new Car('Toyota', 'Camry');
 
-// Check if property is own or inherited
-console.log(myCar.hasOwnProperty('brand'));
-console.log(myCar.hasOwnProperty('type'));
-console.log('type' in myCar);`}
-              </pre>
-              <SnippetOutput lines={['hasOwnProperty("brand") -> true (own property)', 'hasOwnProperty("type") -> false (inherited)', '"type" in myCar -> true (exists)', 'Distinguish own vs inherited']} />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+// Check own properties
+console.log(myCar.hasOwnProperty('make'));   // true (own)
+console.log(myCar.hasOwnProperty('model'));  // true (own)
+console.log(myCar.hasOwnProperty('wheels')); // false (inherited)
 
-      {/* Real-World Examples */}
-      <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical prototype patterns used in production JavaScript.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Extending Built-in Objects</h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Add methods to existing prototypes (use with caution!)
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Add utility method to String prototype
-// (Usually not recommended, but educational)
-String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
+// But still accessible
+console.log(myCar.wheels);  // 4
 
-const text = 'hello world';
-console.log(text.capitalize());
-
-// Available on all strings
-console.log('javascript'.capitalize());`}
-              </pre>
-              <SnippetOutput lines={['text.capitalize() -> "Hello world"', '"javascript".capitalize() -> "Javascript"', 'Method added to all strings', '⚠️ Can cause conflicts!']} />
-            </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Delegation Pattern</h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Objects delegate behavior to prototypes
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const validators = {
-  isEmail(value) {
-    return /@/.test(value);
-  },
-  isPhone(value) {
-    return /\\d{10}/.test(value);
+// Loop through own properties only
+for (let key in myCar) {
+  if (myCar.hasOwnProperty(key)) {
+    console.log(\`\${key}: \${myCar[key]}\`);
   }
-};
-
-const userValidator = Object.create(validators);
-userValidator.isValid = function(user) {
-  return this.isEmail(user.email) &&
-         this.isPhone(user.phone);
-};
-
-console.log(userValidator.isEmail('test@email.com'));
-console.log(userValidator.isPhone('1234567890'));`}
-              </pre>
-              <SnippetOutput lines={['isEmail() -> true', 'isPhone() -> true', 'userValidator delegates to validators', 'Clean separation of concerns']} />
-            </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Plugin System</h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Extend functionality via prototypes
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function App() {
-  this.plugins = [];
 }
+// make: Toyota
+// model: Camry
+// (wheels not shown - it's inherited)
 
-App.prototype.use = function(plugin) {
-  this.plugins.push(plugin);
-  plugin(this);
-};
+// Get all own property names
+const ownProps = Object.keys(myCar);
+console.log(ownProps);  // ['make', 'model']
 
-App.prototype.run = function() {
-  console.log('App running with ' + this.plugins.length + ' plugins');
-};
+// Modern alternative: Object.hasOwn()
+console.log(Object.hasOwn(myCar, 'make'));   // true
+console.log(Object.hasOwn(myCar, 'wheels')); // false`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-const app = new App();
-app.use(function(app) {
-  app.logger = { log: (msg) => console.log(msg) };
-});
-
-app.run();
-app.logger.log('Hello from plugin');`}
-              </pre>
-              <SnippetOutput lines={['app.run() -> "App running with 1 plugins"', 'logger.log() works', 'Extensible architecture']} />
-            </div>
-
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3">Mixin Pattern</h4>
-              <p className="text-xs text-muted-foreground mb-3">
-                Copy methods from mixins to prototype
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const eventMixin = {
-  on(event, handler) {
-    this.handlers = this.handlers || {};
-    this.handlers[event] = handler;
-  },
-  emit(event) {
-    if (this.handlers && this.handlers[event]) {
-      this.handlers[event]();
-    }
-  }
-};
-
-function Component() {}
-
-// Copy mixin methods to prototype
-Object.assign(Component.prototype, eventMixin);
-
-const comp = new Component();
-comp.on('click', () => console.log('Clicked!'));
-comp.emit('click');`}
-              </pre>
-              <SnippetOutput lines={['comp.on("click", ...) registers handler', 'comp.emit("click") -> "Clicked!"', 'Event system via prototype', 'Reusable behavior']} />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-emerald-700 dark:text-emerald-300"><CheckCircle2 className="w-5 h-5" /> Do This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>✅ Use <code className="font-mono text-xs">Object.getPrototypeOf()</code> instead of <code className="font-mono text-xs">__proto__</code></li>
-              <li>✅ Add methods to prototype for memory efficiency</li>
-              <li>✅ Use <code className="font-mono text-xs">Object.create()</code> for clean inheritance</li>
-              <li>✅ Check own properties with <code className="font-mono text-xs">hasOwnProperty()</code></li>
-              <li>✅ Use ES6 classes for new code (simpler syntax)</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-rose-700 dark:text-rose-300"><XCircle className="w-5 h-5" /> Avoid This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>❌ Don't modify built-in prototypes (Object, Array, etc.)</li>
-              <li>❌ Don't use <code className="font-mono text-xs">Object.setPrototypeOf()</code> (performance impact)</li>
-              <li>❌ Don't rely on <code className="font-mono text-xs">__proto__</code> (non-standard)</li>
-              <li>❌ Don't add non-enumerable properties without reason</li>
-              <li>❌ Don't create deep prototype chains (hard to debug)</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Hands-on Playground */}
+      {/* Modifying Prototypes */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Play className="w-5 h-5" />
-            Hands-on playground
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Launch the simulator closure built playground to experiment with ✨ prototypes, prototype chain, and Object.create().
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Adding to Existing Prototypes</CardTitle>
+              <CardDescription>Extend built-in objects (use with caution!)</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {onOpenWebPlayground && (
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-            >
-              Run in playground
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">
-            The console output highlights prototype usage (prototype chain, Object.create(), and modern methods) with practical examples most developers encounter.
-          </p>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Prototype Extension</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                You CAN add methods to built-in prototypes, but generally shouldn't in production code!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Add method to Array prototype (not recommended!)
+Array.prototype.myMethod = function() {
+  return this.length;
+};
+
+const arr = [1, 2, 3];
+console.log(arr.myMethod());  // 3 (all arrays have it now)
+
+// Better: Create your own constructor
+function MyArray() {
+  Array.call(this);
+}
+MyArray.prototype = Object.create(Array.prototype);
+MyArray.prototype.myMethod = function() {
+  return this.length;
+};`}</pre>
+              </div>
+              <Alert className="mt-4 bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/30">
+                <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                <AlertDescription className="text-sm">
+                  <strong>Warning:</strong> Modifying built-in prototypes (Array, Object, String) can cause conflicts with other code or future JavaScript features. Avoid in production!
+                </AlertDescription>
+              </Alert>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Prototype Extension Example"
+        description="For learning purposes only!"
+        code={`// DON'T do this in production code!
+// Just for understanding how it works
+
+// Add method to String prototype
+String.prototype.reverse = function() {
+  return this.split('').reverse().join('');
+};
+
+const str = 'hello';
+console.log(str.reverse());  // 'olleh'
+
+// Now ALL strings have this method
+const str2 = 'world';
+console.log(str2.reverse());  // 'dlrow'
+
+// Add method to Number prototype
+Number.prototype.double = function() {
+  return this * 2;
+};
+
+const num = 5;
+console.log(num.double());  // 10
+
+// Why it's dangerous:
+// 1. Can conflict with future JavaScript features
+// 2. Can break libraries that loop through properties
+// 3. Hard to debug when methods appear "magically"
+
+// Better approach: Create utility functions
+function reverseString(str) {
+  return str.split('').reverse().join('');
+}
+
+console.log(reverseString('hello'));  // 'olleh'`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Add methods to <strong>your</strong> constructor prototypes</li>
+                <li>• Use <strong>hasOwnProperty()</strong> to check ownership</li>
+                <li>• Understand the prototype chain</li>
+                <li>• Use <strong>Object.getPrototypeOf()</strong></li>
+                <li>• Share methods via prototype for efficiency</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't modify built-in prototypes (Array, Object, String)</li>
+                <li>• Don't use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">__proto__</code> directly (deprecated)</li>
+                <li>• Don't confuse prototype with <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">__proto__</code></li>
+                <li>• Don't add properties to prototype (use constructor)</li>
+                <li>• Don't forget prototypes are shared</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Key Concepts</h4>
+            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <div><strong>Constructor.prototype</strong> - Where you add shared methods</div>
+              <div><strong>instance.__proto__</strong> - Links to constructor's prototype</div>
+              <div><strong>Object.getPrototypeOf(obj)</strong> - Modern way to access prototype</div>
+              <div><strong>Prototype chain</strong> - obj → Constructor.prototype → Object.prototype → null</div>
+              <div><strong>hasOwnProperty()</strong> - Check if property is own (not inherited)</div>
+            </div>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Modern JavaScript</AlertTitle>
+            <AlertDescription className="text-base">
+              ES6 Classes use prototypes under the hood! Understanding prototypes helps you understand how classes really work in JavaScript.
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
     </div>

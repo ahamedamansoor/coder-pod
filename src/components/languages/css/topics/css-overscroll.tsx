@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Hand, CheckCircle, Info } from 'lucide-react';
+import { Hand, CheckCircle, Info, Sparkles, Lightbulb, ArrowRight, Move, Lock, Unlock, Code, Layers, MousePointer } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssOverscrollProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
@@ -36,11 +37,423 @@ h1{color:#f97316;text-align:center;margin-bottom:30px;}@media(prefers-color-sche
 
   return (
     <div className="space-y-8">
-      <PageHeader icon={Hand} category="CSS · Modern Features" title="Overscroll Behavior" description="Control scroll boundaries and prevent scroll chaining" colorTheme="orange" />
-      <Card><CardHeader className="relative"><CardTitle className="flex items-center gap-3 text-2xl text-orange-700 dark:text-orange-300"><div className="relative"><Hand className="w-8 h-8" /><div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div></div>Overscroll Behavior</CardTitle><CardDescription className="text-lg text-orange-600 dark:text-orange-400">🖐️ Control what happens when users scroll past boundaries!</CardDescription></CardHeader><CardContent><div className="grid lg:grid-cols-3 gap-6"><div className="lg:col-span-2 space-y-6"><div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-orange-200/50 shadow-lg"><h4 className="font-bold mb-4 text-orange-700 dark:text-orange-300">What is Overscroll Behavior?</h4><p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Controls what happens when a user scrolls past the boundary of a scrolling area. Prevents unwanted scroll chaining and bounce effects.</p><div className="space-y-3"><div className="flex items-start gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg"><CheckCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" /><div><div className="font-semibold text-orange-700 dark:text-orange-300">Contain Scrolling</div><div className="text-sm text-orange-600 dark:text-orange-400">Prevent parent element from scrolling</div></div></div></div></div></div><div className="bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 p-6 rounded-xl border border-orange-200/50 shadow-lg"><div className="text-center space-y-4"><div className="text-4xl mb-2">🖐️</div><div className="font-bold text-lg text-orange-700 dark:text-orange-300">Values</div><div className="space-y-2 text-sm"><div className="bg-white dark:bg-gray-800 p-2 rounded"><code className="text-orange-600 dark:text-orange-400">contain</code></div><div className="bg-white dark:bg-gray-800 p-2 rounded"><code className="text-orange-600 dark:text-orange-400">auto</code></div><div className="bg-white dark:bg-gray-800 p-2 rounded"><code className="text-orange-600 dark:text-orange-400">none</code></div></div></div></div></div></CardContent></Card>
-      <Card><CardHeader><CardTitle>Live Examples</CardTitle></CardHeader><CardContent><div className="flex gap-4 mb-6"><button onClick={() => setSelectedExample('contain')} className={`px-4 py-2 rounded-lg font-medium transition-all ${selectedExample === 'contain' ? 'bg-orange-500 text-white shadow-lg' : 'bg-gray-100 dark:bg-gray-800'}`}>Contain</button><button onClick={() => setSelectedExample('auto')} className={`px-4 py-2 rounded-lg font-medium transition-all ${selectedExample === 'auto' ? 'bg-orange-500 text-white shadow-lg' : 'bg-gray-100 dark:bg-gray-800'}`}>Auto</button></div>{selectedExample === 'contain' && <FrontendCodePreview html={containExample} title="Overscroll: Contain" colorTheme="orange" onOpenPlayground={onOpenWebPlayground} />}{selectedExample === 'auto' && <FrontendCodePreview html={autoExample} title="Overscroll: Auto" colorTheme="orange" onOpenPlayground={onOpenWebPlayground} />}</CardContent></Card>
-      <Alert><CheckCircle className="h-4 w-4" /><AlertTitle>Use Cases</AlertTitle><AlertDescription><ul className="list-disc list-inside space-y-1 mt-2"><li><strong>Modal dialogs</strong> - Prevent body scroll when modal is open</li><li><strong>Mobile navigation</strong> - Contain scroll within drawers</li><li><strong>Chat interfaces</strong> - Keep chat scroll independent</li></ul></AlertDescription></Alert>
-      <Alert className="border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/20"><Info className="h-4 w-4 text-orange-600" /><AlertTitle className="text-orange-900 dark:text-orange-100">Browser Support</AlertTitle><AlertDescription className="text-orange-800 dark:text-orange-200">Widely supported in modern browsers (Chrome 63+, Firefox 59+, Safari 16+)</AlertDescription></Alert>
+      <PageHeader icon={Hand} category="CSS · Modern Features" title="CSS Overscroll Behavior" description="Control scroll boundaries and prevent scroll chaining" colorTheme="orange" />
+
+      {/* What is Overscroll Behavior */}
+      <Card className="relative overflow-hidden bg-gradient-to-br from-orange-50/60 via-white to-red-50/60 dark:from-orange-950/30 dark:via-slate-900 dark:to-red-950/30 backdrop-blur">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <CardHeader className="relative">
+          <div className="flex items-start justify-between">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-orange-500/20 rounded-xl blur-xl animate-pulse"></div>
+                  <div className="relative w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <Hand className="w-7 h-7 text-white" />
+                  </div>
+                </div>
+                <div>
+                  <CardTitle className="text-3xl bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 bg-clip-text text-transparent">
+                    What is Overscroll Behavior?
+                  </CardTitle>
+                  <CardDescription className="text-base mt-1">
+                    Control what happens when users scroll past boundaries
+                  </CardDescription>
+                </div>
+              </div>
+            </div>
+            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0">
+              CSS Modern
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-6">
+          {/* Main Explanation */}
+          <Alert className="border-orange-200 dark:border-orange-800 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/50 dark:to-red-950/50">
+            <Sparkles className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+            <AlertTitle className="text-orange-900 dark:text-orange-100">Control Scroll Boundaries</AlertTitle>
+            <AlertDescription className="text-orange-800 dark:text-orange-200">
+              The <code className="px-2 py-1 bg-white dark:bg-slate-800 rounded">overscroll-behavior</code> property controls what happens when a user reaches the edge of a scrolling area. It prevents unwanted scroll chaining (where parent elements start scrolling) and browser bounce effects.
+            </AlertDescription>
+          </Alert>
+
+          {/* The Problem */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="relative p-6 rounded-xl bg-white dark:bg-slate-800 border-2 border-red-200 dark:border-red-800 shadow-lg overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-2xl"></div>
+              <div className="relative">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                    <MousePointer className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  </div>
+                  <h4 className="font-bold text-lg text-red-700 dark:text-red-300">The Problem (Default)</h4>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold">❌</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Scroll chains to parent element
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold">❌</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Unwanted page scrolling in modals
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold">❌</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Rubber-band bounce effect on mobile
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold">❌</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Poor user experience in nested scrolls
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="relative p-6 rounded-xl bg-white dark:bg-slate-800 border-2 border-emerald-200 dark:border-emerald-800 shadow-lg overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+              <div className="relative">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                    <Lock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">The Solution</h4>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-500 font-bold">✅</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Contain scrolling within element
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-500 font-bold">✅</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Prevent parent page from scrolling
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-500 font-bold">✅</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Disable bounce effects
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-500 font-bold">✅</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Better control in modals & drawers
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Pro Tip */}
+          <div className="relative p-6 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 dark:from-amber-950/30 dark:via-orange-950/30 dark:to-amber-950/30 rounded-xl border-2 border-amber-200 dark:border-amber-800 shadow-lg overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl animate-pulse"></div>
+            <div className="relative flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg animate-bounce">
+                <Lightbulb className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h4 className="font-bold text-lg text-amber-900 dark:text-amber-100 mb-2">💡 Perfect for Modals & Drawers</h4>
+                <p className="text-amber-800 dark:text-amber-200">
+                  Use <code className="px-2 py-1 bg-white dark:bg-slate-800 rounded">overscroll-behavior: contain;</code> on modal dialogs, side drawers, and chat interfaces to prevent the background page from scrolling when users reach the end of the scrollable content!
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Property Values */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 via-red-50/30 to-orange-50/30 dark:from-orange-950/10 dark:via-red-950/10 dark:to-orange-950/10"></div>
+        <CardHeader className="relative">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Code className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Property Values</CardTitle>
+              <CardDescription>Three ways to control overscroll behavior</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* contain */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700 shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mb-4">
+                  <Lock className="w-6 h-6 text-white" />
+                </div>
+                <Badge className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-0 mb-3">
+                  contain
+                </Badge>
+                <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2">Contain Scrolling</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Prevents scroll chaining to parent elements. The scrolling stays within the element.
+                </p>
+                <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg">
+                  <code className="text-xs font-mono text-emerald-700 dark:text-emerald-300">
+                    overscroll-behavior: contain;
+                  </code>
+                </div>
+                <div className="mt-3 text-xs text-emerald-600 dark:text-emerald-400">
+                  ✨ Best for: Modals, drawers, chat boxes
+                </div>
+              </div>
+            </div>
+
+            {/* auto */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-blue-200 dark:border-blue-700 shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mb-4">
+                  <Unlock className="w-6 h-6 text-white" />
+                </div>
+                <Badge className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white border-0 mb-3">
+                  auto
+                </Badge>
+                <h4 className="font-bold text-lg text-blue-700 dark:text-blue-300 mb-2">Default Behavior</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Normal browser behavior. Scroll continues to parent element and bounce effects work.
+                </p>
+                <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
+                  <code className="text-xs font-mono text-blue-700 dark:text-blue-300">
+                    overscroll-behavior: auto;
+                  </code>
+                </div>
+                <div className="mt-3 text-xs text-blue-600 dark:text-blue-400">
+                  ⚙️ Default - Usually not needed
+                </div>
+              </div>
+            </div>
+
+            {/* none */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-purple-200 dark:border-purple-700 shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+                  <Move className="w-6 h-6 text-white" />
+                </div>
+                <Badge className="bg-gradient-to-r from-purple-500 to-pink-600 text-white border-0 mb-3">
+                  none
+                </Badge>
+                <h4 className="font-bold text-lg text-purple-700 dark:text-purple-300 mb-2">Disable All Effects</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Prevents both scroll chaining AND bounce effects. Most restrictive option.
+                </p>
+                <div className="p-3 bg-purple-50 dark:bg-purple-950/30 rounded-lg">
+                  <code className="text-xs font-mono text-purple-700 dark:text-purple-300">
+                    overscroll-behavior: none;
+                  </code>
+                </div>
+                <div className="mt-3 text-xs text-purple-600 dark:text-purple-400">
+                  🚫 Disables browser scroll effects
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Axis Control */}
+          <div className="p-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/30 dark:via-purple-950/30 dark:to-pink-950/30 rounded-xl border-2 border-indigo-200 dark:border-indigo-700">
+            <h4 className="font-bold text-lg text-indigo-900 dark:text-indigo-100 mb-4 flex items-center gap-2">
+              <Layers className="w-5 h-5" />
+              Control Specific Axes
+            </h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-indigo-200 dark:border-indigo-700">
+                <code className="font-mono text-sm font-bold text-indigo-700 dark:text-indigo-300 block mb-2">
+                  overscroll-behavior-x
+                </code>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Control horizontal overscroll only
+                </p>
+              </div>
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-indigo-200 dark:border-indigo-700">
+                <code className="font-mono text-sm font-bold text-indigo-700 dark:text-indigo-300 block mb-2">
+                  overscroll-behavior-y
+                </code>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Control vertical overscroll only
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Live Examples */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+              <Hand className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Live Interactive Examples</CardTitle>
+              <CardDescription>See overscroll behavior in action</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4 mb-6">
+            <button 
+              onClick={() => setSelectedExample('contain')} 
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                selectedExample === 'contain' 
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105' 
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              Contain
+            </button>
+            <button 
+              onClick={() => setSelectedExample('auto')} 
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                selectedExample === 'auto' 
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105' 
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              Auto (Default)
+            </button>
+          </div>
+
+          {selectedExample === 'contain' && (
+            <FrontendCodePreview 
+              html={containExample} 
+              title="Overscroll Behavior: Contain" 
+              colorTheme="orange" 
+              onOpenPlayground={onOpenWebPlayground} 
+            />
+          )}
+          
+          {selectedExample === 'auto' && (
+            <FrontendCodePreview 
+              html={autoExample} 
+              title="Overscroll Behavior: Auto" 
+              colorTheme="orange" 
+              onOpenPlayground={onOpenWebPlayground} 
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Use Cases & Browser Support */}
+      <Card className="relative overflow-hidden border-2 border-orange-200 dark:border-orange-800">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/60 via-red-50/60 to-orange-50/60 dark:from-orange-950/20 dark:via-red-950/20 dark:to-orange-950/20"></div>
+        <CardHeader className="relative">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Use Cases & Browser Support</CardTitle>
+              <CardDescription>Where to use it and compatibility information</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-6">
+          {/* Use Cases */}
+          <div>
+            <h3 className="font-bold text-lg text-orange-900 dark:text-orange-100 mb-4">Perfect Use Cases</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-5 bg-white dark:bg-slate-800 rounded-xl border border-orange-200 dark:border-orange-700 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">🪟</span>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Modal Dialogs</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Prevent body scroll when modal is open
+                </p>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-slate-800 rounded-xl border border-orange-200 dark:border-orange-700 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">📱</span>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Mobile Navigation</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Contain scroll within side drawers
+                </p>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-slate-800 rounded-xl border border-orange-200 dark:border-orange-700 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">💬</span>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Chat Interfaces</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Keep chat scroll independent from page
+                </p>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-slate-800 rounded-xl border border-orange-200 dark:border-orange-700 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">🖼️</span>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Image Carousels</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Prevent parent scroll during swipe
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Browser Support */}
+          <div>
+            <h3 className="font-bold text-lg text-orange-900 dark:text-orange-100 mb-4 flex items-center gap-2">
+              <Info className="w-5 h-5" />
+              Browser Support - Excellent!
+            </h3>
+            <Alert className="mb-4 border-emerald-200 dark:border-emerald-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/50 dark:to-teal-950/50">
+              <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              <AlertTitle className="text-emerald-900 dark:text-emerald-100">Production Ready!</AlertTitle>
+              <AlertDescription className="text-emerald-800 dark:text-emerald-200">
+                Supported in all modern browsers since 2017-2022. Safe to use in production!
+              </AlertDescription>
+            </Alert>
+
+            <div className="grid md:grid-cols-4 gap-3">
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-emerald-200 dark:border-emerald-700 text-center">
+                <div className="text-3xl mb-2">🌐</div>
+                <div className="font-bold text-sm">Chrome 63+</div>
+                <div className="text-xs text-emerald-600 dark:text-emerald-400">Dec 2017</div>
+              </div>
+
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-emerald-200 dark:border-emerald-700 text-center">
+                <div className="text-3xl mb-2">🦊</div>
+                <div className="font-bold text-sm">Firefox 59+</div>
+                <div className="text-xs text-emerald-600 dark:text-emerald-400">Mar 2018</div>
+              </div>
+
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-emerald-200 dark:border-emerald-700 text-center">
+                <div className="text-3xl mb-2">🧭</div>
+                <div className="font-bold text-sm">Safari 16+</div>
+                <div className="text-xs text-emerald-600 dark:text-emerald-400">Sep 2022</div>
+              </div>
+
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-emerald-200 dark:border-emerald-700 text-center">
+                <div className="text-3xl mb-2">🔷</div>
+                <div className="font-bold text-sm">Edge 79+</div>
+                <div className="text-xs text-emerald-600 dark:text-emerald-400">Jan 2020</div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -396,7 +396,7 @@ export default function CssSignFunctions({ onOpenWebPlayground }: CssSignFunctio
         category="CSS · Modern Features"
         title="Sign Functions"
         description="Absolute values and sign detection with abs() and sign()"
-        colorTheme="teal"
+        colorTheme="cyan"
       />
 
       <Card>
@@ -561,7 +561,7 @@ export default function CssSignFunctions({ onOpenWebPlayground }: CssSignFunctio
             <FrontendCodePreview
               html={absoluteExample}
               title="Absolute Value Operations"
-              colorTheme="teal"
+              colorTheme="cyan"
               onOpenPlayground={onOpenWebPlayground}
             />
           )}
@@ -570,7 +570,7 @@ export default function CssSignFunctions({ onOpenWebPlayground }: CssSignFunctio
             <FrontendCodePreview
               html={signExample}
               title="Sign Detection"
-              colorTheme="teal"
+              colorTheme="cyan"
               onOpenPlayground={onOpenWebPlayground}
             />
           )}

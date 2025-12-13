@@ -1,8 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import React from 'react';
+import { CheckSquare, Upload, Sliders, Target, Sparkles, Layers } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { CheckSquare, Sparkles, CheckCircle, Code, Zap, Upload, Sliders, Target } from 'lucide-react';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CustomFormElementsProps {
     onOpenWebPlayground?: (html: string, css: string, js: string) => void;
@@ -11,175 +17,96 @@ interface CustomFormElementsProps {
 export default function CustomFormElements({ onOpenWebPlayground }: CustomFormElementsProps) {
     
     return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
+        <CssTopicLayout
+            icon={CheckSquare}
+            title="Custom Form Elements"
+            description="Make checkboxes, radio buttons, and sliders look exactly how you want"
+            category="CSS Forms & UI"
+            whatIsIt={{
+                title: "What are Custom Form Elements?",
+                description: "Replacing boring default form controls with your own beautiful designs",
+                keyPoints: [
+                    "Style checkboxes to match your brand",
+                    "Create custom radio buttons with any shape",
+                    "Design beautiful file upload buttons",
+                    "Make range sliders look modern",
+                    "Use appearance: none to remove browser defaults",
+                    "Works across all modern browsers"
+                ]
+            }}
+        >
+
+            {/* Simple Explanation */}
+            <InfoAlert type="info" title="Simple Concept">
+                You know how checkboxes and radio buttons look different in every browser? And they're pretty ugly? 
+                With CSS, you can hide those defaults and create your own beautiful custom versions that match your design perfectly!
+            </InfoAlert>
+
+            {/* Elements You Can Customize */}
+            <SectionCard
+                title="What Can You Customize?"
+                description="Four main form elements"
                 icon={CheckSquare}
-                category="CSS · Forms & UI"
-                title="Custom Form Elements"
-                description="Create beautiful custom checkboxes, radio buttons, file inputs, and range sliders with pure CSS"
-                colorTheme="purple"
-            />
+                variant="primary"
+            >
+                <ConceptGrid
+                    concepts={[
+                        {
+                            title: "☑️ Checkboxes",
+                            description: "Boxes that users can check on/off",
+                            example: "Styled squares with checkmarks"
+                        },
+                        {
+                            title: "⭕ Radio Buttons",
+                            description: "Circles where users pick one option",
+                            example: "Custom circles with dots inside"
+                        },
+                        {
+                            title: "📁 File Uploads",
+                            description: "Buttons to select files",
+                            example: "Beautiful upload buttons"
+                        },
+                        {
+                            title: "🎚️ Range Sliders",
+                            description: "Sliders to pick numbers",
+                            example: "Modern slider with custom track"
+                        }
+                    ]}
+                />
+            </SectionCard>
 
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-purple-700 dark:text-purple-300">
-                        <div className="relative">
-                            <CheckSquare className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are Custom Form Elements?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-                        🚀 Replace default browser form controls with custom-styled elements that match your design!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-purple-400 dark:hover:border-purple-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Zap className="w-5 h-5 animate-pulse" />
-                                    🎨 Custom Form Controls
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">Custom Form Elements</strong> allow you to replace default browser styling with your own designs using <code className="text-xs bg-muted px-1 py-0.5 rounded">appearance: none</code> and creative CSS.
-                                </p>
+            {/* Basic Technique */}
+            <SectionCard
+                title="The Magic Property"
+                description="appearance: none removes browser defaults"
+                icon={Sparkles}
+            >
+                <SyntaxBlock
+                    title="Step 1: Remove Default Styling"
+                    code={`/* Hide the ugly default checkbox/radio */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;  /* This is the magic! */
+  -webkit-appearance: none;
+}
 
-                                {/* Elements Visual */}
-                                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg border border-purple-200/50">
-                                    <div className="text-sm font-semibold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        📦 Customizable Elements
-                                    </div>
-                                    <div className="text-xs text-purple-600 dark:text-purple-400">
-                                        Checkboxes, Radio buttons, File uploads, Range sliders - all fully customizable!
-                                    </div>
-                                </div>
-                            </div>
+/* Now you have a blank canvas to style! */`}
+                />
 
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    🎨 Custom Elements
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <CheckSquare className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Checkboxes</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Custom styling</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <Target className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Radio Buttons</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">Custom circles</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Upload className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">File Inputs</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Custom upload</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-                                        <Sliders className="w-6 h-6 text-pink-500" />
-                                        <div>
-                                            <div className="font-semibold text-pink-700 dark:text-pink-300 text-sm">Range Sliders</div>
-                                            <div className="text-xs text-pink-600 dark:text-pink-400">Custom track</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <InfoAlert type="tip" title="Important">
+                    <code>appearance: none</code> removes all browser default styling, giving you complete control. 
+                    Always include <code>-webkit-appearance: none</code> for Safari support!
+                </InfoAlert>
+            </SectionCard>
 
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-fuchsia-100 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-fuchsia-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">☑️</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Custom Controls</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Brand match
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Better UX
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Cross-browser
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Always test custom elements with keyboard and screen readers for accessibility!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Custom Checkbox</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">/* ☑️ Hide default checkbox */</div>
-                            <div className="text-blue-600 dark:text-blue-400">input[type="checkbox"]</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">appearance</span>: <span className="text-yellow-600 dark:text-yellow-400">none</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">width</span>: <span className="text-yellow-600 dark:text-yellow-400">20px</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">height</span>: <span className="text-yellow-600 dark:text-yellow-400">20px</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">border</span>: <span className="text-yellow-600 dark:text-yellow-400">2px solid #3b82f6</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">border-radius</span>: <span className="text-yellow-600 dark:text-yellow-400">4px</span>;</div>
-                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* CUSTOM CHECKBOXES */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <CheckSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        Custom Checkboxes
-                    </CardTitle>
-                    <CardDescription>
-                        Create beautiful custom checkbox designs
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
+            {/* Example 1: Custom Checkboxes */}
+            <SectionCard
+                title="Example: Custom Checkboxes"
+                description="Beautiful checkboxes with animations"
+                icon={CheckSquare}
+                variant="primary"
+            >
+                <FrontendCodePreview
                         title="Modern Checkboxes"
                         html={`<div class="checkbox-group">
   <label class="checkbox-label">
@@ -304,22 +231,16 @@ export default function CustomFormElements({ onOpenWebPlayground }: CustomFormEl
                         colorTheme="blue"
                         onOpenPlayground={onOpenWebPlayground}
                     />
-                </CardContent>
-            </Card>
+            </SectionCard>
 
-            {/* CUSTOM RADIO BUTTONS */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Target className="w-5 h-5 text-green-600 dark:text-green-400" />
-                        Custom Radio Buttons
-                    </CardTitle>
-                    <CardDescription>
-                        Style radio buttons with custom designs
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
+            {/* Example 2: Custom Radio Buttons */}
+            <SectionCard
+                title="Example: Custom Radio Buttons"
+                description="Styled circular radio buttons"
+                icon={Target}
+                variant="primary"
+            >
+                <FrontendCodePreview
                         title="Modern Radio Buttons"
                         html={`<div class="radio-group">
   <p class="group-label">Choose your plan:</p>
@@ -491,22 +412,16 @@ export default function CustomFormElements({ onOpenWebPlayground }: CustomFormEl
                         colorTheme="green"
                         onOpenPlayground={onOpenWebPlayground}
                     />
-                </CardContent>
-            </Card>
+            </SectionCard>
 
-            {/* CUSTOM RANGE SLIDER */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Sliders className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                        Custom Range Slider
-                    </CardTitle>
-                    <CardDescription>
-                        Style range inputs with custom tracks and thumbs
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
+            {/* Example 3: Custom Range Slider */}
+            <SectionCard
+                title="Example: Custom Range Slider"
+                description="Modern slider with custom styling"
+                icon={Sliders}
+                variant="primary"
+            >
+                <FrontendCodePreview
                         title="Modern Range Slider"
                         html={`<div class="slider-wrapper">
   <label for="volume">Volume: <span id="volume-value">50</span>%</label>
@@ -634,57 +549,61 @@ input[type="range"]:focus::-webkit-slider-thumb {
                         colorTheme="purple"
                         onOpenPlayground={onOpenWebPlayground}
                     />
-                </CardContent>
-            </Card>
+            </SectionCard>
 
-            {/* BEST PRACTICES */}
-            <Card className="border-orange-200 bg-orange-50/50 dark:bg-orange-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-orange-700 dark:text-orange-300">
-                        <Sparkles className="w-5 h-5" />
-                        Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Maintain accessibility:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Keep native HTML elements and only hide them visually - don't remove from DOM.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Keyboard support:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Ensure all custom elements work with Tab, Space, and Enter keys.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Focus indicators:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Always provide visible focus states for keyboard navigation.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Touch targets:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Make clickable areas at least 44x44px for better mobile usability.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            {/* Use Cases */}
+            <SectionCard
+                title="When to Use Custom Form Elements"
+                description="Common scenarios"
+                icon={Target}
+            >
+                <div className="grid md:grid-cols-2 gap-4">
+                    <UseCaseCard
+                        title="Branding"
+                        description="Match form controls to your company's design system"
+                        icon={CheckSquare}
+                        gradient="from-blue-500 to-indigo-600"
+                    />
+                    <UseCaseCard
+                        title="User Experience"
+                        description="Create larger, more user-friendly controls"
+                        icon={Target}
+                        gradient="from-green-500 to-emerald-600"
+                    />
+                    <UseCaseCard
+                        title="Mobile Apps"
+                        description="Make controls touch-friendly for mobile devices"
+                        icon={Sparkles}
+                        gradient="from-purple-500 to-pink-600"
+                    />
+                    <UseCaseCard
+                        title="Themes"
+                        description="Create dark mode or themed form controls"
+                        icon={Layers}
+                        gradient="from-amber-500 to-orange-600"
+                    />
+                </div>
+            </SectionCard>
 
-            {/* BROWSER SUPPORT */}
-            <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700 dark:text-green-300">
-                    <strong className="block mb-1">Good Browser Support</strong>
-                    Custom form elements work in all modern browsers. Use <code className="bg-green-100 dark:bg-green-900 px-1 rounded">appearance: none</code> to remove default styling.
-                </AlertDescription>
-            </Alert>
-        </div>
+            {/* Best Practices */}
+            <InfoAlert type="success" title="Best Practices">
+                <ul className="list-disc list-inside space-y-2 mt-2">
+                    <li><strong>Maintain Accessibility:</strong> Keep native HTML elements and only hide them visually</li>
+                    <li><strong>Keyboard Support:</strong> Ensure Tab, Space, and Enter keys work properly</li>
+                    <li><strong>Focus Indicators:</strong> Always provide visible focus states for keyboard navigation</li>
+                    <li><strong>Touch Targets:</strong> Make clickable areas at least 44×44px for mobile</li>
+                    <li><strong>Test Thoroughly:</strong> Check with screen readers and across devices</li>
+                </ul>
+            </InfoAlert>
+
+            {/* Browser Support */}
+            <InfoAlert type="info" title="Browser Support">
+                <p className="mt-2">
+                    <strong>✅ All Modern Browsers:</strong> Custom form elements using <code>appearance: none</code> work in 
+                    Chrome, Firefox, Safari, and Edge. Range sliders need vendor prefixes for best compatibility.
+                </p>
+            </InfoAlert>
+
+        </CssTopicLayout>
     );
 }

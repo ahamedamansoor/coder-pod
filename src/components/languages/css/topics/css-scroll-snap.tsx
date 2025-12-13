@@ -1,527 +1,479 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { MousePointerClick, CheckCircle, Smartphone, Info } from 'lucide-react';
+import { 
+  MousePointer2, Sparkles, Lightbulb, ArrowRight, 
+  CheckCircle, Info, Move, Smartphone
+} from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssScrollSnapProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssScrollSnap({ onOpenWebPlayground }: CssScrollSnapProps) {
-  const [selectedExample, setSelectedExample] = useState('horizontal');
+  
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={MousePointer2}
+        category="CSS · Modern Features"
+        title="Scroll Snap"
+        description="Create smooth, snapping scroll experiences"
+        colorTheme="indigo"
+      />
 
-  const horizontalSnapExample = `<!DOCTYPE html>
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <MousePointer2 className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">CSS Scroll Snap</CardTitle>
+              <CardDescription className="text-base">Snap scroll positions to specific points</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Scroll Snap = Smooth Carousels!</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              Create carousel-like scroll behavior with pure CSS! Perfect for image galleries, 
+              full-page sections, and mobile-friendly scrolling experiences. No JavaScript needed! 🎯
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { icon: Smartphone, title: 'Mobile-First', desc: 'Perfect for touch scrolling' },
+              { icon: Move, title: 'No JavaScript', desc: 'Pure CSS solution' },
+              { icon: Sparkles, title: 'Smooth UX', desc: 'Native browser behavior' }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 text-center">
+                <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                <h3 className="font-bold mb-1">{item.title}</h3>
+                <p className="text-xs text-blue-800 dark:text-blue-200">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Move className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Basic Setup
+          </CardTitle>
+          <CardDescription>Two simple properties</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-6 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+              <Badge className="bg-blue-600 text-white text-lg mb-3">1. Container</Badge>
+              <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+                Set snap type on scroll container
+              </p>
+              <div className="bg-blue-900 dark:bg-blue-950 p-4 rounded-lg">
+                <code className="text-sm text-blue-100">
+{`.container {
+  scroll-snap-type: x mandatory;
+  overflow-x: scroll;
+}`}
+                </code>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+              <Badge className="bg-green-600 text-white text-lg mb-3">2. Children</Badge>
+              <p className="text-sm text-green-800 dark:text-green-200 mb-3">
+                Set snap align on child items
+              </p>
+              <div className="bg-green-900 dark:bg-green-950 p-4 rounded-lg">
+                <code className="text-sm text-green-100">
+{`.item {
+  scroll-snap-align: start;
+}`}
+                </code>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-2 border-purple-300 dark:border-purple-700">
+            <h3 className="font-bold text-lg text-purple-900 dark:text-purple-100 mb-3">
+              scroll-snap-type Values
+            </h3>
+            <div className="space-y-3 text-sm">
+              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <code className="font-bold text-purple-700 dark:text-purple-400">x mandatory</code> - Horizontal, must snap
+              </div>
+              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <code className="font-bold text-purple-700 dark:text-purple-400">y mandatory</code> - Vertical, must snap
+              </div>
+              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <code className="font-bold text-purple-700 dark:text-purple-400">x proximity</code> - Snap if close enough
+              </div>
+              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <code className="font-bold text-purple-700 dark:text-purple-400">both mandatory</code> - Both directions
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            Interactive Demo
+          </CardTitle>
+          <CardDescription>Horizontal image carousel</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scroll Snap - Horizontal</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 40px 20px;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     @media (prefers-color-scheme: dark) {
-      body { background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); }
+      body {
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
+      }
     }
     
-    .container {
+    .demo {
       max-width: 800px;
-      margin: 0 auto;
+      width: 100%;
       background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
     
     @media (prefers-color-scheme: dark) {
-      .container { background: #1e293b; color: #e2e8f0; }
+      .demo {
+        background: #1a1a2e;
+        color: #e5e5e5;
+      }
     }
     
     h1 {
-      color: #14b8a6;
-      margin-bottom: 10px;
       text-align: center;
-      font-size: 2.5rem;
+      color: #667eea;
+      margin-bottom: 10px;
     }
     
     @media (prefers-color-scheme: dark) {
-      h1 { color: #5eead4; }
+      h1 {
+        color: #a78bfa;
+      }
     }
     
     .subtitle {
       text-align: center;
-      color: #64748b;
+      color: #6b7280;
       margin-bottom: 30px;
+      font-size: 14px;
     }
     
-    /* Scroll Container with Snap */
-    .scroll-container {
-      display: flex;
-      overflow-x: auto;
+    @media (prefers-color-scheme: dark) {
+      .subtitle {
+        color: #9ca3af;
+      }
+    }
+    
+    /* SCROLL SNAP CONTAINER */
+    .carousel {
       scroll-snap-type: x mandatory;
+      overflow-x: scroll;
+      display: flex;
       gap: 20px;
       padding: 20px;
-      background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+      background: #f3f4f6;
       border-radius: 12px;
-      -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
-      scrollbar-color: #14b8a6 #ccfbf1;
     }
     
     @media (prefers-color-scheme: dark) {
-      .scroll-container { 
-        background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
-        scrollbar-color: #5eead4 #0f766e;
+      .carousel {
+        background: #374151;
       }
     }
     
-    .scroll-container::-webkit-scrollbar {
-      height: 8px;
-    }
-    
-    .scroll-container::-webkit-scrollbar-track {
-      background: rgba(204, 251, 241, 0.5);
-      border-radius: 10px;
-    }
-    
-    .scroll-container::-webkit-scrollbar-thumb {
-      background: #14b8a6;
-      border-radius: 10px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .scroll-container::-webkit-scrollbar-track {
-        background: rgba(15, 118, 110, 0.5);
-      }
-      .scroll-container::-webkit-scrollbar-thumb {
-        background: #5eead4;
-      }
-    }
-    
-    /* Scroll Items */
-    .scroll-item {
-      flex: 0 0 80%;
-      scroll-snap-align: center;
-      background: white;
-      padding: 60px 40px;
+    /* SCROLL SNAP ITEMS */
+    .slide {
+      scroll-snap-align: start;
+      flex: 0 0 100%;
+      height: 300px;
       border-radius: 12px;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: 700;
-      color: #0f766e;
-      border: 3px solid #14b8a6;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
     
-    @media (prefers-color-scheme: dark) {
-      .scroll-item { 
-        background: #0f172a;
-        color: #99f6e4;
-        border-color: #5eead4;
-      }
+    .slide:nth-child(1) {
+      background: linear-gradient(135deg, #667eea, #764ba2);
     }
     
-    .scroll-item-number {
-      font-size: 3rem;
-      display: block;
+    .slide:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+    
+    .slide:nth-child(3) {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+    
+    .slide:nth-child(4) {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+    }
+    
+    .slide:nth-child(5) {
+      background: linear-gradient(135deg, #fa709a, #fee140);
+    }
+    
+    .slide-number {
+      font-size: 80px;
       margin-bottom: 10px;
-      color: #14b8a6;
     }
     
-    @media (prefers-color-scheme: dark) {
-      .scroll-item-number { color: #5eead4; }
+    .slide-text {
+      font-size: 18px;
+      opacity: 0.9;
     }
     
-    .info-box {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-left: 4px solid #f59e0b;
-      padding: 16px;
-      border-radius: 8px;
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
       margin-top: 20px;
     }
     
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d1d5db;
+    }
+    
     @media (prefers-color-scheme: dark) {
-      .info-box { 
-        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
-        border-left-color: #fbbf24; 
+      .dot {
+        background: #4b5563;
       }
     }
-    
-    .info-text {
-      color: #78350f;
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-text { color: #fef3c7; }
-    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>📜 Scroll Snap</h1>
-    <p class="subtitle">Smooth horizontal scroll snapping</p>
+  <div class="demo">
+    <h1>📸 Scroll Snap Carousel</h1>
+    <p class="subtitle">Swipe or scroll horizontally →</p>
     
-    <div class="scroll-container">
-      <div class="scroll-item">
-        <span class="scroll-item-number">1</span>
-        Slide One
+    <div class="carousel">
+      <div class="slide">
+        <div class="slide-number">1</div>
+        <div class="slide-text">Purple Gradient</div>
       </div>
-      <div class="scroll-item">
-        <span class="scroll-item-number">2</span>
-        Slide Two
+      
+      <div class="slide">
+        <div class="slide-number">2</div>
+        <div class="slide-text">Pink Gradient</div>
       </div>
-      <div class="scroll-item">
-        <span class="scroll-item-number">3</span>
-        Slide Three
+      
+      <div class="slide">
+        <div class="slide-number">3</div>
+        <div class="slide-text">Blue Gradient</div>
       </div>
-      <div class="scroll-item">
-        <span class="scroll-item-number">4</span>
-        Slide Four
+      
+      <div class="slide">
+        <div class="slide-number">4</div>
+        <div class="slide-text">Green Gradient</div>
       </div>
-      <div class="scroll-item">
-        <span class="scroll-item-number">5</span>
-        Slide Five
+      
+      <div class="slide">
+        <div class="slide-number">5</div>
+        <div class="slide-text">Yellow Gradient</div>
       </div>
     </div>
     
-    <div class="info-box">
-      <p class="info-text">
-        👆 <strong>Scroll horizontally</strong> to snap to each slide! The scroll will automatically 
-        snap to the center of each item for a smooth carousel experience.
-      </p>
-    </div>
-  </div>
-</body>
-</html>`;
-
-  const verticalSnapExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scroll Snap - Vertical</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, sans-serif;
-      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    @media (prefers-color-scheme: dark) {
-      body { background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); }
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .container { background: #1e293b; color: #e2e8f0; }
-    }
-    h1 { color: #14b8a6; text-align: center; margin-bottom: 30px; }
-    @media (prefers-color-scheme: dark) {
-      h1 { color: #5eead4; }
-    }
-    
-    .scroll-container {
-      height: 400px;
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
-      background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
-      border-radius: 12px;
-      scrollbar-width: thin;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .scroll-container { background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); }
-    }
-    
-    .section {
-      height: 400px;
-      scroll-snap-align: start;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: 700;
-      color: white;
-    }
-    
-    .section:nth-child(1) { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); }
-    .section:nth-child(2) { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
-    .section:nth-child(3) { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
-    .section:nth-child(4) { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>📜 Vertical Snap Scrolling</h1>
-    <div class="scroll-container">
-      <div class="section">Section 1</div>
-      <div class="section">Section 2</div>
-      <div class="section">Section 3</div>
-      <div class="section">Section 4</div>
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
   </div>
 </body>
-</html>`;
-
-  return (
-    <div className="space-y-8">
-      <PageHeader
-        icon={MousePointerClick}
-        category="CSS · Modern Features"
-        title="CSS Scroll Snap"
-        description="Create smooth, controlled scroll experiences with snap points"
-        colorTheme="teal"
-      />
-
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-teal-700 dark:text-teal-300">
-            <div className="relative">
-              <MousePointerClick className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            CSS Scroll Snap
-          </CardTitle>
-          <CardDescription className="text-lg text-teal-600 dark:text-teal-400">
-            📜 Control scroll behavior with automatic snap points!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-teal-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-teal-700 dark:text-teal-300">
-                  What is Scroll Snap?
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  CSS Scroll Snap allows you to create smooth, paginated scrolling experiences 
-                  where content automatically aligns to specific snap points as the user scrolls.
-                </p>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-teal-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-teal-700 dark:text-teal-300">Smooth Navigation</div>
-                      <div className="text-sm text-teal-600 dark:text-teal-400">
-                        Content snaps to defined positions for precise control
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <Smartphone className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-blue-700 dark:text-blue-300">Touch-Friendly</div>
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
-                        Perfect for mobile carousels and galleries
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-teal-200/50">
-                <h4 className="font-bold mb-4 text-teal-700 dark:text-teal-300">
-                  Key Properties
-                </h4>
-                
-                <div className="grid gap-3">
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-teal-600 dark:text-teal-400">
-                      scroll-snap-type: x mandatory;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Horizontal snap, required to snap
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-cyan-600 dark:text-cyan-400">
-                      scroll-snap-align: center;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Snap to center of container
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-blue-600 dark:text-blue-400">
-                      scroll-padding: 20px;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Offset from snap container edges
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-teal-100 via-cyan-100 to-teal-100 dark:from-teal-900/30 dark:via-cyan-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-teal-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">📜</div>
-                  <div className="font-bold text-lg text-teal-700 dark:text-teal-300">Snap Types</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-teal-600 dark:text-teal-400">
-                      <CheckCircle className="w-4 h-4" />
-                      mandatory
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-cyan-600 dark:text-cyan-400">
-                      <CheckCircle className="w-4 h-4" />
-                      proximity
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Use scroll-snap-stop: always to prevent skipping snap points
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+</html>`}
+            title="Scroll Snap Carousel"
+            colorTheme="indigo"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-2 border-green-200 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-teal-500/10 rounded-lg">
-              <MousePointerClick className="h-5 w-5 text-teal-600 dark:text-teal-400" />
-            </div>
-            Live Examples
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Move className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Scroll Snap Align
           </CardTitle>
-          <CardDescription>
-            Interactive scroll snap demonstrations
-          </CardDescription>
+          <CardDescription>Control snap alignment</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 mb-6">
-            <button
-              onClick={() => setSelectedExample('horizontal')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'horizontal'
-                  ? 'bg-teal-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Horizontal Snap
-            </button>
-            <button
-              onClick={() => setSelectedExample('vertical')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'vertical'
-                  ? 'bg-teal-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Vertical Snap
-            </button>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            {[
+              {
+                align: 'start',
+                desc: 'Snap to the start edge of the item',
+                use: 'Image galleries, card carousels'
+              },
+              {
+                align: 'center',
+                desc: 'Snap to the center of the item',
+                use: 'Featured content, testimonials'
+              },
+              {
+                align: 'end',
+                desc: 'Snap to the end edge of the item',
+                use: 'Right-aligned layouts'
+              },
+              {
+                align: 'none',
+                desc: 'No snapping on this item',
+                use: 'Disable snap for specific items'
+              }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-green-600 text-white">{item.align}</Badge>
+                  <span className="text-xs text-green-700 dark:text-green-300">{item.use}</span>
+                </div>
+                <p className="text-sm text-green-800 dark:text-green-200 mb-2">{item.desc}</p>
+                <code className="text-xs bg-green-900 dark:bg-green-950 text-green-100 px-2 py-1 rounded">
+                  scroll-snap-align: {item.align};
+                </code>
+              </div>
+            ))}
           </div>
-
-          {selectedExample === 'horizontal' && (
-            <FrontendCodePreview
-              html={horizontalSnapExample}
-              title="Horizontal Scroll Snap Carousel"
-              colorTheme="teal"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
-
-          {selectedExample === 'vertical' && (
-            <FrontendCodePreview
-              html={verticalSnapExample}
-              title="Vertical Scroll Snap Sections"
-              colorTheme="teal"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
         <CardHeader>
-          <CardTitle>Snap Alignment Options</CardTitle>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Lightbulb className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            Additional Properties
+          </CardTitle>
+          <CardDescription>Fine-tune scroll behavior</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg border border-teal-200/50">
-              <h4 className="font-bold text-teal-700 dark:text-teal-300 mb-2">start</h4>
-              <p className="text-sm text-teal-600 dark:text-teal-400 mb-3">
-                Snap to the start edge of the container
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">
-                scroll-snap-align: start;
-              </code>
-            </div>
-            
-            <div className="p-4 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg border border-cyan-200/50">
-              <h4 className="font-bold text-cyan-700 dark:text-cyan-300 mb-2">center</h4>
-              <p className="text-sm text-cyan-600 dark:text-cyan-400 mb-3">
-                Snap to the center of the container
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">
-                scroll-snap-align: center;
-              </code>
-            </div>
-            
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-              <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-2">end</h4>
-              <p className="text-sm text-blue-600 dark:text-blue-400 mb-3">
-                Snap to the end edge of the container
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">
-                scroll-snap-align: end;
-              </code>
-            </div>
+        <CardContent className="space-y-4">
+          <div className="space-y-4">
+            {[
+              {
+                prop: 'scroll-padding',
+                desc: 'Offset for snap position',
+                code: 'scroll-padding: 20px;',
+                use: 'Add spacing around snapped items'
+              },
+              {
+                prop: 'scroll-snap-stop',
+                desc: 'Force stop at snap points',
+                code: 'scroll-snap-stop: always;',
+                use: 'Prevent skipping slides'
+              },
+              {
+                prop: 'scroll-margin',
+                desc: 'Margin around snap item',
+                code: 'scroll-margin: 10px;',
+                use: 'Adjust item snap position'
+              }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+                <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2">{item.prop}</h4>
+                <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">{item.desc}</p>
+                <code className="text-xs bg-blue-900 dark:bg-blue-950 text-blue-100 px-3 py-2 rounded block mb-2">
+                  {item.code}
+                </code>
+                <p className="text-xs text-blue-700 dark:text-blue-300">→ {item.use}</p>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Use Cases for Scroll Snap</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Image carousels</strong> - Smooth image gallery navigation</li>
-            <li><strong>Story/slide shows</strong> - Full-screen paginated content</li>
-            <li><strong>Product galleries</strong> - E-commerce product browsing</li>
-            <li><strong>Onboarding flows</strong> - Step-by-step tutorials</li>
-            <li><strong>Section navigation</strong> - Full-page scrolling websites</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            Common Use Cases
+          </CardTitle>
+          <CardDescription>Where to use scroll snap</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {[
+            { use: 'Image Galleries', example: 'Full-width photo carousels' },
+            { use: 'Product Showcases', example: 'E-commerce product images' },
+            { use: 'Testimonials', example: 'Customer review sliders' },
+            { use: 'Onboarding Screens', example: 'Mobile app tutorials' },
+            { use: 'Full-Page Sections', example: 'Landing page sections' },
+            { use: 'Card Carousels', example: 'Horizontal card lists' }
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800">
+              <div>
+                <p className="font-bold text-orange-900 dark:text-orange-100">{item.use}</p>
+                <p className="text-xs text-orange-700 dark:text-orange-300">{item.example}</p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
-      <Alert className="border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950/20">
-        <Info className="h-4 w-4 text-teal-600" />
-        <AlertTitle className="text-teal-900 dark:text-teal-100">Browser Support</AlertTitle>
-        <AlertDescription className="text-teal-800 dark:text-teal-200">
-          <div className="mt-2">
-            CSS Scroll Snap is widely supported in all modern browsers (Chrome 69+, Firefox 68+, Safari 11+, Edge 79+)
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>scroll-snap-type</strong> on container</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>scroll-snap-align</strong> on child items</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <strong>mandatory</strong> for carousels, <strong>proximity</strong> for lists</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Perfect for <strong>mobile touch scrolling</strong>!</span>
           </div>
         </AlertDescription>
       </Alert>

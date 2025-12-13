@@ -1,573 +1,600 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview } from '@/components/shared';
-import { 
-  Award, CheckCircle, Code, Zap, Shield, 
-  Layers, Target, Users, Sparkles, Info
-} from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import React from 'react';
+import { Award, CheckCircle, Sparkles, Target, Layers, Zap } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssBestPracticesProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssBestPractices({ onOpenWebPlayground }: CssBestPracticesProps) {
-  const [selectedPractice, setSelectedPractice] = useState('organization');
-
-  const bestPractices = [
-    { id: 'organization', name: 'Organization', icon: Layers, color: 'bg-blue-500' },
-    { id: 'naming', name: 'Naming', icon: Code, color: 'bg-purple-500' },
-    { id: 'performance', name: 'Performance', icon: Zap, color: 'bg-green-500' },
-    { id: 'maintainability', name: 'Maintainability', icon: Users, color: 'bg-orange-500' },
-  ];
-
-  const bestPracticesExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Best Practices</title>
-  <style>
-    /**
-     * CSS Best Practices Example
-     * Following industry standards and conventions
-     */
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    :root {
-      /* Design Tokens */
-      --color-primary: #10b981;
-      --color-secondary: #059669;
-      --spacing-unit: 8px;
-      --spacing-xs: calc(var(--spacing-unit) * 1);
-      --spacing-sm: calc(var(--spacing-unit) * 2);
-      --spacing-md: calc(var(--spacing-unit) * 3);
-      --spacing-lg: calc(var(--spacing-unit) * 4);
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --border-radius: 12px;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-      padding: var(--spacing-lg) var(--spacing-md);
-      min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #065f46 0%, #047857 100%);
-      }
-    }
-    
-    /* Component: Container */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: var(--spacing-lg);
-      border-radius: var(--border-radius);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    /* Component: Header */
-    .header {
-      text-align: center;
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .header__title {
-      color: var(--color-primary);
-      font-size: 2.5rem;
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .header__title {
-        color: #34d399;
-      }
-    }
-    
-    .header__subtitle {
-      color: #64748b;
-    }
-    
-    /* Component: Card Grid */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    /* Component: Card */
-    .card {
-      padding: var(--spacing-md);
-      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-      border-radius: var(--border-radius);
-      border: 2px solid var(--color-primary);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card {
-        background: linear-gradient(135deg, #065f46 0%, #047857 100%);
-        border-color: #34d399;
-      }
-    }
-    
-    .card__icon {
-      font-size: 2.5rem;
-      margin-bottom: var(--spacing-sm);
-      text-align: center;
-    }
-    
-    .card__title {
-      color: #065f46;
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: var(--spacing-xs);
-      text-align: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card__title {
-        color: #a7f3d0;
-      }
-    }
-    
-    .card__description {
-      color: #047857;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card__description {
-        color: #d1fae5;
-      }
-    }
-    
-    /* Component: Info Box */
-    .info-box {
-      background: #dcfce7;
-      border-left: 4px solid var(--color-primary);
-      padding: var(--spacing-md);
-      border-radius: 8px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-box {
-        background: #065f46;
-        border-left-color: #34d399;
-      }
-    }
-    
-    .info-box__title {
-      color: #065f46;
-      font-weight: 700;
-      margin-bottom: var(--spacing-xs);
-      font-size: 1.1rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-box__title {
-        color: #a7f3d0;
-      }
-    }
-    
-    .info-box__text {
-      color: #047857;
-      line-height: 1.6;
-      font-size: 0.9rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-box__text {
-        color: #d1fae5;
-      }
-    }
-    
-    /* Utility: Responsive */
-    @media (max-width: 768px) {
-      .container {
-        padding: var(--spacing-md);
-      }
-      
-      .header__title {
-        font-size: 2rem;
-      }
-      
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header class="header">
-      <h1 class="header__title">🏆 CSS Best Practices</h1>
-      <p class="header__subtitle">Follow these principles for clean, maintainable CSS</p>
-    </header>
-    
-    <div class="card-grid">
-      <article class="card">
-        <div class="card__icon">📐</div>
-        <h3 class="card__title">BEM Naming</h3>
-        <p class="card__description">Block__Element--Modifier pattern for clarity</p>
-      </article>
-      
-      <article class="card">
-        <div class="card__icon">🎨</div>
-        <h3 class="card__title">CSS Variables</h3>
-        <p class="card__description">Centralized design tokens and theming</p>
-      </article>
-      
-      <article class="card">
-        <div class="card__icon">⚡</div>
-        <h3 class="card__title">Performance</h3>
-        <p class="card__description">Optimized selectors and minimal CSS</p>
-      </article>
-      
-      <article class="card">
-        <div class="card__icon">📚</div>
-        <h3 class="card__title">Organization</h3>
-        <p class="card__description">Structured, modular architecture</p>
-      </article>
-    </div>
-    
-    <aside class="info-box">
-      <h3 class="info-box__title">💡 Key Principles</h3>
-      <p class="info-box__text">
-        Write CSS that is predictable, reusable, maintainable, and scalable. 
-        Use meaningful class names, follow conventions, and document your decisions. 
-        Think of your CSS as a living system that will grow with your project.
-      </p>
-    </aside>
-  </div>
-</body>
-</html>`;
-
+  
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={Award}
+      title="CSS Best Practices"
+      description="Write clean, maintainable, and performant CSS"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What are CSS Best Practices?",
+        description: "Proven techniques and patterns for writing high-quality CSS that's easy to maintain and performs well",
+        keyPoints: [
+          "Organize CSS logically and consistently",
+          "Use clear, descriptive class names",
+          "Write reusable, modular code",
+          "Optimize for performance",
+          "Make CSS accessible and maintainable",
+          "Follow industry standards"
+        ]
+      }}
+    >
+
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why Best Practices Matter">
+        Bad CSS is like a messy room - it works, but it's hard to find things, clean up, or add new stuff. 
+        Best practices are like organizing your room: <strong>everything has a place, it's easy to maintain, 
+        and you can find what you need quickly!</strong>
+      </InfoAlert>
+
+      {/* Core Best Practices */}
+      <SectionCard
+        title="The Golden Rules of CSS"
+        description="Essential practices every developer should follow"
         icon={Award}
-        category="CSS · Professional Development"
-        title="CSS Best Practices"
-        description="Write clean, maintainable, and scalable CSS following industry standards"
-        colorTheme="emerald"
-      />
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "📁 Organize Your Code",
+              description: "Group related styles together",
+              example: "base.css, layout.css, components.css"
+            },
+            {
+              title: "📛 Name Things Clearly",
+              description: "Use descriptive class names",
+              example: ".user-profile-card not .box2"
+            },
+            {
+              title: "🔄 Write Reusable Code",
+              description: "Don't repeat yourself",
+              example: "One .button class, not 10 versions"
+            },
+            {
+              title: "⚡ Keep It Fast",
+              description: "Optimize for performance",
+              example: "Minimize CSS, avoid expensive selectors"
+            }
+          ]}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-emerald-700 dark:text-emerald-300">
-            <div className="relative">
-              <Award className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            Professional CSS Standards
-          </CardTitle>
-          <CardDescription className="text-lg text-emerald-600 dark:text-emerald-400">
-            🏆 Follow industry best practices for production-ready CSS!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-emerald-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  Core Principles
-                </h4>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-emerald-700 dark:text-emerald-300">Predictable</div>
-                      <div className="text-sm text-emerald-600 dark:text-emerald-400">
-                        CSS behaves as expected without surprises
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <Layers className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-blue-700 dark:text-blue-300">Reusable</div>
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
-                        Components can be used across the project
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <Users className="w-5 h-5 text-purple-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-purple-700 dark:text-purple-300">Maintainable</div>
-                      <div className="text-sm text-purple-600 dark:text-purple-400">
-                        Easy to understand and modify by any developer
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                    <Sparkles className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-orange-700 dark:text-orange-300">Scalable</div>
-                      <div className="text-sm text-orange-600 dark:text-orange-400">
-                        Grows gracefully as the project expands
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-xl border border-emerald-200/50">
-                <h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300">
-                  Code Quality Checklist
-                </h4>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                      <div className="font-semibold text-sm">Valid CSS</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">No syntax errors</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                      <div className="font-semibold text-sm">Consistent Naming</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Follow conventions</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                      <div className="font-semibold text-sm">Organized Structure</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Logical grouping</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                      <div className="font-semibold text-sm">Documented Code</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Clear comments</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-emerald-100 via-green-100 to-teal-100 dark:from-emerald-900/30 dark:via-green-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-emerald-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">🏆</div>
-                  <div className="font-bold text-lg text-emerald-700 dark:text-emerald-300">Best Practices</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Clean Code
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Standards
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Performance
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Maintainability
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Consistency is key - follow your team's conventions
-                  </div>
-                </div>
-              </div>
+      {/* Organization */}
+      <SectionCard
+        title="1. Code Organization"
+        description="Structure your CSS files properly"
+        icon={Layers}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">Recommended File Structure</h4>
+            <div className="font-mono text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <div>📁 styles/</div>
+              <div className="ml-4">📄 1-reset.css (normalize browser styles)</div>
+              <div className="ml-4">📄 2-variables.css (colors, spacing, fonts)</div>
+              <div className="ml-4">📄 3-typography.css (headings, paragraphs)</div>
+              <div className="ml-4">📄 4-layout.css (grid, flexbox, structure)</div>
+              <div className="ml-4">📄 5-components.css (buttons, cards, forms)</div>
+              <div className="ml-4">📄 6-utilities.css (helpers, overrides)</div>
+              <div className="ml-4">📄 main.css (imports all files)</div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-emerald-500/10 rounded-lg">
-              <Code className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            Best Practices Categories
-          </CardTitle>
-          <CardDescription>
-            Essential areas for writing professional CSS
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {bestPractices.map((practice) => (
-              <div
-                key={practice.id}
-                onClick={() => setSelectedPractice(practice.id)}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                  selectedPractice === practice.id
-                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 shadow-lg scale-105'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-700'
-                }`}
-              >
-                <div className="flex flex-col items-center text-center gap-3">
-                  <div className={`w-12 h-12 ${practice.color} rounded-lg flex items-center justify-center`}>
-                    <practice.icon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="font-bold text-sm text-gray-900 dark:text-gray-100">{practice.name}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <SyntaxBlock
+            title="Good: Organized CSS"
+            code={`/* ✅ GOOD: Organized by sections with clear comments */
 
-          <FrontendCodePreview
-            html={bestPracticesExample}
-            title="CSS Best Practices - Clean Code Example"
-            colorTheme="emerald"
-            onOpenPlayground={onOpenWebPlayground}
+/* ======================
+   Variables
+   ====================== */
+:root {
+  --color-primary: #3b82f6;
+  --spacing-unit: 8px;
+}
+
+/* ======================
+   Typography
+   ====================== */
+h1 { font-size: 32px; }
+h2 { font-size: 24px; }
+p { line-height: 1.6; }
+
+/* ======================
+   Components
+   ====================== */
+.button {
+  padding: 12px 24px;
+  background: var(--color-primary);
+}
+
+.card {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+}`}
           />
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            Essential Guidelines
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h4 className="font-bold text-emerald-700 dark:text-emerald-300">✅ Do</h4>
-              <div className="space-y-2">
-                <div className="flex items-start gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <strong>Use meaningful class names</strong> that describe purpose, not appearance
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <strong>Keep specificity low</strong> to make styles easier to override
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <strong>Use CSS variables</strong> for design tokens and theming
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <strong>Mobile-first approach</strong> for responsive design
-                  </div>
-                </div>
-              </div>
+          <SyntaxBlock
+            title="Bad: Unorganized CSS"
+            code={`/* ❌ BAD: Everything mixed together, no structure */
+
+.button { padding: 12px 24px; }
+h1 { font-size: 32px; }
+.card { padding: 20px; }
+p { line-height: 1.6; }
+h2 { font-size: 24px; }
+.button { background: #3b82f6; } /* Duplicate! */
+.card { border: 1px solid #e5e7eb; }`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Naming */}
+      <SectionCard
+        title="2. Naming Conventions"
+        description="Choose clear, consistent names"
+        icon={CheckCircle}
+      >
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ DO: Clear Names</h4>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300 font-mono">
+                <li>✓ .user-profile</li>
+                <li>✓ .navigation-menu</li>
+                <li>✓ .button-primary</li>
+                <li>✓ .card-header</li>
+                <li>✓ .form-input-error</li>
+              </ul>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="font-bold text-red-700 dark:text-red-300">❌ Don't</h4>
-              <div className="space-y-2">
-                <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <div className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5 text-center font-bold">×</div>
-                  <div className="text-sm">
-                    <strong>Overuse !important</strong> - it makes code hard to maintain
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <div className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5 text-center font-bold">×</div>
-                  <div className="text-sm">
-                    <strong>Deep nesting</strong> - increases specificity and complexity
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <div className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5 text-center font-bold">×</div>
-                  <div className="text-sm">
-                    <strong>Inline styles</strong> - separates presentation from content
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <div className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5 text-center font-bold">×</div>
-                  <div className="text-sm">
-                    <strong>Magic numbers</strong> - use variables for repeated values
-                  </div>
-                </div>
-              </div>
+            <div className="p-5 border-2 border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-950/20">
+              <h4 className="font-semibold text-red-900 dark:text-red-100 mb-3">❌ DON'T: Vague Names</h4>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300 font-mono">
+                <li>✗ .box</li>
+                <li>✗ .thing</li>
+                <li>✗ .btn2</li>
+                <li>✗ .top</li>
+                <li>✗ .red-text</li>
+              </ul>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Best Practices Summary</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Organize logically</strong> - Group related styles together</li>
-            <li><strong>Name consistently</strong> - Follow BEM or similar methodology</li>
-            <li><strong>Optimize performance</strong> - Minimize CSS size and complexity</li>
-            <li><strong>Document decisions</strong> - Comment complex or non-obvious code</li>
-            <li><strong>Test thoroughly</strong> - Verify across browsers and devices</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
+          <SyntaxBlock
+            title="Naming Best Practices"
+            code={`/* ✅ GOOD: Descriptive, consistent naming */
+.user-profile-card { }
+.user-profile-card__avatar { }
+.user-profile-card__name { }
+.user-profile-card--featured { }
 
-      <Alert className="border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/20">
-        <Info className="h-4 w-4 text-emerald-600" />
-        <AlertTitle className="text-emerald-900 dark:text-emerald-100">Methodologies & Frameworks</AlertTitle>
-        <AlertDescription className="text-emerald-800 dark:text-emerald-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>🎯 BEM:</strong> Block Element Modifier naming convention</div>
-            <div><strong>⚛️ SMACSS:</strong> Scalable and Modular Architecture for CSS</div>
-            <div><strong>🎨 OOCSS:</strong> Object-Oriented CSS principles</div>
-            <div><strong>🏗️ ITCSS:</strong> Inverted Triangle CSS architecture</div>
+/* Use BEM (Block Element Modifier) */
+.block { }              /* Component */
+.block__element { }     /* Part of component */
+.block--modifier { }    /* Variation */
+
+/* ❌ BAD: Unclear, inconsistent naming */
+.box { }
+.userCard { }           /* Inconsistent casing */
+.user_profile { }       /* Mixed conventions */
+.blue { }               /* Style-based */
+.new-final-v2 { }       /* Meaningless */`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Reusability */}
+      <SectionCard
+        title="3. Write Reusable CSS"
+        description="Don't Repeat Yourself (DRY)"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Good: Reusable Classes"
+            code={`/* ✅ GOOD: One button class, modified with utilities */
+.button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button--primary { background: #3b82f6; color: white; }
+.button--secondary { background: #6b7280; color: white; }
+.button--large { padding: 16px 32px; font-size: 18px; }
+.button--small { padding: 8px 16px; font-size: 14px; }
+
+/* Combine classes in HTML */
+/* <button class="button button--primary button--large">Click Me</button> */`}
+          />
+
+          <SyntaxBlock
+            title="Bad: Repetitive CSS"
+            code={`/* ❌ BAD: Repeating the same styles everywhere */
+.submit-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  padding: 12px 24px;      /* Duplicated! */
+  font-size: 16px;         /* Duplicated! */
+  background: #6b7280;
+  color: white;
+  border: none;            /* Duplicated! */
+  border-radius: 6px;      /* Duplicated! */
+  cursor: pointer;         /* Duplicated! */
+}
+
+.big-submit-button {
+  padding: 16px 32px;
+  font-size: 18px;
+  background: #3b82f6;
+  color: white;
+  border: none;            /* Still duplicating! */
+  border-radius: 6px;
+  cursor: pointer;
+}`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Performance */}
+      <SectionCard
+        title="4. Performance Optimization"
+        description="Keep your CSS fast"
+        icon={Zap}
+      >
+        <div className="space-y-4">
+          <div className="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">✅ DO: Fast Selectors</h4>
+            <pre className="text-sm text-gray-700 dark:text-gray-300 font-mono">{`.button { }              /* Fast: class selector */
+#header { }              /* Fast: ID selector */
+.nav .item { }           /* Okay: 2 levels */`}</pre>
           </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+
+          <div className="p-4 border-l-4 border-red-500 bg-red-50 dark:bg-red-950/20">
+            <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">❌ DON'T: Slow Selectors</h4>
+            <pre className="text-sm text-gray-700 dark:text-gray-300 font-mono">{`div div div div { }     /* Slow: too many levels */
+* { }                    /* Slow: universal selector */
+[class*="btn"] { }       /* Slow: attribute selector with wildcard */
+.nav > ul > li > a { }   /* Slow: overly specific */`}</pre>
+          </div>
+
+          <SyntaxBlock
+            title="Performance Best Practices"
+            code={`/* ✅ GOOD: Performance-friendly CSS */
+
+/* 1. Keep selectors shallow (max 3 levels) */
+.card { }
+.card__title { }         /* Better than .card .container .title */
+
+/* 2. Avoid expensive properties where possible */
+.box {
+  /* Fast */
+  transform: translateX(10px);
+  opacity: 0.5;
+  
+  /* Avoid if possible */
+  /* box-shadow: 0 0 50px 50px rgba(0,0,0,0.5); (expensive) */
+  /* filter: blur(10px); (expensive) */
+}
+
+/* 3. Use CSS variables for repeated values */
+:root {
+  --primary-color: #3b82f6;
+  --spacing: 16px;
+}
+
+.button { 
+  background: var(--primary-color); 
+  padding: var(--spacing);
+}
+
+/* 4. Minimize and combine CSS files */
+/* Use build tools to minify and combine CSS */`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Practical Example */}
+      <SectionCard
+        title="Best Practices in Action"
+        description="See good CSS organization"
+        icon={Target}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={`<div class="container">
+  <header class="site-header">
+    <h1 class="site-header__title">My Website</h1>
+    <nav class="site-header__nav">
+      <a href="#" class="nav-link nav-link--active">Home</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="#" class="nav-link">Contact</a>
+    </nav>
+  </header>
+  
+  <main class="main-content">
+    <article class="card">
+      <h2 class="card__title">Article Title</h2>
+      <p class="card__text">This example demonstrates clean CSS with good organization, 
+      clear naming (BEM), and reusable classes.</p>
+      <button class="button button--primary">Read More</button>
+    </article>
+    
+    <article class="card card--featured">
+      <h2 class="card__title">Featured Article</h2>
+      <p class="card__text">This card uses the same base styles but has a "featured" modifier.</p>
+      <button class="button button--primary button--large">Learn More</button>
+    </article>
+  </main>
+</div>`}
+          css={`/* Variables */
+:root {
+  --color-primary: #3b82f6;
+  --color-text: #1f2937;
+  --color-border: #e5e7eb;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
+
+/* Base */
+body {
+  font-family: system-ui, sans-serif;
+  color: var(--color-text);
+  padding: var(--spacing-lg);
+}
+
+/* Layout */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header Component */
+.site-header {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.site-header__title {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 28px;
+}
+
+.site-header__nav {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* Navigation Component */
+.nav-link {
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: #f3f4f6;
+}
+
+.nav-link--active {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* Card Component */
+.card {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: white;
+}
+
+.card__title {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 20px;
+}
+
+.card__text {
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+.card--featured {
+  border-color: var(--color-primary);
+  border-width: 2px;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+/* Button Component */
+.button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button--primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.button--large {
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #f3f4f6;
+    --color-border: #374151;
+  }
+  
+  body {
+    background: #1f2937;
+  }
+  
+  .card {
+    background: #374151;
+  }
+  
+  .nav-link:hover {
+    background: #4b5563;
+  }
+}`}
+          title="Best Practices Demo"
+          colorTheme="green"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
+
+      {/* Additional Best Practices */}
+      <SectionCard
+        title="More Important Best Practices"
+        description="Additional rules to follow"
+        icon={CheckCircle}
+      >
+        <div className="space-y-4">
+          <div className="p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">5. Use CSS Variables</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Define colors, spacing, and fonts once. Change everywhere instantly.
+            </p>
+            <code className="text-sm">:root &#123; --primary: #3b82f6; &#125;</code>
+          </div>
+
+          <div className="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">6. Mobile-First Design</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Start with mobile styles, then add desktop styles with media queries.
+            </p>
+            <code className="text-sm">@media (min-width: 768px) &#123; ... &#125;</code>
+          </div>
+
+          <div className="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-950/20">
+            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">7. Comment Your Code</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Explain complex CSS, mark sections, and note browser hacks.
+            </p>
+            <code className="text-sm">/* Header Component - Used on all pages */</code>
+          </div>
+
+          <div className="p-4 border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
+            <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">8. Avoid !important</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              If you need !important, your CSS structure probably needs improvement.
+            </p>
+            <code className="text-sm text-red-600">color: red !important; /* Try to avoid */</code>
+          </div>
+
+          <div className="p-4 border-l-4 border-pink-500 bg-pink-50 dark:bg-pink-950/20">
+            <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-2">9. Validate Your CSS</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Use tools like CSS Validator to catch errors and improve quality.
+            </p>
+            <code className="text-sm">jigsaw.w3.org/css-validator/</code>
+          </div>
+
+          <div className="p-4 border-l-4 border-red-500 bg-red-50 dark:bg-red-950/20">
+            <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">10. Test in Multiple Browsers</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Don't just test in Chrome. Check Firefox, Safari, and Edge too.
+            </p>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When Best Practices Matter Most"
+        description="Common scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Team Projects"
+            description="Multiple developers need consistency"
+            icon={Layers}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Large Codebases"
+            description="Thousands of lines of CSS"
+            icon={CheckCircle}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Long-Term Projects"
+            description="Code maintained for years"
+            icon={Sparkles}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="High-Traffic Sites"
+            description="Performance matters"
+            icon={Zap}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Summary */}
+      <InfoAlert type="success" title="Quick Best Practices Checklist">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li>✓ Organize CSS into logical sections with clear comments</li>
+          <li>✓ Use clear, descriptive class names (BEM is recommended)</li>
+          <li>✓ Write reusable code - don't repeat yourself</li>
+          <li>✓ Keep selectors shallow (max 3 levels)</li>
+          <li>✓ Use CSS variables for colors, spacing, fonts</li>
+          <li>✓ Mobile-first responsive design</li>
+          <li>✓ Comment complex or unusual CSS</li>
+          <li>✓ Avoid !important unless absolutely necessary</li>
+          <li>✓ Validate and test in multiple browsers</li>
+          <li>✓ Minify and combine CSS for production</li>
+        </ul>
+      </InfoAlert>
+
+    </CssTopicLayout>
   );
 }

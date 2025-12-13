@@ -1,19 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
+import React from 'react';
+import { Zap, Gauge, Sparkles, Target, AlertTriangle, Rocket } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared';
-import { Zap, CheckCircle, AlertTriangle, Info } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  PropertyTable,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssWillChangeProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssWillChange({ onOpenWebPlayground }: CssWillChangeProps) {
-  const [selectedExample, setSelectedExample] = useState('transform');
-
   const transformExample = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -272,252 +276,282 @@ export default function CssWillChange({ onOpenWebPlayground }: CssWillChangeProp
 </html>`;
 
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={Zap}
+      title="Will-Change"
+      description="Optimize animations and transitions with performance hints"
+      category="Performance & Optimization"
+      whatIsIt={{
+        title: "What is Will-Change?",
+        description: "Browser optimization hint for better animation performance",
+        keyPoints: [
+          "Hints browser about upcoming property changes",
+          "Enables GPU acceleration for animations",
+          "Reduces jank and improves smoothness",
+          "Creates optimized rendering layers",
+          "Must be used carefully to avoid overhead",
+          "Remove after animation completes"
+        ]
+      }}
+    >
+
+      {/* Performance Benefits Alert */}
+      <InfoAlert type="info" title="Performance Optimization Hint">
+        The <code>will-change</code> property informs the browser about which properties will change, 
+        allowing it to optimize ahead of time by creating GPU-accelerated layers and preparing rendering pipelines.
+      </InfoAlert>
+
+      {/* How It Works */}
+      <SectionCard
+        title="How Will-Change Works"
+        description="Understanding the optimization process"
+        icon={Gauge}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "GPU Acceleration",
+              description: "Moves elements to dedicated GPU layers for hardware-accelerated rendering",
+              example: "will-change: transform;"
+            },
+            {
+              title: "Layer Preparation",
+              description: "Browser creates optimized layers before animation starts",
+              example: "will-change: opacity;"
+            },
+            {
+              title: "Pipeline Optimization",
+              description: "Rendering pipeline prepared in advance for smoother performance",
+              example: "will-change: scroll-position;"
+            },
+            {
+              title: "Memory Trade-off",
+              description: "Uses more memory for better performance - remove after use",
+              example: "element.style.willChange = 'auto';"
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* Syntax */}
+      <SectionCard
+        title="Basic Syntax"
+        description="How to use will-change"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Single Property"
+            code={`.element {
+  /* Hint for transform changes */
+  will-change: transform;
+  
+  /* Apply the actual animation */
+  transition: transform 0.3s;
+}
+
+.element:hover {
+  transform: scale(1.2);
+}`}
+          />
+
+          <SyntaxBlock
+            title="Multiple Properties"
+            code={`.element {
+  /* Hint for multiple properties */
+  will-change: transform, opacity;
+  
+  transition: all 0.3s ease;
+}
+
+.element:active {
+  transform: scale(0.95);
+  opacity: 0.7;
+}`}
+          />
+
+          <SyntaxBlock
+            title="JavaScript Control (Recommended)"
+            language="javascript"
+            code={`// Add before animation
+element.addEventListener('mouseenter', () => {
+  element.style.willChange = 'transform';
+});
+
+// Remove after animation completes
+element.addEventListener('transitionend', () => {
+  element.style.willChange = 'auto';
+});`}
+          />
+        </div>
+
+        <InfoAlert type="tip" title="Pro Tip">
+          Use JavaScript to add <code>will-change</code> just before animation starts and remove it 
+          after completion. This prevents unnecessary memory usage.
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Common Values */}
+      <SectionCard
+        title="Common Values"
+        description="Most frequently used properties"
+        icon={Rocket}
+      >
+        <PropertyTable
+          properties={[
+            {
+              property: 'will-change: transform',
+              values: 'N/A',
+              description: 'For scale, rotate, translate animations'
+            },
+            {
+              property: 'will-change: opacity',
+              values: 'N/A',
+              description: 'For fade in/out animations'
+            },
+            {
+              property: 'will-change: scroll-position',
+              values: 'N/A',
+              description: 'For scroll-based animations and parallax'
+            },
+            {
+              property: 'will-change: contents',
+              values: 'N/A',
+              description: 'For elements with changing content'
+            },
+            {
+              property: 'will-change: auto',
+              values: 'default',
+              description: 'Remove optimization (default value)'
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* Visual Example */}
+      <SectionCard
+        title="Transform Example"
+        description="See the performance difference"
         icon={Zap}
-        category="CSS · Modern Features"
-        title="Will-Change"
-        description="Optimize animations and transitions with performance hints to the browser"
-        colorTheme="yellow"
-      />
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={transformExample}
+          title="Will-Change: Transform Optimization"
+          colorTheme="indigo"
+          onOpenWebPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-yellow-700 dark:text-yellow-300">
-            <div className="relative">
-              <Zap className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            CSS Will-Change
-          </CardTitle>
-          <CardDescription className="text-lg text-yellow-600 dark:text-yellow-400">
-            ⚡ Hint the browser about upcoming changes for better performance!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-yellow-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-yellow-700 dark:text-yellow-300">
-                  What is Will-Change?
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  The <code className="text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded">will-change</code> property 
-                  informs the browser about which properties will change, allowing it to optimize ahead of time by creating 
-                  GPU-accelerated layers and preparing rendering pipelines.
-                </p>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                    <Zap className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-yellow-700 dark:text-yellow-300">GPU Acceleration</div>
-                      <div className="text-sm text-yellow-600 dark:text-yellow-400">
-                        Moves elements to GPU layers for smoother animations
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-green-700 dark:text-green-300">Better Performance</div>
-                      <div className="text-sm text-green-600 dark:text-green-400">
-                        Reduces jank and improves animation smoothness
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Opacity Example */}
+      <SectionCard
+        title="Opacity Example"
+        description="Smooth fade animations"
+        icon={Sparkles}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={opacityExample}
+          title="Will-Change: Opacity Animation"
+          colorTheme="indigo"
+          onOpenWebPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-              <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-6 rounded-xl border border-yellow-200/50">
-                <h4 className="font-bold mb-4 text-yellow-700 dark:text-yellow-300">
-                  Common Values
-                </h4>
-                
-                <div className="grid gap-3">
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-yellow-600 dark:text-yellow-400">
-                      will-change: transform;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      For scale, rotate, translate animations
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-amber-600 dark:text-amber-400">
-                      will-change: opacity;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      For fade in/out animations
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                    <code className="text-sm font-mono text-orange-600 dark:text-orange-400">
-                      will-change: scroll-position;
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      For scroll-based animations
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Use Will-Change"
+        description="Common scenarios for optimization"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Hover Animations"
+            description="Scale, rotate, and transform effects on user interaction"
+            icon={Sparkles}
+            gradient="from-blue-500 to-cyan-600"
+          />
+          <UseCaseCard
+            title="Scroll Animations"
+            description="Parallax effects and scroll-triggered animations"
+            icon={Gauge}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Page Transitions"
+            description="Slide-in/out navigation and route changes"
+            icon={Rocket}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Drag & Drop"
+            description="Smooth element dragging and repositioning"
+            icon={Target}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-yellow-100 via-amber-100 to-orange-100 dark:from-yellow-900/30 dark:via-amber-900/30 dark:to-orange-900/30 p-6 rounded-xl border border-yellow-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">⚡</div>
-                  <div className="font-bold text-lg text-yellow-700 dark:text-yellow-300">Performance</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Smoother animations
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Reduced jank
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      60fps+ rendering
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Best Practices */}
+      <SectionCard
+        title="Best Practices"
+        description="How to use will-change effectively"
+        icon={AlertTriangle}
+        variant="success"
+      >
+        <div className="space-y-4">
+          <InfoAlert type="success" title="✅ Do">
+            <ul className="list-disc list-inside space-y-2 mt-2">
+              <li>Use for elements about to animate</li>
+              <li>Remove after animation completes</li>
+              <li>Limit to specific properties (not <code>all</code>)</li>
+              <li>Test performance impact with DevTools</li>
+              <li>Add via JavaScript for better control</li>
+            </ul>
+          </InfoAlert>
 
-              <div className="bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 dark:from-red-900/20 dark:via-orange-900/20 dark:to-yellow-900/20 p-4 rounded-xl border border-red-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">⚠️</div>
-                  <div className="font-bold text-red-700 dark:text-red-300 mb-2">Warning!</div>
-                  <div className="text-sm text-red-600 dark:text-red-400">
-                    Don't overuse! Too many will-change properties can hurt performance
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          <InfoAlert type="warning" title="❌ Don't">
+            <ul className="list-disc list-inside space-y-2 mt-2">
+              <li>Apply to many elements simultaneously</li>
+              <li>Use <code>will-change: all</code> (too broad)</li>
+              <li>Leave it on permanently (memory leak)</li>
+              <li>Use without measuring actual benefit</li>
+              <li>Apply before user interaction starts</li>
+            </ul>
+          </InfoAlert>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-yellow-500/10 rounded-lg">
-              <Zap className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-            </div>
-            Live Examples
-          </CardTitle>
-          <CardDescription>
-            See the performance difference with will-change
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 mb-6">
-            <button
-              onClick={() => setSelectedExample('transform')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'transform'
-                  ? 'bg-yellow-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Transform
-            </button>
-            <button
-              onClick={() => setSelectedExample('opacity')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'opacity'
-                  ? 'bg-yellow-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Opacity
-            </button>
-          </div>
+        <SyntaxBlock
+          title="Best Practice Pattern"
+          language="javascript"
+          code={`const button = document.querySelector('.animated-button');
 
-          {selectedExample === 'transform' && (
-            <FrontendCodePreview
-              html={transformExample}
-              title="Will-Change: Transform Optimization"
-              colorTheme="yellow"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
+// Add hint before animation
+button.addEventListener('mouseenter', () => {
+  button.style.willChange = 'transform';
+});
 
-          {selectedExample === 'opacity' && (
-            <FrontendCodePreview
-              html={opacityExample}
-              title="Will-Change: Opacity Animation"
-              colorTheme="yellow"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
-        </CardContent>
-      </Card>
+// Clean up after animation
+button.addEventListener('mouseleave', () => {
+  setTimeout(() => {
+    button.style.willChange = 'auto';
+  }, 300); // Match transition duration
+});`}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-              <h4 className="font-bold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                <CheckCircle className="w-4 h-4" />
-                ✅ Do
-              </h4>
-              <ul className="text-sm space-y-2 text-green-600 dark:text-green-400">
-                <li>• Use for elements about to animate</li>
-                <li>• Remove after animation completes</li>
-                <li>• Limit to specific properties</li>
-                <li>• Test performance impact</li>
-              </ul>
-            </div>
-            
-            <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200/50">
-              <h4 className="font-bold text-red-700 dark:text-red-300 mb-2 flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4" />
-                ❌ Don't
-              </h4>
-              <ul className="text-sm space-y-2 text-red-600 dark:text-red-400">
-                <li>• Apply to many elements at once</li>
-                <li>• Use will-change: all</li>
-                <li>• Leave it on permanently</li>
-                <li>• Use without measuring benefit</li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Warning Alert */}
+      <InfoAlert type="warning" title="Performance Consideration">
+        <strong>Memory Usage:</strong> <code>will-change</code> uses additional memory to create optimized layers. 
+        Using it on too many elements can actually hurt performance. Always remove it after the animation completes!
+      </InfoAlert>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>When to Use Will-Change</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Hover animations</strong> - Scale, rotate effects on interaction</li>
-            <li><strong>Scroll animations</strong> - Parallax and scroll-triggered effects</li>
-            <li><strong>Page transitions</strong> - Slide-in/out navigation</li>
-            <li><strong>Drag & drop</strong> - Smooth element dragging</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
+      {/* Browser Support */}
+      <InfoAlert type="info" title="Browser Support">
+        Widely supported in all modern browsers: Chrome 36+, Firefox 36+, Safari 9.1+, Edge 79+
+      </InfoAlert>
 
-      <Alert className="border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-950/20">
-        <Info className="h-4 w-4 text-yellow-600" />
-        <AlertTitle className="text-yellow-900 dark:text-yellow-100">Browser Support</AlertTitle>
-        <AlertDescription className="text-yellow-800 dark:text-yellow-200">
-          <div className="mt-2">
-            Widely supported in all modern browsers (Chrome 36+, Firefox 36+, Safari 9.1+, Edge 79+)
-          </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+    </CssTopicLayout>
   );
 }

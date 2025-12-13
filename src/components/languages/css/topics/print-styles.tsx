@@ -1,186 +1,204 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+'use client';
+
+import React from 'react';
+import { Printer, FileText, Sparkles, Target, Layers, CheckCircle } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { Printer, Sparkles, CheckCircle, Code, Zap, FileText, DollarSign, Eye } from 'lucide-react';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface PrintStylesProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function PrintStyles({ onOpenWebPlayground }: PrintStylesProps) {
-    
-    return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
-                icon={Printer}
-                category="CSS · Best Practices"
-                title="Print Styles"
-                description="Create printer-friendly versions of your web pages with CSS print media queries and optimization techniques"
-                colorTheme="purple"
-            />
+  
+  return (
+    <CssTopicLayout
+      icon={Printer}
+      title="Print Styles"
+      description="Make your web pages look great when printed"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What are Print Styles?",
+        description: "CSS rules that apply only when users print your webpage",
+        keyPoints: [
+          "Different styles for screen vs print",
+          "Hide navigation, ads, and unnecessary elements",
+          "Optimize colors and layout for paper",
+          "Save ink and improve readability",
+          "Use @media print queries",
+          "Essential for reports, articles, and documents"
+        ]
+      }}
+    >
 
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-purple-600 dark:text-purple-400">
-                        <div className="relative">
-                            <Printer className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are Print Styles?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-                        🖨️ Optimize your web pages for printing with dedicated CSS styles that save ink, improve readability, and enhance user experience!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-purple-400 dark:hover:border-purple-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Zap className="w-5 h-5 animate-pulse" />
-                                    🖨️ Print Optimization
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">Print Styles</strong> use the <code className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 rounded text-purple-700 dark:text-purple-300">@media print</code> media query to apply special CSS rules when users print your web page. This helps save ink, improve readability, and create professional-looking printed documents.
-                                </p>
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why Print Styles Matter">
+        When users print your webpage, they don't need navigation menus, ads, or fancy animations. 
+        Print styles let you create a clean, paper-friendly version that saves ink and looks professional on paper!
+      </InfoAlert>
 
-                                {/* Print Visual */}
-                                <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-purple-200/50">
-                                    <div className="text-sm font-semibold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        💰 Cost Savings
-                                    </div>
-                                    <div className="text-xs text-purple-600 dark:text-purple-400">
-                                        Good print styles can reduce ink usage by 50-70% and improve print quality!
-                                    </div>
-                                </div>
-                            </div>
+      {/* Key Concepts */}
+      <SectionCard
+        title="Key Print Styling Concepts"
+        description="What to focus on"
+        icon={FileText}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "🖨️ @media print",
+              description: "CSS that only applies when printing",
+              example: "@media print { /* styles */ }"
+            },
+            {
+              title: "🙈 Hide Unnecessary",
+              description: "Remove navigation, ads, sidebars",
+              example: "nav, aside, ads { display: none; }"
+            },
+            {
+              title: "🎨 Optimize Colors",
+              description: "Use black text on white for ink savings",
+              example: "body { color: #000; background: #fff; }"
+            },
+            {
+              title: "📄 Page Breaks",
+              description: "Control where content splits across pages",
+              example: "page-break-after: always;"
+            }
+          ]}
+        />
+      </SectionCard>
 
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    🎨 Print Optimizations
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <DollarSign className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Save Ink</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Remove backgrounds</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <Eye className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Hide Elements</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">Remove nav/ads</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-                                        <FileText className="w-6 h-6 text-purple-500" />
-                                        <div>
-                                            <div className="font-semibold text-purple-700 dark:text-purple-300 text-sm">Show URLs</div>
-                                            <div className="text-xs text-purple-600 dark:text-purple-400">Display links</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Printer className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Page Breaks</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Control layout</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      {/* Basic Syntax */}
+      <SectionCard
+        title="Basic Print Styles"
+        description="How to create print-friendly CSS"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Basic Print Media Query"
+            code={`/* Normal screen styles */
+body {
+  font-family: system-ui, sans-serif;
+  background: #f3f4f6;
+  color: #1f2937;
+}
 
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-purple-100 via-indigo-100 to-blue-100 dark:from-purple-900/30 dark:via-indigo-900/30 dark:to-blue-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">🖨️</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Print Friendly</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Save ink
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Clean layout
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Professional
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+/* Print-only styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+    font-size: 12pt; /* Use pt for print */
+  }
+  
+  /* Hide navigation and unnecessary elements */
+  nav,
+  aside,
+  .sidebar,
+  .ads,
+  .no-print {
+    display: none !important;
+  }
+}`}
+          />
 
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Test print styles with Ctrl/Cmd + P or browser DevTools print preview!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <SyntaxBlock
+            title="Hide Elements When Printing"
+            code={`/* Hide specific elements from print */
+@media print {
+  /* Navigation */
+  header,
+  nav,
+  footer {
+    display: none;
+  }
+  
+  /* Ads and promotional content */
+  .advertisement,
+  .popup,
+  .banner {
+    display: none;
+  }
+  
+  /* Interactive elements */
+  button:not(.print-button),
+  .form-controls {
+    display: none;
+  }
+}`}
+          />
 
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Print Media Query</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">/* 🖨️ Apply styles only when printing */</div>
-                            <div className="text-purple-700 dark:text-purple-400">@media print</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-blue-600 dark:text-blue-400">body</span> {'{'}</div>
-                            <div className="text-gray-900 dark:text-white">     <span className="text-green-600 dark:text-green-400">background</span>: <span className="text-yellow-600 dark:text-yellow-400">white</span>;</div>
-                            <div className="text-gray-900 dark:text-white">     <span className="text-green-600 dark:text-green-400">color</span>: <span className="text-yellow-600 dark:text-yellow-400">black</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   {'}'}</div>
-                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+          <SyntaxBlock
+            title="Optimize Links for Print"
+            code={`/* Show link URLs when printed */
+@media print {
+  a[href]:after {
+    content: " (" attr(href) ")";
+    color: #666;
+    font-size: 90%;
+  }
+  
+  /* Don't show URLs for internal links */
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+}`}
+          />
 
-            {/* BASIC PRINT STYLES */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Printer className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        Basic Print Optimization
-                    </CardTitle>
-                    <CardDescription>
-                        Remove backgrounds, hide navigation, and optimize colors for printing
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Print-Friendly Article"
-                        html={`<article class="content">
+          <SyntaxBlock
+            title="Page Breaks"
+            code={`/* Control page breaks */
+@media print {
+  /* Avoid breaking inside these elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  
+  /* Keep images with their captions */
+  figure {
+    page-break-inside: avoid;
+  }
+  
+  /* Force page break before chapters */
+  .chapter {
+    page-break-before: always;
+  }
+  
+  /* Force page break after sections */
+  .section {
+    page-break-after: always;
+  }
+}`}
+          />
+        </div>
+
+        <InfoAlert type="tip" title="Use Points (pt) for Print">
+          For print, use <code>pt</code> (points) instead of <code>px</code> for font sizes. 
+          Standard print sizes: body text 12pt, headings 14-24pt. This ensures consistent sizing on paper!
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Example 1: Article Print Styles */}
+      <SectionCard
+        title="Example: Print-Friendly Article"
+        description="Optimize an article for printing"
+        icon={FileText}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={`<div class="page">
   <header class="site-header">
     <nav>
       <a href="#">Home</a>
@@ -189,116 +207,92 @@ export default function PrintStyles({ onOpenWebPlayground }: PrintStylesProps) {
     </nav>
   </header>
   
-  <main>
-    <h1>Understanding CSS Print Styles</h1>
-    
-    <div class="meta">
-      <span class="author">By John Doe</span>
-      <span class="date">December 5, 2024</span>
-    </div>
-    
-    <p class="intro">
-      Print styles help create beautiful printed versions of web pages. 
-      They save ink and improve readability.
-    </p>
-    
-    <p>
-      When users print your web page, you can provide a clean, 
-      professional layout that's optimized for paper.
-    </p>
-    
-    <aside class="tip">
-      💡 <strong>Tip:</strong> Always test your print styles!
-    </aside>
-    
-    <p>
-      Good print styles remove unnecessary elements like navigation, 
-      ads, and interactive components.
-    </p>
+  <main class="content">
+    <article>
+      <h1>How to Save Ink When Printing</h1>
+      <p class="meta">Published on December 13, 2024</p>
+      
+      <p>This article demonstrates print-friendly styling. When you print this page, 
+      the navigation will disappear, colors will optimize, and the layout will adjust for paper.</p>
+      
+      <h2>Key Benefits</h2>
+      <ul>
+        <li>Saves ink and paper</li>
+        <li>Improves readability</li>
+        <li>Professional appearance</li>
+      </ul>
+      
+      <p>Try printing this page (Ctrl/Cmd + P) to see the difference!</p>
+      
+      <div class="ad-banner no-print">
+        <strong>Advertisement</strong>
+        <p>This ad won't appear in print</p>
+      </div>
+      
+      <a href="https://example.com/learn-more">Learn More</a>
+    </article>
   </main>
   
-  <footer class="site-footer">
-    © 2024 Your Website
-  </footer>
-</article>`}
-                        css={`/* Screen styles */
-.content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Georgia, serif;
+  <aside class="sidebar">
+    <h3>Related Articles</h3>
+    <ul>
+      <li><a href="#">CSS Tips</a></li>
+      <li><a href="#">Web Design</a></li>
+    </ul>
+  </aside>
+</div>`}
+          css={`/* Screen styles */
+.page {
+  font-family: system-ui, sans-serif;
+  color: #1f2937;
 }
 
 .site-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 30px;
-}
-
-nav {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
+  background: #3b82f6;
+  color: white;
+  margin-bottom: 20px;
 }
 
 nav a {
   color: white;
   text-decoration: none;
-  font-weight: 600;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
+  margin-right: 20px;
 }
 
-h1 {
-  color: #667eea;
-  font-size: 36px;
-  margin-bottom: 12px;
+.content {
+  max-width: 800px;
+  padding: 20px;
+}
+
+article h1 {
+  color: #1f2937;
+  font-size: 32px;
+  margin-bottom: 10px;
 }
 
 .meta {
-  display: flex;
-  gap: 20px;
-  color: #666;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
-.intro {
-  font-size: 20px;
-  font-weight: 500;
-  color: #374151;
-  line-height: 1.6;
-}
-
-p {
-  line-height: 1.8;
-  margin-bottom: 16px;
-  color: #4b5563;
-}
-
-.tip {
-  background: #fef3c7;
-  border-left: 4px solid #f59e0b;
-  padding: 16px;
-  margin: 24px 0;
-  border-radius: 6px;
-}
-
-.site-footer {
-  background: #1f2937;
-  color: white;
-  text-align: center;
+.sidebar {
   padding: 20px;
-  margin-top: 40px;
-  border-radius: 12px;
+  background: #f3f4f6;
+  border-left: 4px solid #3b82f6;
 }
 
-/* 🖨️ PRINT STYLES - Optimize for printing */
+.ad-banner {
+  padding: 20px;
+  background: #fef3c7;
+  border: 2px dashed #f59e0b;
+  margin: 20px 0;
+}
+
+/* PRINT STYLES */
 @media print {
-  /* Reset colors to save ink */
+  /* Reset to print-friendly colors */
   * {
     background: transparent !important;
     color: black !important;
@@ -306,456 +300,373 @@ p {
     text-shadow: none !important;
   }
   
-  /* Hide unnecessary elements */
+  body {
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+  
+  /* Hide screen-only elements */
   .site-header,
-  .site-footer,
   nav,
-  aside {
+  .sidebar,
+  .no-print {
     display: none !important;
   }
   
-  /* Reset spacing for print */
-  body {
-    margin: 0;
-    padding: 0;
-  }
-  
+  /* Optimize layout */
   .content {
     width: 100%;
     max-width: 100%;
-    margin: 0;
     padding: 0;
   }
   
-  /* Optimize typography */
+  /* Typography for print */
   h1 {
     font-size: 24pt;
-    margin-bottom: 12pt;
+    page-break-after: avoid;
+  }
+  
+  h2 {
+    font-size: 18pt;
     page-break-after: avoid;
   }
   
   p {
-    font-size: 12pt;
-    line-height: 1.5;
     orphans: 3;
     widows: 3;
   }
   
-  /* Add border to meta */
-  .meta {
-    border-bottom: 1pt solid black;
-    padding-bottom: 6pt;
-  }
-  
-  /* Avoid breaking elements */
-  h1, h2, h3 {
-    page-break-after: avoid;
-  }
-  
-  p {
-    page-break-inside: avoid;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .content {
-    background: #1f2937;
-  }
-  
-  h1 {
-    color: #a78bfa;
-  }
-  
-  p {
-    color: #d1d5db;
-  }
-  
-  .meta {
-    color: #9ca3af;
-    border-bottom-color: #374151;
-  }
-}`}
-                        colorTheme="purple"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* SHOW URLS */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-green-600 dark:text-green-400" />
-                        Display Link URLs
-                    </CardTitle>
-                    <CardDescription>
-                        Show URLs next to links so printed documents remain useful
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Print URLs After Links"
-                        html={`<div class="article">
-  <h2>Useful Resources</h2>
-  
-  <p>
-    Check out <a href="https://developer.mozilla.org">MDN Web Docs</a> 
-    for comprehensive CSS documentation.
-  </p>
-  
-  <p>
-    Learn more at <a href="https://css-tricks.com">CSS-Tricks</a> 
-    for practical examples and tutorials.
-  </p>
-  
-  <p>
-    Visit <a href="https://caniuse.com">Can I Use</a> 
-    to check browser compatibility.
-  </p>
-  
-  <div class="note">
-    📄 When you print this page, URLs will appear next to each link!
-  </div>
-</div>`}
-                        css={`.article {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 32px;
-  font-family: Georgia, serif;
-}
-
-h2 {
-  color: #059669;
-  font-size: 28px;
-  margin-bottom: 24px;
-}
-
-p {
-  font-size: 16px;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  color: #374151;
-}
-
-a {
-  color: #0ea5e9;
-  text-decoration: underline;
-  font-weight: 500;
-}
-
-a:hover {
-  color: #0284c7;
-}
-
-.note {
-  background: #dbeafe;
-  border-left: 4px solid #0ea5e9;
-  padding: 16px;
-  margin-top: 32px;
-  border-radius: 6px;
-  font-size: 15px;
-}
-
-/* 🖨️ PRINT STYLES - Show URLs after links */
-@media print {
-  body {
-    background: white;
-  }
-  
-  .article {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
-  }
-  
-  h2 {
-    color: black;
-    font-size: 18pt;
-  }
-  
-  p {
-    font-size: 12pt;
-    color: black;
-  }
-  
-  /* Show URL after each link */
-  a::after {
+  /* Show link URLs */
+  a[href]:after {
     content: " (" attr(href) ")";
-    font-size: 10pt;
+    font-size: 90%;
     color: #666;
-    font-weight: normal;
   }
   
-  /* Don't show URL for anchor links */
-  a[href^="#"]::after {
+  a[href^="#"]:after {
     content: "";
   }
   
-  /* Style links for print */
-  a {
-    color: black;
-    text-decoration: underline;
-  }
-  
-  .note {
-    background: #f0f0f0;
-    border-left: 2pt solid black;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .article {
-    background: #1f2937;
-  }
-  
-  h2 {
-    color: #34d399;
-  }
-  
-  p {
-    color: #d1d5db;
-  }
-  
-  .note {
-    background: #1e3a8a;
-    border-left-color: #60a5fa;
-    color: #dbeafe;
+  /* Page breaks */
+  article {
+    page-break-inside: avoid;
   }
 }`}
-                        colorTheme="green"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
+          title="Print-Friendly Article"
+          colorTheme="purple"
+          onOpenPlayground={onOpenWebPlayground}
+        />
 
-            {/* PAGE BREAKS */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                        Page Break Control
-                    </CardTitle>
-                    <CardDescription>
-                        Control where content breaks across printed pages
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Page Break Management"
-                        html={`<div class="document">
-  <section class="chapter">
-    <h2>Chapter 1: Introduction</h2>
-    <p>
-      This is the first chapter of our document. It contains important 
-      information that should stay together when printed.
-    </p>
-    <p>
-      Page breaks are controlled using CSS properties like 
-      page-break-before, page-break-after, and page-break-inside.
-    </p>
-  </section>
+        <InfoAlert type="info" title="Test Your Print Styles">
+          Press <code>Ctrl+P</code> (Windows) or <code>Cmd+P</code> (Mac) to preview how this page will look when printed. 
+          You'll see the navigation and sidebar disappear!
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Example 2: Invoice Print Layout */}
+      <SectionCard
+        title="Example: Printable Invoice"
+        description="Professional document styling"
+        icon={Target}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={`<div class="container">
+  <div class="screen-toolbar no-print">
+    <button>Save as PDF</button>
+    <button>Email Invoice</button>
+    <button onclick="window.print()">Print Invoice</button>
+  </div>
   
-  <section class="chapter">
-    <h2>Chapter 2: Getting Started</h2>
-    <p>
-      This chapter starts on a new page when printed, making the 
-      document easier to read and more professional.
-    </p>
-    <div class="code-block">
-      <pre>@media print {
-  .chapter {
-    page-break-before: always;
-  }
-}</pre>
+  <div class="invoice">
+    <div class="invoice-header">
+      <h1>Invoice #INV-2024-001</h1>
+      <p class="date">Date: December 13, 2024</p>
     </div>
-  </section>
-  
-  <section class="chapter">
-    <h2>Chapter 3: Advanced Topics</h2>
-    <p>
-      Each chapter starts fresh on its own page, creating a clean 
-      and organized printed document.
-    </p>
-  </section>
+    
+    <div class="invoice-details">
+      <div class="section">
+        <h3>From:</h3>
+        <p><strong>Your Company</strong></p>
+        <p>123 Business St</p>
+        <p>City, State 12345</p>
+      </div>
+      
+      <div class="section">
+        <h3>To:</h3>
+        <p><strong>Client Name</strong></p>
+        <p>456 Client Ave</p>
+        <p>Town, State 67890</p>
+      </div>
+    </div>
+    
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Web Development</td>
+          <td>40 hours</td>
+          <td>$100</td>
+          <td>$4,000</td>
+        </tr>
+        <tr>
+          <td>Design Services</td>
+          <td>20 hours</td>
+          <td>$80</td>
+          <td>$1,600</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"><strong>Total:</strong></td>
+          <td><strong>$5,600</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>`}
-                        css={`.document {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 24px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          css={`.container {
+  padding: 20px;
+  font-family: system-ui, sans-serif;
 }
 
-.chapter {
-  margin-bottom: 48px;
-  padding: 24px;
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-h2 {
-  color: #f59e0b;
-  font-size: 28px;
+/* Screen-only toolbar */
+.screen-toolbar {
+  display: flex;
+  gap: 12px;
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 3px solid #fbbf24;
 }
 
-p {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #4b5563;
-  margin-bottom: 16px;
+.screen-toolbar button {
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.code-block {
-  background: #1f2937;
-  padding: 16px;
+/* Invoice */
+.invoice {
+  max-width: 800px;
+  padding: 40px;
+  background: white;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  margin: 20px 0;
 }
 
-pre {
-  color: #e5e7eb;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
+.invoice-header {
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.invoice-header h1 {
+  color: #3b82f6;
+  margin: 0 0 10px 0;
+}
+
+.date {
+  color: #6b7280;
   margin: 0;
-  overflow-x: auto;
 }
 
-/* 🖨️ PRINT STYLES - Control page breaks */
+.invoice-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.section h3 {
+  margin: 0 0 10px 0;
+  color: #1f2937;
+}
+
+.section p {
+  margin: 5px 0;
+  color: #4b5563;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.invoice-table th,
+.invoice-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.invoice-table thead th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.invoice-table tfoot {
+  font-size: 18px;
+  background: #f9fafb;
+}
+
+/* PRINT STYLES */
 @media print {
-  body {
-    background: white;
+  /* Hide screen-only elements */
+  .no-print {
+    display: none !important;
   }
   
-  .document {
-    width: 100%;
+  /* Reset container */
+  .container {
+    padding: 0;
+  }
+  
+  /* Optimize invoice for print */
+  .invoice {
     max-width: 100%;
     padding: 0;
-  }
-  
-  .chapter {
-    margin-bottom: 0;
-    padding: 0;
-    background: transparent;
     border: none;
-    box-shadow: none;
-    
-    /* Start each chapter on a new page */
-    page-break-before: always;
+    border-radius: 0;
+  }
+  
+  /* Use print-friendly fonts and sizes */
+  body {
+    font-size: 11pt;
+  }
+  
+  .invoice-header h1 {
+    font-size: 20pt;
+    color: black;
+  }
+  
+  /* Ensure table stays together */
+  .invoice-table {
     page-break-inside: avoid;
   }
   
-  /* Don't break the first chapter */
-  .chapter:first-of-type {
-    page-break-before: avoid;
+  .invoice-table th,
+  .invoice-table td {
+    padding: 8pt;
   }
   
-  h2 {
-    color: black;
-    font-size: 18pt;
-    border-bottom: 1pt solid black;
-    
-    /* Keep heading with content */
-    page-break-after: avoid;
+  /* Print borders for table */
+  .invoice-table th,
+  .invoice-table td {
+    border: 1pt solid #000;
   }
   
-  p {
-    font-size: 12pt;
-    color: black;
-    
-    /* Prevent orphans and widows */
-    orphans: 3;
-    widows: 3;
+  /* No page break inside invoice details */
+  .invoice-details {
     page-break-inside: avoid;
-  }
-  
-  .code-block {
-    background: #f3f4f6;
-    border: 1pt solid black;
-    page-break-inside: avoid;
-  }
-  
-  pre {
-    color: black;
-    font-size: 10pt;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .document {
-    background: #111827;
-  }
-  
-  .chapter {
-    background: #1f2937;
-    border-color: #374151;
-  }
-  
-  h2 {
-    color: #fbbf24;
-  }
-  
-  p {
-    color: #d1d5db;
   }
 }`}
-                        colorTheme="orange"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
+          title="Printable Invoice"
+          colorTheme="blue"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-            {/* BEST PRACTICES */}
-            <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Sparkles className="w-5 h-5" />
-                        Print Style Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Remove backgrounds and colors:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Use white backgrounds and black text to save ink costs.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Hide navigation and UI:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Remove headers, footers, sidebars, and interactive elements that don't work on paper.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Use point sizes:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Use `pt` units for print (12pt body text, 18pt headings) for consistent sizing.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Control page breaks:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Use `page-break-*` properties to avoid breaking headings, images, or important content.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* BROWSER SUPPORT */}
-            <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700 dark:text-green-300">
-                    <strong className="block mb-1">Universal Browser Support</strong>
-                    @media print is supported in all browsers. Test your print styles with browser print preview (Ctrl/Cmd + P) before deployment.
-                </AlertDescription>
-            </Alert>
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Use Print Styles"
+        description="Common scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Articles & Blog Posts"
+            description="Clean, readable print version without distractions"
+            icon={FileText}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Invoices & Receipts"
+            description="Professional business documents"
+            icon={CheckCircle}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Reports & Documents"
+            description="Multi-page documents with proper pagination"
+            icon={Layers}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Educational Content"
+            description="Lessons, tutorials, and study materials"
+            icon={Sparkles}
+            gradient="from-amber-500 to-orange-600"
+          />
         </div>
-    );
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="Print Styles Best Practices">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Use Points (pt):</strong> Font sizes in pt are more consistent for print (12pt body, 18-24pt headings)</li>
+          <li><strong>Black & White:</strong> Use black text on white background to save ink</li>
+          <li><strong>Hide Navigation:</strong> Remove menus, sidebars, ads, and interactive elements</li>
+          <li><strong>Show URLs:</strong> Display link URLs using <code>::after</code> pseudo-element</li>
+          <li><strong>Control Page Breaks:</strong> Use <code>page-break-before/after/inside</code> properties</li>
+          <li><strong>Test Print Preview:</strong> Always test using Ctrl/Cmd+P before deploying</li>
+          <li><strong>Optimize Images:</strong> Reduce image sizes or remove decorative images</li>
+          <li><strong>Remove Shadows:</strong> Text shadows and box shadows waste ink</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Common CSS Properties */}
+      <SectionCard
+        title="Useful Print CSS Properties"
+        description="Key properties for print control"
+        icon={Layers}
+      >
+        <div className="space-y-4">
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-2">Page Break Control</h4>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><code>page-break-before: always</code> - Force page break before element</li>
+              <li><code>page-break-after: always</code> - Force page break after element</li>
+              <li><code>page-break-inside: avoid</code> - Prevent breaks inside element</li>
+            </ul>
+          </div>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-2">Widow & Orphan Control</h4>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><code>orphans: 3</code> - Minimum lines at bottom of page</li>
+              <li><code>widows: 3</code> - Minimum lines at top of page</li>
+            </ul>
+          </div>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-2">Print-Specific Units</h4>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><code>pt</code> - Points (1/72 inch) - best for print font sizes</li>
+              <li><code>cm</code> - Centimeters - for page margins</li>
+              <li><code>in</code> - Inches - for page dimensions</li>
+            </ul>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Browser Support */}
+      <InfoAlert type="info" title="Browser Support">
+        <p className="mt-2">
+          <strong>✅ Universal Support:</strong> <code>@media print</code> is supported in all browsers. 
+          Page break properties work in all major browsers. Always test print preview in multiple browsers to ensure consistency!
+        </p>
+      </InfoAlert>
+
+    </CssTopicLayout>
+  );
 }

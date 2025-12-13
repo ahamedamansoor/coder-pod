@@ -1,219 +1,283 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+'use client';
+
+import React from 'react';
+import { Users, Eye, Sparkles, Target, Layers, CheckCircle } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { Eye, Sparkles, CheckCircle, Code, Zap, Users, AlertTriangle, Heart } from 'lucide-react';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssAccessibilityProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssAccessibility({ onOpenWebPlayground }: CssAccessibilityProps) {
-    
-    return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
-                icon={Users}
-                category="CSS · Accessibility"
-                title="CSS Accessibility"
-                description="Build inclusive web experiences with CSS best practices for screen readers, keyboard navigation, and assistive technologies"
-                colorTheme="green"
-            />
+  
+  return (
+    <CssTopicLayout
+      icon={Users}
+      title="CSS Accessibility"
+      description="Make your websites usable for everyone"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is CSS Accessibility?",
+        description: "Using CSS to make websites work for people with disabilities",
+        keyPoints: [
+          "Ensure enough color contrast for readability",
+          "Support keyboard navigation with focus styles",
+          "Hide elements visually but keep them for screen readers",
+          "Make text readable and resizable",
+          "Respect user preferences (dark mode, reduced motion)",
+          "Help everyone use your website"
+        ]
+      }}
+    >
 
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-emerald-600 dark:text-emerald-400">
-                        <div className="relative">
-                            <Users className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What is CSS Accessibility?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-emerald-600 dark:text-emerald-400">
-                        🚀 Make your website usable for everyone - including people with disabilities using assistive technologies!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-green-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-green-400 dark:hover:border-green-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Zap className="w-5 h-5 animate-pulse" />
-                                    ♿ Web Accessibility
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">CSS Accessibility</strong> ensures your website is usable by everyone, including people with visual, motor, auditory, or cognitive disabilities. Good CSS practices make content accessible to screen readers, keyboard users, and assistive technologies.
-                                </p>
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why It Matters">
+        About 15% of people have some form of disability. Good CSS accessibility means everyone can use your website, 
+        whether they use a screen reader, keyboard navigation, or just need larger text. It's not just nice to have - it's essential!
+      </InfoAlert>
 
-                                {/* Accessibility Visual */}
-                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        🌍 Universal Design
-                                    </div>
-                                    <div className="text-xs text-green-600 dark:text-green-400">
-                                        1 in 4 adults has a disability - accessible design benefits everyone!
-                                    </div>
-                                </div>
-                            </div>
+      {/* Key Principles */}
+      <SectionCard
+        title="Four Key Accessibility Principles"
+        description="What to focus on with CSS"
+        icon={CheckCircle}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "👁️ Visible Focus States",
+              description: "Show which element is selected when using keyboard",
+              example: "button:focus { outline: 2px solid blue; }"
+            },
+            {
+              title: "🎨 Sufficient Contrast",
+              description: "Text must be readable against background",
+              example: "Minimum 4.5:1 ratio for normal text"
+            },
+            {
+              title: "📱 Responsive Text",
+              description: "Let users resize text without breaking layout",
+              example: "Use rem units, not fixed px"
+            },
+            {
+              title: "♿ Screen Reader Support",
+              description: "Hide decorative elements, keep important content",
+              example: ".sr-only class for screen-reader-only text"
+            }
+          ]}
+        />
+      </SectionCard>
 
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-green-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    ♿ Key Areas
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Eye className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Visual</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Color contrast</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-                                        <Heart className="w-6 h-6 text-purple-500" />
-                                        <div>
-                                            <div className="font-semibold text-purple-700 dark:text-purple-300 text-sm">Motor</div>
-                                            <div className="text-xs text-purple-600 dark:text-purple-400">Keyboard nav</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Users className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Screen Readers</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Hidden content</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-                                        <AlertTriangle className="w-6 h-6 text-pink-500" />
-                                        <div>
-                                            <div className="font-semibold text-pink-700 dark:text-pink-300 text-sm">Motion</div>
-                                            <div className="text-xs text-pink-600 dark:text-pink-400">Reduce motion</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      {/* Focus Styles */}
+      <SectionCard
+        title="1. Focus Styles for Keyboard Users"
+        description="Show which element is active"
+        icon={Eye}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Good Focus Styles"
+            code={`/* NEVER do this! */
+button:focus {
+  outline: none; /* ❌ Makes keyboard navigation impossible */
+}
 
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 dark:from-green-900/30 dark:via-emerald-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-green-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">♿</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-green-700 dark:text-green-300">Inclusive Design</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Better SEO
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Legal compliance
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            More users
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+/* GOOD - Clear, visible focus */
+button:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
 
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Test with keyboard only (no mouse) and screen readers like NVDA or VoiceOver!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+/* BETTER - Custom focus ring */
+button:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
 
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Screen Reader Only Text</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">/* ♿ Visually hidden but screen reader accessible */</div>
-                            <div className="text-blue-600 dark:text-blue-400">.sr-only</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">position</span>: <span className="text-yellow-600 dark:text-yellow-400">absolute</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">width</span>: <span className="text-yellow-600 dark:text-yellow-400">1px</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">height</span>: <span className="text-yellow-600 dark:text-yellow-400">1px</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">clip</span>: <span className="text-yellow-600 dark:text-yellow-400">rect(0, 0, 0, 0)</span>;</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">overflow</span>: <span className="text-yellow-600 dark:text-yellow-400">hidden</span>;</div>
-                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+/* Modern approach */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}`}
+          />
+        </div>
 
-            {/* SCREEN READER ONLY TEXT */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        Screen Reader Only Content
-                    </CardTitle>
-                    <CardDescription>
-                        Hide content visually but keep it accessible to screen readers
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Screen Reader Only Class"
-                        html={`<nav>
-  <ul class="nav-list">
-    <li><a href="#home">Home</a></li>
-    <li>
-      <a href="#about">
-        <span class="sr-only">Navigate to </span>About
-      </a>
-    </li>
-    <li>
-      <a href="#services">
-        <span class="sr-only">Navigate to </span>Services
-      </a>
-    </li>
-    <li>
-      <a href="#contact">
-        <span class="sr-only">Navigate to </span>Contact
-      </a>
-    </li>
-  </ul>
-</nav>
+        <InfoAlert type="warning" title="Never Remove Outlines!">
+          Don't use <code>outline: none</code> unless you replace it with another clear focus indicator. 
+          Keyboard users need to see where they are on the page!
+        </InfoAlert>
+      </SectionCard>
 
-<button class="icon-button">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M19 7L10 16L5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  </svg>
-  <span class="sr-only">Mark as complete</span>
-</button>
-
-<div class="status-indicator success">
-  <span class="sr-only">Success: </span>
-  Form submitted successfully!
+      {/* Example: Focus States */}
+      <SectionCard
+        title="Example: Accessible Focus States"
+        description="Clear keyboard navigation"
+        icon={Target}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={`<div class="container">
+  <h2>Try tabbing through these buttons</h2>
+  <p class="hint">Press Tab key to navigate →</p>
+  
+  <div class="button-group">
+    <button class="btn btn-primary">Primary Action</button>
+    <button class="btn btn-secondary">Secondary</button>
+    <button class="btn btn-success">Save Changes</button>
+  </div>
+  
+  <div class="links">
+    <a href="#">Learn More</a>
+    <a href="#">Documentation</a>
+    <a href="#">Contact Us</a>
+  </div>
 </div>`}
-                        css={`/* Screen Reader Only utility class */
+          css={`.container {
+  padding: 40px;
+  font-family: system-ui, sans-serif;
+}
+
+h2 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 24px;
+}
+
+.hint {
+  margin: 0 0 32px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* IMPORTANT: Clear focus styles for keyboard users */
+.btn:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 3px;
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.links a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.links a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* Clear focus for links */
+.links a:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 4px;
+  background: rgba(59, 130, 246, 0.1);
+  padding-left: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #1f2937;
+  }
+  
+  h2 {
+    color: #f3f4f6;
+  }
+  
+  .hint {
+    color: #9ca3af;
+  }
+  
+  .links a {
+    color: #60a5fa;
+  }
+  
+  .links a:hover {
+    color: #93c5fd;
+  }
+}`}
+          title="Accessible Focus Styles"
+          colorTheme="blue"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
+
+      {/* Screen Reader Only Content */}
+      <SectionCard
+        title="2. Screen Reader Only Content"
+        description="Hide visually, but keep for assistive tech"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Screen Reader Only Class"
+            code={`/* Visually hide but keep for screen readers */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -226,467 +290,212 @@ export default function CssAccessibility({ onOpenWebPlayground }: CssAccessibili
   border-width: 0;
 }
 
-/* Alternative: Clip-path method (modern) */
-.sr-only-modern {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* Navigation */
-.nav-list {
-  display: flex;
-  gap: 20px;
-  list-style: none;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-}
-
-.nav-list a {
-  text-decoration: none;
-  color: #3b82f6;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: background 0.3s;
-}
-
-.nav-list a:hover {
-  background: #dbeafe;
-}
-
-.nav-list a:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Icon button */
-.icon-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border: none;
-  background: #3b82f6;
-  color: white;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-  margin: 20px;
-}
-
-.icon-button:hover {
-  background: #2563eb;
-  transform: scale(1.05);
-}
-
-.icon-button:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Status indicator */
-.status-indicator {
-  padding: 16px 20px;
-  border-radius: 12px;
-  font-weight: 500;
-  margin-top: 20px;
-}
-
-.status-indicator.success {
-  background: #dcfce7;
-  color: #166534;
-  border-left: 4px solid #22c55e;
-}
-
-@media (prefers-color-scheme: dark) {
-  .nav-list {
-    background: #1f2937;
-  }
-  
-  .nav-list a {
-    color: #60a5fa;
-  }
-  
-  .nav-list a:hover {
-    background: #1e3a8a;
-  }
-  
-  .status-indicator.success {
-    background: #064e3b;
-    color: #86efac;
-  }
+/* Make visible when focused (for skip links) */
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
 }`}
-                        colorTheme="blue"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
+          />
 
-            {/* SKIP LINKS */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                        Skip Navigation Links
-                    </CardTitle>
-                    <CardDescription>
-                        Allow keyboard users to skip repetitive content
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Skip to Main Content"
-                        html={`<a href="#main-content" class="skip-link">
+          <SyntaxBlock
+            title="How to Use It"
+            code={`<!-- Add context for screen readers -->
+<button>
+  <svg><!-- icon --></svg>
+  <span class="sr-only">Delete item</span>
+</button>
+
+<!-- Skip to main content link -->
+<a href="#main" class="sr-only-focusable">
   Skip to main content
 </a>
 
-<nav class="main-nav">
-  <a href="#home">Home</a>
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="#products">Products</a>
-  <a href="#team">Team</a>
-  <a href="#contact">Contact</a>
-</nav>
-
-<main id="main-content">
-  <h1>Main Content Area</h1>
-  <p>Press Tab key to see the skip link appear at the top!</p>
-  <p>This allows keyboard users to jump directly to the main content without tabbing through all navigation links.</p>
+<main id="main">
+  <!-- Your content -->
 </main>`}
-                        css={`/* Skip link - hidden until focused */
-.skip-link {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #3b82f6;
-  color: white;
-  padding: 12px 20px;
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: 0 0 8px 0;
-  transform: translateY(-100%);
-  transition: transform 0.3s;
-  z-index: 9999;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-  outline: 2px solid #1e40af;
-  outline-offset: 2px;
-}
-
-/* Navigation */
-.main-nav {
-  display: flex;
-  gap: 8px;
-  padding: 20px;
-  background: white;
-  border-bottom: 2px solid #e5e7eb;
-  flex-wrap: wrap;
-}
-
-.main-nav a {
-  padding: 10px 16px;
-  text-decoration: none;
-  color: #374151;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.main-nav a:hover {
-  background: #f3f4f6;
-  color: #3b82f6;
-}
-
-.main-nav a:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-  background: #dbeafe;
-}
-
-/* Main content */
-main {
-  padding: 40px 20px;
-  max-width: 800px;
-}
-
-h1 {
-  color: #111827;
-  margin-bottom: 20px;
-  font-size: 28px;
-}
-
-p {
-  color: #4b5563;
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .skip-link {
-    background: #60a5fa;
-    color: #1e293b;
-  }
-  
-  .main-nav {
-    background: #1f2937;
-    border-bottom-color: #374151;
-  }
-  
-  .main-nav a {
-    color: #e5e7eb;
-  }
-  
-  .main-nav a:hover {
-    background: #374151;
-    color: #60a5fa;
-  }
-  
-  .main-nav a:focus {
-    background: #1e3a8a;
-  }
-  
-  h1 {
-    color: #f9fafb;
-  }
-  
-  p {
-    color: #d1d5db;
-  }
-}`}
-                        colorTheme="purple"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* COLOR CONTRAST */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Eye className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                        Color Contrast
-                    </CardTitle>
-                    <CardDescription>
-                        Ensure sufficient contrast for readability (WCAG guidelines)
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Contrast Examples"
-                        html={`<div class="contrast-demo">
-  <div class="contrast-section">
-    <h3>❌ Poor Contrast (Fails WCAG)</h3>
-    <div class="poor-contrast">
-      <p class="text-poor">This text is hard to read (2.5:1 ratio)</p>
-      <button class="btn-poor">Low Contrast Button</button>
-    </div>
-  </div>
-  
-  <div class="contrast-section">
-    <h3>✅ Good Contrast (Passes WCAG AA)</h3>
-    <div class="good-contrast">
-      <p class="text-good">This text is readable (4.5:1 ratio)</p>
-      <button class="btn-good">Good Contrast Button</button>
-    </div>
-  </div>
-  
-  <div class="contrast-section">
-    <h3>⭐ Excellent Contrast (Passes WCAG AAA)</h3>
-    <div class="excellent-contrast">
-      <p class="text-excellent">This text is very readable (7:1 ratio)</p>
-      <button class="btn-excellent">Excellent Contrast Button</button>
-    </div>
-  </div>
-</div>`}
-                        css={`.contrast-demo {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 20px;
-}
-
-.contrast-section h3 {
-  margin-bottom: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #374151;
-}
-
-/* Poor Contrast - FAILS WCAG (< 3:1) */
-.poor-contrast {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  border: 2px solid #ef4444;
-}
-
-.text-poor {
-  color: #d1d5db;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-.btn-poor {
-  background: #fecaca;
-  color: #fee2e2;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* Good Contrast - PASSES WCAG AA (4.5:1) */
-.good-contrast {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  border: 2px solid #f59e0b;
-}
-
-.text-good {
-  color: #1f2937;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-.btn-good {
-  background: #3b82f6;
-  color: #ffffff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-good:hover {
-  background: #2563eb;
-}
-
-/* Excellent Contrast - PASSES WCAG AAA (7:1) */
-.excellent-contrast {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  border: 2px solid #22c55e;
-}
-
-.text-excellent {
-  color: #000000;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-.btn-excellent {
-  background: #000000;
-  color: #ffffff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-excellent:hover {
-  background: #1f2937;
-}
-
-@media (prefers-color-scheme: dark) {
-  .contrast-section h3 {
-    color: #e5e7eb;
-  }
-  
-  .poor-contrast,
-  .good-contrast,
-  .excellent-contrast {
-    background: #1f2937;
-  }
-  
-  .text-poor {
-    color: #4b5563;
-  }
-  
-  .btn-poor {
-    background: #374151;
-    color: #4b5563;
-  }
-  
-  .text-good {
-    color: #e5e7eb;
-  }
-  
-  .text-excellent {
-    color: #ffffff;
-  }
-}`}
-                        colorTheme="orange"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* BEST PRACTICES */}
-            <Card className="border-orange-200 bg-orange-50/50 dark:bg-orange-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-orange-700 dark:text-orange-300">
-                        <Sparkles className="w-5 h-5" />
-                        Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Test with real users:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Use automated tools (WAVE, axe) but also test with actual screen readers and keyboard navigation.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Use semantic HTML:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Proper HTML elements provide built-in accessibility - don't override with CSS unnecessarily.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Visible focus indicators:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Never remove focus outlines without providing better alternatives.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Text alternatives:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Always provide text alternatives for icon-only buttons and links.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* WCAG STANDARDS */}
-            <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700 dark:text-green-300">
-                    <strong className="block mb-1">WCAG Standards</strong>
-                    Follow WCAG 2.1 guidelines: Level AA requires 4.5:1 contrast for normal text, 3:1 for large text. Level AAA requires 7:1 for normal text, 4.5:1 for large text.
-                </AlertDescription>
-            </Alert>
+          />
         </div>
-    );
+
+        <InfoAlert type="tip" title="When to Use">
+          Use <code>.sr-only</code> for icon buttons, decorative images, or additional context that sighted users don't need 
+          but screen reader users do!
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Color Contrast */}
+      <SectionCard
+        title="3. Color Contrast"
+        description="Make text readable"
+        icon={Eye}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Contrast Requirements"
+            code={`/* ❌ BAD - Low contrast (fails WCAG) */
+.text-bad {
+  color: #cccccc;
+  background: #ffffff;
+  /* Contrast ratio: 1.6:1 - Too low! */
+}
+
+/* ✅ GOOD - Normal text (WCAG AA) */
+.text-normal {
+  color: #767676;
+  background: #ffffff;
+  /* Contrast ratio: 4.5:1 - Passes! */
+}
+
+/* ✅ BETTER - Large text (WCAG AA) */
+.text-large {
+  font-size: 24px;
+  color: #959595;
+  background: #ffffff;
+  /* Contrast ratio: 3:1 - Passes for large text! */
+}
+
+/* ✅ BEST - High contrast (WCAG AAA) */
+.text-best {
+  color: #333333;
+  background: #ffffff;
+  /* Contrast ratio: 7:1 - Excellent! */
+}`}
+          />
+        </div>
+
+        <InfoAlert type="info" title="Contrast Ratios">
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>Normal text:</strong> Minimum 4.5:1 ratio</li>
+            <li><strong>Large text (18px+ or 14px+ bold):</strong> Minimum 3:1 ratio</li>
+            <li><strong>AAA standard:</strong> 7:1 for normal text, 4.5:1 for large text</li>
+          </ul>
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Respect User Preferences */}
+      <SectionCard
+        title="4. Respect User Preferences"
+        description="Support reduced motion and dark mode"
+        icon={Layers}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Reduced Motion"
+            code={`/* Animations by default */
+.box {
+  transition: transform 0.3s ease;
+}
+
+.box:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .box {
+    transition: none;
+  }
+  
+  .box:hover {
+    transform: none; /* No animations */
+  }
+  
+  /* Keep functionality, remove motion */
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}`}
+          />
+
+          <SyntaxBlock
+            title="Dark Mode Support"
+            code={`/* Light mode (default) */
+body {
+  background: #ffffff;
+  color: #1f2937;
+}
+
+/* Respect dark mode preference */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1f2937;
+    color: #f3f4f6;
+  }
+  
+  a {
+    color: #60a5fa; /* Better contrast in dark */
+  }
+}`}
+          />
+        </div>
+
+        <InfoAlert type="success" title="Why This Matters">
+          Some users have vestibular disorders and get dizzy from animations. Others prefer dark mode for eye strain. 
+          Respecting these preferences makes your site more comfortable for everyone!
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Focus on Accessibility"
+        description="Always! But especially..."
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Forms"
+            description="Clear labels, focus states, and error messages"
+            icon={CheckCircle}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Navigation"
+            description="Keyboard accessible menus and skip links"
+            icon={Target}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Interactive Elements"
+            description="Buttons, links, and controls with clear focus"
+            icon={Sparkles}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Content"
+            description="Readable text with proper contrast and sizing"
+            icon={Eye}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="Quick Accessibility Checklist">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Focus States:</strong> Never remove outlines without replacement</li>
+          <li><strong>Color Contrast:</strong> Minimum 4.5:1 for normal text</li>
+          <li><strong>Font Size:</strong> Use rem units, allow text resizing</li>
+          <li><strong>Screen Readers:</strong> Use .sr-only for icon buttons</li>
+          <li><strong>Reduced Motion:</strong> Respect prefers-reduced-motion</li>
+          <li><strong>Dark Mode:</strong> Support prefers-color-scheme</li>
+          <li><strong>Touch Targets:</strong> Minimum 44×44px for mobile</li>
+          <li><strong>Test:</strong> Use keyboard navigation and screen readers!</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools */}
+      <InfoAlert type="info" title="Testing Tools">
+        <p className="mt-2">
+          <strong>🛠️ Useful Tools:</strong> Chrome DevTools (Lighthouse accessibility audit), 
+          WebAIM Contrast Checker, axe DevTools browser extension, and NVDA/JAWS screen readers for testing.
+        </p>
+      </InfoAlert>
+
+    </CssTopicLayout>
+  );
 }

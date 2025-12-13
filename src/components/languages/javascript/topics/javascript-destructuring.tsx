@@ -1,878 +1,471 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
-  Code2,
   Sparkles,
-  CheckCircle2,
-  XCircle,
+  Code2,
   Lightbulb,
   Package,
   Boxes,
-  PlayCircle,
-  RefreshCw,
-  Globe,
-  Info,
-  Zap,
-  ArrowRight
+  Gift,
 } from 'lucide-react';
 
-interface DestructuringProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-export default function JavaScriptDestructuring({ onOpenWebPlayground }: DestructuringProps) {
-  // Demo states
-  const [arrayDemo, setArrayDemo] = useState('');
-  const [objectDemo, setObjectDemo] = useState('');
-  const [demoLog, setDemoLog] = useState<string[]>([]);
-
-  const runArrayDemo = () => {
-    const [first, second, third] = ['Apple', 'Banana', 'Cherry'];
-    setArrayDemo(`first: ${first}, second: ${second}, third: ${third}`);
-    setDemoLog(prev => [...prev, 'Array destructuring executed']);
-  };
-
-  const runObjectDemo = () => {
-    const user = { name: 'John', age: 25, role: 'developer' };
-    const { name, age } = user;
-    setObjectDemo(`name: ${name}, age: ${age}`);
-    setDemoLog(prev => [...prev, 'Object destructuring executed']);
-  };
-
-  const resetDemo = () => {
-    setArrayDemo('');
-    setObjectDemo('');
-    setDemoLog([]);
-  };
-
-  const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Destructuring Masterclass</title>
-  <link rel="stylesheet" href="./styles.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>📦 Destructuring</h1>
-    <p class="subtitle">Extract values with elegant syntax</p>
-
-    <section class="demo-section">
-      <h2>Array Destructuring</h2>
-      <button onclick="testArrayDestructuring()">Test Arrays</button>
-    </section>
-
-    <section class="demo-section">
-      <h2>Object Destructuring</h2>
-      <button onclick="testObjectDestructuring()">Test Objects</button>
-    </section>
-
-    <section class="demo-section">
-      <h2>Nested Destructuring</h2>
-      <button onclick="testNested()">Test Nested</button>
-    </section>
-
-    <section class="demo-section">
-      <h2>Advanced Patterns</h2>
-      <button onclick="testAdvanced()">Test Advanced</button>
-    </section>
-
-    <div id="console" class="console">
-      <h3>Console Output</h3>
-      <div id="console-log"></div>
-    </div>
-  </div>
-  <script src="./script.js"></script>
-</body>
-</html>`;
-
-  const playgroundCss = `* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 20px;
-}
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-h1 {
-  color: #1e293b;
-  font-size: 32px;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.subtitle {
-  text-align: center;
-  color: #64748b;
-  margin-bottom: 32px;
-}
-
-.demo-section {
-  margin-bottom: 20px;
-  padding: 20px;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
-}
-
-.demo-section h2 {
-  color: #334155;
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
-button {
-  padding: 10px 20px;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: #2563eb;
-}
-
-.console {
-  margin-top: 24px;
-  padding: 20px;
-  background: #0f172a;
-  border-radius: 12px;
-  color: #22d3ee;
-  max-height: 350px;
-  overflow-y: auto;
-}
-
-.console h3 {
-  margin-bottom: 12px;
-  font-size: 16px;
-}
-
-#console-log {
-  font-family: 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-.log-entry {
-  margin: 4px 0;
-  padding: 4px 8px;
-  background: rgba(34, 211, 238, 0.1);
-  border-left: 3px solid #22d3ee;
-}`;
-
-  const playgroundJs = `const consoleLog = document.getElementById('console-log');
-
-function log(message, color = '#22d3ee') {
-  const entry = document.createElement('div');
-  entry.className = 'log-entry';
-  entry.style.borderLeftColor = color;
-  entry.textContent = message;
-  consoleLog.appendChild(entry);
-  consoleLog.scrollTop = consoleLog.scrollHeight;
-}
-
-function testArrayDestructuring() {
-  log('=== Array Destructuring ===', '#10b981');
-  
-  // Basic
-  const [a, b, c] = [1, 2, 3];
-  log('const [a, b, c] = [1, 2, 3]');
-  log('Result: a=' + a + ', b=' + b + ', c=' + c, '#64748b');
-  
-  // Skip elements
-  const [first, , third] = [1, 2, 3];
-  log('const [first, , third] = [1, 2, 3]');
-  log('Result: first=' + first + ', third=' + third, '#64748b');
-  
-  // Rest operator
-  const [x, ...rest] = [1, 2, 3, 4, 5];
-  log('const [x, ...rest] = [1, 2, 3, 4, 5]');
-  log('Result: x=' + x + ', rest=' + rest, '#64748b');
-  
-  // Swap variables
-  let p = 1, q = 2;
-  [p, q] = [q, p];
-  log('Swap: p=' + p + ', q=' + q, '#10b981');
-}
-
-function testObjectDestructuring() {
-  log('=== Object Destructuring ===', '#10b981');
-  
-  const user = { name: 'John', age: 25, role: 'dev' };
-  
-  // Basic
-  const { name, age } = user;
-  log('const { name, age } = user');
-  log('Result: name=' + name + ', age=' + age, '#64748b');
-  
-  // Rename
-  const { name: userName, age: userAge } = user;
-  log('const { name: userName } = user');
-  log('Result: userName=' + userName, '#64748b');
-  
-  // Default values
-  const { city = 'Unknown' } = user;
-  log('const { city = "Unknown" } = user');
-  log('Result: city=' + city, '#64748b');
-  
-  // Rest
-  const { name: n, ...otherProps } = user;
-  log('Rest: ' + JSON.stringify(otherProps), '#10b981');
-}
-
-function testNested() {
-  log('=== Nested Destructuring ===', '#10b981');
-  
-  const data = {
-    user: {
-      name: 'John',
-      address: {
-        city: 'NYC',
-        zip: '10001'
-      }
-    }
-  };
-  
-  const { user: { name, address: { city } } } = data;
-  log('Extracted: name=' + name + ', city=' + city, '#10b981');
-  
-  // Array in object
-  const response = { data: [1, 2, 3] };
-  const { data: [first, second] } = response;
-  log('Array in object: first=' + first + ', second=' + second, '#64748b');
-}
-
-function testAdvanced() {
-  log('=== Advanced Patterns ===', '#10b981');
-  
-  // Function parameters
-  function greet({ name, age = 0 }) {
-    return 'Hello ' + name + ', age ' + age;
-  }
-  log(greet({ name: 'John', age: 25 }), '#10b981');
-  
-  // Mixed destructuring
-  const [{ name }] = [{ name: 'John', age: 25 }];
-  log('Mixed: name=' + name, '#64748b');
-  
-  // Computed property names
-  const key = 'status';
-  const obj = { status: 'active' };
-  const { [key]: value } = obj;
-  log('Computed: value=' + value, '#10b981');
-}
-
-log('👆 Click buttons to test destructuring', '#94a3b8');`;
-
+export default function JavaScriptDestructuring() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
-      {/* Page Header */}
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Package}
-        category="12. ES6+ Features"
+        category="JavaScript Fundamentals"
         title="Destructuring"
-        description="Extract values from arrays and objects with elegant, concise syntax"
-        colorTheme="blue"
+        description="Unpack values from arrays and objects - extract what you need easily"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/50 dark:border-purple-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            What is Destructuring?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Unpack values from arrays or properties from objects into distinct variables
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="p-6 bg-gradient-to-br from-purple-50/40 to-pink-50/40 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              Destructuring is a JavaScript expression that allows you to <strong className="text-foreground">extract multiple values</strong> from arrays or objects and assign them to variables in a single statement. It makes your code cleaner, more readable, and eliminates repetitive property access.
-            </p>
-            <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Old way (verbose!)
-const array = [1, 2, 3];
-const a = array[0];
-const b = array[1];
-const c = array[2];
-
-const user = { name: 'John', age: 25 };
-const name = user.name;
-const age = user.age;
-
-// Destructuring (elegant!)
-const [a, b, c] = [1, 2, 3];
-const { name, age } = user;`}</pre>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <Boxes className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-                <h3 className="font-semibold">Arrays</h3>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Extract by position
-              </p>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-                [a, b, c]
-              </Badge>
+      {/* What is Destructuring? */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-teal-50/50 via-cyan-50/30 to-blue-50/20 dark:from-teal-950/10 dark:via-cyan-950/5 dark:to-blue-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <Package className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-                <h3 className="font-semibold">Objects</h3>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Extract by property name
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Destructuring: Unpack Values
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Destructuring is like <strong className="text-teal-700 dark:text-teal-400">unpacking a box</strong> - you take out exactly what you need from an array or object. It's a shortcut for extracting multiple values at once!
               </p>
-              <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
-                {`{ name, age }`}
-              </Badge>
-            </div>
-
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
-                <h3 className="font-semibold">Nested</h3>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Deep extraction
-              </p>
-              <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">
-                Multi-level
-              </Badge>
             </div>
           </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-teal-200 dark:border-teal-800/30">
+            <Gift className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+            <AlertTitle className="text-lg">Like Opening a Gift Box</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Instead of taking items out one by one, destructuring lets you grab multiple items in one line!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
       {/* Array Destructuring */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Boxes className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            1. Array Destructuring
-          </CardTitle>
-          <CardDescription className="text-base">
-            Extract values from arrays by position
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Code2 className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Array Destructuring</CardTitle>
+              <CardDescription>Extract values from arrays by position</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Basic */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3">Basic Array Destructuring</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Assign by position
-const arr = [1, 2, 3];
+        <CardContent>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Old Way */}
+            <div className="rounded-xl border-2 border-red-200 dark:border-red-800/30 overflow-hidden">
+              <div className="bg-red-100 dark:bg-red-900/30 px-4 py-3 border-b-2 border-red-200 dark:border-red-800/30">
+                <h4 className="font-semibold text-red-700 dark:text-red-300">❌ Old Way - Verbose</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+{`const colors = ['red', 'green', 'blue'];
 
-// Old way
-const a = arr[0]; // 1
-const b = arr[1]; // 2
-const c = arr[2]; // 3
+const first = colors[0];
+const second = colors[1];
+const third = colors[2];
 
-// Destructuring way ✨
-const [a, b, c] = [1, 2, 3];
-console.log(a); // 1
-console.log(b); // 2
-console.log(c); // 3
-
-// Works with any iterable
-const [x, y] = 'Hi';
-console.log(x); // 'H'
-console.log(y); // 'i'`}</pre>
+console.log(first);   // red
+console.log(second);  // green
+console.log(third);   // blue`}</pre>
+              </div>
             </div>
 
-            {/* Skip Elements */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3">Skip Elements</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const colors = ['red', 'green', 'blue', 'yellow'];
+            {/* New Way */}
+            <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 overflow-hidden">
+              <div className="bg-green-100 dark:bg-green-900/30 px-4 py-3 border-b-2 border-green-200 dark:border-green-800/30">
+                <h4 className="font-semibold text-green-700 dark:text-green-300">✅ Destructuring - Clean!</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+{`const colors = ['red', 'green', 'blue'];
 
-// Skip middle elements with commas
-const [first, , third] = colors;
-console.log(first); // 'red'
-console.log(third); // 'blue'
+// Get all three in one line!
+const [first, second, third] = colors;
 
-// Skip multiple
-const [, , , last] = colors;
-console.log(last); // 'yellow'
-
-// Get first and last
-const [firstColor, , , lastColor] = colors;
-console.log(firstColor, lastColor);
-// 'red' 'yellow'`}</pre>
-            </div>
-
-            {/* Default Values */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3">Default Values</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Provide fallback values
-const [a = 10, b = 20] = [5];
-console.log(a); // 5 (from array)
-console.log(b); // 20 (default)
-
-// Empty array
-const [x = 1, y = 2, z = 3] = [];
-console.log(x, y, z); // 1 2 3
-
-// Partial array
-const [name = 'Guest', age = 0] = ['John'];
-console.log(name); // 'John'
-console.log(age); // 0 (default)
-
-// undefined uses default
-const [p = 5] = [undefined];
-console.log(p); // 5`}</pre>
-            </div>
-
-            {/* Rest Operator */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3">Rest Operator (...)</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Collect remaining elements
-const [first, ...rest] = [1, 2, 3, 4, 5];
-console.log(first); // 1
-console.log(rest); // [2, 3, 4, 5]
-
-// Rest must be last
-const [a, b, ...others] = [1, 2, 3, 4];
-console.log(others); // [3, 4]
-
-// Can be empty
-const [x, ...empty] = [1];
-console.log(empty); // []
-
-// Get head and tail
-const [head, ...tail] = [10, 20, 30];
-console.log(head); // 10
-console.log(tail); // [20, 30]`}</pre>
-            </div>
-
-            {/* Swap Variables */}
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3">Swap Variables</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Old way (needs temp variable)
-let a = 1, b = 2;
-let temp = a;
-a = b;
-b = temp;
-
-// Destructuring way ✨
-let a = 1, b = 2;
-[a, b] = [b, a];
-console.log(a, b); // 2 1
-
-// Swap multiple
-let x = 1, y = 2, z = 3;
-[x, y, z] = [z, x, y];
-console.log(x, y, z); // 3 1 2
-
-// Rotate values
-let p = 1, q = 2, r = 3;
-[p, q, r] = [q, r, p];`}</pre>
-            </div>
-
-            {/* Return Multiple Values */}
-            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/30">
-              <h4 className="font-semibold mb-3">Return Multiple Values</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Functions can return arrays
-function getCoords() {
-  return [10, 20];
-}
-
-const [x, y] = getCoords();
-console.log(x, y); // 10 20
-
-// Ignore unwanted values
-function getStats() {
-  return [100, 200, 300];
-}
-
-const [min, , max] = getStats();
-console.log(min, max); // 100 300
-
-// useState pattern (React)
-const [count, setCount] = useState(0);`}</pre>
+console.log(first);   // red
+console.log(second);  // green
+console.log(third);   // blue`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Array Destructuring Basics"
+        description="Extract array values by position"
+        code={`// Basic array destructuring
+const fruits = ['apple', 'banana', 'orange'];
+const [first, second, third] = fruits;
+
+console.log(first);   // apple
+console.log(second);  // banana
+console.log(third);   // orange
+
+// Skip items you don't need
+const numbers = [1, 2, 3, 4, 5];
+const [one, , three, , five] = numbers;  // Skip 2 and 4
+
+console.log(one);    // 1
+console.log(three);  // 3
+console.log(five);   // 5
+
+// Get only what you need
+const [firstItem] = ['a', 'b', 'c'];
+console.log(firstItem);  // a
+
+const [, secondItem] = ['x', 'y', 'z'];
+console.log(secondItem);  // y`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
       {/* Object Destructuring */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Package className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            2. Object Destructuring
-          </CardTitle>
-          <CardDescription className="text-base">
-            Extract properties from objects by name
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Boxes className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Object Destructuring</CardTitle>
+              <CardDescription>Extract properties by name</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Basic */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3">Basic Object Destructuring</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
+        <CardContent>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Old Way */}
+            <div className="rounded-xl border-2 border-red-200 dark:border-red-800/30 overflow-hidden">
+              <div className="bg-red-100 dark:bg-red-900/30 px-4 py-3 border-b-2 border-red-200 dark:border-red-800/30">
+                <h4 className="font-semibold text-red-700 dark:text-red-300">❌ Old Way - Repetitive</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
 {`const user = {
-  name: 'John',
+  name: 'Alice',
   age: 25,
-  role: 'developer'
+  city: 'Boston'
 };
 
-// Old way
 const name = user.name;
 const age = user.age;
+const city = user.city;`}</pre>
+              </div>
+            </div>
 
-// Destructuring way ✨
-const { name, age } = user;
-console.log(name); // 'John'
-console.log(age); // 25
+            {/* New Way */}
+            <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 overflow-hidden">
+              <div className="bg-green-100 dark:bg-green-900/30 px-4 py-3 border-b-2 border-green-200 dark:border-green-800/30">
+                <h4 className="font-semibold text-green-700 dark:text-green-300">✅ Destructuring - Simple!</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+{`const user = {
+  name: 'Alice',
+  age: 25,
+  city: 'Boston'
+};
+
+// Extract all in one line!
+const { name, age, city } = user;`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object Destructuring Basics"
+        description="Extract properties by matching names"
+        code={`// Basic object destructuring
+const person = {
+  name: 'Bob',
+  age: 30,
+  job: 'Developer'
+};
+
+// Extract by property name
+const { name, age, job } = person;
+
+console.log(name);  // Bob
+console.log(age);   // 30
+console.log(job);   // Developer
 
 // Order doesn't matter!
-const { role, name } = user;
-// Works fine!`}</pre>
+const { job: jobTitle, name: fullName } = person;
+console.log(jobTitle);  // Developer
+console.log(fullName);  // Bob
+
+// Get only what you need
+const { name: userName } = person;
+console.log(userName);  // Bob`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Renaming Variables */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Code2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
+            <div>
+              <CardTitle>Rename Variables</CardTitle>
+              <CardDescription>Give extracted values different names</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Use : to Rename</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">propertyName: newName</code> to rename during destructuring
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const user = { name: 'Alice', age: 25 };
 
-            {/* Renaming */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3">Renaming Variables</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const user = { name: 'John', age: 25 };
-
-// Rename with colon
+// Rename during destructuring
 const { name: userName, age: userAge } = user;
-console.log(userName); // 'John'
-console.log(userAge); // 25
 
-// Avoid naming conflicts
-const name = 'Global';
-const { name: localName } = user;
-console.log(localName); // 'John'
-console.log(name); // 'Global'
-
-// Multiple renames
-const { name: n, age: a, role: r } = user;`}</pre>
+console.log(userName);  // Alice
+console.log(userAge);   // 25
+// name and age don't exist!`}</pre>
+              </div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            {/* Default Values */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3">Default Values</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const user = { name: 'John' };
-
-// Provide defaults for missing properties
-const { name, age = 0, city = 'Unknown' } = user;
-console.log(name); // 'John'
-console.log(age); // 0 (default)
-console.log(city); // 'Unknown' (default)
-
-// Combine with renaming
-const {
-  name: userName,
-  age: userAge = 0,
-  role: userRole = 'guest'
-} = user;
-
-// undefined uses default
-const { status = 'active' } = { status: undefined };
-console.log(status); // 'active'`}</pre>
-            </div>
-
-            {/* Rest in Objects */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3">Rest with Objects</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const user = {
-  name: 'John',
-  age: 25,
-  role: 'dev',
-  city: 'NYC'
+      <CodeSnippet
+        title="Renaming Example"
+        description="Give properties new variable names"
+        code={`const product = {
+  id: 101,
+  name: 'Laptop',
+  price: 999
 };
 
-// Extract specific props, collect rest
-const { name, ...otherProps } = user;
-console.log(name); // 'John'
-console.log(otherProps);
-// { age: 25, role: 'dev', city: 'NYC' }
+// Rename to avoid conflicts
+const { 
+  id: productId, 
+  name: productName, 
+  price: productPrice 
+} = product;
 
-// Remove properties
-const { password, ...publicUser } = user;
-// publicUser doesn&apos;t have password
+console.log(productId);     // 101
+console.log(productName);   // Laptop
+console.log(productPrice);  // 999
 
-// Clone and modify
-const updated = { ...user, age: 26 };`}</pre>
+// Useful when you need clearer names
+const settings = { lang: 'en', theme: 'dark' };
+const { lang: language, theme: colorTheme } = settings;
+
+console.log(language);    // en
+console.log(colorTheme);  // dark`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Default Values */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Lightbulb className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
-
-            {/* Computed Property Names */}
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3">Computed Property Names</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Dynamic property extraction
-const key = 'status';
-const obj = { status: 'active', role: 'admin' };
-
-const { [key]: value } = obj;
-console.log(value); // 'active'
-
-// Rename dynamically
-const { [key]: currentStatus } = obj;
-console.log(currentStatus); // 'active'
-
-// From variable
-const prop = 'role';
-const { [prop]: userRole } = obj;
-console.log(userRole); // 'admin'
-
-// With function
-const getKey = () => 'status';
-const { [getKey()]: s } = obj;`}</pre>
+            <div>
+              <CardTitle>Default Values</CardTitle>
+              <CardDescription>Provide fallback values if property doesn't exist</CardDescription>
             </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 overflow-hidden">
+            <div className="bg-emerald-600 dark:bg-emerald-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Use = for Defaults</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Add <code className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 rounded text-xs">= defaultValue</code> to use a fallback if the property is missing
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-emerald-200 dark:border-emerald-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const user = { name: 'Bob' };
 
-            {/* Function Parameters */}
-            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/30">
-              <h4 className="font-semibold mb-3">Function Parameters</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Destructure in parameters
-function greet({ name, age }) {
-  console.log(\`\$\\{name\\} is \$\\{age\\} years old\`);
-}
+// age doesn't exist, use default
+const { name, age = 25 } = user;
 
-greet({ name: 'John', age: 25 });
-// 'John is 25 years old'
+console.log(name);  // Bob
+console.log(age);   // 25 (default)`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Default Values Example"
+        description="Prevent undefined with default values"
+        code={`// Without defaults
+const settings = { theme: 'dark' };
+const { theme, fontSize } = settings;
+
+console.log(theme);     // dark
+console.log(fontSize);  // undefined ⚠️
 
 // With defaults
-function createUser({ name, age = 0, role = 'guest' }) {
-  return { name, age, role };
+const { theme: colorTheme, fontSize = 14 } = settings;
+
+console.log(colorTheme);  // dark
+console.log(fontSize);    // 14 (default used)
+
+// Multiple defaults
+const config = { title: 'My App' };
+const { 
+  title = 'Untitled', 
+  version = '1.0', 
+  lang = 'en' 
+} = config;
+
+console.log(title);    // My App (exists)
+console.log(version);  // 1.0 (default)
+console.log(lang);     // en (default)`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Real World Example */}
+      <CodeSnippet
+        title="Real-World Example: Function Parameters"
+        description="Destructure directly in function parameters"
+        code={`// Destructure object parameter
+function displayUser({ name, age, city }) {
+  console.log('Name: ' + name);
+  console.log('Age: ' + age);
+  console.log('City: ' + city);
 }
 
-createUser({ name: 'John' });
-// { name: 'John', age: 0, role: 'guest' }
-
-// Entire param is optional
-function config({ debug = false } = {}) {
-  return debug;
-}`}</pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Nested & Advanced */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Zap className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            3. Nested & Advanced Patterns
-          </CardTitle>
-          <CardDescription className="text-base">
-            Deep extraction and complex destructuring scenarios
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3">Nested Objects</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const data = {
-  user: {
-    name: 'John',
-    address: {
-      city: 'NYC',
-      zip: '10001'
-    }
-  }
+const user = {
+  name: 'Emma',
+  age: 28,
+  city: 'Seattle'
 };
 
-// Deep destructuring
-const {
-  user: {
-    name,
-    address: { city, zip }
-  }
-} = data;
+displayUser(user);
+// Output: Name: Emma
+// Output: Age: 28
+// Output: City: Seattle
 
-console.log(name); // 'John'
-console.log(city); // 'NYC'
-console.log(zip); // '10001'
+// With defaults in parameters
+function createProfile({ 
+  username, 
+  role = 'user', 
+  isActive = true 
+}) {
+  console.log('Username: ' + username);
+  console.log('Role: ' + role);
+  console.log('Active: ' + isActive);
+}
 
-// Note: 'user' and 'address' are not created
-// Only name, city, zip are variables`}</pre>
+createProfile({ username: 'alice123' });
+// Output: Username: alice123
+// Output: Role: user (default)
+// Output: Active: true (default)
+
+createProfile({ 
+  username: 'bob456', 
+  role: 'admin', 
+  isActive: false 
+});
+// Output: Username: bob456
+// Output: Role: admin
+// Output: Active: false`}
+        language="javascript"
+        colorTheme="yellow"
+        icon={Package}
+      />
+
+      {/* Key Takeaways */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">📦</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Arrays = [a, b, c]</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Extract by position with square brackets
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3">Mixed Destructuring</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Array of objects
-const users = [
-  { name: 'John', age: 25 },
-  { name: 'Jane', age: 30 }
-];
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🎁</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Objects = {'{ x, y }'}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Extract by name with curly braces
+                  </p>
+                </div>
+              </div>
+            </div>
 
-const [{ name: firstName }] = users;
-console.log(firstName); // 'John'
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">✏️</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Rename with :</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {'{ name: newName }'} gives new variable name
+                  </p>
+                </div>
+              </div>
+            </div>
 
-// Object with arrays
-const response = {
-  data: [1, 2, 3],
-  status: 'success'
-};
-
-const { data: [first, second], status } = response;
-console.log(first); // 1
-console.log(status); // 'success'`}</pre>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🛡️</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Defaults with =</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {'{ x = 5 }'} provides fallback value
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Live Demo */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <PlayCircle className="w-6 h-6 text-cyan-600/80 dark:text-cyan-400/80" />
-            Live Demo - Destructuring
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <div className="flex gap-2">
-              <Button onClick={runArrayDemo}>Test Arrays</Button>
-              <Button onClick={runObjectDemo} variant="secondary">Test Objects</Button>
-              <Button onClick={resetDemo} variant="outline">
-                <RefreshCw className="w-3 h-3 mr-1" />
-                Reset
-              </Button>
-            </div>
-
-            {arrayDemo && (
-              <div className="p-4 bg-white dark:bg-gray-900 rounded border">
-                <p className="font-semibold text-sm mb-2">Array Result:</p>
-                <p className="text-sm font-mono text-blue-600 dark:text-blue-400">{arrayDemo}</p>
-              </div>
-            )}
-
-            {objectDemo && (
-              <div className="p-4 bg-white dark:bg-gray-900 rounded border">
-                <p className="font-semibold text-sm mb-2">Object Result:</p>
-                <p className="text-sm font-mono text-emerald-600 dark:text-emerald-400">{objectDemo}</p>
-              </div>
-            )}
-
-            {demoLog.length > 0 && (
-              <div className="p-3 bg-white dark:bg-gray-900 rounded border">
-                <p className="font-semibold text-sm mb-2">Log:</p>
-                {demoLog.map((log, i) => (
-                  <p key={i} className="text-xs font-mono text-muted-foreground">→ {log}</p>
-                ))}
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Best Practices */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                ✅ Do This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Use destructuring for cleaner code</li>
-                <li>• Provide default values for optional properties</li>
-                <li>• Use rest operator to collect remaining items</li>
-                <li>• Destructure function parameters</li>
-                <li>• Rename variables to avoid conflicts</li>
-                <li>• Use for React hooks and API responses</li>
-                <li>• Destructure in for...of loops</li>
-                <li>• Use to swap variables without temp</li>
-              </ul>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                ❌ Avoid This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Don&apos;t destructure deeply nested objects</li>
-                <li>• Don&apos;t destructure everything unnecessarily</li>
-                <li>• Don&apos;t forget to handle undefined/null</li>
-                <li>• Don&apos;t use on arrays when order matters later</li>
-                <li>• Don&apos;t create overly complex patterns</li>
-                <li>• Don&apos;t destructure in performance-critical loops</li>
-                <li>• Don&apos;t forget rest must be last element</li>
-                <li>• Don&apos;t ignore readability for brevity</li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Interactive Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Globe className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Interactive Playground
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Open this playground to experiment with all destructuring patterns—arrays, objects, nested, and advanced techniques!
-          </p>
-          {onOpenWebPlayground && (
-            <Button
-              className="w-full md:w-auto"
-              onClick={() => onOpenWebPlayground(playgroundHtml, playgroundCss, playgroundJs)}
-            >
-              <Globe className="w-4 h-4 mr-2" />
-              Open Destructuring Playground
-            </Button>
-          )}
         </CardContent>
       </Card>
     </div>

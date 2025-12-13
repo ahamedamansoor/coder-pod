@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { 
-    Wand2, Sparkles, CheckCircle, Info, Code, Star, Box
+    Wand2, Sparkles, CheckCircle, Info, Code, Star, Box, Zap, Lightbulb, ArrowRight
 } from 'lucide-react';
 
 interface CssGeneratedContentProps {
@@ -610,51 +610,71 @@ export default function CssGeneratedContent({ onOpenWebPlayground }: CssGenerate
             {/* PAGE HEADER */}
             <PageHeader
                 icon={Wand2}
-                category="CSS · Intermediate"
-                title="CSS Generated Content"
+                category="CSS · Advanced CSS"
+                title="Generated Content"
                 description="Add decorative elements and dynamic content with ::before and ::after pseudo-elements"
-                colorTheme="pink"
+                colorTheme="indigo"
             />
 
             {/* INTRODUCTION */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <div className="p-2 bg-pink-500/10 rounded-lg">
-                            <Sparkles className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+            <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+                <CardHeader className="relative">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="relative p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+                            <Wand2 className="w-7 h-7 text-white" />
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
                         </div>
-                        What is Generated Content?
-                    </CardTitle>
-                    <CardDescription>
-                        Add content to elements without modifying HTML
-                    </CardDescription>
+                        <div>
+                            <CardTitle className="text-2xl">CSS Generated Content</CardTitle>
+                            <CardDescription className="text-base">
+                                ::before and ::after pseudo-elements
+                            </CardDescription>
+                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <p className="text-muted-foreground leading-relaxed">
-                        <strong className="text-foreground">Generated Content</strong> in CSS uses the <code className="text-sm bg-muted px-1 py-0.5 rounded">::before</code> and <code className="text-sm bg-muted px-1 py-0.5 rounded">::after</code> <strong className="text-foreground">pseudo-elements</strong> to insert content before or after an element's actual content. Perfect for adding <strong className="text-foreground">decorative elements</strong>, <strong className="text-foreground">icons</strong>, or <strong className="text-foreground">dynamic text</strong> without cluttering your HTML.
-                    </p>
+                    <Alert className="border-indigo-200 dark:border-indigo-800 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-purple-950/30">
+                        <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400 animate-pulse" />
+                        <AlertTitle className="text-indigo-900 dark:text-indigo-100 text-lg">Generated Content = Pure CSS Magic! ✨</AlertTitle>
+                        <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+                            Use <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900 rounded">::before</code> and <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900 rounded">::after</code> <strong>pseudo-elements</strong> to insert content before or after an element without touching HTML. 
+                            Perfect for <strong>decorative elements</strong>, <strong>icons</strong>, <strong>tooltips</strong>, and <strong>dynamic content</strong>!
+                        </AlertDescription>
+                    </Alert>
 
-                    <div className="grid md:grid-cols-3 gap-4">
-                        <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
-                            <Star className="h-6 w-6 text-pink-600 dark:text-pink-400 mb-2" />
-                            <h4 className="font-semibold mb-2">Decorative</h4>
-                            <p className="text-sm text-muted-foreground">
-                                Add visual elements without extra HTML
-                            </p>
-                        </div>
-                        <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
-                            <Box className="h-6 w-6 text-pink-600 dark:text-pink-400 mb-2" />
-                            <h4 className="font-semibold mb-2">Dynamic</h4>
-                            <p className="text-sm text-muted-foreground">
-                                Display attributes or counter values
-                            </p>
-                        </div>
-                        <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
-                            <Code className="h-6 w-6 text-pink-600 dark:text-pink-400 mb-2" />
-                            <h4 className="font-semibold mb-2">Clean HTML</h4>
-                            <p className="text-sm text-muted-foreground">
-                                Keep markup semantic and minimal
-                            </p>
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-2 border-blue-200 dark:border-blue-800">
+                        <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                            <Zap className="w-5 h-5 text-blue-600" />
+                            Why Use Generated Content?
+                        </h3>
+                        <div className="grid md:grid-cols-3 gap-4 text-sm">
+                            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg">
+                                <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2 flex items-center gap-2">
+                                    <Star className="w-4 h-4 text-blue-600" />
+                                    ✨ Decorative
+                                </h4>
+                                <p className="text-gray-600 dark:text-gray-400">
+                                    Add visual elements without extra HTML
+                                </p>
+                            </div>
+                            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg">
+                                <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2 flex items-center gap-2">
+                                    <Box className="w-4 h-4 text-blue-600" />
+                                    🎯 Dynamic
+                                </h4>
+                                <p className="text-gray-600 dark:text-gray-400">
+                                    Display attributes or counter values
+                                </p>
+                            </div>
+                            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg">
+                                <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2 flex items-center gap-2">
+                                    <Code className="w-4 h-4 text-blue-600" />
+                                    🧹 Clean
+                                </h4>
+                                <p className="text-gray-600 dark:text-gray-400">
+                                    Keep markup semantic and minimal
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -728,13 +748,11 @@ export default function CssGeneratedContent({ onOpenWebPlayground }: CssGenerate
             </Card>
 
             {/* BASIC GENERATED CONTENT */}
-            <Card>
+            <Card className="border-2 border-purple-200 dark:border-purple-800">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <div className="p-2 bg-pink-500/10 rounded-lg">
-                            <Star className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-                        </div>
-                        1. Basic ::before and ::after
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                        <Star className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                        Basic ::before and ::after
                     </CardTitle>
                     <CardDescription>
                         Add content before or after elements
@@ -744,138 +762,190 @@ export default function CssGeneratedContent({ onOpenWebPlayground }: CssGenerate
                     <FrontendCodePreview
                         html={basicGeneratedExample}
                         title="Basic Generated Content Demo"
-                        colorTheme="pink"
+                        colorTheme="indigo"
                         onOpenPlayground={() => handleOpenPlayground(basicGeneratedExample)}
                     />
                     
-                    <div className="mt-4 p-4 rounded-lg bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800">
-                        <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-3">✨ How It Works:</h4>
-                        <ul className="space-y-2 text-sm text-pink-800 dark:text-pink-200">
-                            <li className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                                <span><strong>::before</strong> inserts content before the element's content</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                                <span><strong>::after</strong> inserts content after the element's content</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                                <span><strong>content property</strong> is required to display anything</span>
-                            </li>
-                        </ul>
+                    <div className="mt-4 p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-2 border-purple-300 dark:border-purple-700">
+                        <h4 className="font-bold text-lg text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-2">
+                            <Lightbulb className="w-5 h-5" />
+                            ✨ How It Works
+                        </h4>
+                        <div className="space-y-3">
+                            <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
+                                <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                                <div>
+                                    <strong className="text-purple-900 dark:text-purple-100">::before</strong>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Inserts content BEFORE the element's content</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
+                                <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                                <div>
+                                    <strong className="text-purple-900 dark:text-purple-100">::after</strong>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Inserts content AFTER the element's content</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
+                                <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                                <div>
+                                    <strong className="text-purple-900 dark:text-purple-100">content property</strong>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Required to display anything - even empty ""</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
 
             {/* ADVANCED GENERATED CONTENT */}
-            <Card>
+            <Card className="border-2 border-blue-200 dark:border-blue-800">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <div className="p-2 bg-pink-500/10 rounded-lg">
-                            <Wand2 className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-                        </div>
-                        2. Advanced Techniques
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                        <Wand2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        Advanced Techniques
                     </CardTitle>
                     <CardDescription>
-                        Tooltips, effects, and dynamic content
+                        Tooltips, effects, and dynamic content with attr()
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <FrontendCodePreview
                         html={advancedGeneratedExample}
                         title="Advanced Generated Content Examples"
-                        colorTheme="pink"
+                        colorTheme="indigo"
                         onOpenPlayground={() => handleOpenPlayground(advancedGeneratedExample)}
                     />
                     
-                    <div className="mt-4 p-4 rounded-lg bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800">
-                        <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-3">🎯 Advanced Uses:</h4>
-                        <ul className="space-y-2 text-sm text-pink-800 dark:text-pink-200">
-                            <li className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                                <span><strong>attr()</strong> displays HTML attribute values</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                                <span><strong>Tooltips</strong> created with positioning and transitions</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                                <span><strong>Visual effects</strong> like ripples and glows</span>
-                            </li>
-                        </ul>
+                    <div className="mt-4 p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 border-2 border-blue-300 dark:border-blue-700">
+                        <h4 className="font-bold text-lg text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                            <Sparkles className="w-5 h-5" />
+                            🎯 Advanced Uses
+                        </h4>
+                        <div className="grid md:grid-cols-3 gap-3">
+                            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-blue-200 dark:border-blue-800">
+                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm mb-2">
+                                    1
+                                </div>
+                                <h5 className="font-bold text-blue-900 dark:text-blue-100 mb-1">attr()</h5>
+                                <p className="text-xs text-gray-600 dark:text-gray-400">Display HTML attribute values dynamically</p>
+                            </div>
+                            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-blue-200 dark:border-blue-800">
+                                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm mb-2">
+                                    2
+                                </div>
+                                <h5 className="font-bold text-blue-900 dark:text-blue-100 mb-1">Tooltips</h5>
+                                <p className="text-xs text-gray-600 dark:text-gray-400">Created with positioning and transitions</p>
+                            </div>
+                            <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-blue-200 dark:border-blue-800">
+                                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm mb-2">
+                                    3
+                                </div>
+                                <h5 className="font-bold text-blue-900 dark:text-blue-100 mb-1">Visual FX</h5>
+                                <p className="text-xs text-gray-600 dark:text-gray-400">Ripples, glows, and animations</p>
+                            </div>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
 
             {/* CONTENT PROPERTY VALUES */}
-            <Card>
+            <Card className="border-2 border-green-200 dark:border-green-800">
                 <CardHeader>
-                    <CardTitle>Content Property Reference</CardTitle>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                        <Code className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        Content Property Reference
+                    </CardTitle>
                     <CardDescription>
-                        Common values for the content property
+                        All values you can use with the content property
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid gap-3">
-                        <div className="p-3 rounded-lg bg-muted border">
-                            <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                                content: "text";
-                            </code>
-                            <p className="text-sm text-muted-foreground mt-1">Insert plain text</p>
+                        <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <code className="text-sm font-mono text-green-700 dark:text-green-300 font-bold">
+                                    content: "text";
+                                </code>
+                                <span className="text-xs bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">String</span>
+                            </div>
+                            <p className="text-sm text-green-700 dark:text-green-300">Insert plain text</p>
                         </div>
                         
-                        <div className="p-3 rounded-lg bg-muted border">
-                            <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                                content: attr(data-label);
-                            </code>
-                            <p className="text-sm text-muted-foreground mt-1">Display HTML attribute value</p>
+                        <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <code className="text-sm font-mono text-blue-700 dark:text-blue-300 font-bold">
+                                    content: attr(data-label);
+                                </code>
+                                <span className="text-xs bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">Dynamic</span>
+                            </div>
+                            <p className="text-sm text-blue-700 dark:text-blue-300">Display HTML attribute value</p>
                         </div>
                         
-                        <div className="p-3 rounded-lg bg-muted border">
-                            <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                                content: counter(name);
-                            </code>
-                            <p className="text-sm text-muted-foreground mt-1">Display counter value</p>
+                        <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <code className="text-sm font-mono text-purple-700 dark:text-purple-300 font-bold">
+                                    content: counter(name);
+                                </code>
+                                <span className="text-xs bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Counter</span>
+                            </div>
+                            <p className="text-sm text-purple-700 dark:text-purple-300">Display counter value</p>
                         </div>
                         
-                        <div className="p-3 rounded-lg bg-muted border">
-                            <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                                content: url(icon.svg);
-                            </code>
-                            <p className="text-sm text-muted-foreground mt-1">Insert image or SVG</p>
+                        <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <code className="text-sm font-mono text-amber-700 dark:text-amber-300 font-bold">
+                                    content: url(icon.svg);
+                                </code>
+                                <span className="text-xs bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 px-2 py-1 rounded">Image</span>
+                            </div>
+                            <p className="text-sm text-amber-700 dark:text-amber-300">Insert image or SVG</p>
                         </div>
                         
-                        <div className="p-3 rounded-lg bg-muted border">
-                            <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                                content: "";
-                            </code>
-                            <p className="text-sm text-muted-foreground mt-1">Empty content (for decorative elements)</p>
+                        <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-950/20 border border-gray-200 dark:border-gray-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <code className="text-sm font-mono text-gray-700 dark:text-gray-300 font-bold">
+                                    content: "";
+                                </code>
+                                <span className="text-xs bg-gray-200 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Empty</span>
+                            </div>
+                            <p className="text-sm text-gray-700 dark:text-gray-300">Empty content (for decorative elements)</p>
                         </div>
                         
-                        <div className="p-3 rounded-lg bg-muted border">
-                            <code className="text-sm font-mono text-pink-600 dark:text-pink-400">
-                                content: "★" " " attr(rating);
-                            </code>
-                            <p className="text-sm text-muted-foreground mt-1">Combine multiple values with spaces</p>
+                        <div className="p-4 rounded-lg bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <code className="text-sm font-mono text-pink-700 dark:text-pink-300 font-bold">
+                                    content: "★" " " attr(rating);
+                                </code>
+                                <span className="text-xs bg-pink-200 dark:bg-pink-900 text-pink-800 dark:text-pink-200 px-2 py-1 rounded">Combined</span>
+                            </div>
+                            <p className="text-sm text-pink-700 dark:text-pink-300">Combine multiple values with spaces</p>
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
             {/* BEST PRACTICES */}
-            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertTitle className="text-green-900 dark:text-green-100">Best Practices</AlertTitle>
-                <AlertDescription className="text-green-800 dark:text-green-200">
-                    <ul className="list-disc list-inside space-y-1 mt-2">
-                        <li><strong>Keep it decorative</strong> - Don't add essential content that needs to be read</li>
-                        <li><strong>Consider accessibility</strong> - Screen readers may not announce generated content</li>
-                        <li><strong>Use for icons</strong> - Perfect for adding visual indicators without HTML</li>
-                        <li><strong>Empty content=""</strong> - Use for pure CSS shapes and decorations</li>
-                        <li><strong>Avoid text content</strong> - Important text should be in HTML, not CSS</li>
-                    </ul>
+            <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+                <CheckCircle className="w-5 h-5 text-indigo-600" />
+                <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember 💡</AlertTitle>
+                <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+                    <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+                        <span><strong>Keep it decorative</strong> - Don't add essential content</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+                        <span><strong>Accessibility matters</strong> - Screen readers may not read generated content</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+                        <span><strong>Perfect for icons</strong> - Visual indicators without HTML</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+                        <span><strong>content: ""</strong> required even for empty pseudo-elements</span>
+                    </div>
                 </AlertDescription>
             </Alert>
 

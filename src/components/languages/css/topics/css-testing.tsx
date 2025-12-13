@@ -1,524 +1,536 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview } from '@/components/shared';
-import { 
-  TestTube, CheckCircle, Code, Eye, Monitor, 
-  Camera, GitCompare, Smartphone, AlertCircle, Info
-} from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import React from 'react';
+import { TestTube, Sparkles, Target, Layers, CheckCircle, Eye } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssTestingProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssTesting({ onOpenWebPlayground }: CssTestingProps) {
-  const [selectedTest, setSelectedTest] = useState('visual');
-
-  const testingTypes = [
-    { id: 'visual', name: 'Visual Regression', icon: Camera, color: 'bg-blue-500' },
-    { id: 'snapshot', name: 'Snapshot Testing', icon: GitCompare, color: 'bg-purple-500' },
-    { id: 'cross-browser', name: 'Cross-Browser', icon: Monitor, color: 'bg-green-500' },
-    { id: 'responsive', name: 'Responsive Testing', icon: Smartphone, color: 'bg-orange-500' },
-  ];
-
-  const visualTestExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Testing - Visual Regression</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-      }
-    }
-    
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    h1 {
-      color: #3b82f6;
-      margin-bottom: 10px;
-      text-align: center;
-      font-size: 2.5rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #60a5fa;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 30px;
-    }
-    
-    .test-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-    
-    .test-card {
-      padding: 24px;
-      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-      border-radius: 12px;
-      border: 2px solid #3b82f6;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    
-    .test-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .test-card {
-        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-        border-color: #60a5fa;
-      }
-    }
-    
-    .test-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-    }
-    
-    .test-title {
-      color: #1e40af;
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .test-title {
-        color: #93c5fd;
-      }
-    }
-    
-    .test-desc {
-      color: #64748b;
-      font-size: 0.9rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .test-desc {
-        color: #cbd5e0;
-      }
-    }
-    
-    .info-box {
-      background: #eff6ff;
-      border-left: 4px solid #3b82f6;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-box {
-        background: #1e3a8a;
-        border-left-color: #60a5fa;
-      }
-    }
-    
-    .info-title {
-      color: #1e40af;
-      font-weight: 700;
-      margin-bottom: 12px;
-      font-size: 1.1rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-title {
-        color: #93c5fd;
-      }
-    }
-    
-    .tool-list {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .tool-item {
-      padding: 12px;
-      background: white;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .tool-item {
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-    }
-    
-    .tool-check {
-      color: #3b82f6;
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🧪 CSS Testing</h1>
-    <p class="subtitle">Visual Regression Testing for CSS Changes</p>
-    
-    <div class="test-grid">
-      <div class="test-card">
-        <div class="test-icon">📸</div>
-        <div class="test-title">Take Snapshot</div>
-        <p class="test-desc">Capture current visual state</p>
-      </div>
-      
-      <div class="test-card">
-        <div class="test-icon">🔄</div>
-        <div class="test-title">Make Changes</div>
-        <p class="test-desc">Update your CSS code</p>
-      </div>
-      
-      <div class="test-card">
-        <div class="test-icon">🔍</div>
-        <div class="test-title">Compare</div>
-        <p class="test-desc">Detect visual differences</p>
-      </div>
-      
-      <div class="test-card">
-        <div class="test-icon">✅</div>
-        <div class="test-title">Approve/Fix</div>
-        <p class="test-desc">Accept changes or fix issues</p>
-      </div>
-    </div>
-    
-    <div class="info-box">
-      <div class="info-title">📦 Popular Testing Tools</div>
-      <ul class="tool-list">
-        <li class="tool-item">
-          <span class="tool-check">✓</span>
-          <strong>Percy</strong> - Visual testing and review platform
-        </li>
-        <li class="tool-item">
-          <span class="tool-check">✓</span>
-          <strong>BackstopJS</strong> - Automated visual regression testing
-        </li>
-        <li class="tool-item">
-          <span class="tool-check">✓</span>
-          <strong>Chromatic</strong> - Storybook visual testing
-        </li>
-        <li class="tool-item">
-          <span class="tool-check">✓</span>
-          <strong>Jest + Puppeteer</strong> - Snapshot testing
-        </li>
-      </ul>
-    </div>
-  </div>
-</body>
-</html>`;
-
+  
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={TestTube}
+      title="CSS Testing"
+      description="Ensure your styles work correctly across browsers and devices"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is CSS Testing?",
+        description: "The process of verifying that your CSS renders correctly and consistently across different browsers, devices, and screen sizes",
+        keyPoints: [
+          "Test visual appearance automatically",
+          "Catch CSS regressions early",
+          "Verify cross-browser compatibility",
+          "Test responsive designs",
+          "Prevent visual bugs in production",
+          "Essential for quality assurance"
+        ]
+      }}
+    >
+
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why Test CSS?">
+        CSS can look perfect in Chrome but broken in Safari. Perfect on desktop but terrible on mobile. 
+        <strong> CSS testing catches these issues before users see them!</strong> 
+        Automated tests save hours of manual checking and prevent embarrassing bugs.
+      </InfoAlert>
+
+      {/* Types of CSS Testing */}
+      <SectionCard
+        title="Types of CSS Testing"
+        description="Different ways to test CSS"
         icon={TestTube}
-        category="CSS · Quality & Testing"
-        title="CSS Testing"
-        description="Ensure your styles work correctly with automated testing"
-        colorTheme="blue"
-      />
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "📸 Visual Regression",
+              description: "Compare screenshots to detect changes",
+              example: "Percy, BackstopJS, Chromatic"
+            },
+            {
+              title: "🌐 Cross-Browser",
+              description: "Test in multiple browsers",
+              example: "BrowserStack, Sauce Labs"
+            },
+            {
+              title: "📱 Responsive Testing",
+              description: "Test different screen sizes",
+              example: "Chrome DevTools, LambdaTest"
+            },
+            {
+              title: "♿ Accessibility",
+              description: "Test contrast, focus, readability",
+              example: "axe, Lighthouse"
+            }
+          ]}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
-            <div className="relative">
-              <TestTube className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            Why Test CSS?
-          </CardTitle>
-          <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
-            🧪 Catch visual bugs before they reach production!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  Benefits of CSS Testing
-                </h4>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <Camera className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-blue-700 dark:text-blue-300">Catch Visual Regressions</div>
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
-                        Detect unintended changes to your UI
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <Monitor className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-green-700 dark:text-green-300">Cross-Browser Consistency</div>
-                      <div className="text-sm text-green-600 dark:text-green-400">
-                        Ensure consistent appearance across browsers
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <Smartphone className="w-5 h-5 text-purple-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-purple-700 dark:text-purple-300">Responsive Testing</div>
-                      <div className="text-sm text-purple-600 dark:text-purple-400">
-                        Verify layouts work at all screen sizes
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      {/* Visual Regression Testing */}
+      <SectionCard
+        title="1. Visual Regression Testing"
+        description="Catch unintended visual changes"
+        icon={Eye}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-3 text-blue-900 dark:text-blue-100">What is Visual Regression Testing?</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+              Takes screenshots of your site, compares them to baseline images, and alerts you to any visual differences. 
+              Perfect for catching CSS bugs that break layouts!
+            </p>
+            <div className="grid md:grid-cols-3 gap-3 text-sm">
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">1. Baseline</p>
+                <p className="text-xs">Take screenshot of correct design</p>
               </div>
-
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-xl border border-blue-200/50">
-                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300">
-                  Testing Strategy
-                </h4>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="text-2xl mb-2">1️⃣</div>
-                    <div className="font-semibold text-sm mb-1">Unit Tests</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Test individual components</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="text-2xl mb-2">2️⃣</div>
-                    <div className="font-semibold text-sm mb-1">Visual Tests</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Compare screenshots</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="text-2xl mb-2">3️⃣</div>
-                    <div className="font-semibold text-sm mb-1">Integration</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Test component interactions</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="text-2xl mb-2">4️⃣</div>
-                    <div className="font-semibold text-sm mb-1">E2E Tests</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Full user workflows</p>
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">2. Compare</p>
+                <p className="text-xs">Run after code changes</p>
               </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100 dark:from-blue-900/30 dark:via-cyan-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">🧪</div>
-                  <div className="font-bold text-lg text-blue-700 dark:text-blue-300">CSS Testing</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Visual Regression
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Snapshot Testing
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Cross-Browser
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Automated QA
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Automate CSS testing in your CI/CD pipeline
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">3. Review</p>
+                <p className="text-xs">Approve or fix differences</p>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Eye className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <div className="space-y-4">
+            <div className="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-950/20">
+              <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Percy (by BrowserStack)</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Popular visual testing platform. Integrates with CI/CD. Free for open source.
+              </p>
+              <code className="text-xs bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">
+                percy.io
+              </code>
             </div>
-            Testing Types
-          </CardTitle>
-          <CardDescription>
-            Different approaches to testing CSS
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {testingTypes.map((type) => (
-              <div
-                key={type.id}
-                onClick={() => setSelectedTest(type.id)}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                  selectedTest === type.id
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-lg scale-105'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'
-                }`}
-              >
-                <div className="flex flex-col items-center text-center gap-3">
-                  <div className={`w-12 h-12 ${type.color} rounded-lg flex items-center justify-center`}>
-                    <type.icon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="font-bold text-sm text-gray-900 dark:text-gray-100">{type.name}</div>
-                </div>
-              </div>
-            ))}
+
+            <div className="p-4 border-l-4 border-pink-500 bg-pink-50 dark:bg-pink-950/20">
+              <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-2">BackstopJS</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Free, open-source visual regression testing. Runs locally or in CI.
+              </p>
+              <code className="text-xs bg-pink-100 dark:bg-pink-900 px-2 py-1 rounded">
+                npm install -g backstopjs
+              </code>
+            </div>
+
+            <div className="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">Chromatic</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Made by Storybook team. Great for component testing. Free tier available.
+              </p>
+              <code className="text-xs bg-green-100 dark:bg-green-900 px-2 py-1 rounded">
+                chromatic.com
+              </code>
+            </div>
           </div>
 
-          <FrontendCodePreview
-            html={visualTestExample}
-            title="CSS Testing - Visual Regression Example"
-            colorTheme="blue"
-            onOpenPlayground={onOpenWebPlayground}
+          <SyntaxBlock
+            title="BackstopJS Example Setup"
+            code={`# Install BackstopJS
+npm install -g backstopjs
+
+# Initialize in your project
+backstop init
+
+# Edit backstop.json to define test scenarios
+{
+  "scenarios": [
+    {
+      "label": "Homepage",
+      "url": "http://localhost:3000",
+      "selectors": ["body"]
+    },
+    {
+      "label": "Button Component",
+      "url": "http://localhost:3000/components",
+      "selectors": [".button"]
+    }
+  ],
+  "viewports": [
+    { "label": "phone", "width": 375, "height": 667 },
+    { "label": "tablet", "width": 768, "height": 1024 },
+    { "label": "desktop", "width": 1920, "height": 1080 }
+  ]
+}
+
+# Create baseline (reference) screenshots
+backstop reference
+
+# Run tests (compare to baseline)
+backstop test
+
+# View results in browser
+# Approve changes if they're intentional
+backstop approve`}
           />
-        </CardContent>
-      </Card>
+        </div>
+      </SectionCard>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Code className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            Testing Tools
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-              <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                <Camera className="w-4 h-4" />
-                Percy
-              </h4>
-              <p className="text-sm text-blue-600 dark:text-blue-400 mb-3">
-                Visual testing and review platform with CI/CD integration
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">npm install @percy/cli</code>
-            </div>
+      {/* Cross-Browser Testing */}
+      <SectionCard
+        title="2. Cross-Browser Testing"
+        description="Test in multiple browsers"
+        icon={Layers}
+      >
+        <div className="space-y-6">
+          <InfoAlert type="warning" title="Why Cross-Browser Testing Matters">
+            CSS can render differently in Chrome, Firefox, Safari, and Edge. 
+            What works in one browser might be completely broken in another!
+          </InfoAlert>
+
+          <div className="p-5 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl border-2 border-green-200 dark:border-green-800">
+            <h4 className="text-lg font-semibold mb-4 text-green-900 dark:text-green-100">Popular Cross-Browser Testing Tools</h4>
             
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                <GitCompare className="w-4 h-4" />
-                BackstopJS
-              </h4>
-              <p className="text-sm text-purple-600 dark:text-purple-400 mb-3">
-                Automated visual regression testing tool
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">npm install backstopjs</code>
-            </div>
-            
-            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-              <h4 className="font-bold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                <TestTube className="w-4 h-4" />
-                Chromatic
-              </h4>
-              <p className="text-sm text-green-600 dark:text-green-400 mb-3">
-                Visual testing for Storybook components
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">npm install chromatic</code>
-            </div>
-            
-            <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-              <h4 className="font-bold text-orange-700 dark:text-orange-300 mb-2 flex items-center gap-2">
-                <Monitor className="w-4 h-4" />
-                Playwright
-              </h4>
-              <p className="text-sm text-orange-600 dark:text-orange-400 mb-3">
-                Cross-browser testing automation framework
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">npm install @playwright/test</code>
+            <div className="space-y-3">
+              <div className="p-3 bg-white dark:bg-green-900/20 rounded-lg">
+                <p className="font-semibold text-green-900 dark:text-green-100 mb-1">BrowserStack</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  Test in 3000+ real browsers and devices. Live interactive testing. Screenshots & videos.
+                </p>
+                <code className="text-xs bg-green-100 dark:bg-green-900 px-2 py-1 rounded">
+                  browserstack.com - Free trial available
+                </code>
+              </div>
+
+              <div className="p-3 bg-white dark:bg-green-900/20 rounded-lg">
+                <p className="font-semibold text-green-900 dark:text-green-100 mb-1">LambdaTest</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  Cloud-based testing. Automated screenshots. Integrates with CI/CD.
+                </p>
+                <code className="text-xs bg-green-100 dark:bg-green-900 px-2 py-1 rounded">
+                  lambdatest.com - Free tier available
+                </code>
+              </div>
+
+              <div className="p-3 bg-white dark:bg-green-900/20 rounded-lg">
+                <p className="font-semibold text-green-900 dark:text-green-100 mb-1">Sauce Labs</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  Enterprise testing platform. Supports Selenium and Cypress. CI/CD integration.
+                </p>
+                <code className="text-xs bg-green-100 dark:bg-green-900 px-2 py-1 rounded">
+                  saucelabs.com
+                </code>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Test early</strong> - Integrate testing from the start of development</li>
-            <li><strong>Automate</strong> - Run tests automatically in CI/CD pipeline</li>
-            <li><strong>Test critical paths</strong> - Focus on important user journeys</li>
-            <li><strong>Multiple viewports</strong> - Test responsive designs at various sizes</li>
-            <li><strong>Review failures</strong> - Investigate and fix visual regressions promptly</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
-        <Info className="h-4 w-4 text-blue-600" />
-        <AlertTitle className="text-blue-900 dark:text-blue-100">Testing Resources</AlertTitle>
-        <AlertDescription className="text-blue-800 dark:text-blue-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>📸 Percy:</strong> https://percy.io/</div>
-            <div><strong>🔄 BackstopJS:</strong> https://github.com/garris/BackstopJS</div>
-            <div><strong>🎨 Chromatic:</strong> https://www.chromatic.com/</div>
-            <div><strong>🎭 Playwright:</strong> https://playwright.dev/</div>
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-3 text-blue-900 dark:text-blue-100">Free Alternative: Local Browser Testing</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+              Install multiple browsers on your machine and test manually:
+            </p>
+            <div className="grid md:grid-cols-4 gap-2 text-sm">
+              <div className="p-2 bg-white dark:bg-blue-900/20 rounded text-center">
+                <p className="font-semibold">Chrome</p>
+                <p className="text-xs">google.com/chrome</p>
+              </div>
+              <div className="p-2 bg-white dark:bg-blue-900/20 rounded text-center">
+                <p className="font-semibold">Firefox</p>
+                <p className="text-xs">mozilla.org/firefox</p>
+              </div>
+              <div className="p-2 bg-white dark:bg-blue-900/20 rounded text-center">
+                <p className="font-semibold">Safari</p>
+                <p className="text-xs">Mac/iOS only</p>
+              </div>
+              <div className="p-2 bg-white dark:bg-blue-900/20 rounded text-center">
+                <p className="font-semibold">Edge</p>
+                <p className="text-xs">microsoft.com/edge</p>
+              </div>
+            </div>
           </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+        </div>
+      </SectionCard>
+
+      {/* Responsive Testing */}
+      <SectionCard
+        title="3. Responsive Testing"
+        description="Test different screen sizes"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border-2 border-purple-200 dark:border-purple-800">
+            <h4 className="text-lg font-semibold mb-3 text-purple-900 dark:text-purple-100">Chrome DevTools - Built-in Tool</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+              Chrome (and other browsers) have built-in responsive testing tools. 
+              <strong> Free and powerful!</strong>
+            </p>
+            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">1.</span>
+                <span>Open DevTools (F12 or Ctrl+Shift+I)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">2.</span>
+                <span>Click device toolbar icon (Ctrl+Shift+M)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">3.</span>
+                <span>Choose device or custom dimensions</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">4.</span>
+                <span>Test different breakpoints</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 border-2 border-blue-200 dark:border-blue-800 rounded-xl bg-blue-50 dark:bg-blue-950/20">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">📱 Mobile</h4>
+              <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                <li>• iPhone 14: 390x844</li>
+                <li>• Galaxy S21: 360x800</li>
+                <li>• iPhone SE: 375x667</li>
+              </ul>
+            </div>
+
+            <div className="p-4 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">📱 Tablet</h4>
+              <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                <li>• iPad: 768x1024</li>
+                <li>• iPad Pro: 1024x1366</li>
+                <li>• Surface: 912x1368</li>
+              </ul>
+            </div>
+
+            <div className="p-4 border-2 border-purple-200 dark:border-purple-800 rounded-xl bg-purple-50 dark:bg-purple-950/20">
+              <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">💻 Desktop</h4>
+              <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                <li>• Laptop: 1366x768</li>
+                <li>• Desktop: 1920x1080</li>
+                <li>• 4K: 3840x2160</li>
+              </ul>
+            </div>
+          </div>
+
+          <SyntaxBlock
+            title="Responsive Design Testing Checklist"
+            code={`# Test these breakpoints at minimum:
+
+✓ Mobile (320px - 480px)
+  - Check menu collapses to hamburger
+  - Text is readable
+  - Images scale properly
+  - No horizontal scroll
+
+✓ Tablet (481px - 768px)
+  - Layout adjusts appropriately
+  - Touch targets are large enough (44x44px min)
+  - Navigation works
+
+✓ Desktop (769px - 1920px)
+  - Full layout displays correctly
+  - Hover states work
+  - Multi-column layouts function
+
+✓ Large Desktop (1921px+)
+  - Content doesn't stretch too wide
+  - Max-width containers work
+  - No awkward spacing`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Automated CSS Testing */}
+      <SectionCard
+        title="4. Automated CSS Testing with Playwright"
+        description="Write tests that run automatically"
+        icon={CheckCircle}
+      >
+        <div className="space-y-6">
+          <InfoAlert type="tip" title="Modern Approach: E2E Testing">
+            Modern E2E testing tools like Playwright and Cypress can test CSS automatically. 
+            Write tests once, run them on every deployment!
+          </InfoAlert>
+
+          <SyntaxBlock
+            title="Playwright CSS Test Example"
+            code={`// Install Playwright
+npm install -D @playwright/test
+
+// tests/css-tests.spec.js
+import { test, expect } from '@playwright/test';
+
+test('button has correct styles', async ({ page }) => {
+  await page.goto('http://localhost:3000');
+  
+  const button = page.locator('.button');
+  
+  // Test computed styles
+  await expect(button).toHaveCSS('background-color', 'rgb(59, 130, 246)');
+  await expect(button).toHaveCSS('padding', '12px 24px');
+  await expect(button).toHaveCSS('border-radius', '6px');
+  
+  // Test hover state
+  await button.hover();
+  await expect(button).toHaveCSS('background-color', 'rgb(37, 99, 235)');
+});
+
+test('layout is responsive', async ({ page }) => {
+  // Test mobile
+  await page.setViewportSize({ width: 375, height: 667 });
+  await page.goto('http://localhost:3000');
+  
+  const menu = page.locator('.menu');
+  await expect(menu).toHaveCSS('display', 'none'); // Hidden on mobile
+  
+  // Test desktop
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await expect(menu).toHaveCSS('display', 'flex'); // Visible on desktop
+});
+
+test('take screenshot for visual regression', async ({ page }) => {
+  await page.goto('http://localhost:3000');
+  
+  // Take full page screenshot
+  await page.screenshot({ path: 'screenshots/homepage.png', fullPage: true });
+  
+  // Compare to baseline (requires setup)
+  await expect(page).toHaveScreenshot('homepage.png');
+});`}
+          />
+
+          <SyntaxBlock
+            title="Run Playwright Tests"
+            code={`# Run tests
+npx playwright test
+
+# Run in headed mode (see browser)
+npx playwright test --headed
+
+# Run specific test file
+npx playwright test css-tests.spec.js
+
+# Update baseline screenshots
+npx playwright test --update-snapshots`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Common CSS Issues to Test */}
+      <SectionCard
+        title="Common CSS Issues to Test For"
+        description="What to look for"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-4 border-2 border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-950/20">
+            <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">❌ Layout Breakage</h4>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <li>• Overlapping elements</li>
+              <li>• Content overflow</li>
+              <li>• Broken grid/flexbox</li>
+              <li>• Incorrect positioning</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border-2 border-orange-200 dark:border-orange-800 rounded-xl bg-orange-50 dark:bg-orange-950/20">
+            <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">❌ Typography Issues</h4>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <li>• Unreadable text sizes</li>
+              <li>• Wrong font loading</li>
+              <li>• Poor line height</li>
+              <li>• Text overflow/cutting</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border-2 border-yellow-200 dark:border-yellow-800 rounded-xl bg-yellow-50 dark:bg-yellow-950/20">
+            <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">❌ Color/Contrast</h4>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <li>• Poor contrast ratios</li>
+              <li>• Dark mode not working</li>
+              <li>• Invisible text</li>
+              <li>• Wrong colors applied</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border-2 border-blue-200 dark:border-blue-800 rounded-xl bg-blue-50 dark:bg-blue-950/20">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">❌ Interactive States</h4>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <li>• Hover effects missing</li>
+              <li>• Focus states invisible</li>
+              <li>• Active states broken</li>
+              <li>• Transitions not working</li>
+            </ul>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When CSS Testing is Essential"
+        description="Critical scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Before Deployment"
+            description="Catch issues before users see them"
+            icon={CheckCircle}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="After Refactoring"
+            description="Ensure nothing broke during changes"
+            icon={Eye}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Design System Updates"
+            description="Test component library changes"
+            icon={Layers}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Browser Updates"
+            description="New browser versions may break CSS"
+            icon={Sparkles}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="CSS Testing Best Practices">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Automate Visual Tests:</strong> Use tools like BackstopJS or Percy for automatic screenshot comparison</li>
+          <li><strong>Test Multiple Browsers:</strong> At minimum test Chrome, Firefox, Safari, and Edge</li>
+          <li><strong>Test Breakpoints:</strong> Mobile (375px), Tablet (768px), Desktop (1920px) at minimum</li>
+          <li><strong>Test Interactive States:</strong> Hover, focus, active, disabled states</li>
+          <li><strong>CI/CD Integration:</strong> Run CSS tests automatically on every pull request</li>
+          <li><strong>Maintain Baselines:</strong> Update reference screenshots when you intentionally change designs</li>
+          <li><strong>Test Dark Mode:</strong> If you support it, test both light and dark themes</li>
+          <li><strong>Use Real Devices:</strong> Emulators are good, but test on real phones/tablets when possible</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools Summary */}
+      <InfoAlert type="info" title="CSS Testing Tools Summary">
+        <div className="mt-2 space-y-2">
+          <p><strong>Visual Regression:</strong> BackstopJS (free), Percy, Chromatic</p>
+          <p><strong>Cross-Browser:</strong> BrowserStack, LambdaTest, Sauce Labs</p>
+          <p><strong>Responsive:</strong> Chrome DevTools (free), BrowserStack</p>
+          <p><strong>E2E with CSS:</strong> Playwright, Cypress</p>
+          <p><strong>Accessibility:</strong> axe DevTools, Lighthouse</p>
+        </div>
+      </InfoAlert>
+
+    </CssTopicLayout>
   );
 }

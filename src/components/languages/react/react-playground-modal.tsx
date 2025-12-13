@@ -13,7 +13,10 @@ interface ReactPlaygroundModalProps {
 }
 
 export function ReactPlaygroundModal({ children }: ReactPlaygroundModalProps) {
-  const { open, setOpen, content } = useReactPlayground();
+  const reactPlayground = useReactPlayground();
+  const open = reactPlayground?.open ?? false;
+  const setOpen = reactPlayground?.setOpen ?? (() => {});
+  const content = reactPlayground?.content;
 
 
   return (

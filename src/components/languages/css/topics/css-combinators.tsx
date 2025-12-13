@@ -1,883 +1,485 @@
-
 'use client';
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { FrontendCodePreview } from '@/components/shared';
 import { 
-    Play, Link, Plus, GitMerge, Waves, ArrowRight, ArrowDown,
-    Users, User, Target, Eye, Settings, CheckCircle, AlertTriangle,
-    Zap, Grid3X3, Monitor, Smartphone, Code, TreePine
+  GitBranch, Sparkles, Lightbulb, ArrowRight, 
+  CheckCircle, Info, ArrowDown, MoveRight
 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssCombinatorsProps {
-    onOpenWebPlayground: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssCombinators({ onOpenWebPlayground }: CssCombinatorsProps) {
-    const [selectedCombinator, setSelectedCombinator] = useState('descendant');
+  
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={GitBranch}
+        category="CSS · Advanced Selectors"
+        title="Combinators"
+        description="Target elements based on their relationships"
+        colorTheme="indigo"
+      />
 
-    // Comprehensive Combinator Types
-    const combinatorTypes = [
-        {
-            name: 'descendant',
-            symbol: ' ',
-            icon: TreePine,
-            title: 'Descendant Selector',
-            syntax: 'div p',
-            desc: 'Selects all elements that are descendants (nested inside) of a specified element, regardless of depth.',
-            relationship: 'Any level nested',
-            specificity: 'Low',
-            performance: 'Slower (searches deep)',
-            color: 'bg-blue-100 dark:bg-blue-900/30 border-blue-300',
-            textColor: 'text-blue-800 dark:text-blue-200',
-            useCase: 'Styling all nested elements of a type'
-        },
-        {
-            name: 'child',
-            symbol: '>',
-            icon: ArrowDown,
-            title: 'Child Selector',
-            syntax: 'div > p',
-            desc: 'Selects elements that are direct children (one level down) of a specified element.',
-            relationship: 'Direct children only',
-            specificity: 'Medium',
-            performance: 'Faster (one level only)',
-            color: 'bg-green-100 dark:bg-green-900/30 border-green-300',
-            textColor: 'text-green-800 dark:text-green-200',
-            useCase: 'Styling immediate children only'
-        },
-        {
-            name: 'adjacent',
-            symbol: '+',
-            icon: Plus,
-            title: 'Adjacent Sibling Selector',
-            syntax: 'h1 + p',
-            desc: 'Selects the first element that immediately follows another specified element (same parent).',
-            relationship: 'Next sibling only',
-            specificity: 'Medium',
-            performance: 'Fast (single element)',
-            color: 'bg-purple-100 dark:bg-purple-900/30 border-purple-300',
-            textColor: 'text-purple-800 dark:text-purple-200',
-            useCase: 'First paragraph after heading'
-        },
-        {
-            name: 'general',
-            symbol: '~',
-            icon: Waves,
-            title: 'General Sibling Selector',
-            syntax: 'h1 ~ p',
-            desc: 'Selects all elements that are siblings of a specified element and come after it (same parent).',
-            relationship: 'All following siblings',
-            specificity: 'Medium',
-            performance: 'Medium (multiple elements)',
-            color: 'bg-orange-100 dark:bg-orange-900/30 border-orange-300',
-            textColor: 'text-orange-800 dark:text-orange-200',
-            useCase: 'All paragraphs after heading'
-        }
-    ];
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <GitBranch className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">CSS Combinators</CardTitle>
+              <CardDescription className="text-base">Select elements by their relationships</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Combinators = Element Relationships! 🔗</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              Combinators define the relationship between selectors. Target children, descendants, 
+              siblings, and more with simple symbols like <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900 rounded">&gt;</code>, 
+              <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900 rounded">+</code>, and 
+              <code className="px-1 py-0.5 bg-indigo-100 dark:bg-indigo-900 rounded">~</code>
+            </AlertDescription>
+          </Alert>
 
-    // Practical Examples
-    const practicalExamples = [
-        {
-            name: 'Navigation Styling',
-            html: 'nav ul li a',
-            desc: 'Style all links inside navigation lists',
-            useCase: 'Menu styling'
-        },
-        {
-            name: 'Form Labels',
-            html: 'form > label',
-            desc: 'Style direct label children of forms',
-            useCase: 'Form layout'
-        },
-        {
-            name: 'Heading Paragraphs',
-            html: 'h2 + p',
-            desc: 'Style first paragraph after headings',
-            useCase: 'Typography hierarchy'
-        },
-        {
-            name: 'Article Sections',
-            html: 'article ~ section',
-            desc: 'Style sections that follow articles',
-            useCase: 'Content layout'
-        }
-    ];
+          <div className="grid md:grid-cols-4 gap-4">
+            {[
+              { symbol: ' ', name: 'Descendant', icon: ArrowDown },
+              { symbol: '>', name: 'Child', icon: ArrowDown },
+              { symbol: '+', name: 'Adjacent', icon: MoveRight },
+              { symbol: '~', name: 'Sibling', icon: MoveRight }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 text-center">
+                <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                <code className="font-bold text-2xl text-blue-700 dark:text-blue-400">{item.symbol === ' ' ? '(space)' : item.symbol}</code>
+                <p className="text-xs text-blue-600 dark:text-blue-300 mt-2">{item.name}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-    // Common Patterns
-    const commonPatterns = [
-        {
-            pattern: 'Nested Lists',
-            selector: 'ul li ul',
-            description: 'Target nested unordered lists',
-            example: 'Multi-level navigation menus'
-        },
-        {
-            pattern: 'Table Cells',
-            selector: 'table > tbody > tr > td',
-            description: 'Target table cells with specific hierarchy',
-            example: 'Styling data tables'
-        },
-        {
-            pattern: 'Card Content',
-            selector: '.card > .header + .content',
-            description: 'Target content that follows header in cards',
-            example: 'Component styling'
-        },
-        {
-            pattern: 'Form Groups',
-            selector: '.form-group ~ .form-group',
-            description: 'Target form groups after the first one',
-            example: 'Form spacing and layout'
-        }
-    ];
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <ArrowDown className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Descendant Selector (space)
+          </CardTitle>
+          <CardDescription>All nested elements</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-2 border-purple-300 dark:border-purple-700">
+            <Badge className="bg-purple-600 text-white text-lg mb-3">A B</Badge>
+            <p className="text-sm text-purple-800 dark:text-purple-200 mb-3">
+              Selects <strong>all B</strong> elements inside <strong>A</strong> (any level deep)
+            </p>
+            <div className="bg-purple-900 dark:bg-purple-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-purple-100 block">
+{`/* Select ALL p inside div */
+div p {
+  color: blue;
+}
 
-    // Comprehensive Playground Code
-    const playgroundCode = {
-        html: `<!DOCTYPE html>
-<html>
+/* HTML matches:
+<div>
+  <p>Match ✓</p>
+  <section>
+    <p>Match ✓ (nested)</p>
+  </section>
+</div>
+*/`}
+              </code>
+            </div>
+            <div className="flex items-start gap-2 text-sm">
+              <CheckCircle className="w-4 h-4 text-purple-600 mt-1" />
+              <span className="text-purple-800 dark:text-purple-200">Most commonly used combinator</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <ArrowDown className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            Child Selector &gt;
+          </CardTitle>
+          <CardDescription>Direct children only</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 border-2 border-blue-300 dark:border-blue-700">
+            <Badge className="bg-blue-600 text-white text-lg mb-3">A &gt; B</Badge>
+            <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+              Selects <strong>B</strong> only if it's a <strong>direct child</strong> of <strong>A</strong>
+            </p>
+            <div className="bg-blue-900 dark:bg-blue-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-blue-100 block">
+{`/* Select ONLY direct p children */
+div > p {
+  color: red;
+}
+
+/* HTML:
+<div>
+  <p>Match ✓ (direct child)</p>
+  <section>
+    <p>No match ✗ (not direct)</p>
+  </section>
+</div>
+*/`}
+              </code>
+            </div>
+            <div className="flex items-start gap-2 text-sm">
+              <Info className="w-4 h-4 text-blue-600 mt-1" />
+              <span className="text-blue-800 dark:text-blue-200">More specific than descendant selector</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <MoveRight className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Adjacent Sibling +
+          </CardTitle>
+          <CardDescription>Immediately following sibling</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-300 dark:border-green-700">
+            <Badge className="bg-green-600 text-white text-lg mb-3">A + B</Badge>
+            <p className="text-sm text-green-800 dark:text-green-200 mb-3">
+              Selects <strong>B</strong> only if it <strong>immediately follows</strong> <strong>A</strong>
+            </p>
+            <div className="bg-green-900 dark:bg-green-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-green-100 block">
+{`/* Style p immediately after h2 */
+h2 + p {
+  font-weight: bold;
+}
+
+/* HTML:
+<h2>Title</h2>
+<p>Match ✓ (immediately after)</p>
+<p>No match ✗ (not adjacent)</p>
+*/`}
+              </code>
+            </div>
+            <div className="flex items-start gap-2 text-sm">
+              <Lightbulb className="w-4 h-4 text-green-600 mt-1" />
+              <span className="text-green-800 dark:text-green-200">Perfect for styling first paragraphs after headings</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <MoveRight className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            General Sibling ~
+          </CardTitle>
+          <CardDescription>All following siblings</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-900/30 dark:to-yellow-900/30 border-2 border-orange-300 dark:border-orange-700">
+            <Badge className="bg-orange-600 text-white text-lg mb-3">A ~ B</Badge>
+            <p className="text-sm text-orange-800 dark:text-orange-200 mb-3">
+              Selects <strong>all B</strong> elements that are siblings <strong>after</strong> <strong>A</strong>
+            </p>
+            <div className="bg-orange-900 dark:bg-orange-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-orange-100 block">
+{`/* Style ALL p siblings after h2 */
+h2 ~ p {
+  margin-left: 20px;
+}
+
+/* HTML:
+<h2>Title</h2>
+<p>Match ✓</p>
+<div>Something</div>
+<p>Match ✓ (still a sibling)</p>
+*/`}
+              </code>
+            </div>
+            <div className="flex items-start gap-2 text-sm">
+              <Info className="w-4 h-4 text-orange-600 mt-1" />
+              <span className="text-orange-800 dark:text-orange-200">Selects ALL following siblings, not just adjacent</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            Interactive Demo
+          </CardTitle>
+          <CardDescription>See all combinators in action</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>CSS Combinators Complete Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
+      }
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1a1a2e;
+        color: #e5e5e5;
+      }
+    }
+    
+    h1 {
+      text-align: center;
+      color: #667eea;
+      margin-bottom: 40px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #a78bfa;
+      }
+    }
+    
+    .example {
+      margin-bottom: 40px;
+      padding: 30px;
+      background: #f3f4f6;
+      border-radius: 12px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .example {
+        background: #374151;
+      }
+    }
+    
+    .label {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #667eea;
+      color: white;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .label {
+        background: #a78bfa;
+        color: #1a1a2e;
+      }
+    }
+    
+    /* DESCENDANT: div p */
+    .demo1 p {
+      color: #3b82f6;
+      padding: 10px;
+      background: #dbeafe;
+      margin: 5px 0;
+      border-radius: 6px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .demo1 p {
+        background: #1e3a8a;
+        color: #93c5fd;
+      }
+    }
+    
+    /* CHILD: div > p */
+    .demo2 > p {
+      color: #10b981;
+      padding: 10px;
+      background: #d1fae5;
+      margin: 5px 0;
+      border-radius: 6px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .demo2 > p {
+        background: #064e3b;
+        color: #6ee7b7;
+      }
+    }
+    
+    /* ADJACENT: h3 + p */
+    .demo3 h3 + p {
+      color: #8b5cf6;
+      padding: 10px;
+      background: #ede9fe;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .demo3 h3 + p {
+        background: #4c1d95;
+        color: #c4b5fd;
+      }
+    }
+    
+    /* GENERAL SIBLING: h3 ~ p */
+    .demo4 h3 ~ p {
+      color: #f59e0b;
+      padding: 10px;
+      background: #fef3c7;
+      margin: 5px 0;
+      border-radius: 6px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .demo4 h3 ~ p {
+        background: #78350f;
+        color: #fde68a;
+      }
+    }
+    
+    h3 {
+      color: #667eea;
+      margin: 10px 0;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h3 {
+        color: #a78bfa;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>CSS Combinators: Complete Guide</h1>
-        
-        <section class="demo-section">
-            <h2>Descendant Selector (space)</h2>
-            <div class="example-container descendant-demo">
-                <div class="parent">
-                    <p class="target">Direct child paragraph (selected)</p>
-                    <div class="nested">
-                        <p class="target">Nested paragraph (also selected)</p>
-                        <span>
-                            <p class="target">Deeply nested paragraph (also selected)</p>
-                        </span>
-                    </div>
-                </div>
-                <p>Outside paragraph (not selected)</p>
-            </div>
-            <div class="code-example">
-                <strong>CSS:</strong> <code>.parent p { background: lightblue; }</code>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Child Selector (>)</h2>
-            <div class="example-container child-demo">
-                <div class="parent">
-                    <p class="target">Direct child paragraph (selected)</p>
-                    <div class="nested">
-                        <p>Nested paragraph (NOT selected)</p>
-                    </div>
-                    <p class="target">Another direct child (selected)</p>
-                </div>
-            </div>
-            <div class="code-example">
-                <strong>CSS:</strong> <code>.parent > p { background: lightgreen; }</code>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Adjacent Sibling Selector (+)</h2>
-            <div class="example-container adjacent-demo">
-                <div class="parent">
-                    <h3>Heading</h3>
-                    <p class="target">First paragraph after heading (selected)</p>
-                    <p>Second paragraph (NOT selected)</p>
-                    <div>A div element</div>
-                    <p>Paragraph after div (NOT selected)</p>
-                </div>
-            </div>
-            <div class="code-example">
-                <strong>CSS:</strong> <code>h3 + p { background: lightcoral; }</code>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>General Sibling Selector (~)</h2>
-            <div class="example-container general-demo">
-                <div class="parent">
-                    <h3>Heading</h3>
-                    <div>A div sibling</div>
-                    <p class="target">First paragraph sibling (selected)</p>
-                    <span>A span element</span>
-                    <p class="target">Second paragraph sibling (also selected)</p>
-                </div>
-            </div>
-            <div class="code-example">
-                <strong>CSS:</strong> <code>h3 ~ p { background: lightyellow; }</code>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Interactive Combinator Tester</h2>
-            <div class="interactive-demo">
-                <div class="controls">
-                    <button onclick="showCombinator('descendant')">Descendant ( )</button>
-                    <button onclick="showCombinator('child')">Child (>)</button>
-                    <button onclick="showCombinator('adjacent')">Adjacent (+)</button>
-                    <button onclick="showCombinator('general')">General (~)</button>
-                    <button onclick="showCombinator('none')">Reset</button>
-                </div>
-                <div class="test-structure">
-                    <div class="test-parent" id="testParent">
-                        <h4>Parent Element</h4>
-                        <p class="test-element" id="element1">Direct child paragraph 1</p>
-                        <div class="test-nested">
-                            <p class="test-element" id="element2">Nested paragraph</p>
-                        </div>
-                        <p class="test-element" id="element3">Direct child paragraph 2</p>
-                        <span class="test-element" id="element4">Span sibling</span>
-                        <p class="test-element" id="element5">Another paragraph sibling</p>
-                    </div>
-                </div>
-                <div class="current-selector" id="currentSelector">
-                    Click a button to see combinator in action
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Real-World Examples</h2>
-            <div class="real-world-examples">
-                <div class="example-card">
-                    <h3>Navigation Menu</h3>
-                    <nav class="nav-example">
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li>
-                                <a href="#">Products</a>
-                                <ul>
-                                    <li><a href="#">Laptops</a></li>
-                                    <li><a href="#">Phones</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </nav>
-                    <div class="code-example">
-                        <code>nav ul li a { color: blue; }</code><br>
-                        <code>nav > ul > li > a { font-weight: bold; }</code>
-                    </div>
-                </div>
-
-                <div class="example-card">
-                    <h3>Article Layout</h3>
-                    <article class="article-example">
-                        <h2>Article Title</h2>
-                        <p>First paragraph after title</p>
-                        <p>Second paragraph</p>
-                        <blockquote>A quote</blockquote>
-                        <p>Paragraph after quote</p>
-                    </article>
-                    <div class="code-example">
-                        <code>h2 + p { font-size: 1.2em; }</code><br>
-                        <code>blockquote ~ p { margin-top: 1em; }</code>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-</body>
-</html>`,
-        css: `* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 2rem;
-    color: #333;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    color: #2c3e50;
-}
-
-.demo-section {
-    background: white;
-    margin-bottom: 2rem;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.example-container {
-    background: #f8f9fa;
-    border: 2px dashed #dee2e6;
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.parent {
-    background: #e9ecef;
-    border: 2px solid #6c757d;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-.nested {
-    background: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-}
-
-.target {
-    background: #d4edda !important;
-    border: 2px solid #28a745 !important;
-    color: #155724 !important;
-    font-weight: bold;
-}
-
-/* Specific combinator demonstrations */
-.descendant-demo .parent p {
-    background: #cce5ff;
-    border: 2px solid #007bff;
-    padding: 0.5rem;
-    margin: 0.25rem 0;
-    border-radius: 4px;
-}
-
-.child-demo .parent > p {
-    background: #d4edda;
-    border: 2px solid #28a745;
-    padding: 0.5rem;
-    margin: 0.25rem 0;
-    border-radius: 4px;
-}
-
-.adjacent-demo h3 + p {
-    background: #f8d7da;
-    border: 2px solid #dc3545;
-    padding: 0.5rem;
-    margin: 0.25rem 0;
-    border-radius: 4px;
-}
-
-.general-demo h3 ~ p {
-    background: #fff3cd;
-    border: 2px solid #ffc107;
-    padding: 0.5rem;
-    margin: 0.25rem 0;
-    border-radius: 4px;
-}
-
-.code-example {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    padding: 1rem;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-}
-
-.code-example code {
-    background: #e9ecef;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    color: #e83e8c;
-}
-
-/* Interactive Demo */
-.interactive-demo {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 1.5rem;
-    border: 1px solid #dee2e6;
-}
-
-.controls {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.controls button {
-    padding: 0.5rem 1rem;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.3s ease;
-}
-
-.controls button:hover {
-    background: #0056b3;
-}
-
-.test-structure {
-    background: white;
-    border: 2px dashed #6c757d;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-.test-parent {
-    background: #e9ecef;
-    border: 2px solid #6c757d;
-    border-radius: 6px;
-    padding: 1rem;
-}
-
-.test-nested {
-    background: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-}
-
-.test-element {
-    background: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 0.5rem;
-    margin: 0.25rem 0;
-    transition: all 0.3s ease;
-}
-
-.test-element.highlighted {
-    background: #d4edda;
-    border: 2px solid #28a745;
-    color: #155724;
-    font-weight: bold;
-    transform: scale(1.02);
-}
-
-.current-selector {
-    background: #d1ecf1;
-    border: 1px solid #bee5eb;
-    border-radius: 6px;
-    padding: 1rem;
-    text-align: center;
-    font-weight: bold;
-    color: #0c5460;
-}
-
-/* Real-World Examples */
-.real-world-examples {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-}
-
-.example-card {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    padding: 1.5rem;
-}
-
-.nav-example ul {
-    list-style: none;
-    background: #e9ecef;
-    padding: 0.5rem;
-    border-radius: 6px;
-}
-
-.nav-example li {
-    padding: 0.25rem 0;
-}
-
-.nav-example a {
-    color: #007bff;
-    text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    transition: background 0.3s ease;
-}
-
-.nav-example a:hover {
-    background: #007bff;
-    color: white;
-}
-
-.nav-example ul ul {
-    margin-left: 1rem;
-    margin-top: 0.5rem;
-    background: #f8f9fa;
-}
-
-.article-example {
-    background: #fff;
-    padding: 1rem;
-    border-radius: 6px;
-    border: 1px solid #dee2e6;
-}
-
-.article-example h2 {
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-}
-
-.article-example p {
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
-}
-
-.article-example blockquote {
-    background: #f8f9fa;
-    border-left: 4px solid #007bff;
-    padding: 1rem;
-    margin: 1rem 0;
-    font-style: italic;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container { padding: 1rem; }
-    h1 { font-size: 2rem; }
-    .real-world-examples { grid-template-columns: 1fr; }
-    .controls { justify-content: center; }
-}`,
-        js: `// Interactive CSS Combinators Demo
-document.addEventListener('DOMContentLoaded', function() {
-    const elements = {
-        element1: document.getElementById('element1'),
-        element2: document.getElementById('element2'),
-        element3: document.getElementById('element3'),
-        element4: document.getElementById('element4'),
-        element5: document.getElementById('element5')
-    };
+  <div class="container">
+    <h1>🔗 CSS Combinators</h1>
     
-    const currentSelector = document.getElementById('currentSelector');
+    <div class="example demo1">
+      <span class="label">Descendant: div p (all p inside div)</span>
+      <p>Direct p - Styled ✓</p>
+      <section>
+        <p>Nested p - Styled ✓</p>
+      </section>
+    </div>
+    
+    <div class="example demo2">
+      <span class="label">Child: div > p (only direct children)</span>
+      <p>Direct p - Styled ✓</p>
+      <section>
+        <p>Nested p - NOT styled ✗</p>
+      </section>
+    </div>
+    
+    <div class="example demo3">
+      <span class="label">Adjacent: h3 + p (immediately after h3)</span>
+      <h3>Heading</h3>
+      <p>First p after h3 - Styled ✓</p>
+      <p>Second p - NOT styled ✗</p>
+    </div>
+    
+    <div class="example demo4">
+      <span class="label">General Sibling: h3 ~ p (all p after h3)</span>
+      <h3>Heading</h3>
+      <p>First p - Styled ✓</p>
+      <div>Some div</div>
+      <p>Second p - Still styled ✓</p>
+    </div>
+  </div>
+</body>
+</html>`}
+            title="Combinators Demo"
+            colorTheme="indigo"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+        </CardContent>
+      </Card>
 
-    function clearHighlights() {
-        Object.values(elements).forEach(el => {
-            if (el) el.classList.remove('highlighted');
-        });
-    }
+      <Card className="border-2 border-pink-200 dark:border-pink-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Lightbulb className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+            Quick Reference
+          </CardTitle>
+          <CardDescription>Combinator cheat sheet</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {[
+              { selector: 'A B', name: 'Descendant', matches: 'All B inside A (any level)' },
+              { selector: 'A > B', name: 'Child', matches: 'B only if direct child of A' },
+              { selector: 'A + B', name: 'Adjacent Sibling', matches: 'B immediately after A' },
+              { selector: 'A ~ B', name: 'General Sibling', matches: 'All B siblings after A' }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800">
+                <div className="flex-1">
+                  <code className="font-mono font-bold text-pink-700 dark:text-pink-400 text-lg">{item.selector}</code>
+                  <p className="text-sm text-pink-600 dark:text-pink-300 mt-1">{item.matches}</p>
+                </div>
+                <Badge className="bg-pink-600 text-white">{item.name}</Badge>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-    window.showCombinator = function(type) {
-        clearHighlights();
-        
-        switch(type) {
-            case 'descendant':
-                // Descendant selector: .test-parent p (all p elements inside)
-                if (elements.element1) elements.element1.classList.add('highlighted');
-                if (elements.element2) elements.element2.classList.add('highlighted');
-                if (elements.element3) elements.element3.classList.add('highlighted');
-                if (elements.element5) elements.element5.classList.add('highlighted');
-                currentSelector.textContent = 'Descendant: .test-parent p (all p elements inside parent)';
-                break;
-                
-            case 'child':
-                // Child selector: .test-parent > p (only direct children)
-                if (elements.element1) elements.element1.classList.add('highlighted');
-                if (elements.element3) elements.element3.classList.add('highlighted');
-                if (elements.element5) elements.element5.classList.add('highlighted');
-                currentSelector.textContent = 'Child: .test-parent > p (only direct p children)';
-                break;
-                
-            case 'adjacent':
-                // Adjacent sibling: h4 + p (first p immediately after h4)
-                if (elements.element1) elements.element1.classList.add('highlighted');
-                currentSelector.textContent = 'Adjacent Sibling: h4 + p (first p immediately after h4)';
-                break;
-                
-            case 'general':
-                // General sibling: h4 ~ p (all p siblings after h4)
-                if (elements.element1) elements.element1.classList.add('highlighted');
-                if (elements.element3) elements.element3.classList.add('highlighted');
-                if (elements.element5) elements.element5.classList.add('highlighted');
-                currentSelector.textContent = 'General Sibling: h4 ~ p (all p siblings after h4)';
-                break;
-                
-            case 'none':
-                currentSelector.textContent = 'Click a button to see combinator in action';
-                break;
-        }
-        
-        console.log('Combinator demo:', type);
-    };
-
-    // Add hover effects to demo elements
-    const demoElements = document.querySelectorAll('.test-element, .target');
-    demoElements.forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('highlighted')) {
-                this.style.transform = 'scale(1.02)';
-                this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-            }
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('highlighted')) {
-                this.style.transform = 'scale(1)';
-                this.style.boxShadow = 'none';
-            }
-        });
-    });
-
-    // Add click effects to control buttons
-    const buttons = document.querySelectorAll('.controls button');
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            // Visual feedback
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    });
-
-    console.log('CSS Combinators Demo loaded successfully!');
-    console.log('Use the interactive controls to see how different combinators work.');
-});`
-    };
-
-    return (
-        <div className="space-y-8">
-            <PageHeader
-                icon={Link}
-                category="CSS · Advanced Selectors"
-                title="Combinators"
-                description="Master element relationships and targeting with descendant, child, sibling, and adjacent selectors"
-                colorTheme="blue"
-            />
-
-            {/* Combinator Types Overview */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <TreePine className="w-5 h-5 text-blue-500" />
-                        CSS Combinator Types
-                    </CardTitle>
-                    <CardDescription>
-                        Understanding the four main combinators and how they define element relationships in CSS.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-4">
-                        {combinatorTypes.map((type, index) => (
-                            <div 
-                                key={type.name} 
-                                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                                    selectedCombinator === type.name 
-                                        ? 'ring-2 ring-primary ring-offset-2' 
-                                        : ''
-                                } ${type.color}`}
-                                onClick={() => setSelectedCombinator(type.name)}
-                            >
-                                <div className="flex items-center gap-2 mb-3">
-                                    <type.icon className={`w-5 h-5 ${type.textColor}`} />
-                                    <h3 className={`font-bold text-lg ${type.textColor}`}>
-                                        {type.title}
-                                    </h3>
-                                    <Badge variant="secondary" className="text-xs">
-                                        {type.symbol === ' ' ? 'space' : type.symbol}
-                                    </Badge>
-                                </div>
-                                <p className={`text-sm mb-3 ${type.textColor}`}>{type.desc}</p>
-                                <div className="space-y-2">
-                                    <div className="flex justify-between text-xs">
-                                        <span className="font-semibold">Relationship:</span>
-                                        <span>{type.relationship}</span>
-                                    </div>
-                                    <div className="flex justify-between text-xs">
-                                        <span className="font-semibold">Performance:</span>
-                                        <span>{type.performance}</span>
-                                    </div>
-                                    <code className="text-xs bg-muted p-2 rounded block text-center">
-                                        {type.syntax}
-                                    </code>
-                                    <Badge variant="secondary" className="text-xs w-full justify-center">
-                                        {type.useCase}
-                                    </Badge>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>What are Combinators?</CardTitle>
-                    <CardDescription>
-                       A combinator is something that explains the relationship between the selectors. It sits between two selectors to create a more complex and specific rule.
-                    </CardDescription>
-                </CardHeader>
-            </Card>
-
-            {/* Live Combinator Demo */}
-            <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Zap className="w-5 h-5" />
-                        Live Combinator Demo
-                    </CardTitle>
-                    <CardDescription>
-                        Click the buttons below to see how different combinators target elements based on their relationships.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-6">
-                        {/* Combinator Controls */}
-                        <div className="flex flex-wrap justify-center gap-2">
-                            {combinatorTypes.map((type) => (
-                                <Button
-                                    key={type.name}
-                                    variant={selectedCombinator === type.name ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setSelectedCombinator(type.name)}
-                                    className="flex items-center gap-2"
-                                >
-                                    <type.icon className="w-4 h-4" />
-                                    {type.title}
-                                </Button>
-                            ))}
-                        </div>
-
-                        {/* Live Demo Structure */}
-                        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border-2 border-dashed border-gray-300 min-h-[400px]">
-                            <div className="mb-4 text-center">
-                                <Badge variant="outline" className="text-sm">
-                                    Current: <code className="ml-1">{combinatorTypes.find(t => t.name === selectedCombinator)?.syntax}</code>
-                                </Badge>
-                            </div>
-                            
-                            {/* HTML Structure Visualization */}
-                            <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                                <div className="border-2 border-blue-400 bg-blue-50 dark:bg-blue-900/30 p-3 rounded mb-2">
-                                    <span className="text-xs font-mono text-blue-700 dark:text-blue-300">Parent Container</span>
-                                    
-                                    {/* Direct children */}
-                                    <div className={`mt-2 p-2 rounded border ${
-                                        selectedCombinator === 'descendant' || selectedCombinator === 'child' ? 
-                                        'bg-green-200 dark:bg-green-800 border-green-400' : 
-                                        'bg-white dark:bg-gray-600 border-gray-300'
-                                    }`}>
-                                        <span className="text-xs">Direct Child Element 1</span>
-                                    </div>
-                                    
-                                    <div className="mt-2 p-2 rounded border bg-gray-200 dark:bg-gray-600 border-gray-300">
-                                        <span className="text-xs">Nested Container</span>
-                                        <div className={`mt-1 p-2 rounded border ${
-                                            selectedCombinator === 'descendant' ? 
-                                            'bg-green-200 dark:bg-green-800 border-green-400' : 
-                                            'bg-white dark:bg-gray-500 border-gray-300'
-                                        }`}>
-                                            <span className="text-xs">Nested Child Element</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className={`mt-2 p-2 rounded border ${
-                                        selectedCombinator === 'descendant' || selectedCombinator === 'child' ? 
-                                        'bg-green-200 dark:bg-green-800 border-green-400' : 
-                                        'bg-white dark:bg-gray-600 border-gray-300'
-                                    }`}>
-                                        <span className="text-xs">Direct Child Element 2</span>
-                                    </div>
-                                </div>
-                                
-                                {/* Sibling elements */}
-                                <div className={`p-2 rounded border mt-2 ${
-                                    selectedCombinator === 'adjacent' ? 
-                                    'bg-green-200 dark:bg-green-800 border-green-400' : 
-                                    'bg-white dark:bg-gray-600 border-gray-300'
-                                }`}>
-                                    <span className="text-xs">Adjacent Sibling Element</span>
-                                </div>
-                                
-                                <div className={`p-2 rounded border mt-2 ${
-                                    selectedCombinator === 'general' ? 
-                                    'bg-green-200 dark:bg-green-800 border-green-400' : 
-                                    'bg-white dark:bg-gray-600 border-gray-300'
-                                }`}>
-                                    <span className="text-xs">General Sibling Element</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Current Behavior Explanation */}
-                        <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border-l-4 border-blue-400">
-                            <p className="text-sm text-blue-700 dark:text-blue-300">
-                                <strong>Current behavior:</strong> {combinatorTypes.find(t => t.name === selectedCombinator)?.desc}
-                            </p>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Interactive Playground */}
-            <Card className="border-primary bg-primary/5">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Play className="w-5 h-5" />
-                        Interactive Combinator Playground
-                    </CardTitle>
-                    <CardDescription>
-                        Explore comprehensive combinator examples including all four types, interactive demonstrations, real-world patterns, and live element targeting.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                        <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                            <Play className="mr-2 h-4 w-4" />
-                            Open Complete Combinator Guide
-                        </Button>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <TreePine className="w-3 h-3" />
-                            Descendant Demo
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <ArrowDown className="w-3 h-3" />
-                            Child Demo
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Plus className="w-3 h-3" />
-                            Adjacent Demo
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Waves className="w-3 h-3" />
-                            General Demo
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Zap className="w-3 h-3" />
-                            Interactive Tester
-                        </Badge>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-    );
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>(space)</strong> = any descendant, <strong>&gt;</strong> = direct child only</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>+</strong> = next sibling, <strong>~</strong> = all following siblings</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Child selector <strong>&gt;</strong> is more specific than descendant</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Sibling selectors only work on <strong>same level</strong></span>
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
 }

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
@@ -14,156 +13,191 @@ import {
   Lightbulb,
   CheckCircle2,
   XCircle,
+  ArrowRight,
 } from 'lucide-react';
 
-interface JavaScriptFunctionParametersProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-export default function JavaScriptFunctionParameters({}: JavaScriptFunctionParametersProps) {
+export default function JavaScriptFunctionParameters() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Brackets}
         category="JavaScript Fundamentals"
         title="Function Parameters"
-        description="Pass data into functions with defaults, rest parameters, and destructuring for clarity."
-        colorTheme="blue"
+        description="Pass data into functions - learn defaults, rest parameters, and destructuring"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Why Parameters Matter
-          </CardTitle>
-          <CardDescription className="text-base">
-            Parameters shape how functions receive and process data—defaults, rest, and destructuring keep code clean.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Sliders className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">Defaults</h3>
+      {/* What are Parameters */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-sm text-muted-foreground">Provide fallback values to avoid undefined checks everywhere.</p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">name = 'Guest'</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Layers className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              <h3 className="font-semibold">Rest</h3>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Function Parameters?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Parameters are <strong className="text-yellow-700 dark:text-yellow-400">named variables</strong> in a function that receive values when the function is called. Think of them as labeled containers that hold the data your function needs.
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">Handle variable arguments with a single array-like parameter.</p>
-            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">...nums</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Brackets className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
-              <h3 className="font-semibold">Destructuring</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Pull only what you need from objects or arrays right in the signature.</p>
-            <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">{'{ name, plan }'}</Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* What are Function Parameters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Brackets className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Function Parameters?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Parameters are the named variables in a function definition that receive values when the function is called
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            Think of parameters as labeled containers that hold the data your function needs to work. When you call a function, you pass <strong>arguments</strong> (actual values) that fill these parameter containers.
-          </p>
-          
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">parameters-vs-arguments.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Understanding the difference</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Parameters: name, age (in definition)
-function introduce(name, age) {
-  return \`I'm \${name} and I'm \${age} years old.\`;
-}
-
-// Arguments: "Alice", 25 (values passed in)
-const message = introduce('Alice', 25);
-
-console.log(message);
-// Output: "I'm Alice and I'm 25 years old."`}
-            </pre>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Distinction</AlertTitle>
-            <AlertDescription>
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Parameters vs Arguments</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
               <strong>Parameters</strong> are placeholders in the function definition. <strong>Arguments</strong> are the actual values you pass when calling the function.
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
+      {/* Basic Example */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <ArrowRight className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Parameters in Action</CardTitle>
+              <CardDescription>Understanding how parameters work</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-yellow-600 dark:bg-yellow-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The Difference</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                When you define a function, you specify <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-xs">parameters</code>. When you call it, you pass <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-xs">arguments</code>.
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-yellow-200 dark:border-yellow-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Parameters: name, age
+function introduce(name, age) {
+  return 'I am ' + name + ', ' + age + ' years old';
+}
+
+// Arguments: 'Alice', 25
+const message = introduce('Alice', 25);
+
+console.log(message);
+// Output: I am Alice, 25 years old`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Basic Parameters Example"
+        description="Pass different values to the same function"
+        code={`function greet(name) {
+  console.log('Hello, ' + name + '!');
+}
+
+greet('Alice');   // Hello, Alice!
+greet('Bob');     // Hello, Bob!
+greet('Charlie'); // Hello, Charlie!
+
+// Multiple parameters
+function add(a, b) {
+  return a + b;
+}
+
+console.log(add(5, 3));   // 8
+console.log(add(10, 20)); // 30`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
       {/* Default Parameters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sliders className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Default Parameters
-          </CardTitle>
-          <CardDescription className="text-base">
-            Provide fallback values when arguments aren't supplied
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Sliders className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Default Parameters</CardTitle>
+              <CardDescription>Provide fallback values when arguments aren't supplied</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Basic Default Values</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">default-params.js</span>
-                <span className="text-blue-600/70 dark:text-blue-400/70">Setting default values</span>
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Why Use Defaults?</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Default parameters let you set fallback values. If someone doesn't pass an argument, the default kicks in automatically!
+              </p>
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="font-semibold text-red-700 dark:text-red-300 mb-3">❌ Without Default</h5>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-red-200 dark:border-red-800/30">
+                    <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function greet(name) {
+  console.log('Hello, ' + name);
+}
+
+greet();
+// Output: Hello, undefined
+// Not good! ❌`}</pre>
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold text-green-700 dark:text-green-300 mb-3">✅ With Default</h5>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-green-200 dark:border-green-800/30">
+                    <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function greet(name = 'Guest') {
+  console.log('Hello, ' + name);
+}
+
+greet();
+// Output: Hello, Guest
+// Perfect! ✅`}</pre>
+                  </div>
+                </div>
               </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Function with default parameters
-function greet(name = 'Guest', greeting = 'Hello') {
-  return \`\${greeting}, \${name}!\`;
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Default Parameters in Action"
+        description="Set default values for optional parameters"
+        code={`function greet(name = 'Guest', greeting = 'Hello') {
+  return greeting + ', ' + name + '!';
 }
 
 // Call with both arguments
 console.log(greet('Alice', 'Hi'));
-// Output: "Hi, Alice!"
+// Output: Hi, Alice!
 
 // Call with one argument
 console.log(greet('Bob'));
-// Output: "Hello, Bob!"
+// Output: Hello, Bob!
 
 // Call with no arguments
 console.log(greet());
-// Output: "Hello, Guest!"`}
-              </pre>
-            </div>
-          </div>
+// Output: Hello, Guest!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Default with Expressions</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">expression-defaults.js</span>
-                <span className="text-purple-600/70 dark:text-purple-400/70">Dynamic defaults</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Default can be an expression
+      <CodeSnippet
+        title="Default with Expressions"
+        description="Defaults can be any expression, not just simple values"
+        code={`// Default can be a function call or expression
 function createUser(name, createdAt = new Date()) {
   return {
     name: name,
@@ -175,51 +209,48 @@ const user1 = createUser('Alice');
 console.log(user1);
 // { name: 'Alice', created: [current date] }
 
-// Can pass custom date
+// Can override with custom date
 const customDate = new Date('2024-01-01');
 const user2 = createUser('Bob', customDate);
 console.log(user2);
-// { name: 'Bob', created: 2024-01-01T00:00:00.000Z }`}
-              </pre>
-            </div>
-          </div>
+// { name: 'Bob', created: 2024-01-01... }`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-          <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
-            <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <AlertTitle className="text-blue-900 dark:text-blue-100">When Defaults Apply</AlertTitle>
-            <AlertDescription className="text-blue-800 dark:text-blue-200">
-              Default values are used when the argument is <code className="font-mono">undefined</code>. Passing <code className="font-mono">null</code> or <code className="font-mono">0</code> will NOT trigger the default.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
+      <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+        <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <AlertTitle>When Defaults Apply</AlertTitle>
+        <AlertDescription className="text-base">
+          Default values are used when the argument is <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">undefined</code>. Passing <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">null</code> or <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">0</code> will NOT trigger the default!
+        </AlertDescription>
+      </Alert>
 
       {/* Rest Parameters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Rest Parameters
-          </CardTitle>
-          <CardDescription className="text-base">
-            Collect multiple arguments into a single array
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Layers className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>Rest Parameters (...)</CardTitle>
+              <CardDescription>Collect multiple arguments into a single array</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              The rest parameter syntax (<code className="font-mono">...name</code>) allows a function to accept any number of arguments as an array.
-            </p>
-            
-            <h4 className="font-semibold text-lg">Basic Rest Parameter</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30">
-                <span className="uppercase tracking-wide text-emerald-700 dark:text-emerald-300">rest-params.js</span>
-                <span className="text-emerald-600/70 dark:text-emerald-400/70">Flexible arguments</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Function with rest parameter
-function sum(...numbers) {
+          <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 overflow-hidden">
+            <div className="bg-emerald-600 dark:bg-emerald-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Accept Any Number of Arguments!</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                The rest parameter syntax <code className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 rounded text-xs">...name</code> collects all remaining arguments into an array. Perfect for flexible functions!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-emerald-200 dark:border-emerald-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function sum(...numbers) {
   let total = 0;
   for (const num of numbers) {
     total += num;
@@ -227,27 +258,21 @@ function sum(...numbers) {
   return total;
 }
 
-console.log(sum(1, 2));
-// Output: 3
+console.log(sum(1, 2));           // 3
+console.log(sum(1, 2, 3, 4, 5));  // 15
+console.log(sum());               // 0
 
-console.log(sum(1, 2, 3, 4, 5));
-// Output: 15
-
-console.log(sum());
-// Output: 0`}
-              </pre>
+// numbers becomes an array!`}</pre>
+              </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
 
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Mixing Regular and Rest Parameters</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-cyan-100 dark:bg-cyan-900/30">
-                <span className="uppercase tracking-wide text-cyan-700 dark:text-cyan-300">rest-mixed.js</span>
-                <span className="text-cyan-600/70 dark:text-cyan-400/70">Combined parameters</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// First parameter is required, rest are collected
+      <CodeSnippet
+        title="Mixing Regular and Rest Parameters"
+        description="Combine fixed parameters with rest parameters"
+        code={`// First parameter is required, rest are collected
 function createList(title, ...items) {
   return {
     title: title,
@@ -256,74 +281,117 @@ function createList(title, ...items) {
   };
 }
 
-const groceries = createList('Shopping', 'Milk', 'Bread', 'Eggs');
+const groceries = createList(
+  'Shopping',
+  'Milk',
+  'Bread',
+  'Eggs',
+  'Butter'
+);
 
 console.log(groceries);
 // Output: {
 //   title: 'Shopping',
-//   items: ['Milk', 'Bread', 'Eggs'],
-//   count: 3
+//   items: ['Milk', 'Bread', 'Eggs', 'Butter'],
+//   count: 4
 // }`}
-              </pre>
-            </div>
-          </div>
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-          <Alert className="bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800">
-            <Lightbulb className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            <AlertTitle className="text-emerald-900 dark:text-emerald-100">Rest Must Be Last</AlertTitle>
-            <AlertDescription className="text-emerald-800 dark:text-emerald-200">
-              The rest parameter must always be the last parameter in the function signature.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
+      <Alert className="bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30">
+        <Lightbulb className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+        <AlertTitle>Rest Must Be Last!</AlertTitle>
+        <AlertDescription className="text-base">
+          The rest parameter must always be the last parameter in the function signature. You can't have parameters after <code className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 rounded text-xs">...rest</code>
+        </AlertDescription>
+      </Alert>
 
       {/* Destructuring Parameters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Brackets className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            Destructuring Parameters
-          </CardTitle>
-          <CardDescription className="text-base">
-            Extract values from objects and arrays directly in the function signature
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Object Destructuring</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-amber-100 dark:bg-amber-900/30">
-                <span className="uppercase tracking-wide text-amber-700 dark:text-amber-300">object-destructure.js</span>
-                <span className="text-amber-600/70 dark:text-amber-400/70">Pull specific properties</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Destructure object parameter
-function displayUser({ name, email, role = 'user' }) {
-  return \`\${name} (\${email}) - Role: \${role}\`;
-}
-
-const user1 = { name: 'Alice', email: 'alice@example.com', role: 'admin' };
-const user2 = { name: 'Bob', email: 'bob@example.com' };
-
-console.log(displayUser(user1));
-// Output: "Alice (alice@example.com) - Role: admin"
-
-console.log(displayUser(user2));
-// Output: "Bob (bob@example.com) - Role: user"`}
-              </pre>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Brackets className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Destructuring Parameters</CardTitle>
+              <CardDescription>Extract values from objects and arrays directly in the function signature</CardDescription>
             </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Pull What You Need!</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Instead of passing an entire object and accessing properties inside, you can destructure right in the parameter list!
+              </p>
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="font-semibold text-red-700 dark:text-red-300 mb-3">❌ Without Destructuring</h5>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-red-200 dark:border-red-800/30">
+                    <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function displayUser(user) {
+  return user.name + 
+    ' (' + user.email + ')';
+}
 
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Array Destructuring</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">array-destructure.js</span>
-                <span className="text-blue-600/70 dark:text-blue-400/70">Extract array elements</span>
+// Have to repeat 'user.'`}</pre>
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold text-green-700 dark:text-green-300 mb-3">✅ With Destructuring</h5>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-green-200 dark:border-green-800/30">
+                    <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function displayUser({ name, email }) {
+  return name + ' (' + email + ')';
+}
+
+// Much cleaner! ✅`}</pre>
+                  </div>
+                </div>
               </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Destructure array parameter
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object Destructuring with Defaults"
+        description="Combine destructuring with default values"
+        code={`// Destructure object parameter with defaults
+function displayUser({ name, email, role = 'user' }) {
+  return name + ' (' + email + ') - Role: ' + role;
+}
+
+const user1 = { 
+  name: 'Alice', 
+  email: 'alice@example.com', 
+  role: 'admin' 
+};
+
+const user2 = { 
+  name: 'Bob', 
+  email: 'bob@example.com' 
+};
+
+console.log(displayUser(user1));
+// Output: Alice (alice@example.com) - Role: admin
+
+console.log(displayUser(user2));
+// Output: Bob (bob@example.com) - Role: user`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      <CodeSnippet
+        title="Array Destructuring"
+        description="Extract array elements by position"
+        code={`// Destructure array parameter
 function getCoordinates([x, y, z = 0]) {
   return {
     x: x,
@@ -336,98 +404,87 @@ console.log(getCoordinates([10, 20, 30]));
 // Output: { x: 10, y: 20, z: 30 }
 
 console.log(getCoordinates([5, 15]));
-// Output: { x: 5, y: 15, z: 0 }`}
-              </pre>
-            </div>
-          </div>
+// Output: { x: 5, y: 15, z: 0 }
 
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Nested Destructuring</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">nested-destructure.js</span>
-                <span className="text-purple-600/70 dark:text-purple-400/70">Deep extraction</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Destructure nested objects
-function formatAddress({ user: { name }, address: { city, country } }) {
-  return \`\${name} lives in \${city}, \${country}\`;
+// Skip elements with commas
+function getFirstAndThird([first, , third]) {
+  return { first, third };
 }
 
-const data = {
-  user: { name: 'Alice', id: 123 },
-  address: { city: 'New York', country: 'USA', zip: '10001' }
-};
+console.log(getFirstAndThird([1, 2, 3]));
+// Output: { first: 1, third: 3 }`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-console.log(formatAddress(data));
-// Output: "Alice lives in New York, USA"`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Real-World Examples */}
+      {/* Real-World Pattern */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll use every day
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Options Object Pattern</CardTitle>
+              <CardDescription>The most common pattern in modern JavaScript</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="Options Object Pattern"
-              description="Pass multiple parameters as a single object with defaults - perfect for complex configurations"
-              code={`// Options object with destructuring and defaults
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Professional Pattern</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Instead of many individual parameters, pass a single options object with defaults. This pattern is used everywhere in modern JavaScript!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Options object with destructuring + defaults
 function createButton({
   text,
   color = 'blue',
   size = 'medium',
   disabled = false
 }) {
-  return \`Button: \${text} (\${color}, \${size})\`;
+  return 'Button: ' + text + 
+    ' (' + color + ', ' + size + ')';
 }
 
+// Only pass what you need!
 const btn = createButton({
   text: 'Click Me',
   color: 'red'
 });
 
 console.log(btn);
-// Output: "Button: Click Me (red, medium)"`}
-              language="javascript"
-              colorTheme="blue"
-              icon={CheckCircle2}
-              features={[
-                "Named parameters pattern",
-                "Default values for optional params",
-                "Only pass what you need",
-                "Self-documenting API"
-              ]}
-              tips={[
-                "Essential for complex configurations",
-                "Makes code more readable",
-                "Common in React components and APIs"
-              ]}
-            />
+// Output: Button: Click Me (red, medium)`}</pre>
+              </div>
+            </div>
+          </div>
 
-            <CodeSnippet
-              title="Rest Parameters for Math"
-              description="Use rest operator (...) to accept unlimited arguments - perfect for flexible operations"
-              code={`// Rest parameters for variable arguments
+          <Alert className="bg-indigo-50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800/30">
+            <CheckCircle2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle>Why This Pattern is Great</AlertTitle>
+            <AlertDescription className="text-base space-y-2">
+              <div>✅ Self-documenting - parameter names are clear</div>
+              <div>✅ Order doesn't matter - pass properties in any order</div>
+              <div>✅ Optional parameters - just omit what you don't need</div>
+              <div>✅ Default values - built-in fallbacks</div>
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Real-World: Math Functions with Rest"
+        description="Accept unlimited arguments for calculations"
+        code={`// Calculate average of any number of values
 function average(...numbers) {
   if (numbers.length === 0) return 0;
   
-  const sum = numbers.reduce(
-    (total, num) => total + num,
-    0
-  );
-  
+  const sum = numbers.reduce((total, num) => total + num, 0);
   return sum / numbers.length;
 }
 
@@ -435,58 +492,58 @@ console.log(average(10, 20, 30));
 // Output: 20
 
 console.log(average(5, 15, 25, 35));
-// Output: 20`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={CheckCircle2}
-              features={[
-                "Accept unlimited arguments",
-                "Works with all array methods",
-                "Cleaner than 'arguments' object",
-                "Type-safe with TypeScript"
-              ]}
-              tips={[
-                "Use ...rest for flexible functions",
-                "Perfect for math operations",
-                "Combine with other parameters"
-              ]}
-            />
-          </div>
-        </CardContent>
-      </Card>
+// Output: 20
 
-      {/* Best practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Do This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Default optional params to avoid undefined checks.</li>
-              <li>✅ Destructure only needed fields to reduce noise.</li>
-              <li>✅ Validate inputs early; throw descriptive errors.</li>
-              <li>✅ Prefer rest over `arguments` for clarity.</li>
-            </ul>
+// Find maximum
+function max(...numbers) {
+  if (numbers.length === 0) return -Infinity;
+  return Math.max(...numbers);
+}
+
+console.log(max(3, 7, 2, 9, 1));
+// Output: 9`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Best Practices</h3>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" />
-              Avoid This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>❌ Overloading params with multiple meanings.</li>
-              <li>❌ Mutating parameter objects inside the function.</li>
-              <li>❌ Depending on `arguments` instead of rest.</li>
-              <li>❌ Returning inconsistent shapes when params vary.</li>
-            </ul>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use defaults for optional parameters</li>
+                <li>• Destructure only the fields you need</li>
+                <li>• Prefer rest over the arguments object</li>
+                <li>• Use options object for many parameters</li>
+                <li>• Put rest parameter last</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Too many individual parameters</li>
+                <li>• Mutating parameter objects</li>
+                <li>• Using the old arguments object</li>
+                <li>• Parameters after rest parameter</li>
+                <li>• Unclear parameter names</li>
+              </ul>
+            </div>
           </div>
         </CardContent>
       </Card>

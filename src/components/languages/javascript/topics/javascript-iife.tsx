@@ -2,547 +2,569 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
+  Zap,
   Sparkles,
-  Shield,
-  Layers,
-  Code2,
+  Lock,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  Zap,
-  Box,
-  Lock,
+  Shield,
   Package,
+  Code2,
 } from 'lucide-react';
 
-export default function JavaScriptIife() {
+export default function JavaScriptIIFE() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Zap}
-        category="JavaScript · Functions"
+        category="JavaScript Fundamentals"
         title="IIFE (Immediately Invoked Function Expressions)"
-        description="Encapsulate logic, protect scope, and run setup code instantly with IIFEs"
-        colorTheme="blue"
+        description="Functions that execute immediately - protect your scope and avoid global pollution"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are IIFEs?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Functions that execute immediately after definition, creating private scope and avoiding global pollution
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Lock className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">Private Scope</h3>
+      {/* What are IIFEs */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-muted-foreground text-sm">
-              Variables stay inside and don't pollute the global namespace
-            </p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-              Encapsulation
-            </Badge>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What is an IIFE?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                IIFE stands for <strong className="text-yellow-700 dark:text-yellow-400">"Immediately Invoked Function Expression"</strong>. It's a function that runs as soon as it's defined. Think of it like a function that calls itself automatically!
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-cyan-600/80 dark:text-cyan-400/80" />
-              <h3 className="font-semibold">Immediate Execution</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Code runs instantly without manual function call
-            </p>
-            <Badge className="bg-cyan-100/80 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 border border-cyan-300/50 dark:border-cyan-700/40">
-              Auto-run
-            </Badge>
-          </div>
-
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Package className="w-5 h-5 text-purple-600/80 dark:text-purple-400/80" />
-              <h3 className="font-semibold">Module Pattern</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Create modules with private data and public APIs
-            </p>
-            <Badge className="bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-300/50 dark:border-purple-700/40">
-              Patterns
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Understanding IIFEs */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Box className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Understanding IIFEs
-          </CardTitle>
-          <CardDescription className="text-base">
-            A function expression that runs immediately, wrapped in parentheses to create isolated scope
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            An IIFE is a <strong>function expression</strong> wrapped in parentheses and executed immediately. The outer parentheses force JavaScript to treat it as an expression (not a declaration), and the trailing <code>()</code> invokes it right away. This creates a private scope where variables don't leak into the global namespace.
-          </p>
-          
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">basic-iife.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Two common syntaxes</span>
-            </div>
-            <pre 
-              className="text-xs px-4 py-3 whitespace-pre overflow-x-auto"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`// Basic IIFE - runs immediately
-(function() {
-  const message = 'Hello from IIFE!';
-  console.log(message);
-})();
-
-// With arrow function
-(() => {
-  console.log('Arrow IIFE executed!');
-})();
-
-// Output:
-// Hello from IIFE!
-// Arrow IIFE executed!`}
-            </pre>
-          </div>
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Concept</AlertTitle>
-            <AlertDescription>
-              The wrapping parentheses <code>(function() &#123;...&#125;)</code> turn the function into an expression. The final <code>()</code> executes it immediately. Variables inside cannot be accessed from outside.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              It's like a self-destructing message - the function creates a private space, does its work, and disappears, leaving no trace in the global scope!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Anatomy */}
+      {/* Basic Syntax */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Anatomy of an IIFE
-          </CardTitle>
-          <CardDescription className="text-base">
-            Breaking down the wrapper, private scope, and returned values
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Code2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Basic IIFE Syntax</CardTitle>
+              <CardDescription>Two ways to write an IIFE</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-              <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">anatomy.js</span>
-              <span className="text-purple-600/70 dark:text-purple-400/70">How IIFEs work</span>
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The Pattern</h4>
             </div>
-            <pre 
-              className="text-xs px-4 py-3 whitespace-pre overflow-x-auto"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`// Anatomy of an IIFE
-(function(name) {           // ← Wrapper: makes it an expression
-  const greeting = 'Hello';  // ← Private scope
-  console.log(greeting + ', ' + name);
-})('World');                 // ← Immediate invocation with argument
-
-// Output: Hello, World
-
-// With return value
-const result = (function() {
-  const x = 10;
-  const y = 20;
-  return x + y;              // ← Return value
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Wrap the function in parentheses and add <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">()</code> to invoke it immediately!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Method 1: Recommended
+(function() {
+  console.log('I run immediately!');
 })();
 
-console.log(result);         // 30`}
-            </pre>
-          </div>
+// Method 2: Alternative
+(function() {
+  console.log('This also works!');
+}());
 
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                <strong className="text-purple-700 dark:text-purple-300">Wrapper ()</strong>
+// Both do the same thing!
+// Output: I run immediately!
+// Output: This also works!`}</pre>
               </div>
-              <p className="text-sm text-muted-foreground">
-                First parentheses wrap the function expression so it can be invoked immediately
-              </p>
-            </div>
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                <strong className="text-blue-700 dark:text-blue-300">Private Scope</strong>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Variables inside only exist within the IIFE and cannot leak out
-              </p>
-            </div>
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-cyan-500"></div>
-                <strong className="text-cyan-700 dark:text-cyan-300">Return Value</strong>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Can return values or objects to expose a public API
-              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Core Use Cases */}
+      <CodeSnippet
+        title="Regular Function vs IIFE"
+        description="See the difference between normal functions and IIFEs"
+        code={`// Regular function - you must call it
+function greet() {
+  console.log('Hello!');
+}
+greet(); // Must call manually
+// Output: Hello!
+
+// IIFE - calls itself automatically
+(function() {
+  console.log('Hi there!');
+})(); // Runs immediately!
+// Output: Hi there!
+
+// The IIFE executed without us calling it!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Private Scope */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Shield className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Core Use Cases
-          </CardTitle>
-          <CardDescription className="text-base">
-            Common patterns where IIFEs provide elegant solutions
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Lock className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>Private Scope - The Main Benefit</CardTitle>
+              <CardDescription>Keep variables private and avoid global pollution</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-3 gap-6">
-            <CodeSnippet
-              title="Private Configuration"
-              description="Keep sensitive data and helper functions private from global scope"
-              code={`// Create a private scope for temporary helpers
-(function () {
-  const apiKey = 'secret-123';
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Why Use IIFEs?</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Variables inside an IIFE are <strong>private</strong> - they don't pollute the global scope and can't be accessed from outside!
+              </p>
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="font-semibold text-red-700 dark:text-red-300 mb-3">❌ Without IIFE</h5>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-red-200 dark:border-red-800/30">
+                    <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`var name = 'Alice';
+var age = 25;
 
-  function buildUrl(endpoint) {
-    return 'https://api.example.com/' + endpoint + '?key=' + apiKey;
-  }
+console.log(name); // Alice
+console.log(age);  // 25
 
-  console.log(buildUrl('stats'));
+// Global scope polluted!
+// Anyone can access these ❌`}</pre>
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold text-green-700 dark:text-green-300 mb-3">✅ With IIFE</h5>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-green-200 dark:border-green-800/30">
+                    <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`(function() {
+  var name = 'Alice';
+  var age = 25;
+  
+  console.log(name); // Alice
+  console.log(age);  // 25
 })();
 
-// console.log(apiKey); // ReferenceError`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Lock}
-              features={[
-                "Variables stay private",
-                "No global pollution",
-                "Secrets protected",
-                "Helper functions hidden"
-              ]}
-              tips={[
-                "Use for API keys or config",
-                "Perfect for initialization",
-                "Keeps global scope clean"
-              ]}
-            />
+// Try to access outside:
+console.log(name); // undefined
+console.log(age);  // undefined
 
-            <CodeSnippet
-              title="Module Pattern"
-              description="Create modules with private state and public API"
-              code={`const themeManager = (function () {
-  const theme = { mode: 'light' };
+// Private! ✅`}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-  return {
-    setDark() {
-      theme.mode = 'dark';
-      console.log('Theme set to dark');
-    },
-    current() {
-      return theme.mode;
-    },
-  };
+      <CodeSnippet
+        title="IIFE Prevents Global Pollution"
+        description="Variables stay private inside the IIFE"
+        code={`// Without IIFE - pollutes global
+var counter = 0;
+counter++; // Anyone can modify this!
+
+// With IIFE - keeps it private
+(function() {
+  var counter = 0;
+  counter++;
+  console.log(counter); // 1
 })();
 
-themeManager.setDark(); // Theme set to dark
-console.log(themeManager.current()); // dark`}
-              language="javascript"
-              colorTheme="purple"
-              icon={Package}
-              features={[
-                "Private data",
-                "Public methods",
-                "Encapsulation",
-                "Module pattern"
-              ]}
-              tips={[
-                "Return only what's needed",
-                "Hide implementation details",
-                "Classic pattern before ES6 modules"
-              ]}
-            />
+// Can't access it outside
+console.log(typeof counter); // undefined
 
-            <CodeSnippet
-              title="Loop Closures"
-              description="Preserve correct values in loops with var"
-              code={`// Preserve the right index when using var
-for (var i = 1; i <= 3; i++) {
-  (function (index) {
-    setTimeout(() => console.log('Button', index), index * 100);
-  })(i);
-}
+// The counter variable is protected!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* IIFE with Parameters */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Package className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>IIFE with Parameters</CardTitle>
+              <CardDescription>Pass values into your IIFE</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Pass Data In</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                You can pass arguments to IIFEs just like regular functions!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// IIFE with parameters
+(function(name, age) {
+  console.log('Name: ' + name);
+  console.log('Age: ' + age);
+})('Alice', 25);
 
 // Output:
-// Button 1
-// Button 2
-// Button 3`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={Zap}
-              features={[
-                "Fixes closure issues",
-                "Preserves loop variables",
-                "Works with var",
-                "Common pattern"
-              ]}
-              tips={[
-                "Use let/const in modern code",
-                "IIFE creates new scope per iteration",
-                "Fixes classic setTimeout problem"
-              ]}
-            />
+// Name: Alice
+// Age: 25
+
+// Pass any data you need!`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Real-World Examples */}
+      <CodeSnippet
+        title="Real-World: Configuration IIFE"
+        description="Pass configuration objects to IIFEs"
+        code={`// Initialize app with config
+(function(config) {
+  console.log('App Name: ' + config.name);
+  console.log('Version: ' + config.version);
+  console.log('Debug Mode: ' + config.debug);
+  
+  // Setup code here...
+  if (config.debug) {
+    console.log('Debug mode enabled!');
+  }
+})({
+  name: 'MyApp',
+  version: '1.0.0',
+  debug: true
+});
+
+// Output:
+// App Name: MyApp
+// Version: 1.0.0
+// Debug Mode: true
+// Debug mode enabled!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Return Values */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code2 className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll encounter in production applications
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>IIFEs Can Return Values</CardTitle>
+              <CardDescription>Create modules with public APIs</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="DOM Ready Initialization"
-              description="Run code when DOM is ready without polluting global scope"
-              code={`// Run logic once the DOM is ready
-(function (doc) {
-  if (doc.readyState === 'complete') {
-    console.log('DOM already ready');
-  } else {
-    doc.addEventListener('DOMContentLoaded', () => {
-      console.log('DOM ready, binding events');
-    });
-  }
-})(document);`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Zap}
-              features={[
-                "Runs on DOM ready",
-                "No global variables",
-                "Clean initialization",
-                "Pass document as param"
-              ]}
-              tips={[
-                "Perfect for script initialization",
-                "Keeps window clean",
-                "Common in jQuery plugins"
-              ]}
-            />
-
-            <CodeSnippet
-              title="Feature Toggles"
-              description="Control features with private flags that can't be tampered with"
-              code={`// Feature flag isolated in a private scope
-const feature = (function () {
-  const enabled = true;
-
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The Module Pattern</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                IIFEs can return objects with methods - this is the classic <strong>Module Pattern</strong>!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`var counter = (function() {
+  var count = 0; // Private!
+  
   return {
-    run() {
-      if (!enabled) {
-        console.log('Feature disabled');
-        return;
-      }
-      console.log('Running beta feature safely');
+    increment: function() {
+      count++;
+      return count;
     },
+    decrement: function() {
+      count--;
+      return count;
+    },
+    getCount: function() {
+      return count;
+    }
   };
 })();
 
-feature.run(); // Running beta feature safely`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={Shield}
-              features={[
-                "Private feature flags",
-                "Can't be tampered",
-                "Safe beta features",
-                "Controlled access"
-              ]}
-              tips={[
-                "Use for A/B testing",
-                "Hide experimental code",
-                "Better than window.featureFlag"
-              ]}
-            />
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
+console.log(counter.getCount());  // 2
+console.log(counter.decrement()); // 1
+
+// Can't access count directly!
+console.log(counter.count); // undefined`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Variations */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-cyan-600/80 dark:text-cyan-400/80" />
-            Modern Variations
-          </CardTitle>
-          <CardDescription className="text-base">
-            Async and arrow-based IIFEs for flexible, modern syntax
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="Async IIFE"
-              description="Use async/await at the top level in non-module scripts"
-              code={`// Async IIFE for top-level await style code
-(async function () {
-  const data = await Promise.resolve(['Ada', 'Lin']);
-  console.log('Resolved data:', data);
+      <CodeSnippet
+        title="Real-World: Calculator Module"
+        description="Create a calculator with private state using IIFE"
+        code={`var calculator = (function() {
+  var result = 0; // Private variable
+  
+  return {
+    add: function(num) {
+      result += num;
+      return this;
+    },
+    subtract: function(num) {
+      result -= num;
+      return this;
+    },
+    multiply: function(num) {
+      result *= num;
+      return this;
+    },
+    getResult: function() {
+      return result;
+    },
+    reset: function() {
+      result = 0;
+      return this;
+    }
+  };
 })();
 
-// Immediately starts fetching data`}
-              language="javascript"
-              colorTheme="purple"
-              icon={Zap}
-              features={[
-                "Top-level await",
-                "Async operations",
-                "Promise handling",
-                "Non-blocking"
-              ]}
-              tips={[
-                "Perfect for API calls",
-                "Use in non-module scripts",
-                "Modern async pattern"
-              ]}
-            />
+// Chain operations!
+calculator
+  .add(10)
+  .multiply(2)
+  .subtract(5);
 
-            <CodeSnippet
-              title="Arrow IIFE"
-              description="Concise syntax for immediate execution and implicit returns"
-              code={`// Arrow function IIFE with implicit return
-const config = (() => ({
-  env: 'production',
-  version: '1.0.0',
-}))();
+console.log(calculator.getResult()); // 15
 
-console.log(config.env); // production`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Zap}
-              features={[
-                "Concise syntax",
-                "Implicit return",
-                "Modern style",
-                "Clean code"
-              ]}
-              tips={[
-                "Great for config objects",
-                "Shorter than function keyword",
-                "Returns object immediately"
-              ]}
-            />
+calculator.reset();
+console.log(calculator.getResult()); // 0
+
+// 'result' is completely private!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Arrow Function IIFE */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <Zap className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>Modern IIFE with Arrow Functions</CardTitle>
+              <CardDescription>ES6 syntax for IIFEs</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Cleaner Syntax</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                You can use arrow functions for shorter IIFE syntax!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Traditional IIFE
+(function() {
+  console.log('Old style');
+})();
+
+// Arrow function IIFE
+(() => {
+  console.log('Modern style');
+})();
+
+// With parameters
+((name) => {
+  console.log('Hello, ' + name);
+})('Alice');
+
+// Output:
+// Old style
+// Modern style
+// Hello, Alice`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Real-World: Async IIFE"
+        description="Use async/await inside an IIFE"
+        code={`// Async IIFE - very common in modern JavaScript
+(async () => {
+  console.log('Starting...');
+  
+  // Simulate API call
+  const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
+  await wait(1000);
+  console.log('1 second passed');
+  
+  await wait(1000);
+  console.log('2 seconds passed');
+  
+  console.log('Done!');
+})();
+
+// Output:
+// Starting...
+// (1 second later) 1 second passed
+// (1 second later) 2 seconds passed
+// Done!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Use Cases */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+              <Sparkles className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+            </div>
+            <div>
+              <CardTitle>Common Use Cases</CardTitle>
+              <CardDescription>When to use IIFEs</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 text-blue-700 dark:text-blue-300">1. Avoid Global Pollution</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`(function() {
+  var temp = 'temporary';
+  // Use temp here
+})();
+// temp doesn't exist outside`}</pre>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 border-emerald-200 dark:border-emerald-800/30">
+              <h4 className="font-semibold mb-3 text-emerald-700 dark:text-emerald-300">2. Create Modules</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`var module = (function() {
+  var private = 'secret';
+  return {
+    public: 'exposed'
+  };
+})();`}</pre>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <h4 className="font-semibold mb-3 text-purple-700 dark:text-purple-300">3. Initialize Code</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`(function() {
+  // Setup code
+  console.log('App initialized');
+  // Runs immediately!
+})();`}</pre>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-200 dark:border-orange-800/30">
+              <h4 className="font-semibold mb-3 text-orange-700 dark:text-orange-300">4. Async Operations</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`(async () => {
+  await fetchData();
+  console.log('Done!');
+})();`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <CheckCircle2 className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                Do This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Use IIFEs to initialize libraries or attach event listeners one time</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Return only the API you need; keep internals private</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Prefer async IIFEs when replacing long promise chains</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Document what the IIFE does since it runs immediately</span>
-                </li>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Best Practices</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use IIFEs to avoid global pollution</li>
+                <li>• Create private variables with IIFEs</li>
+                <li>• Use for one-time initialization</li>
+                <li>• Prefer arrow function IIFEs (modern)</li>
+                <li>• Return objects for module pattern</li>
               </ul>
             </div>
 
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                Avoid This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Nesting many IIFEs unnecessarily—split files or use modules instead</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Relying on IIFEs when ES modules already provide scope isolation</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Forgetting to pass dependencies explicitly (e.g., window, document)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Mixing IIFEs with hoisted var declarations that you expect globally</span>
-                </li>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Overusing IIFEs (ES6 modules better)</li>
+                <li>• Complex logic in IIFEs (hard to debug)</li>
+                <li>• Nesting IIFEs too deeply</li>
+                <li>• Using when let/const blocks work</li>
+                <li>• Forgetting the wrapping parentheses</li>
               </ul>
             </div>
           </div>
 
-          <Alert className="mt-6">
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Takeaway</AlertTitle>
-            <AlertDescription>
-              IIFEs are powerful for creating private scopes and avoiding global pollution. While ES6 modules have largely replaced them for modular code, IIFEs remain valuable for script initialization, feature flags, and maintaining backward compatibility.
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Modern Alternative</AlertTitle>
+            <AlertDescription className="text-base">
+              With ES6 modules and block-scoped variables (let/const), IIFEs are less common today. However, they're still useful for one-time setup code, async operations, and understanding JavaScript scope!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
-      
     </div>
   );
 }

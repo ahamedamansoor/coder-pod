@@ -202,10 +202,11 @@ export function ReactContentDisplay({
   topic: Topic, 
   language: Language, 
 }) {
-  const { openWithContent } = useReactPlayground();
+  const reactPlayground = useReactPlayground();
+  const openWithContent = reactPlayground?.openWithContent;
   
   const handleOpenEditor = (code: string) => {
-    openWithContent(code);
+    openWithContent?.(code);
   };
   
   const CustomTopicComponent = topicComponentMap[topic.slug];

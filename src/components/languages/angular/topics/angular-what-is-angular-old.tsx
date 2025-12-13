@@ -22,6 +22,10 @@ import {
   Terminal,
   FileCode,
   Workflow,
+  ExternalLink,
+  Settings,
+  Globe,
+  XCircle,
 } from 'lucide-react';
 
 export default function AngularWhatIsAngular() {
@@ -196,7 +200,6 @@ export default function AngularWhatIsAngular() {
                       title: 'My First Angular App',
                       description: 'A simple counter component demonstrating Angular basics',
                       stackblitzProjectId: 'angular-ivy',  // Using Angular Ivy demo project
-                      openFile: 'src/app/app.component.ts',
                       files: {
                         'src/app/app.component.ts': `import { Component } from '@angular/core';
 
@@ -681,7 +684,7 @@ export class AppModule { }`,
                 Add/remove CSS classes conditionally
               </p>
               <div className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs border">
-                <div className="text-purple-600 dark:text-purple-400">[ngClass]="{"{"}'active': isActive'"}"}"</div>
+                <div className="text-purple-600 dark:text-purple-400">[ngClass]={"{'active': isActive}"}</div>
                 <div className="text-muted-foreground mt-2">Conditional CSS classes</div>
                 <div className="text-muted-foreground">Dynamic styling</div>
               </div>
@@ -793,7 +796,7 @@ export class AppModule { }`,
               <div className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs border">
                 <div className="text-blue-600 dark:text-blue-400">count = signal(0);</div>
                 <div className="text-muted-foreground mt-1">count.set(10);</div>
-                <div className="text-muted-foreground">count.update(n => n + 1);</div>
+                <div className="text-muted-foreground">{'count.update(n => n + 1);'}</div>
               </div>
             </div>
 

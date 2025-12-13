@@ -2,389 +2,519 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
-  RefreshCcw,
-  ListOrdered,
-  ListChecks,
-  Gauge,
-  Timer,
+  RefreshCw,
   Sparkles,
+  Code2,
   Lightbulb,
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
-  Flag,
+  Repeat,
+  PlayCircle,
+  ShoppingCart,
 } from 'lucide-react';
 
-interface JavaScriptLoopsProps {}
-
-export default function JavaScriptLoops({}: JavaScriptLoopsProps) {
+export default function JavaScriptLoops() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
-        icon={RefreshCcw}
+        icon={RefreshCw}
         category="JavaScript Fundamentals"
         title="Loops"
-        description="Repeat actions with for, while, for...of, and forEach—choose the right loop for the job."
-        colorTheme="blue"
+        description="Repeat code automatically instead of writing it over and over"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
+      {/* What are Loops? */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-cyan-50/50 via-blue-50/30 to-indigo-50/20 dark:from-cyan-950/10 dark:via-blue-950/5 dark:to-indigo-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Loops: Repeat Without Repeating Yourself
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Loops let you <strong className="text-cyan-700 dark:text-cyan-400">run the same code multiple times</strong> automatically. Instead of copying and pasting, write it once and let the loop repeat it!
+              </p>
+            </div>
+          </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-cyan-200 dark:border-cyan-800/30">
+            <RefreshCw className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+            <AlertTitle className="text-lg">Like a Repeat Button</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Imagine saying "Play this song 10 times" instead of pressing play 10 times. That's what loops do for code!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Why Use Loops */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Why Loops?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Automate repetitive tasks: iterate lists, retry operations, or run until a condition changes.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Lightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Why Use Loops?</CardTitle>
+              <CardDescription>See the problem loops solve</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <h3 className="font-semibold flex items-center gap-2">
-              <ListOrdered className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              Iterate data
-            </h3>
-            <p className="text-sm text-muted-foreground">Process arrays and collections item by item.</p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">Arrays</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Timer className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              Run until done
-            </h3>
-            <p className="text-sm text-muted-foreground">Use while loops when the count depends on a condition.</p>
-            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">Conditions</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Gauge className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
-              Choose the right tool
-            </h3>
-            <p className="text-sm text-muted-foreground">Pick based on readability, needed indexes, and control.</p>
-            <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">Trade-offs</Badge>
+        <CardContent>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Without Loop */}
+            <div className="rounded-xl border-2 border-red-200 dark:border-red-800/30 overflow-hidden">
+              <div className="bg-red-100 dark:bg-red-900/30 px-4 py-3 border-b-2 border-red-200 dark:border-red-800/30">
+                <h4 className="font-semibold text-red-700 dark:text-red-300">❌ Without Loops (Bad!)</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+{`// Printing 1 to 5 - repetitive!
+console.log(1);
+console.log(2);
+console.log(3);
+console.log(4);
+console.log(5);
+
+// What if we need 1 to 100?
+// We'd have to write 100 lines!`}</pre>
+              </div>
+            </div>
+
+            {/* With Loop */}
+            <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 overflow-hidden">
+              <div className="bg-green-100 dark:bg-green-900/30 px-4 py-3 border-b-2 border-green-200 dark:border-green-800/30">
+                <h4 className="font-semibold text-green-700 dark:text-green-300">✅ With Loop (Smart!)</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+{`// Much cleaner!
+for (let i = 1; i <= 5; i++) {
+  console.log(i);
+}
+
+// Works for 1 to 100 too!
+// Just change 5 to 100`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* What are Loops? */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-indigo-50/60 dark:from-blue-950/10 dark:to-indigo-950/10 border border-blue-200/50 dark:border-blue-800/30">
+      {/* For Loop */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <RefreshCcw className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Loops?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Control structures that repeat a block of code until a condition is met
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Code2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>for Loop - The Most Common</CardTitle>
+              <CardDescription>Repeat a specific number of times</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Loops are programming constructs that <strong>execute a block of code repeatedly</strong>. Instead of writing the same code multiple times,
-              you use a loop to automate repetition. Loops are essential for <strong>processing arrays, retrying operations, counting,</strong> and
-              <strong> iterating through collections</strong>.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-2 text-rose-700 dark:text-rose-300">❌ Without Loops (Repetitive)</h4>
-                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
-{`// Repetitive and unscalable
-const names = ['Alice', 'Bob', 'Charlie'];
-
-console.log('Hello, ' + names[0]);
-console.log('Hello, ' + names[1]);
-console.log('Hello, ' + names[2]);
-
-// What if we add 100 more names?
-// This approach doesn't scale!`}
-                </pre>
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">How for Loop Works</h4>
+            </div>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-6 border-2 border-blue-200 dark:border-blue-800/30 mb-4">
+                <code className="text-lg font-mono text-gray-800 dark:text-gray-200">
+                  for (let i = 0; i &lt; 5; i++) {'{ ... }'}
+                </code>
               </div>
               
-              <div>
-                <h4 className="font-semibold mb-2 text-emerald-700 dark:text-emerald-300">✅ With Loops (Clean & Scalable)</h4>
-                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
-{`// Clean and scalable
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold flex-shrink-0">1</div>
+                  <div>
+                    <code className="text-sm font-mono bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">let i = 0</code>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Start at 0 (initialization)</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold flex-shrink-0">2</div>
+                  <div>
+                    <code className="text-sm font-mono bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded">i &lt; 5</code>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Keep going while i is less than 5 (condition)</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold flex-shrink-0">3</div>
+                  <div>
+                    <code className="text-sm font-mono bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">i++</code>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Add 1 to i after each loop (increment)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Loop Runs: 0, 1, 2, 3, 4</AlertTitle>
+            <AlertDescription className="text-base">
+              Starts at 0, runs 5 times (0,1,2,3,4), then stops because 5 is NOT less than 5
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="for Loop Examples"
+        description="Count, loop through arrays, repeat actions"
+        code={`// Count from 1 to 5
+for (let i = 1; i <= 5; i++) {
+  console.log('Count:', i);
+}
+// Output: Count: 1
+// Output: Count: 2
+// Output: Count: 3
+// Output: Count: 4
+// Output: Count: 5
+
+// Loop through an array
+const fruits = ['Apple', 'Banana', 'Orange'];
+
+for (let i = 0; i < fruits.length; i++) {
+  console.log('Fruit ' + (i + 1) + ':', fruits[i]);
+}
+// Output: Fruit 1: Apple
+// Output: Fruit 2: Banana
+// Output: Fruit 3: Orange
+
+// Countdown
+for (let i = 5; i >= 1; i--) {
+  console.log(i + '...');
+}
+console.log('Blast off!');
+// Output: 5...
+// Output: 4...
+// Output: 3...
+// Output: 2...
+// Output: 1...
+// Output: Blast off!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* While Loop */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Repeat className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>while Loop - Repeat Until Done</CardTitle>
+              <CardDescription>Keep looping as long as a condition is true</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">How while Loop Works</h4>
+            </div>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-6 border-2 border-purple-200 dark:border-purple-800/30 mb-4">
+                <code className="text-lg font-mono text-gray-800 dark:text-gray-200">
+                  while (condition) {'{ ... }'}
+                </code>
+              </div>
+              
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Keeps running as long as the condition is true. Be careful - if the condition never becomes false, you get an infinite loop!
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="while Loop Example"
+        description="Repeat until a condition is met"
+        code={`// Count with while loop
+let count = 1;
+
+while (count <= 5) {
+  console.log('Count:', count);
+  count++;  // IMPORTANT: Must change count or loop never ends!
+}
+// Output: Count: 1
+// Output: Count: 2
+// Output: Count: 3
+// Output: Count: 4
+// Output: Count: 5
+
+// Keep trying until success
+let attempts = 0;
+let success = false;
+
+while (!success && attempts < 3) {
+  attempts++;
+  console.log('Attempt', attempts);
+  
+  // Simulate: succeed on 3rd try
+  if (attempts === 3) {
+    success = true;
+    console.log('Success!');
+  }
+}
+// Output: Attempt 1
+// Output: Attempt 2
+// Output: Attempt 3
+// Output: Success!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* For...of Loop */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <PlayCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>for...of Loop - Loop Through Arrays Easily</CardTitle>
+              <CardDescription>The simplest way to go through array items</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 overflow-hidden">
+            <div className="bg-emerald-600 dark:bg-emerald-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Super Simple!</h4>
+            </div>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-6 border-2 border-emerald-200 dark:border-emerald-800/30">
+                <code className="text-lg font-mono text-gray-800 dark:text-gray-200">
+                  for (const item of array) {'{ ... }'}
+                </code>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+                Gets each item from the array automatically. No need for indexes!
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="for...of Loop Example"
+        description="The easiest way to loop through arrays"
+        code={`// Loop through array items
+const colors = ['Red', 'Green', 'Blue'];
+
+for (const color of colors) {
+  console.log('Color:', color);
+}
+// Output: Color: Red
+// Output: Color: Green
+// Output: Color: Blue
+
+// Loop through names
 const names = ['Alice', 'Bob', 'Charlie'];
 
 for (const name of names) {
-  console.log('Hello, ' + name);
+  console.log('Hello, ' + name + '!');
 }
+// Output: Hello, Alice!
+// Output: Hello, Bob!
+// Output: Hello, Charlie!
 
-// Works with 3 or 3000 names!
-// Output: Hello, Alice
-//         Hello, Bob
-//         Hello, Charlie`}
-                </pre>
-              </div>
-            </div>
+// Works with any iterable
+const message = 'Hi!';
 
-            <Alert>
-              <Lightbulb className="h-4 w-4" />
-              <AlertTitle>Key Concept</AlertTitle>
-              <AlertDescription>
-                Loops have three main parts: <strong>initialization</strong> (start), <strong>condition</strong> (when to continue), and <strong>iteration</strong> (how to progress).
-              </AlertDescription>
-            </Alert>
-          </div>
-        </CardContent>
-      </Card>
+for (const letter of message) {
+  console.log(letter);
+}
+// Output: H
+// Output: i
+// Output: !`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-      {/* Visual flow */}
-      <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListChecks className="w-7 h-7 text-blue-600/80 dark:text-blue-400/80" />
-            Loop Selection Diagram
-          </CardTitle>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-            Decide which loop to use based on what you need—index, early exit, or simple iteration.
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-              <div className="flex items-center gap-2">
-                <RefreshCcw className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-                <h4 className="font-semibold">Need index + control?</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">Use classic for when you need the counter, step size, or to break early.</p>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-                <div>for (let i = 0; i {'<'} arr.length; i++) {'{'} ... {'}'}</div>
-                <div>if (match) break;</div>
-              </div>
-            </div>
-            <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-              <div className="flex items-center gap-2">
-                <ListChecks className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-                <h4 className="font-semibold">Value-only, readable?</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">Reach for for...of to keep iteration clean when you don’t need indexes.</p>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-                <div>for (const user of users) {'{'} ... {'}'}</div>
-              </div>
-            </div>
-            <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
-              <div className="flex items-center gap-2">
-                <Timer className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
-                <h4 className="font-semibold">Need early exit/continue?</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">Pick for/while to break or continue; avoid forEach when you need to stop early.</p>
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-                <div>for (const item of items) {'{'} if (!item) continue; ... {'}'}</div>
-                <div>while (!ready) {'{'} attempt++; if (attempt {'>'} 5) break; {'}'}</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Syntax & examples */}
+      {/* break and continue */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListOrdered className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Common Loop Patterns
-          </CardTitle>
-          <CardDescription className="text-base">
-            Compare syntax and when to use each loop.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold">Indexed and conditional</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>for (let i = 0; i {'<'} items.length; i++) {'{'} ... {'}'}</div>
-              <div>while (count {'<'} 5) {'{'} count++; {'}'}</div>
-              <div>do {'{'} attempt++; {'}'} while (!success);</div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+              <Code2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
             </div>
-            <p className="text-sm text-muted-foreground">Use when you need indexes or dynamic stop conditions.</p>
+            <div>
+              <CardTitle>break & continue - Control Your Loops</CardTitle>
+              <CardDescription>Stop early or skip iterations</CardDescription>
+            </div>
           </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Array-friendly</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>for (const item of items) {'{'} ... {'}'}</div>
-              <div>items.forEach((item, i) =&gt; ...);</div>
-              <div>for (const key in obj) {'{'} ... {'}'}</div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20 border-red-200 dark:border-red-800/30">
+              <h4 className="font-bold text-lg mb-3 text-red-700 dark:text-red-300">break - Stop Loop</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-red-200 dark:border-red-800/30 mb-3">
+                <code className="text-sm font-mono">break;</code>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Exits the loop immediately. Use when you found what you're looking for!
+              </p>
             </div>
-            <Alert>
-              <AlertTitle>Heads up</AlertTitle>
-              <AlertDescription>Use `for...in` for object keys; avoid it on arrays because order can be unexpected.</AlertDescription>
-            </Alert>
+
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-bold text-lg mb-3 text-blue-700 dark:text-blue-300">continue - Skip to Next</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-blue-200 dark:border-blue-800/30 mb-3">
+                <code className="text-sm font-mono">continue;</code>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Skips the rest of current loop and goes to next iteration
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Real-World Examples */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll use in real applications
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            {/* Pattern 1: Processing Array Data */}
-            <CodeSnippet
-              title="Processing Array Data"
-              description="Calculate total price from shopping cart - perfect for summing values from arrays of objects"
-              code={`// Pattern: Calculate total price
-const cart = [
-  { name: 'Book', price: 15 },
-  { name: 'Pen', price: 5 },
-  { name: 'Bag', price: 30 }
-];
-
-let total = 0;
-for (const item of cart) {
-  total += item.price;
-  console.log(item.name + ': $' + item.price);
-}
-
-console.log('Total: $' + total);
-// Output: Book: $15
-// Output: Pen: $5
-// Output: Bag: $30
-// Output: Total: $50`}
-              language="javascript"
-              colorTheme="blue"
-              icon={CheckCircle2}
-              features={[
-                "for...of loop for clean iteration",
-                "Accumulate values in a variable",
-                "Common in e-commerce calculations",
-                "Works with arrays of objects"
-              ]}
-              tips={[
-                "Initialize accumulator before loop",
-                "Use reduce() for functional approach",
-                "Essential for shopping cart totals"
-              ]}
-            />
-
-            {/* Pattern 2: Finding Items */}
-            <CodeSnippet
-              title="Finding Items (Early Exit)"
-              description="Search and stop - use break to exit once you find what you need"
-              code={`// Pattern: Search and stop
-const users = [
-  { id: 1, name: 'Alice' },
-  { id: 2, name: 'Bob' },
-  { id: 3, name: 'Charlie' }
-];
-
+      <CodeSnippet
+        title="break & continue Examples"
+        description="Control loop flow with break and continue"
+        code={`// break - stop when found
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
 let found = null;
-for (const user of users) {
-  if (user.id === 2) {
-    found = user;
-    break; // Stop searching!
+
+for (const num of numbers) {
+  if (num === 5) {
+    found = num;
+    break;  // Stop searching!
   }
+  console.log('Checking:', num);
+}
+console.log('Found:', found);
+// Output: Checking: 1
+// Output: Checking: 2
+// Output: Checking: 3
+// Output: Checking: 4
+// Output: Found: 5
+
+// continue - skip certain items
+for (let i = 1; i <= 5; i++) {
+  if (i === 3) {
+    continue;  // Skip 3
+  }
+  console.log(i);
+}
+// Output: 1
+// Output: 2
+// (skips 3)
+// Output: 4
+// Output: 5`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Real World Example */}
+      <CodeSnippet
+        title="Real-World Example: Shopping Cart Total"
+        description="Calculate total price using a loop"
+        code={`// Shopping cart with multiple items
+const cart = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 25 },
+  { name: 'Keyboard', price: 75 },
+  { name: 'Monitor', price: 300 }
+];
+
+// Calculate total
+let total = 0;
+
+for (const item of cart) {
+  console.log(item.name + ': $' + item.price);
+  total += item.price;
 }
 
-console.log('Found:', found.name);
-// Output: Found: Bob
-// Loop exits after match - no need to check remaining items`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={CheckCircle2}
-              features={[
-                "break exits loop immediately",
-                "Saves processing time",
-                "Common search pattern",
-                "More efficient than checking all items"
-              ]}
-              tips={[
-                "Use break for early exit optimization",
-                "Consider Array.find() for similar logic",
-                "Essential for search operations"
-              ]}
-            />
-          </div>
-        </CardContent>
-      </Card>
+console.log('---');
+console.log('Total: $' + total);
 
-      {/* Performance & pitfalls */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Do This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Pick the loop that matches your need (index vs values vs condition).</li>
-              <li>✅ Break/return early to stop work when you find what you need.</li>
-              <li>✅ Cache array length in classic for loops in hot paths.</li>
-              <li>✅ Use `for...of` for readability when index isn’t required.</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" />
-              Avoid This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>❌ Infinite loops—ensure conditions change.</li>
-              <li>❌ Using `forEach` when you need `break`/`return` to exit early.</li>
-              <li>❌ Mutating arrays while iterating without care (indexes shift).</li>
-              <li>❌ `for...in` on arrays—stick to `for` or `for...of`.</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
+// Output: Laptop: $999
+// Output: Mouse: $25
+// Output: Keyboard: $75
+// Output: Monitor: $300
+// Output: ---
+// Output: Total: $1399`}
+        language="javascript"
+        colorTheme="yellow"
+        icon={ShoppingCart}
+      />
 
-      {/* Loop control */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Flag className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Control Statements
-          </CardTitle>
-          <CardDescription className="text-base">
-            Break out early, skip iterations, and guard against infinite loops.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold">break & continue</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>for (const item of items) {'{'}</div>
-              <div className="pl-4">if (!item) continue; <span className="text-slate-500">// skip blanks</span></div>
-              <div className="pl-4">if (item.id === target) {'{'} found = item; break; {'}'}</div>
-              <div>{'}'}</div>
+      {/* Key Takeaways */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-sm text-muted-foreground">Use continue to skip, break to exit as soon as you’re done.</p>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
           </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Prevent infinite loops</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>let safety = 0;</div>
-              <div>while (!ready && safety {'<'} 100) {'{'}</div>
-              <div className="pl-4">safety++;</div>
-              <div className="pl-4">checkStatus();</div>
-              <div>{'}'}</div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🔄</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">for Loop = Fixed Count</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Use when you know how many times to repeat
+                  </p>
+                </div>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">Always mutate the condition and consider a safety counter for retries.</p>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">⏳</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">while = Until Condition</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Keep going until something becomes false
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">📋</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">for...of = Easy Arrays</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Simplest way to go through array items
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🛑</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">break Stops Loop</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Exit early when you find what you need
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
-
     </div>
   );
 }

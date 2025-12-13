@@ -2,703 +2,496 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { CodeSnippetWithOutput } from '@/components/shared/code-snippet-with-output';
-import { InteractivePlayground } from '@/components/shared/interactive-playground';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Box,
   Lock,
   Unlock,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  ArrowRight,
-  Lightbulb,
   Sparkles,
   Code2,
-  Zap,
-  Globe,
-  FileCode,
-  Settings,
+  Lightbulb,
+  CheckCircle2,
+  XCircle,
+  RefreshCw,
+  AlertCircle,
 } from 'lucide-react';
 
-interface JavaScriptVariablesConstantsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-const letExampleHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>let Example</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see the output</p>
-</body>
-</html>`;
-
-const letExampleJs = `// let variables can be changed
-
-let score = 0;
-console.log('Starting score:', score);
-
-score = 10;
-console.log('After update:', score);
-
-score = 20;
-console.log('Final score:', score);
-
-console.log('');
-console.log('✅ let allows reassignment');`;
-
-const constExampleHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>const Example</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see the output</p>
-</body>
-</html>`;
-
-const constExampleJs = `// const variables cannot be reassigned
-
-const PI = 3.14159;
-console.log('PI:', PI);
-
-// This would cause an error:
-// PI = 3.14; // ❌ Error!
-
-console.log('');
-console.log('--- Objects with const ---');
-
-const user = { name: 'Alice', age: 25 };
-console.log('Before:', user);
-
-user.age = 26; // ✅ This works!
-console.log('After:', user);
-
-console.log('');
-console.log('✅ const prevents reassignment');
-console.log('✅ Object properties can still change');`;
-
-const scopeExampleHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Scope Example</title>
-  <style>
-    body { 
-      font-family: system-ui; 
-      padding: 2rem; 
-      color: #64748b; 
-    }
-  </style>
-</head>
-<body>
-  <p>Open the console to see the output</p>
-</body>
-</html>`;
-
-const scopeExampleJs = `// Global vs Local Scope
-
-let globalVar = 'I am global';
-
-function myFunction() {
-  let localVar = 'I am local';
-  
-  console.log('Inside function:');
-  console.log('  globalVar:', globalVar); // ✅ Works
-  console.log('  localVar:', localVar);   // ✅ Works
-}
-
-myFunction();
-
-console.log('');
-console.log('Outside function:');
-console.log('  globalVar:', globalVar); // ✅ Works
-// console.log('  localVar:', localVar); // ❌ Error!
-
-console.log('');
-console.log('✅ Global: accessible everywhere');
-console.log('✅ Local: only inside function');`;
-
-export default function JavaScriptVariablesConstants({ onOpenWebPlayground }: JavaScriptVariablesConstantsProps) {
+export default function JavaScriptVariablesConstants() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Box}
         category="JavaScript Fundamentals"
         title="Variables & Constants"
-        description="Learn how to store and manage data in JavaScript using let, const, and understanding variable scope."
-        colorTheme="blue"
+        description="Store and manage data in your programs - let, const, and var explained"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Three Ways to Declare Variables
-          </CardTitle>
-          <CardDescription className="text-base">
-            Modern JavaScript provides three keywords for declaring variables, each with different characteristics.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Unlock className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">let</h3>
+      {/* What are Variables */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-muted-foreground text-sm">
-              For values that can change. Block-scoped and reassignable.
-            </p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-              Most Common
-            </Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Lock className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              <h3 className="font-semibold">const</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              For values that stay the same. Block-scoped and cannot be reassigned.
-            </p>
-            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">
-              Recommended
-            </Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2 opacity-60">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-slate-600/80 dark:text-slate-400/80" />
-              <h3 className="font-semibold">var</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Old way with function scope. Avoid in modern code.
-            </p>
-            <Badge variant="outline" className="opacity-60">
-              Legacy
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Let - Mutable Variables */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Unlock className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            let - Mutable Variables
-          </CardTitle>
-          <CardDescription className="text-base">
-            Use let when you need to change the value of a variable.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="rounded-xl border-2 border-blue-200/60 dark:border-blue-800/40 bg-gradient-to-br from-blue-50/40 to-cyan-50/40 dark:from-blue-950/10 dark:to-cyan-950/10 p-6 space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-blue-500/80 dark:bg-blue-600/80 rounded-lg">
-                <Code2 className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-blue-700 dark:text-blue-300">How let Works</h3>
-                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Declare once, reassign many times</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border">
-                <h4 className="font-semibold mb-3 text-sm">Declaration</h4>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-2">
-                  <div>
-                    <span className="text-blue-600 dark:text-blue-400">let</span>{' '}
-                    <span className="text-amber-700 dark:text-amber-300">age</span> ={' '}
-                    <span className="text-purple-600 dark:text-purple-400">25</span>;
-                  </div>
-                  <div>
-                    <span className="text-blue-600 dark:text-blue-400">let</span>{' '}
-                    <span className="text-amber-700 dark:text-amber-300">name</span>;
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border">
-                <h4 className="font-semibold mb-3 text-sm">Reassignment</h4>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-2">
-                  <div>
-                    <span className="text-amber-700 dark:text-amber-300">age</span> ={' '}
-                    <span className="text-purple-600 dark:text-purple-400">26</span>;{' '}
-                    <span className="text-emerald-600 dark:text-emerald-400">// ✅</span>
-                  </div>
-                  <div>
-                    <span className="text-amber-700 dark:text-amber-300">name</span> ={' '}
-                    <span className="text-purple-600 dark:text-purple-400">'Alice'</span>;{' '}
-                    <span className="text-emerald-600 dark:text-emerald-400">// ✅</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-300">When to use let:</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <span>Counters and loop variables</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <span>Values that change over time</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <span>Temporary variables</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <CodeSnippetWithOutput
-            title="let Variable Example"
-            description="Variables declared with let can be reassigned to new values"
-            code={letExampleJs}
-            output={[
-              "Starting score: 0",
-              "After update: 10",
-              "Final score: 20",
-              "",
-              "✅ let allows reassignment"
-            ]}
-            language="javascript"
-            colorTheme="blue"
-            icon={Unlock}
-          />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try let Variables"
-              description="Experiment with reassigning values using let"
-              features={[
-                'Reassignment',
-                'Value Updates',
-                'Block Scope',
-                'Console Output'
-              ]}
-              buttonText="Open let Example"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: letExampleHtml,
-                css: '',
-                js: letExampleJs
-              }}
-              colorTheme="blue"
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Const - Immutable Variables */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lock className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            const - Immutable Variables
-          </CardTitle>
-          <CardDescription className="text-base">
-            Use const for values that shouldn't be reassigned. This is the recommended default choice.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="rounded-xl border-2 border-emerald-200/60 dark:border-emerald-800/40 bg-gradient-to-br from-emerald-50/40 to-green-50/40 dark:from-emerald-950/10 dark:to-green-950/10 p-6 space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-emerald-500/80 dark:bg-emerald-600/80 rounded-lg">
-                <Lock className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">How const Works</h3>
-                <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">Declare once, cannot reassign</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
-                <h4 className="font-semibold mb-3 text-sm flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  What's Protected
-                </h4>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-2">
-                  <div>
-                    <span className="text-emerald-600 dark:text-emerald-400">const</span>{' '}
-                    <span className="text-amber-700 dark:text-amber-300">PI</span> ={' '}
-                    <span className="text-purple-600 dark:text-purple-400">3.14</span>;
-                  </div>
-                  <div className="text-rose-600 dark:text-rose-400">// PI = 3; // ❌ Error!</div>
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
-                <h4 className="font-semibold mb-3 text-sm flex items-center gap-2">
-                  <Lightbulb className="w-4 h-4 text-emerald-600" />
-                  Objects & Arrays
-                </h4>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs space-y-2">
-                  <div>
-                    <span className="text-emerald-600 dark:text-emerald-400">const</span>{' '}
-                    <span className="text-amber-700 dark:text-amber-300">user</span> = {'{}'};
-                  </div>
-                  <div>
-                    <span className="text-amber-700 dark:text-amber-300">user</span>.name = <span className="text-purple-600 dark:text-purple-400">'Alice'</span>;{' '}
-                    <span className="text-emerald-600 dark:text-emerald-400">// ✅</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
-              <h4 className="font-semibold mb-2 text-emerald-700 dark:text-emerald-300">💡 Best Practice:</h4>
-              <p className="text-sm text-muted-foreground">
-                Start with <code className="font-mono">const</code> by default. Only use <code className="font-mono">let</code> when you know the value needs to change.
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Variables?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Variables are <strong className="text-yellow-700 dark:text-yellow-400">labeled containers</strong> that store data in your program. Think of them like boxes with names on them - you can put things in, take things out, and change what's inside!
               </p>
             </div>
           </div>
 
-          <CodeSnippetWithOutput
-            title="const Variable Example"
-            description="Variables declared with const cannot be reassigned, but object properties can still change"
-            code={constExampleJs}
-            output={[
-              "PI: 3.14159",
-              "",
-              "--- Objects with const ---",
-              "Before: { name: 'Alice', age: 25 }",
-              "After: { name: 'Alice', age: 26 }",
-              "",
-              "✅ const prevents reassignment",
-              "✅ Object properties can still change"
-            ]}
-            language="javascript"
-            colorTheme="emerald"
-            icon={Lock}
-          />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try const Variables"
-              description="See how const protects reassignment while allowing object mutations"
-              features={[
-                'Immutability',
-                'Object Properties',
-                'Best Practices',
-                'Error Prevention'
-              ]}
-              buttonText="Open const Example"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: constExampleHtml,
-                css: '',
-                js: constExampleJs
-              }}
-              colorTheme="emerald"
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Comparison Table */}
-      <Card className="bg-gradient-to-br from-slate-50/60 to-gray-50/60 dark:from-slate-950/10 dark:to-gray-950/10 border border-slate-200/50 dark:border-slate-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Settings className="w-6 h-6 text-slate-600/80 dark:text-slate-400/80" />
-            Quick Comparison: let vs const vs var
-          </CardTitle>
-          <CardDescription className="text-base">
-            Understanding the key differences at a glance.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-slate-100 dark:bg-slate-900">
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">Feature</th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">let</th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">const</th>
-                  <th className="border border-slate-300 dark:border-slate-700 p-3 text-left text-sm font-semibold">var</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                <tr>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-semibold">Reassignable</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">Yes ✅</Badge>
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <Badge variant="outline" className="bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300">No ❌</Badge>
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">Yes ✅</Badge>
-                  </td>
-                </tr>
-                <tr className="bg-slate-50 dark:bg-slate-900/50">
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-semibold">Scope</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Block</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Block</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Function</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-semibold">Hoisting</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Not initialized</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Not initialized</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Initialized as undefined</td>
-                </tr>
-                <tr className="bg-slate-50 dark:bg-slate-900/50">
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-semibold">Best For</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Changing values</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">Fixed values</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <span className="text-slate-500">Legacy code</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3 font-semibold">Recommended?</td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">Yes</Badge>
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">Preferred ⭐</Badge>
-                  </td>
-                  <td className="border border-slate-300 dark:border-slate-700 p-3">
-                    <Badge variant="outline" className="opacity-60">Avoid</Badge>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Variable Scope */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <FileCode className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Variable Scope
-          </CardTitle>
-          <CardDescription className="text-base">
-            Understanding where variables are accessible in your code.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Globe className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                Global Scope
-              </h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Variables declared outside any function or block are accessible everywhere.
-              </p>
-              <div className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs">
-                <span className="text-blue-600 dark:text-blue-400">let</span> globalVar = <span className="text-purple-600 dark:text-purple-400">'global'</span>;
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:to-blue-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Box className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                Block Scope
-              </h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Variables declared with let/const inside {'{}'} are only accessible within that block.
-              </p>
-              <div className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs space-y-1">
-                <div>{'{'}</div>
-                <div className="ml-2"><span className="text-blue-600 dark:text-blue-400">let</span> local = <span className="text-purple-600 dark:text-purple-400">'block'</span>;</div>
-                <div>{'}'}</div>
-              </div>
-            </div>
-          </div>
-
-          <CodeSnippetWithOutput
-            title="Variable Scope Example"
-            description="Understanding global and local scope - where variables are accessible in your code"
-            code={scopeExampleJs}
-            output={[
-              "Inside function:",
-              "  globalVar: I am global",
-              "  localVar: I am local",
-              "",
-              "Outside function:",
-              "  globalVar: I am global",
-              "",
-              "✅ Global: accessible everywhere",
-              "✅ Local: only inside function"
-            ]}
-            language="javascript"
-            colorTheme="purple"
-            icon={FileCode}
-          />
-
-          {onOpenWebPlayground && (
-            <InteractivePlayground
-              title="Try Variable Scope"
-              description="Experiment with global and local scope to understand variable accessibility"
-              features={[
-                'Global Scope',
-                'Local Scope',
-                'Function Scope',
-                'Block Scope'
-              ]}
-              buttonText="Open Scope Example"
-              onLaunchPlayground={onOpenWebPlayground}
-              playgroundData={{
-                html: scopeExampleHtml,
-                css: '',
-                js: scopeExampleJs
-              }}
-              colorTheme="purple"
-            />
-          )}
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Scope Rule</AlertTitle>
-            <AlertDescription>
-              Variables declared with <code className="font-mono">let</code> and <code className="font-mono">const</code> are block-scoped. They only exist within the nearest set of curly braces {'{}'}.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Box className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              A variable is like a labeled jar. You write a name on the jar (variable name), put something inside (value), and use that name whenever you need what's in the jar!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Naming Conventions */}
+      {/* Three Keywords */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <FileCode className="w-6 h-6 text-cyan-600/80 dark:text-cyan-400/80" />
-            Naming Conventions
-          </CardTitle>
-          <CardDescription className="text-base">
-            Follow these rules to write clean, readable variable names.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Code2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Three Ways to Create Variables</CardTitle>
+              <CardDescription>JavaScript has three keywords: let, const, and var</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <div className="flex items-center gap-2 mb-4">
+                <Unlock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <h4 className="font-bold text-xl">let</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                For values that <strong>can change</strong>
+              </p>
+              <div className="text-xs text-gray-500 dark:text-gray-500 mb-3">
+                Use when you need to reassign
+              </div>
+              <div className="bg-white dark:bg-slate-900 rounded p-2 font-mono text-xs border">
+                let age = 25;
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <div className="flex items-center gap-2 mb-4">
+                <Lock className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <h4 className="font-bold text-xl">const</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                For values that <strong>stay the same</strong>
+              </p>
+              <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-3 font-semibold">
+                ⭐ Recommended - use by default
+              </div>
+              <div className="bg-white dark:bg-slate-900 rounded p-2 font-mono text-xs border">
+                const name = 'Alice';
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 border-red-200 dark:border-red-800/30">
+              <div className="flex items-center gap-2 mb-4">
+                <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <h4 className="font-bold text-xl">var</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                The <strong>old way</strong> (avoid it)
+              </p>
+              <div className="text-xs text-red-600 dark:text-red-400 mb-3 font-semibold">
+                ⚠️ Use let or const instead
+              </div>
+              <div className="bg-white dark:bg-slate-900 rounded p-2 font-mono text-xs border">
+                var old = 'legacy';
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Creating Variables - Basic Syntax"
+        description="How to create variables with let and const"
+        code={`// Using let (can change)
+let age = 25;
+console.log(age);  // 25
+
+age = 26;  // Can reassign!
+console.log(age);  // 26
+
+// Using const (cannot change)
+const name = 'Alice';
+console.log(name);  // Alice
+
+// name = 'Bob';  // ERROR! Can't reassign const
+// This would throw an error
+
+// Multiple variables at once
+let x = 5, y = 10, z = 15;
+console.log(x, y, z);  // 5 10 15`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* let vs const */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <RefreshCw className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>let vs const - When to Use Which?</CardTitle>
+              <CardDescription>Choosing the right keyword</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-emerald-200 dark:border-emerald-800">
-              <h4 className="font-semibold mb-3 text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                Good Names
-              </h4>
-              <div className="space-y-2 text-sm font-mono">
-                <div>✅ userName</div>
-                <div>✅ totalPrice</div>
-                <div>✅ isActive</div>
-                <div>✅ MAX_SIZE</div>
-                <div>✅ _private</div>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+              <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+                <h4 className="text-white font-semibold flex items-center gap-2">
+                  <Unlock className="w-4 h-4" />
+                  Use let
+                </h4>
+              </div>
+              <div className="p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  When you know the value will change later
+                </p>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-blue-200 dark:border-blue-800/30">
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`let counter = 0;
+
+counter++;  // Now 1
+counter++;  // Now 2
+counter++;  // Now 3
+
+console.log(counter);  // 3
+
+// Perfect for counters,
+// loops, and changing values!`}</pre>
+                </div>
               </div>
             </div>
 
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-rose-200 dark:border-rose-800">
-              <h4 className="font-semibold mb-3 text-rose-700 dark:text-rose-300 flex items-center gap-2">
-                <XCircle className="w-5 h-5" />
-                Bad Names
-              </h4>
-              <div className="space-y-2 text-sm font-mono">
-                <div>❌ 1name (starts with number)</div>
-                <div>❌ user-name (contains hyphen)</div>
-                <div>❌ let (reserved keyword)</div>
-                <div>❌ x (not descriptive)</div>
-                <div>❌ UserName (PascalCase for variables)</div>
+            <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+              <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+                <h4 className="text-white font-semibold flex items-center gap-2">
+                  <Lock className="w-4 h-4" />
+                  Use const (Recommended)
+                </h4>
+              </div>
+              <div className="p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  When the value won't change (most of the time!)
+                </p>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-green-200 dark:border-green-800/30">
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const name = 'Alice';
+const age = 25;
+const isStudent = true;
+
+// These won't change!
+// Prevents accidental reassignment
+// Makes code more predictable ✅`}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Real-World Example"
+        description="Using let and const together"
+        code={`// Use const for values that don't change
+const userName = 'Alice';
+const maxAttempts = 3;
+const greeting = 'Welcome!';
+
+// Use let for values that do change
+let attempts = 0;
+let isLoggedIn = false;
+
+attempts++;
+console.log('Attempts: ' + attempts);  // 1
+
+if (attempts < maxAttempts) {
+  isLoggedIn = true;
+  console.log(greeting + ' ' + userName);
+}
+
+// Output:
+// Attempts: 1
+// Welcome! Alice`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Variable Naming Rules */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Code2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Variable Naming Rules</CardTitle>
+              <CardDescription>What you can and can't name your variables</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Valid Names ✅</h4>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="bg-green-50 dark:bg-green-950/20 rounded p-2 font-mono">age</div>
+                <div className="bg-green-50 dark:bg-green-950/20 rounded p-2 font-mono">userName</div>
+                <div className="bg-green-50 dark:bg-green-950/20 rounded p-2 font-mono">_private</div>
+                <div className="bg-green-50 dark:bg-green-950/20 rounded p-2 font-mono">$amount</div>
+                <div className="bg-green-50 dark:bg-green-950/20 rounded p-2 font-mono">number1</div>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-3">
+                • Start with letter, _, or $<br/>
+                • Can contain letters, numbers, _, $<br/>
+                • Use camelCase convention
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Invalid Names ❌</h4>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="bg-red-50 dark:bg-red-950/20 rounded p-2 font-mono">1name</div>
+                <div className="bg-red-50 dark:bg-red-950/20 rounded p-2 font-mono">user-name</div>
+                <div className="bg-red-50 dark:bg-red-950/20 rounded p-2 font-mono">user name</div>
+                <div className="bg-red-50 dark:bg-red-950/20 rounded p-2 font-mono">let</div>
+                <div className="bg-red-50 dark:bg-red-950/20 rounded p-2 font-mono">class</div>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-3">
+                • Can't start with number<br/>
+                • No hyphens or spaces<br/>
+                • Can't use reserved words
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Good Naming Practices"
+        description="Use descriptive, meaningful names"
+        code={`// ❌ Bad: unclear names
+let x = 25;
+let y = 'Alice';
+let z = true;
+
+// ✅ Good: descriptive names
+let userAge = 25;
+let userName = 'Alice';
+let isLoggedIn = true;
+
+// ❌ Bad: abbreviations
+let usrNm = 'Bob';
+let addr = '123 Main St';
+
+// ✅ Good: full words
+let username = 'Bob';
+let address = '123 Main St';
+
+// Use camelCase for variables
+let firstName = 'Alice';
+let lastName = 'Smith';
+let totalAmount = 100;`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* const with Objects and Arrays */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>Important: const with Objects & Arrays</CardTitle>
+              <CardDescription>const prevents reassignment, not modification</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Common Confusion</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                With <code className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 rounded text-xs">const</code>, you can't reassign the variable, but you CAN modify the contents of objects and arrays!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// With arrays
+const colors = ['red', 'blue'];
+
+colors.push('green');  // ✅ Works!
+console.log(colors);   // ['red', 'blue', 'green']
+
+// colors = ['yellow'];  // ❌ Error! Can't reassign
+
+// With objects
+const user = { name: 'Alice', age: 25 };
+
+user.age = 26;  // ✅ Works! Can modify
+console.log(user.age);  // 26
+
+// user = { name: 'Bob' };  // ❌ Error! Can't reassign`}</pre>
               </div>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-3">
-            <div className="p-4 bg-gradient-to-br from-cyan-50/60 to-blue-50/60 dark:from-cyan-950/10 dark:to-blue-950/10 rounded-xl border border-cyan-200/50 dark:border-cyan-800/30">
-              <h4 className="font-semibold mb-2 text-sm">camelCase</h4>
-              <p className="text-xs text-muted-foreground mb-2">For variables and functions</p>
-              <code className="text-xs font-mono">firstName, getUserData</code>
-            </div>
+          <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Remember</AlertTitle>
+            <AlertDescription className="text-base">
+              <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">const</code> means the <strong>variable binding</strong> is constant, not the value itself. For objects and arrays, the reference stays the same, but you can change what's inside!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
 
-            <div className="p-4 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-2 text-sm">UPPER_CASE</h4>
-              <p className="text-xs text-muted-foreground mb-2">For constants</p>
-              <code className="text-xs font-mono">MAX_SIZE, API_KEY</code>
+      {/* Why Avoid var */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30">
+              <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
             </div>
-
-            <div className="p-4 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-2 text-sm">Descriptive</h4>
-              <p className="text-xs text-muted-foreground mb-2">Clear purpose</p>
-              <code className="text-xs font-mono">isLoggedIn, userCount</code>
+            <div>
+              <CardTitle>Why Avoid var?</CardTitle>
+              <CardDescription>The problems with the old way</CardDescription>
             </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-red-200 dark:border-red-800/30 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20 overflow-hidden">
+            <div className="bg-red-600 dark:bg-red-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Problems with var</h4>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <h5 className="font-semibold mb-2 text-red-700 dark:text-red-300">1. Function Scope (not block scope)</h5>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`if (true) {
+  var x = 5;
+}
+console.log(x);  // 5 - leaks out! ❌
+
+if (true) {
+  let y = 10;
+}
+console.log(y);  // Error - stays inside! ✅`}</pre>
+                </div>
+              </div>
+
+              <div>
+                <h5 className="font-semibold mb-2 text-red-700 dark:text-red-300">2. Hoisting Issues</h5>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`console.log(a);  // undefined (not error!) ❌
+var a = 5;
+
+console.log(b);  // Error! ✅
+let b = 10;`}</pre>
+                </div>
+              </div>
+
+              <div>
+                <h5 className="font-semibold mb-2 text-red-700 dark:text-red-300">3. Can Redeclare</h5>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`var name = 'Alice';
+var name = 'Bob';  // No error! ❌
+
+let age = 25;
+let age = 30;  // Error! ✅ Prevents bugs`}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/30">
+            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+            <AlertTitle>Simple Rule</AlertTitle>
+            <AlertDescription className="text-base">
+              <strong>Never use var</strong>. Always use <code className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs">const</code> by default, and <code className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs">let</code> when you need to reassign!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Zap className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices Summary
-          </CardTitle>
-          <CardDescription className="text-base">
-            Follow these guidelines for professional variable usage.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                Do This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>✅ Use <code className="font-mono">const</code> by default</li>
-                <li>✅ Use <code className="font-mono">let</code> when values change</li>
-                <li>✅ Use descriptive, meaningful names</li>
-                <li>✅ Follow camelCase convention</li>
-                <li>✅ Declare variables at the top of scope</li>
-                <li>✅ Initialize variables when declaring</li>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Best Practices</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">const</code> by default</li>
+                <li>• Use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">let</code> only when you need to reassign</li>
+                <li>• Use descriptive, meaningful names</li>
+                <li>• Follow camelCase convention</li>
+                <li>• Declare variables at the top</li>
               </ul>
             </div>
 
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                Avoid This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>❌ Using <code className="font-mono">var</code> in modern code</li>
-                <li>❌ Single-letter variable names (except loops)</li>
-                <li>❌ Reassigning <code className="font-mono">const</code> variables</li>
-                <li>❌ Global variables when not needed</li>
-                <li>❌ Reserved JavaScript keywords</li>
-                <li>❌ Variables without initialization</li>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Never use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">var</code></li>
+                <li>• Don't use single letters (except loops)</li>
+                <li>• Avoid abbreviations</li>
+                <li>• Don't use reserved keywords</li>
+                <li>• Don't reassign const variables</li>
               </ul>
             </div>
           </div>
         </CardContent>
       </Card>
-
     </div>
   );
 }

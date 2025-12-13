@@ -2,923 +2,863 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   ClipboardList,
   Sparkles,
-  Layers,
   Lightbulb,
   CheckCircle2,
   XCircle,
-  ListChecks,
   Key,
   Lock,
-  Shuffle,
+  Copy,
   Package,
-  Zap,
-  Columns,
 } from 'lucide-react';
 
 export default function JavaScriptObjectMethods() {
-  const methodGroups = [
-    { label: 'Inspection', methods: ['Object.keys', 'Object.values', 'Object.entries'] },
-    { label: 'Creation', methods: ['Object.assign', 'Object.fromEntries', 'Object.create'] },
-    { label: 'Grouping', methods: ['Object.groupBy (ES2024)'] },
-    { label: 'Integrity', methods: ['Object.freeze', 'Object.seal', 'Object.preventExtensions'] },
-    { label: 'Definition', methods: ['Object.defineProperty', 'Object.defineProperties', 'Object.getOwnPropertyNames'] },
-    { label: 'Meta', methods: ['Object.hasOwn', 'Object.is', 'Object.getOwnPropertyDescriptors'] },
-  ];
-
-  const methodReference = [
-    { method: 'Object.keys()', tip: 'Array of enumerable property names.' },
-    { method: 'Object.values()', tip: 'Array of enumerable property values.' },
-    { method: 'Object.entries()', tip: 'Array of [key, value] pairs.' },
-    { method: 'Object.fromEntries()', tip: 'Build object from [key, value] pairs.' },
-    { method: 'Object.assign()', tip: 'Copy properties into a target object.' },
-    { method: 'Object.create()', tip: 'Create object with chosen prototype.' },
-    { method: 'Object.groupBy()', tip: 'Group array items by key (ES2024).' },
-    { method: 'Object.freeze()', tip: 'Lock additions/updates (deep copy still required).' },
-    { method: 'Object.seal()', tip: 'Disallow adding/removing properties but allow value changes.' },
-    { method: 'Object.preventExtensions()', tip: 'Block new properties entirely.' },
-    { method: 'Object.defineProperty()', tip: 'Define a property with descriptors (writable, enumerable).' },
-    { method: 'Object.defineProperties()', tip: 'Define multiple properties at once.' },
-    { method: 'Object.getOwnPropertyNames()', tip: 'List own property names (including non-enumerable).' },
-    { method: 'Object.hasOwn()', tip: 'Check if a key exists directly on the object.' },
-    { method: 'Object.is()', tip: 'Precise equality comparison (handles NaN, -0).' },
-    { method: 'Object.getOwnPropertyDescriptors()', tip: 'Inspect attributes like enumerable/writeable.' },
-  ];
-
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={ClipboardList}
-        category="JavaScript · Arrays & Objects"
+        category="JavaScript Fundamentals"
         title="Object Methods"
-        description="Use built-in helpers including ES2024 Object.groupBy() to inspect, clone, lock, group, and transform objects with confidence."
-        colorTheme="blue"
+        description="Built-in methods to work with objects efficiently"
+        colorTheme="yellow"
       />
 
-      {/* What Are Object Methods */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What Are Object Methods?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Built-in utilities that inspect, transform, protect, and manipulate objects without manual property loops.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            JavaScript's <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">Object</code> global provides <strong>16+ static methods</strong> to work with objects efficiently. Instead of writing <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">for...in</code> loops, you can extract keys, values, or entries in one call. The latest ES2024 adds <code className="font-mono text-xs bg-indigo-100 dark:bg-indigo-900/30 px-1.5 py-0.5 rounded">Object.groupBy()</code> for elegant array grouping. You can also clone, freeze, seal, or define properties with precise control.
-          </p>
-          <div className="grid md:grid-cols-3 gap-3">
-            <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-              <p className="text-sm font-semibold mb-1">Inspect</p>
-              <p className="text-xs text-muted-foreground">Extract keys, values, and entries without manual iteration</p>
+      {/* What are Object Methods */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mb-2" />
-              <p className="text-sm font-semibold mb-1">Transform</p>
-              <p className="text-xs text-muted-foreground">Clone, merge, and convert objects with built-in helpers</p>
-            </div>
-            <div className="p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
-              <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400 mb-2" />
-              <p className="text-sm font-semibold mb-1">Protect</p>
-              <p className="text-xs text-muted-foreground">Freeze, seal, or control property behavior</p>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Object Methods?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Object methods are <strong className="text-yellow-700 dark:text-yellow-400">built-in functions</strong> that help you work with objects. Instead of writing loops to get keys or values, use these ready-made tools from <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-sm">Object</code>!
+              </p>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card className="bg-gradient-to-br from-blue-50/70 via-cyan-50/60 to-emerald-50/60 dark:from-blue-950/20 dark:via-cyan-950/10 dark:to-emerald-950/10 border border-blue-200/40 dark:border-blue-900/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListChecks className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Method Families
-          </CardTitle>
-          <CardDescription className="text-base">Group helpers by what they do—understand the toolbox at a glance.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {methodGroups.map(({ label, methods }) => (
-            <div key={label} className="rounded-xl border bg-white/90 dark:bg-slate-900/80 p-4 space-y-2">
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200">{label}</Badge>
-              <ul className="text-xs text-muted-foreground space-y-1">
-                {methods.map((method) => (
-                  <li key={method}>{method}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Inspecting Properties: Keys, Values, Entries"
-        description="Extract all keys, values, or key-value pairs from an object"
-        code={`const user = {
-  id: 123,
-  name: 'Ada Lovelace',
-  role: 'Developer',
-  active: true
-};
-
-// Get all property names
-const keys = Object.keys(user);
-console.log(keys);
-// ["id", "name", "role", "active"]
-
-// Get all property values
-const values = Object.values(user);
-console.log(values);
-// [123, "Ada Lovelace", "Developer", true]
-
-// Get key-value pairs
-const entries = Object.entries(user);
-console.log(entries);
-// [["id", 123], ["name", "Ada Lovelace"], ["role", "Developer"], ["active", true]]
-
-// Iterate with entries
-for (const [key, value] of Object.entries(user)) {
-  console.log(\`\${key}: \${value}\`);
-}`}
-        language="javascript"
-        colorTheme="blue"
-        icon={Key}
-      />
-
-      <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Method Reference Quick List
-          </CardTitle>
-          <CardDescription className="text-base">Scan the core helpers and remember when to reach for them.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-3">
-          {methodReference.map(({ method, tip }) => (
-            <div key={method} className="rounded-lg border bg-white/90 dark:bg-slate-900/80 p-3">
-              <p className="text-sm font-semibold text-blue-700 dark:text-blue-300">{method}</p>
-              <p className="text-xs text-muted-foreground mt-1">{tip}</p>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Transform & Clone: Object.assign()"
-        description="Merge multiple objects into a target object (shallow copy)"
-        code={`// Merging objects (right side wins on conflicts)
-const defaults = {
-  theme: 'light',
-  fontSize: 14,
-  autoSave: true
-};
-
-const userPrefs = {
-  theme: 'dark',
-  fontSize: 16
-};
-
-// Merge into new object
-const config = Object.assign({}, defaults, userPrefs);
-console.log(config);
-// {
-//   theme: "dark",
-//   fontSize: 16,
-//   autoSave: true
-// }
-
-// Alternative with spread (more common)
-const config2 = { ...defaults, ...userPrefs };
-console.log(config2); // Same result`}
-        language="javascript"
-        colorTheme="emerald"
-        icon={Shuffle}
-      />
-
-      <CodeSnippet
-        title="Convert Entries: Object.fromEntries()"
-        description="Build an object from an array of key-value pairs"
-        code={`// From array of pairs
-const pairs = [
-  ['name', 'Alice'],
-  ['age', 30],
-  ['role', 'Developer']
-];
-
-const user = Object.fromEntries(pairs);
-console.log(user);
-// { name: "Alice", age: 30, role: "Developer" }
-
-// Practical: Convert FormData to object
-const formData = new FormData();
-formData.append('username', 'ada_dev');
-formData.append('email', 'ada@example.com');
-
-const userData = Object.fromEntries(formData.entries());
-console.log(userData);
-// { username: "ada_dev", email: "ada@example.com" }
-
-// Practical: Filter object properties
-const original = { id: 1, password: 'secret', email: 'a@b.com' };
-const filtered = Object.fromEntries(
-  Object.entries(original).filter(([key]) => key !== 'password')
-);
-console.log(filtered); // { id: 1, email: "a@b.com" }`}
-        language="javascript"
-        colorTheme="purple"
-        icon={Package}
-      />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Columns className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Prototype & Extension Control
-          </CardTitle>
-          <CardDescription className="text-base">Create objects with custom prototypes and control extensibility.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.create</h4>
-            <p className="text-xs text-muted-foreground">Create a new object with a specific prototype</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const animal = {
-  speak() { return 'Sound'; }
-};
-
-const dog = Object.create(animal);
-dog.name = 'Rex';
-
-console.log(dog.speak());
-// Output: "Sound"
-
-console.log(dog.name);
-// Output: "Rex"
-
-// Object.getPrototypeOf(dog) === animal -> true`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.preventExtensions</h4>
-            <p className="text-xs text-muted-foreground">Block adding new properties to an object</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const config = { apiKey: 'secret123' };
-Object.preventExtensions(config);
-
-config.newKey = 'test'; // Silently ignored
-config.apiKey = 'updated'; // Works
-
-console.log(Object.isExtensible(config));
-// Output: false
-
-console.log(config.newKey);
-// Output: undefined
-
-// config.apiKey -> "updated"`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.hasOwn</h4>
-            <p className="text-xs text-muted-foreground">Check if property exists directly on object (safer than hasOwnProperty)</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const user = { name: 'Alice', role: 'admin' };
-
-console.log(Object.hasOwn(user, 'name'));
-// Output: true
-
-console.log(Object.hasOwn(user, 'age'));
-// Output: false
-
-console.log(Object.hasOwn(user, 'toString'));
-// Output: false`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.is</h4>
-            <p className="text-xs text-muted-foreground">Precise equality check (handles NaN and -0 correctly)</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`console.log(Object.is(25, 25));
-// Output: true
-
-console.log(Object.is(NaN, NaN));
-// Output: true
-
-console.log(Object.is(0, -0));
-// Output: false
-
-console.log(Object.is(null, undefined));
-// Output: false`}
-            </pre>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Immutability: Object.freeze()"
-        description="Prevent any modifications to an object (add, update, or delete)"
-        code={`// Create immutable constants
-const API_CONFIG = Object.freeze({
-  BASE_URL: 'https://api.example.com',
-  TIMEOUT: 5000,
-  MAX_RETRIES: 3
-});
-
-// Attempts to modify are silently ignored (throws in strict mode)
-API_CONFIG.BASE_URL = 'https://hacked.com'; // Ignored
-API_CONFIG.NEW_PROP = 'value'; // Ignored
-delete API_CONFIG.TIMEOUT; // Ignored
-
-console.log(Object.isFrozen(API_CONFIG)); // true
-console.log(API_CONFIG.BASE_URL); // "https://api.example.com"
-
-// Note: freeze() is shallow
-const config = Object.freeze({
-  api: { url: 'test' }
-});
-
-config.api = {}; // Ignored (frozen)
-config.api.url = 'changed'; // Works! (nested object not frozen)
-
-// Deep freeze nested objects too
-config.api = Object.freeze(config.api);`}
-        language="javascript"
-        colorTheme="amber"
-        icon={Lock}
-      />
-
-      <CodeSnippet
-        title="Controlled Mutability: Object.seal()"
-        description="Allow value changes but prevent adding or deleting properties"
-        code={`// Seal an object (fixed structure, mutable values)
-const user = Object.seal({
-  id: 123,
-  name: 'Alice',
-  status: 'active'
-});
-
-// Can modify existing properties
-user.name = 'Alice Cooper'; // ✓ Works
-user.status = 'inactive'; // ✓ Works
-
-// Cannot add new properties
-user.email = 'alice@dev.com'; // ✗ Ignored
-user.role = 'admin'; // ✗ Ignored
-
-// Cannot delete properties
-delete user.status; // ✗ Ignored
-
-console.log(Object.isSealed(user)); // true
-console.log(user);
-// { id: 123, name: "Alice Cooper", status: "inactive" }
-
-// Use case: Database record with fixed schema
-const record = Object.seal({
-  id: null,
-  createdAt: null,
-  updatedAt: null
-});
-
-// Can set values
-record.id = 456;
-record.createdAt = new Date();
-// But cannot add extra fields
-record.metadata = {}; // Ignored`}
-        language="javascript"
-        colorTheme="indigo"
-        icon={Lock}
-      />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Define & Describe Properties
-          </CardTitle>
-          <CardDescription className="text-base">Control modifiers (enumerable, writable, configurable) with descriptor helpers.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.defineProperty</h4>
-            <p className="text-xs text-muted-foreground">Define a single property with descriptors</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const user = {};
-Object.defineProperty(user, 'id', {
-  value: 100,
-  writable: false,
-});
-
-console.log(user.id);
-// Output: 100
-
-user.id = 200; // No effect (non-writable)`}</pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.defineProperties</h4>
-            <p className="text-xs text-muted-foreground">Define multiple properties at once</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const settings = {};
-Object.defineProperties(settings, {
-  theme: { value: 'dark', enumerable: true },
-  version: { value: 1, writable: true },
-});
-
-console.log(settings.theme);
-// Output: 'dark'
-
-console.log(Object.keys(settings));
-// Output: ["theme"]`}</pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <h4 className="font-semibold">Object.getOwnPropertyNames</h4>
-            <p className="text-xs text-muted-foreground">Get all property names (including non-enumerable)</p>
-            <pre className="bg-slate-50 dark:bg-slate-900 rounded p-3 font-mono text-xs overflow-x-auto border">{`const report = Object.create({}, {
-  hidden: { value: true, enumerable: false },
-  visible: { value: false, enumerable: true },
-});
-const names = Object.getOwnPropertyNames(report);
-
-console.log(names);
-// Output: ["hidden","visible"]`}</pre>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: Define & Describe Properties"
-        description="All three methods demonstrated together"
-        code={`// Object.defineProperty - Define single property with descriptors
-const user = {};
-Object.defineProperty(user, 'id', {
-  value: 100,
-  writable: false,
-});
-
-console.log(user.id);
-// Output: 100
-
-user.id = 200; // No effect (non-writable)
-
-// Object.defineProperties - Define multiple properties at once
-const settings = {};
-Object.defineProperties(settings, {
-  theme: { value: 'dark', enumerable: true },
-  version: { value: 1, writable: true },
-});
-
-console.log(settings.theme);
-// Output: 'dark'
-
-console.log(Object.keys(settings));
-// Output: ["theme"]
-
-// Object.getOwnPropertyNames - Get all property names (including non-enumerable)
-const report = Object.create({}, {
-  hidden: { value: true, enumerable: false },
-  visible: { value: false, enumerable: true },
-});
-const names = Object.getOwnPropertyNames(report);
-
-console.log(names);
-// Output: ["hidden","visible"]`}
-        language="javascript"
-        colorTheme="purple"
-        icon={Layers}
-      />
-
-      {/* ES2024 New Method */}
-      <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            ES2024: Object.groupBy()
-          </CardTitle>
-          <CardDescription className="text-base">
-            New method for grouping array items by a key—perfect for data organization and categorization.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Latest Addition</AlertTitle>
-            <AlertDescription>
-              <code className="font-mono text-xs bg-indigo-100 dark:bg-indigo-900/30 px-1.5 py-0.5 rounded">Object.groupBy()</code> is a <strong>static method</strong> introduced in ES2024 that groups array elements based on a callback function. Returns an object with groups as keys.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Why Use Them?</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              These methods save you from writing manual loops. Want all keys? Use <code className="px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-xs">Object.keys()</code>. Want to copy? Use <code className="px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-xs">Object.assign()</code>. Clean and simple!
             </AlertDescription>
           </Alert>
+        </CardContent>
+      </Card>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Basic Grouping */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Basic Grouping</h4>
-                <Badge className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30">ES2024</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Group array items by a property or computed value
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const products = [
-  { name: 'Apple', category: 'fruit' },
-  { name: 'Carrot', category: 'vegetable' },
-  { name: 'Banana', category: 'fruit' },
-  { name: 'Broccoli', category: 'vegetable' }
-];
-
-const grouped = Object.groupBy(
-  products,
-  (item) => item.category
-);
-
-console.log(grouped);
-// Output: {
-//   fruit: [Apple, Banana],
-//   vegetable: [Carrot, Broccoli]
-// }`}
-              </pre>
+      {/* Method Categories */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Method Categories</CardTitle>
+          <CardDescription>Different methods for different tasks</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <div className="text-3xl mb-3">🔍</div>
+              <h4 className="font-bold text-lg mb-2">Inspect</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">keys, values, entries</p>
             </div>
 
-            {/* Grouping by Computation */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Grouping by Computation</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">Dynamic</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Use any logic to determine the grouping key
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const users = [
-  { name: 'Alice', age: 25 },
-  { name: 'Bob', age: 17 },
-  { name: 'Charlie', age: 30 },
-  { name: 'Diana', age: 16 }
-];
-
-const byAgeGroup = Object.groupBy(
-  users,
-  (user) => user.age >= 18 ? 'adult' : 'minor'
-);
-
-console.log(byAgeGroup.adult.length);
-// Output: 2 (Alice, Charlie)
-
-console.log(byAgeGroup.minor.length);
-// Output: 2 (Bob, Diana)`}
-              </pre>
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <div className="text-3xl mb-3">📋</div>
+              <h4 className="font-bold text-lg mb-2">Copy & Merge</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">assign, fromEntries</p>
             </div>
 
-            {/* Grouping by String Property */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Grouping Orders by Status</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Practical</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Common use case: organize items by status
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const orders = [
-  { id: 1, status: 'pending' },
-  { id: 2, status: 'shipped' },
-  { id: 3, status: 'pending' },
-  { id: 4, status: 'delivered' }
-];
-
-const byStatus = Object.groupBy(
-  orders,
-  (order) => order.status
-);
-
-console.log(Object.keys(byStatus));
-// Output: ["pending", "shipped", "delivered"]
-
-console.log(byStatus.pending.length);
-// Output: 2`}
-              </pre>
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <div className="text-3xl mb-3">🔒</div>
+              <h4 className="font-bold text-lg mb-2">Protect</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">freeze, seal</p>
             </div>
 
-            {/* Grouping with Fallback */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Grouping with Fallback</h4>
-                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">Safe</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Handle missing properties with default values
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const tasks = [
-  { title: 'Fix bug', priority: 'high' },
-  { title: 'Write docs', priority: 'low' },
-  { title: 'Review PR' }, // No priority
-  { title: 'Deploy', priority: 'high' }
-];
-
-const byPriority = Object.groupBy(
-  tasks,
-  (task) => task.priority || 'none'
-);
-
-console.log(byPriority.none);
-// Output: [{ title: 'Review PR' }]
-// high -> [Fix bug, Deploy]
-// low -> [Write docs]`}
-              </pre>
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-200 dark:border-orange-800/30">
+              <div className="text-3xl mb-3">✨</div>
+              <h4 className="font-bold text-lg mb-2">Latest (ES2024)</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">groupBy</p>
             </div>
           </div>
+        </CardContent>
+      </Card>
 
-          <div className="p-4 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800">
-            <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5" />
-              When to Use Object.groupBy()
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Organizing data by category, status, or type</li>
-              <li>✅ Creating reports with grouped summaries</li>
-              <li>✅ Building navigation menus from flat arrays</li>
-              <li>✅ Sorting items into buckets for processing</li>
-              <li>✅ Replacing complex reduce() patterns with cleaner code</li>
-            </ul>
+      {/* Object.keys() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Key className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Object.keys() - Get All Keys</CardTitle>
+              <CardDescription>Returns an array of property names</CardDescription>
+            </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Extract Property Names</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Gets all <strong>enumerable</strong> property names as an array
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const user = {
+  name: 'Alice',
+  age: 25,
+  email: 'alice@example.com'
+};
 
-          <div className="p-4 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl border border-amber-200 dark:border-amber-800">
-            <h4 className="font-semibold mb-2 text-amber-700 dark:text-amber-300 flex items-center gap-2">
-              <Lightbulb className="w-5 h-5" />
-              Before Object.groupBy() (Old Way)
-            </h4>
-            <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border mt-2">
-{`// Old way: using reduce()
-const grouped = products.reduce((acc, item) => {
-  const key = item.category;
-  if (!acc[key]) acc[key] = [];
-  acc[key].push(item);
-  return acc;
-}, {});
-
-// New way: much cleaner!
-const grouped = Object.groupBy(products, item => item.category);`}
-            </pre>
+const keys = Object.keys(user);
+console.log(keys);
+// ['name', 'age', 'email']`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: ES2024 Object.groupBy()"
-        description="All grouping patterns demonstrated together"
-        code={`// Example 1: Basic Grouping by Property
-const products = [
-  { name: 'Apple', category: 'fruit' },
-  { name: 'Carrot', category: 'vegetable' },
-  { name: 'Banana', category: 'fruit' },
-  { name: 'Broccoli', category: 'vegetable' }
-];
+        title="Object.keys() Examples"
+        description="Working with object keys"
+        code={`const product = {
+  id: 101,
+  name: 'Laptop',
+  price: 999,
+  inStock: true
+};
 
-const grouped = Object.groupBy(
-  products,
-  (item) => item.category
+// Get all keys
+const keys = Object.keys(product);
+console.log(keys);
+// ['id', 'name', 'price', 'inStock']
+
+// Count properties
+console.log('Properties:', keys.length);  // Properties: 4
+
+// Loop through keys
+keys.forEach(key => {
+  console.log(\`\${key}: \${product[key]}\`);
+});
+// id: 101
+// name: Laptop
+// price: 999
+// inStock: true
+
+// Check if key exists
+const hasName = keys.includes('name');
+console.log(hasName);  // true
+
+// Real-world: Validate required fields
+const requiredFields = ['name', 'price'];
+const hasAllFields = requiredFields.every(field => 
+  keys.includes(field)
 );
-
-console.log(grouped);
-// Output: {
-//   fruit: [Apple, Banana],
-//   vegetable: [Carrot, Broccoli]
-// }
-
-// Example 2: Grouping by Computation (Dynamic)
-const users = [
-  { name: 'Alice', age: 25 },
-  { name: 'Bob', age: 17 },
-  { name: 'Charlie', age: 30 },
-  { name: 'Diana', age: 16 }
-];
-
-const byAgeGroup = Object.groupBy(
-  users,
-  (user) => user.age >= 18 ? 'adult' : 'minor'
-);
-
-console.log(byAgeGroup.adult.length);
-// Output: 2 (Alice, Charlie)
-
-console.log(byAgeGroup.minor.length);
-// Output: 2 (Bob, Diana)
-
-// Example 3: Grouping Orders by Status (Practical)
-const orders = [
-  { id: 1, status: 'pending' },
-  { id: 2, status: 'shipped' },
-  { id: 3, status: 'pending' },
-  { id: 4, status: 'delivered' }
-];
-
-const byStatus = Object.groupBy(
-  orders,
-  (order) => order.status
-);
-
-console.log(Object.keys(byStatus));
-// Output: ["pending", "shipped", "delivered"]
-
-console.log(byStatus.pending.length);
-// Output: 2
-
-// Example 4: Grouping with Fallback (Safe)
-const tasks = [
-  { title: 'Fix bug', priority: 'high' },
-  { title: 'Write docs', priority: 'low' },
-  { title: 'Review PR' }, // No priority
-  { title: 'Deploy', priority: 'high' }
-];
-
-const byPriority = Object.groupBy(
-  tasks,
-  (task) => task.priority || 'none'
-);
-
-console.log(byPriority.none);
-// Output: [{ title: 'Review PR' }]
-// high -> [Fix bug, Deploy]
-// low -> [Write docs]
-
-// Old way: using reduce()
-const grouped2 = products.reduce((acc, item) => {
-  const key = item.category;
-  if (!acc[key]) acc[key] = [];
-  acc[key].push(item);
-  return acc;
-}, {});
-
-// New way: much cleaner!
-const grouped3 = Object.groupBy(products, item => item.category);`}
+console.log('Valid:', hasAllFields);  // Valid: true`}
         language="javascript"
-        colorTheme="indigo"
-        icon={Sparkles}
+        colorTheme="yellow"
       />
 
-      {/* Real-World Examples */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
+      {/* Object.values() */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll use in production code every day.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Package className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>Object.values() - Get All Values</CardTitle>
+              <CardDescription>Returns an array of property values</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Pattern 1: Merging Configuration */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                Merging Configuration Objects
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Default config
-const defaults = {
-  theme: 'light',
-  fontSize: 14,
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Extract Property Values</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Gets all values without needing keys
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const scores = {
+  math: 95,
+  english: 87,
+  science: 92
+};
+
+const values = Object.values(scores);
+console.log(values);  // [95, 87, 92]`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object.values() Examples"
+        description="Working with object values"
+        code={`const inventory = {
+  apples: 50,
+  bananas: 30,
+  oranges: 45
+};
+
+// Get all values
+const quantities = Object.values(inventory);
+console.log(quantities);  // [50, 30, 45]
+
+// Calculate total
+const total = quantities.reduce((sum, qty) => sum + qty, 0);
+console.log('Total items:', total);  // Total items: 125
+
+// Find max value
+const max = Math.max(...quantities);
+console.log('Max quantity:', max);  // Max quantity: 50
+
+// Real-world: Calculate average score
+const scores = { math: 90, english: 85, science: 88 };
+const grades = Object.values(scores);
+const average = grades.reduce((a, b) => a + b, 0) / grades.length;
+console.log('Average:', average);  // Average: 87.67
+
+// Check if all values meet condition
+const prices = { item1: 10, item2: 20, item3: 15 };
+const allAffordable = Object.values(prices).every(price => price < 50);
+console.log('All affordable:', allAffordable);  // true`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Object.entries() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <ClipboardList className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Object.entries() - Get Key-Value Pairs</CardTitle>
+              <CardDescription>Returns array of [key, value] arrays</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Extract Pairs</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Perfect for looping when you need both key and value
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const user = { name: 'Bob', age: 30 };
+
+const entries = Object.entries(user);
+console.log(entries);
+// [['name', 'Bob'], ['age', 30]]`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object.entries() Examples"
+        description="Working with key-value pairs"
+        code={`const settings = {
+  theme: 'dark',
+  language: 'en',
+  notifications: true
+};
+
+// Get all entries
+const entries = Object.entries(settings);
+console.log(entries);
+// [['theme', 'dark'], ['language', 'en'], ['notifications', true]]
+
+// Loop with destructuring
+entries.forEach(([key, value]) => {
+  console.log(\`\${key}: \${value}\`);
+});
+// theme: dark
+// language: en
+// notifications: true
+
+// Convert to Map
+const map = new Map(entries);
+console.log(map.get('theme'));  // 'dark'
+
+// Filter entries
+const booleanSettings = entries.filter(([key, value]) => 
+  typeof value === 'boolean'
+);
+console.log(booleanSettings);
+// [['notifications', true]]
+
+// Real-world: Build query string
+const params = { page: 1, limit: 10, sort: 'name' };
+const queryString = Object.entries(params)
+  .map(([key, value]) => \`\${key}=\${value}\`)
+  .join('&');
+console.log(queryString);
+// page=1&limit=10&sort=name`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Object.assign() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <Copy className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>Object.assign() - Copy & Merge</CardTitle>
+              <CardDescription>Copy properties from one or more objects</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Shallow Copy & Merge</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Copies properties from source objects to target
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const target = { a: 1 };
+const source = { b: 2, c: 3 };
+
+Object.assign(target, source);
+console.log(target);
+// { a: 1, b: 2, c: 3 }`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object.assign() Examples"
+        description="Copying and merging objects"
+        code={`// Clone an object
+const original = { name: 'Alice', age: 25 };
+const clone = Object.assign({}, original);
+
+console.log(clone);  // { name: 'Alice', age: 25 }
+clone.age = 30;
+console.log(original.age);  // 25 (original unchanged)
+
+// Merge multiple objects
+const defaults = { theme: 'light', lang: 'en' };
+const userPrefs = { theme: 'dark' };
+const config = Object.assign({}, defaults, userPrefs);
+
+console.log(config);
+// { theme: 'dark', lang: 'en' } (userPrefs overwrites defaults)
+
+// Add properties to existing object
+const user = { name: 'Bob' };
+Object.assign(user, { age: 30, email: 'bob@example.com' });
+console.log(user);
+// { name: 'Bob', age: 30, email: 'bob@example.com' }
+
+// Real-world: Merge settings
+const systemDefaults = {
+  notifications: true,
+  autoSave: false,
+  theme: 'light'
+};
+
+const userSettings = {
+  theme: 'dark',
   autoSave: true
 };
 
-// User preferences
-const userPrefs = {
-  theme: 'dark',
-  fontSize: 16
+const finalSettings = Object.assign({}, systemDefaults, userSettings);
+console.log(finalSettings);
+// { notifications: true, autoSave: true, theme: 'dark' }
+
+// Modern alternative: Spread operator
+const merged = { ...defaults, ...userPrefs };
+console.log(merged);  // Same result`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Object.fromEntries() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Package className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Object.fromEntries() - Build from Pairs</CardTitle>
+              <CardDescription>Convert [key, value] pairs to object</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Opposite of Object.entries()</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Creates object from array of [key, value] pairs
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const entries = [['name', 'Alice'], ['age', 25]];
+
+const obj = Object.fromEntries(entries);
+console.log(obj);
+// { name: 'Alice', age: 25 }`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object.fromEntries() Examples"
+        description="Building objects from entries"
+        code={`// From array of pairs
+const pairs = [['x', 10], ['y', 20], ['z', 30]];
+const coords = Object.fromEntries(pairs);
+console.log(coords);  // { x: 10, y: 20, z: 30 }
+
+// From Map
+const map = new Map([
+  ['name', 'Bob'],
+  ['age', 30]
+]);
+const obj = Object.fromEntries(map);
+console.log(obj);  // { name: 'Bob', age: 30 }
+
+// Real-world: Transform object values
+const prices = { apple: 1, banana: 2, orange: 3 };
+
+// Double all prices
+const doubled = Object.fromEntries(
+  Object.entries(prices).map(([key, value]) => [key, value * 2])
+);
+console.log(doubled);
+// { apple: 2, banana: 4, orange: 6 }
+
+// Filter object properties
+const user = {
+  name: 'Alice',
+  age: 25,
+  password: 'secret123',
+  email: 'alice@example.com'
 };
 
-// Merge configurations
-const config = Object.assign(
-  {},
-  defaults,
-  userPrefs
+// Remove password
+const safe = Object.fromEntries(
+  Object.entries(user).filter(([key]) => key !== 'password')
 );
+console.log(safe);
+// { name: 'Alice', age: 25, email: 'alice@example.com' }
 
-console.log(config.theme);
-// Output: "dark"
-
-console.log(config.autoSave);
-// Output: true
-
-// config.fontSize -> 16`}
-              </pre>
-            </div>
-
-            {/* Pattern 2: Converting Form Data */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Converting Form Data to Object
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Form data as entries
-const formData = new FormData();
-formData.append('username', 'alice');
-formData.append('email', 'alice@dev.com');
-
-// Convert to object
-const userData = Object.fromEntries(
-  formData.entries()
+// Real-world: Parse URL query string
+const queryString = 'page=1&limit=10&sort=name';
+const params = Object.fromEntries(
+  queryString.split('&').map(pair => pair.split('='))
 );
+console.log(params);
+// { page: '1', limit: '10', sort: 'name' }`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-console.log(userData);
-// Output: { username: "alice", email: "alice@dev.com" }`}
-              </pre>
+      {/* Object.freeze() */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+              <Lock className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
             </div>
+            <div>
+              <CardTitle>Object.freeze() - Make Immutable</CardTitle>
+              <CardDescription>Prevent any changes to an object</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-cyan-200 dark:border-cyan-800/30 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-cyan-600 dark:bg-cyan-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Lock It Down</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                No adding, deleting, or modifying properties (shallow only!)
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-cyan-200 dark:border-cyan-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const config = { api: 'v1', timeout: 5000 };
 
-            {/* Pattern 3: Filtering Object Properties */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                Filtering Object Properties
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const user = {
-  id: 123,
-  name: 'Bob',
-  password: 'secret',
-  email: 'bob@dev.com'
+Object.freeze(config);
+
+config.api = 'v2';        // Ignored (strict mode: error)
+config.newProp = 'test';  // Ignored
+delete config.timeout;    // Ignored
+
+console.log(config);
+// { api: 'v1', timeout: 5000 } (unchanged)`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object.freeze() Examples"
+        description="Creating immutable objects"
+        code={`// Freeze constants
+const COLORS = {
+  PRIMARY: '#007bff',
+  SECONDARY: '#6c757d',
+  SUCCESS: '#28a745'
 };
 
-// Remove password from object
-const publicData = Object.fromEntries(
-  Object.entries(user)
-    .filter(([key]) => key !== 'password')
-);
+Object.freeze(COLORS);
 
-console.log(Object.keys(publicData));
-// Output: ["id", "name", "email"]
+// Attempts to modify fail silently
+COLORS.PRIMARY = '#ff0000';  // Ignored
+COLORS.NEW = '#000000';      // Ignored
 
-// publicData -> { id: 123, name: "Bob", email: "bob@dev.com" }`}
-              </pre>
-            </div>
+console.log(COLORS.PRIMARY);  // '#007bff' (unchanged)
 
-            {/* Pattern 4: Creating Immutable Constants */}
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                Creating Immutable Constants
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// API configuration
-const API_CONFIG = Object.freeze({
+// Check if frozen
+console.log(Object.isFrozen(COLORS));  // true
+
+// Real-world: API endpoints
+const API = Object.freeze({
   BASE_URL: 'https://api.example.com',
-  TIMEOUT: 5000,
-  ENDPOINTS: Object.freeze({
-    USERS: '/users',
-    POSTS: '/posts'
-  })
+  USERS: '/users',
+  POSTS: '/posts'
 });
 
-// Attempts to modify are ignored
-API_CONFIG.BASE_URL = 'hacked';
+// Cannot be changed
+API.BASE_URL = 'https://hacker.com';  // Ignored
+console.log(API.BASE_URL);
+// 'https://api.example.com' (still safe)
 
-console.log(API_CONFIG.BASE_URL);
-// Output: "https://api.example.com"
+// Note: Freeze is shallow!
+const user = {
+  name: 'Alice',
+  address: { city: 'NYC' }
+};
 
-console.log(Object.isFrozen(API_CONFIG));
-// Output: true`}
-              </pre>
+Object.freeze(user);
+
+user.name = 'Bob';  // Ignored (frozen)
+user.address.city = 'LA';  // WORKS! (nested not frozen)
+
+console.log(user);
+// { name: 'Alice', address: { city: 'LA' } }
+
+// Deep freeze (manual)
+function deepFreeze(obj) {
+  Object.freeze(obj);
+  Object.values(obj).forEach(value => {
+    if (typeof value === 'object' && value !== null) {
+      deepFreeze(value);
+    }
+  });
+  return obj;
+}`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Object.groupBy() - ES2024 */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-pink-100 dark:bg-pink-900/30">
+              <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+            </div>
+            <div>
+              <CardTitle>Object.groupBy() - Latest ES2024</CardTitle>
+              <CardDescription>Group array items into object by key</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20 overflow-hidden">
+            <div className="bg-pink-600 dark:bg-pink-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Modern Grouping</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                New in ES2024 - group array items by a key function
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-pink-200 dark:border-pink-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const people = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 25 }
+];
+
+const byAge = Object.groupBy(people, person => person.age);
+console.log(byAge);
+// {
+//   25: [{ name: 'Alice', ... }, { name: 'Charlie', ... }],
+//   30: [{ name: 'Bob', ... }]
+// }`}</pre>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
+      <CodeSnippet
+        title="Object.groupBy() Examples"
+        description="Grouping arrays by property (ES2024)"
+        code={`// Group by property
+const products = [
+  { name: 'Laptop', category: 'Electronics' },
+  { name: 'Shirt', category: 'Clothing' },
+  { name: 'Phone', category: 'Electronics' },
+  { name: 'Pants', category: 'Clothing' }
+];
+
+const byCategory = Object.groupBy(products, p => p.category);
+console.log(byCategory);
+// {
+//   Electronics: [{ name: 'Laptop' }, { name: 'Phone' }],
+//   Clothing: [{ name: 'Shirt' }, { name: 'Pants' }]
+// }
+
+// Group by condition
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const evenOdd = Object.groupBy(numbers, n => 
+  n % 2 === 0 ? 'even' : 'odd'
+);
+console.log(evenOdd);
+// { odd: [1, 3, 5, 7, 9], even: [2, 4, 6, 8, 10] }
+
+// Real-world: Group users by role
+const users = [
+  { name: 'Alice', role: 'admin' },
+  { name: 'Bob', role: 'user' },
+  { name: 'Charlie', role: 'admin' },
+  { name: 'David', role: 'user' }
+];
+
+const byRole = Object.groupBy(users, u => u.role);
+console.log(byRole);
+// {
+//   admin: [{ name: 'Alice' }, { name: 'Charlie' }],
+//   user: [{ name: 'Bob' }, { name: 'David' }]
+// }
+
+// Group by first letter
+const names = ['Alice', 'Bob', 'Anna', 'Charlie', 'Alex'];
+
+const byFirstLetter = Object.groupBy(names, name => name[0]);
+console.log(byFirstLetter);
+// {
+//   A: ['Alice', 'Anna', 'Alex'],
+//   B: ['Bob'],
+//   C: ['Charlie']
+// }
+
+// Note: Use polyfill or check browser support!
+// Not yet available in all environments`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* hasOwn */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-emerald-700 dark:text-emerald-300"><CheckCircle2 className="w-5 h-5" /> Do This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>✅ Use <code className="font-mono text-xs">Object.assign</code> or spread to avoid mutating shared objects.</li>
-              <li>✅ Convert entry arrays with <code className="font-mono text-xs">Object.fromEntries</code> for clarity.</li>
-              <li>✅ Use <code className="font-mono text-xs">Object.groupBy()</code> instead of complex <code className="font-mono text-xs">reduce()</code> patterns (ES2024).</li>
-              <li>✅ Freeze config objects in production to catch accidental writes.</li>
-              <li>✅ Check properties with <code className="font-mono text-xs">Object.hasOwn()</code> instead of <code className="font-mono text-xs">hasOwnProperty</code>.</li>
-            </ul>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+              <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+            </div>
+            <div>
+              <CardTitle>Object.hasOwn() - Check Property</CardTitle>
+              <CardDescription>Safer way to check if property exists</CardDescription>
+            </div>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-rose-700 dark:text-rose-300"><XCircle className="w-5 h-5" /> Avoid This</h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>❌ Overusing <code className="font-mono text-xs">Object.assign</code> when spread syntax is clearer.</li>
-              <li>❌ Relying on property order—use <code className="font-mono text-xs">Object.entries</code> when you need pairs.</li>
-              <li>❌ Complex <code className="font-mono text-xs">reduce()</code> for grouping when <code className="font-mono text-xs">Object.groupBy()</code> exists.</li>
-              <li>❌ Forgetting to handle missing keys (check with <code className="font-mono text-xs">Object.hasOwn</code>).</li>
-            </ul>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-amber-200 dark:border-amber-800/30 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 overflow-hidden">
+            <div className="bg-amber-600 dark:bg-amber-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Modern Property Check</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Replaces <code className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded text-xs">obj.hasOwnProperty()</code> with safer alternative
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-amber-200 dark:border-amber-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const user = { name: 'Alice', age: 25 };
+
+console.log(Object.hasOwn(user, 'name'));  // true
+console.log(Object.hasOwn(user, 'email')); // false`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
+      <CodeSnippet
+        title="Object.hasOwn() Examples"
+        description="Checking property existence safely"
+        code={`const user = {
+  name: 'Alice',
+  age: 25
+};
+
+// Check if property exists
+console.log(Object.hasOwn(user, 'name'));   // true
+console.log(Object.hasOwn(user, 'email'));  // false
+
+// Real-world: Validate object
+function validateUser(user) {
+  const required = ['name', 'email', 'age'];
+  
+  for (const field of required) {
+    if (!Object.hasOwn(user, field)) {
+      return \`Missing field: \${field}\`;
+    }
+  }
+  
+  return 'Valid user';
+}
+
+console.log(validateUser({ name: 'Bob', age: 30 }));
+// Missing field: email
+
+console.log(validateUser({ name: 'Alice', email: 'a@example.com', age: 25 }));
+// Valid user
+
+// Why use hasOwn instead of 'in'?
+const obj = { prop: undefined };
+
+console.log('prop' in obj);              // true
+console.log(Object.hasOwn(obj, 'prop')); // true
+
+// 'in' checks prototype chain, hasOwn checks own properties only
+console.log('toString' in obj);              // true (inherited)
+console.log(Object.hasOwn(obj, 'toString')); // false (not own property)`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Quick Reference & Best Practices</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use <strong>keys()</strong> to get property names</li>
+                <li>• Use <strong>values()</strong> to get just values</li>
+                <li>• Use <strong>entries()</strong> for key-value pairs</li>
+                <li>• Use <strong>freeze()</strong> for constants</li>
+                <li>• Use <strong>hasOwn()</strong> to check properties</li>
+                <li>• Use spread <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">{'...obj'}</code> for shallow copy</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">for...in</code> without checks</li>
+                <li>• Don't forget freeze() is shallow</li>
+                <li>• Don't use old <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">hasOwnProperty()</code></li>
+                <li>• Don't mutate frozen objects</li>
+                <li>• Don't assume groupBy() works everywhere yet</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Method Comparison</h4>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <strong>Inspect:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• keys() → array of keys</div>
+                  <div>• values() → array of values</div>
+                  <div>• entries() → array of pairs</div>
+                </div>
+              </div>
+              <div>
+                <strong>Transform:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• assign() → merge/copy</div>
+                  <div>• fromEntries() → pairs to object</div>
+                  <div>• groupBy() → group by key</div>
+                </div>
+              </div>
+              <div>
+                <strong>Protect:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• freeze() → no changes</div>
+                  <div>• seal() → no add/remove</div>
+                </div>
+              </div>
+              <div>
+                <strong>Check:</strong>
+                <div className="text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                  <div>• hasOwn() → property exists</div>
+                  <div>• isFrozen() → is frozen</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Browser Support</AlertTitle>
+            <AlertDescription className="text-base">
+              Most methods are widely supported. <code className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">Object.groupBy()</code> is very new (ES2024) - check compatibility or use a polyfill for production code!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
     </div>
   );
 }

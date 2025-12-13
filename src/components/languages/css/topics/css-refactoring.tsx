@@ -1,520 +1,587 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview } from '@/components/shared';
-import { 
-  RefreshCw, CheckCircle, Code, Trash2, Zap, 
-  Target, Layers, AlertCircle, Info
-} from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import React from 'react';
+import { RefreshCw, Sparkles, Target, Layers, CheckCircle, Zap } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssRefactoringProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string) => void;
 }
 
 export default function CssRefactoring({ onOpenWebPlayground }: CssRefactoringProps) {
-  const [selectedStep, setSelectedStep] = useState('before');
-
-  const refactoringSteps = [
-    { id: 'before', name: 'Before', icon: AlertCircle, color: 'bg-red-500' },
-    { id: 'identify', name: 'Identify Issues', icon: Target, color: 'bg-orange-500' },
-    { id: 'refactor', name: 'Refactor', icon: RefreshCw, color: 'bg-blue-500' },
-    { id: 'after', name: 'After', icon: CheckCircle, color: 'bg-green-500' },
-  ];
-
-  const refactoringExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Refactoring Example</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
-      }
-    }
-    
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    h1 {
-      color: #06b6d4;
-      margin-bottom: 10px;
-      text-align: center;
-      font-size: 2.5rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #22d3ee;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 30px;
-    }
-    
-    /* ✅ REFACTORED: Using CSS Variables */
-    :root {
-      --card-padding: 24px;
-      --card-radius: 12px;
-      --card-border: 2px;
-      --spacing: 20px;
-    }
-    
-    .comparison {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing);
-      margin-bottom: var(--spacing);
-    }
-    
-    /* ✅ REFACTORED: DRY - Single card base class */
-    .card {
-      padding: var(--card-padding);
-      border-radius: var(--card-radius);
-      border: var(--card-border) solid;
-      transition: all 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-    
-    /* ✅ REFACTORED: Modifiers instead of duplicate styles */
-    .card--before {
-      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-      border-color: #ef4444;
-    }
-    
-    .card--after {
-      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-      border-color: #10b981;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card--before {
-        background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
-        border-color: #f87171;
-      }
-      
-      .card--after {
-        background: linear-gradient(135deg, #065f46 0%, #047857 100%);
-        border-color: #34d399;
-      }
-    }
-    
-    .card__title {
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 16px;
-    }
-    
-    .card--before .card__title {
-      color: #b91c1c;
-    }
-    
-    .card--after .card__title {
-      color: #065f46;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card--before .card__title {
-        color: #fca5a5;
-      }
-      
-      .card--after .card__title {
-        color: #a7f3d0;
-      }
-    }
-    
-    .issue-list {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .issue-item {
-      padding: 12px;
-      background: white;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: start;
-      gap: 12px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .issue-item {
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-    }
-    
-    .icon {
-      font-size: 1.5rem;
-      flex-shrink: 0;
-    }
-    
-    .card--before .icon {
-      color: #ef4444;
-    }
-    
-    .card--after .icon {
-      color: #10b981;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🔄 CSS Refactoring</h1>
-    <p class="subtitle">Clean, maintainable, and scalable CSS</p>
-    
-    <div class="comparison">
-      <div class="card card--before">
-        <h3 class="card__title">❌ Before Refactoring</h3>
-        <ul class="issue-list">
-          <li class="issue-item">
-            <span class="icon">×</span>
-            <span>Duplicate styles</span>
-          </li>
-          <li class="issue-item">
-            <span class="icon">×</span>
-            <span>Hard-coded values</span>
-          </li>
-          <li class="issue-item">
-            <span class="icon">×</span>
-            <span>Complex selectors</span>
-          </li>
-          <li class="issue-item">
-            <span class="icon">×</span>
-            <span>No modularity</span>
-          </li>
-        </ul>
-      </div>
-      
-      <div class="card card--after">
-        <h3 class="card__title">✅ After Refactoring</h3>
-        <ul class="issue-list">
-          <li class="issue-item">
-            <span class="icon">✓</span>
-            <span>DRY principles</span>
-          </li>
-          <li class="issue-item">
-            <span class="icon">✓</span>
-            <span>CSS variables</span>
-          </li>
-          <li class="issue-item">
-            <span class="icon">✓</span>
-            <span>BEM methodology</span>
-          </li>
-          <li class="issue-item">
-            <span class="icon">✓</span>
-            <span>Reusable components</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
-
+  
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={RefreshCw}
+      title="CSS Refactoring"
+      description="Improve your CSS code without changing its behavior"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is CSS Refactoring?",
+        description: "The process of improving CSS code structure and quality while keeping the same visual output",
+        keyPoints: [
+          "Clean up messy, hard-to-maintain CSS",
+          "Remove duplicate and unused styles",
+          "Improve code organization",
+          "Make CSS more reusable",
+          "No visual changes - same output",
+          "Essential for long-term projects"
+        ]
+      }}
+    >
+
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why Refactor CSS?">
+        CSS gets messy over time - duplicated rules, unused styles, confusing names. 
+        <strong> Refactoring is like cleaning your room: everything works better when it's organized!</strong> 
+        You improve the code without changing how the page looks.
+      </InfoAlert>
+
+      {/* Signs You Need Refactoring */}
+      <SectionCard
+        title="Signs Your CSS Needs Refactoring"
+        description="Red flags to watch for"
+        icon={Target}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "🔄 Lots of Duplication",
+              description: "Same styles repeated everywhere",
+              example: "5 buttons with identical code"
+            },
+            {
+              title: "❌ Unused Styles",
+              description: "CSS that does nothing",
+              example: "Styles for deleted components"
+            },
+            {
+              title: "😱 Too Specific",
+              description: "Overly complex selectors",
+              example: "div > ul > li > a.link"
+            },
+            {
+              title: "🤯 Hard to Understand",
+              description: "Confusing class names",
+              example: ".box2-final-v3-NEW"
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* Refactoring Techniques */}
+      <SectionCard
+        title="CSS Refactoring Techniques"
+        description="Common ways to improve CSS"
         icon={RefreshCw}
-        category="CSS · Best Practices"
-        title="CSS Refactoring"
-        description="Clean up and improve your CSS for better maintainability"
-        colorTheme="cyan"
-      />
-
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-cyan-700 dark:text-cyan-300">
-            <div className="relative">
-              <RefreshCw className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            What is CSS Refactoring?
-          </CardTitle>
-          <CardDescription className="text-lg text-cyan-600 dark:text-cyan-400">
-            🔄 Improve your CSS structure without changing its functionality!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-cyan-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-cyan-700 dark:text-cyan-300 flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  Why Refactor CSS?
-                </h4>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
-                    <Zap className="w-5 h-5 text-cyan-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-cyan-700 dark:text-cyan-300">Improve Performance</div>
-                      <div className="text-sm text-cyan-600 dark:text-cyan-400">
-                        Remove unused code and optimize selectors
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <Layers className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-blue-700 dark:text-blue-300">Better Organization</div>
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
-                        Structure code for easier maintenance
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-green-700 dark:text-green-300">Reduce Technical Debt</div>
-                      <div className="text-sm text-green-600 dark:text-green-400">
-                        Clean up legacy code and workarounds
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">6 Key Refactoring Techniques</h4>
+            <div className="grid md:grid-cols-2 gap-3 text-sm">
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">1. Remove Duplication</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Combine repeated styles into reusable classes</p>
               </div>
-
-              <div className="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 p-6 rounded-xl border border-cyan-200/50">
-                <h4 className="font-bold mb-4 text-cyan-700 dark:text-cyan-300">
-                  Common Refactoring Tasks
-                </h4>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Trash2 className="w-4 h-4 text-red-500" />
-                      <div className="font-semibold text-sm">Remove Duplicates</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">DRY principle</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Code className="w-4 h-4 text-blue-500" />
-                      <div className="font-semibold text-sm">Simplify Selectors</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Reduce specificity</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Layers className="w-4 h-4 text-purple-500" />
-                      <div className="font-semibold text-sm">Use Variables</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">CSS custom properties</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <RefreshCw className="w-4 h-4 text-green-500" />
-                      <div className="font-semibold text-sm">Extract Components</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Reusable patterns</p>
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">2. Delete Unused CSS</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Remove styles that aren't used anywhere</p>
               </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100 dark:from-cyan-900/30 dark:via-blue-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-cyan-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">🔄</div>
-                  <div className="font-bold text-lg text-cyan-700 dark:text-cyan-300">Refactoring</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Clean Code
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Maintainable
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Scalable
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Performant
-                    </div>
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">3. Simplify Selectors</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Make selectors less specific and complex</p>
               </div>
-
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Refactor incrementally, not all at once
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">4. Rename Classes</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Use clear, descriptive names</p>
+              </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">5. Extract Variables</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Use CSS variables for repeated values</p>
+              </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">6. Organize Structure</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Group related styles logically</p>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </SectionCard>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-cyan-500/10 rounded-lg">
-              <RefreshCw className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
-            </div>
-            Refactoring Process
-          </CardTitle>
-          <CardDescription>
-            Step-by-step approach to refactoring CSS
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {refactoringSteps.map((step) => (
-              <div
-                key={step.id}
-                onClick={() => setSelectedStep(step.id)}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                  selectedStep === step.id
-                    ? 'border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20 shadow-lg scale-105'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-cyan-300 dark:hover:border-cyan-700'
-                }`}
-              >
-                <div className="flex flex-col items-center text-center gap-3">
-                  <div className={`w-12 h-12 ${step.color} rounded-lg flex items-center justify-center`}>
-                    <step.icon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="font-bold text-sm text-gray-900 dark:text-gray-100">{step.name}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Technique 1: Remove Duplication */}
+      <SectionCard
+        title="1. Remove Duplication"
+        description="DRY - Don't Repeat Yourself"
+        icon={Layers}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Before: Repeated Styles"
+            code={`/* ❌ BAD: Same styles repeated 3 times */
+.submit-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #3b82f6;
+  color: white;
+}
 
-          <FrontendCodePreview
-            html={refactoringExample}
-            title="CSS Refactoring - Before and After"
-            colorTheme="cyan"
-            onOpenPlayground={onOpenWebPlayground}
+.cancel-button {
+  padding: 12px 24px;    /* Duplicate! */
+  font-size: 16px;       /* Duplicate! */
+  font-weight: 600;      /* Duplicate! */
+  border: none;          /* Duplicate! */
+  border-radius: 6px;    /* Duplicate! */
+  cursor: pointer;       /* Duplicate! */
+  background: #6b7280;
+  color: white;
+}
+
+.delete-button {
+  padding: 12px 24px;    /* Duplicate! */
+  font-size: 16px;       /* Duplicate! */
+  font-weight: 600;      /* Duplicate! */
+  border: none;          /* Duplicate! */
+  border-radius: 6px;    /* Duplicate! */
+  cursor: pointer;       /* Duplicate! */
+  background: #ef4444;
+  color: white;
+}`}
           />
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Target className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            Refactoring Checklist
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          <SyntaxBlock
+            title="After: Reusable Base Class"
+            code={`/* ✅ GOOD: One base class, modified with utilities */
+.button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+
+.button--primary {
+  background: #3b82f6;
+}
+
+.button--secondary {
+  background: #6b7280;
+}
+
+.button--danger {
+  background: #ef4444;
+}
+
+/* Usage in HTML:
+<button class="button button--primary">Submit</button>
+<button class="button button--secondary">Cancel</button>
+<button class="button button--danger">Delete</button>
+*/`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Technique 2: Delete Unused CSS */}
+      <SectionCard
+        title="2. Delete Unused CSS"
+        description="Remove dead code"
+        icon={Zap}
+      >
+        <div className="space-y-6">
+          <InfoAlert type="warning" title="Unused CSS is a Problem">
+            Unused CSS increases file size, slows page load, and makes code harder to maintain. 
+            Delete it!
+          </InfoAlert>
+
+          <SyntaxBlock
+            title="Finding Unused CSS"
+            code={`/* Tools to find unused CSS: */
+
+// 1. Chrome DevTools Coverage Tool
+// - Open DevTools → More tools → Coverage
+// - Record page load
+// - See unused CSS highlighted in red
+
+// 2. PurgeCSS (removes unused CSS automatically)
+npm install -D purgecss
+
+// purgecss.config.js
+module.exports = {
+  content: ['./src/**/*.html', './src/**/*.js'],
+  css: ['./src/**/*.css']
+}
+
+// Run PurgeCSS
+npx purgecss --config ./purgecss.config.js --output ./dist
+
+// 3. UnCSS (scans HTML and removes unused styles)
+npm install -g uncss
+
+// Command line
+uncss https://yoursite.com > clean.css`}
+          />
+
+          <div className="p-5 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl border-2 border-amber-200 dark:border-amber-800">
+            <h4 className="text-lg font-semibold mb-3 text-amber-900 dark:text-amber-100">Before Deleting, Check:</h4>
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li>✓ Is it used in JavaScript (dynamic classes)?</li>
+              <li>✓ Is it in modal/dropdown content (hidden initially)?</li>
+              <li>✓ Is it for different page states (logged in/out)?</li>
+              <li>✓ Test thoroughly after deletion!</li>
+            </ul>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Technique 3: Simplify Selectors */}
+      <SectionCard
+        title="3. Simplify Selectors"
+        description="Reduce specificity"
+        icon={Target}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Before: Overly Specific Selectors"
+            code={`/* ❌ BAD: Too specific, hard to override */
+#header div.container ul.nav li.nav-item a.nav-link {
+  color: blue;
+}
+
+body .content .sidebar .widget .widget-content p {
+  font-size: 14px;
+}
+
+div > ul > li > a.button {
+  background: red;
+}`}
+          />
+
+          <SyntaxBlock
+            title="After: Simple, Flat Selectors"
+            code={`/* ✅ GOOD: Simpler, easier to maintain and override */
+.nav-link {
+  color: blue;
+}
+
+.widget-text {
+  font-size: 14px;
+}
+
+.button {
+  background: red;
+}
+
+/* Benefits:
+- Easier to understand
+- Faster to render
+- Simpler to override
+- Less prone to conflicts
+*/`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Technique 4: Rename Classes */}
+      <SectionCard
+        title="4. Rename Classes Clearly"
+        description="Use descriptive names"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <h4 className="font-bold text-blue-700 dark:text-blue-300">Code Quality</h4>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                  <CheckCircle className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm">Remove duplicate code</span>
-                </div>
-                <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                  <CheckCircle className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm">Simplify selectors</span>
-                </div>
-                <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                  <CheckCircle className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm">Use CSS variables</span>
-                </div>
-              </div>
+            <div className="p-5 border-2 border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-950/20">
+              <h4 className="font-semibold text-red-900 dark:text-red-100 mb-3">❌ Bad Class Names</h4>
+              <ul className="space-y-2 text-sm font-mono text-gray-700 dark:text-gray-300">
+                <li>.box</li>
+                <li>.style2</li>
+                <li>.blue-text</li>
+                <li>.new-final-v3</li>
+                <li>.header2</li>
+                <li>.temp</li>
+              </ul>
             </div>
 
-            <div className="space-y-3">
-              <h4 className="font-bold text-green-700 dark:text-green-300">Organization</h4>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">Group related styles</span>
-                </div>
-                <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">Follow naming convention</span>
-                </div>
-                <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">Extract reusable components</span>
-                </div>
-              </div>
+            <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ Good Class Names</h4>
+              <ul className="space-y-2 text-sm font-mono text-gray-700 dark:text-gray-300">
+                <li>.user-profile-card</li>
+                <li>.secondary-button</li>
+                <li>.featured-text</li>
+                <li>.navigation-menu</li>
+                <li>.site-header</li>
+                <li>.search-results</li>
+              </ul>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Start small</strong> - Refactor one component at a time</li>
-            <li><strong>Test thoroughly</strong> - Verify nothing breaks after refactoring</li>
-            <li><strong>Use version control</strong> - Commit before and after refactoring</li>
-            <li><strong>Document changes</strong> - Note what and why you refactored</li>
-            <li><strong>Regular maintenance</strong> - Schedule periodic refactoring sessions</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
+          <SyntaxBlock
+            title="Refactoring Example"
+            code={`/* ❌ BEFORE: Unclear names */
+.box {
+  padding: 20px;
+}
 
-      <Alert className="border-cyan-200 dark:border-cyan-800 bg-cyan-50 dark:bg-cyan-950/20">
-        <Info className="h-4 w-4 text-cyan-600" />
-        <AlertTitle className="text-cyan-900 dark:text-cyan-100">Refactoring Tools</AlertTitle>
-        <AlertDescription className="text-cyan-800 dark:text-cyan-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>🔍 UnCSS:</strong> Remove unused CSS</div>
-            <div><strong>📦 PurgeCSS:</strong> Eliminate unused styles</div>
-            <div><strong>🎨 cssnano:</strong> Optimize and minify CSS</div>
-            <div><strong>🔧 Stylelint:</strong> Enforce code standards</div>
-          </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+.box2 {
+  background: white;
+}
+
+.blue {
+  color: blue;
+}
+
+/* ✅ AFTER: Clear, descriptive names */
+.product-card {
+  padding: 20px;
+}
+
+.product-card--featured {
+  background: white;
+}
+
+.product-card__price {
+  color: blue;
+}`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Technique 5: Extract Variables */}
+      <SectionCard
+        title="5. Extract CSS Variables"
+        description="Reuse repeated values"
+        icon={CheckCircle}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Before: Repeated Values"
+            code={`/* ❌ BAD: Same colors repeated everywhere */
+.header {
+  background: #3b82f6;
+  border-bottom: 2px solid #3b82f6;
+}
+
+.button {
+  background: #3b82f6;
+  border: 1px solid #3b82f6;
+}
+
+.link:hover {
+  color: #3b82f6;
+}
+
+/* If you need to change the blue, you have to find all instances! */`}
+          />
+
+          <SyntaxBlock
+            title="After: CSS Variables"
+            code={`/* ✅ GOOD: Define once, use everywhere */
+:root {
+  --color-primary: #3b82f6;
+  --color-secondary: #6b7280;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+}
+
+.header {
+  background: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.button {
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  padding: var(--spacing-md);
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+/* Change the blue ONCE in :root and it updates everywhere! */`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Complete Example */}
+      <SectionCard
+        title="Complete Refactoring Example"
+        description="Before and after"
+        icon={RefreshCw}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Before: Messy CSS"
+            code={`/* ❌ Messy, hard to maintain */
+#main div.box {
+  padding: 12px 24px 12px 24px;
+  background-color: #3b82f6;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+}
+
+#main div.box2 {
+  padding: 12px 24px 12px 24px;
+  background-color: #6b7280;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+}
+
+body .content .card1 {
+  padding: 20px 20px 20px 20px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.blue-text {
+  color: #3b82f6;
+}
+
+/* Unused old styles */
+.old-button {
+  background: red;
+}`}
+          />
+
+          <SyntaxBlock
+            title="After: Clean, Refactored CSS"
+            code={`/* ✅ Clean, maintainable, reusable */
+
+/* Variables */
+:root {
+  --color-primary: #3b82f6;
+  --color-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
+
+/* Button Component */
+.button {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button--primary {
+  background: var(--color-primary);
+}
+
+.button--secondary {
+  background: var(--color-secondary);
+}
+
+/* Card Component */
+.card {
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  background: white;
+}
+
+/* Utility */
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* Benefits of refactoring:
+- 50% less code
+- Reusable components
+- Easy to maintain
+- Clear naming
+- CSS variables for consistency
+- Deleted unused styles
+*/`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Refactor CSS"
+        description="The right time"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Before Big Features"
+            description="Clean code before adding major changes"
+            icon={Sparkles}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="After Code Reviews"
+            description="Implement feedback and improvements"
+            icon={CheckCircle}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Regular Maintenance"
+            description="Schedule refactoring time quarterly"
+            icon={RefreshCw}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Performance Issues"
+            description="Optimize slow, bloated CSS"
+            icon={Zap}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="CSS Refactoring Best Practices">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Test After Changes:</strong> Verify visuals haven't changed</li>
+          <li><strong>One Step at a Time:</strong> Small, incremental refactors are safer</li>
+          <li><strong>Use Version Control:</strong> Commit before and after refactoring</li>
+          <li><strong>Document Changes:</strong> Note what you changed and why</li>
+          <li><strong>Remove Unused CSS:</strong> Use tools like PurgeCSS to find dead code</li>
+          <li><strong>Extract Variables:</strong> Use CSS variables for repeated values</li>
+          <li><strong>Simplify Selectors:</strong> Keep specificity low</li>
+          <li><strong>Create Reusable Classes:</strong> Follow DRY principle</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools */}
+      <InfoAlert type="info" title="CSS Refactoring Tools">
+        <div className="mt-2 space-y-2">
+          <p><strong>PurgeCSS:</strong> Removes unused CSS automatically</p>
+          <p><strong>UnCSS:</strong> Scans HTML and removes unused styles</p>
+          <p><strong>Chrome DevTools Coverage:</strong> Find unused CSS in browser</p>
+          <p><strong>cssnano:</strong> Optimizes and minifies CSS</p>
+        </div>
+      </InfoAlert>
+
+    </CssTopicLayout>
   );
 }

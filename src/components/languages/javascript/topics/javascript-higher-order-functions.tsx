@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
@@ -16,128 +15,69 @@ import {
   Code2,
   Zap,
   GitBranch,
-  ListFilter,
 } from 'lucide-react';
 
-interface JavaScriptHigherOrderFunctionsProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-export default function JavaScriptHigherOrderFunctions({}: JavaScriptHigherOrderFunctionsProps) {
+export default function JavaScriptHigherOrderFunctions() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Layers}
-        category="JavaScript · Functions"
+        category="JavaScript Fundamentals"
         title="Higher-Order Functions"
-        description="Master functions that accept or return other functions for powerful code composition"
-        colorTheme="blue"
+        description="Functions that accept or return other functions - the foundation of functional programming"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Higher-Order Functions?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Functions that treat other functions as data—accepting them as arguments or returning them as results
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <ArrowRight className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">Accept Functions</h3>
+      {/* What are Higher-Order Functions */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-muted-foreground text-sm">
-              Take other functions as parameters (like callbacks)
-            </p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-              Example: map, filter
-            </Badge>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Higher-Order Functions?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                A higher-order function is a function that <strong className="text-yellow-700 dark:text-yellow-400">accepts other functions as arguments</strong> or <strong className="text-yellow-700 dark:text-yellow-400">returns a function</strong>. They treat functions as data!
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-5 h-5 text-cyan-600/80 dark:text-cyan-400/80" />
-              <h3 className="font-semibold">Return Functions</h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800/30">
+              <div className="flex items-center gap-2 mb-3">
+                <ArrowRight className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <h4 className="font-semibold">Accept Functions</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Take other functions as parameters (callbacks)
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                Example: map, filter, forEach
+              </p>
             </div>
-            <p className="text-muted-foreground text-sm">
-              Create and return new functions on the fly
-            </p>
-            <Badge className="bg-cyan-100/80 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 border border-cyan-300/50 dark:border-cyan-700/40">
-              Factory pattern
-            </Badge>
+
+            <div className="p-5 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border-2 border-purple-200 dark:border-purple-800/30">
+              <div className="flex items-center gap-2 mb-3">
+                <GitBranch className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <h4 className="font-semibold">Return Functions</h4>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Create and return new functions
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                Example: function factories
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-purple-600/80 dark:text-purple-400/80" />
-              <h3 className="font-semibold">Powerful Patterns</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Enable composition, decorators, and functional programming
-            </p>
-            <Badge className="bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-300/50 dark:border-purple-700/40">
-              Composable
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* What is HOF */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Understanding Higher-Order Functions
-          </CardTitle>
-          <CardDescription className="text-base">
-            A higher-order function is simply a function that works with other functions
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            In JavaScript, functions are <strong>first-class citizens</strong>—meaning they can be treated like any other value. You can store them in variables, pass them as arguments, and return them from other functions. Higher-order functions take advantage of this powerful feature.
-          </p>
-          
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">simple-example.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Basic higher-order function</span>
-            </div>
-            <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// A higher-order function that accepts a function
-function greetUser(name, formatter) {
-  const formattedName = formatter(name);
-  return 'Hello, ' + formattedName + '!';
-}
-
-// Functions to pass in
-function uppercase(str) {
-  return str.toUpperCase();
-}
-
-function lowercase(str) {
-  return str.toLowerCase();
-}
-
-// Use different formatters
-console.log(greetUser('Alice', uppercase));
-// Output: "Hello, ALICE!"
-
-console.log(greetUser('BOB', lowercase));
-// Output: "Hello, bob!"`}
-            </pre>
-          </div>
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Concept</AlertTitle>
-            <AlertDescription>
-              Instead of hardcoding behavior, higher-order functions let you pass in the behavior as a parameter. This makes your code more flexible and reusable.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Why Higher-Order?</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              They're called "higher-order" because they operate at a <strong>higher level of abstraction</strong> - instead of working directly with data, they work with functions that work with data!
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -146,407 +86,441 @@ console.log(greetUser('BOB', lowercase));
       {/* Type 1: Accept Functions */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ArrowRight className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Type 1: Functions That Accept Functions
-          </CardTitle>
-          <CardDescription className="text-base">
-            Pass functions as arguments to create flexible, reusable code
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <ArrowRight className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Type 1: Functions That Accept Functions</CardTitle>
+              <CardDescription>Take a function as a parameter</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Basic Example: Custom Repeat</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-                <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">custom-repeat.js</span>
-                <span className="text-blue-600/70 dark:text-blue-400/70">Function accepts callback</span>
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The Most Common Pattern</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Array methods like <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">map</code>, <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">filter</code>, and <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">reduce</code> are higher-order functions!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const numbers = [1, 2, 3, 4, 5];
+
+// map is a higher-order function
+// It accepts a function as an argument
+const doubled = numbers.map(function(num) {
+  return num * 2;
+});
+
+console.log(doubled);
+// Output: [2, 4, 6, 8, 10]
+
+// filter also accepts a function
+const evens = numbers.filter(function(num) {
+  return num % 2 === 0;
+});
+
+console.log(evens);
+// Output: [2, 4]`}</pre>
               </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Higher-order function that accepts a function
-function repeatAction(times, action) {
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Creating Your Own Higher-Order Function"
+        description="Build a function that accepts another function"
+        code={`// Our own higher-order function!
+function repeat(times, action) {
   for (let i = 0; i < times; i++) {
     action(i);
   }
 }
 
-// Pass different functions to create different behaviors
-repeatAction(3, (i) => console.log(\`Count: \${i}\`));
+// Use it with different functions
+repeat(3, function(i) {
+  console.log('Hello ' + i);
+});
 // Output:
-// Count: 0
+// Hello 0
+// Hello 1
+// Hello 2
+
+repeat(3, function(i) {
+  console.log('Count: ' + (i + 1));
+});
+// Output:
 // Count: 1
 // Count: 2
+// Count: 3`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-repeatAction(3, (i) => console.log(\`* \${i * 2}\`));
-// Output:
-// * 0
-// * 2
-// * 4`}
-              </pre>
-            </div>
-          </div>
+      <CodeSnippet
+        title="Real-World: Custom Filter Function"
+        description="Build your own filter-like higher-order function"
+        code={`function filterArray(array, testFunction) {
+  const result = [];
+  
+  for (let i = 0; i < array.length; i++) {
+    if (testFunction(array[i])) {
+      result.push(array[i]);
+    }
+  }
+  
+  return result;
+}
 
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="Array Methods: map & filter"
-              description="Transform and filter arrays - the most common higher-order functions"
-              code={`// map() - Transform each element
-const nums = [1, 2, 3];
-const doubled = nums.map(x => x * 2);
-console.log(doubled);
-// Output: [2, 4, 6]
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-// filter() - Keep elements that pass test
-const numbers = [1, 2, 3, 4];
-const evens = numbers.filter(x => x % 2 === 0);
+// Filter even numbers
+const evens = filterArray(numbers, function(num) {
+  return num % 2 === 0;
+});
 console.log(evens);
-// Output: [2, 4]`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={ListFilter}
-              features={[
-                "map() transforms each element",
-                "filter() selects matching elements",
-                "Both return new arrays",
-                "Don't mutate original array"
-              ]}
-              tips={[
-                "Use map() to transform data",
-                "Use filter() to select data",
-                "Chain methods for complex operations"
-              ]}
-            />
+// Output: [2, 4, 6, 8, 10]
 
-            <CodeSnippet
-              title="reduce() - Combine Values"
-              description="Reduce an array to a single value - the most powerful array method"
-              code={`// reduce() - Combine to single value
-const nums = [1, 2, 3, 4, 5];
-const sum = nums.reduce((acc, x) => acc + x, 0);
-console.log('Sum:', sum);
-// Output: Sum: 15
-
-// Real-world: Calculate total price
-const cart = [
-  { name: 'Phone', price: 500 },
-  { name: 'Case', price: 20 },
-  { name: 'Charger', price: 30 }
-];
-
-const total = cart.reduce((sum, item) => sum + item.price, 0);
-console.log('Total: $' + total);
-// Output: Total: $550`}
-              language="javascript"
-              colorTheme="purple"
-              icon={ListFilter}
-              features={[
-                "Reduces array to single value",
-                "Accumulator pattern",
-                "Works for any operation",
-                "Can return any type"
-              ]}
-              tips={[
-                "Initial value is crucial",
-                "Perfect for summing values",
-                "Use for complex aggregations"
-              ]}
-            />
-          </div>
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Why Use Higher-Order Functions?</AlertTitle>
-            <AlertDescription>
-              They make code more declarative and reusable. Instead of writing loops everywhere, you describe what you want to do with the data.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
+// Filter numbers greater than 5
+const greaterThan5 = filterArray(numbers, function(num) {
+  return num > 5;
+});
+console.log(greaterThan5);
+// Output: [6, 7, 8, 9, 10]`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
       {/* Type 2: Return Functions */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <GitBranch className="w-6 h-6 text-cyan-600/80 dark:text-cyan-400/80" />
-            Type 2: Functions That Return Functions
-          </CardTitle>
-          <CardDescription className="text-base">
-            Create specialized functions dynamically—the factory pattern
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <GitBranch className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Type 2: Functions That Return Functions</CardTitle>
+              <CardDescription>Create specialized functions on the fly</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Example 1: Multiplier Factory</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-cyan-100 dark:bg-cyan-900/30">
-                <span className="uppercase tracking-wide text-cyan-700 dark:text-cyan-300">multiplier-factory.js</span>
-                <span className="text-cyan-600/70 dark:text-cyan-400/70">Creates specialized functions</span>
-              </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`// Higher-order function returns a new function
-function createMultiplier(factor) {
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Function Factories</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                A function that returns another function is like a factory - it creates customized functions!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function makeMultiplier(factor) {
+  // Return a new function
   return function(number) {
     return number * factor;
   };
 }
 
-// Create specialized multiplier functions
-const double = createMultiplier(2);
-const triple = createMultiplier(3);
-const tenTimes = createMultiplier(10);
+// Create specialized functions
+const double = makeMultiplier(2);
+const triple = makeMultiplier(3);
+const quadruple = makeMultiplier(4);
 
-console.log(double(5));    // 10
-console.log(triple(5));    // 15
-console.log(tenTimes(5));  // 50`}
-              </pre>
-            </div>
-          </div>
+console.log(double(5));     // 10
+console.log(triple(5));     // 15
+console.log(quadruple(5));  // 20
 
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Example 2: Greeting Factory</h4>
-            <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-              <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-purple-100 dark:bg-purple-900/30">
-                <span className="uppercase tracking-wide text-purple-700 dark:text-purple-300">greeting-factory.js</span>
-                <span className="text-purple-600/70 dark:text-purple-400/70">Personalized greetings</span>
+// Each function remembers its 'factor'!`}</pre>
               </div>
-              <pre className="font-mono text-xs px-4 py-3 whitespace-pre overflow-x-auto">
-{`function createGreeter(greeting) {
-  return function(name) {
-    return \`\${greeting}, \${name}!\`;
-  };
-}
-
-const sayHello = createGreeter('Hello');
-const sayHola = createGreeter('Hola');
-const sayBonjour = createGreeter('Bonjour');
-
-console.log(sayHello('Alice'));     // "Hello, Alice!"
-console.log(sayHola('Carlos'));     // "Hola, Carlos!"
-console.log(sayBonjour('Marie'));   // "Bonjour, Marie!"`}
-              </pre>
             </div>
           </div>
-
-          <Alert className="bg-cyan-50 dark:bg-cyan-950/20 border-cyan-200 dark:border-cyan-800">
-            <Sparkles className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
-            <AlertTitle className="text-cyan-900 dark:text-cyan-100">Closures Power This Pattern</AlertTitle>
-            <AlertDescription className="text-cyan-800 dark:text-cyan-200">
-              The returned function "remembers" parameters from its parent function, allowing it to access those values even after the parent has finished executing.
-            </AlertDescription>
-          </Alert>
         </CardContent>
       </Card>
 
-      {/* Common Patterns */}
+      <CodeSnippet
+        title="Real-World: Greeting Generator"
+        description="Create customized greeting functions"
+        code={`function makeGreeter(greeting) {
+  return function(name) {
+    return greeting + ', ' + name + '!';
+  };
+}
+
+// Create different greeters
+const sayHi = makeGreeter('Hi');
+const sayHello = makeGreeter('Hello');
+const sayWelcome = makeGreeter('Welcome');
+
+console.log(sayHi('Alice'));
+// Output: Hi, Alice!
+
+console.log(sayHello('Bob'));
+// Output: Hello, Bob!
+
+console.log(sayWelcome('Charlie'));
+// Output: Welcome, Charlie!
+
+// Same pattern, different behavior!`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Both Together */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code2 className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Common Patterns
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll encounter in real applications
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Layers className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>Combining Both Types</CardTitle>
+              <CardDescription>Functions that accept AND return functions</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="Debounce - Control Execution Rate"
-              description="Delay function execution until user stops typing - perfect for search inputs"
-              code={`// Debounce function
-function debounce(fn, delay) {
-  let timeout;
+          <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 overflow-hidden">
+            <div className="bg-emerald-600 dark:bg-emerald-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The Most Powerful Pattern</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Some higher-order functions both accept a function AND return a new function!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-emerald-200 dark:border-emerald-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function withLogging(fn) {
+  // Accept a function, return a new function
   return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
-}
-
-// Usage: Search with debouncing
-const input = document.querySelector('#searchInput');
-const results = document.querySelector('#results');
-
-const search = debounce((query) => {
-  results.textContent = 'Searching for: ' + query;
-  console.log('API call for:', query);
-}, 500);
-
-input.addEventListener('input', (e) => search(e.target.value));`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Zap}
-              embedPlayground={true}
-              playgroundConfig={{
-                html: `<div style="padding: 30px; max-width: 500px; margin: 0 auto;">
-  <h3 style="margin-bottom: 15px; color: #1e293b;">Debounce Demo</h3>
-  <input 
-    id="searchInput" 
-    type="text" 
-    placeholder="Type to search..." 
-    style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #3b82f6; border-radius: 8px; margin-bottom: 15px;"
-  />
-  <div 
-    id="results" 
-    style="padding: 15px; background: #eff6ff; border: 1px solid #3b82f6; border-radius: 8px; color: #1e40af; min-height: 50px;"
-  >
-    Start typing...
-  </div>
-</div>`,
-                css: '',
-                js: `function debounce(fn, delay) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
-}
-
-const input = document.querySelector('#searchInput');
-const results = document.querySelector('#results');
-
-const search = debounce((query) => {
-  if (query) {
-    results.textContent = '🔍 Searching for: ' + query;
-    console.log('API call for:', query);
-  } else {
-    results.textContent = 'Start typing...';
-  }
-}, 500);
-
-input.addEventListener('input', (e) => search(e.target.value));`,
-                visiblePanels: ['preview', 'js', 'console'],
-                layout: 'vertical'
-              }}
-              features={[
-                "Delays execution until user stops",
-                "Prevents excessive API calls",
-                "Common in search inputs",
-                "Returns higher-order function"
-              ]}
-              tips={[
-                "Use 300-500ms delay for search",
-                "Essential for performance",
-                "Prevents rate limiting"
-              ]}
-            />
-
-            <CodeSnippet
-              title="Memoization - Cache Results"
-              description="Cache expensive calculations to avoid recalculating - great for recursive functions"
-              code={`// Memoize function
-function memoize(fn) {
-  const cache = {};
-  return function(...args) {
-    const key = JSON.stringify(args);
-    if (key in cache) {
-      console.log('✅ From cache');
-      return cache[key];
-    }
-    console.log('🔄 Calculating...');
+    console.log('Calling with:', args);
     const result = fn(...args);
-    cache[key] = result;
+    console.log('Result:', result);
     return result;
   };
 }
 
-// Usage: Expensive calculation
-const square = memoize((n) => n * n);
+// Original function
+function add(a, b) {
+  return a + b;
+}
 
-console.log(square(5));  
-// Output: 🔄 Calculating... 25
+// Wrap it with logging
+const addWithLogging = withLogging(add);
 
-console.log(square(5));  
-// Output: ✅ From cache 25`}
-              language="javascript"
-              colorTheme="purple"
-              icon={Zap}
-              features={[
-                "Caches function results",
-                "Avoids repeated calculations",
-                "Perfect for Fibonacci/factorial",
-                "Trade memory for speed"
-              ]}
-              tips={[
-                "Use for expensive operations",
-                "Great for recursive functions",
-                "Clear cache when needed"
-              ]}
-            />
+addWithLogging(3, 5);
+// Output:
+// Calling with: [3, 5]
+// Result: 8`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
+
+      <CodeSnippet
+        title="Real-World: Rate Limiting"
+        description="Create a function wrapper that limits how often a function can be called"
+        code={`function rateLimit(fn, delay) {
+  let lastCall = 0;
+  
+  return function(...args) {
+    const now = Date.now();
+    
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      return fn(...args);
+    } else {
+      console.log('Rate limit - too fast!');
+    }
+  };
+}
+
+// Original function
+function saveData(data) {
+  console.log('Saving:', data);
+}
+
+// Wrapped with rate limiting (1 second)
+const saveWithLimit = rateLimit(saveData, 1000);
+
+saveWithLimit('First');   // Saving: First
+saveWithLimit('Second');  // Rate limit - too fast!
+setTimeout(() => {
+  saveWithLimit('Third'); // Saving: Third (after 1 sec)
+}, 1100);`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Common Patterns */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Zap className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Common Patterns</CardTitle>
+              <CardDescription>Real-world uses of higher-order functions</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 text-blue-700 dark:text-blue-300">Sorting with Compare Function</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const numbers = [5, 2, 8, 1, 9];
+
+// sort accepts a function!
+numbers.sort(function(a, b) {
+  return a - b;
+});
+
+console.log(numbers);
+// [1, 2, 5, 8, 9]`}</pre>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 border-emerald-200 dark:border-emerald-800/30">
+              <h4 className="font-semibold mb-3 text-emerald-700 dark:text-emerald-300">Array reduce</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`const nums = [1, 2, 3, 4, 5];
+
+const sum = nums.reduce(
+  function(total, num) {
+    return total + num;
+  },
+  0
+);
+
+console.log(sum); // 15`}</pre>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <h4 className="font-semibold mb-3 text-purple-700 dark:text-purple-300">Function Composition</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`function compose(f, g) {
+  return function(x) {
+    return f(g(x));
+  };
+}
+
+const add2 = x => x + 2;
+const mult3 = x => x * 3;
+
+const add2ThenMult3 = compose(mult3, add2);
+console.log(add2ThenMult3(5)); // 21`}</pre>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-200 dark:border-orange-800/30">
+              <h4 className="font-semibold mb-3 text-orange-700 dark:text-orange-300">Memoization</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                <pre className="font-mono text-xs text-gray-800 dark:text-gray-200">
+{`function memoize(fn) {
+  const cache = {};
+  return function(arg) {
+    if (cache[arg]) {
+      return cache[arg];
+    }
+    const result = fn(arg);
+    cache[arg] = result;
+    return result;
+  };
+}`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Real-World: Debouncing Search"
+        description="Higher-order function to limit search API calls"
+        code={`function debounce(fn, delay) {
+  let timeoutId;
+  
+  return function(...args) {
+    clearTimeout(timeoutId);
+    
+    timeoutId = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
+// Search function
+function searchAPI(query) {
+  console.log('Searching for:', query);
+  // API call would go here
+}
+
+// Wrap with debounce
+const debouncedSearch = debounce(searchAPI, 500);
+
+// User types rapidly
+debouncedSearch('j');
+debouncedSearch('ja');
+debouncedSearch('jav');
+debouncedSearch('java');
+
+// Only ONE search happens after user stops typing!
+// Output (after 500ms): Searching for: java`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <CheckCircle2 className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                Do This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Use descriptive names for returned functions</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Keep functions pure (no side effects)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Use array methods instead of loops</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Compose small, focused functions</span>
-                </li>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Best Practices</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use built-in HOFs (map, filter, reduce)</li>
+                <li>• Name returned functions clearly</li>
+                <li>• Keep higher-order functions simple</li>
+                <li>• Use for reusable patterns</li>
+                <li>• Document expected function signatures</li>
               </ul>
             </div>
 
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                Avoid This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Creating deeply nested function returns</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Modifying external state inside callbacks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Overusing clever patterns when simple code is clearer</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Forgetting to handle edge cases</span>
-                </li>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Over-abstracting simple code</li>
+                <li>• Creating overly complex functions</li>
+                <li>• Using when loops are clearer</li>
+                <li>• Forgetting about readability</li>
+                <li>• Nesting too many HOFs</li>
               </ul>
             </div>
           </div>
-
-          <Alert className="mt-6">
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Takeaway</AlertTitle>
-            <AlertDescription>
-              Higher-order functions are powerful tools for abstraction and composition. Use them to write cleaner, more maintainable code—but don't sacrifice readability for cleverness.
-            </AlertDescription>
-          </Alert>
         </CardContent>
       </Card>
-      
     </div>
   );
 }

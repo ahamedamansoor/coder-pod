@@ -1,943 +1,599 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
-  Clock,
+  ListOrdered,
   Sparkles,
   Lightbulb,
   CheckCircle2,
   XCircle,
   Play,
-  Code,
-  AlertCircle,
+  Pause,
+  RotateCcw,
   Zap,
-  Layers,
+  Clock,
   ArrowRight,
-  RefreshCw,
-  Network,
-  Timer,
-  Workflow,
-  ListOrdered,
-  GitBranch,
-  TrendingUp,
-  AlertTriangle,
 } from 'lucide-react';
 
-interface JavaScriptTaskQueueProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+interface QueueItem {
+  name: string;
+  type: 'micro' | 'macro';
+  id: number;
 }
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
+interface AnimationStep {
+  microQueue: QueueItem[];
+  macroQueue: QueueItem[];
+  processing: string | null;
+  output: string[];
+  description: string;
+  code?: string;
+}
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Task Queue Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
+export default function JavaScriptTaskQueue() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const animationSteps: AnimationStep[] = [
+    {
+      microQueue: [],
+      macroQueue: [],
+      processing: null,
+      output: [],
+      description: 'Program starts - both queues empty',
+      code: 'console.log(\'Start\');'
+    },
+    {
+      microQueue: [],
+      macroQueue: [],
+      processing: 'console.log',
+      output: ['Start'],
+      description: 'Sync code executes immediately',
+      code: '// Output: Start'
+    },
+    {
+      microQueue: [],
+      macroQueue: [{ name: 'setTimeout 1', type: 'macro', id: 1 }],
+      processing: null,
+      output: ['Start'],
+      description: 'setTimeout registered - added to MACROTASK queue',
+      code: 'setTimeout(() => console.log(\'Timeout\'), 0);'
+    },
+    {
+      microQueue: [{ name: 'Promise 1', type: 'micro', id: 2 }],
+      macroQueue: [{ name: 'setTimeout 1', type: 'macro', id: 1 }],
+      processing: null,
+      output: ['Start'],
+      description: 'Promise callback added to MICROTASK queue',
+      code: 'Promise.resolve().then(() => console.log(\'Promise\'));'
+    },
+    {
+      microQueue: [
+        { name: 'Promise 1', type: 'micro', id: 2 },
+        { name: 'Promise 2', type: 'micro', id: 3 }
+      ],
+      macroQueue: [{ name: 'setTimeout 1', type: 'macro', id: 1 }],
+      processing: null,
+      output: ['Start'],
+      description: 'Another promise - added to end of microtask queue',
+      code: 'Promise.resolve().then(() => console.log(\'Promise 2\'));'
+    },
+    {
+      microQueue: [
+        { name: 'Promise 1', type: 'micro', id: 2 },
+        { name: 'Promise 2', type: 'micro', id: 3 }
+      ],
+      macroQueue: [
+        { name: 'setTimeout 1', type: 'macro', id: 1 },
+        { name: 'setTimeout 2', type: 'macro', id: 4 }
+      ],
+      processing: null,
+      output: ['Start'],
+      description: 'Another setTimeout - added to macrotask queue',
+      code: 'setTimeout(() => console.log(\'Timeout 2\'), 0);'
+    },
+    {
+      microQueue: [{ name: 'Promise 2', type: 'micro', id: 3 }],
+      macroQueue: [
+        { name: 'setTimeout 1', type: 'macro', id: 1 },
+        { name: 'setTimeout 2', type: 'macro', id: 4 }
+      ],
+      processing: 'Promise 1',
+      output: ['Start'],
+      description: 'Event loop: Process MICROTASKS first (higher priority)',
+      code: '// Executing: Promise 1'
+    },
+    {
+      microQueue: [{ name: 'Promise 2', type: 'micro', id: 3 }],
+      macroQueue: [
+        { name: 'setTimeout 1', type: 'macro', id: 1 },
+        { name: 'setTimeout 2', type: 'macro', id: 4 }
+      ],
+      processing: null,
+      output: ['Start', 'Promise'],
+      description: 'Output: Promise - microtask complete',
+      code: '// Output: Promise'
+    },
+    {
+      microQueue: [],
+      macroQueue: [
+        { name: 'setTimeout 1', type: 'macro', id: 1 },
+        { name: 'setTimeout 2', type: 'macro', id: 4 }
+      ],
+      processing: 'Promise 2',
+      output: ['Start', 'Promise'],
+      description: 'Process next microtask',
+      code: '// Executing: Promise 2'
+    },
+    {
+      microQueue: [],
+      macroQueue: [
+        { name: 'setTimeout 1', type: 'macro', id: 1 },
+        { name: 'setTimeout 2', type: 'macro', id: 4 }
+      ],
+      processing: null,
+      output: ['Start', 'Promise', 'Promise 2'],
+      description: 'Output: Promise 2 - ALL microtasks done!',
+      code: '// Output: Promise 2'
+    },
+    {
+      microQueue: [],
+      macroQueue: [{ name: 'setTimeout 2', type: 'macro', id: 4 }],
+      processing: 'setTimeout 1',
+      output: ['Start', 'Promise', 'Promise 2'],
+      description: 'Now process ONE macrotask',
+      code: '// Executing: setTimeout 1'
+    },
+    {
+      microQueue: [],
+      macroQueue: [{ name: 'setTimeout 2', type: 'macro', id: 4 }],
+      processing: null,
+      output: ['Start', 'Promise', 'Promise 2', 'Timeout'],
+      description: 'Output: Timeout - back to check microtasks',
+      code: '// Output: Timeout'
+    },
+    {
+      microQueue: [],
+      macroQueue: [],
+      processing: 'setTimeout 2',
+      output: ['Start', 'Promise', 'Promise 2', 'Timeout'],
+      description: 'No microtasks - process next macrotask',
+      code: '// Executing: setTimeout 2'
+    },
+    {
+      microQueue: [],
+      macroQueue: [],
+      processing: null,
+      output: ['Start', 'Promise', 'Promise 2', 'Timeout', 'Timeout 2'],
+      description: '✅ Complete! Order: Sync → All Micros → Macros one by one',
+      code: '// Output: Timeout 2\n// ✅ Done!'
     }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  ];
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isPlaying && currentStep < animationSteps.length - 1) {
+      interval = setInterval(() => {
+        setCurrentStep(prev => {
+          if (prev >= animationSteps.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 2000);
+    } else if (currentStep >= animationSteps.length - 1) {
+      setIsPlaying(false);
     }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-      margin-bottom: 24px;
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      font-family: monospace; 
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>📋 Task Queue</h1>
-    <p>Open the browser console to see task execution order!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-</body>
-</html>`;
+    return () => clearInterval(interval);
+  }, [isPlaying, currentStep, animationSteps.length]);
 
-const playgroundJs = `console.clear();
-console.log("🚀 Task Queue Demo\\n");
+  const step = animationSteps[currentStep];
 
-// Example 1: Microtask vs Macrotask Priority
-console.log("1. PRIORITY DEMONSTRATION:");
-console.log("Start");
-
-setTimeout(() => console.log("setTimeout (Macrotask)"), 0);
-Promise.resolve().then(() => console.log("Promise.then (Microtask)"));
-queueMicrotask(() => console.log("queueMicrotask (Microtask)"));
-
-console.log("End");
-
-// Example 2: Multiple Microtasks
-setTimeout(() => {
-  console.log("\\n2. MULTIPLE MICROTASKS:");
-  
-  Promise.resolve().then(() => console.log("Promise 1"));
-  Promise.resolve().then(() => console.log("Promise 2"));
-  Promise.resolve().then(() => console.log("Promise 3"));
-  
-  setTimeout(() => console.log("Next macrotask"), 0);
-}, 1000);
-
-// Example 3: Chained Microtasks
-setTimeout(() => {
-  console.log("\\n3. CHAINED MICROTASKS:");
-  
-  Promise.resolve()
-    .then(() => {
-      console.log("Promise chain 1");
-      return Promise.resolve();
-    })
-    .then(() => console.log("Promise chain 2"))
-    .then(() => console.log("Promise chain 3"));
-    
-}, 2000);
-
-console.log("\\n💡 Watch the execution order!");`;
-
-export default function JavaScriptTaskQueue({ onOpenWebPlayground }: JavaScriptTaskQueueProps) {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={ListOrdered}
-        category="JavaScript · Asynchronous Programming"
-        title="Task Queue (Micro & Macro)"
-        description="Master the task queue system - understand how JavaScript prioritizes and executes asynchronous tasks to write predictable, efficient code."
-        colorTheme="blue"
+        category="JavaScript Fundamentals"
+        title="Task Queue"
+        description="How JavaScript queues and processes asynchronous callbacks"
+        colorTheme="yellow"
       />
 
-      {/* Overview Section */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What is the Task Queue?
-          </CardTitle>
-          <CardDescription className="text-base">
-            The task queue is where JavaScript stores asynchronous operations waiting to be executed. Understanding how tasks are prioritized is crucial for writing predictable async code.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Think of the task queue like a restaurant with two service lanes: a VIP express lane (microtasks) and a regular lane (macrotasks). The express lane always gets served first, no matter how long the regular line is!
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                <h4 className="font-semibold text-sm">Microtasks</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                High-priority tasks that run immediately after the current script
-              </p>
-              <Badge className="mt-2 bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 text-xs">Priority 1</Badge>
+      {/* Introduction */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Timer className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold text-sm">Macrotasks</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Lower-priority tasks that run after all microtasks are done
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Task Queues?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Task queues are <strong className="text-yellow-700 dark:text-yellow-400">waiting lines</strong> for callbacks. JavaScript has two types: <strong>Microtask Queue</strong> (high priority) and <strong>Macrotask Queue</strong> (low priority)!
               </p>
-              <Badge className="mt-2 bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 text-xs">Priority 2</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <RefreshCw className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold text-sm">Event Loop</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Manages task execution: sync → ALL micros → ONE macro
-              </p>
-              <Badge className="mt-2 bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 text-xs">Orchestrator</Badge>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>The Critical Rule</AlertTitle>
-            <AlertDescription>
-              JavaScript processes <strong>ALL microtasks</strong> before moving to the next macrotask. This is why Promises (microtasks) always execute before setTimeout (macrotasks), even with setTimeout(..., 0).
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <ListOrdered className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Priority System</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              The event loop always checks: <strong>ALL microtasks first</strong>, then <strong>ONE macrotask</strong>, then repeat. Microtasks cut in line!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Microtask Queue Section */}
+      {/* Interactive Animation */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Zap className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            Microtask Queue (High Priority)
-          </CardTitle>
-          <CardDescription className="text-base">
-            Microtasks execute immediately after the current script completes, before any macrotasks
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Task Queue Animation</CardTitle>
+              <CardDescription>Watch how tasks are queued and processed</CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={() => currentStep > 0 && setCurrentStep(currentStep - 1)} disabled={currentStep === 0}>
+                ← Prev
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => setIsPlaying(!isPlaying)}>
+                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => currentStep < animationSteps.length - 1 && setCurrentStep(currentStep + 1)} disabled={currentStep === animationSteps.length - 1}>
+                Next →
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => { setCurrentStep(0); setIsPlaying(false); }}>
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>What Creates Microtasks?</AlertTitle>
-            <AlertDescription>
-              <ul className="mt-2 space-y-1 text-sm">
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded">Promise.then/catch/finally</code>
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded">queueMicrotask()</code>
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded">MutationObserver</code>
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded">async/await</code> (under the hood uses Promises)
-                </li>
-              </ul>
-            </AlertDescription>
-          </Alert>
+        <CardContent>
+          <div className="space-y-6">
+            {/* Queues Grid */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Microtask Queue */}
+              <div className="border-2 border-green-300 dark:border-green-700 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Zap className="w-6 h-6 text-green-600 dark:text-green-400" />
+                  <h3 className="font-bold text-lg">Microtask Queue</h3>
+                  <span className="ml-auto text-xs bg-green-200 dark:bg-green-900/40 px-2 py-1 rounded">HIGH PRIORITY</span>
+                </div>
+                <div className="space-y-2 min-h-[200px]">
+                  {step.microQueue.length === 0 ? (
+                    <div className="text-center text-gray-400 py-8">Empty</div>
+                  ) : (
+                    step.microQueue.map((task, index) => (
+                      <div
+                        key={task.id}
+                        className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-3 rounded-lg font-mono text-sm shadow-md animate-in slide-in-from-left-4"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span>{task.name}</span>
+                          {index === 0 && <span className="text-xs bg-white/20 px-2 py-1 rounded">NEXT</span>}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className="mt-3 text-xs text-gray-600 dark:text-gray-400 text-center">
+                  Promises, queueMicrotask
+                </div>
+              </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Promise.then() Example</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`console.log("1. Start");
-
-Promise.resolve()
-  .then(() => console.log("2. Microtask"));
-
-console.log("3. End");
-
-// Output order:
-// 1. Start
-// 3. End
-// 2. Microtask`}</pre>
-              <SnippetOutput lines={['1. Start', '3. End', '2. Microtask']} />
-              <p className="text-xs text-muted-foreground">
-                The Promise callback runs immediately after the synchronous code completes.
-              </p>
+              {/* Macrotask Queue */}
+              <div className="border-2 border-orange-300 dark:border-orange-700 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Clock className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                  <h3 className="font-bold text-lg">Macrotask Queue</h3>
+                  <span className="ml-auto text-xs bg-orange-200 dark:bg-orange-900/40 px-2 py-1 rounded">LOW PRIORITY</span>
+                </div>
+                <div className="space-y-2 min-h-[200px]">
+                  {step.macroQueue.length === 0 ? (
+                    <div className="text-center text-gray-400 py-8">Empty</div>
+                  ) : (
+                    step.macroQueue.map((task, index) => (
+                      <div
+                        key={task.id}
+                        className="bg-gradient-to-r from-orange-400 to-amber-500 text-white px-4 py-3 rounded-lg font-mono text-sm shadow-md animate-in slide-in-from-right-4"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span>{task.name}</span>
+                          {index === 0 && <span className="text-xs bg-white/20 px-2 py-1 rounded">NEXT</span>}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className="mt-3 text-xs text-gray-600 dark:text-gray-400 text-center">
+                  setTimeout, setInterval, I/O
+                </div>
+              </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">queueMicrotask() Example</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`console.log("1. Start");
+            {/* Currently Processing */}
+            <div className="border-2 border-blue-300 dark:border-blue-700 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 p-6">
+              <h3 className="font-bold mb-3 flex items-center gap-2">
+                <ArrowRight className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                Currently Processing
+              </h3>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 min-h-[60px] flex items-center justify-center">
+                {step.processing ? (
+                  <div className="text-lg font-mono text-blue-600 dark:text-blue-400 animate-pulse">
+                    {step.processing}
+                  </div>
+                ) : (
+                  <div className="text-gray-400">Nothing executing</div>
+                )}
+              </div>
+            </div>
 
-queueMicrotask(() => {
-  console.log("2. Queued microtask");
-});
+            {/* Console Output */}
+            <div className="border-2 border-indigo-300 dark:border-indigo-700 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/10 p-6">
+              <h3 className="font-bold mb-3">Console Output</h3>
+              <div className="bg-slate-900 dark:bg-slate-950 rounded-lg p-4 min-h-[100px] font-mono text-sm">
+                {step.output.length === 0 ? (
+                  <div className="text-gray-500">// No output yet</div>
+                ) : (
+                  step.output.map((line, i) => (
+                    <div key={i} className="text-emerald-400 animate-in fade-in">
+                      {line}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
 
-console.log("3. End");
+            {/* Description and Code */}
+            <div className="space-y-4">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm">
+                    {currentStep + 1}
+                  </div>
+                  <span className="font-semibold">Step {currentStep + 1} of {animationSteps.length}</span>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 text-lg">
+                  {step.description}
+                </p>
+              </div>
 
-// Output order:
-// 1. Start
-// 3. End
-// 2. Queued microtask`}</pre>
-              <SnippetOutput lines={['1. Start', '3. End', '2. Queued microtask']} />
-              <p className="text-xs text-muted-foreground">
-                Explicitly queue a microtask without creating a Promise.
-              </p>
+              {step.code && (
+                <div className="bg-slate-900 dark:bg-slate-950 border-2 border-slate-700 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      Code Executing
+                    </span>
+                  </div>
+                  <pre className="font-mono text-sm text-emerald-400 whitespace-pre-wrap">
+                    {step.code}
+                  </pre>
+                </div>
+              )}
+            </div>
+
+            {/* Progress */}
+            <div className="flex justify-center">
+              <div className="flex gap-2 bg-slate-100 dark:bg-slate-800 rounded-full p-2">
+                {animationSteps.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentStep(index)}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentStep 
+                        ? 'bg-blue-500 w-8' 
+                        : 'bg-slate-300 dark:bg-slate-600 w-2 hover:bg-slate-400'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Macrotask Queue Section */}
+      {/* Queue Rules */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Timer className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Macrotask Queue (Low Priority)
-          </CardTitle>
-          <CardDescription className="text-base">
-            Macrotasks execute one at a time, after ALL microtasks are processed
-          </CardDescription>
+          <CardTitle>Queue Processing Rules</CardTitle>
+          <CardDescription>How the event loop processes tasks</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>What Creates Macrotasks?</AlertTitle>
-            <AlertDescription>
-              <ul className="mt-2 space-y-1 text-sm">
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-purple-100 dark:bg-purple-900/30 px-1 py-0.5 rounded">setTimeout()</code>
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-purple-100 dark:bg-purple-900/30 px-1 py-0.5 rounded">setInterval()</code>
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-purple-100 dark:bg-purple-900/30 px-1 py-0.5 rounded">setImmediate()</code> (Node.js only)
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-purple-100 dark:bg-purple-900/30 px-1 py-0.5 rounded">I/O operations</code>
-                </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight className="w-3 h-3" />
-                  <code className="text-xs bg-purple-100 dark:bg-purple-900/30 px-1 py-0.5 rounded">UI rendering</code>
-                </li>
-              </ul>
-            </AlertDescription>
-          </Alert>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                1
+              </div>
+              <div>
+                <h4 className="font-bold mb-1">Execute Synchronous Code</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  All synchronous code runs first, immediately
+                </p>
+              </div>
+            </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">setTimeout() Example</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`console.log("1. Start");
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                2
+              </div>
+              <div>
+                <h4 className="font-bold mb-1">Process ALL Microtasks</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Empty the entire microtask queue before moving on
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                3
+              </div>
+              <div>
+                <h4 className="font-bold mb-1">Process ONE Macrotask</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Execute only one macrotask, then go back to step 2
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                ♻️
+              </div>
+              <div>
+                <h4 className="font-bold mb-1">Repeat</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Loop forever: check microtasks → process one macrotask → repeat
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Task Queue Example"
+        description="Visualizing queue priority"
+        code={`console.log('Start');  // Sync - runs immediately
 
 setTimeout(() => {
-  console.log("4. Macrotask");
+  console.log('Timeout');  // Macrotask
 }, 0);
 
-Promise.resolve()
-  .then(() => console.log("3. Microtask"));
+Promise.resolve().then(() => {
+  console.log('Promise');  // Microtask
+});
 
-console.log("2. End");
+Promise.resolve().then(() => {
+  console.log('Promise 2');  // Microtask
+});
 
-// Output order:
-// 1. Start
-// 2. End
-// 3. Microtask
-// 4. Macrotask`}</pre>
-              <SnippetOutput lines={['1. Start', '2. End', '3. Microtask', '4. Macrotask']} />
-              <p className="text-xs text-muted-foreground">
-                Even with timeout of 0ms, setTimeout executes AFTER all microtasks.
-              </p>
-            </div>
+setTimeout(() => {
+  console.log('Timeout 2');  // Macrotask
+}, 0);
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">setInterval() Example</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`let count = 0;
+// Output order: 
+// Start (sync)
+// Promise (microtask 1)
+// Promise 2 (microtask 2)
+// Timeout (macrotask 1)
+// Timeout 2 (macrotask 2)
 
-const intervalId = setInterval(() => {
-  count++;
-  console.log("Interval:", count);
-  
-  if (count === 3) {
-    clearInterval(intervalId);
-    console.log("Stopped");
-  }
-}, 1000);
+// Why?
+// 1. Sync code runs first
+// 2. ALL microtasks run
+// 3. Then ONE macrotask
+// 4. Back to check microtasks
+// 5. Then next macrotask`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-// Output:
-// Interval: 1 (after 1s)
-// Interval: 2 (after 2s)
-// Interval: 3 (after 3s)
-// Stopped`}</pre>
-              <SnippetOutput lines={['Interval: 1', 'Interval: 2', 'Interval: 3', 'Stopped']} />
-              <p className="text-xs text-muted-foreground">
-                Each interval callback is a separate macrotask.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Priority Demonstration */}
-      <Card className="bg-gradient-to-br from-amber-50/60 to-purple-50/60 dark:from-amber-950/10 dark:to-purple-950/10 border border-amber-200/40 dark:border-amber-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <TrendingUp className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            Priority Demonstration
-          </CardTitle>
-          <CardDescription className="text-base">
-            See how microtasks always execute before macrotasks
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-4">
-            <h4 className="font-semibold">Complex Priority Example</h4>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`console.log("1. Sync start");
-
-setTimeout(() => console.log("6. Macrotask 1"), 0);
-
-Promise.resolve()
-  .then(() => {
-    console.log("3. Microtask 1");
-    setTimeout(() => console.log("7. Macrotask 2"), 0);
-  })
-  .then(() => console.log("4. Microtask 2"));
-
-queueMicrotask(() => console.log("5. Microtask 3"));
-
-console.log("2. Sync end");
-
-// Execution order:
-// 1. Sync start
-// 2. Sync end
-// 3. Microtask 1 → ALL microtasks run
-// 4. Microtask 2
-// 5. Microtask 3
-// 6. Macrotask 1 → ONE macrotask
-// 7. Macrotask 2 → (next event loop cycle)`}</pre>
-            <SnippetOutput lines={[
-              '1. Sync start',
-              '2. Sync end',
-              '3. Microtask 1',
-              '4. Microtask 2',
-              '5. Microtask 3',
-              '6. Macrotask 1',
-              '7. Macrotask 2'
-            ]} />
-          </div>
-
-          <Alert>
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Understanding the Flow</AlertTitle>
-            <AlertDescription>
-              <ol className="mt-2 space-y-2 text-sm list-decimal list-inside">
-                <li>All <strong>synchronous code</strong> runs first</li>
-                <li>Process <strong>ALL microtasks</strong> (including newly added ones)</li>
-                <li>Process <strong>ONE macrotask</strong></li>
-                <li>Repeat from step 2</li>
-              </ol>
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Real-World Use Cases */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Network className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Real-World Use Cases
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical examples showing when to use microtasks vs macrotasks
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Use Case 1 */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                State Updates Before Render
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Use microtasks when you need to update state before the next render
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Batch multiple updates
-function batchUpdates() {
-  updateState1();
-  updateState2();
-  
-  // Ensure render happens after all updates
-  queueMicrotask(() => {
-    render(); // All states updated
+      <CodeSnippet
+        title="Microtasks Can Starve Macrotasks"
+        description="Be careful with infinite microtasks!"
+        code={`// BAD: Infinite microtask loop
+function recursiveMicrotask() {
+  Promise.resolve().then(() => {
+    console.log('Microtask');
+    recursiveMicrotask();  // Creates another microtask!
   });
 }
 
-// React's setState batching uses
-// a similar microtask pattern`}</pre>
-            </div>
-
-            {/* Use Case 2 */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Timer className="w-5 h-5 text-blue-600" />
-                Debouncing User Input
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Use macrotasks for delayed operations like debouncing
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function debounce(fn, delay) {
-  let timeoutId;
-  return function(...args) {
-    clearTimeout(timeoutId);
-    // Use setTimeout (macrotask)
-    timeoutId = setTimeout(() => {
-      fn.apply(this, args);
-    }, delay);
-  };
-}
-
-const search = debounce((query) => {
-  fetchResults(query);
-}, 300);`}</pre>
-            </div>
-
-            {/* Use Case 3 */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Workflow className="w-5 h-5 text-purple-600" />
-                Breaking Up Long Tasks
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Use macrotasks to yield to the browser between chunks
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function processLargeArray(items) {
-  const chunkSize = 100;
-  let index = 0;
-  
-  function processChunk() {
-    const chunk = items.slice(
-      index, 
-      index + chunkSize
-    );
-    
-    chunk.forEach(processItem);
-    index += chunkSize;
-    
-    if (index < items.length) {
-      // Use setTimeout to yield
-      setTimeout(processChunk, 0);
-    }
-  }
-  
-  processChunk();
-}`}</pre>
-            </div>
-
-            {/* Use Case 4 */}
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-rose-600" />
-                Error Handling Timing
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Understanding when errors are caught in different queues
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`try {
-  // This error is NOT caught
-  setTimeout(() => {
-    throw new Error("Macrotask error");
-  }, 0);
-} catch (e) {
-  console.log("Not caught!");
-}
-
-// Use Promise for catchable errors
-Promise.resolve()
-  .then(() => {
-    throw new Error("Microtask error");
-  })
-  .catch(e => {
-    console.log("Caught:", e.message);
-  });`}</pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Common Mistakes */}
-      <Card className="bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 border border-rose-200/40 dark:border-rose-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <AlertTriangle className="w-6 h-6 text-rose-600/80 dark:text-rose-400/80" />
-            Common Mistakes & Pitfalls
-          </CardTitle>
-          <CardDescription className="text-base">
-            Avoid these common errors when working with task queues
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Mistake 1 */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-rose-700 dark:text-rose-300">❌ Infinite Microtask Loop</h4>
-                <Badge className="bg-rose-100 text-rose-700 dark:bg-rose-900/30">Dangerous</Badge>
-              </div>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// NEVER DO THIS!
-function infiniteLoop() {
-  Promise.resolve()
-    .then(() => {
-      console.log("Running...");
-      infiniteLoop(); // Creates new microtask
-    });
-}
-
-infiniteLoop();
-// Blocks the entire browser!
-// Macrotasks NEVER run`}</pre>
-              <p className="text-xs text-rose-700 dark:text-rose-300">
-                ⚠️ Continuously adding microtasks prevents macrotasks from ever running, freezing the UI.
-              </p>
-            </div>
-
-            {/* Solution 1 */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-emerald-700 dark:text-emerald-300">✅ Use Macrotask Instead</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Safe</Badge>
-              </div>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Use setTimeout to yield
-function safeLoop(count = 0) {
-  console.log("Running:", count);
-  
-  if (count < 1000) {
-    // Yields to browser every iteration
-    setTimeout(() => safeLoop(count + 1), 0);
-  }
-}
-
-safeLoop();
-// UI stays responsive
-// Other tasks can run between iterations`}</pre>
-              <p className="text-xs text-emerald-700 dark:text-emerald-300">
-                ✓ Using setTimeout allows the browser to process UI updates and other tasks.
-              </p>
-            </div>
-
-            {/* Mistake 2 */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-rose-700 dark:text-rose-300">❌ Assuming setTimeout(0) Runs Immediately</h4>
-                <Badge className="bg-rose-100 text-rose-700 dark:bg-rose-900/30">Common</Badge>
-              </div>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`let value = 0;
-
 setTimeout(() => {
-  value = 100;
+  console.log('This will NEVER run!');
 }, 0);
 
-console.log(value); // 0, not 100!
+// recursiveMicrotask();  // Don't run this!
+// The macrotask never gets a chance because
+// microtasks keep adding more microtasks
 
-// setTimeout is a macrotask
-// Runs AFTER current script completes`}</pre>
-              <p className="text-xs text-rose-700 dark:text-rose-300">
-                ⚠️ setTimeout(0) doesn't run immediately - it's scheduled as a macrotask.
-              </p>
-            </div>
-
-            {/* Solution 2 */}
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-emerald-700 dark:text-emerald-300">✅ Use Promise or queueMicrotask</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Better</Badge>
-              </div>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`let value = 0;
-
-// Option 1: Promise (microtask)
-Promise.resolve().then(() => {
-  value = 100;
-  console.log(value); // 100
-});
-
-// Option 2: queueMicrotask
-queueMicrotask(() => {
-  // Runs before next macrotask
-  updateUI();
-});`}</pre>
-              <p className="text-xs text-emerald-700 dark:text-emerald-300">
-                ✓ Use microtasks when you need execution right after current script.
-              </p>
-            </div>
-          </div>
-
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Performance Tip</AlertTitle>
-            <AlertDescription>
-              Be careful with microtasks in hot code paths. Since ALL microtasks run before the next macrotask, adding too many can delay rendering and make your app feel sluggish.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Latest Features */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Latest Features & Modern APIs
-          </CardTitle>
-          <CardDescription className="text-base">
-            New task queue features in modern JavaScript
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Feature 1 */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Scheduler API (Experimental)</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 text-xs">New</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Priority-based task scheduling for better performance
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Prioritize tasks
-scheduler.postTask(
-  () => {
-    updateCriticalUI();
-  },
-  { priority: 'user-blocking' }
-);
-
-scheduler.postTask(
-  () => {
-    logAnalytics();
-  },
-  { priority: 'background' }
-);
-
-// Priorities:
-// - user-blocking (highest)
-// - user-visible
-// - background (lowest)`}</pre>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">requestIdleCallback</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 text-xs">Stable</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Run tasks when browser is idle
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Run during idle time
-requestIdleCallback((deadline) => {
-  while (
-    deadline.timeRemaining() > 0 &&
-    tasks.length > 0
-  ) {
-    const task = tasks.shift();
-    processTask(task);
+// GOOD: Allow macrotasks to run
+let count = 0;
+function limitedMicrotask() {
+  if (count++ < 5) {
+    Promise.resolve().then(() => {
+      console.log('Microtask', count);
+      limitedMicrotask();
+    });
   }
-  
-  if (tasks.length > 0) {
-    // Schedule remaining tasks
-    requestIdleCallback(callback);
-  }
-}, { timeout: 2000 });`}</pre>
-            </div>
+}
 
-            {/* Feature 3 */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">AbortController with Timers</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 text-xs">Modern</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Cancel scheduled tasks gracefully
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const controller = new AbortController();
-
-// Schedule with abort signal
 setTimeout(() => {
-  console.log("Task executed");
-}, 1000, { signal: controller.signal });
+  console.log('Timeout can run now!');
+}, 0);
 
-// Cancel if needed
-controller.abort();
-
-// Also works with fetch
-fetch(url, {
-  signal: controller.signal
-}).catch(err => {
-  if (err.name === 'AbortError') {
-    console.log('Request cancelled');
-  }
-});`}</pre>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Performance Monitoring</h4>
-                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30 text-xs">Essential</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Track task execution performance
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Measure task timing
-const observer = new PerformanceObserver(
-  (list) => {
-    for (const entry of list.getEntries()) {
-      console.log(\`\${entry.name}: \${entry.duration}ms\`);
-    }
-  }
-);
-
-observer.observe({ 
-  entryTypes: ['measure', 'mark'] 
-});
-
-performance.mark('task-start');
-// ... do work ...
-performance.mark('task-end');
-performance.measure(
-  'task-duration',
-  'task-start',
-  'task-end'
-);`}</pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+limitedMicrotask();  // Only 5 iterations`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
       {/* Best Practices */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <CheckCircle2 className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-          <CardDescription className="text-base">
-            Guidelines for working effectively with task queues
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h4 className="font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                Do This
-              </h4>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Use Promises/async-await for async flow control</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Batch DOM updates using microtasks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Use queueMicrotask for immediate post-script execution</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Break up long tasks with setTimeout to yield to browser</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Monitor task performance in production</span>
-                </li>
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Remember ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Two queues: Microtask & Macrotask</li>
+                <li>• Microtasks have higher priority</li>
+                <li>• ALL microtasks run before next macrotask</li>
+                <li>• Only ONE macrotask per cycle</li>
+                <li>• Event loop checks microtasks after each task</li>
               </ul>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="font-semibold flex items-center gap-2">
-                <XCircle className="w-5 h-5 text-rose-600" />
-                Avoid This
-              </h4>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't create infinite microtask loops</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't assume setTimeout(0) runs immediately</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't queue too many microtasks in hot paths</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't use callbacks when Promises are clearer</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't ignore error handling in async code</span>
-                </li>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Watch Out ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't create infinite microtask loops</li>
+                <li>• Don't assume setTimeout runs immediately</li>
+                <li>• Don't mix sync/async assumptions</li>
+                <li>• Don't block the event loop</li>
+                <li>• Don't forget promises are microtasks</li>
               </ul>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Golden Rule</AlertTitle>
-            <AlertDescription>
-              The event loop follows a simple pattern: <strong>Sync code → ALL microtasks → ONE macrotask → Repeat</strong>. Understanding this pattern is the key to writing predictable async JavaScript code.
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Quick Reference</h4>
+            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <div><strong>Microtasks:</strong> Promises, queueMicrotask(), async/await</div>
+              <div><strong>Macrotasks:</strong> setTimeout, setInterval, I/O, UI events</div>
+              <div><strong>Priority:</strong> Sync → All Micros → One Macro → Repeat</div>
+              <div><strong>Rule:</strong> Microtasks can't be interrupted by macrotasks</div>
+            </div>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Pro Tip</AlertTitle>
+            <AlertDescription className="text-base">
+              Use <code className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">queueMicrotask()</code> when you need something to run as a microtask but don't want to use promises!
             </AlertDescription>
           </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Interactive Playground */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Interactive Playground
-          </CardTitle>
-          <CardDescription className="text-base">
-            Experiment with task queue concepts in a live environment
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Button
-            onClick={() => onOpenWebPlayground?.(playgroundHtml, '', playgroundJs)}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
-          >
-            <Play className="w-4 h-4 mr-2" />
-            Run in Playground
-          </Button>
-          <p className="text-sm text-muted-foreground">
-            The console demonstrates execution order with microtasks and macrotasks. Try modifying the code to see how task priorities affect execution!
-          </p>
         </CardContent>
       </Card>
     </div>

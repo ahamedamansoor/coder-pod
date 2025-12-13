@@ -1,481 +1,404 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
 import { 
-    Sparkles, Image as ImageIcon, Eye, Droplet, Sun, Contrast,
-    Palette, Settings, CheckCircle, AlertTriangle, MousePointer,
-    Play, Zap, Target, CircleDot
+  Sparkles, Lightbulb, ArrowRight, 
+  CheckCircle, Info, Eye, Droplet
 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 
 interface CssFiltersProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssFilters({ onOpenWebPlayground }: CssFiltersProps) {
-    const [selectedFilter, setSelectedFilter] = useState('blur');
+  
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Droplet}
+        category="CSS · Visual Effects"
+        title="CSS Filters"
+        description="Image and element effects with filter functions"
+        colorTheme="indigo"
+      />
 
-    const filterTypes = [
-        { name: 'blur', icon: CircleDot, desc: 'Blurs the element', values: ['0px', '5px', '10px'], example: 'filter: blur(5px);' },
-        { name: 'brightness', icon: Sun, desc: 'Adjusts brightness', values: ['0', '1', '1.5'], example: 'filter: brightness(1.5);' },
-        { name: 'contrast', icon: Contrast, desc: 'Adjusts contrast', values: ['0', '1', '2'], example: 'filter: contrast(2);' },
-        { name: 'grayscale', icon: Droplet, desc: 'Converts to grayscale', values: ['0', '0.5', '1'], example: 'filter: grayscale(1);' },
-        { name: 'hue-rotate', icon: Palette, desc: 'Rotates hue', values: ['0deg', '90deg', '180deg'], example: 'filter: hue-rotate(90deg);' },
-        { name: 'saturate', icon: Droplet, desc: 'Adjusts saturation', values: ['0', '1', '2'], example: 'filter: saturate(2);' },
-        { name: 'sepia', icon: ImageIcon, desc: 'Applies sepia tone', values: ['0', '0.5', '1'], example: 'filter: sepia(1);' },
-        { name: 'invert', icon: Contrast, desc: 'Inverts colors', values: ['0', '0.5', '1'], example: 'filter: invert(1);' }
-    ];
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <Droplet className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">CSS Filters</CardTitle>
+              <CardDescription className="text-base">Photoshop-like effects in CSS</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">CSS Filters = Instant Effects! ✨</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              Apply visual effects like <strong>blur</strong>, <strong>brightness</strong>, and <strong>saturate</strong> 
+              to any element with pure CSS. No image editing software needed!
+            </AlertDescription>
+          </Alert>
 
-    const playgroundCode = `<!DOCTYPE html>
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { name: 'Image Effects', icon: Eye },
+              { name: 'Hover States', icon: Sparkles },
+              { name: 'Animations', icon: Droplet }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 text-center">
+                <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                <p className="text-sm font-bold">{item.name}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Filter Functions
+          </CardTitle>
+          <CardDescription>10 powerful filter effects</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {[
+            { func: 'blur()', example: 'blur(5px)', desc: 'Gaussian blur effect' },
+            { func: 'brightness()', example: 'brightness(150%)', desc: 'Adjust brightness (0-200%+)' },
+            { func: 'contrast()', example: 'contrast(200%)', desc: 'Adjust contrast (0-200%+)' },
+            { func: 'grayscale()', example: 'grayscale(100%)', desc: 'Convert to grayscale (0-100%)' },
+            { func: 'saturate()', example: 'saturate(200%)', desc: 'Adjust saturation (0-200%+)' },
+            { func: 'hue-rotate()', example: 'hue-rotate(90deg)', desc: 'Rotate hue (0-360deg)' },
+            { func: 'invert()', example: 'invert(100%)', desc: 'Invert colors (0-100%)' },
+            { func: 'sepia()', example: 'sepia(100%)', desc: 'Apply sepia tone (0-100%)' },
+            { func: 'opacity()', example: 'opacity(50%)', desc: 'Adjust opacity (0-100%)' },
+            { func: 'drop-shadow()', example: 'drop-shadow(2px 2px 4px black)', desc: 'Add drop shadow' }
+          ].map((item, i) => (
+            <div key={i} className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+              <div className="flex items-center justify-between mb-2">
+                <Badge className="bg-purple-600 text-white">{item.func}</Badge>
+                <code className="text-xs bg-purple-900 dark:bg-purple-950 text-purple-100 px-2 py-1 rounded">
+                  {item.example}
+                </code>
+              </div>
+              <p className="text-sm text-purple-600 dark:text-purple-300">{item.desc}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Eye className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            Interactive Demo
+          </CardTitle>
+          <CardDescription>See all filters in action</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CSS Filters Complete Guide</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #333;
-        line-height: 1.6;
-        padding: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
     }
-
+    
     @media (prefers-color-scheme: dark) {
-        body {
-            background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
-            color: #e5e7eb;
-        }
+      body {
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
+      }
     }
-
+    
     .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 16px;
-        padding: 3rem;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
-
+    
     @media (prefers-color-scheme: dark) {
-        .container {
-            background: rgba(30, 41, 55, 0.95);
-            color: #e5e7eb;
-        }
+      .container {
+        background: #1a1a2e;
+        color: #e5e5e5;
+      }
     }
-
-    h1 { 
-        font-size: 2.5rem; 
-        text-align: center; 
-        margin-bottom: 1rem; 
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    
+    h1 {
+      text-align: center;
+      color: #667eea;
+      margin-bottom: 40px;
     }
-
-    h2 { 
-        font-size: 1.5rem; 
-        margin: 2rem 0 1rem; 
-        color: #334155;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
+    
     @media (prefers-color-scheme: dark) {
-        h2 { color: #cbd5e1; }
+      h1 {
+        color: #a78bfa;
+      }
     }
-
-    .demo-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-        margin: 2rem 0;
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
     }
-
-    .filter-demo {
-        text-align: center;
-        padding: 1.5rem;
-        background: #f8f9fa;
-        border-radius: 12px;
-        transition: transform 0.3s ease;
-        cursor: pointer;
+    
+    .filter-box {
+      text-align: center;
     }
-
-    .filter-demo:hover {
-        transform: translateY(-5px);
+    
+    .image {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 24px;
+      margin-bottom: 10px;
+      transition: filter 0.3s;
     }
-
+    
+    .label {
+      font-weight: 600;
+      color: #667eea;
+      font-size: 14px;
+    }
+    
     @media (prefers-color-scheme: dark) {
-        .filter-demo {
-            background: rgba(55, 65, 81, 0.5);
-        }
+      .label {
+        color: #a78bfa;
+      }
     }
-
-    .demo-image {
-        width: 150px;
-        height: 150px;
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        border-radius: 12px;
-        margin: 0 auto 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        transition: all 0.3s ease;
+    
+    /* FILTER EFFECTS */
+    .blur { filter: blur(5px); }
+    .brightness { filter: brightness(150%); }
+    .contrast { filter: contrast(200%); }
+    .grayscale { filter: grayscale(100%); }
+    .saturate { filter: saturate(300%); }
+    .hue-rotate { filter: hue-rotate(180deg); }
+    .invert { filter: invert(100%); }
+    .sepia { filter: sepia(100%); }
+    .opacity { filter: opacity(50%); }
+    .drop-shadow { filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.5)); }
+    
+    /* COMBINED */
+    .combined {
+      filter: brightness(110%) contrast(120%) saturate(150%);
     }
-
-    /* Filter Effects */
-    .blur-demo:hover .demo-image { filter: blur(5px); }
-    .brightness-demo:hover .demo-image { filter: brightness(1.5); }
-    .contrast-demo:hover .demo-image { filter: contrast(2); }
-    .grayscale-demo:hover .demo-image { filter: grayscale(1); }
-    .hue-demo:hover .demo-image { filter: hue-rotate(180deg); }
-    .saturate-demo:hover .demo-image { filter: saturate(3); }
-    .sepia-demo:hover .demo-image { filter: sepia(1); }
-    .invert-demo:hover .demo-image { filter: invert(1); }
-
-    /* Combined Filters */
-    .combined-demo {
-        margin-top: 3rem;
-        padding: 2rem;
-        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-        border-radius: 12px;
+    
+    /* HOVER EFFECT */
+    .hover:hover {
+      filter: brightness(80%) blur(2px);
     }
-
-    @media (prefers-color-scheme: dark) {
-        .combined-demo {
-            background: linear-gradient(135deg, #0c4a6e, #075985);
-        }
-    }
-
-    .combined-image {
-        width: 300px;
-        height: 300px;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect fill="%23667eea" width="200" height="200"/><circle fill="%23764ba2" cx="100" cy="100" r="80"/></svg>');
-        background-size: cover;
-        border-radius: 16px;
-        margin: 2rem auto;
-        transition: all 0.5s ease;
-        cursor: pointer;
-    }
-
-    .combined-image:hover {
-        filter: blur(2px) brightness(1.2) contrast(1.3) saturate(1.5);
-        transform: scale(1.05) rotate(2deg);
-    }
-
-    .filter-label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #1e293b;
-        margin-top: 0.5rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .filter-label {
-            color: #f1f5f9;
-        }
-    }
-
-    .instruction {
-        text-align: center;
-        padding: 1rem;
-        background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-        border-radius: 8px;
-        margin-bottom: 2rem;
-        font-weight: 600;
-        color: #166534;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .instruction {
-            background: linear-gradient(135deg, #14532d, #166534);
-            color: #bbf7d0;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .demo-grid { 
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        .demo-image { 
-            width: 100px; 
-            height: 100px;
-            font-size: 2rem;
-        }
-        .combined-image {
-            width: 200px;
-            height: 200px;
-        }
-    }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎨 CSS Filters Playground</h1>
-        <div class="instruction">
-            👆 Hover over each box to see the filter effect in action!
-        </div>
-        
-        <section>
-            <h2>🎯 Basic Filter Effects</h2>
-            <div class="demo-grid">
-                <div class="filter-demo blur-demo">
-                    <div class="demo-image">🖼️</div>
-                    <div class="filter-label">Blur</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">blur(5px)</code>
-                </div>
-
-                <div class="filter-demo brightness-demo">
-                    <div class="demo-image">☀️</div>
-                    <div class="filter-label">Brightness</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">brightness(1.5)</code>
-                </div>
-
-                <div class="filter-demo contrast-demo">
-                    <div class="demo-image">🎭</div>
-                    <div class="filter-label">Contrast</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">contrast(2)</code>
-                </div>
-
-                <div class="filter-demo grayscale-demo">
-                    <div class="demo-image">⚫</div>
-                    <div class="filter-label">Grayscale</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">grayscale(1)</code>
-                </div>
-
-                <div class="filter-demo hue-demo">
-                    <div class="demo-image">🌈</div>
-                    <div class="filter-label">Hue Rotate</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">hue-rotate(180deg)</code>
-                </div>
-
-                <div class="filter-demo saturate-demo">
-                    <div class="demo-image">🎨</div>
-                    <div class="filter-label">Saturate</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">saturate(3)</code>
-                </div>
-
-                <div class="filter-demo sepia-demo">
-                    <div class="demo-image">📷</div>
-                    <div class="filter-label">Sepia</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">sepia(1)</code>
-                </div>
-
-                <div class="filter-demo invert-demo">
-                    <div class="demo-image">🔄</div>
-                    <div class="filter-label">Invert</div>
-                    <code style="font-size: 0.8rem; color: #64748b;">invert(1)</code>
-                </div>
-            </div>
-        </section>
-
-        <section class="combined-demo">
-            <h2>✨ Combined Filters (Hover Me!)</h2>
-            <p style="text-align: center; margin-bottom: 1rem; color: #64748b;">
-                Multiple filters can be combined for creative effects
-            </p>
-            <div class="combined-image"></div>
-            <p style="text-align: center; font-family: monospace; font-size: 0.9rem; color: #475569;">
-                filter: blur(2px) brightness(1.2) contrast(1.3) saturate(1.5);
-            </p>
-        </section>
+  <div class="container">
+    <h1>✨ CSS Filters Gallery</h1>
+    
+    <div class="grid">
+      <div class="filter-box">
+        <div class="image">CSS</div>
+        <div class="label">Original</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image blur">CSS</div>
+        <div class="label">blur(5px)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image brightness">CSS</div>
+        <div class="label">brightness(150%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image contrast">CSS</div>
+        <div class="label">contrast(200%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image grayscale">CSS</div>
+        <div class="label">grayscale(100%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image saturate">CSS</div>
+        <div class="label">saturate(300%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image hue-rotate">CSS</div>
+        <div class="label">hue-rotate(180deg)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image invert">CSS</div>
+        <div class="label">invert(100%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image sepia">CSS</div>
+        <div class="label">sepia(100%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image opacity">CSS</div>
+        <div class="label">opacity(50%)</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image drop-shadow">CSS</div>
+        <div class="label">drop-shadow()</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image combined">CSS</div>
+        <div class="label">Combined</div>
+      </div>
+      
+      <div class="filter-box">
+        <div class="image hover">Hover</div>
+        <div class="label">Hover Effect</div>
+      </div>
     </div>
+  </div>
 </body>
-</html>`;
+</html>`}
+            title="CSS Filters Gallery"
+            colorTheme="indigo"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+        </CardContent>
+      </Card>
 
-    const handleOpenPlayground = () => {
-        if (onOpenWebPlayground) {
-            onOpenWebPlayground(playgroundCode, '', '');
-        }
-    };
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Lightbulb className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Combining Filters
+          </CardTitle>
+          <CardDescription>Use multiple filters together</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-gray-700 dark:text-gray-300">
+            Chain multiple filter functions separated by spaces:
+          </p>
 
-    return (
-        <div className="space-y-8">
-            <PageHeader
-                icon={Sparkles}
-                category="CSS · Visual Effects"
-                title="CSS Filters"
-                description="Apply stunning visual effects like blur, brightness, contrast, and more to transform your elements with GPU-accelerated filters."
-                colorTheme="blue"
-            />
+          <div className="p-6 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-300 dark:border-green-700">
+            <div className="bg-green-900 dark:bg-green-950 p-5 rounded-lg">
+              <code className="text-sm text-green-100 block">
+{`/* Combine multiple filters */
+.photo {
+  filter: 
+    brightness(110%)
+    contrast(120%)
+    saturate(130%);
+}
 
-            {/* What are CSS Filters? */}
-            <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 animate-pulse"></div>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
-                        <div className="relative">
-                            <Sparkles className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are CSS Filters?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
-                        🎨 Apply Instagram-style effects directly with CSS - blur, brightness, contrast, and more!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative space-y-4">
-                    <p className="text-muted-foreground leading-relaxed">
-                        CSS filters allow you to apply <strong className="text-foreground">graphical effects</strong> like blur, color adjustments, and more to any element. They're <strong className="text-foreground">GPU-accelerated</strong>, making them incredibly performant for real-time effects.
-                    </p>
+/* Hover effect */
+.card:hover {
+  filter: brightness(90%) blur(2px);
+}`}
+              </code>
+            </div>
+          </div>
 
-                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                        <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                            <Eye className="w-5 h-5" />
-                            🎯 Interactive Filter Demo
-                        </h4>
-                        
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                            <div className="text-center cursor-pointer group">
-                                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg mx-auto mb-2 transition-all duration-300 group-hover:filter group-hover:blur-sm flex items-center justify-center text-white font-bold text-2xl">
-                                    🖼️
-                                </div>
-                                <p className="text-xs font-medium">Blur</p>
-                                <code className="text-xs text-muted-foreground">blur(8px)</code>
-                            </div>
+          <div className="space-y-3">
+            {[
+              { name: 'Instagram-like', code: 'brightness(110%) contrast(110%) saturate(130%)' },
+              { name: 'Vintage', code: 'sepia(50%) contrast(120%) brightness(90%)' },
+              { name: 'Dramatic', code: 'grayscale(100%) contrast(150%)' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+                <p className="font-bold text-green-900 dark:text-green-100 mb-2">{item.name}</p>
+                <code className="text-xs bg-green-900 dark:bg-green-950 text-green-100 px-2 py-1 rounded">
+                  {item.code}
+                </code>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-                            <div className="text-center cursor-pointer group">
-                                <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg mx-auto mb-2 transition-all duration-300 group-hover:brightness-150 flex items-center justify-center text-white font-bold text-2xl">
-                                    ☀️
-                                </div>
-                                <p className="text-xs font-medium">Brightness</p>
-                                <code className="text-xs text-muted-foreground">brightness(1.5)</code>
-                            </div>
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Info className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            Common Use Cases
+          </CardTitle>
+          <CardDescription>Where to use filters</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {[
+            { use: 'Image Effects', filter: 'grayscale(), sepia()', desc: 'B&W or vintage photos' },
+            { use: 'Hover States', filter: 'brightness(), blur()', desc: 'Darken on hover' },
+            { use: 'Loading States', filter: 'blur(), opacity()', desc: 'Blur placeholder' },
+            { use: 'Disabled Elements', filter: 'grayscale(), opacity()', desc: 'Show disabled' },
+            { use: 'Focus Attention', filter: 'brightness(), saturate()', desc: 'Highlight active' }
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+              <div>
+                <p className="font-bold text-blue-900 dark:text-blue-100">{item.use}</p>
+                <p className="text-xs text-blue-700 dark:text-blue-300">{item.desc}</p>
+              </div>
+              <code className="text-xs bg-blue-900 dark:bg-blue-950 text-blue-100 px-2 py-1 rounded">
+                {item.filter}
+              </code>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
-                            <div className="text-center cursor-pointer group">
-                                <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-teal-600 rounded-lg mx-auto mb-2 transition-all duration-300 group-hover:grayscale flex items-center justify-center text-white font-bold text-2xl">
-                                    ⚫
-                                </div>
-                                <p className="text-xs font-medium">Grayscale</p>
-                                <code className="text-xs text-muted-foreground">grayscale(1)</code>
-                            </div>
-
-                            <div className="text-center cursor-pointer group">
-                                <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg mx-auto mb-2 transition-all duration-300 group-hover:hue-rotate-180 flex items-center justify-center text-white font-bold text-2xl">
-                                    🌈
-                                </div>
-                                <p className="text-xs font-medium">Hue Rotate</p>
-                                <code className="text-xs text-muted-foreground">hue-rotate(180deg)</code>
-                            </div>
-                        </div>
-
-                        <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                            <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                                <MousePointer className="w-4 h-4" />
-                                💡 Hover to See Filters!
-                            </div>
-                            <div className="text-xs text-green-600 dark:text-green-400">
-                                Each box demonstrates a different filter effect. Hover over them to see the transformation in real-time!
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Filter Types */}
-            <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Settings className="w-5 h-5" />
-                        CSS Filter Functions
-                    </CardTitle>
-                    <CardDescription>
-                        Master the different filter functions available in CSS.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {filterTypes.map((filter) => (
-                                <div 
-                                    key={filter.name}
-                                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-1 ${
-                                        selectedFilter === filter.name 
-                                            ? 'ring-2 ring-primary ring-offset-2 border-primary shadow-lg' 
-                                            : 'border-gray-200 hover:border-gray-300'
-                                    }`}
-                                    onClick={() => setSelectedFilter(filter.name)}
-                                >
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <filter.icon className="w-5 h-5 text-primary" />
-                                        <h3 className="font-bold text-sm">{filter.name}</h3>
-                                    </div>
-                                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{filter.desc}</p>
-                                    <div className="flex flex-wrap gap-1">
-                                        {filter.values.map((value, idx) => (
-                                            <Badge key={idx} variant="secondary" className="text-xs">{value}</Badge>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        
-                        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
-                            <h4 className="font-semibold mb-3">{selectedFilter} Example</h4>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block">
-                                {filterTypes.find(f => f.name === selectedFilter)?.example}
-                            </code>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Complete Playground */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <div className="p-2 bg-blue-500/10 rounded-lg">
-                            <Play className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                        </div>
-                        Complete CSS Filters Playground
-                    </CardTitle>
-                    <CardDescription>
-                        Interactive playground with all filter effects - hover to see them in action!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        html={playgroundCode}
-                        title="CSS Filters Playground"
-                        colorTheme="blue"
-                        onOpenPlayground={handleOpenPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* Best Practices */}
-            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertTitle className="text-green-900 dark:text-green-100">Best Practices</AlertTitle>
-                <AlertDescription className="text-green-800 dark:text-green-200">
-                    <ul className="list-disc list-inside space-y-1 mt-2">
-                        <li><strong>Performance</strong> - Filters are GPU-accelerated, but use sparingly on many elements</li>
-                        <li><strong>Combine Filters</strong> - Chain multiple filters with spaces: <code>filter: blur(5px) brightness(1.2);</code></li>
-                        <li><strong>Transitions</strong> - Add smooth transitions for interactive filter effects</li>
-                        <li><strong>Browser Support</strong> - Excellent support in all modern browsers</li>
-                    </ul>
-                </AlertDescription>
-            </Alert>
-
-            {/* Browser Support */}
-            <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
-                <CheckCircle className="h-4 w-4 text-blue-600" />
-                <AlertTitle className="text-blue-900 dark:text-blue-100">Browser Support</AlertTitle>
-                <AlertDescription className="text-blue-800 dark:text-blue-200">
-                    CSS filters have excellent browser support across all modern browsers including Chrome, Firefox, Safari, and Edge. No prefixes needed!
-                </AlertDescription>
-            </Alert>
-        </div>
-    );
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Combine filters with <strong>spaces</strong></span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>Animate</strong> filters for smooth transitions</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use <strong>backdrop-filter</strong> to filter background</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Browser support: <strong>All modern browsers</strong></span>
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
 }

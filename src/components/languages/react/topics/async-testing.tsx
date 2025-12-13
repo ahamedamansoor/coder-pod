@@ -311,10 +311,10 @@ root.render(
                 Wait until a condition becomes true. Most flexible option!
               </p>
               <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 font-mono text-xs">
-                <div className="text-purple-600 dark:text-purple-400">await waitFor(() => {'{'}</div>
-                <div className="text-purple-600 dark:text-purple-400 ml-4">expect(element)</div>
-                <div className="text-purple-600 dark:text-purple-400 ml-6">.toBeInTheDocument();</div>
-                <div className="text-purple-600 dark:text-purple-400">{'});'}</div>
+                <div className="text-purple-600 dark:text-purple-400">{"await waitFor(() => {"}</div>
+                <div className="text-purple-600 dark:text-purple-400 ml-4">{"expect(element)"}</div>
+                <div className="text-purple-600 dark:text-purple-400 ml-6">{".toBeInTheDocument();"}</div>
+                <div className="text-purple-600 dark:text-purple-400">{"});"}</div>
               </div>
             </div>
 

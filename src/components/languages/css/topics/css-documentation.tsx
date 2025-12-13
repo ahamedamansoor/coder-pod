@@ -1,464 +1,356 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview } from '@/components/shared';
-import { 
-  FileText, CheckCircle, Code, Book, MessageSquare, 
-  Users, Lightbulb, Info, AlertCircle
-} from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import React from 'react';
+import { FileText, Sparkles, Target, Layers, CheckCircle, Book } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssDocumentationProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssDocumentation({ onOpenWebPlayground }: CssDocumentationProps) {
-  const documentationExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Documentation Example</title>
-  <style>
-    /**
-     * ==========================================
-     * THEME SYSTEM
-     * ==========================================
-     * Central color and spacing variables for the design system.
-     * @author Design Team
-     * @version 1.0.0
-     */
-    
-    :root {
-      /* Primary Colors */
-      --color-primary: #8b5cf6;
-      --color-primary-dark: #7c3aed;
-      --color-primary-light: #a78bfa;
-      
-      /* Spacing Scale */
-      --spacing-xs: 8px;
-      --spacing-sm: 16px;
-      --spacing-md: 24px;
-      --spacing-lg: 32px;
-      --spacing-xl: 48px;
-      
-      /* Typography */
-      --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-size-base: 16px;
-      --line-height-base: 1.5;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: var(--font-family-base);
-      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-      padding: var(--spacing-xl) var(--spacing-md);
-      min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
-      }
-    }
-    
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: var(--spacing-xl);
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    /**
-     * Component: Page Header
-     * ==========================================
-     * Main title for documentation pages
-     * 
-     * @usage
-     *   <h1 class="page-title">Title</h1>
-     * 
-     * @notes
-     *   - Responsive font size
-     *   - Uses primary color from theme
-     */
-    .page-title {
-      color: var(--color-primary);
-      margin-bottom: var(--spacing-sm);
-      text-align: center;
-      font-size: 2.5rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .page-title {
-        color: var(--color-primary-light);
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    /**
-     * Component: Documentation Card
-     * ==========================================
-     * Displays documentation examples with clear structure
-     * 
-     * @dependencies
-     *   - Requires theme variables
-     *   - Uses spacing scale
-     * 
-     * @accessibility
-     *   - Proper contrast ratios
-     *   - Dark mode support
-     */
-    .doc-card {
-      padding: var(--spacing-md);
-      background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-      border-radius: 12px;
-      border: 2px solid var(--color-primary);
-      margin-bottom: var(--spacing-md);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .doc-card {
-        background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
-        border-color: var(--color-primary-light);
-      }
-    }
-    
-    .doc-title {
-      color: #6d28d9;
-      font-weight: 700;
-      margin-bottom: var(--spacing-sm);
-      font-size: 1.3rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .doc-title {
-        color: #ddd6fe;
-      }
-    }
-    
-    /* TODO: Add animation on hover */
-    /* FIXME: Review spacing on mobile devices */
-    /* NOTE: This component is used site-wide */
-    
-    .doc-list {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .doc-item {
-      padding: var(--spacing-sm);
-      background: white;
-      border-radius: 8px;
-      margin-bottom: var(--spacing-xs);
-      border-left: 4px solid var(--color-primary);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .doc-item {
-        background: #0f172a;
-        border-left-color: var(--color-primary-light);
-        color: #e2e8f0;
-      }
-    }
-    
-    /**
-     * ==========================================
-     * UTILITY CLASSES
-     * ==========================================
-     */
-    
-    /* Text alignment utilities */
-    .text-center { text-align: center; }
-    .text-left { text-align: left; }
-    .text-right { text-align: right; }
-    
-    /* Margin utilities */
-    .mt-sm { margin-top: var(--spacing-sm); }
-    .mb-sm { margin-bottom: var(--spacing-sm); }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1 class="page-title">📚 CSS Documentation</h1>
-    <p class="subtitle">Well-documented CSS is maintainable CSS</p>
-    
-    <div class="doc-card">
-      <h3 class="doc-title">✨ Documentation Benefits</h3>
-      
-      <ul class="doc-list">
-        <li class="doc-item">
-          <strong>👥 Team Collaboration:</strong> Help others understand your code
-        </li>
-        <li class="doc-item">
-          <strong>🔄 Maintainability:</strong> Easier to update and refactor
-        </li>
-        <li class="doc-item">
-          <strong>📖 Knowledge Sharing:</strong> Document design decisions
-        </li>
-        <li class="doc-item">
-          <strong>🚀 Onboarding:</strong> Help new team members get started
-        </li>
-        <li class="doc-item">
-          <strong>💡 Context:</strong> Explain "why" not just "what"
-        </li>
-      </ul>
-    </div>
-    
-    <div style="background: #f3e8ff; padding: 16px; border-radius: 8px; border-left: 4px solid #8b5cf6;">
-      <p style="color: #6b21a8; font-weight: 600; margin-bottom: 8px;">💡 Pro Tip</p>
-      <p style="color: #7c3aed; font-size: 0.9rem;">
-        Document your CSS as you write it, not as an afterthought. 
-        Future you (and your team) will thank you!
-      </p>
-    </div>
-  </div>
-</body>
-</html>`;
-
+  
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={FileText}
+      title="CSS Documentation"
+      description="Document your CSS for better maintainability and team collaboration"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is CSS Documentation?",
+        description: "Comments and explanations in your CSS that help others (and future you) understand the code",
+        keyPoints: [
+          "Explain complex or unusual CSS",
+          "Document component purposes",
+          "Note browser hacks and workarounds",
+          "Help team members understand code",
+          "Essential for large projects",
+          "Saves time during maintenance"
+        ]
+      }}
+    >
+
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why Document CSS?">
+        In 6 months, you won't remember why you wrote that complex CSS. 
+        <strong> Good documentation is like leaving notes for future you and your team</strong> - 
+        it explains the "why" behind the code, not just the "what"!
+      </InfoAlert>
+
+      {/* When to Document */}
+      <SectionCard
+        title="When to Add CSS Comments"
+        description="What deserves documentation"
         icon={FileText}
-        category="CSS · Best Practices"
-        title="CSS Documentation"
-        description="Document your CSS for better maintainability and team collaboration"
-        colorTheme="purple"
-      />
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "🔧 Complex Solutions",
+              description: "Tricky CSS that's not obvious",
+              example: "Z-index management, flex hacks"
+            },
+            {
+              title: "🐛 Browser Workarounds",
+              description: "Fixes for specific browsers",
+              example: "IE11 fixes, Safari bugs"
+            },
+            {
+              title: "📦 Component Purpose",
+              description: "What the section does",
+              example: "Header, navigation, footer"
+            },
+            {
+              title: "⚠️ Important Notes",
+              description: "Warnings and gotchas",
+              example: "Don't change this value!"
+            }
+          ]}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-purple-700 dark:text-purple-300">
-            <div className="relative">
-              <FileText className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            Why Document CSS?
-          </CardTitle>
-          <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-            📚 Make your CSS understandable and maintainable for everyone!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                  <Book className="w-5 h-5" />
-                  Documentation Benefits
-                </h4>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <Users className="w-5 h-5 text-purple-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-purple-700 dark:text-purple-300">Team Collaboration</div>
-                      <div className="text-sm text-purple-600 dark:text-purple-400">
-                        Help teammates understand your code quickly
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <Lightbulb className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-blue-700 dark:text-blue-300">Context & Decisions</div>
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
-                        Document why certain approaches were chosen
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-green-700 dark:text-green-300">Easier Maintenance</div>
-                      <div className="text-sm text-green-600 dark:text-green-400">
-                        Update and refactor code with confidence
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Comment Styles */}
+      <SectionCard
+        title="CSS Comment Styles"
+        description="Different ways to document"
+        icon={Book}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="1. Section Headers (Large Sections)"
+            code={`/**
+ * ================================================
+ * HEADER COMPONENT
+ * ================================================
+ * Main site header with logo, navigation, and search.
+ * Used on all pages.
+ * 
+ * @author Design Team
+ * @date 2024-12-13
+ */
 
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-200/50">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300">
-                  What to Document
-                </h4>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="font-semibold text-sm mb-1 text-purple-700 dark:text-purple-300">📐 Complex Logic</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Calculations, layouts</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="font-semibold text-sm mb-1 text-blue-700 dark:text-blue-300">🎨 Design System</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Colors, spacing, fonts</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="font-semibold text-sm mb-1 text-green-700 dark:text-green-300">🔧 Utilities</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Helper classes, mixins</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="font-semibold text-sm mb-1 text-orange-700 dark:text-orange-300">⚠️ Workarounds</div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Browser hacks, fixes</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-purple-100 via-fuchsia-100 to-pink-100 dark:from-purple-900/30 dark:via-fuchsia-900/30 dark:to-pink-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">📚</div>
-                  <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Documentation</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Clear Comments
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Style Guides
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Usage Examples
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Team Standards
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Document as you code, not later
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <MessageSquare className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            Documentation Example
-          </CardTitle>
-          <CardDescription>
-            See how to document CSS effectively
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={documentationExample}
-            title="Well-Documented CSS Example"
-            colorTheme="purple"
-            onOpenPlayground={onOpenWebPlayground}
+.header {
+  /* styles here */
+}`}
           />
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            Comment Types
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2">Section Comments</h4>
-              <pre className="text-sm overflow-x-auto text-gray-800 dark:text-gray-200"><code>{`/**
- * ==========================================
- * TYPOGRAPHY SYSTEM
- * ==========================================
- * Base typography styles and scales
- */`}</code></pre>
+          <SyntaxBlock
+            title="2. Block Comments (Components/Groups)"
+            code={`/* =================================
+   Navigation Component
+   ================================= */
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Navigation items */
+.nav__item {
+  padding: 10px 20px;
+}
+
+/* Active navigation state */
+.nav__item--active {
+  background: #3b82f6;
+  color: white;
+}`}
+          />
+
+          <SyntaxBlock
+            title="3. Inline Comments (Single Properties)"
+            code={`.element {
+  /* Fix for IE11 flexbox bug */
+  flex: 1 1 auto;
+  
+  /* Force hardware acceleration */
+  transform: translateZ(0);
+  
+  /* Prevent text selection */
+  user-select: none;
+  
+  /* Magic number - matches design spec */
+  padding: 23px;
+}`}
+          />
+
+          <SyntaxBlock
+            title="4. TODO Comments (Reminders)"
+            code={`/* TODO: Optimize this for mobile */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* FIXME: Safari rendering issue - investigate */
+.card {
+  backdrop-filter: blur(10px);
+}
+
+/* NOTE: Don't change this - it breaks the layout */
+.sidebar {
+  width: 250px;
+}`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Documentation Best Practices */}
+      <SectionCard
+        title="Documentation Best Practices"
+        description="How to write good CSS comments"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ DO: Good Comments</h4>
+              <div className="space-y-3 text-sm">
+                <div className="p-3 bg-white dark:bg-green-900/20 rounded">
+                  <p className="font-semibold mb-1">Explain WHY</p>
+                  <code className="text-xs">/* Z-index: 1000 to appear above modal */</code>
+                </div>
+                <div className="p-3 bg-white dark:bg-green-900/20 rounded">
+                  <p className="font-semibold mb-1">Document Hacks</p>
+                  <code className="text-xs">/* IE11 flexbox fix */</code>
+                </div>
+                <div className="p-3 bg-white dark:bg-green-900/20 rounded">
+                  <p className="font-semibold mb-1">Section Headers</p>
+                  <code className="text-xs">/* === HEADER SECTION === */</code>
+                </div>
+                <div className="p-3 bg-white dark:bg-green-900/20 rounded">
+                  <p className="font-semibold mb-1">Warnings</p>
+                  <code className="text-xs">/* WARNING: Don't modify */</code>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-              <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-2">Component Documentation</h4>
-              <pre className="text-sm overflow-x-auto text-gray-800 dark:text-gray-200"><code>{`/**
- * Component: Button
- * @usage <button class="btn btn--primary">Click</button>
- * @dependencies Requires base button styles
- * @notes Available in 3 sizes: small, medium, large
- */`}</code></pre>
-            </div>
-
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-              <h4 className="font-bold text-green-700 dark:text-green-300 mb-2">Inline Comments</h4>
-              <pre className="text-sm overflow-x-auto text-gray-800 dark:text-gray-200"><code>{`/* TODO: Add animation on hover */
-/* FIXME: Review mobile spacing */
-/* NOTE: This is a temporary workaround */`}</code></pre>
+            <div className="p-5 border-2 border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-950/20">
+              <h4 className="font-semibold text-red-900 dark:text-red-100 mb-3">❌ DON'T: Bad Comments</h4>
+              <div className="space-y-3 text-sm">
+                <div className="p-3 bg-white dark:bg-red-900/20 rounded">
+                  <p className="font-semibold mb-1">State the Obvious</p>
+                  <code className="text-xs">/* Make text blue */ color: blue;</code>
+                </div>
+                <div className="p-3 bg-white dark:bg-red-900/20 rounded">
+                  <p className="font-semibold mb-1">Redundant Comments</p>
+                  <code className="text-xs">/* Set padding to 10px */ padding: 10px;</code>
+                </div>
+                <div className="p-3 bg-white dark:bg-red-900/20 rounded">
+                  <p className="font-semibold mb-1">Outdated Comments</p>
+                  <code className="text-xs">/* Works in all browsers */ -webkit-transform: ...</code>
+                </div>
+                <div className="p-3 bg-white dark:bg-red-900/20 rounded">
+                  <p className="font-semibold mb-1">Commented-Out Code</p>
+                  <code className="text-xs">/* .old-style &#123; ... &#125; */</code>
+                </div>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Be concise</strong> - Write clear, brief comments</li>
-            <li><strong>Explain why</strong> - Not just what the code does</li>
-            <li><strong>Keep updated</strong> - Update docs when code changes</li>
-            <li><strong>Use standards</strong> - Follow team conventions</li>
-            <li><strong>Document gotchas</strong> - Explain workarounds and hacks</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
-        <Info className="h-4 w-4 text-purple-600" />
-        <AlertTitle className="text-purple-900 dark:text-purple-100">Documentation Tools</AlertTitle>
-        <AlertDescription className="text-purple-800 dark:text-purple-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>📖 Storybook:</strong> Component documentation and testing</div>
-            <div><strong>📝 Styleguidist:</strong> Living style guide generator</div>
-            <div><strong>🎨 KSS:</strong> CSS documentation generator</div>
-            <div><strong>📚 Docz:</strong> Documentation powered by MDX</div>
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-3 text-blue-900 dark:text-blue-100">Golden Rules for CSS Comments</h4>
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li>✓ Explain WHY, not WHAT (code shows what it does)</li>
+              <li>✓ Document browser hacks and workarounds</li>
+              <li>✓ Use section headers for major components</li>
+              <li>✓ Keep comments up to date with code changes</li>
+              <li>✓ Delete outdated or commented-out code</li>
+              <li>✓ Be concise but clear</li>
+            </ul>
           </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+        </div>
+      </SectionCard>
+
+      {/* File Organization & TOC */}
+      <SectionCard
+        title="File Organization with TOC"
+        description="Table of Contents for large CSS files"
+        icon={Layers}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="CSS File with Table of Contents"
+            code={`/**
+ * ================================================
+ * MAIN STYLESHEET
+ * ================================================
+ * 
+ * Table of Contents:
+ * 
+ * 1. CSS Variables
+ * 2. Reset & Base Styles
+ * 3. Typography
+ * 4. Layout
+ *    4.1 Header
+ *    4.2 Navigation
+ *    4.3 Main Content
+ *    4.4 Sidebar
+ *    4.5 Footer
+ * 5. Components
+ *    5.1 Buttons
+ *    5.2 Cards
+ *    5.3 Forms
+ *    5.4 Modals
+ * 6. Utilities
+ * 7. Media Queries
+ * 
+ * ================================================
+ */
+
+
+/* ================================================
+   1. CSS VARIABLES
+   ================================================ */
+
+:root {
+  --color-primary: #3b82f6;
+  --color-secondary: #6b7280;
+  --spacing-unit: 8px;
+}
+
+
+/* ================================================
+   2. RESET & BASE STYLES
+   ================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When Documentation is Essential"
+        description="Critical scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Team Projects"
+            description="Multiple developers need to understand code"
+            icon={Layers}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Large Codebases"
+            description="Thousands of lines of CSS to maintain"
+            icon={FileText}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Complex Layouts"
+            description="Intricate CSS that needs explanation"
+            icon={Sparkles}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Long-Term Projects"
+            description="Code maintained for years"
+            icon={CheckCircle}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="CSS Documentation Checklist">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Section Headers:</strong> Use clear headers for major components and sections</li>
+          <li><strong>Explain Complex CSS:</strong> Document tricky solutions and why they're needed</li>
+          <li><strong>Browser Hacks:</strong> Always note browser-specific workarounds</li>
+          <li><strong>Magic Numbers:</strong> Explain why specific values are used</li>
+          <li><strong>TOC for Large Files:</strong> Add table of contents if file is 500+ lines</li>
+          <li><strong>Update Comments:</strong> Keep documentation in sync with code changes</li>
+          <li><strong>Remove Old Code:</strong> Delete commented-out CSS - use version control instead</li>
+          <li><strong>Be Concise:</strong> Write clear, brief comments - avoid essays</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools */}
+      <InfoAlert type="info" title="Documentation Tools">
+        <div className="mt-2 space-y-2">
+          <p><strong>StyleDocco:</strong> Generates style guides from CSS comments</p>
+          <p><strong>KSS:</strong> Living style guide methodology</p>
+          <p><strong>Storybook:</strong> Component explorer with documentation</p>
+          <p><strong>Pattern Lab:</strong> Creates pattern libraries from code</p>
+        </div>
+      </InfoAlert>
+
+    </CssTopicLayout>
   );
 }

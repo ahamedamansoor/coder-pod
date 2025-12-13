@@ -735,7 +735,7 @@ export default function CssStackingContext({ onOpenWebPlayground }: CssStackingC
           <FrontendCodePreview
             html={zIndexBasicsExample}
             title="Z-Index Demo"
-            colorTheme="violet"
+            colorTheme="purple"
             onOpenWebPlayground={onOpenWebPlayground}
           />
           
@@ -822,7 +822,7 @@ export default function CssStackingContext({ onOpenWebPlayground }: CssStackingC
           <FrontendCodePreview
             html={interactiveStackingExample}
             title="Interactive Demo"
-            colorTheme="violet"
+            colorTheme="purple"
             onOpenWebPlayground={onOpenWebPlayground}
           />
         </CardContent>

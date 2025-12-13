@@ -1,724 +1,545 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { Puzzle, Sparkles, CheckCircle, Code, Zap, Package, Box, Component } from 'lucide-react';
+'use client';
+
+import React from 'react';
+import { Puzzle, Box, Sparkles, Target, Layers, CheckCircle } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssModularityProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssModularity({ onOpenWebPlayground }: CssModularityProps) {
-    
-    return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
-                icon={Puzzle}
-                category="CSS · Architecture"
-                title="CSS Modularity"
-                description="Build reusable, maintainable, and scalable CSS with modular component-based architecture"
-                colorTheme="purple"
-            />
-
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-purple-600 dark:text-purple-400">
-                        <div className="relative">
-                            <Puzzle className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full animate-ping"></div>
-                        </div>
-                        What is CSS Modularity?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-                        🧩 Breaking CSS into independent, reusable modules that can be composed to build complete interfaces!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-purple-400 dark:hover:border-purple-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Box className="w-5 h-5 animate-pulse" />
-                                    🎯 Modular Approach
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">Modular CSS</strong> means organizing styles into self-contained, reusable components. Each module is independent, predictable, and can be combined with others without conflicts. This approach improves maintainability and scalability.
-                                </p>
-
-                                {/* Visual */}
-                                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg border border-purple-200/50">
-                                    <div className="text-sm font-semibold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        🧱 Modular Structure
-                                    </div>
-                                    <div className="text-xs text-purple-600 dark:text-purple-400">
-                                        Component = Styles + Structure + Behavior (isolated & reusable)
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    ✨ Modularity Benefits
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Package className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Reusable</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Use anywhere</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <CheckCircle className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Isolated</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">No conflicts</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Zap className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Scalable</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Grows easily</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-                                        <Component className="w-6 h-6 text-purple-500" />
-                                        <div>
-                                            <div className="font-semibold text-purple-700 dark:text-purple-300 text-sm">Composable</div>
-                                            <div className="text-xs text-purple-600 dark:text-purple-400">Mix & match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-indigo-100 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">🧩</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Modular CSS</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Easy to maintain
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Team-friendly
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Predictable
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Think of CSS modules like LEGO blocks - small, focused, and infinitely combinable!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Modular CSS Structure</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">{'/* Base Module */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-blue-600 dark:text-blue-400">.button</span> {'{ ... }'}</div>
-                            <div className="text-gray-500 mt-2">{'/* Variant Modules */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-green-600 dark:text-green-400">.button--primary</span> {'{ ... }'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-purple-600 dark:text-purple-400">.button--secondary</span> {'{ ... }'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* CSS MODULES */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Package className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                        CSS Modules - Scoped Styles
-                    </CardTitle>
-                    <CardDescription>
-                        Automatically scoped CSS with unique class names per component
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="CSS Modules Example"
-                        html={`<!-- Button.module.css is imported -->
-<div class="container">
-  <button class="btn btn-primary">
-    Primary Button
-  </button>
   
-  <button class="btn btn-secondary">
-    Secondary Button
-  </button>
+  return (
+    <CssTopicLayout
+      icon={Puzzle}
+      title="CSS Modularity"
+      description="Break your CSS into reusable, maintainable pieces"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is CSS Modularity?",
+        description: "Organizing CSS into small, independent, reusable modules instead of one giant stylesheet",
+        keyPoints: [
+          "Break CSS into smaller, focused files",
+          "Each module does one thing well",
+          "Reuse modules across projects",
+          "Easy to find and update styles",
+          "Prevents CSS from becoming messy",
+          "Essential for large projects"
+        ]
+      }}
+    >
+
+      {/* The Problem */}
+      <InfoAlert type="warning" title="The Problem Without Modularity">
+        Imagine a single 5,000-line CSS file with everything mixed together: buttons, forms, navigation, colors, typography... 
+        Finding anything is a nightmare, changing one thing breaks another, and nobody wants to touch it! 
+        <strong> Modularity fixes this by breaking CSS into logical, manageable pieces.</strong>
+      </InfoAlert>
+
+      {/* Core Principles */}
+      <SectionCard
+        title="Core Principles of Modular CSS"
+        description="What makes CSS modular"
+        icon={CheckCircle}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "📦 Single Responsibility",
+              description: "Each module handles one thing",
+              example: "buttons.css only contains button styles"
+            },
+            {
+              title: "🔄 Reusable",
+              description: "Use the same module anywhere",
+              example: "card.css works on any page"
+            },
+            {
+              title: "🎯 Independent",
+              description: "Modules don't depend on each other",
+              example: "Changing buttons doesn't break forms"
+            },
+            {
+              title: "📝 Self-Contained",
+              description: "Everything for one component in one file",
+              example: "modal.css has all modal styles"
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* File Organization */}
+      <SectionCard
+        title="How to Organize Modular CSS"
+        description="Common file structures"
+        icon={Layers}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">Option 1: Component-Based Structure</h4>
+            <div className="font-mono text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <div>📁 styles/</div>
+              <div className="ml-4">📁 components/</div>
+              <div className="ml-8">📄 button.css</div>
+              <div className="ml-8">📄 card.css</div>
+              <div className="ml-8">📄 modal.css</div>
+              <div className="ml-8">📄 form.css</div>
+              <div className="ml-4">📁 layout/</div>
+              <div className="ml-8">📄 header.css</div>
+              <div className="ml-8">📄 footer.css</div>
+              <div className="ml-8">📄 grid.css</div>
+              <div className="ml-4">📁 base/</div>
+              <div className="ml-8">📄 reset.css</div>
+              <div className="ml-8">📄 typography.css</div>
+              <div className="ml-8">📄 colors.css</div>
+              <div className="ml-4">📄 main.css (imports all)</div>
+            </div>
+          </div>
+
+          <div className="p-5 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl border-2 border-green-200 dark:border-green-800">
+            <h4 className="text-lg font-semibold mb-4 text-green-900 dark:text-green-100">Option 2: ITCSS (Inverted Triangle)</h4>
+            <div className="font-mono text-sm space-y-1 text-gray-700 dark:text-gray-300">
+              <div>📁 styles/</div>
+              <div className="ml-4">📄 1-settings.css (variables)</div>
+              <div className="ml-4">📄 2-tools.css (mixins)</div>
+              <div className="ml-4">📄 3-generic.css (reset)</div>
+              <div className="ml-4">📄 4-elements.css (h1, p, a)</div>
+              <div className="ml-4">📄 5-objects.css (layout patterns)</div>
+              <div className="ml-4">📄 6-components.css (UI components)</div>
+              <div className="ml-4">📄 7-utilities.css (helpers)</div>
+            </div>
+          </div>
+
+          <SyntaxBlock
+            title="Main CSS File (Imports All Modules)"
+            code={`/* main.css - Import order matters! */
+
+/* Base styles first */
+@import './base/reset.css';
+@import './base/typography.css';
+@import './base/colors.css';
+
+/* Layout styles */
+@import './layout/grid.css';
+@import './layout/header.css';
+@import './layout/footer.css';
+
+/* Components */
+@import './components/button.css';
+@import './components/card.css';
+@import './components/form.css';
+@import './components/modal.css';
+
+/* Utilities last (highest specificity) */
+@import './utilities/spacing.css';
+@import './utilities/text.css';`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Example: Button Module */}
+      <SectionCard
+        title="Example: Button Module"
+        description="Complete, self-contained button styles"
+        icon={Box}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="components/button.css"
+            code={`/* Button Module - All button styles in one file */
+
+/* Base button */
+.button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Button sizes */
+.button--small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.button--large {
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+/* Button colors */
+.button--primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.button--primary:hover {
+  background: #2563eb;
+}
+
+.button--secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.button--secondary:hover {
+  background: #4b5563;
+}
+
+.button--success {
+  background: #10b981;
+  color: white;
+}
+
+.button--success:hover {
+  background: #059669;
+}
+
+/* Button states */
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--loading {
+  position: relative;
+  color: transparent;
+}
+
+.button--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}`}
+          />
+
+          <FrontendCodePreview
+            html={`<div class="demo">
+  <h2>Button Module in Action</h2>
   
-  <button class="btn btn-outline">
-    Outline Button
-  </button>
+  <div class="section">
+    <h3>Primary Buttons</h3>
+    <button class="button button--primary">Default</button>
+    <button class="button button--primary button--small">Small</button>
+    <button class="button button--primary button--large">Large</button>
+  </div>
   
-  <div class="card">
-    <h3 class="card-title">Module Styles</h3>
-    <p class="card-text">
-      CSS Modules automatically generate unique class names like 
-      <code>Button_btn__abc123</code> preventing style conflicts.
-    </p>
+  <div class="section">
+    <h3>Button Colors</h3>
+    <button class="button button--primary">Primary</button>
+    <button class="button button--secondary">Secondary</button>
+    <button class="button button--success">Success</button>
+  </div>
+  
+  <div class="section">
+    <h3>Button States</h3>
+    <button class="button button--primary">Normal</button>
+    <button class="button button--primary" disabled>Disabled</button>
+    <button class="button button--primary button--loading">Loading</button>
   </div>
 </div>`}
-                        css={`/* Button.module.css - Scoped to this component */
-.container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
+            css={`body {
+  padding: 40px;
   font-family: system-ui, sans-serif;
 }
 
-/* Base button module */
-.btn {
-  padding: 12px 24px;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 16px;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Button variant modules */
-.btn-primary {
-  background: #6366f1;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #4f46e5;
-}
-
-.btn-secondary {
-  background: #8b5cf6;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #7c3aed;
-}
-
-.btn-outline {
-  background: transparent;
-  border-color: #6366f1;
-  color: #6366f1;
-}
-
-.btn-outline:hover {
-  background: #6366f1;
-  color: white;
-}
-
-/* Card module */
-.card {
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  margin-top: 24px;
-}
-
-.card-title {
+.demo h2 {
+  margin: 0 0 24px 0;
   color: #1f2937;
-  font-size: 20px;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.section h3 {
   margin: 0 0 12px 0;
-}
-
-.card-text {
-  color: #6b7280;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.card-text code {
-  background: #f3f4f6;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: monospace;
-  color: #6366f1;
-  font-size: 14px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .container {
-    background: #0f172a;
-  }
-  
-  .card {
-    background: #1e293b;
-    border-color: #334155;
-  }
-  
-  .card-title {
-    color: #f1f5f9;
-  }
-  
-  .card-text {
-    color: #cbd5e1;
-  }
-  
-  .card-text code {
-    background: #334155;
-    color: #a78bfa;
-  }
-  
-  .btn-outline {
-    border-color: #818cf8;
-    color: #818cf8;
-  }
-  
-  .btn-outline:hover {
-    background: #818cf8;
-    color: white;
-  }
-}`}
-                        colorTheme="indigo"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* COMPONENT-BASED CSS */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Component className="w-5 h-5 text-pink-600 dark:text-pink-400" />
-                        Component-Based Architecture
-                    </CardTitle>
-                    <CardDescription>
-                        Organizing CSS around reusable UI components
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Component-Based CSS"
-                        html={`<div class="app">
-  <!-- Alert Component -->
-  <div class="alert alert--success">
-    <div class="alert__icon">✓</div>
-    <div class="alert__content">
-      <h4 class="alert__title">Success!</h4>
-      <p class="alert__message">Your changes have been saved.</p>
-    </div>
-  </div>
-  
-  <!-- Alert Component (Different Variant) -->
-  <div class="alert alert--warning">
-    <div class="alert__icon">⚠</div>
-    <div class="alert__content">
-      <h4 class="alert__title">Warning</h4>
-      <p class="alert__message">Please review your settings.</p>
-    </div>
-  </div>
-  
-  <!-- Alert Component (Error Variant) -->
-  <div class="alert alert--error">
-    <div class="alert__icon">✗</div>
-    <div class="alert__content">
-      <h4 class="alert__title">Error</h4>
-      <p class="alert__message">Something went wrong.</p>
-    </div>
-  </div>
-</div>`}
-                        css={`.app {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* Alert Component - Base */
-.alert {
-  display: flex;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 8px;
-  border: 2px solid;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Alert Elements */
-.alert__icon {
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.alert__content {
-  flex: 1;
-}
-
-.alert__title {
+  color: #4b5563;
   font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px 0;
 }
 
-.alert__message {
-  font-size: 14px;
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* Alert Variants/Modifiers */
-.alert--success {
-  background: #d1fae5;
-  border-color: #6ee7b7;
-}
-
-.alert--success .alert__icon {
-  color: #059669;
-}
-
-.alert--success .alert__title {
-  color: #065f46;
-}
-
-.alert--success .alert__message {
-  color: #047857;
-}
-
-.alert--warning {
-  background: #fef3c7;
-  border-color: #fcd34d;
-}
-
-.alert--warning .alert__icon {
-  color: #d97706;
-}
-
-.alert--warning .alert__title {
-  color: #92400e;
-}
-
-.alert--warning .alert__message {
-  color: #b45309;
-}
-
-.alert--error {
-  background: #fee2e2;
-  border-color: #fca5a5;
-}
-
-.alert--error .alert__icon {
-  color: #dc2626;
-}
-
-.alert--error .alert__title {
-  color: #991b1b;
-}
-
-.alert--error .alert__message {
-  color: #b91c1c;
-}
-
-@media (prefers-color-scheme: dark) {
-  .app {
-    background: #0f172a;
-  }
-  
-  .alert--success {
-    background: #064e3b;
-    border-color: #059669;
-  }
-  
-  .alert--success .alert__title,
-  .alert--success .alert__message {
-    color: #d1fae5;
-  }
-  
-  .alert--warning {
-    background: #78350f;
-    border-color: #f59e0b;
-  }
-  
-  .alert--warning .alert__title,
-  .alert--warning .alert__message {
-    color: #fef3c7;
-  }
-  
-  .alert--error {
-    background: #7f1d1d;
-    border-color: #dc2626;
-  }
-  
-  .alert--error .alert__title,
-  .alert--error .alert__message {
-    color: #fee2e2;
-  }
-}`}
-                        colorTheme="pink"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* BEST PRACTICES */}
-            <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                        <Sparkles className="w-5 h-5" />
-                        Modularity Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Single Responsibility:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Each module should do one thing well - keep components focused and reusable.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Avoid global styles:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Keep styles scoped to components to prevent unwanted cascading and conflicts.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Use composition:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Build complex UIs by combining simple, reusable modules rather than creating monolithic components.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-purple-900 dark:text-purple-200">Document dependencies:</strong>
-                            <span className="text-purple-700 dark:text-purple-300"> Clearly document which modules depend on others for easier maintenance.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* BROWSER SUPPORT */}
-            <Alert className="border-purple-200 bg-purple-50 dark:bg-purple-950/20">
-                <CheckCircle className="h-4 w-4 text-purple-600" />
-                <AlertDescription className="text-purple-700 dark:text-purple-300">
-                    <strong className="block mb-1">Universal Approach</strong>
-                    Modularity is an organizational pattern that works with any CSS. Tools like CSS Modules require build tools but the modular approach itself is universally applicable!
-                </AlertDescription>
-            </Alert>
-
-            {/* INTERACTIVE PLAYGROUND */}
-            {onOpenWebPlayground && (
-                <InteractivePlayground
-                    title="🧩 Try CSS Modularity"
-                    description="Build modular, reusable components with scoped styles and see them in action"
-                    features={[
-                        'Scoped Styles',
-                        'Component Isolation',
-                        'Live Preview',
-                        'Modular Architecture'
-                    ]}
-                    buttonText="Open Modularity Playground"
-                    onLaunchPlayground={onOpenWebPlayground}
-                    playgroundData={{
-                        html: `<div class="app">
-  <!-- Alert Component Module -->
-  <div class="alert alert--success">
-    <div class="alert__icon">✓</div>
-    <div class="alert__content">
-      <h4 class="alert__title">Success!</h4>
-      <p class="alert__message">Your component is modular and reusable.</p>
-    </div>
-  </div>
-  
-  <div class="alert alert--warning">
-    <div class="alert__icon">⚠</div>
-    <div class="alert__content">
-      <h4 class="alert__title">Warning</h4>
-      <p class="alert__message">This component is self-contained.</p>
-    </div>
-  </div>
-  
-  <div class="alert alert--error">
-    <div class="alert__icon">✗</div>
-    <div class="alert__content">
-      <h4 class="alert__title">Error</h4>
-      <p class="alert__message">Modular styles prevent conflicts.</p>
-    </div>
-  </div>
-  
-  <!-- Button Module -->
-  <div class="button-group">
-    <button class="btn btn--primary btn--sm">Small</button>
-    <button class="btn btn--primary btn--md">Medium</button>
-    <button class="btn btn--secondary btn--lg">Large</button>
-  </div>
-</div>`,
-                        css: `.app {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* Alert Module - Base */
-.alert {
-  display: flex;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 8px;
-  border: 2px solid;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.alert__icon {
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.alert__content {
-  flex: 1;
-}
-
-.alert__title {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px 0;
-}
-
-.alert__message {
-  font-size: 14px;
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* Alert Variants */
-.alert--success {
-  background: #d1fae5;
-  border-color: #6ee7b7;
-}
-
-.alert--success .alert__icon { color: #059669; }
-.alert--success .alert__title { color: #065f46; }
-.alert--success .alert__message { color: #047857; }
-
-.alert--warning {
-  background: #fef3c7;
-  border-color: #fcd34d;
-}
-
-.alert--warning .alert__icon { color: #d97706; }
-.alert--warning .alert__title { color: #92400e; }
-.alert--warning .alert__message { color: #b45309; }
-
-.alert--error {
-  background: #fee2e2;
-  border-color: #fca5a5;
-}
-
-.alert--error .alert__icon { color: #dc2626; }
-.alert--error .alert__title { color: #991b1b; }
-.alert--error .alert__message { color: #b91c1c; }
-
-/* Button Module */
-.button-group {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.btn {
+/* Button Module Styles */
+.button {
+  display: inline-block;
   padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
+  margin-right: 12px;
+  font-size: 16px;
   font-weight: 600;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+.button--small {
+  padding: 8px 16px;
+  font-size: 14px;
 }
 
-.btn--primary {
-  background: #6366f1;
+.button--large {
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+.button--primary {
+  background: #3b82f6;
   color: white;
 }
 
-.btn--secondary {
-  background: #8b5cf6;
+.button--primary:hover {
+  background: #2563eb;
+}
+
+.button--secondary {
+  background: #6b7280;
   color: white;
 }
 
-.btn--sm { padding: 8px 16px; font-size: 14px; }
-.btn--md { padding: 12px 24px; font-size: 16px; }
-.btn--lg { padding: 16px 32px; font-size: 18px; }`,
-                        js: ''
-                    }}
-                    colorTheme="purple"
-                />
-            )}
+.button--secondary:hover {
+  background: #4b5563;
+}
+
+.button--success {
+  background: #10b981;
+  color: white;
+}
+
+.button--success:hover {
+  background: #059669;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--loading {
+  position: relative;
+  color: transparent;
+}
+
+.button--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1f2937;
+  }
+  
+  .demo h2 {
+    color: #f3f4f6;
+  }
+  
+  .section h3 {
+    color: #9ca3af;
+  }
+}`}
+            title="Button Module Example"
+            colorTheme="blue"
+            onOpenPlayground={onOpenWebPlayground}
+          />
         </div>
-    );
+      </SectionCard>
+
+      {/* Benefits */}
+      <SectionCard
+        title="Benefits of Modular CSS"
+        description="Why break CSS into modules"
+        icon={Sparkles}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+              ✅ Easy to Find
+            </h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Need to change button styles? Go straight to <code>button.css</code>. 
+              No hunting through a 5,000-line file!
+            </p>
+          </div>
+
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+              ✅ Easy to Reuse
+            </h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Need buttons on a new project? Copy <code>button.css</code> and you're done. 
+              No copying half a stylesheet!
+            </p>
+          </div>
+
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+              ✅ Safe to Change
+            </h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Updating <code>card.css</code> won't accidentally break your buttons. 
+              Each module is independent!
+            </p>
+          </div>
+
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+              ✅ Team Friendly
+            </h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Multiple developers can work on different modules without conflicts. 
+              No more merge nightmares!
+            </p>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <SectionCard
+        title="Modular CSS Best Practices"
+        description="How to do it right"
+        icon={Target}
+      >
+        <div className="space-y-4">
+          <div className="p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">1. One Component = One File</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Each UI component should have its own CSS file. Don't mix button and card styles in one file.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">2. Keep Modules Small</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              If a module gets too big (&gt;200 lines), split it into smaller modules. Break <code>form.css</code> into 
+              <code>input.css</code>, <code>select.css</code>, <code>checkbox.css</code>.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-950/20">
+            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">3. Use Clear Names</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Name files after what they style: <code>button.css</code>, <code>navigation.css</code>, <code>modal.css</code>. 
+              Not <code>styles2.css</code> or <code>new-css.css</code>.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
+            <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">4. Import Order Matters</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Always import in this order: Reset → Base → Layout → Components → Utilities. 
+              This prevents specificity issues.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-pink-500 bg-pink-50 dark:bg-pink-950/20">
+            <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-2">5. Document Your Modules</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Add comments at the top of each module explaining what it does and how to use it. 
+              Your future self will thank you!
+            </p>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Use Modular CSS"
+        description="Common scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Component Libraries"
+            description="Building reusable UI components"
+            icon={Box}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Large Projects"
+            description="Websites with hundreds of pages"
+            icon={Layers}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Team Projects"
+            description="Multiple developers working together"
+            icon={CheckCircle}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Design Systems"
+            description="Consistent UI across products"
+            icon={Sparkles}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Common Mistakes */}
+      <InfoAlert type="warning" title="Common Modular CSS Mistakes">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>❌ Too Many Small Files:</strong> Don't create 100 tiny files. Group related styles (all form inputs in one file)</li>
+          <li><strong>❌ Mixing Concerns:</strong> Don't put typography in <code>button.css</code> - keep each module focused</li>
+          <li><strong>❌ Deep Dependencies:</strong> Modules shouldn't depend on each other. <code>button.css</code> shouldn't need <code>card.css</code></li>
+          <li><strong>❌ No Naming Convention:</strong> Use consistent naming (BEM, OOCSS) across all modules</li>
+          <li><strong>❌ Ignoring Import Order:</strong> Wrong order causes specificity battles and unexpected styles</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools */}
+      <InfoAlert type="info" title="Tools for Modular CSS">
+        <div className="mt-2 space-y-2">
+          <p><strong>CSS Preprocessors:</strong> Sass, Less, PostCSS make imports and organization easier</p>
+          <p><strong>CSS Modules:</strong> React/Vue/Angular can scope CSS to components automatically</p>
+          <p><strong>Build Tools:</strong> Webpack, Vite, Parcel bundle multiple CSS files into one</p>
+          <p><strong>Frameworks:</strong> Bootstrap, Tailwind, Material UI are examples of modular CSS</p>
+        </div>
+      </InfoAlert>
+
+    </CssTopicLayout>
+  );
 }

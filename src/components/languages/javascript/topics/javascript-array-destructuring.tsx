@@ -2,453 +2,677 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   SplitSquareHorizontal,
   Sparkles,
-  Columns,
-  Layers,
   Lightbulb,
   CheckCircle2,
   XCircle,
   Shuffle,
-  ArrowRightLeft,
-  ListChecks,
   Package,
+  ArrowRightLeft,
 } from 'lucide-react';
 
 export default function JavaScriptArrayDestructuring() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={SplitSquareHorizontal}
-        category="JavaScript · Arrays"
+        category="JavaScript Fundamentals"
         title="Array Destructuring"
-        description="Unpack array elements directly into variables for cleaner, beginner-friendly code."
-        colorTheme="blue"
+        description="Unpack array values into variables - a cleaner way to extract data"
+        colorTheme="yellow"
       />
 
-      {/* All Patterns Reference */}
-      <Card className="bg-gradient-to-br from-indigo-50/70 via-purple-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:via-purple-950/10 dark:to-blue-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListChecks className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            All Destructuring Patterns
-          </CardTitle>
-          <CardDescription className="text-base">
-            10+ essential patterns to unpack arrays efficiently
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-4 gap-3">
-          <div className="p-3 rounded-lg bg-blue-50/80 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/30">
-            <h4 className="font-semibold text-sm text-blue-700 dark:text-blue-300 mb-2">Basic</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Position matching</div>
-              <div>• Default values</div>
-              <div>• Skip elements</div>
+      {/* What is Array Destructuring */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What is Array Destructuring?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Array destructuring is a <strong className="text-yellow-700 dark:text-yellow-400">shortcut</strong> to extract values from arrays and assign them to variables. Instead of <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-sm">arr[0]</code>, <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-sm">arr[1]</code>, you can unpack them all at once!
+              </p>
             </div>
           </div>
-          <div className="p-3 rounded-lg bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/30">
-            <h4 className="font-semibold text-sm text-emerald-700 dark:text-emerald-300 mb-2">Advanced</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Rest operator</div>
-              <div>• Nested arrays</div>
-              <div>• Value swapping</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-lg bg-purple-50/80 dark:bg-purple-950/20 border border-purple-200/50 dark:border-purple-800/30">
-            <h4 className="font-semibold text-sm text-purple-700 dark:text-purple-300 mb-2">Function</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Parameter destructuring</div>
-              <div>• Return value destructuring</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-lg bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
-            <h4 className="font-semibold text-sm text-amber-700 dark:text-amber-300 mb-2">Real-World</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• React hooks</div>
-              <div>• API responses</div>
-              <div>• Coordinates</div>
-            </div>
-          </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Analogy</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Like unpacking a suitcase - instead of taking items out one by one (<code className="px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-xs">arr[0]</code>, <code className="px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-xs">arr[1]</code>), you lay them all out at once with labels!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-indigo-50/70 via-sky-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:via-sky-950/10 dark:to-blue-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Why Array Destructuring Matters
-          </CardTitle>
-          <CardDescription className="text-base">
-            Unpack array values directly into variables for cleaner, more readable code.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-indigo-500" />
-              <h3 className="font-semibold">Cleaner syntax</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Replace arr[0], arr[1] with meaningful variable names.</p>
-            <Badge className="bg-indigo-100/80 text-indigo-700 border border-indigo-200/60">[x, y] = coords</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <ArrowRightLeft className="w-5 h-5 text-emerald-500" />
-              <h3 className="font-semibold">Value swapping</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Swap variables in one line without temp variables.</p>
-            <Badge className="bg-emerald-100/80 text-emerald-700 border border-emerald-200/60">[a, b] = [b, a]</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Package className="w-5 h-5 text-sky-500" />
-              <h3 className="font-semibold">Hook patterns</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Essential for React hooks and modern JS libraries.</p>
-            <Badge className="bg-sky-100/80 text-sky-700 border border-sky-200/60">useState</Badge>
-          </div>
-        </CardContent>
-      </Card>
-
+      {/* Basic Destructuring */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <SplitSquareHorizontal className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            What Is Array Destructuring?
-          </CardTitle>
-          <CardDescription className="text-base">
-            A syntax to extract array elements directly into variables based on position.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <pre 
-            className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-            style={{
-              fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-            }}
-          >
-{`// Traditional way
-const colors = ['red', 'green', 'blue'];
-const primary = colors[0];
-const secondary = colors[1];
-
-// Destructuring way
-const [primary, secondary] = colors;
-console.log(primary);   // "red"
-console.log(secondary); // "green"`}
-          </pre>
-          <p className="text-sm text-muted-foreground">
-            Destructuring matches variables to array positions left-to-right. Skip positions with commas, apply defaults, or collect remaining items with rest operator.
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Basic Patterns */}
-      <Card className="bg-gradient-to-br from-indigo-50/60 to-slate-50/60 dark:from-indigo-950/10 dark:to-slate-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Columns className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Basic Patterns
-          </CardTitle>
-          <CardDescription className="text-base">
-            Essential destructuring patterns you'll use every day
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Position Matching</h4>
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">Basic</Badge>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Package className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
-            <p className="text-xs text-muted-foreground">Extract values based on array position</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
+            <div>
+              <CardTitle>Basic Array Destructuring</CardTitle>
+              <CardDescription>Extract values by position</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Old Way vs New Way</h4>
+            </div>
+            <div className="p-6">
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-red-200 dark:border-red-800/30">
+                  <h5 className="font-semibold mb-3 text-red-600 dark:text-red-400">❌ Old Way (Tedious)</h5>
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
 {`const colors = ['red', 'green', 'blue'];
-const [primary, secondary, tertiary] = colors;
 
-console.log(primary);   // "red"
-console.log(secondary); // "green"
-console.log(tertiary);  // "blue"`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Default Values</h4>
-              <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Safe</Badge>
+const first = colors[0];
+const second = colors[1];
+const third = colors[2];`}</pre>
+                </div>
+
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                  <h5 className="font-semibold mb-3 text-green-600 dark:text-green-400">✅ New Way (Clean)</h5>
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const colors = ['red', 'green', 'blue'];
+
+const [first, second, third] = colors;
+// first = 'red'
+// second = 'green'
+// third = 'blue'`}</pre>
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Provide fallback values for missing elements</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const [x = 0, y = 0, z = 0] = [5, 10];
-
-console.log(x); // 5
-console.log(y); // 10
-console.log(z); // 0 (default)`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Skip Elements</h4>
-              <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">Selective</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground">Use commas to skip unwanted positions</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const [first, , third] = ['JS', 'TS', 'Rust'];
-
-console.log(first); // "JS"
-console.log(third); // "Rust"
-// TypeScript is skipped`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Rest Operator</h4>
-              <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">Collect</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground">Gather remaining elements into an array</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const [leader, ...followers] = ['Ada', 'Lin', 'Noor'];
-
-console.log(leader);     // "Ada"
-console.log(followers);  // ["Lin", "Noor"]`}
-            </pre>
           </div>
         </CardContent>
       </Card>
 
-      {/* Advanced Patterns */}
       <CodeSnippet
-        title="Advanced Pattern: Nested Arrays"
-        description="Destructure nested arrays for complex data structures"
-        code={`const user = ['Ada', 'Lovelace', ['Paris', 'FR', 75001]];
+        title="Basic Destructuring Examples"
+        description="Extracting values from arrays"
+        code={`// Simple destructuring
+const fruits = ['apple', 'banana', 'cherry'];
+const [first, second, third] = fruits;
 
-// Destructure nested array
-const [firstName, lastName, [city, country, postal]] = user;
+console.log(first);   // 'apple'
+console.log(second);  // 'banana'
+console.log(third);   // 'cherry'
 
-console.log(firstName); // "Ada"
-console.log(lastName);  // "Lovelace"
-console.log(city);      // "Paris"
-console.log(country);   // "FR"
-console.log(postal);    // 75001
+// You don't need to extract all values
+const numbers = [1, 2, 3, 4, 5];
+const [a, b] = numbers;  // Just get first two
 
-// Real-world example: Geographic coordinates
-const location = ['Eiffel Tower', [48.8584, 2.2945]];
-const [name, [latitude, longitude]] = location;
+console.log(a);  // 1
+console.log(b);  // 2
 
-console.log(name);      // "Eiffel Tower"
-console.log(latitude);  // 48.8584
-console.log(longitude); // 2.2945`}
+// Real-world: Coordinates
+const point = [10, 20];
+const [x, y] = point;
+
+console.log(\`X: \${x}, Y: \${y}\`);  // X: 10, Y: 20
+
+// Real-world: RGB colors
+const color = [255, 128, 0];
+const [red, green, blue] = color;
+
+console.log(\`RGB(\${red}, \${green}, \${blue})\`);
+// RGB(255, 128, 0)`}
         language="javascript"
-        colorTheme="purple"
-        icon={Layers}
+        colorTheme="yellow"
       />
 
-      <CodeSnippet
-        title="Practical Pattern: Value Swapping"
-        description="Swap variable values without a temporary variable"
-        code={`let a = 'left';
-let b = 'right';
+      {/* Skipping Elements */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <ArrowRightLeft className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Skipping Elements</CardTitle>
+              <CardDescription>Use commas to skip unwanted values</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Skip with Empty Commas</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Leave empty slots with commas to skip elements you don't need
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const colors = ['red', 'green', 'blue', 'yellow'];
 
-// Traditional swap (needs temp variable)
+// Skip green and blue, only get red and yellow
+const [first, , , fourth] = colors;
+
+console.log(first);   // 'red'
+console.log(fourth);  // 'yellow'`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Skipping Elements Examples"
+        description="Get only what you need"
+        code={`const data = ['Alice', 25, 'Engineer', 'New York', 'USA'];
+
+// Only want name and city
+const [name, , , city] = data;
+console.log(name);   // 'Alice'
+console.log(city);   // 'New York'
+
+// Real-world: Date components
+const date = [2024, 12, 25, 10, 30, 0];  // [year, month, day, hour, min, sec]
+
+// Only want year, month, day
+const [year, month, day] = date;
+console.log(\`\${year}-\${month}-\${day}\`);  // 2024-12-25
+
+// Skip to get only time
+const [, , , hour, minute, second] = date;
+console.log(\`\${hour}:\${minute}:\${second}\`);  // 10:30:0`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Default Values */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>Default Values</CardTitle>
+              <CardDescription>Provide fallback values if array is too short</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Safe Defaults</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use <code className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">=</code> to set default values in case elements are missing
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const colors = ['red'];
+
+// Without defaults
+const [first, second] = colors;
+console.log(second);  // undefined
+
+// With defaults
+const [a, b = 'green'] = colors;
+console.log(b);  // 'green'`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Default Values Examples"
+        description="Handling missing array elements"
+        code={`// Array might be incomplete
+const user = ['Alice', 25];
+
+// Set default values
+const [name, age, role = 'User'] = user;
+
+console.log(name);  // 'Alice'
+console.log(age);   // 25
+console.log(role);  // 'User' (default)
+
+// With complete data, defaults are ignored
+const admin = ['Bob', 30, 'Admin'];
+const [n, a, r = 'User'] = admin;
+
+console.log(r);  // 'Admin' (from array, not default)
+
+// Real-world: API response
+const apiResponse = ['Success'];
+const [status, message = 'No message', code = 200] = apiResponse;
+
+console.log(status);   // 'Success'
+console.log(message);  // 'No message' (default)
+console.log(code);     // 200 (default)
+
+// Function that returns array
+function getConfig() {
+  return ['dark'];  // Only returns theme
+}
+
+const [theme = 'light', language = 'en'] = getConfig();
+console.log(theme);     // 'dark'
+console.log(language);  // 'en' (default)`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Rest Operator */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <Package className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>Rest Operator (...)</CardTitle>
+              <CardDescription>Collect remaining elements into a new array</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Collect the Rest</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use <code className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 rounded text-xs">...</code> to gather remaining elements (must be last!)
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const numbers = [1, 2, 3, 4, 5];
+
+const [first, second, ...rest] = numbers;
+
+console.log(first);   // 1
+console.log(second);  // 2
+console.log(rest);    // [3, 4, 5]`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Rest Operator Examples"
+        description="Gathering remaining elements"
+        code={`const colors = ['red', 'green', 'blue', 'yellow', 'purple'];
+
+// Get first color and rest
+const [primary, ...others] = colors;
+console.log(primary);  // 'red'
+console.log(others);   // ['green', 'blue', 'yellow', 'purple']
+
+// Get first two and rest
+const [first, second, ...remaining] = colors;
+console.log(first);      // 'red'
+console.log(second);     // 'green'
+console.log(remaining);  // ['blue', 'yellow', 'purple']
+
+// Real-world: Head and tail
+const numbers = [10, 20, 30, 40, 50];
+const [head, ...tail] = numbers;
+
+console.log('Head:', head);  // Head: 10
+console.log('Tail:', tail);  // Tail: [20, 30, 40, 50]
+
+// Real-world: Extract first item from list
+const tasks = ['Buy milk', 'Clean room', 'Study JavaScript'];
+const [nextTask, ...remainingTasks] = tasks;
+
+console.log('Do next:', nextTask);
+// Do next: Buy milk
+
+console.log('Later:', remainingTasks);
+// Later: ['Clean room', 'Study JavaScript']
+
+// If array is empty, rest is empty array
+const empty = [];
+const [a, ...b] = empty;
+console.log(a);  // undefined
+console.log(b);  // []`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Swapping Variables */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Shuffle className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Swapping Variables</CardTitle>
+              <CardDescription>Swap values without a temporary variable</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Elegant Swap</h4>
+            </div>
+            <div className="p-6">
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-red-200 dark:border-red-800/30">
+                  <h5 className="font-semibold mb-3 text-red-600 dark:text-red-400">❌ Old Way</h5>
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`let a = 1;
+let b = 2;
+
+// Need temp variable
 let temp = a;
 a = b;
-b = temp;
+b = temp;`}</pre>
+                </div>
 
-// Destructuring swap (one line!)
-[a, b] = [b, a];
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                  <h5 className="font-semibold mb-3 text-green-600 dark:text-green-400">✅ New Way</h5>
+                  <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`let a = 1;
+let b = 2;
 
-console.log(a); // "right"
-console.log(b); // "left"
+// One line swap!
+[a, b] = [b, a];`}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-// Real-world: Sorting algorithm helper
-let arr = [5, 2, 8, 1];
-if (arr[0] > arr[1]) {
-  [arr[0], arr[1]] = [arr[1], arr[0]];
+      <CodeSnippet
+        title="Swapping Variables Examples"
+        description="Quick variable swaps"
+        code={`// Simple swap
+let x = 10;
+let y = 20;
+
+console.log(\`Before: x=\${x}, y=\${y}\`);  // Before: x=10, y=20
+
+[x, y] = [y, x];
+
+console.log(\`After: x=\${x}, y=\${y}\`);   // After: x=20, y=10
+
+// Swap multiple values
+let a = 1, b = 2, c = 3;
+
+[a, b, c] = [c, b, a];
+console.log(a, b, c);  // 3 2 1
+
+// Real-world: Sort two numbers
+let num1 = 50;
+let num2 = 30;
+
+if (num1 > num2) {
+  [num1, num2] = [num2, num1];  // Ensure num1 is smaller
 }
-console.log(arr); // [2, 5, 8, 1]`}
+
+console.log(\`Min: \${num1}, Max: \${num2}\`);
+// Min: 30, Max: 50
+
+// Real-world: Rotate values
+let first = 'A';
+let second = 'B';
+let third = 'C';
+
+// Rotate right: C -> A, A -> B, B -> C
+[first, second, third] = [third, first, second];
+console.log(first, second, third);  // C A B`}
         language="javascript"
-        colorTheme="blue"
-        icon={ArrowRightLeft}
+        colorTheme="yellow"
       />
 
-      {/* Real-World Examples */}
-      <Card className="bg-gradient-to-br from-sky-50/60 to-blue-50/60 dark:from-sky-950/10 dark:to-blue-950/10 border border-sky-200/40 dark:border-sky-800/30">
+      {/* Nested Arrays */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Shuffle className="w-6 h-6 text-sky-600/80 dark:text-sky-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Common use cases where destructuring shines
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-pink-100 dark:bg-pink-900/30">
+              <Package className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+            </div>
+            <div>
+              <CardTitle>Nested Array Destructuring</CardTitle>
+              <CardDescription>Unpack arrays within arrays</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-blue-500" />
-              <h4 className="font-semibold">React Hooks</h4>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20 overflow-hidden">
+            <div className="bg-pink-600 dark:bg-pink-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Deep Unpacking</h4>
             </div>
-            <p className="text-xs text-muted-foreground">Most common use case in modern React</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const [count, setCount] = useState(0);
-const [user, setUser] = useState(null);
-const [loading, setLoading] = useState(false);`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-              <h4 className="font-semibold">API Responses</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">Unpack tuple-style API responses</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const response = ['Ada', 'Premium', 150];
-const [name, plan, credits] = response;
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Use nested brackets to destructure nested arrays
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-pink-200 dark:border-pink-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const matrix = [[1, 2], [3, 4]];
 
-console.log(\`\${name} has \${credits} credits\`);`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-purple-500" />
-              <h4 className="font-semibold">Function Parameters</h4>
+const [[a, b], [c, d]] = matrix;
+
+console.log(a, b, c, d);  // 1 2 3 4`}</pre>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Destructure arrays in function signatures</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`function distance([x1, y1], [x2, y2]) {
-  return Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Nested Destructuring Examples"
+        description="Working with multi-dimensional arrays"
+        code={`// Nested arrays
+const data = [
+  ['Alice', 25],
+  ['Bob', 30]
+];
+
+const [[name1, age1], [name2, age2]] = data;
+console.log(name1, age1);  // Alice 25
+console.log(name2, age2);  // Bob 30
+
+// Real-world: Coordinates
+const points = [[10, 20], [30, 40], [50, 60]];
+
+const [[x1, y1], [x2, y2], [x3, y3]] = points;
+console.log(\`Point 1: (\${x1}, \${y1})\`);  // Point 1: (10, 20)
+console.log(\`Point 2: (\${x2}, \${y2})\`);  // Point 2: (30, 40)
+
+// Mixed with rest
+const nested = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+
+const [[first, ...restFirst], second] = nested;
+console.log(first);       // 1
+console.log(restFirst);   // [2, 3]
+console.log(second);      // [4, 5, 6]
+
+// Real-world: RGB color palette
+const palette = [
+  [255, 0, 0],    // Red
+  [0, 255, 0],    // Green
+  [0, 0, 255]     // Blue
+];
+
+const [[r1, g1, b1], [r2, g2, b2], [r3, g3, b3]] = palette;
+console.log(\`Red: rgb(\${r1}, \${g1}, \${b1})\`);`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Function Parameters */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+              <ArrowRightLeft className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+            </div>
+            <div>
+              <CardTitle>Destructuring in Functions</CardTitle>
+              <CardDescription>Unpack parameters and return values</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-cyan-200 dark:border-cyan-800/30 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-cyan-600 dark:bg-cyan-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Functions + Destructuring</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Destructure directly in function parameters or return values
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-cyan-200 dark:border-cyan-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// Function parameter destructuring
+function printCoords([x, y]) {
+  console.log(\`X: \${x}, Y: \${y}\`);
 }
 
-console.log(distance([0, 0], [3, 4])); // 5`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-amber-500" />
-              <h4 className="font-semibold">Multiple Return Values</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">Return multiple values from functions</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`function getMinMax(arr) {
+printCoords([10, 20]);  // X: 10, Y: 20
+
+// Return value destructuring
+function getMinMax(arr) {
   return [Math.min(...arr), Math.max(...arr)];
 }
 
-const [min, max] = getMinMax([5, 2, 8, 1]);`}
-            </pre>
+const [min, max] = getMinMax([5, 2, 8, 1, 9]);
+console.log(min, max);  // 1 9`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: Data Processing Pipeline"
-        description="Combining destructuring with array methods for elegant data transformation"
-        code={`const users = [
-  ['Ada', 'Premium', 150],
-  ['Lin', 'Basic', 50],
-  ['Mia', 'Premium', 200],
-];
-
-// Process and destructure in one pass
-const premiumUsers = users
-  .filter(([, plan]) => plan === 'Premium')
-  .map(([name, , credits]) => ({ name, credits }));
-
-console.log(premiumUsers);
-// [
-//   { name: "Ada", credits: 150 },
-//   { name: "Mia", credits: 200 }
-// ]
-
-// Iterate with entries
-for (const [index, [name, plan]] of users.entries()) {
-  console.log(\`\${index + 1}. \${name} (\${plan})\`);
+        title="Functions with Destructuring"
+        description="Clean function signatures and returns"
+        code={`// Parameter destructuring
+function sumFirstTwo([a, b]) {
+  return a + b;
 }
-// 1. Ada (Premium)
-// 2. Lin (Basic)
-// 3. Mia (Premium)`}
+
+console.log(sumFirstTwo([10, 20, 30]));  // 30
+
+// With defaults
+function greet([firstName, lastName = 'Doe']) {
+  console.log(\`Hello, \${firstName} \${lastName}!\`);
+}
+
+greet(['John']);         // Hello, John Doe!
+greet(['Jane', 'Smith']); // Hello, Jane Smith!
+
+// Multiple return values
+function getDimensions() {
+  return [1920, 1080];
+}
+
+const [width, height] = getDimensions();
+console.log(\`\${width}x\${height}\`);  // 1920x1080
+
+// Real-world: React useState pattern
+function useState(initial) {
+  let value = initial;
+  
+  function setValue(newValue) {
+    value = newValue;
+  }
+  
+  return [value, setValue];
+}
+
+const [count, setCount] = useState(0);
+console.log(count);  // 0
+
+// Real-world: Split string and destructure
+function parseDate(dateString) {
+  return dateString.split('-');
+}
+
+const [year, month, day] = parseDate('2024-12-25');
+console.log(\`Year: \${year}, Month: \${month}, Day: \${day}\`);
+// Year: 2024, Month: 12, Day: 25`}
         language="javascript"
-        colorTheme="indigo"
-        icon={Sparkles}
+        colorTheme="yellow"
       />
 
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/50 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Do This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Use descriptive variable names that match the data meaning.</li>
-              <li>✅ Provide default values to handle missing elements safely.</li>
-              <li>✅ Use rest operator to collect remaining items.</li>
-              <li>✅ Skip elements you don't need with empty commas.</li>
-            </ul>
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" />
-              Avoid This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>❌ Destructuring very long arrays (use objects instead).</li>
-              <li>❌ Forgetting to handle undefined values.</li>
-              <li>❌ Using unclear variable names like a, b, c.</li>
-              <li>❌ Mixing destructuring patterns without documentation.</li>
-            </ul>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use descriptive variable names</li>
+                <li>• Set defaults for optional values</li>
+                <li>• Use rest operator for remaining items</li>
+                <li>• Swap variables with <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">[a, b] = [b, a]</code></li>
+                <li>• Skip elements with commas</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't use cryptic names like <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">x, y, z</code></li>
+                <li>• Don't over-nest (hard to read)</li>
+                <li>• Don't forget rest must be last</li>
+                <li>• Don't destructure null/undefined (errors!)</li>
+                <li>• Don't use when array structure is unclear</li>
+              </ul>
+            </div>
           </div>
+
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Common Patterns</h4>
+            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400 font-mono">
+              <div><strong>Basic:</strong> <code className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 rounded">const [a, b, c] = array</code></div>
+              <div><strong>Skip:</strong> <code className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 rounded">const [a, , c] = array</code></div>
+              <div><strong>Defaults:</strong> <code className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 rounded">const [a = 1, b = 2] = array</code></div>
+              <div><strong>Rest:</strong> <code className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 rounded">const [first, ...rest] = array</code></div>
+              <div><strong>Swap:</strong> <code className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 rounded">[a, b] = [b, a]</code></div>
+            </div>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>React Developers</AlertTitle>
+            <AlertDescription className="text-base">
+              Array destructuring is heavily used in React hooks: <code className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">const [state, setState] = useState(0)</code> - this is array destructuring in action!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
-
     </div>
   );
 }

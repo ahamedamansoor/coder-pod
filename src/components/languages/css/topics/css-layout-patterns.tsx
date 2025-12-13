@@ -53,227 +53,6 @@ export default function CssLayoutPatterns({ onOpenWebPlayground }: CssLayoutPatt
         }
     ];
 
-    // Comprehensive Playground Code
-    const playgroundCode = {
-        html: `<!DOCTYPE html>
-<html>
-<head>
-    <title>CSS Layout Patterns Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1>CSS Layout Patterns: Complete Guide</h1>
-        
-        <section class="demo-section">
-            <h2>Holy Grail Layout</h2>
-            <div class="holy-grail-demo">
-                <header class="header">Header</header>
-                <nav class="nav">Navigation</nav>
-                <main class="main">Main Content Area</main>
-                <aside class="aside">Sidebar</aside>
-                <footer class="footer">Footer</footer>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Sidebar Layout</h2>
-            <div class="sidebar-demo">
-                <aside class="sidebar">Sidebar</aside>
-                <main class="content">Main Content</main>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Card Grid Layout</h2>
-            <div class="card-grid-demo">
-                <div class="card">Card 1</div>
-                <div class="card">Card 2</div>
-                <div class="card">Card 3</div>
-                <div class="card">Card 4</div>
-                <div class="card">Card 5</div>
-                <div class="card">Card 6</div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>Hero Section</h2>
-            <div class="hero-demo">
-                <div class="hero-content">
-                    <h1>Hero Title</h1>
-                    <p>Hero description text</p>
-                    <button>Call to Action</button>
-                </div>
-            </div>
-        </section>
-    </div>
-</body>
-</html>`,
-        css: `* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 2rem;
-    color: #333;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.demo-section {
-    background: white;
-    margin-bottom: 2rem;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Holy Grail Layout */
-.holy-grail-demo {
-    display: grid;
-    grid-template-areas:
-        "header header header"
-        "nav main aside"
-        "footer footer footer";
-    grid-template-columns: 200px 1fr 200px;
-    grid-template-rows: auto 1fr auto;
-    gap: 1rem;
-    height: 400px;
-    border: 2px dashed #dee2e6;
-    padding: 1rem;
-}
-
-.header { grid-area: header; background: #007bff; }
-.nav { grid-area: nav; background: #28a745; }
-.main { grid-area: main; background: #6c757d; }
-.aside { grid-area: aside; background: #ffc107; color: #333; }
-.footer { grid-area: footer; background: #dc3545; }
-
-.header, .nav, .main, .aside, .footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    padding: 1rem;
-}
-
-/* Sidebar Layout */
-.sidebar-demo {
-    display: flex;
-    height: 300px;
-    gap: 1rem;
-    border: 2px dashed #dee2e6;
-    padding: 1rem;
-}
-
-.sidebar {
-    width: 250px;
-    background: #007bff;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.content {
-    flex: 1;
-    background: #6c757d;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-/* Card Grid Layout */
-.card-grid-demo {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-    border: 2px dashed #dee2e6;
-}
-
-.card {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 120px;
-}
-
-.card:nth-child(even) {
-    background: linear-gradient(135deg, #28a745, #1e7e34);
-}
-
-/* Hero Section */
-.hero-demo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 400px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 10px;
-    color: white;
-    text-align: center;
-}
-
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-.hero-content button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.hero-content button:hover {
-    background: #0056b3;
-}`,
-        js: `console.log('CSS Layout Patterns Demo loaded successfully!');`
-    };
-
     const layoutEssentialsPlayground = {
         html: `<!DOCTYPE html>
 <html lang="en">
@@ -289,7 +68,7 @@ h1 {
         <p class="eyebrow">Layout Essentials</p>
         <h2>Spacing, Display, Positioning &amp; Flexbox</h2>
       </div>
-      <button id="theme-toggle" class="theme-toggle">Switch to dark mode</button>
+      <button id="theme-toggle" class="theme-toggle">🌙 Switch to Dark Mode</button>
     </header>
 
     <section class="section spacing-system">
@@ -345,46 +124,53 @@ h1 {
   </div>
 </body>
 </html>`,
-        css: `:root {
+        css: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
   --bg: #f8fafc;
   --card: #ffffff;
   --text: #0f172a;
-  --border: #e5e7eb;
-  --muted: #475569;
-}
-.dark {
-  --bg: #0f172a;
-  --card: #111827;
-  --text: #f8fafc;
-  --border: #334155;
-  --muted: #cbd5f5;
+  --border: #e2e8f0;
+  --muted: #64748b;
 }
 
-* {
-  box-sizing: border-box;
+html.dark {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f1f5f9;
+  --border: #334155;
+  --muted: #94a3b8;
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: radial-gradient(circle at top, #e0f2fe, #3b82f6 45%, #0f172a);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: var(--text);
   min-height: 100vh;
-  margin: 0;
-  padding: 2.5rem;
-  transition: background 0.4s ease;
+  padding: 2rem;
+  transition: all 0.3s ease;
 }
-.dark body {
-  background: radial-gradient(circle at top, #0b1120, #111827 60%, #0f172a);
+
+html.dark body {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 .playground {
   max-width: 1100px;
   margin: 0 auto;
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 1.5rem;
-  padding: 2rem;
-  box-shadow: 0 25px 40px rgba(15, 23, 42, 0.25);
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+html.dark .playground {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .playground-header {
@@ -392,11 +178,18 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
 }
 .playground-header h2 {
   margin: 0;
-  font-size: 1.9rem;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .eyebrow {
   text-transform: uppercase;
@@ -407,26 +200,43 @@ body {
 }
 
 .theme-toggle {
-  padding: 0.6rem 1rem;
-  background: #6366f1;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-radius: 999px;
   color: white;
   font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 .theme-toggle:hover {
-  transform: translateY(-1px);
-  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+.theme-toggle:active {
+  transform: translateY(0);
 }
 
 .section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 .section h3 {
-  margin-bottom: 0.75rem;
-  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.section h3::before {
+  content: '';
+  width: 4px;
+  height: 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 999px;
 }
 
 .spacing-grid {
@@ -436,21 +246,32 @@ body {
 }
 .spacing-card {
   border-radius: 1rem;
-  border: 1px dashed var(--border);
-  padding: 1rem;
-  background: var(--bg);
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.12);
+  border: 2px dashed var(--border);
+  padding: 1.5rem;
+  background: var(--card);
   text-align: center;
+  transition: all 0.3s ease;
+}
+.spacing-card:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 .spacing-value {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   display: block;
-  color: #4338ca;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+html.dark .spacing-value {
+  color: #a78bfa;
 }
 .spacing-label {
   margin: 0;
   color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .display-row {
@@ -461,23 +282,53 @@ body {
 .display-demo {
   flex: 1;
   min-width: 140px;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   text-align: center;
   font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+.display-demo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .display-block {
-  background: rgba(59, 130, 246, 0.15);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.2));
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+html.dark .display-block {
+  color: #60a5fa;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.3));
 }
 .display-inline {
-  background: rgba(34, 197, 94, 0.15);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(21, 128, 61, 0.2));
+  border-color: #22c55e;
+  color: #15803d;
+}
+html.dark .display-inline {
+  color: #4ade80;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(21, 128, 61, 0.3));
 }
 .display-inline-block {
-  background: rgba(234, 179, 8, 0.15);
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.1), rgba(202, 138, 4, 0.2));
+  border-color: #eab308;
+  color: #a16207;
+}
+html.dark .display-inline-block {
+  color: #facc15;
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(202, 138, 4, 0.3));
 }
 .display-grid {
-  background: rgba(236, 72, 153, 0.15);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(219, 39, 119, 0.2));
+  border-color: #ec4899;
+  color: #be185d;
+}
+html.dark .display-grid {
+  color: #f472b6;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.3));
 }
 
 .position-stage {
@@ -490,11 +341,17 @@ body {
 }
 .position-card {
   position: absolute;
-  padding: 0.7rem 1rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 0.75rem;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--border);
+  background: var(--card);
+  border: 2px solid var(--border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.position-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.2);
 }
 .position-card.top-left {
   top: 1rem;
@@ -508,8 +365,13 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(15, 23, 42, 0.85);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
+  border-color: #a78bfa;
+  font-weight: 700;
+}
+.position-card.center:hover {
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
 .flexbox-demo {
@@ -523,29 +385,39 @@ body {
   border: 1px solid var(--border);
 }
 .flex-item {
-  min-width: 120px;
-  padding: 0.8rem 1rem;
-  border-radius: 0.7rem;
-  background: linear-gradient(135deg, #38bdf8, #9333ea);
+  min-width: 100px;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   text-align: center;
   font-weight: 700;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+.flex-item:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
 }`,
         js: `document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('theme-toggle');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const html = document.documentElement;
+  
+  // Check for system dark mode preference
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (prefersDark) {
-    document.documentElement.classList.add('dark');
+    html.classList.add('dark');
   }
 
   const updateLabel = () => {
     if (!toggle) return;
-    const isDark = document.documentElement.classList.contains('dark');
-    toggle.textContent = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+    const isDark = html.classList.contains('dark');
+    toggle.textContent = isDark ? '☀️ Switch to Light Mode' : '🌙 Switch to Dark Mode';
   };
 
   toggle?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
+    html.classList.toggle('dark');
     updateLabel();
   });
 
@@ -639,25 +511,18 @@ body {
                             </div>
                         </div>
                         
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block">
-                            .container {'{'}
-                            <br />
-                            {'  '}display: grid;
-                            <br />
-                            {'  '}grid-template-areas:
-                            <br />
-                            {'    '}"header header header"
-                            <br />
-                            {'    '}"nav main aside"
-                            <br />
-                            {'    '}"footer footer footer";
-                            <br />
-                            {'  '}grid-template-columns: 200px 1fr 200px;
-                            <br />
-                            {'  '}grid-template-rows: auto 1fr auto;
-                            <br />
-                            {'}'}
-                        </code>
+                        <pre className="text-sm bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg overflow-x-auto">
+                            <code>{`.container {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "nav main aside"
+    "footer footer footer";
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+}`}</code>
+                        </pre>
                     </div>
                 </CardContent>
             </Card>
@@ -686,27 +551,20 @@ body {
                             </div>
                         </div>
                         
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block">
-                            .container {'{'}
-                            <br />
-                            {'  '}display: flex;
-                            <br />
-                            {'  '}gap: 1rem;
-                            <br />
-                            {'}'}
-                            <br />
-                            .sidebar {'{'}
-                            <br />
-                            {'  '}width: 250px; /* Fixed width */
-                            <br />
-                            {'}'}
-                            <br />
-                            .main {'{'}
-                            <br />
-                            {'  '}flex: 1; /* Takes remaining space */
-                            <br />
-                            {'}'}
-                        </code>
+                        <pre className="text-sm bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg overflow-x-auto">
+                            <code>{`.container {
+  display: flex;
+  gap: 1rem;
+}
+
+.sidebar {
+  width: 250px; /* Fixed width */
+}
+
+.main {
+  flex: 1; /* Takes remaining space */
+}`}</code>
+                        </pre>
                     </div>
                 </CardContent>
             </Card>
@@ -742,29 +600,20 @@ body {
                             </div>
                         </div>
                         
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block">
-                            .card-grid {'{'}
-                            <br />
-                            {'  '}display: grid;
-                            <br />
-                            {'  '}grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                            <br />
-                            {'  '}gap: 1rem;
-                            <br />
-                            {'}'}
-                            <br />
-                            .card {'{'}
-                            <br />
-                            {'  '}padding: 1.5rem;
-                            <br />
-                            {'  '}border-radius: 8px;
-                            <br />
-                            {'  '}background: white;
-                            <br />
-                            {'  '}box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                            <br />
-                            {'}'}
-                        </code>
+                        <pre className="text-sm bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg overflow-x-auto">
+                            <code>{`.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}`}</code>
+                        </pre>
                     </div>
                 </CardContent>
             </Card>
@@ -794,23 +643,16 @@ body {
                             </div>
                         </div>
                         
-                        <code className="text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded block">
-                            .hero {'{'}
-                            <br />
-                            {'  '}display: flex;
-                            <br />
-                            {'  '}align-items: center;
-                            <br />
-                            {'  '}justify-content: center;
-                            <br />
-                            {'  '}min-height: 100vh;
-                            <br />
-                            {'  '}background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            <br />
-                            {'  '}text-align: center;
-                            <br />
-                            {'}'}
-                        </code>
+                        <pre className="text-sm bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg overflow-x-auto">
+                            <code>{`.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  text-align: center;
+}`}</code>
+                        </pre>
                     </div>
                 </CardContent>
             </Card>
@@ -842,23 +684,17 @@ body {
                                     </div>
                                 ))}
                             </div>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded block mt-3">
-                                .masonry {'{'}
-                                <br />
-                                {'  '}columns: 3;
-                                <br />
-                                {'  '}gap: 1rem;
-                                <br />
-                                {'}'}
-                                <br />
-                                .masonry-item {'{'}
-                                <br />
-                                {'  '}break-inside: avoid;
-                                <br />
-                                {'  '}margin-bottom: 1rem;
-                                <br />
-                                {'}'}
-                            </code>
+                            <pre className="text-sm bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg overflow-x-auto mt-3">
+                                <code>{`.masonry {
+  columns: 3;
+  gap: 1rem;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}`}</code>
+                            </pre>
                         </div>
 
                         {/* Sticky Header Layout */}
@@ -876,17 +712,14 @@ body {
                                     ))}
                                 </div>
                             </div>
-                            <code className="text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded block mt-3">
-                                .header {'{'}
-                                <br />
-                                {'  '}position: sticky;
-                                <br />
-                                {'  '}top: 0;
-                                <br />
-                                {'  '}z-index: 100;
-                                <br />
-                                {'}'}
-                            </code>
+                            <pre className="text-sm bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg overflow-x-auto mt-3">
+                                <code>{`.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+}`}</code>
+                            </pre>
                         </div>
                     </div>
                 </CardContent>
@@ -946,51 +779,6 @@ body {
                             <p><strong>CSS Multi-column:</strong> Text layouts, masonry-style arrangements</p>
                             <p><strong>Position:</strong> Overlays, tooltips, specific positioning needs</p>
                         </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Interactive Playground */}
-            <Card className="border-primary bg-primary/5">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Play className="w-5 h-5" />
-                        Interactive Layout Patterns Playground
-                    </CardTitle>
-                    <CardDescription>
-                        Explore comprehensive layout examples including Holy Grail, Sidebar, Card Grid, Hero Section, and advanced patterns.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                        <Button onClick={() => onOpenWebPlayground(playgroundCode.html, playgroundCode.css, playgroundCode.js)}>
-                            <Play className="mr-2 h-4 w-4" />
-                            Open Complete Layout Guide
-                        </Button>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Layout className="w-3 h-3" />
-                            Holy Grail
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Columns className="w-3 h-3" />
-                            Sidebar
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Grid className="w-3 h-3" />
-                            Card Grid
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Monitor className="w-3 h-3" />
-                            Hero Section
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Settings className="w-3 h-3" />
-                            Advanced Patterns
-                        </Badge>
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                            <Zap className="w-3 h-3" />
-                            Interactive Demos
-                        </Badge>
                     </div>
                 </CardContent>
             </Card>

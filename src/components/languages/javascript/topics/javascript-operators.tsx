@@ -2,574 +2,532 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Calculator,
-  Scale,
-  GitCompare,
-  ToggleLeft,
-  Type,
+  Plus,
+  Equal,
   Sparkles,
-  ClipboardCheck,
-  CheckCircle2,
   Lightbulb,
-  AlertTriangle,
+  CheckCircle2,
   XCircle,
-  ShoppingCart,
-  UserCheck,
+  GitCompare,
+  Zap,
 } from 'lucide-react';
 
-interface JavaScriptOperatorsProps {}
-
-export default function JavaScriptOperators({}: JavaScriptOperatorsProps) {
+export default function JavaScriptOperators() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Calculator}
         category="JavaScript Fundamentals"
         title="Operators"
-        description="Perform calculations, compare values, combine conditions, and inspect types with JavaScript operators."
-        colorTheme="blue"
+        description="Perform calculations, compare values, and combine conditions"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Operator Categories
-          </CardTitle>
-          <CardDescription className="text-base">
-            Five core groups cover most everyday tasks: arithmetic, assignment, comparison, logical, and type-checking.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-5 gap-3">
-          {[
-            { label: 'Arithmetic', color: 'blue' },
-            { label: 'Assignment', color: 'amber' },
-            { label: 'Comparison', color: 'emerald' },
-            { label: 'Logical', color: 'purple' },
-            { label: 'Type/Unary', color: 'indigo' },
-          ].map(({ label, color }) => (
-            <div
-              key={label}
-              className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-3 space-y-2"
-            >
-              <h3 className="font-semibold">{label}</h3>
-              <Badge
-                className={`bg-${color}-100/80 text-${color}-700 dark:bg-${color}-900/30 dark:text-${color}-300 border border-${color}-300/50 dark:border-${color}-700/40`}
-              >
-                Core set
-              </Badge>
+      {/* What are Operators */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-          ))}
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What are Operators?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Operators are <strong className="text-yellow-700 dark:text-yellow-400">special symbols</strong> that tell JavaScript to perform actions with your data. Think of them as the verbs in your code - add, compare, combine!
+              </p>
+            </div>
+          </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Calculator className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Example</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-sm">5 + 3</code> - The <strong>+</strong> is an operator that adds two numbers together to get 8!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* What are Operators? */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-indigo-50/60 dark:from-blue-950/10 dark:to-indigo-950/10 border border-blue-200/50 dark:border-blue-800/30">
+      {/* Types Overview */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Calculator className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Operators?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Operators are symbols that perform operations on values (operands) to produce new results
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Zap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Four Main Types of Operators</CardTitle>
+              <CardDescription>Different operators for different tasks</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <div className="text-3xl mb-3">➕</div>
+              <h4 className="font-bold text-lg">Arithmetic</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                Math operations: +, -, *, /
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <div className="text-3xl mb-3">⚖️</div>
+              <h4 className="font-bold text-lg">Comparison</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                Compare: ===, &gt;, &lt;, &gt;=
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <div className="text-3xl mb-3">🔗</div>
+              <h4 className="font-bold text-lg">Logical</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                Combine: &amp;&amp;, ||, !
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-200 dark:border-orange-800/30">
+              <div className="text-3xl mb-3">📌</div>
+              <h4 className="font-bold text-lg">Assignment</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                Assign: =, +=, -=
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Arithmetic Operators */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Plus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>1. Arithmetic Operators</CardTitle>
+              <CardDescription>Mathematical operations on numbers</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Think of operators as <strong>action verbs</strong> in JavaScript. They tell the computer what to do with your data.
-              Each operator takes one or more values (operands) and produces a result.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-300">Basic Example</h4>
-                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
-{`// Operator: +
-// Operands: 5 and 3
-const sum = 5 + 3;
-
-console.log(sum);
-// Output: 8`}
-                </pre>
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Basic Math</h4>
+            </div>
+            <div className="p-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Addition (+)</h5>
+                  <code className="text-sm">5 + 3 = 8</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Subtraction (-)</h5>
+                  <code className="text-sm">10 - 4 = 6</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Multiplication (*)</h5>
+                  <code className="text-sm">6 * 7 = 42</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Division (/)</h5>
+                  <code className="text-sm">20 / 4 = 5</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Remainder (%)</h5>
+                  <code className="text-sm">10 % 3 = 1</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Exponent (**)</h5>
+                  <code className="text-sm">2 ** 3 = 8</code>
+                </div>
               </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2 text-emerald-700 dark:text-emerald-300">Comparison Example</h4>
-                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
-{`// Operator: ===
-// Operands: age and 18
-const age = 20;
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Arithmetic Operators in Action"
+        description="Performing calculations with numbers"
+        code={`// Basic operations
+const sum = 10 + 5;         // 15
+const difference = 10 - 5;  // 5
+const product = 10 * 5;     // 50
+const quotient = 10 / 5;    // 2
+
+console.log(sum);        // 15
+console.log(product);    // 50
+
+// Remainder (modulo)
+const remainder = 10 % 3;   // 1
+console.log(remainder);     // 1
+
+// Exponent (power)
+const power = 2 ** 3;       // 2 * 2 * 2 = 8
+console.log(power);         // 8
+
+// Real-world: Calculate total price
+const price = 19.99;
+const quantity = 3;
+const total = price * quantity;
+console.log(total);         // 59.97`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Comparison Operators */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <GitCompare className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>2. Comparison Operators</CardTitle>
+              <CardDescription>Compare values and get true/false results</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Testing Relationships</h4>
+            </div>
+            <div className="p-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Equal (===)</h5>
+                  <code className="text-sm">5 === 5 → true</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Not Equal (!==)</h5>
+                  <code className="text-sm">5 !== 3 → true</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Greater Than (&gt;)</h5>
+                  <code className="text-sm">10 &gt; 5 → true</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Less Than (&lt;)</h5>
+                  <code className="text-sm">3 &lt; 8 → true</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Greater or Equal (&gt;=)</h5>
+                  <code className="text-sm">5 &gt;= 5 → true</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">Less or Equal (&lt;=)</h5>
+                  <code className="text-sm">4 &lt;= 7 → true</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Alert className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/30">
+            <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+            <AlertTitle>Important: Use === not ==</AlertTitle>
+            <AlertDescription className="text-base">
+              Always use <code className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs">===</code> (strict equality) instead of <code className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs">==</code>. It checks both value AND type!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Comparison Operators Examples"
+        description="Comparing values returns boolean results"
+        code={`// Equal (strict)
+console.log(5 === 5);      // true
+console.log(5 === '5');    // false (different types!)
+
+// Not equal
+console.log(5 !== 3);      // true
+console.log(5 !== 5);      // false
+
+// Greater/Less than
+console.log(10 > 5);       // true
+console.log(3 < 8);        // true
+console.log(5 >= 5);       // true
+console.log(4 <= 7);       // true
+
+// Real-world: Check age
+const age = 18;
 const isAdult = age >= 18;
+console.log(isAdult);      // true
 
-console.log(isAdult);
-// Output: true`}
-                </pre>
-              </div>
-            </div>
+// Check if logged in
+const username = 'Alice';
+const isLoggedIn = username !== '';
+console.log(isLoggedIn);   // true`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-            <Alert>
-              <Lightbulb className="h-4 w-4" />
-              <AlertTitle>Key Concept</AlertTitle>
-              <AlertDescription>
-                Operators always <strong>evaluate to a value</strong>. Mathematical operators return numbers, comparison operators return booleans.
-              </AlertDescription>
-            </Alert>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Arithmetic & Assignment */}
+      {/* Logical Operators */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Calculator className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Arithmetic & Assignment
-          </CardTitle>
-          <CardDescription className="text-base">
-            Modify numbers and variables with expressive operators.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              Arithmetic
-            </h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>2 + 3 // addition</div>
-              <div>10 - 4 // subtraction</div>
-              <div>6 * 7 // multiplication</div>
-              <div>9 / 3 // division</div>
-              <div>10 % 3 // remainder</div>
-              <div>2 ** 3 // exponent</div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Zap className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>3. Logical Operators</CardTitle>
+              <CardDescription>Combine multiple conditions</CardDescription>
             </div>
           </div>
-          <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <Scale className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
-              Assignment
-            </h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>let total = 10;</div>
-              <div>total += 5; <span className="text-slate-500">// 15</span></div>
-              <div>total -= 3; <span className="text-slate-500">// 12</span></div>
-              <div>total *= 2; <span className="text-slate-500">// 24</span></div>
-              <div>total /= 4; <span className="text-slate-500">// 6</span></div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Comparison */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <GitCompare className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Comparison Operators
-          </CardTitle>
-          <CardDescription className="text-base">
-            Check equality or ordering. Prefer strict equality to avoid type coercion surprises.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Strict Equality (===)
-            </h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>'5' === 5 <span className="text-rose-500">// false</span></div>
-              <div>5 === 5 <span className="text-emerald-500">// true</span></div>
-              <div>null === undefined <span className="text-rose-500">// false</span></div>
-            </div>
-            <Alert>
-              <AlertTriangle className="h-4 w-4" />
-              <AlertTitle>Tip</AlertTitle>
-              <AlertDescription>Use === over == to avoid implicit conversions.</AlertDescription>
-            </Alert>
-          </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <GitCompare className="w-5 h-5" />
-              Relational
-            </h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>10 {'>'} 3 <span className="text-emerald-500">// true</span></div>
-              <div>2 {'<='} 2 <span className="text-emerald-500">// true</span></div>
-              <div>'b' {'>'} 'a' <span className="text-emerald-500">// true (lexicographic)</span></div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Logical */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ToggleLeft className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Logical Operators
-          </CardTitle>
-          <CardDescription className="text-base">
-            Combine conditions and use short-circuiting to simplify defaults.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-            <h4 className="font-semibold">Boolean logic</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>true && false <span className="text-rose-500">// false</span></div>
-              <div>true || false <span className="text-emerald-500">// true</span></div>
-              <div>!true <span className="text-rose-500">// false</span></div>
-            </div>
-          </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Short-circuit defaults</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const name = input || 'Guest';</div>
-              <div>const enabled = isAdmin && featureFlag;</div>
-            </div>
-            <Alert>
-              <Lightbulb className="h-4 w-4" />
-              <AlertTitle>Remember</AlertTitle>
-              <AlertDescription>Logical operators return the last evaluated operand, not just true/false.</AlertDescription>
-            </Alert>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Type & unary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Type className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            typeof & Unary Helpers
-          </CardTitle>
-          <CardDescription className="text-base">
-            Inspect types and flip booleans or signs with quick operators.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:to-blue-950/10 rounded-xl border border-indigo-200/50 dark:border-indigo-800/30 space-y-3">
-            <h4 className="font-semibold">typeof quirks</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>typeof 42 <span className="text-emerald-500">// "number"</span></div>
-              <div>typeof 'hi' <span className="text-emerald-500">// "string"</span></div>
-              <div>typeof null <span className="text-rose-500">// "object" (historical bug)</span></div>
-              <div>typeof undefined <span className="text-emerald-500">// "undefined"</span></div>
-            </div>
-          </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Unary + and !</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>+'5' <span className="text-emerald-500">// 5</span></div>
-              <div>-7 <span className="text-rose-500">// -7</span></div>
-              <div>!!'text' <span className="text-emerald-500">// true (truthy)</span></div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Operator Precedence */}
-      <Card className="bg-gradient-to-br from-orange-50/60 to-red-50/60 dark:from-orange-950/10 dark:to-red-950/10 border border-orange-200/50 dark:border-orange-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Scale className="w-6 h-6 text-orange-600/80 dark:text-orange-400/80" />
-            Operator Precedence
-          </CardTitle>
-          <CardDescription className="text-base">
-            Understanding which operators evaluate first to avoid unexpected results
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-5 bg-white/80 dark:bg-slate-900/80 rounded-xl border space-y-4">
-            <p className="text-sm text-muted-foreground">
-              When multiple operators appear in one expression, JavaScript follows a specific order (precedence) to evaluate them.
-              Higher precedence operators execute before lower precedence ones.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-2 text-orange-700 dark:text-orange-300">Without Parentheses</h4>
-                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
-{`// Multiplication happens first
-const result1 = 5 + 3 * 2;
-
-console.log(result1);
-// Output: 11 (not 16)
-
-// Division before subtraction  
-const result2 = 10 - 8 / 2;
-
-console.log(result2);
-// Output: 6 (not 1)`}
-                </pre>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2 text-emerald-700 dark:text-emerald-300">With Parentheses (Recommended)</h4>
-                <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 font-mono text-xs overflow-x-auto border">
-{`// Force order with parentheses
-const result1 = (5 + 3) * 2;
-
-console.log(result1);
-// Output: 16
-
-// Clear intent
-const result2 = (10 - 8) / 2;
-
-console.log(result2);
-// Output: 1`}
-                </pre>
-              </div>
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">AND, OR, NOT</h4>
             </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <span className="text-2xl">&amp;&amp;</span> AND - Both must be true
+                </h5>
+                <div className="space-y-2 text-sm">
+                  <div><code>true &amp;&amp; true → true</code> ✅</div>
+                  <div><code>true &amp;&amp; false → false</code> ❌</div>
+                  <div><code>false &amp;&amp; false → false</code> ❌</div>
+                </div>
+              </div>
 
-            <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 text-blue-700 dark:text-blue-300">Common Precedence Order (High to Low)</h4>
-              <div className="grid md:grid-cols-3 gap-3 text-sm">
-                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
-                  <div className="font-semibold text-xs text-blue-600 dark:text-blue-400 mb-2">HIGHEST</div>
-                  <div className="font-mono text-xs space-y-1">
-                    <div>( ) - Grouping</div>
-                    <div>** - Exponent</div>
-                    <div>*, /, % - Multiply/Divide</div>
-                  </div>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <span className="text-2xl">||</span> OR - At least one must be true
+                </h5>
+                <div className="space-y-2 text-sm">
+                  <div><code>true || true → true</code> ✅</div>
+                  <div><code>true || false → true</code> ✅</div>
+                  <div><code>false || false → false</code> ❌</div>
                 </div>
-                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
-                  <div className="font-semibold text-xs text-amber-600 dark:text-amber-400 mb-2">MEDIUM</div>
-                  <div className="font-mono text-xs space-y-1">
-                    <div>+, - - Add/Subtract</div>
-                    <div>{'<, >, <=, >='} - Comparison</div>
-                    <div>===, !== - Equality</div>
-                  </div>
-                </div>
-                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
-                  <div className="font-semibold text-xs text-purple-600 dark:text-purple-400 mb-2">LOWEST</div>
-                  <div className="font-mono text-xs space-y-1">
-                    <div>&& - Logical AND</div>
-                    <div>|| - Logical OR</div>
-                    <div>=, +=, -= - Assignment</div>
-                  </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <span className="text-2xl">!</span> NOT - Flips true/false
+                </h5>
+                <div className="space-y-2 text-sm">
+                  <div><code>!true → false</code></div>
+                  <div><code>!false → true</code></div>
                 </div>
               </div>
             </div>
-
-            <Alert>
-              <Lightbulb className="h-4 w-4" />
-              <AlertTitle>Pro Tip</AlertTitle>
-              <AlertDescription>
-                Always use <strong>parentheses</strong> to make your intent clear, even if precedence rules would work. Code readability beats cleverness!
-              </AlertDescription>
-            </Alert>
           </div>
         </CardContent>
       </Card>
 
-      {/* Real-World Examples */}
+      <CodeSnippet
+        title="Logical Operators in Real Code"
+        description="Combining conditions for decision making"
+        code={`const age = 25;
+const hasLicense = true;
+const hasInsurance = true;
+
+// AND (&&) - Both must be true
+const canDrive = hasLicense && hasInsurance;
+console.log(canDrive);  // true
+
+// Check multiple conditions
+const isAdult = age >= 18 && age < 65;
+console.log(isAdult);   // true
+
+// OR (||) - At least one must be true
+const canEnter = age >= 18 || hasParent;
+const isWeekend = day === 'Saturday' || day === 'Sunday';
+
+// NOT (!) - Flip boolean
+const isLoggedOut = !isLoggedIn;
+const isClosed = !isOpen;
+
+// Real-world: Access control
+const username = 'Alice';
+const password = 'secret123';
+const isAdmin = false;
+
+const canAccess = (username && password) || isAdmin;
+console.log(canAccess);  // true`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Assignment Operators */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll use every day in real applications
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <Equal className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>4. Assignment Operators</CardTitle>
+              <CardDescription>Assign and update values</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            {/* Pattern 1: Default Values with OR */}
-            <CodeSnippet
-              title="Default Values with OR (||)"
-              description="Provide fallback values - the OR operator returns the first truthy value"
-              code={`// Pattern: Provide fallback values
-function greetUser(name) {
-  const displayName = name || 'Guest';
-  return 'Hello, ' + displayName;
-}
-
-console.log(greetUser('Alice'));
-// Output: Hello, Alice
-
-console.log(greetUser(''));
-// Output: Hello, Guest
-
-console.log(greetUser());
-// Output: Hello, Guest`}
-              language="javascript"
-              colorTheme="blue"
-              icon={CheckCircle2}
-              features={[
-                "|| returns first truthy value",
-                "Empty string is falsy",
-                "undefined is falsy",
-                "Common for default parameters"
-              ]}
-              tips={[
-                "Use ?? for null/undefined only",
-                "Watch out for 0 and false",
-                "Modern: use default parameters"
-              ]}
-            />
-
-            {/* Pattern 2: Conditional Execution with AND */}
-            <CodeSnippet
-              title="Conditional Execution with AND (&&)"
-              description="Execute only if condition is true - AND operator short-circuits"
-              code={`// Pattern: Execute only if condition is true
-const user = { 
-  isAdmin: true, 
-  name: 'Bob' 
-};
-
-// Only log if user is admin
-user.isAdmin && console.log('Admin access granted');
-// Output: Admin access granted
-
-const normalUser = { isAdmin: false };
-normalUser.isAdmin && console.log('Will not print');
-// Output: (nothing - second part not executed)`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={UserCheck}
-              features={[
-                "&& short-circuits at first falsy",
-                "Right side only runs if left is truthy",
-                "Common for conditional execution",
-                "React: condition && <Component />"
-              ]}
-              tips={[
-                "Cleaner than if statements sometimes",
-                "Watch return values",
-                "Popular in JSX rendering"
-              ]}
-            />
-
-            {/* Pattern 3: Calculate Discounts */}
-            <CodeSnippet
-              title="Calculate Discounts"
-              description="Arithmetic operators combined for real business logic like pricing and discounts"
-              code={`// Pattern: Apply percentage discounts
-function applyDiscount(price, percent) {
-  const discount = price * (percent / 100);
-  const finalPrice = price - discount;
-  return finalPrice;
-}
-
-const originalPrice = 100;
-const discountRate = 20;
-
-const salePrice = applyDiscount(
-  originalPrice, 
-  discountRate
-);
-
-console.log('Original: $' + originalPrice);
-// Output: Original: $100
-
-console.log('Discount: ' + discountRate + '%');
-// Output: Discount: 20%
-
-console.log('Final: $' + salePrice);
-// Output: Final: $80`}
-              language="javascript"
-              colorTheme="purple"
-              icon={ShoppingCart}
-              features={[
-                "Multiply for percentage calculation",
-                "Subtract discount from original",
-                "Common in e-commerce",
-                "Real business logic example"
-              ]}
-              tips={[
-                "Always validate discount range",
-                "Consider rounding for currency",
-                "Use toFixed() for display"
-              ]}
-            />
-
-            {/* Pattern 4: Form Validation */}
-            <CodeSnippet
-              title="Form Validation"
-              description="Combining comparison and logical operators to validate multiple conditions"
-              code={`// Pattern: Validate user input
-function validateForm(email, age) {
-  const hasEmail = email && email.length > 0;
-  const isAdult = age >= 18;
-  const isValid = hasEmail && isAdult;
-  
-  return isValid;
-}
-
-console.log(validateForm('user@email.com', 25));
-// Output: true
-
-console.log(validateForm('', 25));
-// Output: false
-
-console.log(validateForm('user@email.com', 16));
-// Output: false`}
-              language="javascript"
-              colorTheme="amber"
-              icon={CheckCircle2}
-              features={[
-                "Combines && and >= operators",
-                "Multiple validation checks",
-                "Returns boolean result",
-                "Real form validation pattern"
-              ]}
-              tips={[
-                "Check each condition separately",
-                "Combine with && for all checks",
-                "Essential for user input"
-              ]}
-            />
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Shortcuts for Updating</h4>
+            </div>
+            <div className="p-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">= (Assign)</h5>
+                  <code className="text-sm">x = 5</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">+= (Add &amp; Assign)</h5>
+                  <code className="text-sm">x += 3 → x = x + 3</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">-= (Subtract &amp; Assign)</h5>
+                  <code className="text-sm">x -= 2 → x = x - 2</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">*= (Multiply &amp; Assign)</h5>
+                  <code className="text-sm">x *= 4 → x = x * 4</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">++ (Increment)</h5>
+                  <code className="text-sm">x++ → x = x + 1</code>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border">
+                  <h5 className="font-semibold mb-2">-- (Decrement)</h5>
+                  <code className="text-sm">x-- → x = x - 1</code>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Best practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
+      <CodeSnippet
+        title="Assignment Operators Examples"
+        description="Shortcuts for updating variables"
+        code={`let score = 0;
+
+// Add to score
+score += 10;     // score = score + 10
+console.log(score);  // 10
+
+score += 5;      // score = score + 5
+console.log(score);  // 15
+
+// Subtract from score
+score -= 3;      // score = score - 3
+console.log(score);  // 12
+
+// Multiply
+let points = 10;
+points *= 2;     // points = points * 2
+console.log(points); // 20
+
+// Increment & Decrement
+let count = 5;
+count++;         // count = count + 1
+console.log(count);  // 6
+
+count--;         // count = count - 1
+console.log(count);  // 5
+
+// Real-world: Shopping cart
+let cartTotal = 50;
+cartTotal += 25;  // Add item
+cartTotal += 15;  // Add another
+cartTotal -= 10;  // Apply discount
+console.log(cartTotal);  // 80`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* String Concatenation */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ClipboardCheck className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Operator Tips
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Do This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Prefer strict equality (===) for reliability.</li>
-              <li>✅ Use parentheses to make complex logic readable.</li>
-              <li>✅ Consider optional chaining <code className="font-mono">?.</code> before accessing deep properties.</li>
-              <li>✅ Use logical OR for defaults and AND for guarded calls.</li>
-            </ul>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Plus className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div>
+              <CardTitle>Bonus: + Operator with Strings</CardTitle>
+              <CardDescription>Combine text together</CardDescription>
+            </div>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" />
-              Avoid This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>❌ Relying on <code className="font-mono">==</code> for mixed types.</li>
-              <li>❌ Forgetting that <code className="font-mono">typeof null</code> is "object".</li>
-              <li>❌ Overusing negation chains (e.g., <code className="font-mono">!!!!!value</code>).</li>
-              <li>❌ Leaving arithmetic on non-numbers without parsing first.</li>
-            </ul>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 overflow-hidden">
+            <div className="bg-indigo-600 dark:bg-indigo-700 px-4 py-3">
+              <h4 className="text-white font-semibold">String Concatenation</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                The <code className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 rounded text-xs">+</code> operator can also join strings together!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-indigo-200 dark:border-indigo-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const firstName = 'John';
+const lastName = 'Doe';
+
+// Combine strings
+const fullName = firstName + ' ' + lastName;
+console.log(fullName);  // John Doe
+
+// With numbers becomes a string
+const result = '5' + 3;
+console.log(result);    // '53' (string!)
+
+// But other operators convert to number
+console.log('10' - 5);  // 5 (number)
+console.log('10' * 2);  // 20 (number)`}</pre>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Operator Types</h4>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• <strong>Arithmetic</strong>: +, -, *, /, %, **</li>
+                <li>• <strong>Comparison</strong>: ===, !==, &gt;, &lt;, &gt;=, &lt;=</li>
+                <li>• <strong>Logical</strong>: &amp;&amp;, ||, !</li>
+                <li>• <strong>Assignment</strong>: =, +=, -=, *=, ++, --</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Remember</h4>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Always use <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">===</code> not <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">==</code></li>
+                <li>• <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">&amp;&amp;</code> means both must be true</li>
+                <li>• <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">||</code> means at least one true</li>
+                <li>• <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">!</code> flips true ↔ false</li>
+                <li>• <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">+=</code> is shorthand for x = x +</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

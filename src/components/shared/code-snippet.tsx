@@ -4,8 +4,18 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Check, Play, Code2, FileCode, Terminal } from 'lucide-react';
+import { Copy, Check, Play, Code2, FileCode, Terminal, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import {
+  vscDarkPlus,
+  vs,
+  dracula,
+  atomDark,
+  oneDark,
+  materialDark
+} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useTheme } from 'next-themes';
 
 /**
  * CodeSnippet - A component to display code with optional execution
@@ -18,7 +28,7 @@ interface CodeSnippetProps {
   description?: string;
   code: string;
   language?: 'javascript' | 'typescript' | 'html' | 'css' | 'jsx' | 'tsx';
-  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan' | 'red' | 'green' | 'yellow';
+  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan' | 'teal' | 'red' | 'green' | 'yellow' | 'indigo' | 'rose';
   icon?: React.ComponentType<{ className?: string }>;
   highlightLines?: number[];
   showLineNumbers?: boolean;
@@ -29,7 +39,13 @@ interface CodeSnippetProps {
     visiblePanels?: ('html' | 'css' | 'js' | 'preview' | 'console')[];
     layout?: 'horizontal' | 'vertical'; // horizontal: code|preview|console, vertical: preview top, code+console bottom
   };
-  onOpenWebPlayground?: (html: string, css: string, js: string, config?: any) => void;
+  onOpenWebPlayground?: (
+    html: string,
+    css: string,
+    js: string,
+    focusedPanel?: 'html' | 'css' | 'js' | string,
+    config?: { visiblePanels?: ('html' | 'css' | 'js' | 'preview' | 'console')[] }
+  ) => void;
   features?: string[];
   tips?: string[];
   embedPlayground?: boolean; // If true, shows playground inline instead of modal
@@ -39,7 +55,7 @@ interface CodeSnippetProps {
 export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   title,
   description,
-  code,
+  code = '',
   language = 'javascript',
   colorTheme = 'blue',
   icon: Icon = Code2,
@@ -62,6 +78,16 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   const [showEmbeddedPlayground, setShowEmbeddedPlayground] = useState(false);
   const [activeTab, setActiveTab] = React.useState<'preview' | 'code'>('preview');
   const [playgroundConsole, setPlaygroundConsole] = React.useState<string[]>([]);
+  const { theme: systemTheme } = useTheme();
+
+  // Automatically use light/dark theme based on system preference
+  const currentIdeTheme = {
+    style: systemTheme === 'light' ? vs : vscDarkPlus,
+    bg: systemTheme === 'light' ? '#ffffff' : '#1e1e1e',
+    color: systemTheme === 'light' ? '#24292e' : '#d4d4d4',
+    borderColor: systemTheme === 'light' ? '#e1e4e8' : '#404040',
+    name: systemTheme === 'light' ? 'Light' : 'Dark'
+  };
 
   // Update editable code when prop changes
   React.useEffect(() => {
@@ -153,6 +179,24 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
       iconBg: 'bg-cyan-100 dark:bg-cyan-900/40',
       iconColor: 'text-cyan-600 dark:text-cyan-400',
     },
+    indigo: {
+      bg: 'bg-indigo-50 dark:bg-indigo-950/20',
+      border: 'border-indigo-200 dark:border-indigo-800',
+      text: 'text-indigo-700 dark:text-indigo-300',
+      badge: 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300',
+      button: 'bg-indigo-600 hover:bg-indigo-700 text-white',
+      iconBg: 'bg-indigo-100 dark:bg-indigo-900/40',
+      iconColor: 'text-indigo-600 dark:text-indigo-400',
+    },
+    teal: {
+      bg: 'bg-teal-50 dark:bg-teal-950/20',
+      border: 'border-teal-200 dark:border-teal-800',
+      text: 'text-teal-700 dark:text-teal-300',
+      badge: 'bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300',
+      button: 'bg-teal-600 hover:bg-teal-700 text-white',
+      iconBg: 'bg-teal-100 dark:bg-teal-900/40',
+      iconColor: 'text-teal-600 dark:text-teal-400',
+    },
     red: {
       bg: 'bg-red-50 dark:bg-red-950/20',
       border: 'border-red-200 dark:border-red-800',
@@ -180,10 +224,20 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
       iconBg: 'bg-yellow-100 dark:bg-yellow-900/40',
       iconColor: 'text-yellow-600 dark:text-yellow-400',
     },
+    rose: {
+      bg: 'bg-rose-50 dark:bg-rose-950/20',
+      border: 'border-rose-200 dark:border-rose-800',
+      text: 'text-rose-700 dark:text-rose-300',
+      badge: 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300',
+      button: 'bg-rose-600 hover:bg-rose-700 text-white',
+      iconBg: 'bg-rose-100 dark:bg-rose-900/40',
+      iconColor: 'text-rose-600 dark:text-rose-400',
+    },
   };
 
   const theme = themeColors[colorTheme] ?? themeColors.blue;
-  const codeLines = code.split('\n');
+  const safeCode = typeof code === 'string' ? code : '';
+  const codeLines = safeCode.split('\n');
   
   // Check if code is executable (only JavaScript/TypeScript)
   const isExecutable = language === 'javascript' || language === 'typescript' || language === 'jsx' || language === 'tsx';
@@ -205,16 +259,12 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
       setPlaygroundConsole([]); // Clear console when toggling
       return;
     }
-    
-    console.log('Playground button clicked', { onOpenWebPlayground, playgroundConfig });
-    
+
     if (!onOpenWebPlayground) {
-      console.warn('onOpenWebPlayground prop is not provided');
       return;
     }
     
     if (!playgroundConfig) {
-      console.warn('playgroundConfig is not provided');
       return;
     }
     
@@ -222,25 +272,17 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
       const htmlContent = playgroundConfig.html || '';
       const cssContent = playgroundConfig.css || '';
       const jsContent = playgroundConfig.js || code;
-      
-      console.log('Opening playground with:', { htmlContent, cssContent, jsContent });
-      
-      // Try calling with 5 parameters first
-      if (typeof onOpenWebPlayground === 'function') {
-        const config = {
-          visiblePanels: playgroundConfig.visiblePanels || ['js', 'console'],
-        };
-        
-        // Call with all parameters
-        (onOpenWebPlayground as any)(
-          htmlContent,
-          cssContent,
-          jsContent,
-          'js', // focused panel
-          config
-        );
-        
-        console.log('Playground opened successfully');
+
+      const config = {
+        visiblePanels: playgroundConfig.visiblePanels || ['js', 'console'],
+      };
+
+      // Prefer the WebPlaygroundContext signature: (html, css, js, focusedPanel, config)
+      // Backward-compat: if an older callback only expects 4 args, pass config as 4th arg.
+      if (onOpenWebPlayground.length <= 4) {
+        (onOpenWebPlayground as any)(htmlContent, cssContent, jsContent, config);
+      } else {
+        onOpenWebPlayground(htmlContent, cssContent, jsContent, 'js', config);
       }
     } catch (error) {
       console.error('Error opening playground:', error);
@@ -703,9 +745,25 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
                   </div>
                 </div>
                 <div className="p-4">
-                  <pre className="p-4 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl overflow-x-auto font-mono text-xs leading-relaxed border border-slate-200 dark:border-slate-700">
+                  <SyntaxHighlighter
+                    language="javascript"
+                    style={currentIdeTheme.style}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '12px',
+                      fontSize: '14px',
+                      fontWeight: 450,
+                      lineHeight: '1.6',
+                      border: '1px solid rgba(148, 163, 184, 0.2)',
+                      background: currentIdeTheme.bg,
+                      color: currentIdeTheme.color,
+                      fontFamily: '"JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace',
+                    }}
+                    showLineNumbers={false}
+                    wrapLines={true}
+                  >
                     {playgroundConfig.js || editableCode}
-                  </pre>
+                  </SyntaxHighlighter>
                 </div>
               </div>
 
@@ -771,9 +829,25 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
               </div>
             </div>
             <div className="p-4">
-              <pre className="p-4 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl overflow-x-auto font-mono text-xs leading-relaxed border border-slate-200 dark:border-slate-700">
+              <SyntaxHighlighter
+                language="javascript"
+                style={currentIdeTheme.style}
+                customStyle={{
+                  margin: 0,
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  fontWeight: 450,
+                  lineHeight: '1.6',
+                  border: '1px solid rgba(148, 163, 184, 0.2)',
+                  background: currentIdeTheme.bg,
+                  color: currentIdeTheme.color,
+                  fontFamily: '"JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace',
+                }}
+                showLineNumbers={false}
+                wrapLines={true}
+              >
                 {playgroundConfig.js || editableCode}
-              </pre>
+              </SyntaxHighlighter>
               
               {playgroundConfig.html && (
                 <>
@@ -783,9 +857,25 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
                     </svg>
                     HTML
                   </h4>
-                  <pre className="p-4 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl overflow-x-auto font-mono text-xs leading-relaxed border border-slate-200 dark:border-slate-700">
+                  <SyntaxHighlighter
+                    language="html"
+                    style={currentIdeTheme.style}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '12px',
+                      fontSize: '14px',
+                      fontWeight: 450,
+                      lineHeight: '1.6',
+                      border: '1px solid rgba(148, 163, 184, 0.2)',
+                      background: currentIdeTheme.bg,
+                      color: currentIdeTheme.color,
+                      fontFamily: '"JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace',
+                    }}
+                    showLineNumbers={false}
+                    wrapLines={true}
+                  >
                     {playgroundConfig.html}
-                  </pre>
+                  </SyntaxHighlighter>
                 </>
               )}
             </div>
@@ -815,7 +905,9 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       padding: 40px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace;
+      font-size: 14px;
+      font-weight: 450;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
@@ -859,11 +951,12 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     input {
       width: 100%;
       padding: 14px 18px;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 450;
       border: 2px solid rgba(255, 255, 255, 0.3);
       border-radius: 10px;
       transition: all 0.3s;
-      font-family: inherit;
+      font-family: "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace;
       background: rgba(255, 255, 255, 0.95);
       color: #1e293b;
     }
@@ -882,15 +975,15 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     .action-btn {
       width: 100%;
       padding: 14px 24px;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 450;
       cursor: pointer;
       border: none;
       border-radius: 10px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       transition: transform 0.2s, box-shadow 0.2s;
-      font-family: inherit;
+      font-family: "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace;
     }
     button:hover,
     .action-btn:hover {
@@ -908,9 +1001,10 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     [id*="output"] {
       margin-top: 24px;
       padding: 20px;
-      font-size: 18px;
+      font-size: 14px;
       color: #10b981;
-      font-weight: 600;
+      font-weight: 450;
+      font-family: "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace;
       text-align: center;
       background: rgba(255, 255, 255, 0.95);
       border-radius: 12px;
@@ -1110,59 +1204,112 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
 
           {/* Code and Console Grid - Show console only for executable languages */}
           <div className={cn(
-            "grid gap-0",
+            "grid gap-0 h-full",
             isExecutable ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1"
           )}>
             {/* Code Display - Editable only for executable languages */}
             <div className={cn(
-              "bg-slate-50 dark:bg-slate-950 overflow-x-auto",
+              "overflow-hidden h-full flex flex-col",
               isExecutable && "border-r border-slate-200 dark:border-slate-800"
             )}>
               {isExecutable ? (
-                <textarea
-                  value={editableCode}
-                  onChange={(e) => setEditableCode(e.target.value)}
-                  className={cn(
-                    "w-full p-4 font-mono text-xs bg-transparent text-slate-800 dark:text-slate-100 border-none outline-none resize-none leading-relaxed",
-                    previewHtml ? "min-h-[300px]" : "min-h-[400px]"
-                  )}
-                  style={{
-                    fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-                  }}
-                  spellCheck={false}
-                />
+                // For executable code, use a styled textarea with IDE-like appearance
+                <div className="relative h-full flex flex-col">
+                  <div
+                    className="flex items-center px-3 gap-1.5 h-10 border-b flex-shrink-0"
+                    style={{ 
+                      backgroundColor: currentIdeTheme.bg,
+                      borderColor: currentIdeTheme.borderColor
+                    }}
+                  >
+                    <span className="text-xs font-mono flex items-center gap-2" style={{ color: currentIdeTheme.color }}>
+                      <FileCode className="w-3.5 h-3.5" />
+                      code
+                    </span>
+                    <div className="ml-auto flex items-center gap-2">
+                      <span className="text-xs font-mono" style={{ color: currentIdeTheme.color }}>{currentIdeTheme.name}</span>
+                      <span className="px-2 py-0.5 text-xs rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-medium">Editable</span>
+                    </div>
+                  </div>
+                  <textarea
+                    value={editableCode}
+                    onChange={(e) => setEditableCode(e.target.value)}
+                    className="flex-1 w-full p-4 font-mono border-none outline-none resize-none leading-relaxed"
+                    style={{
+                      fontFamily: '"JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace',
+                      fontSize: '14px',
+                      fontWeight: 450,
+                      tabSize: 2,
+                      caretColor: systemTheme === 'light' ? '#24292e' : '#fff',
+                      backgroundColor: currentIdeTheme.bg,
+                      color: currentIdeTheme.color,
+                    }}
+                    spellCheck={false}
+                  />
+                </div>
               ) : (
-                <div className="p-4 font-mono text-xs leading-relaxed" style={{
-                  fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-                }}>
-                  {codeLines.map((line, index) => {
-                    const lineNum = index + 1;
-                    const isHighlighted = highlightLines.includes(lineNum);
-                    
-                    return (
-                      <div
-                        key={index}
-                        className={cn(
-                          'flex gap-4 min-h-[24px]',
-                          isHighlighted && 'bg-blue-500/10 border-l-2 border-blue-500 pl-2 -ml-2'
-                        )}
-                      >
-                        {showLineNumbers && (
-                          <span className="text-slate-400 dark:text-slate-500 select-none w-8 text-right flex-shrink-0">
-                            {lineNum}
-                          </span>
-                        )}
-                        <span className="text-slate-800 dark:text-slate-100 whitespace-pre flex-1">{line}</span>
-                      </div>
-                    );
-                  })}
+                // For non-executable code, use syntax highlighter
+                <div className="relative h-full flex flex-col">
+                  <div
+                    className="flex items-center px-3 gap-1.5 h-10 border-b flex-shrink-0"
+                    style={{ 
+                      backgroundColor: currentIdeTheme.bg,
+                      borderColor: currentIdeTheme.borderColor
+                    }}
+                  >
+                    <span className="text-xs font-mono flex items-center gap-2" style={{ color: currentIdeTheme.color }}>
+                      <FileCode className="w-3.5 h-3.5" />
+                      code
+                    </span>
+                    <span className="ml-auto text-xs font-mono" style={{ color: currentIdeTheme.color }}>{currentIdeTheme.name}</span>
+                  </div>
+                  <div className="flex-1 overflow-auto">
+                    <SyntaxHighlighter
+                      language={language}
+                      style={currentIdeTheme.style}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: 0,
+                        fontSize: '14px',
+                        fontWeight: 450,
+                        lineHeight: '1.6',
+                        padding: '16px',
+                        minHeight: '100%',
+                        background: currentIdeTheme.bg,
+                        color: currentIdeTheme.color,
+                        fontFamily: '"JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, Monaco, Consolas, monospace',
+                      }}
+                      showLineNumbers={showLineNumbers}
+                      wrapLines={true}
+                      lineNumberStyle={{
+                        minWidth: '3em',
+                        paddingRight: '1em',
+                        color: '#858585',
+                        textAlign: 'right',
+                        userSelect: 'none',
+                      }}
+                      lineProps={(lineNumber) => {
+                        const isHighlighted = highlightLines.includes(lineNumber);
+                        return {
+                          style: {
+                            backgroundColor: isHighlighted ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
+                            borderLeft: isHighlighted ? '3px solid #3b82f6' : 'none',
+                            display: 'block',
+                            paddingLeft: isHighlighted ? '8px' : '0',
+                          }
+                        };
+                      }}
+                    >
+                      {safeCode}
+                    </SyntaxHighlighter>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Console Output - Only show for executable languages */}
             {isExecutable && (
-              <div className="bg-slate-100 dark:bg-slate-900">
+              <div className="bg-slate-100 dark:bg-slate-900 h-full flex flex-col">
                 <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Terminal className="w-4 h-4 text-purple-600 dark:text-purple-400" />

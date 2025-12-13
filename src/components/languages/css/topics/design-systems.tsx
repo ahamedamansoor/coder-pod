@@ -1,882 +1,561 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { Palette, Sparkles, CheckCircle, Code, Zap, Layers, Box, BookOpen } from 'lucide-react';
+'use client';
+
+import React from 'react';
+import { Palette, BookOpen, Sparkles, Target, Layers, CheckCircle } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface DesignSystemsProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function DesignSystems({ onOpenWebPlayground }: DesignSystemsProps) {
-    
-    return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
-                icon={Palette}
-                category="CSS · Architecture"
-                title="Design Systems"
-                description="Build consistent, scalable design systems with design tokens, component libraries, and style guides"
-                colorTheme="pink"
-            />
+  
+  return (
+    <CssTopicLayout
+      icon={Palette}
+      title="Design Systems"
+      description="Create consistent designs across your entire product"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is a Design System?",
+        description: "A collection of reusable components, guidelines, and standards that ensure design consistency",
+        keyPoints: [
+          "Consistent colors, typography, and spacing",
+          "Reusable UI components with clear guidelines",
+          "Design tokens for easy theme changes",
+          "Documentation for designers and developers",
+          "Used by big companies (Google Material, Apple)",
+          "Speeds up design and development"
+        ]
+      }}
+    >
 
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-pink-600 dark:text-pink-400">
-                        <div className="relative">
-                            <Palette className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are Design Systems?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-pink-600 dark:text-pink-400">
-                        🎨 A collection of reusable components, guidelines, and design tokens that ensure consistency across products!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-pink-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-pink-400 dark:hover:border-pink-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-pink-600 dark:text-pink-400 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Layers className="w-5 h-5 animate-pulse" />
-                                    🎯 Design System Components
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">Design systems</strong> are the single source of truth for your brand's design. They include design tokens (colors, spacing, typography), reusable components, patterns, and documentation that ensures consistency across all products and teams.
-                                </p>
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Real-World Example">
+        Think of LEGO blocks: every piece follows the same rules (how they connect, their size system), 
+        you can combine them in endless ways, and everything works together perfectly. 
+        A design system is the same - <strong>consistent building blocks that work together to create any interface!</strong>
+      </InfoAlert>
 
-                                {/* Visual */}
-                                <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 p-4 rounded-lg border border-pink-200/50">
-                                    <div className="text-sm font-semibold text-pink-700 dark:text-pink-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        🎨 Design System = Tokens + Components + Guidelines
-                                    </div>
-                                    <div className="text-xs text-pink-600 dark:text-pink-400">
-                                        Consistent branding • Faster development • Better collaboration
-                                    </div>
-                                </div>
-                            </div>
+      {/* Core Parts */}
+      <SectionCard
+        title="Parts of a Design System"
+        description="What makes up a design system"
+        icon={Layers}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "🎨 Design Tokens",
+              description: "Variables for colors, spacing, fonts",
+              example: "--primary-color: #3b82f6"
+            },
+            {
+              title: "📦 Components",
+              description: "Reusable UI pieces (buttons, cards, forms)",
+              example: "Button component with 5 variations"
+            },
+            {
+              title: "📐 Guidelines",
+              description: "Rules for using components",
+              example: "When to use primary vs secondary buttons"
+            },
+            {
+              title: "📚 Documentation",
+              description: "How to use everything",
+              example: "Component examples and code snippets"
+            }
+          ]}
+        />
+      </SectionCard>
 
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-pink-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-pink-600 dark:text-pink-400 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    ✨ Design System Benefits
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <CheckCircle className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Consistent</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Same look</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <Zap className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Efficient</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">Build faster</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-                                        <Layers className="w-6 h-6 text-purple-500" />
-                                        <div>
-                                            <div className="font-semibold text-purple-700 dark:text-purple-300 text-sm">Scalable</div>
-                                            <div className="text-xs text-purple-600 dark:text-purple-400">Grows easily</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-                                        <BookOpen className="w-6 h-6 text-pink-500" />
-                                        <div>
-                                            <div className="font-semibold text-pink-700 dark:text-pink-300 text-sm">Documented</div>
-                                            <div className="text-xs text-pink-600 dark:text-pink-400">Clear guides</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      {/* Design Tokens */}
+      <SectionCard
+        title="Design Tokens - The Foundation"
+        description="Variables that define your design"
+        icon={Sparkles}
+        variant="primary"
+      >
+        <InfoAlert type="info" title="What are Design Tokens?">
+          Design tokens are named variables that store design decisions (colors, spacing, fonts). 
+          Change one token, update everywhere! Think of them as the DNA of your design system.
+        </InfoAlert>
 
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-pink-100 via-rose-100 to-red-100 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-red-900/30 p-6 rounded-xl border border-pink-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">🎨</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-pink-700 dark:text-pink-300">Design System</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-pink-600 dark:text-pink-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Brand consistency
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-pink-600 dark:text-pink-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Team alignment
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-pink-600 dark:text-pink-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Faster iteration
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div className="space-y-6 mt-6">
+          <SyntaxBlock
+            title="Design Tokens Example"
+            code={`/* design-tokens.css - Your design system's foundation */
 
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Start small! Define colors and typography first, then build components gradually.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+/* Colors */
+:root {
+  /* Primary colors */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-900: #1e3a8a;
+  
+  /* Neutral colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-500: #6b7280;
+  --color-gray-900: #111827;
+  
+  /* Semantic colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  
+  /* Typography */
+  --font-sans: system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
+  
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}`}
+          />
 
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Design Tokens</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">{'/* Color Tokens */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-blue-600 dark:text-blue-400">--color-primary</span>: <span className="text-green-600 dark:text-green-400">#3b82f6</span>;</div>
-                            <div className="text-gray-500 mt-2">{'/* Spacing Tokens */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-purple-600 dark:text-purple-400">--space-md</span>: <span className="text-green-600 dark:text-green-400">16px</span>;</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+          <SyntaxBlock
+            title="Using Design Tokens in Components"
+            code={`/* button.css - Uses design tokens */
 
-            {/* DESIGN TOKENS */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Box className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                        Design Tokens - The Foundation
-                    </CardTitle>
-                    <CardDescription>
-                        CSS custom properties for colors, spacing, typography, and more
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Design Token System"
-                        html={`<div class="design-system-demo">
+.button {
+  /* Use tokens instead of hardcoded values */
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  font-family: var(--font-sans);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.button--primary {
+  background: var(--color-primary-500);
+  color: white;
+}
+
+.button--primary:hover {
+  background: var(--color-primary-600);
+}
+
+.button--small {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.button--large {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-lg);
+}`}
+          />
+        </div>
+      </SectionCard>
+
+      {/* Example: Mini Design System */}
+      <SectionCard
+        title="Example: Mini Design System"
+        description="See design tokens in action"
+        icon={BookOpen}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={`<div class="container">
+  <h1 class="heading-large">Design System Demo</h1>
+  <p class="text-body">This demo uses a simple design system with tokens for colors, spacing, and typography.</p>
+  
   <div class="section">
-    <h2 class="heading-lg">Design Tokens in Action</h2>
-    <p class="text-body">
-      Design tokens are the visual design atoms of your system - colors, 
-      spacing, typography, and more.
-    </p>
+    <h2 class="heading-medium">Buttons</h2>
+    <button class="btn btn--primary btn--medium">Primary</button>
+    <button class="btn btn--secondary btn--medium">Secondary</button>
+    <button class="btn btn--success btn--medium">Success</button>
   </div>
   
-  <div class="card card-primary">
-    <h3 class="heading-md">Primary Card</h3>
-    <p class="text-body">Using primary color token</p>
-    <button class="btn btn-primary">Primary Button</button>
-  </div>
-  
-  <div class="card card-secondary">
-    <h3 class="heading-md">Secondary Card</h3>
-    <p class="text-body">Using secondary color token</p>
-    <button class="btn btn-secondary">Secondary Button</button>
-  </div>
-  
-  <div class="token-showcase">
-    <div class="token-item">
-      <div class="color-swatch primary"></div>
-      <span>Primary</span>
-    </div>
-    <div class="token-item">
-      <div class="color-swatch secondary"></div>
-      <span>Secondary</span>
-    </div>
-    <div class="token-item">
-      <div class="color-swatch success"></div>
-      <span>Success</span>
+  <div class="section">
+    <h2 class="heading-medium">Cards</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3 class="heading-small">Feature 1</h3>
+        <p class="text-body">Consistent spacing and typography</p>
+      </div>
+      <div class="card">
+        <h3 class="heading-small">Feature 2</h3>
+        <p class="text-body">Reusable components</p>
+      </div>
     </div>
   </div>
 </div>`}
-                        css={`:root {
-  /* Color Tokens */
+          css={`:root {
+  /* Design Tokens */
   --color-primary: #3b82f6;
-  --color-primary-dark: #2563eb;
-  --color-secondary: #8b5cf6;
-  --color-secondary-dark: #7c3aed;
+  --color-secondary: #6b7280;
   --color-success: #10b981;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-bg: #ffffff;
+  --color-border: #e5e7eb;
   
-  /* Spacing Tokens */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
   
-  /* Typography Tokens */
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 20px;
-  --font-size-xl: 24px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
   
-  /* Border Radius Tokens */
-  --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.design-system-demo {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: var(--space-lg);
+body {
   font-family: system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
-.section {
-  margin-bottom: var(--space-xl);
+.container {
+  padding: var(--space-8);
 }
 
 /* Typography using tokens */
-.heading-lg {
-  font-size: var(--font-size-xl);
+.heading-large {
+  font-size: var(--text-2xl);
   font-weight: 700;
-  color: #1f2937;
-  margin: 0 0 var(--space-md) 0;
+  margin: 0 0 var(--space-2) 0;
 }
 
-.heading-md {
-  font-size: var(--font-size-lg);
+.heading-medium {
+  font-size: var(--text-xl);
   font-weight: 600;
-  margin: 0 0 var(--space-sm) 0;
+  margin: 0 0 var(--space-4) 0;
+}
+
+.heading-small {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
 }
 
 .text-body {
-  font-size: var(--font-size-md);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-6) 0;
   line-height: 1.6;
-  color: #6b7280;
-  margin: 0;
 }
 
-/* Cards using tokens */
-.card {
-  padding: var(--space-lg);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--space-md);
-  border: 2px solid;
+.section {
+  margin-bottom: var(--space-8);
 }
 
-.card-primary {
-  background: #eff6ff;
-  border-color: var(--color-primary);
-}
-
-.card-primary .heading-md {
-  color: var(--color-primary);
-}
-
-.card-secondary {
-  background: #f5f3ff;
-  border-color: var(--color-secondary);
-}
-
-.card-secondary .heading-md {
-  color: var(--color-secondary);
-}
-
-/* Buttons using tokens */
+/* Button component using tokens */
 .btn {
-  padding: var(--space-sm) var(--space-lg);
+  display: inline-block;
+  margin-right: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  font-weight: 600;
   border: none;
   border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: var(--font-size-md);
   cursor: pointer;
-  transition: all 0.2s;
-  margin-top: var(--space-md);
+  transition: all 0.2s ease;
 }
 
-.btn-primary {
+.btn--primary {
   background: var(--color-primary);
   color: white;
 }
 
-.btn-primary:hover {
-  background: var(--color-primary-dark);
+.btn--primary:hover {
+  opacity: 0.9;
 }
 
-.btn-secondary {
+.btn--secondary {
   background: var(--color-secondary);
   color: white;
 }
 
-.btn-secondary:hover {
-  background: var(--color-secondary-dark);
+.btn--secondary:hover {
+  opacity: 0.9;
 }
 
-/* Token Showcase */
-.token-showcase {
-  display: flex;
-  gap: var(--space-md);
-  margin-top: var(--space-xl);
-  flex-wrap: wrap;
-}
-
-.token-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.color-swatch {
-  width: 60px;
-  height: 60px;
-  border-radius: var(--radius-md);
-  border: 2px solid #e5e7eb;
-}
-
-.color-swatch.primary {
-  background: var(--color-primary);
-}
-
-.color-swatch.secondary {
-  background: var(--color-secondary);
-}
-
-.color-swatch.success {
+.btn--success {
   background: var(--color-success);
-}
-
-.token-item span {
-  font-size: var(--font-size-sm);
-  color: #6b7280;
-}
-
-@media (prefers-color-scheme: dark) {
-  .design-system-demo {
-    background: #0f172a;
-  }
-  
-  .heading-lg {
-    color: #f9fafb;
-  }
-  
-  .text-body {
-    color: #d1d5db;
-  }
-  
-  .card-primary {
-    background: #1e3a8a;
-  }
-  
-  .card-secondary {
-    background: #581c87;
-  }
-  
-  .color-swatch {
-    border-color: #374151;
-  }
-  
-  .token-item span {
-    color: #9ca3af;
-  }
-}`}
-                        colorTheme="indigo"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* COMPONENT LIBRARY */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                        Component Library
-                    </CardTitle>
-                    <CardDescription>
-                        Reusable UI components built with design tokens
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Component Library Example"
-                        html={`<div class="component-library">
-  <h2 class="lib-heading">Button Components</h2>
-  
-  <div class="component-section">
-    <h3 class="section-title">Sizes</h3>
-    <div class="component-grid">
-      <button class="ds-button ds-button-sm">Small</button>
-      <button class="ds-button ds-button-md">Medium</button>
-      <button class="ds-button ds-button-lg">Large</button>
-    </div>
-  </div>
-  
-  <div class="component-section">
-    <h3 class="section-title">Variants</h3>
-    <div class="component-grid">
-      <button class="ds-button ds-button-primary">Primary</button>
-      <button class="ds-button ds-button-secondary">Secondary</button>
-      <button class="ds-button ds-button-outline">Outline</button>
-      <button class="ds-button ds-button-ghost">Ghost</button>
-    </div>
-  </div>
-  
-  <div class="component-section">
-    <h3 class="section-title">States</h3>
-    <div class="component-grid">
-      <button class="ds-button ds-button-primary">Normal</button>
-      <button class="ds-button ds-button-primary" disabled>Disabled</button>
-    </div>
-  </div>
-</div>`}
-                        css={`:root {
-  --ds-primary: #6366f1;
-  --ds-secondary: #8b5cf6;
-  --ds-text: #1f2937;
-  --ds-border: #d1d5db;
-  --ds-radius: 8px;
-  --ds-spacing-sm: 8px;
-  --ds-spacing-md: 12px;
-  --ds-spacing-lg: 16px;
-}
-
-.component-library {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 24px;
-}
-
-.lib-heading {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--ds-text);
-  margin: 0 0 24px 0;
-}
-
-.component-section {
-  margin-bottom: 32px;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #6b7280;
-  margin: 0 0 12px 0;
-}
-
-.component-grid {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* Base Button Component */
-.ds-button {
-  font-family: system-ui, sans-serif;
-  font-weight: 600;
-  border: 2px solid transparent;
-  border-radius: var(--ds-radius);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ds-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.ds-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Button Sizes */
-.ds-button-sm {
-  padding: var(--ds-spacing-sm) var(--ds-spacing-md);
-  font-size: 14px;
-}
-
-.ds-button-md {
-  padding: var(--ds-spacing-md) var(--ds-spacing-lg);
-  font-size: 16px;
-}
-
-.ds-button-lg {
-  padding: var(--ds-spacing-lg) 24px;
-  font-size: 18px;
-}
-
-/* Button Variants */
-.ds-button-primary {
-  background: var(--ds-primary);
   color: white;
 }
 
-.ds-button-primary:hover:not(:disabled) {
-  background: #4f46e5;
+.btn--success:hover {
+  opacity: 0.9;
 }
 
-.ds-button-secondary {
-  background: var(--ds-secondary);
-  color: white;
+/* Card component using tokens */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
 }
 
-.ds-button-secondary:hover:not(:disabled) {
-  background: #7c3aed;
-}
-
-.ds-button-outline {
-  background: transparent;
-  border-color: var(--ds-primary);
-  color: var(--ds-primary);
-}
-
-.ds-button-outline:hover:not(:disabled) {
-  background: var(--ds-primary);
-  color: white;
-}
-
-.ds-button-ghost {
-  background: transparent;
-  color: var(--ds-text);
-}
-
-.ds-button-ghost:hover:not(:disabled) {
-  background: #f3f4f6;
+.card {
+  padding: var(--space-6);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ds-text: #f9fafb;
-    --ds-border: #374151;
+    --color-text: #f3f4f6;
+    --color-text-muted: #9ca3af;
+    --color-bg: #1f2937;
+    --color-border: #374151;
   }
   
-  .component-library {
-    background: #0f172a;
+  .btn--primary {
+    background: var(--color-primary);
   }
   
-  .section-title {
-    color: #9ca3af;
+  .btn--secondary {
+    background: var(--color-secondary);
   }
   
-  .ds-button-ghost {
-    color: #f9fafb;
-  }
-  
-  .ds-button-ghost:hover:not(:disabled) {
-    background: #1f2937;
-  }
-  
-  .ds-button-outline {
-    border-color: #818cf8;
-    color: #818cf8;
-  }
-  
-  .ds-button-outline:hover:not(:disabled) {
-    background: #818cf8;
-    color: white;
+  .btn--success {
+    background: var(--color-success);
   }
 }`}
-                        colorTheme="purple"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
+          title="Design System in Action"
+          colorTheme="purple"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-            {/* BEST PRACTICES */}
-            <Card className="border-pink-200 bg-pink-50/50 dark:bg-pink-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-pink-700 dark:text-pink-300">
-                        <Sparkles className="w-5 h-5" />
-                        Design System Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-pink-900 dark:text-pink-200">Start with design tokens:</strong>
-                            <span className="text-pink-700 dark:text-pink-300"> Define your foundation (colors, spacing, typography) before building components.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-pink-900 dark:text-pink-200">Document everything:</strong>
-                            <span className="text-pink-700 dark:text-pink-300"> Every component, token, and pattern should have clear documentation and usage examples.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-pink-900 dark:text-pink-200">Version your system:</strong>
-                            <span className="text-pink-700 dark:text-pink-300"> Use semantic versioning to manage changes and maintain backwards compatibility.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-pink-900 dark:text-pink-200">Make it accessible:</strong>
-                            <span className="text-pink-700 dark:text-pink-300"> Build accessibility (WCAG) into your design system from the start, not as an afterthought.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+      {/* Benefits */}
+      <SectionCard
+        title="Why Use a Design System?"
+        description="The advantages"
+        icon={CheckCircle}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ Consistency</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Every button looks the same. Every spacing follows the same scale. 
+              No more "this button is 14px, that one is 15px" inconsistencies.
+            </p>
+          </div>
 
-            {/* BROWSER SUPPORT */}
-            <Alert className="border-pink-200 bg-pink-50 dark:bg-pink-950/20">
-                <CheckCircle className="h-4 w-4 text-pink-600" />
-                <AlertDescription className="text-pink-700 dark:text-pink-300">
-                    <strong className="block mb-1">Modern Standards</strong>
-                    Design systems using CSS custom properties work in all modern browsers. For IE11 support, consider using PostCSS to compile variables, or use a CSS-in-JS solution.
-                </AlertDescription>
-            </Alert>
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ Speed</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              No decisions needed - use existing components. Build pages in minutes, not hours. 
+              Designers and developers work faster.
+            </p>
+          </div>
 
-            {/* INTERACTIVE PLAYGROUND */}
-            {onOpenWebPlayground && (
-                <InteractivePlayground
-                    title="🎨 Try Design Systems"
-                    description="Build a complete design system with tokens, components, and consistent styling"
-                    features={[
-                        'Design Tokens',
-                        'Component Library',
-                        'Live Preview',
-                        'Consistent Theming'
-                    ]}
-                    buttonText="Open Design System Playground"
-                    onLaunchPlayground={onOpenWebPlayground}
-                    playgroundData={{
-                        html: `<div class="ds-demo">
-  <h1 class="ds-heading-xl">Design System Demo</h1>
-  <p class="ds-text-body">
-    A complete design system with consistent tokens and components.
-  </p>
-  
-  <!-- Button Sizes -->
-  <div class="ds-section">
-    <h3 class="ds-heading-md">Button Sizes</h3>
-    <div class="ds-button-group">
-      <button class="ds-btn ds-btn--sm ds-btn--primary">Small</button>
-      <button class="ds-btn ds-btn--md ds-btn--primary">Medium</button>
-      <button class="ds-btn ds-btn--lg ds-btn--primary">Large</button>
-    </div>
-  </div>
-  
-  <!-- Button Variants -->
-  <div class="ds-section">
-    <h3 class="ds-heading-md">Button Variants</h3>
-    <div class="ds-button-group">
-      <button class="ds-btn ds-btn--md ds-btn--primary">Primary</button>
-      <button class="ds-btn ds-btn--md ds-btn--secondary">Secondary</button>
-      <button class="ds-btn ds-btn--md ds-btn--outline">Outline</button>
-    </div>
-  </div>
-  
-  <!-- Color Tokens -->
-  <div class="ds-section">
-    <h3 class="ds-heading-md">Color Tokens</h3>
-    <div class="ds-color-grid">
-      <div class="ds-color-item">
-        <div class="ds-swatch ds-swatch--primary"></div>
-        <span>Primary</span>
-      </div>
-      <div class="ds-color-item">
-        <div class="ds-swatch ds-swatch--secondary"></div>
-        <span>Secondary</span>
-      </div>
-      <div class="ds-color-item">
-        <div class="ds-swatch ds-swatch--success"></div>
-        <span>Success</span>
-      </div>
-    </div>
-  </div>
-</div>`,
-                        css: `:root {
-  /* Color Tokens */
-  --ds-color-primary: #6366f1;
-  --ds-color-primary-hover: #4f46e5;
-  --ds-color-secondary: #8b5cf6;
-  --ds-color-secondary-hover: #7c3aed;
-  --ds-color-success: #10b981;
-  
-  /* Spacing Tokens */
-  --ds-space-xs: 4px;
-  --ds-space-sm: 8px;
-  --ds-space-md: 16px;
-  --ds-space-lg: 24px;
-  --ds-space-xl: 32px;
-  
-  /* Typography Tokens */
-  --ds-font-sm: 14px;
-  --ds-font-md: 16px;
-  --ds-font-lg: 20px;
-  --ds-font-xl: 32px;
-  
-  /* Border Radius Tokens */
-  --ds-radius: 8px;
-}
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ Easy Updates</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Change <code>--color-primary</code> once, update 1,000 buttons instantly. 
+              Rebranding becomes easy!
+            </p>
+          </div>
 
-.ds-demo {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: var(--ds-space-lg);
-  font-family: system-ui, sans-serif;
-}
-
-/* Typography System */
-.ds-heading-xl {
-  font-size: var(--ds-font-xl);
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0 0 var(--ds-space-md) 0;
-}
-
-.ds-heading-md {
-  font-size: var(--ds-font-lg);
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 var(--ds-space-sm) 0;
-}
-
-.ds-text-body {
-  font-size: var(--ds-font-md);
-  color: #6b7280;
-  line-height: 1.6;
-  margin: 0 0 var(--ds-space-xl) 0;
-}
-
-/* Layout */
-.ds-section {
-  margin-bottom: var(--ds-space-xl);
-}
-
-.ds-button-group {
-  display: flex;
-  gap: var(--ds-space-md);
-  flex-wrap: wrap;
-}
-
-/* Button Component */
-.ds-btn {
-  border: 2px solid transparent;
-  border-radius: var(--ds-radius);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-}
-
-.ds-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* Button Sizes */
-.ds-btn--sm {
-  padding: var(--ds-space-sm) var(--ds-space-md);
-  font-size: var(--ds-font-sm);
-}
-
-.ds-btn--md {
-  padding: var(--ds-space-md) var(--ds-space-lg);
-  font-size: var(--ds-font-md);
-}
-
-.ds-btn--lg {
-  padding: var(--ds-space-lg) var(--ds-space-xl);
-  font-size: var(--ds-font-lg);
-}
-
-/* Button Variants */
-.ds-btn--primary {
-  background: var(--ds-color-primary);
-  color: white;
-}
-
-.ds-btn--primary:hover {
-  background: var(--ds-color-primary-hover);
-}
-
-.ds-btn--secondary {
-  background: var(--ds-color-secondary);
-  color: white;
-}
-
-.ds-btn--secondary:hover {
-  background: var(--ds-color-secondary-hover);
-}
-
-.ds-btn--outline {
-  background: transparent;
-  border-color: var(--ds-color-primary);
-  color: var(--ds-color-primary);
-}
-
-.ds-btn--outline:hover {
-  background: var(--ds-color-primary);
-  color: white;
-}
-
-/* Color Swatches */
-.ds-color-grid {
-  display: flex;
-  gap: var(--ds-space-lg);
-}
-
-.ds-color-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--ds-space-xs);
-}
-
-.ds-swatch {
-  width: 60px;
-  height: 60px;
-  border-radius: var(--ds-radius);
-  border: 2px solid #e5e7eb;
-}
-
-.ds-swatch--primary {
-  background: var(--ds-color-primary);
-}
-
-.ds-swatch--secondary {
-  background: var(--ds-color-secondary);
-}
-
-.ds-swatch--success {
-  background: var(--ds-color-success);
-}
-
-.ds-color-item span {
-  font-size: var(--ds-font-sm);
-  color: #6b7280;
-}`,
-                        js: ''
-                    }}
-                    colorTheme="purple"
-                />
-            )}
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">✅ Team Alignment</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Everyone uses the same components. Designers design with real components. 
+              Developers build what was designed. No surprises!
+            </p>
+          </div>
         </div>
-    );
+      </SectionCard>
+
+      {/* How to Build */}
+      <SectionCard
+        title="How to Build a Design System"
+        description="Step-by-step process"
+        icon={Target}
+      >
+        <div className="space-y-4">
+          <div className="p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Step 1: Define Design Tokens</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Start with the basics: colors (3-5 main colors), spacing scale (4px, 8px, 12px...), 
+              typography (2-3 fonts, 5-6 sizes), and border radius values.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">Step 2: Build Core Components</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Start with the most-used components: Button, Input, Card, Modal. 
+              Make sure they use your design tokens.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-950/20">
+            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Step 3: Document Everything</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Write clear guidelines: when to use each component, examples, code snippets. 
+              Make it easy for new team members.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
+            <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">Step 4: Create a Storybook</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Build a website showing all components with live examples. 
+              Tools like Storybook, Figma, or even a simple HTML page work great.
+            </p>
+          </div>
+
+          <div className="p-4 border-l-4 border-pink-500 bg-pink-50 dark:bg-pink-950/20">
+            <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-2">Step 5: Maintain & Evolve</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Review and update regularly. Add new components as needed. 
+              Get feedback from users and improve!
+            </p>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Famous Design Systems */}
+      <SectionCard
+        title="Famous Design Systems to Learn From"
+        description="Real-world examples"
+        icon={BookOpen}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-5 border-2 border-blue-200 dark:border-blue-800 rounded-xl">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">🎨 Material Design (Google)</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Google's design system used across all their products. Comprehensive, well-documented, 
+              with components for web and mobile.
+            </p>
+            <code className="text-xs bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">material.io</code>
+          </div>
+
+          <div className="p-5 border-2 border-purple-200 dark:border-purple-800 rounded-xl">
+            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">🍎 Human Interface (Apple)</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Apple's design language. Clean, minimalist, with detailed guidelines 
+              for iOS, macOS, and web.
+            </p>
+            <code className="text-xs bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">developer.apple.com/design</code>
+          </div>
+
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">⚡ Lightning (Salesforce)</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Enterprise-focused design system. Great example of complex component library 
+              with clear documentation.
+            </p>
+            <code className="text-xs bg-green-100 dark:bg-green-900 px-2 py-1 rounded">lightningdesignsystem.com</code>
+          </div>
+
+          <div className="p-5 border-2 border-pink-200 dark:border-pink-800 rounded-xl">
+            <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-2">🛒 Polaris (Shopify)</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              E-commerce focused design system. Excellent examples of practical components 
+              for admin interfaces.
+            </p>
+            <code className="text-xs bg-pink-100 dark:bg-pink-900 px-2 py-1 rounded">polaris.shopify.com</code>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Create a Design System"
+        description="Common scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Multiple Products"
+            description="When you have 2+ apps that should look similar"
+            icon={Layers}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Large Teams"
+            description="5+ designers/developers working together"
+            icon={CheckCircle}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Long-Term Projects"
+            description="Products that will be maintained for years"
+            icon={Sparkles}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="White-Label Products"
+            description="Same product with different branding for clients"
+            icon={Palette}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="Design System Best Practices">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Start Small:</strong> Begin with 10-15 tokens and 5 components. Don't try to build everything at once</li>
+          <li><strong>Use Your System:</strong> Actually use it in a real project. You'll find what's missing or doesn't work</li>
+          <li><strong>Version Control:</strong> Treat your design system like code - use Git, track changes, release versions</li>
+          <li><strong>Get Feedback:</strong> Talk to designers and developers using it. What's confusing? What's missing?</li>
+          <li><strong>Keep Documentation Updated:</strong> Every component should have examples and usage guidelines</li>
+          <li><strong>Make it Accessible:</strong> All components should work with keyboard and screen readers</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools */}
+      <InfoAlert type="info" title="Design System Tools">
+        <div className="mt-2 space-y-2">
+          <p><strong>Design:</strong> Figma, Sketch, Adobe XD - create design libraries</p>
+          <p><strong>Documentation:</strong> Storybook, Docz, Styleguidist - showcase components</p>
+          <p><strong>Tokens:</strong> Style Dictionary, Theo - manage design tokens</p>
+          <p><strong>CSS:</strong> CSS Variables, Sass, CSS Modules - implement tokens</p>
+        </div>
+      </InfoAlert>
+
+    </CssTopicLayout>
+  );
 }

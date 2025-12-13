@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Grid, CheckCircle, Layers, Info, ArrowRight } from 'lucide-react';
+import { Grid, CheckCircle, Layers, Info, ArrowRight, Lightbulb, Sparkles, Code, Layout, AlignHorizontalSpaceAround } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssSubgridProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
@@ -331,114 +332,192 @@ export default function CssSubgrid({ onOpenWebPlayground }: CssSubgridProps) {
         colorTheme="purple"
       />
 
-      <Card>
+      {/* What is CSS Subgrid Section - Enhanced with animations */}
+      <Card className="relative overflow-hidden bg-gradient-to-br from-purple-50/60 via-white to-pink-50/60 dark:from-purple-950/30 dark:via-slate-900 dark:to-pink-950/30 backdrop-blur">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
         <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-purple-700 dark:text-purple-300">
-            <div className="relative">
-              <Grid className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            What is CSS Subgrid?
-          </CardTitle>
-          <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-            📐 Inherit parent grid tracks for perfect nested grid alignment!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                  <Grid className="w-5 h-5" />
-                  The Problem Without Subgrid
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Before subgrid, nested grids couldn't align with their parent's grid tracks. 
-                  Each nested grid had its own independent track sizing, making perfect alignment impossible.
-                </p>
-                
-                <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200/50 mb-4">
-                  <div className="font-semibold text-red-700 dark:text-red-300 mb-2">❌ Without Subgrid:</div>
-                  <div className="text-sm text-red-600 dark:text-red-400">
-                    • Nested grids can't align with parent<br/>
-                    • Content misalignment issues<br/>
-                    • Complex workarounds needed
+          <div className="flex items-start justify-between">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-purple-500/20 rounded-xl blur-xl animate-pulse"></div>
+                  <div className="relative w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <Grid className="w-7 h-7 text-white" />
                   </div>
                 </div>
-                
-                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200/50">
-                  <div className="font-semibold text-green-700 dark:text-green-300 mb-2">✅ With Subgrid:</div>
-                  <div className="text-sm text-green-600 dark:text-green-400">
-                    • Perfect alignment across levels<br/>
-                    • Simplified layout code<br/>
-                    • Flexible nested structures
-                  </div>
+                <div>
+                  <CardTitle className="text-3xl bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+                    What is CSS Subgrid?
+                  </CardTitle>
+                  <CardDescription className="text-base mt-1">
+                    Inherit parent grid tracks for perfect nested alignment
+                  </CardDescription>
                 </div>
               </div>
+            </div>
+            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
+              CSS Grid Level 2
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-6">
+          {/* Main Explanation */}
+          <Alert className="border-purple-200 dark:border-purple-800 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/50 dark:to-pink-950/50">
+            <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <AlertTitle className="text-purple-900 dark:text-purple-100">The Magic of Subgrid</AlertTitle>
+            <AlertDescription className="text-purple-800 dark:text-purple-200">
+              Subgrid allows a grid item to inherit the column or row tracks from its parent grid, enabling perfect alignment across nested grid levels. Before subgrid, achieving this required complex workarounds or was simply impossible!
+            </AlertDescription>
+          </Alert>
 
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-200/50">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300">
-                  Key Benefits
-                </h4>
-                
-                <div className="grid gap-3">
-                  <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-purple-700 dark:text-purple-300">Perfect Alignment</div>
-                      <div className="text-sm text-purple-600 dark:text-purple-400">
-                        Child items align perfectly with parent grid tracks
-                      </div>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Problem vs Solution */}
+            <div className="space-y-4">
+              <div className="relative p-6 rounded-xl bg-white dark:bg-slate-800 border-2 border-red-200 dark:border-red-800 shadow-lg overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-2xl"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                      <Code className="w-5 h-5 text-red-600 dark:text-red-400" />
                     </div>
+                    <h4 className="font-bold text-lg text-red-700 dark:text-red-300">Without Subgrid</h4>
                   </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <Layers className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-blue-700 dark:text-blue-300">Simplified Code</div>
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
-                        No need for complex calculations or workarounds
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <ArrowRight className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-green-700 dark:text-green-300">Flexible Layouts</div>
-                      <div className="text-sm text-green-600 dark:text-green-400">
-                        Create complex nested grids with ease
-                      </div>
-                    </div>
-                  </div>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-500 font-bold">❌</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Nested grids create their own independent tracks
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-500 font-bold">❌</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Misaligned content across nested levels
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-500 font-bold">❌</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Complex calculations and workarounds needed
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-500 font-bold">❌</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Card footers at different heights
+                      </span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-purple-100 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-purple-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">📐</div>
-                  <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Subgrid Syntax</div>
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-                    <code className="text-sm font-mono text-purple-600 dark:text-purple-400">
-                      grid-template-columns: subgrid;
-                    </code>
+              <div className="relative p-6 rounded-xl bg-white dark:bg-slate-800 border-2 border-emerald-200 dark:border-emerald-800 shadow-lg overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                      <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">With Subgrid</h4>
                   </div>
-                  <div className="text-sm text-purple-600 dark:text-purple-400">
-                    Inherits parent's column tracks
-                  </div>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold">✅</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Child inherits parent's grid tracks perfectly
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold">✅</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Perfect alignment across all nested levels
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold">✅</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Clean, simple CSS with no calculations
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold">✅</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        All card footers align automatically
+                      </span>
+                    </li>
+                  </ul>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Use subgrid for card layouts where you want all footers to align perfectly!
-                  </div>
+          {/* Key Concepts Grid */}
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-purple-200 dark:border-purple-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-3">
+                  <Layout className="w-5 h-5 text-white" />
                 </div>
+                <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2">Track Inheritance</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Child grid items use parent's column or row track sizing automatically
+                </p>
+              </div>
+            </div>
+
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-blue-200 dark:border-blue-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-3">
+                  <AlignHorizontalSpaceAround className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-2">Perfect Alignment</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Content aligns perfectly across parent and child grids
+                </p>
+              </div>
+            </div>
+
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-emerald-200 dark:border-emerald-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center mb-3">
+                  <Layers className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-2">Simplified Code</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  No complex calculations or JavaScript needed for alignment
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Pro Tip */}
+          <div className="relative p-6 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 dark:from-amber-950/30 dark:via-orange-950/30 dark:to-amber-950/30 rounded-xl border-2 border-amber-200 dark:border-amber-800 shadow-lg overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl animate-pulse"></div>
+            <div className="relative flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg animate-bounce">
+                <Lightbulb className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h4 className="font-bold text-lg text-amber-900 dark:text-amber-100 mb-2">💡 Pro Tip: Best Use Cases</h4>
+                <ul className="space-y-2 text-amber-800 dark:text-amber-200">
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-600">•</span>
+                    <span><strong>Card Layouts:</strong> Keep footers aligned across cards with varying content heights</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-600">•</span>
+                    <span><strong>Form Layouts:</strong> Align labels and inputs in nested fieldsets</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-600">•</span>
+                    <span><strong>Data Tables:</strong> Create complex table-like layouts with perfect alignment</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -501,69 +580,368 @@ export default function CssSubgrid({ onOpenWebPlayground }: CssSubgridProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+      {/* Subgrid Syntax & Properties */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/30 to-pink-50/30 dark:from-blue-950/10 dark:via-purple-950/10 dark:to-pink-950/10"></div>
+        <CardHeader className="relative">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Code className="h-6 w-6 text-white" />
             </div>
-            Subgrid Properties
-          </CardTitle>
+            <div>
+              <CardTitle className="text-2xl">Subgrid Syntax & Properties</CardTitle>
+              <CardDescription>Two ways to use subgrid for different alignment needs</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2">
-                Column Subgrid
-              </h4>
-              <code className="text-sm bg-white dark:bg-gray-800 p-2 rounded block mb-2">
-                grid-template-columns: subgrid;
-              </code>
-              <p className="text-sm text-purple-600 dark:text-purple-400">
-                Inherit parent's column tracks for horizontal alignment
-              </p>
+        <CardContent className="relative space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Column Subgrid */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-purple-200 dark:border-purple-700 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                    <Grid className="w-5 h-5 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-purple-700 dark:text-purple-300">Column Subgrid</h4>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="p-4 bg-purple-50 dark:bg-purple-950/30 rounded-lg border border-purple-200 dark:border-purple-700">
+                    <div className="text-xs font-semibold text-purple-600 dark:text-purple-400 mb-2">CSS Syntax</div>
+                    <code className="block font-mono text-sm text-purple-700 dark:text-purple-300">
+                      grid-template-columns: subgrid;
+                    </code>
+                  </div>
+                  
+                  <div>
+                    <h5 className="font-semibold text-sm text-gray-700 dark:text-gray-300 mb-2">Required Properties:</h5>
+                    <div className="space-y-2">
+                      <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                        <code className="text-sm font-mono text-gray-700 dark:text-gray-300">display: grid;</code>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Child must be a grid container</p>
+                      </div>
+                      <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                        <code className="text-sm font-mono text-gray-700 dark:text-gray-300">grid-column: span 3;</code>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Span parent columns to inherit</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg border border-emerald-200 dark:border-emerald-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Use For:</span>
+                    </div>
+                    <p className="text-sm text-emerald-700 dark:text-emerald-300">
+                      Horizontal alignment - perfect for card grids, navigation menus, product listings
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            
-            <div className="p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-              <h4 className="font-bold text-pink-700 dark:text-pink-300 mb-2">
-                Row Subgrid
-              </h4>
-              <code className="text-sm bg-white dark:bg-gray-800 p-2 rounded block mb-2">
-                grid-template-rows: subgrid;
-              </code>
-              <p className="text-sm text-pink-600 dark:text-pink-400">
-                Inherit parent's row tracks for vertical alignment
-              </p>
+
+            {/* Row Subgrid */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-blue-200 dark:border-blue-700 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                    <Layers className="w-5 h-5 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-blue-700 dark:text-blue-300">Row Subgrid</h4>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">CSS Syntax</div>
+                    <code className="block font-mono text-sm text-blue-700 dark:text-blue-300">
+                      grid-template-rows: subgrid;
+                    </code>
+                  </div>
+                  
+                  <div>
+                    <h5 className="font-semibold text-sm text-gray-700 dark:text-gray-300 mb-2">Required Properties:</h5>
+                    <div className="space-y-2">
+                      <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                        <code className="text-sm font-mono text-gray-700 dark:text-gray-300">display: grid;</code>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Child must be a grid container</p>
+                      </div>
+                      <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                        <code className="text-sm font-mono text-gray-700 dark:text-gray-300">grid-row: span 3;</code>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Span parent rows to inherit</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg border border-emerald-200 dark:border-emerald-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Use For:</span>
+                    </div>
+                    <p className="text-sm text-emerald-700 dark:text-emerald-300">
+                      Vertical alignment - great for card layouts where titles, content, and footers align
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Complete Example */}
+          <div className="relative p-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/30 dark:via-purple-950/30 dark:to-pink-950/30 rounded-xl border-2 border-indigo-200 dark:border-indigo-700 shadow-lg">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Code className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-lg text-indigo-900 dark:text-indigo-100 mb-3">Complete Subgrid Example</h4>
+                <div className="space-y-3">
+                  <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-indigo-200 dark:border-indigo-700">
+                    <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Parent Grid</div>
+                    <pre className="font-mono text-sm text-gray-700 dark:text-gray-300 overflow-x-auto">
+{`.parent {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}`}</pre>
+                  </div>
+                  
+                  <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-indigo-200 dark:border-indigo-700">
+                    <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Child with Subgrid</div>
+                    <pre className="font-mono text-sm text-gray-700 dark:text-gray-300 overflow-x-auto">
+{`.child {
+  display: grid;
+  grid-template-columns: subgrid;  /* Inherits 3 columns */
+  grid-column: span 3;              /* Spans all 3 columns */
+  gap: 20px;
+}`}</pre>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>When to Use Subgrid</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Card layouts</strong> - Align card footers across different content lengths</li>
-            <li><strong>Form layouts</strong> - Align labels and inputs in nested fieldsets</li>
-            <li><strong>Table-like layouts</strong> - Create complex aligned structures</li>
-            <li><strong>Nested components</strong> - Maintain grid alignment across component boundaries</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
-        <Info className="h-4 w-4 text-purple-600" />
-        <AlertTitle className="text-purple-900 dark:text-purple-100">Browser Support</AlertTitle>
-        <AlertDescription className="text-purple-800 dark:text-purple-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>✅ Chrome 117+</strong> - Full support</div>
-            <div><strong>✅ Firefox 71+</strong> - Full support</div>
-            <div><strong>✅ Safari 16+</strong> - Full support</div>
-            <div><strong>✅ Edge 117+</strong> - Full support</div>
+      {/* When to Use Subgrid - Enhanced Section */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-teal-50/50 to-cyan-50/50 dark:from-emerald-950/20 dark:via-teal-950/20 dark:to-cyan-950/20"></div>
+        <CardHeader className="relative">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">When to Use Subgrid</CardTitle>
+              <CardDescription>Perfect use cases for CSS Subgrid</CardDescription>
+            </div>
           </div>
-        </AlertDescription>
-      </Alert>
+        </CardHeader>
+        <CardContent className="relative">
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Card Layouts */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-purple-200 dark:border-purple-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Layout className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2">Card Layouts</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Align card footers across different content lengths. Perfect for product cards, blog posts, and feature showcases.
+                    </p>
+                    <div className="mt-3 p-2 bg-purple-50 dark:bg-purple-950/30 rounded text-xs font-mono text-purple-700 dark:text-purple-300">
+                      grid-template-rows: subgrid;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Form Layouts */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-blue-200 dark:border-blue-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Code className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-2">Form Layouts</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Align labels and inputs in nested fieldsets. Great for complex forms with consistent alignment.
+                    </p>
+                    <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-950/30 rounded text-xs font-mono text-blue-700 dark:text-blue-300">
+                      grid-template-columns: subgrid;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Table-like Layouts */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-emerald-200 dark:border-emerald-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Grid className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-2">Table-like Layouts</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Create complex aligned structures that behave like tables but with more flexibility and semantics.
+                    </p>
+                    <div className="mt-3 p-2 bg-emerald-50 dark:bg-emerald-950/30 rounded text-xs font-mono text-emerald-700 dark:text-emerald-300">
+                      grid-template-columns: subgrid;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Nested Components */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-400 rounded-xl blur opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border border-amber-200 dark:border-amber-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Layers className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-amber-700 dark:text-amber-300 mb-2">Nested Components</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Maintain grid alignment across component boundaries in modern component-based architectures.
+                    </p>
+                    <div className="mt-3 p-2 bg-amber-50 dark:bg-amber-950/30 rounded text-xs font-mono text-amber-700 dark:text-amber-300">
+                      grid-template-rows: subgrid;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Browser Support - Enhanced */}
+      <Card className="relative overflow-hidden border-2 border-purple-200 dark:border-purple-800">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-50/60 via-pink-50/60 to-purple-50/60 dark:from-purple-950/20 dark:via-pink-950/20 dark:to-purple-950/20"></div>
+        <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <CardHeader className="relative">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Info className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+                  Browser Support
+                </CardTitle>
+                <CardDescription>Excellent support across modern browsers</CardDescription>
+              </div>
+            </div>
+            <Badge className="bg-emerald-500 text-white border-0">
+              Widely Supported
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="relative">
+          <Alert className="mb-6 border-emerald-200 dark:border-emerald-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/50 dark:to-teal-950/50">
+            <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <AlertTitle className="text-emerald-900 dark:text-emerald-100">Production Ready!</AlertTitle>
+            <AlertDescription className="text-emerald-800 dark:text-emerald-200">
+              CSS Subgrid has excellent browser support and is ready for production use. Available in all modern browsers since 2023.
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Chrome */}
+            <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">🌐</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100">Chrome</h4>
+                  <Badge className="bg-emerald-500 text-white text-xs">Version 117+</Badge>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Full Support Since Aug 2023</span>
+              </div>
+            </div>
+
+            {/* Firefox */}
+            <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">🦊</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100">Firefox</h4>
+                  <Badge className="bg-emerald-500 text-white text-xs">Version 71+</Badge>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Full Support Since Dec 2019</span>
+              </div>
+            </div>
+
+            {/* Safari */}
+            <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">🧭</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100">Safari</h4>
+                  <Badge className="bg-emerald-500 text-white text-xs">Version 16+</Badge>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Full Support Since Sep 2022</span>
+              </div>
+            </div>
+
+            {/* Edge */}
+            <div className="relative p-5 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">🔷</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100">Edge</h4>
+                  <Badge className="bg-emerald-500 text-white text-xs">Version 117+</Badge>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Full Support Since Aug 2023</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl border border-blue-200 dark:border-blue-700">
+            <div className="flex items-start gap-3">
+              <Lightbulb className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" />
+              <div>
+                <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2">Progressive Enhancement</h4>
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  For older browsers, use <code className="px-2 py-1 bg-white dark:bg-slate-800 rounded text-blue-600 dark:text-blue-400">@supports (grid-template-columns: subgrid)</code> to provide fallback layouts. Most users on modern browsers will see the enhanced subgrid version!
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

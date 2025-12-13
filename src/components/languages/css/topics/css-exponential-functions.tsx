@@ -11,7 +11,7 @@ interface CssExponentialFunctionsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-export default function CssExponentialFunctions({ onOpenWebplayground }: CssExponentialFunctionsProps) {
+export default function CssExponentialFunctions({ onOpenWebPlayground }: CssExponentialFunctionsProps) {
   const [selectedExample, setSelectedExample] = useState('scaling');
 
   const scalingExample = `<!DOCTYPE html>

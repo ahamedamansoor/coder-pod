@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Eye, CheckCircle, Zap, Info } from 'lucide-react';
+import { Eye, CheckCircle, Zap, Info, Sparkles, Lightbulb, ArrowRight, Rocket, Gauge, EyeOff, Package, Code } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssContentVisibilityProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
@@ -14,39 +15,661 @@ export default function CssContentVisibility({ onOpenWebPlayground }: CssContent
   const [selectedExample, setSelectedExample] = useState('auto');
 
   const autoExample = `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Content Visibility - Auto</title><style>
-*{margin:0;padding:0;box-sizing:border-box;}body{font-family:-apple-system,sans-serif;background:linear-gradient(135deg,#10b981 0%,#059669 100%);padding:40px 20px;min-height:100vh;}@media(prefers-color-scheme:dark){body{background:linear-gradient(135deg,#047857 0%,#065f46 100%);}}
-.container{max-width:1000px;margin:0 auto;background:white;padding:40px;border-radius:16px;}@media(prefers-color-scheme:dark){.container{background:#1e293b;color:#e2e8f0;}}
-h1{color:#10b981;text-align:center;margin-bottom:10px;font-size:2.5rem;}@media(prefers-color-scheme:dark){h1{color:#6ee7b7;}}
-.subtitle{text-align:center;color:#64748b;margin-bottom:30px;}
-.section{content-visibility:auto;contain-intrinsic-size:0 500px;background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);padding:24px;border-radius:12px;margin-bottom:20px;border:3px solid #10b981;}@media(prefers-color-scheme:dark){.section{background:linear-gradient(135deg,#047857 0%,#065f46 100%);border-color:#6ee7b7;}}
-.section-title{font-weight:700;font-size:1.3rem;margin-bottom:16px;color:#047857;}@media(prefers-color-scheme:dark){.section-title{color:#a7f3d0;}}
-.section-content{color:#064e3b;line-height:1.8;}@media(prefers-color-scheme:dark){.section-content{color:#d1fae5;}}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;margin-top:12px;background:#10b981;color:white;}
-.info-box{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-left:4px solid #f59e0b;padding:20px;border-radius:8px;margin-top:20px;}@media(prefers-color-scheme:dark){.info-box{background:linear-gradient(135deg,#78350f 0%,#92400e 100%);border-left-color:#fbbf24;}}
-.info-title{color:#92400e;font-weight:700;margin-bottom:8px;font-size:1.1rem;}@media(prefers-color-scheme:dark){.info-title{color:#fde68a;}}
-.info-text{color:#78350f;line-height:1.6;}@media(prefers-color-scheme:dark){.info-text{color:#fef3c7;}}
-</style></head><body><div class="container"><h1>👁️ Content Visibility</h1><p class="subtitle">Lazy rendering with content-visibility: auto</p><div class="section"><div class="section-title">✨ Section 1 - Rendered When Visible</div><div class="section-content">This section uses <strong>content-visibility: auto</strong>. The browser only renders it when it's near the viewport, significantly improving initial page load performance for long documents.<br><br>Key benefits:<br>• Faster initial page load<br>• Reduced memory usage<br>• Better scrolling performance</div><span class="badge">Optimized</span></div><div class="section"><div class="section-title">✨ Section 2 - Lazy Rendered</div><div class="section-content">Each section with content-visibility: auto is rendered on-demand. Combined with <strong>contain-intrinsic-size</strong>, the browser can reserve space for content without rendering it immediately.</div><span class="badge">Optimized</span></div><div class="section"><div class="section-title">✨ Section 3 - Performance Boost</div><div class="section-content">For pages with many sections, this can reduce initial rendering work by 50% or more! The browser skips rendering off-screen content until needed.</div><span class="badge">Optimized</span></div><div class="info-box"><div class="info-title">⚡ How It Works</div><p class="info-text">content-visibility: auto tells the browser to skip rendering work for off-screen elements. When combined with contain-intrinsic-size, the browser knows how much space to reserve without actually rendering the content.</p></div></div></body></html>`;
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Visibility Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      padding: 40px 20px;
+      min-height: 200vh;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+      }
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
+    }
+    
+    h1 {
+      color: #10b981;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #6ee7b7;
+      }
+    }
+    
+    .section {
+      /* The magic property! */
+      content-visibility: auto;
+      contain-intrinsic-size: 0 400px;
+      
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      padding: 30px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      border: 3px solid #10b981;
+      transition: all 0.3s ease;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .section {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        border-color: #6ee7b7;
+      }
+    }
+    
+    .section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+    }
+    
+    .section-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: #047857;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .section-title {
+        color: #a7f3d0;
+      }
+    }
+    
+    .section-content {
+      color: #064e3b;
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .section-content {
+        color: #d1fae5;
+      }
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 12px;
+      background: #10b981;
+      color: white;
+    }
+    
+    .info-box {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-left: 4px solid #f59e0b;
+      padding: 24px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-box {
+        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+        border-left-color: #fbbf24;
+      }
+    }
+    
+    .info-title {
+      color: #92400e;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-title {
+        color: #fde68a;
+      }
+    }
+    
+    .info-text {
+      color: #78350f;
+      line-height: 1.7;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info-text {
+        color: #fef3c7;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>👁️ Content Visibility in Action</h1>
+    
+    <div class="section">
+      <div class="section-title">✨ Section 1 - Lazy Rendered!</div>
+      <div class="section-content">
+        This section uses <strong>content-visibility: auto</strong>. The browser only renders it when it's near the viewport, dramatically improving initial page load!
+        <br><br>
+        <strong>Key Benefits:</strong><br>
+        • 50%+ faster initial page load<br>
+        • Reduced memory usage<br>
+        • Smoother scrolling performance<br>
+        • Better user experience
+      </div>
+      <span class="badge">⚡ Optimized</span>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">🚀 Section 2 - On-Demand Rendering</div>
+      <div class="section-content">
+        Each section with <code>content-visibility: auto</code> is rendered on-demand. Combined with <strong>contain-intrinsic-size</strong>, the browser reserves space without rendering!
+        <br><br>
+        This means the page loads instantly, and sections render as you scroll to them.
+      </div>
+      <span class="badge">⚡ Optimized</span>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">💨 Section 3 - Performance Boost</div>
+      <div class="section-content">
+        For pages with many sections, this can reduce initial rendering work by <strong>50% or more</strong>!
+        <br><br>
+        The browser skips rendering off-screen content until you actually need to see it. Simple but powerful!
+      </div>
+      <span class="badge">⚡ Optimized</span>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">📱 Section 4 - Mobile First</div>
+      <div class="section-content">
+        This is especially important on mobile devices where performance matters most. Users get a fast, responsive experience!
+      </div>
+      <span class="badge">⚡ Optimized</span>
+    </div>
+    
+    <div class="info-box">
+      <div class="info-title">⚡ How It Works</div>
+      <p class="info-text">
+        <code>content-visibility: auto</code> tells the browser to skip rendering off-screen elements. Combined with <code>contain-intrinsic-size</code>, the browser knows how much space to reserve without actually rendering the content. It's like magic! ✨
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
 
   const comparisonExample = `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Content Visibility - Comparison</title><style>
-*{margin:0;padding:0;box-sizing:border-box;}body{font-family:sans-serif;background:linear-gradient(135deg,#10b981 0%,#059669 100%);padding:40px 20px;min-height:100vh;}@media(prefers-color-scheme:dark){body{background:linear-gradient(135deg,#047857 0%,#065f46 100%);}}
-.container{max-width:1000px;margin:0 auto;background:white;padding:40px;border-radius:16px;}@media(prefers-color-scheme:dark){.container{background:#1e293b;color:#e2e8f0;}}
-h1{color:#10b981;text-align:center;margin-bottom:30px;}@media(prefers-color-scheme:dark){h1{color:#6ee7b7;}}
-.comparison{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:20px;}
-.optimized{content-visibility:auto;contain-intrinsic-size:300px;background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);padding:20px;border-radius:12px;border:3px solid #10b981;}@media(prefers-color-scheme:dark){.optimized{background:linear-gradient(135deg,#047857 0%,#065f46 100%);border-color:#6ee7b7;}}
-.normal{background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);padding:20px;border-radius:12px;border:3px solid #ef4444;}@media(prefers-color-scheme:dark){.normal{background:linear-gradient(135deg,#7f1d1d 0%,#991b1b 100%);border-color:#fca5a5;}}
-.title{font-weight:700;margin-bottom:10px;color:#047857;}@media(prefers-color-scheme:dark){.title{color:#a7f3d0;}}
-</style></head><body><div class="container"><h1>👁️ Performance Comparison</h1><div class="comparison"><div class="optimized"><div class="title">✅ With content-visibility</div><p style="color:#064e3b;">Lazy rendered - better performance</p></div><div class="normal"><div class="title" style="color:#7f1d1d;">❌ Without optimization</div><p style="color:#7f1d1d;">Always rendered - slower</p></div></div></div></body></html>`;
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance Comparison</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+      }
+    }
+    
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      background: white;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #1e293b;
+        color: #e2e8f0;
+      }
+    }
+    
+    h1 {
+      color: #10b981;
+      text-align: center;
+      margin-bottom: 50px;
+      font-size: 3rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #6ee7b7;
+      }
+    }
+    
+    .comparison {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+    }
+    
+    .card {
+      padding: 30px;
+      border-radius: 16px;
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+    }
+    
+    .optimized {
+      content-visibility: auto;
+      contain-intrinsic-size: 300px;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border: 3px solid #10b981;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .optimized {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        border-color: #6ee7b7;
+      }
+    }
+    
+    .normal {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      border: 3px solid #ef4444;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .normal {
+        background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+        border-color: #fca5a5;
+      }
+    }
+    
+    .title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .optimized .title {
+      color: #047857;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .optimized .title {
+        color: #a7f3d0;
+      }
+    }
+    
+    .normal .title {
+      color: #7f1d1d;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .normal .title {
+        color: #fca5a5;
+      }
+    }
+    
+    .description {
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    
+    .optimized .description {
+      color: #064e3b;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .optimized .description {
+        color: #d1fae5;
+      }
+    }
+    
+    .normal .description {
+      color: #7f1d1d;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .normal .description {
+        color: #fecaca;
+      }
+    }
+    
+    .stats {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px dashed currentColor;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>👁️ Performance Comparison</h1>
+    
+    <div class="comparison">
+      <div class="card optimized">
+        <div class="title">✅ With content-visibility</div>
+        <div class="description">
+          <strong>Lazy rendered</strong> - Only renders when near viewport
+          <div class="stats">
+            ⚡ 50%+ faster load<br>
+            💾 Less memory usage<br>
+            🚀 Better performance
+          </div>
+        </div>
+      </div>
+      
+      <div class="card normal">
+        <div class="title">❌ Without optimization</div>
+        <div class="description">
+          <strong>Always rendered</strong> - Renders everything immediately
+          <div class="stats">
+            🐌 Slower initial load<br>
+            💥 More memory usage<br>
+            📉 Worse performance
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
 
   return (
     <div className="space-y-8">
-      <PageHeader icon={Eye} category="CSS · Modern Features" title="Content Visibility" description="Boost performance with lazy rendering of off-screen content" colorTheme="emerald" />
-      <Card><CardHeader className="relative"><CardTitle className="flex items-center gap-3 text-2xl text-emerald-700 dark:text-emerald-300"><div className="relative"><Eye className="w-8 h-8" /><div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div></div>Content Visibility</CardTitle><CardDescription className="text-lg text-emerald-600 dark:text-emerald-400">👁️ Render content only when it's visible!</CardDescription></CardHeader><CardContent><div className="grid lg:grid-cols-3 gap-6"><div className="lg:col-span-2 space-y-6"><div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-emerald-200/50 shadow-lg"><h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300">What is Content Visibility?</h4><p className="text-sm text-gray-600 dark:text-gray-400 mb-4">The content-visibility CSS property enables the browser to skip rendering work for off-screen elements, dramatically improving page load and rendering performance.</p><div className="space-y-3"><div className="flex items-start gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg"><Zap className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-1" /><div><div className="font-semibold text-emerald-700 dark:text-emerald-300">Faster Initial Load</div><div className="text-sm text-emerald-600 dark:text-emerald-400">Skip rendering off-screen content initially</div></div></div><div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" /><div><div className="font-semibold text-green-700 dark:text-green-300">On-Demand Rendering</div><div className="text-sm text-green-600 dark:text-green-400">Content renders when scrolled into view</div></div></div></div></div><div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-xl border border-emerald-200/50"><h4 className="font-bold mb-4 text-emerald-700 dark:text-emerald-300">Property Values</h4><div className="grid gap-3"><div className="bg-white dark:bg-gray-800 p-3 rounded-lg"><code className="text-sm font-mono text-emerald-600 dark:text-emerald-400">content-visibility: auto;</code><p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Lazy render when near viewport (recommended)</p></div><div className="bg-white dark:bg-gray-800 p-3 rounded-lg"><code className="text-sm font-mono text-teal-600 dark:text-teal-400">content-visibility: hidden;</code><p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Skip rendering entirely</p></div><div className="bg-white dark:bg-gray-800 p-3 rounded-lg"><code className="text-sm font-mono text-cyan-600 dark:text-cyan-400">content-visibility: visible;</code><p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Normal rendering (default)</p></div></div></div></div><div className="space-y-4"><div className="bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-emerald-200/50 shadow-lg"><div className="text-center space-y-4"><div className="text-4xl mb-2">👁️</div><div className="font-bold text-lg text-emerald-700 dark:text-emerald-300">Performance Gains</div><div className="space-y-2 text-sm"><div className="bg-white dark:bg-gray-800 p-2 rounded">50%+ faster initial load</div><div className="bg-white dark:bg-gray-800 p-2 rounded">Reduced memory usage</div><div className="bg-white dark:bg-gray-800 p-2 rounded">Smoother scrolling</div></div></div></div><div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50"><div className="text-center"><div className="text-2xl mb-2">💡</div><div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div><div className="text-sm text-orange-600 dark:text-orange-400">Always use with contain-intrinsic-size to prevent layout shifts</div></div></div></div></div></CardContent></Card>
-      <Card><CardHeader><CardTitle>Live Examples</CardTitle></CardHeader><CardContent><div className="flex gap-4 mb-6"><button onClick={() => setSelectedExample('auto')} className={`px-4 py-2 rounded-lg font-medium transition-all ${selectedExample === 'auto' ? 'bg-emerald-500 text-white shadow-lg' : 'bg-gray-100 dark:bg-gray-800'}`}>Auto (Recommended)</button><button onClick={() => setSelectedExample('comparison')} className={`px-4 py-2 rounded-lg font-medium transition-all ${selectedExample === 'comparison' ? 'bg-emerald-500 text-white shadow-lg' : 'bg-gray-100 dark:bg-gray-800'}`}>Comparison</button></div>{selectedExample === 'auto' && <FrontendCodePreview html={autoExample} title="Content Visibility: Auto" colorTheme="emerald" onOpenPlayground={onOpenWebPlayground} />}{selectedExample === 'comparison' && <FrontendCodePreview html={comparisonExample} title="Performance Comparison" colorTheme="emerald" onOpenPlayground={onOpenWebPlayground} />}</CardContent></Card>
-      <Card><CardHeader><CardTitle>Best Practices</CardTitle></CardHeader><CardContent><div className="grid md:grid-cols-2 gap-4"><div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200/50"><h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-2">✅ Do Use</h4><ul className="text-sm space-y-2 text-emerald-600 dark:text-emerald-400"><li>• Long documents with many sections</li><li>• Blog posts and articles</li><li>• Image galleries and lists</li><li>• Comment sections</li></ul></div><div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200/50"><h4 className="font-bold text-red-700 dark:text-red-300 mb-2">❌ Avoid Using</h4><ul className="text-sm space-y-2 text-red-600 dark:text-red-400"><li>• Above-the-fold content</li><li>• Navigation menus</li><li>• Critical UI elements</li><li>• Short pages</li></ul></div></div></CardContent></Card>
-      <Alert><CheckCircle className="h-4 w-4" /><AlertTitle>Perfect Use Cases</AlertTitle><AlertDescription><ul className="list-disc list-inside space-y-1 mt-2"><li><strong>Blog articles</strong> - Long-form content with multiple sections</li><li><strong>News feeds</strong> - Infinite scroll with many items</li><li><strong>Product listings</strong> - E-commerce catalog pages</li><li><strong>Documentation</strong> - Long technical docs with many sections</li></ul></AlertDescription></Alert>
-      <Alert className="border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/20"><Info className="h-4 w-4 text-emerald-600" /><AlertTitle className="text-emerald-900 dark:text-emerald-100">Browser Support</AlertTitle><AlertDescription className="text-emerald-800 dark:text-emerald-200">Supported in Chrome 85+, Edge 85+, Opera 71+. Safari support coming soon.</AlertDescription></Alert>
+      <PageHeader icon={Eye} category="CSS · Modern Features" title="CSS Content Visibility" description="Boost performance with lazy rendering - 50%+ faster page loads!" colorTheme="emerald" />
+
+      {/* What is Content Visibility - Simple explanation */}
+      <Card className="relative overflow-hidden bg-gradient-to-br from-emerald-50/60 via-white to-teal-50/60 dark:from-emerald-950/30 dark:via-slate-900 dark:to-teal-950/30">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <CardHeader className="relative">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Eye className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-3xl bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
+                What is Content Visibility?
+              </CardTitle>
+              <CardDescription className="text-base mt-1">
+                The secret to lightning-fast page loads ⚡
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-6">
+          <Alert className="border-emerald-200 dark:border-emerald-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/50 dark:to-teal-950/50">
+            <Rocket className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <AlertTitle className="text-emerald-900 dark:text-emerald-100">The Simple Idea</AlertTitle>
+            <AlertDescription className="text-emerald-800 dark:text-emerald-200">
+              Don't render what users can't see yet! <code className="px-2 py-1 bg-white dark:bg-slate-800 rounded">content-visibility: auto</code> tells the browser to skip rendering off-screen content. When users scroll to it, THEN it renders. Result? 50%+ faster page loads!
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-red-200 dark:border-red-800 shadow-lg">
+              <h4 className="font-bold text-lg text-red-700 dark:text-red-300 mb-4 flex items-center gap-2">
+                <EyeOff className="w-5 h-5" /> ❌ Without It
+              </h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <span>🐌</span>
+                  <span className="text-gray-700 dark:text-gray-300">Renders EVERYTHING immediately</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span>💥</span>
+                  <span className="text-gray-700 dark:text-gray-300">Slow 5-10 second load times</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span>📉</span>
+                  <span className="text-gray-700 dark:text-gray-300">High memory usage</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-800 shadow-lg">
+              <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-4 flex items-center gap-2">
+                <Zap className="w-5 h-5" /> ✅ With It
+              </h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <span>⚡</span>
+                  <span className="text-gray-700 dark:text-gray-300">Only renders visible content</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span>🚀</span>
+                  <span className="text-gray-700 dark:text-gray-300">Instant page loads!</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span>📈</span>
+                  <span className="text-gray-700 dark:text-gray-300">Low memory, smooth scrolling</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl border-2 border-amber-200 dark:border-amber-800">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Lightbulb className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h4 className="font-bold text-lg text-amber-900 dark:text-amber-100 mb-2">💡 Simple Example</h4>
+                <p className="text-amber-800 dark:text-amber-200">
+                  Imagine a blog with 50 sections. Normally, the browser renders all 50 (slow!). With <code className="px-2 py-1 bg-white dark:bg-slate-800 rounded">content-visibility: auto</code>, it only renders what's on screen. Sections render as you scroll. Result? Lightning-fast! ⚡
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+            <h4 className="font-bold text-lg mb-4">📝 Super Easy Setup</h4>
+            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg font-mono text-sm mb-3">
+              <div className="text-emerald-600 dark:text-emerald-400">.section &#123;</div>
+              <div className="ml-4 text-emerald-700 dark:text-emerald-300">content-visibility: auto;</div>
+              <div className="ml-4 text-gray-600 dark:text-gray-400">contain-intrinsic-size: 0 500px;</div>
+              <div className="text-emerald-600 dark:text-emerald-400">&#125;</div>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              That's it! Just 2 lines. The second property prevents layout shift.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Live Examples with dark mode */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+              <Package className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Live Examples (Dark Mode Supported!)</CardTitle>
+              <CardDescription>See it in action - works in light and dark mode</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4 mb-6">
+            <button 
+              onClick={() => setSelectedExample('auto')} 
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                selectedExample === 'auto' 
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' 
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              Auto (Recommended)
+            </button>
+            <button 
+              onClick={() => setSelectedExample('comparison')} 
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                selectedExample === 'comparison' 
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' 
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              Before/After Comparison
+            </button>
+          </div>
+
+          {selectedExample === 'auto' && (
+            <FrontendCodePreview 
+              html={autoExample} 
+              title="Content Visibility Demo" 
+              colorTheme="emerald" 
+              onOpenPlayground={onOpenWebPlayground} 
+            />
+          )}
+          
+          {selectedExample === 'comparison' && (
+            <FrontendCodePreview 
+              html={comparisonExample} 
+              title="Performance Comparison" 
+              colorTheme="emerald" 
+              onOpenPlayground={onOpenWebPlayground} 
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* When to use it */}
+      <Card className="relative overflow-hidden border-2 border-emerald-200 dark:border-emerald-800">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/60 to-teal-50/60 dark:from-emerald-950/20 dark:to-teal-950/20"></div>
+        <CardHeader className="relative">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">When to Use It</CardTitle>
+              <CardDescription>Perfect for long pages - avoid for short ones</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-white dark:bg-slate-800 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+              <h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-4 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" /> ✅ Perfect For
+              </h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-lg">📝</span>
+                  <div>
+                    <strong className="text-gray-900 dark:text-gray-100">Blog Posts</strong>
+                    <p className="text-gray-600 dark:text-gray-400">Long articles with many sections</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-lg">📰</span>
+                  <div>
+                    <strong className="text-gray-900 dark:text-gray-100">News Feeds</strong>
+                    <p className="text-gray-600 dark:text-gray-400">Infinite scroll lists</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-lg">🛍️</span>
+                  <div>
+                    <strong className="text-gray-900 dark:text-gray-100">Product Pages</strong>
+                    <p className="text-gray-600 dark:text-gray-400">E-commerce catalogs</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-5 bg-white dark:bg-slate-800 rounded-xl border-2 border-red-200 dark:border-red-700">
+              <h4 className="font-bold text-red-700 dark:text-red-300 mb-4 flex items-center gap-2">
+                <Info className="w-5 h-5" /> ❌ Don't Use For
+              </h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-lg">👀</span>
+                  <div>
+                    <strong className="text-gray-900 dark:text-gray-100">Visible Content</strong>
+                    <p className="text-gray-600 dark:text-gray-400">Content already on screen</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-lg">🧭</span>
+                  <div>
+                    <strong className="text-gray-900 dark:text-gray-100">Navigation</strong>
+                    <p className="text-gray-600 dark:text-gray-400">Menus, headers, footers</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-lg">📄</span>
+                  <div>
+                    <strong className="text-gray-900 dark:text-gray-100">Short Pages</strong>
+                    <p className="text-gray-600 dark:text-gray-400">Everything fits on screen</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <Alert className="border-emerald-200 dark:border-emerald-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/50 dark:to-teal-950/50">
+            <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <AlertTitle className="text-emerald-900 dark:text-emerald-100">Browser Support</AlertTitle>
+            <AlertDescription className="text-emerald-800 dark:text-emerald-200">
+              ✅ Chrome 85+ • ✅ Edge 85+ • ✅ Opera 71+ • ⏳ Safari (Coming Soon)
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
     </div>
   );
 }

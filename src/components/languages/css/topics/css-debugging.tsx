@@ -1,525 +1,500 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview } from '@/components/shared';
-import { 
-  Bug, CheckCircle, Code, Search, Target, 
-  Layers, AlertTriangle, Eye, Info
-} from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import React from 'react';
+import { Bug, Sparkles, Target, Layers, CheckCircle, Eye } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssDebuggingProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssDebugging({ onOpenWebPlayground }: CssDebuggingProps) {
-  const [selectedMethod, setSelectedMethod] = useState('devtools');
-
-  const debuggingMethods = [
-    { id: 'devtools', name: 'DevTools', icon: Search, color: 'bg-blue-500' },
-    { id: 'border', name: 'Border Method', icon: Target, color: 'bg-green-500' },
-    { id: 'background', name: 'Background Colors', icon: Layers, color: 'bg-purple-500' },
-    { id: 'console', name: 'Console Logging', icon: Code, color: 'bg-orange-500' },
-  ];
-
-  const devToolsExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Debugging - DevTools</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
-      }
-    }
-    
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    h1 {
-      color: #ef4444;
-      margin-bottom: 10px;
-      text-align: center;
-      font-size: 2.5rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #fca5a5;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 30px;
-    }
-    
-    .debug-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-    
-    .debug-card {
-      padding: 24px;
-      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-      border-radius: 12px;
-      border: 2px solid #ef4444;
-      text-align: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .debug-card {
-        background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
-        border-color: #fca5a5;
-      }
-    }
-    
-    .debug-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-    }
-    
-    .debug-title {
-      color: #991b1b;
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .debug-title {
-        color: #fca5a5;
-      }
-    }
-    
-    .debug-desc {
-      color: #64748b;
-      font-size: 0.9rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .debug-desc {
-        color: #cbd5e0;
-      }
-    }
-    
-    .info-box {
-      background: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-box {
-        background: #78350f;
-        border-left-color: #fbbf24;
-      }
-    }
-    
-    .info-title {
-      color: #92400e;
-      font-weight: 700;
-      margin-bottom: 12px;
-      font-size: 1.1rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-title {
-        color: #fde68a;
-      }
-    }
-    
-    .shortcut-list {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .shortcut-item {
-      padding: 12px;
-      background: white;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .shortcut-item {
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-    }
-    
-    .shortcut-key {
-      background: #1e293b;
-      color: white;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🐛 CSS Debugging</h1>
-    <p class="subtitle">Master debugging tools and techniques</p>
-    
-    <div class="debug-grid">
-      <div class="debug-card">
-        <div class="debug-icon">🔍</div>
-        <div class="debug-title">Inspect Element</div>
-        <p class="debug-desc">Right-click and inspect any element</p>
-      </div>
-      
-      <div class="debug-card">
-        <div class="debug-icon">🎨</div>
-        <div class="debug-title">Live Edit</div>
-        <p class="debug-desc">Test CSS changes in real-time</p>
-      </div>
-      
-      <div class="debug-card">
-        <div class="debug-icon">📊</div>
-        <div class="debug-title">Computed Styles</div>
-        <p class="debug-desc">See final applied values</p>
-      </div>
-    </div>
-    
-    <div class="info-box">
-      <div class="info-title">⌨️ DevTools Shortcuts</div>
-      <ul class="shortcut-list">
-        <li class="shortcut-item">
-          <span>Open DevTools</span>
-          <span class="shortcut-key">F12 or Ctrl+Shift+I</span>
-        </li>
-        <li class="shortcut-item">
-          <span>Inspect Element</span>
-          <span class="shortcut-key">Ctrl+Shift+C</span>
-        </li>
-        <li class="shortcut-item">
-          <span>Toggle Device Mode</span>
-          <span class="shortcut-key">Ctrl+Shift+M</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</body>
-</html>`;
-
+  
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={Bug}
+      title="CSS Debugging"
+      description="Find and fix CSS problems like a pro"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What is CSS Debugging?",
+        description: "The process of finding and fixing problems in your CSS code",
+        keyPoints: [
+          "Identify why styles aren't working",
+          "Find specificity conflicts",
+          "Discover layout issues",
+          "Use browser DevTools effectively",
+          "Debug responsive design problems",
+          "Essential skill for all developers"
+        ]
+      }}
+    >
+
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Why CSS Debugging Matters">
+        CSS can be frustrating when it doesn't work as expected. Is it specificity? A typo? Wrong selector? 
+        <strong> Learning to debug CSS systematically saves hours of trial and error!</strong> 
+        Master these techniques and you'll fix issues 10x faster.
+      </InfoAlert>
+
+      {/* Common CSS Problems */}
+      <SectionCard
+        title="Common CSS Problems"
+        description="What usually goes wrong"
         icon={Bug}
-        category="CSS · Debugging & Testing"
-        title="CSS Debugging"
-        description="Find and fix CSS issues with professional debugging techniques"
-        colorTheme="red"
-      />
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "🎯 Wrong Selector",
+              description: "CSS doesn't target the right element",
+              example: ".buton instead of .button"
+            },
+            {
+              title: "⚔️ Specificity War",
+              description: "Another style is more specific",
+              example: "#id beats .class"
+            },
+            {
+              title: "📦 Box Model Issues",
+              description: "Padding/margin not as expected",
+              example: "box-sizing problems"
+            },
+            {
+              title: "👻 Invisible Elements",
+              description: "Elements hidden or off-screen",
+              example: "display: none or opacity: 0"
+            }
+          ]}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-red-700 dark:text-red-300">
-            <div className="relative">
-              <Bug className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            CSS Debugging Process
-          </CardTitle>
-          <CardDescription className="text-lg text-red-600 dark:text-red-400">
-            🐛 Systematic approach to identifying and fixing CSS issues!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-red-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-red-700 dark:text-red-300 flex items-center gap-2">
-                  <Search className="w-5 h-5" />
-                  The Debugging Workflow
-                </h4>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
-                    <div>
-                      <div className="font-semibold text-red-700 dark:text-red-300">Identify the Problem</div>
-                      <div className="text-sm text-red-600 dark:text-red-400">
-                        What exactly isn't working as expected?
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
-                    <div>
-                      <div className="font-semibold text-orange-700 dark:text-orange-300">Inspect with DevTools</div>
-                      <div className="text-sm text-orange-600 dark:text-orange-400">
-                        Right-click element → Inspect
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
-                    <div>
-                      <div className="font-semibold text-yellow-700 dark:text-yellow-300">Check Computed Styles</div>
-                      <div className="text-sm text-yellow-600 dark:text-yellow-400">
-                        See which CSS is actually applied
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
-                    <div>
-                      <div className="font-semibold text-green-700 dark:text-green-300">Test & Fix</div>
-                      <div className="text-sm text-green-600 dark:text-green-400">
-                        Edit live in DevTools, then update code
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      {/* Browser DevTools */}
+      <SectionCard
+        title="1. Browser DevTools - Your Best Friend"
+        description="The most powerful debugging tool"
+        icon={Eye}
+        variant="primary"
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+            <h4 className="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">How to Open DevTools</h4>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">Chrome/Edge</p>
+                <code className="text-xs">F12 or Ctrl+Shift+I</code><br/>
+                <code className="text-xs">Mac: Cmd+Option+I</code>
               </div>
-
-              <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-6 rounded-xl border border-red-200/50">
-                <h4 className="font-bold mb-4 text-red-700 dark:text-red-300">
-                  Common Issues
-                </h4>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <AlertTriangle className="w-4 h-4 text-red-500" />
-                      <div className="font-semibold text-sm">Specificity</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Styles not applying</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Layers className="w-4 h-4 text-orange-500" />
-                      <div className="font-semibold text-sm">Box Model</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Sizing issues</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Eye className="w-4 h-4 text-yellow-500" />
-                      <div className="font-semibold text-sm">Z-Index</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Stacking problems</p>
-                  </div>
-                  
-                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Code className="w-4 h-4 text-green-500" />
-                      <div className="font-semibold text-sm">Syntax Errors</div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Invalid CSS</p>
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">Firefox</p>
+                <code className="text-xs">F12 or Ctrl+Shift+I</code><br/>
+                <code className="text-xs">Mac: Cmd+Option+I</code>
               </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-red-100 via-orange-100 to-yellow-100 dark:from-red-900/30 dark:via-orange-900/30 dark:to-yellow-900/30 p-6 rounded-xl border border-red-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">🐛</div>
-                  <div className="font-bold text-lg text-red-700 dark:text-red-300">Debugging Tools</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Browser DevTools
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      CSS Validators
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Visual Methods
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Console Logging
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Master browser DevTools - they're your best debugging friend!
-                  </div>
-                </div>
+              <div className="p-3 bg-white dark:bg-blue-900/20 rounded-lg">
+                <p className="font-semibold mb-1">Safari</p>
+                <code className="text-xs">Cmd+Option+I</code><br/>
+                <p className="text-xs">(Enable in Preferences first)</p>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-red-500/10 rounded-lg">
-              <Search className="h-5 w-5 text-red-600 dark:text-red-400" />
+          <div className="space-y-4">
+            <div className="p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Step 1: Inspect Element</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Right-click any element → "Inspect" or "Inspect Element"
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                💡 This opens DevTools and selects that exact element in the Elements/Inspector panel
+              </p>
             </div>
-            Debugging Methods
-          </CardTitle>
-          <CardDescription>
-            Different techniques for finding and fixing CSS issues
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {debuggingMethods.map((method) => (
-              <div
-                key={method.id}
-                onClick={() => setSelectedMethod(method.id)}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                  selectedMethod === method.id
-                    ? 'border-red-500 bg-red-50 dark:bg-red-900/20 shadow-lg scale-105'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-700'
-                }`}
-              >
-                <div className="flex flex-col items-center text-center gap-3">
-                  <div className={`w-12 h-12 ${method.color} rounded-lg flex items-center justify-center`}>
-                    <method.icon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="font-bold text-sm text-gray-900 dark:text-gray-100">{method.name}</div>
-                </div>
-              </div>
-            ))}
+
+            <div className="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">Step 2: View Computed Styles</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Look at the "Styles" or "Rules" panel to see ALL CSS applied to the element
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                💡 Styles are shown from most specific to least specific. Crossed-out styles are overridden.
+              </p>
+            </div>
+
+            <div className="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-950/20">
+              <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Step 3: Edit Live</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Click any CSS value and change it - see results instantly!
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                💡 Changes are temporary - refresh to reset. Great for experimenting!
+              </p>
+            </div>
+
+            <div className="p-4 border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
+              <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">Step 4: Check Box Model</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                Look at the box model diagram showing content, padding, border, margin
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                💡 Hover over the diagram to highlight areas on the page. Instantly see spacing issues!
+              </p>
+            </div>
           </div>
+        </div>
+      </SectionCard>
+
+      {/* Border Debugging Technique */}
+      <SectionCard
+        title="2. The Border Debugging Technique"
+        description="Quick and simple visual debugging"
+        icon={Target}
+      >
+        <div className="space-y-6">
+          <InfoAlert type="tip" title="Classic Debugging Trick">
+            Add colored borders to elements to see their actual size and position. 
+            This reveals layout problems instantly!
+          </InfoAlert>
+
+          <SyntaxBlock
+            title="Border Debugging Method"
+            code={`/* Add this temporarily to debug layout issues */
+
+/* See all elements */
+* {
+  border: 1px solid red !important;
+}
+
+/* Or target specific elements */
+.container {
+  border: 2px solid blue !important;
+}
+
+.item {
+  border: 2px solid green !important;
+}
+
+/* Debug specific element */
+.problematic-div {
+  border: 3px solid red !important;
+  background: rgba(255, 0, 0, 0.1) !important;
+}`}
+          />
 
           <FrontendCodePreview
-            html={devToolsExample}
-            title="CSS Debugging with Browser DevTools"
+            html={`<div class="container">
+  <div class="header">Header</div>
+  <div class="content">
+    <div class="sidebar">Sidebar</div>
+    <div class="main">Main Content</div>
+  </div>
+  <div class="footer">Footer</div>
+</div>`}
+            css={`/* Remove the debugging borders to see the problem */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+/* WITH DEBUG BORDERS - Uncomment to see layout clearly */
+* {
+  border: 1px solid red !important;
+}
+
+.container { border-color: blue !important; }
+.header { border-color: green !important; }
+.content { border-color: purple !important; }
+.sidebar { border-color: orange !important; }
+.main { border-color: pink !important; }
+.footer { border-color: brown !important; }
+
+/* Original styles */
+.header, .footer {
+  padding: 20px;
+  background: #3b82f6;
+  color: white;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.sidebar {
+  width: 200px;
+  padding: 15px;
+  background: #f3f4f6;
+}
+
+.main {
+  flex: 1;
+  padding: 15px;
+  background: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header, .footer {
+    background: #2563eb;
+  }
+  
+  .sidebar {
+    background: #374151;
+    color: #f3f4f6;
+  }
+  
+  .main {
+    background: #4b5563;
+    color: #f3f4f6;
+  }
+}`}
+            title="Border Debugging Demo"
             colorTheme="red"
             onOpenPlayground={onOpenWebPlayground}
           />
-        </CardContent>
-      </Card>
+        </div>
+      </SectionCard>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Target className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            Debugging Techniques
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-              <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                <Target className="w-4 h-4" />
-                Border Method
-              </h4>
-              <p className="text-sm text-blue-600 dark:text-blue-400 mb-3">
-                Add colored borders to visualize element boundaries
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">
-                * {'{'} border: 1px solid red; {'}'}
-              </code>
-            </div>
-            
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                <Layers className="w-4 h-4" />
-                Background Colors
-              </h4>
-              <p className="text-sm text-purple-600 dark:text-purple-400 mb-3">
-                Use temporary background colors for layout debugging
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">
-                div {'{'} background: rgba(255,0,0,0.1); {'}'}
-              </code>
-            </div>
-            
-            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-              <h4 className="font-bold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                <Code className="w-4 h-4" />
-                Console Logging
-              </h4>
-              <p className="text-sm text-green-600 dark:text-green-400 mb-3">
-                Log computed styles to the console for analysis
-              </p>
-              <code className="text-xs bg-white dark:bg-gray-800 p-2 rounded block">
-                console.log(getComputedStyle(el))
-              </code>
+      {/* Specificity Debugging */}
+      <SectionCard
+        title="3. Debugging Specificity Issues"
+        description="Why your styles aren't applying"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border-2 border-purple-200 dark:border-purple-800">
+            <h4 className="text-lg font-semibold mb-3 text-purple-900 dark:text-purple-100">Specificity Hierarchy</h4>
+            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <div className="flex items-center justify-between p-2 bg-white dark:bg-purple-900/20 rounded">
+                <span>1. Inline styles</span>
+                <code className="bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">style="..."</code>
+                <span className="text-red-600 font-semibold">HIGHEST</span>
+              </div>
+              <div className="flex items-center justify-between p-2 bg-white dark:bg-purple-900/20 rounded">
+                <span>2. IDs</span>
+                <code className="bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">#id</code>
+                <span className="text-orange-600 font-semibold">HIGH</span>
+              </div>
+              <div className="flex items-center justify-between p-2 bg-white dark:bg-purple-900/20 rounded">
+                <span>3. Classes, attributes, pseudo-classes</span>
+                <code className="bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">.class</code>
+                <span className="text-blue-600 font-semibold">MEDIUM</span>
+              </div>
+              <div className="flex items-center justify-between p-2 bg-white dark:bg-purple-900/20 rounded">
+                <span>4. Elements, pseudo-elements</span>
+                <code className="bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">div</code>
+                <span className="text-green-600 font-semibold">LOW</span>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Debugging Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Use DevTools</strong> - Master browser developer tools for efficient debugging</li>
-            <li><strong>Check specificity</strong> - Understand CSS specificity and cascade rules</li>
-            <li><strong>Validate CSS</strong> - Use validators to catch syntax errors early</li>
-            <li><strong>Test incrementally</strong> - Make small changes and test frequently</li>
-            <li><strong>Document fixes</strong> - Keep notes on common issues and solutions</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
+          <SyntaxBlock
+            title="Specificity Problem Example"
+            code={`/* ❌ PROBLEM: Your style doesn't apply */
+.button {
+  background: blue;  /* This won't work! */
+}
 
-      <Alert className="border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/20">
-        <Info className="h-4 w-4 text-red-600" />
-        <AlertTitle className="text-red-900 dark:text-red-100">DevTools Shortcuts</AlertTitle>
-        <AlertDescription className="text-red-800 dark:text-red-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>F12 or Ctrl+Shift+I:</strong> Open DevTools</div>
-            <div><strong>Ctrl+Shift+C:</strong> Inspect Element Mode</div>
-            <div><strong>Ctrl+Shift+M:</strong> Toggle Device Mode</div>
-            <div><strong>Ctrl+Shift+P:</strong> Command Menu</div>
+/* ✓ Reason: More specific selector wins */
+#header .nav .button {
+  background: red;  /* This wins (1 ID + 2 classes) */
+}
+
+/* ❌ BAD FIX: Using !important */
+.button {
+  background: blue !important;  /* Works but creates problems */
+}
+
+/* ✅ GOOD FIX: Match or exceed specificity */
+#header .nav .button {
+  background: blue;  /* Same specificity, later in file wins */
+}
+
+/* ✅ BETTER FIX: Reduce original specificity */
+.nav-button {
+  background: blue;  /* Simpler, easier to override later */
+}`}
+          />
+
+          <InfoAlert type="warning" title="How to Check Specificity in DevTools">
+            In DevTools, look for crossed-out styles. Hover over them to see which rule is overriding them. 
+            The rule at the top of the list has the highest specificity and wins!
+          </InfoAlert>
+        </div>
+      </SectionCard>
+
+      {/* Common Debugging Scenarios */}
+      <SectionCard
+        title="Common Debugging Scenarios"
+        description="Problems and solutions"
+        icon={CheckCircle}
+      >
+        <div className="space-y-4">
+          <div className="p-5 border-2 border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-950/20">
+            <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">❌ "My CSS isn't loading!"</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Check:</p>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-disc list-inside">
+              <li>Is the file path correct? (Check browser Network tab)</li>
+              <li>Is there a syntax error? (Missing <code>&#125;</code> breaks everything after it)</li>
+              <li>Is the <code>&lt;link&gt;</code> tag in the <code>&lt;head&gt;</code>?</li>
+              <li>Hard refresh: Ctrl+F5 (clears cache)</li>
+            </ul>
           </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+
+          <div className="p-5 border-2 border-orange-200 dark:border-orange-800 rounded-xl bg-orange-50 dark:bg-orange-950/20">
+            <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">❌ "My layout is broken!"</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Check:</p>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-disc list-inside">
+              <li>Box model in DevTools - unexpected padding/margin?</li>
+              <li>Missing <code>box-sizing: border-box</code>?</li>
+              <li>Flexbox/Grid issues - check parent and child properties</li>
+              <li>Z-index problems - check stacking context</li>
+            </ul>
+          </div>
+
+          <div className="p-5 border-2 border-yellow-200 dark:border-yellow-800 rounded-xl bg-yellow-50 dark:bg-yellow-950/20">
+            <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">❌ "Element is invisible!"</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Check:</p>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-disc list-inside">
+              <li><code>display: none</code> or <code>visibility: hidden</code>?</li>
+              <li><code>opacity: 0</code>?</li>
+              <li>Z-index - is it behind something else?</li>
+              <li>Color same as background?</li>
+              <li>Width/height set to 0?</li>
+            </ul>
+          </div>
+
+          <div className="p-5 border-2 border-blue-200 dark:border-blue-800 rounded-xl bg-blue-50 dark:bg-blue-950/20">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">❌ "Hover/Focus not working!"</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Check:</p>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-disc list-inside">
+              <li>Is there an element covering it? (Check z-index)</li>
+              <li>Typo in selector? <code>:hover</code> not <code>:Hover</code></li>
+              <li>Specificity - is another rule overriding it?</li>
+              <li>DevTools: Force element state (hover/focus/active)</li>
+            </ul>
+          </div>
+
+          <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">❌ "Responsive design broken!"</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Check:</p>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-disc list-inside">
+              <li>Missing viewport meta tag in HTML?</li>
+              <li>Media query breakpoints correct?</li>
+              <li>Test in DevTools responsive mode</li>
+              <li>Fixed widths preventing responsive behavior?</li>
+            </ul>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* DevTools Pro Tips */}
+      <SectionCard
+        title="DevTools Pro Tips"
+        description="Advanced debugging techniques"
+        icon={Sparkles}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-4 border-2 border-blue-200 dark:border-blue-800 rounded-xl bg-blue-50 dark:bg-blue-950/20">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">🔍 Element State Simulation</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              In DevTools, click the ":hov" button to force :hover, :active, :focus states. 
+              Great for debugging interactive styles!
+            </p>
+          </div>
+
+          <div className="p-4 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+            <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">📱 Device Simulation</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Toggle device toolbar (Ctrl+Shift+M) to test mobile layouts. 
+              Choose specific devices or custom dimensions.
+            </p>
+          </div>
+
+          <div className="p-4 border-2 border-purple-200 dark:border-purple-800 rounded-xl bg-purple-50 dark:bg-purple-950/20">
+            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">🎨 Color Picker</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Click any color value in DevTools to open a color picker. 
+              Test different colors instantly!
+            </p>
+          </div>
+
+          <div className="p-4 border-2 border-amber-200 dark:border-amber-800 rounded-xl bg-amber-50 dark:bg-amber-950/20">
+            <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">📋 Copy Styles</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Right-click on an element → Copy → Copy styles. 
+              Paste computed styles into your CSS file!
+            </p>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When Debugging is Essential"
+        description="Common scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Layout Issues"
+            description="Elements not positioned correctly"
+            icon={Layers}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Responsive Breakage"
+            description="Mobile/tablet layouts broken"
+            icon={Target}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Style Conflicts"
+            description="Multiple CSS files interfering"
+            icon={Bug}
+            gradient="from-red-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Browser Differences"
+            description="Works in Chrome, broken in Safari"
+            icon={CheckCircle}
+            gradient="from-purple-500 to-indigo-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="CSS Debugging Best Practices">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Use DevTools First:</strong> Right-click → Inspect is your starting point for every issue</li>
+          <li><strong>Check Specificity:</strong> Look for crossed-out styles in DevTools Styles panel</li>
+          <li><strong>Validate CSS:</strong> Use W3C CSS Validator to catch syntax errors</li>
+          <li><strong>Border Debugging:</strong> Add colored borders temporarily to see element boundaries</li>
+          <li><strong>Test Incrementally:</strong> Make one change at a time to isolate the problem</li>
+          <li><strong>Check Console:</strong> Look for CSS loading errors in browser console</li>
+          <li><strong>Use Semantic Names:</strong> Clear class names make debugging easier</li>
+          <li><strong>Comment Your CSS:</strong> Future you will thank you when debugging</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Tools */}
+      <InfoAlert type="info" title="Debugging Tools & Extensions">
+        <div className="mt-2 space-y-2">
+          <p><strong>Browser DevTools:</strong> Chrome/Firefox/Safari built-in tools (F12)</p>
+          <p><strong>CSS Validator:</strong> jigsaw.w3.org/css-validator - catches syntax errors</p>
+          <p><strong>Specificity Calculator:</strong> specificity.keegan.st - calculate selector specificity</p>
+          <p><strong>What CSS:</strong> Browser extension to see all styles on hover</p>
+        </div>
+      </InfoAlert>
+
+    </CssTopicLayout>
   );
 }

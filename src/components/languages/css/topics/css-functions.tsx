@@ -1,879 +1,462 @@
 'use client';
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { 
-    Play, Calculator, Target, Code, Zap, Settings, 
-    CheckCircle, AlertTriangle, Palette, Eye, MousePointer, 
-    Layers, RefreshCw, Sun, Moon, Paintbrush, Sliders,
-    Maximize, Move, RotateCcw, Grid3X3, Hash, Sparkles, Info
+  Calculator, Sparkles, Lightbulb, ArrowRight, 
+  CheckCircle, Info, Maximize2, Minimize2
 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssFunctionsProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssFunctions({ onOpenWebPlayground }: CssFunctionsProps) {
-    const [selectedCategory, setSelectedCategory] = useState('math');
-    const [selectedFunction, setSelectedFunction] = useState('calc');
+  
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Calculator}
+        category="CSS · Advanced CSS"
+        title="CSS Functions"
+        description="Dynamic calculations with calc(), min(), max(), and clamp()"
+        colorTheme="indigo"
+      />
 
-    // Function Categories
-    const functionCategories = [
-        {
-            name: 'math',
-            title: 'Math Functions',
-            icon: Calculator,
-            desc: 'Mathematical calculations and operations',
-            functions: ['calc()', 'min()', 'max()', 'clamp()']
-        },
-        {
-            name: 'color',
-            title: 'Color Functions',
-            icon: Palette,
-            desc: 'Color manipulation and generation',
-            functions: ['rgb()', 'hsl()', 'rgba()', 'hsla()']
-        },
-        {
-            name: 'transform',
-            title: 'Transform Functions',
-            icon: Move,
-            desc: 'Element transformation operations',
-            functions: ['translate()', 'rotate()', 'scale()', 'skew()']
-        },
-        {
-            name: 'filter',
-            title: 'Filter Functions',
-            icon: Eye,
-            desc: 'Visual effects and filters',
-            functions: ['blur()', 'brightness()', 'contrast()', 'saturate()']
-        }
-    ];
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <Calculator className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">CSS Functions</CardTitle>
+              <CardDescription className="text-base">Dynamic value calculations</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Functions = Dynamic Values</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              CSS functions perform calculations and return values dynamically. No JavaScript needed! 
+              Perfect for responsive designs and flexible layouts.
+            </AlertDescription>
+          </Alert>
 
-    const playgroundCode = `<!DOCTYPE html>
+          <div className="grid md:grid-cols-4 gap-4">
+            {[
+              { icon: Calculator, name: 'calc()', desc: 'Math operations' },
+              { icon: Minimize2, name: 'min()', desc: 'Smallest value' },
+              { icon: Maximize2, name: 'max()', desc: 'Largest value' },
+              { icon: Sparkles, name: 'clamp()', desc: 'Range limit' }
+            ].map((item, i) => (
+              <div key={i} className="p-5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 text-center">
+                <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                <h3 className="font-bold mb-1">{item.name}</h3>
+                <p className="text-xs text-blue-800 dark:text-blue-200">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Calculator className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            calc() Function
+          </CardTitle>
+          <CardDescription>Perform mathematical calculations</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-gray-700 dark:text-gray-300">
+            The <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">calc()</code> function 
+            lets you perform calculations with different units. Perfect for dynamic layouts!
+          </p>
+
+          <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-2 border-purple-300 dark:border-purple-700">
+            <h3 className="font-bold text-lg text-purple-900 dark:text-purple-100 mb-3">
+              calc() Examples
+            </h3>
+            <div className="bg-purple-900 dark:bg-purple-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-purple-100 block">
+{`/* Mix different units */
+width: calc(100% - 50px);
+
+/* Math operations: +, -, *, / */
+width: calc(100vw - 2rem);
+height: calc(100vh / 3);
+
+/* Complex calculations */
+padding: calc(1rem + 2vw);
+margin: calc((100% - 1200px) / 2);
+
+/* With variables */
+width: calc(var(--sidebar-width) + 20px);`}
+              </code>
+            </div>
+            <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
+              <Lightbulb className="w-5 h-5 text-purple-600" />
+              <AlertTitle className="text-purple-900 dark:text-purple-100">Spacing is Important!</AlertTitle>
+              <AlertDescription className="text-purple-800 dark:text-purple-200">
+                Always use spaces around <code>+</code> and <code>-</code> operators: 
+                <code className="px-2 py-1 bg-purple-100 dark:bg-purple-900 rounded ml-1">calc(100% - 20px)</code> ✓<br />
+                Not: <code className="px-2 py-1 bg-purple-100 dark:bg-purple-900 rounded">calc(100%-20px)</code> ✗
+              </AlertDescription>
+            </Alert>
+          </div>
+
+          <div className="space-y-3">
+            {[
+              { use: 'Full width minus fixed sidebar', code: 'width: calc(100% - 250px);' },
+              { use: 'Center with margin', code: 'margin: calc((100% - 800px) / 2);' },
+              { use: 'Responsive padding', code: 'padding: calc(1rem + 1vw);' },
+              { use: 'Grid gap calculation', code: 'gap: calc(20px + 1%);' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+                <p className="font-bold text-purple-900 dark:text-purple-100 mb-2">{item.use}</p>
+                <code className="text-xs bg-purple-900 dark:bg-purple-950 text-purple-100 px-2 py-1 rounded">
+                  {item.code}
+                </code>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            Interactive Demo
+          </CardTitle>
+          <CardDescription>See calc() in action</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Functions Complete Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-    * { 
-        margin: 0; 
-        padding: 0; 
-        box-sizing: border-box; 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
+    
     body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #333;
-        line-height: 1.6;
-        padding: 1rem;
-        min-height: 100vh;
-        overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
     }
-
+    
     @media (prefers-color-scheme: dark) {
-        body {
-            background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
-            color: #e2e8f0;
-        }
+      body {
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
+      }
     }
-
+    
     .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        overflow: hidden;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
-
+    
     @media (prefers-color-scheme: dark) {
-        .container {
-            background: #1f2937;
-            color: #e2e8f0;
-        }
+      .container {
+        background: #1a1a2e;
+        color: #e5e5e5;
+      }
     }
-
-    h1 { 
-        font-size: 2.5rem; 
-        text-align: center; 
-        margin-bottom: 1rem; 
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    
+    h1 {
+      text-align: center;
+      color: #667eea;
+      margin-bottom: 40px;
     }
-
+    
     @media (prefers-color-scheme: dark) {
-        h1 {
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+      h1 {
+        color: #a78bfa;
+      }
     }
-
-    h2 { 
-        font-size: 1.5rem; 
-        margin: 2rem 0 1rem; 
-        color: #667eea;
+    
+    /* calc() Examples */
+    .example {
+      margin-bottom: 30px;
     }
-
+    
+    .label {
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
     @media (prefers-color-scheme: dark) {
-        h2 {
-            color: #60a5fa;
-        }
+      .label {
+        color: #a78bfa;
+      }
     }
-
-    h3 { 
-        font-size: 1rem; 
-        margin-bottom: 0.5rem; 
-        color: #667eea; 
+    
+    .box {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
     }
-
+    
+    /* Example 1: Full width minus fixed */
+    .calc1 {
+      width: calc(100% - 100px);
+    }
+    
+    /* Example 2: Viewport based */
+    .calc2 {
+      width: calc(100vw - 120px);
+      max-width: 100%;
+    }
+    
+    /* Example 3: Centered with calc */
+    .calc3 {
+      width: 400px;
+      margin-left: calc(50% - 200px);
+    }
+    
+    /* Example 4: Dynamic padding */
+    .calc4 {
+      padding: calc(10px + 2vw);
+    }
+    
+    /* Example 5: Grid with calc */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, calc(33.333% - 20px));
+      gap: 30px;
+      margin-top: 20px;
+    }
+    
+    .code {
+      background: #1a1a2e;
+      color: #10b981;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    
     @media (prefers-color-scheme: dark) {
-        h3 {
-            color: #a78bfa;
-        }
+      .code {
+        background: #0a0a14;
+      }
     }
-
-    p {
-        text-align: center;
-        margin-bottom: 0.5rem;
-    }
-
-    .demo-section { 
-        margin-bottom: 3rem;
-        overflow: hidden;
-    }
-
-    .function-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        margin-top: 1rem;
-        width: 100%;
-    }
-
-    .function-demo {
-        text-align: center;
-        padding: 1.5rem;
-        background: #f8f9fa;
-        border-radius: 10px;
-        border: 2px solid #e9ecef;
-        transition: all 0.3s ease;
-        overflow: hidden;
-        max-width: 100%;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .function-demo {
-            background: #374151;
-            border-color: #4b5563;
-        }
-    }
-
-    .function-demo:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    /* Math Functions */
-    .calc-box {
-        width: calc(100% - 40px);
-        max-width: 100%;
-        height: 60px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin: 0 auto 1rem;
-        font-weight: bold;
-        word-wrap: break-word;
-        overflow: hidden;
-    }
-
-    .min-box {
-        width: min(300px, 100%);
-        max-width: 100%;
-        height: 60px;
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin: 0 auto 1rem;
-        font-weight: bold;
-        word-wrap: break-word;
-        overflow: hidden;
-    }
-
-    .max-box {
-        width: max(200px, 50%);
-        max-width: 100%;
-        height: 60px;
-        background: linear-gradient(135deg, #4ecdc4, #44a08d);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin: 0 auto 1rem;
-        font-weight: bold;
-        word-wrap: break-word;
-        overflow: hidden;
-    }
-
-    .clamp-box {
-        width: clamp(200px, 50%, 400px);
-        max-width: 100%;
-        height: 60px;
-        background: linear-gradient(135deg, #a8edea, #fed6e3);
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin: 0 auto 1rem;
-        font-weight: bold;
-        word-wrap: break-word;
-        overflow: hidden;
-    }
-
-    /* Color Functions */
-    .color-box {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        margin: 0 auto 1rem;
-        border: 3px solid white;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .rgb-box { background: rgb(59, 130, 246); }
-    .hsl-box { background: hsl(220, 91%, 60%); }
-    .rgba-box { background: rgba(16, 185, 129, 0.7); }
-    .hsla-box { background: hsla(45, 93%, 47%, 0.8); }
-
-    /* Transform Functions */
-    .transform-box {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin: 0 auto 1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-
-    .translate-box:hover { transform: translate(10px, -10px); }
-    .rotate-box:hover { transform: rotate(45deg); }
-    .scale-box:hover { transform: scale(1.2); }
-    .skew-box:hover { transform: skew(15deg, 5deg); }
-
-    /* Filter Functions */
-    .filter-box {
-        width: 120px;
-        height: 80px;
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin: 0 auto 1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: filter 0.3s ease;
-    }
-
-    .blur-box:hover { filter: blur(3px); }
-    .brightness-box:hover { filter: brightness(1.5); }
-    .contrast-box:hover { filter: contrast(1.5); }
-    .saturate-box:hover { filter: saturate(2); }
-
-    @media (max-width: 768px) {
-        .function-grid { grid-template-columns: repeat(2, 1fr); }
-        .calc-box, .min-box, .max-box, .clamp-box { font-size: 0.8rem; }
-    }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🧮 CSS Functions Showcase</h1>
-        <p>Explore the power of CSS functions with interactive examples!</p>
-        
-        <section class="demo-section">
-            <h2>🧮 Math Functions</h2>
-            <div class="function-grid">
-                <div class="function-demo calc-demo">
-                    <h3>calc()</h3>
-                    <div class="calc-box">Dynamic Width</div>
-                    <p>width: calc(100% - 40px)</p>
-                </div>
-                
-                <div class="function-demo min-demo">
-                    <h3>min()</h3>
-                    <div class="min-box">Responsive</div>
-                    <p>width: min(300px, 100%)</p>
-                </div>
-                
-                <div class="function-demo max-demo">
-                    <h3>max()</h3>
-                    <div class="max-box">Minimum Size</div>
-                    <p>width: max(200px, 50%)</p>
-                </div>
-                
-                <div class="function-demo clamp-demo">
-                    <h3>clamp()</h3>
-                    <div class="clamp-box">Clamped</div>
-                    <p>width: clamp(200px, 50%, 400px)</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🎨 Color Functions</h2>
-            <div class="function-grid">
-                <div class="function-demo">
-                    <h3>rgb()</h3>
-                    <div class="color-box rgb-box"></div>
-                    <p>rgb(59, 130, 246)</p>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>hsl()</h3>
-                    <div class="color-box hsl-box"></div>
-                    <p>hsl(220, 91%, 60%)</p>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>rgba()</h3>
-                    <div class="color-box rgba-box"></div>
-                    <p>rgba(16, 185, 129, 0.7)</p>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>hsla()</h3>
-                    <div class="color-box hsla-box"></div>
-                    <p>hsla(45, 93%, 47%, 0.8)</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🔄 Transform Functions</h2>
-            <div class="function-grid">
-                <div class="function-demo">
-                    <h3>translate()</h3>
-                    <div class="transform-box translate-box">Move</div>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>rotate()</h3>
-                    <div class="transform-box rotate-box">Spin</div>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>scale()</h3>
-                    <div class="transform-box scale-box">Size</div>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>skew()</h3>
-                    <div class="transform-box skew-box">Slant</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="demo-section">
-            <h2>🎭 Filter Functions</h2>
-            <div class="function-grid">
-                <div class="function-demo">
-                    <h3>blur()</h3>
-                    <div class="filter-box blur-box">Blur Effect</div>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>brightness()</h3>
-                    <div class="filter-box brightness-box">Bright</div>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>contrast()</h3>
-                    <div class="filter-box contrast-box">Contrast</div>
-                </div>
-                
-                <div class="function-demo">
-                    <h3>saturate()</h3>
-                    <div class="filter-box saturate-box">Vivid</div>
-                </div>
-            </div>
-        </section>
+  <div class="container">
+    <h1>🧮 calc() Function</h1>
+    
+    <div class="example">
+      <div class="label">width: calc(100% - 100px)</div>
+      <div class="box calc1">100% width minus 100px</div>
+      <div class="code">Perfect for fixed sidebar layouts</div>
     </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('CSS Functions Demo loaded!');
-        
-        // Add click effects for mobile
-        const boxes = document.querySelectorAll('.transform-box, .filter-box');
-        
-        boxes.forEach(box => {
-            box.addEventListener('click', function() {
-                this.style.transform = this.style.transform ? '' : 
-                    this.classList.contains('translate-box') ? 'translate(10px, -10px)' :
-                    this.classList.contains('rotate-box') ? 'rotate(45deg)' :
-                    this.classList.contains('scale-box') ? 'scale(1.2)' :
-                    this.classList.contains('skew-box') ? 'skew(15deg, 5deg)' : '';
-                    
-                if (this.classList.contains('filter-box')) {
-                    this.style.filter = this.style.filter ? '' :
-                        this.classList.contains('blur-box') ? 'blur(3px)' :
-                        this.classList.contains('brightness-box') ? 'brightness(1.5)' :
-                        this.classList.contains('contrast-box') ? 'contrast(1.5)' :
-                        this.classList.contains('saturate-box') ? 'saturate(2)' : '';
-                }
-            });
-        });
-    });
-    </script>
+    
+    <div class="example">
+      <div class="label">width: calc(100vw - 120px)</div>
+      <div class="box calc2">Viewport width minus 120px</div>
+      <div class="code">Responsive to window size</div>
+    </div>
+    
+    <div class="example">
+      <div class="label">margin-left: calc(50% - 200px)</div>
+      <div class="box calc3">Centered with calc!</div>
+      <div class="code">Alternative to margin: 0 auto</div>
+    </div>
+    
+    <div class="example">
+      <div class="label">padding: calc(10px + 2vw)</div>
+      <div class="box calc4">Dynamic padding!</div>
+      <div class="code">Grows with viewport width</div>
+    </div>
+    
+    <div class="example">
+      <div class="label">Grid: calc(33.333% - 20px) with 30px gap</div>
+      <div class="grid">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+      </div>
+      <div class="code">Equal columns with gap</div>
+    </div>
+  </div>
 </body>
-</html>`;
+</html>`}
+            title="calc() Examples"
+            colorTheme="indigo"
+            onOpenWebPlayground={onOpenWebPlayground}
+          />
+        </CardContent>
+      </Card>
 
-    const handleOpenPlayground = () => {
-        if (onOpenWebPlayground) {
-            onOpenWebPlayground(playgroundCode, '', '');
-        }
-    };
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Minimize2 className="w-6 h-6 text-green-600 dark:text-green-400" />
+            min() & max() Functions
+          </CardTitle>
+          <CardDescription>Choose smallest or largest value</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-6 rounded-xl bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800">
+              <Badge className="bg-blue-600 text-white text-lg mb-3">min()</Badge>
+              <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+                Returns the <strong>smallest</strong> value from a list
+              </p>
+              <div className="bg-blue-900 dark:bg-blue-950 p-3 rounded-lg mb-3">
+                <code className="text-sm text-blue-100">
+                  width: min(500px, 100%);
+                </code>
+              </div>
+              <p className="text-xs text-blue-700 dark:text-blue-300">
+                ✓ Never exceeds 500px, but can be smaller
+              </p>
+            </div>
 
-    return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
-                icon={Calculator}
-                category="CSS · Core Concepts"
-                title="CSS Functions"
-                description="Master powerful built-in functions for calculations, colors, transforms, and visual effects - unlock advanced CSS capabilities."
-                colorTheme="blue"
-            />
+            <div className="p-6 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+              <Badge className="bg-green-600 text-white text-lg mb-3">max()</Badge>
+              <p className="text-sm text-green-800 dark:text-green-200 mb-3">
+                Returns the <strong>largest</strong> value from a list
+              </p>
+              <div className="bg-green-900 dark:bg-green-950 p-3 rounded-lg mb-3">
+                <code className="text-sm text-green-100">
+                  width: max(300px, 50%);
+                </code>
+              </div>
+              <p className="text-xs text-green-700 dark:text-green-300">
+                ✓ At least 300px, but can be larger
+              </p>
+            </div>
+          </div>
 
-            {/* What are CSS Functions */}
-            <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 animate-pulse"></div>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
-                        <div className="relative">
-                            <Calculator className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are CSS Functions?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
-                        🚀 Supercharge your CSS with dynamic calculations, intelligent responsiveness, and stunning visual effects!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative">
-                    <div className="grid lg:grid-cols-3 gap-6">
-                        {/* Interactive Demo */}
-                        <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                                    <Zap className="w-5 h-5" />
-                                    🎯 Functions in Action
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">Static Value</div>
-                                        <div className="w-full h-8 bg-gray-300 rounded flex items-center justify-center text-xs font-mono">
-                                            width: 200px
-                                        </div>
-                                        <div className="text-xs text-red-500 mt-1">❌ Fixed & Rigid</div>
-                                    </div>
-                                    
-                                    <div className="text-center">
-                                        <div className="text-xs text-gray-600 mb-2">CSS Function</div>
-                                        <div 
-                                            className="h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded flex items-center justify-center text-xs font-mono text-white transition-all duration-300"
-                                            style={{ width: 'calc(100% - 20px)' }}
-                                        >
-                                            calc(100% - 20px)
-                                        </div>
-                                        <div className="text-xs text-green-500 mt-1">✅ Dynamic & Smart</div>
-                                    </div>
-                                </div>
+          <div className="space-y-3">
+            {[
+              { func: 'min()', use: 'Max width constraint', code: 'width: min(100%, 800px);', desc: 'Never wider than 800px' },
+              { func: 'max()', use: 'Min width constraint', code: 'width: max(50%, 300px);', desc: 'At least 300px wide' },
+              { func: 'min()', use: 'Responsive font', code: 'font-size: min(5vw, 32px);', desc: 'Caps at 32px' },
+              { func: 'max()', use: 'Responsive padding', code: 'padding: max(20px, 2vw);', desc: 'Minimum 20px' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-green-600 text-white text-xs">{item.func}</Badge>
+                  <span className="font-bold text-sm">{item.use}</span>
+                </div>
+                <code className="text-xs bg-green-900 dark:bg-green-950 text-green-100 px-2 py-1 rounded block mb-1">
+                  {item.code}
+                </code>
+                <p className="text-xs text-green-700 dark:text-green-300">→ {item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
-                                        🎪 Try it yourself - Resize this window!
-                                    </div>
-                                    <div className="text-xs text-green-600 dark:text-green-400">
-                                        The function-based width adapts automatically, while the static width stays the same.
-                                    </div>
-                                </div>
-                            </div>
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            clamp() Function
+          </CardTitle>
+          <CardDescription>The most powerful: min, ideal, and max</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-gray-700 dark:text-gray-300">
+            <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">clamp()</code> combines 
+            min and max in one function: <code>clamp(minimum, ideal, maximum)</code>
+          </p>
 
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                                    <Grid3X3 className="w-5 h-5" />
-                                    🎨 Function Categories
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Calculator className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Math Magic</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">calc(), min(), max(), clamp()</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200/50">
-                                        <Palette className="w-6 h-6 text-pink-500" />
-                                        <div>
-                                            <div className="font-semibold text-pink-700 dark:text-pink-300 text-sm">Color Wizardry</div>
-                                            <div className="text-xs text-pink-600 dark:text-pink-400">rgb(), hsl(), rgba(), hsla()</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <Move className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Transform Power</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">translate(), rotate(), scale()</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Eye className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Visual Effects</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">blur(), brightness(), contrast()</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+          <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 border-2 border-blue-300 dark:border-blue-700">
+            <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100 mb-3">
+              clamp() Syntax
+            </h3>
+            <div className="bg-blue-900 dark:bg-blue-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-blue-100 block">
+{`/* clamp(minimum, ideal, maximum) */
 
-                        {/* Animated Comparison */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-purple-100 via-blue-100 to-indigo-100 dark:from-purple-900/30 dark:via-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">🧮</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">
-                                            ✨
-                                        </div>
-                                    </div>
-                                    <div className="font-bold text-lg text-purple-700 dark:text-purple-300">CSS Functions</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Dynamic & Responsive
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Calculated Values
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Future-Proof
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="text-2xl font-bold text-gray-400">vs</div>
-                                    
-                                    <div className="text-4xl mb-2">📏</div>
-                                    <div className="font-bold text-lg text-gray-600 dark:text-gray-400">Static Values</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-red-500 dark:text-red-400">
-                                            <AlertTriangle className="w-4 h-4" />
-                                            Fixed & Rigid
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-red-500 dark:text-red-400">
-                                            <AlertTriangle className="w-4 h-4" />
-                                            Hardcoded Numbers
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-red-500 dark:text-red-400">
-                                            <AlertTriangle className="w-4 h-4" />
-                                            Maintenance Nightmare
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+/* Responsive font size */
+font-size: clamp(16px, 4vw, 32px);
+/* Never smaller than 16px, never larger than 32px */
 
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">🚀</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Functions make your CSS intelligent and adaptive to different screen sizes, user preferences, and content changes!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+/* Responsive width */
+width: clamp(300px, 50%, 800px);
+/* Min 300px, Max 800px, tries for 50% */
 
-                    {/* Interactive Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">CSS Functions Demo</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">/* 🧮 Math Functions */</div>
-                            <div className="text-blue-600 dark:text-blue-400">.responsive-width</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'} <span className="text-green-600 dark:text-green-400">width</span>: <span className="text-yellow-600 dark:text-yellow-400">calc(100% - 2rem)</span>; {'}'}</div>
-                            <br />
-                            <div className="text-gray-500">/* 🎨 Color Functions */</div>
-                            <div className="text-blue-600 dark:text-blue-400">.dynamic-color</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'} <span className="text-green-600 dark:text-green-400">background</span>: <span className="text-yellow-600 dark:text-yellow-400">hsl(220, 91%, 60%)</span>; {'}'}</div>
-                            <br />
-                            <div className="text-gray-500">/* 🔄 Transform Functions */</div>
-                            <div className="text-blue-600 dark:text-blue-400">.animated-element</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'} <span className="text-green-600 dark:text-green-400">transform</span>: <span className="text-yellow-600 dark:text-yellow-400">translate(50px, -20px)</span>; {'}'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Function Categories */}
-            <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                        <Code className="w-5 h-5" />
-                        Function Categories
-                    </CardTitle>
-                    <CardDescription>
-                        Explore different categories of CSS functions and their use cases.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {functionCategories.map((category) => (
-                            <div 
-                                key={category.name}
-                                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                                    selectedCategory === category.name 
-                                        ? 'ring-2 ring-primary ring-offset-2 border-primary' 
-                                        : 'border-gray-200 hover:border-gray-300'
-                                }`}
-                                onClick={() => setSelectedCategory(category.name)}
-                            >
-                                <div className="flex items-center gap-2 mb-3">
-                                    <category.icon className="w-5 h-5 text-primary" />
-                                    <h3 className="font-bold text-sm">{category.title}</h3>
-                                </div>
-                                <p className="text-xs text-gray-600 mb-3">{category.desc}</p>
-                                <div className="space-y-1">
-                                    {category.functions.map((func, idx) => (
-                                        <Badge key={idx} variant="secondary" className="text-xs mr-1 mb-1">
-                                            {func}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Live Interactive Examples */}
-            <Card className="border-indigo-200 bg-indigo-50/50 dark:bg-indigo-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
-                        <MousePointer className="w-5 h-5" />
-                        Live Function Examples
-                    </CardTitle>
-                    <CardDescription>
-                        Interactive CSS functions demonstrations right here on the page!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-8">
-                        {/* Math Functions */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-indigo-700 dark:text-indigo-300">🧮 Math Functions</h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded mx-auto mb-2 flex items-center justify-center text-white font-bold text-xs"
-                                        style={{ width: 'calc(100% - 20px)' }}
-                                    >
-                                        calc()
-                                    </div>
-                                    <p className="text-xs font-medium">calc(100% - 20px)</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="h-12 bg-gradient-to-r from-green-500 to-teal-600 rounded mx-auto mb-2 flex items-center justify-center text-white font-bold text-xs"
-                                        style={{ width: 'min(120px, 100%)' }}
-                                    >
-                                        min()
-                                    </div>
-                                    <p className="text-xs font-medium">min(120px, 100%)</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded mx-auto mb-2 flex items-center justify-center text-white font-bold text-xs"
-                                        style={{ width: 'max(80px, 50%)' }}
-                                    >
-                                        max()
-                                    </div>
-                                    <p className="text-xs font-medium">max(80px, 50%)</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="h-12 bg-gradient-to-r from-pink-500 to-rose-600 rounded mx-auto mb-2 flex items-center justify-center text-white font-bold text-xs"
-                                        style={{ width: 'clamp(60px, 50%, 100px)' }}
-                                    >
-                                        clamp()
-                                    </div>
-                                    <p className="text-xs font-medium">clamp(60px, 50%, 100px)</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Color Functions */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-indigo-700 dark:text-indigo-300">🎨 Color Functions</h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="w-16 h-16 rounded-full mx-auto mb-2 border-4 border-white shadow-lg"
-                                        style={{ backgroundColor: 'rgb(59, 130, 246)' }}
-                                    ></div>
-                                    <p className="text-xs font-medium">rgb(59, 130, 246)</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="w-16 h-16 rounded-full mx-auto mb-2 border-4 border-white shadow-lg"
-                                        style={{ backgroundColor: 'hsl(220, 91%, 60%)' }}
-                                    ></div>
-                                    <p className="text-xs font-medium">hsl(220, 91%, 60%)</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="w-16 h-16 rounded-full mx-auto mb-2 border-4 border-white shadow-lg"
-                                        style={{ backgroundColor: 'rgba(16, 185, 129, 0.7)' }}
-                                    ></div>
-                                    <p className="text-xs font-medium">rgba(16, 185, 129, 0.7)</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div 
-                                        className="w-16 h-16 rounded-full mx-auto mb-2 border-4 border-white shadow-lg"
-                                        style={{ backgroundColor: 'hsla(45, 93%, 47%, 0.8)' }}
-                                    ></div>
-                                    <p className="text-xs font-medium">hsla(45, 93%, 47%, 0.8)</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Transform Functions */}
-                        <div>
-                            <h4 className="font-semibold mb-4 text-indigo-700 dark:text-indigo-300">🔄 Transform Functions</h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded mx-auto mb-2 cursor-pointer transition-transform duration-300 hover:translate-x-2 hover:-translate-y-2 flex items-center justify-center text-white font-bold text-xs">
-                                        T
-                                    </div>
-                                    <p className="text-xs font-medium">translate()</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-600 rounded mx-auto mb-2 cursor-pointer transition-transform duration-300 hover:rotate-45 flex items-center justify-center text-white font-bold text-xs">
-                                        R
-                                    </div>
-                                    <p className="text-xs font-medium">rotate()</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded mx-auto mb-2 cursor-pointer transition-transform duration-300 hover:scale-125 flex items-center justify-center text-white font-bold text-xs">
-                                        S
-                                    </div>
-                                    <p className="text-xs font-medium">scale()</p>
-                                </div>
-                                
-                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-600 rounded mx-auto mb-2 cursor-pointer transition-transform duration-300 hover:skew-x-12 flex items-center justify-center text-white font-bold text-xs">
-                                        K
-                                    </div>
-                                    <p className="text-xs font-medium">skew()</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Interactive Playground */}
-            <Card className="border-primary bg-primary/5">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Play className="w-5 h-5" />
-                        Complete CSS Functions Playground
-                    </CardTitle>
-                    <CardDescription>
-                        Interactive playground with math, color, transform, and filter functions.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        html={playgroundCode}
-                        title="CSS Functions Playground"
-                        colorTheme="blue"
-                        onOpenPlayground={handleOpenPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* BEST PRACTICES */}
-            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertTitle className="text-green-900 dark:text-green-100">Best Practices</AlertTitle>
-                <AlertDescription className="text-green-800 dark:text-green-200">
-                    <ul className="list-disc list-inside space-y-1 mt-2">
-                        <li><strong>Use calc() for dynamic sizing</strong> - Perfect for responsive layouts with mixed units</li>
-                        <li><strong>Prefer clamp() for fluid typography</strong> - Creates responsive text without media queries</li>
-                        <li><strong>Use hsl() for color manipulation</strong> - Easier to adjust hue, saturation, and lightness</li>
-                        <li><strong>Combine functions</strong> - Stack multiple functions for powerful effects</li>
-                        <li><strong>Performance</strong> - Most CSS functions are GPU-accelerated</li>
-                    </ul>
-                </AlertDescription>
-            </Alert>
-
-            {/* BROWSER SUPPORT */}
+/* Fluid spacing */
+padding: clamp(1rem, 2vw, 3rem);`}
+              </code>
+            </div>
             <Alert className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/20">
-                <Info className="h-4 w-4 text-blue-600" />
-                <AlertTitle className="text-blue-900 dark:text-blue-100">Browser Support</AlertTitle>
-                <AlertDescription className="text-blue-800 dark:text-blue-200">
-                    <strong>Excellent support for most CSS functions!</strong> calc(), rgb(), hsl(), and transform functions work in all modern browsers. Math functions like min(), max(), and clamp() are supported in Chrome 79+, Firefox 75+, Safari 13.1+, and Edge 79+.
-                </AlertDescription>
+              <Lightbulb className="w-5 h-5 text-blue-600" />
+              <AlertTitle className="text-blue-900 dark:text-blue-100">Most Popular Use: Typography!</AlertTitle>
+              <AlertDescription className="text-blue-800 dark:text-blue-200">
+                <code>clamp()</code> is perfect for fluid typography that scales with viewport but stays readable!
+              </AlertDescription>
             </Alert>
-        </div>
-    );
+          </div>
+
+          <div className="space-y-3">
+            {[
+              { use: 'Fluid Typography', code: 'font-size: clamp(1rem, 2.5vw, 2rem);' },
+              { use: 'Responsive Container', code: 'width: clamp(320px, 90%, 1200px);' },
+              { use: 'Flexible Padding', code: 'padding: clamp(20px, 5%, 80px);' },
+              { use: 'Dynamic Gap', code: 'gap: clamp(10px, 2vw, 40px);' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+                <p className="font-bold text-blue-900 dark:text-blue-100 mb-2">{item.use}</p>
+                <code className="text-xs bg-blue-900 dark:bg-blue-950 text-blue-100 px-2 py-1 rounded">
+                  {item.code}
+                </code>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>calc()</strong> for math operations between units</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>min()</strong> picks smallest, <strong>max()</strong> picks largest</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>clamp()</strong> = min + ideal + max in one function</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use spaces around <strong>+</strong> and <strong>-</strong> in calc()</span>
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
 }

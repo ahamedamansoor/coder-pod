@@ -2,516 +2,525 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Boxes,
   Sparkles,
-  Layers,
-  Database,
+  Code2,
   Lightbulb,
-  CheckCircle2,
-  XCircle,
   Key,
-  ListChecks,
-  Braces,
+  UserCircle,
   Package,
-  Zap,
 } from 'lucide-react';
 
 export default function JavaScriptObjects() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Boxes}
-        category="JavaScript · Arrays & Objects"
+        category="JavaScript Fundamentals"
         title="Objects"
-        description="Store related data as key-value pairs and model everything from users to configuration."
-        colorTheme="blue"
+        description="Store related data together using key-value pairs - like a contact card"
+        colorTheme="yellow"
       />
 
-      {/* All Object Features Reference */}
-      <Card className="bg-gradient-to-br from-indigo-50/70 via-purple-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:via-purple-950/10 dark:to-blue-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListChecks className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            All Object Features
-          </CardTitle>
-          <CardDescription className="text-base">
-            Comprehensive features for working with JavaScript objects
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-4 gap-3">
-          <div className="p-3 rounded-lg bg-blue-50/80 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/30">
-            <h4 className="font-semibold text-sm text-blue-700 dark:text-blue-300 mb-2">Creation</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Object literals</div>
-              <div>• Constructor functions</div>
-              <div>• Object.create()</div>
+      {/* What are Objects? */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-indigo-50/50 via-blue-50/30 to-cyan-50/20 dark:from-indigo-950/10 dark:via-blue-950/5 dark:to-cyan-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-indigo-400 to-blue-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Objects: Groups of Related Data
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                An object is like a <strong className="text-indigo-700 dark:text-indigo-400">labeled container</strong> that holds related information. Think of it like a contact card with name, phone, and email - all the info about one person in one place!
+              </p>
             </div>
           </div>
-          <div className="p-3 rounded-lg bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/30">
-            <h4 className="font-semibold text-sm text-emerald-700 dark:text-emerald-300 mb-2">Properties</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Dot notation</div>
-              <div>• Bracket notation</div>
-              <div>• Computed properties</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-lg bg-purple-50/80 dark:bg-purple-950/20 border border-purple-200/50 dark:border-purple-800/30">
-            <h4 className="font-semibold text-sm text-purple-700 dark:text-purple-300 mb-2">Methods</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Object.keys()</div>
-              <div>• Object.values()</div>
-              <div>• Object.entries()</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-lg bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
-            <h4 className="font-semibold text-sm text-amber-700 dark:text-amber-300 mb-2">Operations</h4>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div>• Spread operator</div>
-              <div>• Destructuring</div>
-              <div>• Object.assign()</div>
-            </div>
-          </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-indigo-200 dark:border-indigo-800/30">
+            <Boxes className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-lg">Objects vs Arrays</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              <strong>Arrays</strong> = Numbered list [1, 2, 3]<br/>
+              <strong>Objects</strong> = Named properties {'{ name: "Alice", age: 25 }'}
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-indigo-50/70 via-sky-50/60 to-blue-50/60 dark:from-indigo-950/10 dark:via-sky-950/10 dark:to-blue-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Why Objects Matter
-          </CardTitle>
-          <CardDescription className="text-base">
-            Objects are the foundation of JavaScript - everything is built on them.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Key className="w-5 h-5 text-indigo-500" />
-              <h3 className="font-semibold">Key-value pairs</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Store related data with descriptive keys instead of numeric indices.</p>
-            <Badge className="bg-indigo-100/80 text-indigo-700 border border-indigo-200/60">{`{ }`}</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-emerald-500" />
-              <h3 className="font-semibold">Flexible structure</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Add or remove properties dynamically as your needs change.</p>
-            <Badge className="bg-emerald-100/80 text-emerald-700 border border-emerald-200/60">Dynamic</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Package className="w-5 h-5 text-sky-500" />
-              <h3 className="font-semibold">Universal format</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">JSON, APIs, and frameworks all use objects as the standard data structure.</p>
-            <Badge className="bg-sky-100/80 text-sky-700 border border-sky-200/60">JSON</Badge>
-          </div>
-        </CardContent>
-      </Card>
-
+      {/* Creating Objects */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Boxes className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            What Are Objects?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Collections of key-value pairs that represent entities, configurations, and data structures.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Code2 className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Creating Objects</CardTitle>
+              <CardDescription>Use curly braces {'{ }'} with key-value pairs</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <pre 
-            className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-            style={{
-              fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-            }}
-          >
-{`// Creating an object
-const user = {
-  name: 'Ada Lovelace',
-  age: 36,
-  role: 'Developer',
-  skills: ['JavaScript', 'Python', 'Math']
-};
-
-// Accessing properties
-console.log(user.name);        // "Ada Lovelace"
-console.log(user['role']);     // "Developer"
-console.log(user.skills[0]);   // "JavaScript"`}
-          </pre>
-          <p className="text-sm text-muted-foreground">
-            Objects use curly braces and contain properties as key-value pairs. Access properties with dot notation or bracket notation.
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Object Operations */}
-      <Card className="bg-gradient-to-br from-indigo-50/60 to-slate-50/60 dark:from-indigo-950/10 dark:to-slate-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Common Object Operations
-          </CardTitle>
-          <CardDescription className="text-base">
-            Essential operations for creating, accessing, and manipulating objects
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Creating Objects</h4>
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30">Basic</Badge>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Object Syntax</h4>
             </div>
-            <p className="text-xs text-muted-foreground">Multiple ways to create object instances</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`// Object literal (most common)
-const user = { name: 'Ada', age: 36 };
-
-// Object constructor
-const config = new Object();
-config.theme = 'dark';
-
-// Object.create()
-const prototype = { greet() { return 'Hi'; } };
-const obj = Object.create(prototype);`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Accessing Properties</h4>
-              <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30">Essential</Badge>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30 mb-4">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const objectName = {
+  key1: value1,
+  key2: value2
+};`}</pre>
+              </div>
+              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600 dark:text-green-400">•</span>
+                  <span><code className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">key</code> = property name</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-blue-600 dark:text-blue-400">•</span>
+                  <span><code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">value</code> = the data</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-purple-600 dark:text-purple-400">•</span>
+                  <span>Separate pairs with commas</span>
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Dot notation and bracket notation</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const user = { name: 'Ada', 'favorite-color': 'blue' };
-
-// Dot notation
-console.log(user.name); // "Ada"
-
-// Bracket notation (for special chars or dynamic keys)
-console.log(user['favorite-color']); // "blue"
-const key = 'name';
-console.log(user[key]); // "Ada"`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Spread Operator</h4>
-              <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30">Copy</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground">Clone and merge objects easily</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const defaults = { theme: 'light', lang: 'en' };
-const userPrefs = { theme: 'dark' };
-
-// Merge objects (right side wins)
-const settings = { ...defaults, ...userPrefs };
-console.log(settings);
-// { theme: 'dark', lang: 'en' }`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Destructuring</h4>
-              <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30">Extract</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground">Unpack properties into variables</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const user = { name: 'Ada', role: 'Dev', city: 'London' };
-
-// Extract specific properties
-const { name, role } = user;
-console.log(name); // "Ada"
-
-// With defaults
-const { city, country = 'UK' } = user;
-console.log(country); // "UK"`}
-            </pre>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Object Methods: Keys, Values, Entries"
-        description="Iterate over objects using built-in methods"
-        code={`const product = {
-  name: 'Laptop',
-  price: 999,
-  inStock: true,
-  specs: { ram: '16GB', cpu: 'M2' }
-};
-
-// Get all keys
-const keys = Object.keys(product);
-console.log(keys); // ["name", "price", "inStock", "specs"]
-
-// Get all values
-const values = Object.values(product);
-console.log(values); // ["Laptop", 999, true, {...}]
-
-// Get key-value pairs
-const entries = Object.entries(product);
-console.log(entries);
-// [["name", "Laptop"], ["price", 999], ["inStock", true], ["specs", {...}]]
-
-// Iterate with for...in
-for (const key in product) {
-  console.log(\`\${key}: \${product[key]}\`);
-}
-
-// Check if key exists
-console.log('price' in product); // true
-console.log(product.hasOwnProperty('name')); // true`}
-        language="javascript"
-        colorTheme="purple"
-        icon={Braces}
-      />
-
-      <CodeSnippet
-        title="Computed Property Names"
-        description="Use expressions as property keys with square brackets"
-        code={`// Dynamic property names
-const propName = 'status';
+        title="Creating Objects"
+        description="Store multiple pieces of related information"
+        code={`// Create a user object
 const user = {
-  name: 'Ada',
-  [propName]: 'active',
-  ['is' + 'Admin']: true
+  name: 'Alice',
+  age: 25,
+  city: 'New York',
+  isActive: true
 };
 
 console.log(user);
-// { name: "Ada", status: "active", isAdmin: true }
+// Output: { name: 'Alice', age: 25, city: 'New York', isActive: true }
 
-// With functions
-const createKey = (prefix, name) => \`\${prefix}_\${name}\`;
-
-const config = {
-  [createKey('api', 'key')]: 'abc123',
-  [createKey('db', 'host')]: 'localhost'
+// Create a product object
+const product = {
+  id: 101,
+  name: 'Laptop',
+  price: 999,
+  inStock: true
 };
 
-console.log(config);
-// { api_key: "abc123", db_host: "localhost" }`}
+console.log(product);
+// Output: { id: 101, name: 'Laptop', price: 999, inStock: true }
+
+// Empty object
+const emptyObject = {};
+console.log(emptyObject);
+// Output: {}`}
         language="javascript"
-        colorTheme="blue"
-        icon={Key}
+        colorTheme="yellow"
       />
 
-      {/* Real-World Examples */}
-      <Card className="bg-gradient-to-br from-sky-50/60 to-blue-50/60 dark:from-sky-950/10 dark:to-blue-950/10 border border-sky-200/40 dark:border-sky-800/30">
+      {/* Accessing Properties */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Database className="w-6 h-6 text-sky-600/80 dark:text-sky-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Common use cases where objects are essential
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Key className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Accessing Object Properties</CardTitle>
+              <CardDescription>Two ways: dot notation and bracket notation</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-blue-500" />
-              <h4 className="font-semibold">API Response</h4>
+        <CardContent className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <h4 className="font-bold text-lg mb-3 text-green-700 dark:text-green-300">Dot Notation (Most Common)</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-green-200 dark:border-green-800/30 mb-3">
+                <code className="text-sm font-mono text-gray-800 dark:text-gray-200">object.propertyName</code>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Simple and clean - use when you know the property name
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground">Parse and access nested API data</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const response = {
-  data: {
-    user: { id: 1, name: 'Ada' },
-    posts: [{ id: 101, title: 'Hello' }]
-  }
-};
 
-const { data: { user, posts } } = response;
-console.log(user.name); // "Ada"`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-              <h4 className="font-semibold">Configuration</h4>
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-bold text-lg mb-3 text-blue-700 dark:text-blue-300">Bracket Notation</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-blue-200 dark:border-blue-800/30 mb-3">
+                <code className="text-sm font-mono text-gray-800 dark:text-gray-200">object['propertyName']</code>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Use with spaces, variables, or special characters
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground">Store app settings and preferences</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const config = {
-  api: {
-    baseURL: 'https://api.example.com',
-    timeout: 5000
-  },
-  features: { darkMode: true }
-};
-
-fetch(config.api.baseURL + '/users');`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-purple-500" />
-              <h4 className="font-semibold">State Management</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">Track component or application state</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const state = {
-  user: null,
-  isLoading: false,
-  error: null
-};
-
-// Update state
-const newState = { ...state, isLoading: true };`}
-            </pre>
-          </div>
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-amber-500" />
-              <h4 className="font-semibold">Form Data</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">Collect and validate user input</p>
-            <pre 
-              className="bg-slate-50 dark:bg-slate-950 rounded p-3 text-xs overflow-x-auto border"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`const formData = {
-  email: 'ada@example.com',
-  password: '••••••',
-  remember: true
-};
-
-if (formData.email && formData.password) {
-  // Submit form
-}`}
-            </pre>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: User Profile Manager"
-        description="Combining object operations for a practical use case"
-        code={`// Default profile template
-const defaultProfile = {
-  theme: 'light',
-  notifications: true,
-  language: 'en'
+        title="Accessing Properties"
+        description="Get values from objects"
+        code={`const person = {
+  name: 'Bob',
+  age: 30,
+  city: 'Los Angeles',
+  'favorite color': 'blue'  // Property with space
 };
 
-// User's custom settings
-const userSettings = {
-  theme: 'dark',
-  username: 'ada_dev'
-};
+// Dot notation (most common)
+console.log(person.name);  // Bob
+console.log(person.age);   // 30
+console.log(person.city);  // Los Angeles
 
-// Merge with defaults
-const profile = { ...defaultProfile, ...userSettings };
-console.log(profile);
-// {
-//   theme: "dark",
-//   notifications: true,
-//   language: "en",
-//   username: "ada_dev"
-// }
+// Bracket notation (for special cases)
+console.log(person['favorite color']);  // blue
 
-// Update specific property
-const updatedProfile = {
-  ...profile,
-  notifications: false,
-  lastLogin: new Date()
-};
+// Using a variable
+const propertyName = 'age';
+console.log(person[propertyName]);  // 30
 
-// Extract needed values
-const { username, theme, language } = updatedProfile;
-console.log(\`\${username} prefers \${theme} mode in \${language}\`);
-
-// Save to localStorage
-localStorage.setItem('profile', JSON.stringify(updatedProfile));
-
-// Load from localStorage
-const savedProfile = JSON.parse(localStorage.getItem('profile'));`}
+// Property doesn't exist
+console.log(person.country);  // undefined`}
         language="javascript"
-        colorTheme="indigo"
-        icon={Sparkles}
+        colorTheme="yellow"
       />
 
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/50 dark:border-emerald-800/30">
+      {/* Modifying Objects */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Do This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Use descriptive property names that reflect their purpose.</li>
-              <li>✅ Prefer object destructuring for cleaner variable assignment.</li>
-              <li>✅ Use spread operator to create shallow copies when updating.</li>
-              <li>✅ Freeze configuration objects with Object.freeze() for safety.</li>
-            </ul>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Code2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>Adding & Changing Properties</CardTitle>
+              <CardDescription>Objects are flexible - add, change, or remove properties anytime</CardDescription>
+            </div>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" />
-              Avoid This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>❌ Directly mutating objects passed as props or shared state.</li>
-              <li>❌ Using reserved words or special characters as property names.</li>
-              <li>❌ Creating deeply nested objects without proper documentation.</li>
-              <li>❌ Forgetting to check if properties exist before accessing them.</li>
-            </ul>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <h4 className="font-bold mb-3 text-green-700 dark:text-green-300">Add</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border mb-2">
+                <code className="text-xs font-mono">obj.newKey = value</code>
+              </div>
+              <p className="text-xs text-gray-500">Creates new property</p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-bold mb-3 text-blue-700 dark:text-blue-300">Change</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border mb-2">
+                <code className="text-xs font-mono">obj.key = newValue</code>
+              </div>
+              <p className="text-xs text-gray-500">Updates existing property</p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20 border-red-200 dark:border-red-800/30">
+              <h4 className="font-bold mb-3 text-red-700 dark:text-red-300">Delete</h4>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border mb-2">
+                <code className="text-xs font-mono">delete obj.key</code>
+              </div>
+              <p className="text-xs text-gray-500">Removes property</p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
+      <CodeSnippet
+        title="Modifying Objects"
+        description="Add, change, and remove properties"
+        code={`const car = {
+  brand: 'Toyota',
+  year: 2020
+};
+
+console.log(car);
+// Output: { brand: 'Toyota', year: 2020 }
+
+// Add new property
+car.color = 'Blue';
+console.log(car);
+// Output: { brand: 'Toyota', year: 2020, color: 'Blue' }
+
+// Change existing property
+car.year = 2021;
+console.log(car);
+// Output: { brand: 'Toyota', year: 2021, color: 'Blue' }
+
+// Delete property
+delete car.color;
+console.log(car);
+// Output: { brand: 'Toyota', year: 2021 }`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Methods in Objects */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Package className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Object Methods</CardTitle>
+              <CardDescription>Objects can store functions too!</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Functions as Properties</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                When a function is stored in an object, it's called a <strong>method</strong>
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const person = {
+  name: 'Alice',
+  sayHello: function() {
+    console.log('Hello!');
+  }
+};
+
+person.sayHello();  // Hello!`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Object Methods Example"
+        description="Store functions inside objects"
+        code={`const calculator = {
+  // Properties
+  name: 'Simple Calculator',
+  version: 1.0,
+  
+  // Methods (functions)
+  add: function(a, b) {
+    return a + b;
+  },
+  
+  subtract: function(a, b) {
+    return a - b;
+  },
+  
+  multiply: function(a, b) {
+    return a * b;
+  }
+};
+
+// Use the methods
+console.log(calculator.name);  // Simple Calculator
+
+console.log(calculator.add(5, 3));       // 8
+console.log(calculator.subtract(10, 4)); // 6
+console.log(calculator.multiply(6, 7));  // 42`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Nested Objects */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Boxes className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Nested Objects</CardTitle>
+              <CardDescription>Objects inside objects - like folders in folders</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Chain Dot Notation</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Access nested properties by chaining dots: <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-xs">object.level1.level2</code>
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const company = {
+  name: 'Tech Corp',
+  address: {
+    street: '123 Main St',
+    city: 'Boston'
+  }
+};
+
+console.log(company.address.city);
+// Output: Boston`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Nested Objects Example"
+        description="Objects containing other objects"
+        code={`const student = {
+  name: 'Emma',
+  age: 20,
+  address: {
+    street: '456 Oak Ave',
+    city: 'Seattle',
+    state: 'WA'
+  },
+  grades: {
+    math: 95,
+    english: 88,
+    science: 92
+  }
+};
+
+// Access nested properties
+console.log(student.name);  // Emma
+console.log(student.address.city);  // Seattle
+console.log(student.grades.math);   // 95
+
+// Change nested property
+student.address.city = 'Portland';
+console.log(student.address.city);  // Portland`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Real World Example */}
+      <CodeSnippet
+        title="Real-World Example: User Profile"
+        description="Complete user profile with all information in one object"
+        code={`const userProfile = {
+  // Basic info
+  id: 12345,
+  username: 'alice_dev',
+  email: 'alice@example.com',
+  
+  // Personal details
+  firstName: 'Alice',
+  lastName: 'Johnson',
+  age: 28,
+  
+  // Address (nested object)
+  address: {
+    street: '123 Code Lane',
+    city: 'San Francisco',
+    state: 'CA',
+    zip: '94102'
+  },
+  
+  // Skills array
+  skills: ['JavaScript', 'React', 'Node.js'],
+  
+  // Account status
+  isActive: true,
+  isPremium: false,
+  
+  // Method
+  getFullName: function() {
+    return this.firstName + ' ' + this.lastName;
+  }
+};
+
+// Access everything
+console.log('Username:', userProfile.username);
+console.log('City:', userProfile.address.city);
+console.log('Skills:', userProfile.skills.join(', '));
+console.log('Full Name:', userProfile.getFullName());
+
+// Output: Username: alice_dev
+// Output: City: San Francisco
+// Output: Skills: JavaScript, React, Node.js
+// Output: Full Name: Alice Johnson`}
+        language="javascript"
+        colorTheme="yellow"
+        icon={UserCircle}
+      />
+
+      {/* Key Takeaways */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">📦</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Objects = Key-Value Pairs</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Store related data: {'{ name: "Alice", age: 25 }'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🔑</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Access with Dot</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Use object.property to get values
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">✏️</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Flexible & Dynamic</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Add, change, delete properties anytime
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🎯</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Methods = Functions</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Store functions as object properties
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

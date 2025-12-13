@@ -1,703 +1,568 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { FrontendCodePreview, InteractivePlayground } from '@/components/shared';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { FileText, Sparkles, CheckCircle, Code, Zap, Target, BookOpen, Hash } from 'lucide-react';
+'use client';
+
+import React from 'react';
+import { FileText, Sparkles, Target, Layers, CheckCircle, Hash } from 'lucide-react';
+import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssNamingConventionsProps {
-    onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssNamingConventions({ onOpenWebPlayground }: CssNamingConventionsProps) {
-    
-    return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
-                icon={FileText}
-                category="CSS · Architecture"
-                title="CSS Naming Conventions"
-                description="Master consistent, maintainable class naming patterns for scalable and readable stylesheets"
-                colorTheme="green"
-            />
-
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-green-600 dark:text-green-400">
-                        <div className="relative">
-                            <FileText className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                        </div>
-                        What are Naming Conventions?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-green-600 dark:text-green-400">
-                        📛 Standardized patterns for naming CSS classes that improve code readability, maintainability, and team collaboration!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-green-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-green-400 dark:hover:border-green-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-green-600 dark:text-green-400 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <Hash className="w-5 h-5 animate-pulse" />
-                                    📋 Naming Matters
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">Good naming conventions</strong> make your CSS self-documenting, reduce naming conflicts, improve team communication, and make codebases easier to maintain. Consistent patterns help developers understand component structure instantly.
-                                </p>
-
-                                {/* Naming Visual */}
-                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        ✅ Good vs Bad Naming
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-2 text-xs">
-                                        <div className="text-green-600 dark:text-green-400">
-                                            <div className="font-mono bg-white dark:bg-gray-900 p-2 rounded mb-1">.card-header</div>
-                                            <div className="font-mono bg-white dark:bg-gray-900 p-2 rounded">.btn-primary</div>
-                                        </div>
-                                        <div className="text-red-600 dark:text-red-400">
-                                            <div className="font-mono bg-white dark:bg-gray-900 p-2 rounded mb-1">.ch</div>
-                                            <div className="font-mono bg-white dark:bg-gray-900 p-2 rounded">.button1</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-green-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-green-600 dark:text-green-400 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    🎯 Naming Principles
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Target className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">Descriptive</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Clear purpose</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-                                        <BookOpen className="w-6 h-6 text-purple-500" />
-                                        <div>
-                                            <div className="font-semibold text-purple-700 dark:text-purple-300 text-sm">Consistent</div>
-                                            <div className="text-xs text-purple-600 dark:text-purple-400">Same pattern</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <Zap className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">Scalable</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Grows easily</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <FileText className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">Readable</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">Easy to parse</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 dark:from-green-900/30 dark:via-emerald-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-green-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">📛</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-green-700 dark:text-green-300">Good Naming</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Self-documenting
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            No conflicts
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Easy maintenance
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Choose one naming convention and stick with it throughout your project!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">BEM Naming Example</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">{'/* Block */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-blue-600 dark:text-blue-400">.card</span> {'{ }'}</div>
-                            <div className="text-gray-500 mt-2">{'/* Element */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-green-600 dark:text-green-400">.card__title</span> {'{ }'}</div>
-                            <div className="text-gray-500 mt-2">{'/* Modifier */'}</div>
-                            <div className="text-gray-900 dark:text-white"><span className="text-purple-600 dark:text-purple-400">.card--featured</span> {'{ }'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* BEM METHODOLOGY */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Hash className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        BEM - Block Element Modifier
-                    </CardTitle>
-                    <CardDescription>
-                        Most popular naming convention - Block__Element--Modifier pattern
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="BEM Naming in Action"
-                        html={`<div class="card card--featured">
-  <div class="card__header">
-    <h2 class="card__title">Product Title</h2>
-    <span class="card__badge card__badge--new">New!</span>
-  </div>
   
-  <div class="card__body">
-    <p class="card__description">
-      BEM uses double underscores for elements and double hyphens for modifiers.
-    </p>
-  </div>
-  
-  <div class="card__footer">
-    <button class="card__button card__button--primary">
-      Buy Now
-    </button>
-    <button class="card__button card__button--secondary">
-      Learn More
-    </button>
-  </div>
-</div>`}
-                        css={`/* Block - standalone component */
-.card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  max-width: 400px;
-  margin: 40px auto;
-}
+  return (
+    <CssTopicLayout
+      icon={FileText}
+      title="CSS Naming Conventions"
+      description="Name your CSS classes in a way everyone understands"
+      category="CSS Best Practices"
+      whatIsIt={{
+        title: "What are CSS Naming Conventions?",
+        description: "Rules for naming CSS classes so your code is clear, consistent, and maintainable",
+        keyPoints: [
+          "Consistent naming across your project",
+          "Clear class names that explain their purpose",
+          "Avoid naming conflicts and confusion",
+          "Make code easier for teams to work on",
+          "Popular conventions: BEM, camelCase, kebab-case",
+          "Essential for large projects"
+        ]
+      }}
+    >
 
-/* Modifier - variant of block */
-.card--featured {
-  border: 3px solid #3b82f6;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-}
+      {/* The Problem */}
+      <InfoAlert type="warning" title="What Happens Without Good Naming?">
+        Without naming rules, you end up with a mess: <code>.btn</code>, <code>.button</code>, <code>.button2</code>, 
+        <code>.newButton</code>, <code>.btn-new-final</code> all doing the same thing! Good naming conventions 
+        prevent this chaos and make your code professional.
+      </InfoAlert>
 
-/* Element - part of block */
-.card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e5e7eb;
-}
+      {/* Basic Naming Styles */}
+      <SectionCard
+        title="Common Naming Styles"
+        description="Different ways to write class names"
+        icon={Hash}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "🔤 kebab-case",
+              description: "Words separated by dashes (most common in CSS)",
+              example: ".user-profile, .nav-item, .button-primary"
+            },
+            {
+              title: "🐫 camelCase",
+              description: "First word lowercase, rest capitalized",
+              example: ".userProfile, .navItem, .buttonPrimary"
+            },
+            {
+              title: "🐍 snake_case",
+              description: "Words separated by underscores (rare in CSS)",
+              example: ".user_profile, .nav_item, .button_primary"
+            },
+            {
+              title: "🅿️ PascalCase",
+              description: "All words capitalized (rare in CSS)",
+              example: ".UserProfile, .NavItem, .ButtonPrimary"
+            }
+          ]}
+        />
 
-.card__title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1f2937;
-  margin: 0;
-}
+        <div className="mt-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+          <h4 className="text-lg font-semibold mb-3 text-blue-900 dark:text-blue-100">✅ Recommended: kebab-case</h4>
+          <p className="text-sm text-gray-700 dark:text-gray-300">
+            The CSS community mostly uses <strong>kebab-case</strong> because:
+          </p>
+          <ul className="list-disc list-inside space-y-1 mt-2 text-sm text-gray-700 dark:text-gray-300">
+            <li>Easy to read: <code>.main-navigation</code> vs <code>.mainNavigation</code></li>
+            <li>Consistent with CSS properties: <code>font-family</code>, <code>background-color</code></li>
+            <li>Used by most CSS frameworks (Bootstrap, Tailwind)</li>
+            <li>Standard in the community</li>
+          </ul>
+        </div>
+      </SectionCard>
 
-.card__badge {
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-}
+      {/* BEM Naming Convention */}
+      <SectionCard
+        title="BEM Naming Convention"
+        description="The most popular CSS naming system"
+        icon={Layers}
+        variant="primary"
+      >
+        <InfoAlert type="info" title="What is BEM?">
+          BEM = <strong>Block Element Modifier</strong>. It's a naming convention that makes class names 
+          super descriptive. Format: <code>.block__element--modifier</code>
+        </InfoAlert>
 
-/* Element modifier */
-.card__badge--new {
-  background: #10b981;
-  color: white;
-}
+        <div className="space-y-6 mt-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-5 bg-blue-50 dark:bg-blue-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Block 🏗️</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">The main component</p>
+              <code className="text-sm bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded block">.card</code>
+              <code className="text-sm bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded block mt-2">.menu</code>
+              <code className="text-sm bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded block mt-2">.button</code>
+            </div>
 
-.card__body {
-  margin-bottom: 20px;
-}
+            <div className="p-5 bg-green-50 dark:bg-green-950/20 rounded-xl border-2 border-green-200 dark:border-green-800">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">Element 🧩</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">Part of the block (use __)</p>
+              <code className="text-sm bg-green-100 dark:bg-green-900 px-2 py-1 rounded block">.card__title</code>
+              <code className="text-sm bg-green-100 dark:bg-green-900 px-2 py-1 rounded block mt-2">.menu__item</code>
+              <code className="text-sm bg-green-100 dark:bg-green-900 px-2 py-1 rounded block mt-2">.button__icon</code>
+            </div>
 
-.card__description {
-  color: #6b7280;
-  line-height: 1.6;
-  margin: 0;
-}
+            <div className="p-5 bg-purple-50 dark:bg-purple-950/20 rounded-xl border-2 border-purple-200 dark:border-purple-800">
+              <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Modifier 🎨</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">Variation (use --)</p>
+              <code className="text-sm bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded block">.card--featured</code>
+              <code className="text-sm bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded block mt-2">.menu--vertical</code>
+              <code className="text-sm bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded block mt-2">.button--large</code>
+            </div>
+          </div>
 
-.card__footer {
-  display: flex;
-  gap: 12px;
-}
-
-.card__button {
-  flex: 1;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.card__button:hover {
-  transform: translateY(-2px);
-}
-
-.card__button--primary {
-  background: #3b82f6;
-  color: white;
-}
-
-.card__button--secondary {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: #1f2937;
-  }
-  
-  .card--featured {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-    border-color: #60a5fa;
-  }
-  
-  .card__title {
-    color: #f9fafb;
-  }
-  
-  .card__description {
-    color: #d1d5db;
-  }
-  
-  .card__header {
-    border-bottom-color: #374151;
-  }
-  
-  .card__button--secondary {
-    background: #374151;
-    color: #f9fafb;
-  }
-}`}
-                        colorTheme="blue"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
-
-            {/* UTILITY-FIRST NAMING */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-                        Utility-First Naming
-                    </CardTitle>
-                    <CardDescription>
-                        Single-purpose classes for rapid development (like Tailwind CSS)
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
-                        title="Utility Class Naming"
-                        html={`<div class="container">
-  <div class="alert alert-success">
-    <div class="flex items-center gap-3">
-      <svg class="icon icon-check" viewBox="0 0 24 24">
-        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-      </svg>
-      <div>
-        <h3 class="text-lg font-bold mb-1">Success!</h3>
-        <p class="text-sm">Your changes have been saved successfully.</p>
-      </div>
-    </div>
-  </div>
-  
-  <div class="button-group">
-    <button class="btn btn-primary btn-lg">
-      Large Primary
-    </button>
-    <button class="btn btn-secondary btn-md">
-      Medium Secondary
-    </button>
-    <button class="btn btn-outline btn-sm">
-      Small Outline
-    </button>
-  </div>
-</div>`}
-                        css={`.container {
-  max-width: 800px;
-  margin: 40px auto;
+          <SyntaxBlock
+            title="BEM Example - Product Card"
+            code={`/* Block: The main component */
+.product-card {
   padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
 }
 
-/* Utility classes - single purpose */
-.flex {
-  display: flex;
+/* Elements: Parts of the product card */
+.product-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
-.items-center {
-  align-items: center;
-}
-
-.gap-3 {
-  gap: 12px;
-}
-
-.text-lg {
+.product-card__title {
   font-size: 18px;
+  font-weight: 600;
+  margin: 12px 0;
 }
 
-.text-sm {
-  font-size: 14px;
-}
-
-.font-bold {
+.product-card__price {
+  font-size: 20px;
+  color: #10b981;
   font-weight: 700;
 }
 
-.mb-1 {
-  margin-bottom: 4px;
-}
-
-/* Component classes */
-.alert {
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-
-.alert-success {
-  background: #d1fae5;
-  border: 2px solid #6ee7b7;
-  color: #065f46;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  fill: currentColor;
-}
-
-.icon-check {
-  color: #10b981;
-}
-
-.button-group {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  padding: 12px 24px;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Button variants */
-.btn-primary {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn-secondary {
-  background: #8b5cf6;
-  color: white;
-}
-
-.btn-outline {
-  background: transparent;
-  border-color: #3b82f6;
-  color: #3b82f6;
-}
-
-/* Button sizes */
-.btn-lg {
-  padding: 16px 32px;
-  font-size: 18px;
-}
-
-.btn-md {
-  padding: 12px 24px;
-  font-size: 16px;
-}
-
-.btn-sm {
-  padding: 8px 16px;
+.product-card__description {
   font-size: 14px;
+  color: #6b7280;
+  margin: 8px 0;
+}
+
+/* Modifiers: Variations of the product card */
+.product-card--featured {
+  border-color: #3b82f6;
+  border-width: 2px;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+.product-card--compact {
+  padding: 12px;
+}
+
+.product-card--compact .product-card__image {
+  height: 120px;
+}`}
+          />
+
+          <FrontendCodePreview
+            html={`<div class="product-card">
+  <img class="product-card__image" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop" alt="Product">
+  <h3 class="product-card__title">Wireless Headphones</h3>
+  <p class="product-card__price">$99.99</p>
+  <p class="product-card__description">Premium sound quality with active noise cancellation</p>
+</div>
+
+<div class="product-card product-card--featured">
+  <img class="product-card__image" src="https://images.unsplash.com/photo-1484704849700-f032a568e944?w=300&h=200&fit=crop" alt="Product">
+  <h3 class="product-card__title">Pro Headphones ⭐</h3>
+  <p class="product-card__price">$199.99</p>
+  <p class="product-card__description">Our best-selling premium headphones with extended battery</p>
+</div>
+
+<div class="product-card product-card--compact">
+  <img class="product-card__image" src="https://images.unsplash.com/photo-1545127398-14699f92334b?w=300&h=120&fit=crop" alt="Product">
+  <h3 class="product-card__title">Budget Headphones</h3>
+  <p class="product-card__price">$49.99</p>
+</div>`}
+            css={`body {
+  padding: 40px;
+  font-family: system-ui, sans-serif;
+  display: grid;
+  gap: 20px;
+}
+
+.product-card {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+}
+
+.product-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.product-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 12px 0 8px 0;
+  color: #1f2937;
+}
+
+.product-card__price {
+  font-size: 20px;
+  color: #10b981;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.product-card__description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Featured Modifier */
+.product-card--featured {
+  border-color: #3b82f6;
+  border-width: 2px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+/* Compact Modifier */
+.product-card--compact {
+  padding: 12px;
+}
+
+.product-card--compact .product-card__image {
+  height: 120px;
 }
 
 @media (prefers-color-scheme: dark) {
-  .container {
-    background: #111827;
+  body {
+    background: #1f2937;
   }
   
-  .alert-success {
-    background: #064e3b;
-    border-color: #059669;
-    color: #d1fae5;
+  .product-card {
+    background: #374151;
+    border-color: #4b5563;
   }
   
-  .btn-outline {
-    border-color: #60a5fa;
-    color: #60a5fa;
+  .product-card__title {
+    color: #f3f4f6;
+  }
+  
+  .product-card__description {
+    color: #9ca3af;
   }
 }`}
-                        colorTheme="cyan"
-                        onOpenPlayground={onOpenWebPlayground}
-                    />
-                </CardContent>
-            </Card>
+            title="BEM Naming in Action"
+            colorTheme="blue"
+            onOpenPlayground={onOpenWebPlayground}
+          />
+        </div>
 
-            {/* BEST PRACTICES */}
-            <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                        <Sparkles className="w-5 h-5" />
-                        Naming Convention Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-green-900 dark:text-green-200">Use lowercase and hyphens:</strong>
-                            <span className="text-green-700 dark:text-green-300"> Prefer <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">card-header</code> over <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">cardHeader</code> or <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">CardHeader</code>.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-green-900 dark:text-green-200">Be descriptive, not abbreviated:</strong>
-                            <span className="text-green-700 dark:text-green-300"> Use <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">navigation-menu</code> instead of <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">nav-m</code>.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-green-900 dark:text-green-200">Avoid presentational names:</strong>
-                            <span className="text-green-700 dark:text-green-300"> Use <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">alert-error</code> not <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">red-box</code>.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-green-900 dark:text-green-200">Maintain consistency:</strong>
-                            <span className="text-green-700 dark:text-green-300"> If you use <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">btn</code> for buttons, don't also use <code className="px-1 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs">button</code>.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+        <InfoAlert type="success" title="Why BEM Works">
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li><strong>Self-Documenting:</strong> <code>.product-card__price</code> tells you exactly what it is</li>
+            <li><strong>No Conflicts:</strong> Every component has unique class names</li>
+            <li><strong>Easy to Find:</strong> Search for "product-card" to find all related styles</li>
+            <li><strong>Safe to Change:</strong> Modifying <code>.product-card__title</code> won't break other titles</li>
+          </ul>
+        </InfoAlert>
+      </SectionCard>
 
-            {/* BROWSER SUPPORT */}
-            <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700 dark:text-green-300">
-                    <strong className="block mb-1">Universal Compatibility</strong>
-                    Naming conventions are purely organizational - they work in all browsers and don't affect CSS functionality. Choose the convention that works best for your team!
-                </AlertDescription>
-            </Alert>
+      {/* Naming Rules */}
+      <SectionCard
+        title="General Naming Rules"
+        description="Best practices for any naming convention"
+        icon={CheckCircle}
+      >
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 border-2 border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-950/20">
+              <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+                ✅ DO These Things
+              </h4>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li>✓ Use descriptive names: <code>.user-avatar</code></li>
+                <li>✓ Be consistent: Choose one style and stick to it</li>
+                <li>✓ Use lowercase: <code>.nav-menu</code> not <code>.Nav-Menu</code></li>
+                <li>✓ Be specific: <code>.article-title</code> not <code>.title</code></li>
+                <li>✓ Use full words: <code>.navigation</code> not <code>.nav</code> (unless common abbreviation)</li>
+              </ul>
+            </div>
 
-            {/* INTERACTIVE PLAYGROUND */}
-            {onOpenWebPlayground && (
-                <InteractivePlayground
-                    title="🎯 Try CSS Naming Conventions"
-                    description="Experiment with BEM, utility-first, and other naming patterns in a live playground"
-                    features={[
-                        'BEM Methodology',
-                        'Utility Classes',
-                        'Live Preview',
-                        'Component Examples'
-                    ]}
-                    buttonText="Open Naming Playground"
-                    onLaunchPlayground={onOpenWebPlayground}
-                    playgroundData={{
-                        html: `<div class="card card--featured">
-  <div class="card__header">
-    <h2 class="card__title">BEM Example Card</h2>
-    <span class="card__badge card__badge--new">New!</span>
-  </div>
-  
-  <div class="card__body">
-    <p class="card__description">
-      This card demonstrates BEM naming convention with clear 
-      block, element, and modifier structure.
-    </p>
-  </div>
-  
-  <div class="card__footer">
-    <button class="card__button card__button--primary">
-      Learn More
-    </button>
-    <button class="card__button card__button--secondary">
-      View Details
-    </button>
-  </div>
-</div>
+            <div className="p-5 border-2 border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-950/20">
+              <h4 className="font-semibold text-red-900 dark:text-red-100 mb-3 flex items-center gap-2">
+                ❌ DON'T Do These Things
+              </h4>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li>✗ Generic names: <code>.item</code>, <code>.box</code>, <code>.thing</code></li>
+                <li>✗ Cryptic abbreviations: <code>.usrprf</code>, <code>.nv</code></li>
+                <li>✗ Numbers without context: <code>.box2</code>, <code>.style3</code></li>
+                <li>✗ Style-based names: <code>.red-text</code>, <code>.big-box</code></li>
+                <li>✗ Starting with numbers: <code>.2-column</code> (invalid!)</li>
+              </ul>
+            </div>
+          </div>
 
-<!-- Utility-First Example -->
-<div class="mt-6 p-4 bg-blue-100 border border-blue-300 rounded-lg">
-  <h3 class="text-lg font-bold mb-2">Utility-First Approach</h3>
-  <p class="text-sm text-gray-700">
-    Using single-purpose utility classes for rapid development.
-  </p>
-  <button class="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-    Action Button
-  </button>
-</div>`,
-                        css: `/* BEM Naming Convention */
-.card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  max-width: 400px;
-  margin: 40px auto;
-}
+          <SyntaxBlock
+            title="Good vs Bad Examples"
+            code={`/* ❌ BAD: Generic, unclear names */
+.box { }
+.item2 { }
+.red { }
+.big { }
+.new { }
 
-.card--featured {
-  border: 3px solid #3b82f6;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-}
+/* ✅ GOOD: Descriptive, specific names */
+.user-profile-card { }
+.navigation-menu-item { }
+.error-message { }
+.header-logo-large { }
+.product-featured { }
 
-.card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e5e7eb;
-}
+/* ❌ BAD: Style-based (what if design changes?) */
+.red-button { }         /* What if it becomes blue? */
+.left-sidebar { }       /* What if it moves to the right? */
 
-.card__title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1f2937;
-  margin: 0;
-}
+/* ✅ GOOD: Purpose-based */
+.button-danger { }      /* Still makes sense if color changes */
+.sidebar-navigation { } /* Describes what it is, not where it is */
 
-.card__badge {
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-}
+/* ❌ BAD: Too generic */
+.title { }              /* Which title? */
+.image { }              /* Which image? */
 
-.card__badge--new {
-  background: #10b981;
-  color: white;
-}
+/* ✅ GOOD: Specific */
+.article-title { }
+.product-thumbnail { }`}
+          />
+        </div>
+      </SectionCard>
 
-.card__body {
-  margin-bottom: 20px;
-}
+      {/* State Classes */}
+      <SectionCard
+        title="Naming States and Variations"
+        description="How to name different states"
+        icon={Sparkles}
+      >
+        <div className="space-y-6">
+          <div className="p-5 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 rounded-xl border-2 border-indigo-200 dark:border-indigo-800">
+            <h4 className="text-lg font-semibold mb-3 text-indigo-900 dark:text-indigo-100">Common State Prefixes</h4>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div>
+                <code className="text-sm bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded">.is-active</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Currently active/selected</p>
+              </div>
+              <div>
+                <code className="text-sm bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded">.is-disabled</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Not clickable/usable</p>
+              </div>
+              <div>
+                <code className="text-sm bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded">.is-loading</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Fetching data</p>
+              </div>
+              <div>
+                <code className="text-sm bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded">.is-hidden</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Not visible</p>
+              </div>
+              <div>
+                <code className="text-sm bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded">.has-error</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Contains an error</p>
+              </div>
+              <div>
+                <code className="text-sm bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded">.is-open</code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Expanded/visible</p>
+              </div>
+            </div>
+          </div>
 
-.card__description {
-  color: #6b7280;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.card__footer {
-  display: flex;
-  gap: 12px;
-}
-
-.card__button {
-  flex: 1;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.card__button:hover {
-  transform: translateY(-2px);
-}
-
-.card__button--primary {
+          <SyntaxBlock
+            title="State Class Examples"
+            code={`/* Base button */
+.button {
+  padding: 10px 20px;
   background: #3b82f6;
   color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.card__button--secondary {
-  background: #e5e7eb;
-  color: #374151;
+/* Button states */
+.button.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
-/* Utility Classes */
-.mt-6 { margin-top: 24px; }
-.p-4 { padding: 16px; }
-.bg-blue-100 { background: #dbeafe; }
-.border { border-width: 1px; }
-.border-blue-300 { border-color: #93c5fd; }
-.rounded-lg { border-radius: 8px; }
-.text-lg { font-size: 18px; }
-.font-bold { font-weight: 700; }
-.mb-2 { margin-bottom: 8px; }
-.text-sm { font-size: 14px; }
-.text-gray-700 { color: #374151; }
-.mt-3 { margin-top: 12px; }
-.px-4 { padding-left: 16px; padding-right: 16px; }
-.py-2 { padding-top: 8px; padding-bottom: 8px; }
-.bg-blue-600 { background: #2563eb; }
-.text-white { color: white; }
-.rounded { border-radius: 4px; }
-.hover\\:bg-blue-700:hover { background: #1d4ed8; }`,
-                        js: ''
-                    }}
-                    colorTheme="emerald"
-                />
-            )}
+.button.is-loading {
+  position: relative;
+  color: transparent;
+}
+
+.button.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* Dropdown states */
+.dropdown {
+  position: relative;
+}
+
+.dropdown__menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.dropdown.is-open .dropdown__menu {
+  display: block;
+}`}
+          />
         </div>
-    );
+      </SectionCard>
+
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Use Which Convention"
+        description="Choosing the right naming style"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Use BEM For..."
+            description="Components, reusable UI elements, component libraries"
+            icon={Layers}
+            gradient="from-blue-500 to-indigo-600"
+          />
+          <UseCaseCard
+            title="Use Utility Classes For..."
+            description="Common styles: .text-center, .mb-4, .flex"
+            icon={Sparkles}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Use State Classes For..."
+            description="Temporary states: .is-active, .is-loading, .has-error"
+            icon={CheckCircle}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Use Layout Classes For..."
+            description="Page structure: .l-header, .l-main, .l-sidebar"
+            icon={Target}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Best Practices */}
+      <InfoAlert type="success" title="CSS Naming Best Practices">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>Be Consistent:</strong> Pick one convention (like BEM) and use it everywhere</li>
+          <li><strong>Be Descriptive:</strong> Names should explain what the element does, not how it looks</li>
+          <li><strong>Think Long-Term:</strong> Avoid names tied to current design (like .red-button)</li>
+          <li><strong>Use Prefixes:</strong> For states (.is-active), layout (.l-header), JavaScript hooks (.js-toggle)</li>
+          <li><strong>Keep It Lowercase:</strong> Use kebab-case for consistency with CSS properties</li>
+          <li><strong>Avoid Deep Nesting:</strong> <code>.card__header</code> not <code>.card__container__header__title</code></li>
+          <li><strong>Document Your System:</strong> Write a style guide for your team</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Common Mistakes */}
+      <InfoAlert type="warning" title="Common Naming Mistakes">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>❌ Too Generic:</strong> <code>.item</code>, <code>.box</code>, <code>.content</code> (too vague)</li>
+          <li><strong>❌ Style-Based:</strong> <code>.blue-text</code>, <code>.large-box</code> (what if design changes?)</li>
+          <li><strong>❌ Inconsistent:</strong> Mixing <code>.user-card</code> and <code>.userCard</code> in same project</li>
+          <li><strong>❌ Too Long:</strong> <code>.homepage-hero-section-container-wrapper-div</code> (overkill!)</li>
+          <li><strong>❌ Abbreviated:</strong> <code>.usrprf</code>, <code>.nv</code> (unclear what they mean)</li>
+          <li><strong>❌ Numbers:</strong> <code>.button2</code>, <code>.style3-final</code> (no context)</li>
+        </ul>
+      </InfoAlert>
+
+      {/* Quick Reference */}
+      <SectionCard
+        title="Quick Reference Guide"
+        description="Common patterns at a glance"
+        icon={FileText}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-3">Component Naming (BEM)</h4>
+            <ul className="space-y-1 text-sm font-mono">
+              <li>.component</li>
+              <li>.component__element</li>
+              <li>.component--modifier</li>
+              <li>.component__element--modifier</li>
+            </ul>
+          </div>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-3">State Naming</h4>
+            <ul className="space-y-1 text-sm font-mono">
+              <li>.is-active</li>
+              <li>.is-disabled</li>
+              <li>.is-loading</li>
+              <li>.has-error</li>
+            </ul>
+          </div>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-3">Layout Naming</h4>
+            <ul className="space-y-1 text-sm font-mono">
+              <li>.l-header</li>
+              <li>.l-sidebar</li>
+              <li>.l-main</li>
+              <li>.l-footer</li>
+            </ul>
+          </div>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-3">JavaScript Hooks</h4>
+            <ul className="space-y-1 text-sm font-mono">
+              <li>.js-toggle</li>
+              <li>.js-modal-trigger</li>
+              <li>.js-form-submit</li>
+              <li>.js-dropdown</li>
+            </ul>
+          </div>
+        </div>
+      </SectionCard>
+
+    </CssTopicLayout>
+  );
 }

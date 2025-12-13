@@ -3,18 +3,18 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Terminal,
-  Download,
   Rocket,
   Globe,
   Code2,
   CheckCircle2,
   Lightbulb,
-  Zap,
-  MonitorSmartphone,
-  Settings,
+  Sparkles,
+  Monitor,
 } from 'lucide-react';
 
 interface JavaScriptInstallationSetupProps {
@@ -24,617 +24,486 @@ interface JavaScriptInstallationSetupProps {
 export default function JavaScriptInstallationSetup({ onOpenWebPlayground }: JavaScriptInstallationSetupProps) {
   return (
     <div className="w-full space-y-8 pb-16">
-      {/* Page Header */}
       <PageHeader
-        icon={Download}
+        icon={Rocket}
         category="JavaScript Fundamentals"
         title="Installation & Setup"
-        description="Get started with JavaScript - no installation needed!"
-        colorTheme="amber"
+        description="The easiest programming language to get started with - literally zero installation!"
+        colorTheme="yellow"
       />
 
-      {/* Section 1: No Installation Needed */}
-      <Card className="overflow-hidden">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Zap className="w-6 h-6 text-slate-600 dark:text-slate-400" />
-            Good News - Nothing to Install!
-          </CardTitle>
-          <CardDescription>
-            JavaScript runs in your browser - it's already installed!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Key Point */}
-          <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800">
-            <div className="flex items-start gap-4">
-              <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-lg mb-2">JavaScript is Already Ready!</h3>
-                <p className="text-base leading-relaxed">
-                  Every modern web browser (Chrome, Firefox, Safari, Edge) has JavaScript built-in. 
-                  You don't need to download or install anything to start coding!
-                </p>
-              </div>
+      {/* Amazing News */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-green-50/50 via-emerald-50/30 to-teal-50/20 dark:from-green-950/10 dark:via-emerald-950/5 dark:to-teal-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Amazing News: Nothing to Install!
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Unlike most programming languages, <strong className="text-green-700 dark:text-green-400">JavaScript is already installed</strong> on your computer! Every web browser (Chrome, Firefox, Safari, Edge) comes with JavaScript built right in. You can start coding in the next 30 seconds.
+              </p>
             </div>
           </div>
 
-          {/* Quick Start Options */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-xl border bg-white dark:bg-slate-900/50 space-y-3">
-              <div className="text-3xl">⚡</div>
-              <h4 className="font-semibold">Browser Console</h4>
-              <p className="text-sm text-muted-foreground">Start coding in 5 seconds</p>
-              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                Easiest Way
-              </Badge>
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-green-200 dark:border-green-800/30">
+            <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+            <AlertTitle className="text-lg">Why JavaScript is Perfect for Beginners</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Zero installation, zero configuration, zero waiting. Just open your browser and start coding immediately. No other language makes it this easy!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Method 1: Browser Console */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Terminal className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Method 1: Browser Console (Start Here!)</CardTitle>
+              <CardDescription>The fastest way to start coding JavaScript</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-white dark:bg-slate-900">
+              <div className="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mb-4 text-2xl font-bold text-yellow-700 dark:text-yellow-400">
+                1
+              </div>
+              <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Open Browser</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Any browser works - Chrome, Firefox, Safari, or Edge
+              </p>
             </div>
 
-            <div className="p-5 rounded-xl border bg-white dark:bg-slate-900/50 space-y-3">
-              <div className="text-3xl">📄</div>
-              <h4 className="font-semibold">HTML File</h4>
-              <p className="text-sm text-muted-foreground">Create files and open in browser</p>
-              <Badge variant="outline">Simple</Badge>
+            <div className="p-5 rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 bg-white dark:bg-slate-900">
+              <div className="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mb-4 text-2xl font-bold text-yellow-700 dark:text-yellow-400">
+                2
+              </div>
+              <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Press F12</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Or Ctrl+Shift+J (Windows) or Cmd+Option+J (Mac)
+              </p>
             </div>
 
-            <div className="p-5 rounded-xl border bg-white dark:bg-slate-900/50 space-y-3">
-              <div className="text-3xl">🚀</div>
-              <h4 className="font-semibold">Node.js</h4>
-              <p className="text-sm text-muted-foreground">Run JavaScript outside browser</p>
-              <Badge variant="outline">Advanced</Badge>
+            <div className="p-5 rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+              <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center mb-4 text-2xl font-bold text-white">
+                3
+              </div>
+              <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Start Coding!</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Go to Console tab and type your first code
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Section 2: Method 1 - Browser Console */}
-      <Card className="overflow-hidden">
+      {/* Try in Console */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Terminal className="w-6 h-6 text-slate-600 dark:text-slate-400" />
-            Method 1: Browser Console (Recommended for Beginners)
-          </CardTitle>
-          <CardDescription>
-            Start coding JavaScript in 3 simple steps
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Terminal className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Try This in Browser Console</CardTitle>
+              <CardDescription>Type these commands one by one and press Enter after each</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Step-by-step Guide */}
-          <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 rounded-lg border bg-slate-50/50 dark:bg-slate-900/30">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
-                1
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Open Your Browser</h4>
-                <p className="text-sm text-muted-foreground">
-                  Open any web browser (Chrome, Firefox, Safari, or Edge)
-                </p>
-              </div>
+        <CardContent>
+          <div className="rounded-xl border-2 border-yellow-200 dark:border-yellow-800/30 overflow-hidden">
+            <div className="bg-yellow-600 dark:bg-yellow-700 px-4 py-2.5 flex items-center gap-2">
+              <Terminal className="w-4 h-4 text-white" />
+              <span className="text-sm font-semibold text-white">Browser Console (Press F12)</span>
             </div>
+            <div className="bg-slate-50 dark:bg-slate-950 p-5">
+              <pre className="font-mono text-sm text-slate-800 dark:text-slate-200 leading-relaxed overflow-x-auto">
+{`// Type these one by one and press Enter after each
+console.log('Hello, JavaScript!');
 
-            <div className="flex items-start gap-4 p-4 rounded-lg border bg-slate-50/50 dark:bg-slate-900/30">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
-                2
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Open Developer Tools</h4>
-                <p className="text-sm text-muted-foreground mb-2">Press one of these keyboard shortcuts:</p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="font-mono">F12</Badge>
-                  <Badge variant="secondary" className="font-mono">Ctrl + Shift + J</Badge>
-                  <Badge variant="secondary" className="font-mono">Cmd + Option + J (Mac)</Badge>
-                </div>
-              </div>
-            </div>
+2 + 2
 
-            <div className="flex items-start gap-4 p-4 rounded-lg border bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-950/10 dark:to-emerald-950/10">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-600 text-white font-bold flex-shrink-0">
-                3
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Start Typing Code!</h4>
-                <p className="text-sm text-muted-foreground">
-                  Go to the "Console" tab and start writing JavaScript
-                </p>
-              </div>
+let name = 'Your Name';
+console.log('Welcome, ' + name + '!');
+
+Math.random()`}</pre>
             </div>
           </div>
 
+          <Alert className="mt-4 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle>Tip</AlertTitle>
+            <AlertDescription className="text-base">
+              The console shows results instantly. Try changing the code - it's a great way to experiment and learn!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* Section 3: Method 2 - HTML File */}
-      <Card className="overflow-hidden">
+      {/* Method 2: HTML File */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Globe className="w-6 h-6 text-slate-600 dark:text-slate-400" />
-            Method 2: HTML File with Script Tag
-          </CardTitle>
-          <CardDescription>
-            Create files and run JavaScript in the browser
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Steps */}
-          <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 rounded-lg border">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
-                1
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Create an HTML File</h4>
-                <p className="text-sm text-muted-foreground">
-                  Create a file named <code className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs">index.html</code>
-                </p>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Globe className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
             </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-lg border">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
-                2
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Add JavaScript Code</h4>
-                <p className="text-sm text-muted-foreground">
-                  Use the <code className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs">&lt;script&gt;</code> tag to add JavaScript
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-lg border">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
-                3
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Open in Browser</h4>
-                <p className="text-sm text-muted-foreground">
-                  Double-click the file or right-click → Open with → Browser
-                </p>
-              </div>
+            <div>
+              <CardTitle>Method 2: Create HTML File</CardTitle>
+              <CardDescription>For building actual web pages with JavaScript</CardDescription>
             </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-base text-gray-700 dark:text-gray-300">
+            When you want to build a real website, you'll create HTML files and add JavaScript to them. Here's how:
+          </p>
 
-          {/* HTML File Example */}
-          <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <Code2 className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              Complete Example
-            </h4>
-            
-            <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-              <div className="bg-slate-700 dark:bg-slate-800 px-4 py-2 flex items-center gap-2">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-white/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-white/60"></div>
-                  <div className="w-3 h-3 rounded-full bg-white/40"></div>
-                </div>
-                <span className="text-xs font-semibold text-white ml-2">index.html</span>
-              </div>
-              <div className="bg-slate-100 dark:bg-slate-950 p-5">
-                <pre className="font-mono text-sm text-slate-800 dark:text-slate-100 leading-loose overflow-x-auto">
-{`<!DOCTYPE html>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-white dark:bg-slate-900">
+              <div className="text-3xl mb-3">📝</div>
+              <h4 className="font-semibold mb-2">Step 1</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Create a file called <code className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs">index.html</code>
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-white dark:bg-slate-900">
+              <div className="text-3xl mb-3">💻</div>
+              <h4 className="font-semibold mb-2">Step 2</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Add your JavaScript code inside <code className="text-xs">&lt;script&gt;</code> tags
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+              <div className="text-3xl mb-3">🌐</div>
+              <h4 className="font-semibold mb-2">Step 3</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Double-click the file to open it in your browser
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Simple HTML + JavaScript Example"
+        description="Copy this entire code, save it as index.html, then open it in your browser"
+        code={`<!DOCTYPE html>
 <html>
 <head>
-  <title>My First JavaScript</title>
+  <title>My First JavaScript Page</title>
 </head>
 <body>
-  <h1>Hello from HTML!</h1>
-  
-  <button id="myButton">Click Me</button>
+  <h1>Hello, World!</h1>
+  <button id="btn">Click Me!</button>
+  <p id="message"></p>
   
   <script>
-    // JavaScript code here
-    console.log("Page loaded!");
-    
-    const button = document.getElementById('myButton');
+    // Your JavaScript goes here
+    const button = document.getElementById('btn');
+    const message = document.getElementById('message');
     
     button.addEventListener('click', () => {
-      alert('Hello, JavaScript!');
+      message.textContent = 'You clicked the button! 🎉';
     });
   </script>
 </body>
-</html>`}</pre>
-              </div>
-            </div>
+</html>`}
+        language="html"
+        colorTheme="yellow"
+      />
 
-            <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-              <div className="flex items-start gap-2">
-                <Lightbulb className="w-4 h-4 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1">Tip</p>
-                  <p className="text-xs text-slate-700 dark:text-slate-300">Save this as index.html and open it in your browser. Click the button to see JavaScript in action!</p>
-                </div>
-              </div>
+      <Alert className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+        <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <AlertTitle>Pro Tip: Separate JavaScript File</AlertTitle>
+        <AlertDescription className="text-base">
+          For bigger projects, put JavaScript in its own file (e.g., <code className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 rounded text-sm">script.js</code>) and link it like this:<br/>
+          <code className="mt-2 inline-block px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded text-sm">&lt;script src="script.js"&gt;&lt;/script&gt;</code>
+        </AlertDescription>
+      </Alert>
+
+      {/* Method 3: Node.js (Optional) */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Rocket className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Method 3: Node.js (Optional - Advanced)</CardTitle>
+              <CardDescription>Run JavaScript outside the browser - for backend development</CardDescription>
             </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/30">
+            <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            <AlertTitle>Do You Need This?</AlertTitle>
+            <AlertDescription className="text-base">
+              <strong>No!</strong> You don't need Node.js to learn JavaScript basics. Only install this if you want to build servers or run JavaScript programs outside the browser.
+            </AlertDescription>
+          </Alert>
 
-          {/* External JavaScript File */}
-          <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-            <h4 className="font-bold mb-3 flex items-center gap-2">
-              <Lightbulb className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              Pro Tip: External JavaScript Files
-            </h4>
-            <p className="text-sm mb-3">For larger projects, put JavaScript in a separate file:</p>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-start gap-2">
-                <span className="text-slate-600 dark:text-slate-400">1.</span>
-                <span>Create <code className="px-1 bg-white dark:bg-slate-800 rounded text-xs">script.js</code></span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-slate-600 dark:text-slate-400">2.</span>
-                <span>Link it: <code className="px-1 bg-white dark:bg-slate-800 rounded text-xs">&lt;script src="script.js"&gt;&lt;/script&gt;</code></span>
-              </div>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-white dark:bg-slate-900">
+              <div className="text-3xl mb-3">⬇️</div>
+              <h4 className="font-semibold mb-2">Download</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Visit <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline font-semibold">nodejs.org</a> and download LTS version
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-white dark:bg-slate-900">
+              <div className="text-3xl mb-3">⚙️</div>
+              <h4 className="font-semibold mb-2">Install</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Run the installer and follow the simple setup steps
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+              <div className="text-3xl mb-3">✅</div>
+              <h4 className="font-semibold mb-2">Verify</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Open terminal and check: <code className="text-xs">node --version</code>
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Section 4: Method 3 - Node.js */}
-      <Card className="overflow-hidden">
+      {/* Running Node.js Example */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Rocket className="w-6 h-6 text-slate-600 dark:text-slate-400" />
-            Method 3: Node.js (Optional - For Advanced Users)
-          </CardTitle>
-          <CardDescription>
-            Run JavaScript outside the browser
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Terminal className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Running JavaScript with Node.js</CardTitle>
+              <CardDescription>Create a file and run it from terminal</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* What is Node.js */}
-          <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-            <h4 className="font-bold text-lg mb-2">What is Node.js?</h4>
-            <p className="text-sm leading-relaxed">
-              Node.js lets you run JavaScript on your computer (not just in browsers). 
-              It's used for building servers, tools, and applications. <strong>You don't need this for learning JavaScript basics!</strong>
-            </p>
-          </div>
-
-          {/* Installation Steps */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Installation Steps:</h4>
-            
-            <div className="flex items-start gap-4 p-4 rounded-lg border">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
+          {/* Step 1: Create File */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-sm font-bold text-purple-700 dark:text-purple-400">
                 1
               </div>
-              <div>
-                <h5 className="font-semibold mb-1">Download Node.js</h5>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Visit <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                    nodejs.org
-                  </a> and download the LTS version
-                </p>
-                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                  Recommended: LTS Version
-                </Badge>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Create a file called <code className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 rounded text-sm">app.js</code></h4>
+            </div>
+            
+            <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 overflow-hidden">
+              <div className="bg-purple-600 dark:bg-purple-700 px-4 py-2.5 flex items-center gap-2">
+                <Code2 className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white">app.js</span>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-slate-800 dark:text-slate-200 leading-relaxed overflow-x-auto">
+{`// app.js - Save this file
+console.log('Hello from Node.js!');
+
+const name = 'Developer';
+console.log(\`Welcome, \${name}!\`);
+
+// Do some math
+const result = 10 + 20;
+console.log('10 + 20 =', result);`}</pre>
               </div>
             </div>
+          </div>
 
-            <div className="flex items-start gap-4 p-4 rounded-lg border">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
+          {/* Step 2: Run Command */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-sm font-bold text-emerald-700 dark:text-emerald-400">
                 2
               </div>
-              <div>
-                <h5 className="font-semibold mb-1">Run the Installer</h5>
-                <p className="text-sm text-muted-foreground">
-                  Double-click the downloaded file and follow installation steps
-                </p>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Open terminal in the same folder and run this command</h4>
+            </div>
+            
+            <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 overflow-hidden">
+              <div className="bg-emerald-600 dark:bg-emerald-700 px-4 py-2.5 flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white">Terminal</span>
+              </div>
+              <div className="bg-slate-100 dark:bg-slate-900 p-5">
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm">$</span>
+                  <code className="text-slate-800 dark:text-slate-100 font-mono text-sm">node app.js</code>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="flex items-start gap-4 p-4 rounded-lg border">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-600 dark:bg-slate-700 text-white font-bold flex-shrink-0">
+          {/* Step 3: Output */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-sm font-bold text-blue-700 dark:text-blue-400">
                 3
               </div>
-              <div>
-                <h5 className="font-semibold mb-1">Verify Installation</h5>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Open terminal/command prompt and check version
-                </p>
-              </div>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">You'll see this output</h4>
             </div>
-          </div>
-
-          {/* Verify Node.js Installation - Terminal Command Display */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Terminal className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <h4 className="font-semibold">Verify Node.js Installation</h4>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">
-              Run these commands in terminal/command prompt to verify installation
-            </p>
-
-            {/* Terminal-style Command Cards */}
-            <div className="space-y-3">
-              {/* Command 1 */}
-              <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-indigo-600/90 dark:bg-indigo-700/80 px-4 py-2 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-white/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/60"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/40"></div>
-                  </div>
-                  <span className="text-xs font-semibold text-white ml-2">Check Node.js Version</span>
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-950 p-5">
-                  <div className="flex items-start gap-2 mb-3">
-                    <span className="text-green-600 dark:text-green-400 font-mono text-sm mt-0.5">$</span>
-                    <code className="text-slate-800 dark:text-slate-100 font-mono text-sm">node --version</code>
-                  </div>
-                  <div className="text-slate-600 dark:text-slate-400 font-mono text-sm pl-4">
-                    v20.11.0
-                  </div>
-                </div>
+            
+            <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 overflow-hidden">
+              <div className="bg-blue-600 dark:bg-blue-700 px-4 py-2.5 flex items-center gap-2">
+                <Monitor className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white">Output</span>
               </div>
-
-              {/* Command 2 */}
-              <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-teal-600/90 dark:bg-teal-700/80 px-4 py-2 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-white/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/60"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/40"></div>
-                  </div>
-                  <span className="text-xs font-semibold text-white ml-2">Check npm Version</span>
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-950 p-5">
-                  <div className="flex items-start gap-2 mb-3">
-                    <span className="text-green-600 dark:text-green-400 font-mono text-sm mt-0.5">$</span>
-                    <code className="text-slate-800 dark:text-slate-100 font-mono text-sm">npm --version</code>
-                  </div>
-                  <div className="text-slate-600 dark:text-slate-400 font-mono text-sm pl-4">
-                    10.2.4
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Tips */}
-            <div className="grid md:grid-cols-2 gap-3 mt-4">
-              <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1">Success!</p>
-                    <p className="text-xs text-slate-700 dark:text-slate-300">If you see version numbers, installation is complete</p>
-                  </div>
-                </div>
-              </div>
-              <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-                <div className="flex items-start gap-2">
-                  <Lightbulb className="w-4 h-4 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1">Tip</p>
-                    <p className="text-xs text-slate-700 dark:text-slate-300">npm comes bundled with Node.js automatically</p>
-                  </div>
+              <div className="bg-slate-100 dark:bg-slate-900 p-5">
+                <div className="space-y-1 font-mono text-sm text-slate-700 dark:text-slate-300">
+                  <div>Hello from Node.js!</div>
+                  <div>Welcome, Developer!</div>
+                  <div>10 + 20 = 30</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Running Node.js */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Rocket className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <h4 className="font-semibold">Running JavaScript with Node.js</h4>
-            </div>
-
-            {/* Step 1: JavaScript Code */}
-            <div>
-              <p className="text-sm text-muted-foreground mb-3">
-                <strong>Step 1:</strong> Create a file named <code className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs">app.js</code> with this content:
-              </p>
-              
-              <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-amber-600/90 dark:bg-amber-700/80 px-4 py-2 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-white/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/60"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/40"></div>
-                  </div>
-                  <span className="text-xs font-semibold text-white ml-2">app.js</span>
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-950 p-5">
-                  <pre className="font-mono text-sm text-slate-800 dark:text-slate-100 leading-loose overflow-x-auto">
-{`console.log("Hello from Node.js!");
-
-console.log("2 + 2 =", 2 + 2);
-
-const name = "Developer";
-
-console.log(\`Welcome, \${name}!\`);`}</pre>
-                </div>
-              </div>
-
-              <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-                <div className="flex items-start gap-2">
-                  <Lightbulb className="w-4 h-4 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1">Tip</p>
-                    <p className="text-xs text-slate-700 dark:text-slate-300">Save this file with .js extension in any folder. No HTML or browser needed!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 2: Run Command */}
-            <div>
-              <p className="text-sm text-muted-foreground mb-3">
-                <strong>Step 2:</strong> Open terminal in the same folder and run:
-              </p>
-              <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-emerald-600/90 dark:bg-emerald-700/80 px-4 py-2 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-white/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/60"></div>
-                    <div className="w-3 h-3 rounded-full bg-white/40"></div>
-                  </div>
-                  <span className="text-xs font-semibold text-white ml-2">Run Your Program</span>
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-950 p-5">
-                  <div className="flex items-start gap-2 mb-4">
-                    <span className="text-green-600 dark:text-green-400 font-mono text-sm mt-0.5">$</span>
-                    <code className="text-slate-800 dark:text-slate-100 font-mono text-sm">node app.js</code>
-                  </div>
-                  <div className="space-y-2 pl-4 text-slate-700 dark:text-slate-300 font-mono text-sm leading-relaxed">
-                    <div>Hello from Node.js!</div>
-                    <div>2 + 2 = 4</div>
-                    <div>Welcome, Developer!</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1">Success!</p>
-                    <p className="text-xs text-slate-700 dark:text-slate-300">You've just run JavaScript outside the browser! Press Ctrl+C to stop any running program.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Alert className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+            <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+            <AlertTitle>Success!</AlertTitle>
+            <AlertDescription className="text-base">
+              You just ran JavaScript outside the browser! Node.js can do much more - build servers, read files, connect to databases, and create powerful applications.
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* Section 5: Code Editors (Optional) */}
-      <Card className="overflow-hidden">
+      {/* Code Editors */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code2 className="w-6 h-6 text-slate-600 dark:text-slate-400" />
-            Recommended Code Editors (Optional)
-          </CardTitle>
-          <CardDescription>
-            Better tools for writing code
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Code2 className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Recommended Code Editors (Optional)</CardTitle>
+              <CardDescription>Better tools make coding easier and more fun</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Editor Options */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-xl border bg-white dark:bg-slate-900/50 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">VS Code</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                  Most Popular
-                </Badge>
+        <CardContent>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-lg">VS Code</h4>
+                <Badge className="bg-blue-600 text-white border-0">Most Popular</Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Free, powerful, and beginner-friendly. Highly recommended!
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Free, powerful, with tons of features. Highly recommended for beginners and pros!
               </p>
               <a 
                 href="https://code.visualstudio.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline"
               >
                 Download VS Code →
               </a>
             </div>
 
-            <div className="p-5 rounded-xl border bg-white dark:bg-slate-900/50 space-y-3">
-              <h4 className="font-semibold">Sublime Text</h4>
-              <p className="text-sm text-muted-foreground">
-                Fast and lightweight. Great for simple projects.
+            <div className="p-5 rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-lg mb-3">Sublime Text</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Fast and lightweight. Great for simple projects and quick edits.
               </p>
               <a 
                 href="https://www.sublimetext.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-purple-600 dark:text-purple-400 hover:underline"
               >
                 Download Sublime →
               </a>
             </div>
 
-            <div className="p-5 rounded-xl border bg-white dark:bg-slate-900/50 space-y-3">
-              <h4 className="font-semibold">Notepad++</h4>
-              <p className="text-sm text-muted-foreground">
-                Simple and fast. Good for Windows users.
+            <div className="p-5 rounded-xl border-2 border-emerald-200 dark:border-emerald-800/30 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-lg mb-3">Notepad++</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Simple and fast. Perfect for Windows users who want something basic.
               </p>
               <a 
                 href="https://notepad-plus-plus.org" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
               >
                 Download Notepad++ →
               </a>
             </div>
           </div>
 
-          {/* Why Use an Editor */}
-          <div className="p-5 rounded-xl border bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/10 dark:to-cyan-950/10">
-            <h4 className="font-bold mb-3">Why Use a Code Editor?</h4>
-            <div className="grid md:grid-cols-2 gap-3 text-sm">
+          <div className="mt-6 p-5 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/10 dark:to-purple-950/10 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-bold mb-3 text-gray-900 dark:text-gray-100">Why Use a Code Editor?</h4>
+            <div className="grid sm:grid-cols-2 gap-3">
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-                <span>Syntax highlighting (colors make code easier to read)</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">Colors make code easier to read</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-                <span>Auto-completion (suggests code as you type)</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">Suggests code as you type</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-                <span>Error detection (spots mistakes early)</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">Spots mistakes before you run code</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-                <span>File management (organize your projects)</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">Organize multiple files easily</span>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Quick Reference Card */}
-      <Card className="overflow-hidden border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50/50 to-yellow-50/50 dark:from-amber-950/10 dark:to-yellow-950/10">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-xl">
-            <Settings className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            Quick Setup Summary
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
-              </div>
-              <div>
-                <h5 className="font-semibold mb-1">For Complete Beginners</h5>
-                <p className="text-sm text-muted-foreground">
-                  Start with <strong>Browser Console</strong> (F12 → Console). No setup needed!
-                </p>
-              </div>
+      {/* Quick Summary */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Quick Setup Summary</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="text-3xl mb-3">🚀</div>
+              <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Complete Beginners</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Start with <strong>Browser Console</strong> (F12). No setup needed at all!
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div>
-                <h5 className="font-semibold mb-1">For Building Websites</h5>
-                <p className="text-sm text-muted-foreground">
-                  Use <strong>HTML files with &lt;script&gt; tags</strong>. Save and open in browser.
-                </p>
-              </div>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="text-3xl mb-3">🌐</div>
+              <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Building Websites</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Use <strong>HTML files</strong> with &lt;script&gt; tags. Save and open in browser.
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              </div>
-              <div>
-                <h5 className="font-semibold mb-1">For Advanced Development</h5>
-                <p className="text-sm text-muted-foreground">
-                  Install <strong>Node.js</strong> and use a code editor like <strong>VS Code</strong>.
-                </p>
-              </div>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="text-3xl mb-3">⚡</div>
+              <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Advanced Projects</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Install <strong>Node.js</strong> and use <strong>VS Code</strong> editor.
+              </p>
             </div>
           </div>
         </CardContent>

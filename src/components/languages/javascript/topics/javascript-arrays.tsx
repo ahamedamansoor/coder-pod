@@ -2,455 +2,515 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Layers,
   Sparkles,
-  ListChecks,
-  Grid,
+  Code2,
   Lightbulb,
-  CheckCircle2,
-  XCircle,
-  Boxes,
-  Package,
+  ListOrdered,
+  Plus,
+  Minus,
   ShoppingCart,
-  ListTodo,
 } from 'lucide-react';
 
 export default function JavaScriptArrays() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Layers}
-        category="JavaScript · Data Structures"
+        category="JavaScript Fundamentals"
         title="Arrays"
-        description="Master ordered collections and powerful transformation methods"
-        colorTheme="blue"
+        description="Store multiple values in a single list - like a shopping list for your code"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Arrays?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Ordered collections that store multiple values in a single variable, enabling powerful data manipulation
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <ListChecks className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">Ordered Data</h3>
+      {/* What are Arrays? */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-purple-50/50 via-pink-50/30 to-rose-50/20 dark:from-purple-950/10 dark:via-pink-950/5 dark:to-rose-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-muted-foreground text-sm">
-              Maintains insertion order with zero-based indexing
-            </p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">
-              Index-based
-            </Badge>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Arrays: Lists of Data
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                An array is like a <strong className="text-purple-700 dark:text-purple-400">numbered list</strong> where you can store multiple items. Perfect for shopping lists, todo lists, or any collection of similar things!
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Package className="w-5 h-5 text-cyan-600/80 dark:text-cyan-400/80" />
-              <h3 className="font-semibold">Flexible Type</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Store any type: numbers, strings, objects, or nested arrays
-            </p>
-            <Badge className="bg-cyan-100/80 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 border border-cyan-300/50 dark:border-cyan-700/40">
-              Dynamic
-            </Badge>
-          </div>
-
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Grid className="w-5 h-5 text-purple-600/80 dark:text-purple-400/80" />
-              <h3 className="font-semibold">Transform Power</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Built-in methods for mapping, filtering, and reducing data
-            </p>
-            <Badge className="bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-300/50 dark:border-purple-700/40">
-              Functional
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Understanding Arrays */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Understanding Arrays
-          </CardTitle>
-          <CardDescription className="text-base">
-            A zero-indexed list that stores multiple values in a single variable
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            Arrays are JavaScript's most fundamental data structure for storing <strong>ordered collections</strong>. They use zero-based indexing, meaning the first element is at position <code>0</code>. Arrays can store any type of data and dynamically grow or shrink as needed.
-          </p>
-          
-          <div className="rounded-lg overflow-hidden border bg-white dark:bg-gray-900">
-            <div className="flex items-center justify-between px-4 py-2 text-xs font-medium bg-blue-100 dark:bg-blue-900/30">
-              <span className="uppercase tracking-wide text-blue-700 dark:text-blue-300">array-basics.js</span>
-              <span className="text-blue-600/70 dark:text-blue-400/70">Creating and accessing arrays</span>
-            </div>
-            <pre 
-              className="text-xs px-4 py-3 whitespace-pre overflow-x-auto"
-              style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-{`// Create and access arrays
-const languages = ['HTML', 'CSS', 'JavaScript'];
-console.log(languages[0]); // HTML
-console.log(languages.length); // 3`}
-            </pre>
-          </div>
-
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Concept</AlertTitle>
-            <AlertDescription>
-              Arrays use bracket notation <code>[]</code> for access. The <code>length</code> property always reflects the number of elements. Use <code>array[array.length - 1]</code> to access the last element.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-purple-200 dark:border-purple-800/30">
+            <Layers className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <AlertTitle className="text-lg">Real-World Example</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              Shopping list: ["Milk", "Bread", "Eggs"] • Each item has a number (position) starting from 0
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* Core Array Operations */}
+      {/* Creating Arrays */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Grid className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Core Array Operations
-          </CardTitle>
-          <CardDescription className="text-base">
-            Transform, filter, and summarize data with built-in methods
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Code2 className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Creating Arrays</CardTitle>
+              <CardDescription>Use square brackets [ ] to make a list</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="map, filter & reduce"
-              description="The holy trinity of array transformation methods"
-              code={`const numbers = [10, 20, 30, 40];
-
-const doubled = numbers.map((value) => value * 2);
-const filtered = numbers.filter((value) => value >= 25);
-const total = numbers.reduce((sum, value) => sum + value, 0);
-
-console.log(doubled);  // [20, 40, 60, 80]
-console.log(filtered); // [30, 40]
-console.log(total);    // 100`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Grid}
-              features={[
-                "map() transforms each element",
-                "filter() selects matching items",
-                "reduce() combines to single value",
-                "Pure functions - no mutations"
-              ]}
-              tips={[
-                "map() creates new array with same length",
-                "filter() returns subset of original",
-                "reduce() is most powerful - can do anything"
-              ]}
-            />
-
-            <CodeSnippet
-              title="Nested Arrays & flatten"
-              description="Work with multi-dimensional arrays and flatten them"
-              code={`// Nested arrays (2D)
-const seats = [
-  ['A1', 'A2', 'A3'],
-  ['B1', 'B2', 'B3'],
-];
-
-console.log(seats[1][2]); // B3
-
-// Flatten
-const flat = seats.flat();
-console.log(flat); // ["A1","A2","A3","B1","B2","B3"]`}
-              language="javascript"
-              colorTheme="purple"
-              icon={Layers}
-              features={[
-                "Access nested elements",
-                "flat() flattens one level",
-                "flatMap() combines map + flat",
-                "Useful for grids and tables"
-              ]}
-              tips={[
-                "Use flat(depth) for deep nesting",
-                "Perfect for matrix operations",
-                "Great for CSV or spreadsheet data"
-              ]}
-            />
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Array Syntax</h4>
+            </div>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-800/30 mb-4">
+                <code className="text-lg font-mono text-gray-800 dark:text-gray-200">
+                  const items = [item1, item2, item3];
+                </code>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Put items inside square brackets [ ], separated by commas
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Real-World Examples */}
+      <CodeSnippet
+        title="Creating Arrays"
+        description="Different types of arrays you can create"
+        code={`// Array of strings
+const fruits = ['Apple', 'Banana', 'Orange'];
+console.log(fruits);
+// Output: ['Apple', 'Banana', 'Orange']
+
+// Array of numbers
+const ages = [25, 30, 18, 42];
+console.log(ages);
+// Output: [25, 30, 18, 42]
+
+// Array of mixed types
+const mixed = ['Alice', 25, true, 'Developer'];
+console.log(mixed);
+// Output: ['Alice', 25, true, 'Developer']
+
+// Empty array
+const emptyList = [];
+console.log(emptyList);
+// Output: []`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Accessing Items */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical patterns you'll use in every application
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <ListOrdered className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Accessing Array Items</CardTitle>
+              <CardDescription>Arrays use index numbers starting from 0</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-3 gap-6">
-            <CodeSnippet
-              title="Shopping Cart Total"
-              description="Calculate totals and extract data from object arrays"
-              code={`const cart = [
-  { id: 1, name: 'Keyboard', price: 80 },
-  { id: 2, name: 'Mouse', price: 40 },
-];
-
-const total = cart.reduce((sum, item) => sum + item.price, 0);
-const names = cart.map((item) => item.name);
-
-console.log('Cart total:', total); // 120
-console.log('Items:', names);      // ["Keyboard","Mouse"]`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={ShoppingCart}
-              features={[
-                "reduce() for totals",
-                "map() for extraction",
-                "Works with object arrays",
-                "Common e-commerce pattern"
-              ]}
-              tips={[
-                "Start reduce with 0 for numbers",
-                "map() is perfect for UI rendering",
-                "Chain methods for complex logic"
-              ]}
-            />
-
-            <CodeSnippet
-              title="Todo State Updates"
-              description="Immutably toggle items in state management"
-              code={`function toggleTodo(todos, id) {
-  return todos.map((todo) =>
-    todo.id === id ? { ...todo, done: !todo.done } : todo
-  );
-}
-
-const todos = [
-  { id: 1, text: 'Plan lesson', done: false },
-  { id: 2, text: 'Record video', done: false },
-];
-
-const updated = toggleTodo(todos, 2);
-console.log(updated);
-// id 2 toggled to true`}
-              language="javascript"
-              colorTheme="blue"
-              icon={ListTodo}
-              features={[
-                "Immutable updates",
-                "Spread operator for copying",
-                "React/Redux pattern",
-                "Preserves other items"
-              ]}
-              tips={[
-                "Always return new array in React",
-                "map() perfect for targeted updates",
-                "Ternary for conditional logic"
-              ]}
-            />
-
-            <CodeSnippet
-              title="API Data Filtering"
-              description="Filter and transform API responses"
-              code={`const response = {
-  data: [
-    { id: '1', status: 'done' },
-    { id: '2', status: 'todo' },
-    { id: '3', status: 'done' },
-  ],
-};
-
-const doneIds = response.data
-  .filter((item) => item.status === 'done')
-  .map((item) => item.id);
-
-console.log(doneIds); // ["1","3"]`}
-              language="javascript"
-              colorTheme="purple"
-              icon={Grid}
-              features={[
-                "Chain filter + map",
-                "Process API responses",
-                "Extract specific fields",
-                "Clean data pipelines"
-              ]}
-              tips={[
-                "Filter first to reduce iterations",
-                "Method chaining is readable",
-                "Perfect for analytics data"
-              ]}
-            />
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Index Numbers Start at 0</h4>
+            </div>
+            <div className="p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-6 border-2 border-purple-200 dark:border-purple-800/30">
+                <div className="flex items-center justify-center gap-2 mb-6">
+                  <div className="text-center">
+                    <div className="text-xs text-gray-500 mb-2">Index:</div>
+                    <div className="flex gap-2">
+                      {[0, 1, 2].map(i => (
+                        <div key={i} className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center font-bold text-blue-600 dark:text-blue-400 text-xl border-2 border-blue-200 dark:border-blue-800">
+                          {i}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="text-center">
+                    <div className="text-xs text-gray-500 mb-2">Value:</div>
+                    <div className="flex gap-2">
+                      {['🍎', '🍌', '🍊'].map((fruit, i) => (
+                        <div key={i} className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-3xl border-2 border-purple-200 dark:border-purple-800">
+                          {fruit}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <Alert className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/30">
+            <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            <AlertTitle>Remember: Count Starts at 0!</AlertTitle>
+            <AlertDescription className="text-base">
+              The first item is [0], second is [1], third is [2]. This is how most programming languages work!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* Working Immutably */}
+      <CodeSnippet
+        title="Accessing Array Items"
+        description="Get items from an array using their index"
+        code={`const colors = ['Red', 'Green', 'Blue', 'Yellow'];
+
+// Access by index
+console.log(colors[0]);  // Red (first item)
+console.log(colors[1]);  // Green (second item)
+console.log(colors[2]);  // Blue (third item)
+
+// Get array length
+console.log(colors.length);  // 4 (total items)
+
+// Get last item (length - 1)
+const lastColor = colors[colors.length - 1];
+console.log(lastColor);  // Yellow
+
+// Index doesn't exist returns undefined
+console.log(colors[10]);  // undefined`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Modifying Arrays */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Boxes className="w-6 h-6 text-cyan-600/80 dark:text-cyan-400/80" />
-            Working Immutably
-          </CardTitle>
-          <CardDescription className="text-base">
-            Copy and merge arrays without mutations for predictable state
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="Clone Before Editing"
-              description="Use spread operator to create copies"
-              code={`const base = ['JS', 'TS'];
-
-const copy = [...base];
-copy.push('Rust');
-
-console.log('Base:', base); // ["JS","TS"]
-console.log('Copy:', copy); // ["JS","TS","Rust"]`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Package}
-              features={[
-                "Spread creates shallow copy",
-                "Original stays unchanged",
-                "Essential for React state",
-                "Prevents bugs"
-              ]}
-              tips={[
-                "Always clone before mutating",
-                "Spread is fastest method",
-                "Use slice() as alternative"
-              ]}
-            />
-
-            <CodeSnippet
-              title="Merge with Spread"
-              description="Combine multiple arrays elegantly"
-              code={`const morning = ['email', 'standup'];
-const afternoon = ['code review', 'deploy'];
-
-const schedule = ['Plan', ...morning, 'Lunch', ...afternoon, 'Wrap up'];
-
-console.log(schedule);
-// ["Plan","email","standup","Lunch","code review","deploy","Wrap up"]`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={Layers}
-              features={[
-                "Combine arrays inline",
-                "Add items between arrays",
-                "Clean, readable syntax",
-                "No concat() needed"
-              ]}
-              tips={[
-                "Spread can merge multiple arrays",
-                "Add elements anywhere",
-                "More flexible than concat()"
-              ]}
-            />
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Plus className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>Adding & Removing Items</CardTitle>
+              <CardDescription>Change what's in your array</CardDescription>
+            </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <CheckCircle2 className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices
-          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                Do This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Use descriptive variable names (cartItems, students, tasks)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Prefer pure methods (map/filter/reduce) over loops</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Clone arrays before mutating in shared state</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Check array length before accessing elements</span>
-                </li>
-              </ul>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800/30">
+              <div className="flex items-center gap-2 mb-4">
+                <Plus className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <h4 className="font-bold text-lg text-green-700 dark:text-green-300">Adding Items</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
+                  <code className="text-sm font-mono text-gray-800 dark:text-gray-200">array.push(item)</code>
+                  <p className="text-xs text-gray-500 mt-1">Add to end</p>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
+                  <code className="text-sm font-mono text-gray-800 dark:text-gray-200">array.unshift(item)</code>
+                  <p className="text-xs text-gray-500 mt-1">Add to beginning</p>
+                </div>
+              </div>
             </div>
 
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                Avoid This
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Mutating arrays received as props or from state</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Using for loops when array methods are clearer</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Assuming arrays always have items without guards</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <span>Storing unrelated types without proper context</span>
-                </li>
-              </ul>
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20 border-red-200 dark:border-red-800/30">
+              <div className="flex items-center gap-2 mb-4">
+                <Minus className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <h4 className="font-bold text-lg text-red-700 dark:text-red-300">Removing Items</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
+                  <code className="text-sm font-mono text-gray-800 dark:text-gray-200">array.pop()</code>
+                  <p className="text-xs text-gray-500 mt-1">Remove from end</p>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border">
+                  <code className="text-sm font-mono text-gray-800 dark:text-gray-200">array.shift()</code>
+                  <p className="text-xs text-gray-500 mt-1">Remove from beginning</p>
+                </div>
+              </div>
             </div>
           </div>
-
-          <Alert className="mt-6">
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Key Takeaway</AlertTitle>
-            <AlertDescription>
-              Arrays are JavaScript's workhorse data structure. Master map/filter/reduce and immutable patterns to write clean, predictable code. Always clone before mutating shared state, and leverage method chaining for readable transformations.
-            </AlertDescription>
-          </Alert>
         </CardContent>
       </Card>
-      
+
+      <CodeSnippet
+        title="Adding & Removing Items"
+        description="Modify arrays with push, pop, shift, and unshift"
+        code={`const fruits = ['Apple', 'Banana'];
+console.log(fruits);  // ['Apple', 'Banana']
+
+// Add to end with push()
+fruits.push('Orange');
+console.log(fruits);  // ['Apple', 'Banana', 'Orange']
+
+// Add to beginning with unshift()
+fruits.unshift('Mango');
+console.log(fruits);  // ['Mango', 'Apple', 'Banana', 'Orange']
+
+// Remove from end with pop()
+const last = fruits.pop();
+console.log('Removed:', last);  // Removed: Orange
+console.log(fruits);  // ['Mango', 'Apple', 'Banana']
+
+// Remove from beginning with shift()
+const first = fruits.shift();
+console.log('Removed:', first);  // Removed: Mango
+console.log(fruits);  // ['Apple', 'Banana']`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Array Methods */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Code2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <CardTitle>Useful Array Methods</CardTitle>
+              <CardDescription>Built-in tools to work with arrays</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { method: 'includes()', desc: 'Check if item exists', example: 'arr.includes(5) → true' },
+              { method: 'indexOf()', desc: 'Find position of item', example: 'arr.indexOf(5) → 2' },
+              { method: 'join()', desc: 'Join into string', example: 'arr.join(\', \') → "a, b, c"' },
+              { method: 'slice()', desc: 'Copy part of array', example: 'arr.slice(1, 3) → [b, c]' },
+              { method: 'reverse()', desc: 'Reverse order', example: 'arr.reverse() → [3, 2, 1]' },
+              { method: 'sort()', desc: 'Sort items', example: 'arr.sort() → [1, 2, 3]' },
+            ].map((item, idx) => (
+              <div key={idx} className="p-4 rounded-xl border-2 bg-white dark:bg-slate-900 border-blue-200 dark:border-blue-800/30">
+                <code className="text-sm font-mono font-bold text-blue-600 dark:text-blue-400 block mb-2">
+                  {item.method}
+                </code>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{item.desc}</p>
+                <code className="text-xs font-mono text-gray-500 dark:text-gray-500 block">
+                  {item.example}
+                </code>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Common Array Methods"
+        description="Essential methods for working with arrays"
+        code={`const numbers = [1, 2, 3, 4, 5];
+
+// Check if item exists
+console.log(numbers.includes(3));  // true
+console.log(numbers.includes(10)); // false
+
+// Find position
+console.log(numbers.indexOf(3));   // 2
+console.log(numbers.indexOf(10));  // -1 (not found)
+
+// Join into string
+const joined = numbers.join(' - ');
+console.log(joined);  // "1 - 2 - 3 - 4 - 5"
+
+// Copy part of array (doesn't change original)
+const slice = numbers.slice(1, 4);
+console.log(slice);  // [2, 3, 4]
+console.log(numbers);  // [1, 2, 3, 4, 5] (unchanged)
+
+// Reverse (changes original!)
+numbers.reverse();
+console.log(numbers);  // [5, 4, 3, 2, 1]`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Looping Through Arrays */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Looping Through Arrays</CardTitle>
+              <CardDescription>Go through each item in an array</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-blue-200 dark:border-blue-800/30">
+              <h4 className="font-bold mb-3 text-blue-700 dark:text-blue-300">for...of Loop (Easy!)</h4>
+              <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-slate-900 rounded-lg p-4 border">
+{`for (const item of array) {
+  console.log(item);
+}`}</pre>
+              <p className="text-xs text-gray-500 mt-2">Gets each value directly</p>
+            </div>
+
+            <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-200 dark:border-purple-800/30">
+              <h4 className="font-bold mb-3 text-purple-700 dark:text-purple-300">for Loop (With Index)</h4>
+              <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-slate-900 rounded-lg p-4 border">
+{`for (let i = 0; i < array.length; i++) {
+  console.log(array[i]);
+}`}</pre>
+              <p className="text-xs text-gray-500 mt-2">Gives you position number too</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Looping Through Arrays"
+        description="Different ways to go through all items"
+        code={`const fruits = ['Apple', 'Banana', 'Orange'];
+
+// for...of - easiest way
+console.log('Using for...of:');
+for (const fruit of fruits) {
+  console.log(fruit);
+}
+// Output: Apple
+// Output: Banana
+// Output: Orange
+
+// Regular for loop - when you need index
+console.log('\\nUsing for loop with index:');
+for (let i = 0; i < fruits.length; i++) {
+  console.log(i + ': ' + fruits[i]);
+}
+// Output: 0: Apple
+// Output: 1: Banana
+// Output: 2: Orange
+
+// forEach method
+console.log('\\nUsing forEach:');
+fruits.forEach(function(fruit) {
+  console.log(fruit);
+});
+// Output: Apple
+// Output: Banana
+// Output: Orange`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Real World Example */}
+      <CodeSnippet
+        title="Real-World Example: Shopping Cart"
+        description="Calculate total price from array of items"
+        code={`// Shopping cart with prices
+const cart = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 25 },
+  { name: 'Keyboard', price: 75 }
+];
+
+// Calculate total
+let total = 0;
+
+for (const item of cart) {
+  console.log(item.name + ': $' + item.price);
+  total += item.price;
+}
+
+console.log('---');
+console.log('Total: $' + total);
+
+// Output: Laptop: $999
+// Output: Mouse: $25
+// Output: Keyboard: $75
+// Output: ---
+// Output: Total: $1099
+
+// Get all product names
+const names = [];
+for (const item of cart) {
+  names.push(item.name);
+}
+
+console.log('Products:', names.join(', '));
+// Output: Products: Laptop, Mouse, Keyboard`}
+        language="javascript"
+        colorTheme="yellow"
+        icon={ShoppingCart}
+      />
+
+      {/* Key Takeaways */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">📝</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Arrays = Lists</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Store multiple items: [1, 2, 3]
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">0️⃣</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Index Starts at 0</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    First item is array[0], not array[1]
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">➕</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">push() Adds Items</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Add to end, pop() removes from end
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🔄</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Loop with for...of</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Easiest way to go through all items
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

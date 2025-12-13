@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
+import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   RefreshCw,
   Sparkles,
@@ -13,1108 +13,766 @@ import {
   CheckCircle2,
   XCircle,
   Play,
-  ArrowRight,
-  AlertTriangle,
-  TrendingUp,
-  Layers,
-  Clock,
+  Pause,
+  RotateCcw,
   Zap,
-  GitBranch,
-  Network,
-  Timer,
+  Clock,
 } from 'lucide-react';
 
-interface JavaScriptEventLoopProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+interface Task {
+  name: string;
+  type: 'sync' | 'macro' | 'micro';
+  color: string;
 }
 
-const SnippetOutput = ({ lines }: { lines: string[] }) => (
-  <div className="mt-3 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-white/90 dark:bg-slate-900/80 shadow-sm">
-    <div className="flex items-center gap-2 border-b border-blue-100/60 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/30 px-4 py-2 rounded-t-xl">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">IO</span>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">Output</p>
-    </div>
-    <pre className="px-4 py-3 text-xs font-mono text-blue-900 dark:text-blue-100 whitespace-pre-wrap">{lines.join('\n')}</pre>
-  </div>
-);
+interface AnimationStep {
+  callStack: string[];
+  webAPIs: string[];
+  macroQueue: string[];
+  microQueue: string[];
+  output: string[];
+  description: string;
+  code?: string;
+  highlight?: 'stack' | 'webapi' | 'macro' | 'micro' | 'output';
+}
 
-const playgroundHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Event Loop Demo</title>
-  <style>
-    body { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-    .container { 
-      text-align: center; 
-      background: rgba(255,255,255,0.95); 
-      padding: 48px 32px; 
-      border-radius: 20px; 
-      max-width: 600px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 { 
-      color: #667eea; 
-      margin-bottom: 16px; 
-      font-size: 32px; 
-    }
-    p { 
-      color: #64748b; 
-      font-size: 18px; 
-      margin-bottom: 24px;
-    }
-    .console-hint { 
-      background: #0f172a; 
-      color: #22d3ee; 
-      padding: 16px; 
-      border-radius: 12px; 
-      font-family: monospace; 
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🔄 Event Loop</h1>
-    <p>Open the browser console to see the event loop in action!</p>
-    <div class="console-hint">Press F12 or Cmd+Option+J</div>
-  </div>
-</body>
-</html>`;
-
-const playgroundJs = `console.clear();
-console.log("🔄 Event Loop Demo\\n");
-
-// Example 1: Call stack vs Task Queue
-console.log("1. CALL STACK VS TASK QUEUE:");
-console.log("Start");
-
-setTimeout(() => {
-  console.log("Timeout (Task Queue)");
-}, 0);
-
-console.log("End");
-
-// Example 2: Microtask vs Macrotask
-setTimeout(() => {
-  console.log("\\n2. MICROTASK VS MACROTASK:");
-  
-  console.log("Macrotask: setTimeout");
-  
-  Promise.resolve().then(() => {
-    console.log("Microtask: Promise");
-  });
-  
-  setTimeout(() => {
-    console.log("Another Macrotask");
-  }, 0);
-  
-  console.log("Synchronous");
-}, 1000);
-
-// Example 3: Promise chain
-setTimeout(() => {
-  console.log("\\n3. PROMISE CHAIN:");
-  
-  Promise.resolve()
-    .then(() => console.log("Promise 1"))
-    .then(() => console.log("Promise 2"))
-    .then(() => console.log("Promise 3"));
-  
-  console.log("After Promise");
-}, 2500);
-
-console.log("\\n💡 Watch the execution order!");`;
-
-// Animated Event Loop Component
-const AnimatedEventLoop = () => {
-  const [callStack, setCallStack] = useState<string[]>([]);
-  const [webAPIs, setWebAPIs] = useState<Array<{ id: string; task: string; time: number }>>([]);
-  const [microtaskQueue, setMicrotaskQueue] = useState<string[]>([]);
-  const [macrotaskQueue, setMacrotaskQueue] = useState<string[]>([]);
+export default function JavaScriptEventLoop() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [output, setOutput] = useState<string[]>([]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const executionSteps = [
+  // Comprehensive animation showing microtasks vs macrotasks
+  const animationSteps: AnimationStep[] = [
     {
-      stack: ['console.log("Start")'],
+      callStack: [],
       webAPIs: [],
-      microtasks: [],
-      macrotasks: [],
-      output: 'Start',
-      description: 'Synchronous code executes on stack'
+      macroQueue: [],
+      microQueue: [],
+      output: [],
+      description: 'Program starts - all queues empty',
+      code: '// JavaScript engine ready',
+      highlight: 'stack'
     },
     {
-      stack: ['setTimeout callback'],
-      webAPIs: [{ id: '1', task: 'setTimeout(1000ms)', time: 1000 }],
-      microtasks: [],
-      macrotasks: [],
-      output: '',
-      description: 'setTimeout moved to Web API'
-    },
-    {
-      stack: ['Promise.resolve().then()'],
-      webAPIs: [{ id: '1', task: 'setTimeout(1000ms)', time: 1000 }],
-      microtasks: [],
-      macrotasks: [],
-      output: '',
-      description: 'Promise created, .then() queued'
-    },
-    {
-      stack: [],
-      webAPIs: [{ id: '1', task: 'setTimeout(1000ms)', time: 1000 }],
-      microtasks: ['Promise callback'],
-      macrotasks: [],
-      output: '',
-      description: 'Promise callback in microtask queue'
-    },
-    {
-      stack: ['console.log("End")'],
-      webAPIs: [{ id: '1', task: 'setTimeout(1000ms)', time: 1000 }],
-      microtasks: ['Promise callback'],
-      macrotasks: [],
-      output: 'End',
-      description: 'Synchronous code continues'
-    },
-    {
-      stack: [],
-      webAPIs: [{ id: '1', task: 'setTimeout(1000ms)', time: 1000 }],
-      microtasks: ['Promise callback'],
-      macrotasks: [],
-      output: '',
-      description: 'Stack empty, check microtasks'
-    },
-    {
-      stack: ['Promise callback'],
-      webAPIs: [{ id: '1', task: 'setTimeout(1000ms)', time: 1000 }],
-      microtasks: [],
-      macrotasks: [],
-      output: 'Promise',
-      description: 'Execute microtask (higher priority)'
-    },
-    {
-      stack: [],
+      callStack: ['main()'],
       webAPIs: [],
-      microtasks: [],
-      macrotasks: ['setTimeout callback'],
-      output: '',
-      description: 'setTimeout done, moved to macrotask queue'
+      macroQueue: [],
+      microQueue: [],
+      output: [],
+      description: 'Script execution begins',
+      code: '// Script starts executing',
+      highlight: 'stack'
     },
     {
-      stack: ['setTimeout callback'],
+      callStack: ['main()', 'console.log("1")'],
       webAPIs: [],
-      microtasks: [],
-      macrotasks: [],
-      output: 'Timeout',
-      description: 'Execute macrotask'
+      macroQueue: [],
+      microQueue: [],
+      output: [],
+      description: 'Synchronous code: console.log("1") executes immediately',
+      code: 'console.log(\'1\');',
+      highlight: 'stack'
     },
     {
-      stack: [],
+      callStack: ['main()'],
       webAPIs: [],
-      microtasks: [],
-      macrotasks: [],
-      output: '',
-      description: 'All done! Event loop complete'
+      macroQueue: [],
+      microQueue: [],
+      output: ['1'],
+      description: 'Output: 1 (call stack pops)',
+      code: '// Output: 1',
+      highlight: 'output'
     },
+    {
+      callStack: ['main()', 'setTimeout()'],
+      webAPIs: [],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1'],
+      description: 'setTimeout() called - registers callback',
+      code: 'setTimeout(() => {\n  console.log(\'4\');\n}, 0);',
+      highlight: 'stack'
+    },
+    {
+      callStack: ['main()'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1'],
+      description: 'Callback moved to Web APIs (browser handles the timer)',
+      code: '// Timer running in background',
+      highlight: 'webapi'
+    },
+    {
+      callStack: ['main()', 'Promise.resolve()'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1'],
+      description: 'Promise.resolve() called',
+      code: 'Promise.resolve().then(() => {\n  console.log(\'3\');\n});',
+      highlight: 'stack'
+    },
+    {
+      callStack: ['main()'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: ['Promise.then()'],
+      output: ['1'],
+      description: 'Promise callback goes to MICROTASK queue',
+      code: '// Promise callback queued',
+      highlight: 'micro'
+    },
+    {
+      callStack: ['main()', 'console.log("2")'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: ['Promise.then()'],
+      output: ['1'],
+      description: 'Synchronous code: console.log("2")',
+      code: 'console.log(\'2\');',
+      highlight: 'stack'
+    },
+    {
+      callStack: ['main()'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: ['Promise.then()'],
+      output: ['1', '2'],
+      description: 'Output: 2',
+      code: '// Output: 2',
+      highlight: 'output'
+    },
+    {
+      callStack: [],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: ['Promise.then()'],
+      output: ['1', '2'],
+      description: 'main() completes - call stack empty!',
+      code: '// Sync code complete',
+      highlight: 'stack'
+    },
+    {
+      callStack: ['Promise.then()'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1', '2'],
+      description: 'Event loop checks MICROTASKS first (higher priority)',
+      code: '// Microtask executing',
+      highlight: 'micro'
+    },
+    {
+      callStack: ['Promise.then()', 'console.log("3")'],
+      webAPIs: ['setTimeout callback'],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1', '2'],
+      description: 'Microtask executes: console.log("3")',
+      code: 'console.log(\'3\');',
+      highlight: 'stack'
+    },
+    {
+      callStack: [],
+      webAPIs: [],
+      macroQueue: ['setTimeout callback'],
+      microQueue: [],
+      output: ['1', '2', '3'],
+      description: 'Output: 3 - Timer completes, callback moves to MACROTASK queue',
+      code: '// Output: 3\n// Timer done, callback ready',
+      highlight: 'macro'
+    },
+    {
+      callStack: ['setTimeout callback'],
+      webAPIs: [],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1', '2', '3'],
+      description: 'Event loop processes MACROTASK (only after microtasks done)',
+      code: '// Macrotask executing',
+      highlight: 'macro'
+    },
+    {
+      callStack: ['setTimeout callback', 'console.log("4")'],
+      webAPIs: [],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1', '2', '3'],
+      description: 'Macrotask executes: console.log("4")',
+      code: 'console.log(\'4\');',
+      highlight: 'stack'
+    },
+    {
+      callStack: [],
+      webAPIs: [],
+      macroQueue: [],
+      microQueue: [],
+      output: ['1', '2', '3', '4'],
+      description: 'Output: 4 - Program complete! Final order: 1, 2, 3, 4',
+      code: '// Output: 4\n// ✅ Complete!',
+      highlight: 'output'
+    }
   ];
 
-  const runAnimation = async () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCallStack([]);
-    setWebAPIs([]);
-    setMicrotaskQueue([]);
-    setMacrotaskQueue([]);
-    setOutput([]);
-    setCurrentStep(0);
-
-    for (let i = 0; i < executionSteps.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      const step = executionSteps[i];
-      setCurrentStep(i);
-      setCallStack(step.stack);
-      setWebAPIs(step.webAPIs);
-      setMicrotaskQueue(step.microtasks);
-      setMacrotaskQueue(step.macrotasks);
-      if (step.output) {
-        setOutput(prev => [...prev, step.output]);
-      }
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isPlaying && currentStep < animationSteps.length - 1) {
+      interval = setInterval(() => {
+        setCurrentStep(prev => {
+          if (prev >= animationSteps.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 2000);
+    } else if (currentStep >= animationSteps.length - 1) {
+      setIsPlaying(false);
     }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentStep, animationSteps.length]);
 
-    setIsAnimating(false);
-  };
-
-  const reset = () => {
-    setCallStack([]);
-    setWebAPIs([]);
-    setMicrotaskQueue([]);
-    setMacrotaskQueue([]);
-    setOutput([]);
+  const handlePlayPause = () => setIsPlaying(!isPlaying);
+  const handleReset = () => {
     setCurrentStep(0);
-    setIsAnimating(false);
+    setIsPlaying(false);
+  };
+  const handleNext = () => {
+    if (currentStep < animationSteps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+  const handlePrev = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
+  const step = animationSteps[currentStep];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-3 text-2xl">
-          <RefreshCw className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-          Animated Event Loop Visualization
-        </CardTitle>
-        <CardDescription className="text-base">
-          Watch how the event loop coordinates the call stack, Web APIs, and task queues
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Left Column: Call Stack & Web APIs */}
-          <div className="space-y-4">
-            {/* Call Stack */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-sm">Call Stack</h4>
-                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 text-xs">
-                  {callStack.length === 0 ? 'Empty' : `${callStack.length} frame${callStack.length > 1 ? 's' : ''}`}
-                </Badge>
-              </div>
-              <div className="min-h-[120px] p-3 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-lg border-2 border-dashed border-blue-300 dark:border-blue-700 flex flex-col-reverse justify-start gap-1.5">
-                {callStack.length === 0 ? (
-                  <div className="flex items-center justify-center h-full text-muted-foreground text-xs">
-                    [Empty]
-                  </div>
-                ) : (
-                  callStack.map((frame, index) => (
-                    <div
-                      key={`stack-${index}`}
-                      className="px-3 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded font-mono text-xs shadow-md animate-in slide-in-from-bottom-3 duration-300"
-                    >
-                      {frame}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Web APIs */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-sm">Web APIs</h4>
-                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 text-xs">
-                  {webAPIs.length} running
-                </Badge>
-              </div>
-              <div className="min-h-[120px] p-3 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-lg border-2 border-dashed border-emerald-300 dark:border-emerald-700 flex flex-col gap-1.5">
-                {webAPIs.length === 0 ? (
-                  <div className="flex items-center justify-center h-full text-muted-foreground text-xs">
-                    [No Web API calls]
-                  </div>
-                ) : (
-                  webAPIs.map((api) => (
-                    <div
-                      key={api.id}
-                      className="px-3 py-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded font-mono text-xs shadow-md animate-in fade-in duration-300 flex items-center justify-between"
-                    >
-                      <span>{api.task}</span>
-                      <RefreshCw className="w-3 h-3 animate-spin" />
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Queues & Output */}
-          <div className="space-y-4">
-            {/* Microtask Queue */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-sm">Microtask Queue</h4>
-                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30 text-xs">
-                  High Priority
-                </Badge>
-              </div>
-              <div className="min-h-[80px] p-3 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-lg border-2 border-dashed border-amber-300 dark:border-amber-700 flex flex-col gap-1.5">
-                {microtaskQueue.length === 0 ? (
-                  <div className="flex items-center justify-center h-full text-muted-foreground text-xs">
-                    [Empty]
-                  </div>
-                ) : (
-                  microtaskQueue.map((task, index) => (
-                    <div
-                      key={`micro-${index}`}
-                      className="px-3 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded font-mono text-xs shadow-md animate-in slide-in-from-right-3 duration-300"
-                    >
-                      {task}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Macrotask Queue */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-sm">Macrotask Queue</h4>
-                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 text-xs">
-                  Low Priority
-                </Badge>
-              </div>
-              <div className="min-h-[80px] p-3 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-lg border-2 border-dashed border-purple-300 dark:border-purple-700 flex flex-col gap-1.5">
-                {macrotaskQueue.length === 0 ? (
-                  <div className="flex items-center justify-center h-full text-muted-foreground text-xs">
-                    [Empty]
-                  </div>
-                ) : (
-                  macrotaskQueue.map((task, index) => (
-                    <div
-                      key={`macro-${index}`}
-                      className="px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded font-mono text-xs shadow-md animate-in slide-in-from-right-3 duration-300"
-                    >
-                      {task}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Output */}
-            <div className="space-y-2">
-              <h4 className="font-semibold text-sm">Console Output</h4>
-              <div className="min-h-[80px] p-3 bg-slate-900 dark:bg-slate-950 rounded-lg border font-mono text-xs">
-                {output.length === 0 ? (
-                  <div className="text-slate-500">Ready to execute...</div>
-                ) : (
-                  <div className="space-y-1">
-                    {output.map((line, index) => (
-                      <div
-                        key={index}
-                        className="text-emerald-400 animate-in fade-in duration-300"
-                      >
-                        → {line}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
-          <p className="text-sm">
-            <strong className="text-blue-700 dark:text-blue-300">Current Step:</strong>{' '}
-            <span className="text-muted-foreground">
-              {executionSteps[currentStep]?.description || 'Ready to start'}
-            </span>
-          </p>
-        </div>
-
-        {/* Code Reference */}
-        <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border">
-          <p className="text-xs font-semibold mb-2">Code Example:</p>
-          <pre className="text-xs font-mono text-slate-700 dark:text-slate-300">
-{`console.log("Start");
-
-setTimeout(() => {
-  console.log("Timeout");
-}, 1000);
-
-Promise.resolve().then(() => {
-  console.log("Promise");
-});
-
-console.log("End");
-
-// Output: Start, End, Promise, Timeout`}</pre>
-        </div>
-
-        {/* Controls */}
-        <div className="flex gap-3 pt-4 border-t">
-          <Button
-            onClick={runAnimation}
-            disabled={isAnimating}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-500 hover:to-cyan-500 disabled:opacity-50"
-          >
-            {isAnimating ? (
-              <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                Running...
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                Run Event Loop Animation
-              </>
-            )}
-          </Button>
-          <Button
-            onClick={reset}
-            variant="outline"
-            disabled={isAnimating}
-          >
-            Reset
-          </Button>
-        </div>
-
-        <Alert>
-          <Lightbulb className="h-4 w-4" />
-          <AlertTitle>Watch Closely</AlertTitle>
-          <AlertDescription>
-            Notice how the <strong className="text-blue-600 dark:text-blue-400">Call Stack</strong> executes first, then <strong className="text-amber-600 dark:text-amber-400">Microtasks</strong> (Promises) before <strong className="text-purple-600 dark:text-purple-400">Macrotasks</strong> (setTimeout). This is the essence of the event loop!
-          </AlertDescription>
-        </Alert>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default function JavaScriptEventLoop({ onOpenWebPlayground }: JavaScriptEventLoopProps) {
-  return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={RefreshCw}
-        category="JavaScript · Asynchronous Programming"
+        category="JavaScript Fundamentals"
         title="Event Loop"
-        description="The heart of JavaScript's asynchronous behavior - understanding how the event loop coordinates the call stack, Web APIs, and task queues to execute code."
-        colorTheme="blue"
+        description="How JavaScript handles async code - Call Stack, Web APIs, Microtasks & Macrotasks"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What is the Event Loop?
-          </CardTitle>
-          <CardDescription className="text-base">
-            The mechanism that allows JavaScript to perform non-blocking operations despite being single-threaded
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* 3-Column Overview */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-              <div className="flex items-center gap-2">
-                <RefreshCw className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold text-sm">Continuous Loop</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Constantly checks if there's work to do - never stops while your app runs
-              </p>
-              <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 text-xs">24/7</Badge>
+      {/* Introduction */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-              <div className="flex items-center gap-2">
-                <GitBranch className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                <h4 className="font-semibold text-sm">Task Coordinator</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Decides what code to run next - synchronous first, then async tasks
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What is the Event Loop?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                The event loop is JavaScript's <strong className="text-yellow-700 dark:text-yellow-400">traffic controller</strong> - it coordinates the call stack, Web APIs, and task queues to handle both synchronous and asynchronous code!
               </p>
-              <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 text-xs">Prioritizes</Badge>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold text-sm">Non-Blocking</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Allows async operations without freezing the main thread
-              </p>
-              <Badge className="bg-purple-100/80 text-purple-700 dark:bg-purple-900/30 text-xs">Async</Badge>
             </div>
           </div>
 
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Why the Event Loop Matters</AlertTitle>
-            <AlertDescription>
-              JavaScript is single-threaded, meaning it can only execute one piece of code at a time. The event loop is what makes async operations possible - it manages the call stack, Web APIs, and task queues to create the illusion of multitasking. Without it, your app would freeze during network requests or timers.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <RefreshCw className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">The Loop That Never Stops</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              The event loop constantly checks: "Is the call stack empty? Any microtasks? Any macrotasks?" It keeps JavaScript responsive while handling async operations!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
 
-      {/* The 4 Components */}
+      {/* Interactive Visualization */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            The 4 Main Components
-          </CardTitle>
-          <CardDescription className="text-base">
-            Understanding the parts that work together to make the event loop function
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Call Stack */}
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                1. Call Stack
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Where your code executes - processes one function at a time (LIFO)
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-2 font-mono text-xs">
-{`function main() {
-  console.log("A");
-  console.log("B");
-}
-main(); // Executes on stack`}</pre>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Complete Event Loop Visualization</CardTitle>
+              <CardDescription>See how everything works together</CardDescription>
             </div>
-
-            {/* Web APIs */}
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Network className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                2. Web APIs
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Browser-provided features that run outside the stack (setTimeout, fetch, DOM events)
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-2 font-mono text-xs">
-{`setTimeout(() => {
-  console.log("Done!");
-}, 1000); // Runs in Web API`}</pre>
-            </div>
-
-            {/* Task Queue */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Timer className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                3. Task Queue (Macrotasks)
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Where callbacks from Web APIs wait (setTimeout, setInterval, I/O operations)
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-2 font-mono text-xs">
-{`// Goes to Task Queue
-setTimeout(() => {
-  console.log("Task");
-}, 0);`}</pre>
-            </div>
-
-            {/* Microtask Queue */}
-            <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                4. Microtask Queue (Higher Priority)
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Where Promise callbacks wait - executes BEFORE macrotasks
-              </p>
-              <pre className="bg-white dark:bg-gray-900 rounded p-2 font-mono text-xs">
-{`// Goes to Microtask Queue
-Promise.resolve()
-  .then(() => {
-    console.log("Microtask");
-  });`}</pre>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={handlePrev} disabled={currentStep === 0}>
+                ← Prev
+              </Button>
+              <Button size="sm" variant="outline" onClick={handlePlayPause}>
+                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              </Button>
+              <Button size="sm" variant="outline" onClick={handleNext} disabled={currentStep === animationSteps.length - 1}>
+                Next →
+              </Button>
+              <Button size="sm" variant="outline" onClick={handleReset}>
+                <RotateCcw className="w-4 h-4" />
+              </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Execution Flow */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <TrendingUp className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            How the Event Loop Works
-          </CardTitle>
-          <CardDescription className="text-base">
-            Step-by-step execution order that the event loop follows
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-4">
-            <h4 className="font-semibold">Execution Order (The Algorithm)</h4>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <Badge className="bg-blue-600 text-white text-xs mt-0.5">1</Badge>
-                <div>
-                  <p className="font-semibold text-sm">Execute all synchronous code</p>
-                  <p className="text-xs text-muted-foreground mt-1">Everything on the call stack runs first</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                <Badge className="bg-amber-600 text-white text-xs mt-0.5">2</Badge>
-                <div>
-                  <p className="font-semibold text-sm">Check if call stack is empty</p>
-                  <p className="text-xs text-muted-foreground mt-1">Event loop only runs when stack is clear</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
-                <Badge className="bg-green-600 text-white text-xs mt-0.5">3</Badge>
-                <div>
-                  <p className="font-semibold text-sm">Process ALL microtasks</p>
-                  <p className="text-xs text-muted-foreground mt-1">Promises, queueMicrotask - runs until queue is empty</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                <Badge className="bg-purple-600 text-white text-xs mt-0.5">4</Badge>
-                <div>
-                  <p className="font-semibold text-sm">Process ONE macrotask</p>
-                  <p className="text-xs text-muted-foreground mt-1">setTimeout, setInterval, I/O - only one per cycle</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg border border-cyan-200 dark:border-cyan-800">
-                <Badge className="bg-cyan-600 text-white text-xs mt-0.5">5</Badge>
-                <div>
-                  <p className="font-semibold text-sm">Repeat from step 2</p>
-                  <p className="text-xs text-muted-foreground mt-1">Loop continues forever while app is running</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Alert>
-            <Clock className="h-4 w-4" />
-            <AlertTitle>Key Insight</AlertTitle>
-            <AlertDescription>
-              The event loop processes <strong>ALL microtasks</strong> before moving to the next macrotask. This is why Promises always execute before setTimeout, even with setTimeout(..., 0).
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Microtask vs Macrotask Priority */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <GitBranch className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Microtask vs Macrotask Priority
-          </CardTitle>
-          <CardDescription className="text-base">
-            Understanding the critical difference that trips up most developers
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-            <h4 className="font-semibold">Classic Example</h4>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`console.log("1. Start");
-
-setTimeout(() => {
-  console.log("2. Timeout (Macrotask)");
-}, 0);
-
-Promise.resolve().then(() => {
-  console.log("3. Promise (Microtask)");
-});
-
-console.log("4. End");`}</pre>
-            <SnippetOutput lines={[
-              '1. Start',
-              '4. End',
-              '3. Promise (Microtask)',
-              '2. Timeout (Macrotask)',
-              '',
-              '// Synchronous first, then microtasks, then macrotasks'
-            ]} />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Microtasks */}
-            <div className="p-5 bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 rounded-xl border border-green-200/50 dark:border-green-800/30 space-y-3">
-              <h4 className="font-semibold text-green-700 dark:text-green-300">⚡ Microtasks (Higher Priority)</h4>
-              <ul className="space-y-2 text-xs text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Promise.then/catch/finally</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>queueMicrotask()</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>MutationObserver</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>process.nextTick (Node.js)</span>
-                </li>
-              </ul>
-              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 text-xs">ALL execute before next macrotask</Badge>
-            </div>
-
-            {/* Macrotasks */}
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30 space-y-3">
-              <h4 className="font-semibold text-purple-700 dark:text-purple-300">⏱️ Macrotasks (Lower Priority)</h4>
-              <ul className="space-y-2 text-xs text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <Clock className="w-3 h-3 text-purple-500 mt-0.5 flex-shrink-0" />
-                  <span>setTimeout</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Clock className="w-3 h-3 text-purple-500 mt-0.5 flex-shrink-0" />
-                  <span>setInterval</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Clock className="w-3 h-3 text-purple-500 mt-0.5 flex-shrink-0" />
-                  <span>setImmediate (Node.js)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Clock className="w-3 h-3 text-purple-500 mt-0.5 flex-shrink-0" />
-                  <span>I/O operations, UI rendering</span>
-                </li>
-              </ul>
-              <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 text-xs">ONE executes per event loop cycle</Badge>
-            </div>
-          </div>
-
-          {/* Complex Example */}
-          <div className="p-5 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30 space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-              Complex Example: Multiple Tasks
-            </h4>
-            <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`console.log("1. Script start");
-
-setTimeout(() => {
-  console.log("2. setTimeout 1");
-  Promise.resolve().then(() => {
-    console.log("3. Promise inside setTimeout");
-  });
-}, 0);
-
-Promise.resolve()
-  .then(() => {
-    console.log("4. Promise 1");
-  })
-  .then(() => {
-    console.log("5. Promise 2");
-  });
-
-setTimeout(() => {
-  console.log("6. setTimeout 2");
-}, 0);
-
-console.log("7. Script end");`}</pre>
-            <SnippetOutput lines={[
-              '1. Script start',
-              '7. Script end',
-              '4. Promise 1',
-              '5. Promise 2',
-              '2. setTimeout 1',
-              '3. Promise inside setTimeout',
-              '6. setTimeout 2',
-              '',
-              '// Order: Sync → All Microtasks → Macrotask → Its Microtasks → Next Macrotask'
-            ]} />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Animated Event Loop Visualization */}
-      <AnimatedEventLoop />
-
-      {/* Real-World Examples */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Network className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Real-World Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            How the event loop affects actual application behavior
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* API Calls */}
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <Network className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              API Calls Don't Block the UI
-            </h4>
-            <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`console.log("1. Start fetching data");
-
-fetch('/api/data')
-  .then(response => response.json())
-  .then(data => {
-    console.log("3. Data received:", data);
-  });
-
-console.log("2. Continue executing");
-
-// UI remains responsive during fetch!
-button.addEventListener('click', () => {
-  console.log("Button clicked while fetch is running!");
-});`}</pre>
-            <SnippetOutput lines={[
-              '1. Start fetching data',
-              '2. Continue executing',
-              '// ... user can click button ...',
-              'Button clicked while fetch is running!',
-              '3. Data received: { ... }',
-              '',
-              '// Fetch runs in Web API, UI stays responsive'
-            ]} />
-          </div>
-
-          {/* Render Blocking */}
-          <div className="p-5 bg-gradient-to-br from-red-50/60 to-rose-50/60 dark:from-red-950/10 dark:to-rose-950/10 rounded-xl border border-red-200/50 dark:border-red-800/30 space-y-3">
-            <h4 className="font-semibold flex items-center gap-2 text-red-700 dark:text-red-300">
-              <AlertTriangle className="w-5 h-5" />
-              Heavy Computation Blocks Everything
-            </h4>
-            <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function heavyComputation() {
-  console.log("Start heavy work");
-  
-  // Synchronous - blocks the stack!
-  for (let i = 0; i < 1000000000; i++) {
-    // Expensive calculation
-  }
-  
-  console.log("Done with heavy work");
-}
-
-setTimeout(() => {
-  console.log("This won't run until heavy work is done!");
-}, 0);
-
-heavyComputation(); // Blocks everything
-// UI freezes, setTimeout delayed, app unresponsive`}</pre>
-            <Alert className="mt-3">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertTitle>Solution</AlertTitle>
-              <AlertDescription>
-                Break heavy tasks into smaller chunks using setTimeout or use Web Workers for CPU-intensive tasks.
-              </AlertDescription>
-            </Alert>
-          </div>
-
-          {/* Promise Chain */}
-          <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-              Promise Chains Execute Together
-            </h4>
-            <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`Promise.resolve()
-  .then(() => {
-    console.log("Promise 1");
-    return Promise.resolve();
-  })
-  .then(() => {
-    console.log("Promise 2");
-  })
-  .then(() => {
-    console.log("Promise 3");
-  });
-
-setTimeout(() => {
-  console.log("Timeout");
-}, 0);`}</pre>
-            <SnippetOutput lines={[
-              'Promise 1',
-              'Promise 2',
-              'Promise 3',
-              'Timeout',
-              '',
-              '// All Promises execute before setTimeout'
-            ]} />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Common Mistakes */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <AlertTriangle className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            Common Mistakes
-          </CardTitle>
-          <CardDescription className="text-base">
-            Event loop misconceptions that cause bugs
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Mistake 1 */}
-            <div className="rounded-xl border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/20 p-5 space-y-3">
-              <h4 className="font-semibold text-red-700 dark:text-red-300">❌ Assuming setTimeout is instant</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`setTimeout(() => {
-  console.log("This");
-}, 0);
-console.log("That");
-
-// Output: "That", "This"
-// setTimeout(0) isn't instant!`}</pre>
-            </div>
-
-            <div className="rounded-xl border border-green-200 dark:border-green-900 bg-green-50/50 dark:bg-green-950/20 p-5 space-y-3">
-              <h4 className="font-semibold text-green-700 dark:text-green-300">✅ Understanding the delay</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// Use Promises for immediate async
-Promise.resolve().then(() => {
-  console.log("This");
-});
-console.log("That");
-
-// Output: "That", "This"
-// But runs before setTimeout`}</pre>
-            </div>
-
-            {/* Mistake 2 */}
-            <div className="rounded-xl border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/20 p-5 space-y-3">
-              <h4 className="font-semibold text-red-700 dark:text-red-300">❌ Blocking with long loops</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`for (let i = 0; i < 1000000; i++) {
-  // Blocks event loop
-  // UI freezes
-  // No other code runs
-}`}</pre>
-            </div>
-
-            <div className="rounded-xl border border-green-200 dark:border-green-900 bg-green-50/50 dark:bg-green-950/20 p-5 space-y-3">
-              <h4 className="font-semibold text-green-700 dark:text-green-300">✅ Breaking into chunks</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function processChunk(i) {
-  const chunk = 1000;
-  if (i < 1000000) {
-    // Process chunk
-    setTimeout(() => 
-      processChunk(i + chunk), 0
-    );
-  }
-}`}</pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Best Practices */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <CheckCircle2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Best Practices
-          </CardTitle>
-          <CardDescription className="text-base">
-            Working effectively with the event loop
-          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Do This */}
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <CheckCircle2 className="w-5 h-5" />
-                Do This ✅
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Use Promises for async operations</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Break heavy computations into smaller chunks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Use Web Workers for CPU-intensive tasks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Understand microtask vs macrotask priority</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ArrowRight className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  <span>Use requestAnimationFrame for animations</span>
-                </li>
+          <div className="space-y-6">
+            {/* Main Visualization Grid */}
+            <div className="grid lg:grid-cols-2 gap-4">
+              {/* Call Stack */}
+              <div className={`rounded-xl border-2 p-4 transition-all ${
+                step.highlight === 'stack' 
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 shadow-lg scale-105' 
+                  : 'border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/10'
+              }`}>
+                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                  Call Stack
+                </h3>
+                <div className="min-h-[120px] flex flex-col-reverse gap-1">
+                  {step.callStack.length === 0 ? (
+                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
+                  ) : (
+                    step.callStack.map((item, i) => (
+                      <div
+                        key={i}
+                        className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-bottom-2"
+                      >
+                        {item}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Web APIs */}
+              <div className={`rounded-xl border-2 p-4 transition-all ${
+                step.highlight === 'webapi'
+                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30 shadow-lg scale-105'
+                  : 'border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/10'
+              }`}>
+                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                  Web APIs (Browser)
+                </h3>
+                <div className="min-h-[120px]">
+                  {step.webAPIs.length === 0 ? (
+                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
+                  ) : (
+                    <div className="space-y-1">
+                      {step.webAPIs.map((item, i) => (
+                        <div
+                          key={i}
+                          className="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-right-2"
+                        >
+                          <Clock className="w-3 h-3 inline mr-2 animate-spin" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Microtask Queue */}
+              <div className={`rounded-xl border-2 p-4 transition-all ${
+                step.highlight === 'micro'
+                  ? 'border-green-500 bg-green-50 dark:bg-green-950/30 shadow-lg scale-105'
+                  : 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/10'
+              }`}>
+                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  Microtask Queue (High Priority)
+                </h3>
+                <div className="min-h-[120px]">
+                  {step.microQueue.length === 0 ? (
+                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
+                  ) : (
+                    <div className="space-y-1">
+                      {step.microQueue.map((item, i) => (
+                        <div
+                          key={i}
+                          className="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-left-2"
+                        >
+                          <Zap className="w-3 h-3 inline mr-2" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Macrotask Queue */}
+              <div className={`rounded-xl border-2 p-4 transition-all ${
+                step.highlight === 'macro'
+                  ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/30 shadow-lg scale-105'
+                  : 'border-orange-200 dark:border-orange-800 bg-orange-50/50 dark:bg-orange-950/10'
+              }`}>
+                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                  Macrotask Queue (Low Priority)
+                </h3>
+                <div className="min-h-[120px]">
+                  {step.macroQueue.length === 0 ? (
+                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
+                  ) : (
+                    <div className="space-y-1">
+                      {step.macroQueue.map((item, i) => (
+                        <div
+                          key={i}
+                          className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-left-2"
+                        >
+                          <Clock className="w-3 h-3 inline mr-2" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Console Output */}
+            <div className={`rounded-xl border-2 p-4 transition-all ${
+              step.highlight === 'output'
+                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 shadow-lg'
+                : 'border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/10'
+            }`}>
+              <h3 className="font-bold text-sm mb-3">Console Output</h3>
+              <div className="bg-slate-900 dark:bg-slate-950 rounded-lg p-4 min-h-[60px] font-mono text-sm">
+                {step.output.length === 0 ? (
+                  <div className="text-gray-500">// No output yet</div>
+                ) : (
+                  step.output.map((line, i) => (
+                    <div key={i} className="text-emerald-400 animate-in fade-in">
+                      {line}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Description and Code */}
+            <div className="space-y-4">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm">
+                    {currentStep + 1}
+                  </div>
+                  <span className="font-semibold">Step {currentStep + 1} of {animationSteps.length}</span>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 text-lg">
+                  {step.description}
+                </p>
+              </div>
+
+              {/* Code Being Executed */}
+              {step.code && (
+                <div className="bg-slate-900 dark:bg-slate-950 border-2 border-slate-700 dark:border-slate-800 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      Code Executing
+                    </span>
+                  </div>
+                  <pre className="font-mono text-sm text-emerald-400 whitespace-pre-wrap">
+                    {step.code}
+                  </pre>
+                </div>
+              )}
+            </div>
+
+            {/* Progress Dots */}
+            <div className="flex justify-center">
+              <div className="flex gap-2 bg-slate-100 dark:bg-slate-800 rounded-full p-2">
+                {animationSteps.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentStep(index)}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentStep 
+                        ? 'bg-blue-500 w-8' 
+                        : 'bg-slate-300 dark:bg-slate-600 w-2 hover:bg-slate-400'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Code Example */}
+      <CodeSnippet
+        title="Event Loop Example"
+        description="The code being visualized above"
+        code={`console.log('1');  // Synchronous - immediate
+
+setTimeout(() => {
+  console.log('4');  // Macrotask - runs last
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3');  // Microtask - runs before setTimeout
+});
+
+console.log('2');  // Synchronous - immediate
+
+// Output order: 1, 2, 3, 4
+// Why?
+// 1. Sync code runs first (1, 2)
+// 2. Microtasks run next (3)
+// 3. Macrotasks run last (4)`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Priority Explanation */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Execution Priority</CardTitle>
+          <CardDescription>What runs when?</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                1
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold mb-1">Call Stack (Synchronous)</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Regular code executes immediately - console.log, variables, function calls
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                2
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold mb-1">Microtasks (High Priority)</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Promises, queueMicrotask, MutationObserver - runs after sync, before macrotasks
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                3
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold mb-1">Macrotasks (Low Priority)</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  setTimeout, setInterval, I/O operations - runs last
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Microtasks vs Macrotasks */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Microtasks vs Macrotasks</CardTitle>
+          <CardDescription>Understanding the difference</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="border-2 border-green-200 dark:border-green-800 rounded-xl p-6 bg-green-50/50 dark:bg-green-950/10">
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="w-6 h-6 text-green-600" />
+                <h3 className="font-bold text-lg">Microtasks</h3>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <span className="font-semibold text-sm">Sources:</span>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                    <li>• Promise callbacks (.then, .catch, .finally)</li>
+                    <li>• async/await</li>
+                    <li>• queueMicrotask()</li>
+                    <li>• MutationObserver</li>
+                  </ul>
+                </div>
+                <div className="bg-green-100 dark:bg-green-900/30 rounded p-3">
+                  <strong className="text-xs">Priority: HIGH</strong>
+                  <p className="text-xs mt-1">Runs after current script, before next macrotask</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-2 border-orange-200 dark:border-orange-800 rounded-xl p-6 bg-orange-50/50 dark:bg-orange-950/10">
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-6 h-6 text-orange-600" />
+                <h3 className="font-bold text-lg">Macrotasks</h3>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <span className="font-semibold text-sm">Sources:</span>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 mt-1 space-y-1">
+                    <li>• setTimeout / setInterval</li>
+                    <li>• setImmediate (Node.js)</li>
+                    <li>• I/O operations</li>
+                    <li>• UI rendering</li>
+                  </ul>
+                </div>
+                <div className="bg-orange-100 dark:bg-orange-900/30 rounded p-3">
+                  <strong className="text-xs">Priority: LOW</strong>
+                  <p className="text-xs mt-1">Runs after ALL microtasks are done</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Complex Example: Microtasks vs Macrotasks"
+        description="See the execution order"
+        code={`console.log('1: Start');
+
+setTimeout(() => {
+  console.log('2: setTimeout');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3: Promise 1');
+}).then(() => {
+  console.log('4: Promise 2');
+});
+
+setTimeout(() => {
+  console.log('5: setTimeout 2');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('6: Promise 3');
+});
+
+console.log('7: End');
+
+// Output order: 1, 7, 3, 6, 4, 2, 5
+// 
+// Breakdown:
+// 1, 7     - Synchronous (call stack)
+// 3, 6, 4  - Microtasks (promises)
+// 2, 5     - Macrotasks (setTimeout)
+//
+// Event Loop Process:
+// 1. Run all synchronous code
+// 2. Run ALL microtasks
+// 3. Run ONE macrotask
+// 4. Repeat from step 2`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      <CodeSnippet
+        title="Real-World Example"
+        description="Async data loading"
+        code={`async function loadUserData() {
+  console.log('1: Start loading');
+  
+  // Macrotask - simulated API delay
+  setTimeout(() => {
+    console.log('6: Timeout callback');
+  }, 0);
+  
+  // Async operation
+  const response = await fetch('/api/user');
+  console.log('2: Response received');
+  
+  // Microtask - promise
+  Promise.resolve().then(() => {
+    console.log('3: Promise callback');
+  });
+  
+  const data = await response.json();
+  console.log('4: Data parsed');
+  
+  // More microtasks
+  Promise.resolve().then(() => {
+    console.log('5: Another promise');
+  });
+  
+  return data;
+}
+
+loadUserData();
+console.log('7: Code after function call');
+
+// Possible output order:
+// 1: Start loading
+// 7: Code after function call
+// 2: Response received
+// 3: Promise callback
+// 4: Data parsed
+// 5: Another promise
+// 6: Timeout callback`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Remember ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Synchronous code runs first</li>
+                <li>• Microtasks have higher priority</li>
+                <li>• ALL microtasks run before next macrotask</li>
+                <li>• Event loop never stops checking</li>
+                <li>• JavaScript is single-threaded</li>
               </ul>
             </div>
-            
-            {/* Avoid This */}
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-                <XCircle className="w-5 h-5" />
-                Avoid This ❌
-              </h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't block the call stack with long synchronous operations</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't assume setTimeout(0) runs immediately</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't create infinite microtask loops</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't ignore the event loop when debugging timing issues</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <span>Don't use alert() or confirm() - they block everything</span>
-                </li>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Common Mistakes ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Assuming setTimeout runs immediately</li>
+                <li>• Not understanding promise priority</li>
+                <li>• Blocking the event loop</li>
+                <li>• Infinite microtask loops</li>
+                <li>• Mixing sync and async incorrectly</li>
               </ul>
             </div>
           </div>
 
-          <Alert className="mt-6">
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Pro Tip</AlertTitle>
-            <AlertDescription>
-              The event loop is the reason JavaScript can handle thousands of concurrent connections despite being single-threaded. Understanding it is crucial for writing performant, non-blocking code. When in doubt: sync code first, then ALL microtasks, then ONE macrotask, repeat!
+          <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800/30">
+            <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Event Loop Algorithm</h4>
+            <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-400 list-decimal list-inside">
+              <li>Execute all synchronous code (call stack)</li>
+              <li>Execute ALL microtasks (until microtask queue is empty)</li>
+              <li>Execute ONE macrotask</li>
+              <li>Go back to step 2</li>
+              <li>Repeat forever!</li>
+            </ol>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Why This Matters</AlertTitle>
+            <AlertDescription className="text-base">
+              Understanding the event loop helps you predict async behavior, debug timing issues, and write more efficient code. It's the foundation of JavaScript's non-blocking architecture!
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
-
-      {/* Playground */}
-      {onOpenWebPlayground && (
-        <Card className="border border-blue-200/60 dark:border-blue-900/30 bg-white/95 dark:bg-slate-950/70">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <Play className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-              Interactive Playground
-            </CardTitle>
-            <CardDescription className="text-base">
-              See the event loop in action with real execution examples
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col md:flex-row md:items-center md:gap-6 gap-4">
-            <Button
-              onClick={() => onOpenWebPlayground(playgroundHtml, '', playgroundJs)}
-              className="bg-blue-600 text-white hover:bg-blue-500 w-full md:w-auto"
-            >
-              Run in Playground
-            </Button>
-            <p className="text-sm text-muted-foreground">
-              The console demonstrates execution order with the call stack, microtasks, and macrotasks.
-            </p>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }

@@ -29,7 +29,7 @@ interface FrontendCodePreviewProps {
   angular?: string;
   vue?: string;
   next?: string;
-  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan' | 'red' | 'green';
+  colorTheme?: 'blue' | 'purple' | 'emerald' | 'amber' | 'orange' | 'pink' | 'cyan' | 'teal' | 'red' | 'green' | 'indigo';
   icon?: React.ComponentType<{ className?: string }>;
   previewHeight?: string;
   codeHeight?: string;
@@ -434,6 +434,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       tab: 'bg-blue-500 text-white',
       tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
     },
+    indigo: {
+      gradient: 'from-indigo-50 to-slate-50 dark:from-indigo-950/20 dark:to-slate-950/20',
+      border: 'border-indigo-200/60 dark:border-indigo-700',
+      badge: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400',
+      icon: 'text-indigo-600 dark:text-indigo-400',
+      tab: 'bg-indigo-500 text-white',
+      tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
+    },
     purple: {
       gradient: 'from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',
       border: 'border-purple-200/60 dark:border-purple-700',
@@ -496,6 +504,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       badge: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
       icon: 'text-cyan-600 dark:text-cyan-400',
       tab: 'bg-cyan-500 text-white',
+      tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
+    },
+    teal: {
+      gradient: 'from-teal-50 to-emerald-50 dark:from-teal-950/20 dark:to-emerald-950/20',
+      border: 'border-teal-200/60 dark:border-teal-700',
+      badge: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400',
+      icon: 'text-teal-600 dark:text-teal-400',
+      tab: 'bg-teal-500 text-white',
       tabInactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
     },
   };

@@ -1,8 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import React from 'react';
+import { CheckCircle, AlertCircle, Shield, XCircle, AlertTriangle, Target, Layers } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
-import { PageHeader } from '@/components/shared/generic-page-header';
-import { CheckCircle, AlertCircle, Sparkles, Code, Shield, Zap, XCircle, AlertTriangle } from 'lucide-react';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface FormValidationStylingProps {
     onOpenWebPlayground?: (html: string, css: string, js: string) => void;
@@ -11,177 +17,131 @@ interface FormValidationStylingProps {
 export default function FormValidationStyling({ onOpenWebPlayground }: FormValidationStylingProps) {
     
     return (
-        <div className="space-y-8">
-            {/* PAGE HEADER */}
-            <PageHeader
+        <CssTopicLayout
+            icon={Shield}
+            title="Form Validation Styling"
+            description="Show users when they're doing it right (or wrong)"
+            category="CSS Forms & UI"
+            whatIsIt={{
+                title: "What is Form Validation Styling?",
+                description: "Using CSS to show if form inputs are correct or have errors",
+                keyPoints: [
+                    "Give instant visual feedback to users",
+                    "Show green borders for correct inputs",
+                    "Show red borders for errors",
+                    "Indicate required fields clearly",
+                    "Works with HTML5 validation automatically",
+                    "Makes forms easier to fill out correctly"
+                ]
+            }}
+        >
+
+            {/* Simple Explanation */}
+            <InfoAlert type="info" title="Simple Concept">
+                Imagine filling out a form - wouldn't it be nice if the input turned green when you typed your email correctly, 
+                or red if something's wrong? That's what form validation styling does!
+            </InfoAlert>
+
+            {/* How It Works */}
+            <SectionCard
+                title="Validation Pseudo-Classes"
+                description="Different states for different situations"
                 icon={Shield}
-                category="CSS · Forms & UI"
-                title="Form Validation Styling"
-                description="Style form validation states with :valid, :invalid, :required pseudo-classes for better user feedback"
-                colorTheme="green"
-            />
+                variant="primary"
+            >
+                <ConceptGrid
+                    concepts={[
+                        {
+                            title: ":valid",
+                            description: "Input is correct and meets all requirements",
+                            example: "input:valid { border-color: green; }"
+                        },
+                        {
+                            title: ":invalid",
+                            description: "Input has errors or doesn't meet requirements",
+                            example: "input:invalid { border-color: red; }"
+                        },
+                        {
+                            title: ":required",
+                            description: "Field must be filled out before submitting",
+                            example: "input:required { border-left: 3px solid orange; }"
+                        },
+                        {
+                            title: ":optional",
+                            description: "Field can be left empty",
+                            example: "input:optional { opacity: 0.8; }"
+                        }
+                    ]}
+                />
+            </SectionCard>
 
-            {/* INTRODUCTION - Animation Style */}
-            <Card>
-                <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-2xl text-green-700 dark:text-green-300">
-                        <div className="relative">
-                            <Shield className="w-8 h-8" />
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
-                        </div>
-                        What is Form Validation Styling?
-                    </CardTitle>
-                    <CardDescription className="text-lg text-green-600 dark:text-green-400">
-                        🚀 Provide instant visual feedback with CSS validation pseudo-classes - help users fill forms correctly!
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="relative overflow-hidden">
-                    <div className="grid lg:grid-cols-3 gap-6 p-2">
-                        {/* Interactive Demo Section */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Main Interactive Card */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-green-200/50 shadow-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl hover:border-green-400 dark:hover:border-green-600 cursor-pointer group">
-                                <h4 className="font-bold mb-4 text-green-700 dark:text-green-300 flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                                    <CheckCircle className="w-5 h-5 animate-pulse" />
-                                    ✅ Validation Pseudo-Classes
-                                </h4>
-                                
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    <strong className="text-foreground">CSS Validation Pseudo-classes</strong> let you style form fields based on their validation state - valid, invalid, required, optional, in-range, and out-of-range.
-                                </p>
+            {/* Basic Syntax */}
+            <SectionCard
+                title="Basic Syntax"
+                description="How to style validation states"
+                icon={CheckCircle}
+            >
+                <div className="space-y-6">
+                    <SyntaxBlock
+                        title="Valid Inputs (Green)"
+                        code={`/* Style correct inputs with green */
+input:valid {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
 
-                                {/* Validation States Visual */}
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200/50">
-                                    <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                                        <Code className="w-4 h-4" />
-                                        🎯 Pseudo-Classes
-                                    </div>
-                                    <div className="text-xs text-green-600 dark:text-green-400">
-                                        :valid, :invalid, :required, :optional, :in-range, :out-of-range - Style forms based on validation state!
-                                    </div>
-                                </div>
-                            </div>
+/* Add a checkmark icon */
+input:valid {
+  background-image: url("checkmark.svg");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}`}
+                    />
 
-                            {/* Capability Grid */}
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-green-200/50 shadow-lg transition-all duration-300">
-                                <h4 className="font-bold mb-4 text-green-700 dark:text-green-300 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    🎨 Validation States
-                                </h4>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200/50">
-                                        <CheckCircle className="w-6 h-6 text-green-500" />
-                                        <div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300 text-sm">:valid</div>
-                                            <div className="text-xs text-green-600 dark:text-green-400">Correct input</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200/50">
-                                        <XCircle className="w-6 h-6 text-red-500" />
-                                        <div>
-                                            <div className="font-semibold text-red-700 dark:text-red-300 text-sm">:invalid</div>
-                                            <div className="text-xs text-red-600 dark:text-red-400">Wrong input</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200/50">
-                                        <AlertCircle className="w-6 h-6 text-orange-500" />
-                                        <div>
-                                            <div className="font-semibold text-orange-700 dark:text-orange-300 text-sm">:required</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400">Must fill</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50">
-                                        <Shield className="w-6 h-6 text-blue-500" />
-                                        <div>
-                                            <div className="font-semibold text-blue-700 dark:text-blue-300 text-sm">:in-range</div>
-                                            <div className="text-xs text-blue-600 dark:text-blue-400">Within limits</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <SyntaxBlock
+                        title="Invalid Inputs (Red)"
+                        code={`/* Style incorrect inputs with red */
+input:invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
 
-                        {/* Side Comparison Card */}
-                        <div className="space-y-4">
-                            <div className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 dark:from-green-900/30 dark:via-emerald-900/30 dark:to-teal-900/30 p-6 rounded-xl border border-green-200/50 shadow-lg">
-                                <div className="text-center space-y-4">
-                                    <div className="relative">
-                                        <div className="text-4xl mb-2 animate-bounce">✅</div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white animate-pulse">✨</div>
-                                    </div>
-                                    <div className="font-bold text-lg text-green-700 dark:text-green-300">Validation Styling</div>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Instant feedback
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Better UX
-                                        </div>
-                                        <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                                            <CheckCircle className="w-4 h-4" />
-                                            Reduced errors
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+/* Add an X icon */
+input:invalid {
+  background-image: url("error.svg");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}`}
+                    />
 
-                            {/* Pro Tip Card */}
-                            <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                                <div className="text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                                    <div className="text-sm text-orange-600 dark:text-orange-400">
-                                        Combine with :focus for better user experience - don't show errors before user interacts!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <SyntaxBlock
+                        title="Required Fields"
+                        code={`/* Show required fields with orange indicator */
+input:required {
+  border-left: 3px solid #f59e0b;
+}
 
-                    {/* Terminal Code Example */}
-                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">Validation Styling</span>
-                        </div>
-                        <div className="font-mono text-sm">
-                            <div className="text-gray-500">/* ✅ Valid state */</div>
-                            <div className="text-blue-600 dark:text-blue-400">input:valid</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">border-color</span>: <span className="text-yellow-600 dark:text-yellow-400">#10b981</span>;</div>
-                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
-                            <br />
-                            <div className="text-gray-500">/* ❌ Invalid state */</div>
-                            <div className="text-blue-600 dark:text-blue-400">input:invalid</div>
-                            <div className="text-gray-900 dark:text-white"> {'{'}</div>
-                            <div className="text-gray-900 dark:text-white">   <span className="text-green-600 dark:text-green-400">border-color</span>: <span className="text-yellow-600 dark:text-yellow-400">#ef4444</span>;</div>
-                            <div className="text-gray-900 dark:text-white"> {'}'}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+/* Optional fields - subtle styling */
+input:optional {
+  border-left: 3px solid #e5e7eb;
+}`}
+                    />
+                </div>
 
-            {/* :VALID AND :INVALID */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                        :valid and :invalid Pseudo-Classes
-                    </CardTitle>
-                    <CardDescription>
-                        Style fields based on validation state
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
+                <InfoAlert type="tip" title="Important Tip">
+                    Use <code>:not(:placeholder-shown)</code> to only show validation after the user starts typing: 
+                    <code>input:valid:not(:placeholder-shown)</code>. This prevents showing errors on empty fields!
+                </InfoAlert>
+            </SectionCard>
+
+            {/* Example */}
+            <SectionCard
+                title="Example: Email Validation Form"
+                description="Try typing valid and invalid emails!"
+                icon={Shield}
+                variant="primary"
+            >
+                <FrontendCodePreview
                         title="Email Validation"
                         html={`<form>
   <div class="form-group">
@@ -299,29 +259,16 @@ input:invalid:not(:placeholder-shown) ~ .invalid-feedback {
                         colorTheme="green"
                         onOpenPlayground={onOpenWebPlayground}
                     />
+            </SectionCard>
 
-                    <Alert className="mt-4 border-blue-200 bg-blue-50 dark:bg-blue-950/20">
-                        <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                        <AlertDescription className="text-blue-700 dark:text-blue-300">
-                            <strong>Note:</strong> Use <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">:not(:placeholder-shown)</code> to avoid showing validation before user types!
-                        </AlertDescription>
-                    </Alert>
-                </CardContent>
-            </Card>
-
-            {/* :REQUIRED AND :OPTIONAL */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                        :required and :optional
-                    </CardTitle>
-                    <CardDescription>
-                        Style required and optional fields differently
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
+            {/* Example 2: Required Fields */}
+            <SectionCard
+                title="Example: Required & Optional Fields"
+                description="Show which fields are mandatory"
+                icon={AlertTriangle}
+                variant="primary"
+            >
+                <FrontendCodePreview
                         title="Required Fields"
                         html={`<form>
   <div class="form-field">
@@ -412,22 +359,16 @@ label:has(+ textarea:required)::after {
                         colorTheme="orange"
                         onOpenPlayground={onOpenWebPlayground}
                     />
-                </CardContent>
-            </Card>
+            </SectionCard>
 
-            {/* :IN-RANGE AND :OUT-OF-RANGE */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                        :in-range and :out-of-range
-                    </CardTitle>
-                    <CardDescription>
-                        Style number inputs based on min/max values
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <FrontendCodePreview
+            {/* Example 3: Range Validation */}
+            <SectionCard
+                title="Example: Number Range Validation"
+                description="Validate numbers with min and max values"
+                icon={Target}
+                variant="primary"
+            >
+                <FrontendCodePreview
                         title="Range Validation"
                         html={`<div class="range-group">
   <label for="age">Age (18-65)</label>
@@ -550,57 +491,61 @@ input[type="number"]:out-of-range ~ .range-info .range-invalid {
                         colorTheme="purple"
                         onOpenPlayground={onOpenWebPlayground}
                     />
-                </CardContent>
-            </Card>
+            </SectionCard>
 
-            {/* BEST PRACTICES */}
-            <Card className="border-orange-200 bg-orange-50/50 dark:bg-orange-950/20">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-orange-700 dark:text-orange-300">
-                        <Sparkles className="w-5 h-5" />
-                        Best Practices
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Wait for interaction:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Use <code>:not(:placeholder-shown)</code> or <code>:focus</code> to avoid showing errors immediately.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Clear messaging:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Provide specific error messages explaining what's wrong and how to fix it.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Use proper HTML5 types:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Leverage <code>type="email"</code>, <code>type="url"</code>, <code>type="tel"</code> for built-in validation.</span>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                            <strong className="text-orange-900 dark:text-orange-200">Accessible colors:</strong>
-                            <span className="text-orange-700 dark:text-orange-300"> Don't rely on color alone - use icons and text labels for validation feedback.</span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            {/* Use Cases */}
+            <SectionCard
+                title="When to Use Validation Styling"
+                description="Common scenarios"
+                icon={Target}
+            >
+                <div className="grid md:grid-cols-2 gap-4">
+                    <UseCaseCard
+                        title="Registration Forms"
+                        description="Help users create accounts with correct information"
+                        icon={CheckCircle}
+                        gradient="from-green-500 to-emerald-600"
+                    />
+                    <UseCaseCard
+                        title="Contact Forms"
+                        description="Ensure messages can be sent successfully"
+                        icon={Shield}
+                        gradient="from-blue-500 to-indigo-600"
+                    />
+                    <UseCaseCard
+                        title="Checkout Pages"
+                        description="Validate payment and shipping details properly"
+                        icon={AlertTriangle}
+                        gradient="from-orange-500 to-amber-600"
+                    />
+                    <UseCaseCard
+                        title="Settings Pages"
+                        description="Make sure users enter valid configuration data"
+                        icon={Layers}
+                        gradient="from-purple-500 to-pink-600"
+                    />
+                </div>
+            </SectionCard>
 
-            {/* BROWSER SUPPORT */}
-            <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700 dark:text-green-300">
-                    <strong className="block mb-1">Excellent Browser Support</strong>
-                    CSS validation pseudo-classes are supported in all modern browsers. Always complement with JavaScript validation for security.
-                </AlertDescription>
-            </Alert>
-        </div>
+            {/* Best Practices */}
+            <InfoAlert type="success" title="Best Practices">
+                <ul className="list-disc list-inside space-y-2 mt-2">
+                    <li><strong>Wait for Interaction:</strong> Use <code>:not(:placeholder-shown)</code> to avoid showing errors immediately</li>
+                    <li><strong>Clear Messages:</strong> Explain what's wrong and how to fix it</li>
+                    <li><strong>HTML5 Types:</strong> Use proper input types like <code>type="email"</code>, <code>type="url"</code> for automatic validation</li>
+                    <li><strong>Don't Rely Only on Color:</strong> Use icons and text labels for accessibility</li>
+                    <li><strong>Combine with JavaScript:</strong> CSS validation is for UX, always validate on the server too!</li>
+                </ul>
+            </InfoAlert>
+
+            {/* Browser Support */}
+            <InfoAlert type="info" title="Browser Support">
+                <p className="mt-2">
+                    <strong>✅ All Modern Browsers:</strong> Validation pseudo-classes (:valid, :invalid, :required, :in-range) work in 
+                    Chrome, Firefox, Safari, and Edge. They're part of CSS3 and have been supported for years!
+                </p>
+            </InfoAlert>
+
+        </CssTopicLayout>
     );
 }

@@ -1,477 +1,218 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { FrontendCodePreview } from '@/components/shared';
-import { Type, Sliders, Zap, Sparkles, CheckCircle, Info, AlertTriangle } from 'lucide-react';
+import { 
+  Type, Sparkles, Lightbulb, ArrowRight, 
+  CheckCircle, Info, Sliders, Zap
+} from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface CssVariableFontsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
-// Variable font demo
-const variableFontDemo = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Variable Fonts Demo</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #9f1239 0%, #881337 100%);
-      }
-    }
-    
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    h1 {
-      color: #ec4899;
-      margin-bottom: 10px;
-      text-align: center;
-      font-variation-settings: 'wght' 900;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      h1 {
-        color: #f9a8d4;
-      }
-    }
-    
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 40px;
-      font-variation-settings: 'wght' 400;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .subtitle {
-        color: #94a3b8;
-      }
-    }
-    
-    .demo-section {
-      margin-bottom: 50px;
-    }
-    
-    .demo-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 30px;
-      color: #1e293b;
-      font-variation-settings: 'wght' 600;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .demo-title {
-        color: #e2e8f0;
-      }
-    }
-    
-    .weight-samples {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    .weight-sample {
-      font-size: 32px;
-      color: #1e293b;
-      transition: all 0.3s;
-    }
-    
-    .weight-sample:hover {
-      color: #ec4899;
-      transform: translateX(10px);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .weight-sample {
-        color: #e2e8f0;
-      }
-      .weight-sample:hover {
-        color: #f9a8d4;
-      }
-    }
-    
-    .weight-label {
-      font-size: 14px;
-      color: #64748b;
-      margin-left: 10px;
-      font-variation-settings: 'wght' 400;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .weight-label {
-        color: #94a3b8;
-      }
-    }
-    
-    /* Different weights using variable font */
-    .weight-100 { font-variation-settings: 'wght' 100; }
-    .weight-200 { font-variation-settings: 'wght' 200; }
-    .weight-300 { font-variation-settings: 'wght' 300; }
-    .weight-400 { font-variation-settings: 'wght' 400; }
-    .weight-500 { font-variation-settings: 'wght' 500; }
-    .weight-600 { font-variation-settings: 'wght' 600; }
-    .weight-700 { font-variation-settings: 'wght' 700; }
-    .weight-800 { font-variation-settings: 'wght' 800; }
-    .weight-900 { font-variation-settings: 'wght' 900; }
-    
-    .comparison {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    
-    .comparison-card {
-      padding: 20px;
-      border-radius: 12px;
-      background: #fef3c7;
-      border: 2px solid #fbbf24;
-      text-align: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .comparison-card {
-        background: #451a03;
-        border-color: #d97706;
-      }
-    }
-    
-    .comparison-card h3 {
-      font-size: 14px;
-      margin-bottom: 10px;
-      color: #92400e;
-      font-variation-settings: 'wght' 600;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .comparison-card h3 {
-        color: #fbbf24;
-      }
-    }
-    
-    .file-size {
-      font-size: 24px;
-      font-weight: 700;
-      color: #b45309;
-      margin-bottom: 5px;
-      font-variation-settings: 'wght' 700;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .file-size {
-        color: #fbbf24;
-      }
-    }
-    
-    .description {
-      font-size: 12px;
-      color: #78350f;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .description {
-        color: #fde68a;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>✨ Variable Fonts</h1>
-    <p class="subtitle">One font file with infinite variations</p>
-    
-    <div class="demo-section">
-      <div class="demo-title">Weight Variations (100-900)</div>
-      <div class="weight-samples">
-        <div class="weight-sample weight-100">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 100 (Thin)</span>
-        </div>
-        <div class="weight-sample weight-200">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 200 (Extra Light)</span>
-        </div>
-        <div class="weight-sample weight-300">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 300 (Light)</span>
-        </div>
-        <div class="weight-sample weight-400">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 400 (Regular)</span>
-        </div>
-        <div class="weight-sample weight-500">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 500 (Medium)</span>
-        </div>
-        <div class="weight-sample weight-600">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 600 (Semi Bold)</span>
-        </div>
-        <div class="weight-sample weight-700">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 700 (Bold)</span>
-        </div>
-        <div class="weight-sample weight-800">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 800 (Extra Bold)</span>
-        </div>
-        <div class="weight-sample weight-900">
-          The quick brown fox jumps
-          <span class="weight-label">weight: 900 (Black)</span>
-        </div>
-      </div>
-    </div>
-    
-    <div class="demo-section">
-      <div class="demo-title">Why Variable Fonts Are Better</div>
-      <div class="comparison">
-        <div class="comparison-card">
-          <h3>Traditional Fonts</h3>
-          <div class="file-size">360 KB</div>
-          <div class="description">9 separate files (100-900)</div>
-        </div>
-        <div class="comparison-card">
-          <h3>Variable Font</h3>
-          <div class="file-size">40 KB</div>
-          <div class="description">1 file, infinite weights!</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
-
-// Interactive weight slider
-const interactiveSliderDemo = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Variable Font Interactive</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-      padding: 40px 20px;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #9f1239 0%, #881337 100%);
-      }
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 800px;
-      background: white;
-      padding: 50px;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .container {
-        background: #1e293b;
-        color: #e2e8f0;
-      }
-    }
-    
-    .demo-text {
-      font-size: 72px;
-      text-align: center;
-      margin-bottom: 50px;
-      color: #ec4899;
-      font-variation-settings: 'wght' 400;
-      transition: font-variation-settings 0.1s;
-      line-height: 1.2;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .demo-text {
-        color: #f9a8d4;
-      }
-    }
-    
-    .controls {
-      text-align: center;
-    }
-    
-    .control-group {
-      margin-bottom: 30px;
-    }
-    
-    .control-label {
-      display: block;
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #1e293b;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .control-label {
-        color: #e2e8f0;
-      }
-    }
-    
-    .slider {
-      width: 100%;
-      height: 8px;
-      border-radius: 4px;
-      background: #f1f5f9;
-      outline: none;
-      -webkit-appearance: none;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .slider {
-        background: #334155;
-      }
-    }
-    
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #ec4899;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .slider::-webkit-slider-thumb:hover {
-      background: #db2777;
-      transform: scale(1.2);
-    }
-    
-    .slider::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #ec4899;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-    }
-    
-    .slider::-moz-range-thumb:hover {
-      background: #db2777;
-      transform: scale(1.2);
-    }
-    
-    .value-display {
-      display: inline-block;
-      min-width: 60px;
-      padding: 8px 16px;
-      background: #fef3c7;
-      border-radius: 8px;
-      font-weight: 700;
-      color: #92400e;
-      margin-top: 15px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .value-display {
-        background: #451a03;
-        color: #fbbf24;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div id="demoText" class="demo-text">
-      Variable<br>Fonts
-    </div>
-    
-    <div class="controls">
-      <div class="control-group">
-        <label class="control-label">Font Weight</label>
-        <input 
-          type="range" 
-          id="weightSlider" 
-          class="slider" 
-          min="100" 
-          max="900" 
-          value="400"
-          step="1"
-        >
-        <div class="value-display" id="weightValue">400</div>
-      </div>
-    </div>
-  </div>
+export default function CssVariableFonts({ onOpenWebPlayground }: CssVariableFontsProps) {
   
-  <script>
-    const demoText = document.getElementById('demoText');
-    const weightSlider = document.getElementById('weightSlider');
-    const weightValue = document.getElementById('weightValue');
-    
-    weightSlider.addEventListener('input', (e) => {
-      const weight = e.target.value;
-      demoText.style.fontVariationSettings = \`'wght' \${weight}\`;
-      weightValue.textContent = weight;
-    });
-  </script>
-</body>
-</html>`;
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        icon={Type}
+        category="CSS · Styling Basics"
+        title="Variable Fonts"
+        description="One font file with infinite design possibilities"
+        colorTheme="indigo"
+      />
 
-// Advanced variable font axes
-const advancedAxesDemo = `<!DOCTYPE html>
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-indigo-950/20 dark:via-gray-900 dark:to-purple-950/20">
+        <CardHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <Type className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Variable Fonts</CardTitle>
+              <CardDescription className="text-base">Adjustable typography with font-variation-settings</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-100">Variable Fonts = Infinite Variations! ✨</AlertTitle>
+            <AlertDescription className="text-indigo-800 dark:text-indigo-200">
+              Instead of loading multiple font files (Regular, Bold, Italic), variable fonts contain 
+              <strong> all variations</strong> in <strong>one file</strong>! Adjust weight, width, slant, 
+              and custom axes smoothly with CSS.
+            </AlertDescription>
+          </Alert>
+
+          <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border-2 border-blue-200 dark:border-blue-800">
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-600" />
+              Traditional vs Variable Fonts
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-4 bg-white dark:bg-gray-900 rounded-lg">
+                <Badge className="bg-red-600 text-white mb-2">❌ Traditional</Badge>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  • Multiple files (Regular.woff, Bold.woff, etc.)<br />
+                  • ~100KB × 6 styles = 600KB<br />
+                  • Fixed weights (400, 700)<br />
+                  • More HTTP requests
+                </p>
+              </div>
+              <div className="p-4 bg-white dark:bg-gray-900 rounded-lg">
+                <Badge className="bg-green-600 text-white mb-2">✅ Variable</Badge>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  • One file (Variable.woff2)<br />
+                  • ~150KB total<br />
+                  • Any weight (100-900)<br />
+                  • Smooth animations!
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sliders className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            Standard Axes
+          </CardTitle>
+          <CardDescription>5 registered variation axes</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-4">
+            {[
+              {
+                axis: 'wght',
+                name: 'Weight',
+                range: '100-900',
+                property: 'font-weight',
+                example: 'font-weight: 350;',
+                color: 'blue'
+              },
+              {
+                axis: 'wdth',
+                name: 'Width',
+                range: '50-200',
+                property: 'font-stretch',
+                example: 'font-stretch: 115%;',
+                color: 'green'
+              },
+              {
+                axis: 'slnt',
+                name: 'Slant',
+                range: '-10 to 0',
+                property: 'font-style: oblique',
+                example: 'font-style: oblique 10deg;',
+                color: 'purple'
+              },
+              {
+                axis: 'ital',
+                name: 'Italic',
+                range: '0 or 1',
+                property: 'font-style: italic',
+                example: 'font-style: italic;',
+                color: 'pink'
+              },
+              {
+                axis: 'opsz',
+                name: 'Optical Size',
+                range: '6-72',
+                property: 'font-optical-sizing',
+                example: 'font-optical-sizing: auto;',
+                color: 'orange'
+              }
+            ].map((item, i) => (
+              <div key={i} className={`p-5 rounded-xl bg-${item.color}-50 dark:bg-${item.color}-950/20 border-2 border-${item.color}-200 dark:border-${item.color}-800`}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Badge className={`bg-${item.color}-600 text-white text-lg`}>{item.axis}</Badge>
+                    <span className="font-bold">{item.name}</span>
+                  </div>
+                  <span className="text-xs font-mono">{item.range}</span>
+                </div>
+                <p className="text-sm mb-2">CSS Property: <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{item.property}</code></p>
+                <div className={`bg-${item.color}-900 dark:bg-${item.color}-950 p-3 rounded-lg`}>
+                  <code className={`text-sm text-${item.color}-100`}>
+                    {item.example}
+                  </code>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
+            <Lightbulb className="w-5 h-5 text-purple-600" />
+            <AlertTitle className="text-purple-900 dark:text-purple-100">Pro Tip!</AlertTitle>
+            <AlertDescription className="text-purple-800 dark:text-purple-200">
+              Use standard CSS properties like <code>font-weight</code> when available - they're easier to read and maintain!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            font-variation-settings
+          </CardTitle>
+          <CardDescription>Low-level control over variations</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-gray-700 dark:text-gray-300">
+            For custom axes or fine-grained control, use <code className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">font-variation-settings</code>:
+          </p>
+
+          <div className="p-6 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 border-2 border-indigo-300 dark:border-indigo-700">
+            <h3 className="font-bold text-lg text-indigo-900 dark:text-indigo-100 mb-3">
+              Syntax & Examples
+            </h3>
+            <div className="bg-indigo-900 dark:bg-indigo-950 p-5 rounded-lg mb-4">
+              <code className="text-sm text-indigo-100 block">
+{`/* Single axis */
+font-variation-settings: 'wght' 650;
+
+/* Multiple axes */
+font-variation-settings: 
+  'wght' 500,
+  'wdth' 120,
+  'slnt' -5;
+
+/* Custom axes (font-specific) */
+font-variation-settings: 
+  'wght' 600,
+  'GRAD' 150;  /* Custom gradient axis */`}
+              </code>
+            </div>
+            <p className="text-sm text-indigo-800 dark:text-indigo-200">
+              ⚠️ Axis names must be in <strong>quotes</strong> and exactly 4 characters!
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-green-200 dark:border-green-800">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Type className="w-6 h-6 text-green-600 dark:text-green-400" />
+            Interactive Demo
+          </CardTitle>
+          <CardDescription>See variable fonts in action</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FrontendCodePreview
+            html={`<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Variable Font Axes</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
     
@@ -483,14 +224,14 @@ const advancedAxesDemo = `<!DOCTYPE html>
     
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 40px 20px;
       min-height: 100vh;
     }
     
     @media (prefers-color-scheme: dark) {
       body {
-        background: linear-gradient(135deg, #9f1239 0%, #881337 100%);
+        background: linear-gradient(135deg, #434190 0%, #5a3d7a 100%);
       }
     }
     
@@ -499,365 +240,236 @@ const advancedAxesDemo = `<!DOCTYPE html>
       margin: 0 auto;
       background: white;
       padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
     
     @media (prefers-color-scheme: dark) {
       .container {
-        background: #1e293b;
-        color: #e2e8f0;
+        background: #1a1a2e;
+        color: #e5e5e5;
       }
     }
     
     h1 {
-      color: #ec4899;
-      margin-bottom: 10px;
       text-align: center;
-      font-variation-settings: 'wght' 900;
+      color: #667eea;
+      margin-bottom: 40px;
+      font-weight: 700;
     }
     
     @media (prefers-color-scheme: dark) {
       h1 {
-        color: #f9a8d4;
+        color: #a78bfa;
       }
     }
     
-    .subtitle {
-      text-align: center;
-      color: #64748b;
+    .demo-section {
       margin-bottom: 40px;
     }
     
-    @media (prefers-color-scheme: dark) {
-      .subtitle {
-        color: #94a3b8;
-      }
-    }
-    
-    .axes-grid {
-      display: grid;
-      gap: 30px;
-    }
-    
-    .axis-card {
-      padding: 30px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border: 2px solid #fbbf24;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .axis-card {
-        background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
-        border-color: #d97706;
-      }
-    }
-    
-    .axis-card h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      color: #92400e;
-      font-variation-settings: 'wght' 600;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .axis-card h3 {
-        color: #fbbf24;
-      }
-    }
-    
-    .axis-card p {
+    .label {
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 15px;
       font-size: 14px;
-      color: #78350f;
-      margin-bottom: 20px;
     }
     
     @media (prefers-color-scheme: dark) {
-      .axis-card p {
-        color: #fde68a;
+      .label {
+        color: #a78bfa;
       }
     }
     
-    .axis-demo {
-      font-size: 36px;
-      color: #1e293b;
-      padding: 20px;
-      background: white;
-      border-radius: 8px;
+    .demo-text {
+      font-size: 48px;
+      line-height: 1.3;
+      margin-bottom: 20px;
       text-align: center;
     }
     
+    /* Weight variations */
+    .weight-100 { font-weight: 100; }
+    .weight-300 { font-weight: 300; }
+    .weight-500 { font-weight: 500; }
+    .weight-700 { font-weight: 700; }
+    .weight-900 { font-weight: 900; }
+    
+    /* Custom intermediate weight */
+    .weight-450 { font-weight: 450; }
+    .weight-650 { font-weight: 650; }
+    
+    /* Animated weight */
+    @keyframes weight-pulse {
+      0%, 100% { font-weight: 300; }
+      50% { font-weight: 900; }
+    }
+    
+    .animated {
+      animation: weight-pulse 3s ease-in-out infinite;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .weight-card {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      border-radius: 12px;
+    }
+    
     @media (prefers-color-scheme: dark) {
-      .axis-demo {
-        background: #0f172a;
-        color: #e2e8f0;
+      .weight-card {
+        background: linear-gradient(135deg, #374151, #4b5563);
       }
     }
     
-    .code-sample {
-      margin-top: 15px;
-      padding: 10px 15px;
-      background: rgba(255,255,255,0.5);
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 13px;
-      color: #92400e;
+    .weight-value {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 5px;
     }
     
     @media (prefers-color-scheme: dark) {
-      .code-sample {
-        background: rgba(0,0,0,0.3);
-        color: #fbbf24;
+      .weight-value {
+        color: #9ca3af;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🎯 Variable Font Axes</h1>
-    <p class="subtitle">Common variation axes in variable fonts</p>
+    <h1>✨ Variable Fonts Demo</h1>
     
-    <div class="axes-grid">
-      <div class="axis-card">
-        <h3>Weight (wght)</h3>
-        <p>Control the thickness of characters</p>
-        <div class="axis-demo" style="font-variation-settings: 'wght' 100;">
-          Thin (100)
+    <div class="demo-section">
+      <div class="label">Standard Weights (100, 300, 500, 700, 900)</div>
+      <div class="grid">
+        <div class="weight-card">
+          <div class="demo-text weight-100">Aa</div>
+          <div class="weight-value">100 Thin</div>
         </div>
-        <div class="axis-demo" style="font-variation-settings: 'wght' 900; margin-top: 10px;">
-          Black (900)
+        <div class="weight-card">
+          <div class="demo-text weight-300">Aa</div>
+          <div class="weight-value">300 Light</div>
         </div>
-        <div class="code-sample">font-variation-settings: 'wght' 500;</div>
+        <div class="weight-card">
+          <div class="demo-text weight-500">Aa</div>
+          <div class="weight-value">500 Medium</div>
+        </div>
+        <div class="weight-card">
+          <div class="demo-text weight-700">Aa</div>
+          <div class="weight-value">700 Bold</div>
+        </div>
+        <div class="weight-card">
+          <div class="demo-text weight-900">Aa</div>
+          <div class="weight-value">900 Black</div>
+        </div>
       </div>
-      
-      <div class="axis-card">
-        <h3>Width (wdth)</h3>
-        <p>Make text narrower or wider</p>
-        <div class="axis-demo">
-          Normal Width Text
+    </div>
+    
+    <div class="demo-section">
+      <div class="label">🎯 Custom Weights (450, 650) - Only possible with Variable Fonts!</div>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="weight-card">
+          <div class="demo-text weight-450">Aa</div>
+          <div class="weight-value">450 Custom</div>
         </div>
-        <div class="code-sample">font-variation-settings: 'wdth' 75;</div>
+        <div class="weight-card">
+          <div class="demo-text weight-650">Aa</div>
+          <div class="weight-value">650 Custom</div>
+        </div>
       </div>
-      
-      <div class="axis-card">
-        <h3>Slant (slnt)</h3>
-        <p>Control the angle of characters</p>
-        <div class="axis-demo">
-          Upright vs Slanted
+    </div>
+    
+    <div class="demo-section">
+      <div class="label">🎬 Animated Weight (300 → 900)</div>
+      <div style="text-align: center; padding: 30px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px;">
+        <div class="demo-text animated" style="color: white; font-size: 64px;">
+          Variable!
         </div>
-        <div class="code-sample">font-variation-settings: 'slnt' -10;</div>
-      </div>
-      
-      <div class="axis-card">
-        <h3>Optical Size (opsz)</h3>
-        <p>Optimize for different display sizes</p>
-        <div class="axis-demo">
-          Optimized Typography
-        </div>
-        <div class="code-sample">font-variation-settings: 'opsz' 14;</div>
       </div>
     </div>
   </div>
 </body>
-</html>`;
-
-export default function CssVariableFonts({ onOpenWebPlayground }: CssVariableFontsProps) {
-  return (
-    <div className="space-y-8">
-      <PageHeader
-        icon={Sliders}
-        category="CSS · Typography"
-        title="Variable Fonts"
-        description="One font file with infinite weight, width, and style variations"
-        colorTheme="blue"
-      />
-
-      {/* Introduction */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-pink-500/10 rounded-lg">
-              <Sparkles className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-            </div>
-            What are Variable Fonts?
-          </CardTitle>
-          <CardDescription>
-            The future of web typography
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground leading-relaxed">
-            Variable fonts are a <strong className="text-foreground">revolutionary font technology</strong> that lets you use 
-            hundreds of font styles from a single file. Instead of loading separate files for Regular, Bold, Light, etc., 
-            variable fonts give you <strong className="text-foreground">infinite variations</strong> with smooth transitions!
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
-              <Zap className="h-6 w-6 text-pink-600 dark:text-pink-400 mb-2" />
-              <h4 className="font-semibold mb-2">Smaller File Size</h4>
-              <p className="text-sm text-muted-foreground">
-                One 40KB file replaces nine 40KB files = 90% smaller!
-              </p>
-            </div>
-            
-            <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
-              <Sliders className="h-6 w-6 text-pink-600 dark:text-pink-400 mb-2" />
-              <h4 className="font-semibold mb-2">Infinite Control</h4>
-              <p className="text-sm text-muted-foreground">
-                Adjust weight from 100 to 900 with any value in between
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Variable Font Demo */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-pink-500/10 rounded-lg">
-              <Type className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-            </div>
-            1. Weight Variations
-          </CardTitle>
-          <CardDescription>
-            See all weight variations from a single font file
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={variableFontDemo}
-            title="Variable Font Weight Demo"
-            colorTheme="pink"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-          
-          <div className="mt-4 p-4 rounded-lg bg-pink-50 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-800">
-            <h4 className="font-semibold text-pink-900 dark:text-pink-100 mb-3">💡 Benefits:</h4>
-            <ul className="space-y-2 text-sm text-pink-800 dark:text-pink-200">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>One file</strong> instead of 9 separate font files</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>Smooth animations</strong> between font weights</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span><strong>Fine control</strong> - use weight 450, 550, any value!</span>
-              </li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Interactive Demo */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-rose-500/10 rounded-lg">
-              <Sliders className="h-5 w-5 text-rose-600 dark:text-rose-400" />
-            </div>
-            2. Interactive Weight Control
-          </CardTitle>
-          <CardDescription>
-            Adjust font weight in real-time with a slider
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={interactiveSliderDemo}
-            title="Interactive Variable Font"
-            colorTheme="rose"
-            onOpenWebPlayground={onOpenWebPlayground}
-          />
-          
-          <Alert className="mt-4">
-            <Info className="h-4 w-4" />
-            <AlertTitle>Try It Out!</AlertTitle>
-            <AlertDescription>
-              Move the slider to see smooth font weight transitions. Variable fonts let you animate between weights 
-              for eye-catching effects that were impossible with traditional fonts!
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Advanced Axes */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-pink-500/10 rounded-lg">
-              <Zap className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-            </div>
-            3. Variable Font Axes
-          </CardTitle>
-          <CardDescription>
-            Common variation axes you can control
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FrontendCodePreview
-            html={advancedAxesDemo}
-            title="Variable Font Axes"
-            colorTheme="pink"
+</html>`}
+            title="Variable Fonts Demo"
+            colorTheme="indigo"
             onOpenWebPlayground={onOpenWebPlayground}
           />
         </CardContent>
       </Card>
 
-      {/* Quick Reference */}
-      <Card>
+      <Card className="border-2 border-blue-200 dark:border-blue-800">
         <CardHeader>
-          <CardTitle>Quick Reference</CardTitle>
-          <CardDescription>
-            Variable font syntax
-          </CardDescription>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <Lightbulb className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            Loading Variable Fonts
+          </CardTitle>
+          <CardDescription>How to use variable fonts</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-3">
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-pink-600 dark:text-pink-400">font-variation-settings: 'wght' 500;</code>
-              <p className="text-sm text-muted-foreground mt-1">Set font weight to 500</p>
+        <CardContent className="space-y-6">
+          <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 border-2 border-blue-300 dark:border-blue-700">
+            <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100 mb-3">
+              @font-face Declaration
+            </h3>
+            <div className="bg-blue-900 dark:bg-blue-950 p-5 rounded-lg">
+              <code className="text-sm text-blue-100 block">
+{`@font-face {
+  font-family: 'InterVariable';
+  src: url('Inter-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;  /* Range */
+  font-display: swap;
+}`}
+              </code>
             </div>
-            
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-pink-600 dark:text-pink-400">font-variation-settings: 'wght' 700, 'wdth' 80;</code>
-              <p className="text-sm text-muted-foreground mt-1">Control multiple axes at once</p>
-            </div>
-            
-            <div className="p-3 rounded-lg bg-muted border">
-              <code className="text-sm font-mono text-pink-600 dark:text-pink-400">font-weight: 450;</code>
-              <p className="text-sm text-muted-foreground mt-1">Simpler syntax for weight axis</p>
-            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="font-bold">Popular Variable Fonts:</h4>
+            {[
+              { name: 'Inter', use: 'UI, body text', url: 'fonts.google.com/specimen/Inter' },
+              { name: 'Roboto Flex', use: 'Google Material', url: 'fonts.google.com/specimen/Roboto+Flex' },
+              { name: 'Source Sans 3', use: 'Adobe, readable', url: 'fonts.google.com/specimen/Source+Sans+3' },
+              { name: 'Recursive', use: 'Code & UI', url: 'fonts.google.com/specimen/Recursive' }
+            ].map((font, i) => (
+              <div key={i} className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <strong className="text-blue-900 dark:text-blue-100">{font.name}</strong>
+                    <p className="text-xs text-blue-700 dark:text-blue-300">{font.use}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Best Practices */}
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Best Practices</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Use popular variable fonts:</strong> Inter, Roboto Flex, Recursive</li>
-            <li><strong>Provide fallbacks:</strong> Include regular font-weight as backup</li>
-            <li><strong>Optimize loading:</strong> Use font-display: swap</li>
-            <li><strong>Test rendering:</strong> Check on different browsers and devices</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      {/* Browser Support */}
-      <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
-        <CheckCircle className="h-4 w-4 text-green-600" />
-        <AlertTitle className="text-green-900 dark:text-green-100">Browser Support</AlertTitle>
-        <AlertDescription className="text-green-800 dark:text-green-200">
-          Variable fonts work in all modern browsers! Supported in Chrome 62+, Firefox 62+, Safari 11+, and Edge 79+. 
-          Always provide fallback fonts for older browsers.
+      <Alert className="border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
+        <CheckCircle className="w-5 h-5 text-indigo-600" />
+        <AlertTitle className="text-xl text-indigo-900 dark:text-indigo-100">Remember</AlertTitle>
+        <AlertDescription className="text-indigo-800 dark:text-indigo-200 space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span><strong>One file</strong> replaces multiple font weights</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Use any weight: <code>font-weight: 450;</code></span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Can <strong>animate</strong> font-weight smoothly!</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
+            <span>Browser support: <strong>All modern browsers</strong></span>
+          </div>
         </AlertDescription>
       </Alert>
     </div>

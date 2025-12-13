@@ -163,50 +163,10 @@ export default function JavaScriptFirstProgram({}: JavaScriptFirstProgramProps) 
             />
           </div>
 
-          {/* Example 2: Button Click */}
+          {/* Example 2: Loop */}
           <div className="space-y-4">
             <CodeSnippet
-              title="2. Button Click Hello"
-              description="Attach JavaScript to the DOM and respond to user interactions."
-              code={domJs}
-              language="javascript"
-              colorTheme="emerald"
-              icon={MousePointerClick}
-              embedPlayground={true}
-              playgroundConfig={{
-                html: `<div class="demo-container">
-  <header>
-    <h2 id="heading">Interactive Button Demo</h2>
-    <p class="subtitle">Click the button below to see JavaScript in action</p>
-  </header>
-  
-  <main>
-    <button id="btn" class="action-btn">Click Me!</button>
-    <div id="message" class="output-display" role="status" aria-live="polite"></div>
-  </main>
-</div>`,
-                js: domJs,
-                visiblePanels: ['preview', 'console']
-              }}
-              features={[
-                "getElementById() finds HTML elements",
-                "addEventListener() waits for clicks",
-                "textContent changes element text",
-                "style.color changes text color"
-              ]}
-              tips={[
-                "Try clicking the button multiple times",
-                "Watch the console for logs",
-                "See how the text color changes",
-                "Elements must exist before selecting them"
-              ]}
-            />
-          </div>
-
-          {/* Example 3: Loop */}
-          <div className="space-y-4">
-            <CodeSnippet
-              title="3. Looped Messages"
+              title="2. Looped Messages"
               description="Use loops to repeat code automatically and create patterns."
               code={loopJs}
               language="javascript"

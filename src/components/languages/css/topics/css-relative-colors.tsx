@@ -1,44 +1,51 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageHeader } from '@/components/shared/generic-page-header';
+import React from 'react';
+import { Palette, Droplet, Paintbrush, Target, Layers, Sparkles } from 'lucide-react';
 import { FrontendCodePreview } from '@/components/shared';
-import { Palette, CheckCircle, Sparkles, Info } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {
+  CssTopicLayout,
+  SectionCard,
+  SyntaxBlock,
+  ConceptGrid,
+  InfoAlert,
+  PropertyTable,
+  UseCaseCard
+} from '../shared/css-topic-layout';
 
 interface CssRelativeColorsProps {
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
 
 export default function CssRelativeColors({ onOpenWebPlayground }: CssRelativeColorsProps) {
-  const [selectedExample, setSelectedExample] = useState('colorMix');
-
-  const colorMixExample = `<!DOCTYPE html>
+  // Example 1: Understanding color-mix basics
+  const mixBasicsExample = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relative Colors - color-mix()</title>
+  <title>Color Mix Basics</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      font-family: -apple-system, sans-serif;
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       padding: 40px 20px;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     @media (prefers-color-scheme: dark) {
-      body { background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%); }
+      body { background: linear-gradient(135deg, #6b21a8, #581c87); }
     }
     
     .container {
-      max-width: 1000px;
-      margin: 0 auto;
+      max-width: 900px;
+      width: 100%;
       background: white;
-      padding: 40px;
+      padding: 50px;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
@@ -49,9 +56,9 @@ export default function CssRelativeColors({ onOpenWebPlayground }: CssRelativeCo
     
     h1 {
       color: #8b5cf6;
-      margin-bottom: 10px;
       text-align: center;
-      font-size: 2.5rem;
+      margin-bottom: 15px;
+      font-size: 2rem;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -61,502 +68,570 @@ export default function CssRelativeColors({ onOpenWebPlayground }: CssRelativeCo
     .subtitle {
       text-align: center;
       color: #64748b;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
+      font-size: 0.95rem;
     }
     
-    :root {
-      --base-color: #8b5cf6;
+    .demo-section {
+      margin-bottom: 40px;
     }
     
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #8b5cf6;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .section-title { color: #c4b5fd; }
+    }
+    
+    .color-row {
+      display: flex;
       gap: 20px;
-      margin: 20px 0;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
     }
     
     .color-box {
-      padding: 40px 20px;
+      width: 120px;
+      height: 120px;
       border-radius: 12px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border: 3px solid rgba(139, 92, 246, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       color: white;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      border: 3px solid rgba(255,255,255,0.3);
+      font-size: 0.85rem;
     }
     
-    .base {
-      background: var(--base-color);
+    .plus {
+      font-size: 2rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
     }
     
-    .lighter-20 {
-      background: #a27cf8;
-      background: color-mix(in srgb, var(--base-color) 80%, white);
+    .equals {
+      font-size: 2rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
     }
     
-    .lighter-40 {
-      background: #c4b5fd;
-      background: color-mix(in srgb, var(--base-color) 60%, white);
+    /* First example - mix blue with white */
+    .blue { background: #3b82f6; }
+    .white { background: white; color: #1e293b; border-color: #e2e8f0; }
+    .light-blue { background: color-mix(in srgb, #3b82f6 50%, white); }
+    
+    /* Second example - mix red with black */
+    .red { background: #ef4444; }
+    .black { background: #1e293b; }
+    .dark-red { background: color-mix(in srgb, #ef4444 70%, black); }
+    
+    /* Third example - mix two colors */
+    .purple { background: #8b5cf6; }
+    .pink { background: #ec4899; }
+    .purple-pink { background: color-mix(in srgb, #8b5cf6 50%, #ec4899); }
+    
+    .code-box {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #1e293b;
+      text-align: center;
+      border: 2px solid #e2e8f0;
     }
     
-    .lighter-60 {
-      background: #e0e7ff;
-      background: color-mix(in srgb, var(--base-color) 40%, white);
+    @media (prefers-color-scheme: dark) {
+      .code-box { background: #0f172a; color: #e2e8f0; border-color: #334155; }
     }
     
-    .darker-20 {
-      background: #6b21a8;
-      background: color-mix(in srgb, var(--base-color) 80%, black);
+    .code-box .highlight {
+      color: #8b5cf6;
+      font-weight: 700;
     }
     
-    .darker-40 {
-      background: #4c1d95;
-      background: color-mix(in srgb, var(--base-color) 60%, black);
-    }
-    
-    .info-box {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-left: 4px solid #f59e0b;
+    .info {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
       padding: 20px;
       border-radius: 8px;
-      margin-top: 20px;
+      border-left: 4px solid #f59e0b;
+      font-size: 0.9rem;
+      color: #78350f;
+      margin-top: 30px;
     }
     
     @media (prefers-color-scheme: dark) {
-      .info-box {
-        background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+      .info {
+        background: linear-gradient(135deg, #78350f, #92400e);
+        color: #fef3c7;
         border-left-color: #fbbf24;
       }
-    }
-    
-    .info-title {
-      color: #92400e;
-      font-weight: 700;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-title { color: #fde68a; }
-    }
-    
-    .info-text {
-      color: #78350f;
-      line-height: 1.6;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .info-text { color: #fef3c7; }
-    }
-    
-    code {
-      background: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
-      color: #8b5cf6;
-      font-weight: 600;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      code { background: #0f172a; color: #c4b5fd; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🎨 Relative Colors</h1>
-    <p class="subtitle">Derive new colors from existing colors</p>
+    <h1>🎨 Understanding color-mix()</h1>
+    <p class="subtitle">Mix colors together to create new ones!</p>
     
-    <div class="color-grid">
-      <div class="color-box lighter-60">
-        60% Lighter
+    <!-- Example 1: Lighten -->
+    <div class="demo-section">
+      <div class="section-title">Making Colors Lighter</div>
+      <div class="color-row">
+        <div class="color-box blue">Blue</div>
+        <div class="plus">+</div>
+        <div class="color-box white">White</div>
+        <div class="equals">=</div>
+        <div class="color-box light-blue">Light Blue</div>
       </div>
-      <div class="color-box lighter-40">
-        40% Lighter
-      </div>
-      <div class="color-box lighter-20">
-        20% Lighter
-      </div>
-      <div class="color-box base">
-        Base Color
-      </div>
-      <div class="color-box darker-20">
-        20% Darker
-      </div>
-      <div class="color-box darker-40">
-        40% Darker
+      <div class="code-box">
+        <span class="highlight">color-mix(in srgb, #3b82f6 50%, white)</span>
       </div>
     </div>
     
-    <div class="info-box">
-      <div class="info-title">✨ color-mix() Function</div>
-      <p class="info-text">
-        Using <code>color-mix(in srgb, color1 percentage, color2)</code> you can create 
-        lighter and darker variations of any color! Mix with white for lighter shades, 
-        or black for darker shades.
-      </p>
+    <!-- Example 2: Darken -->
+    <div class="demo-section">
+      <div class="section-title">Making Colors Darker</div>
+      <div class="color-row">
+        <div class="color-box red">Red</div>
+        <div class="plus">+</div>
+        <div class="color-box black">Black</div>
+        <div class="equals">=</div>
+        <div class="color-box dark-red">Dark Red</div>
+      </div>
+      <div class="code-box">
+        <span class="highlight">color-mix(in srgb, #ef4444 70%, black)</span>
+      </div>
+    </div>
+    
+    <!-- Example 3: Mix two colors -->
+    <div class="demo-section">
+      <div class="section-title">Mixing Two Colors</div>
+      <div class="color-row">
+        <div class="color-box purple">Purple</div>
+        <div class="plus">+</div>
+        <div class="color-box pink">Pink</div>
+        <div class="equals">=</div>
+        <div class="color-box purple-pink">Purple-Pink</div>
+      </div>
+      <div class="code-box">
+        <span class="highlight">color-mix(in srgb, #8b5cf6 50%, #ec4899)</span>
+      </div>
+    </div>
+    
+    <div class="info">
+      <strong>💡 Key Point:</strong> The percentage controls how much of the first color to use. 
+      50% means equal parts of both colors. 70% means more of the first color, less of the second!
     </div>
   </div>
 </body>
 </html>`;
 
-  const themeExample = `<!DOCTYPE html>
+  // Example 2: Creating a color palette
+  const paletteExample = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Relative Colors - Theme Generation</title>
+  <title>Color Palette Generator</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: -apple-system, sans-serif;
-      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       padding: 40px 20px;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    
     @media (prefers-color-scheme: dark) {
-      body { background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%); }
+      body { background: linear-gradient(135deg, #6b21a8, #581c87); }
     }
+    
     .container {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 1100px;
+      width: 100%;
       background: white;
-      padding: 40px;
+      padding: 50px;
       border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
+    
     @media (prefers-color-scheme: dark) {
       .container { background: #1e293b; color: #e2e8f0; }
     }
-    h1 { color: #8b5cf6; text-align: center; margin-bottom: 30px; }
+    
+    h1 {
+      color: #8b5cf6;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+    
     @media (prefers-color-scheme: dark) {
       h1 { color: #c4b5fd; }
     }
     
-    :root {
-      --primary: #3b82f6;
-      --primary-light: #7dd3fc;
-      --primary-light: color-mix(in srgb, var(--primary) 50%, white);
-      --primary-dark: #1d4ed8;
-      --primary-dark: color-mix(in srgb, var(--primary) 70%, black);
-    }
-    
-    .button-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-    
-    .btn-light {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
-    
-    .btn-light:hover {
-      background: var(--primary);
-      color: white;
-    }
-    
-    .note {
-      margin-top: 30px;
-      padding: 16px;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-radius: 8px;
-      color: #78350f;
+    .subtitle {
       text-align: center;
-      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 40px;
+      font-size: 0.95rem;
+    }
+    
+    :root {
+      --brand-color: #10b981;
+    }
+    
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .swatch {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      border: 3px solid rgba(255,255,255,0.2);
+    }
+    
+    .label {
+      font-size: 0.7rem;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+    
+    /* Auto-generate shades */
+    .shade-100 {
+      background: color-mix(in srgb, var(--brand-color) 20%, white);
+      color: #1e293b;
+    }
+    
+    .shade-300 {
+      background: color-mix(in srgb, var(--brand-color) 50%, white);
+      color: #1e293b;
+    }
+    
+    .shade-500 {
+      background: var(--brand-color);
+    }
+    
+    .shade-700 {
+      background: color-mix(in srgb, var(--brand-color) 80%, black);
+    }
+    
+    .shade-900 {
+      background: color-mix(in srgb, var(--brand-color) 50%, black);
+    }
+    
+    .code-sample {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #1e293b;
     }
     
     @media (prefers-color-scheme: dark) {
-      .note { background: linear-gradient(135deg, #78350f 0%, #92400e 100%); color: #fef3c7; }
+      .code-sample { background: #0f172a; color: #e2e8f0; border-color: #334155; }
+    }
+    
+    .code-sample .comment {
+      color: #64748b;
+      font-style: italic;
+    }
+    
+    .code-sample .var-name {
+      color: #10b981;
+      font-weight: 700;
+    }
+    
+    .info {
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #10b981;
+      font-size: 0.9rem;
+      color: #065f46;
+      margin-top: 30px;
+      line-height: 1.6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .info {
+        background: linear-gradient(135deg, #064e3b, #065f46);
+        color: #d1fae5;
+        border-left-color: #6ee7b7;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🎨 Theme with Relative Colors</h1>
+    <h1>🎨 Automatic Color Palette</h1>
+    <p class="subtitle">5 shades generated from one base color</p>
     
-    <div class="button-group">
-      <button class="btn btn-primary">Primary Button</button>
-      <button class="btn btn-light">Light Button</button>
-      <button class="btn btn-primary">Another Primary</button>
+    <div class="palette">
+      <div class="swatch shade-100">
+        <div>100</div>
+        <div class="label">Lightest</div>
+      </div>
+      <div class="swatch shade-300">
+        <div>300</div>
+        <div class="label">Light</div>
+      </div>
+      <div class="swatch shade-500">
+        <div>500</div>
+        <div class="label">Base</div>
+      </div>
+      <div class="swatch shade-700">
+        <div>700</div>
+        <div class="label">Dark</div>
+      </div>
+      <div class="swatch shade-900">
+        <div>900</div>
+        <div class="label">Darkest</div>
+      </div>
     </div>
     
-    <div class="note">
-      💡 All button colors are derived from one base color using color-mix()!
+    <div class="code-sample">
+      <div><span class="comment">/* One base color */</span></div>
+      <div><span class="var-name">--brand-color</span>: #10b981;</div>
+      <br>
+      <div><span class="comment">/* Light shade - mix with white */</span></div>
+      <div>background: color-mix(in srgb, var(--brand-color) 20%, white);</div>
+      <br>
+      <div><span class="comment">/* Dark shade - mix with black */</span></div>
+      <div>background: color-mix(in srgb, var(--brand-color) 50%, black);</div>
+    </div>
+    
+    <div class="info">
+      <strong>💡 How it works:</strong> By changing just ONE color variable (--brand-color), 
+      all 5 shades automatically update! Perfect for themes and design systems.
     </div>
   </div>
 </body>
 </html>`;
 
   return (
-    <div className="space-y-8">
-      <PageHeader
+    <CssTopicLayout
+      icon={Palette}
+      title="Relative Colors"
+      description="Mix colors together to create new shades automatically"
+      category="Modern CSS Features"
+      whatIsIt={{
+        title: "What are Relative Colors?",
+        description: "Mix existing colors to create new ones without manual calculation",
+        keyPoints: [
+          "Mix colors together with color-mix() function",
+          "Lighten colors by mixing with white",
+          "Darken colors by mixing with black",
+          "Create entire color palettes from one base color",
+          "Perfect for themes and design systems",
+          "No manual color calculations needed"
+        ]
+      }}
+    >
+
+      {/* Simple Explanation */}
+      <InfoAlert type="info" title="Simple Concept">
+        Think of color-mix() like mixing paint! Mix blue paint with white paint to get light blue. 
+        Mix blue paint with black paint to get dark blue. That's exactly what color-mix() does in CSS!
+      </InfoAlert>
+
+      {/* How It Works */}
+      <SectionCard
+        title="How color-mix() Works"
+        description="Understanding the basics"
+        icon={Droplet}
+        variant="primary"
+      >
+        <ConceptGrid
+          concepts={[
+            {
+              title: "Mix with White",
+              description: "Makes colors lighter - like adding white paint",
+              example: "color-mix(in srgb, blue 50%, white)"
+            },
+            {
+              title: "Mix with Black",
+              description: "Makes colors darker - like adding black paint",
+              example: "color-mix(in srgb, red 70%, black)"
+            },
+            {
+              title: "Mix Two Colors",
+              description: "Blend two colors together to create a new one",
+              example: "color-mix(in srgb, purple 50%, pink)"
+            },
+            {
+              title: "Control the Mix",
+              description: "The percentage controls how much of the first color to use",
+              example: "50% = equal parts, 70% = more first color"
+            }
+          ]}
+        />
+      </SectionCard>
+
+      {/* Syntax */}
+      <SectionCard
+        title="Basic Syntax"
+        description="How to write color-mix()"
+        icon={Paintbrush}
+      >
+        <div className="space-y-6">
+          <SyntaxBlock
+            title="Basic Format"
+            code={`color-mix(in srgb, color1 percentage, color2)`}
+          />
+
+          <SyntaxBlock
+            title="Lighten a Color"
+            code={`/* Mix with white to lighten */
+.button {
+  background: color-mix(in srgb, #3b82f6 50%, white);
+  /* Result: Light blue */
+}`}
+          />
+
+          <SyntaxBlock
+            title="Darken a Color"
+            code={`/* Mix with black to darken */
+.button:hover {
+  background: color-mix(in srgb, #3b82f6 70%, black);
+  /* Result: Dark blue */
+}`}
+          />
+
+          <SyntaxBlock
+            title="Create Color Palette from Variable"
+            code={`:root {
+  --brand: #10b981;
+  --brand-light: color-mix(in srgb, var(--brand) 50%, white);
+  --brand-dark: color-mix(in srgb, var(--brand) 70%, black);
+}
+
+/* Now use them anywhere! */
+.button { background: var(--brand); }
+.button:hover { background: var(--brand-dark); }`}
+          />
+        </div>
+
+        <InfoAlert type="tip" title="Pro Tip">
+          Use CSS variables with color-mix() so you can change one color and all variations update automatically!
+        </InfoAlert>
+      </SectionCard>
+
+      {/* Example 1: Basic Mixing */}
+      <SectionCard
+        title="See It In Action: Color Mixing Basics"
+        description="Visual demonstration of how colors mix"
         icon={Palette}
-        category="CSS · Modern Features"
-        title="Relative Colors"
-        description="Create color variations from base colors using color-mix() and relative color syntax"
-        colorTheme="purple"
-      />
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={mixBasicsExample}
+          title="Understanding Color Mix"
+          colorTheme="indigo"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-      <Card>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-purple-700 dark:text-purple-300">
-            <div className="relative">
-              <Palette className="w-8 h-8" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-            </div>
-            Relative Colors
-          </CardTitle>
-          <CardDescription className="text-lg text-purple-600 dark:text-purple-400">
-            🎨 Derive new colors from existing colors dynamically!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300">
-                  What are Relative Colors?
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Relative colors allow you to create new colors based on existing colors using CSS functions 
-                  like <code className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-2 py-1 rounded">color-mix()</code>. 
-                  This enables dynamic theming, automatic color variations, and consistent design systems without 
-                  manually calculating color values!
-                </p>
-                
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <Sparkles className="w-5 h-5 text-purple-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-purple-700 dark:text-purple-300">Dynamic Theming</div>
-                      <div className="text-sm text-purple-600 dark:text-purple-400">
-                        Generate color variations automatically from base colors
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3 p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-pink-700 dark:text-pink-300">Design Consistency</div>
-                      <div className="text-sm text-pink-600 dark:text-pink-400">
-                        Maintain consistent color relationships
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Example 2: Palette Generation */}
+      <SectionCard
+        title="Practical Example: Color Palette"
+        description="Generate shades from one base color"
+        icon={Layers}
+        variant="primary"
+      >
+        <FrontendCodePreview
+          html={paletteExample}
+          title="Auto-Generated Palette"
+          colorTheme="indigo"
+          onOpenPlayground={onOpenWebPlayground}
+        />
+      </SectionCard>
 
-              <div className="bg-gradient-to-r from-purple-50 to-fuchsia-50 dark:from-purple-900/20 dark:to-fuchsia-900/20 p-6 rounded-xl border border-purple-200/50">
-                <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300">
-                  color-mix() Function
-                </h4>
-                
-                <div className="grid gap-3">
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-                    <div className="font-semibold text-purple-700 dark:text-purple-300 mb-2">
-                      Basic Syntax
-                    </div>
-                    <code className="text-sm font-mono text-purple-600 dark:text-purple-400 block">
-                      color-mix(in srgb, color1 percentage, color2)
-                    </code>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-                    <div className="font-semibold text-pink-700 dark:text-pink-300 mb-2">
-                      Example: Lighter Shade
-                    </div>
-                    <code className="text-sm font-mono text-pink-600 dark:text-pink-400 block">
-                      color-mix(in srgb, #8b5cf6 50%, white)
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Mixes 50% purple with 50% white
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-                    <div className="font-semibold text-fuchsia-700 dark:text-fuchsia-300 mb-2">
-                      Example: Darker Shade
-                    </div>
-                    <code className="text-sm font-mono text-fuchsia-600 dark:text-fuchsia-400 block">
-                      color-mix(in srgb, #8b5cf6 70%, black)
-                    </code>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Mixes 70% purple with 30% black
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Use Cases */}
+      <SectionCard
+        title="When to Use Relative Colors"
+        description="Common scenarios"
+        icon={Target}
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <UseCaseCard
+            title="Design Systems"
+            description="Generate hover, active, and disabled states from base colors automatically"
+            icon={Paintbrush}
+            gradient="from-purple-500 to-pink-600"
+          />
+          <UseCaseCard
+            title="Theme Generation"
+            description="Create light and dark variants of colors for themes"
+            icon={Droplet}
+            gradient="from-blue-500 to-cyan-600"
+          />
+          <UseCaseCard
+            title="Brand Customization"
+            description="Let users customize brand colors and auto-generate palettes"
+            icon={Sparkles}
+            gradient="from-green-500 to-emerald-600"
+          />
+          <UseCaseCard
+            title="Color Palettes"
+            description="Build entire color systems from a single base color"
+            icon={Layers}
+            gradient="from-amber-500 to-orange-600"
+          />
+        </div>
+      </SectionCard>
 
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-purple-100 via-fuchsia-100 to-purple-100 dark:from-purple-900/30 dark:via-fuchsia-900/30 dark:to-purple-900/30 p-6 rounded-xl border border-purple-200/50 shadow-lg">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl mb-2">🎨</div>
-                  <div className="font-bold text-lg text-purple-700 dark:text-purple-300">Color Mixing</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Mix colors
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-pink-600 dark:text-pink-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Lighten/darken
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-fuchsia-600 dark:text-fuchsia-400">
-                      <CheckCircle className="w-4 h-4" />
-                      Blend colors
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Benefits */}
+      <InfoAlert type="success" title="Why Use color-mix()?">
+        <ul className="list-disc list-inside space-y-2 mt-2">
+          <li><strong>No Math:</strong> No need to manually calculate hex/rgb values</li>
+          <li><strong>Consistency:</strong> All shades stay related to base color</li>
+          <li><strong>Easy Updates:</strong> Change one color, everything updates</li>
+          <li><strong>Fast:</strong> Browser-optimized, no JavaScript needed</li>
+        </ul>
+      </InfoAlert>
 
-              <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-yellow-200/50">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💡</div>
-                  <div className="font-bold text-orange-700 dark:text-orange-300 mb-2">Pro Tip!</div>
-                  <div className="text-sm text-orange-600 dark:text-orange-400">
-                    Use CSS variables with color-mix() for dynamic themes!
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Browser Support */}
+      <InfoAlert type="info" title="Browser Support (2024)">
+        <div className="space-y-2 mt-2">
+          <p><strong>✅ Chrome 111+:</strong> Full support</p>
+          <p><strong>✅ Firefox 113+:</strong> Full support</p>
+          <p><strong>✅ Safari 16.2+:</strong> Full support</p>
+          <p><strong>✅ Edge 111+:</strong> Full support</p>
+          <p className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-700">
+            <strong>Great news:</strong> Widely supported in all modern browsers!
+          </p>
+        </div>
+      </InfoAlert>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Palette className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            Live Examples
-          </CardTitle>
-          <CardDescription>
-            See color-mix() in action
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 mb-6">
-            <button
-              onClick={() => setSelectedExample('colorMix')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'colorMix'
-                  ? 'bg-purple-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Color Variations
-            </button>
-            <button
-              onClick={() => setSelectedExample('theme')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedExample === 'theme'
-                  ? 'bg-purple-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Theme Generation
-            </button>
-          </div>
-
-          {selectedExample === 'colorMix' && (
-            <FrontendCodePreview
-              html={colorMixExample}
-              title="Color Variations with color-mix()"
-              colorTheme="purple"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
-
-          {selectedExample === 'theme' && (
-            <FrontendCodePreview
-              html={themeExample}
-              title="Dynamic Theme Colors"
-              colorTheme="purple"
-              onOpenPlayground={onOpenWebPlayground}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Common Use Cases</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200/50">
-              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-3">Design Systems</h4>
-              <ul className="text-sm space-y-2 text-purple-600 dark:text-purple-400">
-                <li>• Generate button hover states automatically</li>
-                <li>• Create disabled state colors</li>
-                <li>• Build color palettes from brand colors</li>
-                <li>• Maintain consistent color relationships</li>
-              </ul>
-            </div>
-            
-            <div className="p-4 bg-fuchsia-50 dark:bg-fuchsia-900/20 rounded-lg border border-fuchsia-200/50">
-              <h4 className="font-bold text-fuchsia-700 dark:text-fuchsia-300 mb-3">Dynamic Theming</h4>
-              <ul className="text-sm space-y-2 text-fuchsia-600 dark:text-fuchsia-400">
-                <li>• User-customizable themes</li>
-                <li>• Dark mode color variations</li>
-                <li>• Accessibility contrast adjustments</li>
-                <li>• Brand color customization</li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Why Use Relative Colors?</AlertTitle>
-        <AlertDescription>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li><strong>Consistency:</strong> Maintain color relationships automatically</li>
-            <li><strong>Simplicity:</strong> No need to manually calculate color values</li>
-            <li><strong>Flexibility:</strong> Change base colors and variations update automatically</li>
-            <li><strong>Performance:</strong> Browser-optimized color calculations</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/20">
-        <Info className="h-4 w-4 text-purple-600" />
-        <AlertTitle className="text-purple-900 dark:text-purple-100">Browser Support</AlertTitle>
-        <AlertDescription className="text-purple-800 dark:text-purple-200">
-          <div className="space-y-2 mt-2">
-            <div><strong>✅ Chrome 111+:</strong> Full support</div>
-            <div><strong>✅ Firefox 113+:</strong> Full support</div>
-            <div><strong>✅ Safari 16.2+:</strong> Full support</div>
-            <div><strong>✅ Edge 111+:</strong> Full support</div>
-          </div>
-        </AlertDescription>
-      </Alert>
-    </div>
+    </CssTopicLayout>
   );
 }

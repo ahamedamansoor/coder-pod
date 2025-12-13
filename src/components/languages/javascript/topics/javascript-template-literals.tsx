@@ -2,876 +2,413 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Sparkles,
+  Code2,
   Lightbulb,
-  CheckCircle2,
-  XCircle,
-  Code,
-  Layers,
-  Zap,
-  ArrowRight,
+  Quote,
+  Mail,
 } from 'lucide-react';
 
 export default function JavaScriptTemplateLiterals() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
-        icon={Sparkles}
-        category="JavaScript · Strings & Regex"
+        icon={Quote}
+        category="JavaScript Fundamentals"
         title="Template Literals"
-        description="Master template literals—the modern way to work with strings, featuring interpolation, multiline support, and embedded expressions."
-        colorTheme="blue"
+        description="Modern way to create strings with backticks - insert variables easily!"
+        colorTheme="yellow"
       />
 
       {/* What are Template Literals? */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            What are Template Literals?
-          </CardTitle>
-          <CardDescription className="text-base">
-            Template literals are a modern way to work with strings in JavaScript using backticks (``) instead of quotes.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Introduced in ES6 (ES2015), template literals provide a <strong>more powerful and flexible</strong> way to create strings. They use <strong>backticks</strong> (<code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">`</code>) instead of single or double quotes, and allow you to <strong>embed variables and expressions</strong> directly in the string using <code className="font-mono text-xs bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">${}</code> syntax.
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h4 className="font-semibold">Backtick Syntax</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Use backticks (`) to create template literals instead of regular quotes.
-              </p>
-              <Badge className="mt-2 bg-blue-100/80 text-blue-700 dark:bg-blue-900/30">Modern</Badge>
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-emerald-50/50 via-green-50/30 to-teal-50/20 dark:from-emerald-950/10 dark:via-green-950/5 dark:to-teal-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                <h4 className="font-semibold">Variable Embedding</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Insert variables and expressions directly using ${} syntax.
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Template Literals: Smart Strings
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                Template literals use <strong className="text-emerald-700 dark:text-emerald-400">backticks `</strong> instead of quotes and let you <strong>insert variables directly</strong> into strings. No more messy string concatenation with + signs!
               </p>
-              <Badge className="mt-2 bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30">Dynamic</Badge>
-            </div>
-            
-            <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-              <div className="flex items-center gap-2 mb-2">
-                <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-semibold">Multiline Support</h4>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Create strings that span multiple lines without concatenation.
-              </p>
-              <Badge className="mt-2 bg-purple-100/80 text-purple-700 dark:bg-purple-900/30">Convenient</Badge>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 mt-4">
-            <div className="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-xl border border-rose-200 dark:border-rose-800">
-              <h4 className="font-semibold mb-2 text-rose-700 dark:text-rose-300">Old Way (Quotes)</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const name = 'Alice';
-const age = 25;
-const msg = 'Hello ' + name + ', you are ' + age;
-console.log(msg);
-// msg -> "Hello Alice, you are 25"
-// Requires concatenation with +`}
-              </pre>
-            </div>
-
-            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
-              <h4 className="font-semibold mb-2 text-emerald-700 dark:text-emerald-300">Modern Way (Template Literals)</h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const name = 'Alice';
-const age = 25;
-const msg = \`Hello \${name}, you are \${age}\`;
-console.log(msg);
-// msg -> "Hello Alice, you are 25"
-// Clean and readable!`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Variable Interpolation */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Code className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Variable Interpolation
-          </CardTitle>
-          <CardDescription className="text-base">
-            Embed variables directly in your strings using ${} placeholder syntax.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Basic Variable Insertion</h4>
-              <p className="text-xs text-muted-foreground">
-                Place any variable inside ${} to insert its value
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const firstName = 'John';
-const lastName = 'Doe';
-
-const greeting = \`Hello, \${firstName} \${lastName}!\`;
-console.log(greeting);
-
-const city = 'New York';
-const country = 'USA';
-const location = \`\${city}, \${country}\`;
-console.log(location);
-// greeting -> "Hello, John Doe!"
-// location -> "New York, USA"`}
-              </pre>
-            </div>
-
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Numeric Variables</h4>
-              <p className="text-xs text-muted-foreground">
-                Numbers are automatically converted to strings
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const product = 'Laptop';
-const price = 999;
-const quantity = 2;
-
-const orderSummary = \`Product: \${product}
-Price: $\${price}
-Quantity: \${quantity}
-Total: $\${price * quantity}\`;
-
-console.log(orderSummary);
-// Output:
-// Product: Laptop
-// Price: $999
-// Quantity: 2
-// Total: $1998`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: Variable Interpolation"
-        description="Using template literals to embed variables in strings"
-        code={`const firstName = 'John';
-const lastName = 'Doe';
-
-const greeting = \`Hello, \${firstName} \${lastName}!\`;
-console.log(greeting);
-// Output: "Hello, John Doe!"
-
-const city = 'New York';
-const country = 'USA';
-const location = \`\${city}, \${country}\`;
-console.log(location);
-// Output: "New York, USA"
-
-// With Numbers
-const product = 'Laptop';
-const price = 999;
-const quantity = 2;
-
-const orderSummary = \`Product: \${product}
-Price: $\${price}
-Quantity: \${quantity}
-Total: $\${price * quantity}\`;
-
-console.log(orderSummary);
-// Output:
-// Product: Laptop
-// Price: $999
-// Quantity: 2
-// Total: $1998`}
-        language="javascript"
-        colorTheme="blue"
-        icon={Code}
-      />
-
-      {/* Expression Evaluation */}
-      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/40 dark:border-purple-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Zap className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
-            Expression Evaluation
-          </CardTitle>
-          <CardDescription className="text-base">
-            Execute any JavaScript expression inside ${} - not just variables!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <Alert>
-            <Lightbulb className="h-4 w-4" />
-            <AlertTitle>Powerful Feature</AlertTitle>
-            <AlertDescription>
-              You can perform calculations, call functions, use ternary operators, and execute any valid JavaScript expression inside ${}.
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-emerald-200 dark:border-emerald-800/30">
+            <Quote className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <AlertTitle className="text-lg">Backtick Key</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              The backtick key ` is usually in the top-left corner of your keyboard, above Tab and next to the number 1
             </AlertDescription>
           </Alert>
+        </CardContent>
+      </Card>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Arithmetic Operations</h4>
-              <p className="text-xs text-muted-foreground">
-                Perform calculations directly in the template
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const a = 10;
-const b = 5;
+      {/* Old vs New Way */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
+              <Code2 className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <CardTitle>Old Way vs New Way</CardTitle>
+              <CardDescription>See how much cleaner template literals are!</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Old Way */}
+            <div className="rounded-xl border-2 border-red-200 dark:border-red-800/30 overflow-hidden">
+              <div className="bg-red-100 dark:bg-red-900/30 px-4 py-3 border-b-2 border-red-200 dark:border-red-800/30">
+                <h4 className="font-semibold text-red-700 dark:text-red-300">❌ Old Way (Quotes + Concatenation)</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap break-words">
+{`const name = 'Alice';
+const age = 25;
 
-console.log(\`Sum: \${a + b}\`);
-console.log(\`Difference: \${a - b}\`);
-console.log(\`Product: \${a * b}\`);
-console.log(\`Division: \${a / b}\`);
-console.log(\`Power: \${a ** 2}\`);
-// Output:
-// Sum: 15
-// Difference: 5
-// Product: 50
-// Division: 2
-// Power: 100`}
-              </pre>
+// Messy with + signs
+const message = 'Hello, my name is ' + name + ' and I am ' + age + ' years old.';
+
+console.log(message);`}</pre>
+              </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Conditional (Ternary) Expressions</h4>
-              <p className="text-xs text-muted-foreground">
-                Use ternary operators for conditional text
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const score = 85;
-const passed = score >= 60;
+            {/* New Way */}
+            <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 overflow-hidden">
+              <div className="bg-green-100 dark:bg-green-900/30 px-4 py-3 border-b-2 border-green-200 dark:border-green-800/30">
+                <h4 className="font-semibold text-green-700 dark:text-green-300">✅ New Way (Template Literals)</h4>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-950 p-5">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap break-words">
+{`const name = 'Alice';
+const age = 25;
 
-const result = \`Score: \${score}
-Status: \${passed ? 'PASSED' : 'FAILED'}\`;
-console.log(result);
+// Clean and readable!
+const message = \`Hello, my name is \${name} and I am \${age} years old.\`;
 
-const hour = 14;
-const greeting = \`Good \${hour < 12 ? 'morning' : 'afternoon'}\`;
-console.log(greeting);
-// Output:
-// Score: 85
-// Status: PASSED
-// greeting -> "Good afternoon"`}
-              </pre>
+console.log(message);`}</pre>
+              </div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Function Calls</h4>
-              <p className="text-xs text-muted-foreground">
-                Call functions and use their return values
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-const name = 'alice';
-const message = \`Hello, \${capitalize(name)}!\`;
-console.log(message);
-
-// Using Math methods
-const pi = 3.14159;
-console.log(\`Rounded: \${Math.round(pi)}\`);
-// message -> "Hello, Alice!"
-// Rounded: 3`}
-              </pre>
+      {/* How to Use */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
+            <div>
+              <CardTitle>How to Use Template Literals</CardTitle>
+              <CardDescription>Two simple steps</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Simple Steps</h4>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold flex-shrink-0">1</div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Use Backticks ` instead of Quotes</h5>
+                    <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-green-200 dark:border-green-800/30">
+                      <code className="text-sm font-mono text-gray-800 dark:text-gray-200">
+                        const message = `Hello World`;
+                      </code>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Comparison Operations</h4>
-              <p className="text-xs text-muted-foreground">
-                Evaluate boolean expressions
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const age = 20;
-const isAdult = age >= 18;
-
-console.log(\`Age: \${age}\`);
-console.log(\`Is adult? \${isAdult}\`);
-console.log(\`Can vote? \${age >= 18}\`);
-console.log(\`Can drink? \${age >= 21}\`);
-// Output:
-// Age: 20
-// Is adult? true
-// Can vote? true
-// Can drink? false`}
-              </pre>
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold flex-shrink-0">2</div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Insert Variables with ${'{'}variable{'}'}</h5>
+                    <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-purple-200 dark:border-purple-800/30">
+                      <code className="text-sm font-mono text-gray-800 dark:text-gray-200">
+                        const message = `Hello ${'{'}name{'}'}`;
+                      </code>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <CodeSnippet
-        title="Complete Example: Expression Evaluation"
-        description="Executing JavaScript expressions inside template literals"
-        code={`// Arithmetic Operations
-const a = 10;
-const b = 5;
+        title="Template Literals Basics"
+        description="Insert variables directly into strings"
+        code={`const name = 'Bob';
+const age = 30;
+const city = 'Boston';
 
-console.log(\`Sum: \${a + b}\`);
-// Output: Sum: 15
+// Use backticks and \${} for variables
+const intro = \`Hi, I'm \${name}. I'm \${age} years old and I live in \${city}.\`;
 
-console.log(\`Product: \${a * b}\`);
-// Output: Product: 50
+console.log(intro);
+// Output: Hi, I'm Bob. I'm 30 years old and I live in Boston.
 
-// Conditional (Ternary) Expressions
-const score = 85;
-const passed = score >= 60;
+// Works with any variables
+const product = 'Laptop';
+const price = 999;
 
-const result = \`Score: \${score}
-Status: \${passed ? 'PASSED' : 'FAILED'}\`;
-console.log(result);
-// Output:
-// Score: 85
-// Status: PASSED
-
-// Function Calls
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-const name = 'alice';
-const message = \`Hello, \${capitalize(name)}!\`;
-console.log(message);
-// Output: "Hello, Alice!"
-
-// Comparison Operations
-const age = 20;
-console.log(\`Can vote? \${age >= 18}\`);
-// Output: "Can vote? true"`}
+const description = \`The \${product} costs $\${price}.\`;
+console.log(description);
+// Output: The Laptop costs $999.`}
         language="javascript"
-        colorTheme="purple"
-        icon={Zap}
+        colorTheme="yellow"
+      />
+
+      {/* Math in Template Literals */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>Do Math Inside Template Literals</CardTitle>
+              <CardDescription>You can calculate values right inside ${'{}'}</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Expressions Inside ${'{}'}</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                You can do calculations, call functions, or use any JavaScript expression inside ${'{}'}
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const price = 100;
+const quantity = 3;
+
+// Math inside template literal
+const total = \`Total: $\${price * quantity}\`;
+console.log(total);
+// Output: Total: $300`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Expressions in Template Literals"
+        description="Calculate values directly in your strings"
+        code={`const price = 50;
+const quantity = 4;
+const tax = 0.08;
+
+// Do math inside \${}
+console.log(\`Subtotal: $\${price * quantity}\`);
+// Output: Subtotal: $200
+
+console.log(\`Tax: $\${price * quantity * tax}\`);
+// Output: Tax: $16
+
+console.log(\`Total: $\${price * quantity * (1 + tax)}\`);
+// Output: Total: $216
+
+// Even use functions
+const name = 'alice';
+console.log(\`Hello, \${name.toUpperCase()}!\`);
+// Output: Hello, ALICE!`}
+        language="javascript"
+        colorTheme="yellow"
       />
 
       {/* Multiline Strings */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Layers className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Multiline Strings
-          </CardTitle>
-          <CardDescription className="text-base">
-            Create strings that span multiple lines without concatenation or escape characters.
-          </CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+              <Code2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <CardTitle>Multiline Strings</CardTitle>
+              <CardDescription>Write strings across multiple lines easily</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-xl border border-rose-200 dark:border-rose-800">
-              <h4 className="font-semibold mb-3 text-rose-700 dark:text-rose-300 flex items-center gap-2">
-                <XCircle className="w-5 h-5" />
-                Old Way (Messy)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Using quotes requires \\n or concatenation
-const email = 'Dear Customer,\\n' +
-  '\\n' +
-  'Thank you for your order.\\n' +
-  'Your package will arrive soon.\\n' +
-  '\\n' +
-  'Best regards,\\n' +
-  'The Team';
-
-console.log(email);
-// Requires \\n for line breaks
-// Needs + for concatenation
-// Hard to read and maintain`}
-              </pre>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="p-5 rounded-xl border-2 bg-white dark:bg-slate-900 border-red-200 dark:border-red-800/30">
+              <h4 className="font-bold mb-3 text-red-700 dark:text-red-300">❌ Old Way - Messy</h4>
+              <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border">
+{`const message = 'Line 1\\n' +
+  'Line 2\\n' +
+  'Line 3';`}</pre>
+              <p className="text-xs text-gray-500 mt-2">Need + and \\n for new lines</p>
             </div>
 
-            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
-              <h4 className="font-semibold mb-3 text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                New Way (Clean)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`// Template literals preserve line breaks naturally
+            <div className="p-5 rounded-xl border-2 bg-white dark:bg-slate-900 border-green-200 dark:border-green-800/30">
+              <h4 className="font-bold mb-3 text-green-700 dark:text-green-300">✅ New Way - Clean</h4>
+              <pre className="font-mono text-sm text-gray-800 dark:text-gray-200 bg-slate-50 dark:bg-slate-950 rounded-lg p-4 border">
+{`const message = \`Line 1
+Line 2
+Line 3\`;`}</pre>
+              <p className="text-xs text-gray-500 mt-2">Just press Enter for new lines!</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Multiline String Example"
+        description="Create multiline strings without concatenation"
+        code={`// Multiline string with template literals
 const email = \`Dear Customer,
 
-Thank you for your order.
-Your package will arrive soon.
+Thank you for your order!
+
+Your order will be shipped within 2-3 business days.
 
 Best regards,
 The Team\`;
 
 console.log(email);
-// No \\n needed!
-// Natural line breaks
-// Easy to read and write`}
-              </pre>
-            </div>
-          </div>
 
-          <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-            <h4 className="font-semibold">HTML Generation Example</h4>
-            <p className="text-xs text-muted-foreground">
-              Perfect for generating HTML or formatted text
-            </p>
-            <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const title = 'My Article';
-const author = 'John Doe';
-const content = 'This is the article content.';
+// Output:
+// Dear Customer,
+// 
+// Thank you for your order!
+// 
+// Your order will be shipped within 2-3 business days.
+// 
+// Best regards,
+// The Team`}
+        language="javascript"
+        colorTheme="yellow"
+      />
 
-const html = \`
-  <article>
-    <h1>\${title}</h1>
-    <p class="author">By \${author}</p>
-    <div class="content">
-      \${content}
-    </div>
-  </article>
-\`;
-
-console.log(html);
-// Generates clean HTML
-// Variables embedded naturally
-// Indentation preserved`}
-            </pre>
-          </div>
-        </CardContent>
-      </Card>
-
+      {/* Real World Example */}
       <CodeSnippet
-        title="Complete Example: Multiline Strings"
-        description="Create clean multiline strings without escape characters"
-        code={`// Email Template
-const email = \`Dear Customer,
+        title="Real-World Example: Email Template"
+        description="Build dynamic email messages"
+        code={`const customerName = 'Sarah Johnson';
+const orderNumber = 'ORD-12345';
+const totalAmount = 149.99;
+const deliveryDate = 'December 15, 2024';
 
-Thank you for your order.
-Your package will arrive soon.
+// Create email using template literal
+const emailMessage = \`Hello \${customerName},
+
+Thank you for your order #\${orderNumber}!
+
+Order Summary:
+- Total Amount: $\${totalAmount}
+- Estimated Delivery: \${deliveryDate}
+
+We will send you a tracking number once your order ships.
+
+If you have any questions, please contact our support team.
 
 Best regards,
-The Team\`;
+Customer Service Team\`;
 
-console.log(email);
-// No \\n needed!
-// Natural line breaks
+console.log(emailMessage);
 
-// HTML Generation
-const title = 'My Article';
-const author = 'John Doe';
-const content = 'This is the article content.';
-
-const html = \`
-  <article>
-    <h1>\${title}</h1>
-    <p class="author">By \${author}</p>
-    <div class="content">
-      \${content}
-    </div>
-  </article>
-\`;
-
-console.log(html);
-// Generates clean HTML
-// Variables embedded naturally
-// Indentation preserved`}
+// Output: Hello Sarah Johnson,
+// 
+// Thank you for your order #ORD-12345!
+// 
+// Order Summary:
+// - Total Amount: $149.99
+// - Estimated Delivery: December 15, 2024
+// 
+// We will send you a tracking number once your order ships.
+// 
+// If you have any questions, please contact our support team.
+// 
+// Best regards,
+// Customer Service Team`}
         language="javascript"
-        colorTheme="blue"
-        icon={Layers}
+        colorTheme="yellow"
+        icon={Mail}
       />
 
-      {/* Nested Templates & Advanced Patterns */}
-      <Card className="bg-gradient-to-br from-indigo-50/40 to-blue-50/40 dark:from-indigo-950/10 dark:to-blue-950/10 border border-indigo-200/40 dark:border-indigo-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ArrowRight className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Nested Templates & Advanced Patterns
-          </CardTitle>
-          <CardDescription className="text-base">
-            Template literals can be nested inside other template literals for complex scenarios.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Nested Array Mapping</h4>
-              <p className="text-xs text-muted-foreground">
-                Combine template literals with array methods
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const users = ['Alice', 'Bob', 'Charlie'];
-
-// Create a formatted list
-const userList = \`Users: \${users.map(u => \`<\${u}>\`).join(', ')}\`;
-console.log(userList);
-
-// Create HTML list
-const htmlList = \`
-  <ul>
-    \${users.map(u => \`<li>\${u}</li>\`).join('')}
-  </ul>
-\`;
-console.log(htmlList);
-// Users: <Alice>, <Bob>, <Charlie>
-// Generated <ul> with 3 <li> items`}
-              </pre>
+      {/* Key Takeaways */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Key Takeaways</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">`</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Use Backticks</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Backticks ` instead of quotes ' or "
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Dynamic Table Generation</h4>
-              <p className="text-xs text-muted-foreground">
-                Generate complex HTML structures
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const products = [
-  { name: 'Laptop', price: 999 },
-  { name: 'Mouse', price: 25 },
-  { name: 'Keyboard', price: 75 }
-];
-
-const table = \`
-  <table>
-    <tr><th>Product</th><th>Price</th></tr>
-    \${products.map(p => 
-      \`<tr><td>\${p.name}</td><td>$\${p.price}</td></tr>\`
-    ).join('')}
-  </table>
-\`;
-
-console.log(table);
-// Generated HTML table
-// Each product as a row
-// Nested templates in map()`}
-              </pre>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">💎</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Insert Variables</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Use ${'{'}variable{'}'} to insert values
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Conditional Content</h4>
-              <p className="text-xs text-muted-foreground">
-                Include or exclude sections based on conditions
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const user = {
-  name: 'Alice',
-  isPremium: true,
-  points: 1500
-};
-
-const profile = \`
-  Name: \${user.name}
-  \${user.isPremium ? 'Status: PREMIUM MEMBER' : ''}
-  \${user.points > 1000 ? \`Reward: \${user.points} points!\` : ''}
-\`;
-
-console.log(profile);
-// Output:
-// Name: Alice
-// Status: PREMIUM MEMBER
-// Reward: 1500 points!`}
-              </pre>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🧮</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Do Math</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Calculate inside ${'{'}expression{'}'}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="rounded-xl border bg-white dark:bg-gray-900 p-5 space-y-3">
-              <h4 className="font-semibold">Object Property Access</h4>
-              <p className="text-xs text-muted-foreground">
-                Access nested object properties
-              </p>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded p-3 font-mono text-xs overflow-x-auto border">
-{`const user = {
-  name: 'John',
-  address: {
-    street: '123 Main St',
-    city: 'New York',
-    country: 'USA'
-  }
-};
-
-const info = \`
-  \${user.name} lives at:
-  \${user.address.street}
-  \${user.address.city}, \${user.address.country}
-\`;
-
-console.log(info);
-// Output:
-// John lives at:
-// 123 Main St
-// New York, USA`}
-              </pre>
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-yellow-200 dark:border-yellow-800/30">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">📝</span>
+                <div>
+                  <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Multiline Easy</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Just press Enter for new lines
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
-
-      <CodeSnippet
-        title="Complete Example: Nested Templates & Advanced Patterns"
-        description="Complex patterns using nested template literals"
-        code={`// Nested Array Mapping
-const users = ['Alice', 'Bob', 'Charlie'];
-
-const userList = \`Users: \${users.map(u => \`<\${u}>\`).join(', ')}\`;
-console.log(userList);
-// Output: Users: <Alice>, <Bob>, <Charlie>
-
-// Dynamic Table Generation
-const products = [
-  { name: 'Laptop', price: 999 },
-  { name: 'Mouse', price: 25 },
-  { name: 'Keyboard', price: 75 }
-];
-
-const table = \`
-  <table>
-    <tr><th>Product</th><th>Price</th></tr>
-    \${products.map(p => 
-      \`<tr><td>\${p.name}</td><td>$\${p.price}</td></tr>\`
-    ).join('')}
-  </table>
-\`;
-console.log(table);
-// Generated HTML table with nested templates
-
-// Conditional Content
-const user = {
-  name: 'Alice',
-  isPremium: true,
-  points: 1500
-};
-
-const profile = \`
-  Name: \${user.name}
-  \${user.isPremium ? 'Status: PREMIUM MEMBER' : ''}
-  \${user.points > 1000 ? \`Reward: \${user.points} points!\` : ''}
-\`;
-console.log(profile);
-// Output includes conditional sections`}
-        language="javascript"
-        colorTheme="indigo"
-        icon={ArrowRight}
-      />
-
-      {/* Real-World Use Cases */}
-      <Card className="bg-gradient-to-br from-amber-50/60 to-yellow-50/60 dark:from-amber-950/10 dark:to-yellow-950/10 border border-amber-200/40 dark:border-amber-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-amber-600/80 dark:text-amber-400/80" />
-            Real-World Use Cases
-          </CardTitle>
-          <CardDescription className="text-base">
-            Practical examples where template literals shine in production code.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                URL Building
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`const baseURL = 'https://api.example.com';
-const endpoint = 'users';
-const userId = 123;
-
-// Build API endpoint
-const apiURL = \`\${baseURL}/\${endpoint}/\${userId}\`;
-console.log(apiURL);
-
-// With query parameters
-const search = 'javascript';
-const page = 2;
-const searchURL = \`\${baseURL}/search?q=\${search}&page=\${page}\`;
-console.log(searchURL);
-// apiURL -> "https://api.example.com/users/123"
-// searchURL -> "https://api.example.com/search?q=javascript&page=2"`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Email Templates
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function sendWelcomeEmail(userName, activationLink) {
-  return \`
-    Subject: Welcome to our platform!
-    
-    Hi \${userName},
-    
-    Thanks for signing up! Click below to activate:
-    \${activationLink}
-    
-    Best regards,
-    The Team
-  \`;
-}
-
-const email = sendWelcomeEmail('Alice', 'https://app.com/activate/abc123');
-console.log(email);
-// Personalized email generated
-// Clean and readable template
-// Easy to maintain`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                SQL Queries (Be Careful!)
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`// ⚠️ WARNING: Use parameterized queries in production!
-// This is just an example of template syntax
-
-const tableName = 'users';
-const userId = 5;
-
-const query = \`
-  SELECT * FROM \${tableName}
-  WHERE id = \${userId}
-  AND active = true
-\`;
-
-console.log(query);
-
-// Better: Use prepared statements/parameterized queries
-// Query built dynamically
-// ⚠️ Use prepared statements!
-// Prevent SQL injection`}
-              </pre>
-            </div>
-
-            <div className="p-5 bg-gradient-to-br from-rose-50/60 to-red-50/60 dark:from-rose-950/10 dark:to-red-950/10 rounded-xl border border-rose-200/50 dark:border-rose-800/30">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                Logging & Debugging
-              </h4>
-              <pre className="bg-white dark:bg-gray-900 rounded p-3 font-mono text-xs overflow-x-auto">
-{`function processOrder(orderId, items, total) {
-  console.log(\`
-    Processing Order #\${orderId}
-    Items: \${items.length}
-    Total: $\${total.toFixed(2)}
-    Time: \${new Date().toISOString()}
-  \`);
-  
-  // Process the order...
-}
-
-processOrder('ORD-123', [{}, {}, {}], 299.97);
-// Output:
-// Processing Order #ORD-123
-// Items: 3
-// Total: $299.97
-// Timestamp included`}
-              </pre>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <CodeSnippet
-        title="Complete Example: Real-World Use Cases"
-        description="Practical applications of template literals in production"
-        code={`// URL Building
-const baseURL = 'https://api.example.com';
-const endpoint = 'users';
-const userId = 123;
-
-const apiURL = \`\${baseURL}/\${endpoint}/\${userId}\`;
-console.log(apiURL);
-// Output: "https://api.example.com/users/123"
-
-// With query parameters
-const search = 'javascript';
-const page = 2;
-const searchURL = \`\${baseURL}/search?q=\${search}&page=\${page}\`;
-console.log(searchURL);
-// Output: "https://api.example.com/search?q=javascript&page=2"
-
-// Email Templates
-function sendWelcomeEmail(userName, activationLink) {
-  return \`
-    Subject: Welcome to our platform!
-    
-    Hi \${userName},
-    
-    Thanks for signing up! Click below to activate:
-    \${activationLink}
-    
-    Best regards,
-    The Team
-  \`;
-}
-
-const email = sendWelcomeEmail('Alice', 'https://app.com/activate/abc123');
-console.log(email);
-// Personalized email generated
-
-// Logging & Debugging
-function processOrder(orderId, items, total) {
-  console.log(\`
-    Processing Order #\${orderId}
-    Items: \${items.length}
-    Total: $\${total.toFixed(2)}
-    Time: \${new Date().toISOString()}
-  \`);
-}
-
-processOrder('ORD-123', [{}, {}, {}], 299.97);
-// Structured, readable logging output`}
-        language="javascript"
-        colorTheme="amber"
-        icon={Sparkles}
-      />
-
-      {/* Best Practices */}
-      <Card className="bg-gradient-to-br from-emerald-50/60 to-green-50/60 dark:from-emerald-950/10 dark:to-green-950/10 border border-emerald-200/40 dark:border-emerald-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
-            Best Practices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" /> Do This
-            </h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>✅ Use template literals for any string with variables or expressions.</li>
-              <li>✅ Use them for multiline strings to avoid \\n escapes.</li>
-              <li>✅ Prefer template literals over string concatenation with +.</li>
-              <li>✅ Use them for generating HTML, SQL, or formatted text.</li>
-              <li>✅ Nest templates for complex scenarios like array mapping.</li>
-              <li>✅ Keep expressions inside ${} simple and readable.</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-2 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" /> Avoid This
-            </h4>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>❌ Don't use template literals for simple static strings.</li>
-              <li>❌ Don't put complex logic inside ${}—extract to functions.</li>
-              <li>❌ Don't build SQL queries with user input (SQL injection risk).</li>
-              <li>❌ Don't forget to escape HTML if displaying user content.</li>
-              <li>❌ Don't over-nest templates—it hurts readability.</li>
-              <li>❌ Don't use quotes when you mean to use backticks.</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
     </div>
   );
 }

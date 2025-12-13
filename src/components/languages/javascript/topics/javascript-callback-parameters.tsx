@@ -2,395 +2,573 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
 import {
   Link2,
   Sparkles,
-  Clock3,
-  ListChecks,
   Lightbulb,
   CheckCircle2,
   XCircle,
+  ListChecks,
+  ArrowRight,
+  Package,
 } from 'lucide-react';
 
-interface JavaScriptCallbackParametersProps {
-  onOpenWebPlayground?: (html: string, css: string, js: string) => void;
-}
-
-export default function JavaScriptCallbackParameters({}: JavaScriptCallbackParametersProps) {
+export default function JavaScriptCallbackParameters() {
   return (
-    <div className="w-full min-h-screen space-y-10 pb-16">
+    <div className="w-full space-y-8 pb-16">
       <PageHeader
         icon={Link2}
         category="JavaScript Fundamentals"
         title="Callback Parameters"
-        description="Understand what arguments callback APIs pass you and how to design clear callback signatures."
-        colorTheme="blue"
+        description="Understanding the data that callbacks receive"
+        colorTheme="yellow"
       />
 
-      {/* Overview */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Why Callback Params Matter
-          </CardTitle>
-          <CardDescription className="text-base">
-            Callbacks receive specific arguments: know the order, name them clearly, and validate before using.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <ListChecks className="w-5 h-5 text-blue-600/80 dark:text-blue-400/80" />
-              <h3 className="font-semibold">Know the shape</h3>
+      {/* What are Callback Parameters */}
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50/50 via-amber-50/30 to-orange-50/20 dark:from-yellow-950/10 dark:via-amber-950/5 dark:to-orange-950/5">
+        <CardContent className="pt-8 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <p className="text-sm text-muted-foreground">map gives (value, index, array); setTimeout gives none; custom APIs vary.</p>
-            <Badge className="bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-300/50 dark:border-blue-700/40">Signature</Badge>
-          </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Clock3 className="w-5 h-5 text-emerald-600/80 dark:text-emerald-400/80" />
-              <h3 className="font-semibold">Async ready</h3>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                What Data Do Callbacks Receive?
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                When a callback function runs, it often receives <strong className="text-yellow-700 dark:text-yellow-400">data</strong> from the function that called it. Understanding what parameters your callback gets is crucial!
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">Callbacks often signal completion or errors—design both paths.</p>
-            <Badge className="bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/40">Success/Error</Badge>
           </div>
-          <div className="rounded-xl border bg-white/80 dark:bg-slate-900/80 p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-amber-600/80 dark:text-amber-400/80" />
-              <h3 className="font-semibold">Name clearly</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">Use descriptive param names (`value`, `index`, `array`, `err`, `result`) to avoid confusion.</p>
-            <Badge className="bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/40">Clarity</Badge>
-          </div>
+
+          <Alert className="bg-white/80 dark:bg-slate-900/80 border-yellow-200 dark:border-yellow-800/30">
+            <Lightbulb className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+            <AlertTitle className="text-lg">Simple Example</AlertTitle>
+            <AlertDescription className="text-base leading-relaxed">
+              In <code className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 rounded text-sm">array.map(callback)</code>, the callback receives 3 parameters: the current value, the index, and the full array!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 
-      {/* Beginner walkthrough */}
+      {/* Array Method Parameters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-amber-500/80 dark:text-amber-300/80" />
-            Function Parameters 101
-          </CardTitle>
-          <CardDescription className="text-base">
-            Start with tiny functions, name the inputs, and pass callbacks that expect those inputs.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border space-y-2">
-              <h4 className="font-semibold">Step 1: Plain function</h4>
-              <pre className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 text-xs font-mono whitespace-pre-wrap">
-{`function add(a, b) {
-  return a + b;
-}
-
-add(2, 3); // a=2, b=3
-// Output: 5`}
-              </pre>
-              <p className="text-sm text-muted-foreground">Regular parameters are listed inside parentheses. Order matters.</p>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <ListChecks className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
-            <div className="p-4 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-2">
-              <h4 className="font-semibold">Step 2: Function as parameter</h4>
-              <pre className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 text-xs font-mono whitespace-pre-wrap border">
-{`function greet(name, formatter) {
-  const message = formatter(name);
-  console.log(message);
-}
-
-greet('Ada', (value) => 'Hi ' + value + '!');
-// Output: Hi Ada!`}
-              </pre>
-              <p className="text-sm text-muted-foreground">Here the second parameter is a callback. It receives the <code>name</code> value.</p>
+            <div>
+              <CardTitle>Array Method Callback Parameters</CardTitle>
+              <CardDescription>What data array methods pass to your callbacks</CardDescription>
             </div>
           </div>
-
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-              Extra beginner-friendly callback examples
-            </h4>
-            <div className="grid md:grid-cols-2 gap-3 text-xs font-mono">
-              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border">
-                <div>// Timer callback (no parameters)</div>
-                <div>setTimeout(() =&gt; console.log('time!'), 500);</div>
-                <div className="text-slate-500">// callback runs later, but no args</div>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border">
-                <div>// Iterating list (value, index)</div>
-                <div>['JS', 'TS'].forEach((value, index) =&gt; {'{'}</div>
-                <div className="pl-2">console.log(index, value);</div>
-                <div>{'}'});</div>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 space-y-1 border md:col-span-2">
-                <div>// Custom helper with success + failure callbacks</div>
-                <div>{`function loadUser(onSuccess, onFailure) {`}</div>
-                <div className="pl-2">{`const ok = true;`}</div>
-                <div className="pl-2">{`if (ok) onSuccess({ name: 'Ada' });`}</div>
-                <div className="pl-2">{`else onFailure('Could not load');`}</div>
-                <div>{`}`}</div>
-                <div>{`loadUser(`}</div>
-                <div className="pl-2">{`(user) => console.log('user', user),`}</div>
-                <div className="pl-2">{`(message) => console.error(message)`}</div>
-                <div>{`);`}</div>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Identify what each callback receives (value, index, event, error) and write descriptive parameter names so the next
-              developer can follow your intent.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Canonical signatures */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Link2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Canonical Callback Signatures
-          </CardTitle>
-          <CardDescription className="text-base">
-            Minimal, runnable snippets showing real callback arguments and outputs.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold">Array helpers</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>arr.map((value, index, array) =&gt; value + index);</div>
-              <div>arr.filter((value, index, array) =&gt; value {'>'} 10);</div>
-              <div className="text-slate-500">// map log: value, index, same array</div>
-              <div>arr.reduce((total, value, index, array) =&gt; total + value, 0);</div>
-              <div className="text-slate-500">// reduce gets accumulator + value</div>
-            </div>
-            <p className="text-sm text-muted-foreground">Most array callbacks give (value, index, array) in that order.</p>
-          </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Node-style (err, result)</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>fs.readFile('file.txt', (err, data) =&gt; {'{'} ... {'}'});</div>
-              <div>callback(new Error('fail'), null);</div>
-              <div>callback(null, data);</div>
-              <div className="text-slate-500">// handle err first, data second</div>
-            </div>
-            <Alert>
-              <AlertTitle>Tip</AlertTitle>
-              <AlertDescription>Design async callbacks to deliver error first, result second, or migrate to Promises.</AlertDescription>
-            </Alert>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Extra practical examples */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <ListChecks className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Practical Callback Examples
-          </CardTitle>
-          <CardDescription className="text-base">
-            Quick references for everyday APIs and patterns.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-5 bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30 space-y-3">
-            <h4 className="font-semibold">DOM events</h4>
-            <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>button.addEventListener('click', event =&gt; {'{'} ... {'}'});</div>
-              <div className="text-slate-500">// event carries target, coordinates, etc.</div>
-              <div>{`input.addEventListener('input', ({ target }) => console.log(target.value));`}</div>
-            </div>
-          </div>
-          <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border space-y-3">
-            <h4 className="font-semibold">Promise-style adapters</h4>
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 font-mono text-xs space-y-1 border">
-              <div>const toPromise = (fn) =&gt;</div>
-              <div className="pl-2">new Promise((resolve, reject) =&gt; fn(resolve, reject));</div>
-              <div>toPromise((res) =&gt; res('done')).then(console.log);</div>
-            </div>
-            <p className="text-sm text-muted-foreground">Wrap callbacks to integrate with Promise/async flows.</p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Subscribe & Unsubscribe patterns */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Link2 className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Subscribe & Unsubscribe
-          </CardTitle>
-          <CardDescription className="text-base">
-            How real-world APIs let you start receiving values with a callback, and then stop them safely when you are done.
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 3xl:grid-cols-2 gap-6">
-            <CodeSnippet
-              title="Subscribe/Unsubscribe Pattern"
-              description="Register callbacks and get cleanup functions - the foundation of event-driven programming"
-              code={`// Internal list of listeners
-const listeners = [];
-
-// Subscribe: register callback and return unsubscribe function
-function subscribe(listener) {
-  listeners.push(listener);
-
-  return () => {
-    const index = listeners.indexOf(listener);
-    if (index !== -1) {
-      listeners.splice(index, 1); // unsubscribe
-    }
-  };
-}
-
-// Emit values to all listeners
-function emit(value) {
-  listeners.forEach((listener) => listener(value));
-}
-
-// Usage
-const unsubscribe = subscribe((value) => {
-  console.log('listener A saw:', value);
-});
-
-emit(1);
-emit(2);
-unsubscribe();          // stop this listener
-emit(3);                // A will NOT be called now
-
-// Output:
-// listener A saw: 1
-// listener A saw: 2
-// (no log after unsubscribe)`}
-              language="javascript"
-              colorTheme="blue"
-              icon={Link2}
-              features={[
-                "Returns cleanup function",
-                "Multiple subscribers supported",
-                "Used in RxJS, Redux, WebSockets",
-                "Prevents memory leaks"
-              ]}
-              tips={[
-                "Always call unsubscribe when done",
-                "Store unsubscribe function reference",
-                "Common pattern in modern JavaScript"
-              ]}
-            />
-
-            <CodeSnippet
-              title="DOM Event Listeners"
-              description="addEventListener/removeEventListener - must use the same callback reference to unsubscribe"
-              code={`// Subscribe to DOM event
-const button = document.querySelector('#myButton');
-const output = document.querySelector('#output');
-
-function handleClick(event) {
-  const msg = 'Clicked at: ' + event.clientX + ', ' + event.clientY;
-  output.textContent += msg + '\\n';
-  console.log(msg);
-}
-
-button.addEventListener('click', handleClick);
-
-// Unsubscribe after 5 seconds
-setTimeout(() => {
-  button.removeEventListener('click', handleClick);
-  output.textContent += 'Stopped listening!\\n';
-  console.log('Stopped listening for clicks');
-}, 5000);`}
-              language="javascript"
-              colorTheme="emerald"
-              icon={CheckCircle2}
-              embedPlayground={true}
-              playgroundConfig={{
-                html: `<div style="text-align: center; padding: 20px;">
-  <button id="myButton" style="padding: 12px 24px; font-size: 16px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 20px;">
-    Click Me!
-  </button>
-  <div id="output" style="background: #1e293b; color: #22d3ee; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 14px; min-height: 120px; white-space: pre-wrap; text-align: left;">
-Listener is active. Click the button!
-(It will stop listening after 5 seconds)
-
-</div>
-</div>`,
-                css: '',
-                js: `const button = document.querySelector('#myButton');
-const output = document.querySelector('#output');
-
-function handleClick(event) {
-  const msg = 'Clicked at: ' + event.clientX + ', ' + event.clientY;
-  output.textContent += msg + '\\n';
-  console.log(msg);
-}
-
-button.addEventListener('click', handleClick);
-
-// Unsubscribe after 5 seconds
-setTimeout(() => {
-  button.removeEventListener('click', handleClick);
-  output.textContent += '\\n🔴 Stopped listening! (Try clicking now - nothing happens)\\n';
-  console.log('Stopped listening for clicks');
-}, 5000);`,
-                visiblePanels: ['preview', 'js', 'console'],
-                layout: 'vertical'
-              }}
-              features={[
-                "Classic DOM pattern",
-                "Must use same callback reference",
-                "Prevents ghost listeners",
-                "Essential for cleanup in SPAs"
-              ]}
-              tips={[
-                "Named functions required for removal",
-                "Forgetting removal causes memory leaks",
-                "Use AbortController for modern cleanup"
-              ]}
-            />
+          <div className="rounded-xl border-2 border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 overflow-hidden">
+            <div className="bg-blue-600 dark:bg-blue-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Common Pattern</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Most array methods pass <strong>3 parameters</strong> to callbacks:
+              </p>
+              <div className="grid lg:grid-cols-3 gap-4">
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-blue-200 dark:border-blue-800/30">
+                  <div className="text-2xl mb-2">1️⃣</div>
+                  <h5 className="font-semibold mb-2">Current Value</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">The item being processed</p>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-blue-200 dark:border-blue-800/30">
+                  <div className="text-2xl mb-2">2️⃣</div>
+                  <h5 className="font-semibold mb-2">Index</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Position in the array</p>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border-2 border-blue-200 dark:border-blue-800/30">
+                  <div className="text-2xl mb-2">3️⃣</div>
+                  <h5 className="font-semibold mb-2">Full Array</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">The entire array</p>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Best practices */}
-      <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
+      <CodeSnippet
+        title="forEach Callback Parameters"
+        description="Understanding what forEach passes to your callback"
+        code={`const fruits = ['apple', 'banana', 'cherry'];
+
+// Callback receives: value, index, array
+fruits.forEach(function(value, index, array) {
+  console.log('Value:', value);
+  console.log('Index:', index);
+  console.log('Array:', array);
+  console.log('---');
+});
+
+// Output:
+// Value: apple
+// Index: 0
+// Array: ['apple', 'banana', 'cherry']
+// ---
+// Value: banana
+// Index: 1
+// Array: ['apple', 'banana', 'cherry']
+// ---
+// Value: cherry
+// Index: 2
+// Array: ['apple', 'banana', 'cherry']
+// ---`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      <CodeSnippet
+        title="You Don't Need All Parameters"
+        description="Use only what you need - name them clearly!"
+        code={`const numbers = [1, 2, 3, 4, 5];
+
+// Just using the value
+numbers.forEach(function(num) {
+  console.log(num * 2);
+});
+// Output: 2, 4, 6, 8, 10
+
+// Using value and index
+numbers.forEach(function(num, index) {
+  console.log(\`Position \${index}: \${num}\`);
+});
+// Output:
+// Position 0: 1
+// Position 1: 2
+// Position 2: 3
+// Position 3: 4
+// Position 4: 5
+
+// You can skip parameters you don't need!
+// Most of the time, you only need the value`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* map Parameters */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Lightbulb className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Best Practices
-          </CardTitle>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <ArrowRight className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <CardTitle>map Callback Parameters</CardTitle>
+              <CardDescription>Transform array items with callback data</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-5 h-5" />
-              Do This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>✅ Name callback parameters descriptively (value, index, array).</li>
-              <li>✅ Handle both success and error paths in async callbacks.</li>
-              <li>✅ Keep callbacks pure when possible—avoid unexpected mutations.</li>
-              <li>✅ Prefer Promises/async-await for complex async flows.</li>
-            </ul>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-purple-200 dark:border-purple-800/30 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 overflow-hidden">
+            <div className="bg-purple-600 dark:bg-purple-700 px-4 py-3">
+              <h4 className="text-white font-semibold">Same 3 Parameters</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <code className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 rounded text-xs">map</code> also gives you value, index, and array!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`const prices = [10, 20, 30];
+
+// Using just the value
+const doubled = prices.map(function(price) {
+  return price * 2;
+});
+console.log(doubled);  // [20, 40, 60]
+
+// Using value and index
+const labeled = prices.map(function(price, index) {
+  return \`Item \${index + 1}: $\${price}\`;
+});
+console.log(labeled);
+// ['Item 1: $10', 'Item 2: $20', 'Item 3: $30']`}</pre>
+              </div>
+            </div>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border">
-            <h4 className="font-semibold mb-3 flex items-center gap-2 text-rose-700 dark:text-rose-300">
-              <XCircle className="w-5 h-5" />
-              Avoid This
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>❌ Ignoring the error argument in Node-style callbacks.</li>
-              <li>❌ Over-nesting callbacks; refactor to Promises to avoid callback hell.</li>
-              <li>❌ Relying on implicit globals inside callbacks.</li>
-              <li>❌ Forgetting to return or handle results inside array callbacks.</li>
-            </ul>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="filter Callback Parameters"
+        description="Use callback data to decide what to keep"
+        code={`const students = [
+  { name: 'Alice', grade: 85 },
+  { name: 'Bob', grade: 92 },
+  { name: 'Charlie', grade: 78 }
+];
+
+// Using the value parameter
+const topStudents = students.filter(function(student) {
+  return student.grade >= 80;
+});
+
+console.log(topStudents);
+// [
+//   { name: 'Alice', grade: 85 },
+//   { name: 'Bob', grade: 92 }
+// ]
+
+// Using value and index together
+const numbers = [10, 20, 30, 40, 50];
+
+const evenPositions = numbers.filter(function(num, index) {
+  return index % 2 === 0;  // Keep items at even indexes
+});
+
+console.log(evenPositions);  // [10, 30, 50]`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Event Listener Parameters */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Package className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <CardTitle>Event Listener Parameters</CardTitle>
+              <CardDescription>What data event callbacks receive</CardDescription>
+            </div>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800/30 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 overflow-hidden">
+            <div className="bg-green-600 dark:bg-green-700 px-4 py-3">
+              <h4 className="text-white font-semibold">The Event Object</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Event listeners receive an <strong>event object</strong> with lots of useful information!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-green-200 dark:border-green-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`// HTML: <button id="myBtn">Click Me</button>
+
+const button = document.getElementById('myBtn');
+
+button.addEventListener('click', function(event) {
+  console.log('Event type:', event.type);
+  console.log('Target element:', event.target);
+  console.log('Mouse X:', event.clientX);
+  console.log('Mouse Y:', event.clientY);
+});
+
+// When clicked, you get all this data!`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Real-World: Form Input Event"
+        description="Type in the input to see event data in real-time!"
+        code={`const input = document.getElementById('username');
+const info = document.getElementById('info');
+
+input.addEventListener('input', function(event) {
+  // The event has target.value!
+  const value = event.target.value;
+  const length = value.length;
+  
+  // Update the display
+  let message = 'Value: "' + value + '"<br>';
+  message += 'Length: ' + length + ' characters<br>';
+  
+  if (length === 0) {
+    message += '<span style="color: #94a3b8;">Start typing...</span>';
+  } else if (length < 3) {
+    message += '<span style="color: #f59e0b;">⚠️ Too short (minimum 3)</span>';
+  } else {
+    message += '<span style="color: #10b981;">✅ Long enough!</span>';
+  }
+  
+  info.innerHTML = message;
+});`}
+        language="javascript"
+        colorTheme="yellow"
+        embedPlayground={true}
+        playgroundConfig={{
+          html: `<div class="container">
+  <h2>Username Input</h2>
+  <p>Type a username to see the event data:</p>
+  
+  <input 
+    type="text" 
+    id="username" 
+    placeholder="Enter username..."
+    class="input-field"
+  />
+  
+  <div id="info" class="info-box">
+    <span style="color: #94a3b8;">Start typing...</span>
+  </div>
+</div>`,
+          css: `body {
+  margin: 0;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  max-width: 450px;
+  width: 100%;
+}
+
+h2 {
+  color: #667eea;
+  margin: 0 0 10px 0;
+  font-size: 28px;
+}
+
+p {
+  color: #64748b;
+  margin: 0 0 20px 0;
+  font-size: 14px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+.input-field:focus {
+  border-color: #667eea;
+}
+
+.info-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+  font-size: 14px;
+  line-height: 1.8;
+  font-family: monospace;
+}`,
+          js: `const input = document.getElementById('username');
+const info = document.getElementById('info');
+
+input.addEventListener('input', function(event) {
+  // The event has target.value!
+  const value = event.target.value;
+  const length = value.length;
+  
+  // Update the display
+  let message = 'Value: "' + value + '"<br>';
+  message += 'Length: ' + length + ' characters<br>';
+  
+  if (length === 0) {
+    message += '<span style="color: #94a3b8;">Start typing...</span>';
+  } else if (length < 3) {
+    message += '<span style="color: #f59e0b;">⚠️ Too short (minimum 3)</span>';
+  } else {
+    message += '<span style="color: #10b981;">✅ Long enough!</span>';
+  }
+  
+  info.innerHTML = message;
+});`,
+          visiblePanels: ['js', 'preview']
+        }}
+      />
+
+      {/* Custom Callback Parameters */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+              <Sparkles className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <CardTitle>Designing Your Own Callback Parameters</CardTitle>
+              <CardDescription>When you create functions that take callbacks</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-xl border-2 border-orange-200 dark:border-orange-800/30 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 overflow-hidden">
+            <div className="bg-orange-600 dark:bg-orange-700 px-4 py-3">
+              <h4 className="text-white font-semibold">You Decide What to Pass</h4>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                When you write functions that accept callbacks, YOU choose what data to pass!
+              </p>
+              <div className="bg-white dark:bg-slate-900 rounded-lg p-5 border-2 border-orange-200 dark:border-orange-800/30">
+                <pre className="font-mono text-sm text-gray-800 dark:text-gray-200">
+{`function processOrder(orderId, callback) {
+  // Simulate processing...
+  const result = {
+    orderId: orderId,
+    status: 'completed',
+    total: 99.99
+  };
+  
+  // Call the callback with result data
+  callback(result);
+}
+
+// Use it
+processOrder(12345, function(orderResult) {
+  console.log('Order:', orderResult.orderId);
+  console.log('Status:', orderResult.status);
+  console.log('Total:', orderResult.total);
+});
+
+// Output:
+// Order: 12345
+// Status: completed
+// Total: 99.99`}</pre>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeSnippet
+        title="Error-First Callback Pattern"
+        description="Common Node.js pattern: error first, data second"
+        code={`function fetchUserData(userId, callback) {
+  // Simulate API call
+  if (userId === 0) {
+    // Error case - pass error as first parameter
+    callback(new Error('Invalid user ID'), null);
+  } else {
+    // Success case - null error, data as second parameter
+    const userData = { id: userId, name: 'Alice' };
+    callback(null, userData);
+  }
+}
+
+// Using it
+fetchUserData(123, function(error, data) {
+  // Always check error first!
+  if (error) {
+    console.log('Error:', error.message);
+    return;
+  }
+  
+  console.log('User data:', data);
+});
+
+// Try with invalid ID
+fetchUserData(0, function(error, data) {
+  if (error) {
+    console.log('Error:', error.message);  // Invalid user ID
+    return;
+  }
+});`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      <CodeSnippet
+        title="Multiple Parameters Example"
+        description="Passing several pieces of data to callbacks"
+        code={`function calculatePrice(quantity, price, callback) {
+  const subtotal = quantity * price;
+  const tax = subtotal * 0.1;
+  const total = subtotal + tax;
+  
+  // Pass multiple values to callback
+  callback(subtotal, tax, total);
+}
+
+// Use the callback
+calculatePrice(5, 10, function(subtotal, tax, total) {
+  console.log('Subtotal:', subtotal);  // 50
+  console.log('Tax:', tax);            // 5
+  console.log('Total:', total);        // 55
+});
+
+// You can name the parameters anything!
+calculatePrice(3, 20, function(sub, t, tot) {
+  console.log(\`Pay $\${tot}\`);  // Pay $66
+});`}
+        language="javascript"
+        colorTheme="yellow"
+      />
+
+      {/* Best Practices */}
+      <Card className="border-2 border-yellow-300 dark:border-yellow-700 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950/20 dark:via-amber-950/10 dark:to-orange-950/10 shadow-lg">
+        <CardContent className="pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Best Practices</h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-green-200 dark:border-green-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Do This ✅</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Use descriptive parameter names</li>
+                <li>• Only use parameters you need</li>
+                <li>• Check for errors first (error-first pattern)</li>
+                <li>• Document what your callbacks receive</li>
+                <li>• Keep callback signatures simple</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border-2 border-red-200 dark:border-red-800/30">
+              <div className="flex items-start gap-3 mb-3">
+                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Avoid This ❌</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li>• Don't use single letters like x, y, z</li>
+                <li>• Don't pass too many parameters</li>
+                <li>• Don't assume parameter order</li>
+                <li>• Don't ignore error parameters</li>
+                <li>• Don't use callbacks without knowing the API</li>
+              </ul>
+            </div>
+          </div>
+
+          <Alert className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30">
+            <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Quick Reference</AlertTitle>
+            <AlertDescription className="text-base">
+              <strong>Array methods</strong>: (value, index, array)<br/>
+              <strong>Event listeners</strong>: (event)<br/>
+              <strong>Error-first</strong>: (error, data)<br/>
+              <strong>Custom</strong>: Whatever makes sense!
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
     </div>
