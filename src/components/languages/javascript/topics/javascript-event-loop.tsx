@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { CodeSnippet } from '@/components/shared/code-snippet';
+import { JSVisualizerEnhanced } from '../js-visualizer-enhanced';
 import {
   RefreshCw,
   Sparkles,
@@ -17,6 +18,7 @@ import {
   RotateCcw,
   Zap,
   Clock,
+  Code2,
 } from 'lucide-react';
 
 interface Task {
@@ -287,215 +289,29 @@ export default function JavaScriptEventLoop() {
         </CardContent>
       </Card>
 
-      {/* Interactive Visualization */}
-      <Card>
+      {/* Enhanced JS Visualizer */}
+      <Card className="border-2 border-indigo-200 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50/50 via-purple-50/30 to-blue-50/20 dark:from-indigo-950/10 dark:via-purple-950/5 dark:to-blue-950/5">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Complete Event Loop Visualization</CardTitle>
-              <CardDescription>See how everything works together</CardDescription>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <Code2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <div className="flex gap-2">
-              <Button size="sm" variant="outline" onClick={handlePrev} disabled={currentStep === 0}>
-                ← Prev
-              </Button>
-              <Button size="sm" variant="outline" onClick={handlePlayPause}>
-                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              </Button>
-              <Button size="sm" variant="outline" onClick={handleNext} disabled={currentStep === animationSteps.length - 1}>
-                Next →
-              </Button>
-              <Button size="sm" variant="outline" onClick={handleReset}>
-                <RotateCcw className="w-4 h-4" />
-              </Button>
+            <div>
+              <CardTitle>Interactive Event Loop Visualizer</CardTitle>
+              <CardDescription>Write your own code and see the event loop in action!</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            {/* Main Visualization Grid */}
-            <div className="grid lg:grid-cols-2 gap-4">
-              {/* Call Stack */}
-              <div className={`rounded-xl border-2 p-4 transition-all ${
-                step.highlight === 'stack' 
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 shadow-lg scale-105' 
-                  : 'border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/10'
-              }`}>
-                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                  Call Stack
-                </h3>
-                <div className="min-h-[120px] flex flex-col-reverse gap-1">
-                  {step.callStack.length === 0 ? (
-                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
-                  ) : (
-                    step.callStack.map((item, i) => (
-                      <div
-                        key={i}
-                        className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-bottom-2"
-                      >
-                        {item}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-
-              {/* Web APIs */}
-              <div className={`rounded-xl border-2 p-4 transition-all ${
-                step.highlight === 'webapi'
-                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30 shadow-lg scale-105'
-                  : 'border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/10'
-              }`}>
-                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                  Web APIs (Browser)
-                </h3>
-                <div className="min-h-[120px]">
-                  {step.webAPIs.length === 0 ? (
-                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
-                  ) : (
-                    <div className="space-y-1">
-                      {step.webAPIs.map((item, i) => (
-                        <div
-                          key={i}
-                          className="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-right-2"
-                        >
-                          <Clock className="w-3 h-3 inline mr-2 animate-spin" />
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Microtask Queue */}
-              <div className={`rounded-xl border-2 p-4 transition-all ${
-                step.highlight === 'micro'
-                  ? 'border-green-500 bg-green-50 dark:bg-green-950/30 shadow-lg scale-105'
-                  : 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/10'
-              }`}>
-                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  Microtask Queue (High Priority)
-                </h3>
-                <div className="min-h-[120px]">
-                  {step.microQueue.length === 0 ? (
-                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
-                  ) : (
-                    <div className="space-y-1">
-                      {step.microQueue.map((item, i) => (
-                        <div
-                          key={i}
-                          className="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-left-2"
-                        >
-                          <Zap className="w-3 h-3 inline mr-2" />
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Macrotask Queue */}
-              <div className={`rounded-xl border-2 p-4 transition-all ${
-                step.highlight === 'macro'
-                  ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/30 shadow-lg scale-105'
-                  : 'border-orange-200 dark:border-orange-800 bg-orange-50/50 dark:bg-orange-950/10'
-              }`}>
-                <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                  Macrotask Queue (Low Priority)
-                </h3>
-                <div className="min-h-[120px]">
-                  {step.macroQueue.length === 0 ? (
-                    <div className="text-center text-gray-400 text-sm py-8">Empty</div>
-                  ) : (
-                    <div className="space-y-1">
-                      {step.macroQueue.map((item, i) => (
-                        <div
-                          key={i}
-                          className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-4 py-2 rounded font-mono text-sm animate-in slide-in-from-left-2"
-                        >
-                          <Clock className="w-3 h-3 inline mr-2" />
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Console Output */}
-            <div className={`rounded-xl border-2 p-4 transition-all ${
-              step.highlight === 'output'
-                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 shadow-lg'
-                : 'border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/10'
-            }`}>
-              <h3 className="font-bold text-sm mb-3">Console Output</h3>
-              <div className="bg-slate-900 dark:bg-slate-950 rounded-lg p-4 min-h-[60px] font-mono text-sm">
-                {step.output.length === 0 ? (
-                  <div className="text-gray-500">// No output yet</div>
-                ) : (
-                  step.output.map((line, i) => (
-                    <div key={i} className="text-emerald-400 animate-in fade-in">
-                      {line}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Description and Code */}
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm">
-                    {currentStep + 1}
-                  </div>
-                  <span className="font-semibold">Step {currentStep + 1} of {animationSteps.length}</span>
-                </div>
-                <p className="text-gray-700 dark:text-gray-300 text-lg">
-                  {step.description}
-                </p>
-              </div>
-
-              {/* Code Being Executed */}
-              {step.code && (
-                <div className="bg-slate-900 dark:bg-slate-950 border-2 border-slate-700 dark:border-slate-800 rounded-xl p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Code Executing
-                    </span>
-                  </div>
-                  <pre className="font-mono text-sm text-emerald-400 whitespace-pre-wrap">
-                    {step.code}
-                  </pre>
-                </div>
-              )}
-            </div>
-
-            {/* Progress Dots */}
-            <div className="flex justify-center">
-              <div className="flex gap-2 bg-slate-100 dark:bg-slate-800 rounded-full p-2">
-                {animationSteps.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentStep(index)}
-                    className={`h-2 rounded-full transition-all ${
-                      index === currentStep 
-                        ? 'bg-blue-500 w-8' 
-                        : 'bg-slate-300 dark:bg-slate-600 w-2 hover:bg-slate-400'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          <Alert className="mb-6 bg-indigo-50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800/30">
+            <Lightbulb className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+            <AlertTitle className="text-indigo-900 dark:text-indigo-200">Try It Yourself!</AlertTitle>
+            <AlertDescription className="text-gray-700 dark:text-gray-300">
+              Write or modify JavaScript code to see how the call stack, memory heap, microtask queue, and macrotask queue work together. Watch each step with detailed explanations and smooth animations!
+            </AlertDescription>
+          </Alert>
+          
+          <JSVisualizerEnhanced />
         </CardContent>
       </Card>
 

@@ -223,16 +223,15 @@ export const javascript: Language = {
     { slug: 'battery-api', title: 'Battery Status API', explanation: 'Monitoring device battery status.', category: '23. Browser APIs' },
     { slug: 'network-information', title: 'Network Information API', explanation: 'Detecting connection type and quality.', category: '23. Browser APIs' },
     { slug: 'media-query-api', title: 'Media Query API', explanation: 'matchMedia for responsive JavaScript.', category: '23. Browser APIs' },
-    { slug: 'resize-observer', title: 'Resize Observer', explanation: 'Observing element size changes.', category: '23. Browser APIs' },
-    { slug: 'performance-api', title: 'Performance API', explanation: 'Measuring and monitoring web performance.', category: '23. Browser APIs' },
-    { slug: 'requestanimationframe', title: 'requestAnimationFrame', explanation: 'Smooth animations with optimal timing.', category: '23. Browser APIs' },
-    { slug: 'requestidlecallback', title: 'requestIdleCallback', explanation: 'Running tasks during browser idle time.', category: '23. Browser APIs' },
+    { slug: 'resize-observer', title: 'ResizeObserver API', explanation: 'Detect element size changes with high performance.', category: '23. Browser APIs' },
+    { slug: 'performance-api', title: 'Performance API', explanation: 'Measure and optimize application performance with high-precision timing.', category: '23. Browser APIs' },
+    { slug: 'request-animation-frame', title: 'requestAnimationFrame', explanation: 'Create smooth 60fps animations synced with browser refresh.', category: '23. Browser APIs' },
+    { slug: 'request-idle-callback', title: 'requestIdleCallback', explanation: 'Run tasks when browser is idle - smart background processing.', category: '23. Browser APIs' },
     
     // 24. ADVANCED ASYNC PATTERNS
-    { slug: 'async-iterators', title: 'Async Iterators', explanation: 'for await...of for async iteration.', category: '24. Advanced Async Patterns' },
-    { slug: 'async-generators', title: 'Async Generators', explanation: 'Combining async/await with generators.', category: '24. Advanced Async Patterns' },
-    { slug: 'microtasks-macrotasks', title: 'Microtasks vs Macrotasks', explanation: 'Understanding task queuing and execution order.', category: '24. Advanced Async Patterns' },
-    { slug: 'abort-controller', title: 'AbortController', explanation: 'Canceling fetch requests and async operations.', category: '24. Advanced Async Patterns' },
+    { slug: 'async-iterators-generators', title: 'Async Iterators & Generators', explanation: 'Master lazy evaluation and asynchronous data streams with generators.', category: '24. Advanced Async Patterns' },
+    { slug: 'microtasks-macrotasks', title: 'Microtasks & Macrotasks', explanation: 'Master the JavaScript execution order and event loop.', category: '24. Advanced Async Patterns' },
+    { slug: 'abort-controller', title: 'AbortController', explanation: 'Cancel fetch requests and async operations.', category: '24. Advanced Async Patterns' },
     
     // 25. JAVASCRIPT RUNTIME ENVIRONMENTS
     { slug: 'browser-vs-nodejs', title: 'Browser vs Node.js', explanation: 'Understanding different JavaScript runtime environments and their differences.', category: '25. Runtime Environments' },

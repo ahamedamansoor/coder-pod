@@ -177,15 +177,15 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
   
   // Determine initial tab based on what's provided
-  // Prioritize framework code when available
+  // Prioritize framework code when available, then JS for interactive examples
   const getInitialTab = (): 'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next' => {
     if (hasReact) return 'react';
     if (hasAngular) return 'angular';
     if (hasVue) return 'vue';
     if (hasNext) return 'next';
+    if (hasJS) return 'js'; // Show JS first for JavaScript learning content
     if (hasCSS) return 'css';
     if (html) return 'html';
-    if (hasJS) return 'js';
     return 'html';
   };
   

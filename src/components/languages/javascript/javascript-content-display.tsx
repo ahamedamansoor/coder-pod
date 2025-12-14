@@ -37,7 +37,6 @@ const JavaScriptPrivateFields = lazy(() => import('./topics/javascript-private-f
 const JavaScriptObjectDestructuring = lazy(() => import('./topics/javascript-object-destructuring'));
 const JavaScriptThisKeyword = lazy(() => import('./topics/javascript-this-keyword'));
 const JavaScriptStrings = lazy(() => import('./topics/javascript-strings'));
-const JavaScriptTemplateLiterals = lazy(() => import('./topics/javascript-template-literals'));
 const JavaScriptStringMethods = lazy(() => import('./topics/javascript-string-methods'));
 const JavaScriptRegularExpressions = lazy(() => import('./topics/javascript-regular-expressions'));
 const JavaScriptScope = lazy(() => import('./topics/javascript-scope'));
@@ -66,14 +65,106 @@ const JavaScriptEvents = lazy(() => import('./topics/javascript-events-new'));
 const JavaScriptEventTypes = lazy(() => import('./topics/javascript-event-types-new'));
 const JavaScriptEventObject = lazy(() => import('./topics/javascript-event-object-new'));
 const JavaScriptEventPropagation = lazy(() => import('./topics/javascript-event-propagation-new'));
-const JavaScriptPreventDefault = lazy(() => import('./topics/javascript-prevent-default'));
-const JavaScriptFormHandling = lazy(() => import('./topics/javascript-form-handling'));
-const JavaScriptFormValidation = lazy(() => import('./topics/javascript-form-validation'));
-const JavaScriptFormDataApi = lazy(() => import('./topics/javascript-formdata-api'));
-const JavaScriptES6Overview = lazy(() => import('./topics/javascript-es6-overview'));
+const JavaScriptPreventDefault = lazy(() => import('./topics/javascript-prevent-default-new'));
+const JavaScriptFormHandling = lazy(() => import('./topics/javascript-form-handling-new'));
+const JavaScriptFormValidation = lazy(() => import('./topics/javascript-form-validation-new'));
+const JavaScriptFormDataApi = lazy(() => import('./topics/javascript-formdata-api-new'));
+const JavaScriptES6Overview = lazy(() => import('./topics/javascript-es6-overview-new'));
 const JavaScriptDestructuring = lazy(() => import('./topics/javascript-destructuring'));
 const JavaScriptSpreadRest = lazy(() => import('./topics/javascript-spread-rest'));
-const JavaScriptDefaultParameters = lazy(() => import('./topics/javascript-default-parameters'));
+const JavaScriptDefaultParameters = lazy(() => import('./topics/javascript-default-parameters-new'));
+const JavaScriptEnhancedObjectLiterals = lazy(() => import('./topics/javascript-enhanced-object-literals-new'));
+const JavaScriptTemplateLiterals = lazy(() => import('./topics/javascript-template-literals-new'));
+const JavaScriptForOfLoops = lazy(() => import('./topics/javascript-for-of-loops-new'));
+const JavaScriptModules = lazy(() => import('./topics/javascript-modules-new'));
+const JavaScriptSymbols = lazy(() => import('./topics/javascript-symbols-new'));
+const JavaScriptIterators = lazy(() => import('./topics/javascript-iterators-new'));
+const JavaScriptGenerators = lazy(() => import('./topics/javascript-generators-new'));
+const JavaScriptProxyReflect = lazy(() => import('./topics/javascript-proxy-reflect-new'));
+const JavaScriptReflectAPI = lazy(() => import('./topics/javascript-reflect-api'));
+const JavaScriptDesignPatterns = lazy(() => import('./topics/javascript-design-patterns-new'));
+const JavaScriptFunctionalProgramming = lazy(() => import('./topics/javascript-functional-programming-new'));
+const JavaScriptCurrying = lazy(() => import('./topics/javascript-currying-new'));
+const JavaScriptComposition = lazy(() => import('./topics/javascript-composition-new'));
+const JavaScriptRecursion = lazy(() => import('./topics/javascript-recursion-new'));
+const JavaScriptMemoization = lazy(() => import('./topics/javascript-memoization-new'));
+const JavaScriptErrorHandling = lazy(() => import('./topics/javascript-error-handling-new'));
+const JavaScriptDebugging = lazy(() => import('./topics/javascript-debugging-new'));
+const JavaScriptPerformanceMonitoring = lazy(() => import('./topics/javascript-performance-monitoring-new'));
+const JavaScriptLighthouse = lazy(() => import('./topics/javascript-lighthouse-new'));
+const JavaScriptCallStackNew = lazy(() => import('./topics/javascript-call-stack-new'));
+const JavaScriptProfiling = lazy(() => import('./topics/javascript-profiling-new'));
+const JavaScriptMemoryLeaks = lazy(() => import('./topics/javascript-memory-leaks-new'));
+const JavaScriptGarbageCollection = lazy(() => import('./topics/javascript-garbage-collection-new'));
+const JavaScriptDebounceThrottle = lazy(() => import('./topics/javascript-debounce-throttle'));
+const JavaScriptLazyLoading = lazy(() => import('./topics/javascript-lazy-loading'));
+const JavaScriptWebWorkers = lazy(() => import('./topics/javascript-web-workers'));
+const JavaScriptPropertyAccess = lazy(() => import('./topics/javascript-property-access'));
+const JavaScriptEvalFunctionConstructor = lazy(() => import('./topics/javascript-eval-function-constructor'));
+const JavaScriptUnitTesting = lazy(() => import('./topics/javascript-unit-testing'));
+const JavaScriptJest = lazy(() => import('./topics/javascript-jest'));
+const JavaScriptVitest = lazy(() => import('./topics/javascript-vitest'));
+const JavaScriptTDD = lazy(() => import('./topics/javascript-tdd'));
+const JavaScriptMockingSpies = lazy(() => import('./topics/javascript-mocking-spies'));
+const JavaScriptE2ETesting = lazy(() => import('./topics/javascript-e2e-testing'));
+const JavaScriptTestingBestPractices = lazy(() => import('./topics/javascript-testing-best-practices'));
+const JavaScriptXSSPrevention = lazy(() => import('./topics/javascript-xss-prevention'));
+const JavaScriptCSRFProtection = lazy(() => import('./topics/javascript-csrf-protection'));
+const JavaScriptCSP = lazy(() => import('./topics/javascript-csp'));
+const JavaScriptInputSanitization = lazy(() => import('./topics/javascript-input-sanitization'));
+const JavaScriptSecureCoding = lazy(() => import('./topics/javascript-secure-coding'));
+const JavaScriptCodeSplitting = lazy(() => import('./topics/javascript-code-splitting'));
+const JavaScriptTreeShaking = lazy(() => import('./topics/javascript-tree-shaking'));
+const JavaScriptCleanCode = lazy(() => import('./topics/javascript-clean-code'));
+const JavaScriptSOLIDPrinciples = lazy(() => import('./topics/javascript-solid-principles'));
+const JavaScriptNpmYarn = lazy(() => import('./topics/javascript-npm-yarn'));
+const JavaScriptPackageJson = lazy(() => import('./topics/javascript-package-json'));
+const JavaScriptWebpack = lazy(() => import('./topics/javascript-webpack'));
+const JavaScriptVite = lazy(() => import('./topics/javascript-vite'));
+const JavaScriptBabel = lazy(() => import('./topics/javascript-babel'));
+const JavaScriptESLint = lazy(() => import('./topics/javascript-eslint'));
+const JavaScriptPrettier = lazy(() => import('./topics/javascript-prettier'));
+const JavaScriptBrowserVsNodeJS = lazy(() => import('./topics/javascript-browser-vs-nodejs'));
+const JavaScriptJSEngine = lazy(() => import('./topics/javascript-js-engine'));
+const JavaScriptRuntimeAPIs = lazy(() => import('./topics/javascript-runtime-apis'));
+const JavaScriptCommonJSvsESModules = lazy(() => import('./topics/javascript-commonjs-vs-esmodules'));
+const JavaScriptAbortController = lazy(() => import('./topics/javascript-abort-controller'));
+const JavaScriptHistoryAPI = lazy(() => import('./topics/javascript-history-api'));
+const JavaScriptURLAPI = lazy(() => import('./topics/javascript-url-api'));
+const JavaScriptClipboardAPI = lazy(() => import('./topics/javascript-clipboard-api'));
+const JavaScriptFileAPI = lazy(() => import('./topics/javascript-file-api'));
+const JavaScriptDragDropAPI = lazy(() => import('./topics/javascript-drag-drop-api'));
+const JavaScriptFullscreenAPI = lazy(() => import('./topics/javascript-fullscreen-api'));
+const JavaScriptPageVisibilityAPI = lazy(() => import('./topics/javascript-page-visibility-api'));
+const JavaScriptBatteryStatusAPI = lazy(() => import('./topics/javascript-battery-status-api'));
+const JavaScriptNetworkInfoAPI = lazy(() => import('./topics/javascript-network-info-api'));
+const JavaScriptMediaQueryAPI = lazy(() => import('./topics/javascript-media-query-api'));
+const JavaScriptResizeObserver = lazy(() => import('./topics/javascript-resize-observer'));
+const JavaScriptPerformanceAPI = lazy(() => import('./topics/javascript-performance-api'));
+const JavaScriptRequestAnimationFrame = lazy(() => import('./topics/javascript-request-animation-frame'));
+const JavaScriptRequestIdleCallback = lazy(() => import('./topics/javascript-request-idle-callback'));
+const JavaScriptAsyncIteratorsGenerators = lazy(() => import('./topics/javascript-async-iterators-generators'));
+const JavaScriptMicrotasksMacrotasks = lazy(() => import('./topics/javascript-microtasks-macrotasks'));
+const JavaScriptIntl = lazy(() => import('./topics/javascript-intl'));
+const JavaScriptIntlDateTimeFormat = lazy(() => import('./topics/javascript-intl-datetimeformat'));
+const JavaScriptIntlNumberFormat = lazy(() => import('./topics/javascript-intl-numberformat'));
+const JavaScriptIntlCollator = lazy(() => import('./topics/javascript-intl-collator'));
+const JavaScriptIntlPluralRules = lazy(() => import('./topics/javascript-intl-pluralrules'));
+const JavaScriptJSON = lazy(() => import('./topics/javascript-json'));
+const JavaScriptJSONParse = lazy(() => import('./topics/javascript-json-parse'));
+const JavaScriptJSONStringify = lazy(() => import('./topics/javascript-json-stringify'));
+const JavaScriptJSONReplacerReviver = lazy(() => import('./topics/javascript-json-replacer-reviver'));
+const JavaScriptMathObject = lazy(() => import('./topics/javascript-math-object'));
+const JavaScriptNumberMethods = lazy(() => import('./topics/javascript-number-methods'));
+const JavaScriptMathRandom = lazy(() => import('./topics/javascript-math-random'));
+const JavaScriptDateObject = lazy(() => import('./topics/javascript-date-object'));
+const JavaScriptDateMethods = lazy(() => import('./topics/javascript-date-methods'));
+const JavaScriptDateFormatting = lazy(() => import('./topics/javascript-date-formatting'));
+const JavaScriptTemporalAPI = lazy(() => import('./topics/javascript-temporal-api'));
+const JavaScriptSet = lazy(() => import('./topics/javascript-set'));
+const JavaScriptMap = lazy(() => import('./topics/javascript-map'));
+const JavaScriptWeakMap = lazy(() => import('./topics/javascript-weakmap'));
+const JavaScriptWeakSet = lazy(() => import('./topics/javascript-weakset'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -108,7 +199,6 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'object-destructuring': JavaScriptObjectDestructuring,
   'this-keyword': JavaScriptThisKeyword,
   'strings': JavaScriptStrings,
-  'template-literals': JavaScriptTemplateLiterals,
   'string-methods': JavaScriptStringMethods,
   'regular-expressions': JavaScriptRegularExpressions,
   'js-scope': JavaScriptScope,
@@ -145,6 +235,99 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'destructuring': JavaScriptDestructuring,
   'spread-rest': JavaScriptSpreadRest,
   'default-parameters': JavaScriptDefaultParameters,
+  'enhanced-object-literals': JavaScriptEnhancedObjectLiterals,
+  'template-literals': JavaScriptTemplateLiterals,
+  'for-of-loop': JavaScriptForOfLoops,
+  'modules': JavaScriptModules,
+  'symbols': JavaScriptSymbols,
+  'iterators': JavaScriptIterators,
+  'generators': JavaScriptGenerators,
+  'proxy-reflect': JavaScriptProxyReflect,
+  'reflect-api': JavaScriptReflectAPI,
+  'design-patterns': JavaScriptDesignPatterns,
+  'functional-programming': JavaScriptFunctionalProgramming,
+  'currying': JavaScriptCurrying,
+  'composition': JavaScriptComposition,
+  'recursion': JavaScriptRecursion,
+  'memoization': JavaScriptMemoization,
+  'error-handling': JavaScriptErrorHandling,
+  'debugging': JavaScriptDebugging,
+  'performance-monitoring': JavaScriptPerformanceMonitoring,
+  'lighthouse': JavaScriptLighthouse,
+  'call-stack-visualization': JavaScriptCallStackNew,
+  'profiling': JavaScriptProfiling,
+  'memory-leaks': JavaScriptMemoryLeaks,
+  'garbage-collection': JavaScriptGarbageCollection,
+  'debouncing-throttling': JavaScriptDebounceThrottle,
+  'lazy-loading': JavaScriptLazyLoading,
+  'web-workers': JavaScriptWebWorkers,
+  'property-access': JavaScriptPropertyAccess,
+  'eval-function': JavaScriptEvalFunctionConstructor,
+  'proxy-advanced': JavaScriptProxyReflect,
+  'unit-testing': JavaScriptUnitTesting,
+  'jest': JavaScriptJest,
+  'vitest': JavaScriptVitest,
+  'test-driven-development': JavaScriptTDD,
+  'mocking': JavaScriptMockingSpies,
+  'e2e-testing': JavaScriptE2ETesting,
+  'testing-best-practices': JavaScriptTestingBestPractices,
+  'xss-prevention': JavaScriptXSSPrevention,
+  'csrf-protection': JavaScriptCSRFProtection,
+  'content-security-policy': JavaScriptCSP,
+  'sanitization': JavaScriptInputSanitization,
+  'secure-coding': JavaScriptSecureCoding,
+  'code-splitting': JavaScriptCodeSplitting,
+  'tree-shaking': JavaScriptTreeShaking,
+  'clean-code': JavaScriptCleanCode,
+  'solid-principles': JavaScriptSOLIDPrinciples,
+  'npm-yarn': JavaScriptNpmYarn,
+  'package-json': JavaScriptPackageJson,
+  'webpack': JavaScriptWebpack,
+  'vite': JavaScriptVite,
+  'babel': JavaScriptBabel,
+  'eslint': JavaScriptESLint,
+  'prettier': JavaScriptPrettier,
+  'browser-vs-nodejs': JavaScriptBrowserVsNodeJS,
+  'javascript-engines': JavaScriptJSEngine,
+  'runtime-apis': JavaScriptRuntimeAPIs,
+  'commonjs-vs-esm': JavaScriptCommonJSvsESModules,
+  'abort-controller': JavaScriptAbortController,
+  'microtasks-macrotasks': JavaScriptMicrotasksMacrotasks,
+  'async-iterators-generators': JavaScriptAsyncIteratorsGenerators,
+  'history-api': JavaScriptHistoryAPI,
+  'url-api': JavaScriptURLAPI,
+  'clipboard-api': JavaScriptClipboardAPI,
+  'file-api': JavaScriptFileAPI,
+  'drag-drop-api': JavaScriptDragDropAPI,
+  'fullscreen-api': JavaScriptFullscreenAPI,
+  'page-visibility-api': JavaScriptPageVisibilityAPI,
+  'battery-api': JavaScriptBatteryStatusAPI,
+  'network-information': JavaScriptNetworkInfoAPI,
+  'media-query-api': JavaScriptMediaQueryAPI,
+  'resize-observer': JavaScriptResizeObserver,
+  'performance-api': JavaScriptPerformanceAPI,
+  'request-animation-frame': JavaScriptRequestAnimationFrame,
+  'request-idle-callback': JavaScriptRequestIdleCallback,
+  'intl': JavaScriptIntl,
+  'intl-datetimeformat': JavaScriptIntlDateTimeFormat,
+  'intl-numberformat': JavaScriptIntlNumberFormat,
+  'intl-collator': JavaScriptIntlCollator,
+  'intl-pluralrules': JavaScriptIntlPluralRules,
+  'json': JavaScriptJSON,
+  'json-parse': JavaScriptJSONParse,
+  'json-stringify': JavaScriptJSONStringify,
+  'json-replacer-reviver': JavaScriptJSONReplacerReviver,
+  'math-object': JavaScriptMathObject,
+  'number-methods': JavaScriptNumberMethods,
+  'math-random': JavaScriptMathRandom,
+  'date-object': JavaScriptDateObject,
+  'date-methods': JavaScriptDateMethods,
+  'date-formatting': JavaScriptDateFormatting,
+  'temporal-api': JavaScriptTemporalAPI,
+  'set': JavaScriptSet,
+  'map': JavaScriptMap,
+  'weakmap': JavaScriptWeakMap,
+  'weakset': JavaScriptWeakSet,
 };
 
 function LoadingSkeleton() {
