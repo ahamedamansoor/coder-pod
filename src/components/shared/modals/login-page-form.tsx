@@ -9,8 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Chrome, Loader2, User } from 'lucide-react';
 import { Logo } from '@/components/shared/layout/logo';
 import { useAuth, useFirestore } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signInAnonymously, UserCredential, User as FirebaseUser } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { signInAnonymously } from 'firebase/auth';
+import { ServiceFactory } from '@/services';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
@@ -29,68 +29,21 @@ export function LoginPageForm() {
   const { toast } = useToast();
   const { showLoader } = useLoading();
 
-  const createUserProfile = async (user: FirebaseUser) => {
-    if (!user || !firestore) return;
-
-    let isNewUser = false;
-    
-    showLoader({
-      title: 'Login successful!',
-      subtitle: 'Redirecting you to your dashboard...',
-    });
-
-    const isEmailPasswordSignIn = user.providerData.some(p => p.providerId === 'password');
-    if (isEmailPasswordSignIn && !user.emailVerified) {
-        toast({
-            variant: 'destructive',
-            title: 'Verification Required',
-            description: 'Please verify your email before signing in. Check your inbox for a verification link.',
-            duration: 8000,
-        });
-        await auth?.signOut();
-        return; 
-    }
-
-    const userRef = doc(firestore, `users/${user.uid}`);
-    const docSnap = await getDoc(userRef);
-
-    if (!docSnap.exists()) {
-        isNewUser = true;
-        const nameFromUrl = searchParams.get('name');
-        const dobFromUrl = searchParams.get('dob');
-        const phoneFromUrl = searchParams.get('phoneNumber');
-
-        const userProfile = {
-          id: user.uid,
-          email: user.email,
-          name: user.displayName || nameFromUrl || user.email,
-          phoneNumber: user.phoneNumber || phoneFromUrl || null,
-          dob: dobFromUrl ? new Date(dobFromUrl) : null,
-          createdAt: serverTimestamp(),
-          lastLoginAt: serverTimestamp(),
-          completedTopics: {},
-          plan: "free",
-          tokenBalance: 10000,
-        };
-        await setDoc(userRef, userProfile);
-    } else {
-        await setDoc(userRef, { lastLoginAt: serverTimestamp(), email: user.email }, { merge: true });
-    }
-    
-    router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);
-  };
-
-  const handleSuccessfulLogin = async (userCredential: UserCredential) => {
-    await createUserProfile(userCredential.user);
-  };
 
   const handleGoogleSignIn = async () => {
-    if (!auth) return;
+    if (!auth || !firestore) return;
     setIsGoogleLoading(true);
-    const provider = new GoogleAuthProvider();
+    
     try {
-      const userCredential = await signInWithPopup(auth, provider);
-      await handleSuccessfulLogin(userCredential);
+      const authService = ServiceFactory.getAuthService(auth, firestore);
+      const { user, isNewUser } = await authService.signInWithGoogle();
+      
+      showLoader({
+        title: 'Login successful!',
+        subtitle: 'Redirecting you to your dashboard...',
+      });
+      
+      router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);
     } catch (error: any) {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
         toast({
@@ -106,7 +59,7 @@ export function LoginPageForm() {
         });
       }
     } finally {
-        setIsGoogleLoading(false);
+      setIsGoogleLoading(false);
     }
   };
   
@@ -118,17 +71,30 @@ export function LoginPageForm() {
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth) return;
+    if (!auth || !firestore) return;
     setIsEmailLoading(true);
+    
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      await handleSuccessfulLogin(userCredential);
+      const authService = ServiceFactory.getAuthService(auth, firestore);
+      const { user, isNewUser } = await authService.signInWithEmail(email, password);
+      
+      showLoader({
+        title: 'Login successful!',
+        subtitle: 'Redirecting you to your dashboard...',
+      });
+      
+      router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);
     } catch (error: any) {
-       console.error('Email sign-in error:', error);
-       let description = 'An unexpected error occurred. Please try again.';
-       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-            description = 'The email or password you entered is incorrect. Please try again.';
-       }
+      console.error('Email sign-in error:', error);
+      
+      let description = 'An unexpected error occurred. Please try again.';
+      
+      if (error.message === 'EMAIL_NOT_VERIFIED') {
+        description = 'Please verify your email before signing in. Check your inbox for a verification link.';
+      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        description = 'The email or password you entered is incorrect. Please try again.';
+      }
+      
       toast({
         variant: 'destructive',
         title: 'Sign-in failed',

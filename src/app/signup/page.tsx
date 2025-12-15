@@ -21,8 +21,7 @@ import Link from 'next/link';
 import { countries } from '@/lib/countries';
 
 import { useAuth, useFirestore } from '@/firebase';
-import { createUserWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup, UserCredential, User as FirebaseUser } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { ServiceFactory } from '@/services';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { getRandomQuote } from '@/data/motivational-quotes';
@@ -83,11 +82,8 @@ export default function SignupPage() {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      const user = userCredential.user;
-
-      // Send verification email
-      await sendEmailVerification(user);
+      const authService = ServiceFactory.getAuthService(auth, firestore);
+      const user = await authService.signUpWithEmail(values.email, values.password);
 
       // We pass user details via query params for pre-filling on the login page,
       // as the profile will only be created upon first verified sign-in.
@@ -131,43 +127,23 @@ export default function SignupPage() {
   const handleGoogleSignUp = async () => {
     if (!auth || !firestore) return;
     setIsGoogleLoading(true);
-    const provider = new GoogleAuthProvider();
+    
     try {
-      const userCredential = await signInWithPopup(auth, provider);
-      const user = userCredential.user;
+      const authService = ServiceFactory.getAuthService(auth, firestore);
+      const { user, isNewUser } = await authService.signInWithGoogle();
       
-      // Check if user already exists
-      const userRef = doc(firestore, `users/${user.uid}`);
-      const docSnap = await getDoc(userRef);
-      
-      if (docSnap.exists()) {
-        // User already exists, redirect to dashboard
-        toast({
-          title: 'Welcome back!',
-          description: 'Redirecting to your dashboard...',
-        });
-        router.push('/dashboard');
-      } else {
-        // New user, create profile
-        const userProfile = {
-          id: user.uid,
-          email: user.email,
-          name: user.displayName || user.email,
-          phoneNumber: user.phoneNumber || null,
-          dob: null,
-          createdAt: serverTimestamp(),
-          lastLoginAt: serverTimestamp(),
-          completedTopics: {},
-          plan: 'free',
-          tokenBalance: 10000,
-        };
-        await setDoc(userRef, userProfile);
-        
+      if (isNewUser) {
         toast({
           title: 'Account created!',
           description: 'Welcome to Coder Pod!',
         });
         router.push('/dashboard?isNewUser=true');
+      } else {
+        toast({
+          title: 'Welcome back!',
+          description: 'Redirecting to your dashboard...',
+        });
+        router.push('/dashboard');
       }
     } catch (error: any) {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {

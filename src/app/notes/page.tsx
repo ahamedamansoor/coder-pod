@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useFirestore } from '@/firebase';
 import { useRouter } from 'next/navigation';
+import { ServiceFactory } from '@/services';
+import { Note } from '@/types/notes.types';
 import { enabledLanguages as languages } from '@/data/languages';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { 
   PlusCircle, Loader2, Search, Trash2, X, 
-  Youtube, Play, Clock, Filter, Code, BookmarkIcon, Link as LinkIcon, FileText, BookOpen, ExternalLink, Sparkles
+  Youtube, Play, Clock, Filter, Code, BookmarkIcon, Link as LinkIcon, FileText, BookOpen, ExternalLink
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -17,6 +19,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import {
@@ -28,29 +37,20 @@ import {
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '@/contexts/PlayerContext';
-import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
 
-interface SavedNote {
-  id: string;
-  title: string;
-  url: string;
-  type: 'video' | 'blog' | 'article' | 'documentation' | 'link';
-  videoId?: string;
-  language: string;
-  createdAt: number;
-}
+// Using Note type from notes.types.ts
 
 export default function NotesPage() {
-  const [notes, setNotes] = useState<SavedNote[]>([]);
-  const [filteredNotes, setFilteredNotes] = useState<SavedNote[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [showAiKeyModal, setShowAiKeyModal] = useState(false);
+  const [hasMigrated, setHasMigrated] = useState(false);
   
   // Form states
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
-  const [resourceType, setResourceType] = useState<SavedNote['type']>('video');
+  const [resourceType, setResourceType] = useState<Note['type']>('video');
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const [isSaving, setIsSaving] = useState(false);
   
@@ -61,6 +61,7 @@ export default function NotesPage() {
   
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
@@ -80,23 +81,23 @@ export default function NotesPage() {
     return null;
   };
 
-  // Fetch saved resources from localStorage
-  const fetchNotes = () => {
+  // Fetch saved resources from Firebase
+  const fetchNotes = async () => {
+    if (!user || !firestore) return;
+    
     setIsLoading(true);
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const fetchedNotes: SavedNote[] = JSON.parse(stored);
-        // Sort by createdAt descending
-        fetchedNotes.sort((a, b) => b.createdAt - a.createdAt);
-        setNotes(fetchedNotes);
-        setFilteredNotes(fetchedNotes);
-      } else {
-        setNotes([]);
-        setFilteredNotes([]);
-      }
+      const notesService = ServiceFactory.getNotesService(firestore);
+      const fetchedNotes = await notesService.getUserNotes(user.uid);
+      setNotes(fetchedNotes);
+      setFilteredNotes(fetchedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);
+      toast({
+        title: "Error loading notes",
+        description: "Failed to load your notes. Please try again.",
+        variant: "destructive",
+      });
       setNotes([]);
       setFilteredNotes([]);
     } finally {
@@ -104,9 +105,48 @@ export default function NotesPage() {
     }
   };
 
+  // Migrate notes from localStorage to Firebase (one-time operation)
+  const migrateNotesFromLocalStorage = async () => {
+    if (!user || !firestore || hasMigrated) return;
+    
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const localNotes = JSON.parse(stored);
+        if (localNotes.length > 0) {
+          const notesService = ServiceFactory.getNotesService(firestore);
+          const migratedCount = await notesService.migrateFromLocalStorage(user.uid, localNotes);
+          
+          if (migratedCount > 0) {
+            // Clear localStorage after successful migration
+            localStorage.removeItem(STORAGE_KEY);
+            toast({
+              title: "Notes Migrated! 🎉",
+              description: `Successfully migrated ${migratedCount} notes to your account.`,
+            });
+            await fetchNotes();
+          }
+        }
+      }
+      setHasMigrated(true);
+    } catch (error) {
+      console.error("Error migrating notes:", error);
+      toast({
+        title: "Migration Warning",
+        description: "Some notes may not have been migrated. Your existing notes are safe.",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    if (user && firestore && !isUserLoading) {
+      // First migrate any localStorage notes, then fetch all notes
+      migrateNotesFromLocalStorage().then(() => {
+        fetchNotes();
+      });
+    }
+  }, [user, firestore, isUserLoading]);
 
   // Filter notes based on search, language, and type
   useEffect(() => {
@@ -148,7 +188,7 @@ export default function NotesPage() {
     setIsDialogOpen(true);
   };
 
-  const handleSaveNote = () => {
+  const handleSaveNote = async () => {
     if (!title.trim()) {
       toast({
         title: "Title Required",
@@ -167,6 +207,15 @@ export default function NotesPage() {
       return;
     }
 
+    if (!user || !firestore) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to save notes.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       let videoId: string | undefined;
@@ -176,32 +225,29 @@ export default function NotesPage() {
         videoId = extractVideoId(url) || undefined;
       }
 
-      const newNote: SavedNote = {
-        id: Date.now().toString(),
+      const notesService = ServiceFactory.getNotesService(firestore);
+      await notesService.createNote(user.uid, {
         title: title.trim(),
         url: url.trim(),
         type: resourceType,
         videoId,
         language: selectedLanguage,
-        createdAt: Date.now(),
-      };
-
-      const updatedNotes = [newNote, ...notes];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNotes));
+      });
       
       toast({
         title: "✅ Resource Saved!",
         description: `Your ${resourceType} has been saved successfully.`,
       });
       
-      fetchNotes();
+      await fetchNotes();
       setIsDialogOpen(false);
       resetForm();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving note:", error);
+      const errorMessage = error?.message || error?.code || "Failed to save resource. Please try again.";
       toast({
         title: "❌ Save Failed",
-        description: "Failed to save resource. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -209,14 +255,23 @@ export default function NotesPage() {
     }
   };
 
-  const handleDeleteNote = (noteId: string) => {
+  const handleDeleteNote = async (noteId: string) => {
     if (!confirm('Are you sure you want to delete this resource?')) return;
 
+    if (!user || !firestore) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to delete notes.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const updatedNotes = notes.filter(note => note.id !== noteId);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNotes));
+      const notesService = ServiceFactory.getNotesService(firestore);
+      await notesService.deleteNote(noteId, user.uid);
       
-      fetchNotes();
+      await fetchNotes();
       toast({
         title: "🗑️ Resource Deleted",
         description: "Resource has been deleted.",
@@ -232,7 +287,7 @@ export default function NotesPage() {
   };
 
   // Get icon based on resource type
-  const getResourceIcon = (type: SavedNote['type']) => {
+  const getResourceIcon = (type: Note['type']) => {
     switch (type) {
       case 'video': return Youtube;
       case 'blog': return BookOpen;
@@ -265,25 +320,14 @@ export default function NotesPage() {
           title="Learning Resources"
           subtitle="Save videos, blogs, articles & links for quick access — organize your learning materials in one place"
           action={
-            <div className="flex items-center gap-3">
-              <Button 
-                onClick={() => setShowAiKeyModal(true)}
-                variant="outline"
-                size="lg"
-                className="gap-2 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-200 dark:border-blue-800 hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-900/50 dark:hover:to-purple-900/50"
-              >
-                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                AI Settings
-              </Button>
-              <Button 
-                onClick={openCreateDialog}
-                size="lg"
-                className="gap-2"
-              >
-                <PlusCircle className="w-4 h-4" />
-                Add Resource
-              </Button>
-            </div>
+            <Button 
+              onClick={openCreateDialog}
+              size="lg"
+              className="gap-2"
+            >
+              <PlusCircle className="w-4 h-4" />
+              Add Resource
+            </Button>
           }
         />
       </div>
@@ -405,6 +449,7 @@ export default function NotesPage() {
                   const langData = languages.find(l => l.slug === note.language);
                   const ResourceIcon = getResourceIcon(note.type);
                   const hasThumb = note.type === 'video' && note.videoId;
+                  const createdDate = note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt);
                   
                   return (
                     <div key={note.id} className="group">
@@ -482,7 +527,7 @@ export default function NotesPage() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                               <Clock className="w-3 h-3" />
-                              {new Date(note.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              {createdDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                             </div>
                             <button
                               onClick={(e) => {
@@ -588,28 +633,21 @@ export default function NotesPage() {
 
             <div>
               <label className="text-sm font-medium mb-2 block">Programming Language *</label>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between h-11">
-                    <span className="flex items-center gap-2">
-                      <Code className="w-4 h-4" />
-                      {languages.find(l => l.slug === selectedLanguage)?.name || 'Select Language'}
-                    </span>
-                    <Filter className="w-4 h-4 text-muted-foreground" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full max-h-[300px] overflow-y-auto">
+              <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                <SelectTrigger className="w-full h-11">
+                  <div className="flex items-center gap-2">
+                    <Code className="w-4 h-4" />
+                    <SelectValue placeholder="Select Language" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
                   {languages.map(lang => (
-                    <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => setSelectedLanguage(lang.slug)}
-                      className="cursor-pointer"
-                    >
+                    <SelectItem key={lang.slug} value={lang.slug}>
                       {lang.name}
-                    </DropdownMenuItem>
+                    </SelectItem>
                   ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </SelectContent>
+              </Select>
               <p className="text-xs text-muted-foreground mt-1.5">
                 Organize resources by programming language
               </p>
@@ -640,26 +678,6 @@ export default function NotesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* AI Provider Modal */}
-      <AIProviderModal
-        isOpen={showAiKeyModal}
-        onClose={() => setShowAiKeyModal(false)}
-        onSave={async (provider, apiKey) => {
-          // Persist locally (client-side only)
-          localStorage.setItem('ai_api_key', apiKey);
-          localStorage.setItem('ai_provider', provider);
-          // Basic non-empty validation
-          const isValid = !!apiKey && apiKey.trim().length > 0;
-          if (isValid) {
-            toast({
-              title: 'AI Provider Connected!',
-              description: `Successfully configured ${provider}`,
-            });
-          }
-          return isValid;
-        }}
-      />
     </div>
   );
 }

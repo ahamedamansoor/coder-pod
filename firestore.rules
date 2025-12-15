@@ -13,21 +13,36 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      // Admins can read, update, and delete any user document.
-      // Users can read, update, and delete their own document.
+      // Any authenticated user can create their own user document
+      allow create: if request.auth != null;
+      
+      // Admins can read, update, and delete any user document
+      // Users can read, update, and delete their own document
       allow get, update, delete: if isAdmin() || isOwner(userId);
 
-      // Any authenticated user can create their own user document.
-      allow create: if isOwner(userId);
-
-      // Admins can list all users.
+      // Admins can list all users
       allow list: if isAdmin();
 
-      // A user can perform any action on their own subcollections.
-      // Admins can also perform any action on any user's subcollections.
+      // A user can perform any action on their own subcollections
+      // Admins can also perform any action on any user's subcollections
       match /{allSubcollections}/{docId} {
         allow read, write: if isAdmin() || isOwner(userId);
       }
+    }
+
+    // Notes collection - users can only access their own notes
+    match /notes/{noteId} {
+      // Admins can do anything
+      allow read, write: if isAdmin();
+      
+      // Allow authenticated users to create notes
+      allow create: if request.auth != null;
+      
+      // Allow authenticated users to read their own notes
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      
+      // Allow authenticated users to update/delete their own notes
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
   }
 }

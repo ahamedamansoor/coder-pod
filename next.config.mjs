@@ -27,8 +27,6 @@ const nextConfig = {
       // Exclude server-only packages from client bundle
       config.externals = config.externals || [];
       config.externals.push({
-        'firebase-admin': 'commonjs firebase-admin',
-        '@google-cloud/storage': 'commonjs @google-cloud/storage',
         'genkit': 'commonjs genkit',
         '@genkit-ai/google-genai': 'commonjs @genkit-ai/google-genai',
       });
@@ -46,8 +44,6 @@ const nextConfig = {
   
   // Server Components external packages (prevents bundling for server components)
   serverExternalPackages: [
-    'firebase-admin',
-    '@google-cloud/storage',
     'genkit',
     '@genkit-ai/google-genai',
   ],

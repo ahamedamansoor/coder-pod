@@ -4,13 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Shield, Code, Play, Zap, StickyNote, LogIn, Brain } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { cn } from '@/lib/utils';
-import { isUserAdmin } from '@/lib/admin';
 import { FeatureGateModal } from '@/components/shared/feature-gate-modal';
 import {
   DropdownMenu,
@@ -384,17 +383,6 @@ export function InnovativeHeader({
                 
                 {/* Menu Items */}
                 <div className="p-2">
-                  {isUserAdmin(user) && (
-                    <>
-                      <Link href="/admin">
-                        <DropdownMenuItem className="cursor-pointer rounded-lg p-3 transition-colors">
-                          <Shield className="mr-3 h-4 w-4 text-blue-600 dark:text-blue-400" />
-                          <span className="font-medium">Admin Dashboard</span>
-                        </DropdownMenuItem>
-                      </Link>
-                      <DropdownMenuSeparator className="my-2" />
-                    </>
-                  )}
                   
                   <DropdownMenuItem className="cursor-pointer rounded-lg p-3 transition-colors">
                     <Settings className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
