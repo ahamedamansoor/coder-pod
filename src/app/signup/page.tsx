@@ -14,14 +14,15 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CalendarIcon, Loader2, Quote } from 'lucide-react';
+import { CalendarIcon, Loader2, Quote, Chrome } from 'lucide-react';
 import { Logo } from '@/components/shared/layout/logo';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { countries } from '@/lib/countries';
 
-import { useAuth } from '@/firebase';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { useAuth, useFirestore } from '@/firebase';
+import { createUserWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup, UserCredential, User as FirebaseUser } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { getRandomQuote } from '@/data/motivational-quotes';
@@ -32,16 +33,18 @@ const formSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
   countryCode: z.string().nonempty({ message: 'Please select your country code.' }),
   phoneNumber: z.string().min(5, { message: 'Please enter a valid phone number.' }),
-  dob: z.date({
-    required_error: 'A date of birth is required.',
+  dob: z.string().regex(/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/, {
+    message: 'Please enter a valid date in MM/DD/YYYY format.',
   }),
 });
 
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [phonePlaceholder, setPhonePlaceholder] = useState('555-123-4567');
   const [quote, setQuote] = useState(() => getRandomQuote());
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -91,7 +94,7 @@ export default function SignupPage() {
       const queryParams = new URLSearchParams({
         email: values.email,
         name: values.name,
-        dob: values.dob.toISOString(),
+        dob: values.dob,
         phoneNumber: `${values.countryCode}${values.phoneNumber}`,
       });
       const loginUrl = `/login?${queryParams.toString()}`;
@@ -125,6 +128,66 @@ export default function SignupPage() {
     }
   }
 
+  const handleGoogleSignUp = async () => {
+    if (!auth || !firestore) return;
+    setIsGoogleLoading(true);
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
+      
+      // Check if user already exists
+      const userRef = doc(firestore, `users/${user.uid}`);
+      const docSnap = await getDoc(userRef);
+      
+      if (docSnap.exists()) {
+        // User already exists, redirect to dashboard
+        toast({
+          title: 'Welcome back!',
+          description: 'Redirecting to your dashboard...',
+        });
+        router.push('/dashboard');
+      } else {
+        // New user, create profile
+        const userProfile = {
+          id: user.uid,
+          email: user.email,
+          name: user.displayName || user.email,
+          phoneNumber: user.phoneNumber || null,
+          dob: null,
+          createdAt: serverTimestamp(),
+          lastLoginAt: serverTimestamp(),
+          completedTopics: {},
+          plan: 'free',
+          tokenBalance: 10000,
+        };
+        await setDoc(userRef, userProfile);
+        
+        toast({
+          title: 'Account created!',
+          description: 'Welcome to Coder Pod!',
+        });
+        router.push('/dashboard?isNewUser=true');
+      }
+    } catch (error: any) {
+      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+        toast({
+          title: 'Sign-up cancelled',
+          description: 'You closed the Google sign-up window.',
+        });
+      } else {
+        console.error('Google sign-up error:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Sign-up failed',
+          description: error.message || 'An unexpected error occurred during Google sign-up.',
+        });
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen w-full overflow-hidden">
       {/* Animated gradient background */}
@@ -146,6 +209,31 @@ export default function SignupPage() {
           <CardDescription>Join Coder Pod and start your learning journey today.</CardDescription>
         </CardHeader>
         <CardContent>
+          <Button
+            variant="outline"
+            onClick={handleGoogleSignUp}
+            disabled={isLoading || isGoogleLoading}
+            className="w-full mb-4"
+          >
+            {isGoogleLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <>
+                <Chrome className="mr-2 h-4 w-4" />
+                Sign up with Google
+              </>
+            )}
+          </Button>
+
+          <div className="relative mb-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or with email</span>
+            </div>
+          </div>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -229,45 +317,22 @@ export default function SignupPage() {
                 control={form.control}
                 name="dob"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date of birth</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'w-full pl-3 text-left font-normal',
-                              !field.value && 'text-muted-foreground'
-                            )}
-                            disabled={isLoading}
-                          >
-                            {field.value ? (
-                              format(field.value, 'PPP')
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date('1900-01-01')
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  <FormItem>
+                    <FormLabel>Date of Birth</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="text" 
+                        placeholder="MM/DD/YYYY" 
+                        {...field} 
+                        disabled={isLoading}
+                        maxLength={10}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isLoading || isGoogleLoading}>
                 {isLoading ? <Loader2 className="animate-spin" /> : 'Create Account'}
               </Button>
             </form>

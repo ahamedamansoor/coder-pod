@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Chrome, Loader2, User, Github } from 'lucide-react';
+import { Chrome, Loader2, User } from 'lucide-react';
 import { Logo } from '@/components/shared/layout/logo';
 import { useAuth, useFirestore } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signInAnonymously, UserCredential, GithubAuthProvider, User as FirebaseUser } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signInAnonymously, UserCredential, User as FirebaseUser } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -21,7 +21,6 @@ export function LoginPageForm() {
   const [password, setPassword] = useState('');
   const [isEmailLoading, setIsEmailLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [isGitHubLoading, setIsGitHubLoading] = useState(false);
   const [isAnonymousLoading, setIsAnonymousLoading] = useState(false);
   const auth = useAuth();
   const firestore = useFirestore();
@@ -111,33 +110,6 @@ export function LoginPageForm() {
     }
   };
   
-  const handleGitHubSignIn = async () => {
-    if (!auth) return;
-    setIsGitHubLoading(true);
-    const provider = new GithubAuthProvider();
-    provider.addScope('read:user');
-    provider.addScope('user:email');
-    try {
-      const userCredential = await signInWithPopup(auth, provider);
-      await handleSuccessfulLogin(userCredential);
-    } catch (error: any) {
-      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        toast({
-          title: 'Sign-in cancelled',
-          description: 'You closed the GitHub sign-in window.',
-        });
-      } else {
-        console.error('GitHub sign-in error:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Sign-in failed',
-          description: error.message || 'An unexpected error occurred during GitHub sign-in.',
-        });
-      }
-    } finally {
-      setIsGitHubLoading(false);
-    }
-  };
 
   const handleAnonymousSignIn = async () => {
     showLoader();
@@ -167,7 +139,7 @@ export function LoginPageForm() {
     }
   };
 
-  const isLoading = isEmailLoading || isGoogleLoading || isAnonymousLoading || isGitHubLoading;
+  const isLoading = isEmailLoading || isGoogleLoading || isAnonymousLoading;
 
   return (
     <Card className="w-full max-w-md">
@@ -178,36 +150,21 @@ export function LoginPageForm() {
         <CardDescription>Sign in to continue your learning journey.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-         <div className="grid grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              onClick={handleGoogleSignIn}
-              disabled={isLoading}
-            >
-              {isGoogleLoading ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                <>
-                  <Chrome className="mr-2 h-4 w-4" />
-                  Google
-                </>
-              )}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleGitHubSignIn}
-              disabled={isLoading}
-            >
-              {isGitHubLoading ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                <>
-                  <Github className="mr-2 h-4 w-4" />
-                  GitHub
-                </>
-              )}
-            </Button>
-          </div>
+         <Button
+            variant="outline"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+            className="w-full"
+          >
+            {isGoogleLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <>
+                <Chrome className="mr-2 h-4 w-4" />
+                Sign in with Google
+              </>
+            )}
+          </Button>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
