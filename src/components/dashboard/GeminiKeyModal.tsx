@@ -137,7 +137,7 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
             Choose Your AI Provider
           </DialogTitle>
           <DialogDescription>
-            Select an AI provider and enter your API key to unlock AI-powered features.
+            Select from 3 reliable AI providers and enter your API key to unlock AI-powered features.
           </DialogDescription>
         </DialogHeader>
 

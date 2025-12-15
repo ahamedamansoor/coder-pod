@@ -313,7 +313,7 @@ export default function AIInterviewPage() {
                   💡 <strong>Tip:</strong> After clicking start, you'll see a dropdown with {interviewCategories.reduce((acc, cat) => acc + cat.topics.length, 0)}+ topics to choose from
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Powered by 11 AI providers • Voice & Text modes available
+                  Powered by 3 reliable AI providers • Voice & Text modes available
                 </p>
               </div>
             </div>

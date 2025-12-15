@@ -248,15 +248,19 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
   // Auto-reset question type if it's not available for the selected category
   useEffect(() => {
     // For aptitude, auto-select MCQ (especially for Quantitative Aptitude)
-    if (selectedCategoryFilter === 'aptitude' && questionType === 'coding') {
-      setQuestionType('mcq');
-    } else if (selectedCategoryFilter === 'aptitude' && questionType === 'theory' && selectedLanguage === 'Quantitative Aptitude') {
-      // Auto-select MCQ for Quantitative Aptitude specifically
-      setQuestionType('mcq');
-    } else if (selectedCategoryFilter && selectedCategoryFilter !== 'technical' && selectedCategoryFilter !== 'aptitude' && questionType === 'coding') {
+    if (selectedCategoryFilter === 'aptitude') {
+      if (questionType === 'coding') {
+        setQuestionType('mcq');
+      } else if (questionType === 'theory' && selectedLanguage === 'Quantitative Aptitude') {
+        setQuestionType('mcq');
+      }
+    } 
+    // For non-technical categories (behavioral, etc.), disable coding
+    else if (selectedCategoryFilter && selectedCategoryFilter !== 'technical' && questionType === 'coding') {
       setQuestionType('theory');
-    } else if (selectedCategoryFilter !== 'aptitude' && questionType === 'mcq') {
-      // Reset MCQ to theory if category changes away from aptitude
+    } 
+    // Reset MCQ to theory if category changes away from aptitude
+    else if (selectedCategoryFilter !== 'aptitude' && questionType === 'mcq') {
       setQuestionType('theory');
     }
   }, [selectedCategoryFilter, questionType, selectedLanguage]);
@@ -1224,7 +1228,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
               <Sparkles className="mx-auto h-12 w-12 text-blue-500 mb-4" />
               <h3 className="text-2xl font-bold mb-2">AI Feature Locked</h3>
               <p className="text-muted-foreground mb-6 max-w-md">
-                Choose from 11 AI providers and enter your API key to unlock AI-powered interviews and content
+                Choose from 3 reliable AI providers and enter your API key to unlock AI-powered interviews and content
               </p>
               <Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
                 Choose AI Provider

@@ -15,7 +15,7 @@ import { z } from 'genkit';
 import { AIProvider } from '@/types/ai-providers';
 
 const ConductInterviewInputSchema = z.object({
-  provider: z.enum(['gemini', 'openai', 'anthropic', 'perplexity', 'groq', 'mistral', 'cohere', 'huggingface', 'together', 'deepseek', 'meta']).describe('The AI provider to use.'),
+  provider: z.enum(['gemini', 'openai', 'anthropic']).describe('The AI provider to use.'),
   apiKey: z.string().describe('The API key for authentication.'),
   language: z.string().describe('The topic for the interview (e.g., JavaScript, HR Round, Logical Reasoning).'),
   question: z.string().describe('The interview question that was asked. If empty, generate the first question.'),
@@ -74,33 +74,9 @@ export async function conductInterview(
     
     case 'anthropic':
       return await conductAnthropicInterview(apiKey, interviewInput);
-    
-    case 'perplexity':
-      return await conductPerplexityInterview(apiKey, interviewInput);
-    
-    case 'groq':
-      return await conductGroqInterview(apiKey, interviewInput);
-    
-    case 'mistral':
-      return await conductMistralInterview(apiKey, interviewInput);
-    
-    case 'cohere':
-      return await conductCohereInterview(apiKey, interviewInput);
-    
-    case 'huggingface':
-      return await conductHuggingFaceInterview(apiKey, interviewInput);
-
-    case 'together':
-      return await conductTogetherInterview(apiKey, interviewInput);
-
-    case 'deepseek':
-      return await conductDeepSeekInterview(apiKey, interviewInput);
-
-    case 'meta':
-      return await conductMetaInterview(apiKey, interviewInput);
 
     default:
-      throw new Error(`Unsupported AI provider: ${provider}. Please choose from: Gemini, OpenAI, Anthropic, Perplexity, Groq, Mistral, Cohere, HuggingFace, Together, DeepSeek, or Meta.`);
+      throw new Error(`Unsupported AI provider: ${provider}. Please choose from: Gemini, OpenAI, or Anthropic.`);
   }
 }
 
@@ -934,19 +910,25 @@ Respond in JSON format: {"feedback": "string", "idealAnswer": "string with code 
         result.nextquestion ??
         result.next ??
         result.question ??
+        result.interviewQuestion ??
+        result.interview_question ??
+        result.newQuestion ??
+        result.new_question ??
         '',
       answerHint:
         result.answerHint ??
         result.answer_hint ??
         result.hint ??
+        result.hints ??
         'Focus on key concepts and explain with a simple example.',
       simpleAnswer: result.simpleAnswer ?? result.simple_answer ?? result.simple ?? ''
     };
 
     // Validate required fields
     if (!normalizedResult.nextQuestion) {
-      console.error(`[${providerName}] Missing nextQuestion in result:`, result);
-      throw new Error(`${providerName} returned incomplete data - missing nextQuestion`);
+      console.error(`[${providerName}] Missing nextQuestion in result. All fields:`, Object.keys(result));
+      console.error(`[${providerName}] Full result object:`, JSON.stringify(result, null, 2));
+      throw new Error(`${providerName} returned incomplete data - missing nextQuestion. Available fields: ${Object.keys(result).join(', ')}`);
     }
 
     console.log(`[${providerName}] Successfully returning interview data`);
