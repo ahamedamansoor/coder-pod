@@ -96,9 +96,12 @@ const JavaScriptCallStackNew = lazy(() => import('./topics/javascript-call-stack
 const JavaScriptProfiling = lazy(() => import('./topics/javascript-profiling-new'));
 const JavaScriptMemoryLeaks = lazy(() => import('./topics/javascript-memory-leaks-new'));
 const JavaScriptGarbageCollection = lazy(() => import('./topics/javascript-garbage-collection-new'));
+const JavaScriptMemoryManagement = lazy(() => import('./topics/javascript-memory-management'));
 const JavaScriptDebounceThrottle = lazy(() => import('./topics/javascript-debounce-throttle'));
 const JavaScriptLazyLoading = lazy(() => import('./topics/javascript-lazy-loading'));
 const JavaScriptWebWorkers = lazy(() => import('./topics/javascript-web-workers'));
+const JavaScriptPerformanceOptimization = lazy(() => import('./topics/javascript-performance-optimization'));
+const JavaScriptWeakMapWeakSet = lazy(() => import('./topics/javascript-weakmap-weakset'));
 const JavaScriptPropertyAccess = lazy(() => import('./topics/javascript-property-access'));
 const JavaScriptEvalFunctionConstructor = lazy(() => import('./topics/javascript-eval-function-constructor'));
 const JavaScriptUnitTesting = lazy(() => import('./topics/javascript-unit-testing'));
@@ -165,6 +168,56 @@ const JavaScriptSet = lazy(() => import('./topics/javascript-set'));
 const JavaScriptMap = lazy(() => import('./topics/javascript-map'));
 const JavaScriptWeakMap = lazy(() => import('./topics/javascript-weakmap'));
 const JavaScriptWeakSet = lazy(() => import('./topics/javascript-weakset'));
+const JavaScriptObjectCreate = lazy(() => import('./topics/javascript-object-create'));
+const JavaScriptObjectDefineProperty = lazy(() => import('./topics/javascript-object-defineProperty'));
+const JavaScriptObjectFreezeSeal = lazy(() => import('./topics/javascript-object-freeze-seal'));
+const JavaScriptPropertyDescriptors = lazy(() => import('./topics/javascript-property-descriptors'));
+const JavaScriptObjectGetPrototypeOf = lazy(() => import('./topics/javascript-object-getPrototypeOf'));
+const JavaScriptArrayFlat = lazy(() => import('./topics/javascript-array-flat'));
+const JavaScriptArrayFrom = lazy(() => import('./topics/javascript-array-from'));
+const JavaScriptArrayOf = lazy(() => import('./topics/javascript-array-of'));
+const JavaScriptArrayFill = lazy(() => import('./topics/javascript-array-fill'));
+const JavaScriptArrayIncludes = lazy(() => import('./topics/javascript-array-includes'));
+const JavaScriptTypedArrays = lazy(() => import('./topics/javascript-typed-arrays'));
+const JavaScriptOptionalChaining = lazy(() => import('./topics/javascript-optional-chaining'));
+const JavaScriptNullishCoalescing = lazy(() => import('./topics/javascript-nullish-coalescing'));
+const JavaScriptBigInt = lazy(() => import('./topics/javascript-bigint'));
+const JavaScriptPromiseAllSettled = lazy(() => import('./topics/javascript-promise-allsettled'));
+const JavaScriptLogicalAssignment = lazy(() => import('./topics/javascript-logical-assignment'));
+const JavaScriptNumericSeparators = lazy(() => import('./topics/javascript-numeric-separators'));
+const JavaScriptPromiseAny = lazy(() => import('./topics/javascript-promise-any'));
+const JavaScriptStringReplaceAll = lazy(() => import('./topics/javascript-string-replaceall'));
+const JavaScriptAtMethod = lazy(() => import('./topics/javascript-at-method'));
+const JavaScriptArrayFindLast = lazy(() => import('./topics/javascript-array-findlast'));
+const JavaScriptArrayToSorted = lazy(() => import('./topics/javascript-array-tosorted'));
+const JavaScriptSymbolsAsWeakMapKeys = lazy(() => import('./topics/javascript-symbols-as-weakmap-keys'));
+const JavaScriptArrayGroupBy = lazy(() => import('./topics/javascript-array-groupby'));
+const JavaScriptPromiseWithResolvers = lazy(() => import('./topics/javascript-promise-withresolvers'));
+const JavaScriptArrayBufferTransfer = lazy(() => import('./topics/javascript-arraybuffer-transfer'));
+const JavaScriptFetchAPI = lazy(() => import('./topics/javascript-fetch-api'));
+const JavaScriptAjax = lazy(() => import('./topics/javascript-ajax'));
+const JavaScriptRestAPI = lazy(() => import('./topics/javascript-rest-api'));
+const JavaScriptLocalStorage = lazy(() => import('./topics/javascript-local-storage'));
+const JavaScriptCookies = lazy(() => import('./topics/javascript-cookies'));
+const JavaScriptIndexedDB = lazy(() => import('./topics/javascript-indexeddb'));
+const JavaScriptGeolocation = lazy(() => import('./topics/javascript-geolocation'));
+const JavaScriptNotificationAPI = lazy(() => import('./topics/javascript-notification-api'));
+const JavaScriptCanvasAPI = lazy(() => import('./topics/javascript-canvas-api'));
+const JavaScriptWebSockets = lazy(() => import('./topics/javascript-websockets'));
+const JavaScriptServiceWorkers = lazy(() => import('./topics/javascript-service-workers'));
+const JavaScriptIntersectionObserver = lazy(() => import('./topics/javascript-intersection-observer'));
+const JavaScriptMutationObserver = lazy(() => import('./topics/javascript-mutation-observer'));
+const JavaScriptDynamicImport = lazy(() => import('./topics/javascript-dynamic-import'));
+const JavaScriptWeakRefs = lazy(() => import('./topics/javascript-weakrefs'));
+const JavaScriptClassFields = lazy(() => import('./topics/javascript-class-fields'));
+const JavaScriptPrivateMethods = lazy(() => import('./topics/javascript-private-methods'));
+const JavaScriptStaticBlocks = lazy(() => import('./topics/javascript-static-blocks'));
+const JavaScriptTopLevelAwait = lazy(() => import('./topics/javascript-top-level-await'));
+const JavaScriptHasOwn = lazy(() => import('./topics/javascript-hasown'));
+const JavaScriptErrorCause = lazy(() => import('./topics/javascript-error-cause'));
+const JavaScriptHashbang = lazy(() => import('./topics/javascript-hashbang'));
+const JavaScriptRegExpVFlag = lazy(() => import('./topics/javascript-regexp-v-flag'));
+const JavaScriptAtomicsWaitAsync = lazy(() => import('./topics/javascript-atomics-waitasync'));
 
 // Map topic slugs to their components
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
@@ -258,9 +311,12 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'profiling': JavaScriptProfiling,
   'memory-leaks': JavaScriptMemoryLeaks,
   'garbage-collection': JavaScriptGarbageCollection,
+  'memory-management': JavaScriptMemoryManagement,
   'debouncing-throttling': JavaScriptDebounceThrottle,
   'lazy-loading': JavaScriptLazyLoading,
   'web-workers': JavaScriptWebWorkers,
+  'performance-optimization': JavaScriptPerformanceOptimization,
+  'weakmap-weakset': JavaScriptWeakMapWeakSet,
   'property-access': JavaScriptPropertyAccess,
   'eval-function': JavaScriptEvalFunctionConstructor,
   'proxy-advanced': JavaScriptProxyReflect,
@@ -328,6 +384,56 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'map': JavaScriptMap,
   'weakmap': JavaScriptWeakMap,
   'weakset': JavaScriptWeakSet,
+  'object-create': JavaScriptObjectCreate,
+  'object-defineProperty': JavaScriptObjectDefineProperty,
+  'object-freeze-seal': JavaScriptObjectFreezeSeal,
+  'property-descriptors': JavaScriptPropertyDescriptors,
+  'object-getPrototypeOf': JavaScriptObjectGetPrototypeOf,
+  'array-flat': JavaScriptArrayFlat,
+  'array-from': JavaScriptArrayFrom,
+  'array-of': JavaScriptArrayOf,
+  'array-fill': JavaScriptArrayFill,
+  'array-includes': JavaScriptArrayIncludes,
+  'typed-arrays': JavaScriptTypedArrays,
+  'optional-chaining': JavaScriptOptionalChaining,
+  'nullish-coalescing': JavaScriptNullishCoalescing,
+  'bigint': JavaScriptBigInt,
+  'promise-allsettled': JavaScriptPromiseAllSettled,
+  'logical-assignment': JavaScriptLogicalAssignment,
+  'numeric-separators': JavaScriptNumericSeparators,
+  'promise-any': JavaScriptPromiseAny,
+  'string-replaceall': JavaScriptStringReplaceAll,
+  'weakrefs': JavaScriptWeakRefs,
+  'class-fields': JavaScriptClassFields,
+  'private-methods': JavaScriptPrivateMethods,
+  'static-blocks': JavaScriptStaticBlocks,
+  'at-method': JavaScriptAtMethod,
+  'hasown': JavaScriptHasOwn,
+  'error-cause': JavaScriptErrorCause,
+  'array-findlast': JavaScriptArrayFindLast,
+  'array-toSorted': JavaScriptArrayToSorted,
+  'hashbang': JavaScriptHashbang,
+  'symbols-as-weakmap-keys': JavaScriptSymbolsAsWeakMapKeys,
+  'array-groupby': JavaScriptArrayGroupBy,
+  'promise-withresolvers': JavaScriptPromiseWithResolvers,
+  'regexp-v-flag': JavaScriptRegExpVFlag,
+  'atomics-waitasync': JavaScriptAtomicsWaitAsync,
+  'arraybuffer-transfer': JavaScriptArrayBufferTransfer,
+  'fetch-api': JavaScriptFetchAPI,
+  'ajax': JavaScriptAjax,
+  'rest-api': JavaScriptRestAPI,
+  'local-storage': JavaScriptLocalStorage,
+  'cookies': JavaScriptCookies,
+  'indexeddb': JavaScriptIndexedDB,
+  'geolocation': JavaScriptGeolocation,
+  'notification-api': JavaScriptNotificationAPI,
+  'canvas-api': JavaScriptCanvasAPI,
+  'websockets': JavaScriptWebSockets,
+  'service-workers': JavaScriptServiceWorkers,
+  'intersection-observer': JavaScriptIntersectionObserver,
+  'mutation-observer': JavaScriptMutationObserver,
+  'dynamic-import': JavaScriptDynamicImport,
+  'top-level-await': JavaScriptTopLevelAwait,
 };
 
 function LoadingSkeleton() {

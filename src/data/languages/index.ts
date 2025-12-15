@@ -20,23 +20,26 @@ import { backendDeveloper } from './backend-developer';
 import type { Language } from './types';
 
 export const languages: Language[] = [
-    html,
-    css,
-    scss,
-    tailwind,
-    javascript,
-    typescript,
-    react,
-    vue,
-    nextjs,
-    angular,
-    java,
-    spring,
-    springBoot,
-    dsa,
-    rxjs,
-    playwright,
+    { ...html, enabled: true },
+    { ...css, enabled: true },
+    { ...scss, enabled: true },
+    { ...tailwind, enabled: true },
+    { ...javascript, enabled: true },
+    { ...typescript, enabled: true },
+    { ...react, enabled: true },
+    { ...vue, enabled: false },
+    { ...nextjs, enabled: false },
+    { ...angular, enabled: false },
+    { ...java, enabled: false },
+    { ...spring, enabled: false },
+    { ...springBoot, enabled: false },
+    { ...dsa, enabled: false },
+    { ...rxjs, enabled: false },
+    { ...playwright, enabled: false },
 ];
+
+// Filtered list for display (dashboard, dropdowns, etc.)
+export const enabledLanguages = languages.filter(lang => lang.enabled !== false);
 
 // Role-based roadmaps (for display in roadmaps page only, not learnable languages)
 export const roleBasedRoadmaps: Language[] = [

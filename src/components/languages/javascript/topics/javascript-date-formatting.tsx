@@ -164,7 +164,7 @@ console.log(new Intl.DateTimeFormat('ja-JP').format(date));
         title="Custom Date Formats"
         description="Build your own formatters"
         language="javascript"
-        colorTheme="fuchsia"
+        colorTheme="pink"
         code={`const date = new Date('2024-12-14T15:30:45');
 
 // YYYY-MM-DD

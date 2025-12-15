@@ -474,7 +474,7 @@ observer.observe(scrollContainer);
             <p className="text-sm text-gray-700 dark:text-gray-300">
               Always call <code className="text-xs bg-white dark:bg-green-900 px-1.5 py-0.5 rounded">observer.disconnect()</code> when component unmounts
             </p>
-            <pre className="text-xs mt-2 p-2 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded"><code>useEffect(() => {`{
+            <pre className="text-xs mt-2 p-2 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded"><code>useEffect(() {'=>'} {`{
   return () => observer.disconnect();
 }`}, []);</code></pre>
           </div>

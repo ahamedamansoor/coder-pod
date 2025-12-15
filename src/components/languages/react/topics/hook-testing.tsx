@@ -282,7 +282,7 @@ root.render(<CounterApp />);`;
               <div className="flex items-center gap-3">
                 <div className="px-4 py-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg border-2 border-blue-500 flex-1">
                   <p className="font-semibold text-blue-700 dark:text-blue-300 mb-1">1. Call renderHook</p>
-                  <code className="text-xs text-blue-600 dark:text-blue-400">const {'{ result }'} = renderHook(() => useCounter())</code>
+                  <code className="text-xs text-blue-600 dark:text-blue-400">const {'{ result }'} = renderHook(() {'=>'} useCounter())</code>
                 </div>
               </div>
               
@@ -304,7 +304,7 @@ root.render(<CounterApp />);`;
               <div className="flex items-center gap-3">
                 <div className="px-4 py-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg border-2 border-purple-500 flex-1">
                   <p className="font-semibold text-purple-700 dark:text-purple-300 mb-1">3. Call Hook Functions</p>
-                  <code className="text-xs text-purple-600 dark:text-purple-400">act(() => result.current.increment())</code>
+                  <code className="text-xs text-purple-600 dark:text-purple-400">act(() {'=>'} result.current.increment())</code>
                 </div>
               </div>
 
@@ -646,7 +646,7 @@ describe('useFetch Hook - Async', () => {
                 Wrap state-changing functions in <code className="bg-purple-100 dark:bg-purple-900 px-1 rounded">act()</code>
               </p>
               <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 font-mono text-xs">
-                <div className="text-purple-600 dark:text-purple-400">act(() => {'{'}</div>
+                <div className="text-purple-600 dark:text-purple-400">act(() {'=>'} {'{'})</div>
                 <div className="text-purple-600 dark:text-purple-400 ml-4">result.current.increment();</div>
                 <div className="text-purple-600 dark:text-purple-400">{'});'}</div>
               </div>
@@ -673,7 +673,7 @@ describe('useFetch Hook - Async', () => {
                 Wait for async updates with <code className="bg-green-100 dark:bg-green-900 px-1 rounded">waitFor()</code>
               </p>
               <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 font-mono text-xs">
-                <div className="text-green-600 dark:text-green-400">await waitFor(() => {'{'}</div>
+                <div className="text-green-600 dark:text-green-400">await waitFor(() {'=>'} {'{'})</div>
                 <div className="text-green-600 dark:text-green-400 ml-4">expect(result.current.data)</div>
                 <div className="text-green-600 dark:text-green-400 ml-6">.toBeDefined();</div>
                 <div className="text-green-600 dark:text-green-400">{'});'}</div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useUser, useFirestore } from '@/firebase';
-import { languages } from '@/data/languages';
+import { enabledLanguages as languages } from '@/data/languages';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';

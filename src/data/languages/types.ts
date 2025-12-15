@@ -13,4 +13,5 @@ export type Language = {
   name: string;
   description?: string; // Optional description
   topics: Topic[];
+  enabled?: boolean; // If false, language is hidden from display (default: true)
 };

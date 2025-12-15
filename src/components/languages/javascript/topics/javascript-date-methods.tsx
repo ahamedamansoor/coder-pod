@@ -169,7 +169,7 @@ console.log(date.getTimezoneOffset()); // -330 (IST is UTC+5:30)`}
         title="Setter Methods (Local Time)"
         description="Modify date components"
         language="javascript"
-        colorTheme="sky"
+        colorTheme="cyan"
         code={`const date = new Date('2024-12-14T15:30:00');
 
 // Set year

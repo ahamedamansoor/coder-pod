@@ -21,7 +21,7 @@ import { WebPlaygroundModal } from '@/components/shared/playground/web-playgroun
 import { LanguageSwitcher } from './language-switcher';
 import Link from 'next/link';
 import { useLoading } from '@/hooks/use-loading';
-import { languages } from '@/data/languages';
+import { enabledLanguages as languages } from '@/data/languages';
 import { ReactPlaygroundModal } from '@/components/languages/react/react-playground-modal';
 
 interface MainHeaderProps {

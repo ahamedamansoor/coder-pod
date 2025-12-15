@@ -14,6 +14,8 @@ interface AIAnswerDisplayProps {
 }
 
 export function AIAnswerDisplay({ answer, language = 'html', className, onOpenWebPlayground }: AIAnswerDisplayProps) {
+  // Check if this is a frontend language that should prioritize code preview
+  const isFrontendLanguage = ['html', 'css', 'scss', 'javascript', 'tailwind', 'react', 'nextjs', 'vue'].includes(language);
   // Extract HTML, CSS, and JavaScript code blocks from the answer
   const extractedCode = useMemo(() => {
     const htmlMatch = answer.match(/```html\n([\s\S]*?)```/);
@@ -36,7 +38,12 @@ export function AIAnswerDisplay({ answer, language = 'html', className, onOpenWe
         .replace(/## 💻 Live Preview Code\s*/, '');
     }
     
-    return { html, css, js, hasCode, textContent };
+    // Extract sections from markdown
+    const sections = textContent.split(/(?=##\s)/g).filter(s => s.trim());
+    const mainContent = sections[0] || textContent;
+    const additionalSections = sections.slice(1);
+    
+    return { html, css, js, hasCode, textContent, mainContent, additionalSections };
   }, [answer]);
   
   // Language-specific theme colors
@@ -224,60 +231,46 @@ export function AIAnswerDisplay({ answer, language = 'html', className, onOpenWe
         </CardHeader>
 
         {/* Beautiful Content Area with Enhanced Typography */}
-        <CardContent className="p-8 sm:p-10 lg:p-12 w-full">
-          <div 
-            className="prose prose-base sm:prose-lg max-w-none w-full
-            text-slate-700 dark:text-slate-200
-            
-            /* Headings */
-            prose-headings:font-bold prose-headings:tracking-tight
-            prose-h2:text-2xl prose-h2:bg-gradient-to-r prose-h2:from-slate-800 prose-h2:to-slate-600 dark:prose-h2:from-slate-100 dark:prose-h2:to-slate-300 prose-h2:bg-clip-text prose-h2:text-transparent prose-h2:mt-8 prose-h2:first:mt-0 prose-h2:mb-4 prose-h2:pb-3 prose-h2:border-b-2 prose-h2:border-slate-200 dark:prose-h2:border-slate-700 prose-h2:flex prose-h2:items-center prose-h2:gap-2
-            prose-h3:text-xl prose-h3:text-slate-800 dark:prose-h3:text-slate-100 prose-h3:mt-6 prose-h3:mb-3 prose-h3:font-semibold prose-h3:flex prose-h3:items-center prose-h3:gap-2
-            prose-h4:text-lg prose-h4:text-slate-700 dark:prose-h4:text-slate-200 prose-h4:mt-4 prose-h4:mb-2 prose-h4:font-semibold
-            
-            /* Paragraphs and Text */
-            prose-p:text-slate-700 dark:prose-p:text-slate-200 prose-p:leading-relaxed prose-p:my-4 prose-p:text-[15px]
-            prose-strong:text-slate-900 dark:prose-strong:text-slate-50 prose-strong:font-bold
-            prose-em:text-slate-800 dark:prose-em:text-slate-100 prose-em:italic
-            
-            /* Inline Code */
-            prose-code:text-emerald-700 dark:prose-code:text-emerald-300 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-950/40 prose-code:px-2.5 prose-code:py-1 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:border prose-code:border-emerald-200 dark:prose-code:border-emerald-800 prose-code:before:content-[''] prose-code:after:content-[''] prose-code:font-semibold prose-code:shadow-sm
-            
-            /* Code Blocks */
-            prose-pre:bg-slate-50 dark:prose-pre:bg-slate-950 prose-pre:border-2 prose-pre:border-slate-200 dark:prose-pre:border-slate-800 prose-pre:rounded-xl prose-pre:text-slate-800 dark:prose-pre:text-slate-100 prose-pre:p-6 prose-pre:my-6 prose-pre:overflow-x-auto prose-pre:shadow-xl prose-pre:font-mono prose-pre:text-sm prose-pre:leading-relaxed
-            
-            /* Links */
-            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-a:transition-all
-            
-            /* Blockquotes */
-            prose-blockquote:border-l-4 prose-blockquote:border-slate-400 dark:prose-blockquote:border-slate-600 prose-blockquote:pl-6 prose-blockquote:text-slate-700 dark:prose-blockquote:text-slate-200 prose-blockquote:bg-slate-100 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:py-4 prose-blockquote:pr-6 prose-blockquote:rounded-r-lg prose-blockquote:my-6 prose-blockquote:italic prose-blockquote:font-medium prose-blockquote:shadow-md
-            
-            /* Lists */
-            prose-ul:my-5 prose-ul:text-slate-700 dark:prose-ul:text-slate-200 prose-ul:space-y-3 prose-ul:pl-6
-            prose-ol:my-5 prose-ol:text-slate-700 dark:prose-ol:text-slate-200 prose-ol:space-y-3 prose-ol:pl-6
-            prose-li:leading-relaxed prose-li:marker:text-slate-600 dark:prose-li:marker:text-slate-300 prose-li:marker:font-bold prose-li:pl-2
-            
-            /* Tables */
-            prose-table:border-collapse prose-table:border-2 prose-table:border-slate-300 dark:prose-table:border-slate-700 prose-table:rounded-xl prose-table:overflow-hidden prose-table:my-6 prose-table:shadow-xl prose-table:w-full
-            prose-thead:bg-gradient-to-r prose-thead:from-slate-100 prose-thead:to-slate-200 dark:prose-thead:from-slate-800 dark:prose-thead:to-slate-700
-            prose-th:text-slate-900 dark:prose-th:text-slate-100 prose-th:font-bold prose-th:p-4 prose-th:border prose-th:border-slate-300 dark:prose-th:border-slate-700 prose-th:text-left
-            prose-td:p-4 prose-td:border prose-td:border-slate-300 dark:prose-td:border-slate-700 prose-td:text-slate-800 dark:prose-td:text-slate-200
-            prose-tr:transition-colors hover:prose-tr:bg-slate-50 dark:hover:prose-tr:bg-slate-900/50
-            
-            /* Horizontal Rules */
-            prose-hr:border-2 prose-hr:border-slate-200 dark:prose-hr:border-slate-700 prose-hr:my-8 prose-hr:rounded-full
-            
-            /* Images */
-            prose-img:rounded-xl prose-img:shadow-xl prose-img:border-2 prose-img:border-slate-300 dark:prose-img:border-slate-700 prose-img:my-6" 
-            dangerouslySetInnerHTML={{ __html: extractedCode.textContent }} 
-          />
+        <CardContent className="p-6 sm:p-8 lg:p-10 w-full space-y-6">
+          {/* Explanation Section - Always show first */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border-2 border-slate-200 dark:border-slate-800 shadow-md">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
+                <Lightbulb className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                {isFrontendLanguage ? 'Syntax & Concept Explained' : 'Quick Explanation'}
+              </h3>
+            </div>
+            <div 
+              className="prose prose-base max-w-none
+              text-slate-700 dark:text-slate-200
+              prose-p:text-slate-700 dark:prose-p:text-slate-200 prose-p:leading-relaxed prose-p:my-3 prose-p:text-[15px]
+              prose-strong:text-slate-900 dark:prose-strong:text-slate-50 prose-strong:font-bold
+              prose-code:text-emerald-700 dark:prose-code:text-emerald-300 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-950/40 prose-code:px-2 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm prose-code:border prose-code:border-emerald-200 dark:prose-code:border-emerald-800 prose-code:before:content-[''] prose-code:after:content-['']
+              prose-ul:my-3 prose-ul:space-y-2 prose-ul:pl-5
+              prose-ol:my-3 prose-ol:space-y-2 prose-ol:pl-5
+              prose-li:text-slate-700 dark:prose-li:text-slate-200 prose-li:leading-relaxed
+              prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium hover:prose-a:underline" 
+              dangerouslySetInnerHTML={{ __html: extractedCode.mainContent }} 
+            />
+          </div>
 
-          {/* Live Preview - Show when HTML/CSS/JS code is detected */}
+          {/* Live Code Preview - Show after explanation when code exists */}
           {extractedCode.hasCode && (
-            <div className="mt-8 pt-8 border-t-2 border-slate-200 dark:border-slate-800 w-full">
+            <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 rounded-xl p-6 border-2 border-slate-200 dark:border-slate-800 shadow-lg">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">
+                  <Code className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Live Code Example</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Interactive preview - try modifying the code!</p>
+                </div>
+              </div>
               <FrontendCodePreview
-                title="Live Interactive Preview"
-                description="Try out the code example below - it's fully interactive!"
+                title=""
+                description=""
                 html={extractedCode.html}
                 css={extractedCode.css}
                 js={extractedCode.js}
@@ -288,23 +281,58 @@ export function AIAnswerDisplay({ answer, language = 'html', className, onOpenWe
             </div>
           )}
 
-          {/* Decorative Elements */}
-          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 w-full">
-            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                <span className="font-medium">Generated Response</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  <span>Verified</span>
+          {/* Additional Sections (if any) */}
+          {extractedCode.additionalSections.map((section, index) => {
+            const hasKeyPoints = section.toLowerCase().includes('key point') || section.toLowerCase().includes('important');
+            const hasTips = section.toLowerCase().includes('tip') || section.toLowerCase().includes('note');
+            
+            return (
+              <div key={index} className="bg-white dark:bg-slate-900 rounded-xl p-6 border-2 border-slate-200 dark:border-slate-800 shadow-md">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={cn(
+                    "p-2 rounded-lg bg-gradient-to-br",
+                    hasKeyPoints ? "from-amber-500 to-orange-500" : hasTips ? "from-purple-500 to-pink-500" : "from-slate-500 to-slate-600"
+                  )}>
+                    {hasKeyPoints ? <AlertTriangle className="w-5 h-5 text-white" /> : 
+                     hasTips ? <Zap className="w-5 h-5 text-white" /> : 
+                     <BookOpen className="w-5 h-5 text-white" />}
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Additional Information</h3>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Lightbulb className="w-4 h-4 text-yellow-500" />
-                  <span>Beginner-Friendly</span>
-                </div>
+                <div 
+                  className="prose prose-base max-w-none
+                  text-slate-700 dark:text-slate-200
+                  prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-headings:font-bold
+                  prose-h2:text-xl prose-h2:mt-4 prose-h2:mb-3 prose-h2:first:mt-0
+                  prose-h3:text-lg prose-h3:mt-3 prose-h3:mb-2
+                  prose-p:text-slate-700 dark:prose-p:text-slate-200 prose-p:leading-relaxed prose-p:my-3 prose-p:text-[15px]
+                  prose-strong:text-slate-900 dark:prose-strong:text-slate-50 prose-strong:font-bold
+                  prose-code:text-emerald-700 dark:prose-code:text-emerald-300 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-950/40 prose-code:px-2 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm prose-code:border prose-code:border-emerald-200 dark:prose-code:border-emerald-800 prose-code:before:content-[''] prose-code:after:content-['']
+                  prose-pre:bg-slate-50 dark:prose-pre:bg-slate-950 prose-pre:border prose-pre:border-slate-300 dark:prose-pre:border-slate-700 prose-pre:rounded-lg prose-pre:p-4 prose-pre:my-4 prose-pre:overflow-x-auto
+                  prose-ul:my-3 prose-ul:space-y-2 prose-ul:pl-5
+                  prose-ol:my-3 prose-ol:space-y-2 prose-ol:pl-5
+                  prose-li:text-slate-700 dark:prose-li:text-slate-200 prose-li:leading-relaxed
+                  prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium hover:prose-a:underline
+                  prose-blockquote:border-l-4 prose-blockquote:border-slate-400 dark:prose-blockquote:border-slate-600 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:my-4" 
+                  dangerouslySetInnerHTML={{ __html: section }} 
+                />
               </div>
+            );
+          })}
+
+          {/* Footer with badges */}
+          <div className="flex items-center justify-center gap-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-xs font-medium">
+              <CheckCircle className="w-3.5 h-3.5" />
+              AI Verified
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium">
+              <Lightbulb className="w-3.5 h-3.5" />
+              Beginner-Friendly
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium">
+              <Zap className="w-3.5 h-3.5" />
+              Interactive
             </div>
           </div>
         </CardContent>

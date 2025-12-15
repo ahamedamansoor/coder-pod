@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { languages } from '@/data/languages';
+import { enabledLanguages as languages } from '@/data/languages';
 import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Lock, Key, BookOpen, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { InnovativeHeader } from '@/components/shared';
@@ -405,7 +405,44 @@ function DashboardContent() {
             </div>
           )}
 
+          {/* Empty State - No Results */}
+          {filteredLanguages.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 px-4">
+              <div className="relative mb-6">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" />
+                <div className="relative p-6 rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-300/20 dark:border-blue-700/30">
+                  <Sparkles className="w-16 h-16 text-blue-600 dark:text-blue-400" />
+                </div>
+              </div>
+              
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
+                Coming Soon! 🚀
+              </h3>
+              
+              <p className="text-center text-slate-600 dark:text-slate-400 max-w-md mb-2">
+                We're working hard to bring you this content. It will be available soon!
+              </p>
+              
+              <p className="text-sm text-slate-500 dark:text-slate-500 text-center max-w-sm">
+                {searchQuery 
+                  ? `No results found for "${searchQuery}". Try searching for something else or check back later.`
+                  : 'This category is currently under development. Stay tuned for updates!'}
+              </p>
+
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilter('all');
+                }}
+                className="mt-6 px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"
+              >
+                View All Languages
+              </button>
+            </div>
+          )}
+
           {/* Scrollable Container with Navigation */}
+          {filteredLanguages.length > 0 && (
           <div className="relative group/carousel">
             {/* Left Arrow */}
             {canScrollLeft && (
@@ -559,9 +596,9 @@ function DashboardContent() {
               </div>
             </div>
           </div>
+          )}
         </div>
       </div>
-
 
       {/* Quick Stats Section */}
       <div className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/10 dark:to-indigo-950/10 py-12 sm:py-16 lg:py-20">

@@ -393,7 +393,7 @@ dbInfo('Query executed');       // [INFO] [Database] Query executed`}
                 <div>
                   <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Arrow Functions</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <code>a => b => c => ...</code><br/>
+                    <code>a {'=>'} b {'=>'} c {'=>'} ...</code><br/>
                     Clean, concise syntax
                   </p>
                 </div>

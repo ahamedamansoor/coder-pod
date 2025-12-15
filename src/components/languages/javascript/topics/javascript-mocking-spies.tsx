@@ -430,8 +430,7 @@ afterEach(() => {
             <div className="p-4 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-l-4 border-purple-500">
               <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Partial Module Mock</h4>
               <code className="text-xs text-gray-700 dark:text-gray-300 font-mono">
-                jest.mock('./module', () => ({'{'} ...actualModule, foo: mockFoo {'}'}))
-              </code>
+                jest.mock('./module', () {'=>'} ({'{'} ...actualModule, foo: mockFoo {'}'}))</code>
             </div>
 
             <div className="p-4 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-l-4 border-amber-500">

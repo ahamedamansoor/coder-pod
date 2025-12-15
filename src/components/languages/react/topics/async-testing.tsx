@@ -742,7 +742,7 @@ describe('SearchBox - Timers', () => {
                 <div className="flex-1 px-4 py-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg border-2 border-purple-300 dark:border-purple-700">
                   <p className="font-semibold text-purple-700 dark:text-purple-300 mb-2">Need to wait for any custom condition?</p>
                   <p className="text-sm text-purple-600 dark:text-purple-400">
-                    ✅ Use <code className="bg-purple-200 dark:bg-purple-800 px-1 rounded">waitFor(() => expect(...))</code>
+                    ✅ Use <code className="bg-purple-200 dark:bg-purple-800 px-1 rounded">waitFor(() {'=>'} expect(...))</code>
                   </p>
                 </div>
               </div>
@@ -790,7 +790,7 @@ describe('SearchBox - Timers', () => {
                   <div className="text-green-600 dark:text-green-400">// ✅ Good</div>
                   <div className="text-green-600 dark:text-green-400">await screen.findByText('Loaded');</div>
                   <div className="text-red-600 dark:text-red-400 mt-2">// ❌ Verbose</div>
-                  <div className="text-red-600 dark:text-red-400">await waitFor(() => screen.getByText('Loaded'));</div>
+                  <div className="text-red-600 dark:text-red-400">await waitFor(() {'=>'} screen.getByText('Loaded'));</div>
                 </div>
               </div>
             </div>

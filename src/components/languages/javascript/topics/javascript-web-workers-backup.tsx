@@ -823,7 +823,7 @@ document.getElementById('runWorker').addEventListener('click', function() {
                 <div>
                   <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Perfect for Heavy Tasks</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Data processing, image manipulation, calculations. Anything that takes >50ms benefits from workers!
+                    Data processing, image manipulation, calculations. Anything that takes {'>'} 50ms benefits from workers!
                   </p>
                 </div>
               </div>

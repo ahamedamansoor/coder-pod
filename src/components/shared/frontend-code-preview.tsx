@@ -34,6 +34,7 @@ interface FrontendCodePreviewProps {
   previewHeight?: string;
   codeHeight?: string;
   styleLanguage?: 'css' | 'scss' | 'tailwind';
+  hideTabs?: Array<'html' | 'css' | 'js'>; // Hide specific tabs (useful for HTML-only content)
   onOpenPlayground?: (html: string, css: string, js: string) => void;
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
 }
@@ -53,6 +54,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   previewHeight = 'auto',
   codeHeight = 'auto',
   styleLanguage = 'css',
+  hideTabs = [],
   onOpenPlayground,
   onOpenWebPlayground,
 }) => {
@@ -97,8 +99,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   // Get extracted or provided content
   const extractedCSS = css || extractCSSFromHTML(html);
   const extractedJS = js || extractJSFromHTML(html);
-  const hasCSS = !!extractedCSS;
-  const hasJS = !!extractedJS;
+  const hasCSS = !!extractedCSS && !hideTabs.includes('css');
+  const hasJS = !!extractedJS && !hideTabs.includes('js');
   const hasReact = !!react;
   const hasAngular = !!angular;
   const hasVue = !!vue;
@@ -177,21 +179,21 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   };
   
   // Determine initial tab based on what's provided
-  // Prioritize framework code when available, then JS for interactive examples
+  // Prioritize framework code when available, then HTML for HTML learning content
   const getInitialTab = (): 'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next' => {
     if (hasReact) return 'react';
     if (hasAngular) return 'angular';
     if (hasVue) return 'vue';
     if (hasNext) return 'next';
-    if (hasJS) return 'js'; // Show JS first for JavaScript learning content
+    if (html && !hideTabs.includes('html')) return 'html'; // Show HTML first for HTML learning content
     if (hasCSS) return 'css';
-    if (html) return 'html';
+    if (hasJS) return 'js';
     return 'html';
   };
   
   const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next'>(getInitialTab());
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showCode, setShowCode] = useState(hasFramework); // Show code by default for framework examples
+  const [showCode, setShowCode] = useState(true); // Show code by default for all content
 
   // Get playground contexts
   const { openWithContent } = useWebPlayground();
@@ -551,13 +553,13 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       <CardContent className="p-0">
         <div 
           className="flex flex-col gap-4 lg:flex-row"
-          style={previewHeight === 'auto' ? { height: '600px' } : { height: previewHeight }}
+          style={previewHeight === 'auto' ? { height: '700px' } : { height: previewHeight }}
         >
           {showCode && (
             <div
-              className="lg:w-1/2 flex flex-col border border-[#d0d7de] dark:border-[#30363d] rounded-lg overflow-hidden shadow-sm"
+              className="lg:w-1/2 h-full flex flex-col rounded-lg overflow-hidden border border-slate-200/60 dark:border-slate-700/40"
             >
-            <div className="flex items-center justify-between bg-[#f6f8fa] dark:bg-[#161b22] px-4 py-2 border-b border-[#d0d7de] dark:border-[#30363d]">
+            <div className="flex items-center justify-between bg-[#f6f8fa] dark:bg-[#161b22] px-4 py-2">
               <div className="flex gap-2">
                 {/* Framework tabs - only show when framework code is provided */}
                 {hasReact && (
@@ -602,7 +604,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 )}
                 
                 {/* Only show HTML/CSS/JS tabs when NO framework code is provided */}
-                {!hasFramework && html && (
+                {!hasFramework && html && !hideTabs.includes('html') && (
                   <button
                     onClick={() => setActiveTab('html')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
@@ -668,6 +670,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                   background: appTheme === 'dark' ? '#0d1117' : '#ffffff',
                   fontSize: '13px',
                   lineHeight: '1.45',
+                  border: 'none',
                 }}
                 codeTagProps={{
                   style: {
@@ -683,9 +686,9 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
           )}
 
           <div
-            className={`${showCode ? 'lg:w-1/2' : 'w-full'} flex flex-col border border-slate-200 dark:border-slate-900/40 rounded-lg overflow-hidden shadow-sm`}
+            className={`${showCode ? 'lg:w-1/2' : 'w-full'} h-full flex flex-col rounded-lg overflow-hidden border border-slate-200/60 dark:border-slate-700/40`}
           >
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b dark:border-slate-800">
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-slate-900">
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                 <span className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">

@@ -91,7 +91,7 @@ export default function JavaScriptDebounceThrottle() {
         category="JavaScript Performance"
         title="Debouncing & Throttling"
         description="Control how often functions execute for better performance"
-        colorTheme="yellow"
+        colorTheme="amber"
       />
 
       {/* What are they? */}
@@ -411,7 +411,7 @@ searchInput.addEventListener('input', (e) => {
     document.getElementById('results').textContent = 'Start typing to see debounce in action...';
   }
 });`}
-        colorTheme="yellow"
+        colorTheme="amber"
       />
 
       {/* Throttle Implementation */}
@@ -487,7 +487,7 @@ button.addEventListener('click', () => {
   document.getElementById('totalclicks').textContent = totalClicks;
   throttledClick();
 });`}
-        colorTheme="yellow"
+        colorTheme="amber"
       />
 
       {/* When to Use */}
@@ -701,7 +701,7 @@ document.addEventListener('click', (e) => {
     document.getElementById('dropdown').style.display = 'none';
   }
 });`}
-        colorTheme="yellow"
+        colorTheme="amber"
       />
 
       <FrontendCodePreview
@@ -878,7 +878,7 @@ scrollContainer.addEventListener('scroll', () => {
   document.getElementById('scrollevents').textContent = scrollEventCount;
   throttledScroll();
 });`}
-        colorTheme="yellow"
+        colorTheme="amber"
       />
 
       {/* Key Takeaways */}

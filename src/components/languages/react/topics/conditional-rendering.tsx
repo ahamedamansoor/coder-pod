@@ -685,7 +685,7 @@ document.head.appendChild(script2);`}
                 <h4 className="font-bold mb-3 text-blue-600">If Statement</h4>
                 <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded text-sm space-y-2">
                   <div className="font-mono">if (condition) return {'<A />'};</div>
-                  <div className="font-mono">return {'<B />'};}</div>
+                  <div className="font-mono">return {'<B />'};</div>
                   <p className="text-xs text-muted-foreground mt-2">✅ Best for: Multiple conditions, early returns</p>
                 </div>
               </div>

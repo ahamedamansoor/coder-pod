@@ -34,6 +34,7 @@ import { conductInterview } from '@/ai/flows/interview-flow';
 import { AIAnswerDisplay } from './ai-answer-display';
 import { useWebPlayground } from './playground/web-playground-context';
 import { ModuleCompletionCelebration } from './modals/module-completion-celebration';
+import { TopicNavigation } from './topic-navigation';
 
 function useLanguageContext(language: Language) {
     switch(language.slug) {
@@ -560,6 +561,9 @@ Keep it simple and easy to understand.`;
         onOpenChange={handleDrawerChange}
         languageSlug={language.slug}
       />
+
+      {/* Topic Navigation - Next/Previous Topics */}
+      <TopicNavigation currentTopic={topic} language={language} />
       
       {!isLearningPlanTopic && (
           <div className="relative mt-8">

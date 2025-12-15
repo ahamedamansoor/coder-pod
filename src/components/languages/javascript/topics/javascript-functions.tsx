@@ -466,7 +466,7 @@ console.log(add(3, 7));  // 10`}
                 <div>
                   <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">Arrow Functions = Shorter</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Modern syntax: (x) => x * 2
+                    Modern syntax: (x) {'=>'} x * 2
                   </p>
                 </div>
               </div>

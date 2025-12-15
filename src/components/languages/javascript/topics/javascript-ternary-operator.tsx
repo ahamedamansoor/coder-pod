@@ -257,7 +257,7 @@ console.log(greeting);  // Good Afternoon`}
                   <span className="text-green-600 dark:text-green-400 mt-0.5">•</span>
                   <p className="text-sm text-gray-700 dark:text-gray-300">
                     <strong>Simple yes/no decisions</strong><br/>
-                    <code className="text-xs bg-white dark:bg-slate-900 px-2 py-0.5 rounded">age >= 18 ? 'Adult' : 'Minor'</code>
+                    <code className="text-xs bg-white dark:bg-slate-900 px-2 py-0.5 rounded">age {'>='} 18 ? 'Adult' : 'Minor'</code>
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
@@ -271,7 +271,7 @@ console.log(greeting);  // Good Afternoon`}
                   <span className="text-green-600 dark:text-green-400 mt-0.5">•</span>
                   <p className="text-sm text-gray-700 dark:text-gray-300">
                     <strong>Quick inline checks</strong><br/>
-                    <code className="text-xs bg-white dark:bg-slate-900 px-2 py-0.5 rounded">price > 100 ? 'Expensive' : 'Affordable'</code>
+                    <code className="text-xs bg-white dark:bg-slate-900 px-2 py-0.5 rounded">price {'>'} 100 ? 'Expensive' : 'Affordable'</code>
                   </p>
                 </div>
               </div>

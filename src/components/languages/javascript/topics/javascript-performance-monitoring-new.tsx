@@ -644,7 +644,7 @@ export default function JavaScriptPerformanceMonitoringNew() {
                   <div className="flex items-start gap-2">
                     <span className="text-green-500 font-bold">•</span>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      <strong>Look for:</strong> Large files (>1MB), slow requests (>1s), failed requests (red)
+                      <strong>Look for:</strong> Large files ({'>'} 1MB), slow requests ({'>'} 1s), failed requests (red)
                     </p>
                   </div>
                 </div>
@@ -898,7 +898,7 @@ export default function JavaScriptPerformanceMonitoringNew() {
                   <h4 className="font-semibold mb-1.5 text-gray-900 dark:text-gray-100">CPU</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     JavaScript is single-threaded<br/>
-                    Avoid long tasks (>50ms)<br/>
+                    Avoid long tasks ({'>'} 50ms)<br/>
                     Break up heavy computations
                   </p>
                 </div>

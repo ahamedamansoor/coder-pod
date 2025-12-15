@@ -127,10 +127,24 @@ export function InnovativeHeader({
             </div>
           )}
 
+          {/* Sidebar Toggle Button on Learning Pages */}
+          {showLanguageSwitcher && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="transition-transform duration-300 hover:scale-105">
+                  <SidebarTrigger className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-950/50 dark:hover:to-purple-950/50 transition-all duration-300 hover:shadow-lg" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Toggle Sidebar</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+
           {/* Language Switcher on Learning Pages */}
           {showLanguageSwitcher && (
             <div className="sm:block">
-              <LanguageSwitcher />
+              <LanguageSwitcher currentLanguageSlug={currentLanguage} />
             </div>
           )}
         </div>

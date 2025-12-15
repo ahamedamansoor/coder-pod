@@ -13,6 +13,7 @@ import { languages } from '@/data/languages';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, Code, Search } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 export function LanguageSwitcher({
   currentLanguageSlug,
@@ -67,12 +68,19 @@ export function LanguageSwitcher({
   }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs]);
 
   return (
-    <DropdownMenu>
+      <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200">
-          <Code className="mr-2 h-4 w-4" />
-          {currentLanguage?.name || 'Select Language'}
-          <ChevronDown className="ml-2 h-4 w-4" />
+        <Button className="group relative overflow-hidden rounded-full border border-slate-200/70 bg-white/70 text-slate-900 shadow-sm transition-all hover:bg-white/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-slate-800/60 dark:bg-slate-950/50 dark:text-slate-100">
+          <Code className="relative z-10 mr-2 h-4 w-4" />
+          <span
+            className={cn(
+              'relative z-10 max-w-[10rem] truncate font-semibold',
+              !currentLanguage && 'text-slate-500 dark:text-slate-400'
+            )}
+          >
+            {currentLanguage?.name || 'Select Language'}
+          </span>
+          <ChevronDown className="relative z-10 ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80 p-0">
