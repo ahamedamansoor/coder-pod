@@ -46,7 +46,7 @@ export default function DataAttributes() {
         category="Tailwind CSS · Variants & Modifiers"
         title="Data Attribute Variants"
         description="Styling based on data attributes (Tailwind 3.3+)"
-        colorTheme="sky"
+        colorTheme="orange"
       />
 
       <Card className="border-2 border-sky-200 dark:border-sky-800">
@@ -71,7 +71,7 @@ export default function DataAttributes() {
             html={dataHTML}
             title="Data Attribute Examples"
             description="Conditional styling with data attributes"
-            colorTheme="sky"
+            colorTheme="green"
             styleLanguage="tailwind"
           />
         </CardContent>

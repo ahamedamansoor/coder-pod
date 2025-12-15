@@ -92,7 +92,7 @@ async function getUsers() {
         title="Parse LocalStorage Data"
         description="Retrieve and parse stored data"
         language="javascript"
-        colorTheme="sky"
+        colorTheme="indigo"
         code={`// Save data (must stringify first)
 const settings = { theme: 'dark', fontSize: 16 };
 localStorage.setItem('settings', JSON.stringify(settings));

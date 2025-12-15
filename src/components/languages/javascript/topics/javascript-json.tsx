@@ -196,7 +196,7 @@ console.log(arr[0]);  // "apple"`}
         title="JSON.stringify() - Object to String"
         description="Convert JavaScript object to JSON string"
         language="javascript"
-        colorTheme="sky"
+        colorTheme="cyan"
         code={`const user = {
   name: "Bob",
   age: 28,

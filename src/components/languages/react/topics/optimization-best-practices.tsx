@@ -247,7 +247,7 @@ function App() {
             '// ✨ Much faster initial page load!'
           ]}
           language="javascript"
-          colorTheme="indigo"
+          colorTheme="purple"
         />
       </div>
 

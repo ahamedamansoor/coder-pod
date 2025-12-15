@@ -64,7 +64,7 @@ console.log(Number(""));           // 0`}
         title="parseInt() & parseFloat()"
         description="Parse strings to integers or decimals"
         language="javascript"
-        colorTheme="sky"
+        colorTheme="amber"
         code={`// parseInt - extracts integer
 console.log(parseInt("123"));          // 123
 console.log(parseInt("123.99"));       // 123 (stops at decimal)

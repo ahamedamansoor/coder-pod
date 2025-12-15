@@ -167,7 +167,7 @@ console.log(value2 ?? 'fallback');  // "fallback"`}
         title="Example 2: Real-World Use Cases"
         description="Practical scenarios where ?? shines"
         language="javascript"
-        colorTheme="fuchsia"
+        colorTheme="cyan"
         code={`// 1. Configuration with 0 as valid value
 const config = {
   port: 0,        // 0 is valid (auto-assign port)

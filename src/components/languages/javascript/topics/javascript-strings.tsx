@@ -84,7 +84,7 @@ export default function JavaScriptStrings() {
 
             <div className="p-5 rounded-xl border-2 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 border-emerald-200 dark:border-emerald-800/30">
               <h4 className="font-bold mb-3 text-emerald-700 dark:text-emerald-300">Backticks</h4>
-              <code className="text-sm font-mono text-gray-800 dark:text-gray-200 block mb-3">`Hello, ${name}!`</code>
+              <code className="text-sm font-mono text-gray-800 dark:text-gray-200 block mb-3">{"`Hello, ${name}!`"}</code>
               <p className="text-xs text-gray-600 dark:text-gray-400">For templates (advanced)</p>
             </div>
           </div>

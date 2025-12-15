@@ -127,7 +127,7 @@ console.log(metadataMap.has(userId));  // true`}
         title="Example 2: Framework Internal State Management"
         description="Real-world use case for component metadata"
         language="javascript"
-        colorTheme="fuchsia"
+        colorTheme="emerald"
         code={`// Component framework using symbols for private state
 class ComponentFramework {
   // WeakMap to store component metadata

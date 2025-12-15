@@ -264,9 +264,11 @@ export function ScssContentDisplay({
       language={language}
     >
       <Suspense fallback={<LoadingSkeleton />}>
-        {CustomTopicComponent ? (
-          <CustomTopicComponent onOpenWebPlayground={handleOpenWebPlayground} />
-        ) : null}
+        {CustomTopicComponent
+          ? React.createElement(CustomTopicComponent as any, {
+              onOpenWebPlayground: handleOpenWebPlayground,
+            })
+          : null}
       </Suspense>
     </GenericContentDisplay>
   );

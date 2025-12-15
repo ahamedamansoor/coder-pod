@@ -41,7 +41,7 @@ export default function Subgrid() {
         category="Tailwind CSS · Modern CSS"
         title="Subgrid"
         description="CSS Subgrid with Tailwind utilities"
-        colorTheme="fuchsia"
+        colorTheme="orange"
       />
 
       <Card className="border-2 border-fuchsia-200 dark:border-fuchsia-800">
@@ -147,7 +147,7 @@ export default function Subgrid() {
             html={subgridExampleHTML}
             title="Subgrid alignment demo"
             description="Nested grids inheriting both columns and rows from the parent."
-            colorTheme="fuchsia"
+            colorTheme="cyan"
             styleLanguage="tailwind"
             previewHeight="420px"
           />

@@ -40,7 +40,7 @@ export default function FocusStates() {
         category="Tailwind CSS · Accessibility"
         title="Focus States"
         description="Keyboard navigation and focus styling"
-        colorTheme="sky"
+        colorTheme="blue"
       />
 
       <Card className="border-2 border-sky-200 dark:border-sky-800">
@@ -65,7 +65,7 @@ export default function FocusStates() {
             html={focusHTML}
             title="Focus States"
             description="Use Tab key to navigate and see focus styles"
-            colorTheme="sky"
+            colorTheme="teal"
             styleLanguage="tailwind"
           />
         </CardContent>

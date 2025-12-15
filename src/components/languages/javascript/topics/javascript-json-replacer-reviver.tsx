@@ -81,7 +81,7 @@ console.log(jsonString);
         title="Replacer Array"
         description="Whitelist specific properties"
         language="javascript"
-        colorTheme="fuchsia"
+        colorTheme="amber"
         code={`const user = {
   id: 123,
   name: "Alice",

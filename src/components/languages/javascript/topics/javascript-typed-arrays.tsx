@@ -190,7 +190,7 @@ console.log(typed.length);        // 4 (number of elements)`}
         title="Example 2: Working with Binary Data"
         description="Real-world scenarios for Typed Arrays"
         language="javascript"
-        colorTheme="gray"
+        colorTheme="slate"
         code={`// 1. Image pixel manipulation
 // Images are typically Uint8ClampedArray (RGBA: 0-255 clamped)
 function createRedImage(width, height) {

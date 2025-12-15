@@ -17,7 +17,7 @@ type ColorTheme =
   | 'sky'
   | 'rose'
   | 'fuchsia'
-  | 'lime'
+  | 'lime' | 'slate'
   | 'amber';
 
 interface PageHeaderProps {
