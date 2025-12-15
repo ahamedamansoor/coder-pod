@@ -23,7 +23,13 @@ const LOGO_COLOR_CLASS = 'text-[#5B7FFF]';
 const LOGO_BG_CLASS = 'bg-[#5B7FFF]';
 const LOGO_BG_SOFT_CLASS = 'bg-[#5B7FFF]/5';
 
-function useLanguageContext(language: Language) {
+type LanguageProgressContext = {
+  completedTopics: Set<string>;
+  handleToggleComplete: (topicSlug: string) => void;
+  isProgressLoading: boolean;
+};
+
+function useLanguageContext(language: Language): LanguageProgressContext {
     switch(language.slug) {
         case 'java': return useJava();
         case 'spring': return useSpring();
@@ -33,7 +39,7 @@ function useLanguageContext(language: Language) {
         case 'css': return useCss();
         case 'scss': return useScss();
         case 'tailwind': return useTailwind();
-        default: return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
+        default: return { completedTopics: new Set<string>(), handleToggleComplete: () => {}, isProgressLoading: true };
     }
 }
 

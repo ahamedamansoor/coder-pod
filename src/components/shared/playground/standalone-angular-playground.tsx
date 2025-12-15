@@ -87,7 +87,7 @@ bootstrapApplication(AppComponent).catch(err => console.error(err));`,
     };
 
     import('@stackblitz/sdk').then((sdk) => {
-      sdk.openProject(project, {
+      sdk.default.openProject(project, {
         openFile: selectedFile,
         newWindow: true,
       });

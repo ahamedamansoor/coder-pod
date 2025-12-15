@@ -203,8 +203,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   const openReactPlaygroundWithContent = reactPlayground?.openWithContent;
   
   
-  // Note: Angular playground will be added when needed
-  const openAngularPlayground = undefined; // TODO: Add when Angular pages use this component
+  const { openPlayground: openAngularPlayground } = useAngularPlayground();
 
   // Compile SCSS to CSS if needed
   useEffect(() => {
@@ -740,11 +739,10 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
               </button>
             </div>
             <div className="flex-1 overflow-auto bg-white dark:bg-[#0d1117]">
-              <SyntaxHighlighter
+                <SyntaxHighlighter
                 language={
                   activeTab === 'html' ? 'html' :
-                  activeTab === 'css' ? 'css' :
-                  activeTab === 'scss' ? 'scss' :
+                  activeTab === 'css' ? (styleLanguage === 'scss' ? 'scss' : 'css') :
                   activeTab === 'js' ? 'javascript' :
                   activeTab === 'react' || activeTab === 'vue' || activeTab === 'angular' ? 'jsx' :
                   activeTab === 'next' ? 'jsx' :

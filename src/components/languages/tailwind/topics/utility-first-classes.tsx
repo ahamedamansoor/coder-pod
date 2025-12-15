@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';
 import AIProviderModal from '@/components/dashboard/GeminiKeyModal';
 import { AIProvider } from '@/types/ai-providers';
+import { marked } from 'marked';
 
 export default function UtilityFirstClasses() {
   
@@ -42,13 +43,111 @@ export default function UtilityFirstClasses() {
       const provider = (localStorage.getItem('ai_provider') as AIProvider) || 'gemini';
       const apiKey = localStorage.getItem('ai_api_key') || '';
       
+      const structuredPrompt = `You are an expert Tailwind CSS tutor. Answer this question with clear, structured examples that follow Tailwind best practices.
+
+**Question:** ${question}
+
+**Topic Context:** Utility-First Classes
+
+**CRITICAL: Provide a complete working example with HTML, CSS, and JavaScript separated into distinct code blocks.**
+
+**Format your answer EXACTLY like this:**
+
+## 🎯 Quick Answer
+[Direct 1-2 sentence answer]
+
+## 📖 Detailed Explanation
+[Explain clearly in 2-3 short paragraphs. Use simple language.]
+
+## 💻 Live Preview Code
+
+### HTML:
+\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind Utility-First Demo</title>
+  <!-- Note: In a real app, Tailwind is compiled. This is a conceptual example. -->
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 p-6">
+  <div class="max-w-xl mx-auto space-y-4">
+    <h1 class="text-3xl font-bold tracking-tight">Utility-First Card</h1>
+    <p class="text-slate-600">A small example showing how utilities replace custom CSS classes.</p>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold">Pro Plan</h2>
+        <span class="rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800">Popular</span>
+      </div>
+      <p class="mt-2 text-slate-600">Everything you need to build fast.</p>
+      <div class="mt-4 flex items-center gap-3">
+        <button id="cta" class="rounded-xl bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700 transition">
+          Get Started
+        </button>
+        <button class="rounded-xl border border-slate-200 px-4 py-2 font-semibold hover:bg-slate-50 transition">
+          Learn more
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+\`\`\`
+
+### CSS:
+\`\`\`css
+/* Optional: small demo-only styles. Tailwind normally replaces most custom CSS. */
+/* Keep empty unless you truly need custom styling. */
+\`\`\`
+
+### JavaScript (if needed):
+\`\`\`javascript
+document.getElementById('cta')?.addEventListener('click', () => {
+  alert('Utility-first: behavior stays in JS, styling stays in utilities.');
+});
+\`\`\`
+
+## ✅ Best Practices
+- Use semantic HTML and compose utilities.
+- Extract repeated patterns into components.
+- Reach for custom CSS only when needed.
+
+## ❌ Common Mistakes to Avoid
+- Overusing arbitrary values without a design system.
+- Duplicating long class strings everywhere.
+- Mixing conflicting utilities without intent.
+
+## 📚 Summary
+[2-3 sentence recap emphasizing the key takeaway]
+`;
+
       const result = await conductInterview({
-        languageName: 'Tailwind CSS',
-        topicTitle: 'Utility-First Classes',
-        question: question,
-      }, provider, apiKey);
+        provider,
+        apiKey,
+        language: 'Tailwind CSS',
+        question: structuredPrompt,
+        userAnswer: 'Please follow the structured format provided above exactly, with all sections and formatting.',
+        previousQuestions: [],
+        questionType: 'theory',
+      });
       
-      setQaResult({ answer: result.answer });
+      marked.setOptions({
+        breaks: true,
+        gfm: true,
+      });
+
+      let parsedAnswer = await marked(result.idealAnswer);
+      parsedAnswer = parsedAnswer
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&nbsp;/g, ' ');
+
+      setQaResult({ answer: parsedAnswer });
     } catch (error) {
       console.error('Error asking question:', error);
     } finally {
@@ -921,6 +1020,7 @@ export default function UtilityFirstClasses() {
           localStorage.setItem('ai_provider', provider);
           setIsAiEnabled(true);
           setShowAiKeyModal(false);
+          return true;
         }}
       />
     </div>

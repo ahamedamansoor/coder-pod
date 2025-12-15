@@ -17,7 +17,10 @@ type ColorTheme =
   | 'sky'
   | 'rose'
   | 'fuchsia'
-  | 'lime' | 'slate'
+  | 'lime'
+  | 'slate'
+  | 'gray'
+  | 'stone'
   | 'amber';
 
 interface PageHeaderProps {
@@ -146,6 +149,27 @@ const colorClasses: Record<ColorTheme, {
     icon: 'text-lime-600 dark:text-lime-400',
     text: 'text-lime-700 dark:text-lime-300',
     gradient: 'bg-gradient-to-r from-lime-600 via-lime-600 to-lime-600',
+  },
+  slate: {
+    badgeBg: 'bg-gradient-to-r from-slate-500/10 via-slate-500/10 to-slate-500/10',
+    badgeBorder: 'border-slate-200 dark:border-slate-800',
+    icon: 'text-slate-600 dark:text-slate-400',
+    text: 'text-slate-700 dark:text-slate-300',
+    gradient: 'bg-gradient-to-r from-slate-600 via-slate-600 to-slate-600',
+  },
+  gray: {
+    badgeBg: 'bg-gradient-to-r from-gray-500/10 via-gray-500/10 to-gray-500/10',
+    badgeBorder: 'border-gray-200 dark:border-gray-800',
+    icon: 'text-gray-600 dark:text-gray-400',
+    text: 'text-gray-700 dark:text-gray-300',
+    gradient: 'bg-gradient-to-r from-gray-600 via-gray-600 to-gray-600',
+  },
+  stone: {
+    badgeBg: 'bg-gradient-to-r from-stone-500/10 via-stone-500/10 to-stone-500/10',
+    badgeBorder: 'border-stone-200 dark:border-stone-800',
+    icon: 'text-stone-600 dark:text-stone-400',
+    text: 'text-stone-700 dark:text-stone-300',
+    gradient: 'bg-gradient-to-r from-stone-600 via-stone-600 to-stone-600',
   },
   amber: {
     badgeBg: 'bg-gradient-to-r from-amber-500/10 via-amber-500/10 to-amber-500/10',

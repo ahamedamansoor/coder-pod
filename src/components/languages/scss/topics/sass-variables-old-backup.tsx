@@ -989,7 +989,7 @@ export default function SassVariables({ onOpenWebPlayground }: SassVariablesProp
             <div className="p-2 bg-pink-500/10 rounded-lg">
               <Code className="h-5 w-5 text-pink-600 dark:text-pink-400" />
             </div>
-            Variable Interpolation #{'{'}{'}'}}
+            {"Variable Interpolation #{}"}
           </CardTitle>
           <CardDescription>
             Insert variables into selectors and strings

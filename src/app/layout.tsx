@@ -1,15 +1,9 @@
 
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 import "./globals.css";
 import { Providers } from './providers';
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
 
 export const metadata: Metadata = {
   title: "Coder Pod - Learn Programming",
@@ -50,10 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="https://cdn.jsdelivr.net/npm/sass.js@0.11.1/dist/sass.sync.js" async></script>
         <script src="/register-sw.js" defer></script>
       </head>
-      <body className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}>
+      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
         <Providers>
           {children}
         </Providers>

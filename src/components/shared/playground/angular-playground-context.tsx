@@ -102,7 +102,6 @@ body {
       sdk.default.openProject(project, {
         openFile: data.openFile || 'src/app/app.component.ts',
         newWindow: true,
-        height: 600,
       });
     });
   };
