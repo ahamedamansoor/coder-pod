@@ -137,8 +137,8 @@ export default function OptimizationBestPractices() {
                     Cache computed values so they're not recalculated on every render.
                   </p>
                   <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 font-mono text-xs">
-                    <div className="text-blue-600 dark:text-blue-400">const sortedList = useMemo(() => {'{'}</div>
-                    <div className="text-blue-600 dark:text-blue-400 ml-4">return items.sort((a, b) => a.value - b.value);</div>
+                    <div className="text-blue-600 dark:text-blue-400">const sortedList = useMemo(() {'=>'} {'{'}</div>
+                    <div className="text-blue-600 dark:text-blue-400 ml-4">return items.sort((a, b) {'=>'} a.value - b.value);</div>
                     <div className="text-blue-600 dark:text-blue-400">{'}, [items]);'}</div>
                   </div>
                   <p className="text-xs text-gray-600 dark:text-gray-400 mt-3">
@@ -161,7 +161,7 @@ export default function OptimizationBestPractices() {
                     Prevent creating new function instances on every render.
                   </p>
                   <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 font-mono text-xs">
-                    <div className="text-green-600 dark:text-green-400">const handleClick = useCallback(() => {'{'}</div>
+                    <div className="text-green-600 dark:text-green-400">const handleClick = useCallback(() {'=>'} {'{'}</div>
                     <div className="text-green-600 dark:text-green-400 ml-4">doSomething(id);</div>
                     <div className="text-green-600 dark:text-green-400">{'}, [id]);'}</div>
                   </div>
@@ -532,7 +532,7 @@ const SettingsContext = createContext();
                 <div className="text-red-600 dark:text-red-400">// ❌ BAD: New function every render</div>
                 <div className="text-red-600 dark:text-red-400">{'<Button onClick={() => doSomething()} />'}</div>
                 <div className="text-green-600 dark:text-green-400 mt-2">// ✅ GOOD: Memoized callback</div>
-                <div className="text-green-600 dark:text-green-400">const handleClick = useCallback(() => doSomething(), []);</div>
+                <div className="text-green-600 dark:text-green-400">const handleClick = useCallback(() {'=>'} doSomething(), []);</div>
                 <div className="text-green-600 dark:text-green-400">{'<Button onClick={handleClick} />'}</div>
               </div>
             </div>
@@ -557,9 +557,9 @@ const SettingsContext = createContext();
               </p>
               <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 font-mono text-xs">
                 <div className="text-red-600 dark:text-red-400">// ❌ BAD: No key or using index</div>
-                <div className="text-red-600 dark:text-red-400">items.map((item, i) => {'<div key={i}>{item}</div>'})</div>
+                <div className="text-red-600 dark:text-red-400">items.map((item, i) {'=>'} {'<div key={i}>{item}</div>'})</div>
                 <div className="text-green-600 dark:text-green-400 mt-2">// ✅ GOOD: Stable unique ID</div>
-                <div className="text-green-600 dark:text-green-400">items.map(item => {'<div key={item.id}>{item}</div>'})</div>
+                <div className="text-green-600 dark:text-green-400">items.map(item {'=>'} {'<div key={item.id}>{item}</div>'})</div>
               </div>
             </div>
           </div>

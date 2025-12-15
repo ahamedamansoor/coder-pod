@@ -142,7 +142,7 @@ export default function AdvancedSelectors() {
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />
-            <span>Arbitrary variants: <code className="bg-cyan-200 dark:bg-cyan-900 px-2 py-1 rounded">[&>*]:</code> for complex selectors</span>
+            <span>Arbitrary variants: <code className="bg-cyan-200 dark:bg-cyan-900 px-2 py-1 rounded">[&{'>'}*]:</code> for complex selectors</span>
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0" />

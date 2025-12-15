@@ -548,7 +548,7 @@ h1 {
                       <div className="mt-2"></div>
                       <div>{'<button onClick={() => {'}</div>
                       <div className="pl-4">setNumber(number + 5);</div>
-                      <div className="pl-4">setTimeout(() => {'{'}</div>
+                      <div className="pl-4">setTimeout(() {'=>'} {'{'}</div>
                       <div className="pl-8">alert(number); // What will this show?</div>
                       <div className="pl-4">{'}, 3000);'}</div>
                       <div>{'}>{'}</div>

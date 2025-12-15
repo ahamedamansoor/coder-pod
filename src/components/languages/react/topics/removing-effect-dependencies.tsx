@@ -594,7 +594,7 @@ h1 {
                   If variable is only used in Effect, declare it inside the Effect.
                 </p>
                 <div className="bg-slate-100 dark:bg-slate-900 p-2 rounded text-xs font-mono text-blue-600 dark:text-blue-400">
-                  useEffect(() => {'{ const local = value; ...}'}, []);
+                  useEffect(() {'=>'} {'{ const local = value; ...}'}, []);
                 </div>
               </div>
 
@@ -609,7 +609,7 @@ h1 {
                   For state updates, use updater function instead of reading state.
                 </p>
                 <div className="bg-slate-100 dark:bg-slate-900 p-2 rounded text-xs font-mono text-purple-600 dark:text-purple-400">
-                  setState(prev => prev + 1); // No state dependency!
+                  setState(prev {'=>'} prev + 1); // No state dependency!
                 </div>
               </div>
 

@@ -786,7 +786,7 @@ h1 {
                   <h4 className="font-bold text-purple-700 dark:text-purple-300">Functional Updates</h4>
                 </div>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Use updater function when new state depends on previous: setState(prev => prev + 1)
+                  Use updater function when new state depends on previous: setState(prev {'=>'} prev + 1)
                 </p>
               </div>
 

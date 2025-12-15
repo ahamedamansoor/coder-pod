@@ -485,7 +485,7 @@ describe('DataDisplay - Partial Mocks', () => {
               <div className="bg-gray-100 dark:bg-gray-800 rounded p-4 font-mono text-xs">
                 <div className="text-purple-600 dark:text-purple-400">global.fetch = jest.fn();</div>
                 <div className="text-purple-600 dark:text-purple-400 mt-2">fetch.mockResolvedValue({'{'}</div>
-                <div className="text-purple-600 dark:text-purple-400 ml-4">json: async () => ({'{ data: "test" }'})</div>
+                <div className="text-purple-600 dark:text-purple-400 ml-4">json: async () {'=>'} ({'{ data: "test" }'})</div>
                 <div className="text-purple-600 dark:text-purple-400">{'});'}</div>
               </div>
             </div>
@@ -506,10 +506,10 @@ describe('DataDisplay - Partial Mocks', () => {
             <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-300 dark:border-green-700">
               <Badge className="bg-green-500 mb-3">Mock React Router</Badge>
               <div className="bg-gray-100 dark:bg-gray-800 rounded p-4 font-mono text-xs">
-                <div className="text-green-600 dark:text-green-400">jest.mock('react-router-dom', () => ({'{'}</div>
+                <div className="text-green-600 dark:text-green-400">jest.mock('react-router-dom', () {'=>'} ({'{'}</div>
                 <div className="text-green-600 dark:text-green-400 ml-4">...jest.requireActual('react-router-dom'),</div>
-                <div className="text-green-600 dark:text-green-400 ml-4">useNavigate: () => mockNavigate,</div>
-                <div className="text-green-600 dark:text-green-400 ml-4">useParams: () => ({'{ id: "123" }'})</div>
+                <div className="text-green-600 dark:text-green-400 ml-4">useNavigate: () {'=>'} mockNavigate,</div>
+                <div className="text-green-600 dark:text-green-400 ml-4">useParams: () {'=>'} ({'{ id: "123" }'})</div>
                 <div className="text-green-600 dark:text-green-400">{'}));'}</div>
               </div>
             </div>
@@ -551,7 +551,7 @@ describe('DataDisplay - Partial Mocks', () => {
                   Always clear or reset mocks in <code className="bg-green-100 dark:bg-green-900 px-1 rounded">beforeEach</code> to avoid test pollution.
                 </p>
                 <div className="bg-gray-100 dark:bg-gray-800 rounded p-2 font-mono text-xs">
-                  <div className="text-green-600 dark:text-green-400">beforeEach(() => {'{'}</div>
+                  <div className="text-green-600 dark:text-green-400">beforeEach(() {'=>'} {'{'}</div>
                   <div className="text-green-600 dark:text-green-400 ml-2">jest.clearAllMocks();</div>
                   <div className="text-green-600 dark:text-green-400">{'});'}</div>
                 </div>
@@ -580,7 +580,7 @@ describe('DataDisplay - Partial Mocks', () => {
                   Always restore spies after tests to avoid affecting other tests.
                 </p>
                 <div className="bg-gray-100 dark:bg-gray-800 rounded p-2 font-mono text-xs">
-                  <div className="text-purple-600 dark:text-purple-400">afterEach(() => {'{'}</div>
+                  <div className="text-purple-600 dark:text-purple-400">afterEach(() {'=>'} {'{'}</div>
                   <div className="text-purple-600 dark:text-purple-400 ml-2">spy.mockRestore();</div>
                   <div className="text-purple-600 dark:text-purple-400">{'});'}</div>
                 </div>

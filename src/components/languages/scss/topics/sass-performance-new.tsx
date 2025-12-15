@@ -68,7 +68,7 @@ export default function SassPerformanceNew({ onOpenWebPlayground }: SassPerforma
                 <h4 className="font-bold text-red-700 dark:text-red-300">DON'T</h4>
               </div>
               <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
-                <li>❌ Deep nesting (>3 levels)</li>
+                <li>❌ Deep nesting ({'>'} 3 levels)</li>
                 <li>❌ Overuse @extend</li>
                 <li>❌ Unnecessary calculations</li>
               </ul>

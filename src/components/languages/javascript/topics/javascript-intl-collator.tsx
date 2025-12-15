@@ -141,7 +141,7 @@ console.log(words.sort(englishSort));
         title="Case Sensitivity"
         description="Control how uppercase and lowercase are handled"
         language="javascript"
-        colorTheme="fuchsia"
+        colorTheme="purple"
         code={`const items = ['Apple', 'apple', 'Banana', 'banana'];
 
 // Case-sensitive (default)

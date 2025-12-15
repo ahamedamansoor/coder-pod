@@ -46,7 +46,7 @@ export default function SassSelectorCombinatorsNew({ onOpenWebPlayground }: Sass
           />
           
           <p className="text-base leading-relaxed text-gray-700 dark:text-gray-300">
-            <strong>Selector combinators</strong> define the relationship between selectors. CSS has four combinators: <strong>descendant (space)</strong>, <strong>child (>)</strong>, <strong>adjacent sibling (+)</strong>, and <strong>general sibling (~)</strong>. SCSS makes them easier to use with nesting!
+            <strong>Selector combinators</strong> define the relationship between selectors. CSS has four combinators: <strong>descendant (space)</strong>, <strong>child ({'>'}))</strong>, <strong>adjacent sibling (+)</strong>, and <strong>general sibling (~)</strong>. SCSS makes them easier to use with nesting!
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -60,8 +60,8 @@ export default function SassSelectorCombinatorsNew({ onOpenWebPlayground }: Sass
               </p>
               <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg p-3 font-mono text-xs border border-blue-200 dark:border-blue-800">
                 <div className="text-gray-700 dark:text-gray-300">.nav {'{ }'}</div>
-                <div className="text-gray-700 dark:text-gray-300">.nav > .item {'{ }'}</div>
-                <div className="text-gray-700 dark:text-gray-300">.nav > .item + .item {'{ }'}</div>
+                <div className="text-gray-700 dark:text-gray-300">.nav {'>'} .item {'{ }'}</div>
+                <div className="text-gray-700 dark:text-gray-300">.nav {'>'} .item + .item {'{ }'}</div>
                 <div className="text-blue-600 dark:text-blue-400 text-[10px] mt-1">Repetitive selectors</div>
               </div>
             </div>
@@ -76,8 +76,8 @@ export default function SassSelectorCombinatorsNew({ onOpenWebPlayground }: Sass
               </p>
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-3 font-mono text-xs border border-green-200 dark:border-green-800">
                 <div className="text-gray-700 dark:text-gray-300">.nav {'{'}</div>
-                <div className="text-gray-700 dark:text-gray-300 ml-2">> .item {'{ }'}</div>
-                <div className="text-gray-700 dark:text-gray-300 ml-2">> .item + .item {'{ }'}</div>
+                <div className="text-gray-700 dark:text-gray-300 ml-2">{'>'} .item {'{ }'}</div>
+                <div className="text-gray-700 dark:text-gray-300 ml-2">{'>'} .item + .item {'{ }'}</div>
                 <div className="text-gray-700 dark:text-gray-300">{'}'}</div>
                 <div className="text-green-600 dark:text-green-400 text-[10px] mt-1">✓ Cleaner!</div>
               </div>
@@ -97,7 +97,7 @@ export default function SassSelectorCombinatorsNew({ onOpenWebPlayground }: Sass
           />
 
           <p className="text-gray-700 dark:text-gray-300">
-            The <strong>child combinator</strong> <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">></code> selects elements that are <strong>direct children</strong> of the parent. It doesn't select nested descendants.
+            The <strong>child combinator</strong> <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{'>'}</code> selects elements that are <strong>direct children</strong> of the parent. It doesn't select nested descendants.
           </p>
 
           <div className="space-y-6">
@@ -130,7 +130,7 @@ export default function SassSelectorCombinatorsNew({ onOpenWebPlayground }: Sass
                 <div className="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 rounded-lg p-4 font-mono text-sm border border-pink-200 dark:border-pink-800 space-y-1">
                   <div className="text-gray-700 dark:text-gray-300">nav {'{'}</div>
                   <div className="text-green-600 dark:text-green-400 ml-4">// Select direct children only</div>
-                  <div className="text-pink-600 dark:text-pink-400 ml-4">> li {'{'}</div>
+                  <div className="text-pink-600 dark:text-pink-400 ml-4">{'>'} li {'{'}</div>
                   <div className="text-gray-700 dark:text-gray-300 ml-8">color: blue;</div>
                   <div className="text-gray-700 dark:text-gray-300 ml-8">font-weight: bold;</div>
                   <div className="text-pink-600 dark:text-pink-400 ml-4">{'}'}</div>
@@ -147,7 +147,7 @@ export default function SassSelectorCombinatorsNew({ onOpenWebPlayground }: Sass
               
               <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-300 dark:border-green-700">
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-4 font-mono text-sm border border-green-200 dark:border-green-800 space-y-1">
-                  <div className="text-gray-700 dark:text-gray-300">nav > li {'{'}</div>
+                  <div className="text-gray-700 dark:text-gray-300">nav {'>'} li {'{'}</div>
                   <div className="text-gray-700 dark:text-gray-300 ml-4">color: blue;</div>
                   <div className="text-gray-700 dark:text-gray-300 ml-4">font-weight: bold;</div>
                   <div className="text-gray-700 dark:text-gray-300">{'}'}</div>
@@ -456,7 +456,7 @@ body {
                 Selects direct children
               </p>
               <div className="font-mono text-xs bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
-                .parent > .child
+                .parent {'>'} .child
               </div>
             </div>
 

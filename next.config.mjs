@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Turbopack configuration (Next.js 16 default)
+  // Empty config silences the warning - Turbopack handles Node.js polyfills automatically
+  turbopack: {},
+  
   webpack: (config, { isServer }) => {
     // Exclude Node.js built-in modules and server-only packages from client bundle
     if (!isServer) {
