@@ -161,7 +161,7 @@ console.log(new Intl.DateTimeFormat('ja-JP').format(date));
         title="Date Style Options"
         description="Control the date format with style options"
         language="javascript"
-        colorTheme="sky"
+        colorTheme="indigo"
         code={`const date = new Date('2024-12-14');
 
 // Short: 12/14/24
