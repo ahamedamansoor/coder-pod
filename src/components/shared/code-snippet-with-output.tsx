@@ -10,29 +10,71 @@ import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 
 const themeColors = {
-  blue: {
-    accent: 'text-blue-600 dark:text-blue-400',
+  slate: {
+    accent: 'text-slate-600 dark:text-slate-400',
   },
-  purple: {
-    accent: 'text-purple-600 dark:text-purple-400',
+  gray: {
+    accent: 'text-gray-600 dark:text-gray-400',
   },
-  emerald: {
-    accent: 'text-emerald-600 dark:text-emerald-400',
+  zinc: {
+    accent: 'text-zinc-600 dark:text-zinc-400',
   },
-  amber: {
-    accent: 'text-amber-600 dark:text-amber-400',
+  neutral: {
+    accent: 'text-neutral-600 dark:text-neutral-400',
+  },
+  stone: {
+    accent: 'text-stone-600 dark:text-stone-400',
   },
   red: {
     accent: 'text-red-600 dark:text-red-400',
   },
-  green: {
-    accent: 'text-green-600 dark:text-green-400',
-  },
   orange: {
     accent: 'text-orange-600 dark:text-orange-400',
   },
+  amber: {
+    accent: 'text-amber-600 dark:text-amber-400',
+  },
+  yellow: {
+    accent: 'text-yellow-600 dark:text-yellow-400',
+  },
+  lime: {
+    accent: 'text-lime-600 dark:text-lime-400',
+  },
+  green: {
+    accent: 'text-green-600 dark:text-green-400',
+  },
+  emerald: {
+    accent: 'text-emerald-600 dark:text-emerald-400',
+  },
+  teal: {
+    accent: 'text-teal-600 dark:text-teal-400',
+  },
+  cyan: {
+    accent: 'text-cyan-600 dark:text-cyan-400',
+  },
+  sky: {
+    accent: 'text-sky-600 dark:text-sky-400',
+  },
+  blue: {
+    accent: 'text-blue-600 dark:text-blue-400',
+  },
+  indigo: {
+    accent: 'text-indigo-600 dark:text-indigo-400',
+  },
+  violet: {
+    accent: 'text-violet-600 dark:text-violet-400',
+  },
+  purple: {
+    accent: 'text-purple-600 dark:text-purple-400',
+  },
+  fuchsia: {
+    accent: 'text-fuchsia-600 dark:text-fuchsia-400',
+  },
   pink: {
     accent: 'text-pink-600 dark:text-pink-400',
+  },
+  rose: {
+    accent: 'text-rose-600 dark:text-rose-400',
   },
 } as const;
 
