@@ -136,13 +136,13 @@ export default function CheatsheetBoard() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={cn(
-                  "pl-12 h-11 text-base transition-all duration-300 rounded-xl",
-                  "bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl",
-                  "border border-white/20 dark:border-white/10",
-                  "shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
-                  "hover:border-white/30 dark:hover:border-white/20",
-                  "focus:border-blue-400/50 dark:focus:border-blue-500/50",
-                  "focus:shadow-lg focus:shadow-blue-500/10 dark:focus:shadow-blue-500/20"
+                  "pl-12 h-11 text-base transition-colors duration-200 rounded-xl",
+                  "bg-white/50 dark:bg-slate-800/50",
+                  "border border-slate-200 dark:border-slate-700",
+                  "shadow-sm",
+                  "hover:border-slate-300 dark:hover:border-slate-600",
+                  "focus:border-blue-400 dark:focus:border-blue-500",
+                  "focus:shadow-md focus:ring-2 focus:ring-blue-500/20"
                 )}
               />
             </div>
@@ -187,29 +187,20 @@ export default function CheatsheetBoard() {
                           data-testid={`cheatsheet-card-${sheet.id}`}
                           className={cn(
                             "group relative h-full overflow-hidden rounded-2xl cursor-pointer",
-                            // Glass morphism base - transparent with blur
-                            "bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl",
-                            // Borders with subtle gradient
-                            "border border-white/20 dark:border-white/10",
-                            "shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
-                            // Glass reflection layer
-                            "after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none",
-                            // Smooth transitions - only shine animation on hover
-                            "transition-all duration-500 ease-out"
+                            "bg-white/80 dark:bg-slate-800/80",
+                            "border border-slate-200 dark:border-slate-700",
+                            "shadow-sm hover:shadow-md",
+                            "transition-all duration-200 ease-out"
                           )}
+                          style={{ willChange: 'transform' }}
                           onClick={() => setSelectedSheet(sheet)}
                         >
-                          {/* Holographic shimmer effect */}
-                          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                            <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[shine-glow_1.5s_ease-in-out] pointer-events-none" />
-                          </div>
                           
                           <div className="relative p-5">
                             <div className="flex items-start gap-3">
                               <div className={cn(
-                                "p-2.5 rounded-xl transition-all duration-300",
-                                "bg-blue-50/80 dark:bg-blue-950/50 backdrop-blur-sm",
+                                "p-2.5 rounded-xl transition-colors duration-200",
+                                "bg-blue-50 dark:bg-blue-950/50",
                                 "shadow-sm"
                               )}>
                                 <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -223,7 +214,7 @@ export default function CheatsheetBoard() {
                                 </p>
                                 {/* Command count badge */}
                                 <div className="mt-2">
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 backdrop-blur-sm">
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -246,12 +237,12 @@ export default function CheatsheetBoard() {
               <div className="lg:sticky lg:top-6 h-fit">
                 <div className={cn(
                   "rounded-2xl overflow-hidden",
-                  "bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl",
-                  "border border-white/20 dark:border-white/10",
-                  "shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+                  "bg-white/80 dark:bg-slate-800/80",
+                  "border border-slate-200 dark:border-slate-700",
+                  "shadow-sm"
                 )}>
                   {/* Header */}
-                  <div className="p-4 border-b border-white/10 dark:border-white/5">
+                  <div className="p-4 border-b border-slate-200 dark:border-slate-700">
                     <div className="flex items-center gap-2">
                       <ChevronRight className="h-5 w-5 text-blue-500 dark:text-blue-400" />
                       <h3 className="font-semibold text-slate-900 dark:text-white">
@@ -264,14 +255,14 @@ export default function CheatsheetBoard() {
                   </div>
 
                   {/* Commands List */}
-                  <div className="max-h-[calc(100vh-16rem)] overflow-y-auto">
-                    <div className="divide-y divide-white/10 dark:divide-white/5">
+                  <div className="max-h-[calc(100vh-16rem)] overflow-y-auto" style={{ willChange: 'scroll-position' }}>
+                    <div className="divide-y divide-slate-200 dark:divide-slate-700">
                       {matchingCommands.map((match, index) => {
                         const Icon = match.sheetIcon;
                         const isCopied = copiedCommand === match.command.command;
 
                         return (
-                          <div key={index} className="p-4 hover:bg-white/5 dark:hover:bg-white/[0.02] transition-colors">
+                          <div key={index} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200">
                             {/* Source Info */}
                             <div className="flex items-center gap-2 mb-2">
                               <Icon className="h-3.5 w-3.5 text-blue-500 dark:text-blue-400" />
@@ -282,7 +273,7 @@ export default function CheatsheetBoard() {
 
                             {/* Command */}
                             <div className="flex items-start gap-2 mb-2">
-                              <code className="flex-1 text-sm font-mono bg-slate-900/5 dark:bg-white/5 px-2 py-1 rounded text-slate-900 dark:text-white break-all">
+                              <code className="flex-1 text-sm font-mono bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded text-slate-900 dark:text-white break-all">
                                 {match.command.command}
                               </code>
                               <Button
@@ -328,15 +319,14 @@ export default function CheatsheetBoard() {
               id="cheatsheets-empty-state"
               data-testid="cheatsheets-empty-state"
               className={cn(
-                "text-center py-16 rounded-2xl relative overflow-hidden",
-                "bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl",
-                "border border-white/20 dark:border-white/10",
-                "shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
-                "after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none"
+                "text-center py-16 rounded-2xl",
+                "bg-white/80 dark:bg-slate-800/80",
+                "border border-slate-200 dark:border-slate-700",
+                "shadow-sm"
               )}
             >
               <div className="relative z-10">
-                <div className="bg-blue-100/50 dark:bg-blue-900/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                <div className="bg-blue-100 dark:bg-blue-900/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="h-10 w-10 text-blue-500 dark:text-blue-400" />
                 </div>
                 <p className="text-lg font-semibold text-slate-900 dark:text-white">No cheat sheets found</p>

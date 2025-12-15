@@ -188,19 +188,11 @@ export default function RoadmapsPage() {
       style={{ width: '100vw', height: '100vh' }}
       className="flex flex-col overflow-hidden bg-background relative"
     >
-      {/* Subtle Animated Background */}
+      {/* Simplified Static Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle gradient orbs */}
-        <div className="absolute top-20 -left-20 w-96 h-96 bg-primary/10 dark:bg-primary/5 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl animate-float"></div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/8 dark:bg-primary/4 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl animate-float-delayed"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary/6 dark:bg-primary/3 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl animate-pulse-slow"></div>
-        
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]" 
-             style={{ 
-               backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-               backgroundSize: '40px 40px'
-             }}></div>
+        {/* Static gradient (no animation) */}
+        <div className="absolute top-20 -left-20 w-96 h-96 bg-primary/5 dark:bg-primary/3 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/3 dark:bg-primary/2 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl"></div>
       </div>
       
       {/* Innovative Header */}
@@ -216,13 +208,7 @@ export default function RoadmapsPage() {
       </div>
 
       {/* Main Content - Scrollable */}
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 bg-transparent relative overflow-y-auto">
-        {/* Subtle animated background gradients */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl animate-float" style={{ animationDuration: '20s' }} />
-          <div className="absolute top-1/4 right-0 w-80 h-80 bg-gradient-to-bl from-blue-500/5 to-transparent rounded-full blur-3xl animate-float" style={{ animationDuration: '25s', animationDelay: '5s' }} />
-          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-gradient-to-tr from-purple-500/5 to-transparent rounded-full blur-3xl animate-float" style={{ animationDuration: '30s', animationDelay: '10s' }} />
-        </div>
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 bg-transparent relative overflow-y-auto" style={{ willChange: 'scroll-position' }}>
         
         <div className="w-full relative z-10">
 
@@ -231,8 +217,7 @@ export default function RoadmapsPage() {
             {languageCategories.map((category, categoryIndex) => (
               <div 
                 key={category.title}
-                className="animate-in fade-in slide-in-from-bottom-4 duration-500"
-                style={{ animationDelay: `${categoryIndex * 100}ms` }}
+                className="opacity-100"
               >
                 {/* Category Header */}
                 <div className="mb-8 relative">
@@ -292,63 +277,40 @@ export default function RoadmapsPage() {
                       <div
                         key={language.slug}
                         onClick={() => handleLanguageClick(language)}
-                        onMouseEnter={() => setHoveredCard(language.slug)}
-                        onMouseLeave={() => setHoveredCard(null)}
-                        className={cn(
-                          "group relative cursor-pointer transition-all duration-500 ease-out",
-                          "animate-in fade-in duration-700",
-                          isHovered && "scale-[1.02] z-10"
-                        )}
-                        style={{ animationDelay: `${(categoryIndex * 100) + (index * 50)}ms` }}
+                        className="group relative cursor-pointer transition-transform duration-200 ease-out hover:scale-[1.02] hover:z-10"
+                        style={{ willChange: 'transform' }}
                       >
-                        {/* Animated gradient glow on hover */}
+                        {/* Simplified glow on hover */}
                         <div className={cn(
-                          "absolute -inset-[2px] rounded-lg opacity-0 transition-all duration-500 blur-sm",
+                          "absolute -inset-[1px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200",
                           "bg-gradient-to-r",
-                          colors.bg.replace('bg-', 'from-') + '/40',
-                          "to-primary/20",
-                          isHovered && "opacity-100 animate-pulse"
-                        )} style={{ animationDuration: '2s' }} />
+                          colors.bg.replace('bg-', 'from-') + '/30',
+                          "to-primary/10"
+                        )} />
                         
                         {/* Main card */}
                         <div className={cn(
                           "relative px-3 py-2.5 rounded-lg overflow-hidden",
-                          "bg-gradient-to-r from-white/70 to-white/60 dark:from-slate-900/70 dark:to-slate-900/60",
-                          "backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60",
-                          "transition-all duration-500 ease-out",
+                          "bg-white/80 dark:bg-slate-900/80",
+                          "border border-slate-200/60 dark:border-slate-700/60",
+                          "transition-all duration-200 ease-out",
                           "group-hover:shadow-lg group-hover:shadow-primary/10",
-                          isHovered && "border-primary/40 from-white/90 to-white/80 dark:from-slate-900/90 dark:to-slate-900/80"
+                          "group-hover:border-primary/40"
                         )}>
-                          {/* Animated shine effect */}
-                          <div className={cn(
-                            "absolute inset-0 -translate-x-full transition-transform duration-700 ease-out",
-                            "bg-gradient-to-r from-transparent via-white/30 dark:via-white/10 to-transparent",
-                            isHovered && "translate-x-full"
-                          )} />
                           
-                          {/* Colored accent bar with glow */}
-                          <div className={cn(
-                            "absolute left-0 top-1/2 -translate-y-1/2 transition-all duration-500",
-                            isHovered ? "w-1 h-full" : "w-0.5 h-0"
-                          )}>
+                          {/* Colored accent bar */}
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0 group-hover:w-1 h-0 group-hover:h-full transition-all duration-200">
                             <div className={cn(
-                              "w-full h-full rounded-r-full transition-all duration-500",
-                              isHovered ? colors.iconBg : "bg-slate-300 dark:bg-slate-600",
-                              isHovered && "shadow-lg shadow-current/50"
+                              "w-full h-full rounded-r-full",
+                              colors.iconBg
                             )} />
                           </div>
                           
-                          <div className={cn(
-                            "relative flex items-center transition-all duration-500",
-                            isHovered ? "gap-2.5 pl-2" : "gap-2.5"
-                          )}>
+                          <div className="relative flex items-center gap-2.5 group-hover:pl-2 transition-all duration-200">
                             {/* Icon badge - appears on hover */}
-                            <div className={cn(
-                              "transition-all duration-500 overflow-hidden",
-                              isHovered ? "w-6 opacity-100" : "w-0 opacity-0"
-                            )}>
+                            <div className="w-0 group-hover:w-6 opacity-0 group-hover:opacity-100 transition-all duration-200 overflow-hidden">
                               <div className={cn(
-                                "w-6 h-6 rounded-md flex items-center justify-center transition-all duration-500",
+                                "w-6 h-6 rounded-md flex items-center justify-center",
                                 colors.iconBg,
                                 "shadow-sm"
                               )}>
@@ -358,27 +320,22 @@ export default function RoadmapsPage() {
                             
                             {/* Content */}
                             <div className="flex-1 min-w-0">
-                              <h3 className={cn(
-                                "text-xs font-semibold transition-all duration-500 leading-tight truncate",
-                                "text-slate-900 dark:text-slate-100",
-                                isHovered && "translate-x-0.5"
-                              )}>
+                              <h3 className="text-xs font-semibold transition-transform duration-200 leading-tight truncate text-slate-900 dark:text-slate-100 group-hover:translate-x-0.5">
                                 {language.name}
                               </h3>
                               <p className={cn(
-                                "text-[10px] font-medium transition-all duration-500 mt-0.5",
-                                isHovered ? colors.text : "text-muted-foreground"
+                                "text-[10px] font-medium transition-colors duration-200 mt-0.5 text-muted-foreground",
+                                "group-hover:" + colors.text.split(' ')[0]
                               )}>
                                 {language.topics?.filter(t => t.slug !== 'learning-plan').length || 0} topics
                               </p>
                             </div>
                             
-                            {/* Arrow with bounce */}
+                            {/* Arrow */}
                             <svg 
                               className={cn(
-                                "w-3.5 h-3.5 transition-all duration-500 flex-shrink-0",
-                                isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2",
-                                colors.text.replace('text-', 'text-')
+                                "w-3.5 h-3.5 transition-all duration-200 flex-shrink-0 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0",
+                                colors.text.split(' ')[0]
                               )} 
                               fill="none" 
                               viewBox="0 0 24 24" 
