@@ -449,7 +449,7 @@ export default function NotesPage() {
                   const langData = languages.find(l => l.slug === note.language);
                   const ResourceIcon = getResourceIcon(note.type);
                   const hasThumb = note.type === 'video' && note.videoId;
-                  const createdDate = note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt);
+                  const createdDate = note.createdAt instanceof Date ? note.createdAt : note.createdAt.toDate();
                   
                   return (
                     <div key={note.id} className="group">
@@ -592,7 +592,7 @@ export default function NotesPage() {
                   {type: 'link', icon: LinkIcon, label: 'Link'}].map(({type, icon: Icon, label}) => (
                   <button
                     key={type}
-                    onClick={() => setResourceType(type as SavedNote['type'])}
+                    onClick={() => setResourceType(type as Note['type'])}
                     className={cn(
                       "flex flex-col items-center gap-1.5 p-3 rounded-lg border-2 transition-all",
                       resourceType === type 
