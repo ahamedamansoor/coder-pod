@@ -740,7 +740,7 @@ function DashboardContent() {
                     {/* CTA Section */}
                     <div className="flex-shrink-0">
                       <a 
-                        href="https://buymeacoffee.com/ahamedamansoor" 
+                        href="https://buymeacoffee.com/coderpod" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         onClick={(e) => {
