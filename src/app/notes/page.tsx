@@ -223,6 +223,10 @@ export default function NotesPage() {
   };
 
   const openCreateDialog = () => {
+    if (!user) {
+      setShowFeatureGate(true);
+      return;
+    }
     resetForm();
     setIsDialogOpen(true);
   };
@@ -368,14 +372,16 @@ export default function NotesPage() {
           title="Learning Resources"
           subtitle="Save videos, blogs, articles & links for quick access — organize your learning materials in one place"
           action={
-            <Button 
-              onClick={openCreateDialog}
-              size="lg"
-              className="gap-2"
-            >
-              <PlusCircle className="w-4 h-4" />
-              Add Resource
-            </Button>
+            notes.length > 0 ? (
+              <Button 
+                onClick={openCreateDialog}
+                size="lg"
+                className="gap-2"
+              >
+                <PlusCircle className="w-4 h-4" />
+                Add Resource
+              </Button>
+            ) : undefined
           }
         />
       </div>
