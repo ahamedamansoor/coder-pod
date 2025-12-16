@@ -8,9 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Chrome, Loader2, User } from 'lucide-react';
 import { Logo } from '@/components/shared/layout/logo';
-import { useAuth, useFirestore } from '@/firebase';
-import { signInAnonymously } from 'firebase/auth';
-import { ServiceFactory } from '@/services';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
@@ -21,9 +19,7 @@ export function LoginPageForm() {
   const [password, setPassword] = useState('');
   const [isEmailLoading, setIsEmailLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [isAnonymousLoading, setIsAnonymousLoading] = useState(false);
-  const auth = useAuth();
-  const firestore = useFirestore();
+  const { signInWithGoogle, signInWithEmail } = useSupabaseAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -31,68 +27,52 @@ export function LoginPageForm() {
 
 
   const handleGoogleSignIn = async () => {
-    if (!auth || !firestore) return;
     setIsGoogleLoading(true);
     
     try {
-      const authService = ServiceFactory.getAuthService(auth, firestore);
-      const { user, isNewUser } = await authService.signInWithGoogle();
-      
-      showLoader({
-        title: 'Login successful!',
-        subtitle: 'Redirecting you to your dashboard...',
-      });
-      
-      router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);
+      await signInWithGoogle();
+      // User will be redirected by Supabase OAuth flow
     } catch (error: any) {
-      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        toast({
-          title: 'Sign-in cancelled',
-          description: 'You closed the Google sign-in window.',
-        });
-      } else {
-        console.error('Google sign-in error:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Sign-in failed',
-          description: error.message || 'An unexpected error occurred during Google sign-in.',
-        });
-      }
-    } finally {
+      console.error('Google sign-in error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Sign-in failed',
+        description: error.message || 'An unexpected error occurred during Google sign-in.',
+      });
       setIsGoogleLoading(false);
     }
   };
   
 
-  const handleAnonymousSignIn = async () => {
-    showLoader();
+  const handleGuestContinue = () => {
+    // Guest users can browse without authentication
     router.push('/dashboard');
   };
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth || !firestore) return;
     setIsEmailLoading(true);
     
     try {
-      const authService = ServiceFactory.getAuthService(auth, firestore);
-      const { user, isNewUser } = await authService.signInWithEmail(email, password);
+      await signInWithEmail(email, password);
       
       showLoader({
         title: 'Login successful!',
         subtitle: 'Redirecting you to your dashboard...',
       });
       
-      router.push(`/dashboard${isNewUser ? '?isNewUser=true' : ''}`);
+      router.push('/dashboard');
     } catch (error: any) {
       console.error('Email sign-in error:', error);
       
       let description = 'An unexpected error occurred. Please try again.';
       
-      if (error.message === 'EMAIL_NOT_VERIFIED') {
+      if (error.message && error.message.includes('verify')) {
         description = 'Please verify your email before signing in. Check your inbox for a verification link.';
-      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+      } else if (error.message && (error.message.includes('Invalid') || error.message.includes('credentials'))) {
         description = 'The email or password you entered is incorrect. Please try again.';
+      } else if (error.message) {
+        description = error.message;
       }
       
       toast({
@@ -105,7 +85,7 @@ export function LoginPageForm() {
     }
   };
 
-  const isLoading = isEmailLoading || isGoogleLoading || isAnonymousLoading;
+  const isLoading = isEmailLoading || isGoogleLoading;
 
   return (
     <Card className="w-full max-w-md">
@@ -193,17 +173,11 @@ export function LoginPageForm() {
         <Button
           variant="ghost"
           className="w-full"
-          onClick={handleAnonymousSignIn}
+          onClick={handleGuestContinue}
           disabled={isLoading}
         >
-          {isAnonymousLoading ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <>
-              <User className="mr-2 h-4 w-4" />
-              Continue as Guest
-            </>
-          )}
+          <User className="mr-2 h-4 w-4" />
+          Continue as Guest
         </Button>
       </CardFooter>
     </Card>

@@ -9,7 +9,8 @@ import { useParams, notFound, useRouter } from 'next/navigation';
 import { RxjsProvider } from './rxjs-context';
 import { RxjsLayoutProvider, useRxjsLayout } from './rxjs-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function RxjsLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -17,7 +18,7 @@ function RxjsLayoutContent({ children }: { children: React.ReactNode }) {
   const { isEditorOpen, setIsEditorOpen } = useRxjsLayout();
   const { hideLoader } = useLoading();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   useEffect(() => {
     hideLoader();

@@ -10,22 +10,15 @@ import { Youtube, Play, Clock, Search, X, Video, BookOpen, FileText, Link as Lin
 import { languages } from '@/data/languages';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '@/contexts/PlayerContext';
+import { useUser } from '@/hooks/use-auth-compat';
+import { ServiceFactory } from '@/services';
+import { Note } from '@/types/notes.types';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-interface SavedNote {
-  id: string;
-  title: string;
-  url: string;
-  type: 'video' | 'blog' | 'article' | 'documentation' | 'link';
-  videoId?: string; // Only for YouTube videos
-  language: string;
-  createdAt: number;
-}
 
 interface VideoNotesDrawerProps {
   open: boolean;
@@ -34,9 +27,10 @@ interface VideoNotesDrawerProps {
 }
 
 export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNotesDrawerProps) {
-  const [notes, setNotes] = useState<SavedNote[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [playingVideo, setPlayingVideo] = useState<SavedNote | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<Note | null>(null);
   const [iframeError, setIframeError] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -44,36 +38,50 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   // Form states
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
-  const [resourceType, setResourceType] = useState<SavedNote['type']>('video');
+  const [resourceType, setResourceType] = useState<Note['type']>('video');
 
   const { toast } = useToast();
   const { setContent } = usePlayer();
+  const { user } = useUser();
   const languageData = languages.find(l => l.slug === languageSlug);
-  const STORAGE_KEY = 'video_notes';
 
-  // Load notes from localStorage
+  // Fetch notes from Supabase
+  const fetchNotes = async () => {
+    if (!user) {
+      setNotes([]);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const notesService = ServiceFactory.getNotesService();
+      const allNotes = await notesService.getNotesByLanguage(user.uid, languageSlug);
+      setNotes(allNotes);
+    } catch (error) {
+      console.error('Error fetching notes:', error);
+      toast({
+        title: 'Error loading resources',
+        description: 'Failed to load your saved resources.',
+        variant: 'destructive',
+      });
+      setNotes([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (open) {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const allNotes: SavedNote[] = JSON.parse(stored);
-        // Filter by language and sort by createdAt descending
-        const languageNotes = allNotes
-          .filter(note => note.language === languageSlug)
-          .sort((a, b) => b.createdAt - a.createdAt);
-        setNotes(languageNotes);
-      } else {
-        setNotes([]);
-      }
+      fetchNotes();
     }
-  }, [open, languageSlug]);
+  }, [open, languageSlug, user]);
 
   // Filter notes based on search
   const filteredNotes = searchQuery
     ? notes.filter(note => note.title.toLowerCase().includes(searchQuery.toLowerCase()))
     : notes;
 
-  const handlePlayVideo = (note: SavedNote) => {
+  const handlePlayVideo = (note: Note) => {
     // If it's a video with videoId, use the minimizable FloatingPlayer
     if (note.type === 'video' && note.videoId) {
       setContent({
@@ -114,7 +122,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     setIsAddDialogOpen(true);
   };
 
-  const handleSaveNote = () => {
+  const handleSaveNote = async () => {
     if (!title.trim()) {
       toast({
         title: "Title Required",
@@ -133,6 +141,15 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
       return;
     }
 
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to save resources.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       let videoId: string | undefined;
@@ -142,34 +159,22 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         videoId = extractVideoId(url) || undefined;
       }
 
-      const newNote: SavedNote = {
-        id: Date.now().toString(),
+      const notesService = ServiceFactory.getNotesService();
+      await notesService.createNote(user.uid, {
         title: title.trim(),
         url: url.trim(),
         type: resourceType,
         videoId,
         language: languageSlug,
-        createdAt: Date.now(),
-      };
-
-      // Get all notes from storage
-      const stored = localStorage.getItem(STORAGE_KEY);
-      const allNotes: SavedNote[] = stored ? JSON.parse(stored) : [];
-      
-      // Add new note and save
-      const updatedNotes = [newNote, ...allNotes];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNotes));
-      
-      // Update local state with filtered notes
-      const languageNotes = updatedNotes
-        .filter(note => note.language === languageSlug)
-        .sort((a, b) => b.createdAt - a.createdAt);
-      setNotes(languageNotes);
+      });
       
       toast({
         title: "✅ Resource Saved!",
         description: `Your ${resourceType} has been saved successfully.`,
       });
+      
+      // Refresh notes list
+      await fetchNotes();
       
       setIsAddDialogOpen(false);
       resetForm();
@@ -186,7 +191,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   };
 
   // Get icon based on resource type
-  const getResourceIcon = (type: SavedNote['type']) => {
+  const getResourceIcon = (type: Note['type']) => {
     switch (type) {
       case 'video':
         return Youtube;
@@ -202,7 +207,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   };
 
   // Get thumbnail or fallback
-  const getThumbnail = (note: SavedNote) => {
+  const getThumbnail = (note: Note) => {
     if (note.type === 'video' && note.videoId) {
       return `https://img.youtube.com/vi/${note.videoId}/mqdefault.jpg`;
     }
@@ -251,7 +256,11 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
 
             {/* Resource List - Scrollable */}
             <div className="flex-1 overflow-y-auto -mx-6 px-6 space-y-2">
-              {filteredNotes.length > 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                </div>
+              ) : filteredNotes.length > 0 ? (
                 filteredNotes.map((note) => {
                   const ResourceIcon = getResourceIcon(note.type);
                   const thumbnail = getThumbnail(note);
@@ -296,7 +305,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                         </h4>
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                           <Clock className="w-3 h-3" />
-                          {new Date(note.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          {(note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </div>
                       </div>
                     </div>
@@ -412,7 +421,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                 <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4" />
-                    {new Date(playingVideo.createdAt).toLocaleDateString()}
+                    {(playingVideo.createdAt instanceof Date ? playingVideo.createdAt : new Date(playingVideo.createdAt)).toLocaleDateString()}
                   </span>
                   <a
                     href={playingVideo.url}

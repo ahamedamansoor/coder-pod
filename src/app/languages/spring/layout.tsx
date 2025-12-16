@@ -10,14 +10,15 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { SpringProvider } from './spring-context';
 import { SpringLayoutProvider, useSpringLayout } from './spring-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function SpringTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const router = useRouter();
   const { isEditorOpen, setIsEditorOpen } = useSpringLayout();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
 
   useEffect(() => {

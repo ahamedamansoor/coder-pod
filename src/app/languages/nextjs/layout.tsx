@@ -9,7 +9,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { NextjsProvider } from './nextjs-context';
 import { NextjsLayoutProvider, useNextjsLayout } from './nextjs-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function NextjsTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -17,7 +18,7 @@ function NextjsTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const { isEditorOpen, setIsEditorOpen } = useNextjsLayout();
   const { hideLoader } = useLoading();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   useEffect(() => {
     hideLoader();

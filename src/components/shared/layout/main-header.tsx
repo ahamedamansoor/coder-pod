@@ -14,9 +14,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useUser, useAuth, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useRouter, usePathname } from 'next/navigation';
-import { doc } from 'firebase/firestore';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
 import Link from 'next/link';
@@ -37,9 +36,7 @@ export function MainHeader({
   showCodeEditorButton = true,
   showWebPlaygroundButton = true,
 }: MainHeaderProps) {
-  const { user } = useUser();
-  const auth = useAuth();
-  const firestore = useFirestore();
+  const { user, userProfile, signOut } = useSupabaseAuth();
   const router = useRouter();
   const pathname = usePathname();
   const { showLoader } = useLoading();
@@ -47,18 +44,9 @@ export function MainHeader({
   const currentLanguageSlug = pathname.split('/')[1] || undefined;
   const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
 
-  const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
-
-  const { data: userData } = useDoc(userDocRef);
-
   const handleSignOut = async () => {
     showLoader();
-    if (auth) {
-      await auth.signOut();
-    }
+    await signOut();
     router.push('/login');
   };
   
@@ -67,7 +55,7 @@ export function MainHeader({
   };
 
   const getInitials = (name?: string | null) => {
-    if (user?.isAnonymous) return 'G';
+    if (!user) return 'G';
     if (!name) return 'U';
     const names = name.split(' ');
     if (names.length > 1) {
@@ -76,7 +64,7 @@ export function MainHeader({
     return name[0].toUpperCase();
   };
 
-  const displayName = user?.isAnonymous ? 'Guest User' : userData?.name || user?.displayName || 'User';
+  const displayName = user ? (userProfile?.name || user.user_metadata?.name || user.email?.split('@')[0] || 'User') : 'Guest User';
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">

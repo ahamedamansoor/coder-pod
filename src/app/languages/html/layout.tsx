@@ -10,7 +10,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { HtmlProvider } from './html-context';
 import { HtmlLayoutProvider, useHtmlLayout } from './html-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 
@@ -20,7 +21,7 @@ function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const { isEditorOpen, setIsEditorOpen } = useHtmlLayout();
   const { hideLoader } = useLoading();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   useEffect(() => {
     hideLoader();

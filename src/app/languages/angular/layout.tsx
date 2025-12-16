@@ -10,7 +10,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { AngularProvider } from './angular-context';
 import { AngularLayoutProvider, useAngularLayout } from './angular-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { AngularPlaygroundProvider } from '@/components/shared/playground/angular-playground-context';
 import { AngularPlaygroundModal } from '@/components/shared/playground/angular-playground-modal';
 
@@ -19,7 +20,7 @@ function AngularTopicLayoutContent({ children }: { children: React.ReactNode }) 
   const router = useRouter();
   const { isEditorOpen, setIsEditorOpen } = useAngularLayout();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
 
   useEffect(() => {

@@ -20,8 +20,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { languages } from '@/data/languages';
-import { useUser, useFirestore } from '@/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
+import { ServiceFactory } from '@/services';
 import { useLoading } from '@/hooks/use-loading';
 import { useToast } from '@/hooks/use-toast';
 
@@ -37,7 +37,6 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
   const [selectedLanguage, setSelectedLanguage] = useState('');
 
   const { user } = useUser();
-  const firestore = useFirestore();
   const { showLoader, hideLoader } = useLoading();
   const { toast } = useToast();
 
@@ -65,16 +64,13 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
 
     showLoader();
     try {
-      if (!firestore) {
-        throw new Error('Firestore is not initialized');
-      }
-      const notesCollectionRef = collection(firestore, 'notes');
-      await addDoc(notesCollectionRef, {
+      const notesService = ServiceFactory.getNotesService();
+      await notesService.createNote({
         title,
-        videoUrl,
+        url: videoUrl,
         language: selectedLanguage,
         userId: user.uid,
-        createdAt: new Date(),
+        type: 'video',
       });
 
       toast({

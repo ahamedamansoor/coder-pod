@@ -10,7 +10,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { JavascriptProvider } from './javascript-context';
 import { JavascriptLayoutProvider, useJavascriptLayout } from './javascript-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function JavascriptTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -18,7 +19,7 @@ function JavascriptTopicLayoutContent({ children }: { children: React.ReactNode 
   const { isEditorOpen, setIsEditorOpen } = useJavascriptLayout();
   const { hideLoader } = useLoading();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   useEffect(() => {
     hideLoader();

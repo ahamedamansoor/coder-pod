@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { usePlayer } from '@/contexts/PlayerContext';
 import { Button } from '@/components/ui/button';
@@ -48,7 +48,6 @@ export default function DiscoverPage() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   
   const { user, isUserLoading } = useUser();
-  const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
@@ -611,10 +610,7 @@ export default function DiscoverPage() {
   }, [searchQuery, selectedTag]);
 
   const handleLogout = async () => {
-    if (auth) {
-      await auth.signOut();
-      router.push('/login');
-    }
+    router.push('/login');
   };
 
   const loadMoreArticles = () => {

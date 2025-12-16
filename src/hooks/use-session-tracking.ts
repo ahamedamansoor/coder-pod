@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { doc, updateDoc, increment, getFirestore } from 'firebase/firestore';
 
 export function useSessionTracking() {

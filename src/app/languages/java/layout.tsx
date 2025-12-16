@@ -10,14 +10,15 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { JavaProvider } from './java-context';
 import { JavaLayoutProvider, useJavaLayout } from './java-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function JavaTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const router = useRouter();
   const { isEditorOpen, setIsEditorOpen } = useJavaLayout();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
 
   useEffect(() => {

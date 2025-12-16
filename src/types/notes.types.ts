@@ -1,30 +1,36 @@
-import { Timestamp } from 'firebase/firestore';
-
-export type NoteType = 'video' | 'blog' | 'article' | 'documentation' | 'link';
+export type NoteType = 'article' | 'video' | 'link' | 'doc' | 'blog' | 'documentation';
 
 export interface Note {
   id: string;
   userId: string;
   title: string;
-  url: string;
+  description?: string;
   type: NoteType;
-  videoId?: string;
   language: string;
-  createdAt: Timestamp | Date;
-  updatedAt?: Timestamp | Date;
+  url?: string;
+  videoId?: string;
+  content?: string;
+  tags?: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreateNoteData {
   title: string;
-  url: string;
+  description?: string;
   type: NoteType;
-  videoId?: string;
   language: string;
+  url?: string;
+  videoId?: string;
+  content?: string;
+  tags?: string[];
 }
 
 export interface UpdateNoteData {
   title?: string;
+  description?: string;
   url?: string;
-  type?: NoteType;
-  language?: string;
+  videoId?: string;
+  content?: string;
+  tags?: string[];
 }

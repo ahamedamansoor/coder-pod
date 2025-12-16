@@ -16,7 +16,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';
 import { validateApiKey } from '@/ai/flows/validate-api-key';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { languages } from '@/data/languages';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ReactMarkdown from 'react-markdown';

@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AIAnswerDisplay } from '@/components/shared/ai-answer-display';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { cn } from '@/lib/utils';
 import { conductInterview } from '@/ai/flows/interview-flow';
 import AIProviderModal from '@/components/dashboard/GeminiKeyModal';

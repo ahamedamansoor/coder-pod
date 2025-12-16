@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser, useAuth, useFirestore } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { ServiceFactory } from '@/services';
 import { Note } from '@/types/notes.types';
@@ -45,7 +45,6 @@ export default function NotesPage() {
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [hasMigrated, setHasMigrated] = useState(false);
   
   // Form states
   const [title, setTitle] = useState('');
@@ -60,8 +59,6 @@ export default function NotesPage() {
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   
   const { user, isUserLoading } = useUser();
-  const auth = useAuth();
-  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
@@ -81,23 +78,37 @@ export default function NotesPage() {
     return null;
   };
 
-  // Fetch saved resources from Firebase
+  // Fetch saved resources from Supabase
   const fetchNotes = async () => {
-    if (!user || !firestore) return;
+    if (!user) {
+      setNotes([]);
+      setFilteredNotes([]);
+      setIsLoading(false);
+      return;
+    }
     
     setIsLoading(true);
     try {
-      const notesService = ServiceFactory.getNotesService(firestore);
+      const notesService = ServiceFactory.getNotesService();
       const fetchedNotes = await notesService.getUserNotes(user.uid);
       setNotes(fetchedNotes);
       setFilteredNotes(fetchedNotes);
-    } catch (error) {
+      console.log('✅ Loaded notes:', fetchedNotes.length);
+    } catch (error: any) {
       console.error("Error fetching notes:", error);
-      toast({
-        title: "Error loading notes",
-        description: "Failed to load your notes. Please try again.",
-        variant: "destructive",
-      });
+      
+      // Only show toast if it's not a "table doesn't exist" error
+      const errorMessage = error?.message || '';
+      if (errorMessage.includes('relation "notes" does not exist')) {
+        console.warn('⚠️ Notes table does not exist in Supabase. Please run the SQL setup script.');
+      } else {
+        toast({
+          title: "Error loading notes",
+          description: errorMessage || "Failed to load your notes. Please try again.",
+          variant: "destructive",
+        });
+      }
+      
       setNotes([]);
       setFilteredNotes([]);
     } finally {
@@ -105,48 +116,13 @@ export default function NotesPage() {
     }
   };
 
-  // Migrate notes from localStorage to Firebase (one-time operation)
-  const migrateNotesFromLocalStorage = async () => {
-    if (!user || !firestore || hasMigrated) return;
-    
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const localNotes = JSON.parse(stored);
-        if (localNotes.length > 0) {
-          const notesService = ServiceFactory.getNotesService(firestore);
-          const migratedCount = await notesService.migrateFromLocalStorage(user.uid, localNotes);
-          
-          if (migratedCount > 0) {
-            // Clear localStorage after successful migration
-            localStorage.removeItem(STORAGE_KEY);
-            toast({
-              title: "Notes Migrated! 🎉",
-              description: `Successfully migrated ${migratedCount} notes to your account.`,
-            });
-            await fetchNotes();
-          }
-        }
-      }
-      setHasMigrated(true);
-    } catch (error) {
-      console.error("Error migrating notes:", error);
-      toast({
-        title: "Migration Warning",
-        description: "Some notes may not have been migrated. Your existing notes are safe.",
-        variant: "destructive",
-      });
-    }
-  };
+  // Note: localStorage migration removed - using Supabase directly
 
   useEffect(() => {
-    if (user && firestore && !isUserLoading) {
-      // First migrate any localStorage notes, then fetch all notes
-      migrateNotesFromLocalStorage().then(() => {
-        fetchNotes();
-      });
+    if (user && !isUserLoading) {
+      fetchNotes();
     }
-  }, [user, firestore, isUserLoading]);
+  }, [user, isUserLoading]);
 
   // Filter notes based on search, language, and type
   useEffect(() => {
@@ -170,10 +146,7 @@ export default function NotesPage() {
   }, [searchQuery, languageFilter, typeFilter, notes]);
 
   const handleLogout = async () => {
-    if (auth) {
-      await auth.signOut();
-      router.push('/login');
-    }
+    router.push('/login');
   };
 
   const resetForm = () => {
@@ -207,7 +180,7 @@ export default function NotesPage() {
       return;
     }
 
-    if (!user || !firestore) {
+    if (!user) {
       toast({
         title: "Authentication Required",
         description: "Please sign in to save notes.",
@@ -225,7 +198,7 @@ export default function NotesPage() {
         videoId = extractVideoId(url) || undefined;
       }
 
-      const notesService = ServiceFactory.getNotesService(firestore);
+      const notesService = ServiceFactory.getNotesService();
       await notesService.createNote(user.uid, {
         title: title.trim(),
         url: url.trim(),
@@ -258,7 +231,7 @@ export default function NotesPage() {
   const handleDeleteNote = async (noteId: string) => {
     if (!confirm('Are you sure you want to delete this resource?')) return;
 
-    if (!user || !firestore) {
+    if (!user) {
       toast({
         title: "Authentication Required",
         description: "Please sign in to delete notes.",
@@ -268,7 +241,7 @@ export default function NotesPage() {
     }
 
     try {
-      const notesService = ServiceFactory.getNotesService(firestore);
+      const notesService = ServiceFactory.getNotesService();
       await notesService.deleteNote(noteId, user.uid);
       
       await fetchNotes();
@@ -449,7 +422,7 @@ export default function NotesPage() {
                   const langData = languages.find(l => l.slug === note.language);
                   const ResourceIcon = getResourceIcon(note.type);
                   const hasThumb = note.type === 'video' && note.videoId;
-                  const createdDate = note.createdAt instanceof Date ? note.createdAt : note.createdAt.toDate();
+                  const createdDate = note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt);
                   
                   return (
                     <div key={note.id} className="group">

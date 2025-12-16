@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Award, Linkedin, Home } from 'lucide-react';

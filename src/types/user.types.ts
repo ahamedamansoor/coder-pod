@@ -1,5 +1,3 @@
-import { FieldValue, Timestamp } from 'firebase/firestore';
-
 export type UserPlan = 'free' | 'pro' | 'enterprise';
 
 export interface UserProfile {
@@ -9,8 +7,8 @@ export interface UserProfile {
   phoneNumber: string | null;
   dob: Date | null;
   photoURL?: string | null;
-  createdAt: Timestamp | Date | FieldValue;
-  lastLoginAt: Timestamp | Date | FieldValue;
+  createdAt: Date;
+  lastLoginAt: Date;
   completedTopics: Record<string, boolean>;
   plan: UserPlan;
   tokenBalance: number;

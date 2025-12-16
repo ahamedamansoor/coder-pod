@@ -9,7 +9,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { VueProvider } from './vue-context';
 import { VueLayoutProvider, useVueLayout } from './vue-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function VueTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -17,7 +18,7 @@ function VueTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const { isEditorOpen, setIsEditorOpen } = useVueLayout();
   const { hideLoader } = useLoading();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   useEffect(() => {
     hideLoader();

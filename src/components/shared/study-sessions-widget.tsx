@@ -5,43 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Calendar, Clock, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScheduleStudyModal } from './schedule-study-modal';
-import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
 export function StudySessionsWidget() {
   const { user } = useUser();
-  const firestore = useFirestore();
-  
   const isGuestUser = !user;
-
-  const sessionsQuery = useMemoFirebase(() => {
-    if (isGuestUser || !user || !firestore) return null;
-    return query(
-        collection(firestore, `users/${user.uid}/studySessions`),
-        where('dateTime', '>=', new Date()),
-        orderBy('dateTime', 'asc'),
-        limit(3)
-    );
-  }, [user, firestore, isGuestUser]);
-
-  const { data: upcomingSessions, isLoading } = useCollection(sessionsQuery);
-
-  const formatSessionTime = (timestamp: Timestamp) => {
-    const date = timestamp.toDate();
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    if (date.toDateString() === today.toDateString()) {
-      return `Today at ${format(date, 'p')}`;
-    }
-    if (date.toDateString() === tomorrow.toDateString()) {
-      return `Tomorrow at ${format(date, 'p')}`;
-    }
-    return format(date, "MMM d 'at' p");
-  }
+  
+  // TODO: Implement Supabase study sessions
+  const upcomingSessions: any[] = [];
+  const isLoading = false;
 
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-border/50">

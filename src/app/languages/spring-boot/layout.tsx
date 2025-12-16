@@ -7,13 +7,14 @@ import { SpringBootProvider } from './spring-boot-context';
 import { SpringBootLayoutProvider } from './spring-boot-layout-context';
 import { InnovativeHeader } from '@/components/shared';
 import { languages } from '@/data/languages';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 export default function SpringBootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useUser();
-  const auth = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   const language = useMemo(() => languages.find(lang => lang.slug === 'spring-boot'), []);
 
@@ -24,9 +25,11 @@ export default function SpringBootLayout({ children }: { children: React.ReactNo
   }, [pathname]);
 
   const handleLogout = async () => {
-    if (auth) {
-      await auth.signOut();
+    try {
+      await signOut();
       router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
 

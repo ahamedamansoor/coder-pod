@@ -24,7 +24,7 @@ import { useRxjs } from '@/app/languages/rxjs/rxjs-context';
 import { usePlaywright } from '@/app/languages/playwright/playwright-context';
 import { useNextjsContext } from '@/app/languages/nextjs/nextjs-context';
 import { useTailwind } from '@/app/languages/tailwind/tailwind-context';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
 import { AiSimplification } from './ai-simplification';

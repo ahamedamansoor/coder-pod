@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Award, CheckCircle, Circle, ChevronDown, ChevronRight, Zap, Code, Rocket, Trophy, LucideIcon, MapPin, BookmarkIcon } from 'lucide-react';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';

@@ -10,7 +10,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { ReactProvider } from './react-context';
 import { ReactLayoutProvider } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { ReactPlaygroundProvider } from '@/components/languages/react/react-playground-context';
 import { ReactPlaygroundModal } from '@/components/languages/react/react-playground-modal';
 
@@ -19,7 +20,7 @@ function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { hideLoader } = useLoading();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
 
   useEffect(() => {
     hideLoader();

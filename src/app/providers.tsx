@@ -10,12 +10,11 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
-import { FirebaseProvider } from '@/firebase';
+import { SupabaseAuthProvider } from '@/contexts/SupabaseAuthContext';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
 import { PlayerProvider } from '@/contexts/PlayerContext';
 import { FloatingPlayer } from '@/components/shared/FloatingPlayer';
 import { MotivationalLoaderProvider } from '@/contexts/motivational-loader-context';
-import { AutoGuestAuth } from '@/components/shared/auto-guest-auth';
 import { Loader2 } from 'lucide-react';
 
 function GlobalLoadingIndicator() {
@@ -34,7 +33,7 @@ function GlobalLoadingIndicator() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <FirebaseProvider>
+        <SupabaseAuthProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
                 <TooltipProvider>
                     <SidebarProvider>
@@ -51,13 +50,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                     <FloatingPlayer />
                                     <GlobalLoadingIndicator />
                                     <Toaster />
-                                    <AutoGuestAuth />
                                 </PlayerProvider>
                             </MotivationalLoaderProvider>
                         </LoadingProvider>
                     </SidebarProvider>
                 </TooltipProvider>
             </ThemeProvider>
-        </FirebaseProvider>
+        </SupabaseAuthProvider>
     )
 }

@@ -48,14 +48,17 @@ function getUserInitials(displayName?: string | null, email?: string | null, isA
   if (isAnonymous) {
     return 'G';
   }
-  if (displayName) {
-    const names = displayName.trim().split(' ');
-    if (names.length >= 2) {
-      return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+  if (displayName && typeof displayName === 'string') {
+    const trimmed = displayName.trim();
+    if (trimmed) {
+      const names = trimmed.split(' ');
+      if (names.length >= 2) {
+        return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+      }
+      return trimmed.substring(0, 2).toUpperCase();
     }
-    return displayName.substring(0, 2).toUpperCase();
   }
-  if (email) {
+  if (email && typeof email === 'string') {
     return email.substring(0, 2).toUpperCase();
   }
   return 'U';
@@ -353,7 +356,7 @@ export function InnovativeHeader({
                     
                     {/* User Name (Hidden on Mobile) */}
                     <span className="hidden sm:block text-sm font-medium text-slate-700 dark:text-slate-300 relative z-10">
-                      {user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'User'}
+                      {(typeof user.displayName === 'string' ? user.displayName.split(' ')[0] : null) || (typeof user.email === 'string' ? user.email.split('@')[0] : null) || 'User'}
                     </span>
                   </button>
                 </DropdownMenuTrigger>
@@ -375,8 +378,10 @@ export function InnovativeHeader({
                     
                     {/* User Info */}
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-base truncate">{user.isAnonymous ? 'Guest User' : (user.displayName || user.email?.split('@')[0] || 'User')}</p>
-                      <p className="text-sm text-white/80 truncate">{user.isAnonymous ? 'Browsing as guest' : user.email}</p>
+                      <p className="font-semibold text-base truncate">
+                        {user.isAnonymous ? 'Guest User' : ((typeof user.displayName === 'string' ? user.displayName : null) || (typeof user.email === 'string' ? user.email.split('@')[0] : null) || 'User')}
+                      </p>
+                      <p className="text-sm text-white/80 truncate">{user.isAnonymous ? 'Browsing as guest' : (typeof user.email === 'string' ? user.email : 'No email')}</p>
                     </div>
                   </div>
                 </div>

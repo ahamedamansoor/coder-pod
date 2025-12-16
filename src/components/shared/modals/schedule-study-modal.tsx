@@ -40,8 +40,7 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUser, useFirestore, addDocumentNonBlocking } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
 
 
 const formSchema = z.object({
@@ -59,8 +58,6 @@ export function ScheduleStudyModal({ children }: { children: React.ReactNode }) 
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { user } = useUser();
-  const firestore = useFirestore();
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,30 +67,18 @@ export function ScheduleStudyModal({ children }: { children: React.ReactNode }) 
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!user || !firestore) {
+    if (!user) {
         toast({ variant: 'destructive', title: 'Error', description: 'You must be logged in to schedule a session.' });
         return;
     }
     setIsLoading(true);
     
     try {
-        const [hours, minutes] = values.time.split(':').map(Number);
-        const sessionDateTime = new Date(values.date);
-        sessionDateTime.setHours(hours, minutes);
-
-        const sessionData = {
-            topic: values.topic,
-            dateTime: sessionDateTime,
-            duration: parseInt(values.duration, 10),
-            userId: user.uid,
-        };
-        
-        const sessionsCollectionRef = collection(firestore, `users/${user.uid}/studySessions`);
-        await addDocumentNonBlocking(sessionsCollectionRef, sessionData);
-
+        // TODO: Implement Supabase study sessions storage
+        // For now, just show success message
         toast({
-            title: 'Session Scheduled! ✅',
-            description: `Your study session for "${values.topic}" is booked.`,
+            title: 'Feature Coming Soon',
+            description: 'Study session scheduling will be available after Supabase migration is complete.',
         });
 
         setIsOpen(false);

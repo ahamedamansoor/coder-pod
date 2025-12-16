@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { Brain, Mic, MessageSquare, Target, Zap, Code, Users, Calculator, TrendingUp, Flame } from 'lucide-react';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { Button } from '@/components/ui/button';

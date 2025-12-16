@@ -10,7 +10,8 @@ import { notFound, useParams, useRouter } from 'next/navigation';
 import { ScssProvider } from './scss-context';
 import { ScssLayoutProvider, useScssLayout } from './scss-layout-context';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 
@@ -19,7 +20,7 @@ function ScssTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { isEditorOpen, setIsEditorOpen } = useScssLayout();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
 
   useEffect(() => {

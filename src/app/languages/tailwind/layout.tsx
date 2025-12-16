@@ -12,14 +12,15 @@ import { TailwindLayoutProvider, useTailwindLayout } from './tailwind-layout-con
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { useLoading } from '@/hooks/use-loading';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 function TailwindTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const router = useRouter();
   const { isEditorOpen, setIsEditorOpen } = useTailwindLayout();
   const { user } = useUser();
-  const { signOut } = useAuth();
+  const { signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
 
   useEffect(() => {

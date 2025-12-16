@@ -20,8 +20,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { countries } from '@/lib/countries';
 
-import { useAuth, useFirestore } from '@/firebase';
-import { ServiceFactory } from '@/services';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { getRandomQuote } from '@/data/motivational-quotes';
@@ -42,8 +41,7 @@ export default function SignupPage() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [phonePlaceholder, setPhonePlaceholder] = useState('555-123-4567');
   const [quote, setQuote] = useState(() => getRandomQuote());
-  const auth = useAuth();
-  const firestore = useFirestore();
+  const { signUpWithEmail, signInWithGoogle } = useSupabaseAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -75,25 +73,16 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    if (!auth) {
-      toast({ variant: 'destructive', title: 'Firebase not initialized.' });
-      setIsLoading(false);
-      return;
-    }
 
     try {
-      const authService = ServiceFactory.getAuthService(auth, firestore);
-      const user = await authService.signUpWithEmail(values.email, values.password);
-
-      // We pass user details via query params for pre-filling on the login page,
-      // as the profile will only be created upon first verified sign-in.
-      const queryParams = new URLSearchParams({
-        email: values.email,
+      // Store user data for profile creation
+      const userData = {
         name: values.name,
         dob: values.dob,
-        phoneNumber: `${values.countryCode}${values.phoneNumber}`,
-      });
-      const loginUrl = `/login?${queryParams.toString()}`;
+        phone_number: `${values.countryCode}${values.phoneNumber}`,
+      };
+
+      await signUpWithEmail(values.email, values.password, userData);
 
       toast({ 
         title: 'Account Created!',
@@ -101,65 +90,42 @@ export default function SignupPage() {
         duration: 8000,
       });
 
-      // Redirect to the login page with pre-fill data.
-      router.push(loginUrl);
+      // Redirect to login page
+      router.push('/login');
 
     } catch (error: any) {
-      if (error.code === 'auth/email-already-in-use') {
-        toast({
-          variant: 'destructive',
-          title: 'Sign-up failed',
-          description: 'This email is already in use. Please try to sign in instead.',
-        });
-      } else {
-        console.error("Signup error:", error);
-        toast({
-          variant: 'destructive',
-          title: 'Sign-up failed',
-          description: error.message || 'Could not create a new account.',
-        });
+      console.error("Signup error:", error);
+      
+      let description = 'Could not create a new account.';
+      if (error.message && error.message.includes('already registered')) {
+        description = 'This email is already in use. Please try to sign in instead.';
+      } else if (error.message) {
+        description = error.message;
       }
+      
+      toast({
+        variant: 'destructive',
+        title: 'Sign-up failed',
+        description,
+      });
     } finally {
       setIsLoading(false);
     }
   }
 
   const handleGoogleSignUp = async () => {
-    if (!auth || !firestore) return;
     setIsGoogleLoading(true);
     
     try {
-      const authService = ServiceFactory.getAuthService(auth, firestore);
-      const { user, isNewUser } = await authService.signInWithGoogle();
-      
-      if (isNewUser) {
-        toast({
-          title: 'Account created!',
-          description: 'Welcome to Coder Pod!',
-        });
-        router.push('/dashboard?isNewUser=true');
-      } else {
-        toast({
-          title: 'Welcome back!',
-          description: 'Redirecting to your dashboard...',
-        });
-        router.push('/dashboard');
-      }
+      await signInWithGoogle();
+      // Supabase will handle the redirect automatically
     } catch (error: any) {
-      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        toast({
-          title: 'Sign-up cancelled',
-          description: 'You closed the Google sign-up window.',
-        });
-      } else {
-        console.error('Google sign-up error:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Sign-up failed',
-          description: error.message || 'An unexpected error occurred during Google sign-up.',
-        });
-      }
-    } finally {
+      console.error('Google sign-up error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Sign-up failed',
+        description: error.message || 'An unexpected error occurred during Google sign-up.',
+      });
       setIsGoogleLoading(false);
     }
   };

@@ -29,7 +29,7 @@ import { useDsa } from '@/app/languages/dsa/dsa-context';
 import { useRxjs } from '@/app/languages/rxjs/rxjs-context';
 import { useSpringBoot } from '@/app/languages/spring-boot/spring-boot-context';
 import { usePlaywright } from '@/app/languages/playwright/playwright-context';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
 import { cn } from '@/lib/utils';

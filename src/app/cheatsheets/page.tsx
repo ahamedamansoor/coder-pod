@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, lazy } from 'react';
-import { useUser, useAuth } from '@/firebase';
+import { useUser } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
@@ -31,14 +31,10 @@ function CheatsheetBoardLoading() {
 
 export default function CheatsheetBoardPage() {
   const { user, isUserLoading } = useUser();
-  const auth = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
-    if (auth) {
-      await auth.signOut();
-      router.push('/login');
-    }
+    router.push('/login');
   };
 
   if (isUserLoading) {

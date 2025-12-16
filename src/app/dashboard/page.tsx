@@ -1,8 +1,9 @@
 'use client';
 
 import { Suspense, useEffect, useState, useRef } from 'react';
-import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLoading } from '@/hooks/use-loading';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -18,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { enabledLanguages as languages } from '@/data/languages';
 import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Lock, Key, BookOpen, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -86,7 +86,7 @@ function getUserInitials(displayName: string | null | undefined, email: string |
 
 function DashboardContent() {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
+  const { userProfile, signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
   const [showContent, setShowContent] = useState(false);
   const [filter, setFilter] = useState<'all' | 'frontend' | 'backend' | 'testing' | 'algorithms'>('all');
@@ -94,13 +94,6 @@ function DashboardContent() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
-  
-  const { data: userData } = useDoc(userDocRef);
 
   // Filter languages based on category
   const frontendLanguages = ['html', 'css', 'javascript', 'react', 'vue', 'nextjs', 'angular', 'scss', 'rxjs', 'tailwind', 'typescript'];
@@ -172,7 +165,6 @@ function DashboardContent() {
     }
   }, [filteredLanguages]);
 
-  const auth = useAuth();
   const router = useRouter();
   const accentMap: Record<string, string> = {
     javascript: 'from-amber-100/80 via-yellow-50/60 to-amber-100/80',
@@ -188,10 +180,8 @@ function DashboardContent() {
   };
 
   const handleLogout = async () => {
-    if (auth) {
-      await auth.signOut();
-      router.push('/login');
-    }
+    await signOut();
+    router.push('/login');
   };
 
   if (isUserLoading) {
@@ -478,8 +468,8 @@ function DashboardContent() {
               const focusLabel = lang.topics?.find((topic) => topic.category)?.category ?? 'Core Track';
               const accent = accentMap[lang.slug] ?? 'from-slate-400 via-slate-600 to-slate-800';
               
-              // Calculate completion status from Firestore
-              const completedTopicsArray = userData?.completedTopics?.[lang.slug] || [];
+              // Calculate completion status from Supabase
+              const completedTopicsArray = userProfile?.completed_topics?.[lang.slug] || [];
               
               // Get valid topic slugs (exclude 'learning-plan')
               const validTopicSlugs = new Set(
