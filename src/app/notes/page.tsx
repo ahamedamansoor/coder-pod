@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { ServiceFactory } from '@/services';
@@ -64,6 +64,11 @@ export default function NotesPage() {
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
+  
+  // Prevent duplicate fetches
+  const fetchInProgress = useRef(false);
+  const hasFetchedOnce = useRef(false);
+  const lastFetchedUserId = useRef<string | null>(null);
 
   const STORAGE_KEY = 'video_notes';
 
@@ -81,8 +86,14 @@ export default function NotesPage() {
   };
 
   // Fetch saved resources from Supabase
-  const fetchNotes = async () => {
-    console.log('📝 fetchNotes called, user:', user?.uid);
+  const fetchNotes = useCallback(async () => {
+    console.log('📝 fetchNotes called, user:', user?.uid, 'fetchInProgress:', fetchInProgress.current);
+    
+    // Prevent duplicate calls
+    if (fetchInProgress.current) {
+      console.log('⚠️ Fetch already in progress, skipping...');
+      return;
+    }
     
     if (!user) {
       console.log('❌ No user - clearing notes');
@@ -93,6 +104,7 @@ export default function NotesPage() {
       return;
     }
     
+    fetchInProgress.current = true;
     setIsLoading(true);
     console.log('🔄 Starting notes fetch for user:', user.uid);
     
@@ -105,6 +117,7 @@ export default function NotesPage() {
       
       setNotes(fetchedNotes);
       setFilteredNotes(fetchedNotes);
+      hasFetchedOnce.current = true;
       
       if (fetchedNotes.length === 0) {
         console.log('💡 No notes found - empty state will be shown');
@@ -133,14 +146,20 @@ export default function NotesPage() {
       setFilteredNotes([]);
     } finally {
       setIsLoading(false);
+      fetchInProgress.current = false;
       console.log('✔️ fetchNotes complete, loading state cleared');
     }
-  };
+  }, [user, toast]);
 
   // Note: localStorage migration removed - using Supabase directly
 
   useEffect(() => {
-    console.log('Notes page auth state:', { isUserLoading, hasUser: !!user });
+    console.log('Notes page auth state:', { 
+      isUserLoading, 
+      hasUser: !!user, 
+      userId: user?.uid, 
+      lastFetchedUserId: lastFetchedUserId.current 
+    });
     
     if (isUserLoading) {
       // Set a timeout to prevent infinite loading
@@ -159,9 +178,17 @@ export default function NotesPage() {
       return;
     }
     
-    console.log('User authenticated - fetching notes');
+    // Only fetch if we haven't fetched for this user yet
+    if (lastFetchedUserId.current === user.uid) {
+      console.log('✋ Already fetched notes for this user, skipping...');
+      return;
+    }
+    
+    console.log('User authenticated - fetching notes for first time');
+    lastFetchedUserId.current = user.uid;
     fetchNotes();
-  }, [user, isUserLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid, isUserLoading]);
 
   // Filter notes based on search, language, and type
   useEffect(() => {

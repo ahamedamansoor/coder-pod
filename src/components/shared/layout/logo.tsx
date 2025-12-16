@@ -2,11 +2,12 @@ import Link from 'next/link';
 
 interface LogoProps {
   clickable?: boolean;
+  align?: 'left' | 'center';
 }
 
-export function Logo({ clickable = true }: LogoProps) {
+export function Logo({ clickable = true, align = 'center' }: LogoProps) {
   const content = (
-    <div className="flex flex-col items-center leading-none h-16 justify-center">
+    <div className={`flex flex-col leading-none h-16 justify-center ${align === 'left' ? 'items-start' : 'items-center'}`}>
       {/* Main Logo Text */}
       <div className="flex items-baseline gap-1">
         <span className="text-2xl font-bold tracking-tight" style={{ color: '#5B7FFF' }}>

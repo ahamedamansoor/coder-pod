@@ -506,7 +506,7 @@ export function TopicSidebar({
   return (
     <>
       <SidebarHeader className="p-4">
-        <Logo />
+        <Logo align="left" />
       </SidebarHeader>
       <Separator />
       <SidebarContent asChild>
