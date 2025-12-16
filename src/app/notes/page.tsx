@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '@/contexts/PlayerContext';
+import { FeatureGateModal } from '@/components/shared/feature-gate-modal';
 
 // Using Note type from notes.types.ts
 
@@ -57,6 +58,7 @@ export default function NotesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [languageFilter, setLanguageFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [showFeatureGate, setShowFeatureGate] = useState(false);
   
   const { user, isUserLoading } = useUser();
   const router = useRouter();
@@ -80,22 +82,40 @@ export default function NotesPage() {
 
   // Fetch saved resources from Supabase
   const fetchNotes = async () => {
+    console.log('📝 fetchNotes called, user:', user?.uid);
+    
     if (!user) {
+      console.log('❌ No user - clearing notes');
       setNotes([]);
       setFilteredNotes([]);
       setIsLoading(false);
+      setShowFeatureGate(true);
       return;
     }
     
     setIsLoading(true);
+    console.log('🔄 Starting notes fetch for user:', user.uid);
+    
     try {
       const notesService = ServiceFactory.getNotesService();
+      console.log('📦 NotesService obtained, fetching...');
+      
       const fetchedNotes = await notesService.getUserNotes(user.uid);
+      console.log('✅ Notes fetched successfully:', fetchedNotes.length, 'notes');
+      
       setNotes(fetchedNotes);
       setFilteredNotes(fetchedNotes);
-      console.log('✅ Loaded notes:', fetchedNotes.length);
+      
+      if (fetchedNotes.length === 0) {
+        console.log('💡 No notes found - empty state will be shown');
+      }
     } catch (error: any) {
-      console.error("Error fetching notes:", error);
+      console.error("❌ Error fetching notes:", error);
+      console.error("Error details:", {
+        message: error?.message,
+        code: error?.code,
+        details: error?.details
+      });
       
       // Only show toast if it's not a "table doesn't exist" error
       const errorMessage = error?.message || '';
@@ -113,15 +133,34 @@ export default function NotesPage() {
       setFilteredNotes([]);
     } finally {
       setIsLoading(false);
+      console.log('✔️ fetchNotes complete, loading state cleared');
     }
   };
 
   // Note: localStorage migration removed - using Supabase directly
 
   useEffect(() => {
-    if (user && !isUserLoading) {
-      fetchNotes();
+    console.log('Notes page auth state:', { isUserLoading, hasUser: !!user });
+    
+    if (isUserLoading) {
+      // Set a timeout to prevent infinite loading
+      const timeout = setTimeout(() => {
+        console.error('⚠️ Auth loading timeout - forcing load completion');
+        setIsLoading(false);
+      }, 5000);
+      
+      return () => clearTimeout(timeout);
     }
+    
+    if (!user) {
+      console.log('No user - showing feature gate modal');
+      setIsLoading(false);
+      setShowFeatureGate(true);
+      return;
+    }
+    
+    console.log('User authenticated - fetching notes');
+    fetchNotes();
   }, [user, isUserLoading]);
 
   // Filter notes based on search, language, and type
@@ -270,7 +309,16 @@ export default function NotesPage() {
     }
   };
 
+  // Debug render state
+  console.log('🎨 Render state:', { 
+    isUserLoading, 
+    isLoading, 
+    notesCount: notes.length,
+    filteredCount: filteredNotes.length 
+  });
+
   if (isUserLoading) {
+    console.log('⏳ Showing user loading screen');
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="w-12 h-12 animate-spin text-primary" />
@@ -669,6 +717,13 @@ export default function NotesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Feature Gate Modal */}
+      <FeatureGateModal 
+        isOpen={showFeatureGate}
+        onClose={() => setShowFeatureGate(false)}
+        featureName="Notes"
+      />
     </div>
   );
 }

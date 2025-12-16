@@ -27,7 +27,10 @@ export const JavascriptProvider = ({ children }: { children: ReactNode }) => {
   }, [userProfile]);
 
   const handleToggleComplete = React.useCallback(async (topicSlug: string) => {
-    if (!user) return;
+    if (!user) {
+      console.warn('Cannot mark topic complete: user not authenticated');
+      return;
+    }
 
     setCompletedTopics(prev => {
       const newCompleted = new Set(prev);
@@ -39,17 +42,25 @@ export const JavascriptProvider = ({ children }: { children: ReactNode }) => {
 
       // Save to Supabase
       const completedArray = Array.from(newCompleted);
+      const completedTopicsData = {
+        ...(userProfile?.completedTopics || {}),
+        javascript: completedArray 
+      };
+
+      console.log('Saving JavaScript progress:', { userId: user.uid, completed: completedArray.length, topicSlug });
+
       supabase
         .from('users')
         .update({ 
-          completed_topics: { 
-            ...userProfile?.completedTopics,
-            javascript: completedArray 
-          } 
+          completed_topics: completedTopicsData
         })
         .eq('id', user.uid)
-        .then(({ error }) => {
-          if (error) console.error('Error saving progress:', error);
+        .then(({ error, data }) => {
+          if (error) {
+            console.error('❌ Error saving JavaScript progress:', error);
+          } else {
+            console.log('✅ JavaScript progress saved successfully');
+          }
         });
 
       return newCompleted;

@@ -30,8 +30,13 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const [error, setError] = useState<AuthError | null>(null);
 
   // Fetch user profile from database
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = async (userId: string, authData?: any) => {
     try {
+      // First sync user to ensure profile exists
+      if (authData) {
+        await supabaseUserService.syncUserFromAuth(userId, authData);
+      }
+      
       const profile = await supabaseUserService.getUserProfile(userId);
       setUserProfile(profile);
     } catch (err) {
@@ -51,7 +56,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        fetchUserProfile(session.user.id);
+        fetchUserProfile(session.user.id, session.user);
       }
       
       setIsLoading(false);
@@ -65,7 +70,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        await fetchUserProfile(session.user.id);
+        await fetchUserProfile(session.user.id, session.user);
       } else {
         setUserProfile(null);
       }

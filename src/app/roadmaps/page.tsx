@@ -6,6 +6,9 @@ import { languages, roleBasedRoadmaps } from '@/data/languages';
 import { cn } from '@/lib/utils';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useRouter } from 'next/navigation';
 
 const languageColors: Record<string, { bg: string; border: string; text: string; iconBg: string }> = {
   html: { 
@@ -142,9 +145,21 @@ const languageCategories = [
 ];
 
 export default function RoadmapsPage() {
+  const { user } = useUser();
+  const { signOut } = useSupabaseAuth();
+  const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState<typeof languages[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   // Force style recalculation on mount to prevent cached styles
   useEffect(() => {
@@ -196,7 +211,11 @@ export default function RoadmapsPage() {
       </div>
       
       {/* Innovative Header */}
-      <InnovativeHeader currentPage="roadmaps" />
+      <InnovativeHeader 
+        currentPage="roadmaps" 
+        user={user}
+        onLogout={handleLogout}
+      />
 
       {/* Page Title - Fixed */}
       <div className="flex-shrink-0">

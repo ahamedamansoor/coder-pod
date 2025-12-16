@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useRouter } from 'next/navigation';
 import { Brain, Mic, MessageSquare, Target, Zap, Code, Users, Calculator, TrendingUp, Flame } from 'lucide-react';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { Button } from '@/components/ui/button';
@@ -124,7 +126,18 @@ const interviewCategories = [
 
 export default function AIInterviewPage() {
   const { user } = useUser();
+  const { signOut } = useSupabaseAuth();
+  const router = useRouter();
   const [showFeatureGate, setShowFeatureGate] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   const getColorClasses = (color: string) => {
     const colors: Record<string, { bg: string; text: string; border: string }> = {
@@ -153,6 +166,7 @@ export default function AIInterviewPage() {
         currentPage="ai-interview"
         showNavigation={true}
         user={user}
+        onLogout={handleLogout}
       />
 
       {/* Page Title - Sticky */}
