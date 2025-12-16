@@ -6,7 +6,7 @@ interface LogoProps {
 
 export function Logo({ clickable = true }: LogoProps) {
   const content = (
-    <div className="flex flex-col leading-none h-16 justify-center">
+    <div className="flex flex-col items-center leading-none h-16 justify-center">
       {/* Main Logo Text */}
       <div className="flex items-baseline gap-1">
         <span className="text-2xl font-bold tracking-tight" style={{ color: '#5B7FFF' }}>
@@ -19,7 +19,7 @@ export function Logo({ clickable = true }: LogoProps) {
       
       {/* Tagline */}
       <span 
-        className="text-[10px] font-normal tracking-[0.25em] uppercase text-gray-500 dark:text-gray-400 mt-0.5"
+        className="text-[10px] font-normal tracking-[0.25em] uppercase text-gray-500 dark:text-gray-400 mt-0.5 text-center"
         style={{ letterSpacing: '0.25em' }}
       >
         YOUR LAUNCHPAD FOR LEARNING

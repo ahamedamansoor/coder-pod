@@ -49,7 +49,10 @@ export class UserService {
     try {
       const userRef = doc(this.firestore, `users/${userId}`);
       
-      const userProfile: Omit<UserProfile, 'id'> = {
+      const userProfile: Omit<UserProfile, 'id' | 'createdAt' | 'lastLoginAt'> & {
+        createdAt: ReturnType<typeof serverTimestamp>;
+        lastLoginAt: ReturnType<typeof serverTimestamp>;
+      } = {
         email: userData.email,
         name: userData.name || userData.email,
         phoneNumber: userData.phoneNumber || null,
