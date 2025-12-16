@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface DsaContextType {
   completedTopics: Set<string>;
@@ -14,64 +15,45 @@ const DsaContext = createContext<DsaContextType | undefined>(undefined);
 
 export const DsaProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
-
-  const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
-
-  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
-
+  const { userProfile } = useSupabaseAuth();
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   useEffect(() => {
-    if (userData?.completedTopics?.dsa) {
-      setCompletedTopics(new Set(userData.completedTopics.dsa));
-    } else {
-      setCompletedTopics(new Set<string>());
+    if (userProfile?.completedTopics?.dsa) {
+      setCompletedTopics(new Set(userProfile.completedTopics.dsa));
     }
-  }, [userData]);
+  }, [userProfile]);
 
-  const handleToggleComplete = React.useCallback(async (topicSlug: string) => {
-    if (!userDocRef) return;
+  const handleToggleComplete = React.useCallback((topicSlug: string) => {
+    if (!user) return;
 
-    const newCompleted = new Set(completedTopics);
-    if (newCompleted.has(topicSlug)) {
-      newCompleted.delete(topicSlug);
-    } else {
-      newCompleted.add(topicSlug);
-    }
-
-    setCompletedTopics(newCompleted);
-
-    try {
-      const fieldName = 'completedTopics.dsa';
-      const docSnap = await getDoc(userDocRef);
-      if (docSnap.exists()) {
-        await updateDoc(userDocRef, { [fieldName]: Array.from(newCompleted) });
+    setCompletedTopics(prev => {
+      const newCompleted = new Set(prev);
+      if (newCompleted.has(topicSlug)) {
+        newCompleted.delete(topicSlug);
       } else {
-        await setDoc(
-          userDocRef,
-          { completedTopics: { dsa: Array.from(newCompleted) } },
-          { merge: true },
-        );
+        newCompleted.add(topicSlug);
       }
-    } catch (error) {
-      console.error('Error updating DSA topics: ', error);
-      setCompletedTopics((prev) => {
-        const reverted = new Set(prev);
-        if (newCompleted.has(topicSlug)) {
-          reverted.delete(topicSlug);
-        } else {
-          reverted.add(topicSlug);
-        }
-        return reverted;
-      });
-    }
-  }, [completedTopics, userDocRef]);
 
-  const isProgressLoading = isUserLoading || isUserDocLoading;
+      const completedArray = Array.from(newCompleted);
+      supabase
+        .from('users')
+        .update({ 
+          completed_topics: { 
+            ...userProfile?.completedTopics,
+            dsa: completedArray 
+          } 
+        })
+        .eq('id', user.uid)
+        .then(({ error }) => {
+          if (error) console.error('Error saving progress:', error);
+        });
+
+      return newCompleted;
+    });
+  }, [user, userProfile]);
+
+  const isProgressLoading = isUserLoading;
 
   return (
     <DsaContext.Provider value={{ completedTopics, handleToggleComplete, isProgressLoading }}>

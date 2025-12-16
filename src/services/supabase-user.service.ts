@@ -140,13 +140,15 @@ export class SupabaseUserService {
   /**
    * Mark topic as completed
    */
-  async markTopicCompleted(userId: string, topicId: string): Promise<void> {
+  async markTopicCompleted(userId: string, languageSlug: string, topicSlug: string): Promise<void> {
     try {
       // Get current completed topics
       const profile = await this.getUserProfile(userId);
       if (!profile) throw new Error('User profile not found');
 
-      const completedTopics = { ...profile.completedTopics, [topicId]: true };
+      const previous = profile.completedTopics?.[languageSlug] ?? [];
+      const next = Array.from(new Set([...previous, topicSlug]));
+      const completedTopics = { ...profile.completedTopics, [languageSlug]: next };
 
       const { error } = await supabase
         .from(this.tableName)
@@ -199,7 +201,7 @@ export class SupabaseUserService {
       photoURL: supabaseUser.photo_url,
       createdAt: new Date(supabaseUser.created_at),
       lastLoginAt: new Date(supabaseUser.last_login_at),
-      completedTopics: supabaseUser.completed_topics || {},
+      completedTopics: (supabaseUser.completed_topics || {}) as Record<string, string[]>,
       plan: supabaseUser.plan || 'free',
       tokenBalance: supabaseUser.token_balance || 0,
       preferences: supabaseUser.preferences || {},

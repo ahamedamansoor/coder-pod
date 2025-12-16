@@ -1,8 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode, useMemo } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import React, { createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { supabase } from '@/lib/supabase';
 
 export type SpringBootContextType = {
   completedTopics: Set<string>;
@@ -14,41 +15,45 @@ const SpringBootContext = createContext<SpringBootContextType | undefined>(undef
 
 export const SpringBootProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
+  const { userProfile } = useSupabaseAuth();
+  const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
-  const userDocRef = useMemoFirebase(
-    () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
-    [user, firestore]
-  );
+  useEffect(() => {
+    if (userProfile?.completedTopics?.['spring-boot']) {
+      setCompletedTopics(new Set(userProfile.completedTopics['spring-boot']));
+    }
+  }, [userProfile]);
 
-  const { data: userData, isLoading: isDocLoading } = useDoc(userDocRef);
+  const handleToggleComplete = (topicSlug: string) => {
+    if (!user) return;
 
-  const completedTopics = useMemo(() => {
-    const topics = userData?.['completedTopics']?.['spring-boot'] as string[];
-    return new Set(topics || []);
-  }, [userData]);
-
-  const handleToggleComplete = async (topicSlug: string) => {
-    if (!userDocRef) return;
-
-    try {
-      const newCompleted = new Set(completedTopics);
+    setCompletedTopics(prev => {
+      const newCompleted = new Set(prev);
       if (newCompleted.has(topicSlug)) {
         newCompleted.delete(topicSlug);
       } else {
         newCompleted.add(topicSlug);
       }
 
-      const { updateDoc } = await import('firebase/firestore');
-      await updateDoc(userDocRef, {
-        [`completedTopics.spring-boot`]: Array.from(newCompleted),
-      });
-    } catch (error) {
-      console.error('Error updating completed topics:', error);
-    }
+      const completedArray = Array.from(newCompleted);
+      supabase
+        .from('users')
+        .update({ 
+          completed_topics: { 
+            ...userProfile?.completedTopics,
+            'spring-boot': completedArray 
+          } 
+        })
+        .eq('id', user.uid)
+        .then(({ error }) => {
+          if (error) console.error('Error saving progress:', error);
+        });
+
+      return newCompleted;
+    });
   };
 
-  const isProgressLoading = isUserLoading || isDocLoading;
+  const isProgressLoading = isUserLoading;
 
   const value: SpringBootContextType = {
     completedTopics,

@@ -431,6 +431,15 @@ export default function NotesPage() {
                         <div 
                           className="relative aspect-video bg-muted cursor-pointer overflow-hidden flex items-center justify-center"
                           onClick={() => {
+                            if (!note.url) {
+                              toast({
+                                title: 'Missing URL',
+                                description: 'This resource does not have a URL saved.',
+                                variant: 'destructive',
+                              });
+                              return;
+                            }
+
                             // Open videos in floating player
                             if (note.type === 'video' && note.videoId) {
                               setContent({
@@ -480,6 +489,15 @@ export default function NotesPage() {
                           <h3 
                             className="font-semibold text-xs line-clamp-2 mb-1.5 cursor-pointer hover:text-primary transition-colors leading-tight"
                             onClick={() => {
+                              if (!note.url) {
+                                toast({
+                                  title: 'Missing URL',
+                                  description: 'This resource does not have a URL saved.',
+                                  variant: 'destructive',
+                                });
+                                return;
+                              }
+
                               // Open videos in floating player
                               if (note.type === 'video' && note.videoId) {
                                 setContent({

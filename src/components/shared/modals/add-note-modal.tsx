@@ -65,11 +65,10 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
     showLoader();
     try {
       const notesService = ServiceFactory.getNotesService();
-      await notesService.createNote({
+      await notesService.createNote(user.uid, {
         title,
         url: videoUrl,
         language: selectedLanguage,
-        userId: user.uid,
         type: 'video',
       });
 

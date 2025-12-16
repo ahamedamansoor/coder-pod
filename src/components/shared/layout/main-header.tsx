@@ -107,7 +107,10 @@ export function MainHeader({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer h-9 w-9">
-                <AvatarImage src={user.photoURL || ''} alt={displayName} />
+                <AvatarImage
+                  src={userProfile?.photoURL || user.user_metadata?.avatar_url || user.user_metadata?.picture || ''}
+                  alt={displayName}
+                />
                 <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>

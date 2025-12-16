@@ -2,8 +2,9 @@
 'use client';
 
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface SpringContextType {
   completedTopics: Set<string>;
@@ -15,65 +16,45 @@ const SpringContext = createContext<SpringContextType | undefined>(undefined);
 
 export const SpringProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
-
-  const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
-  
-  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
-
+  const { userProfile } = useSupabaseAuth();
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   useEffect(() => {
-    if (userData?.completedTopics?.spring) {
-      setCompletedTopics(new Set(userData.completedTopics.spring));
-    } else {
-      setCompletedTopics(new Set<string>());
+    if (userProfile?.completedTopics?.spring) {
+      setCompletedTopics(new Set(userProfile.completedTopics.spring));
     }
-  }, [userData]);
+  }, [userProfile]);
 
   const handleToggleComplete = React.useCallback(async (topicSlug: string) => {
-    if (!userDocRef) return;
+    if (!user) return;
 
-    const newCompleted = new Set(completedTopics);
-    const isCompleted = newCompleted.has(topicSlug);
+    setCompletedTopics(prev => {
+      const newCompleted = new Set(prev);
+      if (newCompleted.has(topicSlug)) {
+        newCompleted.delete(topicSlug);
+      } else {
+        newCompleted.add(topicSlug);
+      }
 
-    if (isCompleted) {
-      newCompleted.delete(topicSlug);
-    } else {
-      newCompleted.add(topicSlug);
-    }
+      const completedArray = Array.from(newCompleted);
+      supabase
+        .from('users')
+        .update({ 
+          completed_topics: { 
+            ...userProfile?.completedTopics,
+            spring: completedArray 
+          } 
+        })
+        .eq('id', user.uid)
+        .then(({ error }) => {
+          if (error) console.error('Error saving progress:', error);
+        });
 
-    setCompletedTopics(newCompleted); // Optimistic update
-
-    try {
-        const fieldName = 'completedTopics.spring';
-        const docSnap = await getDoc(userDocRef);
-        if (docSnap.exists()) {
-            await updateDoc(userDocRef, {
-                [fieldName]: Array.from(newCompleted),
-            });
-        } else {
-             await setDoc(userDocRef, { completedTopics: { spring: Array.from(newCompleted) } }, { merge: true });
-        }
-    } catch (error) {
-      console.error("Error updating completed topics: ", error);
-      // Revert optimistic update on error
-      setCompletedTopics(prev => {
-          const reverted = new Set(prev);
-          if (newCompleted.has(topicSlug)) { // If we added it, remove it
-              reverted.delete(topicSlug);
-          } else { // If we removed it, add it back
-              reverted.add(topicSlug);
-          }
-          return reverted;
-      });
-    }
-  }, [userDocRef, completedTopics]);
+      return newCompleted;
+    });
+  }, [user, userProfile]);
   
-  const isProgressLoading = isUserLoading || isUserDocLoading;
+  const isProgressLoading = isUserLoading;
 
   return (
     <SpringContext.Provider value={{ completedTopics, handleToggleComplete, isProgressLoading }}>

@@ -2,12 +2,13 @@
 'use client';
 
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface AngularContextType {
   completedTopics: Set<string>;
-  handleToggleComplete: (topicSlug: string) => Promise<void>;
+  handleToggleComplete: (topicSlug: string) => void;
   isProgressLoading: boolean;
 }
 
@@ -15,51 +16,45 @@ const AngularContext = createContext<AngularContextType | undefined>(undefined);
 
 export const AngularProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
-  const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
-
-  const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
+  const { userProfile } = useSupabaseAuth();
   const [completedTopics, setCompletedTopics] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (userData && userData.completedAngularTopics) {
-      setCompletedTopics(new Set(userData.completedAngularTopics));
+    if (userProfile?.completedTopics?.angular) {
+      setCompletedTopics(new Set(userProfile.completedTopics.angular));
     }
-  }, [userData]);
+  }, [userProfile]);
 
-  const handleToggleComplete = async (topicSlug: string) => {
-    if (!user || !userDocRef) return;
+  const handleToggleComplete = React.useCallback(async (topicSlug: string) => {
+    if (!user) return;
 
-    const newCompletedTopics = new Set(completedTopics);
-    if (completedTopics.has(topicSlug)) {
-      newCompletedTopics.delete(topicSlug);
-    } else {
-      newCompletedTopics.add(topicSlug);
-    }
-
-    setCompletedTopics(newCompletedTopics);
-
-    try {
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists()) {
-        await updateDoc(userDocRef, {
-          completedAngularTopics: Array.from(newCompletedTopics),
-        });
+    setCompletedTopics(prev => {
+      const newCompleted = new Set(prev);
+      if (newCompleted.has(topicSlug)) {
+        newCompleted.delete(topicSlug);
       } else {
-        await setDoc(userDocRef, {
-          completedAngularTopics: Array.from(newCompletedTopics),
-        });
+        newCompleted.add(topicSlug);
       }
-    } catch (error) {
-      console.error('Error updating completed topics:', error);
-      setCompletedTopics(completedTopics);
-    }
-  };
 
-  const isProgressLoading = isUserLoading || isUserDataLoading;
+      const completedArray = Array.from(newCompleted);
+      supabase
+        .from('users')
+        .update({ 
+          completed_topics: { 
+            ...userProfile?.completedTopics,
+            angular: completedArray 
+          } 
+        })
+        .eq('id', user.uid)
+        .then(({ error }) => {
+          if (error) console.error('Error saving progress:', error);
+        });
+
+      return newCompleted;
+    });
+  }, [user, userProfile]);
+
+  const isProgressLoading = isUserLoading;
 
   return (
     <AngularContext.Provider

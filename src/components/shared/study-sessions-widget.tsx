@@ -9,6 +9,11 @@ import { useUser } from '@/hooks/use-auth-compat';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
+function formatSessionTime(dateTime: string | number | Date) {
+  const date = dateTime instanceof Date ? dateTime : new Date(dateTime);
+  return format(date, 'MMM d, h:mm a');
+}
+
 export function StudySessionsWidget() {
   const { user } = useUser();
   const isGuestUser = !user;

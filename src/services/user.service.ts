@@ -1,4 +1,4 @@
-import { Firestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, DocumentSnapshot } from 'firebase/firestore';
+import { Firestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, DocumentSnapshot, arrayUnion } from 'firebase/firestore';
 import { User as FirebaseUser } from 'firebase/auth';
 import { UserProfile, CreateUserData, UpdateUserData } from '@/types/user.types';
 
@@ -140,11 +140,11 @@ export class UserService {
   /**
    * Update user's completed topics
    */
-  async markTopicComplete(userId: string, topicId: string): Promise<void> {
+  async markTopicComplete(userId: string, languageSlug: string, topicSlug: string): Promise<void> {
     try {
       const userRef = doc(this.firestore, `users/${userId}`);
       await updateDoc(userRef, {
-        [`completedTopics.${topicId}`]: true,
+        [`completedTopics.${languageSlug}`]: arrayUnion(topicSlug),
       });
     } catch (error) {
       console.error('Error marking topic complete:', error);

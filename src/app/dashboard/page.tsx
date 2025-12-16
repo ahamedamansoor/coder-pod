@@ -469,7 +469,7 @@ function DashboardContent() {
               const accent = accentMap[lang.slug] ?? 'from-slate-400 via-slate-600 to-slate-800';
               
               // Calculate completion status from Supabase
-              const completedTopicsArray = userProfile?.completed_topics?.[lang.slug] || [];
+              const completedTopicsArray = userProfile?.completedTopics?.[lang.slug] ?? [];
               
               // Get valid topic slugs (exclude 'learning-plan')
               const validTopicSlugs = new Set(

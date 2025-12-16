@@ -83,7 +83,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
 
   const handlePlayVideo = (note: Note) => {
     // If it's a video with videoId, use the minimizable FloatingPlayer
-    if (note.type === 'video' && note.videoId) {
+    if (note.type === 'video' && note.videoId && note.url) {
       setContent({
         id: note.id,
         title: note.title,

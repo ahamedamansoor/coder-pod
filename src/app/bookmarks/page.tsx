@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser } from '@/hooks/use-auth-compat';
+import { useAuth, useUser } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -81,7 +81,11 @@ export default function BookmarksPage() {
   }, [searchQuery, bookmarks]);
 
   const handleLogout = async () => {
-    router.push('/login');
+    try {
+      await auth.signOut();
+    } finally {
+      router.push('/login');
+    }
   };
 
   const removeBookmark = (id: number) => {

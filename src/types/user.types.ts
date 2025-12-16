@@ -9,7 +9,7 @@ export interface UserProfile {
   photoURL?: string | null;
   createdAt: Date;
   lastLoginAt: Date;
-  completedTopics: Record<string, boolean>;
+  completedTopics: Record<string, string[]>;
   plan: UserPlan;
   tokenBalance: number;
   preferences?: UserPreferences;

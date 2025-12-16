@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface RxjsContextType {
   completedTopics: Set<string>;
@@ -14,67 +15,48 @@ const RxjsContext = createContext<RxjsContextType | undefined>(undefined);
 
 export const RxjsProvider = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
-
-  const userDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [user, firestore]);
-
-  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
-
+  const { userProfile } = useSupabaseAuth();
   const [completedTopics, setCompletedTopics] = useState(new Set<string>());
 
   useEffect(() => {
-    if (userData?.completedTopics?.rxjs) {
-      setCompletedTopics(new Set(userData.completedTopics.rxjs));
-    } else {
-      setCompletedTopics(new Set<string>());
+    if (userProfile?.completedTopics?.rxjs) {
+      setCompletedTopics(new Set(userProfile.completedTopics.rxjs));
     }
-  }, [userData]);
+  }, [userProfile]);
 
   const handleToggleComplete = React.useCallback(
-    async (topicSlug: string) => {
-      if (!userDocRef) return;
+    (topicSlug: string) => {
+      if (!user) return;
 
-      const newCompleted = new Set(completedTopics);
-      if (newCompleted.has(topicSlug)) {
-        newCompleted.delete(topicSlug);
-      } else {
-        newCompleted.add(topicSlug);
-      }
-
-      setCompletedTopics(newCompleted);
-
-      try {
-        const fieldName = 'completedTopics.rxjs';
-        const docSnap = await getDoc(userDocRef);
-        if (docSnap.exists()) {
-          await updateDoc(userDocRef, { [fieldName]: Array.from(newCompleted) });
+      setCompletedTopics(prev => {
+        const newCompleted = new Set(prev);
+        if (newCompleted.has(topicSlug)) {
+          newCompleted.delete(topicSlug);
         } else {
-          await setDoc(
-            userDocRef,
-            { completedTopics: { rxjs: Array.from(newCompleted) } },
-            { merge: true },
-          );
+          newCompleted.add(topicSlug);
         }
-      } catch (error) {
-        console.error('Error updating RxJS topics: ', error);
-        setCompletedTopics((prev) => {
-          const reverted = new Set(prev);
-          if (newCompleted.has(topicSlug)) {
-            reverted.delete(topicSlug);
-          } else {
-            reverted.add(topicSlug);
-          }
-          return reverted;
-        });
-      }
+
+        const completedArray = Array.from(newCompleted);
+        supabase
+          .from('users')
+          .update({ 
+            completed_topics: { 
+              ...userProfile?.completedTopics,
+              rxjs: completedArray 
+            } 
+          })
+          .eq('id', user.uid)
+          .then(({ error }) => {
+            if (error) console.error('Error saving progress:', error);
+          });
+
+        return newCompleted;
+      });
     },
-    [completedTopics, userDocRef],
+    [user, userProfile],
   );
 
-  const isProgressLoading = isUserLoading || isUserDocLoading;
+  const isProgressLoading = isUserLoading;
 
   return (
     <RxjsContext.Provider value={{ completedTopics, handleToggleComplete, isProgressLoading }}>
