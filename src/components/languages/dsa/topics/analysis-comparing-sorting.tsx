@@ -7,7 +7,8 @@ import { Lightbulb, CheckCircle, Trophy, BookOpen, TrendingUp, Zap, Target, Awar
 import { PageHeader } from '@/components/shared/generic-page-header';
 
 export default function ComparingSortingAlgorithms() {
-  const [selectedScenario, setSelectedScenario] = useState<'small' | 'large' | 'nearly' | 'stability'>('small');
+  type ScenarioKey = 'small' | 'large' | 'nearly' | 'stability';
+  const [selectedScenario, setSelectedScenario] = useState<ScenarioKey>('small');
 
   const algorithms = {
     bubble: { name: 'Bubble Sort', bestTime: 'O(n)', avgTime: 'O(n²)', worstTime: 'O(n²)', space: 'O(1)', stable: true, color: 'red' },
@@ -16,9 +17,20 @@ export default function ComparingSortingAlgorithms() {
     merge: { name: 'Merge Sort', bestTime: 'O(n log n)', avgTime: 'O(n log n)', worstTime: 'O(n log n)', space: 'O(n)', stable: true, color: 'blue' },
     quick: { name: 'Quick Sort', bestTime: 'O(n log n)', avgTime: 'O(n log n)', worstTime: 'O(n²)', space: 'O(log n)', stable: false, color: 'purple' },
     heap: { name: 'Heap Sort', bestTime: 'O(n log n)', avgTime: 'O(n log n)', worstTime: 'O(n log n)', space: 'O(1)', stable: false, color: 'indigo' },
-  };
+  } as const;
 
-  const scenarios = {
+  type AlgorithmKey = keyof typeof algorithms;
+
+  const scenarios: Record<
+    ScenarioKey,
+    {
+      title: string;
+      winner: AlgorithmKey;
+      runnerUp: AlgorithmKey;
+      description: string;
+      reasoning: string;
+    }
+  > = {
     small: {
       title: 'Small Arrays (n < 50)',
       winner: 'insertion',
