@@ -630,7 +630,7 @@ function merge(left, right) {
                 </div>
 
                 <div className="space-y-4">
-                  {activeTech.visualExample.steps.map((step, idx) => (
+                  {(activeTech.visualExample.steps as any[]).map((step, idx) => (
                     <div key={idx} className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                       <div className="flex items-center gap-3 mb-3">
                         <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${colors.gradient} text-white flex items-center justify-center font-bold text-sm`}>
@@ -644,7 +644,7 @@ function merge(left, right) {
                           {/* Pointer Labels Above Array */}
                           {(step.left !== undefined || step.right !== undefined || step.mid !== undefined) && (
                             <div className="flex items-center gap-2 relative" style={{ height: '32px' }}>
-                              {step.array.map((_, i) => (
+                              {(step.array as any[]).map((_: any, i: number) => (
                                 <div key={i} className="w-12 flex flex-col items-center">
                                   {step.left === i && (
                                     <div className="flex flex-col items-center">
@@ -677,7 +677,7 @@ function merge(left, right) {
                           
                           {/* Array Elements */}
                           <div className="flex items-center gap-2 flex-wrap">
-                            {step.array.map((num, i) => {
+                            {(step.array as any[]).map((num: any, i: number) => {
                               const isLeft = step.left === i;
                               const isRight = step.right === i;
                               const isMid = step.mid === i;
@@ -725,7 +725,7 @@ function merge(left, right) {
                               <div className="flex items-center gap-2 flex-wrap">
                                 <div className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">Active Search Space:</div>
                                 <div className="flex items-center gap-1">
-                                  {step.searchSpace.map((idx) => (
+                                  {(step.searchSpace as any[]).map((idx: number) => (
                                     <div key={idx} className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-mono rounded border border-indigo-300 dark:border-indigo-700">
                                       [{idx}]
                                     </div>
@@ -775,7 +775,7 @@ function merge(left, right) {
                         <div className="space-y-2">
                           <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Original:</div>
                           <div className="flex items-center gap-2 flex-wrap">
-                            {step.original.map((num, i) => (
+                            {(step.original as any[]).map((num: any, i: number) => (
                               <div
                                 key={i}
                                 className="w-12 h-12 rounded-lg flex items-center justify-center font-mono font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
@@ -791,7 +791,7 @@ function merge(left, right) {
                         <div className="space-y-2 mt-2">
                           <div className="text-xs text-purple-600 dark:text-purple-400 font-semibold">Prefix Sum:</div>
                           <div className="flex items-center gap-2 flex-wrap">
-                            {step.prefix.map((num, i) => (
+                            {(step.prefix as any[]).map((num: any, i: number) => (
                               <div
                                 key={i}
                                 className={`w-12 h-12 rounded-lg flex items-center justify-center font-mono font-bold text-sm bg-gradient-to-br ${colors.gradient} text-white`}
@@ -827,7 +827,7 @@ function merge(left, right) {
                         <div className="space-y-3 mt-3">
                           <div className="flex items-center gap-2 flex-wrap">
                             <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Available Coins:</div>
-                            {step.coins.map((coin, i) => (
+                            {(step.coins as any[]).map((coin: any, i: number) => (
                               <div key={i} className="px-3 py-2 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm font-bold border border-amber-300 dark:border-amber-700">
                                 {coin}¢
                               </div>
@@ -837,7 +837,7 @@ function merge(left, right) {
                           {step.selected && step.selected.length > 0 && (
                             <div className="flex items-center gap-2 flex-wrap">
                               <div className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Selected:</div>
-                              {step.selected.map((coin, i) => (
+                              {(step.selected as any[]).map((coin: any, i: number) => (
                                 <div key={i} className={`px-3 py-2 rounded-lg bg-gradient-to-br ${colors.gradient} text-white text-sm font-bold shadow-md`}>
                                   {coin}¢
                                 </div>
@@ -867,7 +867,7 @@ function merge(left, right) {
                             <div className="flex items-center gap-2">
                               <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Current Path:</div>
                               <div className="flex items-center gap-1">
-                                {step.path.map((item, i) => (
+                                {(step.path as any[]).map((item: any, i: number) => (
                                   <div key={i} className={`px-3 py-1.5 rounded-lg bg-gradient-to-br ${colors.gradient} text-white text-sm font-bold`}>
                                     {item}
                                   </div>
@@ -899,7 +899,7 @@ function merge(left, right) {
                               <div className="flex flex-wrap gap-2">
                                 {Object.entries(step.map).map(([key, value], i) => (
                                   <div key={i} className="px-3 py-2 bg-cyan-600 text-white rounded-lg text-sm font-mono shadow-md">
-                                    {key} → {value}
+                                    {key} → {String(value)}
                                   </div>
                                 ))}
                               </div>
@@ -942,9 +942,9 @@ function merge(left, right) {
                           </div>
                           
                           <div className="flex flex-wrap gap-3 items-center justify-center">
-                            {step.arrays.map((arr, i) => (
+                            {(step.arrays as any[]).map((arr: any[], i: number) => (
                               <div key={i} className="flex gap-1">
-                                {arr.map((num, j) => (
+                                {arr.map((num: any, j: number) => (
                                   <div
                                     key={j}
                                     className={`w-10 h-10 rounded flex items-center justify-center font-mono font-bold text-sm ${

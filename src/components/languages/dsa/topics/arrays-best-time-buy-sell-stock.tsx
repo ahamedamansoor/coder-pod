@@ -823,15 +823,17 @@ export default function BestTimeBuySellStock() {
               </div>
 
               <div className="p-3 font-mono text-xs leading-tight overflow-x-auto">
-                {getCodeWithValues(steps[currentStep]).map((lineData) => (
-                  <div
-                    key={lineData.line}
-                    className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
-                      lineData.active
-                        ? 'bg-green-50 dark:bg-green-900/20 border-l-2 border-green-400 dark:border-green-500'
-                        : ''
-                    } ${lineData.comment ? 'opacity-60' : ''}`}
-                  >
+                {getCodeWithValues(steps[currentStep]).map((lineData) => {
+                  const isComment = lineData.code.trim().startsWith('//');
+                  return (
+                    <div
+                      key={lineData.line}
+                      className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
+                        lineData.active
+                          ? 'bg-green-50 dark:bg-green-900/20 border-l-2 border-green-400 dark:border-green-500'
+                          : ''
+                      } ${isComment ? 'opacity-60' : ''}`}
+                    >
                     <span className={`select-none w-6 text-right flex-shrink-0 ${
                       lineData.active
                         ? 'text-green-600 dark:text-green-400 font-semibold'
@@ -851,7 +853,8 @@ export default function BestTimeBuySellStock() {
                       )}
                     </code>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-3 py-2">

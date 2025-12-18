@@ -111,8 +111,8 @@ export default function NumberOfProvinces() {
   const handleReset = () => { setCurrentStep(0); setIsAnimating(false); };
 
   const getCityColor = (cityIndex: number, stepData: typeof steps[0]) => {
-    const isVisited = stepData.visited.includes(cityIndex);
-    const isExploring = stepData.exploring.includes(cityIndex);
+    const isVisited = (stepData.visited as number[]).includes(cityIndex);
+    const isExploring = (stepData.exploring as number[]).includes(cityIndex);
     const isCurrent = stepData.city === cityIndex;
     
     if (isCurrent) return '#3b82f6'; // blue - current

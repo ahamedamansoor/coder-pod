@@ -1,5 +1,6 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 type ColorTheme = 
   | 'violet' 
@@ -29,6 +30,10 @@ interface PageHeaderProps {
   title: string;
   description: string;
   colorTheme: ColorTheme;
+  badges?: Array<{
+    label: string;
+    variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'info';
+  }>;
 }
 
 const colorClasses: Record<ColorTheme, {
@@ -212,8 +217,29 @@ export function PageHeader({
   title,
   description,
   colorTheme,
+  badges = [],
 }: PageHeaderProps) {
   const colors = colorClasses[colorTheme];
+
+  const getBadgeStyle = (
+    variant: 'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'info' | undefined
+  ): { variant: 'default' | 'secondary' | 'outline' | 'destructive'; className?: string } => {
+    if (variant === 'success') {
+      return {
+        variant: 'outline',
+        className:
+          'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-950/30 dark:text-emerald-200',
+      };
+    }
+    if (variant === 'info') {
+      return {
+        variant: 'outline',
+        className:
+          'border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-800/50 dark:bg-sky-950/30 dark:text-sky-200',
+      };
+    }
+    return { variant: variant ?? 'secondary' };
+  };
 
   return (
     <div className="text-center space-y-4 py-8">
@@ -263,6 +289,24 @@ export function PageHeader({
       <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-1000">
         {description}
       </p>
+
+      {/* Badges */}
+      {badges.length > 0 && (
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+          {badges.map((badge, index) => {
+            const { variant, className } = getBadgeStyle(badge.variant);
+            return (
+              <Badge
+                key={`${badge.label}-${index}`}
+                variant={variant}
+                className={className}
+              >
+                {badge.label}
+              </Badge>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

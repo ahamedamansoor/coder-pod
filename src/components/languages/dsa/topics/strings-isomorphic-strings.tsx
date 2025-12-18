@@ -19,7 +19,16 @@ export default function IsomorphicStrings() {
   const testString1 = "egg";
   const testString2 = "add";
   
-  const steps = [
+  type Step = {
+    step: number;
+    mapST: Record<string, string>;
+    mapTS: Record<string, string>;
+    index: number;
+    currentLine: number;
+    description: string;
+  };
+
+  const steps: Step[] = [
     { 
       step: 1,
       mapST: {},
@@ -626,8 +635,6 @@ export default function IsomorphicStrings() {
                       className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
                         lineData.active
                           ? 'bg-teal-50 dark:bg-teal-900/20 border-l-2 border-teal-400 dark:border-teal-500'
-                          : lineData.comment
-                          ? 'opacity-50'
                           : ''
                       }`}
                     >

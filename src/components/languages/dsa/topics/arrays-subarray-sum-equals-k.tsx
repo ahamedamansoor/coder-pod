@@ -18,7 +18,21 @@ export default function SubarraySumEqualsK() {
   const [prefixSum, setPrefixSum] = useState(0);
   const [count, setCount] = useState(0);
 
-  const steps = [
+  type Step = {
+    step: number;
+    index: number;
+    prefixSum: number;
+    count: number;
+    hashMap: Record<number, number>;
+    currentLine: number;
+    description: string;
+    action: string;
+    highlighted: number[];
+    found: boolean;
+    subarrayRange?: [number, number];
+  };
+
+  const steps: Step[] = [
     {
       step: 1,
       index: -1,
@@ -639,7 +653,12 @@ export default function SubarraySumEqualsK() {
               <h4 className="font-semibold text-green-700 dark:text-green-400 mb-2">Time Complexity</h4>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <Badge variant="success" className="font-mono">O(n)</Badge>
+                  <Badge
+                    variant="outline"
+                    className="font-mono border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-950/30 dark:text-emerald-200"
+                  >
+                    O(n)
+                  </Badge>
                   <span className="text-sm text-slate-600 dark:text-slate-400">Single pass through array</span>
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -652,7 +671,12 @@ export default function SubarraySumEqualsK() {
               <h4 className="font-semibold text-green-700 dark:text-green-400 mb-2">Space Complexity</h4>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <Badge variant="info" className="font-mono">O(n)</Badge>
+                  <Badge
+                    variant="outline"
+                    className="font-mono border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-800/50 dark:bg-sky-950/30 dark:text-sky-200"
+                  >
+                    O(n)
+                  </Badge>
                   <span className="text-sm text-slate-600 dark:text-slate-400">Hash map storage</span>
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -770,7 +794,7 @@ console.log(subarraySum([1, 2, 3], 3));        // Output: 2`}
         </CardContent>
       </Card>
 
-      {/* Related Problems */}
+	      {/* Related Problems */}
       <Card className="border-blue-200 dark:border-blue-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -781,41 +805,61 @@ console.log(subarraySum([1, 2, 3], 3));        // Output: 2`}
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-3">
-            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Continuous Subarray Sum</h4>
-                <Badge variant="warning">Medium</Badge>
-              </div>
+	            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
+	              <div className="flex items-start justify-between mb-2">
+	                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Continuous Subarray Sum</h4>
+	                <Badge
+	                  variant="outline"
+	                  className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800/50 dark:bg-amber-950/30 dark:text-amber-200"
+	                >
+	                  Medium
+	                </Badge>
+	              </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Check if array has subarray of size at least 2 that sums to multiple of k
               </p>
             </div>
 
-            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Contiguous Array</h4>
-                <Badge variant="warning">Medium</Badge>
-              </div>
+	            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
+	              <div className="flex items-start justify-between mb-2">
+	                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Contiguous Array</h4>
+	                <Badge
+	                  variant="outline"
+	                  className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800/50 dark:bg-amber-950/30 dark:text-amber-200"
+	                >
+	                  Medium
+	                </Badge>
+	              </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Find maximum length subarray with equal 0s and 1s
               </p>
             </div>
 
-            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Find Pivot Index</h4>
-                <Badge variant="success">Easy</Badge>
-              </div>
+	            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
+	              <div className="flex items-start justify-between mb-2">
+	                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Find Pivot Index</h4>
+	                <Badge
+	                  variant="outline"
+	                  className="border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-950/30 dark:text-emerald-200"
+	                >
+	                  Easy
+	                </Badge>
+	              </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Find index where left sum equals right sum using prefix sum
               </p>
             </div>
 
-            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Range Sum Query</h4>
-                <Badge variant="success">Easy</Badge>
-              </div>
+	            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
+	              <div className="flex items-start justify-between mb-2">
+	                <h4 className="font-semibold text-blue-900 dark:text-blue-100">Range Sum Query</h4>
+	                <Badge
+	                  variant="outline"
+	                  className="border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-950/30 dark:text-emerald-200"
+	                >
+	                  Easy
+	                </Badge>
+	              </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Efficiently calculate sum of elements in a given range
               </p>

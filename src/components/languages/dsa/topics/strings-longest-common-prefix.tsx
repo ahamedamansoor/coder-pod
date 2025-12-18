@@ -577,8 +577,6 @@ export default function LongestCommonPrefix() {
                       className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
                         lineData.active
                           ? 'bg-indigo-50 dark:bg-indigo-900/20 border-l-2 border-indigo-400 dark:border-indigo-500'
-                          : lineData.comment
-                          ? 'opacity-50'
                           : ''
                       }`}
                     >

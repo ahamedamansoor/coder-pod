@@ -24,7 +24,7 @@ import { useTheme } from 'next-themes';
  */
 
 interface CodeSnippetProps {
-  title: string;
+  title?: string;
   description?: string;
   code: string;
   language?: 'javascript' | 'typescript' | 'html' | 'css' | 'jsx' | 'tsx';
@@ -53,7 +53,7 @@ interface CodeSnippetProps {
 }
 
 export const CodeSnippet: React.FC<CodeSnippetProps> = ({
-  title,
+  title = 'Code',
   description,
   code = '',
   language = 'javascript',

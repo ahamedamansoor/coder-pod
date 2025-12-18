@@ -52,7 +52,17 @@ export default function RotateArrayByK() {
   const [currentStep, setCurrentStep] = useState(0);
   const [arrayState, setArrayState] = useState([1, 2, 3, 4, 5, 6, 7]);
   const [highlightIndices, setHighlightIndices] = useState<number[]>([]);
-  const [rotationPhase, setRotationPhase] = useState<'init' | 'reverse-all' | 'reverse-first-k' | 'reverse-remaining' | 'done'>('init');
+  type RotationPhase =
+    | 'init'
+    | 'reverse-all-start'
+    | 'reverse-all'
+    | 'reverse-first-k-start'
+    | 'reverse-first-k'
+    | 'reverse-remaining-start'
+    | 'reverse-remaining'
+    | 'compare'
+    | 'done';
+  const [rotationPhase, setRotationPhase] = useState<RotationPhase>('init');
   const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal');
 
   const k = 3; // Rotate by 3 positions
@@ -389,7 +399,7 @@ export default function RotateArrayByK() {
     setCurrentStep(stepIndex);
     setArrayState(step.array);
     setHighlightIndices(step.highlight);
-    setRotationPhase(step.phase);
+    setRotationPhase(step.phase as RotationPhase);
   };
 
   const handlePlay = () => {

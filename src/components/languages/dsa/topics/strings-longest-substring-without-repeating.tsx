@@ -1342,8 +1342,8 @@ export default function LongestSubstringWithoutRepeating() {
                     )}
 
                   {str.split('').map((char, idx) => {
-                  const isInWindow = steps[currentStep] && steps[currentStep].inWindow.includes(idx);
-                  const isHighlighted = steps[currentStep] && steps[currentStep].highlighted.includes(idx);
+                  const isInWindow = steps[currentStep] && (steps[currentStep].inWindow as number[]).includes(idx);
+                  const isHighlighted = steps[currentStep] && (steps[currentStep].highlighted as number[]).includes(idx);
                   const isDuplicate = steps[currentStep] && steps[currentStep].duplicateIndex === idx;
                   const isRemoved = steps[currentStep] && steps[currentStep].removedIndex === idx;
 

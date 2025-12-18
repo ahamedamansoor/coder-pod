@@ -145,9 +145,9 @@ export default function SearchRotatedSortedArray() {
 
   // Code viewer function
   const getCodeWithValues = (stepData: typeof steps[0]) => {
-    const leftVal = stepData.left >= 0 && stepData.left < testArray.length ? testArray[stepData.left] : '';
-    const midVal = stepData.mid >= 0 && stepData.mid < testArray.length ? testArray[stepData.mid] : '';
-    const rightVal = stepData.right >= 0 && stepData.right < testArray.length ? testArray[stepData.right] : '';
+    const leftVal = testArray[stepData.left] ?? Number.NaN;
+    const midVal = testArray[stepData.mid] ?? Number.NaN;
+    const rightVal = testArray[stepData.right] ?? Number.NaN;
     
     return [
       { line: 1, code: 'function search(nums, target) {', active: stepData.currentLine === 1, indent: 0, values: stepData.currentLine >= 1 ? `nums=[${testArray.join(',')}], target=${stepData.target}` : '' },

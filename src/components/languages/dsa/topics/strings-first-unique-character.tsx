@@ -19,7 +19,17 @@ export default function FirstUniqueCharacter() {
 
   const testString = "leetcode";
   
-  const steps = [
+  type Step = {
+    step: number;
+    counts: Record<string, number>;
+    index: number;
+    found: number;
+    phase: 'count' | 'find';
+    currentLine: number;
+    description: string;
+  };
+
+  const steps: Step[] = [
     { 
       step: 1,
       counts: {},

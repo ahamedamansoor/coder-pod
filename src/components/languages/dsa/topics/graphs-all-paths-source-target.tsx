@@ -98,7 +98,7 @@ export default function AllPathsSourceTarget() {
 
   const getNodeColor = (nodeIndex: number, stepData: typeof steps[0]) => {
     if (stepData.node === nodeIndex) return '#3b82f6'; // blue - current
-    if (stepData.exploring.includes(nodeIndex)) return '#f59e0b'; // orange - in path
+    if ((stepData.exploring as number[]).includes(nodeIndex)) return '#f59e0b'; // orange - in path
     if (nodeIndex === 0) return '#10b981'; // green - source
     if (nodeIndex === 3) return '#ef4444'; // red - target
     return '#94a3b8'; // gray - unvisited

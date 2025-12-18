@@ -19,7 +19,16 @@ export default function ValidAnagram() {
   const testString1 = "listen";
   const testString2 = "silent";
   
-  const steps = [
+  type Step = {
+    step: number;
+    counts: Record<string, number>;
+    char: string;
+    stringType: 's' | 't' | 'compare';
+    currentLine: number;
+    description: string;
+  };
+
+  const steps: Step[] = [
     { 
       step: 1,
       counts: {},

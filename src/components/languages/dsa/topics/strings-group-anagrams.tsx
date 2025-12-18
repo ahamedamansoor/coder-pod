@@ -19,7 +19,17 @@ export default function GroupAnagrams() {
 
   const testStrings = ["eat", "tea", "tan", "ate", "nat", "bat"];
   
-  const steps = [
+  type Step = {
+    step: number;
+    map: Record<string, string[]>;
+    index: number;
+    str: string;
+    key: string;
+    currentLine: number;
+    description: string;
+  };
+
+  const steps: Step[] = [
     { 
       step: 1,
       map: {},
@@ -745,8 +755,6 @@ export default function GroupAnagrams() {
                       className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
                         lineData.active
                           ? 'bg-violet-50 dark:bg-violet-900/20 border-l-2 border-violet-400 dark:border-violet-500'
-                          : lineData.comment
-                          ? 'opacity-50'
                           : ''
                       }`}
                     >

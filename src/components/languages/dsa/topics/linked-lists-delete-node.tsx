@@ -19,6 +19,8 @@ type Node = {
 type DeletePosition = 'beginning' | 'end' | 'value';
 
 export default function LinkedListsDeleteNode() {
+  type Step = Record<string, any>;
+
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [deletePosition, setDeletePosition] = useState<DeletePosition>('beginning');
@@ -63,11 +65,11 @@ export default function LinkedListsDeleteNode() {
     }
   };
 
-  const [steps, setSteps] = useState(generateSteps('beginning'));
+  const [steps, setSteps] = useState<Step[]>(generateSteps('beginning') as Step[]);
 
   const handlePositionChange = (position: DeletePosition) => {
     setDeletePosition(position);
-    setSteps(generateSteps(position));
+    setSteps(generateSteps(position) as Step[]);
     setCurrentStep(0);
     setIsAnimating(false);
   };
@@ -458,7 +460,7 @@ export default function LinkedListsDeleteNode() {
               
               <div className="p-8 bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-950 rounded-xl border-2 border-slate-200 dark:border-slate-700 shadow-xl overflow-x-auto">
                 <div className="flex items-center justify-center gap-3 min-h-[120px]">
-                  {steps[currentStep].list.map((node, idx) => 
+                  {(steps[currentStep].list as Node[]).map((node: Node, idx: number) => 
                     renderNode(
                       node, 
                       idx, 

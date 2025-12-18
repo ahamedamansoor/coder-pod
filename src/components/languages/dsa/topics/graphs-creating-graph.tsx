@@ -370,12 +370,12 @@ export default function CreatingGraph() {
         { line: 1, code: 'const graph = new Map();', active: stepData.currentLine === 1, indent: 0, values: stepData.action === 'init' ? 'graph = {}' : getGraphState() },
         { line: 2, code: '// Add all nodes first', active: false, indent: 0 },
         { line: 3, code: 'for (let node of nodes) {', active: stepData.currentLine === 2, indent: 0, values: getNodesAdded() },
-        { line: 4, code: '  graph.set(node, []);', active: stepData.currentLine === 2, indent: 1, values: stepData.currentNode !== null ? `Setting graph[${stepData.currentNode}] = []` : '' },
+        { line: 4, code: '  graph.set(node, []);', active: stepData.currentLine === 2, indent: 1, values: 'currentNode' in stepData && stepData.currentNode !== null ? `Setting graph[${stepData.currentNode}] = []` : '' },
         { line: 5, code: '}', active: false, indent: 0 },
         { line: 6, code: '', active: false, indent: 0 },
         { line: 7, code: '// Add edges (connections)', active: stepData.currentLine === 3, indent: 0, values: stepData.action === 'nodes-complete' ? 'All nodes ready, starting edges' : '' },
         { line: 8, code: 'function addEdge(from, to) {', active: stepData.currentLine === 4, indent: 0, values: getEdgeAction() },
-        { line: 9, code: '  graph.get(from).push(to);', active: stepData.currentLine === 4, indent: 1, values: 'currentEdge' in stepData && stepData.currentEdge && stepData.action === 'edge-complete' ? `graph[${stepData.currentEdge.from}] now = [${(stepData.graph.get(stepData.currentEdge.from) || []).join(', ')}]` : '' },
+        { line: 9, code: '  graph.get(from).push(to);', active: stepData.currentLine === 4, indent: 1, values: 'currentEdge' in stepData && 'graph' in stepData && stepData.currentEdge && stepData.graph instanceof Map && stepData.action === 'edge-complete' ? `graph[${stepData.currentEdge.from}] now = [${((stepData.graph.get(stepData.currentEdge.from) as number[]) || []).join(', ')}]` : '' },
         { line: 10, code: '}', active: false, indent: 0 },
         { line: 11, code: '', active: false, indent: 0 },
         { line: 12, code: 'return graph;', active: stepData.currentLine === 5, indent: 0, values: stepData.action === 'complete' ? `Final: ${getGraphState()}` : '' }
@@ -840,10 +840,10 @@ export default function CreatingGraph() {
               <h4 className="text-sm font-medium text-rose-900 dark:text-rose-100">Adjacency List Visualization:</h4>
               <div className="p-6 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
                 <div className="space-y-3">
-                  {Array.from(steps[currentStep].graph).map(([node, neighbors]) => (
+                  {Array.from((steps[currentStep] as any).graph as Map<number, number[]>).map(([node, neighbors]) => (
                     <div key={node} className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-2 transition-all duration-500 ${
-                        steps[currentStep].currentNode === node
+                        (steps[currentStep] as any).currentNode === node
                           ? 'bg-rose-200 dark:bg-rose-800 border-rose-500 scale-110 ring-4 ring-rose-300 animate-pulse'
                           : 'bg-rose-100 dark:bg-rose-900/40 border-rose-300 dark:border-rose-700'
                       }`}>
@@ -856,7 +856,7 @@ export default function CreatingGraph() {
                         ) : (
                           <div className="flex items-center gap-2 flex-wrap">
                             {neighbors.map((neighbor, idx) => {
-                              const isCurrentEdge = steps[currentStep].currentEdge?.from === node && steps[currentStep].currentEdge?.to === neighbor;
+                              const isCurrentEdge = (steps[currentStep] as any).currentEdge?.from === node && (steps[currentStep] as any).currentEdge?.to === neighbor;
                               return (
                                 <div
                                   key={idx}
@@ -897,14 +897,14 @@ export default function CreatingGraph() {
                     </tr>
                   </thead>
                   <tbody>
-                    {steps[currentStep].matrix.map((row, rowIdx) => (
-                      <tr key={rowIdx}>
-                        <th className="w-12 h-12 text-sm font-semibold text-indigo-700 dark:text-indigo-300">{rowIdx}</th>
-                        {row.map((cell, colIdx) => {
-                          const isCurrentEdge = steps[currentStep].currentEdge?.from === rowIdx && steps[currentStep].currentEdge?.to === colIdx;
-                          return (
-                            <td
-                              key={colIdx}
+	                    {((steps[currentStep] as any).matrix as number[][]).map((row, rowIdx) => (
+	                      <tr key={rowIdx}>
+	                        <th className="w-12 h-12 text-sm font-semibold text-indigo-700 dark:text-indigo-300">{rowIdx}</th>
+	                        {row.map((cell, colIdx) => {
+	                          const isCurrentEdge = (steps[currentStep] as any).currentEdge?.from === rowIdx && (steps[currentStep] as any).currentEdge?.to === colIdx;
+	                          return (
+	                            <td
+	                              key={colIdx}
                               className={`w-16 h-12 text-center font-mono font-bold text-lg border border-slate-200 dark:border-slate-700 transition-all duration-500 ${
                                 isCurrentEdge
                                   ? 'bg-gradient-to-br from-indigo-500 to-purple-500 text-white scale-110 shadow-xl ring-2 ring-indigo-400'

@@ -19,7 +19,27 @@ export default function MinimumWindowSubstring() {
   const [minStart, setMinStart] = useState(-1);
   const [minLen, setMinLen] = useState(Infinity);
 
-  const steps = [
+  type Step = {
+    step: number;
+    left: number;
+    right: number;
+    currentLine: number;
+    description: string;
+    action: string;
+    highlighted: number[];
+    inWindow: number[];
+    targetMap: Record<string, number>;
+    windowMap: Record<string, number>;
+    formed: number;
+    required: number;
+    minStart: number;
+    minLen: number;
+    tryRemove?: number;
+    addedChar?: string;
+    removedChar?: string;
+  };
+
+  const steps: Step[] = [
     {
       step: 1, left: 0, right: 0, currentLine: 2,
       description: '📋 Initialize: Build target map {A:1, B:1, C:1}. Need 3 unique chars.',

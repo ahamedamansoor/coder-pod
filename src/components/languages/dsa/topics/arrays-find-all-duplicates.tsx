@@ -21,7 +21,19 @@ export default function FindAllDuplicates() {
   const testArray = [4, 3, 2, 7, 8, 2, 3, 1];
   
   // Find All Duplicates - 33 Granular Steps
-  const steps = [
+  type Step = {
+    step: number;
+    index: number;
+    currentNum: number | null;
+    map: Record<string, number>;
+    duplicates: number[];
+    currentLine: number;
+    action: string;
+    description: string;
+    checking: string | null;
+  };
+
+  const steps: Step[] = [
     // Initialization (3 steps)
     { step: 1, index: -1, currentNum: null, map: {}, duplicates: [], currentLine: 1, action: 'init', description: '📋 Initialize: Start finding all duplicates in array', checking: null },
     { step: 2, index: -1, currentNum: null, map: {}, duplicates: [], currentLine: 2, action: 'init', description: '📋 Initialize: Create empty map = {} to track frequencies', checking: null },
@@ -82,7 +94,7 @@ export default function FindAllDuplicates() {
   // Code viewer function
   const getCodeWithValues = (stepData: typeof steps[0]) => {
     const mapStr = Object.entries(stepData.map).map(([k, v]) => `${k}:${v}`).join(', ');
-    const currentNumInMap = stepData.currentNum !== null && stepData.map[stepData.currentNum];
+    const currentNumInMap = stepData.currentNum !== null ? stepData.map[String(stepData.currentNum)] : undefined;
     
     return [
       { line: 1, code: 'function findAllDuplicates(nums) {', active: stepData.currentLine === 1, indent: 0, values: stepData.currentLine >= 1 ? `nums=[${testArray.join(',')}]` : '' },
@@ -626,8 +638,8 @@ export default function FindAllDuplicates() {
                     {testArray.map((val, idx) => {
                       const isCurrent = steps[currentStep].index === idx;
                       const isDuplicate = steps[currentStep].duplicates.includes(val);
-                      const inMap = steps[currentStep].map[val] !== undefined;
-                      const count = steps[currentStep].map[val] || 0;
+                      const inMap = steps[currentStep].map[String(val)] !== undefined;
+                      const count = steps[currentStep].map[String(val)] || 0;
                       
                       return (
                         <div key={idx} className="relative flex flex-col items-center gap-2">

@@ -530,8 +530,6 @@ export default function ImplementStrStr() {
                       className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
                         lineData.active
                           ? 'bg-sky-50 dark:bg-sky-900/20 border-l-2 border-sky-400 dark:border-sky-500'
-                          : lineData.comment
-                          ? 'opacity-50'
                           : ''
                       }`}
                     >

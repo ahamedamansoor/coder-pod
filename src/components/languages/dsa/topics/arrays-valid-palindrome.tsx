@@ -61,7 +61,18 @@ export default function ValidPalindrome() {
   const [comparison, setComparison] = useState<{ match: boolean; chars: [string, string] } | null>(null);
   const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal');
 
-  const steps = [
+  type Step = {
+    step: number;
+    left: number;
+    right: number;
+    currentLine: number;
+    description: string;
+    action: string;
+    comparison: { match: boolean; chars: [string, string] } | null;
+    isPalindrome: boolean;
+  };
+
+  const steps: Step[] = [
     // === INITIALIZATION (3 steps) ===
     { step: 1, left: 0, right: 20, currentLine: 2,
       description: '📋 Clean String: Remove non-alphanumeric characters and convert to lowercase.',

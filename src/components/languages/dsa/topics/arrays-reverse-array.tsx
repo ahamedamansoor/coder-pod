@@ -277,7 +277,7 @@ export default function ReverseArray() {
     setCurrentStep(stepIndex);
     setLeftPointer(step.left);
     setRightPointer(step.right);
-    setSwapping(step.swap);
+    setSwapping(step.swap !== false);
     setArrayState([...step.array]);
   };
 
@@ -670,8 +670,6 @@ export default function ReverseArray() {
                       className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
                         lineData.active
                           ? 'bg-amber-50 dark:bg-amber-900/20 border-l-2 border-amber-400 dark:border-amber-500'
-                          : lineData.comment
-                          ? 'opacity-50'
                           : ''
                       }`}
                     >
