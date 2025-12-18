@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { languages } from '@/data/languages';
+import { enabledLanguages as languages } from '@/data/languages';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, Code, Search } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';

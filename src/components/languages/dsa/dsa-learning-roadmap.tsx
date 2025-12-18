@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 
 const sectionIconMap: Record<string, { icon: LucideIcon; color: string; level: string }> = {
+  '0. Time & Space Complexity Analysis': { icon: Timer, color: 'text-slate-700', level: 'Fundamental' },
   '1. Arrays': { icon: Layers, color: 'text-blue-600', level: 'Beginner' },
   '2. Strings': { icon: BookOpen, color: 'text-indigo-600', level: 'Beginner' },
   '3. Linked Lists': { icon: Share2, color: 'text-emerald-600', level: 'Intermediate' },
@@ -57,7 +58,6 @@ const sectionIconMap: Record<string, { icon: LucideIcon; color: string; level: s
   '22. Advanced Dynamic Programming': { icon: TrendingUp, color: 'text-blue-800', level: 'Expert' },
   '23. Monotonic Stack & Deque': { icon: Layers, color: 'text-rose-700', level: 'Expert' },
   '24. Computational Geometry': { icon: Grid3x3, color: 'text-teal-700', level: 'Expert' },
-  '25. Time & Space Complexity Analysis': { icon: Timer, color: 'text-slate-700', level: 'Fundamental' },
 };
 
 const categoryIcons = dsaCategoryOrder.reduce<Record<string, { icon: LucideIcon; color: string; level: string }>>(

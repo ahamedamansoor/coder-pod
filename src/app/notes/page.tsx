@@ -181,6 +181,7 @@ export default function NotesPage() {
     // Only fetch if we haven't fetched for this user yet
     if (lastFetchedUserId.current === user.uid) {
       console.log('✋ Already fetched notes for this user, skipping...');
+      setIsLoading(false); // Clear loading state when skipping
       return;
     }
     
@@ -189,6 +190,13 @@ export default function NotesPage() {
     fetchNotes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, isUserLoading]);
+
+  // Reset ref on unmount to prevent stale data on remount
+  useEffect(() => {
+    return () => {
+      lastFetchedUserId.current = null;
+    };
+  }, []);
 
   // Filter notes based on search, language, and type
   useEffect(() => {

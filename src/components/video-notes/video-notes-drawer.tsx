@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,15 @@ interface VideoNotesDrawerProps {
   languageSlug: string;
 }
 
+// Cache with TTL
+interface CacheEntry {
+  data: Note[];
+  timestamp: number;
+}
+
+const notesCache = new Map<string, CacheEntry>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNotesDrawerProps) {
   const [notes, setNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,19 +53,42 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   const { setContent } = usePlayer();
   const { user } = useUser();
   const languageData = languages.find(l => l.slug === languageSlug);
+  const fetchInProgressRef = useRef(false);
 
-  // Fetch notes from Supabase
-  const fetchNotes = async () => {
+  // Fetch notes from Supabase with caching
+  const fetchNotes = async (forceRefresh = false) => {
     if (!user) {
       setNotes([]);
       return;
     }
 
+    // Prevent concurrent fetches
+    if (fetchInProgressRef.current) {
+      return;
+    }
+
+    const cacheKey = `${user.uid}-${languageSlug}`;
+    const cached = notesCache.get(cacheKey);
+    const now = Date.now();
+
+    // Use cache if valid and not forcing refresh
+    if (!forceRefresh && cached && (now - cached.timestamp) < CACHE_TTL) {
+      setNotes(cached.data);
+      return;
+    }
+
+    fetchInProgressRef.current = true;
     setIsLoading(true);
     try {
       const notesService = ServiceFactory.getNotesService();
       const allNotes = await notesService.getNotesByLanguage(user.uid, languageSlug);
       setNotes(allNotes);
+      
+      // Update cache
+      notesCache.set(cacheKey, {
+        data: allNotes,
+        timestamp: now,
+      });
     } catch (error) {
       console.error('Error fetching notes:', error);
       toast({
@@ -67,11 +99,12 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
       setNotes([]);
     } finally {
       setIsLoading(false);
+      fetchInProgressRef.current = false;
     }
   };
 
   useEffect(() => {
-    if (open) {
+    if (open && user) {
       fetchNotes();
     }
   }, [open, languageSlug, user]);
@@ -82,20 +115,8 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     : notes;
 
   const handlePlayVideo = (note: Note) => {
-    // If it's a video with videoId, use the minimizable FloatingPlayer
-    if (note.type === 'video' && note.videoId && note.url) {
-      setContent({
-        id: note.id,
-        title: note.title,
-        url: note.url,
-        type: 'video',
-      });
-      // Close the drawer to show the floating player
-      onOpenChange(false);
-    } else {
-      // For other resources, use the dialog
-      setPlayingVideo(note);
-    }
+    // Always open in modal dialog
+    setPlayingVideo(note);
   };
 
   // Extract YouTube video ID from URL
@@ -173,8 +194,8 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         description: `Your ${resourceType} has been saved successfully.`,
       });
       
-      // Refresh notes list
-      await fetchNotes();
+      // Refresh notes list with forced cache refresh
+      await fetchNotes(true);
       
       setIsAddDialogOpen(false);
       resetForm();

@@ -658,16 +658,34 @@ function DashboardContent() {
                     </Link>
                   </li>
                   <li>
+                    <Link href="/roadmaps" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      Roadmaps
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/cheatsheets" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      Cheatsheets
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/ai-interview" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      AI Interview
+                    </Link>
+                  </li>
+                  <li>
                     <Link href="/notes" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                       My Notes
                     </Link>
                   </li>
                   <li>
-                    <a href="#languages" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                    <Link href="/discover" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                      Languages
-                    </a>
+                      Discover
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -756,7 +774,7 @@ function DashboardContent() {
                 <div className="bg-gradient-to-r from-transparent via-slate-50 dark:via-slate-950 to-transparent px-4">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                    <span>Built with Next.js, TypeScript & Firebase</span>
+                    <span>Built with Next.js, TypeScript & Supabase and Vercel</span>
                     <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
                   </div>
                 </div>

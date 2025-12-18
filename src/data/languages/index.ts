@@ -33,7 +33,7 @@ export const languages: Language[] = [
     { ...java, enabled: false },
     { ...spring, enabled: false },
     { ...springBoot, enabled: false },
-    { ...dsa, enabled: false },
+    { ...dsa, enabled: true },
     { ...rxjs, enabled: false },
     { ...playwright, enabled: false },
 ];

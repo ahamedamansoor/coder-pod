@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
@@ -80,6 +80,7 @@ export function InnovativeHeader({
   const router = useRouter();
   const [showFeatureGate, setShowFeatureGate] = useState(false);
   const [gatedFeatureName, setGatedFeatureName] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const allNavItems = [
     { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false },
@@ -113,9 +114,9 @@ export function InnovativeHeader({
       </div>
 
       {/* Header Content */}
-      <div className="relative flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+      <div className="relative flex items-center justify-between h-14 md:h-16 px-3 md:px-4 lg:px-8">
         {/* Left Side - Sidebar Trigger, Logo/Language Switcher */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           {/* Sidebar Trigger for Learning Pages */}
           {showSidebarTrigger && (
             <div className="lg:hidden">
@@ -146,7 +147,7 @@ export function InnovativeHeader({
 
           {/* Language Switcher on Learning Pages */}
           {showLanguageSwitcher && (
-            <div className="hidden sm:block">
+            <div className="max-w-[140px] sm:max-w-none">
               <LanguageSwitcher currentLanguageSlug={currentLanguage} />
             </div>
           )}
@@ -195,8 +196,8 @@ export function InnovativeHeader({
           </nav>
         )}
 
-        {/* Right Side - Playground Button, Theme Toggle & User */}
-        <div className="flex items-center gap-3">
+        {/* Right Side - Mobile Menu, Playground Button, Theme Toggle & User */}
+        <div className="flex items-center gap-2 md:gap-3">
           {/* React Playground Button */}
           {currentLanguage === 'react' && onPlaygroundOpen && (
             <Button
@@ -218,14 +219,11 @@ export function InnovativeHeader({
           {currentLanguage === 'react' && onPlaygroundOpen && (
             <Button
               onClick={onPlaygroundOpen}
-              className="sm:hidden relative group/play flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 p-0"
+              className="sm:hidden relative group/play flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-md transition-all duration-200 active:scale-95 p-0"
               size="sm"
             >
-              {/* Gradient Glow */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full opacity-0 group-hover/play:opacity-30 blur transition-all duration-300" />
-              
               {/* Icon */}
-              <Play className="w-5 h-5 relative z-10" />
+              <Play className="w-4 h-4 relative z-10" />
             </Button>
           )}
 
@@ -250,48 +248,29 @@ export function InnovativeHeader({
           {['html', 'css', 'scss', 'javascript', 'typescript', 'tailwind'].includes(currentLanguage || '') && onWebPlaygroundOpen && (
             <Button
               onClick={onWebPlaygroundOpen}
-              className="sm:hidden relative group/web flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-orange-600 to-blue-600 hover:from-orange-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 p-0"
+              className="sm:hidden relative group/web flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-r from-orange-600 to-blue-600 hover:from-orange-700 hover:to-blue-700 text-white shadow-md transition-all duration-200 active:scale-95 p-0"
               size="sm"
             >
-              {/* Gradient Glow */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-full opacity-0 group-hover/web:opacity-30 blur transition-all duration-300" />
-              
               {/* Icon */}
-              <Play className="w-5 h-5 relative z-10" />
+              <Play className="w-4 h-4 relative z-10" />
             </Button>
           )}
-          {/* Mobile Navigation */}
+          
+          {/* Mobile Navigation Hamburger Menu */}
           {showNavigation && (
-            <div className="flex lg:hidden items-center gap-1">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = currentPage === item.page;
-                
-                return (
-                  <Link key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item)}>
-                    <Button
-                      variant={isActive ? "default" : "ghost"}
-                      size="sm"
-                      className={cn(
-                        "gap-2 transition-all duration-300 ease-in-out group/mobile-btn",
-                        isActive 
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md" 
-                          : "hover:bg-slate-100 dark:hover:bg-slate-800"
-                      )}
-                    >
-                      <Icon className="h-4 w-4 flex-shrink-0" />
-                      <span className={cn(
-                        "transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap",
-                        isActive 
-                          ? "inline max-w-[200px] opacity-100 ml-0" 
-                          : "max-w-0 opacity-0 -ml-2 group-hover/mobile-btn:max-w-[200px] group-hover/mobile-btn:opacity-100 group-hover/mobile-btn:ml-0 sm:inline sm:max-w-[200px] sm:opacity-100 sm:ml-0"
-                      )}>
-                        {item.label}
-                      </span>
-                    </Button>
-                  </Link>
-                );
-              })}
+            <div className="lg:hidden">
+              <Button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                variant="ghost"
+                size="sm"
+                className="w-9 h-9 p-0 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </Button>
             </div>
           )}
 
@@ -304,11 +283,10 @@ export function InnovativeHeader({
           {!user && (
             <Link href="/login">
               <Button
-                className="relative group/signin bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md transition-all duration-200 text-xs md:text-sm px-3 md:px-4 h-9"
                 size="sm"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-md opacity-0 group-hover/signin:opacity-30 blur transition-all duration-300" />
-                <span className="relative z-10 font-semibold">Sign In</span>
+                <span className="font-semibold">Sign In</span>
               </Button>
             </Link>
           )}
@@ -317,46 +295,30 @@ export function InnovativeHeader({
           {user && (
             user.isAnonymous ? (
               <Link href="/login">
-                <button className="relative group/signin flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:scale-105 overflow-hidden">
-                  {/* Gradient Glow on Hover */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover/signin:opacity-20 blur transition-all duration-300" />
-                  
-                  {/* Animated background shimmer */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/15 to-purple-500/0 translate-x-[-100%] group-hover/signin:translate-x-[100%] transition-transform duration-700" />
-                  
-                  {/* Avatar Circle with Icon Animation */}
-                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md transition-all duration-300 group-hover/signin:shadow-lg">
-                    <div className="relative w-full h-full flex items-center justify-center">
-                      <span className="absolute transition-all duration-300 group-hover/signin:opacity-0 group-hover/signin:scale-50">G</span>
-                      <LogIn className="absolute h-4 w-4 transition-all duration-300 opacity-0 scale-50 group-hover/signin:opacity-100 group-hover/signin:scale-100" />
-                    </div>
+                <button className="relative group/signin flex items-center gap-1.5 md:gap-2 px-2 md:px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-200 hover:shadow-md overflow-hidden">
+                  {/* Avatar Circle with Icon */}
+                  <div className="relative w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+                    <span className="md:hidden">G</span>
+                    <LogIn className="hidden md:block h-4 w-4" />
                   </div>
                   
-                  {/* Sliding Text Animation (Hidden on Mobile) */}
-                  <div className="hidden sm:block relative h-5 w-16 overflow-hidden">
-                    <span className="absolute inset-0 flex items-center text-sm font-medium text-slate-700 dark:text-slate-300 transition-all duration-300 group-hover/signin:-translate-y-full group-hover/signin:opacity-0">
-                      Guest
-                    </span>
-                    <span className="absolute inset-0 flex items-center text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 translate-y-full opacity-0 group-hover/signin:translate-y-0 group-hover/signin:opacity-100">
-                      Sign In
-                    </span>
-                  </div>
+                  {/* Text (Hidden on Mobile) */}
+                  <span className="hidden md:block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Guest
+                  </span>
                 </button>
               </Link>
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="relative group/avatar flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    {/* Gradient Glow on Hover */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover/avatar:opacity-20 blur transition-all duration-300" />
-                    
+                  <button className="relative group/avatar flex items-center gap-1.5 md:gap-2 px-2 md:px-3 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-200 hover:shadow-md">
                     {/* Avatar Circle */}
-                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md transition-all duration-300 group-hover/avatar:shadow-lg">
-                      <span className="relative z-10">{getUserInitials(user.displayName, user.email, user.isAnonymous)}</span>
+                    <div className="relative w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+                      <span>{getUserInitials(user.displayName, user.email, user.isAnonymous)}</span>
                     </div>
                     
                     {/* User Name (Hidden on Mobile) */}
-                    <span className="hidden sm:block text-sm font-medium text-slate-700 dark:text-slate-300 relative z-10">
+                    <span className="hidden md:block text-sm font-medium text-slate-700 dark:text-slate-300 max-w-[100px] truncate">
                       {(typeof user.displayName === 'string' ? user.displayName.split(' ')[0] : null) || (typeof user.email === 'string' ? user.email.split('@')[0] : null) || 'User'}
                     </span>
                   </button>
@@ -418,6 +380,41 @@ export function InnovativeHeader({
           )}
         </div>
       </div>
+
+      {/* Mobile Navigation Menu Dropdown */}
+      {mobileMenuOpen && showNavigation && (
+        <div className="lg:hidden fixed top-14 md:top-16 left-0 right-0 z-[9999] bg-white/98 dark:bg-slate-950/98 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-xl animate-in slide-in-from-top-2 duration-200">
+          <nav className="px-3 py-3 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = currentPage === item.page;
+              
+              return (
+                <Link 
+                  key={item.href} 
+                  href={item.href} 
+                  onClick={(e) => {
+                    handleNavClick(e, item);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <button
+                    className={cn(
+                      "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
+                      isActive
+                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80 active:scale-98"
+                    )}
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    <span className="font-medium">{item.label}</span>
+                  </button>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      )}
 
       {/* Bottom Border Glow */}
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent dark:via-blue-400/30" />

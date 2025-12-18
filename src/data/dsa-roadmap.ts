@@ -12,10 +12,60 @@ export type DsaRoadmapSection = {
 
 export const dsaRoadmapSections: DsaRoadmapSection[] = [
   {
+    slug: 'complexity-analysis-dsa',
+    title: '0. Time & Space Complexity Analysis',
+    summary: 'Master Big O notation and analyze algorithm efficiency before diving into problems.',
+    groups: [
+      {
+        title: 'Time Complexity',
+        items: [
+          'Big O notation fundamentals',
+          'O(1) - Constant time complexity',
+          'O(log n) - Logarithmic time complexity',
+          'O(√n) - Square root time complexity',
+          'O(n) - Linear time complexity',
+          'O(n log n) - Linearithmic time complexity',
+          'O(n²) - Quadratic time complexity',
+          'O(2^n) - Exponential time complexity',
+          'O(n!) - Factorial time complexity',
+          'Amortized analysis',
+          'Best, average, and worst case analysis',
+          'Recurrence relations (Master theorem)',
+        ],
+      },
+      {
+        title: 'Space Complexity',
+        items: [
+          'Auxiliary space vs total space',
+          'In-place algorithms',
+          'Space-time tradeoffs',
+          'Iterative vs recursive space complexity',
+        ],
+      },
+      {
+        title: 'Algorithm Analysis',
+        items: [
+          'Comparing sorting algorithms',
+          'Analyzing nested loops',
+          'Understanding logarithmic complexity',
+          'Identifying optimal data structures',
+          'Common algorithmic techniques',
+        ],
+      },
+    ],
+  },
+  {
     slug: 'arrays-dsa',
     title: '1. Arrays',
     summary: 'Master foundational array patterns (two pointers, sliding window, prefix sums) before tackling advanced problems.',
     groups: [
+      {
+        title: 'Introduction',
+        items: [
+          'What is an Array?',
+          'Types of Arrays',
+        ],
+      },
       {
         title: 'Basic Operations',
         items: [
@@ -34,7 +84,6 @@ export const dsaRoadmapSections: DsaRoadmapSection[] = [
           'Valid palindrome',
           'Sort array of 0s and 1s',
           'Container with most water',
-          'Remove duplicates from sorted array',
         ],
       },
       {
@@ -76,7 +125,6 @@ export const dsaRoadmapSections: DsaRoadmapSection[] = [
         title: 'Basic Operations',
         items: [
           'Reverse a string',
-          'Check if string is palindrome',
           'Count vowels and consonants',
           'Remove spaces from string',
         ],
@@ -107,6 +155,13 @@ export const dsaRoadmapSections: DsaRoadmapSection[] = [
     title: '3. Linked Lists',
     summary: 'Strengthen pointer intuition across singly, doubly, and circular linked list problems.',
     groups: [
+      {
+        title: 'Introduction',
+        items: [
+          'What is a Linked List?',
+          'Types of Linked Lists',
+        ],
+      },
       {
         title: 'Basic Operations',
         items: [
@@ -909,41 +964,6 @@ export const dsaRoadmapSections: DsaRoadmapSection[] = [
           'Skyline problem',
           'Meeting rooms II',
           'My calendar problems',
-        ],
-      },
-    ],
-  },
-  {
-    slug: 'complexity-analysis-dsa',
-    title: '25. Time & Space Complexity Analysis',
-    summary: 'Master Big O notation and analyze algorithm efficiency.',
-    groups: [
-      {
-        title: 'Time Complexity',
-        items: [
-          'Big O notation fundamentals',
-          'Common time complexities (O(1), O(log n), O(n), O(n log n), O(n²), O(2^n))',
-          'Amortized analysis',
-          'Best, average, and worst case analysis',
-          'Recurrence relations (Master theorem)',
-        ],
-      },
-      {
-        title: 'Space Complexity',
-        items: [
-          'Auxiliary space vs total space',
-          'In-place algorithms',
-          'Space-time tradeoffs',
-          'Iterative vs recursive space complexity',
-        ],
-      },
-      {
-        title: 'Algorithm Analysis',
-        items: [
-          'Comparing sorting algorithms',
-          'Analyzing nested loops',
-          'Understanding logarithmic complexity',
-          'Identifying optimal data structures',
         ],
       },
     ],

@@ -386,7 +386,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     const mockConsole = {
       log: (...args: any[]) => {
         const message = args.map(arg => 
-          typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+          typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
         ).join(' ');
         addOutput(message);
       },
