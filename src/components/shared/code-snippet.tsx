@@ -26,7 +26,7 @@ import { useTheme } from 'next-themes';
 interface CodeSnippetProps {
   title?: string;
   description?: string;
-  code: string;
+  code: string | any[];
   language?: 'javascript' | 'typescript' | 'html' | 'css' | 'jsx' | 'tsx';
   colorTheme?: 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose';
   icon?: React.ComponentType<{ className?: string }>;
@@ -75,6 +75,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   const previewRef = React.useRef<HTMLDivElement>(null);
   const outputLinesRef = React.useRef<string[]>([]);
   const [editableCode, setEditableCode] = useState(code);
+  const safeEditableCode = typeof editableCode === 'string' ? editableCode : '';
   const [showEmbeddedPlayground, setShowEmbeddedPlayground] = useState(false);
   const [activeTab, setActiveTab] = React.useState<'preview' | 'code'>('preview');
   const [playgroundConsole, setPlaygroundConsole] = React.useState<string[]>([]);
@@ -109,9 +110,11 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     }
     
     // Otherwise, try to extract from code comments
-    const htmlMatch = code.match(/\/\/\s*HTML:\s*(.+?)(?=\n|$)/i);
-    if (htmlMatch) {
-      setPreviewHtml(htmlMatch[1].trim());
+    if (typeof code === 'string') {
+      const htmlMatch = code.match(/\/\/\s*HTML:\s*(.+?)(?=\n|$)/i);
+      if (htmlMatch) {
+        setPreviewHtml(htmlMatch[1].trim());
+      }
     }
   }, [code, playgroundConfig]);
 
@@ -322,10 +325,14 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   
   // Check if code is executable (only JavaScript/TypeScript)
   const isExecutable = language === 'javascript' || language === 'typescript' || language === 'jsx' || language === 'tsx';
+  const isStructuredCode = Array.isArray(code);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(editableCode);
+      const textToCopy = typeof editableCode === 'string'
+        ? editableCode
+        : (editableCode as any[]).map(l => l.code).join('\n');
+      await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -352,7 +359,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     try {
       const htmlContent = playgroundConfig.html || '';
       const cssContent = playgroundConfig.css || '';
-      const jsContent = playgroundConfig.js || code;
+      const jsContent = playgroundConfig.js || (typeof code === 'string' ? code : '');
 
       const config = {
         visiblePanels: playgroundConfig.visiblePanels || ['js', 'console'],
@@ -442,8 +449,9 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     
     try {
       // Clean code by removing HTML comment lines
-      const cleanCode = editableCode.replace(/\/\/\s*HTML:.*$/gm, '').trim();
-      
+      const codeStr = typeof editableCode === 'string' ? editableCode : '';
+      const cleanCode = codeStr.replace(/\/\/\s*HTML:.*$/gm, '').trim();
+
       // If there's a preview, run code in the preview context
       if (previewRef.current && previewHtml) {
         // Find the actual preview-container div where HTML is rendered
@@ -803,7 +811,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     })();
     
     try {
-      ${playgroundConfig.js || editableCode}
+      ${playgroundConfig.js || safeEditableCode}
     } catch (error) {
       console.log('❌ Error: ' + error.message);
     }
@@ -843,7 +851,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
                     showLineNumbers={false}
                     wrapLines={true}
                   >
-                    {playgroundConfig.js || editableCode}
+                    {playgroundConfig.js || safeEditableCode}
                   </SyntaxHighlighter>
                 </div>
               </div>
@@ -927,7 +935,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
                 showLineNumbers={false}
                 wrapLines={true}
               >
-                {playgroundConfig.js || editableCode}
+                {playgroundConfig.js || safeEditableCode}
               </SyntaxHighlighter>
               
               {playgroundConfig.html && (
@@ -1122,7 +1130,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     })();
     
     try {
-      ${playgroundConfig.js || editableCode}
+      ${playgroundConfig.js || safeEditableCode}
     } catch (error) {
       console.log('❌ Error: ' + error.message);
       const output = document.getElementById('output') || document.querySelector('[id*="output"]');
@@ -1286,14 +1294,57 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
           {/* Code and Console Grid - Show console only for executable languages */}
           <div className={cn(
             "grid gap-0 h-full",
-            isExecutable ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1"
+            (isExecutable && !isStructuredCode) ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1"
           )}>
             {/* Code Display - Editable only for executable languages */}
             <div className={cn(
               "overflow-hidden h-full flex flex-col",
-              isExecutable && "border-r border-slate-200 dark:border-slate-800"
+              (isExecutable && !isStructuredCode) && "border-r border-slate-200 dark:border-slate-800"
             )}>
-              {isExecutable ? (
+              {isStructuredCode ? (
+                <div className="relative h-full flex flex-col bg-slate-50 dark:bg-slate-950">
+                  <div
+                    className="flex items-center px-3 gap-1.5 h-10 border-b flex-shrink-0"
+                    style={{
+                      backgroundColor: currentIdeTheme.bg,
+                      borderColor: currentIdeTheme.borderColor
+                    }}
+                  >
+                    <span className="text-xs font-mono flex items-center gap-2" style={{ color: currentIdeTheme.color }}>
+                      <FileCode className="w-3.5 h-3.5" />
+                      visualization
+                    </span>
+                    <span className="ml-auto text-xs font-mono" style={{ color: currentIdeTheme.color }}>Read-only</span>
+                  </div>
+                  <div className="flex-1 overflow-auto p-4 font-mono text-sm" style={{ backgroundColor: currentIdeTheme.bg, color: currentIdeTheme.color }}>
+                    {(code as any[]).map((lineData, idx) => (
+                      <div
+                        key={idx}
+                        className={cn(
+                          "flex items-center py-0.5 px-2 rounded transition-colors",
+                          lineData.active ? "bg-blue-100 dark:bg-blue-900/30 border-l-2 border-blue-500" : "border-l-2 border-transparent"
+                        )}
+                      >
+                        {showLineNumbers && (
+                          <span className="w-8 text-right mr-4 text-slate-400 select-none text-xs opacity-50">
+                            {lineData.line}
+                          </span>
+                        )}
+                        <div className="flex-1 flex items-center">
+                          <span style={{ paddingLeft: `${(lineData.indent || 0) * 20}px` }}>
+                            {lineData.code}
+                          </span>
+                          {lineData.values && (
+                            <span className="ml-auto text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-800">
+                              {lineData.values}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : isExecutable ? (
                 // For executable code, use a styled textarea with IDE-like appearance
                 <div className="relative h-full flex flex-col">
                   <div
@@ -1389,7 +1440,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
             </div>
 
             {/* Console Output - Only show for executable languages */}
-            {isExecutable && (
+            {(isExecutable && !isStructuredCode) && (
               <div className="bg-slate-100 dark:bg-slate-900 h-full flex flex-col">
                 <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
