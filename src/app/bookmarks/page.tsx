@@ -109,8 +109,11 @@ export default function BookmarksPage() {
 
   if (isUserLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-12 h-12 animate-spin text-primary" />
+          <p className="text-sm text-muted-foreground">Loading bookmarks...</p>
+        </div>
       </div>
     );
   }

@@ -129,7 +129,7 @@ export default function CheatsheetBoard() {
   return (
     <>
       {/* Category Filter Pills */}
-      <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8 py-4">
+      <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8 py-4 flex justify-center">
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 w-fit">
           {categories.map((cat) => {
             const Icon = cat.icon;

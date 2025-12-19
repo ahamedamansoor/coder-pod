@@ -3,12 +3,14 @@ export { macCheatsheet } from './mac';
 export { windowsCheatsheet } from './windows';
 export { gitCheatsheet } from './git';
 export { dockerCheatsheet } from './docker';
+export { nodeCheatsheet } from './node';
 export { htmlCheatsheet } from './html';
 export { javascriptCheatsheet } from './javascript';
 export { javaCheatsheet } from './java';
 export { springCheatsheet } from './spring';
 export { springBootCheatsheet } from './spring-boot';
 export { reactCheatsheet } from './react';
+export { vueCheatsheet } from './vue';
 export { angularCheatsheet } from './angular';
 export { npmCheatsheet } from './npm';
 export { vimCheatsheet } from './vim';
@@ -30,6 +32,10 @@ export { firefoxCheatsheet } from './firefox';
 export { edgeCheatsheet } from './edge';
 export { safariCheatsheet } from './safari';
 export { kubernetesCheatsheet } from './kubernetes';
+export { scssCheatsheet } from './scss';
+export { tailwindCheatsheet } from './tailwind';
+export { seleniumCheatsheet } from './selenium';
+export { expressCheatsheet } from './express';
 
 // Export all cheatsheets as an array
 import { linuxCheatsheet } from './linux';
@@ -38,12 +44,18 @@ import { windowsCheatsheet } from './windows';
 import { gitCheatsheet } from './git';
 import { dockerCheatsheet } from './docker';
 import { kubernetesCheatsheet } from './kubernetes';
+import { nodeCheatsheet } from './node';
 import { htmlCheatsheet } from './html';
+import { cssCheatsheet } from './css';
 import { javascriptCheatsheet } from './javascript';
+import { typescriptCheatsheet } from './typescript';
 import { javaCheatsheet } from './java';
+import { pythonCheatsheet } from './python';
 import { springCheatsheet } from './spring';
 import { springBootCheatsheet } from './spring-boot';
 import { reactCheatsheet } from './react';
+import { nextjsCheatsheet } from './nextjs';
+import { vueCheatsheet } from './vue';
 import { angularCheatsheet } from './angular';
 import { npmCheatsheet } from './npm';
 import { vimCheatsheet } from './vim';
@@ -60,10 +72,15 @@ import { cassandraCheatsheet } from './cassandra';
 import { timescaledbCheatsheet } from './timescaledb';
 import { bashCheatsheet } from './bash';
 import { homebrewCheatsheet } from './homebrew';
+import { awsCheatsheet } from './aws';
 import { chromeCheatsheet } from './chrome';
 import { firefoxCheatsheet } from './firefox';
 import { edgeCheatsheet } from './edge';
 import { safariCheatsheet } from './safari';
+import { scssCheatsheet } from './scss';
+import { tailwindCheatsheet } from './tailwind';
+import { seleniumCheatsheet } from './selenium';
+import { expressCheatsheet } from './express';
 
 export const allCheatsheets = [
   linuxCheatsheet,
@@ -73,11 +90,17 @@ export const allCheatsheets = [
   dockerCheatsheet,
   kubernetesCheatsheet,
   htmlCheatsheet,
+  cssCheatsheet,
   javascriptCheatsheet,
+  typescriptCheatsheet,
+  nodeCheatsheet,
   javaCheatsheet,
+  pythonCheatsheet,
   springCheatsheet,
   springBootCheatsheet,
   reactCheatsheet,
+  vueCheatsheet,
+  nextjsCheatsheet,
   angularCheatsheet,
   npmCheatsheet,
   vimCheatsheet,
@@ -94,10 +117,15 @@ export const allCheatsheets = [
   timescaledbCheatsheet,
   bashCheatsheet,
   homebrewCheatsheet,
+  awsCheatsheet,
   chromeCheatsheet,
   firefoxCheatsheet,
   edgeCheatsheet,
   safariCheatsheet,
+  scssCheatsheet,
+  tailwindCheatsheet,
+  seleniumCheatsheet,
+  expressCheatsheet,
 ];
 
 // Categorized cheatsheets
@@ -105,7 +133,23 @@ export const cheatsheetCategories = [
   {
     id: 'programming',
     name: 'Programming Languages',
-    cheatsheets: [javaCheatsheet, springCheatsheet, springBootCheatsheet, htmlCheatsheet, javascriptCheatsheet, reactCheatsheet, angularCheatsheet],
+    cheatsheets: [
+      pythonCheatsheet,
+      javaCheatsheet,
+      javascriptCheatsheet,
+      typescriptCheatsheet,
+      nodeCheatsheet,
+      htmlCheatsheet,
+      cssCheatsheet,
+      scssCheatsheet,
+      tailwindCheatsheet,
+      reactCheatsheet,
+      nextjsCheatsheet,
+      vueCheatsheet,
+      angularCheatsheet,
+      springCheatsheet,
+      springBootCheatsheet,
+    ],
   },
   {
     id: 'databases',
@@ -115,7 +159,7 @@ export const cheatsheetCategories = [
   {
     id: 'developer-tools',
     name: 'Developer Tools',
-    cheatsheets: [gitCheatsheet, dockerCheatsheet, kubernetesCheatsheet, npmCheatsheet, homebrewCheatsheet],
+    cheatsheets: [gitCheatsheet, dockerCheatsheet, kubernetesCheatsheet, awsCheatsheet, npmCheatsheet, homebrewCheatsheet, seleniumCheatsheet, expressCheatsheet],
   },
   {
     id: 'editors-tools',

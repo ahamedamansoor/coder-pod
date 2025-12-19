@@ -202,6 +202,238 @@ export const javaCheatsheet = {
       ],
     },
     {
+      title: 'String Manipulation',
+      commands: [
+        {
+          command: 'String Creation',
+          description: 'Ways to create strings',
+          usage: 'String s = "literal"; new String("text");',
+          example: 'String s1 = "Hello";\nString s2 = new String("World");\nString s3 = """\n  Text Block\n  (Java 15+)\n  """;',
+        },
+        {
+          command: 'Common Methods',
+          description: 'Frequently used string operations',
+          usage: 's.length(), s.charAt(i), s.substring(start, end)',
+          example: 'int len = s.length();\nchar c = s.charAt(0);\nString sub = s.substring(0, 5);\nboolean b = s.contains("ell");',
+        },
+        {
+          command: 'Modification (Immutable)',
+          description: 'Operations that return new strings',
+          usage: 's.replace(target, replacement), s.toUpperCase()',
+          example: 'String upper = s.toUpperCase();\nString clean = "  abc  ".trim();\nString stripped = "  abc  ".strip(); // Java 11+',
+        },
+        {
+          command: 'Splitting & Joining',
+          description: 'Divide or combine strings',
+          usage: 's.split(regex), String.join(delimiter, elements)',
+          example: 'String[] parts = "a,b,c".split(",");\nString joined = String.join(" - ", "a", "b", "c");',
+        },
+        {
+          command: 'Formatting',
+          description: 'Format strings with placeholders',
+          usage: 'String.format(format, args) / s.formatted(args)',
+          example: 'String msg = String.format("Hello %s, Score: %d", "Alice", 100);\nString msg2 = "Pi is %.2f".formatted(Math.PI); // Java 15+',
+        },
+        {
+          command: 'StringBuilder',
+          description: 'Mutable sequence of characters for efficient concatenation',
+          usage: 'new StringBuilder().append(...)',
+          example: 'StringBuilder sb = new StringBuilder();\nsb.append("Hello").append(" ").append("World");\nString result = sb.toString();',
+        },
+      ],
+    },
+    {
+      title: 'Collections Framework',
+      commands: [
+        {
+          command: 'ArrayList',
+          description: 'Resizes dynamically, fast random access',
+          usage: 'List<T> list = new ArrayList<>();',
+          example: 'List<String> list = new ArrayList<>();\nlist.add("Apple");\nlist.get(0);\nlist.remove("Apple");',
+        },
+        {
+          command: 'LinkedList',
+          description: 'Doubly-linked list, fast add/remove',
+          usage: 'List<T> list = new LinkedList<>();',
+          example: 'LinkedList<String> list = new LinkedList<>();\nlist.addFirst("Start");\nlist.addLast("End");',
+        },
+        {
+          command: 'HashSet',
+          description: 'Unordered collection of unique elements',
+          usage: 'Set<T> set = new HashSet<>();',
+          example: 'Set<Integer> set = new HashSet<>();\nset.add(1);\nset.add(1); // Ignored\nboolean exists = set.contains(1);',
+        },
+        {
+          command: 'TreeSet',
+          description: 'Sorted set of unique elements',
+          usage: 'Set<T> set = new TreeSet<>();',
+          example: 'Set<Integer> sorted = new TreeSet<>();\nsorted.add(5); sorted.add(1);\n// Iterates: 1, 5',
+        },
+        {
+          command: 'HashMap',
+          description: 'Key-value pairs, unsorted',
+          usage: 'Map<K,V> map = new HashMap<>();',
+          example: 'Map<String, Integer> map = new HashMap<>();\nmap.put("One", 1);\nint val = map.get("One");\nmap.containsKey("One");',
+        },
+        {
+          command: 'TreeMap',
+          description: 'Key-value pairs, sorted by key',
+          usage: 'Map<K,V> map = new TreeMap<>();',
+          example: 'Map<Integer, String> map = new TreeMap<>();\nmap.put(2, "B"); map.put(1, "A");\n// Keys iterate: 1, 2',
+        },
+        {
+          command: 'List.of / Set.of / Map.of',
+          description: 'Immutable collection factories (Java 9+)',
+          usage: 'List.of(e1, e2)',
+          example: 'List<String> list = List.of("A", "B");\nSet<Integer> set = Set.of(1, 2);\nMap<String, Integer> map = Map.of("K1", 1, "K2", 2);',
+        },
+      ],
+    },
+    {
+      title: 'Exception Handling',
+      commands: [
+        {
+          command: 'Try-Catch-Finally',
+          description: 'Handle exceptions gracefully',
+          usage: 'try { ... } catch (Exception e) { ... } finally { ... }',
+          example: 'try {\n  int r = 10 / 0;\n} catch (ArithmeticException e) {\n  e.printStackTrace();\n} finally {\n  System.out.println("Done");\n}',
+        },
+        {
+          command: 'Throw / Throws',
+          description: 'Explicitly throwing exceptions',
+          usage: 'throw new Exception(); / void m() throws Exception',
+          example: 'public void readFile() throws IOException {\n  if (error) throw new IOException("Failed");\n}',
+        },
+        {
+          command: 'Try-with-Resources',
+          description: 'Auto-close resources (Java 7+)',
+          usage: 'try (Resource r = ...) { ... }',
+          example: 'try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {\n  return br.readLine();\n} // br closed automatically',
+        },
+      ],
+    },
+    {
+      title: 'Functional Programming',
+      commands: [
+        {
+          command: 'Lambda Expressions',
+          description: 'Concise way to represent functional interfaces',
+          usage: '(params) -> expression',
+          example: 'Runnable r = () -> System.out.println("Run");\nConsumer<String> c = s -> System.out.println(s);',
+        },
+        {
+          command: 'Method References',
+          description: 'Shorthand for lambdas calling a method',
+          usage: 'Class::method',
+          example: 'list.forEach(System.out::println);\nlist.stream().map(String::toUpperCase);',
+        },
+        {
+          command: 'Functional Interfaces',
+          description: 'Built-in interfaces in java.util.function',
+          usage: 'Predicate<T>, Function<T,R>, Supplier<T>, Consumer<T>',
+          example: 'Predicate<String> isEmpty = String::isEmpty;\nFunction<String, Integer> toInt = Integer::parseInt;',
+        },
+      ],
+    },
+    {
+      title: 'Optional API',
+      commands: [
+        {
+          command: 'Creating Optional',
+          description: 'Wrap potential null values',
+          usage: 'Optional.of(val) / Optional.ofNullable(val)',
+          example: 'Optional<String> opt = Optional.of("Hello");\nOptional<String> empty = Optional.empty();',
+        },
+        {
+          command: 'Handling Values',
+          description: 'Safely accessing values',
+          usage: 'opt.ifPresent(action), opt.orElse(default)',
+          example: 'opt.ifPresent(System.out::println);\nString val = opt.orElse("Default");\nString val2 = opt.orElseThrow(() -> new Error("Missing"));',
+        },
+      ],
+    },
+    {
+      title: 'Date & Time API (Java 8+)',
+      commands: [
+        {
+          command: 'LocalDate',
+          description: 'Date without time',
+          usage: 'LocalDate.now(), LocalDate.of(y, m, d)',
+          example: 'LocalDate today = LocalDate.now();\nLocalDate birthday = LocalDate.of(1990, 1, 1);',
+        },
+        {
+          command: 'LocalTime',
+          description: 'Time without date',
+          usage: 'LocalTime.now()',
+          example: 'LocalTime now = LocalTime.now();',
+        },
+        {
+          command: 'LocalDateTime',
+          description: 'Date and Time combined',
+          usage: 'LocalDateTime.now()',
+          example: 'LocalDateTime dt = LocalDateTime.now();',
+        },
+        {
+          command: 'Formatting Dates',
+          description: 'Parsing and formatting',
+          usage: 'DateTimeFormatter.ofPattern(pattern)',
+          example: 'DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");\nString date = today.format(fmt);',
+        },
+      ],
+    },
+    {
+      title: 'File I/O (NIO.2)',
+      commands: [
+        {
+          command: 'Path',
+          description: 'Representation of a file path',
+          usage: 'Path.of(string) / Paths.get(string)',
+          example: 'Path path = Path.of("data", "file.txt");',
+        },
+        {
+          command: 'Reading Files',
+          description: 'Read content from files',
+          usage: 'Files.readString(path), Files.readAllLines(path)',
+          example: 'String content = Files.readString(path);\nList<String> lines = Files.readAllLines(path);',
+        },
+        {
+          command: 'Writing Files',
+          description: 'Write content to files',
+          usage: 'Files.writeString(path, content)',
+          example: 'Files.writeString(path, "Hello World", StandardOpenOption.CREATE);',
+        },
+      ],
+    },
+    {
+      title: 'Concurrency',
+      commands: [
+        {
+          command: 'Threads',
+          description: 'Basic unit of execution',
+          usage: 'new Thread(runnable).start()',
+          example: 'Thread t = new Thread(() -> System.out.println("Running"));\nt.start();',
+        },
+        {
+          command: 'ExecutorService',
+          description: 'Manage pool of threads',
+          usage: 'Executors.newFixedThreadPool(n)',
+          example: 'ExecutorService executor = Executors.newFixedThreadPool(2);\nexecutor.submit(() -> System.out.println("Task"));\nexecutor.shutdown();',
+        },
+        {
+          command: 'CompletableFuture',
+          description: 'Asynchronous programming (Java 8+)',
+          usage: 'CompletableFuture.supplyAsync(supplier)',
+          example: 'CompletableFuture.supplyAsync(() -> "Result")\n  .thenApply(String::toUpperCase)\n  .thenAccept(System.out::println);',
+        },
+        {
+          command: 'Virtual Threads (Java 21+)',
+          description: 'Lightweight threads for high-throughput',
+          usage: 'Thread.startVirtualThread(runnable)',
+          example: 'Thread.startVirtualThread(() -> {\n  System.out.println("Lightweight!");\n});',
+        },
+      ],
+    },
+    {
       title: 'Maven Commands',
       commands: [
         {

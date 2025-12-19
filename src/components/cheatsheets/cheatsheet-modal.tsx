@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { LucideIcon, X, Copy, Check } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { LucideIcon, X, Copy, Check, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CheatsheetCommand {
@@ -67,6 +68,8 @@ export function CheatsheetModal({
   sections,
 }: CheatsheetModalProps) {
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSections, setSelectedSections] = useState<string[]>([]);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -78,6 +81,54 @@ export function CheatsheetModal({
     }
   };
 
+  // Filter logic
+  const filteredSections = useMemo(() => {
+    let filtered = sections;
+
+    // Filter by selected sections (multi-select)
+    if (selectedSections.length > 0) {
+      filtered = filtered.filter(section => selectedSections.includes(section.title));
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.map(section => ({
+        ...section,
+        commands: section.commands.filter(cmd =>
+          cmd.command.toLowerCase().includes(query) ||
+          cmd.description.toLowerCase().includes(query) ||
+          (cmd.usage && cmd.usage.toLowerCase().includes(query)) ||
+          (cmd.example && cmd.example.toLowerCase().includes(query))
+        )
+      })).filter(section => section.commands.length > 0);
+    }
+
+    return filtered;
+  }, [sections, searchQuery, selectedSections]);
+
+  // Handle section filter click (multi-select)
+  const handleSectionClick = (sectionTitle: string) => {
+    setSelectedSections(prev => {
+      if (prev.includes(sectionTitle)) {
+        // Remove if already selected
+        return prev.filter(title => title !== sectionTitle);
+      } else {
+        // Add if not selected
+        return [...prev, sectionTitle];
+      }
+    });
+  };
+
+  // Clear filters
+  const clearFilters = () => {
+    setSelectedSections([]);
+    setSearchQuery('');
+  };
+
+  // Calculate totals
+  const totalCommands = filteredSections.reduce((acc, s) => acc + s.commands.length, 0);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
@@ -86,36 +137,97 @@ export function CheatsheetModal({
       >
         {/* Header */}
         <DialogHeader className="px-6 py-4 border-b flex-shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
-                <Icon className="h-5 w-5 text-white" />
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
+                  <Icon className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span className="text-emerald-600 dark:text-emerald-400">#</span>
+                    {title}
+                  </DialogTitle>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                    {totalCommands} commands • {filteredSections.length} sections
+                  </p>
+                </div>
               </div>
-              <div>
-                <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <span className="text-emerald-600 dark:text-emerald-400">#</span>
-                  {title}
-                </DialogTitle>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                  {sections.reduce((acc, s) => acc + s.commands.length, 0)} commands • {sections.length} sections
-                </p>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-9 w-9 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Search Input and Topics */}
+            <div className="flex flex-col gap-3">
+              <div className="relative max-w-md w-full">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input
+                  placeholder="Filter commands..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    // Keep selected sections when searching - they work together
+                  }}
+                  className="pl-9 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
+                />
+              </div>
+
+              {/* Topics/Sections Filter */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">
+                  Topics:
+                </span>
+                {(selectedSections.length > 0 || searchQuery) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="h-7 px-2 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                  >
+                    Clear filters {selectedSections.length > 0 && `(${selectedSections.length})`}
+                  </Button>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {sections.map((section, index) => {
+                    const badgeColor = sectionColors[index % sectionColors.length];
+                    const isSelected = selectedSections.includes(section.title);
+
+                    return (
+                      <button
+                        key={section.title}
+                        onClick={() => handleSectionClick(section.title)}
+                        className={cn(
+                          'px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200',
+                          'border border-slate-200 dark:border-slate-700',
+                          isSelected
+                            ? `${badgeColor} text-white border-transparent shadow-md scale-105`
+                            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                        )}
+                        title={`${section.commands.length} commands - Click to ${isSelected ? 'deselect' : 'select'}`}
+                      >
+                        {section.title}
+                        <span className="ml-1.5 text-[10px] opacity-75">
+                          ({section.commands.length})
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="h-9 w-9 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </DialogHeader>
 
         {/* Content - Card Grid Layout */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-            {sections.map((section, sectionIndex) => {
+            {filteredSections.map((section, sectionIndex) => {
               const badgeColor = sectionColors[sectionIndex % sectionColors.length];
 
               return (
@@ -186,6 +298,19 @@ export function CheatsheetModal({
               );
             })}
           </div>
+
+          {/* Empty State */}
+          {filteredSections.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
+                <Search className="w-8 h-8 text-slate-400" />
+              </div>
+              <p className="text-lg font-semibold text-slate-900 dark:text-white">No commands found</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Try adjusting your search for "{searchQuery}"
+              </p>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

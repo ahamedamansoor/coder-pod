@@ -16,8 +16,8 @@ interface LoadingContextType {
 }
 
 const defaultLoaderText: LoaderText = {
-  title: 'Loading Your Learning Module...',
-  subtitle: 'Just a moment!',
+  title: 'Loading Coder Pod...',
+  subtitle: 'Warming up workspaces and creative engines',
 };
 
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
