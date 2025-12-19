@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X, Users } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/tooltip';
 
 interface InnovativeHeaderProps {
-  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'ai-interview';
+  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'ai-interview' | 'collaborative-interview';
   showNavigation?: boolean;
   user?: {
     displayName?: string | null;
@@ -65,10 +65,10 @@ function getUserInitials(displayName?: string | null, email?: string | null, isA
   return 'U';
 }
 
-export function InnovativeHeader({ 
-  currentPage, 
-  showNavigation = true, 
-  user, 
+export function InnovativeHeader({
+  currentPage,
+  showNavigation = true,
+  user,
   onLogout,
   showSidebarTrigger = false,
   showLanguageSwitcher = false,
@@ -83,16 +83,17 @@ export function InnovativeHeader({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const allNavItems = [
-    { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false },
-    { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false },
-    { href: '/cheatsheets', label: 'Cheatsheets', icon: FileText, page: 'cheatsheets', requiresAuth: false },
-    { href: '/ai-interview', label: 'AI Interview', icon: Brain, page: 'ai-interview', requiresAuth: false },
-    { href: '/notes', label: 'Notes', icon: StickyNote, page: 'notes', requiresAuth: true },
-    { href: '/discover', label: 'Discover', icon: Sparkles, page: 'discover', requiresAuth: false },
+    { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false, description: 'Go to homepage' },
+    { href: '/roadmaps', label: 'Learning Paths', icon: Map, page: 'roadmaps', requiresAuth: false, description: 'Structured learning roadmaps' },
+    { href: '/cheatsheets', label: 'Quick Reference', icon: FileText, page: 'cheatsheets', requiresAuth: false, description: 'Cheatsheets & quick tips' },
+    { href: '/ai-interview', label: 'AI Practice', icon: Brain, page: 'ai-interview', requiresAuth: false, description: 'Practice with AI interviewer' },
+    { href: '/collaborative-interview', label: 'Live Interview', icon: Users, page: 'collaborative-interview', requiresAuth: true, description: 'Real-time coding with partner' },
+    { href: '/notes', label: 'My Notes', icon: StickyNote, page: 'notes', requiresAuth: true, description: 'Your saved notes' },
+    { href: '/discover', label: 'Explore', icon: Sparkles, page: 'discover', requiresAuth: false, description: 'Discover new content' },
   ];
 
   // Filter out Discover button when on Learning page
-  const navItems = currentPage === 'learning' 
+  const navItems = currentPage === 'learning'
     ? allNavItems.filter(item => item.page !== 'discover')
     : allNavItems;
 
@@ -160,7 +161,7 @@ export function InnovativeHeader({
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentPage === item.page;
-                
+
                 return (
                   <Link key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item)}>
                     <button
@@ -182,8 +183,8 @@ export function InnovativeHeader({
                       )} />
                       <span className={cn(
                         "relative z-10 font-medium whitespace-nowrap transition-all duration-300 ease-in-out overflow-hidden",
-                        isActive 
-                          ? "opacity-100 max-w-[200px] ml-0" 
+                        isActive
+                          ? "opacity-100 max-w-[200px] ml-0"
                           : "opacity-0 max-w-0 -ml-2 group-hover/btn:opacity-100 group-hover/btn:max-w-[200px] group-hover/btn:ml-0"
                       )}>
                         {item.label}
@@ -207,14 +208,14 @@ export function InnovativeHeader({
             >
               {/* Gradient Glow */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full opacity-0 group-hover/play:opacity-30 blur transition-all duration-300" />
-              
+
               {/* Icon and Text */}
               <Code className="w-4 h-4 relative z-10" />
               <span className="relative z-10 font-semibold">React Playground</span>
               <Zap className="w-4 h-4 text-yellow-300 relative z-10 animate-pulse" />
             </Button>
           )}
-          
+
           {/* Mobile React Playground Button */}
           {currentLanguage === 'react' && onPlaygroundOpen && (
             <Button
@@ -236,14 +237,14 @@ export function InnovativeHeader({
             >
               {/* Gradient Glow */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-full opacity-0 group-hover/web:opacity-30 blur transition-all duration-300" />
-              
+
               {/* Icon and Text */}
               <Code className="w-4 h-4 relative z-10" />
               <span className="relative z-10 font-semibold">Web Playground</span>
               <Zap className="w-4 h-4 text-yellow-300 relative z-10 animate-pulse" />
             </Button>
           )}
-          
+
           {/* Mobile Web Playground Button */}
           {['html', 'css', 'scss', 'javascript', 'typescript', 'tailwind'].includes(currentLanguage || '') && onWebPlaygroundOpen && (
             <Button
@@ -255,7 +256,7 @@ export function InnovativeHeader({
               <Play className="w-4 h-4 relative z-10" />
             </Button>
           )}
-          
+
           {/* Mobile Navigation Hamburger Menu */}
           {showNavigation && (
             <div className="lg:hidden">
@@ -301,7 +302,7 @@ export function InnovativeHeader({
                     <span className="md:hidden">G</span>
                     <LogIn className="hidden md:block h-4 w-4" />
                   </div>
-                  
+
                   {/* Text (Hidden on Mobile) */}
                   <span className="hidden md:block text-sm font-medium text-slate-700 dark:text-slate-300">
                     Guest
@@ -316,66 +317,66 @@ export function InnovativeHeader({
                     <div className="relative w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
                       <span>{getUserInitials(user.displayName, user.email, user.isAnonymous)}</span>
                     </div>
-                    
+
                     {/* User Name (Hidden on Mobile) */}
                     <span className="hidden md:block text-sm font-medium text-slate-700 dark:text-slate-300 max-w-[100px] truncate">
                       {(typeof user.displayName === 'string' ? user.displayName.split(' ')[0] : null) || (typeof user.email === 'string' ? user.email.split('@')[0] : null) || 'User'}
                     </span>
                   </button>
                 </DropdownMenuTrigger>
-              
-              <DropdownMenuContent className="w-72 mt-2 p-0 overflow-hidden" align="end" forceMount>
-                {/* Profile Header with Gradient */}
-                <div className="relative p-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
-                  {/* Decorative Background Pattern */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12" />
-                  </div>
-                  
-                  <div className="relative flex items-center gap-3">
-                    {/* Large Avatar */}
-                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
-                      {getUserInitials(user.displayName, user.email, user.isAnonymous)}
+
+                <DropdownMenuContent className="w-72 mt-2 p-0 overflow-hidden" align="end" forceMount>
+                  {/* Profile Header with Gradient */}
+                  <div className="relative p-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
+                    {/* Decorative Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16" />
+                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12" />
                     </div>
-                    
-                    {/* User Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-base truncate">
-                        {user.isAnonymous ? 'Guest User' : ((typeof user.displayName === 'string' ? user.displayName : null) || (typeof user.email === 'string' ? user.email.split('@')[0] : null) || 'User')}
-                      </p>
-                      <p className="text-sm text-white/80 truncate">{user.isAnonymous ? 'Browsing as guest' : (typeof user.email === 'string' ? user.email : 'No email')}</p>
+
+                    <div className="relative flex items-center gap-3">
+                      {/* Large Avatar */}
+                      <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
+                        {getUserInitials(user.displayName, user.email, user.isAnonymous)}
+                      </div>
+
+                      {/* User Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-base truncate">
+                          {user.isAnonymous ? 'Guest User' : ((typeof user.displayName === 'string' ? user.displayName : null) || (typeof user.email === 'string' ? user.email.split('@')[0] : null) || 'User')}
+                        </p>
+                        <p className="text-sm text-white/80 truncate">{user.isAnonymous ? 'Browsing as guest' : (typeof user.email === 'string' ? user.email : 'No email')}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* Menu Items */}
-                <div className="p-2">
-                  
-                  {/* Settings - Admin Only */}
-                  {user.isAdmin && (
-                    <>
-                      <DropdownMenuItem className="cursor-pointer rounded-lg p-3 transition-colors">
-                        <Settings className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
-                        <span className="font-medium">Settings</span>
+
+                  {/* Menu Items */}
+                  <div className="p-2">
+
+                    {/* Settings - Admin Only */}
+                    {user.isAdmin && (
+                      <>
+                        <DropdownMenuItem className="cursor-pointer rounded-lg p-3 transition-colors">
+                          <Settings className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
+                          <span className="font-medium">Settings</span>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuSeparator className="my-2" />
+                      </>
+                    )}
+
+                    {onLogout && (
+                      <DropdownMenuItem
+                        onClick={onLogout}
+                        className="cursor-pointer rounded-lg p-3 text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20 transition-colors"
+                      >
+                        <LogOut className="mr-3 h-4 w-4" />
+                        <span className="font-medium">Log out</span>
                       </DropdownMenuItem>
-                      
-                      <DropdownMenuSeparator className="my-2" />
-                    </>
-                  )}
-                  
-                  {onLogout && (
-                    <DropdownMenuItem 
-                      onClick={onLogout} 
-                      className="cursor-pointer rounded-lg p-3 text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20 transition-colors"
-                    >
-                      <LogOut className="mr-3 h-4 w-4" />
-                      <span className="font-medium">Log out</span>
-                    </DropdownMenuItem>
-                  )}
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                    )}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )
           )}
         </div>
@@ -388,11 +389,11 @@ export function InnovativeHeader({
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPage === item.page;
-              
+
               return (
-                <Link 
-                  key={item.href} 
-                  href={item.href} 
+                <Link
+                  key={item.href}
+                  href={item.href}
                   onClick={(e) => {
                     handleNavClick(e, item);
                     setMobileMenuOpen(false);
@@ -420,7 +421,7 @@ export function InnovativeHeader({
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent dark:via-blue-400/30" />
 
       {/* Feature Gate Modal */}
-      <FeatureGateModal 
+      <FeatureGateModal
         isOpen={showFeatureGate}
         onClose={() => setShowFeatureGate(false)}
         featureName={gatedFeatureName}
