@@ -23,7 +23,8 @@ interface CheatsheetSnippetProps {
     | 'teal'
     | 'slate'
     | 'orange'
-    | 'green';
+    | 'green'
+    | 'pink';
 }
 
 export function CheatsheetSnippet({

@@ -41,7 +41,8 @@ interface CheatsheetModalProps {
   | 'teal'
   | 'slate'
   | 'orange'
-  | 'green';
+  | 'green'
+  | 'pink';
   sections: CheatsheetSection[];
 }
 
