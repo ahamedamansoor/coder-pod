@@ -172,10 +172,10 @@ export const LearningPathChartModal = ({
           <div className="relative max-w-5xl mx-auto px-8">
 
             {/* Central Spine */}
-            <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-blue-500 z-0" />
+            <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-blue-500 z-0 hidden md:block" />
 
-            {/* Categories */}
-            <div className="relative z-10 space-y-24">
+            {/* Desktop View (Tree Layout) */}
+            <div className="hidden md:block relative z-10 space-y-24">
               {categories.map(([category, topics], categoryIndex) => {
                 const categoryCompleted = effectiveShowProgress && topics.every(t => completedTopics.has(t.slug));
                 const leftTopics = topics.filter((_, i) => i % 2 === 0);
@@ -201,7 +201,6 @@ export const LearningPathChartModal = ({
 
                     {/* Topics Grid */}
                     <div className="grid grid-cols-[1fr_auto_1fr] gap-0 items-start">
-
                       {/* Left Column */}
                       <div className="flex flex-col gap-4 items-end">
                         {leftTopics.map((topic, i) => {
@@ -212,14 +211,13 @@ export const LearningPathChartModal = ({
                               className="flex items-center animate-slide-left"
                               style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
                             >
-                              {/* Topic Box - Glassmorphism Card */}
+                              {/* Topic Box */}
                               <div className={cn(
                                 "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
                                 isCompleted
                                   ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
                                   : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
                               )}>
-                                {/* Card Content */}
                                 <div className="p-4">
                                   <div className={cn(
                                     "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
@@ -234,15 +232,13 @@ export const LearningPathChartModal = ({
                                     {topic.explanation}
                                   </div>
                                 </div>
-
-                                {/* Status Dot */}
                                 <div className={cn(
                                   "absolute top-3 right-3 w-2 h-2 rounded-full",
                                   isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
                                 )} />
                               </div>
 
-                              {/* Curved line to center */}
+                              {/* Connector */}
                               <svg width="100" height="40" className="flex-shrink-0" style={{ marginLeft: '-4px', marginRight: '-4px' }}>
                                 <path
                                   d={`M 0 20 Q 50 20 100 ${i % 2 === 0 ? 5 : 35}`}
@@ -253,7 +249,6 @@ export const LearningPathChartModal = ({
                                   className="animate-draw-line"
                                   style={{ animationDelay: `${0.4 + i * 0.1}s` }}
                                 />
-                                {/* Blue dot at the end connecting to spine */}
                                 <circle
                                   cx="100"
                                   cy={i % 2 === 0 ? 5 : 35}
@@ -268,9 +263,8 @@ export const LearningPathChartModal = ({
                         })}
                       </div>
 
-                      {/* Center Column - Spine dots */}
+                      {/* Spine Dots */}
                       <div className="flex flex-col items-center gap-4 py-2 relative">
-                        {/* Dots aligned with topics */}
                         {[...Array(Math.max(leftTopics.length, rightTopics.length))].map((_, i) => (
                           <div
                             key={i}
@@ -290,9 +284,8 @@ export const LearningPathChartModal = ({
                               className="flex items-center animate-slide-right"
                               style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
                             >
-                              {/* Curved line from center */}
+                              {/* Connector */}
                               <svg width="100" height="40" className="flex-shrink-0" style={{ marginLeft: '-4px', marginRight: '-4px' }}>
-                                {/* Blue dot at start connected to spine */}
                                 <circle
                                   cx="0"
                                   cy={i % 2 === 0 ? 5 : 35}
@@ -312,14 +305,13 @@ export const LearningPathChartModal = ({
                                 />
                               </svg>
 
-                              {/* Topic Box - Glassmorphism Card */}
+                              {/* Topic Box */}
                               <div className={cn(
                                 "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
                                 isCompleted
                                   ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
                                   : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
                               )}>
-                                {/* Card Content */}
                                 <div className="p-4">
                                   <div className={cn(
                                     "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
@@ -334,8 +326,6 @@ export const LearningPathChartModal = ({
                                     {topic.explanation}
                                   </div>
                                 </div>
-
-                                {/* Status Dot */}
                                 <div className={cn(
                                   "absolute top-3 right-3 w-2 h-2 rounded-full",
                                   isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
@@ -351,8 +341,73 @@ export const LearningPathChartModal = ({
               })}
             </div>
 
-            {/* End marker */}
-            <div className="flex justify-center mt-16">
+            {/* Mobile View (Timeline Layout) */}
+            <div className="md:hidden relative z-10 space-y-16">
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-blue-500/50 z-0 -translate-x-1/2" />
+
+              {categories.map(([category, topics], categoryIndex) => {
+                const categoryCompleted = effectiveShowProgress && topics.every(t => completedTopics.has(t.slug));
+
+                return (
+                  <div key={category} className="relative z-10">
+                    {/* Category Header */}
+                    <div className="flex items-center gap-4 mb-6 pl-4">
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold z-10 shrink-0 shadow-md ring-4 ring-white dark:ring-slate-900">
+                        {categoryIndex + 1}
+                      </div>
+                      <h3 className={cn(
+                        "text-lg font-bold px-4 py-2 rounded-lg border bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm",
+                        categoryCompleted ? "border-green-400 text-green-700 dark:text-green-300" : "border-blue-200 dark:border-blue-800"
+                      )}>
+                        {category}
+                      </h3>
+                    </div>
+
+                    {/* Topics List */}
+                    <div className="space-y-6 pl-16">
+                      {topics.map((topic, i) => {
+                        const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
+                        return (
+                          <div key={topic.slug} className="relative">
+                            {/* Connector Line */}
+                            <div className="absolute top-1/2 -left-8 w-8 h-0.5 bg-blue-300/50" />
+                            <div className="absolute top-1/2 -left-8 w-2 h-2 rounded-full bg-blue-500 -translate-y-1/2 -translate-x-1/2 shadow-sm ring-2 ring-white dark:ring-slate-900" />
+
+                            <div className={cn(
+                              "group relative w-full p-4 rounded-xl border text-sm font-medium transition-all backdrop-blur-md shadow-sm",
+                              isCompleted
+                                ? "bg-green-50/90 dark:bg-green-900/30 border-green-200"
+                                : "bg-white/90 dark:bg-slate-800/90 border-slate-200 dark:border-slate-700"
+                            )}>
+                              <div className={cn(
+                                "mb-2 text-sm font-bold border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
+                                isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
+                              )}>
+                                {topic.title}
+                              </div>
+                              <div className={cn(
+                                "text-xs leading-relaxed",
+                                isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                              )}>
+                                {topic.explanation}
+                              </div>
+
+                              <div className={cn(
+                                "absolute top-4 right-4 w-2 h-2 rounded-full",
+                                isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600"
+                              )} />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* End Marker */}
+            <div className="flex justify-center mt-12 mb-8 relative z-20">
               <div className="w-6 h-6 rounded-full bg-purple-500 border-4 border-purple-300 animate-pulse-slow" />
             </div>
 
