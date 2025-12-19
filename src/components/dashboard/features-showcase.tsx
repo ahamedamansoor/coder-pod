@@ -34,7 +34,7 @@ const features: FeatureCard[] = [
         title: 'Learning Paths',
         description: 'Master programming with interactive, AI-powered courses tailored to your learning style. Track progress and earn achievements.',
         icon: Code2,
-        href: '/dashboard',
+        href: '/learning-paths',
         gradient: 'from-blue-500/20 via-cyan-500/10 to-blue-600/20',
         iconBg: 'from-blue-500 to-cyan-500',
         size: 'large',

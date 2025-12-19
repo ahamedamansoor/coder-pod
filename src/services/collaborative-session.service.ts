@@ -21,53 +21,45 @@ class CollaborativeSessionService {
         language: string = 'JavaScript',
         questionType: 'theory' | 'coding' | 'mcq' = 'coding'
     ): Promise<{ roomCode: string; session: InterviewSession }> {
-        // Generate a unique room code
-        let roomCode = generateRoomCode();
         let attempts = 0;
         const maxAttempts = 5;
 
-        // Ensure room code is unique
         while (attempts < maxAttempts) {
-            const { data: existing, error: checkError } = await supabase
+            const roomCode = generateRoomCode();
+
+            console.log('[Collaborative] Creating session with:', { roomCode, hostId, language, questionType });
+
+            // Create the session in database
+            const { data, error } = await supabase
                 .from('interview_sessions')
-                .select('id')
-                .eq('room_code', roomCode)
+                .insert({
+                    room_code: roomCode,
+                    host_id: hostId,
+                    language,
+                    question_type: questionType,
+                    status: 'waiting',
+                    code: getDefaultCode(language),
+                })
+                .select()
                 .single();
 
-            // PGRST116 means no rows returned, which is what we want
-            if (checkError?.code === 'PGRST116' || !existing) break;
-            roomCode = generateRoomCode();
-            attempts++;
+            if (error) {
+                // Check for unique constraint violation (duplicate room code)
+                if (error.code === '23505') {
+                    console.warn(`[Collaborative] Room code collision: ${roomCode}. Retrying...`);
+                    attempts++;
+                    continue;
+                }
+
+                console.error('Error creating session:', error);
+                throw new Error(`Failed to create interview session: ${error.message || error.code || 'Unknown error'}`);
+            }
+
+            console.log('[Collaborative] Session created:', data);
+            return { roomCode, session: data as InterviewSession };
         }
 
-        if (attempts >= maxAttempts) {
-            throw new Error('Failed to generate unique room code. Please try again.');
-        }
-
-        console.log('[Collaborative] Creating session with:', { roomCode, hostId, language, questionType });
-
-        // Create the session in database
-        const { data, error } = await supabase
-            .from('interview_sessions')
-            .insert({
-                room_code: roomCode,
-                host_id: hostId,
-                language,
-                question_type: questionType,
-                status: 'waiting',
-                code: getDefaultCode(language),
-            })
-            .select()
-            .single();
-
-        if (error) {
-            console.error('Error creating session:', error);
-            // Throw the actual error message for debugging
-            throw new Error(`Failed to create interview session: ${error.message || error.code || 'Unknown error'}`);
-        }
-
-        console.log('[Collaborative] Session created:', data);
-        return { roomCode, session: data as InterviewSession };
+        throw new Error('Failed to generate unique room code. Please try again.');
     }
 
     /**

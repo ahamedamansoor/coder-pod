@@ -130,6 +130,8 @@ export function TopicSidebar({
     activeMenuLink: '!text-primary',
   };
 
+  const formatGroupTitle = (title: string) => title.replace(/^\d+\.?\s*/, '').trim();
+
   useEffect(() => {
     if (activeItemRef.current) {
         activeItemRef.current.scrollIntoView({
@@ -280,7 +282,7 @@ export function TopicSidebar({
   // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Vue, Next.js, DSA)
   const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa')
     ? groupOrder
-        .map(group => ({ title: group, topics: topicsByGroup[group] || [] }))
+        .map(group => ({ title: formatGroupTitle(group), topics: topicsByGroup[group] || [] }))
         .filter(group => {
           // Remove "Others" category from Next.js and Vue.js roadmaps
           if ((language.slug === 'nextjs' || language.slug === 'vue') && group.title === 'Others') {
@@ -314,7 +316,7 @@ export function TopicSidebar({
                 "text-sm font-bold transition-colors line-clamp-1 truncate",
                 isGroupComplete ? "text-primary" : "text-foreground"
               )}>
-                {title}
+                {formatGroupTitle(title)}
               </p>
             </div>
             
