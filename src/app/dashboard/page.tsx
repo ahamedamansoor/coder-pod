@@ -23,6 +23,7 @@ import { enabledLanguages as languages } from '@/data/languages';
 import { Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, LogOut, User as UserIcon, Settings, Linkedin, Heart, Mail, Github, Lock, Key, BookOpen, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { InnovativeHeader } from '@/components/shared';
+import { FeaturesShowcase } from '@/components/dashboard/features-showcase';
 
 function TypingEffect({ text, speed = 50 }: { text: string; speed?: number }) {
   const [displayedText, setDisplayedText] = useState('');
@@ -100,18 +101,18 @@ function DashboardContent() {
   const backendLanguages = ['java', 'spring', 'spring-boot'];
   const testingLanguages = ['playwright'];
   const algorithmLanguages = ['dsa'];
-  
+
   const filteredLanguages = languages.filter(lang => {
     // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      const matchesSearch = 
+      const matchesSearch =
         lang.name.toLowerCase().includes(query) ||
         lang.description?.toLowerCase().includes(query) ||
         lang.slug.toLowerCase().includes(query);
       if (!matchesSearch) return false;
     }
-    
+
     // Category filter
     if (filter === 'all') return true;
     if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
@@ -214,8 +215,8 @@ function DashboardContent() {
   return (
     <div className="flex flex-col min-h-screen min-w-full w-screen bg-background overflow-x-hidden standalone-page" data-route="dashboard">
       {/* Innovative Header with User */}
-      <InnovativeHeader 
-        currentPage="home" 
+      <InnovativeHeader
+        currentPage="home"
         user={user}
         onLogout={handleLogout}
       />
@@ -253,7 +254,7 @@ function DashboardContent() {
                 )}
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed">
-                Your personal AI-powered coding tutor. Master programming languages with interactive lessons, 
+                Your personal AI-powered coding tutor. Master programming languages with interactive lessons,
                 quick reference cheatsheets, real-time feedback, and hands-on practice.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -282,6 +283,9 @@ function DashboardContent() {
           </div>
         </div>
       </div>
+
+      {/* Features Showcase Section */}
+      <FeaturesShowcase />
 
       {/* Learning Paths Section */}
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 mb-16 lg:mb-20">
@@ -322,8 +326,8 @@ function DashboardContent() {
                 onClick={() => setFilter('all')}
                 className={cn(
                   'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
-                  filter === 'all' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                  filter === 'all'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                     : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
                 )}
               >
@@ -333,8 +337,8 @@ function DashboardContent() {
                 onClick={() => setFilter('frontend')}
                 className={cn(
                   'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
-                  filter === 'frontend' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                  filter === 'frontend'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                     : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
                 )}
               >
@@ -344,8 +348,8 @@ function DashboardContent() {
                 onClick={() => setFilter('backend')}
                 className={cn(
                   'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
-                  filter === 'backend' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                  filter === 'backend'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                     : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
                 )}
               >
@@ -355,8 +359,8 @@ function DashboardContent() {
                 onClick={() => setFilter('testing')}
                 className={cn(
                   'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
-                  filter === 'testing' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                  filter === 'testing'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                     : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
                 )}
               >
@@ -366,8 +370,8 @@ function DashboardContent() {
                 onClick={() => setFilter('algorithms')}
                 className={cn(
                   'px-5 py-2 rounded-full font-medium text-sm transition-all duration-200',
-                  filter === 'algorithms' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                  filter === 'algorithms'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                     : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/30 dark:hover:bg-slate-800/60'
                 )}
               >
@@ -404,17 +408,17 @@ function DashboardContent() {
                   <Sparkles className="w-16 h-16 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
-              
+
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
                 Coming Soon! 🚀
               </h3>
-              
+
               <p className="text-center text-slate-600 dark:text-slate-400 max-w-md mb-2">
                 We're working hard to bring you this content. It will be available soon!
               </p>
-              
+
               <p className="text-sm text-slate-500 dark:text-slate-500 text-center max-w-sm">
-                {searchQuery 
+                {searchQuery
                   ? `No results found for "${searchQuery}". Try searching for something else or check back later.`
                   : 'This category is currently under development. Stay tuned for updates!'}
               </p>
@@ -433,159 +437,159 @@ function DashboardContent() {
 
           {/* Scrollable Container with Navigation */}
           {filteredLanguages.length > 0 && (
-          <div className="relative group/carousel">
-            {/* Left Arrow */}
-            {canScrollLeft && (
-              <button
-                onClick={() => scroll('left')}
-                className="absolute -left-12 sm:-left-16 lg:-left-20 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/50 text-white shadow-xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 hover:scale-110"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-            )}
-
-            {/* Right Arrow */}
-            {canScrollRight && (
-              <button
-                onClick={() => scroll('right')}
-                className="absolute -right-12 sm:-right-16 lg:-right-20 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/50 text-white shadow-xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 hover:scale-110"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            )}
-
-            {/* Horizontal Scroll Container */}
-            <div
-              ref={scrollContainerRef}
-              className="overflow-x-auto overflow-y-hidden scroll-smooth pb-4 scrollbar-hide"
-            >
-              <div className="inline-grid grid-rows-2 grid-flow-col gap-5 auto-cols-[minmax(280px,1fr)] sm:auto-cols-[minmax(300px,1fr)]">
-            {filteredLanguages.map((lang, index) => {
-              const topicCount = lang.topics?.length ?? 0;
-              const summary = lang.description ?? lang.topics?.[0]?.explanation ?? 'Interactive lessons curated for every learning style.';
-              const focusLabel = lang.topics?.find((topic) => topic.category)?.category ?? 'Core Track';
-              const accent = accentMap[lang.slug] ?? 'from-slate-400 via-slate-600 to-slate-800';
-              
-              // Calculate completion status from Supabase
-              const completedTopicsArray = userProfile?.completedTopics?.[lang.slug] ?? [];
-              
-              // Get valid topic slugs (exclude 'learning-plan')
-              const validTopicSlugs = new Set(
-                lang.topics?.filter(t => t.slug !== 'learning-plan').map(t => t.slug) ?? []
-              );
-              const actualTopicCount = validTopicSlugs.size;
-              
-              // Filter completed topics to only include valid ones (removes duplicates, invalid slugs, and learning-plan)
-              const validCompletedTopics = Array.isArray(completedTopicsArray) 
-                ? Array.from(new Set(completedTopicsArray)).filter(slug => validTopicSlugs.has(slug))
-                : [];
-              const completedCount = validCompletedTopics.length;
-              
-              const completionPercentage = actualTopicCount > 0 ? Math.min(100, Math.round((completedCount / actualTopicCount) * 100)) : 0;
-              const isStarted = completedCount > 0;
-              const isCompleted = completionPercentage === 100;
-
-              return (
-                <Link 
-                  key={lang.slug}
-                  href={`/languages/${lang.slug}/learning-plan`} 
-                  className={cn(
-                    'group relative h-full overflow-hidden rounded-2xl cursor-pointer block',
-                    // Glass morphism base - transparent with blur
-                    'bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl',
-                    // Borders with subtle gradient
-                    'border border-white/20 dark:border-white/10',
-                    'shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]',
-                    // Glass reflection layer
-                    'after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none',
-                    // Smooth transitions
-                    'transition-all duration-500 ease-out',
-                    showContent ? 'animate-in fade-in zoom-in-95' : 'opacity-0'
-                  )}
-                  style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'forwards' }}
+            <div className="relative group/carousel">
+              {/* Left Arrow */}
+              {canScrollLeft && (
+                <button
+                  onClick={() => scroll('left')}
+                  className="absolute -left-12 sm:-left-16 lg:-left-20 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/50 text-white shadow-xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 hover:scale-110"
+                  aria-label="Scroll left"
                 >
-                  {/* Holographic shimmer effect */}
-                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[shine-glow_1.5s_ease-in-out] pointer-events-none" />
-                  </div>
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
 
-                  <div className="relative p-5">
-                  {/* Progress Badge - Top Right */}
-                  <div className="absolute top-3 right-3">
-                    {completionPercentage === 100 ? (
-                      <div className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-green-500 bg-green-500/20 text-green-400 font-bold text-lg animate-bounce">
-                        <Trophy className="w-6 h-6" />
-                      </div>
-                    ) : (
-                      <div className={cn(
-                        "flex items-center justify-center w-12 h-12 rounded-full",
-                        "border-2 font-bold text-sm",
-                        completionPercentage === 0 && "border-slate-600 text-slate-400",
-                        completionPercentage > 0 && "border-blue-500 text-blue-400"
-                      )}>
-                        {completionPercentage}%
-                      </div>
-                    )}
-                  </div>
+              {/* Right Arrow */}
+              {canScrollRight && (
+                <button
+                  onClick={() => scroll('right')}
+                  className="absolute -right-12 sm:-right-16 lg:-right-20 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/50 text-white shadow-xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 hover:scale-110"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
 
-                  {/* Language Title */}
-                  <div className="mb-3">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{lang.name}</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{actualTopicCount} Topics</p>
-                  </div>
+              {/* Horizontal Scroll Container */}
+              <div
+                ref={scrollContainerRef}
+                className="overflow-x-auto overflow-y-hidden scroll-smooth pb-4 scrollbar-hide"
+              >
+                <div className="inline-grid grid-rows-2 grid-flow-col gap-5 auto-cols-[minmax(280px,1fr)] sm:auto-cols-[minmax(300px,1fr)]">
+                  {filteredLanguages.map((lang, index) => {
+                    const topicCount = lang.topics?.length ?? 0;
+                    const summary = lang.description ?? lang.topics?.[0]?.explanation ?? 'Interactive lessons curated for every learning style.';
+                    const focusLabel = lang.topics?.find((topic) => topic.category)?.category ?? 'Core Track';
+                    const accent = accentMap[lang.slug] ?? 'from-slate-400 via-slate-600 to-slate-800';
 
-                  {/* Status Badge */}
-                  <div className="mb-3">
-                    {isCompleted && (
-                      <Badge className="bg-green-500/10 text-green-400 border border-green-500/30 text-xs px-2 py-0.5 animate-pulse">
-                        🎉 Completed
-                      </Badge>
-                    )}
-                    {isStarted && !isCompleted && (
-                      <Badge className="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs px-2 py-0.5">
-                        Active
-                      </Badge>
-                    )}
-                    {!isStarted && (
-                      <Badge className="bg-slate-700/50 text-slate-300 border border-slate-600/50 text-xs px-2 py-0.5">
-                        New
-                      </Badge>
-                    )}
-                  </div>
+                    // Calculate completion status from Supabase
+                    const completedTopicsArray = userProfile?.completedTopics?.[lang.slug] ?? [];
 
-                  {/* Stats */}
-                  <div className="flex gap-3 mb-4">
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm border border-white/10">
-                        <Trophy className="w-3 h-3 text-amber-400" />
-                        <span className="text-slate-900 dark:text-white font-medium">{completedCount}/{actualTopicCount}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm border border-white/10">
-                        <Target className="w-3 h-3 text-blue-400" />
-                        <span className="text-slate-900 dark:text-white font-medium">{actualTopicCount - completedCount} left</span>
-                      </div>
-                    </div>
-                  </div>
+                    // Get valid topic slugs (exclude 'learning-plan')
+                    const validTopicSlugs = new Set(
+                      lang.topics?.filter(t => t.slug !== 'learning-plan').map(t => t.slug) ?? []
+                    );
+                    const actualTopicCount = validTopicSlugs.size;
 
-                  {/* Description */}
-                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-4">{summary}</p>
+                    // Filter completed topics to only include valid ones (removes duplicates, invalid slugs, and learning-plan)
+                    const validCompletedTopics = Array.isArray(completedTopicsArray)
+                      ? Array.from(new Set(completedTopicsArray)).filter(slug => validTopicSlugs.has(slug))
+                      : [];
+                    const completedCount = validCompletedTopics.length;
 
-                  {/* Start Button */}
-                  <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium text-sm transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25">
-                    Start Learning
-                  </button>
-                  </div>
-                </Link>
-              );
-            })}
+                    const completionPercentage = actualTopicCount > 0 ? Math.min(100, Math.round((completedCount / actualTopicCount) * 100)) : 0;
+                    const isStarted = completedCount > 0;
+                    const isCompleted = completionPercentage === 100;
+
+                    return (
+                      <Link
+                        key={lang.slug}
+                        href={`/languages/${lang.slug}/learning-plan`}
+                        className={cn(
+                          'group relative h-full overflow-hidden rounded-2xl cursor-pointer block',
+                          // Glass morphism base - transparent with blur
+                          'bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl',
+                          // Borders with subtle gradient
+                          'border border-white/20 dark:border-white/10',
+                          'shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]',
+                          // Glass reflection layer
+                          'after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-br after:from-white/8 after:via-transparent after:to-transparent after:pointer-events-none',
+                          // Smooth transitions
+                          'transition-all duration-500 ease-out',
+                          showContent ? 'animate-in fade-in zoom-in-95' : 'opacity-0'
+                        )}
+                        style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'forwards' }}
+                      >
+                        {/* Holographic shimmer effect */}
+                        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                          <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[shine-glow_1.5s_ease-in-out] pointer-events-none" />
+                        </div>
+
+                        <div className="relative p-5">
+                          {/* Progress Badge - Top Right */}
+                          <div className="absolute top-3 right-3">
+                            {completionPercentage === 100 ? (
+                              <div className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-green-500 bg-green-500/20 text-green-400 font-bold text-lg animate-bounce">
+                                <Trophy className="w-6 h-6" />
+                              </div>
+                            ) : (
+                              <div className={cn(
+                                "flex items-center justify-center w-12 h-12 rounded-full",
+                                "border-2 font-bold text-sm",
+                                completionPercentage === 0 && "border-slate-600 text-slate-400",
+                                completionPercentage > 0 && "border-blue-500 text-blue-400"
+                              )}>
+                                {completionPercentage}%
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Language Title */}
+                          <div className="mb-3">
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{lang.name}</h3>
+                            <p className="text-xs text-slate-600 dark:text-slate-400">{actualTopicCount} Topics</p>
+                          </div>
+
+                          {/* Status Badge */}
+                          <div className="mb-3">
+                            {isCompleted && (
+                              <Badge className="bg-green-500/10 text-green-400 border border-green-500/30 text-xs px-2 py-0.5 animate-pulse">
+                                🎉 Completed
+                              </Badge>
+                            )}
+                            {isStarted && !isCompleted && (
+                              <Badge className="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs px-2 py-0.5">
+                                Active
+                              </Badge>
+                            )}
+                            {!isStarted && (
+                              <Badge className="bg-slate-700/50 text-slate-300 border border-slate-600/50 text-xs px-2 py-0.5">
+                                New
+                              </Badge>
+                            )}
+                          </div>
+
+                          {/* Stats */}
+                          <div className="flex gap-3 mb-4">
+                            <div className="flex items-center gap-1.5 text-xs">
+                              <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm border border-white/10">
+                                <Trophy className="w-3 h-3 text-amber-400" />
+                                <span className="text-slate-900 dark:text-white font-medium">{completedCount}/{actualTopicCount}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs">
+                              <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm border border-white/10">
+                                <Target className="w-3 h-3 text-blue-400" />
+                                <span className="text-slate-900 dark:text-white font-medium">{actualTopicCount - completedCount} left</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Description */}
+                          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-4">{summary}</p>
+
+                          {/* Start Button */}
+                          <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium text-sm transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25">
+                            Start Learning
+                          </button>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
           )}
         </div>
       </div>
@@ -699,17 +703,17 @@ function DashboardContent() {
                     <span>Crafted with passion</span>
                   </p>
                   <div className="flex flex-wrap gap-3">
-                    <a 
-                      href="https://www.linkedin.com/in/ahamedamansoor/" 
-                      target="_blank" 
+                    <a
+                      href="https://www.linkedin.com/in/ahamedamansoor/"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
                     >
                       <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
                       <span>LinkedIn</span>
                     </a>
-                    <a 
-                      href="mailto:ahamedamansoor@gmail.com" 
+                    <a
+                      href="mailto:ahamedamansoor@gmail.com"
                       className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 text-slate-700 dark:text-slate-300 text-sm font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
                     >
                       <Mail className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
@@ -734,7 +738,7 @@ function DashboardContent() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Content Section */}
                     <div className="flex-1 text-center sm:text-left space-y-3">
                       <h3 className="text-xl font-bold text-slate-900 dark:text-white">
@@ -744,12 +748,12 @@ function DashboardContent() {
                         We're dedicated to keeping all content free for everyone. Your support helps us create more quality resources and maintain this platform for the community.
                       </p>
                     </div>
-                    
+
                     {/* CTA Section */}
                     <div className="flex-shrink-0">
-                      <a 
-                        href="https://buymeacoffee.com/coderpod" 
-                        target="_blank" 
+                      <a
+                        href="https://buymeacoffee.com/coderpod"
+                        target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => {
                           console.log('Support Us clicked - redirecting to:', e.currentTarget.href);
@@ -789,12 +793,12 @@ function DashboardContent() {
                   <span>© {new Date().getFullYear()} CODER POD. All rights reserved.</span>
                 </span>
               </div>
-              
+
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-muted-foreground">Developed & Maintained by</span>
-                <a 
-                  href="https://www.linkedin.com/in/ahamedamansoor/" 
-                  target="_blank" 
+                <a
+                  href="https://www.linkedin.com/in/ahamedamansoor/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="group relative font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
