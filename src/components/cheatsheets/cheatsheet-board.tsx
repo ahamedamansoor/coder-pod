@@ -128,71 +128,70 @@ export default function CheatsheetBoard() {
 
   return (
     <>
-      {/* Category Filter Pills */}
-      <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8 py-4 flex justify-center">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 w-fit">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = activeCategory === cat.id;
+      {/* Top Controls Section - Sticky */}
+      <div className="sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-4 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200">
+        <div className="flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto w-full">
+          {/* Search Bar */}
+          <div className="relative w-full max-w-lg flex-shrink-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
+            <Input
+              id="cheatsheets-search-input"
+              data-testid="cheatsheets-search-input"
+              placeholder="Search commands, situations, or cheat sheets..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={cn(
+                "pl-10 h-10 text-sm rounded-xl",
+                "bg-white/70 dark:bg-slate-900/60 backdrop-blur-md",
+                "border border-slate-200/50 dark:border-slate-700/60",
+                "shadow-sm hover:shadow-md transition-all duration-200",
+                "focus:border-blue-400 dark:focus:border-blue-600",
+                "focus:ring-2 focus:ring-blue-500/20"
+              )}
+            />
+          </div>
 
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={cn(
-                  'relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap',
-                  'transition-all duration-300 ease-out',
-                  isActive
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                )}
-              >
-                {isActive && (
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-pink-500/20" />
-                )}
-                <Icon className={cn(
-                  'w-4 h-4 relative z-10 transition-transform duration-300',
-                  isActive && 'scale-110'
-                )} />
-                <span className="relative z-10">{cat.label}</span>
-                <span className={cn(
-                  'relative z-10 px-2 py-0.5 rounded-full text-xs font-semibold transition-colors duration-300',
-                  isActive
-                    ? 'bg-slate-900/10 dark:bg-white/10 text-slate-700 dark:text-slate-300'
-                    : 'bg-slate-200/80 dark:bg-slate-700/80 text-slate-500 dark:text-slate-400'
-                )}>
-                  {cat.count}
-                </span>
-              </button>
-            );
-          })}
+          {/* Filters - Scrollable */}
+          <div className="w-full relative flex justify-center">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 max-w-full w-auto mx-auto lg:mx-0 snap-x">
+              {categories.map((cat) => {
+                const Icon = cat.icon;
+                const isActive = activeCategory === cat.id;
+
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={cn(
+                      'relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 snap-center',
+                      isActive
+                        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                    )}
+                  >
+                    <Icon className={cn(
+                      'w-4 h-4 transition-transform duration-300',
+                      isActive && 'scale-110'
+                    )} />
+                    <span>{cat.label}</span>
+                    <span className={cn(
+                      'ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-colors duration-300',
+                      isActive
+                        ? 'bg-slate-900/10 dark:bg-white/10 text-slate-700 dark:text-slate-300'
+                        : 'bg-slate-200/80 dark:bg-slate-700/80 text-slate-500 dark:text-slate-400'
+                    )}>
+                      {cat.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
-      <main className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 bg-transparent relative">
+      <main className="px-4 sm:px-6 lg:px-8 xl:px-12 py-6 relative">
         <div className="w-full relative z-10">
-
-          {/* Search Bar */}
-          <div className="mb-6 flex justify-center">
-            <div className="relative max-w-xl w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 dark:text-slate-500" />
-              <Input
-                id="cheatsheets-search-input"
-                data-testid="cheatsheets-search-input"
-                placeholder="Search commands, situations, or cheat sheets..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={cn(
-                  "pl-12 h-12 text-base rounded-xl",
-                  "bg-white dark:bg-slate-900",
-                  "border border-slate-200 dark:border-slate-700",
-                  "shadow-sm hover:shadow-md transition-shadow duration-200",
-                  "focus:border-blue-400 dark:focus:border-blue-500",
-                  "focus:ring-2 focus:ring-blue-500/20"
-                )}
-              />
-            </div>
-          </div>
 
           {/* Split View: Cheatsheets + Matching Commands */}
           <div className={cn(
@@ -200,7 +199,7 @@ export default function CheatsheetBoard() {
             isSearching && matchingCommands.length > 0 ? "lg:grid-cols-[1fr,400px]" : "grid-cols-1"
           )}>
             {/* Left Panel: Cheatsheet Cards */}
-            <div>
+            <div className="min-w-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                 {filteredCheatsheets.map((sheet) => {
                   const Icon = sheet.icon;
@@ -228,10 +227,10 @@ export default function CheatsheetBoard() {
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
 
                         {/* Card Content */}
-                        <div className="p-5 pl-6">
+                        <div className="p-5 pl-6 flex flex-col h-full">
                           {/* Header */}
                           <div className="flex items-start gap-3 mb-3">
-                            <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50">
+                            <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
                               <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -244,13 +243,13 @@ export default function CheatsheetBoard() {
                             </div>
                           </div>
 
-                          {/* Description */}
-                          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 min-h-[2.5rem]">
+                          {/* Description - Fixed to 3 lines */}
+                          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 min-h-[3.75rem] flex-1">
                             {sheet.description}
                           </p>
 
                           {/* Footer */}
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between mt-auto">
                             <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
                               <BookOpen className="w-4 h-4" />
                               <span>{sheet.sections.length} sections</span>

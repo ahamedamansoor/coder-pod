@@ -9,8 +9,8 @@ import { enabledLanguages as languages } from '@/data/languages';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { 
-  PlusCircle, Loader2, Search, Trash2, X, 
+import {
+  PlusCircle, Loader2, Search, Trash2, X,
   Youtube, Play, Clock, Filter, Code, BookmarkIcon, Link as LinkIcon, FileText, BookOpen, ExternalLink
 } from 'lucide-react';
 import {
@@ -46,25 +46,25 @@ export default function NotesPage() {
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
+
   // Form states
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [resourceType, setResourceType] = useState<Note['type']>('video');
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const [isSaving, setIsSaving] = useState(false);
-  
+
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [languageFilter, setLanguageFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [showFeatureGate, setShowFeatureGate] = useState(false);
-  
+
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
-  
+
   // Prevent duplicate fetches
   const fetchInProgress = useRef(false);
   const hasFetchedOnce = useRef(false);
@@ -88,13 +88,13 @@ export default function NotesPage() {
   // Fetch saved resources from Supabase
   const fetchNotes = useCallback(async () => {
     console.log('📝 fetchNotes called, user:', user?.uid, 'fetchInProgress:', fetchInProgress.current);
-    
+
     // Prevent duplicate calls
     if (fetchInProgress.current) {
       console.log('⚠️ Fetch already in progress, skipping...');
       return;
     }
-    
+
     if (!user) {
       console.log('❌ No user - clearing notes');
       setNotes([]);
@@ -103,22 +103,22 @@ export default function NotesPage() {
       setShowFeatureGate(true);
       return;
     }
-    
+
     fetchInProgress.current = true;
     setIsLoading(true);
     console.log('🔄 Starting notes fetch for user:', user.uid);
-    
+
     try {
       const notesService = ServiceFactory.getNotesService();
       console.log('📦 NotesService obtained, fetching...');
-      
+
       const fetchedNotes = await notesService.getUserNotes(user.uid);
       console.log('✅ Notes fetched successfully:', fetchedNotes.length, 'notes');
-      
+
       setNotes(fetchedNotes);
       setFilteredNotes(fetchedNotes);
       hasFetchedOnce.current = true;
-      
+
       if (fetchedNotes.length === 0) {
         console.log('💡 No notes found - empty state will be shown');
       }
@@ -129,7 +129,7 @@ export default function NotesPage() {
         code: error?.code,
         details: error?.details
       });
-      
+
       // Only show toast if it's not a "table doesn't exist" error
       const errorMessage = error?.message || '';
       if (errorMessage.includes('relation "notes" does not exist')) {
@@ -141,7 +141,7 @@ export default function NotesPage() {
           variant: "destructive",
         });
       }
-      
+
       setNotes([]);
       setFilteredNotes([]);
     } finally {
@@ -154,37 +154,37 @@ export default function NotesPage() {
   // Note: localStorage migration removed - using Supabase directly
 
   useEffect(() => {
-    console.log('Notes page auth state:', { 
-      isUserLoading, 
-      hasUser: !!user, 
-      userId: user?.uid, 
-      lastFetchedUserId: lastFetchedUserId.current 
+    console.log('Notes page auth state:', {
+      isUserLoading,
+      hasUser: !!user,
+      userId: user?.uid,
+      lastFetchedUserId: lastFetchedUserId.current
     });
-    
+
     if (isUserLoading) {
       // Set a timeout to prevent infinite loading
       const timeout = setTimeout(() => {
         console.error('⚠️ Auth loading timeout - forcing load completion');
         setIsLoading(false);
       }, 5000);
-      
+
       return () => clearTimeout(timeout);
     }
-    
+
     if (!user) {
       console.log('No user - showing feature gate modal');
       setIsLoading(false);
       setShowFeatureGate(true);
       return;
     }
-    
+
     // Only fetch if we haven't fetched for this user yet
     if (lastFetchedUserId.current === user.uid) {
       console.log('✋ Already fetched notes for this user, skipping...');
       setIsLoading(false); // Clear loading state when skipping
       return;
     }
-    
+
     console.log('User authenticated - fetching notes for first time');
     lastFetchedUserId.current = user.uid;
     fetchNotes();
@@ -270,7 +270,7 @@ export default function NotesPage() {
     setIsSaving(true);
     try {
       let videoId: string | undefined;
-      
+
       // Extract video ID if it's a YouTube video
       if (resourceType === 'video') {
         videoId = extractVideoId(url) || undefined;
@@ -284,12 +284,12 @@ export default function NotesPage() {
         videoId,
         language: selectedLanguage,
       });
-      
+
       toast({
         title: "✅ Resource Saved!",
         description: `Your ${resourceType} has been saved successfully.`,
       });
-      
+
       await fetchNotes();
       setIsDialogOpen(false);
       resetForm();
@@ -321,7 +321,7 @@ export default function NotesPage() {
     try {
       const notesService = ServiceFactory.getNotesService();
       await notesService.deleteNote(noteId, user.uid);
-      
+
       await fetchNotes();
       toast({
         title: "🗑️ Resource Deleted",
@@ -349,11 +349,11 @@ export default function NotesPage() {
   };
 
   // Debug render state
-  console.log('🎨 Render state:', { 
-    isUserLoading, 
-    isLoading, 
+  console.log('🎨 Render state:', {
+    isUserLoading,
+    isLoading,
     notesCount: notes.length,
-    filteredCount: filteredNotes.length 
+    filteredCount: filteredNotes.length
   });
 
   if (isUserLoading) {
@@ -376,34 +376,34 @@ export default function NotesPage() {
         onLogout={handleLogout}
       />
 
-      {/* Page Title - Fixed */}
-      <div className="flex-shrink-0">
-        <LearningPathTitle
-          icon={BookmarkIcon}
-          title="Learning Resources"
-          subtitle="Save videos, blogs, articles & links for quick access — organize your learning materials in one place"
-          action={
-            notes.length > 0 ? (
-              <Button 
-                onClick={openCreateDialog}
-                size="lg"
-                className="gap-2"
-              >
-                <PlusCircle className="w-4 h-4" />
-                Add Resource
-              </Button>
-            ) : undefined
-          }
-        />
-      </div>
-
       {/* Main Content - Scrollable */}
-      <div className="flex-1 relative overflow-y-auto">
+      <div className="flex-1 relative overflow-y-auto z-10">
 
-        <div className="px-4 sm:px-6 lg:px-8 py-6">
+        {/* Page Title - Scrolls with content */}
+        <div className="flex-shrink-0 pt-6">
+          <LearningPathTitle
+            icon={BookmarkIcon}
+            title="Learning Resources"
+            subtitle="Save videos, blogs, articles & links for quick access — organize your learning materials in one place"
+            action={
+              notes.length > 0 ? (
+                <Button
+                  onClick={openCreateDialog}
+                  size="lg"
+                  className="gap-2"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  Add Resource
+                </Button>
+              ) : undefined
+            }
+          />
+        </div>
+
+        <div className="px-4 sm:px-6 lg:px-8 pb-6">
           <div className="w-full">
-            {/* Search and Filter Bar */}
-            <div className="mb-6 flex flex-col sm:flex-row gap-3">
+            {/* Search and Filter Bar - Sticky */}
+            <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md py-4 mb-6 flex flex-col sm:flex-row gap-3 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 border-b border-border/40 transition-all duration-200">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
@@ -414,11 +414,11 @@ export default function NotesPage() {
                   className="w-full pl-12 pr-4 py-3 rounded-xl border bg-card focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 />
               </div>
-              
+
               {/* Resource Type Filter */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="gap-2 min-w-[140px]">
+                  <Button variant="outline" className="gap-2 min-w-[140px] h-auto py-3">
                     <Filter className="w-4 h-4" />
                     {typeFilter ? typeFilter.charAt(0).toUpperCase() + typeFilter.slice(1) : 'All Types'}
                   </Button>
@@ -445,10 +445,10 @@ export default function NotesPage() {
               {/* Language Filter */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="gap-2 min-w-[160px]">
+                  <Button variant="outline" className="gap-2 min-w-[160px] h-auto py-3">
                     <Code className="w-4 h-4" />
-                    {languageFilter 
-                      ? languages.find(l => l.slug === languageFilter)?.name 
+                    {languageFilter
+                      ? languages.find(l => l.slug === languageFilter)?.name
                       : 'All Languages'
                     }
                   </Button>
@@ -515,12 +515,12 @@ export default function NotesPage() {
                   const ResourceIcon = getResourceIcon(note.type);
                   const hasThumb = note.type === 'video' && note.videoId;
                   const createdDate = note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt);
-                  
+
                   return (
                     <div key={note.id} className="group">
                       <div className="rounded-lg border bg-card overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-primary/50">
                         {/* Thumbnail or Icon */}
-                        <div 
+                        <div
                           className="relative aspect-video bg-muted cursor-pointer overflow-hidden flex items-center justify-center"
                           onClick={() => {
                             if (!note.url) {
@@ -564,7 +564,7 @@ export default function NotesPage() {
                               <ResourceIcon className="w-10 h-10 text-primary/60 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
                             </div>
                           )}
-                          
+
                           {/* Type & Language Badges */}
                           <div className="absolute top-1.5 left-1.5 flex gap-1.5">
                             <Badge className="bg-black/60 backdrop-blur-sm text-white border-0 text-[10px] px-1.5 py-0.5 capitalize">
@@ -575,10 +575,10 @@ export default function NotesPage() {
                             </Badge>
                           </div>
                         </div>
-                        
+
                         {/* Info */}
                         <div className="p-2.5">
-                          <h3 
+                          <h3
                             className="font-semibold text-xs line-clamp-2 mb-1.5 cursor-pointer hover:text-primary transition-colors leading-tight"
                             onClick={() => {
                               if (!note.url) {
@@ -606,7 +606,7 @@ export default function NotesPage() {
                           >
                             {note.title}
                           </h3>
-                          
+
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                               <Clock className="w-3 h-3" />
@@ -668,18 +668,18 @@ export default function NotesPage() {
             <div>
               <label className="text-sm font-medium mb-2 block">Resource Type *</label>
               <div className="grid grid-cols-5 gap-2">
-                {[{type: 'video', icon: Youtube, label: 'Video'}, 
-                  {type: 'blog', icon: BookOpen, label: 'Blog'}, 
-                  {type: 'article', icon: FileText, label: 'Article'}, 
-                  {type: 'documentation', icon: BookOpen, label: 'Docs'}, 
-                  {type: 'link', icon: LinkIcon, label: 'Link'}].map(({type, icon: Icon, label}) => (
+                {[{ type: 'video', icon: Youtube, label: 'Video' },
+                { type: 'blog', icon: BookOpen, label: 'Blog' },
+                { type: 'article', icon: FileText, label: 'Article' },
+                { type: 'documentation', icon: BookOpen, label: 'Docs' },
+                { type: 'link', icon: LinkIcon, label: 'Link' }].map(({ type, icon: Icon, label }) => (
                   <button
                     key={type}
                     onClick={() => setResourceType(type as Note['type'])}
                     className={cn(
                       "flex flex-col items-center gap-1.5 p-3 rounded-lg border-2 transition-all",
-                      resourceType === type 
-                        ? "border-primary bg-primary/5" 
+                      resourceType === type
+                        ? "border-primary bg-primary/5"
                         : "border-border hover:border-primary/50"
                     )}
                   >
@@ -741,9 +741,9 @@ export default function NotesPage() {
             <Button variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isSaving}>
               Cancel
             </Button>
-            <Button 
-              onClick={handleSaveNote} 
-              disabled={isSaving || !title.trim() || !url.trim()} 
+            <Button
+              onClick={handleSaveNote}
+              disabled={isSaving || !title.trim() || !url.trim()}
               className="gap-2"
             >
               {isSaving ? (
@@ -763,7 +763,7 @@ export default function NotesPage() {
       </Dialog>
 
       {/* Feature Gate Modal */}
-      <FeatureGateModal 
+      <FeatureGateModal
         isOpen={showFeatureGate}
         onClose={() => setShowFeatureGate(false)}
         featureName="Notes"

@@ -49,7 +49,7 @@ export default function CheatsheetBoardPage() {
   }
 
   return (
-    <div 
+    <div
       style={{ width: '100vw', height: '100vh' }}
       className="flex flex-col overflow-hidden bg-background relative"
     >
@@ -60,11 +60,11 @@ export default function CheatsheetBoardPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-400 dark:bg-purple-800 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-40 dark:opacity-20 animate-blob animation-delay-2000"></div>
         <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-cyan-400 dark:bg-cyan-800 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-40 dark:opacity-20 animate-blob animation-delay-4000"></div>
         <div className="absolute bottom-20 right-20 w-80 h-80 bg-indigo-400 dark:bg-indigo-800 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-30 dark:opacity-15 animate-blob animation-delay-2000"></div>
-        
+
         {/* Enhanced Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-purple-50/20 to-cyan-50/40 dark:from-blue-950/30 dark:via-purple-950/15 dark:to-cyan-950/30"></div>
       </div>
-      
+
       {/* Innovative Header */}
       <InnovativeHeader
         currentPage="cheatsheets"
@@ -72,17 +72,17 @@ export default function CheatsheetBoardPage() {
         onLogout={handleLogout}
       />
 
-      {/* Page Title - Fixed */}
-      <div className="flex-shrink-0">
-        <LearningPathTitle
-          icon={BookOpen}
-          title="Quick Reference"
-          subtitle="Search for specific commands or situations. Click any card to view detailed usage examples — your essential command line reference"
-        />
-      </div>
+      {/* Main Content - Scrollable Container */}
+      <div className="flex-1 overflow-y-auto relative z-10">
+        {/* Page Title - Scrolls with content */}
+        <div className="flex-shrink-0">
+          <LearningPathTitle
+            icon={BookOpen}
+            title="Quick Reference"
+            subtitle="Search for specific commands or situations. Click any card to view detailed usage examples — your essential command line reference"
+          />
+        </div>
 
-      {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
         <Suspense fallback={<CheatsheetBoardLoading />}>
           <CheatsheetBoardContent />
         </Suspense>

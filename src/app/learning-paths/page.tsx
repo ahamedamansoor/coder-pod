@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Code2, Sparkles, Trophy, Target } from 'lucide-react';
-import { InnovativeHeader } from '@/components/shared';
+import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -89,7 +89,7 @@ export default function LearningPathsPage() {
     };
 
     return (
-        <div className="min-h-screen w-screen bg-background flex flex-col">
+        <div className="h-screen w-screen bg-background flex flex-col overflow-hidden">
             <InnovativeHeader
                 currentPage="learning"
                 showNavigation
@@ -97,63 +97,58 @@ export default function LearningPathsPage() {
                 onLogout={handleLogout}
             />
 
-            <main className="flex-1">
+            <main className="flex-1 overflow-y-auto relative z-10 h-[calc(100vh-64px)]">
                 {/* Hero */}
-                <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-950 dark:via-blue-950/30 dark:to-purple-950/30 py-14 sm:py-16 lg:py-20">
-                    <div className="absolute inset-0 bg-grid-slate-200/50 dark:bg-grid-slate-800/50 [mask-image:linear-gradient(0deg,transparent,black)]" />
-                    <div className="absolute -top-32 left-1/4 w-[420px] h-[420px] bg-blue-400/15 dark:bg-blue-600/10 rounded-full blur-3xl" />
-                    <div className="absolute top-1/3 -right-32 w-[420px] h-[420px] bg-purple-400/15 dark:bg-purple-600/10 rounded-full blur-3xl" />
-                    <div className="relative px-4 sm:px-6 lg:px-10 xl:px-14">
-                        <div className="w-full max-w-none mx-auto text-center space-y-6">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 border border-blue-200/60 dark:border-blue-800/50">
-                                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-300 animate-pulse" />
-                                <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">Learning Paths</span>
-                            </div>
-                            <div>
-                                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3">
-                                    Follow curated paths to master every stack
-                                </h1>
-                                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                                    Pick a language or framework and jump into a structured path with progress tracking, milestones, and interactive lessons.
-                                </p>
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                                <div className="relative w-full sm:w-96">
-                                    <input
-                                        type="text"
-                                        placeholder="Search languages..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-full px-5 py-3 pl-12 rounded-full bg-white/70 dark:bg-slate-900/60 backdrop-blur-md border border-white/50 dark:border-slate-700/60 focus:border-blue-400 dark:focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 transition-all duration-200"
-                                    />
-                                    <Code2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
-                                </div>
-                                <div className="flex flex-wrap justify-center gap-2">
-                                    {[
-                                        { id: 'all', label: 'All' },
-                                        { id: 'frontend', label: 'Frontend' },
-                                        { id: 'backend', label: 'Backend' },
-                                        { id: 'testing', label: 'Testing' },
-                                        { id: 'algorithms', label: 'Algorithms' },
-                                    ].map((option) => (
-                                        <button
-                                            key={option.id}
-                                            onClick={() => setFilter(option.id as Filter)}
-                                            className={cn(
-                                                'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
-                                                filter === option.id
-                                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                                                    : 'bg-white/20 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/60'
-                                            )}
-                                        >
-                                            {option.label}
-                                        </button>
-                                    ))}
-                                </div>
+                {/* Header Section - Scrolls with content */}
+                <div className="flex-shrink-0 pt-6">
+                    <LearningPathTitle
+                        icon={Sparkles}
+                        title="Follow curated paths to master every stack"
+                        subtitle="Pick a language or framework and jump into a structured path with progress tracking, milestones, and interactive lessons."
+                    />
+                </div>
+
+                {/* Search and Filters - Sticky */}
+                <div className="sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-4 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200 mb-6">
+                    <div className="flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto w-full">
+                        <div className="w-full relative flex justify-center">
+                            {/* Faded edges to indicate scroll */}
+                            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 max-w-full w-auto mx-auto lg:mx-0 snap-x">
+                                {[
+                                    { id: 'all', label: 'All' },
+                                    { id: 'frontend', label: 'Frontend' },
+                                    { id: 'backend', label: 'Backend' },
+                                    { id: 'testing', label: 'Testing' },
+                                    { id: 'algorithms', label: 'Algorithms' },
+                                ].map((option) => (
+                                    <button
+                                        key={option.id}
+                                        onClick={() => setFilter(option.id as Filter)}
+                                        className={cn(
+                                            'px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 snap-center',
+                                            filter === option.id
+                                                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                                        )}
+                                    >
+                                        {option.label}
+                                    </button>
+                                ))}
                             </div>
                         </div>
+
+                        <div className="relative w-full max-w-lg flex-shrink-0">
+                            <input
+                                type="text"
+                                placeholder="Search languages..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full px-4 py-2.5 pl-10 rounded-xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/60 focus:border-blue-400 dark:focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 transition-all duration-200 text-sm shadow-sm hover:shadow-md"
+                            />
+                            <Code2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
+                        </div>
                     </div>
-                </section>
+                </div>
 
                 {/* Paths grid */}
                 <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-14 py-12">
@@ -213,9 +208,9 @@ export default function LearningPathsPage() {
                                                 ? 'Review & reinforce concepts'
                                                 : nextTopic
                                                     ? nextTopic.title
-                                                : isStarted
-                                                    ? 'Jump into the learning plan'
-                                                    : 'Start your learning journey';
+                                                    : isStarted
+                                                        ? 'Jump into the learning plan'
+                                                        : 'Start your learning journey';
                                     const pillText = completionPercentage === 0 ? 'Start your learning journey' : nextUpText;
                                     const leftCountLabel = hasTopics
                                         ? `${Math.max(actualTopicCount - completedCount, 0)} left`
@@ -273,28 +268,28 @@ export default function LearningPathsPage() {
                                                 <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{summary}</p>
 
                                                 <div
-                                                className={cn(
-                                                    'rounded-xl p-3 text-xs font-semibold',
-                                                    'flex items-center gap-2',
-                                                    'bg-white/70 text-slate-900 border border-white/50 shadow-sm',
-                                                    'dark:bg-slate-900/70 dark:text-white dark:border-slate-800',
-                                                    'backdrop-blur-md'
-                                                )}
-                                            >
-                                                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white text-[10px] font-bold shadow">
-                                                    ↗
-                                                </span>
-                                                <div className="flex-1">
-                                                    {completionPercentage === 0 ? (
-                                                        <span className="ml-1">{pillText}</span>
-                                                    ) : (
-                                                        <>
-                                                            <span className="opacity-70">Next up:</span>{' '}
-                                                            <span className="ml-1">{pillText}</span>
-                                                        </>
+                                                    className={cn(
+                                                        'rounded-xl p-3 text-xs font-semibold',
+                                                        'flex items-center gap-2',
+                                                        'bg-white/70 text-slate-900 border border-white/50 shadow-sm',
+                                                        'dark:bg-slate-900/70 dark:text-white dark:border-slate-800',
+                                                        'backdrop-blur-md'
                                                     )}
+                                                >
+                                                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white text-[10px] font-bold shadow">
+                                                        ↗
+                                                    </span>
+                                                    <div className="flex-1">
+                                                        {completionPercentage === 0 ? (
+                                                            <span className="ml-1">{pillText}</span>
+                                                        ) : (
+                                                            <>
+                                                                <span className="opacity-70">Next up:</span>{' '}
+                                                                <span className="ml-1">{pillText}</span>
+                                                            </>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
 
                                                 <button
                                                     className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium text-sm transition-all duration-200 hover:shadow-lg"

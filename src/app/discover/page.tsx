@@ -7,8 +7,8 @@ import { usePlayer } from '@/contexts/PlayerContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Loader2, Search, ExternalLink, 
+import {
+  Loader2, Search, ExternalLink,
   Newspaper, TrendingUp, Code, X, Filter, Clock, Heart, Video, Podcast, Sparkles
 } from 'lucide-react';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
@@ -46,12 +46,12 @@ export default function DiscoverPage() {
   const [videoPage, setVideoPage] = useState(1);
   const [hasMoreVideos, setHasMoreVideos] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  
+
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
-  
+
   // Tech-related keywords for content filtering
   const TECH_KEYWORDS = [
     'programming', 'code', 'developer', 'software', 'web', 'app', 'api',
@@ -106,14 +106,14 @@ export default function DiscoverPage() {
       } else {
         searchQuery = 'programming full course tutorial';
       }
-      
+
       // Simplified: Use RSS feeds directly - most reliable method
       console.log('Fetching videos from curated YouTube channels via RSS feeds...');
-      const channelIds = selectedTag 
-        ? getChannelsForTag(selectedTag) 
+      const channelIds = selectedTag
+        ? getChannelsForTag(selectedTag)
         : getDefaultChannels();
       return await fetchFromRSSFeeds(channelIds, query);
-      
+
     } catch (error) {
       console.error('Error fetching videos:', error);
       toast({
@@ -132,38 +132,38 @@ export default function DiscoverPage() {
         try {
           // Use our API route to avoid CORS issues
           const response = await fetch(`/api/youtube-rss?channelId=${channelId}`);
-          
+
           if (!response.ok) {
             // Silently fail for individual channels - Invidious should be working
             return [];
           }
-          
+
           const xmlText = await response.text();
-          
+
           // Check if XML is valid
           if (!xmlText || xmlText.trim().length === 0) {
             console.error(`Empty response for channel ${channelId}`);
             return [];
           }
-          
+
           // Parse XML to extract video data
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-          
+
           // Check for XML parsing errors
           const parseError = xmlDoc.querySelector('parsererror');
           if (parseError) {
             console.error(`XML parse error for channel ${channelId}:`, parseError.textContent);
             return [];
           }
-          
+
           const entries = xmlDoc.querySelectorAll('entry');
-          
+
           if (entries.length === 0) {
             console.log(`No entries found for channel ${channelId}`);
             return [];
           }
-          
+
           const videos = Array.from(entries).map((entry) => {
             const videoId = entry.querySelector('videoId')?.textContent || '';
             const title = entry.querySelector('title')?.textContent || '';
@@ -172,7 +172,7 @@ export default function DiscoverPage() {
             const mediaGroup = entry.querySelector('group');
             const description = mediaGroup?.querySelector('description')?.textContent || '';
             const thumbnail = mediaGroup?.querySelector('thumbnail')?.getAttribute('url') || '';
-            
+
             return {
               id: videoId,
               title,
@@ -190,19 +190,19 @@ export default function DiscoverPage() {
               },
             };
           });
-          
+
           return videos;
         } catch (error) {
           console.error(`Error fetching from channel ${channelId}:`, error);
           return [];
         }
       });
-      
+
       const results = await Promise.all(promises);
       const allVideos = results.flat();
-      
+
       console.log(`Fetched ${allVideos.length} total videos from ${channelIds.length} channels`);
-      
+
       if (allVideos.length === 0) {
         toast({
           title: '⚠️ No Videos Found',
@@ -211,47 +211,47 @@ export default function DiscoverPage() {
         });
         return [];
       }
-      
+
       // STRICT keywords for FULL COURSES only
       const mustHaveKeywords = [
         'full course', 'complete course', 'full tutorial', 'complete tutorial',
         'crash course', 'bootcamp', 'full guide', 'complete guide',
         'from scratch', 'zero to hero', 'beginner to advanced',
         'step by step course', 'comprehensive tutorial', 'complete training',
-        'full stack course', 'entire course', 'full project', 
+        'full stack course', 'entire course', 'full project',
         'hours', 'hour course', 'hour tutorial',
         'free course', 'complete bootcamp', 'full bootcamp'
       ];
-      
+
       // Keywords to exclude (shorts, clips, quick tips, single concepts)
       const excludeKeywords = [
         'short', 'shorts', '#shorts', 'quick tip', 'in 60 seconds',
-        'in 1 minute', 'in 5 minutes', 'in 10 minutes', 'quick', 'fast', 
+        'in 1 minute', 'in 5 minutes', 'in 10 minutes', 'quick', 'fast',
         'rapid', 'speedrun', 'brief', 'intro to', 'introduction',
         'what is', 'explained', 'overview', 'summary', 'part 1', 'episode'
       ];
-      
+
       // STRICT FILTER: Only include videos that are clearly full courses
       let filteredVideos = allVideos.filter(video => {
         const titleLower = video.title.toLowerCase();
         const descLower = video.description.toLowerCase();
         const text = `${titleLower} ${descLower}`;
-        
+
         // Must have at least one "full course" keyword
-        const hasCourseKeyword = mustHaveKeywords.some(keyword => 
+        const hasCourseKeyword = mustHaveKeywords.some(keyword =>
           text.includes(keyword.toLowerCase())
         );
         if (!hasCourseKeyword) return false; // STRICT: Exclude if not a course
-        
+
         // Exclude shorts and quick videos even if they claim to be courses
-        const hasExcludedKeyword = excludeKeywords.some(keyword => 
+        const hasExcludedKeyword = excludeKeywords.some(keyword =>
           text.includes(keyword.toLowerCase())
         );
         if (hasExcludedKeyword) return false;
-        
+
         return true; // Only full courses pass this filter
       });
-      
+
       // Filter by search query if provided
       if (query) {
         const searchLower = query.toLowerCase();
@@ -260,31 +260,31 @@ export default function DiscoverPage() {
           video.description.toLowerCase().includes(searchLower)
         );
       }
-      
+
       // Extra filter to ensure tech relevance
-      filteredVideos = filteredVideos.filter(video => 
+      filteredVideos = filteredVideos.filter(video =>
         isTechRelated(video.title, video.description)
       );
-      
+
       // Sort: Prioritize course content, then by date
       filteredVideos.sort((a, b) => {
-        const aHasCourse = mustHaveKeywords.some(k => 
+        const aHasCourse = mustHaveKeywords.some(k =>
           a.title.toLowerCase().includes(k) || a.description.toLowerCase().includes(k)
         );
-        const bHasCourse = mustHaveKeywords.some(k => 
+        const bHasCourse = mustHaveKeywords.some(k =>
           b.title.toLowerCase().includes(k) || b.description.toLowerCase().includes(k)
         );
-        
+
         // Course content first
         if (aHasCourse && !bHasCourse) return -1;
         if (!aHasCourse && bHasCourse) return 1;
-        
+
         // Then by date
         return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
       });
-      
+
       console.log(`After filtering: ${filteredVideos.length} FULL COURSES found`);
-      
+
       // If no courses found after strict filtering, show helpful message
       if (filteredVideos.length === 0) {
         console.log('No full courses found in recent videos. Try different tags or search.');
@@ -294,7 +294,7 @@ export default function DiscoverPage() {
         });
         return [];
       }
-      
+
       return filteredVideos.slice(0, 30);
     } catch (error) {
       console.error('Error fetching from RSS feeds:', error);
@@ -352,7 +352,7 @@ export default function DiscoverPage() {
         ];
         searchQuery = defaultSearches[Math.floor(Math.random() * defaultSearches.length)];
       }
-      
+
       // Add technology genre filter (genreId 1318 = Technology)
       const response = await fetch(
         `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&media=podcast&entity=podcastEpisode&limit=30&genreId=1318`
@@ -361,7 +361,7 @@ export default function DiscoverPage() {
       if (!response.ok) return [];
 
       const data = await response.json();
-      
+
       // Filter and map results
       const podcasts = data.results?.map((item: any) => ({
         id: item.trackId || item.collectionId,
@@ -378,12 +378,12 @@ export default function DiscoverPage() {
           profile_image: item.artworkUrl100 || item.artworkUrl60,
         },
       })) || [];
-      
+
       // Extra filter to ensure tech relevance
       let techPodcasts = podcasts.filter((podcast: any) =>
         isTechRelated(podcast.title, podcast.description)
       );
-      
+
       // VARIETY: Shuffle results for different content each time
       return shuffleArray(techPodcasts);
     } catch (error) {
@@ -397,7 +397,7 @@ export default function DiscoverPage() {
     setIsLoading(true);
     try {
       const tagParam = selectedTag ? `&tag=${selectedTag}` : '';
-      
+
       let allContent: DevToArticle[] = [];
 
       // Fetch DEV.to articles if showing articles or all
@@ -405,11 +405,11 @@ export default function DiscoverPage() {
         // VARIETY: Randomly pick from multiple pages for diverse content
         const randomPageOffset = Math.floor(Math.random() * 3); // 0, 1, or 2
         const fetchPage = pageNum + randomPageOffset;
-        
+
         const response = await fetch(
           `https://dev.to/api/articles?per_page=50&page=${fetchPage}${tagParam}`
         );
-        
+
         if (response.ok) {
           const devData: DevToArticle[] = await response.json();
           // VARIETY: Shuffle articles for different order each time
@@ -423,7 +423,7 @@ export default function DiscoverPage() {
         const podcastData = await fetchPodcasts(selectedTag);
         allContent = [...allContent, ...podcastData];
       }
-      
+
       // VARIETY: Mix up sort order occasionally for diversity
       const sortMethods = [
         // Sort by date (70% chance)
@@ -433,7 +433,7 @@ export default function DiscoverPage() {
         // Random shuffle (15% chance)
         () => { allContent = shuffleArray(allContent); },
       ];
-      
+
       const rand = Math.random();
       if (rand < 0.70) {
         sortMethods[0](); // Date sort
@@ -442,7 +442,7 @@ export default function DiscoverPage() {
       } else {
         sortMethods[2](); // Random shuffle
       }
-      
+
       if (pageNum === 1) {
         setArticles(allContent);
         setFilteredArticles(allContent);
@@ -488,7 +488,7 @@ export default function DiscoverPage() {
           }
           return [];
         });
-        
+
         const allArticles = (await Promise.all(articlePromises)).flat();
         const filtered = allArticles.filter((article: any) => {
           const searchLower = query.toLowerCase();
@@ -514,13 +514,13 @@ export default function DiscoverPage() {
         const podcasts = await fetchPodcasts(query);
         allContent = [...allContent, ...podcasts];
       }
-      
+
       // VARIETY: Shuffle search results for diversity
       allContent = shuffleArray(allContent);
-      
+
       setArticles(allContent);
       setFilteredArticles(allContent);
-      
+
       if (allContent.length === 0) {
         toast({
           title: '🔍 No Results',
@@ -544,11 +544,11 @@ export default function DiscoverPage() {
   // Load more videos
   const loadMoreVideos = async () => {
     if (!hasMoreVideos || isLoadingMore) return;
-    
+
     setIsLoadingMore(true);
     try {
       const newVideos = await fetchYouTubeVideos(searchQuery);
-      
+
       if (newVideos.length === 0) {
         setHasMoreVideos(false);
         toast({
@@ -560,21 +560,21 @@ export default function DiscoverPage() {
         setArticles(prev => {
           const existingIds = new Set(prev.map(item => item.id));
           const uniqueNewVideos = newVideos.filter(video => !existingIds.has(video.id));
-          
+
           if (uniqueNewVideos.length === 0) {
             setHasMoreVideos(false);
             return prev;
           }
-          
+
           return [...prev, ...uniqueNewVideos];
         });
-        
+
         setFilteredArticles(prev => {
           const existingIds = new Set(prev.map(item => item.id));
           const uniqueNewVideos = newVideos.filter(video => !existingIds.has(video.id));
           return [...prev, ...uniqueNewVideos];
         });
-        
+
         setVideoPage(prev => prev + 1);
       }
     } catch (error) {
@@ -638,20 +638,21 @@ export default function DiscoverPage() {
         onLogout={handleLogout}
       />
 
-      {/* Page Title - Fixed */}
-      <div className="flex-shrink-0">
-        <LearningPathTitle
-          icon={Sparkles}
-          title="Discover"
-          subtitle="A comprehensive collection of articles, videos & podcasts from DEV Community — stay updated with the latest tech content"
-        />
-      </div>
-
       {/* Main Content - Scrollable */}
-      <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 overflow-y-auto">
-        <div className="w-full">
-          {/* Search and Filters */}
-          <div className="mb-6 space-y-4">
+      <div className="flex-1 overflow-y-auto relative z-10">
+
+        {/* Page Title - Scrolls with content */}
+        <div className="flex-shrink-0 pt-6">
+          <LearningPathTitle
+            icon={Sparkles}
+            title="Discover"
+            subtitle="A comprehensive collection of articles, videos & podcasts from DEV Community — stay updated with the latest tech content"
+          />
+        </div>
+
+        <div className="w-full px-4 sm:px-6 lg:px-8 pb-6">
+          {/* Search and Filters - Sticky */}
+          <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md py-4 mb-6 space-y-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 border-b border-border/40 transition-all duration-200">
             {/* Search Bar */}
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -660,7 +661,7 @@ export default function DiscoverPage() {
                 placeholder="Search by title, description, tags, or author..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-10 h-12 rounded-xl"
+                className="pl-12 pr-10 h-12 rounded-xl bg-card/50 focus:bg-card transition-colors"
               />
               {isSearching && (
                 <div className="absolute right-12 top-1/2 -translate-y-1/2">
@@ -734,7 +735,7 @@ export default function DiscoverPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
                 {filteredArticles.map((article) => {
                   const publishedDate = new Date(article.published_at);
-                  
+
                   return (
                     <div key={article.id} className="group">
                       <div className="rounded-xl border bg-card overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
@@ -752,7 +753,7 @@ export default function DiscoverPage() {
                             <Newspaper className="w-16 h-16 text-primary/20" />
                           </div>
                         )}
-                        
+
                         {/* Content */}
                         <div className="p-4 flex-1 flex flex-col">
                           {/* Content Type Badge & Tags */}
@@ -882,29 +883,29 @@ export default function DiscoverPage() {
               </div>
 
               {/* Load More Button - Only for articles */}
-              {!searchQuery && 
-               (contentType === 'all' || contentType === 'article') && 
-               filteredArticles.length >= 30 * page && (
-                <div className="mt-8 text-center">
-                  <Button
-                    onClick={loadMoreArticles}
-                    disabled={isLoading}
-                    className="gap-2"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Loading...
-                      </>
-                    ) : (
-                      <>
-                        Load More Content
-                        <TrendingUp className="w-4 h-4" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-              )}
+              {!searchQuery &&
+                (contentType === 'all' || contentType === 'article') &&
+                filteredArticles.length >= 30 * page && (
+                  <div className="mt-8 text-center">
+                    <Button
+                      onClick={loadMoreArticles}
+                      disabled={isLoading}
+                      className="gap-2"
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          Load More Content
+                          <TrendingUp className="w-4 h-4" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
             </>
           ) : (
             <div className="text-center py-20">

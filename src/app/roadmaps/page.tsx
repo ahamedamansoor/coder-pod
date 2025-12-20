@@ -57,13 +57,23 @@ export default function RoadmapsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Combine all roadmaps
   const allRoadmaps = [...(roleBasedRoadmaps || []), ...languages];
 
-  // Filter based on active category
-  const filteredRoadmaps = activeCategory === 'all'
-    ? allRoadmaps
-    : allRoadmaps.filter(r => categoryMap[activeCategory]?.includes(r.slug));
+  // Filter based on active category and search query
+  const filteredRoadmaps = allRoadmaps.filter(r => {
+    // Category filter
+    const matchesCategory = activeCategory === 'all' || categoryMap[activeCategory]?.includes(r.slug);
+
+    // Search filter
+    const matchesSearch = !searchQuery ||
+      r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (r.description && r.description.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesCategory && matchesSearch;
+  });
 
   const handleLogout = async () => {
     try {
@@ -97,63 +107,76 @@ export default function RoadmapsPage() {
         onLogout={handleLogout}
       />
 
-      {/* Page Title */}
-      <div className="flex-shrink-0">
-        <LearningPathTitle
-          icon={MapPin}
-          title="Learning Roadmaps"
-          subtitle={`Explore ${allRoadmaps.length} roadmaps with ${allRoadmaps.reduce((acc, lang) => acc + (lang.topics?.filter(t => t.slug !== 'learning-plan').length ?? 0), 0)}+ topics`}
-        />
-      </div>
-
-      {/* Innovative Filter Pills */}
-      <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8 py-4 flex justify-center">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 w-fit">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = activeCategory === cat.id;
-            const count = cat.id === 'all'
-              ? allRoadmaps.length
-              : categoryMap[cat.id]?.filter(slug => allRoadmaps.some(r => r.slug === slug)).length || 0;
-
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={cn(
-                  'relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap',
-                  'transition-all duration-300 ease-out',
-                  isActive
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                )}
-              >
-                {/* Active indicator glow */}
-                {isActive && (
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-pink-500/20" />
-                )}
-                <Icon className={cn(
-                  'w-4 h-4 relative z-10 transition-transform duration-300',
-                  isActive && 'scale-110'
-                )} />
-                <span className="relative z-10">{cat.label}</span>
-                <span className={cn(
-                  'relative z-10 px-2 py-0.5 rounded-full text-xs font-semibold transition-colors duration-300',
-                  isActive
-                    ? 'bg-slate-900/10 dark:bg-white/10 text-slate-700 dark:text-slate-300'
-                    : 'bg-slate-200/80 dark:bg-slate-700/80 text-slate-500 dark:text-slate-400'
-                )}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Main Content */}
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 xl:px-12 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 xl:px-12 py-8 overflow-y-auto relative z-10">
         <div className="w-full">
+          {/* Page Title - Scrolls with content */}
+          <div className="flex-shrink-0 mb-4">
+            <LearningPathTitle
+              icon={MapPin}
+              title="Learning Roadmaps"
+              subtitle={`Explore ${allRoadmaps.length} roadmaps with ${allRoadmaps.reduce((acc, lang) => acc + (lang.topics?.filter(t => t.slug !== 'learning-plan').length ?? 0), 0)}+ topics`}
+            />
+          </div>
+
+          {/* Innovative Filter Pills - Sticky */}
+          <div className="sticky top-0 z-40 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 xl:-mx-12 xl:px-12 py-4 mb-6 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200">
+            <div className="flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto w-full">
+              <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 w-fit">
+                {categories.map((cat) => {
+                  const Icon = cat.icon;
+                  const isActive = activeCategory === cat.id;
+                  const count = cat.id === 'all'
+                    ? allRoadmaps.length
+                    : categoryMap[cat.id]?.filter(slug => allRoadmaps.some(r => r.slug === slug)).length || 0;
+
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setActiveCategory(cat.id)}
+                      className={cn(
+                        'relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap',
+                        'transition-all duration-300 ease-out',
+                        isActive
+                          ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      )}
+                    >
+                      {/* Active indicator glow */}
+                      {isActive && (
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-pink-500/20" />
+                      )}
+                      <Icon className={cn(
+                        'w-4 h-4 relative z-10 transition-transform duration-300',
+                        isActive && 'scale-110'
+                      )} />
+                      <span className="relative z-10">{cat.label}</span>
+                      <span className={cn(
+                        'relative z-10 px-2 py-0.5 rounded-full text-xs font-semibold transition-colors duration-300',
+                        isActive
+                          ? 'bg-slate-900/10 dark:bg-white/10 text-slate-700 dark:text-slate-300'
+                          : 'bg-slate-200/80 dark:bg-slate-700/80 text-slate-500 dark:text-slate-400'
+                      )}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Search Input */}
+              <div className="relative w-full max-w-lg flex-shrink-0">
+                <input
+                  type="text"
+                  placeholder="Search roadmaps..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2.5 pl-10 rounded-xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/60 focus:border-blue-400 dark:focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 transition-all duration-200 text-sm shadow-sm hover:shadow-md"
+                />
+                <Code2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
+              </div>
+            </div>
+          </div>
 
           {/* Full Width Card Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
