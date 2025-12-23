@@ -2,11 +2,22 @@ import type {Config} from 'tailwindcss';
 
 export default {
   darkMode: ['class'],
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: {
+    files: [
+      './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+      './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+      './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    ],
+    transform: {
+      // Strip content from code blocks to prevent Tailwind from parsing code examples
+      tsx: (content: string) => {
+        return content.replace(/code:\s*String\.raw`[\s\S]*?`/g, 'code: ""');
+      },
+      ts: (content: string) => {
+        return content.replace(/code:\s*String\.raw`[\s\S]*?`/g, 'code: ""');
+      },
+    },
+  },
   safelist: [
     // Dynamic active menu/background classes generated from primary token
     {

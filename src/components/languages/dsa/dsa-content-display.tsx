@@ -87,6 +87,10 @@ const RemoveDuplicatesList = lazy(() => import('./topics/linked-lists-remove-dup
 const MergeSortedLists = lazy(() => import('./topics/linked-lists-merge-sorted-lists'));
 const PalindromeCheck = lazy(() => import('./topics/linked-lists-palindrome-check'));
 const OddEvenList = lazy(() => import('./topics/linked-lists-odd-even'));
+const DetectCycle = lazy(() => import('./topics/linked-lists-dsa-advanced-techniques-detect-cycle-in-linked-list'));
+const FindCycleStart = lazy(() => import('./topics/linked-lists-dsa-advanced-techniques-find-cycle-start-point'));
+const IntersectionOfTwoLinkedLists = lazy(() => import('./topics/linked-lists-dsa-advanced-techniques-intersection-of-two-linked-lists'));
+const RemoveNthNodeFromEnd = lazy(() => import('./topics/linked-lists-remove-nth-node-from-end'));
 
 // Map topic slugs to their components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -171,6 +175,10 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'linked-lists-dsa-reversal-manipulation-merge-two-sorted-lists': MergeSortedLists,
   'linked-lists-dsa-reversal-manipulation-palindrome-linked-list': PalindromeCheck,
   'linked-lists-dsa-reversal-manipulation-odd-even-linked-list': OddEvenList,
+  'linked-lists-dsa-advanced-techniques-detect-cycle-in-linked-list': DetectCycle,
+  'linked-lists-dsa-advanced-techniques-find-cycle-start-point': FindCycleStart,
+  'linked-lists-dsa-advanced-techniques-intersection-of-two-linked-lists': IntersectionOfTwoLinkedLists,
+  'linked-lists-dsa-advanced-techniques-remove-nth-node-from-end': RemoveNthNodeFromEnd,
 };
 
 function LoadingSkeleton() {

@@ -8,9 +8,10 @@ body {
 
 pre {
     font-size: 13px!important;
-    code {
-    font-size: 13px!important;
-    }
+}
+
+pre code {
+  font-size: 13px!important;
 }
 
 @layer base {

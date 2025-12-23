@@ -11,6 +11,7 @@ import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { cn } from '@/lib/utils';
 import { FeatureGateModal } from '@/components/shared/feature-gate-modal';
+import { featureFlags } from '@/config/feature-flags';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,10 +94,17 @@ export function InnovativeHeader({
     { href: '/discover', label: 'Explore', icon: Sparkles, page: 'discover', requiresAuth: false, description: 'Discover new content' },
   ];
 
+  const flaggedNavItems = allNavItems.filter((item) => {
+    if (item.page === 'collaborative-interview') {
+      return featureFlags.collaborativeInterview;
+    }
+    return true;
+  });
+
   // Filter out Discover button when on Learning page
   const navItems = currentPage === 'learning'
-    ? allNavItems.filter(item => item.page !== 'discover')
-    : allNavItems;
+    ? flaggedNavItems.filter(item => item.page !== 'discover')
+    : flaggedNavItems;
 
   const handleNavClick = (e: React.MouseEvent, item: typeof allNavItems[0]) => {
     if (item.requiresAuth && isGuest) {

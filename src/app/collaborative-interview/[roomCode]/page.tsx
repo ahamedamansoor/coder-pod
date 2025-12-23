@@ -8,16 +8,18 @@ import { InnovativeHeader } from '@/components/shared';
 import { CollaborativeInterview } from '@/components/shared/collaborative-interview';
 import { collaborativeSessionService } from '@/services/collaborative-session.service';
 import { InterviewSession } from '@/types/collaborative.types';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { featureFlags } from '@/config/feature-flags';
 
 export default function CollaborativeInterviewRoomPage() {
     const params = useParams();
     const router = useRouter();
     const { user, isUserLoading: isAuthLoading } = useUser();
     const { signOut } = useSupabaseAuth();
+    const featureDisabled = !featureFlags.collaborativeInterview;
 
     const roomCode = params.roomCode as string;
 
@@ -37,6 +39,10 @@ export default function CollaborativeInterviewRoomPage() {
     // Load session data
     useEffect(() => {
         async function loadSession() {
+            if (featureDisabled) {
+                return;
+            }
+
             if (!roomCode) {
                 setError('Invalid room code');
                 setIsLoading(false);
@@ -70,7 +76,45 @@ export default function CollaborativeInterviewRoomPage() {
         if (!isAuthLoading) {
             loadSession();
         }
-    }, [roomCode, isAuthLoading]);
+    }, [roomCode, isAuthLoading, featureDisabled]);
+
+    if (featureDisabled) {
+        return (
+            <div className="min-h-screen flex flex-col bg-background">
+                <InnovativeHeader
+                    currentPage={'collaborative-interview'}
+                    showNavigation={true}
+                    user={user}
+                    onLogout={handleLogout}
+                />
+                <div className="flex-1 flex items-center justify-center p-4">
+                    <Card className="max-w-xl w-full text-center">
+                        <CardHeader className="space-y-3">
+                            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+                                <AlertCircle className="w-6 h-6" />
+                            </div>
+                            <CardTitle>Collaborative Interview is temporarily unavailable</CardTitle>
+                            <CardDescription>
+                                We&apos;re making some updates to live interview rooms. Existing room links are disabled for now.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:items-center">
+                            <Link href="/" className="w-full sm:w-auto">
+                                <Button variant="outline" className="w-full sm:w-auto">
+                                    Go Home
+                                </Button>
+                            </Link>
+                            <Link href="/ai-interview" className="w-full sm:w-auto">
+                                <Button className="w-full sm:w-auto">
+                                    Try AI Interview
+                                </Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        );
+    }
 
     // Show loading state
     if (isLoading || isAuthLoading) {

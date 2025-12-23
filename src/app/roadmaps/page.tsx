@@ -27,6 +27,7 @@ const accentColors: Record<string, string> = {
   'spring-boot': 'bg-green-600',
   'frontend-developer': 'bg-blue-600',
   'backend-developer': 'bg-slate-700',
+  'manual-testing': 'bg-green-500',
   playwright: 'bg-green-500',
   rxjs: 'bg-purple-500',
   dsa: 'bg-violet-600',
@@ -46,7 +47,7 @@ const categoryMap: Record<string, string[]> = {
   frontend: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs'],
   backend: ['java', 'spring', 'spring-boot'],
   algorithms: ['dsa'],
-  testing: ['playwright'],
+  testing: ['manual-testing', 'playwright'],
 };
 
 export default function RoadmapsPage() {

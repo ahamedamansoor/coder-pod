@@ -25,6 +25,7 @@ const accentMap: Record<string, string> = {
     spring: 'from-emerald-100/80 via-green-50/60 to-lime-100/80',
     'spring-boot': 'from-teal-100/80 via-emerald-50/60 to-green-100/80',
     dsa: 'from-violet-100/80 via-indigo-50/60 to-blue-100/80',
+    selenium: 'from-green-100/80 via-emerald-50/60 to-teal-100/80',
     rxjs: 'from-cyan-100/80 via-sky-50/60 to-indigo-100/80',
 };
 
@@ -40,13 +41,13 @@ export default function LearningPathsPage() {
     const [startedPaths, setStartedPaths] = useState<Set<string>>(new Set());
 
     // Only show allowed slugs
-    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa']), []);
+    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium']), []);
     const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind'];
     const backendLanguages: string[] = [];
-    const testingLanguages: string[] = [];
+    const testingLanguages: string[] = ['selenium'];
     const algorithmLanguages = ['dsa'];
 
-    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa']), []);
+    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium']), []);
 
     const filteredLanguages = useMemo(() => {
         return allLanguages.filter((lang) => {

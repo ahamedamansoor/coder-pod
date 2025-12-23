@@ -16,6 +16,7 @@ import {
     Target
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { featureFlags } from '@/config/feature-flags';
 
 interface FeatureCard {
     title: string;
@@ -27,9 +28,10 @@ interface FeatureCard {
     size: 'large' | 'medium' | 'small';
     delay: number;
     badge?: string;
+    enabled?: boolean;
 }
 
-const features: FeatureCard[] = [
+const baseFeatures: FeatureCard[] = [
     {
         title: 'Learning Paths',
         description: 'Master programming with interactive, AI-powered courses tailored to your learning style. Track progress and earn achievements.',
@@ -82,6 +84,7 @@ const features: FeatureCard[] = [
         size: 'medium',
         delay: 400,
         badge: 'Live',
+        enabled: featureFlags.collaborativeInterview,
     },
     {
         title: 'Personal Notes',
@@ -217,6 +220,8 @@ function FeatureCardComponent({ feature }: { feature: FeatureCard }) {
 }
 
 export function FeaturesShowcase() {
+    const features = baseFeatures.filter(feature => feature.enabled !== false);
+
     return (
         <section className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 lg:py-24">
             <div className="max-w-[1920px] mx-auto">

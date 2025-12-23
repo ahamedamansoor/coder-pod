@@ -29,6 +29,7 @@ import { useDsa } from '@/app/languages/dsa/dsa-context';
 import { useRxjs } from '@/app/languages/rxjs/rxjs-context';
 import { useSpringBoot } from '@/app/languages/spring-boot/spring-boot-context';
 import { usePlaywright } from '@/app/languages/playwright/playwright-context';
+import { useSelenium } from '@/app/languages/selenium/selenium-context';
 import { useUser } from '@/hooks/use-auth-compat';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
@@ -93,6 +94,12 @@ function useLanguageContext(language: Language) {
         case 'playwright':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return usePlaywright();
+        case 'selenium':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useSelenium();
+        case 'manual-testing':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: false };
         default:
             // Fallback or default context if necessary
             return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
@@ -167,7 +174,7 @@ export function TopicSidebar({
       if (topic.category) {
         group = topic.category;
       }
-    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs') {
+    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'manual-testing' || language.slug === 'vue' || language.slug === 'nextjs') {
       // Use category from topic data if available
       if (topic.category) {
         group = topic.category;
@@ -277,10 +284,14 @@ export function TopicSidebar({
     ? ["1. Getting Started", "2. Essentials", "3. Components In-Depth", "4. Reusability", "5. Built-in Components", "6. Scaling Up", "7. Composition API", "8. Reactivity In Depth", "9. Rendering Mechanism", "10. Vue Router", "11. Pinia (State Management)", "12. VueUse (Utilities)", "13. TypeScript with Vue", "14. Best Practices", "15. Testing", "16. Tooling & Ecosystem", "17. Server-Side Rendering", "18. Migration & Compatibility", "19. API Reference"]
     : language.slug === 'nextjs'
     ? ["1. Getting Started", "2. Routing Fundamentals", "3. App Router", "4. Data Fetching", "5. Server Components & Actions", "6. Client Components", "7. Rendering Strategies", "8. Caching & Revalidation", "9. Styling", "10. Optimizations", "11. API Routes", "12. Middleware", "13. Authentication", "14. Internationalization", "15. Testing", "16. Deployment", "17. Configuration", "18. Advanced Patterns", "19. Performance", "20. API Reference"]
+    : language.slug === 'selenium'
+    ? ["Overview", "1. Getting Started", "2. Browser Configuration", "3. Locator Strategies", "4. Element Interactions", "5. Waits & Synchronization", "6. Browser Navigation", "7. Advanced Interactions", "8. Frames & Alerts", "9. JavaScript Execution", "10. Screenshots & Visual Testing", "11. Cookies & Storage", "12. Test Frameworks Integration", "13. Page Object Model", "14. Data-Driven Testing", "15. Selenium Grid", "16. Handling Special Elements", "17. Error Handling & Debugging", "18. CI/CD Integration", "19. Performance & Optimization", "20. Best Practices", "21. Framework Architecture", "22. BDD & Cucumber Integration", "23. Reporting & Documentation", "24. API & UI Combined Testing", "25. Mobile Web Testing", "26. Advanced Design Patterns", "27. Selenium 4 Features", "28. Security Testing", "29. Accessibility Testing", "30. Performance Testing Integration", "31. Test Management & Organization", "32. Real-World Scenarios", "33. Interview Preparation"]
+    : language.slug === 'manual-testing'
+    ? ["Overview", "1. Introduction to Testing", "2. Types of Testing", "3. Test Design Techniques", "4. Test Case Management", "5. Defect Management", "6. Specialized Testing", "7. Web & Mobile Testing", "8. API & Database Testing", "9. Test Documentation", "10. Agile Testing"]
     : [];
 
-  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Vue, Next.js, DSA)
-  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa')
+  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Selenium, Manual Testing, Vue, Next.js, DSA)
+  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'manual-testing' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa')
     ? groupOrder
         .map(group => ({ title: formatGroupTitle(group), topics: topicsByGroup[group] || [] }))
         .filter(group => {

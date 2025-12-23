@@ -15,6 +15,8 @@ import { springBoot } from './spring-boot';
 import { dsa } from './dsa';
 import { rxjs } from './rxjs';
 import { playwright } from './playwright';
+import { manualTesting } from './manual-testing';
+import { selenium } from './selenium';
 import { frontendDeveloper } from './frontend-developer';
 import { backendDeveloper } from './backend-developer';
 import type { Language } from './types';
@@ -36,6 +38,8 @@ export const languages: Language[] = [
     { ...dsa, enabled: true },
     { ...rxjs, enabled: false },
     { ...playwright, enabled: false },
+    { ...manualTesting, enabled: true },
+    { ...selenium, enabled: true },
 ];
 
 // Filtered list for display (dashboard, dropdowns, etc.)

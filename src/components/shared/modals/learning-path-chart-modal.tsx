@@ -148,11 +148,11 @@ export const LearningPathChartModal = ({
 
           {!isRoleBasedRoadmap && (
             <Link
-              href={`/languages/${language.slug}/learning-plan`}
+              href={`/languages/${language.slug}/introduction`}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition-all hover:scale-105"
             >
               <BookOpen className="w-4 h-4 text-white" />
-              <span className="font-bold text-sm text-white">Start Learning</span>
+              <span className="font-bold text-sm text-white">View Learning Path</span>
             </Link>
           )}
         </div>

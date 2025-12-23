@@ -26,10 +26,10 @@ type ColorTheme =
 
 interface PageHeaderProps {
   icon: LucideIcon;
-  category: string;
+  category?: string;
   title: string;
   description: string;
-  colorTheme: ColorTheme;
+  colorTheme?: ColorTheme;
   badges?: Array<{
     label: string;
     variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'info';
@@ -213,10 +213,10 @@ const colorClasses: Record<ColorTheme, {
  */
 export function PageHeader({
   icon: Icon,
-  category,
+  category = 'Featured',
   title,
   description,
-  colorTheme,
+  colorTheme = 'blue',
   badges = [],
 }: PageHeaderProps) {
   const colors = colorClasses[colorTheme];
