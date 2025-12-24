@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TopicTitle } from '@/components/shared/topic-title';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { Play, RefreshCw, Activity, Gauge, CreditCard, DollarSign, TrendingUp, Shield, Users, Code, Eye, Plus, Minus, Trash2, Search, Monitor, Package, ShoppingCart, CheckCircle, User, Lock, Home, ArrowRight, LogOut, Send, History, Wallet } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -678,30 +678,10 @@ const BankingTesting: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header using TopicTitle Component */}
-      <TopicTitle
-        icon={<Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />}
+      <PageHeader
         title="Banking Application Testing"
-        description={
-          <div className="space-y-2">
-            <p>
-              Master automated testing for financial applications with realistic banking workflows, 
-              security validation, and transaction testing across multiple banking platforms.
-            </p>
-            <div className="flex items-center gap-2 mt-2">
-              <Badge variant="secondary" className="text-xs">
-                🏦 Dummy Banking Environment
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                🔒 Security-Focused Testing
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                💰 Real Transactions Simulation
-              </Badge>
-            </div>
-          </div>
-        }
-        size="xl"
+        description="Master automated testing for financial applications with realistic banking workflows, security validation, and transaction testing across multiple banking platforms."
+        icon={Shield}
       />
 
       {/* Banking Features Overview */}

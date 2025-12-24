@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, RefreshCw, Code, Users, Calendar, Clock, Video, FileText, Heart, Activity, Shield, Stethoscope, Pill, Phone, Mail, User, Settings, LogOut, Search, Filter, Plus, Edit, Trash2, ChevronRight, Menu, X, Camera, Download, Upload, Eye, EyeOff, Bell, CheckCircle, AlertCircle, TrendingUp, BarChart3, PieChart, LineChart, Zap, Database, Cloud, Cpu, HardDrive, Wifi, MapPin, Star, Award, Target, Package, Building, CreditCard, DollarSign, TrendingDown, Thermometer, Brain, Bone, Lock, Mic } from 'lucide-react';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { toast } from 'sonner';
 
 interface Patient {
@@ -818,6 +819,12 @@ export default function HealthTesting() {
 
   return (
     <div className="space-y-6">
+      <PageHeader
+        title="Healthcare Application Testing"
+        description="Master automated testing for healthcare systems with realistic medical workflows, patient management, appointment scheduling, and HIPAA-compliant clinical operations."
+        icon={Stethoscope}
+      />
+
       {/* Health Application Testing Features Overview */}
       <Card>
         <CardHeader>

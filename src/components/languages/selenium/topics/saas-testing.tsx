@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, RefreshCw, Code, Users, DollarSign, BarChart3, Settings, Building, CreditCard, TrendingUp, Activity, Lock, CheckCircle, Star, Zap, Globe, Shield, Database, Cloud, Cpu, HardDrive, Wifi, Mail, Phone, Calendar, Download, Upload, Eye, EyeOff, ChevronRight, Menu, X, Plus, Minus, Edit, Trash2, Search, Filter, Bell, LogOut, User as UserIcon, Package, Target, Award, PieChart, LineChart, BarChart } from 'lucide-react';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { toast } from 'sonner';
 
 interface Tenant {
@@ -535,6 +536,12 @@ export default function SaaSTesting() {
 
   return (
     <div className="space-y-6">
+      <PageHeader
+        title="SaaS Application Testing"
+        description="Master automated testing for multi-tenant SaaS applications with realistic workflows, tenant management, subscription billing, and enterprise-grade security validation."
+        icon={Cloud}
+      />
+
       {/* SaaS Testing Features Overview */}
       <Card>
         <CardHeader>

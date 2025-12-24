@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, RefreshCw, Code, Heart, MessageCircle, Share2, Users, TrendingUp, Camera, Settings, Home, Search, Bell, User, Hash, AtSign, MoreHorizontal, Activity, Lock, CheckCircle } from 'lucide-react';
+import { PageHeader } from '@/components/shared/generic-page-header';
 import { toast } from 'sonner';
 
 interface Post {
@@ -520,6 +521,12 @@ export default function SocialMediaTesting() {
 
   return (
     <div className="space-y-6">
+      <PageHeader
+        title="Social Media Testing"
+        description="Master automated testing for social media platforms with realistic workflows, content interaction testing, and user engagement validation across multiple social networks."
+        icon={Hash}
+      />
+
       {/* Social Media Testing Features Overview */}
       <Card>
         <CardHeader>
