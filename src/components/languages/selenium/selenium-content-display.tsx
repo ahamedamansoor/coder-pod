@@ -101,6 +101,8 @@ import { BaseClassesInheritanceComponent } from './topics/base-classes-inheritan
 import { Selenium4OverviewComponent } from './topics/selenium-4-overview';
 import { W3CWebDriverProtocolComponent } from './topics/w3c-webdriver-protocol';
 import { ChromeDevToolsProtocolComponent } from './topics/chrome-devtools-protocol';
+import BidiApis from './topics/bidi-apis';
+import NewWindowTabApis from './topics/new-window-tab-apis';
 import { NetworkInterceptionComponent } from './topics/network-interception';
 import { ParallelExecutionComponent } from './topics/parallel-execution';
 import { TestPerformanceComponent } from './topics/test-performance';
@@ -111,7 +113,30 @@ import { TestDesignPrinciplesSeleniumComponent } from './topics/test-design-prin
 import { LocatorBestPracticesComponent } from './topics/locator-best-practices';
 import { TestIndependenceComponent } from './topics/test-independence';
 import { MaintainableTestCodeComponent } from './topics/maintainable-test-code';
+import { SecurityTestingBasics } from './topics/security-testing-basics';
+import XSSTesting from './topics/xss-testing';
+import SQLInjectionTesting from './topics/sql-injection-testing';
+import AuthenticationTesting from './topics/authentication-testing';
+import OWASPIntegration from './topics/owasp-integration';
+import AccessibilityFundamentals from './topics/accessibility-fundamentals';
+import AxeCoreIntegration from './topics/axe-core-integration';
+import KeyboardNavigationTesting from './topics/keyboard-navigation-testing';
+import ScreenReaderTesting from './topics/screen-reader-testing';
+import ColorContrastTesting from './topics/color-contrast-testing';
 import { CrossBrowserTestingComponent } from './topics/cross-browser-testing';
+
+// Performance Testing Components
+import PerformanceMetricsCollection from './topics/performance-metrics-collection';
+import NavigationTimingAPIComponent from './topics/navigation-timing-api';
+import ResourceTimingComponent from './topics/resource-timing';
+import JMeterIntegrationComponent from './topics/jmeter-integration';
+
+// Test Management Components
+import TestSuitesOrganizationComponent from './topics/test-suites-organization';
+import TestPrioritizationComponent from './topics/test-prioritization';
+import TestTaggingComponent from './topics/test-tagging';
+import TestManagementToolsComponent from './topics/test-management-tools';
+import DefectTrackingIntegrationComponent from './topics/defect-tracking-integration';
 
 // Reporting Components
 import { ExtentReportsComponent } from './topics/extent-reports';
@@ -225,6 +250,16 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any> | React.C
   'locator-best-practices': LocatorBestPracticesComponent,
   'test-independence': TestIndependenceComponent,
   'maintainable-test-code': MaintainableTestCodeComponent,
+  'security-testing-basics': SecurityTestingBasics,
+  'xss-testing': XSSTesting,
+  'sql-injection-testing': SQLInjectionTesting,
+  'authentication-testing': AuthenticationTesting,
+  'owasp-integration': OWASPIntegration,
+  'accessibility-fundamentals': AccessibilityFundamentals,
+  'axe-core-integration': AxeCoreIntegration,
+  'keyboard-navigation-testing': KeyboardNavigationTesting as any,
+  'screen-reader-testing': ScreenReaderTesting,
+  'color-contrast-testing': ColorContrastTesting,
   'cross-browser-testing': CrossBrowserTestingComponent,
   'framework-design-principles': FrameworkDesignPrinciplesComponent,
   'hybrid-framework': HybridFrameworkComponent,
@@ -235,6 +270,8 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any> | React.C
   'selenium-4-overview': Selenium4OverviewComponent,
   'w3c-webdriver-protocol': W3CWebDriverProtocolComponent,
   'chrome-devtools-protocol': ChromeDevToolsProtocolComponent,
+  'bidi-apis': BidiApis,
+  'new-window-tab-apis': NewWindowTabApis,
   'network-interception': NetworkInterceptionComponent,
   
   // Real-World Scenarios
@@ -260,6 +297,19 @@ const TopicComponentMap: Record<string, React.LazyExoticComponent<any> | React.C
   'responsive-testing': ResponsiveTestingComponent,
   'mobile-emulation': MobileEmulationComponent,
   'touch-actions': TouchActionsComponent,
+
+  // Performance Testing Components
+  'performance-metrics-collection': PerformanceMetricsCollection,
+  'navigation-timing-api': NavigationTimingAPIComponent,
+  'resource-timing': ResourceTimingComponent,
+  'jmeter-integration': JMeterIntegrationComponent,
+
+  // Test Management Components
+  'test-suites-organization': TestSuitesOrganizationComponent,
+  'test-prioritization': TestPrioritizationComponent,
+  'test-tagging-filtering': TestTaggingComponent,
+  'test-management-tools': TestManagementToolsComponent,
+  'defect-tracking-integration': DefectTrackingIntegrationComponent,
 };
 
 function LoadingSkeleton() {

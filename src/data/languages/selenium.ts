@@ -801,16 +801,16 @@ export const selenium: Language = {
       explanation: 'Using CDP for advanced browser control',
     },
     {
+      title: 'BiDi APIs',
+      slug: 'bidi-apis',
+      category: '27. Selenium 4 Features',
+      explanation: 'WebDriver BiDi - Next-generation bidirectional browser automation protocol for enhanced testing and real-time communication',
+    },
+    {
       title: 'Network Interception',
       slug: 'network-interception',
       category: '27. Selenium 4 Features',
       explanation: 'Intercepting and mocking network requests',
-    },
-    {
-      title: 'BiDi APIs',
-      slug: 'bidi-apis',
-      category: '27. Selenium 4 Features',
-      explanation: 'Bidirectional communication with browsers',
     },
     {
       title: 'New Window & Tab APIs',
