@@ -97,26 +97,6 @@ const BankingTesting: React.FC = () => {
       bankName: 'Chase',
       status: 'active' as const,
       lastTransaction: '2024-01-14'
-    },
-    {
-      id: 'acc3',
-      accountNumber: '****2345',
-      accountType: 'credit' as const,
-      balance: -1250.75,
-      currency: 'USD',
-      bankName: 'Bank of America',
-      status: 'active' as const,
-      lastTransaction: '2024-01-15'
-    },
-    {
-      id: 'acc4',
-      accountNumber: '****6789',
-      accountType: 'checking' as const,
-      balance: 8750.25,
-      currency: 'USD',
-      bankName: 'Wells Fargo',
-      status: 'active' as const,
-      lastTransaction: '2024-01-13'
     }
   ];
 
@@ -425,16 +405,16 @@ const BankingTesting: React.FC = () => {
         }
       },
       { step: 16, log: '📋 Transaction history loaded with recent activities', delay: 1000 * multiplier, codeLine: 0 },
-      { step: 17, log: '🏦 Selecting Bank of America Credit Card...', delay: 800 * multiplier, codeLine: 0,
+      { step: 17, log: '🏦 Selecting Chase Credit Card...', delay: 800 * multiplier, codeLine: 0,
         action: () => {
           selectAccount(getAccounts()[2]);
-          setLiveVariables({ account: 'BofA Credit Card', balance: '-$1,250.75', accountNumber: '****2345' });
+          setLiveVariables({ account: 'Chase Credit Card', balance: '-$1,250.75', accountNumber: '****2345' });
         }
       },
       { step: 18, log: '💳 Making credit card payment of $200...', delay: 800 * multiplier, codeLine: 0,
         action: () => {
           performTransaction('payment', 200, 'Credit Card Payment');
-          setLiveVariables({ account: 'BofA Credit Card', balance: '-$1,050.75', transaction: 'payment', amount: '$200.00' });
+          setLiveVariables({ account: 'Chase Credit Card', balance: '-$1,050.75', transaction: 'payment', amount: '$200.00' });
         }
       },
       { step: 19, log: '✅ Credit card payment processed!', delay: 600 * multiplier, codeLine: 0 },
@@ -653,64 +633,6 @@ const BankingTesting: React.FC = () => {
           'chaseBankTest();'
         ];
       }
-    } else if (selectedBank === 'bankofamerica') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Bank of America Testing", () => {',
-          '  test("BoA end-to-end banking flow", async ({ page }) => {',
-          '    // Navigate to Bank of America online banking',
-          '    await page.goto("https://www.bankofamerica.com");',
-          '    ',
-          '    // Click on Sign In',
-          '    await page.click("#online-banking-sign-in");',
-          '    await page.waitForSelector("#onlineId");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#onlineId", "testuser@bofa.com");',
-          '    await page.fill("#passcode", "BofaSecure123");',
-          '    await page.click("#signIn");',
-          '',
-          '    // Wait for dashboard to load',
-          '    await page.waitForSelector(".dashboard-container");',
-          '',
-          '    // Select account and view details',
-          '    await page.click("[data-account-type=\'checking\']");',
-          '    await page.waitForSelector(".account-balance");',
-          '',
-          '    console.log("Bank of America test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else if (selectedBank === 'wellsfargo') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Wells Fargo Testing", () => {',
-          '  test("WF end-to-end banking flow", async ({ page }) => {',
-          '    // Navigate to Wells Fargo online banking',
-          '    await page.goto("https://www.wellsfargo.com");',
-          '    ',
-          '    // Click on Sign In',
-          '    await page.click("#signin-btn");',
-          '    await page.waitForSelector("#userid");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#userid", "testuser@wellsfargo.com");',
-          '    await page.fill("#password", "WFSecure123");',
-          '    await page.click("#btn-signin");',
-          '',
-          '    // Wait for dashboard',
-          '    await page.waitForSelector(".account-overview");',
-          '',
-          '    console.log("Wells Fargo test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
     } else {
       // General banking testing
       if (language === 'playwright') {
@@ -828,7 +750,7 @@ const BankingTesting: React.FC = () => {
               </div>
               <div>
                 <h4 className="font-semibold text-sm">Multi-Bank Support</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Chase, BoA, Wells Fargo</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400">Chase</p>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
@@ -862,7 +784,7 @@ const BankingTesting: React.FC = () => {
           </CardTitle>
           <CardDescription>
             Multi-language implementations of banking testing workflows. 
-            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real banking websites like Chase, Bank of America, or Wells Fargo to master these skills!</span>
+            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real banking websites like Chase to master these skills!</span>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -871,7 +793,7 @@ const BankingTesting: React.FC = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Select Banking Platform:</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {(['chase', 'bankofamerica', 'wellsfargo', 'general'] as const).map((bank) => (
+                {(['chase'] as const).map((bank) => (
                   <button
                     key={bank}
                     onClick={() => setSelectedBank(bank)}
@@ -881,7 +803,7 @@ const BankingTesting: React.FC = () => {
                         : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
                     }`}
                   >
-                    {bank === 'chase' ? 'Chase' : bank === 'bankofamerica' ? 'Bank of America' : bank === 'wellsfargo' ? 'Wells Fargo' : 'General'}
+                    Chase
                   </button>
                 ))}
               </div>
@@ -921,7 +843,7 @@ const BankingTesting: React.FC = () => {
                   Copy Code
                 </Button>
               </div>
-              <div className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+              <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg overflow-x-auto">
                 <pre className="text-sm">
                   <code>{bankingExample.code}</code>
                 </pre>
@@ -1300,7 +1222,7 @@ const BankingTesting: React.FC = () => {
                   <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Execution Logs</h4>
                 </div>
-                <div className="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
+                <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
                   {executionLogs.map((log, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="text-slate-500">[{String(index + 1).padStart(2, '0')}]</span>

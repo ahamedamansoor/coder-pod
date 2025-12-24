@@ -64,7 +64,7 @@ export default function SaaSTesting() {
   const [executionLogs, setExecutionLogs] = useState<string[]>([]);
   const [liveVariables, setLiveVariables] = useState<Record<string, any>>({});
   const [speed, setSpeed] = useState<'slow' | 'medium' | 'fast'>('medium');
-  const [selectedPlatform, setSelectedPlatform] = useState<'salesforce' | 'slack' | 'hubspot' | 'zendesk' | 'general'>('salesforce');
+  const [selectedPlatform, setSelectedPlatform] = useState<'salesforce'>('salesforce');
   const [selectedLanguage, setSelectedLanguage] = useState<'playwright' | 'python' | 'java' | 'javascript'>('playwright');
 
   const [saasState, setSaaSState] = useState<SaaSState>({
@@ -343,160 +343,15 @@ export default function SaaSTesting() {
           '',
           '# Navigate to Accounts',
           'accounts_link = driver.find_element(By.XPATH, "//a[contains(text(),\'Accounts\')]")',
-          'accounts_link.click()',
-          '',
-          'print("Salesforce test completed successfully!")',
-          'driver.quit()'
-        ];
-      }
-    } else if (selectedPlatform === 'slack') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Slack SaaS Testing", () => {',
-          '  test("Complete Slack workflow", async ({ page }) => {',
-          '    // Navigate to Slack',
-          '    await page.goto("https://slack.com/signin");',
-          '',
-          '    // Enter workspace and credentials',
-          '    await page.fill("#domain", "testworkspace");',
-          '    await page.click("#submit_team_domain");',
-          '    await page.fill("#email", "user@example.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#signin_btn");',
-          '',
-          '    // Wait for workspace to load',
-          '    await page.waitForSelector(".p-client");',
-          '',
-          '    // Send message to channel',
-          '    await page.fill(".p-message_input_field", "Hello from automation testing! 🤖");',
-          '    await page.press(".p-message_input_field", "Enter");',
-          '',
-          '    // Verify message sent',
-          '    await expect(page.locator(".p-message_body")).toContainText("Hello from automation testing!");',
-          '',
-          '    console.log("Slack test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else if (selectedPlatform === 'hubspot') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("HubSpot SaaS Testing", () => {',
-          '  test("Complete HubSpot workflow", async ({ page }) => {',
-          '    // Navigate to HubSpot',
-          '    await page.goto("https://app.hubspot.com/login");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#username", "user@example.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#loginBtn");',
-          '',
-          '    // Wait for dashboard',
-          '    await page.waitForSelector(".private-dashboard");',
-          '',
-          '    // Navigate to Contacts',
-          '    await page.click("a[href=\'/contacts\']");',
-          '    await page.waitForSelector(".contacts-table");',
-          '',
-          '    // Create new contact',
-          '    await page.click(".ui-button:has-text(\'Create contact\')");',
-          '    await page.fill("#firstname", "John");',
-          '    await page.fill("#lastname", "Doe");',
-          '    await page.fill("#email", "john.doe@example.com");',
-          '    await page.click(".ui-button:has-text(\'Create\')");',
-          '',
-          '    console.log("HubSpot test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else if (selectedPlatform === 'zendesk') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Zendesk SaaS Testing", () => {',
-          '  test("Complete Zendesk workflow", async ({ page }) => {',
-          '    // Navigate to Zendesk',
-          '    await page.goto("https://example.zendesk.com/access");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#user_email", "admin@example.com");',
-          '    await page.fill("#user_password", "SecurePassword123");',
-          '    await page.click("input[type=\'submit\']");',
-          '',
-          '    // Wait for dashboard',
-          '    await page.waitForSelector(".dashboard");',
-          '',
-          '    // Create new ticket',
-          '    await page.click("a[href=\'/requests/new\']");',
-          '    await page.fill("#request_subject", "Test Ticket");',
-          '    await page.fill("#request_comment", "This is a test ticket created by automation.");',
-          '    await page.click("input[type=\'submit\']");',
-          '',
-          '    // Verify ticket creation',
-          '    await expect(page.locator(".notice")).toContainText("Ticket was successfully created");',
-          '',
-          '    console.log("Zendesk test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else {
-      // General SaaS testing
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("General SaaS Application Testing", () => {',
-          '  test("Complete SaaS workflow", async ({ page }) => {',
-          '    // Navigate to SaaS application',
-          '    await page.goto("https://saas-app.com/login");',
-          '',
-          '    // Multi-tenant login',
-          '    await page.fill("#tenant", "company-name");',
-          '    await page.fill("#email", "user@company.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#login-button");',
-          '',
-          '    // Wait for dashboard',
-          '    await page.waitForSelector(".saas-dashboard");',
-          '',
-          '    // Check subscription status',
-          '    await expect(page.locator(".subscription-status")).toContainText("Professional Plan");',
-          '',
-          '    // Navigate to user management',
-          '    await page.click("a[href=\'/users\']");',
-          '    await page.waitForSelector(".users-table");',
-          '',
-          '    // Add new user',
-          '    await page.click(".add-user-button");',
-          '    await page.fill("#user-name", "New User");',
-          '    await page.fill("#user-email", "newuser@example.com");',
-          '    await page.selectOption("#user-role", "user");',
-          '    await page.click(".save-user-button");',
-          '',
-          '    // Navigate to billing',
-          '    await page.click("a[href=\'/billing\']");',
-          '    await expect(page.locator(".billing-overview")).toBeVisible();',
-          '',
-          '    // Check analytics',
-          '    await page.click("a[href=\'/analytics\']");',
-          '    await expect(page.locator(".analytics-dashboard")).toBeVisible();',
-          '',
-          '    console.log("General SaaS test completed!");',
-          '  });',
-          '});'
-        ];
-      }
-    }
-    return ['// Select a platform and language to see code examples'];
-  };
+      'accounts_link.click()',
+      '',
+      'print("Salesforce test completed successfully!")',
+      'driver.quit()'
+    ];
+  }
+  }
+  return ['// Select a platform and language to see code examples'];
+};
 
   const saasExample = {
     title: `${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)} SaaS Test`,
@@ -760,7 +615,7 @@ export default function SaaSTesting() {
           </CardTitle>
           <CardDescription>
             Multi-language implementations of SaaS application testing workflows. 
-            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real SaaS platforms like Salesforce, Slack, HubSpot, or Zendesk to master these skills!</span>
+            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real SaaS platforms like Salesforce to master these skills!</span>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -769,7 +624,7 @@ export default function SaaSTesting() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Select SaaS Platform:</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {(['salesforce', 'slack', 'hubspot', 'zendesk', 'general'] as const).map((platform) => (
+                {(['salesforce'] as const).map((platform) => (
                   <button
                     key={platform}
                     onClick={() => setSelectedPlatform(platform)}
@@ -779,7 +634,7 @@ export default function SaaSTesting() {
                         : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
                     }`}
                   >
-                    {platform === 'salesforce' ? 'Salesforce' : platform === 'slack' ? 'Slack' : platform === 'hubspot' ? 'HubSpot' : platform === 'zendesk' ? 'Zendesk' : 'General'}
+                    Salesforce
                   </button>
                 ))}
               </div>
@@ -819,7 +674,7 @@ export default function SaaSTesting() {
                   Copy Code
                 </Button>
               </div>
-              <div className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+              <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg overflow-x-auto">
                 <pre className="text-sm">
                   <code>{saasExample.code}</code>
                 </pre>
@@ -1338,7 +1193,7 @@ export default function SaaSTesting() {
                   <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Execution Logs</h4>
                 </div>
-                <div className="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
+                <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
                   {executionLogs.map((log, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="text-slate-500">[{String(index + 1).padStart(2, '0')}]</span>

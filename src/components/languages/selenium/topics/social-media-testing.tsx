@@ -40,7 +40,7 @@ export default function SocialMediaTesting() {
   const [executionLogs, setExecutionLogs] = useState<string[]>([]);
   const [liveVariables, setLiveVariables] = useState<Record<string, any>>({});
   const [speed, setSpeed] = useState<'slow' | 'medium' | 'fast'>('medium');
-  const [selectedPlatform, setSelectedPlatform] = useState<'instagram' | 'twitter' | 'facebook' | 'linkedin' | 'general'>('instagram');
+  const [selectedPlatform, setSelectedPlatform] = useState<'instagram'>('instagram');
   const [selectedLanguage, setSelectedLanguage] = useState<'playwright' | 'python' | 'java' | 'javascript'>('playwright');
 
   const [socialMediaState, setSocialMediaState] = useState<SocialMediaState>({
@@ -363,142 +363,6 @@ export default function SocialMediaTesting() {
           'instagramTest();'
         ];
       }
-    } else if (selectedPlatform === 'twitter') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Twitter Testing", () => {',
-          '  test("Complete Twitter workflow", async ({ page }) => {',
-          '    // Navigate to Twitter',
-          '    await page.goto("https://twitter.com");',
-          '',
-          '    // Click on Sign In',
-          '    await page.click("a[href=\'/login\']");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("input[name=\'text\']", "testuser@example.com");',
-          '    await page.click("[role=\'button\'] span:has-text(\'Next\')");',
-          '    await page.fill("input[name=\'password\']", "SecurePassword123");',
-          '    await page.click("[data-testid=\'LoginForm_Login_Button\']");',
-          '',
-          '    // Wait for timeline to load',
-          '    await page.waitForSelector("[data-testid=\'primaryColumn\']");',
-          '',
-          '    // Like first tweet',
-          '    await page.click("[data-testid=\'like\']");',
-          '',
-          '    // Retweet',
-          '    await page.click("[data-testid=\'retweet\']");',
-          '    await page.click("[data-testid=\'retweetConfirm\']");',
-          '',
-          '    console.log("Twitter test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else if (selectedPlatform === 'facebook') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Facebook Testing", () => {',
-          '  test("Complete Facebook workflow", async ({ page }) => {',
-          '    // Navigate to Facebook',
-          '    await page.goto("https://www.facebook.com");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#email", "testuser@example.com");',
-          '    await page.fill("#pass", "SecurePassword123");',
-          '    await page.click("button[name=\'login\']");',
-          '',
-          '    // Wait for news feed',
-          '    await page.waitForSelector("[role=\'feed\']");',
-          '',
-          '    // Like first post',
-          '    await page.click("[aria-label=\'Like\']");',
-          '',
-          '    // Comment on post',
-          '    await page.click("[aria-label=\'Comment\']");',
-          '    await page.fill("div[contenteditable=\'true\']", "Great post!");',
-          '    await page.press("div[contenteditable=\'true\']", "Enter");',
-          '',
-          '    console.log("Facebook test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else if (selectedPlatform === 'linkedin') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("LinkedIn Testing", () => {',
-          '  test("Complete LinkedIn workflow", async ({ page }) => {',
-          '    // Navigate to LinkedIn',
-          '    await page.goto("https://www.linkedin.com");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#username", "testuser@example.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("button[type=\'submit\']");',
-          '',
-          '    // Wait for feed',
-          '    await page.waitForSelector(".feed-shared-update-v2");',
-          '',
-          '    // Like post',
-          '    await page.click(".feed-shared-social-action-bar__action-button");',
-          '',
-          '    // Add comment',
-          '    await page.click(".feed-shared-social-action-bar__comment-button");',
-          '    await page.fill(".ql-editor", "Insightful post!");',
-          '    await page.click(".feed-shared-comment-submit-button");',
-          '',
-          '    console.log("LinkedIn test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else {
-      // General social media testing
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("General Social Media Testing", () => {',
-          '  test("Complete social media workflow", async ({ page }) => {',
-          '    // Navigate to social media application',
-          '    await page.goto("https://social-media-app.com");',
-          '',
-          '    // Login process',
-          '    await page.fill("#username", "testuser@example.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#login-button");',
-          '',
-          '    // Wait for feed to load',
-          '    await page.waitForSelector(".social-feed");',
-          '',
-          '    // Like post',
-          '    await page.click(".like-button");',
-          '',
-          '    // Comment on post',
-          '    await page.click(".comment-button");',
-          '    await page.fill(".comment-input", "Great content!");',
-          '    await page.click(".submit-comment");',
-          '',
-          '    // Share post',
-          '    await page.click(".share-button");',
-          '',
-          '    // Create new post',
-          '    await page.click(".create-post-button");',
-          '    await page.fill(".post-content", "My new post!");',
-          '    await page.click(".publish-post");',
-          '',
-          '    console.log("General social media test completed!");',
-          '  });',
-          '});'
-        ];
-      }
     }
     return ['// Select a platform and language to see code examples'];
   };
@@ -736,7 +600,7 @@ export default function SocialMediaTesting() {
           </CardTitle>
           <CardDescription>
             Multi-language implementations of social media testing workflows. 
-            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real social media platforms like Instagram, Twitter, Facebook, or LinkedIn to master these skills!</span>
+            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real social media platforms like Instagram to master these skills!</span>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -745,7 +609,7 @@ export default function SocialMediaTesting() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Select Social Media Platform:</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {(['instagram', 'twitter', 'facebook', 'linkedin', 'general'] as const).map((platform) => (
+                {(['instagram'] as const).map((platform) => (
                   <button
                     key={platform}
                     onClick={() => setSelectedPlatform(platform)}
@@ -755,7 +619,7 @@ export default function SocialMediaTesting() {
                         : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
                     }`}
                   >
-                    {platform === 'instagram' ? 'Instagram' : platform === 'twitter' ? 'Twitter' : platform === 'facebook' ? 'Facebook' : platform === 'linkedin' ? 'LinkedIn' : 'General'}
+                    Instagram
                   </button>
                 ))}
               </div>
@@ -795,7 +659,7 @@ export default function SocialMediaTesting() {
                   Copy Code
                 </Button>
               </div>
-              <div className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+              <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg overflow-x-auto">
                 <pre className="text-sm">
                   <code>{socialMediaExample.code}</code>
                 </pre>
@@ -1078,7 +942,7 @@ export default function SocialMediaTesting() {
                   <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Execution Logs</h4>
                 </div>
-                <div className="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
+                <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
                   {executionLogs.map((log, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="text-slate-500">[{String(index + 1).padStart(2, '0')}]</span>

@@ -1083,7 +1083,7 @@ export function EcommerceTesting() {
                   </Button>
                 )}
               </div>
-              <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
+              <pre className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
                 <code>{getEcommerceCode(selectedLanguage as any).join('\n')}</code>
               </pre>
             </div>
@@ -1484,7 +1484,7 @@ export function EcommerceTesting() {
                   <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Execution Logs</h4>
                 </div>
-                <div className="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
+                <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
                   {executionLogs.map((log, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="text-slate-500">[{String(index + 1).padStart(2, '0')}]</span>

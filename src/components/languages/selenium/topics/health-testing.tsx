@@ -85,7 +85,7 @@ export default function HealthTesting() {
   const [executionLogs, setExecutionLogs] = useState<string[]>([]);
   const [liveVariables, setLiveVariables] = useState<Record<string, any>>({});
   const [speed, setSpeed] = useState<'slow' | 'medium' | 'fast'>('medium');
-  const [selectedPlatform, setSelectedPlatform] = useState<'epic' | 'cerner' | 'athenahealth' | 'teladoc' | 'general'>('epic');
+  const [selectedPlatform, setSelectedPlatform] = useState<'epic'>('epic');
   const [selectedLanguage, setSelectedLanguage] = useState<'playwright' | 'python' | 'java' | 'javascript'>('playwright');
 
   const [healthState, setHealthState] = useState<HealthState>({
@@ -491,160 +491,122 @@ export default function HealthTesting() {
           'print("Epic test completed successfully!")',
           'driver.quit()'
         ];
-      }
-    } else if (selectedPlatform === 'cerner') {
-      if (language === 'playwright') {
+      } else if (language === 'java') {
         return [
-          'import { test, expect } from "@playwright/test";',
+          'import org.openqa.selenium.By;',
+          'import org.openqa.selenium.WebDriver;',
+          'import org.openqa.selenium.WebElement;',
+          'import org.openqa.selenium.chrome.ChromeDriver;',
+          'import org.openqa.selenium.support.ui.ExpectedConditions;',
+          'import org.openqa.selenium.support.ui.WebDriverWait;',
+          'import org.openqa.selenium.support.ui.Select;',
+          'import org.testng.Assert;',
+          'import org.testng.annotations.Test;',
           '',
-          'test.describe("Cerner Health System Testing", () => {',
-          '  test("Complete Cerner workflow", async ({ page }) => {',
-          '    // Navigate to Cerner',
-          '    await page.goto("https://powerchart.cerner.com");',
+          'public class EpicHealthSystemTest {',
+          '    ',
+          '    @Test',
+          '    public void testEpicHealthSystem() {',
+          '        WebDriver driver = new ChromeDriver();',
+          '        try {',
+          '            // Navigate to Epic',
+          '            driver.get("https://epic.com/login");',
+          '            ',
+          '            // Enter credentials',
+          '            WebElement usernameField = driver.findElement(By.id("username"));',
+          '            WebElement passwordField = driver.findElement(By.id("password"));',
+          '            usernameField.sendKeys("doctor@hospital.com");',
+          '            passwordField.sendKeys("SecurePassword123");',
+          '            driver.findElement(By.id("login-button")).click();',
+          '            ',
+          '            // Wait for dashboard',
+          '            WebDriverWait wait = new WebDriverWait(driver, 10);',
+          '            wait.until(ExpectedConditions.presenceOfElementLocated(By.className("patient-portal")));',
+          '            ',
+          '            // Navigate to patient records',
+          '            driver.findElement(By.cssSelector("a[href=\'/patients\']")).click();',
+          '            wait.until(ExpectedConditions.presenceOfElementLocated(By.className("patient-list")));',
+          '            ',
+          '            // Search for patient',
+          '            WebElement searchField = driver.findElement(By.id("patient-search"));',
+          '            searchField.sendKeys("Sarah Johnson");',
+          '            driver.findElement(By.className("search-button")).click();',
+          '            ',
+          '            // View patient details',
+          '            driver.findElement(By.cssSelector(".patient-row:first-child")).click();',
+          '            WebElement patientDetails = wait.until(',
+          '                ExpectedConditions.presenceOfElementLocated(By.className("patient-details"))',
+          '            );',
+          '            Assert.assertTrue(patientDetails.isDisplayed(), "Patient details not displayed");',
+          '            ',
+          '            // Schedule appointment',
+          '            driver.findElement(By.className("schedule-appointment")).click();',
+          '            Select appointmentType = new Select(driver.findElement(By.id("appointment-type")));',
+          '            appointmentType.selectByVisibleText("in-person");',
+          '            driver.findElement(By.id("confirm-appointment")).click();',
+          '            ',
+          '            System.out.println("Epic test completed successfully!");',
+          '            ',
+          '        } finally {',
+          '            driver.quit();',
+          '        }',
+          '    }',
+          '}',
           '',
-          '    // Enter credentials',
-          '    await page.fill("#userid", "doctor123");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#login-button");',
-          '',
-          '    // Wait for patient chart',
-          '    await page.waitForSelector(".patient-chart");',
-          '',
-          '    // Search patient',
-          '    await page.fill("#patient-search", "Robert Williams");',
-          '    await page.press("#patient-search", "Enter");',
-          '',
-          '    // View vitals',
-          '    await page.click(".vitals-tab");',
-          '    await expect(page.locator(".vitals-data")).toBeVisible();',
-          '',
-          '    // Add prescription',
-          '    await page.click(".medications-tab");',
-          '    await page.click(".add-medication");',
-          '    await page.fill("#medication-name", "Lisinopril");',
-          '    await page.click("#prescribe-button");',
-          '',
-          '    console.log("Cerner test completed successfully!");',
-          '  });',
-          '});'
+          '// Run the test',
+          'public class Main {',
+          '    public static void main(String[] args) {',
+          '        EpicHealthSystemTest test = new EpicHealthSystemTest();',
+          '        test.testEpicHealthSystem();',
+          '    }',
+          '}'
         ];
-      }
-    } else if (selectedPlatform === 'athenahealth') {
-      if (language === 'playwright') {
+      } else if (language === 'javascript') {
         return [
-          'import { test, expect } from "@playwright/test";',
+          'const { Builder, By, until, Key } = require(\'selenium-webdriver\');',
+          'const assert = require(\'assert\');',
           '',
-          'test.describe("Athenahealth Testing", () => {',
-          '  test("Complete Athenahealth workflow", async ({ page }) => {',
-          '    // Navigate to Athenahealth',
-          '    await page.goto("https://athenahealth.com/login");',
+          'async function testEpicHealthSystem() {',
+          '    let driver = await new Builder().forBrowser(\'chrome\').build();',
+          '    try {',
+          '        // Navigate to Epic',
+          '        await driver.get(\'https://epic.com/login\');',
+          '        ',
+          '        // Enter credentials',
+          '        await driver.findElement(By.id(\'username\')).sendKeys(\'doctor@hospital.com\');',
+          '        await driver.findElement(By.id(\'password\')).sendKeys(\'SecurePassword123\');',
+          '        await driver.findElement(By.id(\'login-button\')).click();',
+          '        ',
+          '        // Wait for dashboard',
+          '        await driver.wait(until.elementLocated(By.className(\'patient-portal\')), 10000);',
+          '        ',
+          '        // Navigate to patient records',
+          '        await driver.findElement(By.cssSelector(\'a[href="/patients"]\')).click();',
+          '        await driver.wait(until.elementLocated(By.className(\'patient-list\')), 10000);',
+          '        ',
+          '        // Search for patient',
+          '        await driver.findElement(By.id(\'patient-search\')).sendKeys(\'Sarah Johnson\');',
+          '        await driver.findElement(By.className(\'search-button\')).click();',
+          '        ',
+          '        // View patient details',
+          '        await driver.findElement(By.cssSelector(\'.patient-row:first-child\')).click();',
+          '        let patientDetails = await driver.wait(until.elementLocated(By.className(\'patient-details\')), 10000);',
+          '        assert(await patientDetails.isDisplayed(), \'Patient details not displayed\');',
+          '        ',
+          '        // Schedule appointment',
+          '        await driver.findElement(By.className(\'schedule-appointment\')).click();',
+          '        await driver.findElement(By.id(\'appointment-type\')).sendKeys(\'in-person\');',
+          '        await driver.findElement(By.id(\'confirm-appointment\')).click();',
+          '        ',
+          '        console.log(\'Epic test completed successfully!\');',
+          '        ',
+          '    } finally {',
+          '        await driver.quit();',
+          '    }',
+          '}',
           '',
-          '    // Enter credentials',
-          '    await page.fill("#username", "clinician@practice.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#login");',
-          '',
-          '    // Wait for clinical dashboard',
-          '    await page.waitForSelector(".clinical-workflow");',
-          '',
-          '    // Navigate to appointments',
-          '    await page.click(".appointment-scheduler");',
-          '    await page.waitForSelector(".calendar-view");',
-          '',
-          '    // Book new appointment',
-          '    await page.click(".new-appointment");',
-          '    await page.fill("#patient-name", "Maria Garcia");',
-          '    await page.selectOption("#appointment-type", "telemedicine");',
-          '    await page.click("#book-appointment");',
-          '',
-          '    console.log("Athenahealth test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else if (selectedPlatform === 'teladoc') {
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("Teladoc Testing", () => {',
-          '  test("Complete Teladoc workflow", async ({ page }) => {',
-          '    // Navigate to Teladoc',
-          '    await page.goto("https://teladoc.com/login");',
-          '',
-          '    // Enter credentials',
-          '    await page.fill("#email", "patient@teladoc.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#sign-in");',
-          '',
-          '    // Wait for patient portal',
-          '    await page.waitForSelector(".patient-dashboard");',
-          '',
-          '    // Start telemedicine visit',
-          '    await page.click(".start-visit");',
-          '    await page.selectOption("#specialty", "general-practice");',
-          '    await page.click(".continue-booking");',
-          '',
-          '    // Join video call',
-          '    await page.waitForSelector(".video-consultation");',
-          '    await page.click(".join-call");',
-          '    await expect(page.locator(".video-window")).toBeVisible();',
-          '',
-          '    console.log("Teladoc test completed successfully!");',
-          '  });',
-          '});'
-        ];
-      }
-    } else {
-      // General health application testing
-      if (language === 'playwright') {
-        return [
-          'import { test, expect } from "@playwright/test";',
-          '',
-          'test.describe("General Health Application Testing", () => {',
-          '  test("Complete health app workflow", async ({ page }) => {',
-          '    // Navigate to health app',
-          '    await page.goto("https://health-app.com/login");',
-          '',
-          '    // Role-based login',
-          '    await page.selectOption("#role", "doctor");',
-          '    await page.fill("#email", "doctor@hospital.com");',
-          '    await page.fill("#password", "SecurePassword123");',
-          '    await page.click("#login-button");',
-          '',
-          '    // Wait for dashboard',
-          '    await page.waitForSelector(".health-dashboard");',
-          '',
-          '    // View patient records',
-          '    await page.click("a[href=\'/patients\']");',
-          '    await page.waitForSelector(".patient-records");',
-          '',
-          '    // Search patient',
-          '    await page.fill("#search-patient", "Sarah Johnson");',
-          '    await page.click(".search-btn");',
-          '',
-          '    // View patient details',
-          '    await page.click(".patient-card");',
-          '    await expect(page.locator(".patient-info")).toBeVisible();',
-          '',
-          '    // Schedule appointment',
-          '    await page.click(".schedule-appointment-btn");',
-          '    await page.selectOption("#appointment-type", "in-person");',
-          '    await page.click("#confirm-schedule");',
-          '',
-          '    // Issue prescription',
-          '    await page.click(".prescribe-btn");',
-          '    await page.fill("#medication", "Amoxicillin");',
-          '    await page.fill("#dosage", "500mg");',
-          '    await page.click("#issue-prescription");',
-          '',
-          '    // Start telemedicine session',
-          '    await page.click(".telemedicine-btn");',
-          '    await page.waitForSelector(".video-call");',
-          '',
-          '    console.log("General health app test completed!");',
-          '  });',
-          '});'
+          '// Run the test',
+          'testEpicHealthSystem().catch(console.error);'
         ];
       }
     }
@@ -936,7 +898,7 @@ export default function HealthTesting() {
           </CardTitle>
           <CardDescription>
             Multi-language implementations of health application testing workflows. 
-            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real health systems like Epic, Cerner, Athenahealth, or Teladoc to master these skills!</span>
+            <span className="text-green-600 dark:text-green-400 font-medium"> Practice on real health systems like Epic to master these skills!</span>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -945,7 +907,7 @@ export default function HealthTesting() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Select Health Platform:</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {(['epic', 'cerner', 'athenahealth', 'teladoc', 'general'] as const).map((platform) => (
+                {(['epic'] as const).map((platform) => (
                   <button
                     key={platform}
                     onClick={() => setSelectedPlatform(platform)}
@@ -955,7 +917,7 @@ export default function HealthTesting() {
                         : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
                     }`}
                   >
-                    {platform === 'epic' ? 'Epic' : platform === 'cerner' ? 'Cerner' : platform === 'athenahealth' ? 'Athenahealth' : platform === 'teladoc' ? 'Teladoc' : 'General'}
+                    Epic
                   </button>
                 ))}
               </div>
@@ -995,7 +957,7 @@ export default function HealthTesting() {
                   Copy Code
                 </Button>
               </div>
-              <div className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+              <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg overflow-x-auto">
                 <pre className="text-sm">
                   <code>{healthExample.code}</code>
                 </pre>
@@ -1394,7 +1356,7 @@ export default function HealthTesting() {
                   <div className="p-6">
                     <div className="space-y-6">
                       {/* Video Call Interface */}
-                      <div className="bg-slate-900 rounded-lg p-8 text-center">
+                      <div className="bg-slate-100 dark:bg-slate-900 rounded-lg p-8 text-center">
                         <Video className="w-16 h-16 text-white mx-auto mb-4" />
                         <h4 className="text-white text-lg font-semibold mb-2">Video Consultation Active</h4>
                         <p className="text-slate-400 mb-4">Connected with Robert Williams</p>
@@ -1547,7 +1509,7 @@ export default function HealthTesting() {
                   <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Execution Logs</h4>
                 </div>
-                <div className="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
+                <div className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 rounded-lg text-sm font-mono max-h-48 overflow-y-auto">
                   {executionLogs.map((log, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="text-slate-500">[{String(index + 1).padStart(2, '0')}]</span>
