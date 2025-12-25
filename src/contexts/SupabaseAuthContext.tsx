@@ -5,6 +5,7 @@ import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { UserProfile } from '@/types/user.types';
 import { supabaseUserService } from '@/services/supabase-user.service';
+import { completionSyncService } from '@/services/completion-sync.service';
 
 interface AuthContextType {
   user: User | null;
@@ -194,6 +195,16 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     setError(null);
 
     try {
+      // Sync completion data before signing out
+      if (user) {
+        try {
+          await completionSyncService.syncToServer();
+        } catch (syncError) {
+          console.warn('Failed to sync completion data on logout:', syncError);
+          // Continue with logout even if sync fails
+        }
+      }
+
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       

@@ -36,6 +36,7 @@ interface InnovativeHeaderProps {
     isAnonymous?: boolean;
     isAdmin?: boolean;
   } | null;
+  action?: React.ReactNode; // For mobile-friendly action buttons
   onLogout?: () => void;
   // Learning page specific props
   showSidebarTrigger?: boolean;
@@ -70,6 +71,7 @@ export function InnovativeHeader({
   currentPage,
   showNavigation = true,
   user,
+  action,
   onLogout,
   showSidebarTrigger = false,
   showLanguageSwitcher = false,
@@ -85,7 +87,7 @@ export function InnovativeHeader({
 
   const allNavItems = [
     { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false, description: 'Go to homepage' },
-    { href: '/learning-paths', label: 'Learning Path', icon: Code, page: 'learning', requiresAuth: false, description: 'Curated learning path content' },
+    { href: '/learning-paths', label: 'Learn', icon: Code, page: 'learning', requiresAuth: false, description: 'Curated learning path content' },
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false, description: 'Structured learning roadmaps' },
     { href: '/cheatsheets', label: 'Quick Reference', icon: FileText, page: 'cheatsheets', requiresAuth: false, description: 'Cheatsheets & quick tips' },
     { href: '/ai-interview', label: 'AI Practice', icon: Brain, page: 'ai-interview', requiresAuth: false, description: 'Practice with AI interviewer' },
@@ -206,8 +208,31 @@ export function InnovativeHeader({
           </nav>
         )}
 
-        {/* Right Side - Mobile Menu, Playground Button, Theme Toggle & User */}
+        {/* Right Side - Mobile Menu, Action, Playground Button, Theme Toggle & User */}
         <div className="flex items-center gap-2 md:gap-3">
+          {/* Custom Action (e.g., Mark as Completed) - Better Mobile Experience */}
+          {action && (
+            <div className="hidden sm:flex">
+              {action}
+            </div>
+          )}
+          
+          {/* Mobile Action - Show in dropdown on small screens */}
+          {action && (
+            <div className="sm:hidden">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    {action}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Quick Actions</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          )}
+          
           {/* React Playground Button */}
           {currentLanguage === 'react' && onPlaygroundOpen && (
             <Button

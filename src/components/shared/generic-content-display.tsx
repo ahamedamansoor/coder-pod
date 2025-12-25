@@ -487,7 +487,82 @@ Keep it simple and easy to understand.`;
   };
   
   return (
-    <div className="space-y-8 min-h-screen">
+    <div className="space-y-2 min-h-screen">
+      {/* Refined Mark as Completed Button with Enhanced Design */}
+      {isTrackableTopic && isUserAuthenticated && (
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={handleMarkCompleteChange}
+            className={cn(
+              "group relative flex items-center gap-3 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+              "border shadow-sm hover:shadow-lg overflow-hidden",
+              "before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent",
+              "before:translate-x-[-100%] before:transition-transform before:duration-700",
+              "hover:before:translate-x-[100%]",
+              isTopicComplete 
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 border-green-200 hover:border-green-300 hover:shadow-green-100/50" 
+                : "bg-gradient-to-r from-slate-50 to-white text-slate-600 border-slate-200 hover:border-slate-300 hover:shadow-slate-100/50"
+            )}
+          >
+            {/* Inner shadow for depth */}
+            <div className="absolute inset-0 rounded-xl shadow-inner opacity-30"></div>
+            
+            {isTopicComplete ? (
+              <>
+                <div className="relative flex-shrink-0">
+                  <svg className="w-4 h-4 transition-all duration-200 group-hover:scale-110 group-hover:text-green-700" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  {/* Animated success ring */}
+                  <div className="absolute -inset-1.5 border border-green-400 rounded-full opacity-0 group-hover:opacity-40 group-hover:scale-110 transition-all duration-300"></div>
+                  {/* Sparkle effect */}
+                  <div className="absolute -top-1 -right-1 w-2 h-2">
+                    <div className="w-full h-full bg-green-400 rounded-full animate-ping"></div>
+                  </div>
+                </div>
+                <span className="relative font-semibold">Completed</span>
+                {/* Checkmark trail */}
+                <div className="absolute -right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="relative flex-shrink-0">
+                  <svg className="w-4 h-4 transition-all duration-200 group-hover:rotate-90 group-hover:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  {/* Rotating ring */}
+                  <div className="absolute -inset-1.5 border border-slate-300 rounded-full opacity-0 group-hover:opacity-30 group-hover:rotate-45 transition-all duration-300"></div>
+                  {/* Pending dot */}
+                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <span className="relative font-semibold">Mark as Complete</span>
+                {/* Plus trail */}
+                <div className="absolute -right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg className="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </div>
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
+      {/* Simple Center Line */}
+      <div className="relative flex justify-center py-2">
+        <div className="w-full max-w-md">
+          {/* Gradient line */}
+          <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+          
+          {/* Subtle glow effect */}
+          <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent blur-sm"></div>
+        </div>
+      </div>
+      
       {/* Floating Video Notes Button with Animation */}
       <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50">
         <div className="relative">
@@ -516,40 +591,6 @@ Keep it simple and easy to understand.`;
       </div>
 
       <div className="relative" data-testid="topic-content">
-        {/* Mark as Complete - Side of Title */}
-        {isTrackableTopic && isUserAuthenticated && (
-          <div className="absolute right-4 top-8 z-10">
-            <div
-              className="inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50 relative overflow-hidden group cursor-pointer"
-              style={{
-                backgroundColor: '#4A7BF5',
-                borderColor: '#4A7BF5',
-                animation: 'badge-pulse 3s ease-in-out infinite'
-              }}
-            >
-              {/* Shimmer effect */}
-              <div 
-                className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"
-                style={{
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)'
-                }}
-              />
-              <Checkbox
-                id={checkboxId}
-                checked={isTopicComplete}
-                onCheckedChange={handleMarkCompleteChange}
-                className="border-white bg-white/20 transition-colors data-[state=checked]:border-white data-[state=checked]:bg-white data-[state=checked]:text-[#4A7BF5] relative z-10"
-              />
-              <Label htmlFor={checkboxId} className="cursor-pointer leading-none text-white relative z-10">
-                Mark as completed
-              </Label>
-              {isTopicComplete && (
-                <CheckCircle className="h-4 w-4 text-white relative z-10" />
-              )}
-            </div>
-          </div>
-        )}
-        
         {children ? (
           children
         ) : (

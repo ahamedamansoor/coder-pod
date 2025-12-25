@@ -23,8 +23,13 @@ export default function ManualTestingTopicPage() {
     notFound();
   }
 
+  // Handle learning-plan specially - it should show the learning plan, not redirect to introduction
+  if (topicSlug === 'learning-plan') {
+    return <ManualTestingContentDisplay topicSlug="learning-plan" />;
+  }
+
   // If no topic is specified, redirect to introduction
-  if (!topicSlug || topicSlug === 'learning-plan') {
+  if (!topicSlug) {
     return <ManualTestingContentDisplay topicSlug="introduction" />;
   }
 

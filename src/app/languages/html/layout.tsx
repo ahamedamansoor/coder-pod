@@ -14,6 +14,7 @@ import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
+import { useCompletionSync } from '@/hooks/use-completion-sync';
 
 function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -22,6 +23,9 @@ function HtmlTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const { hideLoader } = useLoading();
   const { user } = useUser();
   const { signOut } = useSupabaseAuth();
+  
+  // Enable completion sync for batch operations
+  useCompletionSync();
 
   useEffect(() => {
     hideLoader();

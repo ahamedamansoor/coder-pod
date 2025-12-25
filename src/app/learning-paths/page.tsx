@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Code2, Sparkles, Trophy, Target } from 'lucide-react';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { languages as allLanguages } from '@/data/languages';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useUser } from '@/hooks/use-auth-compat';
+import { unifiedCompletionService } from '@/services/unified-completion.service';
 
 type Filter = 'all' | 'frontend' | 'backend' | 'testing' | 'algorithms';
 
@@ -29,7 +30,7 @@ const accentMap: Record<string, string> = {
     rxjs: 'from-cyan-100/80 via-sky-50/60 to-indigo-100/80',
 };
 
-export default function LearningPathsPage() {
+function LearningPathsPageContent() {
     const router = useRouter();
     const { user } = useUser();
     const { userProfile, signOut } = useSupabaseAuth();
@@ -39,15 +40,37 @@ export default function LearningPathsPage() {
     const [showModal, setShowModal] = useState(false);
     const [blockedLang, setBlockedLang] = useState<{ slug: string; name: string } | null>(null);
     const [startedPaths, setStartedPaths] = useState<Set<string>>(new Set());
+    const [completionData, setCompletionData] = useState<{ [language: string]: string[] }>({});
 
     // Only show allowed slugs
-    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium']), []);
+    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium', 'manual-testing']), []);
     const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind'];
     const backendLanguages: string[] = [];
-    const testingLanguages: string[] = ['selenium'];
+    const testingLanguages: string[] = ['selenium', 'manual-testing'];
     const algorithmLanguages = ['dsa'];
 
-    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium']), []);
+    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium', 'manual-testing']), []);
+
+    // Load completion data from unified service
+    useEffect(() => {
+        if (user) {
+            const data = unifiedCompletionService.getAllCompletionData();
+            setCompletionData(data);
+        }
+    }, [user?.uid]); // Use user.uid instead of user object
+
+    // Listen for storage changes to update completion data
+    useEffect(() => {
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'completion_data') {
+                const data = unifiedCompletionService.getAllCompletionData();
+                setCompletionData(data);
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
 
     const filteredLanguages = useMemo(() => {
         return allLanguages.filter((lang) => {
@@ -181,17 +204,34 @@ export default function LearningPathsPage() {
                                     const accent = accentMap[lang.slug] ?? 'from-slate-200 to-slate-300';
 
                                     const topicList = lang.topics?.filter((t) => t.slug !== 'learning-plan') ?? [];
-                                    const completedTopicsArray = userProfile?.completedTopics?.[lang.slug] ?? [];
+                                    // Use completionData state instead of getCompletedTopics function
+                                    const completedTopicsArray = completionData[lang.slug] || [];
+                                    
+                                    // Debug logging
+                                    console.log(`Learning Path Debug - ${lang.slug}:`, {
+                                        completedTopicsArray,
+                                        completionData,
+                                        topicListLength: topicList.length,
+                                        actualTopicCount: topicList.length
+                                    });
+                                    
                                     const validTopicSlugs = new Set(topicList.map((t) => t.slug));
                                     const actualTopicCount = topicList.length;
-                                    const validCompletedTopics = Array.isArray(completedTopicsArray)
-                                        ? Array.from(new Set(completedTopicsArray)).filter((slug) => validTopicSlugs.has(slug))
-                                        : [];
+                                    const validCompletedTopics = completedTopicsArray.filter((slug) => validTopicSlugs.has(slug));
                                     const completedCount = validCompletedTopics.length;
                                     const hasTopics = actualTopicCount > 0;
                                     let completionPercentage = hasTopics
                                         ? Math.min(100, Math.round((completedCount / actualTopicCount) * 100))
                                         : 0;
+                                    
+                                    // Debug logging for percentage calculation
+                                    console.log(`Percentage Calculation - ${lang.slug}:`, {
+                                        validCompletedTopics,
+                                        completedCount,
+                                        actualTopicCount,
+                                        completionPercentage
+                                    });
+                                    
                                     const hasStartedLocally = hasTopics && startedPaths.has(lang.slug);
                                     if (hasStartedLocally && completionPercentage === 0) {
                                         completionPercentage = 1; // reflect started state
@@ -348,4 +388,8 @@ export default function LearningPathsPage() {
             </Dialog>
         </div>
     );
+}
+
+export default function LearningPathsPage() {
+    return <LearningPathsPageContent />;
 }

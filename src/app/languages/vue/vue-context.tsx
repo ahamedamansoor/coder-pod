@@ -1,9 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
-import { supabase } from '@/lib/supabase';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { useStableCompletion } from '@/hooks/use-stable-completion';
 
 interface VueContextType {
   completedTopics: Set<string>;
@@ -13,63 +11,24 @@ interface VueContextType {
 
 const VueContext = createContext<VueContextType | undefined>(undefined);
 
-export function VueProvider({ children }: { children: React.ReactNode }) {
-  const { user, isUserLoading } = useUser();
-  const { userProfile } = useSupabaseAuth();
-  const [completedTopics, setCompletedTopics] = useState(new Set<string>());
-
-  useEffect(() => {
-    if (userProfile?.completedTopics?.vue) {
-      setCompletedTopics(new Set(userProfile.completedTopics.vue));
-    }
-  }, [userProfile]);
-
-  const handleToggleComplete = useCallback((topicSlug: string) => {
-    if (!user) return;
-
-    setCompletedTopics(prev => {
-      const newCompleted = new Set(prev);
-      if (newCompleted.has(topicSlug)) {
-        newCompleted.delete(topicSlug);
-      } else {
-        newCompleted.add(topicSlug);
-      }
-
-      const completedArray = Array.from(newCompleted);
-      supabase
-        .from('users')
-        .update({ 
-          completed_topics: { 
-            ...userProfile?.completedTopics,
-            vue: completedArray 
-          } 
-        })
-        .eq('id', user.uid)
-        .then(({ error }) => {
-          if (error) console.error('Error saving progress:', error);
-        });
-
-      return newCompleted;
-    });
-  }, [user, userProfile]);
+export const VueProvider = ({ children }: { children: ReactNode }) => {
+  const { completedTopics, handleToggleComplete, isProgressLoading } = useStableCompletion('vue');
 
   return (
-    <VueContext.Provider
-      value={{
-        completedTopics,
-        handleToggleComplete,
-        isProgressLoading: isUserLoading,
-      }}
-    >
+    <VueContext.Provider value={{ 
+      completedTopics, 
+      handleToggleComplete, 
+      isProgressLoading 
+    }}>
       {children}
     </VueContext.Provider>
   );
-}
+};
 
-export function useVueContext() {
+export const useVueContext = () => {
   const context = useContext(VueContext);
   if (context === undefined) {
     throw new Error('useVueContext must be used within a VueProvider');
   }
   return context;
-}
+};

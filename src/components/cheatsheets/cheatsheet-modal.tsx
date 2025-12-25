@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LucideIcon, X, Copy, Check, Search } from 'lucide-react';
+import { LucideIcon, X, Copy, Check, Search, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CheatsheetCommand {
@@ -71,6 +71,7 @@ export function CheatsheetModal({
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSections, setSelectedSections] = useState<string[]>([]);
+  const [showTopics, setShowTopics] = useState(false);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -154,80 +155,94 @@ export function CheatsheetModal({
                   </p>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 onClick={onClose}
-                className="h-9 w-9 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all hover:scale-110 shadow-lg"
               >
-                <X className="h-4 w-4" />
-              </Button>
+                <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              </button>
             </div>
 
-            {/* Search Input and Topics */}
+            {/* Search Input and Advanced Filter */}
             <div className="flex flex-col gap-3">
-              <div className="relative max-w-md w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input
-                  placeholder="Filter commands..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    // Keep selected sections when searching - they work together
-                  }}
-                  className="pl-9 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
-                />
-              </div>
-
-              {/* Topics/Sections Filter */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">
-                  Topics:
-                </span>
-                {(selectedSections.length > 0 || searchQuery) && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="h-7 px-2 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
-                  >
-                    Clear filters {selectedSections.length > 0 && `(${selectedSections.length})`}
-                  </Button>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  {sections.map((section, index) => {
-                    const badgeColor = sectionColors[index % sectionColors.length];
-                    const isSelected = selectedSections.includes(section.title);
-
-                    return (
-                      <button
-                        key={section.title}
-                        onClick={() => handleSectionClick(section.title)}
-                        className={cn(
-                          'px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200',
-                          'border border-slate-200 dark:border-slate-700',
-                          isSelected
-                            ? `${badgeColor} text-white border-transparent shadow-md scale-105`
-                            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
-                        )}
-                        title={`${section.commands.length} commands - Click to ${isSelected ? 'deselect' : 'select'}`}
-                      >
-                        {section.title}
-                        <span className="ml-1.5 text-[10px] opacity-75">
-                          ({section.commands.length})
-                        </span>
-                      </button>
-                    );
-                  })}
+              <div className="flex gap-2 items-center">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Input
+                    placeholder="Filter commands..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      // Keep selected sections when searching - they work together
+                    }}
+                    className="pl-9 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
+                  />
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowTopics(!showTopics)}
+                  className="h-10 px-4 text-xs border-slate-200 dark:border-slate-700 whitespace-nowrap"
+                >
+                  <Filter className="w-3.5 h-3.5 mr-1.5" />
+                  {showTopics ? 'Hide Filters' : 'Advanced Filters'}
+                  <span className="ml-1.5 text-[10px] opacity-75">
+                    ({selectedSections.length > 0 ? selectedSections.length : sections.length})
+                  </span>
+                </Button>
               </div>
+
+              {/* Topics/Sections Filter - Hidden by default, shown when advanced filter is clicked */}
+              {showTopics && (
+                <div className="flex flex-wrap items-center gap-2 animate-in slide-in-from-top-2 duration-200">
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">
+                    Topics:
+                  </span>
+                  {(selectedSections.length > 0 || searchQuery) && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="h-7 px-2 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                    >
+                      Clear filters {selectedSections.length > 0 && `(${selectedSections.length})`}
+                    </Button>
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {sections.map((section, index) => {
+                      const badgeColor = sectionColors[index % sectionColors.length];
+                      const isSelected = selectedSections.includes(section.title);
+
+                      return (
+                        <button
+                          key={section.title}
+                          onClick={() => handleSectionClick(section.title)}
+                          className={cn(
+                            'px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200',
+                            'border border-slate-200 dark:border-slate-700',
+                            isSelected
+                              ? `${badgeColor} text-white border-transparent shadow-md scale-105`
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                          )}
+                          title={`${section.commands.length} commands - Click to ${isSelected ? 'deselect' : 'select'}`}
+                        >
+                          {section.title}
+                          <span className="ml-1.5 text-[10px] opacity-75">
+                            ({section.commands.length})
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </DialogHeader>
 
         {/* Content - Card Grid Layout */}
         <div className="flex-1 overflow-y-auto p-6">
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+          <div className="columns-1 sm:columns-1 md:columns-2 lg:columns-2 xl:columns-3 2xl:columns-4 gap-4 space-y-4">
             {filteredSections.map((section, sectionIndex) => {
               const badgeColor = sectionColors[sectionIndex % sectionColors.length];
 

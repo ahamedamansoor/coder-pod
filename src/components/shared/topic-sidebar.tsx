@@ -539,7 +539,7 @@ export function TopicSidebar({
                     "px-2 py-1 text-xl font-semibold transition-colors",
                     brandTheme.primary
                   )}>Topics</p>
-                  {(language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa') ? (
+                  {(language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'manual-testing' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa') ? (
                     <GenericGroupedTopicMenu
                       groups={orderedGroupsForGeneric}
                       selectedTopicSlug={selectedTopicSlug}

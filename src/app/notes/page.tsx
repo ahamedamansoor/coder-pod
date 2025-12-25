@@ -74,14 +74,27 @@ export default function NotesPage() {
 
   // Extract YouTube video ID from URL
   const extractVideoId = (url: string): string | null => {
+    console.log('🔍 Extracting video ID from URL:', url);
+    
     const patterns = [
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-      /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+      // Standard YouTube watch URLs
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+      // YouTube shorts URLs
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+      // YouTube live URLs
+      /youtube\.com\/live\/([a-zA-Z0-9_-]{11})/,
+      // YouTube v URLs (alternative format)
+      /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
     ];
+    
     for (const pattern of patterns) {
       const match = url.match(pattern);
-      if (match) return match[1];
+      if (match) {
+        console.log('✅ Video ID extracted:', match[1]);
+        return match[1];
+      }
     }
+    console.log('❌ No video ID found for URL:', url);
     return null;
   };
 
@@ -516,6 +529,16 @@ export default function NotesPage() {
                   const hasThumb = note.type === 'video' && note.videoId;
                   const createdDate = note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt);
 
+                  // Debug logging for thumbnail display
+                  console.log('🎥 Processing note:', {
+                    id: note.id,
+                    title: note.title,
+                    type: note.type,
+                    videoId: note.videoId,
+                    hasThumb,
+                    url: note.url
+                  });
+
                   return (
                     <div key={note.id} className="group">
                       <div className="rounded-lg border bg-card overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-primary/50">
@@ -552,6 +575,35 @@ export default function NotesPage() {
                                 src={`https://img.youtube.com/vi/${note.videoId}/mqdefault.jpg`}
                                 alt={note.title}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                onLoad={() => {
+                                  console.log('✅ Thumbnail loaded successfully for video:', note.videoId);
+                                }}
+                                onError={(e) => {
+                                  console.log('❌ Thumbnail failed to load for video:', note.videoId);
+                                  // Fallback to higher quality if mqdefault fails
+                                  const target = e.target as HTMLImageElement;
+                                  if (target.src.includes('mqdefault.jpg')) {
+                                    console.log('🔄 Trying hqdefault.jpg fallback...');
+                                    target.src = `https://img.youtube.com/vi/${note.videoId}/hqdefault.jpg`;
+                                  } else if (target.src.includes('hqdefault.jpg')) {
+                                    console.log('🔄 Trying maxresdefault.jpg fallback...');
+                                    target.src = `https://img.youtube.com/vi/${note.videoId}/maxresdefault.jpg`;
+                                  } else {
+                                    console.log('❌ All thumbnail attempts failed, showing fallback icon');
+                                    // If all fail, hide the image and show fallback
+                                    target.style.display = 'none';
+                                    const parent = target.parentElement;
+                                    if (parent) {
+                                      parent.innerHTML = `
+                                        <div class="w-full h-full flex items-center justify-center bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                                          <svg class="w-10 h-10 text-primary/60 group-hover:text-primary group-hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                          </svg>
+                                        </div>
+                                      `;
+                                    }
+                                  }
+                                }}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300">
