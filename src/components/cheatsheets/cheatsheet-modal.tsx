@@ -164,8 +164,8 @@ export function CheatsheetModal({
             </div>
 
             {/* Search Input and Advanced Filter */}
-            <div className="flex flex-col gap-3">
-              <div className="flex gap-2 items-center">
+            <div className="flex flex-col gap-3 items-center">
+              <div className="flex gap-2 items-center justify-center w-full">
                 <div className="relative flex-1 max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
@@ -175,8 +175,18 @@ export function CheatsheetModal({
                       setSearchQuery(e.target.value);
                       // Keep selected sections when searching - they work together
                     }}
-                    className="pl-9 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
+                    className="pl-9 pr-10 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
                   />
+                  {searchQuery && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
+                    </Button>
+                  )}
                 </div>
                 <Button
                   variant="outline"
@@ -194,7 +204,7 @@ export function CheatsheetModal({
 
               {/* Topics/Sections Filter - Hidden by default, shown when advanced filter is clicked */}
               {showTopics && (
-                <div className="flex flex-wrap items-center gap-2 animate-in slide-in-from-top-2 duration-200">
+                <div className="flex flex-wrap items-center justify-center gap-2 animate-in slide-in-from-top-2 duration-200">
                   <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">
                     Topics:
                   </span>
@@ -266,13 +276,20 @@ export function CheatsheetModal({
                     {/* Commands */}
                     <div className="p-4 space-y-4">
                       {section.commands.map((cmd, cmdIndex) => (
-                        <div key={cmdIndex} className="space-y-2">
-                          {/* Description */}
-                          {cmd.description && (
-                            <p className="text-sm text-slate-600 dark:text-slate-400">
-                              {cmd.description}
-                            </p>
-                          )}
+                        <div key={cmdIndex} className="space-y-3">
+                          {/* Command Title - Enhanced with better font weight */}
+                          <div className="text-center">
+                            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-tight">
+                              {cmd.command}
+                            </h4>
+                            
+                            {/* Description */}
+                            {cmd.description && (
+                              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                                {cmd.description}
+                              </p>
+                            )}
+                          </div>
 
                           {/* Code Block */}
                           <div className="relative group">

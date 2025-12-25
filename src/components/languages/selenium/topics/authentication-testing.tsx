@@ -358,7 +358,7 @@ async function testAuthenticationSecurity(driver, loginUrl) {
       method: 'Multi-Factor Auth Testing',
       description: 'Test MFA implementation and bypasses',
       steps: ['Test MFA bypass attempts', 'Check backup codes', 'Verify MFA enforcement'],
-      tools: ['Intercepting proxy', 'Custom scripts', 'Manual testing']
+      tools: ['Intercepting proxy', 'Custom scripts', 'Security testing tools']
     }
   ];
 

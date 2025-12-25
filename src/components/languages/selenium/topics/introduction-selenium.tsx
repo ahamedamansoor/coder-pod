@@ -80,7 +80,7 @@ export function IntroductionSelenium() {
                 <div className="p-4 bg-white dark:bg-slate-900 rounded-lg border-2 border-slate-200 dark:border-slate-700">
                   <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    MANUAL TESTING (Human)
+                    HUMAN TESTING (Manual)
                   </div>
                   <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
                     <li className="flex items-start gap-2">
@@ -225,7 +225,7 @@ export function IntroductionSelenium() {
                 <div>
                   <h3 className="font-semibold text-green-900 dark:text-green-100 mb-1">Save Time</h3>
                   <p className="text-sm text-muted-foreground">
-                    Run hundreds of test cases in minutes instead of days of manual testing
+                    Run hundreds of test cases in minutes instead of days of human testing
                   </p>
                 </div>
               </div>

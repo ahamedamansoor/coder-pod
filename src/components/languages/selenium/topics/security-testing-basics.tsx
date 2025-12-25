@@ -326,7 +326,7 @@ async function basicSecurityTest(driver, baseUrl) {
     {
       phase: 'Vulnerability Assessment',
       description: 'Identify potential security vulnerabilities',
-      activities: ['Automated scanning', 'Manual testing', 'Code review'],
+      activities: ['Automated scanning', 'Security testing tools', 'Code review'],
       tools: ['OWASP ZAP', 'Burp Suite', 'Nikto']
     },
     {

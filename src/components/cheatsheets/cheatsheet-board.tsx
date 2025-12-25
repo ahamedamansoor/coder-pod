@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Copy, Check, ChevronRight, Terminal, Layers, ArrowRight, BookOpen } from 'lucide-react';
+import { Search, Copy, Check, ChevronRight, Terminal, Layers, ArrowRight, BookOpen, X } from 'lucide-react';
 import { CheatsheetModal } from './cheatsheet-modal';
 import { cn } from '@/lib/utils';
 import { cheatsheetCategories, allCheatsheets } from '@/data/cheatsheets';
@@ -15,11 +15,19 @@ type MatchingCommand = {
   sheetColorTheme: string;
   sectionTitle: string;
   command: {
-    command: string;
-    description: string;
-    usage: string;
-    example: string;
+    command?: string;
+    description?: string;
+    usage?: string;
+    example?: string;
   };
+};
+
+// Type guard to check if an object is a valid command
+const isValidCommand = (obj: any): obj is { command: string; description: string; usage: string; example?: string } => {
+  return obj && 
+         typeof obj.command === 'string' && 
+         typeof obj.description === 'string' && 
+         typeof obj.usage === 'string';
 };
 
 export default function CheatsheetBoard() {
@@ -44,11 +52,16 @@ export default function CheatsheetBoard() {
         return true;
       }
       return section.commands.some(command => {
+        // Use type guard to ensure we only process valid command objects
+        if (!isValidCommand(command)) {
+          return false;
+        }
+        
         return (
-          command.command.toLowerCase().includes(lowerQuery) ||
-          command.description.toLowerCase().includes(lowerQuery) ||
-          command.usage.toLowerCase().includes(lowerQuery) ||
-          command.example.toLowerCase().includes(lowerQuery)
+          (command.command?.toLowerCase().includes(lowerQuery) ?? false) ||
+          (command.description?.toLowerCase().includes(lowerQuery) ?? false) ||
+          (command.usage?.toLowerCase().includes(lowerQuery) ?? false) ||
+          (command.example?.toLowerCase().includes(lowerQuery) ?? false)
         );
       });
     });
@@ -64,11 +77,16 @@ export default function CheatsheetBoard() {
     allCheatsheets.forEach(sheet => {
       sheet.sections.forEach(section => {
         section.commands.forEach(command => {
+          // Use type guard to ensure we only process valid command objects
+          if (!isValidCommand(command)) {
+            return;
+          }
+          
           const textMatch = (
-            command.command.toLowerCase().includes(lowerQuery) ||
-            command.description.toLowerCase().includes(lowerQuery) ||
-            command.usage.toLowerCase().includes(lowerQuery) ||
-            command.example.toLowerCase().includes(lowerQuery)
+            (command.command?.toLowerCase().includes(lowerQuery) ?? false) ||
+            (command.description?.toLowerCase().includes(lowerQuery) ?? false) ||
+            (command.usage?.toLowerCase().includes(lowerQuery) ?? false) ||
+            (command.example?.toLowerCase().includes(lowerQuery) ?? false)
           );
 
           if (textMatch) {
@@ -141,7 +159,7 @@ export default function CheatsheetBoard() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
-                "pl-10 h-10 text-sm rounded-xl",
+                "pl-10 pr-10 h-10 text-sm rounded-xl",
                 "bg-white/70 dark:bg-slate-900/60 backdrop-blur-md",
                 "border border-slate-200/50 dark:border-slate-700/60",
                 "shadow-sm hover:shadow-md transition-all duration-200",
@@ -149,6 +167,16 @@ export default function CheatsheetBoard() {
                 "focus:ring-2 focus:ring-blue-500/20"
               )}
             />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
+              </Button>
+            )}
           </div>
 
           {/* Filters - Scrollable */}
@@ -333,7 +361,7 @@ export default function CheatsheetBoard() {
                                 size="sm"
                                 variant="ghost"
                                 className="h-7 w-7 p-0 flex-shrink-0"
-                                onClick={() => copyToClipboard(match.command.command)}
+                                onClick={() => copyToClipboard(match.command.command!)}
                               >
                                 {isCopied ? (
                                   <Check className="h-3.5 w-3.5 text-green-500" />
