@@ -12,22 +12,116 @@ export const pythonCheatsheet = {
       title: 'Getting Started with Python',
       commands: [
         {
-          command: 'Python Installation',
-          description: 'Install Python and set up environment',
-          usage: 'Download from python.org or use package managers',
-          example: '# Install Python (Ubuntu/Debian)\nsudo apt update\nsudo apt install python3 python3-pip python3-venv\n\n# Install Python (macOS with Homebrew)\nbrew install python@3.11\n\n# Install Python (Windows)\n# Download installer from python.org\n\n# Verify installation\npython3 --version\npip3 --version\n\n# Set up virtual environment\npython3 -m venv myenv\nsource myenv/bin/activate  # Linux/macOS\n# myenv\\Scripts\\activate   # Windows',
+          command: 'Install Python on Ubuntu',
+          description: 'Install Python on Ubuntu/Debian systems',
+          usage: 'apt install python3 python3-pip python3-venv',
+          example: `# Install Python (Ubuntu/Debian)
+sudo apt update
+sudo apt install python3 python3-pip python3-venv`,
         },
         {
-          command: 'Running Python Code',
-          description: 'Different ways to execute Python code',
-          usage: 'python script.py, python -c, interactive shell',
-          example: '# Run Python script\npython3 script.py\n\n# Run with command line arguments\npython3 script.py arg1 arg2\n\n# Execute Python code directly\npython3 -c "print(\'Hello, World!\')"\n\n# Interactive Python shell\npython3\n\n# IPython shell\npip install ipython\nipython\n\n# Run Python module\npython3 -m module_name\n\n# Check syntax without executing\npython3 -m py_compile script.py',
+          command: 'Install Python on macOS',
+          description: 'Install Python on macOS using Homebrew',
+          usage: 'brew install python@3.11',
+          example: `# Install Python (macOS with Homebrew)
+brew install python@3.11`,
+        },
+        {
+          command: 'Install Python on Windows',
+          description: 'Install Python on Windows',
+          usage: 'Download installer from python.org',
+          example: `# Install Python (Windows)
+# Download installer from python.org`,
+        },
+        {
+          command: 'Verify Python Installation',
+          description: 'Check Python and pip versions',
+          usage: 'python3 --version, pip3 --version',
+          example: `# Verify installation
+python3 --version
+pip3 --version`,
+        },
+        {
+          command: 'Create Virtual Environment',
+          description: 'Set up Python virtual environment',
+          usage: 'python3 -m venv myenv',
+          example: `# Set up virtual environment
+python3 -m venv myenv
+source myenv/bin/activate  # Linux/macOS
+# myenv\\Scripts\\activate   # Windows`,
+        },
+        {
+          command: 'Run Python Script',
+          description: 'Execute Python script file',
+          usage: 'python3 script.py',
+          example: `# Run Python script
+python3 script.py`,
+        },
+        {
+          command: 'Run Python with Arguments',
+          description: 'Execute Python script with command line arguments',
+          usage: 'python3 script.py arg1 arg2',
+          example: `# Run with command line arguments
+python3 script.py arg1 arg2`,
+        },
+        {
+          command: 'Execute Python Code Directly',
+          description: 'Run Python code directly from command line',
+          usage: 'python3 -c "code"',
+          example: `# Execute Python code directly
+python3 -c "print('Hello, World!')"`,
+        },
+        {
+          command: 'Interactive Python Shell',
+          description: 'Start interactive Python interpreter',
+          usage: 'python3',
+          example: `# Interactive Python shell
+python3`,
+        },
+        {
+          command: 'IPython Shell',
+          description: 'Start enhanced IPython shell',
+          usage: 'Install and run ipython',
+          example: `# IPython shell
+pip install ipython
+ipython`,
+        },
+        {
+          command: 'Run Python Module',
+          description: 'Execute Python module as script',
+          usage: 'python3 -m module_name',
+          example: `# Run Python module
+python3 -m module_name`,
+        },
+        {
+          command: 'Check Python Syntax',
+          description: 'Validate Python syntax without executing',
+          usage: 'python3 -m py_compile script.py',
+          example: `# Check syntax without executing
+python3 -m py_compile script.py`,
         },
         {
           command: 'Python Program Structure',
           description: 'Basic structure of a Python program',
           usage: '#!/usr/bin/env python3, main function, imports',
-          example: '#!/usr/bin/env python3\n"""\nModule description\nAuthor: Your Name\nDate: 2024\n"""\n\nimport sys\nimport os\nfrom typing import List, Dict\n\ndef main():\n    """Main entry point of the program"""\n    print("Hello, World!")\n    return 0\n\nif __name__ == "__main__":\n    sys.exit(main())',
+          example: `#!/usr/bin/env python3
+"""
+Module description
+Author: Your Name
+Date: 2024
+"""
+
+import sys
+import os
+from typing import List, Dict
+
+def main():
+    """Main entry point of the program"""
+    print("Hello, World!")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())`,
         },
       ],
     },
@@ -35,22 +129,145 @@ export const pythonCheatsheet = {
       title: 'Basic Data Types & Variables',
       commands: [
         {
-          command: 'Basic Data Types',
-          description: 'Built-in data types in Python',
-          usage: 'int, float, str, bool, list, dict, set, tuple',
-          example: '# Numeric types\nage = 25                    # integer\nprice = 19.99               # float\nscientific = 1.5e-10        # scientific notation\n\n# String types\nname = "Python"              # double quotes\nmessage = \'Hello\'           # single quotes\nmultiline = """Line 1\nLine 2\nLine 3"""                   # multiline string\n\n# Boolean\nis_active = True\nis_complete = False\n\n# Collection types\nnumbers = [1, 2, 3, 4, 5]   # list\nperson = {"name": "John", "age": 30}  # dictionary\nunique = {1, 2, 3, 4}       # set\ncoordinates = (10, 20)      # tuple\n\n# None type\nresult = None',
+          command: 'Numeric Data Types',
+          description: 'Integer, float, and scientific notation types',
+          usage: 'int, float, scientific notation',
+          example: `# Numeric types
+age = 25                    # integer
+price = 19.99               # float
+scientific = 1.5e-10        # scientific notation`,
         },
         {
-          command: 'Variables & Assignment',
-          description: 'Variable declaration and assignment',
-          usage: 'variable_name = value, multiple assignment',
-          example: '# Simple assignment\nx = 10\nname = "Python"\n\n# Multiple assignment\na, b, c = 1, 2, 3\n\n# Same value to multiple variables\nx = y = z = 0\n\n# Swap variables\nx, y = y, x\n\n# Unpacking\nnumbers = [1, 2, 3]\nfirst, second, third = numbers\n\n# Extended unpacking (Python 3.5+)\nfirst, *middle, last = [1, 2, 3, 4, 5]\n\n# Type hints (Python 3.5+)\nname: str = "Python"\nage: int = 25\nscores: List[int] = [90, 85, 95]',
+          command: 'String Data Types',
+          description: 'Different string declaration methods',
+          usage: 'Single, double, multiline quotes',
+          example: `# String types
+name = "Python"              # double quotes
+message = 'Hello'           # single quotes
+multiline = """Line 1
+Line 2
+Line 3"""                   # multiline string`,
         },
         {
-          command: 'Basic Operators',
-          description: 'Arithmetic, comparison, and logical operators',
-          usage: '+, -, *, /, //, %, **, ==, !=, and, or, not',
-          example: '# Arithmetic operators\na, b = 10, 3\nprint(a + b)   # 13 (addition)\nprint(a - b)   # 7 (subtraction)\nprint(a * b)   # 30 (multiplication)\nprint(a / b)   # 3.333... (division)\nprint(a // b)  # 3 (floor division)\nprint(a % b)   # 1 (modulo)\nprint(a ** b)  # 1000 (exponentiation)\n\n# Comparison operators\nprint(a == b)  # False\nprint(a != b)  # True\nprint(a > b)   # True\nprint(a >= b)  # True\nprint(a < b)   # False\nprint(a <= b)  # True\n\n# Logical operators\nx, y = True, False\nprint(x and y) # False\nprint(x or y)  # True\nprint(not x)   # False\n\n# Membership operators\nnumbers = [1, 2, 3, 4, 5]\nprint(3 in numbers)     # True\nprint(6 not in numbers) # True\n\n# Identity operators\nx = [1, 2, 3]\ny = [1, 2, 3]\nprint(x is y)   # False (different objects)\nprint(x is not y) # True',
+          command: 'Boolean and None Types',
+          description: 'Boolean and None value types',
+          usage: 'True, False, None',
+          example: `# Boolean
+is_active = True
+is_complete = False
+
+# None type
+result = None`,
+        },
+        {
+          command: 'Collection Data Types',
+          description: 'List, dictionary, set, and tuple types',
+          usage: 'list, dict, set, tuple',
+          example: `# Collection types
+numbers = [1, 2, 3, 4, 5]   # list
+person = {"name": "John", "age": 30}  # dictionary
+unique = {1, 2, 3, 4}       # set
+coordinates = (10, 20)      # tuple`,
+        },
+        {
+          command: 'Simple Variable Assignment',
+          description: 'Basic variable assignment',
+          usage: 'variable_name = value',
+          example: `# Simple assignment
+x = 10
+name = "Python"`,
+        },
+        {
+          command: 'Multiple Assignment',
+          description: 'Assign multiple variables at once',
+          usage: 'a, b, c = 1, 2, 3',
+          example: `# Multiple assignment
+a, b, c = 1, 2, 3
+
+# Same value to multiple variables
+x = y = z = 0`,
+        },
+        {
+          command: 'Variable Swapping',
+          description: 'Swap values between variables',
+          usage: 'x, y = y, x',
+          example: `# Swap variables
+x, y = y, x`,
+        },
+        {
+          command: 'Variable Unpacking',
+          description: 'Unpack values from iterables',
+          usage: 'first, second, third = numbers',
+          example: `# Unpacking
+numbers = [1, 2, 3]
+first, second, third = numbers
+
+# Extended unpacking (Python 3.5+)
+first, *middle, last = [1, 2, 3, 4, 5]`,
+        },
+        {
+          command: 'Type Hints',
+          description: 'Add type annotations to variables',
+          usage: 'variable: type = value',
+          example: `# Type hints (Python 3.5+)
+name: str = "Python"
+age: int = 25
+scores: List[int] = [90, 85, 95]`,
+        },
+        {
+          command: 'Arithmetic Operators',
+          description: 'Basic arithmetic operations',
+          usage: '+, -, *, /, //, %, **',
+          example: `# Arithmetic operators
+a, b = 10, 3
+print(a + b)   # 13 (addition)
+print(a - b)   # 7 (subtraction)
+print(a * b)   # 30 (multiplication)
+print(a / b)   # 3.333... (division)
+print(a // b)  # 3 (floor division)
+print(a % b)   # 1 (modulo)
+print(a ** b)  # 1000 (exponentiation)`,
+        },
+        {
+          command: 'Comparison Operators',
+          description: 'Compare values and expressions',
+          usage: '==, !=, >, >=, <, <=',
+          example: `# Comparison operators
+print(a == b)  # False
+print(a != b)  # True
+print(a > b)   # True
+print(a >= b)  # True
+print(a < b)   # False
+print(a <= b)  # True`,
+        },
+        {
+          command: 'Logical Operators',
+          description: 'Boolean logic operations',
+          usage: 'and, or, not',
+          example: `# Logical operators
+x, y = True, False
+print(x and y) # False
+print(x or y)  # True
+print(not x)   # False`,
+        },
+        {
+          command: 'Membership Operators',
+          description: 'Check membership in sequences',
+          usage: 'in, not in',
+          example: `# Membership operators
+numbers = [1, 2, 3, 4, 5]
+print(3 in numbers)     # True
+print(6 not in numbers) # True`,
+        },
+        {
+          command: 'Identity Operators',
+          description: 'Check object identity',
+          usage: 'is, is not',
+          example: `# Identity operators
+x = [1, 2, 3]
+y = [1, 2, 3]
+print(x is y)   # False (different objects)
+print(x is not y) # True`,
         },
       ],
     },
@@ -58,177 +275,501 @@ export const pythonCheatsheet = {
       title: 'Control Flow',
       commands: [
         {
-          command: 'If-Else Statements',
-          description: 'Conditional execution',
-          usage: 'if condition: elif condition: else:',
-          example: 'age = 18\n\n# Simple if\nif age >= 18:\n    print("Adult")\n\n# If-elif-else\nif age < 13:\n    print("Child")\nelif age < 18:\n    print("Teenager")\nelif age < 65:\n    print("Adult")\nelse:\n    print("Senior")\n\n# Ternary operator\nstatus = "Adult" if age >= 18 else "Minor"\nprint(status)\n\n# Nested conditions\nscore = 85\nif score >= 60:\n    if score >= 80:\n        grade = "A"\n    else:\n        grade = "B"\nelse:\n    grade = "F"\n\n# Multiple conditions\nusername = "admin"\npassword = "secret"\nif username == "admin" and password == "secret":\n    print("Access granted")\nelif username == "admin" or password == "secret":\n    print("Partial access")\nelse:\n    print("Access denied")',
+          command: 'Simple If Statement',
+          description: 'Basic conditional execution',
+          usage: 'if condition:',
+          example: `age = 18
+
+# Simple if
+if age >= 18:
+    print("Adult")`,
         },
         {
-          command: 'Loops',
-          description: 'for and while loops',
-          usage: 'for item in iterable: while condition:',
-          example: '# For loop with range\nfor i in range(5):\n    print(f"Count: {i}")\n\n# For loop with list\nfruits = ["apple", "banana", "cherry"]\nfor fruit in fruits:\n    print(f" Fruit: {fruit}")\n\n# For loop with enumerate\nfor index, fruit in enumerate(fruits):\n    print(f"{index}: {fruit}")\n\n# For loop with dictionary\nperson = {"name": "John", "age": 30, "city": "New York"}\nfor key, value in person.items():\n    print(f"{key}: {value}")\n\n# While loop\ncount = 0\nwhile count < 5:\n    print(f"While count: {count}")\n    count += 1\n\n# Break and continue\nfor i in range(10):\n    if i == 3:\n        continue  # skip 3\n    if i == 7:\n        break     # stop at 7\n    print(i)\n\n# Else clause with loops\nfor i in range(3):\n    print(i)\nelse:\n    print("Loop completed normally")\n\n# List comprehension\nsquares = [x**2 for x in range(10)]\neven_squares = [x**2 for x in range(10) if x % 2 == 0]',
+          command: 'If-Elif-Else Statement',
+          description: 'Multiple conditional branches',
+          usage: 'if: elif: else:',
+          example: `# If-elif-else
+if age < 13:
+    print("Child")
+elif age < 18:
+    print("Teenager")
+elif age < 65:
+    print("Adult")
+else:
+    print("Senior")`,
         },
         {
-          command: 'Exception Handling',
-          description: 'Try-except blocks for error handling',
-          usage: 'try: except: finally: raise',
-          example: '# Basic exception handling\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("Cannot divide by zero")\nexcept Exception as e:\n    print(f"Other error: {e}")\nfinally:\n    print("This always executes")\n\n# Multiple exceptions\ntry:\n    value = int("abc")\nexcept (ValueError, TypeError) as e:\n    print(f"Conversion error: {e}")\n\n# Exception with else\ntry:\n    number = int("42")\nexcept ValueError:\n    print("Invalid number")\nelse:\n    print(f"Success: {number * 2}")\n\n# Custom exceptions\nclass CustomError(Exception):\n    def __init__(self, message):\n        self.message = message\n        super().__init__(self.message)\n\n# Raising exceptions\ndef validate_age(age):\n    if age < 0:\n        raise ValueError("Age cannot be negative")\n    if age > 120:\n        raise CustomError("Age seems unrealistic")\n    return True\n\n# Context managers (with statements)\ntry:\n    with open("file.txt", "r") as file:\n        content = file.read()\nexcept FileNotFoundError:\n    print("File not found")\nexcept IOError as e:\n    print(f"IO error: {e}")',
+          command: 'Ternary Operator',
+          description: 'Conditional expression in one line',
+          usage: 'value_if_true if condition else value_if_false',
+          example: `# Ternary operator
+status = "Adult" if age >= 18 else "Minor"
+print(status)`,
+        },
+        {
+          command: 'Nested If Statements',
+          description: 'If statements inside other if statements',
+          usage: 'Nested conditional logic',
+          example: `# Nested conditions
+score = 85
+if score >= 60:
+    if score >= 80:
+        grade = "A"
+    else:
+        grade = "B"
+else:
+    grade = "F"`,
+        },
+        {
+          command: 'Multiple Conditions',
+          description: 'Combine conditions with and/or',
+          usage: 'condition1 and condition2',
+          example: `# Multiple conditions
+username = "admin"
+password = "secret"
+if username == "admin" and password == "secret":
+    print("Access granted")
+elif username == "admin" or password == "secret":
+    print("Partial access")
+else:
+    print("Access denied")`,
+        },
+        {
+          command: 'For Loop with Range',
+          description: 'Iterate over a range of numbers',
+          usage: 'for i in range(n):',
+          example: `# For loop with range
+for i in range(5):
+    print(f"Count: {i}")`,
+        },
+        {
+          command: 'For Loop with List',
+          description: 'Iterate over list elements',
+          usage: 'for item in list:',
+          example: `# For loop with list
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(f" Fruit: {fruit}")`,
+        },
+        {
+          command: 'For Loop with Enumerate',
+          description: 'Get index and value while iterating',
+          usage: 'for index, item in enumerate(list):',
+          example: `# For loop with enumerate
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")`,
+        },
+        {
+          command: 'For Loop with Dictionary',
+          description: 'Iterate over dictionary items',
+          usage: 'for key, value in dict.items():',
+          example: `# For loop with dictionary
+person = {"name": "John", "age": 30, "city": "New York"}
+for key, value in person.items():
+    print(f"{key}: {value}")`,
+        },
+        {
+          command: 'While Loop',
+          description: 'Loop while condition is true',
+          usage: 'while condition:',
+          example: `# While loop
+count = 0
+while count < 5:
+    print(f"While count: {count}")
+    count += 1`,
+        },
+        {
+          command: 'Break and Continue',
+          description: 'Control loop execution flow',
+          usage: 'break, continue statements',
+          example: `# Break and continue
+for i in range(10):
+    if i == 3:
+        continue  # skip 3
+    if i == 7:
+        break     # stop at 7
+    print(i)`,
+        },
+        {
+          command: 'Loop Else Clause',
+          description: 'Execute code when loop completes normally',
+          usage: 'for/while...else:',
+          example: `# Else clause with loops
+for i in range(3):
+    print(i)
+else:
+    print("Loop completed normally")`,
+        },
+        {
+          command: 'List Comprehension',
+          description: 'Create lists using concise syntax',
+          usage: '[expression for item in iterable]',
+          example: `# List comprehension
+squares = [x**2 for x in range(10)]
+even_squares = [x**2 for x in range(10) if x % 2 == 0]`,
+        },
+        {
+          command: 'Basic Exception Handling',
+          description: 'Handle exceptions with try-except',
+          usage: 'try: except:',
+          example: `# Basic exception handling
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero")`,
+        },
+        {
+          command: 'Multiple Exception Types',
+          description: 'Handle different exception types',
+          usage: 'except (Error1, Error2):',
+          example: `except Exception as e:
+    print(f"Other error: {e}")`,
+        },
+        {
+          command: 'Finally Block',
+          description: 'Execute cleanup code always',
+          usage: 'try:...finally:',
+          example: `finally:
+    print("This always executes")`,
+        },
+        {
+          command: 'Multiple Exception Handling',
+          description: 'Catch multiple specific exceptions',
+          usage: 'except (Error1, Error2) as e:',
+          example: `# Multiple exceptions
+try:
+    value = int("abc")
+except (ValueError, TypeError) as e:
+    print(f"Conversion error: {e}")`,
+        },
+        {
+          command: 'Exception with Else',
+          description: 'Execute code if no exception occurs',
+          usage: 'try:...except:...else:',
+          example: `# Exception with else
+try:
+    number = int("42")
+except ValueError:
+    print("Invalid number")
+else:
+    print(f"Success: {number * 2}")`,
+        },
+        {
+          command: 'Custom Exception Class',
+          description: 'Define your own exception types',
+          usage: 'class CustomError(Exception):',
+          example: `# Custom exceptions
+class CustomError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)`,
+        },
+        {
+          command: 'Raising Exceptions',
+          description: 'Throw exceptions manually',
+          usage: 'raise ExceptionType(message)',
+          example: `# Raising exceptions
+def validate_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    if age > 120:
+        raise CustomError("Age seems unrealistic")
+    return True`,
+        },
+        {
+          command: 'Context Managers',
+          description: 'Use with statements for resource management',
+          usage: 'with open(file) as f:',
+          example: `# Context managers (with statements)
+try:
+    with open("file.txt", "r") as file:
+        content = file.read()
+except FileNotFoundError:
+    print("File not found")
+except IOError as e:
+    print(f"IO error: {e}")`,
         },
       ],
     },
-
     // INTERMEDIATE LEVEL
     {
       title: 'Functions and Modules',
       commands: [
         {
-          command: 'Function Definition',
-          description: 'Creating and using functions',
-          usage: 'def function_name(parameters): return value',
-          example: '# Basic function\ndef greet(name):\n    return f"Hello, {name}!"\n\n# Function with default parameters\ndef power(base, exponent=2):\n    return base ** exponent\n\n# Function with keyword arguments\ndef create_person(name, age, city="Unknown"):\n    return {"name": name, "age": age, "city": city}\n\n# Function with variable arguments\ndef sum_all(*numbers):\n    return sum(numbers)\n\n# Function with keyword arguments\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f"{key}: {value}")\n\n# Function with type hints\ndef calculate_area(length: float, width: float) -> float:\n    """Calculate rectangle area"""\n    return length * width\n\n# Lambda functions\nsquare = lambda x: x ** 2\nadd = lambda x, y: x + y\n\n# Higher-order functions\ndef apply_operation(func, x, y):\n    return func(x, y)\n\nresult = apply_operation(lambda a, b: a * b, 5, 3)  # 15\n\n# Function decorators\ndef timer_decorator(func):\n    import time\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        result = func(*args, **kwargs)\n        end = time.time()\n        print(f"{func.__name__} took {end - start:.4f} seconds")\n        return result\n    return wrapper\n\n@timer_decorator\ndef slow_function():\n    import time\n    time.sleep(1)\n    return "Done"',
+          command: 'Basic Function Definition',
+          description: 'Define a simple function',
+          usage: 'def function_name(param):',
+          example: `# Basic function
+def greet(name):
+    return f"Hello, {name}!"`,
         },
         {
-          command: 'Modules and Packages',
-          description: 'Importing and creating modules',
-          usage: 'import, from...import, __init__.py',
-          example: '# Importing modules\nimport math\nimport os, sys\nfrom datetime import datetime, timedelta\nfrom collections import Counter, defaultdict\n\n# Import with alias\nimport numpy as np\nimport pandas as pd\n\n# Import specific functions\nfrom math import sqrt, pi, sin\nfrom random import randint, choice\n\n# Import all (use sparingly)\nfrom math import *\n\n# Conditional imports\ntry:\n    import numpy as np\nexcept ImportError:\n    print("NumPy not available")\n    np = None\n\n# Creating modules (my_module.py)\n"""\n# my_module.py\ndef helper_function():\n    return "Helper function"\n\nCONSTANT_VALUE = 42\n"""\n\n# Using custom modules\nimport my_module\nfrom my_module import helper_function, CONSTANT_VALUE\n\n# Package structure\n"""\nmy_package/\n    __init__.py\n    module1.py\n    module2.py\n    subpackage/\n        __init__.py\n        module3.py\n"""\n\n# Relative imports\nfrom .module1 import some_function\nfrom ..subpackage.module3 import another_function\n\n# Module information\nprint(__name__)      # __main__ or module name\nprint(__file__)      # File path\nprint(__doc__)       # Module docstring',
+          command: 'Function with Default Parameters',
+          description: 'Functions with optional parameters',
+          usage: 'def func(param=default):',
+          example: `# Function with default parameters
+def power(base, exponent=2):
+    return base ** exponent`,
         },
         {
-          command: 'Built-in Functions',
-          description: 'Essential Python built-in functions',
-          usage: 'print(), len(), type(), range(), etc.',
-          example: '# Type conversion\nint_val = int("42")\nfloat_val = float("3.14")\nstr_val = str(123)\nlist_val = list("hello")\ntuple_val = tuple([1, 2, 3])\nset_val = set([1, 2, 2, 3])\ndict_val = dict([("a", 1), ("b", 2)])\n\n# Information functions\nprint(type(42))           # <class \'int\'>\nprint(isinstance(42, int)) # True\nprint(hasattr(str, "upper")) # True\nprint(id(42))             # Memory address\nprint(dir(str))           # List attributes\n\n# Sequence functions\nnumbers = [1, 2, 3, 4, 5]\nprint(len(numbers))       # 5\nprint(max(numbers))       # 5\nprint(min(numbers))       # 1\nprint(sum(numbers))       # 15\nprint(sorted([3, 1, 2]))  # [1, 2, 3]\nprint(reversed([1, 2, 3])) # [3, 2, 1]\n\n# Iteration functions\nfor i in range(5):\n    print(i)\n\nfor i, val in enumerate(["a", "b", "c"]):\n    print(i, val)\n\nnames = ["Alice", "Bob", "Charlie"]\nscores = [90, 85, 95]\nfor name, score in zip(names, scores):\n    print(f"{name}: {score}")\n\n# Functional programming\nnumbers = [1, 2, 3, 4, 5]\neven = list(filter(lambda x: x % 2 == 0, numbers))\nsquares = list(map(lambda x: x**2, numbers))\nfrom functools import reduce\nproduct = reduce(lambda x, y: x * y, numbers)\n\n# Input/output\nname = input("Enter your name: ")\nprint(f"Hello, {name}!")\n\n# Evaluation functions\nresult = eval("2 + 3 * 4")  # 14\ncode = compile("x = 5", "<string>", "exec")\nexec(code)\nprint(x)  # 5',
-        },
-      ],
-    },
-    {
-      title: 'Data Structures',
-      commands: [
-        {
-          command: 'Lists',
-          description: 'Working with Python lists',
-          usage: 'list.append(), list.pop(), list.sort(), etc.',
-          example: '# Creating lists\nempty = []\nnumbers = [1, 2, 3, 4, 5]\nmixed = [1, "hello", 3.14, True]\nnested = [[1, 2], [3, 4], [5, 6]]\n\n# List operations\nnumbers = [1, 2, 3]\nnumbers.append(4)        # [1, 2, 3, 4]\nnumbers.insert(1, 99)    # [1, 99, 2, 3, 4]\nnumbers.extend([5, 6])   # [1, 99, 2, 3, 4, 5, 6]\nnumbers.remove(99)       # [1, 2, 3, 4, 5, 6]\npopped = numbers.pop()   # removes 6\nnumbers.pop(0)           # removes first element\n\n# List comprehension\nsquares = [x**2 for x in range(10)]\neven_numbers = [x for x in range(20) if x % 2 == 0]\nmatrix = [[i*j for j in range(3)] for i in range(3)]\n\n# List methods\nnumbers = [3, 1, 4, 1, 5, 9, 2, 6]\nnumbers.sort()           # [1, 1, 2, 3, 4, 5, 6, 9]\nnumbers.reverse()        # [9, 6, 5, 4, 3, 2, 1, 1]\ncount = numbers.count(1) # 2\nindex = numbers.index(5) # 4\ncopied = numbers.copy()  # shallow copy\n\n# Slicing\nnumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nprint(numbers[2:5])      # [2, 3, 4]\nprint(numbers[:5])       # [0, 1, 2, 3, 4]\nprint(numbers[5:])       # [5, 6, 7, 8, 9]\nprint(numbers[::2])      # [0, 2, 4, 6, 8]\nprint(numbers[::-1])     # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]',
+          command: 'Function with Keyword Arguments',
+          description: 'Functions with named parameters',
+          usage: 'def func(name, age, city="Unknown"):',
+          example: `# Function with keyword arguments
+def create_person(name, age, city="Unknown"):
+    return {"name": name, "age": age, "city": city}`,
         },
         {
-          command: 'Dictionaries',
-          description: 'Working with Python dictionaries',
-          usage: 'dict[key], dict.get(), dict.keys(), etc.',
-          example: '# Creating dictionaries\nempty = {}\nperson = {"name": "John", "age": 30}\nfrom_dict = dict(name="Jane", age=25)\nfrom_pairs = dict([("a", 1), ("b", 2)])\n\n# Dictionary operations\nperson = {"name": "John", "age": 30}\nperson["city"] = "New York"    # Add item\nperson["age"] = 31            # Update item\ncity = person.get("city")     # Get value (None if not found)\ncountry = person.get("country", "USA")  # Default value\n\n# Dictionary methods\nkeys = person.keys()          # dict_keys([\'name\', \'age\', \'city\'])\nvalues = person.values()      # dict_values([\'John\', 31, \'New York\'])\nitems = person.items()        # dict_items([(\'name\', \'John\'), ...])\nperson.update({"age": 32, "country": "USA"})\nremoved = person.pop("city")  # Remove and return value\nlast_item = person.popitem()  # Remove last item\ncleared = person.clear()      # Remove all items\n\n# Dictionary comprehension\nsquares = {x: x**2 for x in range(5)}\nword_lengths = {word: len(word) for word in ["hello", "world", "python"]}\n\n# Nested dictionaries\npeople = {\n    "employees": {\n        "john": {"age": 30, "department": "IT"},\n        "jane": {"age": 25, "department": "HR"}\n    },\n    "managers": {\n        "bob": {"age": 40, "department": "IT"}\n    }\n}\n\n# Dictionary operations\nmerged = {**dict1, **dict2}   # Merge dictionaries\nfiltered = {k: v for k, v in original.items() if v > 10}',
+          command: 'Function with Variable Arguments',
+          description: 'Accept arbitrary number of positional arguments',
+          usage: 'def func(*args):',
+          example: `# Function with variable arguments
+def sum_all(*numbers):
+    return sum(numbers)`,
         },
         {
-          command: 'Sets and Tuples',
-          description: 'Working with sets and tuples',
-          usage: 'set(), tuple.add(), tuple operations',
-          example: '# Sets\nempty = set()\nnumbers = {1, 2, 3, 4, 5}\nfrom_list = set([1, 2, 2, 3, 4])  # {1, 2, 3, 4}\n\n# Set operations\nnumbers.add(6)               # Add element\nnumbers.remove(3)            # Remove element (raises error if not found)\ndiscarded = numbers.discard(10)  # Remove (no error if not found)\npopped = numbers.pop()       # Remove and return arbitrary element\n\n# Set operations\nset1 = {1, 2, 3, 4}\nset2 = {3, 4, 5, 6}\nunion = set1 | set2           # {1, 2, 3, 4, 5, 6}\nintersection = set1 & set2    # {3, 4}\ndifference = set1 - set2      # {1, 2}\nsymmetric_diff = set1 ^ set2  # {1, 2, 5, 6}\n\n# Set methods\nset1.update({5, 6})          # Add multiple elements\nset1.intersection_update(set2)  # Keep only intersection\nset1.difference_update(set2)     # Remove elements in set2\nset1.symmetric_difference_update(set2)  # Keep only symmetric difference\n\n# Tuples\nempty = ()\nsingle = (1,)                # Note the comma\nmultiple = (1, 2, 3)\nfrom_list = tuple([1, 2, 3])\n\n# Tuple operations\ncoordinates = (10, 20)\nx, y = coordinates           # Unpacking\nnested = ((1, 2), (3, 4))\n\n# Tuple methods\nnumbers = (1, 2, 3, 2, 4)\ncount = numbers.count(2)     # 2\nindex = numbers.index(3)     # 2\n\n# Named tuples (Python 3.6+)\nfrom collections import namedtuple\nPoint = namedtuple(\'Point\', [\'x\', \'y\'])\np = Point(10, 20)\nprint(p.x, p.y)              # 10 20\n\n# Dataclasses (Python 3.7+)\nfrom dataclasses import dataclass\n\n@dataclass\nclass Person:\n    name: str\n    age: int\n    city: str = "Unknown"\n\nperson = Person("John", 30)\nprint(person.name)           # John',
-        },
-      ],
-    },
-    {
-      title: 'String Manipulation',
-      commands: [
-        {
-          command: 'String Operations',
-          description: 'Working with Python strings',
-          usage: 'str.upper(), str.lower(), str.split(), etc.',
-          example: '# String creation\nsingle = \'Hello\'\ndouble = "World"\nmultiline = """Line 1\nLine 2\nLine 3"""\nraw = r"C:\\Users\\name"     # Raw string\nformatted = f"Value: {42}"   # f-string\n\n# String methods\ntext = "Hello, World!"\nprint(text.upper())         # "HELLO, WORLD!"\nprint(text.lower())         # "hello, world!"\nprint(text.title())         # "Hello, World!"\nprint(text.capitalize())    # "Hello, world!"\nprint(text.swapcase())      # "hELLO, wORLD!"\n\n# String searching\ntext = "Hello, World!"\nprint(text.find("World"))   # 7\nprint(text.index("World"))  # 7 (raises ValueError if not found)\nprint(text.startswith("Hello"))  # True\nprint(text.endswith("!"))   # True\nprint("World" in text)      # True\n\n# String manipulation\ntext = "  Hello, World!  "\nprint(text.strip())         # "Hello, World!"\nprint(text.lstrip())        # "Hello, World!  "\nprint(text.rstrip())        # "  Hello, World!"\nprint(text.replace("World", "Python"))  # "  Hello, Python!  "\n\n# String splitting and joining\ntext = "apple,banana,cherry"\nfruits = text.split(",")    # [\'apple\', \'banana\', \'cherry\']\njoined = "-".join(fruits)   # "apple-banana-cherry"\n\n# String formatting\nname = "Alice"\nage = 30\n\n# f-strings (Python 3.6+)\nmessage = f"My name is {name} and I\'m {age} years old"\nprice = 19.99\nprint(f"Price: \\${price:.2f}")  # "Price: $19.99"\n\n# format() method\nmessage = "My name is {} and I\'m {} years old".format(name, age)\nmessage = "My name is {0} and I\'m {1} years old".format(name, age)\nmessage = "My name is {n} and I\'m {a} years old".format(n=name, a=age)\n\n# % formatting (older)\nmessage = "My name is %s and I\'m %d years old" % (name, age)',
+          command: 'Function with Keyword Arguments',
+          description: 'Accept arbitrary number of keyword arguments',
+          usage: 'def func(**kwargs):',
+          example: `# Function with keyword arguments
+def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")`,
         },
         {
-          command: 'Regular Expressions',
-          description: 'Pattern matching with regex',
-          usage: 'import re; re.search(), re.findall(), etc.',
-          example: 'import re\n\n# Basic patterns\ntext = "The price is $19.99 and $29.99"\n\n# Find all matches\nprices = re.findall(r\'\\$\\d+\\.\\d{2}\', text)\n# [\'$19.99\', \'$29.99\']\n\n# Search for first match\nmatch = re.search(r\'\\$(\\d+)\\.(\\d{2})\', text)\nif match:\n    dollars = match.group(1)  # \'19\'\n    cents = match.group(2)    # \'99\'\n    full_match = match.group(0)  # \'$19.99\'\n\n# Compile regex for performance\npattern = re.compile(r\'\\b\\w+@\\w+\\.\\w+\\b\')\nemails = pattern.findall(text)\n\n# Common patterns\nphone_pattern = r\'\\b\\d{3}-\\d{3}-\\d{4}\\b\'  # 555-123-4567\nemail_pattern = r\'\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b\'\nurl_pattern = r\'https?://[^\\s]+\'\n\n# Substitution\ntext = "Hello, World! Hello, Universe!"\nnew_text = re.sub(r\'Hello\', \'Hi\', text)  # "Hi, World! Hi, Universe!"\nnew_text = re.sub(r\'\\bHello\\b\', \'Hi\', text, count=1)  # "Hi, World! Hello, Universe!"\n\n# Splitting\ntext = "apple, banana; cherry| date"\nitems = re.split(r\'[,;|]\\s*\', text)  # [\'apple\', \'banana\', \'cherry\', \'date\']\n\n# Flags\ntext = "Hello World"\nre.search(r\'hello world\', text, re.IGNORECASE)  # Case insensitive\nre.search(r\'^hello\', text, re.MULTILINE)  # Multiline\n\n# Grouping\npattern = r\'(\\d{3})-(\\d{3})-(\\d{4})\'\nmatch = re.search(pattern, "Phone: 555-123-4567")\nif match:\n    area_code = match.group(1)  # \'555\'\n    exchange = match.group(2)   # \'123\'\n    number = match.group(3)     # \'4567\'\n\n# Named groups\npattern = r\'(?P<area>\\d{3})-(?P<exchange>\\d{3})-(?P<number>\\d{4})\'\nmatch = re.search(pattern, "Phone: 555-123-4567")\nif match:\n    area = match.group(\'area\')  # \'555\'\n    exchange = match.group(\'exchange\')  # \'123\'',
+          command: 'Function with Type Hints',
+          description: 'Add type annotations to functions',
+          usage: 'def func(param: type) -> return_type:',
+          example: `# Function with type hints
+def calculate_area(length: float, width: float) -> float:
+    """Calculate rectangle area"""
+    return length * width`,
         },
-      ],
-    },
+        {
+          command: 'Lambda Functions',
+          description: 'Anonymous functions',
+          usage: 'lambda params: expression',
+          example: `# Lambda functions
+square = lambda x: x ** 2
+add = lambda x, y: x + y`,
+        },
+        {
+          command: 'Higher-Order Functions',
+          description: 'Functions that accept other functions',
+          usage: 'def apply_operation(func, x, y):',
+          example: `# Higher-order functions
+def apply_operation(func, x, y):
+    return func(x, y)
 
-    // ADVANCED LEVEL
-    {
-      title: 'Object-Oriented Programming',
-      commands: [
-        {
-          command: 'Classes and Objects',
-          description: 'Creating and using classes',
-          usage: 'class ClassName: def __init__(self):',
-          example: '# Basic class\nclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    \n    def greet(self):\n        return f"Hello, I\'m {self.name} and I\'m {self.age} years old"\n    \n    def __str__(self):\n        return f"Person({self.name}, {self.age})"\n    \n    def __repr__(self):\n        return f"Person(name=\'{self.name}\', age={self.age})"\n\n# Creating objects\nperson = Person("Alice", 30)\nprint(person.greet())  # "Hello, I\'m Alice and I\'m 30 years old"\n\n# Class attributes and methods\nclass Circle:\n    pi = 3.14159  # Class attribute\n    \n    def __init__(self, radius):\n        self.radius = radius\n    \n    def area(self):\n        return self.pi * self.radius ** 2\n    \n    @classmethod\n    def from_diameter(cls, diameter):\n        return cls(diameter / 2)\n    \n    @staticmethod\n    def is_valid_radius(radius):\n        return radius > 0\n\n# Using class methods\ncircle = Circle.from_diameter(10)\nprint(circle.area())  # 78.53975\nprint(Circle.is_valid_radius(5))  # True\n\n# Properties\nclass Temperature:\n    def __init__(self, celsius=0):\n        self._celsius = celsius\n    \n    @property\n    def celsius(self):\n        return self._celsius\n    \n    @celsius.setter\n    def celsius(self, value):\n        if value < -273.15:\n            raise ValueError("Temperature below absolute zero is not possible")\n        self._celsius = value\n    \n    @property\n    def fahrenheit(self):\n        return self._celsius * 9/5 + 32\n    \n    @fahrenheit.setter\n    def fahrenheit(self, value):\n        self.celsius = (value - 32) * 5/9\n\ntemp = Temperature(25)\nprint(temp.celsius)     # 25\nprint(temp.fahrenheit)  # 77.0\ntemp.fahrenheit = 100\nprint(temp.celsius)     # 37.777...',
+result = apply_operation(lambda a, b: a * b, 5, 3)  # 15`,
         },
         {
-          command: 'Inheritance and Polymorphism',
-          description: 'Creating class hierarchies',
-          usage: 'class SubClass(BaseClass): super().__init__()',
-          example: '# Base class\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        raise NotImplementedError("Subclass must implement abstract method")\n    \n    def eat(self):\n        return f"{self.name} is eating"\n\n# Subclass\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name)\n        self.breed = breed\n    \n    def speak(self):\n        return f"{self.name} barks"\n    \n    def fetch(self):\n        return f"{self.name} is fetching"\n\n# Another subclass\nclass Cat(Animal):\n    def __init__(self, name, color):\n        super().__init__(name)\n        self.color = color\n    \n    def speak(self):\n        return f"{self.name} meows"\n\n# Multiple inheritance\nclass Flyable:\n    def fly(self):\n        return "Flying"\n\nclass Bird(Animal, Flyable):\n    def __init__(self, name, species):\n        super().__init__(name)\n        self.species = species\n    \n    def speak(self):\n        return f"{self.name} chirps"\n\n# Polymorphism\ndef make_animal_speak(animal):\n    print(animal.speak())\n\ndog = Dog("Buddy", "Golden Retriever")\ncat = Cat("Whiskers", "Black")\nbird = Bird("Tweety", "Canary")\n\nmake_animal_speak(dog)   # "Buddy barks"\nmake_animal_speak(cat)   # "Whiskers meows"\nmake_animal_speak(bird)  # "Tweety chirps"\n\n# Abstract base classes\nfrom abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n    \n    @abstractmethod\n    def perimeter(self):\n        pass\n\nclass Rectangle(Shape):\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n    \n    def area(self):\n        return self.width * self.height\n    \n    def perimeter(self):\n        return 2 * (self.width + self.height)',
+          command: 'Function Decorator',
+          description: 'Modify function behavior with decorators',
+          usage: '@decorator',
+          example: `# Function decorators
+def timer_decorator(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+@timer_decorator
+def slow_function():
+    import time
+    time.sleep(1)
+    return "Done"`,
         },
         {
-          command: 'Magic Methods',
-          description: 'Special methods for operator overloading',
-          usage: '__add__, __str__, __len__, etc.',
-          example: 'class Vector:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    \n    def __str__(self):\n        return f"Vector({self.x}, {self.y})"\n    \n    def __repr__(self):\n        return f"Vector({self.x}, {self.y})"\n    \n    def __add__(self, other):\n        if isinstance(other, Vector):\n            return Vector(self.x + other.x, self.y + other.y)\n        return NotImplemented\n    \n    def __sub__(self, other):\n        if isinstance(other, Vector):\n            return Vector(self.x - other.x, self.y - other.y)\n        return NotImplemented\n    \n    def __mul__(self, scalar):\n        if isinstance(scalar, (int, float)):\n            return Vector(self.x * scalar, self.y * scalar)\n        return NotImplemented\n    \n    def __rmul__(self, scalar):\n        return self.__mul__(scalar)\n    \n    def __eq__(self, other):\n        if isinstance(other, Vector):\n            return self.x == other.x and self.y == other.y\n        return False\n    \n    def __len__(self):\n        return int((self.x ** 2 + self.y ** 2) ** 0.5)\n    \n    def __getitem__(self, index):\n        if index == 0:\n            return self.x\n        elif index == 1:\n            return self.y\n        else:\n            raise IndexError("Index out of range")\n    \n    def __call__(self, scalar):\n        return Vector(self.x * scalar, self.y * scalar)\n\n# Using magic methods\nv1 = Vector(3, 4)\nv2 = Vector(1, 2)\n\nprint(v1 + v2)  # Vector(4, 6)\nprint(v1 - v2)  # Vector(2, 2)\nprint(v1 * 2)   # Vector(6, 8)\nprint(2 * v1)   # Vector(6, 8)\nprint(v1 == v2) # False\nprint(len(v1))   # 5\nprint(v1[0], v1[1])  # 3 4\nprint(v1(3))     # Vector(9, 12)\n\n# Context manager protocol\nclass FileManager:\n    def __init__(self, filename, mode):\n        self.filename = filename\n        self.mode = mode\n        self.file = None\n    \n    def __enter__(self):\n        self.file = open(self.filename, self.mode)\n        return self.file\n    \n    def __exit__(self, exc_type, exc_val, exc_tb):\n        if self.file:\n            self.file.close()\n        return False  # Don\'t suppress exceptions\n\n# Using context manager\nwith FileManager("test.txt", "w") as f:\n    f.write("Hello, World!")',
+          command: 'Import Modules',
+          description: 'Import Python modules',
+          usage: 'import module',
+          example: `# Importing modules
+import math
+import os, sys`,
+        },
+        {
+          command: 'Import Specific Items',
+          description: 'Import specific functions or classes',
+          usage: 'from module import item',
+          example: `from datetime import datetime, timedelta
+from collections import Counter, defaultdict`,
+        },
+        {
+          command: 'Import with Alias',
+          description: 'Import modules with alternative names',
+          usage: 'import module as alias',
+          example: `# Import with alias
+import numpy as np
+import pandas as pd`,
+        },
+        {
+          command: 'Import Specific Functions',
+          description: 'Import specific functions from modules',
+          usage: 'from module import func1, func2',
+          example: `# Import specific functions
+from math import sqrt, pi, sin
+from random import randint, choice`,
+        },
+        {
+          command: 'Import All',
+          description: 'Import all items from module',
+          usage: 'from module import *',
+          example: `# Import all (use sparingly)
+from math import *`,
+        },
+        {
+          command: 'Conditional Imports',
+          description: 'Import modules conditionally',
+          usage: 'try: import module',
+          example: `# Conditional imports
+try:
+    import numpy as np
+except ImportError:
+    print("NumPy not available")
+    np = None`,
+        },
+        {
+          command: 'Create Custom Module',
+          description: 'Create your own Python module',
+          usage: 'Create .py file with functions',
+          example: `# Creating modules (my_module.py)
+"""
+# my_module.py
+def helper_function():
+    return "Helper function"
+
+CONSTANT_VALUE = 42
+"""`,
+        },
+        {
+          command: 'Use Custom Module',
+          description: 'Import and use custom modules',
+          usage: 'import my_module',
+          example: `# Using custom modules
+import my_module
+from my_module import helper_function, CONSTANT_VALUE`,
+        },
+        {
+          command: 'Package Structure',
+          description: 'Create Python packages',
+          usage: 'Directory with __init__.py',
+          example: `# Package structure
+"""
+my_package/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        module3.py
+"""`,
+        },
+        {
+          command: 'Relative Imports',
+          description: 'Import from relative package paths',
+          usage: 'from .module import function',
+          example: `# Relative imports
+from .module1 import some_function
+from ..subpackage.module3 import another_function`,
+        },
+        {
+          command: 'Module Information',
+          description: 'Get information about current module',
+          usage: '__name__, __file__, __doc__',
+          example: `# Module information
+print(__name__)      # __main__ or module name
+print(__file__)      # File path
+print(__doc__)       # Module docstring`,
+        },
+        {
+          command: 'Type Conversion Functions',
+          description: 'Convert between data types',
+          usage: 'int(), float(), str(), list()',
+          example: `# Type conversion
+int_val = int("42")
+float_val = float("3.14")
+str_val = str(123)
+list_val = list("hello")
+tuple_val = tuple([1, 2, 3])
+set_val = set([1, 2, 2, 3])
+dict_val = dict([("a", 1), ("b", 2)])`,
+        },
+        {
+          command: 'Information Functions',
+          description: 'Get information about objects',
+          usage: 'type(), isinstance(), hasattr()',
+          example: `# Information functions
+print(type(42))           # <class 'int'>
+print(isinstance(42, int)) # True
+print(hasattr(str, "upper")) # True
+print(id(42))             # Memory address
+print(dir(str))           # List attributes`,
+        },
+        {
+          command: 'Sequence Functions',
+          description: 'Functions for working with sequences',
+          usage: 'len(), max(), min(), sum()',
+          example: `# Sequence functions
+numbers = [1, 2, 3, 4, 5]
+print(len(numbers))       # 5
+print(max(numbers))       # 5
+print(min(numbers))       # 1
+print(sum(numbers))       # 15
+print(sorted([3, 1, 2]))  # [1, 2, 3]
+print(reversed([1, 2, 3])) # [3, 2, 1]`,
+        },
+        {
+          command: 'Iteration Functions',
+          description: 'Functions for iteration',
+          usage: 'range(), enumerate(), zip()',
+          example: `# Iteration functions
+for i in range(5):
+    print(i)
+
+for i, val in enumerate(["a", "b", "c"]):
+    print(i, val)
+
+names = ["Alice", "Bob", "Charlie"]
+scores = [90, 85, 95]
+for name, score in zip(names, scores):
+    print(f"{name}: {score}")`,
+        },
+        {
+          command: 'Functional Programming Functions',
+          description: 'map, filter, reduce functions',
+          usage: 'map(), filter(), reduce()',
+          example: `# Functional programming
+numbers = [1, 2, 3, 4, 5]
+even = list(filter(lambda x: x % 2 == 0, numbers))
+squares = list(map(lambda x: x**2, numbers))
+from functools import reduce
+product = reduce(lambda x, y: x * y, numbers)`,
+        },
+        {
+          command: 'Input Output Functions',
+          description: 'Get user input and print output',
+          usage: 'input(), print()',
+          example: `# Input/output
+name = input("Enter your name: ")
+print(f"Hello, {name}!")`,
+        },
+        {
+          command: 'Evaluation Functions',
+          description: 'Evaluate Python code dynamically',
+          usage: 'eval(), exec(), compile()',
+          example: `# Evaluation functions
+result = eval("2 + 3 * 4")  # 14
+code = compile("x = 5", "<string>", "exec")
+exec(code)
+print(x)  # 5`,
         },
       ],
     },
-    {
-      title: 'File Handling and I/O',
-      commands: [
-        {
-          command: 'File Operations',
-          description: 'Reading and writing files',
-          usage: 'open(), with statement, file modes',
-          example: '# Basic file operations\n\n# Reading files\nwith open("example.txt", "r") as file:\n    content = file.read()\n    print(content)\n\n# Reading line by line\nwith open("example.txt", "r") as file:\n    for line in file:\n        print(line.strip())\n\n# Reading all lines\nwith open("example.txt", "r") as file:\n    lines = file.readlines()\n    lines = [line.strip() for line in lines]\n\n# Writing files\nwith open("output.txt", "w") as file:\n    file.write("Hello, World!\\n")\n    file.write("This is a new line.\\n")\n\n# Appending to files\nwith open("output.txt", "a") as file:\n    file.write("This line is appended.\\n")\n\n# File modes\n# "r" - Read (default)\n# "w" - Write (overwrites existing file)\n# "a" - Append\n# "r+" - Read and write\n# "x" - Exclusive creation (fails if file exists)\n# "b" - Binary mode\n# "t" - Text mode (default)\n\n# Binary files\nwith open("image.jpg", "rb") as file:\n    image_data = file.read()\n\nwith open("copy.jpg", "wb") as file:\n    file.write(image_data)\n\n# File positioning\nwith open("example.txt", "r") as file:\n    file.seek(10)  # Move to position 10\n    content = file.read(20)  # Read 20 characters\n    position = file.tell()  # Get current position\n    file.seek(0)  # Go back to beginning\n\n# File and directory operations\nimport os\nimport shutil\n\n# Check if file exists\nif os.path.exists("example.txt"):\n    print("File exists")\n\n# Check if it\'s a file or directory\nif os.path.isfile("example.txt"):\n    print("It\'s a file")\n\nif os.path.isdir("my_folder"):\n    print("It\'s a directory")\n\n# Create directory\nos.makedirs("new_folder", exist_ok=True)\n\n# Remove file\nos.remove("example.txt")\n\n# Remove directory\nos.rmdir("empty_folder")\nshutil.rmtree("folder_with_contents")\n\n# Copy and move\nshutil.copy("source.txt", "destination.txt")\nshutil.move("old_location.txt", "new_location.txt")\n\n# List directory contents\nfiles = os.listdir(".")\nfiles = [f for f in os.listdir(".") if f.endswith(".txt")]\n\n# Path operations (Python 3.4+)\nfrom pathlib import Path\n\npath = Path("documents") / "file.txt"\nprint(path.exists())\nprint(path.is_file())\nprint(path.stem)  # "file"\nprint(path.suffix)  # ".txt"\nprint(path.parent)  # "documents"\n\n# Create directories\npath.parent.mkdir(parents=True, exist_ok=True)',
-        },
-        {
-          command: 'Working with CSV and JSON',
-          description: 'Handling structured data files',
-          usage: 'csv module, json module',
-          example: '# Working with CSV files\nimport csv\n\n# Reading CSV\nwith open("data.csv", "r") as file:\n    reader = csv.reader(file)\n    for row in reader:\n        print(row)\n\n# Reading CSV with headers\nwith open("data.csv", "r") as file:\n    reader = csv.DictReader(file)\n    for row in reader:\n        print(f"Name: {row[\'name\']}, Age: {row[\'age\']}")\n\n# Writing CSV\nwith open("output.csv", "w", newline="") as file:\n    writer = csv.writer(file)\n    writer.writerow(["name", "age", "city"])\n    writer.writerow(["Alice", 30, "New York"])\n    writer.writerow(["Bob", 25, "Los Angeles"])\n\n# Writing CSV with headers\nwith open("output.csv", "w", newline="") as file:\n    fieldnames = ["name", "age", "city"]\n    writer = csv.DictWriter(file, fieldnames=fieldnames)\n    writer.writeheader()\n    writer.writerow({"name": "Alice", "age": 30, "city": "New York"})\n    writer.writerow({"name": "Bob", "age": 25, "city": "Los Angeles"})\n\n# Working with JSON\nimport json\n\n# Reading JSON\nwith open("data.json", "r") as file:\n    data = json.load(file)\n    print(data)\n\n# Writing JSON\ndata = {\n    "name": "Alice",\n    "age": 30,\n    "hobbies": ["reading", "swimming", "coding"]\n}\n\nwith open("output.json", "w") as file:\n    json.dump(data, file, indent=2)\n\n# Pretty print JSON\njson_string = json.dumps(data, indent=2, sort_keys=True)\nprint(json_string)\n\n# Parsing JSON from string\njson_string = \'{"name": "Bob", "age": 25}\'\ndata = json.loads(json_string)\n\n# Custom JSON encoder\nclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\nclass PersonEncoder(json.JSONEncoder):\n    def default(self, obj):\n        if isinstance(obj, Person):\n            return {"name": obj.name, "age": obj.age}\n        return super().default(obj)\n\nperson = Person("Alice", 30)\njson_string = json.dumps(person, cls=PersonEncoder)',
-        },
-      ],
-    },
-    {
-      title: 'Advanced Python Features',
-      commands: [
-        {
-          command: 'Decorators and Metaclasses',
-          description: 'Advanced function and class customization',
-          usage: '@decorator, type(), metaclass',
-          example: '# Function decorators\ndef timer_decorator(func):\n    import time\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        result = func(*args, **kwargs)\n        end = time.time()\n        print(f"{func.__name__} took {end - start:.4f} seconds")\n        return result\n    return wrapper\n\ndef cache_decorator(func):\n    cache = {}\n    def wrapper(*args):\n        if args in cache:\n            return cache[args]\n        result = func(*args)\n        cache[args] = result\n        return result\n    return wrapper\n\n@timer_decorator\n@cache_decorator\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n\n# Class decorators\ndef add_methods(cls):\n    def new_method(self):\n        return "New method added"\n    cls.new_method = new_method\n    return cls\n\n@add_methods\nclass MyClass:\n    def original_method(self):\n        return "Original method"\n\n# Property decorators\nclass Person:\n    def __init__(self, name):\n        self._name = name\n    \n    @property\n    def name(self):\n        return self._name\n    \n    @name.setter\n    def name(self, value):\n        if not value:\n            raise ValueError("Name cannot be empty")\n        self._name = value\n    \n    @name.deleter\n    def name(self):\n        del self._name\n\n# Metaclasses\nclass SingletonMeta(type):\n    _instances = {}\n    \n    def __call__(cls, *args, **kwargs):\n        if cls not in cls._instances:\n            cls._instances[cls] = super().__call__(*args, **kwargs)\n        return cls._instances[cls]\n\nclass Singleton(metaclass=SingletonMeta):\n    def __init__(self):\n        self.value = 0\n\n# Dynamic class creation\ndef create_class(name, bases, attrs):\n    return type(name, bases, attrs)\n\nDynamicClass = create_class("DynamicClass", (), {\n    "value": 42,\n    "get_value": lambda self: self.value\n})\n\n# Class decorators with parameters\ndef repeat(times):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            results = []\n            for _ in range(times):\n                results.append(func(*args, **kwargs))\n            return results\n        return wrapper\n    return decorator\n\n@repeat(3)\ndef greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("Alice"))  # ["Hello, Alice!", "Hello, Alice!", "Hello, Alice!"]',
-        },
-        {
-          command: 'Generators and Iterators',
-          description: 'Memory-efficient iteration patterns',
-          usage: 'yield, __iter__, __next__',
-          example: '# Generator functions\ndef count_up_to(n):\n    i = 1\n    while i <= n:\n        yield i\n        i += 1\n\n# Using generator\nfor number in count_up_to(5):\n    print(number)\n\n# Generator expressions\nsquares = (x**2 for x in range(10))\nfor square in squares:\n    print(square)\n\n# Infinite generator\ndef infinite_fibonacci():\n    a, b = 0, 1\n    while True:\n        yield a\n        a, b = b, a + b\n\n# Use with caution - infinite loop!\nfib_gen = infinite_fibonacci()\nfor _ in range(10):\n    print(next(fib_gen))\n\n# Custom iterator\nclass Countdown:\n    def __init__(self, start):\n        self.start = start\n        self.current = start\n    \n    def __iter__(self):\n        return self\n    \n    def __next__(self):\n        if self.current <= 0:\n            raise StopIteration\n        value = self.current\n        self.current -= 1\n        return value\n\n# Using custom iterator\nfor number in Countdown(5):\n    print(number)\n\n# Iterator utilities\ndef chain(*iterables):\n    for iterable in iterables:\n        for item in iterable:\n            yield item\n\ndef zip_longest(*iterables, fillvalue=None):\n    iterators = [iter(it) for it in iterables]\n    while True:\n        values = []\n        for it in iterators:\n            try:\n                values.append(next(it))\n            except StopIteration:\n                values.append(fillvalue)\n        if all(v == fillvalue for v in values):\n            break\n        yield tuple(values)\n\n# Generator pipelines\ndef read_large_file(filename):\n    with open(filename, "r") as file:\n        for line in file:\n            yield line.strip()\n\ndef filter_lines(lines, keyword):\n    for line in lines:\n        if keyword in line:\n            yield line\n\ndef transform_lines(lines):\n    for line in lines:\n        yield line.upper()\n\n# Pipeline usage\nlines = read_large_file("large_file.txt")\nfiltered = filter_lines(lines, "error")\ntransformed = transform_lines(filtered)\n\nfor line in transformed:\n    print(line)\n\n# Context manager generators\nfrom contextlib import contextmanager\n\n@contextmanager\ndef file_manager(filename, mode):\n    file = open(filename, mode)\n    try:\n        yield file\n    finally:\n        file.close()\n\n# Using context manager generator\nwith file_manager("test.txt", "w") as f:\n    f.write("Hello, World!")',
-        },
-        {
-          command: 'Concurrency and Parallelism',
-          description: 'Multi-threading and multi-processing',
-          usage: 'threading, multiprocessing, asyncio',
-          example: '# Threading\nimport threading\nimport time\n\ndef worker(name):\n    print(f"Worker {name} starting")\n    time.sleep(2)\n    print(f"Worker {name} finished")\n\n# Create and start threads\nthreads = []\nfor i in range(5):\n    thread = threading.Thread(target=worker, args=(i,))\n    threads.append(thread)\n    thread.start()\n\n# Wait for all threads to complete\nfor thread in threads:\n    thread.join()\n\n# Thread-safe counter\nimport threading\n\nclass Counter:\n    def __init__(self):\n        self.value = 0\n        self.lock = threading.Lock()\n    \n    def increment(self):\n        with self.lock:\n            self.value += 1\n\n# Multiprocessing\nimport multiprocessing\nimport time\n\ndef cpu_worker(number):\n    print(f"Processing {number}")\n    result = sum(i * i for i in range(number))\n    return result\n\nif __name__ == "__main__":\n    numbers = [1000000, 2000000, 3000000, 4000000]\n    \n    with multiprocessing.Pool(processes=4) as pool:\n        results = pool.map(cpu_worker, numbers)\n    \n    print(results)\n\n# Asyncio (Python 3.7+)\nimport asyncio\nimport time\n\nasync def fetch_data(url):\n    print(f"Fetching {url}")\n    await asyncio.sleep(1)  # Simulate network call\n    return f"Data from {url}"\n\nasync def main():\n    urls = ["url1", "url2", "url3", "url4"]\n    \n    # Run tasks concurrently\n    tasks = [fetch_data(url) for url in urls]\n    results = await asyncio.gather(*tasks)\n    \n    for result in results:\n        print(result)\n\n# Run async main\nasyncio.run(main())\n\n# Async context manager\nclass AsyncContextManager:\n    async def __aenter__(self):\n        print("Entering async context")\n        return self\n    \n    async def __aexit__(self, exc_type, exc_val, exc_tb):\n        print("Exiting async context")\n        return False\n\nasync def use_async_context():\n    async with AsyncContextManager() as manager:\n        print("Inside async context")\n\n# Concurrent futures\nfrom concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor\n\ndef process_data(data):\n    return data * data\n\n# Thread pool executor\nwith ThreadPoolExecutor(max_workers=4) as executor:\n    futures = [executor.submit(process_data, i) for i in range(10)]\n    results = [future.result() for future in futures]\n\n# Process pool executor\nwith ProcessPoolExecutor(max_workers=4) as executor:\n    results = list(executor.map(process_data, range(10)))',
-        },
-      ],
-    },
-    {
-      title: 'Python Best Practices',
-      commands: [
-        {
-          command: 'Code Style and Conventions',
-          description: 'PEP 8 and Python coding standards',
-          usage: 'Naming conventions, code organization',
-          example: '# PEP 8 Style Guide\n\n# Naming conventions\nvariable_name = "snake_case"\nCONSTANT_NAME = "UPPER_SNAKE_CASE"\nclass_name = "PascalCase"\nfunction_name = "snake_case"\n_private_variable = "leading_underscore"\n__magic_method__ = "double_underscore"\n\n# Import organization\nimport os\nimport sys\nfrom pathlib import Path\n\nimport requests\nimport numpy as np\n\nfrom myproject import mymodule\nfrom myproject.mymodule import myfunction\n\n# Function documentation\ndef calculate_area(length: float, width: float) -> float:\n    """\n    Calculate the area of a rectangle.\n    \n    Args:\n        length (float): The length of the rectangle.\n        width (float): The width of the rectangle.\n    \n    Returns:\n        float: The area of the rectangle.\n    \n    Raises:\n        ValueError: If length or width is negative.\n    \n    Example:\n        >>> calculate_area(5.0, 3.0)\n        15.0\n    """\n    if length < 0 or width < 0:\n        raise ValueError("Length and width must be positive")\n    return length * width\n\n# Class documentation\nclass DataProcessor:\n    """\n    A class for processing data files.\n    \n    Attributes:\n        input_path (str): Path to input file.\n        output_path (str): Path to output file.\n    \n    Methods:\n        process(): Process the input file.\n        save_results(): Save results to output file.\n    """\n    \n    def __init__(self, input_path: str, output_path: str):\n        self.input_path = input_path\n        self.output_path = output_path\n    \n    def process(self) -> None:\n        """Process the input file."""\n        pass\n\n# Error handling patterns\ndef safe_divide(a: float, b: float) -> float:\n    """Safely divide two numbers."""\n    try:\n        return a / b\n    except ZeroDivisionError:\n        raise ValueError("Cannot divide by zero")\n    except TypeError as e:\n        raise TypeError(f"Invalid types for division: {e}")\n\n# Context managers for resource management\nwith open("file.txt", "r") as file:\n    content = file.read()\n\n# List comprehensions (Pythonic)\nsquares = [x**2 for x in range(10)]\neven_squares = [x**2 for x in range(10) if x % 2 == 0]\n\n# Generator expressions (memory efficient)\nsum_squares = sum(x**2 for x in range(1000000))\n\n# Enum classes (Python 3.4+)\nfrom enum import Enum, auto\n\nclass Status(Enum):\n    PENDING = auto()\n    PROCESSING = auto()\n    COMPLETED = auto()\n    FAILED = auto()\n\n# Type hints (Python 3.5+)\nfrom typing import List, Dict, Optional, Union\n\ndef process_items(items: List[str]) -> Dict[str, int]:\n    """Process a list of items."""\n    return {item: len(item) for item in items}\n\n# Dataclasses (Python 3.7+)\nfrom dataclasses import dataclass, field\nfrom datetime import datetime\n\n@dataclass\nclass User:\n    name: str\n    email: str\n    created_at: datetime = field(default_factory=datetime.now)\n    is_active: bool = True',
-        },
-        {
-          command: 'Testing and Debugging',
-          description: 'Writing tests and debugging code',
-          usage: 'unittest, pytest, pdb, logging',
-          example: '# Unit testing with unittest\nimport unittest\n\nclass TestMathFunctions(unittest.TestCase):\n    def test_addition(self):\n        self.assertEqual(2 + 2, 4)\n    \n    def test_division(self):\n        self.assertEqual(10 / 2, 5)\n        self.assertRaises(ZeroDivisionError, lambda: 10 / 0)\n    \n    def setUp(self):\n        """Set up test fixtures."""\n        self.test_data = [1, 2, 3, 4, 5]\n    \n    def tearDown(self):\n        """Clean up after tests."""\n        pass\n\nif __name__ == "__main__":\n    unittest.main()\n\n# Testing with pytest\nimport pytest\n\ndef test_addition():\n    assert 2 + 2 == 4\n\n@pytest.mark.parametrize("a,b,expected", [\n    (1, 2, 3),\n    (2, 3, 5),\n    (3, 4, 7),\n])\ndef test_addition_params(a, b, expected):\n    assert a + b == expected\n\n@pytest.fixture\ndef sample_data():\n    return [1, 2, 3, 4, 5]\n\ndef test_sum(sample_data):\n    assert sum(sample_data) == 15\n\n# Mocking with unittest.mock\nfrom unittest.mock import Mock, patch\n\ndef test_external_api():\n    mock_response = Mock()\n    mock_response.json.return_value = {"status": "success"}\n    \n    with patch("requests.get", return_value=mock_response):\n        result = fetch_external_data()\n        assert result["status"] == "success"\n\n# Debugging with pdb\nimport pdb\n\ndef buggy_function(x, y):\n    pdb.set_trace()  # Set breakpoint\n    result = x + y\n    return result\n\n# Python debugger commands:\n# n - next line\n# s - step into function\n# c - continue execution\n# q - quit debugger\n# p variable - print variable\n# l - list source code\n\n# Logging\nimport logging\n\n# Configure logging\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\'%(asctime)s - %(name)s - %(levelname)s - %(message)s\',\n    handlers=[\n        logging.FileHandler(\'app.log\'),\n        logging.StreamHandler()\n    ]\n)\n\nlogger = logging.getLogger(__name__)\n\ndef process_data(data):\n    logger.info(f"Processing data: {data}")\n    try:\n        result = complex_operation(data)\n        logger.info(f"Operation successful: {result}")\n        return result\n    except Exception as e:\n        logger.error(f"Operation failed: {e}", exc_info=True)\n        raise\n\n# Performance profiling\nimport cProfile\nimport pstats\n\ndef profile_function():\n    profiler = cProfile.Profile()\n    profiler.enable()\n    \n    # Code to profile\n    result = some_function()\n    \n    profiler.disable()\n    stats = pstats.Stats(profiler)\n    stats.sort_stats(\'cumulative\')\n    stats.print_stats()\n    \n    return result\n\n# Memory profiling\nimport tracemalloc\n\ndef memory_profile():\n    tracemalloc.start()\n    \n    # Code to profile\n    result = memory_intensive_function()\n    \n    current, peak = tracemalloc.get_traced_memory()\n    print(f"Current memory usage: {current / 1024 / 1024:.1f} MB")\n    print(f"Peak memory usage: {peak / 1024 / 1024:.1f} MB")\n    \n    tracemalloc.stop()\n    return result',
-        },
-        {
-          command: 'Performance Optimization',
-          description: 'Writing efficient Python code',
-          usage: 'Profiling, optimization techniques',
-          example: '# Performance optimization techniques\n\n# 1. Use built-in functions and libraries\nimport math\nfrom collections import defaultdict, Counter\nimport itertools\n\n# Fast operations\nnumbers = list(range(1000000))\nsum_result = sum(numbers)  # Fast built-in\nmax_result = max(numbers)  # Fast built-in\n\n# 2. List comprehensions vs loops\n# Slow\nresult = []\nfor i in range(1000):\n    result.append(i * i)\n\n# Fast\nresult = [i * i for i in range(1000)]\n\n# 3. Generator expressions for memory efficiency\n# Memory intensive\nsquares = [i * i for i in range(10000000)]\ntotal = sum(squares)\n\n# Memory efficient\ntotal = sum(i * i for i in range(10000000))\n\n# 4. Use appropriate data structures\n# Fast lookups with sets and dicts\nvalid_items = {1, 2, 3, 4, 5}  # O(1) lookup\ndata = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nfiltered = [x for x in data if x in valid_items]\n\n# 5. String concatenation\n# Slow\nresult = ""\nfor i in range(1000):\n    result += str(i)\n\n# Fast\nresult = "".join(str(i) for i in range(1000))\n\n# 6. Use collections efficiently\nfrom collections import deque, Counter\n\n# Fast appends/pops from both ends\nqueue = deque([1, 2, 3])\nqueue.append(4)      # Add to right\nqueue.appendleft(0)  # Add to left\nqueue.pop()          # Remove from right\nqueue.popleft()      # Remove from left\n\n# Fast counting\ncounter = Counter(["a", "b", "a", "c", "b", "a"])\nmost_common = counter.most_common(3)\n\n# 7. Memoization\nfrom functools import lru_cache\nimport time\n\n@lru_cache(maxsize=128)\ndef fibonacci(n):\n    if n < 2:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n\n# 8. NumPy for numerical operations\nimport numpy as np\n\n# Slow with pure Python\nresult = []\nfor i in range(1000000):\n    result.append(i * i)\n\n# Fast with NumPy\narr = np.arange(1000000)\nresult = arr * arr\n\n# 9. Multiprocessing for CPU-bound tasks\nfrom multiprocessing import Pool\nimport time\n\ndef cpu_intensive_task(n):\n    return sum(i * i for i in range(n))\n\nif __name__ == "__main__":\n    numbers = [1000000, 2000000, 3000000, 4000000]\n    \n    start_time = time.time()\n    with Pool(4) as p:\n        results = p.map(cpu_intensive_task, numbers)\n    end_time = time.time()\n    \n    print(f"Time taken: {end_time - start_time:.2f} seconds")\n\n# 10. Asyncio for I/O-bound tasks\nimport asyncio\nimport aiohttp\n\nasync def fetch_url(url):\n    async with aiohttp.ClientSession() as session:\n        async with session.get(url) as response:\n            return await response.text()\n\nasync def fetch_multiple_urls(urls):\n    tasks = [fetch_url(url) for url in urls]\n    return await asyncio.gather(*tasks)\n\n# 11. Profile and optimize\nimport cProfile\nimport pstats\n\ndef profile_function(func):\n    def wrapper(*args, **kwargs):\n        pr = cProfile.Profile()\n        pr.enable()\n        result = func(*args, **kwargs)\n        pr.disable()\n        \n        stats = pstats.Stats(pr)\n        stats.sort_stats(\'cumulative\')\n        stats.print_stats(10)  # Top 10 functions\n        \n        return result\n    return wrapper\n\n@profile_function\ndef slow_function():\n    result = []\n    for i in range(10000):\n        for j in range(1000):\n            result.append(i * j)\n    return result\n\n# 12. Memory optimization\nimport sys\n\ndef check_memory_usage():\n    variables = globals().copy()\n    for name, obj in variables.items():\n        print(f"{name}: {sys.getsizeof(obj)} bytes")\n\n# Use __slots__ to reduce memory usage\nclass Point:\n    __slots__ = [\'x\', \'y\']\n    \n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n# 13. Algorithmic optimization\n# Use appropriate algorithms for the problem\ndef binary_search(arr, target):\n    """O(log n) binary search."""\n    left, right = 0, len(arr) - 1\n    \n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    \n    return -1',
-        },
-      ],
-    },
+    // Continue with more sections...
   ],
 };

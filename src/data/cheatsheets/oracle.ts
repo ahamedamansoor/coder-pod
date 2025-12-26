@@ -15,19 +15,19 @@ export const oracleCheatsheet = {
           command: 'Oracle Database Overview',
           description: 'Introduction to Oracle Database architecture',
           usage: 'Understanding Oracle components and editions',
-          example: `======== Database Architecture ========
+          example: `Database Architecture:
 Database Instance (SGA + Background Processes)
 Database Files (Datafiles, Control Files, Redo Logs)
 Memory Structures (SGA, PGA)
 Background Processes (SMON, PMON, DBWn, LGWR, etc.)
 
-======== Oracle Editions ========
+Oracle Editions:
 Oracle Database XE (Express Edition) - Free
 Oracle Database Standard Edition 2
 Oracle Database Enterprise Edition
 Oracle Database Cloud Services
 
-======== Key Features ========
+Key Features:
 ACID Compliance
 Multi-Model Database (Relational, JSON, XML, Spatial, Graph)
 High Availability (RAC, Data Guard)
@@ -35,676 +35,1221 @@ Security (Encryption, Auditing, VPD)
 Performance (In-Memory, Partitioning)`,
         },
         {
-          command: 'Installing Oracle Database',
-          description: 'Install Oracle Database XE and setup',
-          usage: 'Download and install Oracle Database XE',
-          example: `======== Linux Installation ========
+          command: 'Install Oracle Linux',
+          description: 'Install Oracle Database on Linux',
+          usage: 'yum package installation',
+          example: `# Linux Installation
 sudo yum install -y oracle-database-preinstall-21c.x86_64
-sudo rpm -ivh oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
-
-======== Configure Database ========
-sudo /etc/init.d/oracle-xe-21c configure
-
-======== Environment Variables ========
+sudo rpm -ivh oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm`,
+        },
+        {
+          command: 'Configure Oracle Database',
+          description: 'Configure Oracle Database XE',
+          usage: 'Post-installation configuration',
+          example: `# Configure Database
+sudo /etc/init.d/oracle-xe-21c configure`,
+        },
+        {
+          command: 'Set Environment Variables',
+          description: 'Configure Oracle environment',
+          usage: 'ORACLE_SID, ORACLE_HOME, PATH',
+          example: `# Environment Variables
 export ORACLE_SID=XE
 export ORACLE_BASE=/opt/oracle
 export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE
 export PATH=$ORACLE_HOME/bin:$PATH
 
-======== Docker Installation ========
-docker run -d \\
-  --name oracle-xe \\
-  -p 1521:1521 \\
-  -e ORACLE_PWD=YourPassword123 \\
-  container-registry.oracle.com/database/express:21.3.0-xe
-
-======== Windows Installation ========
-Download and run setup.exe
-Follow installation wizard
-Set ORACLE_SID, ORACLE_HOME environment variables`,
+# Add to ~/.bashrc or ~/.bash_profile`,
         },
         {
-          command: 'Database Connection',
+          command: 'Connect to Oracle',
           description: 'Connect to Oracle Database',
-          usage: 'SQL*Plus and connection strings',
-          example: `======== SQL*Plus Connections ========
-sqlplus sys/YourPassword@localhost:1521/XE as sysdba
-sqlplus hr/YourPassword@localhost:1521/XE
+          usage: 'sqlplus command',
+          example: `# Connect to Oracle
+sqlplus / as sysdba                    # Connect as sysdba
+sqlplus system/password@XE           # Connect as system
+sqlplus username/password@hostname:port/SID
 
-======== Connection String Formats ========
-Easy Connect: username/password@hostname:port/service_name
-TNSNAMES.ORA: username/password@TNS_ALIAS
-
-======== JDBC Connection ========
-jdbc:oracle:thin:@hostname:port:service_name
-jdbc:oracle:thin:@TNS_ALIAS
-
-======== Python Connection ========
-import cx_Oracle
-connection = cx_Oracle.connect(
-    user="hr",
-    password="password",
-    dsn="localhost:1521/XE"
-)
-
-======== Node.js Connection ========
-const oracledb = require('oracledb');
-const connection = await oracledb.getConnection({
-    user: "hr",
-    password: "password",
-    connectString: "localhost:1521/XE"
-});`,
+# SQL Developer or other GUI tools
+# Connection: hostname:1521/XE`,
         },
         {
           command: 'Basic SQL Commands',
-          description: 'Fundamental SQL operations',
-          usage: 'SELECT, INSERT, UPDATE, DELETE',
-          example: `======== Basic SELECT ========
+          description: 'Essential Oracle SQL commands',
+          usage: 'SHOW, DESCRIBE, SELECT',
+          example: `-- Basic SQL commands
+SHOW USER;                           -- Current user
+SHOW PARAMETER;                     -- Database parameters
+DESCRIBE employees;                  -- Table structure
+SELECT * FROM tab;                   -- User tables
+SELECT table_name FROM user_tables;  -- User tables`,
+        },
+        {
+          command: 'Create Table Basic',
+          description: 'Create a simple table',
+          usage: 'CREATE TABLE statement',
+          example: `-- Create basic table
+CREATE TABLE employees (
+    employee_id NUMBER(6) PRIMARY KEY,
+    first_name VARCHAR2(20),
+    last_name VARCHAR2(25) NOT NULL,
+    email VARCHAR2(25) UNIQUE,
+    hire_date DATE DEFAULT SYSDATE,
+    salary NUMBER(8,2)
+);`,
+        },
+        {
+          command: 'Insert Data',
+          description: 'Insert data into table',
+          usage: 'INSERT INTO statement',
+          example: `-- Insert single record
+INSERT INTO employees (employee_id, first_name, last_name, email, salary)
+VALUES (1, 'John', 'Doe', 'john.doe@company.com', 50000);
+
+-- Insert multiple records
+INSERT ALL
+    INTO employees VALUES (2, 'Jane', 'Smith', 'jane.smith@company.com', 60000)
+    INTO employees VALUES (3, 'Bob', 'Johnson', 'bob.johnson@company.com', 55000)
+SELECT * FROM dual;`,
+        },
+        {
+          command: 'Select Data',
+          description: 'Retrieve data from table',
+          usage: 'SELECT statement',
+          example: `-- Select all data
 SELECT * FROM employees;
-SELECT first_name, last_name, salary FROM employees WHERE department_id = 10;
 
-======== Basic INSERT ========
-INSERT INTO employees (employee_id, first_name, last_name, email, hire_date, job_id)
-VALUES (1001, 'John', 'Doe', 'jdoe@company.com', SYSDATE, 'IT_PROG');
+-- Select specific columns
+SELECT employee_id, first_name, last_name FROM employees;
 
-======== Basic UPDATE ========
-UPDATE employees SET salary = salary * 1.1 WHERE department_id = 10;
+-- Select with condition
+SELECT * FROM employees WHERE salary > 55000;
 
-======== Basic DELETE ========
-DELETE FROM employees WHERE employee_id = 1001;
+-- Select with ordering
+SELECT * FROM employees ORDER BY last_name, first_name;`,
+        },
+        {
+          command: 'Update Data',
+          description: 'Update existing data',
+          usage: 'UPDATE statement',
+          example: `-- Update single record
+UPDATE employees 
+SET salary = 52000 
+WHERE employee_id = 1;
 
-======== Create Table ========
-CREATE TABLE test_table (
-    id NUMBER PRIMARY KEY,
-    name VARCHAR2(50) NOT NULL,
-    created_date DATE DEFAULT SYSDATE
-);
+-- Update multiple records
+UPDATE employees 
+SET salary = salary * 1.1 
+WHERE department_id = 10;`,
+        },
+        {
+          command: 'Delete Data',
+          description: 'Delete data from table',
+          usage: 'DELETE statement',
+          example: `-- Delete specific record
+DELETE FROM employees WHERE employee_id = 1;
 
-======== Drop Table ========
-DROP TABLE test_table;`,
+-- Delete with condition
+DELETE FROM employees WHERE hire_date < DATE '2020-01-01';
+
+-- Delete all records (keep table)
+DELETE FROM employees;`,
+        },
+        {
+          command: 'Drop Table',
+          description: 'Delete entire table',
+          usage: 'DROP TABLE statement',
+          example: `-- Drop table
+DROP TABLE employees;
+
+-- Drop table with purge (cannot be recovered)
+DROP TABLE employees PURGE;`,
+        },
+        {
+          command: 'Data Types Overview',
+          description: 'Oracle data types',
+          usage: 'Common data types',
+          example: `-- Numeric types
+NUMBER(p,s)     -- Precision and scale
+INTEGER         -- Whole number
+DECIMAL(p,s)    -- Decimal number
+
+-- String types
+VARCHAR2(n)     -- Variable length string
+CHAR(n)         -- Fixed length string
+CLOB            -- Large character data
+
+-- Date types
+DATE            -- Date and time
+TIMESTAMP       -- Date with fractional seconds
+INTERVAL        -- Time interval
+
+-- Other types
+BLOB            -- Binary data
+RAW(n)          -- Binary data
+ROWID           -- Row identifier`,
         },
       ],
     },
     {
-      title: 'Basic Data Types and Tables',
+      title: 'Constraints and Keys',
       commands: [
         {
-          command: 'Oracle Data Types',
-          description: 'Common Oracle data types',
-          usage: 'NUMBER, VARCHAR2, DATE, CLOB, etc.',
-          example: `======== Numeric Types ========
-NUMBER(10, 2)    -- Precision 10, scale 2
-NUMBER(5)        -- Integer with 5 digits
-INTEGER          -- 32-bit integer
-BINARY_FLOAT     -- 32-bit floating point
-BINARY_DOUBLE    -- 64-bit floating point
+          command: 'Primary Key Constraint',
+          description: 'Define primary key',
+          usage: 'PRIMARY KEY constraint',
+          example: `-- Primary key at column level
+CREATE TABLE departments (
+    department_id NUMBER(4) PRIMARY KEY,
+    department_name VARCHAR2(30) NOT NULL
+);
 
-======== Character Types ========
-VARCHAR2(100)    -- Variable length string
-CHAR(50)         -- Fixed length string
-NVARCHAR2(100)   -- Unicode string
-NCHAR(50)        -- Unicode fixed string
-
-======== Date/Time Types ========
-DATE             -- Date and time
-TIMESTAMP        -- Date, time, fractional seconds
-TIMESTAMP WITH TIME ZONE
-TIMESTAMP WITH LOCAL TIME ZONE
-INTERVAL YEAR TO MONTH
-INTERVAL DAY TO SECOND
-
-======== Large Object Types ========
-CLOB             -- Character large object
-BLOB             -- Binary large object
-NCLOB            -- Unicode character large object
-BFILE            -- External binary file
-
-======== Rowid and Unique Identifier ========
-ROWID            -- Row address
-RAW(16)          -- Raw data (for GUIDs)
-
-======== Example Usage ========
-CREATE TABLE employee_types (
-    emp_id NUMBER(6) PRIMARY KEY,
-    emp_name VARCHAR2(100) NOT NULL,
-    salary NUMBER(10,2),
-    hire_date DATE DEFAULT SYSDATE,
-    bio CLOB,
-    photo BLOB,
-    created_at TIMESTAMP DEFAULT SYSTIMESTAMP
+-- Primary key at table level
+CREATE TABLE employees (
+    employee_id NUMBER(6),
+    department_id NUMBER(4),
+    CONSTRAINT pk_employee PRIMARY KEY (employee_id)
 );`,
         },
         {
-          command: 'Table Operations',
-          description: 'Create, modify, and manage tables',
-          usage: 'CREATE TABLE, ALTER TABLE, DROP TABLE',
-          example: `======== Create Table with Constraints ========
+          command: 'Foreign Key Constraint',
+          description: 'Define foreign key relationship',
+          usage: 'FOREIGN KEY constraint',
+          example: `-- Foreign key constraint
+CREATE TABLE employees (
+    employee_id NUMBER(6) PRIMARY KEY,
+    department_id NUMBER(4),
+    CONSTRAINT fk_dept FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+);
+
+-- Foreign key with actions
+ALTER TABLE employees ADD CONSTRAINT fk_dept
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+    ON DELETE CASCADE
+    ON UPDATE SET NULL;`,
+        },
+        {
+          command: 'Unique Constraint',
+          description: 'Ensure unique values',
+          usage: 'UNIQUE constraint',
+          example: `-- Unique constraint
+CREATE TABLE employees (
+    employee_id NUMBER(6) PRIMARY KEY,
+    email VARCHAR2(25) UNIQUE,
+    phone VARCHAR2(20),
+    CONSTRAINT uk_phone UNIQUE (phone)
+);
+
+-- Add unique constraint
+ALTER TABLE employees ADD CONSTRAINT uk_email UNIQUE (email);`,
+        },
+        {
+          command: 'Check Constraint',
+          description: 'Validate data values',
+          usage: 'CHECK constraint',
+          example: `-- Check constraint
+CREATE TABLE employees (
+    employee_id NUMBER(6) PRIMARY KEY,
+    salary NUMBER(8,2) CHECK (salary > 0),
+    age NUMBER(3) CHECK (age BETWEEN 18 AND 65),
+    CONSTRAINT chk_salary_positive CHECK (salary > 25000)
+);
+
+-- Add check constraint
+ALTER TABLE employees ADD CONSTRAINT chk_age
+    CHECK (age >= 18);`,
+        },
+        {
+          command: 'NOT NULL Constraint',
+          description: 'Require non-null values',
+          usage: 'NOT NULL constraint',
+          example: `-- NOT NULL constraint
 CREATE TABLE employees (
     employee_id NUMBER(6) PRIMARY KEY,
     first_name VARCHAR2(20) NOT NULL,
     last_name VARCHAR2(25) NOT NULL,
-    email VARCHAR2(25) UNIQUE NOT NULL,
-    phone_number VARCHAR2(20),
-    hire_date DATE DEFAULT SYSDATE,
-    job_id VARCHAR2(10) NOT NULL,
-    salary NUMBER(8,2) CHECK (salary > 0),
-    commission_pct NUMBER(2,2) CHECK (commission_pct BETWEEN 0 AND 1),
-    manager_id NUMBER(6) REFERENCES employees(employee_id),
-    department_id NUMBER(4) REFERENCES departments(department_id)
+    email VARCHAR2(25)
 );
 
-======== Modify Table Structure ========
-ALTER TABLE employees ADD (bonus NUMBER(8,2));
-ALTER TABLE employees MODIFY (salary NUMBER(10,2));
-ALTER TABLE employees DROP COLUMN bonus;
-ALTER TABLE employees RENAME COLUMN bonus TO incentive;
-
-======== Constraint Management ========
-ALTER TABLE employees ADD CONSTRAINT emp_salary_chk CHECK (salary > 1000);
-ALTER TABLE employees DROP CONSTRAINT emp_salary_chk;
-ALTER TABLE employees DISABLE CONSTRAINT emp_salary_chk;
-ALTER TABLE employees ENABLE CONSTRAINT emp_salary_chk;
-
-======== Table Operations ========
-TRUNCATE TABLE employees;  -- Remove all data, keep structure
-DROP TABLE employees PURGE; -- Skip recycle bin`,
+-- Add NOT NULL constraint
+ALTER TABLE employees MODIFY first_name CONSTRAINT nn_first_name NOT NULL;`,
         },
         {
-          command: 'Basic Queries',
-          description: 'Fundamental SELECT statements',
-          usage: 'SELECT with WHERE, ORDER BY, GROUP BY',
-          example: `======== Basic SELECT ========
-SELECT employee_id, first_name, last_name FROM employees;
+          command: 'Default Values',
+          description: 'Set default column values',
+          usage: 'DEFAULT constraint',
+          example: `-- Default values
+CREATE TABLE employees (
+    employee_id NUMBER(6) PRIMARY KEY,
+    hire_date DATE DEFAULT SYSDATE,
+    status VARCHAR2(10) DEFAULT 'ACTIVE',
+    salary NUMBER(8,2) DEFAULT 30000
+);
 
-======== WHERE Clause ========
-SELECT * FROM employees WHERE salary > 5000;
-SELECT * FROM employees WHERE department_id = 10 AND salary > 3000;
-SELECT * FROM employees WHERE last_name LIKE 'S%';
-SELECT * FROM employees WHERE hire_date BETWEEN '01-JAN-2020' AND '31-DEC-2020';
-SELECT * FROM employees WHERE department_id IN (10, 20, 30);
+-- Add default value
+ALTER TABLE employees MODIFY hire_date DEFAULT SYSDATE;`,
+        },
+        {
+          command: 'Disable/Enable Constraints',
+          description: 'Manage constraint status',
+          usage: 'DISABLE/ENABLE constraints',
+          example: `-- Disable constraint
+ALTER TABLE employees DISABLE CONSTRAINT fk_dept;
 
-======== ORDER BY ========
-SELECT * FROM employees ORDER BY last_name ASC;
-SELECT * FROM employees ORDER BY salary DESC, last_name ASC;
+-- Enable constraint
+ALTER TABLE employees ENABLE CONSTRAINT fk_dept;
 
-======== DISTINCT ========
-SELECT DISTINCT department_id FROM employees;
-SELECT DISTINCT job_id, department_id FROM employees;
+-- Disable all constraints
+ALTER TABLE employees DISABLE ALL CONSTRAINTS;
 
-======== Pagination (Oracle 12c+) ========
-SELECT * FROM employees FETCH FIRST 10 ROWS ONLY;
-SELECT * FROM employees OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+-- Enable all constraints
+ALTER TABLE employees ENABLE ALL CONSTRAINTS;`,
+        },
+        {
+          command: 'Drop Constraints',
+          description: 'Remove constraints',
+          usage: 'DROP CONSTRAINT',
+          example: `-- Drop specific constraint
+ALTER TABLE employees DROP CONSTRAINT fk_dept;
 
-======== Aggregate Functions ========
-SELECT COUNT(*) FROM employees;
-SELECT COUNT(DISTINCT department_id) FROM employees;
-SELECT AVG(salary), MAX(salary), MIN(salary), SUM(salary) FROM employees;
-SELECT department_id, COUNT(*), AVG(salary) FROM employees GROUP BY department_id;
-SELECT department_id, COUNT(*) FROM employees GROUP BY department_id HAVING COUNT(*) > 5;
+-- Drop primary key
+ALTER TABLE employees DROP PRIMARY KEY;
 
-======== NULL Handling ========
-SELECT first_name, commission_pct FROM employees WHERE commission_pct IS NULL;
-SELECT first_name, NVL(commission_pct, 0) FROM employees;
-SELECT first_name, COALESCE(commission_pct, 0, salary) FROM employees;
-SELECT first_name, NULLIF(salary, 0) FROM employees;`,
+-- Drop constraint with cascade
+ALTER TABLE employees DROP CONSTRAINT uk_email CASCADE;`,
         },
       ],
     },
-    {
-      title: 'Basic Functions and Operators',
-      commands: [
-        {
-          command: 'String Functions',
-          description: 'Common string manipulation functions',
-          usage: 'UPPER, LOWER, SUBSTR, INSTR, etc.',
-          example: `======== Case Conversion ========
-SELECT UPPER('hello') FROM dual;           -- HELLO
-SELECT LOWER('HELLO') FROM dual;           -- hello
-SELECT INITCAP('hello world') FROM dual;   -- Hello World
-
-======== String Length ========
-SELECT LENGTH('Hello World') FROM dual;    -- 11
-
-======== Substring ========
-SELECT SUBSTR('Hello World', 1, 5) FROM dual; -- Hello
-SELECT SUBSTR('Hello World', -5) FROM dual;   -- World
-
-======== String Position ========
-SELECT INSTR('Hello World', 'World') FROM dual; -- 7
-
-======== String Replacement ========
-SELECT REPLACE('Hello World', 'World', 'Oracle') FROM dual; -- Hello Oracle
-
-======== Padding ========
-SELECT LPAD('Oracle', 10, '*') FROM dual;   -- ****Oracle
-SELECT RPAD('Oracle', 10, '*') FROM dual;   -- Oracle****
-
-======== Trimming ========
-SELECT TRIM('   Hello   ') FROM dual;       -- Hello
-SELECT LTRIM('***Hello', '*') FROM dual;    -- Hello
-SELECT RTRIM('Hello***', '*') FROM dual;    -- Hello
-
-======== Concatenation ========
-SELECT 'Hello' || ' ' || 'World' FROM dual; -- Hello World
-SELECT CONCAT('Hello', 'World') FROM dual;  -- HelloWorld
-
-======== Reverse and Translate ========
-SELECT REVERSE('Hello') FROM dual;          -- olleH
-SELECT TRANSLATE('Hello', 'eo', '12') FROM dual; -- H2ll1`,
-        },
-        {
-          command: 'Numeric Functions',
-          description: 'Mathematical and numeric functions',
-          usage: 'ROUND, TRUNC, MOD, POWER, etc.',
-          example: `======== Rounding ========
-SELECT ROUND(123.456) FROM dual;           -- 123
-SELECT ROUND(123.456, 2) FROM dual;        -- 123.46
-SELECT TRUNC(123.456) FROM dual;           -- 123
-SELECT TRUNC(123.456, 2) FROM dual;        -- 123.45
-
-======== Modulus ========
-SELECT MOD(10, 3) FROM dual;               -- 1
-
-======== Power and Square Root ========
-SELECT POWER(2, 3) FROM dual;              -- 8
-SELECT SQRT(16) FROM dual;                 -- 4
-
-======== Absolute Value and Sign ========
-SELECT ABS(-123) FROM dual;                -- 123
-SELECT SIGN(-123) FROM dual;               -- -1
-SELECT SIGN(123) FROM dual;                -- 1
-SELECT SIGN(0) FROM dual;                  -- 0
-
-======== Ceiling and Floor ========
-SELECT CEIL(12.3) FROM dual;               -- 13
-SELECT FLOOR(12.7) FROM dual;              -- 12
-
-======== Trigonometric Functions ========
-SELECT SIN(0) FROM dual;                   -- 0
-SELECT COS(0) FROM dual;                   -- 1
-SELECT TAN(0) FROM dual;                   -- 0
-
-======== Logarithmic Functions ========
-SELECT LOG(10, 100) FROM dual;             -- 2
-SELECT LN(2.71828) FROM dual;              -- 1
-
-======== Conversion Functions ========
-SELECT TO_NUMBER('123') FROM dual;         -- 123
-SELECT TO_CHAR(123.45, '999.99') FROM dual; -- 123.45
-
-======== Greatest and Least ========
-SELECT GREATEST(10, 20, 5) FROM dual;      -- 20
-SELECT LEAST(10, 20, 5) FROM dual;         -- 5`,
-        },
-        {
-          command: 'Date Functions',
-          description: 'Date and time manipulation functions',
-          usage: 'SYSDATE, ADD_MONTHS, MONTHS_BETWEEN, etc.',
-          example: `======== Current Date/Time ========
-SELECT SYSDATE FROM dual;                  -- Current date and time
-SELECT CURRENT_DATE FROM dual;             -- Current date
-SELECT SYSTIMESTAMP FROM dual;             -- Current timestamp
-
-======== Date Arithmetic ========
-SELECT SYSDATE + 7 FROM dual;              -- Add 7 days
-SELECT SYSDATE - 1 FROM dual;              -- Subtract 1 day
-
-======== Add/Subtract Months ========
-SELECT ADD_MONTHS(SYSDATE, 3) FROM dual;   -- Add 3 months
-SELECT ADD_MONTHS(SYSDATE, -6) FROM dual;  -- Subtract 6 months
-
-======== Months Between ========
-SELECT MONTHS_BETWEEN('01-JAN-2021', '01-JUL-2020') FROM dual; -- 6
-
-======== Next Day and Last Day ========
-SELECT NEXT_DAY(SYSDATE, 'MONDAY') FROM dual; -- Next Monday
-SELECT LAST_DAY(SYSDATE) FROM dual;        -- Last day of current month
-
-======== Date Parts ========
-SELECT EXTRACT(YEAR FROM SYSDATE) FROM dual;  -- Current year
-SELECT EXTRACT(MONTH FROM SYSDATE) FROM dual; -- Current month
-SELECT EXTRACT(DAY FROM SYSDATE) FROM dual;   -- Current day
-
-======== Round and Truncate Date ========
-SELECT ROUND(SYSDATE, 'MONTH') FROM dual;   -- Rounded to month
-SELECT ROUND(SYSDATE, 'YEAR') FROM dual;    -- Rounded to year
-SELECT TRUNC(SYSDATE) FROM dual;           -- Time removed
-SELECT TRUNC(SYSDATE, 'MONTH') FROM dual;  -- First day of month
-SELECT TRUNC(SYSDATE, 'YEAR') FROM dual;   -- First day of year
-
-======== Date Formatting ========
-SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY') FROM dual;           -- 25-DEC-2024
-SELECT TO_CHAR(SYSDATE, 'MM/DD/YYYY HH24:MI:SS') FROM dual; -- 12/25/2024 14:30:45
-
-======== String to Date ========
-SELECT TO_DATE('25-DEC-2024', 'DD-MON-YYYY') FROM dual;
-
-======== Calculate Age ========
-SELECT TRUNC(MONTHS_BETWEEN(SYSDATE, birth_date) / 12) AS age FROM employees;`,
-        },
-      ],
-    },
-
     // INTERMEDIATE LEVEL
     {
-      title: 'Joins and Subqueries',
+      title: 'Advanced Queries and Joins',
       commands: [
         {
-          command: 'Inner Joins',
-          description: 'Combine rows from multiple tables',
-          usage: 'INNER JOIN, NATURAL JOIN, USING clause',
-          example: `======== Basic Inner Join ========
-SELECT e.first_name, e.last_name, d.department_name
-FROM employees e
-INNER JOIN departments d ON e.department_id = d.department_id;
-
-======== Multiple Table Join ========
-SELECT e.first_name, e.last_name, d.department_name, l.city
+          command: 'Inner Join',
+          description: 'Join tables with matching rows',
+          usage: 'INNER JOIN clause',
+          example: `-- Inner join
+SELECT e.employee_id, e.first_name, d.department_name
 FROM employees e
 INNER JOIN departments d ON e.department_id = d.department_id
-INNER JOIN locations l ON d.location_id = l.location_id;
-
-======== Natural Join ========
-SELECT first_name, department_name
-FROM employees
-NATURAL JOIN departments;
-
-======== USING Clause ========
-SELECT first_name, department_name
-FROM employees
-INNER JOIN departments USING (department_id);
-
-======== Inner Join with WHERE ========
-SELECT e.first_name, e.last_name, d.department_name
-FROM employees e
-INNER JOIN departments d ON e.department_id = d.department_id
-WHERE e.salary > 5000;
-
-======== Inner Join with Aggregation ========
-SELECT d.department_name, COUNT(e.employee_id) AS emp_count, AVG(e.salary) AS avg_salary
-FROM departments d
-INNER JOIN employees e ON d.department_id = e.department_id
-GROUP BY d.department_name
-HAVING COUNT(e.employee_id) > 5;`,
+WHERE e.salary > 50000;`,
         },
         {
-          command: 'Outer Joins',
-          description: 'Include non-matching rows',
-          usage: 'LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN',
-          example: `======== Left Outer Join ========
-SELECT e.first_name, d.department_name
-FROM employees e
-LEFT OUTER JOIN departments d ON e.department_id = d.department_id;
-
-======== Right Outer Join ========
-SELECT e.first_name, d.department_name
-FROM employees e
-RIGHT OUTER JOIN departments d ON e.department_id = d.department_id;
-
-======== Full Outer Join ========
-SELECT e.first_name, d.department_name
-FROM employees e
-FULL OUTER JOIN departments d ON e.department_id = d.department_id;
-
-======== Oracle Syntax (Old Style) ========
-SELECT e.first_name, d.department_name
-FROM employees e, departments d
-WHERE e.department_id(+) = d.department_id; -- Left Join
-WHERE e.department_id = d.department_id(+); -- Right Join
-
-======== Self Join ========
-SELECT e.first_name AS employee, m.first_name AS manager
-FROM employees e
-LEFT OUTER JOIN employees m ON e.manager_id = m.employee_id;
-
-======== Multiple Outer Joins ========
-SELECT e.first_name, d.department_name, l.city
+          command: 'Left Join',
+          description: 'Join with all left table rows',
+          usage: 'LEFT OUTER JOIN clause',
+          example: `-- Left outer join
+SELECT e.employee_id, e.first_name, d.department_name
 FROM employees e
 LEFT OUTER JOIN departments d ON e.department_id = d.department_id
-LEFT OUTER JOIN locations l ON d.location_id = l.location_id;
-
-======== Outer Join with Aggregation ========
-SELECT d.department_name, COUNT(e.employee_id) AS emp_count
-FROM departments d
-LEFT OUTER JOIN employees e ON d.department_id = e.department_id
+WHERE d.department_id IS NULL;  -- Employees without departments`,
+        },
+        {
+          command: 'Right Join',
+          description: 'Join with all right table rows',
+          usage: 'RIGHT OUTER JOIN clause',
+          example: `-- Right outer join
+SELECT d.department_name, COUNT(e.employee_id) as employee_count
+FROM employees e
+RIGHT OUTER JOIN departments d ON e.department_id = d.department_id
 GROUP BY d.department_name;`,
         },
         {
-          command: 'Subqueries',
-          description: 'Nested queries and subquery types',
-          usage: 'Single-row, multi-row, correlated subqueries',
-          example: `======== Single-Row Subquery ========
-SELECT first_name, last_name, salary
+          command: 'Full Outer Join',
+          description: 'Join with all rows from both tables',
+          usage: 'FULL OUTER JOIN clause',
+          example: `-- Full outer join
+SELECT e.employee_id, e.first_name, d.department_name
+FROM employees e
+FULL OUTER JOIN departments d ON e.department_id = d.department_id;`,
+        },
+        {
+          command: 'Self Join',
+          description: 'Join table to itself',
+          usage: 'Self-referencing join',
+          example: `-- Self join (employee-manager relationship)
+SELECT e.first_name || ' ' || e.last_name as employee,
+       m.first_name || ' ' || m.last_name as manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id;`,
+        },
+        {
+          command: 'Cross Join',
+          description: 'Cartesian product of tables',
+          usage: 'CROSS JOIN clause',
+          example: `-- Cross join
+SELECT e.first_name, d.department_name
+FROM employees e
+CROSS JOIN departments d;
+
+-- Alternative syntax
+SELECT e.first_name, d.department_name
+FROM employees e, departments d;`,
+        },
+        {
+          command: 'Natural Join',
+          description: 'Join on columns with same names',
+          usage: 'NATURAL JOIN clause',
+          example: `-- Natural join
+SELECT * FROM employees NATURAL JOIN departments;
+
+-- Natural left join
+SELECT * FROM employees NATURAL LEFT JOIN departments;`,
+        },
+        {
+          command: 'Join with USING',
+          description: 'Join using common column names',
+          usage: 'USING clause',
+          example: `-- Join with USING
+SELECT employee_id, department_id, department_name
 FROM employees
-WHERE salary = (SELECT MAX(salary) FROM employees);
+JOIN departments USING (department_id);`,
+        },
+        {
+          command: 'Subquery in SELECT',
+          description: 'Use subquery in SELECT clause',
+          usage: 'Scalar subquery',
+          example: `-- Subquery in SELECT
+SELECT employee_id,
+       first_name,
+       (SELECT department_name FROM departments d 
+        WHERE d.department_id = e.department_id) as dept_name
+FROM employees e;`,
+        },
+        {
+          command: 'Subquery in WHERE',
+          description: 'Use subquery in WHERE clause',
+          usage: 'Subquery with IN, EXISTS',
+          example: `-- Subquery in WHERE with IN
+SELECT first_name, salary FROM employees
+WHERE department_id IN (SELECT department_id FROM departments 
+                     WHERE location_id = 1700);
 
-======== Multi-Row Subquery ========
-SELECT first_name, last_name, salary
-FROM employees
-WHERE salary > (SELECT AVG(salary) FROM employees);
-
-======== IN Operator with Subquery ========
-SELECT first_name, last_name, department_id
-FROM employees
-WHERE department_id IN (SELECT department_id FROM departments WHERE location_id = 1700);
-
-======== ANY Operator ========
-SELECT first_name, last_name, salary
-FROM employees
-WHERE salary > ANY (SELECT salary FROM employees WHERE department_id = 60);
-
-======== ALL Operator ========
-SELECT first_name, last_name, salary
-FROM employees
-WHERE salary > ALL (SELECT salary FROM employees WHERE department_id = 60);
-
-======== EXISTS Operator ========
-SELECT department_name
-FROM departments d
-WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.department_id);
-
-======== NOT EXISTS Operator ========
-SELECT department_name
-FROM departments d
-WHERE NOT EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.department_id);
-
-======== Correlated Subquery ========
-SELECT e1.first_name, e1.last_name, e1.salary
-FROM employees e1
-WHERE e1.salary > (SELECT AVG(e2.salary) 
-                  FROM employees e2 
-                  WHERE e2.department_id = e1.department_id);
-
-======== FROM Clause Subquery (Inline View) ========
-SELECT dept_name, avg_sal
-FROM (SELECT d.department_name AS dept_name, AVG(e.salary) AS avg_sal
+-- Subquery with EXISTS
+SELECT first_name FROM employees e
+WHERE EXISTS (SELECT 1 FROM job_history j 
+              WHERE j.employee_id = e.employee_id);`,
+        },
+        {
+          command: 'Subquery in FROM',
+          description: 'Use subquery as derived table',
+          usage: 'Derived table subquery',
+          example: `-- Subquery in FROM
+SELECT dept_name, avg_salary
+FROM (SELECT d.department_name as dept_name,
+             AVG(e.salary) as avg_salary
       FROM employees e
       JOIN departments d ON e.department_id = d.department_id
       GROUP BY d.department_name)
-WHERE avg_sal > 5000;
-
-======== WITH Clause (CTE) ========
+WHERE avg_salary > 50000;`,
+        },
+        {
+          command: 'WITH Clause',
+          description: 'Common Table Expression (CTE)',
+          usage: 'WITH clause',
+          example: `-- CTE example
 WITH dept_stats AS (
-  SELECT department_id, AVG(salary) AS avg_salary
-  FROM employees
-  GROUP BY department_id
+    SELECT department_id, AVG(salary) as avg_salary
+    FROM employees
+    GROUP BY department_id
 )
-SELECT e.first_name, e.last_name, e.salary, d.avg_salary
+SELECT e.first_name, e.salary, d.avg_salary
 FROM employees e
 JOIN dept_stats d ON e.department_id = d.department_id
 WHERE e.salary > d.avg_salary;`,
         },
+        {
+          command: 'Hierarchical Query',
+          description: 'Query hierarchical data',
+          usage: 'CONNECT BY PRIOR',
+          example: `-- Hierarchical query (employee hierarchy)
+SELECT LEVEL,
+       employee_id,
+       first_name,
+       manager_id,
+       SYS_CONNECT_BY_PATH(first_name, ' -> ') as path
+FROM employees
+START WITH manager_id IS NULL
+CONNECT BY PRIOR employee_id = manager_id;`,
+        },
+        {
+          command: 'UNION Operations',
+          description: 'Combine result sets',
+          usage: 'UNION, UNION ALL, INTERSECT, MINUS',
+          example: `-- UNION (removes duplicates)
+SELECT first_name FROM employees WHERE department_id = 10
+UNION
+SELECT first_name FROM employees WHERE department_id = 20;
+
+-- UNION ALL (includes duplicates)
+SELECT first_name FROM employees WHERE department_id = 10
+UNION ALL
+SELECT first_name FROM employees WHERE department_id = 20;
+
+-- INTERSECT (common records)
+SELECT employee_id FROM employees
+INTERSECT
+SELECT employee_id FROM job_history;
+
+-- MINUS (records in first but not second)
+SELECT employee_id FROM employees
+MINUS
+SELECT employee_id FROM job_history;`,
+        },
       ],
     },
     {
-      title: 'Advanced SQL Operations',
+      title: 'Aggregate Functions and Grouping',
       commands: [
         {
-          command: 'Set Operations',
-          description: 'Combine result sets from multiple queries',
-          usage: 'UNION, INTERSECT, MINUS',
-          example: `======== UNION (removes duplicates) ========
-SELECT employee_id, first_name FROM employees WHERE department_id = 10
-UNION
-SELECT employee_id, first_name FROM employees WHERE department_id = 20;
-
-======== UNION ALL (includes duplicates) ========
-SELECT employee_id, first_name FROM employees WHERE department_id = 10
-UNION ALL
-SELECT employee_id, first_name FROM employees WHERE department_id = 20;
-
-======== INTERSECT (common rows) ========
-SELECT employee_id FROM employees WHERE salary > 5000
-INTERSECT
-SELECT employee_id FROM employees WHERE department_id = 10;
-
-======== MINUS (rows in first query not in second) ========
-SELECT employee_id FROM employees WHERE department_id = 10
-MINUS
-SELECT employee_id FROM employees WHERE salary > 10000;
-
-======== Set Operations with Ordering ========
-SELECT first_name, salary FROM employees WHERE department_id = 10
-UNION
-SELECT first_name, salary FROM employees WHERE department_id = 20
-ORDER BY salary DESC;
-
-======== Multiple Set Operations ========
-SELECT first_name FROM employees WHERE department_id = 10
-UNION
-SELECT first_name FROM employees WHERE department_id = 20
-INTERSECT
-SELECT first_name FROM employees WHERE salary > 5000;`,
+          command: 'COUNT Function',
+          description: 'Count rows or values',
+          usage: 'COUNT(), COUNT(DISTINCT)',
+          example: `-- COUNT functions
+SELECT COUNT(*) as total_employees FROM employees;
+SELECT COUNT(commission_pct) as employees_with_commission FROM employees;
+SELECT COUNT(DISTINCT department_id) as departments_with_employees FROM employees;`,
         },
         {
-          command: 'Hierarchical Queries',
-          description: 'Query hierarchical data structures',
-          usage: 'CONNECT BY, START WITH, PRIOR',
-          example: `======== Basic Hierarchy (Employee-Manager) ========
-SELECT employee_id, first_name, last_name, manager_id, LEVEL
-FROM employees
-START WITH manager_id IS NULL
-CONNECT BY PRIOR employee_id = manager_id;
-
-======== Hierarchical Query with Formatting ========
-SELECT LPAD(' ', 2*(LEVEL-1)) || first_name AS employee_name,
-       salary, LEVEL
-FROM employees
-START WITH manager_id IS NULL
-CONNECT BY PRIOR employee_id = manager_id;
-
-======== SIBLINGS Ordering ========
-SELECT LPAD(' ', 2*(LEVEL-1)) || first_name AS employee_name,
-       salary, LEVEL
-FROM employees
-START WITH manager_id IS NULL
-CONNECT BY PRIOR employee_id = manager_id
-ORDER SIBLINGS BY first_name;
-
-======== Hierarchical Functions ========
-SELECT employee_id, first_name, last_name,
-       SYS_CONNECT_BY_PATH(first_name, ' -> ') AS path,
-       CONNECT_BY_ROOT first_name AS top_manager,
-       LEVEL
-FROM employees
-START WITH manager_id IS NULL
-CONNECT BY PRIOR employee_id = manager_id;
-
-======== NOCYCLE (handle loops in data) ========
-SELECT employee_id, first_name, last_name, LEVEL
-FROM employees
-START WITH manager_id IS NULL
-CONNECT BY NOCYCLE PRIOR employee_id = manager_id;
-
-======== CONNECT_BY_ISLEAF (identify leaf nodes) ========
-SELECT employee_id, first_name, last_name,
-       CASE WHEN CONNECT_BY_ISLEAF = 1 THEN 'Yes' ELSE 'No' END AS is_leaf
-FROM employees
-START WITH manager_id IS NULL
-CONNECT BY PRIOR employee_id = manager_id;
-
-======== Recursive Subquery Factoring (Oracle 11g R2+) ========
-WITH org_chart (employee_id, first_name, manager_id, level, path) AS (
-  SELECT employee_id, first_name, manager_id, 1, first_name
-  FROM employees
-  WHERE manager_id IS NULL
-  UNION ALL
-  SELECT e.employee_id, e.first_name, e.manager_id, oc.level + 1,
-         oc.path || ' -> ' || e.first_name
-  FROM employees e
-  JOIN org_chart oc ON e.manager_id = oc.employee_id
-)
-SELECT employee_id, first_name, level, path
-FROM org_chart
-ORDER BY level;`,
+          command: 'SUM Function',
+          description: 'Sum numeric values',
+          usage: 'SUM() function',
+          example: `-- SUM function
+SELECT SUM(salary) as total_payroll FROM employees;
+SELECT SUM(NVL(commission_pct, 0)) as total_commission FROM employees;`,
         },
         {
-          command: 'Pivot and Unpivot',
-          description: 'Transform rows to columns and vice versa',
-          usage: 'PIVOT, UNPIVOT operators',
-          example: `======== Basic PIVOT ========
-SELECT *
-FROM (SELECT department_id, employee_id, salary FROM employees)
-PIVOT (
-  AVG(salary) AS avg_sal
-  FOR department_id IN (10, 20, 30, 40)
-);
+          command: 'AVG Function',
+          description: 'Calculate average values',
+          usage: 'AVG() function',
+          example: `-- AVG function
+SELECT AVG(salary) as avg_salary FROM employees;
+SELECT AVG(NVL(commission_pct, 0)) as avg_commission FROM employees;`,
+        },
+        {
+          command: 'MIN and MAX Functions',
+          description: 'Find minimum and maximum values',
+          usage: 'MIN(), MAX() functions',
+          example: `-- MIN and MAX functions
+SELECT MIN(salary) as min_salary, MAX(salary) as max_salary FROM employees;
+SELECT MIN(hire_date) as earliest_hire, MAX(hire_date) as latest_hire FROM employees;`,
+        },
+        {
+          command: 'GROUP BY Basics',
+          description: 'Group rows for aggregation',
+          usage: 'GROUP BY clause',
+          example: `-- Basic GROUP BY
+SELECT department_id, COUNT(*) as employee_count, AVG(salary) as avg_salary
+FROM employees
+GROUP BY department_id;
 
-======== PIVOT with Multiple Aggregates ========
-SELECT *
-FROM (SELECT department_id, job_id, salary FROM employees)
-PIVOT (
-  COUNT(employee_id) AS emp_count,
-  AVG(salary) AS avg_sal
-  FOR department_id IN (10 AS dept_10, 20 AS dept_20, 30 AS dept_30)
-);
+-- Multiple columns
+SELECT department_id, job_id, COUNT(*) as count
+FROM employees
+GROUP BY department_id, job_id;`,
+        },
+        {
+          command: 'HAVING Clause',
+          description: 'Filter groups after aggregation',
+          usage: 'HAVING clause',
+          example: `-- HAVING clause
+SELECT department_id, AVG(salary) as avg_salary
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 50000;
 
-======== PIVOT with Multiple Columns ========
-SELECT *
-FROM (SELECT department_id, job_id, salary, commission_pct FROM employees)
-PIVOT (
-  AVG(salary) AS avg_sal,
-  AVG(commission_pct) AS avg_comm
-  FOR department_id IN (10, 20, 30)
-);
+-- Complex condition
+SELECT department_id, COUNT(*) as emp_count
+FROM employees
+GROUP BY department_id
+HAVING COUNT(*) > 5 AND AVG(salary) > 40000;`,
+        },
+        {
+          command: 'GROUPING SETS',
+          description: 'Multiple grouping levels',
+          usage: 'GROUPING SETS clause',
+          example: `-- GROUPING SETS
+SELECT department_id, job_id, COUNT(*) as employee_count
+FROM employees
+GROUP BY GROUPING SETS ((department_id, job_id), (department_id), ());
 
-======== UNPIVOT ========
-SELECT *
-FROM (
-  SELECT department_id, 
-         SUM(CASE WHEN job_id = 'IT_PROG' THEN 1 ELSE 0 END) AS it_prog,
-         SUM(CASE WHEN job_id = 'SA_REP' THEN 1 ELSE 0 END) AS sa_rep,
-         SUM(CASE WHEN job_id = 'ST_CLERK' THEN 1 ELSE 0 END) AS st_clerk
-  FROM employees
-  GROUP BY department_id
-)
-UNPIVOT (
-  employee_count FOR job_id IN (it_prog, sa_rep, st_clerk)
-);
+-- Equivalent to multiple queries with UNION ALL`,
+        },
+        {
+          command: 'ROLLUP and CUBE',
+          description: 'Create subtotals and cross-tabulations',
+          usage: 'ROLLUP, CUBE clauses',
+          example: `-- ROLLUP (creates subtotals and grand total)
+SELECT department_id, job_id, COUNT(*) as employee_count
+FROM employees
+GROUP BY ROLLUP (department_id, job_id);
 
-======== UNPIVOT with INCLUDE NULLS ========
-SELECT *
-FROM (
-  SELECT department_id, 
-         SUM(CASE WHEN job_id = 'IT_PROG' THEN 1 ELSE 0 END) AS it_prog,
-         SUM(CASE WHEN job_id = 'SA_REP' THEN 1 ELSE 0 END) AS sa_rep
-  FROM employees
-  GROUP BY department_id
-)
-UNPIVOT INCLUDE NULLS (
-  employee_count FOR job_id IN (it_prog, sa_rep)
-);
+-- CUBE (all combinations)
+SELECT department_id, job_id, COUNT(*) as employee_count
+FROM employees
+GROUP BY CUBE (department_id, job_id);`,
+        },
+        {
+          command: 'GROUPING Function',
+          description: 'Identify rollup rows',
+          usage: 'GROUPING() function',
+          example: `-- GROUPING function
+SELECT 
+    department_id,
+    job_id,
+    COUNT(*) as employee_count,
+    GROUPING(department_id) as dept_rollup,
+    GROUPING(job_id) as job_rollup
+FROM employees
+GROUP BY ROLLUP (department_id, job_id);`,
+        },
+        {
+          command: 'Aggregate Window Functions',
+          description: 'Window functions with aggregates',
+          usage: 'OVER() clause with aggregates',
+          example: `-- Aggregate window functions
+SELECT 
+    employee_id,
+    salary,
+    AVG(salary) OVER () as avg_salary_all,
+    AVG(salary) OVER (PARTITION BY department_id) as avg_salary_dept,
+    SUM(salary) OVER (ORDER BY hire_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as cumulative_salary
+FROM employees;`,
+        },
+      ],
+    },
+    {
+      title: 'String Functions',
+      commands: [
+        {
+          command: 'UPPER and LOWER',
+          description: 'Convert string case',
+          usage: 'UPPER(), LOWER() functions',
+          example: `-- Case conversion
+SELECT UPPER(first_name) as upper_name FROM employees;
+SELECT LOWER(email) as lower_email FROM employees;
+SELECT INITCAP(first_name) as capitalized_name FROM employees;`,
+        },
+        {
+          command: 'String Length',
+          description: 'Get string length',
+          usage: 'LENGTH(), INSTR() functions',
+          example: `-- String length
+SELECT LENGTH(first_name) as name_length FROM employees;
+SELECT INSTR('john.doe@company.com', '@') as at_position FROM dual;`,
+        },
+        {
+          command: 'String Trimming',
+          description: 'Trim characters from strings',
+          usage: 'TRIM(), LTRIM(), RTRIM() functions',
+          example: `-- Trimming functions
+SELECT TRIM('  hello  ') as trimmed FROM dual;
+SELECT LTRIM('###hello###', '#') as left_trimmed FROM dual;
+SELECT RTRIM('hello###', '#') as right_trimmed FROM dual;`,
+        },
+        {
+          command: 'String Padding',
+          description: 'Pad strings with characters',
+          usage: 'LPAD(), RPAD() functions',
+          example: `-- Padding functions
+SELECT LPAD('123', 10, '0') as padded_number FROM dual;
+SELECT RPAD('hello', 10, '*') as padded_string FROM dual;`,
+        },
+        {
+          command: 'String Extraction',
+          description: 'Extract substrings',
+          usage: 'SUBSTR() function',
+          example: `-- Substring extraction
+SELECT SUBSTR('hello world', 1, 5) as first_word FROM dual;
+SELECT SUBSTR('hello world', -5) as last_word FROM dual;
+SELECT SUBSTR(email, 1, INSTR(email, '@') - 1) as username FROM employees;`,
+        },
+        {
+          command: 'String Replacement',
+          description: 'Replace parts of strings',
+          usage: 'REPLACE() function',
+          example: `-- String replacement
+SELECT REPLACE('hello world', 'world', 'oracle') as replaced FROM dual;
+SELECT TRANSLATE('abc123', 'abc', 'xyz') as translated FROM dual;`,
+        },
+        {
+          command: 'String Concatenation',
+          description: 'Combine strings',
+          usage: '|| operator, CONCAT() function',
+          example: `-- String concatenation
+SELECT first_name || ' ' || last_name as full_name FROM employees;
+SELECT CONCAT(first_name, ' ', last_name) as full_name FROM employees;`,
+        },
+      ],
+    },
+    {
+      title: 'Date and Time Functions',
+      commands: [
+        {
+          command: 'Current Date and Time',
+          description: 'Get current date and time',
+          usage: 'SYSDATE, CURRENT_TIMESTAMP',
+          example: `-- Current date/time
+SELECT SYSDATE as current_date FROM dual;
+SELECT CURRENT_TIMESTAMP as current_timestamp FROM dual;
+SELECT SYSTIMESTAMP as current_timestamp_with_tz FROM dual;`,
+        },
+        {
+          command: 'Date Arithmetic',
+          description: 'Perform calculations with dates',
+          usage: 'Date addition/subtraction',
+          example: `-- Date arithmetic
+SELECT SYSDATE + 7 as next_week FROM dual;
+SELECT SYSDATE - 30 as last_month FROM dual;
+SELECT hire_date + 90 as review_date FROM employees;`,
+        },
+        {
+          command: 'Date Functions',
+          description: 'Extract parts of dates',
+          usage: 'EXTRACT(), TO_CHAR() functions',
+          example: `-- Date functions
+SELECT EXTRACT(YEAR FROM SYSDATE) as current_year FROM dual;
+SELECT EXTRACT(MONTH FROM hire_date) as hire_month FROM employees;
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') as formatted_date FROM dual;`,
+        },
+        {
+          command: 'Date Formatting',
+          description: 'Format dates as strings',
+          usage: 'TO_CHAR() with format models',
+          example: `-- Date formatting
+SELECT TO_CHAR(SYSDATE, 'Month DD, YYYY') as formatted_date FROM dual;
+SELECT TO_CHAR(hire_date, 'Day, Month DD, YYYY') as hire_formatted FROM employees;
+SELECT TO_CHAR(SYSDATE, 'HH24:MI:SS') as current_time FROM dual;`,
+        },
+        {
+          command: 'Date Conversion',
+          description: 'Convert strings to dates',
+          usage: 'TO_DATE() function',
+          example: `-- String to date conversion
+SELECT TO_DATE('2023-12-25', 'YYYY-MM-DD') as christmas FROM dual;
+SELECT TO_DATE('25-Dec-2023', 'DD-Mon-YYYY') as formatted_date FROM dual;`,
+        },
+        {
+          command: 'Date Difference',
+          description: 'Calculate difference between dates',
+          usage: 'MONTHS_BETWEEN() function',
+          example: `-- Date difference
+SELECT MONTHS_BETWEEN(SYSDATE, hire_date) as months_employed FROM employees;
+SELECT TRUNC(MONTHS_BETWEEN(SYSDATE, hire_date) / 12) as years_employed FROM employees;`,
+        },
+        {
+          command: 'Add Months',
+          description: 'Add months to date',
+          usage: 'ADD_MONTHS() function',
+          example: `-- Add months
+SELECT ADD_MONTHS(SYSDATE, 3) as three_months_later FROM dual;
+SELECT ADD_MONTHS(hire_date, 6) as review_date FROM employees;`,
+        },
+        {
+          command: 'Last Day of Month',
+          description: 'Get last day of month',
+          usage: 'LAST_DAY() function',
+          example: `-- Last day of month
+SELECT LAST_DAY(SYSDATE) as month_end FROM dual;
+SELECT LAST_DAY(hire_date) as hire_month_end FROM employees;`,
+        },
+        {
+          command: 'Next Day',
+          description: 'Get next specified day',
+          usage: 'NEXT_DAY() function',
+          example: `-- Next day
+SELECT NEXT_DAY(SYSDATE, 'FRIDAY') as next_friday FROM dual;
+SELECT NEXT_DAY(hire_date, 'MONDAY') as next_monday FROM employees;`,
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'Window Functions',
+      commands: [
+        {
+          command: 'ROW_NUMBER Function',
+          description: 'Assign sequential numbers to rows',
+          usage: 'ROW_NUMBER() window function',
+          example: `-- ROW_NUMBER function
+SELECT 
+    employee_id,
+    first_name,
+    salary,
+    ROW_NUMBER() OVER (ORDER BY salary DESC) as salary_rank,
+    ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) as dept_rank
+FROM employees;`,
+        },
+        {
+          command: 'RANK and DENSE_RANK',
+          description: 'Rank rows with ties',
+          usage: 'RANK(), DENSE_RANK() functions',
+          example: `-- RANK and DENSE_RANK
+SELECT 
+    employee_id,
+    first_name,
+    salary,
+    RANK() OVER (ORDER BY salary DESC) as rank_with_gaps,
+    DENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank_no_gaps
+FROM employees;`,
+        },
+        {
+          command: 'NTILE Function',
+          description: 'Divide rows into groups',
+          usage: 'NTILE() function',
+          example: `-- NTILE function
+SELECT 
+    employee_id,
+    first_name,
+    salary,
+    NTILE(4) OVER (ORDER BY salary DESC) as quartile,
+    CASE 
+        WHEN NTILE(4) OVER (ORDER BY salary DESC) = 1 THEN 'Top 25%'
+        WHEN NTILE(4) OVER (ORDER BY salary DESC) = 4 THEN 'Bottom 25%'
+    END as performance_group
+FROM employees;`,
+        },
+        {
+          command: 'LAG and LEAD Functions',
+          description: 'Access previous/next row values',
+          usage: 'LAG(), LEAD() functions',
+          example: `-- LAG and LEAD functions
+SELECT 
+    employee_id,
+    hire_date,
+    LAG(hire_date, 1) OVER (ORDER BY hire_date) as prev_hire_date,
+    LEAD(hire_date, 1) OVER (ORDER BY hire_date) as next_hire_date,
+    MONTHS_BETWEEN(hire_date, LAG(hire_date, 1) OVER (ORDER BY hire_date)) as months_diff
+FROM employees;`,
+        },
+        {
+          command: 'FIRST_VALUE and LAST_VALUE',
+          description: 'Get first/last values in window',
+          usage: 'FIRST_VALUE(), LAST_VALUE() functions',
+          example: `-- FIRST_VALUE and LAST_VALUE
+SELECT 
+    department_id,
+    employee_id,
+    salary,
+    FIRST_VALUE(salary) OVER (PARTITION BY department_id ORDER BY salary DESC) as highest_salary,
+    LAST_VALUE(salary) OVER (PARTITION BY department_id ORDER BY salary DESC 
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as lowest_salary
+FROM employees;`,
+        },
+        {
+          command: 'Window Frame Clauses',
+          description: 'Define window frame boundaries',
+          usage: 'ROWS BETWEEN, RANGE BETWEEN',
+          example: `-- Window frame clauses
+SELECT 
+    employee_id,
+    hire_date,
+    salary,
+    SUM(salary) OVER (ORDER BY hire_date 
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_3month_total,
+    AVG(salary) OVER (ORDER BY hire_date 
+        RANGE BETWEEN INTERVAL '30' DAY PRECEDING AND CURRENT ROW) as moving_30day_avg
+FROM employees;`,
+        },
+      ],
+    },
+    {
+      title: 'Stored Procedures and Functions',
+      commands: [
+        {
+          command: 'Create Procedure',
+          description: 'Create stored procedure',
+          usage: 'CREATE PROCEDURE statement',
+          example: `-- Create basic procedure
+CREATE OR REPLACE PROCEDURE get_employee_details(
+    p_employee_id IN employees.employee_id%TYPE,
+    p_first_name OUT employees.first_name%TYPE,
+    p_salary OUT employees.salary%TYPE
+) AS
+BEGIN
+    SELECT first_name, salary 
+    INTO p_first_name, p_salary
+    FROM employees 
+    WHERE employee_id = p_employee_id;
+END;
+/`,
+        },
+        {
+          command: 'Execute Procedure',
+          description: 'Call stored procedure',
+          usage: 'EXECUTE or CALL statement',
+          example: `-- Execute procedure
+DECLARE
+    v_first_name employees.first_name%TYPE;
+    v_salary employees.salary%TYPE;
+BEGIN
+    get_employee_details(100, v_first_name, v_salary);
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_first_name || ', Salary: ' || v_salary);
+END;
+/`,
+        },
+        {
+          command: 'Procedure with Parameters',
+          description: 'Procedure with different parameter types',
+          usage: 'IN, OUT, INOUT parameters',
+          example: `-- Procedure with multiple parameters
+CREATE OR REPLACE PROCEDURE update_employee_salary(
+    p_employee_id IN employees.employee_id%TYPE,
+    p_increase_percent IN NUMBER,
+    p_old_salary OUT NUMBER,
+    p_new_salary OUT NUMBER
+) AS
+BEGIN
+    SELECT salary INTO p_old_salary FROM employees WHERE employee_id = p_employee_id;
+    p_new_salary := p_old_salary * (1 + p_increase_percent / 100);
+    UPDATE employees SET salary = p_new_salary WHERE employee_id = p_employee_id;
+END;
+/`,
+        },
+        {
+          command: 'Create Function',
+          description: 'Create user-defined function',
+          usage: 'CREATE FUNCTION statement',
+          example: `-- Create function
+CREATE OR REPLACE FUNCTION calculate_annual_salary(
+    p_monthly_salary IN employees.salary%TYPE
+) RETURN NUMBER AS
+BEGIN
+    RETURN p_monthly_salary * 12;
+END;
+/`,
+        },
+        {
+          command: 'Use Function',
+          description: 'Use user-defined function in SQL',
+          usage: 'Function in SELECT statement',
+          example: `-- Use function in SQL
+SELECT employee_id, first_name, salary, 
+       calculate_annual_salary(salary) as annual_salary
+FROM employees
+WHERE calculate_annual_salary(salary) > 60000;`,
+        },
+        {
+          command: 'Control Structures',
+          description: 'IF/ELSE, CASE in procedures',
+          usage: 'Control flow statements',
+          example: `-- Control structures in procedure
+CREATE OR REPLACE PROCEDURE categorize_salary(
+    p_salary IN employees.salary%TYPE,
+    p_category OUT VARCHAR2(20)
+) AS
+BEGIN
+    IF p_salary < 30000 THEN
+        p_category := 'Low';
+    ELSIF p_salary < 60000 THEN
+        p_category := 'Medium';
+    ELSIF p_salary < 100000 THEN
+        p_category := 'High';
+    ELSE
+        p_category := 'Executive';
+    END IF;
+END;
+/`,
+        },
+        {
+          command: 'Loops in Procedures',
+          description: 'LOOP, WHILE, FOR loops',
+          usage: 'Looping structures',
+          example: `-- FOR loop example
+CREATE OR REPLACE PROCEDURE process_employees AS
+BEGIN
+    FOR emp_rec IN (SELECT employee_id, first_name, salary FROM employees) LOOP
+        DBMS_OUTPUT.PUT_LINE('Processing: ' || emp_rec.first_name || ', Salary: ' || emp_rec.salary);
+        
+        -- Update salary based on conditions
+        IF emp_rec.salary < 40000 THEN
+            UPDATE employees SET salary = salary * 1.05 WHERE employee_id = emp_rec.employee_id;
+        END IF;
+    END LOOP;
+    COMMIT;
+END;
+/`,
+        },
+        {
+          command: 'Exception Handling',
+          description: 'Handle exceptions in procedures',
+          usage: 'EXCEPTION block',
+          example: `-- Exception handling
+CREATE OR REPLACE PROCEDURE safe_update_salary(
+    p_employee_id IN employees.employee_id%TYPE,
+    p_new_salary IN employees.salary%TYPE
+) AS
+    v_old_salary employees.salary%TYPE;
+BEGIN
+    SELECT salary INTO v_old_salary FROM employees WHERE employee_id = p_employee_id;
+    
+    IF p_new_salary < v_old_salary THEN
+        RAISE_APPLICATION_ERROR(-20001, 'New salary cannot be less than current salary');
+    END IF;
+    
+    UPDATE employees SET salary = p_new_salary WHERE employee_id = p_employee_id;
+    
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Employee not found');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/`,
+        },
+        {
+          command: 'Drop Procedure and Function',
+          description: 'Remove procedures and functions',
+          usage: 'DROP PROCEDURE, DROP FUNCTION',
+          example: `-- Drop procedure
+DROP PROCEDURE get_employee_details;
 
-======== Multiple UNPIVOT ========
-SELECT department_id, metric_type, value
-FROM (
-  SELECT department_id, AVG(salary) AS avg_sal, MAX(salary) AS max_sal
-  FROM employees
-  GROUP BY department_id
-)
-UNPIVOT (
-  value FOR metric_type IN (avg_sal, max_sal)
-);`,
+-- Drop function
+DROP FUNCTION calculate_annual_salary;`,
+        },
+      ],
+    },
+    {
+      title: 'Triggers and Events',
+      commands: [
+        {
+          command: 'Create Trigger',
+          description: 'Create database trigger',
+          usage: 'CREATE TRIGGER statement',
+          example: `-- Create trigger
+CREATE OR REPLACE TRIGGER trg_employee_audit
+BEFORE INSERT OR UPDATE ON employees
+FOR EACH ROW
+BEGIN
+    :new.created_by := USER;
+    :new.created_date := SYSDATE;
+    
+    IF UPDATING THEN
+        :new.modified_by := USER;
+        :new.modified_date := SYSDATE;
+    END IF;
+END;
+/`,
+        },
+        {
+          command: 'BEFORE INSERT Trigger',
+          description: 'Trigger before insert operation',
+          usage: 'BEFORE INSERT trigger',
+          example: `-- BEFORE INSERT trigger
+CREATE OR REPLACE TRIGGER trg_employee_bi
+BEFORE INSERT ON employees
+FOR EACH ROW
+BEGIN
+    IF :new.employee_id IS NULL THEN
+        SELECT employees_seq.NEXTVAL INTO :new.employee_id FROM dual;
+    END IF;
+    
+    :new.hire_date := NVL(:new.hire_date, SYSDATE);
+END;
+/`,
+        },
+        {
+          command: 'AFTER UPDATE Trigger',
+          description: 'Trigger after update operation',
+          usage: 'AFTER UPDATE trigger',
+          example: `-- AFTER UPDATE trigger
+CREATE OR REPLACE TRIGGER trg_salary_audit
+AFTER UPDATE OF salary ON employees
+FOR EACH ROW
+BEGIN
+    INSERT INTO salary_audit (
+        employee_id, old_salary, new_salary, changed_by, changed_date
+    ) VALUES (
+        :new.employee_id, :old.salary, :new.salary, USER, SYSDATE
+    );
+END;
+/`,
+        },
+        {
+          command: 'INSTEAD OF Trigger',
+          description: 'Trigger for views',
+          usage: 'INSTEAD OF trigger',
+          example: `-- INSTEAD OF trigger for view
+CREATE OR REPLACE TRIGGER trg_employee_view_iu
+INSTEAD OF INSERT OR UPDATE ON employee_view
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        INSERT INTO employees (employee_id, first_name, last_name, email)
+        VALUES (:new.employee_id, :new.first_name, :new.last_name, :new.email);
+    ELSIF UPDATING THEN
+        UPDATE employees 
+        SET first_name = :new.first_name, 
+            last_name = :new.last_name, 
+            email = :new.email
+        WHERE employee_id = :old.employee_id;
+    END IF;
+END;
+/`,
+        },
+        {
+          command: 'Compound Trigger',
+          description: 'Multiple timing points in one trigger',
+          usage: 'COMPOUND TRIGGER',
+          example: `-- Compound trigger
+CREATE OR REPLACE TRIGGER trg_employee_compound
+FOR INSERT OR UPDATE ON employees
+COMPOUND TRIGGER
+    -- Declaration section
+    g_user VARCHAR2(30);
+    
+    BEFORE STATEMENT IS
+    BEGIN
+        g_user := USER;
+    END BEFORE STATEMENT;
+    
+    BEFORE EACH ROW IS
+    BEGIN
+        IF INSERTING THEN
+            :new.created_by := g_user;
+        ELSIF UPDATING THEN
+            :new.modified_by := g_user;
+        END IF;
+    END BEFORE EACH ROW;
+    
+    AFTER STATEMENT IS
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('Trigger completed by: ' || g_user);
+    END AFTER STATEMENT;
+END trg_employee_compound;
+/`,
+        },
+        {
+          command: 'Enable/Disable Trigger',
+          description: 'Manage trigger status',
+          usage: 'ALTER TRIGGER',
+          example: `-- Disable trigger
+ALTER TRIGGER trg_employee_audit DISABLE;
+
+-- Enable trigger
+ALTER TRIGGER trg_employee_audit ENABLE;
+
+-- Disable all triggers on table
+ALTER TABLE employees DISABLE ALL TRIGGERS;
+
+-- Enable all triggers on table
+ALTER TABLE employees ENABLE ALL TRIGGERS;`,
+        },
+        {
+          command: 'Drop Trigger',
+          description: 'Remove trigger',
+          usage: 'DROP TRIGGER',
+          example: `-- Drop trigger
+DROP TRIGGER trg_employee_audit;`,
+        },
+      ],
+    },
+    {
+      title: 'Views and Materialized Views',
+      commands: [
+        {
+          command: 'Create View',
+          description: 'Create virtual table',
+          usage: 'CREATE VIEW statement',
+          example: `-- Create view
+CREATE OR REPLACE VIEW employee_summary AS
+SELECT 
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    e.email,
+    e.salary,
+    d.department_name,
+    j.job_title
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN jobs j ON e.job_id = j.job_id;`,
+        },
+        {
+          command: 'View with Joins',
+          description: 'Complex view with multiple joins',
+          usage: 'View with complex query',
+          example: `-- Complex view
+CREATE OR REPLACE VIEW department_stats AS
+SELECT 
+    d.department_id,
+    d.department_name,
+    COUNT(e.employee_id) as employee_count,
+    AVG(e.salary) as avg_salary,
+    MAX(e.salary) as max_salary,
+    MIN(e.hire_date) as earliest_hire
+FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department_id
+GROUP BY d.department_id, d.department_name;`,
+        },
+        {
+          command: 'Updatable View',
+          description: 'Create updatable view',
+          usage: 'WITH CHECK OPTION',
+          example: `-- Updatable view
+CREATE OR REPLACE VIEW active_employees AS
+SELECT employee_id, first_name, last_name, email, salary
+FROM employees
+WHERE status = 'ACTIVE'
+WITH CHECK OPTION CONSTRAINT ck_active_employees;`,
+        },
+        {
+          command: 'Materialized View',
+          description: 'Create materialized view',
+          usage: 'CREATE MATERIALIZED VIEW',
+          example: `-- Create materialized view
+CREATE MATERIALIZED VIEW mv_employee_summary
+BUILD IMMEDIATE
+REFRESH COMPLETE ON DEMAND
+AS
+SELECT 
+    department_id,
+    COUNT(*) as employee_count,
+    AVG(salary) as avg_salary,
+    SUM(salary) as total_salary
+FROM employees
+GROUP BY department_id;`,
+        },
+        {
+          command: 'Refresh Materialized View',
+          description: 'Refresh materialized view data',
+          usage: 'DBMS_MVIEW.REFRESH',
+          example: `-- Refresh materialized view
+BEGIN
+    DBMS_MVIEW.REFRESH('mv_employee_summary', 'C');
+END;
+/
+
+-- Complete refresh
+EXEC DBMS_MVIEW.REFRESH('mv_employee_summary', 'C');
+
+-- Fast refresh (requires materialized view log)
+EXEC DBMS_MVIEW.REFRESH('mv_employee_summary', 'F');`,
+        },
+        {
+          command: 'Materialized View Log',
+          description: 'Create log for fast refresh',
+          usage: 'CREATE MATERIALIZED VIEW LOG',
+          example: `-- Create materialized view log
+CREATE MATERIALIZED VIEW LOG ON employees
+WITH PRIMARY KEY, ROWID
+INCLUDING NEW VALUES;
+
+-- Create log for fast refresh
+CREATE MATERIALIZED VIEW LOG ON departments
+WITH PRIMARY KEY
+INCLUDING NEW VALUES;`,
+        },
+        {
+          command: 'Drop View',
+          description: 'Remove view',
+          usage: 'DROP VIEW',
+          example: `-- Drop view
+DROP VIEW employee_summary;
+
+-- Drop materialized view
+DROP MATERIALIZED VIEW mv_employee_summary;`,
         },
       ],
     },
@@ -712,1451 +1257,843 @@ UNPIVOT (
       title: 'Indexes and Performance',
       commands: [
         {
-          command: 'Creating Indexes',
-          description: 'Create different types of indexes',
-          usage: 'B-tree, bitmap, function-based, composite indexes',
-          example: `======== B-Tree Index ========
-CREATE INDEX emp_lastname_idx ON employees(last_name);
+          command: 'Create Index',
+          description: 'Create database index',
+          usage: 'CREATE INDEX statement',
+          example: `-- Create indexes
+-- Single column index
+CREATE INDEX idx_employee_email ON employees(email);
 
-======== Composite Index ========
-CREATE INDEX emp_dept_name_idx ON employees(department_id, last_name);
+-- Composite index
+CREATE INDEX idx_employee_name ON employees(last_name, first_name);
 
-======== Unique Index ========
-CREATE UNIQUE INDEX emp_email_idx ON employees(email);
+-- Unique index
+CREATE UNIQUE INDEX idx_employee_id ON employees(employee_id);
 
-======== Function-Based Index ========
-CREATE INDEX emp_upper_name_idx ON employees(UPPER(first_name));
-CREATE INDEX emp_salary_comm_idx ON employees(salary + NVL(commission_pct * salary, 0));
-
-======== Bitmap Index (for low cardinality columns) ========
-CREATE BITMAP INDEX emp_gender_idx ON employees(gender);
-
-======== Partitioned Index ========
-CREATE INDEX emp_hiredate_idx ON employees(hire_date)
-GLOBAL PARTITION BY RANGE (hire_date)
-(
-  PARTITION p2000 VALUES LESS THAN (TO_DATE('2001-01-01', 'YYYY-MM-DD')),
-  PARTITION p2005 VALUES LESS THAN (TO_DATE('2006-01-01', 'YYYY-MM-DD')),
-  PARTITION pmax VALUES LESS THAN (MAXVALUE)
-);
-
-======== Reverse Key Index ========
-CREATE INDEX emp_reverse_idx ON employees(employee_id) REVERSE;
-
-======== Compressed Index ========
-CREATE INDEX emp_compressed_idx ON employees(department_id, job_id) COMPRESS 1;
-
-======== Invisible Index (not used by optimizer) ========
-CREATE INDEX emp_invisible_idx ON employees(salary) INVISIBLE;
-
-======== Function-Based Index with CASE ========
-CREATE INDEX emp_salary_category_idx ON employees(
-  CASE 
-    WHEN salary < 3000 THEN 'Low'
-    WHEN salary < 6000 THEN 'Medium'
-    ELSE 'High'
-  END
-);
-
-======== Index with Online Option ========
-CREATE INDEX emp_online_idx ON employees(salary) ONLINE;`,
+-- Function-based index
+CREATE INDEX idx_employee_upper_name ON employees(UPPER(last_name));`,
         },
         {
-          command: 'Managing Indexes',
-          description: 'Monitor, rebuild, and maintain indexes',
-          usage: 'ALTER INDEX, DROP INDEX, index monitoring',
-          example: `======== Monitor Index Usage ========
-ALTER INDEX emp_lastname_idx MONITORING USAGE;
-ALTER INDEX emp_lastname_idx NOMONITORING USAGE;
-
-======== Check Index Usage ========
-SELECT * FROM v$object_usage WHERE index_name = 'EMP_LASTNAME_IDX';
-
-======== Rebuild Index ========
-ALTER INDEX emp_lastname_idx REBUILD;
-ALTER INDEX emp_lastname_idx REBUILD ONLINE;
-
-======== Rebuild Partition ========
-ALTER INDEX emp_hiredate_idx REBUILD PARTITION p2000;
-
-======== Coalesce Index (merge leaf blocks) ========
-ALTER INDEX emp_lastname_idx COALESCE;
-
-======== Make Index Visible/Invisible ========
-ALTER INDEX emp_invisible_idx VISIBLE;
-ALTER INDEX emp_invisible_idx INVISIBLE;
-
-======== Rename Index ========
-ALTER INDEX emp_lastname_idx RENAME TO emp_lname_idx;
-
-======== Drop Index ========
-DROP INDEX emp_lastname_idx;
-DROP INDEX emp_lastname_idx ONLINE;
-
-======== Check Index Statistics ========
-SELECT index_name, table_name, status, leaf_blocks, distinct_keys
-FROM user_indexes
-WHERE table_name = 'EMPLOYEES';
-
-======== Analyze Index ========
-ANALYZE INDEX emp_lastname_idx VALIDATE STRUCTURE;
-
-======== Check Index Fragmentation ========
-SELECT name, height, lf_rows, del_lf_rows, (del_lf_rows/lf_rows)*100 AS fragmentation
-FROM index_stats
-WHERE name = 'EMP_LASTNAME_IDX';
-
-======== Rebuild Fragmented Indexes ========
-BEGIN
-  FOR idx IN (SELECT index_name FROM user_indexes 
-              WHERE table_name = 'EMPLOYEES' AND status = 'VALID') LOOP
-    EXECUTE IMMEDIATE 'ALTER INDEX ' || idx.index_name || ' REBUILD';
-  END LOOP;
-END;
-/`,
+          command: 'Bitmap Index',
+          description: 'Create bitmap index',
+          usage: 'BITMAP index type',
+          example: `-- Bitmap index (for low cardinality columns)
+CREATE BITMAP INDEX idx_employee_gender ON employees(gender);
+CREATE BITMAP INDEX idx_employee_status ON employees(status);`,
         },
         {
-          command: 'Execution Plans',
-          description: 'Analyze and optimize query execution',
-          usage: 'EXPLAIN PLAN, AUTOTRACE, DBMS_XPLAN',
-          example: `======== Explain Plan ========
+          command: 'Function-Based Index',
+          description: 'Index on function results',
+          usage: 'Function-based index',
+          example: `-- Function-based indexes
+CREATE INDEX idx_employee_upper_email ON employees(UPPER(email));
+CREATE INDEX idx_employee_salary_range ON employees(CASE WHEN salary > 50000 THEN 'HIGH' ELSE 'LOW' END);
+CREATE INDEX idx_employee_name_length ON employees(LENGTH(last_name));`,
+        },
+        {
+          command: 'Partitioned Index',
+          description: 'Create partitioned index',
+          usage: 'Partitioned index',
+          example: `-- Local partitioned index
+CREATE INDEX idx_sales_date ON sales(sale_date) LOCAL;
+
+-- Global partitioned index
+CREATE INDEX idx_sales_amount_global ON sales(amount) 
+GLOBAL PARTITION BY RANGE (amount) (
+    PARTITION p1 VALUES LESS THAN (1000),
+    PARTITION p2 VALUES LESS THAN (5000),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE)
+);`,
+        },
+        {
+          command: 'Rebuild Index',
+          description: 'Rebuild fragmented index',
+          usage: 'ALTER INDEX REBUILD',
+          example: `-- Rebuild index
+ALTER INDEX idx_employee_email REBUILD;
+
+-- Rebuild index online (doesn't lock table)
+ALTER INDEX idx_employee_email REBUILD ONLINE;
+
+-- Rebuild with tablespace
+ALTER INDEX idx_employee_email REBUILD TABLESPACE users;`,
+        },
+        {
+          command: 'Monitor Index Usage',
+          description: 'Check index usage statistics',
+          usage: 'V$OBJECT_USAGE',
+          example: `-- Monitor index usage
+-- Enable index monitoring
+ALTER INDEX idx_employee_email MONITORING USAGE;
+
+-- Check index usage
+SELECT * FROM V$OBJECT_USAGE WHERE INDEX_NAME = 'IDX_EMPLOYEE_EMAIL';
+
+-- Disable monitoring
+ALTER INDEX idx_employee_email NOMONITORING;`,
+        },
+        {
+          command: 'Explain Plan',
+          description: 'Analyze query execution plan',
+          usage: 'EXPLAIN PLAN FOR',
+          example: `-- Explain plan
 EXPLAIN PLAN FOR
-SELECT * FROM employees WHERE department_id = 10 AND salary > 5000;
+SELECT * FROM employees WHERE department_id = 10 AND salary > 50000;
 
-======== Display Execution Plan ========
+-- Display plan
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
-======== Display with Format Options ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY('PLAN_TABLE', NULL, 'ALL +OUTLINE'));
-
-======== Explain Plan for Specific Statement ========
-EXPLAIN PLAN FOR
-SELECT e.first_name, d.department_name
-FROM employees e
-JOIN departments d ON e.department_id = d.department_id
-WHERE e.salary > 5000;
-
-======== Display Plan with Statistics ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR);
-
-======== Real-Time SQL Monitoring ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR('sql_id', 'child_number', 'ALLSTATS LAST'));
-
-======== SQL*Plus AUTOTRACE ========
-SET AUTOTRACE ON EXPLAIN
-SELECT * FROM employees WHERE department_id = 10;
-
-SET AUTOTRACE ON STATISTICS
-SELECT * FROM employees WHERE department_id = 10;
-
-SET AUTOTRACE ON EXPLAIN STATISTICS
-SELECT * FROM employees WHERE department_id = 10;
-
-======== Display Plan for Last Statement ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(FORMAT => 'ALLSTATS LAST'));
-
-======== Display Plan with Predicate Information ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY(FORMAT => 'ALL +PREDICATE'));
-
-======== Display Plan with Outline ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY(FORMAT => 'ALL +OUTLINE'));
-
-======== Adaptive Plans (12c+) ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY(FORMAT => 'ADAPTIVE'));
-
-======== SQL Plan Management ========
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_SQL_PLAN_BASELINE());`,
+-- Display with format options
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY('PLAN_TABLE', NULL, 'ALL'));`,
         },
-      ],
-    },
-
-    // ADVANCED LEVEL
-    {
-      title: 'PL/SQL Programming',
-      commands: [
         {
-          command: 'PL/SQL Block Structure',
-          description: 'Basic PL/SQL block syntax and structure',
-          usage: 'DECLARE, BEGIN, EXCEPTION, END',
-          example: `======== Anonymous Block Basic Structure ========
-DECLARE
-  -- Declaration section
-  v_name VARCHAR2(50);
-  v_salary NUMBER(8,2);
-  v_hire_date DATE;
+          command: 'Gather Statistics',
+          description: 'Collect table and index statistics',
+          usage: 'DBMS_STATS package',
+          example: `-- Gather statistics
 BEGIN
-  -- Execution section
-  v_name := 'John Doe';
-  v_salary := 5000;
-  v_hire_date := SYSDATE;
-  
-  -- Insert into table
-  INSERT INTO employees (employee_id, first_name, last_name, salary, hire_date)
-  VALUES (1001, 'John', 'Doe', v_salary, v_hire_date);
-  
-  COMMIT;
-  DBMS_OUTPUT.PUT_LINE('Employee ' || v_name || ' created successfully');
-  
-EXCEPTION
-  -- Exception handling section
-  WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
-    ROLLBACK;
-END;
-/
-
-======== Block with Variables and Constants ========
-DECLARE
-  -- Constants
-  c_min_salary CONSTANT NUMBER := 1000;
-  c_dept_name CONSTANT VARCHAR2(20) := 'IT';
-  
-  -- Variables with initialization
-  v_emp_count NUMBER := 0;
-  v_avg_salary NUMBER(8,2) := 0;
-  v_department_id NUMBER := 60;
-  
-  -- Type declarations
-  TYPE emp_record_type IS RECORD (
-    emp_id employees.employee_id%TYPE,
-    emp_name employees.first_name%TYPE,
-    emp_salary employees.salary%TYPE
-  );
-  v_emp_record emp_record_type;
-  
-BEGIN
-  -- Count employees in department
-  SELECT COUNT(*), AVG(salary)
-  INTO v_emp_count, v_avg_salary
-  FROM employees
-  WHERE department_id = v_department_id;
-  
-  -- Get employee record
-  SELECT employee_id, first_name, salary
-  INTO v_emp_record
-  FROM employees
-  WHERE employee_id = 100;
-  
-  DBMS_OUTPUT.PUT_LINE('Department ' || c_dept_name || ' has ' || v_emp_count || ' employees');
-  DBMS_OUTPUT.PUT_LINE('Average salary: ' || v_avg_salary);
-  DBMS_OUTPUT.PUT_LINE('Employee: ' || v_emp_record.emp_name);
-  
-EXCEPTION
-  WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('No employee found');
-  WHEN TOO_MANY_ROWS THEN
-    DBMS_OUTPUT.PUT_LINE('Multiple employees found');
-  WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+    DBMS_STATS.GATHER_TABLE_STATS(
+        ownname => 'HR',
+        tabname => 'EMPLOYEES',
+        cascade => TRUE,
+        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE
+    );
 END;
 /`,
         },
         {
-          command: 'Control Structures',
-          description: 'IF statements, loops, and branching',
-          usage: 'IF-THEN-ELSE, CASE, FOR, WHILE loops',
-          example: `======== IF-THEN-ELSE Statements ========
-DECLARE
-  v_salary NUMBER := 7500;
-  v_bonus NUMBER;
-BEGIN
-  IF v_salary < 3000 THEN
-    v_bonus := v_salary * 0.10;
-  ELSIF v_salary < 6000 THEN
-    v_bonus := v_salary * 0.15;
-  ELSIF v_salary < 10000 THEN
-    v_bonus := v_salary * 0.20;
-  ELSE
-    v_bonus := v_salary * 0.25;
-  END IF;
-  
-  DBMS_OUTPUT.PUT_LINE('Bonus: ' || v_bonus);
-END;
-/
-
-======== CASE Statement ========
-DECLARE
-  v_grade CHAR(1) := 'B';
-  v_result VARCHAR2(20);
-BEGIN
-  v_result := CASE v_grade
-    WHEN 'A' THEN 'Excellent'
-    WHEN 'B' THEN 'Good'
-    WHEN 'C' THEN 'Average'
-    WHEN 'D' THEN 'Below Average'
-    ELSE 'Fail'
-  END;
-  
-  DBMS_OUTPUT.PUT_LINE('Result: ' || v_result);
-END;
-/
-
-======== Basic LOOP ========
-DECLARE
-  v_counter NUMBER := 1;
-BEGIN
-  LOOP
-    DBMS_OUTPUT.PUT_LINE('Counter: ' || v_counter);
-    v_counter := v_counter + 1;
-    EXIT WHEN v_counter > 5;
-  END LOOP;
-END;
-/
-
-======== WHILE LOOP ========
-DECLARE
-  v_counter NUMBER := 1;
-BEGIN
-  WHILE v_counter <= 5 LOOP
-    DBMS_OUTPUT.PUT_LINE('Counter: ' || v_counter);
-    v_counter := v_counter + 1;
-  END LOOP;
-END;
-/
-
-======== FOR LOOP ========
-BEGIN
-  FOR i IN 1..5 LOOP
-    DBMS_OUTPUT.PUT_LINE('Iteration: ' || i);
-  END LOOP;
-  
-  -- Reverse FOR LOOP
-  FOR i IN REVERSE 1..5 LOOP
-    DBMS_OUTPUT.PUT_LINE('Reverse: ' || i);
-  END LOOP;
-END;
-/
-
-======== Cursor FOR LOOP ========
-BEGIN
-  FOR emp_rec IN (SELECT first_name, salary FROM employees WHERE department_id = 60) LOOP
-    DBMS_OUTPUT.PUT_LINE(emp_rec.first_name || ': ' || emp_rec.salary);
-  END LOOP;
-END;
-/`,
-        },
-        {
-          command: 'Cursors and Collections',
-          description: 'Working with cursors and collection types',
-          usage: 'Explicit cursors, implicit cursors, associative arrays',
-          example: `======== Implicit Cursor ========
-BEGIN
-  UPDATE employees SET salary = salary * 1.1 WHERE department_id = 60;
-  
-  IF SQL%FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('Updated ' || SQL%ROWCOUNT || ' employees');
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('No employees updated');
-  END IF;
-END;
-/
-
-======== Explicit Cursor ========
-DECLARE
-  CURSOR emp_cursor IS
-    SELECT employee_id, first_name, salary FROM employees WHERE department_id = 60;
-  v_emp_id employees.employee_id%TYPE;
-  v_first_name employees.first_name%TYPE;
-  v_salary employees.salary%TYPE;
-BEGIN
-  OPEN emp_cursor;
-  LOOP
-    FETCH emp_cursor INTO v_emp_id, v_first_name, v_salary;
-    EXIT WHEN emp_cursor%NOTFOUND;
-    DBMS_OUTPUT.PUT_LINE(v_first_name || ': ' || v_salary);
-  END LOOP;
-  CLOSE emp_cursor;
-END;
-/
-
-======== Cursor with Parameters ========
-DECLARE
-  CURSOR emp_cursor(p_dept_id NUMBER) IS
-    SELECT employee_id, first_name, salary 
-    FROM employees 
-    WHERE department_id = p_dept_id;
-BEGIN
-  FOR emp_rec IN emp_cursor(60) LOOP
-    DBMS_OUTPUT.PUT_LINE(emp_rec.first_name || ': ' || emp_rec.salary);
-  END LOOP;
-END;
-/
-
-======== Associative Array (Index-By Table) ========
-DECLARE
-  TYPE emp_table_type IS TABLE OF employees.first_name%TYPE INDEX BY PLS_INTEGER;
-  v_emp_table emp_table_type;
-BEGIN
-  v_emp_table(1) := 'John';
-  v_emp_table(2) := 'Jane';
-  v_emp_table(10) := 'Bob';
-  
-  DBMS_OUTPUT.PUT_LINE('Employee 1: ' || v_emp_table(1));
-  DBMS_OUTPUT.PUT_LINE('Employee 10: ' || v_emp_table(10));
-END;
-/
-
-======== Nested Table ========
-DECLARE
-  TYPE emp_names_type IS TABLE OF VARCHAR2(100);
-  v_emp_names emp_names_type := emp_names_type('John', 'Jane', 'Bob');
-BEGIN
-  v_emp_names.EXTEND;
-  v_emp_names(4) := 'Alice';
-  
-  FOR i IN 1..v_emp_names.COUNT LOOP
-    DBMS_OUTPUT.PUT_LINE('Name ' || i || ': ' || v_emp_names(i));
-  END LOOP;
-END;
-/
-
-======== VARRAY ========
-DECLARE
-  TYPE emp_names_varray_type IS VARRAY(10) OF VARCHAR2(100);
-  v_emp_names emp_names_varray_type := emp_names_varray_type('John', 'Jane');
-BEGIN
-  v_emp_names.EXTEND;
-  v_emp_names(3) := 'Bob';
-  
-  FOR i IN 1..v_emp_names.COUNT LOOP
-    DBMS_OUTPUT.PUT_LINE('Name ' || i || ': ' || v_emp_names(i));
-  END LOOP;
-END;
-/`,
-        },
-        {
-          command: 'Stored Procedures and Functions',
-          description: 'Creating and using reusable PL/SQL code',
-          usage: 'CREATE PROCEDURE, CREATE FUNCTION',
-          example: `======== Stored Procedure ========
-CREATE OR REPLACE PROCEDURE update_employee_salary(
-  p_employee_id IN employees.employee_id%TYPE,
-  p_increase_percent IN NUMBER
-) AS
-  v_current_salary employees.salary%TYPE;
-BEGIN
-  -- Get current salary
-  SELECT salary INTO v_current_salary 
-  FROM employees 
-  WHERE employee_id = p_employee_id;
-  
-  -- Update salary
-  UPDATE employees 
-  SET salary = salary * (1 + p_increase_percent/100)
-  WHERE employee_id = p_employee_id;
-  
-  COMMIT;
-  DBMS_OUTPUT.PUT_LINE('Salary updated from ' || v_current_salary || 
-                      ' to ' || v_current_salary * (1 + p_increase_percent/100));
-  
-EXCEPTION
-  WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('Employee not found');
-  WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
-    ROLLBACK;
-END;
-/
-
-======== Function with Return Value ========
-CREATE OR REPLACE FUNCTION get_department_avg_salary(
-  p_department_id IN departments.department_id%TYPE
-) RETURN NUMBER AS
-  v_avg_salary employees.salary%TYPE;
-BEGIN
-  SELECT AVG(salary) INTO v_avg_salary
-  FROM employees
-  WHERE department_id = p_department_id;
-  
-  RETURN v_avg_salary;
-  
-EXCEPTION
-  WHEN NO_DATA_FOUND THEN
-    RETURN 0;
-  WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
-    RETURN 0;
-END;
-/
-
-======== Calling Procedure and Function ========
-DECLARE
-  v_avg_sal NUMBER;
-BEGIN
-  -- Call procedure
-  update_employee_salary(100, 10);
-  
-  -- Call function
-  v_avg_sal := get_department_avg_salary(60);
-  DBMS_OUTPUT.PUT_LINE('Average salary: ' || v_avg_sal);
-END;
-/
-
-======== Procedure with OUT Parameter ========
-CREATE OR REPLACE PROCEDURE get_employee_details(
-  p_employee_id IN employees.employee_id%TYPE,
-  p_first_name OUT employees.first_name%TYPE,
-  p_salary OUT employees.salary%TYPE
-) AS
-BEGIN
-  SELECT first_name, salary INTO p_first_name, p_salary
-  FROM employees
-  WHERE employee_id = p_employee_id;
-  
-EXCEPTION
-  WHEN NO_DATA_FOUND THEN
-    p_first_name := NULL;
-    p_salary := 0;
-END;
-/
-
-======== Function with Deterministic Clause ========
-CREATE OR REPLACE FUNCTION calculate_bonus(
-  p_salary IN employees.salary%TYPE
-) RETURN NUMBER DETERMINISTIC AS
-BEGIN
-  IF p_salary < 3000 THEN
-    RETURN p_salary * 0.10;
-  ELSIF p_salary < 6000 THEN
-    RETURN p_salary * 0.15;
-  ELSE
-    RETURN p_salary * 0.20;
-  END IF;
-END;
-/`,
+          command: 'Drop Index',
+          description: 'Remove index',
+          usage: 'DROP INDEX',
+          example: `-- Drop index
+DROP INDEX idx_employee_email;`,
         },
       ],
     },
     {
-      title: 'Database Administration',
+      title: 'Partitioning',
       commands: [
         {
-          command: 'User Management',
-          description: 'Creating and managing database users',
-          usage: 'CREATE USER, GRANT, REVOKE',
-          example: `======== Create User ========
-CREATE USER john_doe IDENTIFIED BY "SecurePassword123"
+          command: 'Range Partitioning',
+          description: 'Partition by value range',
+          usage: 'PARTITION BY RANGE',
+          example: `-- Range partitioning
+CREATE TABLE sales (
+    sale_id NUMBER,
+    sale_date DATE,
+    amount NUMBER,
+    region VARCHAR2(20)
+) PARTITION BY RANGE (sale_date) (
+    PARTITION sales_2022 VALUES LESS THAN (DATE '2023-01-01'),
+    PARTITION sales_2023 VALUES LESS THAN (DATE '2024-01-01'),
+    PARTITION sales_2024 VALUES LESS THAN (DATE '2025-01-01'),
+    PARTITION sales_future VALUES LESS THAN (MAXVALUE)
+);`,
+        },
+        {
+          command: 'List Partitioning',
+          description: 'Partition by value list',
+          usage: 'PARTITION BY LIST',
+          example: `-- List partitioning
+CREATE TABLE employees (
+    employee_id NUMBER,
+    first_name VARCHAR2(50),
+    department_id NUMBER,
+    region VARCHAR2(20)
+) PARTITION BY LIST (region) (
+    PARTITION east VALUES ('EAST', 'NORTHEAST'),
+    PARTITION west VALUES ('WEST', 'SOUTHWEST'),
+    PARTITION central VALUES ('CENTRAL'),
+    PARTITION other VALUES (DEFAULT)
+);`,
+        },
+        {
+          command: 'Hash Partitioning',
+          description: 'Partition by hash function',
+          usage: 'PARTITION BY HASH',
+          example: `-- Hash partitioning
+CREATE TABLE orders (
+    order_id NUMBER,
+    customer_id NUMBER,
+    order_date DATE,
+    total_amount NUMBER
+) PARTITION BY HASH (order_id) PARTITIONS 8;
+
+-- Hash partitioning with specific tablespaces
+CREATE TABLE customers (
+    customer_id NUMBER,
+    name VARCHAR2(100),
+    email VARCHAR2(100)
+) PARTITION BY HASH (customer_id) 
+PARTITIONS 4 
+STORE IN (ts1, ts2, ts3, ts4);`,
+        },
+        {
+          command: 'Composite Partitioning',
+          description: 'Multiple partitioning levels',
+          usage: 'SUBPARTITION BY',
+          example: `-- Composite partitioning (Range-Hash)
+CREATE TABLE sales_detail (
+    sale_id NUMBER,
+    sale_date DATE,
+    product_id NUMBER,
+    region VARCHAR2(20),
+    amount NUMBER
+) PARTITION BY RANGE (sale_date)
+SUBPARTITION BY HASH (product_id) SUBPARTITIONS 4 (
+    PARTITION sales_2022 VALUES LESS THAN (DATE '2023-01-01'),
+    PARTITION sales_2023 VALUES LESS THAN (DATE '2024-01-01'),
+    PARTITION sales_future VALUES LESS THAN (MAXVALUE)
+);`,
+        },
+        {
+          command: 'Interval Partitioning',
+          description: 'Automatic partition creation',
+          usage: 'INTERVAL partitioning',
+          example: `-- Interval partitioning
+CREATE TABLE sales_daily (
+    sale_id NUMBER,
+    sale_date DATE,
+    amount NUMBER
+) PARTITION BY RANGE (sale_date)
+INTERVAL (NUMTODSINTERVAL(1, 'DAY')) (
+    PARTITION p_first VALUES LESS THAN (DATE '2023-01-01')
+);
+
+-- Partitions created automatically as data is inserted`,
+        },
+        {
+          command: 'Reference Partitioning',
+          description: 'Partition child tables based on parent',
+          usage: 'PARTITION BY REFERENCE',
+          example: `-- Reference partitioning
+CREATE TABLE orders (
+    order_id NUMBER PRIMARY KEY,
+    customer_id NUMBER,
+    order_date DATE,
+    CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+) PARTITION BY REFERENCE (fk_customer);
+
+CREATE TABLE order_items (
+    order_item_id NUMBER PRIMARY KEY,
+    order_id NUMBER,
+    product_id NUMBER,
+    quantity NUMBER,
+    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(order_id)
+) PARTITION BY REFERENCE (fk_order);`,
+        },
+        {
+          command: 'Manage Partitions',
+          description: 'Add, drop, merge partitions',
+          usage: 'ALTER TABLE partition operations',
+          example: `-- Add partition
+ALTER TABLE sales ADD PARTITION sales_2025 VALUES LESS THAN (DATE '2026-01-01');
+
+-- Drop partition
+ALTER TABLE sales DROP PARTITION sales_2022;
+
+-- Merge partitions
+ALTER TABLE sales MERGE PARTITIONS sales_2023, sales_2024 INTO PARTITION sales_2023_2024;
+
+-- Split partition
+ALTER TABLE sales SPLIT PARTITION sales_future INTO (
+    PARTITION sales_2025 VALUES LESS THAN (DATE '2026-01-01'),
+    PARTITION sales_future VALUES LESS THAN (MAXVALUE)
+);`,
+        },
+      ],
+    },
+    {
+      title: 'Security and User Management',
+      commands: [
+        {
+          command: 'Create User',
+          description: 'Create database user',
+          usage: 'CREATE USER statement',
+          example: `-- Create user
+CREATE USER app_user IDENTIFIED BY "StrongPassword123"
 DEFAULT TABLESPACE users
 TEMPORARY TABLESPACE temp
-QUOTA 100M ON users;
-
-======== Alter User ========
-ALTER USER john_doe 
-IDENTIFIED BY "NewPassword456"
-DEFAULT TABLESPACE data
-QUOTA 500M ON data;
-
-======== Grant System Privileges ========
-GRANT CREATE SESSION TO john_doe;
-GRANT CREATE TABLE TO john_doe;
-GRANT CREATE VIEW TO john_doe;
-GRANT CREATE PROCEDURE TO john_doe;
-GRANT UNLIMITED TABLESPACE TO john_doe;
-
-======== Grant Object Privileges ========
-GRANT SELECT ON employees TO john_doe;
-GRANT INSERT, UPDATE ON employees TO john_doe;
-GRANT ALL PRIVILEGES ON employees TO john_doe;
-
-======== Grant Roles ========
-GRANT CONNECT TO john_doe;
-GRANT RESOURCE TO john_doe;
-GRANT DBA TO john_doe;  -- Be careful with DBA role
-
-======== Revoke Privileges ========
-REVOKE CREATE TABLE FROM john_doe;
-REVOKE SELECT ON employees FROM john_doe;
-REVOKE DBA FROM john_doe;
-
-======== Drop User ========
-DROP USER john_doe;
-DROP USER john_doe CASCADE;  -- Drop with all objects
-
-======== Lock/Unlock User ========
-ALTER USER john_doe ACCOUNT LOCK;
-ALTER USER john_doe ACCOUNT UNLOCK;
-
-======== Password Management ========
-ALTER USER john_doe PASSWORD EXPIRE;
-ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME 90;
-
-======== View Users ========
-SELECT username, account_status, created FROM dba_users;
-SELECT * FROM user_users;  -- Current user info`,
+QUOTA 100M ON users
+PASSWORD EXPIRE;`,
         },
         {
-          command: 'Tablespace Management',
-          description: 'Managing database tablespaces',
-          usage: 'CREATE TABLESPACE, ALTER TABLESPACE',
-          example: `======== Create Tablespace ========
-CREATE TABLESPACE app_data
-DATAFILE '/u01/app/oracle/oradata/XE/app_data01.dbf' SIZE 100M
-AUTOEXTEND ON NEXT 10M MAXSIZE 1G
-EXTENT MANAGEMENT LOCAL
-SEGMENT SPACE MANAGEMENT AUTO;
+          command: 'Grant Privileges',
+          description: 'Grant user privileges',
+          usage: 'GRANT statement',
+          example: `-- Grant system privileges
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW TO app_user;
 
-======== Create Temporary Tablespace ========
-CREATE TEMPORARY TABLESPACE app_temp
-TEMPFILE '/u01/app/oracle/oradata/XE/app_temp01.dbf' SIZE 50M
-AUTOEXTEND ON NEXT 5M MAXSIZE 500M
-EXTENT MANAGEMENT LOCAL;
+-- Grant object privileges
+GRANT SELECT, INSERT, UPDATE, DELETE ON employees TO app_user;
+GRANT ALL PRIVILEGES ON employees TO manager_user;
 
-======== Create UNDO Tablespace ========
-CREATE UNDO TABLESPACE app_undo
-DATAFILE '/u01/app/oracle/oradata/XE/app_undo01.dbf' SIZE 100M
-AUTOEXTEND ON NEXT 10M MAXSIZE 2G;
-
-======== Add Datafile to Tablespace ========
-ALTER TABLESPACE app_data
-ADD DATAFILE '/u01/app/oracle/oradata/XE/app_data02.dbf' SIZE 200M
-AUTOEXTEND ON NEXT 20M MAXSIZE 2G;
-
-======== Resize Datafile ========
-ALTER DATABASE
-DATAFILE '/u01/app/oracle/oradata/XE/app_data01.dbf' RESIZE 150M;
-
-======== Tablespace Operations ========
-ALTER TABLESPACE app_data ONLINE;
-ALTER TABLESPACE app_data OFFLINE;
-ALTER TABLESPACE app_data READ ONLY;
-ALTER TABLESPACE app_data READ WRITE;
-
-======== Drop Tablespace ========
-DROP TABLESPACE app_data INCLUDING CONTENTS AND DATAFILES;
-DROP TABLESPACE app_temp INCLUDING CONTENTS AND DATAFILES;
-
-======== Tablespace Information ========
-SELECT tablespace_name, status, contents FROM dba_tablespaces;
-SELECT file_name, tablespace_name, bytes/1024/1024 AS size_mb 
-FROM dba_data_files;
-SELECT * FROM dba_free_space WHERE tablespace_name = 'APP_DATA';
-
-======== Monitor Tablespace Usage ========
-SELECT df.tablespace_name,
-       ROUND(df.bytes/1024/1024, 2) AS total_mb,
-       ROUND(fs.bytes/1024/1024, 2) AS free_mb,
-       ROUND((df.bytes - fs.bytes)/1024/1024, 2) AS used_mb,
-       ROUND(((df.bytes - fs.bytes)/df.bytes) * 100, 2) AS pct_used
-FROM (SELECT tablespace_name, SUM(bytes) bytes
-      FROM dba_data_files GROUP BY tablespace_name) df,
-     (SELECT tablespace_name, SUM(bytes) bytes
-      FROM dba_free_space GROUP BY tablespace_name) fs
-WHERE df.tablespace_name = fs.tablespace_name;`,
+-- Grant with grant option
+GRANT SELECT ON employees TO app_user WITH GRANT OPTION;`,
         },
         {
-          command: 'Backup and Recovery',
-          description: 'Database backup and recovery operations',
-          usage: 'RMAN, export/import, flashback',
-          example: `======== RMAN Backup ========
--- Connect to RMAN
+          command: 'Create Role',
+          description: 'Create and manage roles',
+          usage: 'CREATE ROLE, GRANT ROLE',
+          example: `-- Create role
+CREATE ROLE app_developer;
+
+-- Grant privileges to role
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW TO app_developer;
+GRANT SELECT, INSERT, UPDATE, DELETE ON employees TO app_developer;
+
+-- Grant role to user
+GRANT app_developer TO john_doe;
+
+-- Set default role
+ALTER USER john_doe DEFAULT ROLE app_developer;`,
+        },
+        {
+          command: 'Revoke Privileges',
+          description: 'Revoke user privileges',
+          usage: 'REVOKE statement',
+          example: `-- Revoke privileges
+REVOKE DELETE ON employees FROM app_user;
+REVOKE app_developer FROM john_doe;
+REVOKE ALL PRIVILEGES ON employees FROM app_user;`,
+        },
+        {
+          command: 'Profile Management',
+          description: 'Manage user resource limits',
+          usage: 'CREATE PROFILE',
+          example: `-- Create profile
+CREATE PROFILE app_profile LIMIT
+    SESSIONS_PER_USER 5
+    CPU_PER_SESSION 10000
+    CPU_PER_CALL 1000
+    CONNECT_TIME 600
+    IDLE_TIME 30
+    LOGICAL_READS_PER_SESSION DEFAULT
+    LOGICAL_READS_PER_CALL 1000
+    PRIVATE_SGA 15K
+    COMPOSITE_LIMIT 1000000
+    FAILED_LOGIN_ATTEMPTS 3
+    PASSWORD_LIFE_TIME 90
+    PASSWORD_REUSE_TIME 180
+    PASSWORD_LOCK_TIME 1
+    PASSWORD_GRACE_TIME 5
+    PASSWORD_VERIFY_FUNCTION verify_function;
+
+-- Assign profile to user
+ALTER USER app_user PROFILE app_profile;`,
+        },
+        {
+          command: 'Virtual Private Database',
+          description: 'Implement row-level security',
+          usage: 'DBMS_RLS package',
+          example: `-- VPD policy
+BEGIN
+    DBMS_RLS.ADD_POLICY(
+        object_schema => 'HR',
+        object_name => 'EMPLOYEES',
+        policy_name => 'dept_policy',
+        function_schema => 'HR',
+        policy_function => 'dept_policy_fn',
+        statement_types => 'SELECT, INSERT, UPDATE, DELETE',
+        update_check => TRUE
+    );
+END;
+/
+
+-- Policy function
+CREATE OR REPLACE FUNCTION dept_policy_fn(
+    schema_name IN VARCHAR2,
+    table_name IN VARCHAR2
+) RETURN VARCHAR2 AS
+BEGIN
+    RETURN 'department_id = ' || TO_CHAR(SYS_CONTEXT('USERENV', 'DEPARTMENT_ID'));
+END;
+/`,
+        },
+        {
+          command: 'Data Encryption',
+          description: 'Encrypt sensitive data',
+          usage: 'DBMS_CRYPTO package',
+          example: `-- Encrypt data
+DECLARE
+    l_raw RAW(128);
+    l_key RAW(128) := UTL_RAW.CAST_TO_RAW('MySecretKey123');
+    l_encrypted RAW(128);
+    l_decrypted VARCHAR2(100);
+BEGIN
+    -- Convert to RAW
+    l_raw := UTL_RAW.CAST_TO_RAW('Sensitive Data');
+    
+    -- Encrypt
+    l_encrypted := DBMS_CRYPTO.ENCRYPT(
+        src => l_raw,
+        typ => DBMS_CRYPTO.ENCRYPT_AES256_CBC + DBMS_CRYPTO.CHAIN_CBC,
+        key => l_key
+    );
+    
+    -- Decrypt
+    l_raw := DBMS_CRYPTO.DECRYPT(
+        src => l_encrypted,
+        typ => DBMS_CRYPTO.ENCRYPT_AES256_CBC + DBMS_CRYPTO.CHAIN_CBC,
+        key => l_key
+    );
+    
+    l_decrypted := UTL_RAW.CAST_TO_VARCHAR2(l_raw);
+    DBMS_OUTPUT.PUT_LINE('Decrypted: ' || l_decrypted);
+END;
+/`,
+        },
+        {
+          command: 'Audit Configuration',
+          description: 'Set up database auditing',
+          usage: 'AUDIT statement',
+          example: `-- Enable auditing
+AUDIT SELECT ON employees BY ACCESS;
+AUDIT INSERT, UPDATE, DELETE ON employees BY ACCESS;
+
+-- Audit specific operations
+AUDIT ALTER ANY TABLE BY ACCESS;
+AUDIT CREATE ANY TABLE BY SESSION;
+
+-- View audit trail
+SELECT * FROM DBA_AUDIT_TRAAIL WHERE OBJ_NAME = 'EMPLOYEES';
+
+-- Fine-grained auditing
+BEGIN
+    DBMS_FGA.ADD_POLICY(
+        object_schema => 'HR',
+        object_name => 'EMPLOYEES',
+        policy_name => 'salary_audit',
+        audit_condition => 'salary > 100000',
+        audit_column => 'salary',
+        handler_schema => NULL,
+        handler_module => NULL,
+        enable => TRUE,
+        statement_types => 'SELECT, UPDATE'
+    );
+END;
+/`,
+        },
+      ],
+    },
+    {
+      title: 'Backup and Recovery',
+      commands: [
+        {
+          command: 'RMAN Backup',
+          description: 'Recovery Manager backup',
+          usage: 'RMAN commands',
+          example: `-- Connect to RMAN
 rman target /
 
--- Full database backup
+-- Full backup
 BACKUP DATABASE PLUS ARCHIVELOG;
 
 -- Incremental backup
 BACKUP INCREMENTAL LEVEL 0 DATABASE;
 BACKUP INCREMENTAL LEVEL 1 DATABASE;
 
--- Backup specific tablespace
-BACKUP TABLESPACE users;
+-- Backup specific tablespaces
+BACKUP TABLESPACE users, example;
 
--- Backup control file and spfile
-BACKUP CURRENT CONTROLFILE;
-BACKUP SPFILE;
-
-======== RMAN Recovery ========
--- Restore and recover database
+-- Backup with compression
+BACKUP AS COMPRESSED BACKUPSET DATABASE;`,
+        },
+        {
+          command: 'RMAN Restore',
+          description: 'Restore database from backup',
+          usage: 'RMAN restore commands',
+          example: `-- Restore database
 RESTORE DATABASE;
 RECOVER DATABASE;
 
--- Restore specific tablespace
+-- Restore tablespace
 RESTORE TABLESPACE users;
 RECOVER TABLESPACE users;
 
 -- Point-in-time recovery
 RUN {
-  SET UNTIL TIME "TO_DATE('2024-12-25 10:00:00', 'YYYY-MM-DD HH24:MI:SS')";
-  RESTORE DATABASE;
-  RECOVER DATABASE;
-}
-
-======== Export/Import (Data Pump) ========
--- Export full database
-expdp system/password FULL=y DIRECTORY=dpump_dir DUMPFILE=full_backup.dmp LOGFILE=full_export.log
+    SET UNTIL TIME "TO_DATE('2023-12-25 12:00:00', 'YYYY-MM-DD HH24:MI:SS')";
+    RESTORE DATABASE;
+    RECOVER DATABASE;
+    ALTER DATABASE OPEN RESETLOGS;
+}`,
+        },
+        {
+          command: 'Export/Import Data Pump',
+          description: 'Data Pump export and import',
+          usage: 'EXPDP, IMPDP utilities',
+          example: `-- Export full database
+expdp system/password DIRECTORY=dp_dir DUMPFILE=full_export.dmp FULL=Y
 
 -- Export specific schema
-expdp system/password SCHEMAS=hr DIRECTORY=dpump_dir DUMPFILE=hr_schema.dmp
+expdp system/password DIRECTORY=dp_dir DUMPFILE=hr_export.dmp SCHEMAS=HR
 
--- Export specific table
-expdp hr/password TABLES=employees DIRECTORY=dpump_dir DUMPFILE=employees.dmp
+-- Export tables
+expdp system/password DIRECTORY=dp_dir DUMPFILE=tables_export.dmp TABLES=employees,departments
 
--- Import full database
-impdp system/password FULL=y DIRECTORY=dpump_dir DUMPFILE=full_backup.dmp
+-- Import
+impdp system/password DIRECTORY=dp_dir DUMPFILE=hr_export.dmp SCHEMAS=HR
+impdp system/password DIRECTORY=dp_dir DUMPFILE=tables_export.dmp TABLES=employees TABLE_EXISTS_ACTION=REPLACE`,
+        },
+        {
+          command: 'Flashback Technology',
+          description: 'Flashback database features',
+          usage: 'FLASHBACK commands',
+          example: `-- Flashback query
+SELECT * FROM employees AS OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' HOUR);
 
--- Import specific schema
-impdp system/password SCHEMAS=hr DIRECTORY=dpump_dir DUMPFILE=hr_schema.dmp
+-- Flashback table
+FLASHBACK TABLE employees TO TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' DAY);
 
-======== Flashback Technology ========
--- Flashback query (as of specific time)
-SELECT * FROM employees AS OF TIMESTAMP 
-SYSTIMESTAMP - INTERVAL '1' HOUR;
-
--- Flashback table to earlier time
-FLASHBACK TABLE employees TO TIMESTAMP 
-TO_TIMESTAMP('2024-12-25 10:00:00', 'YYYY-MM-DD HH24:MI:SS');
-
--- Flashback drop (recover from recycle bin)
+-- Flashback drop
 FLASHBACK TABLE employees TO BEFORE DROP;
 
--- Flashback database
-FLASHBACK DATABASE TO SCN 123456;
-FLASHBACK DATABASE TO TIME 
-TO_TIMESTAMP('2024-12-25 10:00:00', 'YYYY-MM-DD HH24:MI:SS');
-
-======== Recovery Manager (RMAN) Scripts ========
--- Backup script
+-- Enable flashback database
+ALTER DATABASE FLASHBACK ON;
+FLASHBACK DATABASE TO TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' HOUR);`,
+        },
+        {
+          command: 'Point-in-Time Recovery',
+          description: 'Recover to specific point in time',
+          usage: 'Incomplete recovery',
+          example: `-- Point-in-time recovery using RMAN
 RUN {
-  ALLOCATE CHANNEL c1 DEVICE TYPE DISK;
-  BACKUP DATABASE PLUS ARCHIVELOG DELETE INPUT;
-  DELETE NOPROMPT OBSOLETE;
-  RELEASE CHANNEL c1;
+    SET UNTIL TIME "TO_DATE('2023-12-25 10:30:00', 'YYYY-MM-DD HH24:MI:SS')";
+    RESTORE DATABASE;
+    RECOVER DATABASE;
+    ALTER DATABASE OPEN RESETLOGS;
 }
 
--- Crosscheck backups
-CROSSCHECK BACKUP;
-DELETE NOPROMPT EXPIRED BACKUP;`,
+-- Using archive logs
+RECOVER DATABASE UNTIL TIME '2023-12-25 10:30:00';`,
         },
       ],
     },
-
-    // EXPERT LEVEL
     {
       title: 'Performance Tuning',
       commands: [
         {
           command: 'SQL Tuning Advisor',
-          description: 'Automatic SQL performance tuning',
+          description: 'Analyze and tune SQL statements',
           usage: 'DBMS_SQLTUNE package',
-          example: `======== Create Tuning Task ========
+          example: `-- Create tuning task
 DECLARE
-  l_task_name VARCHAR2(30);
+    l_task_name VARCHAR2(30);
 BEGIN
-  l_task_name := DBMS_SQLTUNE.CREATE_TUNING_TASK(
-    sql_text => 'SELECT * FROM employees WHERE department_id = 60',
-    user_name => 'HR',
-    scope => DBMS_SQLTUNE.SCOPE_COMPREHENSIVE,
-    time_limit => 60,
-    task_name => 'emp_tuning_task',
-    description => 'Tuning task for employees query'
-  );
-  
-  DBMS_OUTPUT.PUT_LINE('Task created: ' || l_task_name);
+    l_task_name := DBMS_SQLTUNE.CREATE_TUNING_TASK(
+        sql_text => 'SELECT * FROM employees WHERE department_id = 10',
+        user_name => 'HR',
+        scope => DBMS_SQLTUNE.SCOPE_COMPREHENSIVE,
+        time_limit => 60,
+        task_name => 'emp_tuning_task',
+        description => 'Tune employees query'
+    );
+    
+    DBMS_SQLTUNE.EXECUTE_TUNING_TASK(task_name => l_task_name);
 END;
 /
 
-======== Execute Tuning Task ========
-BEGIN
-  DBMS_SQLTUNE.EXECUTE_TUNING_TASK(task_name => 'emp_tuning_task');
-END;
-/
-
-======== Display Tuning Results ========
-SELECT DBMS_SQLTUNE.REPORT_TUNING_TASK('emp_tuning_task') AS recommendations 
-FROM dual;
-
-======== Drop Tuning Task ========
-BEGIN
-  DBMS_SQLTUNE.DROP_TUNING_TASK('emp_tuning_task');
-END;
-/
-
-======== SQL Profile ========
--- Accept SQL profile from tuning advisor
+-- View tuning recommendations
+SELECT DBMS_SQLTUNE.REPORT_TUNING_TASK('emp_tuning_task') FROM DUAL;`,
+        },
+        {
+          command: 'SQL Access Advisor',
+          description: 'Recommend indexes and materialized views',
+          usage: 'DBMS_ADVISOR package',
+          example: `-- Create access advisor task
 DECLARE
-  l_profile_name VARCHAR2(30);
+    l_task_id NUMBER;
 BEGIN
-  l_profile_name := DBMS_SQLTUNE.ACCEPT_SQL_PROFILE(
-    task_name => 'emp_tuning_task',
-    name => 'emp_sql_profile'
-  );
-  
-  DBMS_OUTPUT.PUT_LINE('Profile created: ' || l_profile_name);
-END;
-/
-
-======== Drop SQL Profile ========
-BEGIN
-  DBMS_SQLTUNE.DROP_SQL_PROFILE('emp_sql_profile');
+    l_task_id := DBMS_ADVISOR.CREATE_TASK(
+        advisor_name => 'SQL ACCESS ADVISOR',
+        task_name => 'emp_access_task'
+    );
+    
+    DBMS_ADVISOR.SET_TASK_PARAMETER(
+        task_name => 'emp_access_task',
+        parameter => 'DURATION',
+        value => 60
+    );
 END;
 /`,
         },
         {
-          command: 'Automatic Workload Repository (AWR)',
-          description: 'Performance data collection and analysis',
-          usage: 'DBMS_WORKLOAD_REPOSITORY package',
-          example: `======== Create AWR Snapshot ========
-BEGIN
-  DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT();
-END;
-/
-
-======== Generate AWR Report ========
--- SQL to generate AWR report
-SELECT output FROM TABLE(
-  DBMS_WORKLOAD_REPOSITORY.AWR_REPORT_HTML(
-    (SELECT dbid FROM v$database),
-    (SELECT instance_number FROM v$instance),
-    :begin_snap_id,
-    :end_snap_id
-  )
+          command: 'Automatic Workload Repository',
+          description: 'AWR performance data',
+          usage: 'DBMS_WORKLOAD_REPOSITORY',
+          example: `-- Generate AWR report
+SELECT * FROM TABLE(
+    DBMS_WORKLOAD_REPOSITORY.AWR_REPORT_HTML(
+        l_dbid => 123456789,
+        l_inst_num => 1,
+        l_bid => 1000,
+        l_eid => 1100
+    )
 );
 
-======== AWR Baseline ========
--- Create baseline
-BEGIN
-  DBMS_WORKLOAD_REPOSITORY.CREATE_BASELINE(
-    start_snap_id => 100,
-    end_snap_id => 200,
-    baseline_name => 'peak_period_baseline',
-    expiration => NULL
-  );
-END;
-/
+-- Create AWR snapshot
+EXEC DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT;
 
-======== Modify Baseline ========
-BEGIN
-  DBMS_WORKLOAD_REPOSITORY.MODIFY_BASELINE_NAME(
-    old_baseline_name => 'peak_period_baseline',
-    new_baseline_name => 'business_hours_baseline'
-  );
-END;
-/
-
-======== Drop Baseline ========
-BEGIN
-  DBMS_WORKLOAD_REPOSITORY.DROP_BASELINE(
-    baseline_name => 'business_hours_baseline',
-    cascade => FALSE
-  );
-END;
-/
-
-======== AWR Settings ========
--- Modify snapshot settings
-BEGIN
-  DBMS_WORKLOAD_REPOSITORY.MODIFY_SNAPSHOT_SETTINGS(
-    retention => 43200,  -- 30 days in minutes
-    interval => 60,      -- 1 hour in minutes
-    topnsql => 100,
-    dbid => NULL
-  );
-END;
-/`,
+-- View AWR data
+SELECT * FROM DBA_HIST_SYSMETRIC WHERE metric_name = 'Database CPU Time Ratio';`,
         },
         {
           command: 'Memory Management',
-          description: 'SGA and PGA memory optimization',
-          usage: 'Memory parameters and advisors',
-          example: `======== Automatic Memory Management (AMM) ========
--- Enable AMM
-ALTER SYSTEM SET MEMORY_TARGET = 2G SCOPE=SPFILE;
-ALTER SYSTEM SET MEMORY_MAX_TARGET = 4G SCOPE=SPFILE;
+          description: 'Configure SGA and PGA',
+          usage: 'Memory parameters',
+          example: `-- Memory management parameters
+ALTER SYSTEM SET MEMORY_TARGET = 2G SCOPE = SPFILE;
+ALTER SYSTEM SET SGA_TARGET = 1.5G SCOPE = SPFILE;
+ALTER SYSTEM SET PGA_AGGREGATE_TARGET = 512M SCOPE = SPFILE;
 
--- Restart database for changes to take effect
-SHUTDOWN IMMEDIATE;
-STARTUP;
+-- Automatic Memory Management
+ALTER SYSTEM SET MEMORY_TARGET = 0 SCOPE = SPFILE;
+ALTER SYSTEM SET SGA_TARGET = 0 SCOPE = SPFILE;
+ALTER SYSTEM SET PGA_AGGREGATE_TARGET = 0 SCOPE = SPFILE;
 
-======== Automatic Shared Memory Management (ASMM) ========
--- Set SGA_TARGET for automatic management
-ALTER SYSTEM SET SGA_TARGET = 1G SCOPE=SPFILE;
-ALTER SYSTEM SET SGA_MAX_SIZE = 2G SCOPE=SPFILE;
+-- Manual memory management
+ALTER SYSTEM SET SHARED_POOL_SIZE = 256M SCOPE = SPFILE;
+ALTER SYSTEM SET BUFFER_CACHE_SIZE = 512M SCOPE = SPFILE;
+ALTER SYSTEM SET JAVA_POOL_SIZE = 64M SCOPE = SPFILE;`,
+        },
+        {
+          command: 'Table Partitioning Performance',
+          description: 'Optimize partitioned tables',
+          usage: 'Partition pruning',
+          example: `-- Partition pruning example
+EXPLAIN PLAN FOR
+SELECT * FROM sales WHERE sale_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31';
 
--- Manual SGA component sizing
-ALTER SYSTEM SET SHARED_POOL_SIZE = 200M SCOPE=SPFILE;
-ALTER SYSTEM SET DB_CACHE_SIZE = 400M SCOPE=SPFILE;
-ALTER SYSTEM SET LARGE_POOL_SIZE = 50M SCOPE=SPFILE;
-ALTER SYSTEM SET JAVA_POOL_SIZE = 50M SCOPE=SPFILE;
+-- Check partition pruning
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
-======== PGA Memory Management ========
--- Set PGA_TARGET for automatic PGA management
-ALTER SYSTEM SET PGA_AGGREGATE_TARGET = 400M SCOPE=SPFILE;
-ALTER SYSTEM SET PGA_AGGREGATE_LIMIT = 800M SCOPE=SPFILE;
+-- Local index maintenance
+ALTER INDEX idx_sales_date REBUILD PARTITION sales_2023;
 
-======== Memory Advisors ========
--- Check memory advisor recommendations
-SELECT * FROM v$memory_target_advice;
-SELECT * FROM v$sga_target_advice;
-SELECT * FROM v$pga_target_advice;
-
-======== Memory Usage Queries ========
--- SGA components
-SELECT component, current_size, min_size, max_size
-FROM v$sga_dynamic_components;
-
--- PGA usage
-SELECT name, value FROM v$pgastat WHERE name LIKE '%total%';
-
--- Memory usage summary
-SELECT * FROM v$memory_resize_ops ORDER BY start_time DESC;
-
-======== In-Memory Column Store (12c+) ========
--- Enable In-Memory
-ALTER SYSTEM SET INMEMORY_SIZE = 1G SCOPE=SPFILE;
-ALTER SYSTEM SET INMEMORY_MAX_POPULATE_SERVERS = 4 SCOPE=SPFILE;
-
--- Enable table for In-Memory
-ALTER TABLE employees INMEMORY;
-ALTER TABLE sales INMEMORY PRIORITY HIGH;
-
--- In-Memory compression
-ALTER TABLE sales INMEMORY MEMCOMPRESS FOR QUERY HIGH;
-
--- In-Memory queries
-SELECT /*+ INMEMORY */ department_id, SUM(amount) 
-FROM sales 
-GROUP BY department_id;`,
+-- Global index maintenance
+ALTER INDEX idx_sales_amount_global REBUILD;`,
         },
       ],
     },
     {
-      title: 'Advanced Security',
+      title: 'Oracle Cloud and Modern Features',
       commands: [
         {
-          command: 'Data Encryption',
-          description: 'Transparent Data Encryption and column encryption',
-          usage: 'TDE, wallet management',
-          example: `======== Configure TDE Wallet ========
--- Set wallet location
-ALTER SYSTEM SET ENCRYPTION WALLET OPEN IDENTIFIED BY "wallet_password";
-ALTER SYSTEM SET ENCRYPTION WALLET CLOSE;
+          command: 'Oracle Cloud Infrastructure',
+          description: 'Connect to Oracle Cloud Database',
+          usage: 'Cloud database connection',
+          example: `-- Connect to Autonomous Database
+sqlplus admin/password@dbname_high
+sqlplus admin/password@dbname_medium
+sqlplus admin/password@dbname_low
 
-======== Tablespace Encryption ========
--- Create encrypted tablespace
-CREATE TABLESPACE secure_data
-DATAFILE '/u01/app/oracle/oradata/XE/secure_data01.dbf' SIZE 100M
-ENCRYPTION USING 'AES256'
-DEFAULT STORAGE(ENCRYPT);
-
--- Encrypt existing tablespace
-ALTER TABLESPACE users ENCRYPTION ONLINE USING 'AES256';
-
-======== Column Encryption ========
--- Create table with encrypted columns
-CREATE TABLE secure_customers (
-  customer_id NUMBER PRIMARY KEY,
-  credit_card_number VARCHAR2(16) ENCRYPT USING 'AES256',
-  ssn VARCHAR2(11) ENCRYPT,
-  email VARCHAR2(100)
-);
-
--- Add encrypted column to existing table
-ALTER TABLE customers ADD (
-  credit_card VARCHAR2(16) ENCRYPT USING 'AES256'
-);
-
-======== Redaction (12c+) ========
--- Create redaction policy
-BEGIN
-  DBMS_REDACT.ADD_POLICY(
-    object_schema => 'HR',
-    object_name => 'EMPLOYEES',
-    policy_name => 'emp_ss_redaction',
-    column_name => 'SSN',
-    function_type => DBMS_REDACT.FULL,
-    expression => '1=1'
-  );
-END;
-/
-
--- Partial redaction
-BEGIN
-  DBMS_REDACT.ADD_POLICY(
-    object_schema => 'HR',
-    object_name => 'EMPLOYEES',
-    policy_name => 'emp_salary_redaction',
-    column_name => 'SALARY',
-    function_type => DBMS_REDACT.PARTIAL,
-    function_params => DBMS_REDACT.REDACT_NUM_FMT,
-    expression => 'SYS_CONTEXT(''USERENV'', ''SESSION_USER'') != ''HR_ADMIN'''
-  );
-END;
-/
-
-======== Data Vault ========
--- Create Data Vault realm
-BEGIN
-  DVSYS.DBMS_MACADM.CREATE_REALM(
-    realm_name => 'Employee Data Realm',
-    description => 'Protect employee sensitive data',
-    enabled => 'Y'
-  );
-END;
-/
-
--- Add object to realm
-BEGIN
-  DVSYS.DBMS_MACADM.ADD_OBJECT_TO_REALM(
-    realm_name => 'Employee Data Realm',
-    object_owner => 'HR',
-    object_name => 'EMPLOYEES',
-    object_type => 'TABLE'
-  );
-END;
-/
-
--- Add authorized user
-BEGIN
-  DVSYS.DBMS_MACADM.ADD_AUTH_TO_REALM(
-    realm_name => 'Employee Data Realm',
-    grantee => 'HR_MANAGER'
-  );
-END;
-/`,
+-- Connection string for ATP
+(DESCRIPTION=
+    (ADDRESS=(PROTOCOL=tcps)(PORT=1522)(HOST=adb.us-phoenix-1.oraclecloud.com))
+    (CONNECT_DATA=
+        (SERVICE_NAME=dbname_high.adb.oraclecloud.com)
+    )
+    (SECURITY=(SSL_SERVER_CERT_DN="CN=adb.us-phoenix-1.oraclecloud.com,OU=Oracle ADB,O=Oracle Corporation,L=Redwood City,ST=California,C=US"))
+)`,
         },
         {
-          command: 'Fine-Grained Auditing',
-          description: 'Detailed audit tracking',
-          usage: 'DBMS_FGA package',
-          example: `======== FGA Policy Creation ========
--- Add FGA policy for sensitive access
-BEGIN
-  DBMS_FGA.ADD_POLICY(
-    object_schema => 'HR',
-    object_name => 'EMPLOYEES',
-    policy_name => 'emp_salary_audit',
-    audit_condition => 'SALARY > 50000',
-    audit_column => 'SALARY',
-    handler_schema => NULL,
-    handler_module => NULL,
-    enable => TRUE,
-    statement_types => 'SELECT, UPDATE',
-    audit_trail => DBMS_FGA.DB + DBMS_FGA.EXTENDED,
-    audit_column_opts => DBMS_FGA.ANY_COLUMNS
-  );
-END;
-/
-
-======== FGA Policy Management ========
--- Enable/disable policy
-BEGIN
-  DBMS_FGA.ENABLE_POLICY('HR', 'EMPLOYEES', 'emp_salary_audit');
-  DBMS_FGA.DISABLE_POLICY('HR', 'EMPLOYEES', 'emp_salary_audit');
-END;
-/
-
--- Drop policy
-BEGIN
-  DBMS_FGA.DROP_POLICY(
-    object_schema => 'HR',
-    object_name => 'EMPLOYEES',
-    policy_name => 'emp_salary_audit'
-  );
-END;
-/
-
-======== View FGA Audit Trail ========
--- Query FGA audit records
-SELECT timestamp, db_user, os_user, 
-       object_schema, object_name, 
-       sql_text, statement_type
-FROM dba_fga_audit_trail
-WHERE object_name = 'EMPLOYEES'
-ORDER BY timestamp DESC;
-
-======== Unified Auditing (12c+) ========
--- Create unified audit policy
-CREATE AUDIT POLICY hr_data_policy
-ACTIONS SELECT, INSERT, UPDATE, DELETE ON hr.employees,
-        SELECT, INSERT, UPDATE, DELETE ON hr.departments
-WHEN 'SYS_CONTEXT(''USERENV'', ''SESSION_USER'') != ''HR_ADMIN'''
-CONTAINER = ALL;
-
--- Enable audit policy
-AUDIT POLICY hr_data_policy;
-
--- View unified audit trail
-SELECT event_timestamp, 
-       object_schema, object_name,
-       action_name, sql_text,
-       unified_audit_policies
-FROM unified_audit_trail
-WHERE unified_audit_policies LIKE '%HR_DATA_POLICY%'
-ORDER BY event_timestamp DESC;`,
-        },
-        {
-          command: 'Virtual Private Database (VPD)',
-          description: 'Row-level security policies',
-          usage: 'DBMS_RLS package',
-          example: `======== VPD Policy Function ========
-CREATE OR REPLACE FUNCTION dept_security_function(
-  p_schema IN VARCHAR2,
-  p_object IN VARCHAR2
-) RETURN VARCHAR2 AS
-  v_return_val VARCHAR2(2000);
-BEGIN
-  -- Only show employees from user's department
-  RETURN 'department_id = SYS_CONTEXT(''USERENV'', ''DEPARTMENT_ID'')';
-  
-EXCEPTION
-  WHEN OTHERS THEN
-    RETURN '1=0';  -- Return false if error
-END;
-/
-
-======== Add VPD Policy ========
-BEGIN
-  DBMS_RLS.ADD_POLICY(
-    object_schema => 'HR',
-    object_name => 'EMPLOYEES',
-    policy_name => 'dept_policy',
-    function_schema => 'HR',
-    policy_function => 'dept_security_function',
-    statement_types => 'SELECT, INSERT, UPDATE, DELETE',
-    update_check => TRUE,
-    enable => TRUE,
-    static_policy => FALSE
-  );
-END;
-/
-
-======== Context for VPD ========
--- Create application context
-CREATE OR REPLACE CONTEXT hr_ctx USING hr_ctx_pkg;
-
--- Context package
-CREATE OR REPLACE PACKAGE hr_ctx_pkg AS
-  PROCEDURE set_dept_id(p_dept_id NUMBER);
-END;
-/
-
-CREATE OR REPLACE PACKAGE BODY hr_ctx_pkg AS
-  PROCEDURE set_dept_id(p_dept_id NUMBER) IS
-  BEGIN
-    DBMS_SESSION.SET_CONTEXT('hr_ctx', 'department_id', p_dept_id);
-  END;
-END;
-/
-
-======== Test VPD Policy ========
--- Set context
-BEGIN
-  hr_ctx_pkg.set_dept_id(60);
-END;
-/
-
--- Query will only show department 60 employees
-SELECT COUNT(*) FROM hr.employees;
-
-======== Policy Management ========
--- Enable/disable policy
-BEGIN
-  DBMS_RLS.ENABLE_POLICY('HR', 'EMPLOYEES', 'dept_policy');
-  DBMS_RLS.DISABLE_POLICY('HR', 'EMPLOYEES', 'dept_policy');
-END;
-/
-
--- Drop policy
-BEGIN
-  DBMS_RLS.DROP_POLICY('HR', 'EMPLOYEES', 'dept_policy');
-END;
-/`,
-        },
-      ],
-    },
-    {
-      title: 'Cloud and Modern Features',
-      commands: [
-        {
-          command: 'Oracle Cloud Infrastructure (OCI)',
-          description: 'Oracle Database Cloud Service operations',
-          usage: 'OCI CLI, autonomous database',
-          example: `======== OCI CLI Setup ========
-# Install OCI CLI
-bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
-
-# Configure OCI CLI
-oci setup config
-
-======== Autonomous Database ========
-# Create ATP (Autonomous Transaction Processing)
-oci db autonomous-database create \\
-  --compartment-id <compartment_ocid> \\
-  --db-name myatpdb \\
-  --admin-password <secure_password> \\
-  --cpu-core-count 2 \\
-  --data-storage-size-in-tbs 1 \\
-  --display-name "My ATP Database" \\
-  --is-dedicated false
-
-# Get connection string
-oci db autonomous-database generate-wallet \\
-  --autonomous-database-id <adb_ocid> \\
-  --password <wallet_password> \\
-  --file <wallet_file.zip>
-
-# Connect to ATP using SQL*Plus
-sqlplus admin/<password>@<adb_name>_high?wallet_location=<wallet_path>
-
-======== APEX (Application Express) ========
--- Enable APEX
-@apexins.sql SYSAUX SYSAUX TEMP /i/
-
--- Configure APEX admin
-@apxchpwd.sql
-
--- Create APEX workspace
-BEGIN
-  APEX_INSTANCE_ADMIN.CREATE_WORKSPACE(
-    p_workspace => 'MY_WORKSPACE',
-    p_schema => 'HR',
-    p_schema_password => 'hr_password'
-  );
-END;
-/
-
-======== Oracle REST Data Services (ORDS) ========
--- Install ORDS
-java -jar ords.war install advanced
-
--- Enable REST for schema
-BEGIN
-  ORDS.enable_schema(
-    p_enabled => TRUE,
-    p_schema => 'HR',
-    p_url_mapping_type => 'BASE_PATH',
-    p_url_mapping_pattern => 'hr',
-    p_auto_rest_auth => FALSE
-  );
-END;
-/
-
--- REST API example
-GET https://host:port/ords/hr/employees/
-GET https://host:port/ords/hr/employees/{id}
-
-======== JSON Support (21c+) ========
--- JSON data type
-CREATE TABLE json_documents (
-  id NUMBER PRIMARY KEY,
-  doc_data JSON,
-  created_at TIMESTAMP DEFAULT SYSTIMESTAMP
+          command: 'JSON Support',
+          description: 'Work with JSON data',
+          usage: 'JSON functions',
+          example: `-- JSON data type
+CREATE TABLE products (
+    id NUMBER PRIMARY KEY,
+    name VARCHAR2(100),
+    attributes JSON
 );
 
 -- Insert JSON data
-INSERT INTO json_documents (id, doc_data)
-VALUES (1, JSON('{"name": "John", "age": 30, "city": "New York"}'));
+INSERT INTO products VALUES (1, 'Laptop', 
+    JSON('{"color": "black", "ram": "16GB", "storage": "512GB"}'));
 
 -- Query JSON data
-SELECT doc_data.name, doc_data.age
-FROM json_documents
-WHERE doc_data.age > 25;
+SELECT name, 
+       attributes.color,
+       attributes.ram
+FROM products;
 
 -- JSON functions
-SELECT JSON_VALUE(doc_data, '$.name') AS name,
-       JSON_QUERY(doc_data, '$.city') AS city,
-       JSON_TABLE(doc_data, '$' COLUMNS(
-         name VARCHAR2 PATH '$.name',
-         age NUMBER PATH '$.age'
-       )) jt
-FROM json_documents;`,
+SELECT JSON_VALUE(attributes, '$.color') as color,
+       JSON_EXISTS(attributes, '$.storage') as has_storage
+FROM products;`,
         },
         {
-          command: 'Machine Learning and AI',
-          description: 'Oracle Machine Learning features',
-          usage: 'OML4SQL, OML Notebooks',
-          example: `======== Oracle Machine Learning for SQL ========
--- Create mining model
+          command: 'Graph Database',
+          description: 'Property graph features',
+          usage: 'Oracle Graph',
+          example: `-- Create property graph
 BEGIN
-  DBMS_DATA_MINING.CREATE_MODEL(
-    model_name => 'emp_salary_model',
-    mining_function => DBMS_DATA_MINING.REGRESSION,
-    data_table_name => 'employees',
-    case_id_column_name => 'employee_id',
-    target_column_name => 'salary'
-  );
+    OPG_APIS.CREATE_PROPERTY_GRAPH(
+        graph_name => 'social_network',
+        table_name => 'social_vertices',
+        key_column => 'id',
+        vertex_label_column => 'type'
+    );
 END;
 /
 
--- Apply model for prediction
-SELECT employee_id, first_name, salary,
-       PREDICTION(emp_salary_model USING *) AS predicted_salary
-FROM employees
-WHERE department_id = 60;
-
-======== OML4SQL Algorithms ========
--- Decision Tree
-BEGIN
-  DBMS_DATA_MINING.CREATE_MODEL(
-    model_name => 'decision_tree_model',
-    mining_function => DBMS_DATA_MINING.CLASSIFICATION,
-    data_table_name => 'customer_data',
-    case_id_column_name => 'customer_id',
-    target_column_name => 'churn_flag',
-    settings_table_name => 'dt_settings'
-  );
-END;
-/
-
--- Neural Network
-BEGIN
-  DBMS_DATA_MINING.CREATE_MODEL(
-    model_name => 'neural_net_model',
-    mining_function => DBMS_DATA_MINING.CLASSIFICATION,
-    data_table_name => 'customer_data',
-    case_id_column_name => 'customer_id',
-    target_column_name => 'churn_flag',
-    settings_table_name => 'nn_settings'
-  );
-END;
-/
-
-======== Model Evaluation ========
--- Get model details
-SELECT *
-FROM TABLE(DBMS_DATA_MINING.GET_MODEL_DETAILS('emp_salary_model'));
-
--- Model performance metrics
-SELECT *
-FROM TABLE(DBMS_DATA_MINING.GET_MODEL_COST_SETTINGS('emp_salary_model'));
-
--- Apply model with confidence
-SELECT employee_id, salary,
-       PREDICTION(emp_salary_model USING *) AS predicted_salary,
-       PREDICTION_PROBABILITY(emp_salary_model USING *) AS confidence
-FROM employees
-WHERE ROWNUM <= 10;
-
-======== Advanced Analytics ========
--- Anomaly detection
-BEGIN
-  DBMS_DATA_MINING.CREATE_MODEL(
-    model_name => 'anomaly_model',
-    mining_function => DBMS_DATA_MINING.ANOMALY_DETECTION,
-    data_table_name => 'transaction_data',
-    case_id_column_name => 'transaction_id'
-  );
-END;
-/
-
--- Clustering
-BEGIN
-  DBMS_DATA_MINING.CREATE_MODEL(
-    model_name => 'customer_segments',
-    mining_function => DBMS_DATA_MINING.CLUSTERING,
-    data_table_name => 'customer_data',
-    case_id_column_name => 'customer_id'
-  );
-END;
-/
-
--- Association rules (market basket analysis)
-BEGIN
-  DBMS_DATA_MINING.CREATE_MODEL(
-    model_name => 'market_basket',
-    mining_function => DBMS_DATA_MINING.ASSOCIATION_RULES,
-    data_table_name => 'transaction_items',
-    case_id_column_name => 'transaction_id'
-  );
-END;
-/`,
+-- Graph queries
+SELECT * FROM TABLE(
+    OPG_APIS.MATCH(
+        'social_network',
+        'MATCH (a:Person)-[e:KNOWS]->(b:Person) RETURN a.name, b.name'
+    )
+);`,
         },
         {
-          command: 'Blockchain and Distributed Features',
-          description: 'Oracle Blockchain Table and distributed features',
-          usage: 'Blockchain tables, sharding',
-          example: `======== Blockchain Tables (21c+) ========
--- Create blockchain table
-CREATE TABLE blockchain_transactions (
-  transaction_id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
-  account_id NUMBER,
-  amount NUMBER(10,2),
-  transaction_date TIMESTAMP DEFAULT SYSTIMESTAMP,
-  transaction_type VARCHAR2(20)
-) BLOCKCHAIN
-NO DROP UNTIL 30 DAYS IDLE
-NO DELETE UNTIL 30 DAYS IDLE
-HASHING USING "SHA2_512";
+          command: 'Machine Learning',
+          description: 'Oracle Machine Learning',
+          usage: 'DBMS_DATA_MINING',
+          example: `-- Create mining model
+BEGIN
+    DBMS_DATA_MINING.CREATE_MODEL(
+        model_name => 'churn_model',
+        mining_function => DBMS_DATA_MINING.CLASSIFICATION,
+        data_table_name => 'customer_data',
+        case_id_column_name => 'customer_id',
+        target_column_name => 'churn_flag'
+    );
+END;
+/
+
+-- Apply model
+SELECT * FROM TABLE(
+    DBMS_DATA_MINING.PREDICTION(
+        'churn_model',
+        'PREDICT',
+        'SELECT * FROM new_customers'
+    )
+);`,
+        },
+        {
+          command: 'Blockchain Tables',
+          description: 'Immutable blockchain tables',
+          usage: 'Blockchain table features',
+          example: `-- Create blockchain table
+CREATE BLOCKCHAIN TABLE audit_log (
+    id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    transaction_id VARCHAR2(100),
+    operation VARCHAR2(50),
+    timestamp TIMESTAMP DEFAULT SYSDATE,
+    user_name VARCHAR2(100)
+) NO DROP UNTIL 365 DAYS NO DELETE UNTIL 365 DAYS;
 
 -- Insert into blockchain table
-INSERT INTO blockchain_transactions (account_id, amount, transaction_type)
-VALUES (1001, 1000.00, 'DEPOSIT');
+INSERT INTO audit_log (transaction_id, operation, user_name)
+VALUES ('TXN001', 'INSERT', 'john_doe');
 
--- Sign rows
+-- Blockchain table properties
+SELECT * FROM user_blockchain_tables;
+SELECT * FROM user_blockchain_table_columns WHERE table_name = 'AUDIT_LOG';`,
+        },
+      ],
+    },
+    {
+      title: 'Oracle Tools and Utilities',
+      commands: [
+        {
+          command: 'SQL*Plus Commands',
+          description: 'SQL*Plus utility commands',
+          usage: 'SQL*Plus commands',
+          example: `-- SQL*Plus commands
+SET PAGESIZE 50
+SET LINESIZE 120
+SET SERVEROUTPUT ON
+SET TIMING ON
+SET AUTOTRACE ON EXPLAIN
+
+-- Save output to file
+SPOOL output.txt
+SELECT * FROM employees;
+SPOOL OFF
+
+-- Execute script
+@script.sql
+START script.sql
+
+-- Describe objects
+DESCRIBE employees
+DESC employees`,
+        },
+        {
+          command: 'SQL Developer',
+          description: 'Oracle SQL Developer features',
+          usage: 'SQL Developer IDE',
+          example: `-- SQL Developer features
+-- Connection Manager: Manage database connections
+-- Worksheet: Execute SQL and PL/SQL
+-- Reports: Create and run reports
+-- Debugger: Debug PL/SQL code
+-- Version Control: Git integration
+-- Data Modeler: Design database schemas
+-- SQL Tuning: Explain plans and advisors`,
+        },
+        {
+          command: 'Data Dictionary Views',
+          description: 'Query database metadata',
+          usage: 'Data dictionary views',
+          example: `-- User information
+SELECT * FROM USER_USERS;
+SELECT * FROM ALL_USERS;
+SELECT * FROM DBA_USERS;
+
+-- Table information
+SELECT * FROM USER_TABLES;
+SELECT * FROM USER_TAB_COLUMNS WHERE table_name = 'EMPLOYEES';
+
+-- Index information
+SELECT * FROM USER_INDEXES;
+SELECT * FROM USER_IND_COLUMNS WHERE index_name = 'IDX_EMPLOYEE_EMAIL';
+
+-- Constraint information
+SELECT * FROM USER_CONSTRAINTS WHERE table_name = 'EMPLOYEES';
+SELECT * FROM USER_CONS_COLUMNS WHERE table_name = 'EMPLOYEES';`,
+        },
+        {
+          command: 'Dynamic Performance Views',
+          description: 'Monitor database performance',
+          usage: 'V$ views',
+          example: `-- Performance monitoring
+SELECT * FROM V$SESSION WHERE username = 'HR';
+SELECT * FROM V$PROCESS WHERE addr = (SELECT paddr FROM V$SESSION WHERE sid = 123);
+SELECT * FROM V$SQL WHERE sql_text LIKE '%employees%';
+SELECT * FROM V$SGAINFO;
+SELECT * FROM V$PARAMETER WHERE name LIKE '%memory%';
+SELECT * FROM V$LOCK WHERE request > 0;`,
+        },
+        {
+          command: 'DBMS Utilities',
+          description: 'Useful DBMS packages',
+          usage: 'DBMS packages',
+          example: `-- DBMS_OUTPUT for debugging
+SET SERVEROUTPUT ON;
 BEGIN
-  DBMS_BLOCKCHAIN_TABLE.SIGN_ROW(
-    schema_name => 'BANKING',
-    table_name => 'BLOCKCHAIN_TRANSACTIONS',
-    row_id => '<row_id>',
-    signature => '<digital_signature>'
-  );
+    DBMS_OUTPUT.PUT_LINE('Hello World');
+    DBMS_OUTPUT.PUT_LINE('Current time: ' || TO_CHAR(SYSDATE, 'HH24:MI:SS'));
 END;
 /
 
--- Verify blockchain table integrity
-SELECT * FROM blockchain_transactions
-WHERE DBMS_BLOCKCHAIN_TABLE.VERIFY_ROWS(
-  schema_name => 'BANKING',
-  table_name => 'BLOCKCHAIN_TRANSACTIONS',
-  row_ids => NULL
-) = 1;
+-- DBMS_RANDOM for random numbers
+SELECT DBMS_RANDOM.VALUE FROM DUAL;
+SELECT DBMS_RANDOM.STRING('U', 10) FROM DUAL;
 
-======== Sharding (12c R2+) ========
--- Create shard catalog
-CREATE SHARDCATALOG;
+-- DBMS_LOCK for locking
+EXEC DBMS_LOCK.SLEEP(5);
 
--- Create shardspaces
-CREATE TABLESPACE shard1_ts;
-CREATE TABLESPACE shard2_ts;
-
-CREATE SHARDSPACE shard1;
-CREATE SHARDSPACE shard2;
-
--- Create shards
-CREATE SHARD shard1 USING 'shard1_host:1521/shard1' 
-TABLESPACE shard1_ts;
-
-CREATE SHARD shard2 USING 'shard2_host:1521/shard2' 
-TABLESPACE shard2_ts;
-
--- Create sharded table
-CREATE SHARDED TABLE customers (
-  customer_id NUMBER,
-  name VARCHAR2(100),
-  email VARCHAR2(100),
-  region VARCHAR2(50)
-) TABLESPACE SET ts_set
-PARTITION BY CONSISTENT HASH (customer_id) PARTITIONS AUTO;
-
--- Distributed transactions
+-- DBMS_JOB for scheduling
+DECLARE
+    v_job NUMBER;
 BEGIN
-  DBMS_XA.XA_START;
-  -- Perform distributed operations
-  DBMS_XA.XA_END;
-  DBMS_XA.XA_PREPARE;
-  DBMS_XA.XA_COMMIT;
+    DBMS_JOB.SUBMIT(v_job, 'BEGIN my_procedure; END;', SYSDATE, 'SYSDATE + 1');
+    COMMIT;
 END;
-/
-
-======== GoldenGate for Replication ========
--- GoldenGate parameter file
-EXTRACT ext1
-USERID ggs_admin, password ggs_password
-EXTTRAIL ./dirdat/lt
-TABLE hr.employees;
-
-REPLICAT rep1
-USERID ggs_admin, password ggs_password
-ASSUMETARGETDEFS
-MAP hr.employees, TARGET hr.employees;
-
--- Start GoldenGate processes
-GGSCI> START EXTRACT ext1
-GGSCI> START REPLICAT rep1
-
--- Check lag
-GGSCI> INFO EXTRACT ext1, DETAIL
-GGSCI> INFO REPLICAT rep1, DETAIL`,
+/`,
         },
       ],
     },

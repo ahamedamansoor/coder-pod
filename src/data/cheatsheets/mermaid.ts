@@ -7,27 +7,92 @@ export const mermaidCheatsheet = {
   icon: GitBranch,
   colorTheme: 'purple' as const,
   sections: [
-    // BEGINNER LEVEL
     {
       title: 'Getting Started with Mermaid',
       commands: [
         {
-          command: 'What is Mermaid',
+          command: 'Mermaid Overview',
           description: 'Understanding Mermaid basics and purpose',
           usage: 'Diagramming and charting tool for creating visualizations',
-          example: '# Mermaid is a JavaScript-based diagramming tool\n# Creates diagrams from simple text-based syntax\n# Integrates with Markdown, documentation tools\n# Supports multiple diagram types\n\n# Basic syntax:\n```mermaid\ngraph TD\n    A[Start] --> B[Process]\n    B --> C[End]\n```',
+          example: `# Mermaid is a JavaScript-based diagramming tool
+# Creates diagrams from simple text-based syntax
+# Integrates with Markdown, documentation tools
+# Supports multiple diagram types`,
         },
         {
-          command: 'Installing Mermaid',
-          description: 'Set up Mermaid in different environments',
-          usage: 'Installation methods for various platforms',
-          example: '# VS Code: Mermaid Preview extension\n# GitHub: Built-in support in Markdown\n# GitLab: Built-in Mermaid support\n# Notion: Mermaid diagrams\n# Web: Include via CDN:\n\n<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>\n\n# npm:\nnpm install mermaid\n\n# Initialize:\nmermaid.initialize({ startOnLoad: true });',
+          command: 'Basic Mermaid Syntax',
+          description: 'Basic diagram syntax structure',
+          usage: 'Diagram type and connections',
+          example: `# Basic syntax:
+\`\`\`mermaid
+graph TD
+    A[Start] --> B[Process]
+    B --> C[End]
+\`\`\``,
         },
         {
-          command: 'Basic Diagram Structure',
-          description: 'Learn basic Mermaid diagram syntax',
-          usage: 'Diagram type and node connections',
-          example: '# Basic flowchart:\n```mermaid\ngraph TD\n    A --> B\n    B --> C\n```\n\n# With node text:\n```mermaid\ngraph LR\n    A[Start] --> B[Process]\n    B --> C[End]\n```',
+          command: 'VS Code Extension',
+          description: 'Install Mermaid in VS Code',
+          usage: 'VS Code Marketplace',
+          example: `# VS Code: Mermaid Preview extension`,
+        },
+        {
+          command: 'GitHub Integration',
+          description: 'Use Mermaid in GitHub',
+          usage: 'Built-in GitHub support',
+          example: `# GitHub: Built-in support in Markdown`,
+        },
+        {
+          command: 'GitLab Integration',
+          description: 'Use Mermaid in GitLab',
+          usage: 'Built-in GitLab support',
+          example: `# GitLab: Built-in Mermaid support`,
+        },
+        {
+          command: 'Notion Integration',
+          description: 'Use Mermaid in Notion',
+          usage: 'Notion Mermaid diagrams',
+          example: `# Notion: Mermaid diagrams`,
+        },
+        {
+          command: 'Web CDN Integration',
+          description: 'Include Mermaid via CDN',
+          usage: 'HTML script tag',
+          example: `<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>`,
+        },
+        {
+          command: 'NPM Installation',
+          description: 'Install Mermaid via npm',
+          usage: 'npm package manager',
+          example: `npm install mermaid`,
+        },
+        {
+          command: 'Initialize Mermaid',
+          description: 'Initialize Mermaid in JavaScript',
+          usage: 'mermaid.initialize()',
+          example: `mermaid.initialize({ startOnLoad: true });`,
+        },
+        {
+          command: 'Basic Flowchart Top to Bottom',
+          description: 'Create basic top to bottom flowchart',
+          usage: 'graph TD',
+          example: `# Basic flowchart:
+\`\`\`mermaid
+graph TD
+    A --> B
+    B --> C
+\`\`\``,
+        },
+        {
+          command: 'Flowchart with Node Text',
+          description: 'Add text to flowchart nodes',
+          usage: 'graph LR with node text',
+          example: `# With node text:
+\`\`\`mermaid
+graph LR
+    A[Start] --> B[Process]
+    B --> C[End]
+\`\`\``,
         },
       ],
     },
@@ -35,22 +100,174 @@ export const mermaidCheatsheet = {
       title: 'Flowchart Basics',
       commands: [
         {
-          command: 'Graph Directions',
-          description: 'Control diagram flow direction',
-          usage: 'graph TD, LR, TB, BT, RL',
-          example: '# Top to Bottom (default):\ngraph TD\n    A --> B\n\n# Left to Right:\ngraph LR\n    A --> B\n\n# Bottom to Top:\ngraph BT\n    A --> B\n\n# Right to Left:\ngraph RL\n    A --> B',
+          command: 'Graph Top to Bottom',
+          description: 'Set diagram flow top to bottom',
+          usage: 'graph TD',
+          example: `# Top to Bottom (default):
+graph TD
+    A --> B`,
         },
         {
-          command: 'Basic Nodes',
-          description: 'Create different types of nodes',
-          usage: 'Node text and shapes',
-          example: '# Rectangle (default):\n    A[Default Text]\n\n# Round edges:\n    B(Rounded Edges)\n\n# Stadium shape:\n    C(Stadium Shape)\n\n# Circle:\n    D((Circle))\n\n# Asymmetric shape:\n    E>Asymmetric]\n\n# Rhombus:\n    F{Rhombus}\n\n# Hexagon:\n    G{{Hexagon}}\n\n# Parallelogram:\n    H[/Parallelogram/]\n\n# Parallelogram alt:\n    I[\\Parallelogram Alt\\]\n\n# Trapezoid:\n    J[/Trapezoid\\]\n\n# Trapezoid alt:\n    K[\\Trapezoid Alt/]',
+          command: 'Graph Left to Right',
+          description: 'Set diagram flow left to right',
+          usage: 'graph LR',
+          example: `# Left to Right:
+graph LR
+    A --> B`,
         },
         {
-          command: 'Basic Connections',
-          description: 'Connect nodes with different arrow types',
-          usage: 'Arrows and line styles',
-          example: '# Solid arrow:\n    A --> B\n\n# Open arrow:\n    A --o B\n\n# Cross arrow:\n    A --x B\n\n# Dotted arrow:\n    A -.-> B\n\n# Thick arrow:\n    A ==> B\n\n# Line without arrow:\n    A --- B\n\n# Text on connection:\n    A -- Text --> B\n    A-. Text .-> B\n    A == Text ==> B',
+          command: 'Graph Bottom to Top',
+          description: 'Set diagram flow bottom to top',
+          usage: 'graph BT',
+          example: `# Bottom to Top:
+graph BT
+    A --> B`,
+        },
+        {
+          command: 'Graph Right to Left',
+          description: 'Set diagram flow right to left',
+          usage: 'graph RL',
+          example: `# Right to Left:
+graph RL
+    A --> B`,
+        },
+        {
+          command: 'Rectangle Node',
+          description: 'Create rectangle node',
+          usage: 'A[Text]',
+          example: `# Rectangle (default):
+    A[Default Text]`,
+        },
+        {
+          command: 'Round Edges Node',
+          description: 'Create round-edged node',
+          usage: 'B(Text)',
+          example: `# Round edges:
+    B(Rounded Edges)`,
+        },
+        {
+          command: 'Stadium Shape Node',
+          description: 'Create stadium-shaped node',
+          usage: 'C(Text)',
+          example: `# Stadium shape:
+    C(Stadium Shape)`,
+        },
+        {
+          command: 'Circle Node',
+          description: 'Create circular node',
+          usage: 'D((Text))',
+          example: `# Circle:
+    D((Circle))`,
+        },
+        {
+          command: 'Asymmetric Shape Node',
+          description: 'Create asymmetric-shaped node',
+          usage: 'E>Text]',
+          example: `# Asymmetric shape:
+    E>Asymmetric]`,
+        },
+        {
+          command: 'Rhombus Node',
+          description: 'Create rhombus-shaped node',
+          usage: 'F{Text}',
+          example: `# Rhombus:
+    F{Rhombus}`,
+        },
+        {
+          command: 'Hexagon Node',
+          description: 'Create hexagon-shaped node',
+          usage: 'G{{Text}}',
+          example: `# Hexagon:
+    G{{Hexagon}}`,
+        },
+        {
+          command: 'Parallelogram Node',
+          description: 'Create parallelogram node',
+          usage: 'H[/Text/]',
+          example: `# Parallelogram:
+    H[/Parallelogram/]`,
+        },
+        {
+          command: 'Parallelogram Alt Node',
+          description: 'Create alternative parallelogram node',
+          usage: 'I[\\Text\\]',
+          example: `# Parallelogram alt:
+    I[\\Parallelogram Alt\\]`,
+        },
+        {
+          command: 'Trapezoid Node',
+          description: 'Create trapezoid node',
+          usage: 'J[/Text\\]',
+          example: `# Trapezoid:
+    J[/Trapezoid\\]`,
+        },
+        {
+          command: 'Trapezoid Alt Node',
+          description: 'Create alternative trapezoid node',
+          usage: 'K[\\Text/]',
+          example: `# Trapezoid alt:
+    K[\\Trapezoid Alt/]`,
+        },
+        {
+          command: 'Solid Arrow Connection',
+          description: 'Create solid arrow connection',
+          usage: 'A --> B',
+          example: `# Solid arrow:
+    A --> B`,
+        },
+        {
+          command: 'Open Arrow Connection',
+          description: 'Create open arrow connection',
+          usage: 'A --o B',
+          example: `# Open arrow:
+    A --o B`,
+        },
+        {
+          command: 'Cross Arrow Connection',
+          description: 'Create cross arrow connection',
+          usage: 'A --x B',
+          example: `# Cross arrow:
+    A --x B`,
+        },
+        {
+          command: 'Dotted Arrow Connection',
+          description: 'Create dotted arrow connection',
+          usage: 'A -.-> B',
+          example: `# Dotted arrow:
+    A -.-> B`,
+        },
+        {
+          command: 'Thick Arrow Connection',
+          description: 'Create thick arrow connection',
+          usage: 'A ==> B',
+          example: `# Thick arrow:
+    A ==> B`,
+        },
+        {
+          command: 'Line Connection',
+          description: 'Create line without arrow',
+          usage: 'A --- B',
+          example: `# Line without arrow:
+    A --- B`,
+        },
+        {
+          command: 'Text on Solid Arrow',
+          description: 'Add text to solid arrow',
+          usage: 'A -- Text --> B',
+          example: `# Text on connection:
+    A -- Text --> B`,
+        },
+        {
+          command: 'Text on Dotted Arrow',
+          description: 'Add text to dotted arrow',
+          usage: 'A-. Text .-> B',
+          example: `    A-. Text .-> B`,
+        },
+        {
+          command: 'Text on Thick Arrow',
+          description: 'Add text to thick arrow',
+          usage: 'A == Text ==> B',
+          example: `    A == Text ==> B`,
         },
       ],
     },
@@ -58,22 +275,69 @@ export const mermaidCheatsheet = {
       title: 'Node Styling and IDs',
       commands: [
         {
-          command: 'Node IDs',
-          description: 'Use IDs for complex node references',
-          usage: 'id[Text] format',
-          example: '# Simple IDs:\n    a1[Node A]\n    b2[Node B]\n    a1 --> b2\n\n# Complex IDs:\n    node1[Complex Node ID]\n    node_2[Another Node]\n    node1 --> node_2\n\n# IDs with special chars:\n    "node-3"[Node with dash ID]\n    "node_4"[Node with underscore]',
+          command: 'Simple Node IDs',
+          description: 'Use simple IDs for nodes',
+          usage: 'a1[Text]',
+          example: `# Simple IDs:
+    a1[Node A]
+    b2[Node B]
+    a1 --> b2`,
         },
         {
-          command: 'Basic Styling',
+          command: 'Complex Node IDs',
+          description: 'Use complex IDs for nodes',
+          usage: 'node1[Text]',
+          example: `# Complex IDs:
+    node1[Complex Node ID]
+    node_2[Another Node]
+    node1 --> node_2`,
+        },
+        {
+          command: 'Special Character IDs',
+          description: 'Use IDs with special characters',
+          usage: '"node-3"[Text]',
+          example: `# IDs with special chars:
+    "node-3"[Node with dash ID]
+    "node_4"[Node with underscore]`,
+        },
+        {
+          command: 'Basic Node Styling',
           description: 'Apply basic styles to nodes',
           usage: 'style node fill,stroke',
-          example: '# Node styling:\n```mermaid\ngraph TD\n    A[Styled Node]\n    B[Another Node]\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style B fill:#bbf,stroke:#f66\n```\n\n# Multiple styles:\n    style A fill:#f9f,stroke:#333\n    style B fill:#bbf,stroke:#f66,stroke-width:4px',
+          example: `# Node styling:
+\`\`\`mermaid
+graph TD
+    A[Styled Node]
+    B[Another Node]
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#f66
+\`\`\``,
         },
         {
-          command: 'CSS Classes',
-          description: 'Apply CSS classes to nodes',
-          usage: 'classDef and class keywords',
-          example: '# Define class:\n```mermaid\ngraph TD\n    A[Class A]\n    B[Class B]\n    C[Regular Node]\n    \n    classDef defaultClass fill:#f9f,stroke:#333,stroke-width:2px\n    classDef specialClass fill:#bbf,stroke:#f66\n    \n    class A,B defaultClass\n    class C specialClass\n```',
+          command: 'Multiple Node Styles',
+          description: 'Apply multiple styles to nodes',
+          usage: 'Multiple style properties',
+          example: `# Multiple styles:
+    style A fill:#f9f,stroke:#333
+    style B fill:#bbf,stroke:#f66,stroke-width:4px`,
+        },
+        {
+          command: 'Define CSS Class',
+          description: 'Define CSS class for nodes',
+          usage: 'classDef keyword',
+          example: `# Define class:
+\`\`\`mermaid
+graph TD
+    A[Class A]
+    B[Class B]
+    C[Regular Node]
+    
+    classDef defaultClass fill:#f9f,stroke:#333,stroke-width:2px
+    classDef specialClass fill:#bbf,stroke:#f66
+    
+    class A,B defaultClass
+    class C specialClass
+\`\`\``,
         },
       ],
     },
@@ -81,22 +345,70 @@ export const mermaidCheatsheet = {
       title: 'Subgraphs and Groups',
       commands: [
         {
-          command: 'Basic Subgraphs',
-          description: 'Group related nodes together',
+          command: 'Simple Subgraph',
+          description: 'Create simple subgraph',
           usage: 'subgraph title ... end',
-          example: '# Simple subgraph:\n```mermaid\ngraph TD\n    subgraph Group 1\n        A[A Node]\n        B[B Node]\n    end\n    \n    subgraph Group 2\n        C[C Node]\n        D[D Node]\n    end\n    \n    A --> C\n    B --> D\n```',
+          example: `# Simple subgraph:
+\`\`\`mermaid
+graph TD
+    subgraph Group 1
+        A[A Node]
+        B[B Node]
+    end
+    
+    subgraph Group 2
+        C[C Node]
+        D[D Node]
+    end
+    
+    A --> C
+    B --> D
+\`\`\``,
         },
         {
-          command: 'Nested Subgraphs',
-          description: 'Create nested subgraph structures',
+          command: 'Nested Subgraph',
+          description: 'Create nested subgraph structure',
           usage: 'subgraph within subgraph',
-          example: '# Nested subgraphs:\n```mermaid\ngraph TD\n    subgraph Main Group\n        subgraph Sub Group 1\n            A[Node A]\n            B[Node B]\n        end\n        \n        subgraph Sub Group 2\n            C[Node C]\n            D[Node D]\n        end\n    end\n    \n    E[External Node]\n    A --> C\n    E --> A\n```',
+          example: `# Nested subgraphs:
+\`\`\`mermaid
+graph TD
+    subgraph Main Group
+        subgraph Sub Group 1
+            A[Node A]
+            B[Node B]
+        end
+        
+        subgraph Sub Group 2
+            C[Node C]
+            D[Node D]
+        end
+    end
+    
+    E[External Node]
+    A --> C
+    E --> A
+\`\`\``,
         },
         {
-          command: 'Subgraph Styling',
+          command: 'Styled Subgraph',
           description: 'Style subgraph containers',
           usage: 'Style subgraph backgrounds',
-          example: '# Styled subgraphs:\n```mermaid\ngraph TD\n    subgraph "Group A"\n        A[Node A]\n        B[Node B]\n    end\n    \n    subgraph "Group B"\n        C[Node C]\n        D[Node D]\n    end\n    \n    style Group A fill:#f9f,stroke:#333\n    style Group B fill:#bbf,stroke:#f66\n```',
+          example: `# Styled subgraphs:
+\`\`\`mermaid
+graph TD
+    subgraph "Group A"
+        A[Node A]
+        B[Node B]
+    end
+    
+    subgraph "Group B"
+        C[Node C]
+        D[Node D]
+    end
+    
+    style Group A fill:#f9f,stroke:#333
+    style Group B fill:#bbf,stroke:#f66
+\`\`\``,
         },
       ],
     },
@@ -105,27 +417,98 @@ export const mermaidCheatsheet = {
       commands: [
         {
           command: 'Basic Sequence Diagram',
-          description: 'Create simple sequence diagrams',
+          description: 'Create simple sequence diagram',
           usage: 'sequenceDiagram with participants',
-          example: '# Basic sequence:\n```mermaid\nsequenceDiagram\n    participant A as Alice\n    participant B as Bob\n    \n    A->>B: Hello Bob!\n    B-->>A: Hello Alice!\n```',
+          example: `# Basic sequence:
+\`\`\`mermaid
+sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    
+    A->>B: Hello Bob!
+    B-->>A: Hello Alice!
+\`\`\``,
         },
         {
-          command: 'Message Types',
-          description: 'Different arrow types for messages',
-          usage: '->>, -->>, -x, --x',
-          example: '# Message types:\n```mermaid\nsequenceDiagram\n    participant A as Alice\n    participant B as Bob\n    participant C as Carol\n    \n    A->>B: Solid message\n    B-->>A: Dashed response\n    A-x C: Crossed message\n    C--x B: Crossed response\n    A->>B: Another solid\n```',
+          command: 'Solid Message Arrow',
+          description: 'Create solid message arrow',
+          usage: 'A->>B: Message',
+          example: `# Message types:
+\`\`\`mermaid
+sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    
+    A->>B: Solid message
+\`\`\``,
         },
         {
-          command: 'Loops and Conditions',
-          description: 'Add control structures to sequences',
-          usage: 'loop, alt, opt, par',
-          example: '# Control structures:\n```mermaid\nsequenceDiagram\n    participant A as Client\n    participant S as Server\n    \n    A->>S: Request\n    \n    loop Retry attempts\n        S-->>A: Process request\n    end\n    \n    alt Success\n        S-->>A: Success response\n    else Failure\n        S-->>A: Error response\n    end\n```',
+          command: 'Dashed Response Arrow',
+          description: 'Create dashed response arrow',
+          usage: 'B-->>A: Response',
+          example: `    B-->>A: Dashed response`,
         },
         {
-          command: 'Activation and Lifelines',
-          description: 'Show activation periods',
-          usage: 'activate/deactivate and +/+',
-          example: '# Activation:\n```mermaid\nsequenceDiagram\n    participant A as Alice\n    participant B as Bob\n    \n    A->>+B: Request\n    B-->>-A: Response\n    \n    A->>B: Another request\n    activate B\n    B-->>A: Another response\n    deactivate B\n```',
+          command: 'Crossed Message Arrow',
+          description: 'Create crossed message arrow',
+          usage: 'A-x C: Message',
+          example: `    A-x C: Crossed message`,
+        },
+        {
+          command: 'Crossed Response Arrow',
+          description: 'Create crossed response arrow',
+          usage: 'C--x B: Response',
+          example: `    C--x B: Crossed response`,
+        },
+        {
+          command: 'Loop Structure',
+          description: 'Add loop to sequence diagram',
+          usage: 'loop description ... end',
+          example: `# Control structures:
+\`\`\`mermaid
+sequenceDiagram
+    participant A as Client
+    participant S as Server
+    
+    A->>S: Request
+    
+    loop Retry attempts
+        S-->>A: Process request
+    end
+\`\`\``,
+        },
+        {
+          command: 'Alternative Structure',
+          description: 'Add alternative branches',
+          usage: 'alt condition ... else ... end',
+          example: `    alt Success
+        S-->>A: Success response
+    else Failure
+        S-->>A: Error response
+    end`,
+        },
+        {
+          command: 'Activation with Plus',
+          description: 'Show activation with plus notation',
+          usage: 'A->>+B: Message',
+          example: `# Activation:
+\`\`\`mermaid
+sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    
+    A->>+B: Request
+    B-->>-A: Response
+\`\`\``,
+        },
+        {
+          command: 'Manual Activation',
+          description: 'Manually control activation',
+          usage: 'activate/deactivate',
+          example: `    A->>B: Another request
+    activate B
+    B-->>A: Another response
+    deactivate B`,
         },
       ],
     },
@@ -134,52 +517,166 @@ export const mermaidCheatsheet = {
       commands: [
         {
           command: 'Basic Class Definition',
-          description: 'Define classes with properties and methods',
+          description: 'Define basic class structure',
           usage: 'class ClassName { properties methods }',
-          example: '# Basic class:\n```mermaid\nclassDiagram\n    class Animal {\n        +String name\n        +int age\n        +makeSound()\n        +eat()\n    }\n    \n    class Dog {\n        +String breed\n        +bark()\n        +wagTail()\n    }\n```',
+          example: `# Basic class:
+\`\`\`mermaid
+classDiagram
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+        +eat()
+    }
+\`\`\``,
         },
         {
-          command: 'Relationships',
-          description: 'Define relationships between classes',
-          usage: 'Inheritance, composition, aggregation',
-          example: '# Relationships:\n```mermaid\nclassDiagram\n    class Animal {\n        +makeSound()\n    }\n    \n    class Dog {\n        +bark()\n    }\n    \n    class Person {\n        +name: String\n        +adoptDog()\n    }\n    \n    Animal <|-- Dog : Inheritance\n    Person "1" -- "0..*" Dog : owns\n```',
+          command: 'Multiple Classes',
+          description: 'Define multiple classes',
+          usage: 'Multiple class definitions',
+          example: `    class Dog {
+        +String breed
+        +bark()
+        +wagTail()
+    }`,
         },
         {
-          command: 'Access Modifiers',
-          description: 'Specify visibility of members',
-          usage: '+ public, - private, # protected',
-          example: '# Access modifiers:\n```mermaid\nclassDiagram\n    class BankAccount {\n        -String accountNumber\n        -double balance\n        #String accountType\n        +deposit(amount)\n        +withdraw(amount)\n        #getAccountType()\n    }\n```',
+          command: 'Inheritance Relationship',
+          description: 'Define inheritance relationship',
+          usage: 'Parent <|-- Child',
+          example: `# Relationships:
+\`\`\`mermaid
+classDiagram
+    class Animal {
+        +makeSound()
+    }
+    
+    class Dog {
+        +bark()
+    }
+    
+    Animal <|-- Dog : Inheritance
+\`\`\``,
         },
         {
-          command: 'Abstract Classes and Interfaces',
-          description: 'Define abstract classes and interfaces',
-          usage: 'abstract, class, interface',
-          example: '# Abstract and interface:\n```mermaid\nclassDiagram\n    class Shape {\n        <<abstract>>\n        +area()\n        +perimeter()\n    }\n    \n    class Drawable {\n        <<interface>>\n        +draw()\n    }\n    \n    class Circle {\n        -double radius\n        +area()\n        +draw()\n    }\n    \n    Shape <|-- Circle\n    Drawable <|.. Circle\n```',
+          command: 'Composition Relationship',
+          description: 'Define composition relationship',
+          usage: 'Owner "1" -- "0..*" Part',
+          example: `    Person "1" -- "0..*" Dog : owns`,
+        },
+        {
+          command: 'Public Access Modifier',
+          description: 'Define public member',
+          usage: '+ public member',
+          example: `# Access modifiers:
+\`\`\`mermaid
+classDiagram
+    class BankAccount {
+        +deposit(amount)
+        +withdraw(amount)
+    }
+\`\`\``,
+        },
+        {
+          command: 'Private Access Modifier',
+          description: 'Define private member',
+          usage: '- private member',
+          example: `    -String accountNumber
+    -double balance`,
+        },
+        {
+          command: 'Protected Access Modifier',
+          description: 'Define protected member',
+          usage: '# protected member',
+          example: `    #String accountType
+    #getAccountType()`,
+        },
+        {
+          command: 'Abstract Class',
+          description: 'Define abstract class',
+          usage: '<<abstract>> class',
+          example: `# Abstract and interface:
+\`\`\`mermaid
+classDiagram
+    class Shape {
+        <<abstract>>
+        +area()
+        +perimeter()
+    }
+\`\`\``,
+        },
+        {
+          command: 'Interface Definition',
+          description: 'Define interface',
+          usage: '<<interface>> class',
+          example: `    class Drawable {
+        <<interface>>
+        +draw()
+    }`,
+        },
+        {
+          command: 'Interface Implementation',
+          description: 'Implement interface',
+          usage: 'Interface <|.. Class',
+          example: `    Drawable <|.. Circle`,
         },
       ],
     },
-
-    // ADVANCED LEVEL
     {
       title: 'State Diagrams',
       commands: [
         {
           command: 'Basic State Diagram',
-          description: 'Create simple state machines',
-          usage: 'stateDiagram-v2 with states and transitions',
-          example: '# Basic state diagram:\n```mermaid\nstateDiagram-v2\n    [*] --> Still\n    Still --> Moving: Accelerate\n    Moving --> Still: Brake\n    Moving --> Crash: Collision\n    Crash --> Still: Repair\n    Still --> [*]\n```',
+          description: 'Create simple state machine',
+          usage: 'stateDiagram-v2 with states',
+          example: `# Basic state diagram:
+\`\`\`mermaid
+stateDiagram-v2
+    [*] --> Still
+    Still --> Moving: Accelerate
+    Moving --> Still: Brake
+    Moving --> Crash: Collision
+    Crash --> Still: Repair
+    Still --> [*]
+\`\`\``,
         },
         {
-          command: 'Composite States',
-          description: 'Create nested state structures',
+          command: 'Composite State',
+          description: 'Create nested state structure',
           usage: 'state ParentState { ... }',
-          example: '# Composite states:\n```mermaid\nstateDiagram-v2\n    [*] --> Active\n    \n    state Active {\n        [*] --> Idle\n        Idle --> Processing: Start\n        Processing --> Idle: Complete\n    }\n    \n    Active --> Inactive: Sleep\n    Inactive --> Active: Wake\n    Inactive --> [*]\n```',
+          example: `# Composite states:
+\`\`\`mermaid
+stateDiagram-v2
+    [*] --> Active
+    
+    state Active {
+        [*] --> Idle
+        Idle --> Processing: Start
+        Processing --> Idle: Complete
+    }
+    
+    Active --> Inactive: Sleep
+    Inactive --> Active: Wake
+    Inactive --> [*]
+\`\`\``,
         },
         {
-          command: 'Choice States',
-          description: 'Add decision points in state diagrams',
-          usage: 'choice state with multiple transitions',
-          example: '# Choice state:\n```mermaid\nstateDiagram-v2\n    [*] --> Processing\n    Processing --> Choice: Evaluate\n    \n    state Choice <<choice>>\n    Choice --> Success: Pass\n    Choice --> Error: Fail\n    \n    Success --> [*]\n    Error --> [*]\n```',
+          command: 'Choice State',
+          description: 'Add decision point in state diagram',
+          usage: 'choice state with transitions',
+          example: `# Choice state:
+\`\`\`mermaid
+stateDiagram-v2
+    [*] --> Processing
+    Processing --> Choice: Evaluate
+    
+    state Choice <<choice>>
+    Choice --> Success: Pass
+    Choice --> Error: Fail
+    
+    Success --> [*]
+    Error --> [*]
+\`\`\``,
         },
       ],
     },
@@ -188,21 +685,63 @@ export const mermaidCheatsheet = {
       commands: [
         {
           command: 'Basic ER Diagram',
-          description: 'Create database entity relationships',
-          usage: 'erDiagram with entities and relationships',
-          example: '# Basic ER diagram:\n```mermaid\nerDiagram\n    CUSTOMER ||--o{ ORDER : places\n    ORDER ||--|{ LINE-ITEM : contains\n    PRODUCT ||--o{ LINE-ITEM : "ordered in"\n    \n    CUSTOMER {\n        int id PK\n        string name\n        string email\n    }\n    \n    ORDER {\n        int id PK\n        date order_date\n        decimal total\n    }\n```',
+          description: 'Create basic entity relationship diagram',
+          usage: 'erDiagram with entities',
+          example: `# Basic ER diagram:
+\`\`\`mermaid
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    PRODUCT ||--o{ LINE-ITEM : "ordered in"
+\`\`\``,
         },
         {
-          command: 'Relationship Cardinality',
-          description: 'Specify relationship types',
-          usage: '|o, ||, |{, }|, }{',
-          example: '# Cardinality types:\n```mermaid\nerDiagram\n    USER ||--o{ POST : creates\n    POST ||--|{ COMMENT : has\n    POST }o--|| CATEGORY : belongs_to\n    USER ||--o{ COMMENT : writes\n    \n    USER {\n        int id PK\n        string username\n    }\n    \n    POST {\n        int id PK\n        string title\n    }\n```',
+          command: 'Entity Definition',
+          description: 'Define entity with attributes',
+          usage: 'ENTITY { attributes }',
+          example: `    CUSTOMER {
+        int id PK
+        string name
+        string email
+    }`,
         },
         {
-          command: 'Advanced ER Features',
-          description: 'Use advanced ER diagram features',
-          usage: 'Keys, constraints, and relationships',
-          example: '# Advanced ER:\n```mermaid\nerDiagram\n    DEPARTMENT {\n        int dept_id PK\n        string dept_name\n        string location\n    }\n    \n    EMPLOYEE {\n        int emp_id PK\n        string name\n        int dept_id FK\n        int manager_id FK\n    }\n    \n    PROJECT {\n        int project_id PK\n        string project_name\n        date start_date\n    }\n    \n    DEPARTMENT ||--o{ EMPLOYEE : "employs"\n    EMPLOYEE ||--o{ PROJECT : "works on"\n    EMPLOYEE }o--|| EMPLOYEE : "manages"\n```',
+          command: 'One to Many Relationship',
+          description: 'Define one-to-many relationship',
+          usage: '||--o{',
+          example: `# Cardinality types:
+\`\`\`mermaid
+erDiagram
+    USER ||--o{ POST : creates
+    POST ||--|{ COMMENT : has
+\`\`\``,
+        },
+        {
+          command: 'Many to One Relationship',
+          description: 'Define many-to-one relationship',
+          usage: '}o--||',
+          example: `    POST }o--|| CATEGORY : belongs_to`,
+        },
+        {
+          command: 'Foreign Key Definition',
+          description: 'Define foreign key in entity',
+          usage: 'attribute FK',
+          example: `# Advanced ER:
+\`\`\`mermaid
+erDiagram
+    EMPLOYEE {
+        int emp_id PK
+        string name
+        int dept_id FK
+        int manager_id FK
+    }
+\`\`\``,
+        },
+        {
+          command: 'Self Relationship',
+          description: 'Define self-referencing relationship',
+          usage: 'Entity }o--|| Entity',
+          example: `    EMPLOYEE }o--|| EMPLOYEE : "manages"`,
         },
       ],
     },
@@ -211,21 +750,62 @@ export const mermaidCheatsheet = {
       commands: [
         {
           command: 'Basic Gantt Chart',
-          description: 'Create project timelines',
+          description: 'Create basic project timeline',
           usage: 'gantt with dates and tasks',
-          example: '# Basic Gantt:\n```mermaid\ngantt\n    title Project Timeline\n    dateFormat  YYYY-MM-DD\n    \n    section Phase 1\n    Research     :a1, 2024-01-01, 7d\n    Planning     :a2, after a1, 5d\n    \n    section Phase 2\n    Development  :a3, after a2, 14d\n    Testing      :a4, after a3, 7d\n```',
+          example: `# Basic Gantt:
+\`\`\`mermaid
+gantt
+    title Project Timeline
+    dateFormat  YYYY-MM-DD
+    
+    section Phase 1
+    Research     :a1, 2024-01-01, 7d
+    Planning     :a2, after a1, 5d
+\`\`\``,
         },
         {
           command: 'Task Dependencies',
           description: 'Link tasks with dependencies',
-          usage: 'after, before, task relationships',
-          example: '# Dependencies:\n```mermaid\ngantt\n    title Software Development\n    dateFormat  YYYY-MM-DD\n    \n    section Setup\n    Requirements :done, req, 2024-01-01, 5d\n    Design       :done, des, after req, 5d\n    \n    section Development\n    Frontend     :active, fe, after des, 10d\n    Backend      :be, after des, 12d\n    Integration  :int, after fe, 5d\n    \n    section Testing\n    Unit Tests   :ut, after be, 3d\n    QA Testing   :qa, after int, 7d\n```',
+          usage: 'after keyword for dependencies',
+          example: `# Dependencies:
+\`\`\`mermaid
+gantt
+    title Software Development
+    dateFormat  YYYY-MM-DD
+    
+    section Setup
+    Requirements :done, req, 2024-01-01, 5d
+    Design       :done, des, after req, 5d
+    
+    section Development
+    Frontend     :active, fe, after des, 10d
+    Backend      :be, after des, 12d
+\`\`\``,
         },
         {
-          command: 'Milestones and Markers',
-          description: 'Add milestones and progress indicators',
-          usage: 'milestone and status markers',
-          example: '# Milestones:\n```mermaid\ngantt\n    title Product Launch\n    dateFormat  YYYY-MM-DD\n    \n    section Planning\n    Market Research :done, research, 2024-01-01, 10d\n    Requirements    :done, req, after research, 5d\n    Design Complete  :milestone, m1, after req, 0d\n    \n    section Development\n    Alpha Build     :active, alpha, after req, 15d\n    Beta Build      :beta, after alpha, 10d\n    Release Ready   :milestone, m2, after beta, 0d\n```',
+          command: 'Task Status Markers',
+          description: 'Add status markers to tasks',
+          usage: 'done, active, crit',
+          example: `    Requirements :done, req, 2024-01-01, 5d
+    Design       :done, des, after req, 5d
+    Frontend     :active, fe, after des, 10d`,
+        },
+        {
+          command: 'Milestone Definition',
+          description: 'Define project milestone',
+          usage: 'milestone, id, date, 0d',
+          example: `# Milestones:
+\`\`\`mermaid
+gantt
+    title Product Launch
+    dateFormat  YYYY-MM-DD
+    
+    section Planning
+    Design Complete  :milestone, m1, after req, 0d
+    
+    section Development
+    Release Ready   :milestone, m2, after beta, 0d
+\`\`\``,
         },
       ],
     },
@@ -234,43 +814,136 @@ export const mermaidCheatsheet = {
       commands: [
         {
           command: 'Basic Pie Chart',
-          description: 'Create pie charts with data',
-          usage: 'pie title with data values',
-          example: '# Basic pie chart:\n```mermaid\npie title Market Share\n    "Product A" : 35\n    "Product B" : 25\n    "Product C" : 20\n    "Product D" : 15\n    "Others"    : 5\n```',
+          description: 'Create basic pie chart',
+          usage: 'pie title with data',
+          example: `# Basic pie chart:
+\`\`\`mermaid
+pie title Market Share
+    "Product A" : 35
+    "Product B" : 25
+    "Product C" : 20
+    "Product D" : 15
+    "Others"    : 5
+\`\`\``,
         },
         {
-          command: 'Advanced Pie Charts',
-          description: 'Customize pie chart appearance',
-          usage: 'Custom colors and formatting',
-          example: '# Styled pie chart:\n```mermaid\npie showData\n    title Budget Distribution 2024\n    "Marketing" : 30\n    "Development" : 45\n    "Operations" : 15\n    "Research" : 10\n```',
+          command: 'Show Data Pie Chart',
+          description: 'Show data values on pie chart',
+          usage: 'pie showData title',
+          example: `# Styled pie chart:
+\`\`\`mermaid
+pie showData
+    title Budget Distribution 2024
+    "Marketing" : 30
+    "Development" : 45
+    "Operations" : 15
+    "Research" : 10
+\`\`\``,
         },
         {
-          command: 'Quadrant Charts',
-          description: 'Create quadrant analysis charts',
-          usage: 'quadrantChart with axes and data',
-          example: '# Quadrant chart:\n```mermaid\nquadrantChart\n    title Product Features Analysis\n    x-axis "Low Cost" --> "High Cost"\n    y-axis "Low Value" --> "High Value"\n    quadrant-1 "High Priority"\n    quadrant-2 "Strategic"\n    quadrant-3 "Basic"\n    quadrant-4 "Premium"\n    "Feature A": [0.3, 0.8]\n    "Feature B": [0.7, 0.6]\n    "Feature C": [0.2, 0.4]\n    "Feature D": [0.8, 0.9]\n```',
-        }],
+          command: 'Quadrant Chart',
+          description: 'Create quadrant analysis chart',
+          usage: 'quadrantChart with axes',
+          example: `# Quadrant chart:
+\`\`\`mermaid
+quadrantChart
+    title Product Features Analysis
+    x-axis "Low Cost" --> "High Cost"
+    y-axis "Low Value" --> "High Value"
+    quadrant-1 "High Priority"
+    quadrant-2 "Strategic"
+    quadrant-3 "Basic"
+    quadrant-4 "Premium"
+    "Feature A": [0.3, 0.8]
+    "Feature B": [0.7, 0.6]
+\`\`\``,
+        },
+      ],
     },
     {
       title: 'Advanced Styling and Themes',
       commands: [
         {
-          command: 'Custom Themes',
-          description: 'Apply predefined themes',
+          command: 'Theme Initialization',
+          description: 'Initialize Mermaid with theme',
           usage: '%%{init: {\'theme\': \'themeName\'}}%%',
-          example: '# Theme initialization:\n```mermaid\n%%{init: {\'theme\': \'base\', \'themeVariables\': {\'primaryColor\': \'#ffecb3\'}}}%%\ngraph TD\n    A[Themed Node]\n    B[Another Node]\n    A --> B\n```\n\n# Available themes:\n# base, default, dark, forest, neutral, null\n\n# Custom theme variables:\n%%{init: {\n    \'theme\': \'base\',\n    \'themeVariables\': {\n        \'primaryColor\': \'#ffecb3\',\n        \'primaryTextColor\': \'#000\',\n        \'primaryBorderColor\': \'#000\',\n        \'lineColor\': \'#000\',\n        \'sectionBkgColor\': \'#ffecb3\',\n        \'altSectionBkgColor\': \'#fff\'\n    }\n}}%%',
+          example: `# Theme initialization:
+\`\`\`mermaid
+%%{init: {\'theme\': \'base\', \'themeVariables\': {\'primaryColor\': \'#ffecb3\'}}}%%
+graph TD
+    A[Themed Node]
+    B[Another Node]
+    A --> B
+\`\`\``,
+        },
+        {
+          command: 'Available Themes',
+          description: 'List of available themes',
+          usage: 'Theme names',
+          example: `# Available themes:
+# base, default, dark, forest, neutral, null`,
+        },
+        {
+          command: 'Custom Theme Variables',
+          description: 'Define custom theme variables',
+          usage: 'themeVariables object',
+          example: `# Custom theme variables:
+%%{init: {
+    \'theme\': \'base\',
+    \'themeVariables\': {
+        \'primaryColor\': \'#ffecb3\',
+        \'primaryTextColor\': \'#000\',
+        \'primaryBorderColor\': \'#000\'
+    }
+}}%%`,
         },
         {
           command: 'Advanced CSS Styling',
-          description: 'Complex styling with CSS',
+          description: 'Apply complex CSS styling',
           usage: 'Multiple style definitions',
-          example: '# Advanced styling:\n```mermaid\ngraph TD\n    A[Styled Node A]\n    B[Styled Node B]\n    C[Styled Node C]\n    D[Styled Node D]\n    \n    A --> B\n    B --> C\n    C --> D\n    \n    classDef nodeA fill:#f9f,stroke:#333,stroke-width:2px,color:#000\n    classDef nodeB fill:#bbf,stroke:#f66,stroke-width:3px,color:#fff\n    classDef nodeC fill:#bfb,stroke:#6f6,stroke-width:4px,color:#000\n    classDef nodeD fill:#fbb,stroke:#66f,stroke-width:5px,color:#fff\n    \n    class A nodeA\n    class B nodeB\n    class C nodeC\n    class D nodeD\n    \n    linkStyle 0 stroke:#f00,stroke-width:2px\n    linkStyle 1 stroke:#0f0,stroke-width:3px\n    linkStyle 2 stroke:#00f,stroke-width:4px\n```',
+          example: `# Advanced styling:
+\`\`\`mermaid
+graph TD
+    A[Styled Node A]
+    B[Styled Node B]
+    
+    classDef nodeA fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    classDef nodeB fill:#bbf,stroke:#f66,stroke-width:3px,color:#fff
+    
+    class A nodeA
+    class B nodeB
+\`\`\``,
+        },
+        {
+          command: 'Link Styling',
+          description: 'Style connections between nodes',
+          usage: 'linkStyle index properties',
+          example: `    linkStyle 0 stroke:#f00,stroke-width:2px
+    linkStyle 1 stroke:#0f0,stroke-width:3px
+    linkStyle 2 stroke:#00f,stroke-width:4px`,
         },
         {
           command: 'Conditional Styling',
           description: 'Apply styles based on conditions',
-          usage: 'Dynamic styling with conditions',
-          example: '# Conditional styling:\n```mermaid\ngraph TD\n    A[Start]\n    B{Decision}\n    C[Success Path]\n    D[Error Path]\n    \n    A --> B\n    B -->|Yes| C\n    B -->|No| D\n    \n    classDef success fill:#bfb,stroke:#6f6\n    classDef error fill:#fbb,stroke:#f66\n    classDef decision fill:#ffeb3b,stroke:#f57f17\n    \n    class C success\n    class D error\n    class B decision\n```',
+          usage: 'Different classes for different states',
+          example: `# Conditional styling:
+\`\`\`mermaid
+graph TD
+    A[Start]
+    B{Decision}
+    C[Success Path]
+    D[Error Path]
+    
+    A --> B
+    B -->|Yes| C
+    B -->|No| D
+    
+    classDef success fill:#bfb,stroke:#6f6
+    classDef error fill:#fbb,stroke:#f66
+    
+    class C success
+    class D error
+\`\`\``,
         },
       ],
     },
@@ -278,22 +951,92 @@ export const mermaidCheatsheet = {
       title: 'Advanced Diagram Features',
       commands: [
         {
-          command: 'Markdown in Nodes',
-          description: 'Use Markdown formatting in node text',
-          usage: 'Markdown syntax in node content',
-          example: '# Markdown in nodes:\n```mermaid\ngraph TD\n    A["**Bold Text**"]\n    B["*Italic Text*"]\n    C["`Code Block`"]\n    D["[Link](https://example.com)"]\n    E["Line 1<br>Line 2<br>Line 3"]\n    \n    A --> B\n    B --> C\n    C --> D\n    D --> E\n```\n\n# Escaped characters:\n    F["Escaped \\[brackets\\]"]\n    G["Escaped \\"quotes\\""]',
+          command: 'Bold Text in Nodes',
+          description: 'Use bold text formatting',
+          usage: '**Bold Text**',
+          example: `# Markdown in nodes:
+\`\`\`mermaid
+graph TD
+    A["**Bold Text**"]
+    B["*Italic Text*"]
+    C["\`Code Block\`"]
+    
+    A --> B
+    B --> C
+\`\`\``,
         },
         {
-          command: 'Comments and Annotations',
+          command: 'Italic Text in Nodes',
+          description: 'Use italic text formatting',
+          usage: '*Italic Text*',
+          example: `    B["*Italic Text*"]`,
+        },
+        {
+          command: 'Code Text in Nodes',
+          description: 'Use code formatting',
+          usage: '`Code Block`',
+          example: `    C["\`Code Block\`"]`,
+        },
+        {
+          command: 'Links in Nodes',
+          description: 'Add clickable links',
+          usage: '[Link](url)',
+          example: `    D["[Link](https://example.com)"]`,
+        },
+        {
+          command: 'Line Breaks in Nodes',
+          description: 'Add line breaks in node text',
+          usage: 'Text<br>More text',
+          example: `    E["Line 1<br>Line 2<br>Line 3"]`,
+        },
+        {
+          command: 'Escaped Characters',
+          description: 'Escape special characters',
+          usage: 'Escaped \\[brackets\\]',
+          example: `# Escaped characters:
+    F["Escaped \\[brackets\\]"]
+    G["Escaped \\"quotes\\""]`,
+        },
+        {
+          command: 'Comments in Diagrams',
           description: 'Add comments to diagrams',
-          usage: '%% for comments',
-          example: '# Comments:\n```mermaid\n%% This is a comment\n%% Multi-line comment\n%% about the diagram\n\ngraph TD\n    A[Start] %% Inline comment\n    B[Process]\n    C[End]\n    \n    A --> B\n    B --> C\n    \n    %% Another comment\n    style A fill:#f9f\n```',
+          usage: '%% Comment',
+          example: `# Comments:
+\`\`\`mermaid
+%% This is a comment
+%% Multi-line comment
+
+graph TD
+    A[Start] %% Inline comment
+    B[Process]
+    
+    A --> B
+    %% Another comment
+\`\`\``,
         },
         {
-          command: 'Unicode and Special Characters',
-          description: 'Use Unicode characters in diagrams',
-          usage: 'Special characters and emojis',
-          example: '# Unicode support:\n```mermaid\ngraph TD\n    A["🚀 Start"]\n    B["⚙️ Process"]\n    C["✅ Success"]\n    D["❌ Error"]\n    \n    A --> B\n    B --> C\n    B --> D\n    \n    E["Math: α + β = γ"]\n    F["Currency: $100, €200, £300"]\n    \n    C --> E\n    D --> F\n```',
+          command: 'Unicode Characters',
+          description: 'Use Unicode and emojis',
+          usage: 'Emoji and special characters',
+          example: `# Unicode support:
+\`\`\`mermaid
+graph TD
+    A["🚀 Start"]
+    B["⚙️ Process"]
+    C["✅ Success"]
+    D["❌ Error"]
+    
+    A --> B
+    B --> C
+    B --> D
+\`\`\``,
+        },
+        {
+          command: 'Math Symbols',
+          description: 'Use mathematical symbols',
+          usage: 'Greek letters and math',
+          example: `    E["Math: α + β = γ"]
+    F["Currency: $100, €200, £300"]`,
         },
       ],
     },
@@ -301,22 +1044,105 @@ export const mermaidCheatsheet = {
       title: 'Integration and Automation',
       commands: [
         {
-          command: 'JavaScript Integration',
-          description: 'Integrate Mermaid with JavaScript',
-          usage: 'Programmatic diagram generation',
-          example: '# JavaScript integration:\n```javascript\n// Initialize Mermaid\nmermaid.initialize({ \n    startOnLoad: true,\n    theme: \'forest\',\n    flowchart: {\n        useMaxWidth: true,\n        htmlLabels: true\n    }\n});\n\n// Render diagram from string\nconst graphDefinition = \'graph TD\\n    A[Start] --> B[End]\';\nconst element = document.querySelector(\'#diagram\');\nmermaid.render(\'diagram-svg\', graphDefinition, element);\n\n// Async rendering\nmermaid.render(\'myDiagram\', graphDefinition).then(svg => {\n    document.getElementById(\'container\').innerHTML = svg;\n});\n```',
+          command: 'JavaScript Initialization',
+          description: 'Initialize Mermaid in JavaScript',
+          usage: 'mermaid.initialize()',
+          example: `# JavaScript integration:
+\`\`\`javascript
+// Initialize Mermaid
+mermaid.initialize({ 
+    startOnLoad: true,
+    theme: \'forest\',
+    flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true
+    }
+});
+\`\`\``,
         },
         {
-          command: 'API Integration',
-          description: 'Generate diagrams from data',
-          usage: 'Dynamic diagram generation',
-          example: '# API integration:\n```javascript\n// Generate flowchart from JSON data\nfunction generateFlowchart(data) {\n    let mermaidCode = \'graph TD\\n\';\n    \n    data.nodes.forEach(node => {\n        mermaidCode += `    ${node.id}[${node.label}]\\n`;\n    });\n    \n    data.connections.forEach(conn => {\n        mermaidCode += `    ${conn.from} --> ${conn.to}\\n`;\n    });\n    \n    return mermaidCode;\n}\n\n// Usage:\nconst apiData = {\n    nodes: [\n        {id: \'A\', label: \'Start\'},\n        {id: \'B\', label: \'Process\'}\n    ],\n    connections: [\n        {from: \'A\', to: \'B\'}\n    ]\n};\n\nconst diagramCode = generateFlowchart(apiData);\nmermaid.render(\'api-diagram\', diagramCode);\n```',
+          command: 'Render Diagram from String',
+          description: 'Render diagram from string definition',
+          usage: 'mermaid.render()',
+          example: `// Render diagram from string
+const graphDefinition = \'graph TD\\n    A[Start] --> B[End]\';
+const element = document.querySelector(\'#diagram\');
+mermaid.render(\'diagram-svg\', graphDefinition, element);`,
         },
         {
-          command: 'Export and Sharing',
-          description: 'Export diagrams in various formats',
-          usage: 'SVG, PNG export options',
-          example: '# Export options:\n```javascript\n// Export to SVG\nconst svgCode = await mermaid.render(\'diagram\', mermaidCode);\n\n// Export to PNG (using canvas)\nfunction exportToPNG(svgElement, filename) {\n    const canvas = document.createElement(\'canvas\');\n    const ctx = canvas.getContext(\'2d\');\n    const svgData = new XMLSerializer().serializeToString(svgElement);\n    \n    const img = new Image();\n    img.onload = function() {\n        canvas.width = img.width;\n        canvas.height = img.height;\n        ctx.drawImage(img, 0, 0);\n        \n        const link = document.createElement(\'a\');\n        link.download = filename;\n        link.href = canvas.toDataURL();\n        link.click();\n    };\n    \n    img.src = \'data:image/svg+xml;base64,\' + btoa(svgData);\n}\n\n// Export to PDF (using libraries)\n// Use jsPDF or similar libraries for PDF export\n```',
+          command: 'Async Rendering',
+          description: 'Render diagrams asynchronously',
+          usage: 'mermaid.render() with promises',
+          example: `// Async rendering
+mermaid.render(\'myDiagram\', graphDefinition).then(svg => {
+    document.getElementById(\'container\').innerHTML = svg;
+});`,
+        },
+        {
+          command: 'Generate Flowchart from JSON',
+          description: 'Convert JSON data to flowchart',
+          usage: 'JSON to Mermaid conversion',
+          example: `// Generate flowchart from JSON data
+function generateFlowchart(data) {
+    let mermaidCode = \'graph TD\\n\';
+    
+    data.nodes.forEach(node => {
+        mermaidCode += \`    \${node.id}[\${node.label}]\\n\`;
+    });
+    
+    data.connections.forEach(conn => {
+        mermaidCode += \`    \${conn.from} --> \${conn.to}\\n\`;
+    });
+    
+    return mermaidCode;
+}`,
+        },
+        {
+          command: 'API Data Structure',
+          description: 'Define API data structure',
+          usage: 'JSON data format',
+          example: `// Usage:
+const apiData = {
+    nodes: [
+        {id: \'A\', label: \'Start\'},
+        {id: \'B\', label: \'Process\'}
+    ],
+    connections: [
+        {from: \'A\', to: \'B\'}
+    ]
+};`,
+        },
+        {
+          command: 'Export to SVG',
+          description: 'Export diagram as SVG',
+          usage: 'mermaid.render() returns SVG',
+          example: `// Export to SVG
+const svgCode = await mermaid.render(\'diagram\', mermaidCode);`,
+        },
+        {
+          command: 'Export to PNG',
+          description: 'Export diagram as PNG image',
+          usage: 'Canvas conversion method',
+          example: `// Export to PNG (using canvas)
+function exportToPNG(svgElement, filename) {
+    const canvas = document.createElement(\'canvas\');
+    const ctx = canvas.getContext(\'2d\');
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+    
+    const img = new Image();
+    img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        
+        const link = document.createElement(\'a\');
+        link.download = filename;
+        link.href = canvas.toDataURL();
+        link.click();
+    };
+    
+    img.src = \'data:image/svg+xml;base64,\' + btoa(svgData);
+}`,
         },
       ],
     },
@@ -324,22 +1150,124 @@ export const mermaidCheatsheet = {
       title: 'Performance and Best Practices',
       commands: [
         {
-          command: 'Performance Optimization',
-          description: 'Optimize diagram rendering performance',
-          usage: 'Best practices for large diagrams',
-          example: '# Performance tips:\n```mermaid\n%% Use subgraphs to organize complex diagrams\n%% Limit nodes per diagram (< 1000 recommended)\n%% Use efficient styling with classes\n%% Avoid excessive text in nodes\n\ngraph TD\n    subgraph "Module A"\n        A1[Node 1]\n        A2[Node 2]\n        A3[Node 3]\n    end\n    \n    subgraph "Module B"\n        B1[Node 1]\n        B2[Node 2]\n        B3[Node 3]\n    end\n    \n    A1 --> B1\n    A2 --> B2\n    A3 --> B3\n    \n    classDef moduleNode fill:#f9f,stroke:#333\n    class A1,A2,A3,B1,B2,B3 moduleNode\n```\n\n# JavaScript optimization:\n```javascript\n// Lazy loading diagrams\nconst observer = new IntersectionObserver((entries) => {\n    entries.forEach(entry => {\n        if (entry.isIntersecting) {\n            renderDiagram(entry.target);\n            observer.unobserve(entry.target);\n        }\n    });\n});\n\ndocument.querySelectorAll(\'.mermaid\').forEach(el => {\n    observer.observe(el);\n});\n```',
+          command: 'Use Subgraphs for Organization',
+          description: 'Organize complex diagrams with subgraphs',
+          usage: 'subgraph for structure',
+          example: `# Performance tips:
+\`\`\`mermaid
+%% Use subgraphs to organize complex diagrams
+%% Limit nodes per diagram (< 1000 recommended)
+
+graph TD
+    subgraph "Module A"
+        A1[Node 1]
+        A2[Node 2]
+    end
+    
+    subgraph "Module B"
+        B1[Node 1]
+        B2[Node 2]
+    end
+    
+    A1 --> B1
+    A2 --> B2
+\`\`\``,
         },
         {
-          command: 'Common Patterns',
-          description: 'Reusable diagram patterns',
-          usage: 'Standard diagram templates',
-          example: '# System architecture pattern:\n```mermaid\ngraph TB\n    subgraph "Frontend"\n        UI[User Interface]\n        SPA[Single Page App]\n    end\n    \n    subgraph "Backend"\n        API[REST API]\n        AUTH[Authentication]\n        DB[(Database)]\n    end\n    \n    subgraph "External"\n        PAY[Payment Gateway]\n        EMAIL[Email Service]\n    end\n    \n    UI --> SPA\n    SPA --> API\n    API --> AUTH\n    API --> DB\n    API --> PAY\n    API --> EMAIL\n```\n\n# CI/CD pipeline pattern:\n```mermaid\ngraph LR\n    DEV[Development] --> BUILD[Build]\n    BUILD --> TEST[Testing]\n    TEST --> STAGE[Staging]\n    STAGE --> PROD[Production]\n    \n    PROD --> MONITOR[Monitoring]\n    MONITOR --> DEV\n```',
+          command: 'Efficient Styling with Classes',
+          description: 'Use CSS classes for efficient styling',
+          usage: 'classDef for multiple nodes',
+          example: `    classDef moduleNode fill:#f9f,stroke:#333
+    class A1,A2,A3,B1,B2,B3 moduleNode`,
         },
         {
-          command: 'Debugging and Troubleshooting',
-          description: 'Common issues and solutions',
-          usage: 'Debug diagram problems',
-          example: '# Common issues and solutions:\n\n# 1. Diagram not rendering\n# - Check syntax errors\n# - Verify mermaid.init() called\n# - Check console for errors\n\n# 2. Styling not applying\n# - Verify CSS class names\n# - Check theme initialization\n# - Use style keyword for individual nodes\n\n# 3. Large diagram performance\n# - Use subgraphs\n# - Limit node count\n# - Implement lazy loading\n\n# 4. Export issues\n# - Check browser compatibility\n# - Verify SVG generation\n# - Use proper export libraries\n\n# Debug syntax:\n```mermaid\n%% Enable debug mode\n%%{init: {\'logLevel\': 1}}%%\n\ngraph TD\n    A[Test Node]\n    B[Debug Node]\n    A --> B\n```\n\n# Validate syntax:\n# Use Mermaid Live Editor\n# Check bracket matching\n# Verify keyword spelling',
+          command: 'Lazy Loading Diagrams',
+          description: 'Implement lazy loading for performance',
+          usage: 'Intersection Observer API',
+          example: `// Lazy loading diagrams
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            renderDiagram(entry.target);
+            observer.unobserve(entry.target);
+        }
+    });
+});
+
+document.querySelectorAll(\'.mermaid\').forEach(el => {
+    observer.observe(el);
+});`,
+        },
+        {
+          command: 'System Architecture Pattern',
+          description: 'Standard system architecture template',
+          usage: 'Reusable architecture pattern',
+          example: `# System architecture pattern:
+\`\`\`mermaid
+graph TB
+    subgraph "Frontend"
+        UI[User Interface]
+        SPA[Single Page App]
+    end
+    
+    subgraph "Backend"
+        API[REST API]
+        AUTH[Authentication]
+        DB[(Database)]
+    end
+    
+    UI --> SPA
+    SPA --> API
+    API --> AUTH
+    API --> DB
+\`\`\``,
+        },
+        {
+          command: 'CI/CD Pipeline Pattern',
+          description: 'Standard CI/CD pipeline template',
+          usage: 'Reusable pipeline pattern',
+          example: `# CI/CD pipeline pattern:
+\`\`\`mermaid
+graph LR
+    DEV[Development] --> BUILD[Build]
+    BUILD --> TEST[Testing]
+    TEST --> STAGE[Staging]
+    STAGE --> PROD[Production]
+    
+    PROD --> MONITOR[Monitoring]
+    MONITOR --> DEV
+\`\`\``,
+        },
+        {
+          command: 'Debug Mode',
+          description: 'Enable debug mode for troubleshooting',
+          usage: 'logLevel configuration',
+          example: `# Debug syntax:
+\`\`\`mermaid
+%% Enable debug mode
+%%{init: {\'logLevel\': 1}}%%
+
+graph TD
+    A[Test Node]
+    B[Debug Node]
+    A --> B
+\`\`\``,
+        },
+        {
+          command: 'Common Issues Solutions',
+          description: 'Solutions to common Mermaid problems',
+          usage: 'Troubleshooting guide',
+          example: `# Common issues and solutions:
+
+# 1. Diagram not rendering
+# - Check syntax errors
+# - Verify mermaid.init() called
+# - Check console for errors
+
+# 2. Styling not applying
+# - Verify CSS class names
+# - Check theme initialization
+# - Use style keyword for individual nodes`,
         },
       ],
     },
@@ -347,22 +1275,118 @@ export const mermaidCheatsheet = {
       title: 'Modern Mermaid Features (2024+)',
       commands: [
         {
-          command: 'New Diagram Types',
-          description: 'Latest diagram types added',
-          usage: 'journey, requirement, gitgraph',
-          example: '# Journey diagram:\n```mermaid\njourney\n    title User Journey\n    section Onboarding\n      Register: 5: User\n      Login: 3: User\n      Dashboard: 4: User\n    section Daily Use\n      View Reports: 5: User\n      Export Data: 3: User\n```\n\n# Requirement diagram:\n```mermaid\nrequirementDiagram\n    requirement test_req {\n        id: 1\n        text: the test text.\n        risk: high\n        verifyMethod: test\n    }\n    \n    element test_elem {\n        type: simulation\n        docRef: test_req\n    }\n    \n    test_elem - satisfies -> test_req\n```\n\n# Git graph:\n```mermaid\ngitGraph\n    commit\n    branch develop\n    checkout develop\n    commit\n    commit\n    checkout main\n    merge develop\n    commit\n    branch feature\n    checkout feature\n    commit\n    checkout main\n    merge feature\n```',
+          command: 'Journey Diagram',
+          description: 'Create user journey diagrams',
+          usage: 'journey with sections',
+          example: `# Journey diagram:
+\`\`\`mermaid
+journey
+    title User Journey
+    section Onboarding
+      Register: 5: User
+      Login: 3: User
+      Dashboard: 4: User
+    section Daily Use
+      View Reports: 5: User
+      Export Data: 3: User
+\`\`\``,
         },
         {
-          command: 'Advanced Interactions',
-          description: 'Interactive diagram features',
-          usage: 'Click actions and handlers',
-          example: '# Click actions:\n```mermaid\ngraph TD\n    A[Click me]\n    B[Clicked!]\n    \n    A --> B\n    \n    click A "alert(\'Node A clicked!\')" "Click me"\n    click B "window.open(\'https://example.com\')" "Open Link"\n```\n\n# Callback functions:\n```javascript\nmermaid.initialize({\n    click: function(nodeId) {\n        console.log(\'Clicked:\', nodeId);\n        // Custom click handling\n    }\n});\n```',
+          command: 'Requirement Diagram',
+          description: 'Create requirement diagrams',
+          usage: 'requirementDiagram syntax',
+          example: `# Requirement diagram:
+\`\`\`mermaid
+requirementDiagram
+    requirement test_req {
+        id: 1
+        text: the test text.
+        risk: high
+        verifyMethod: test
+    }
+    
+    element test_elem {
+        type: simulation
+        docRef: test_req
+    }
+    
+    test_elem - satisfies -> test_req
+\`\`\``,
         },
         {
-          command: 'AI Integration Features',
+          command: 'Git Graph Diagram',
+          description: 'Create Git repository graphs',
+          usage: 'gitGraph syntax',
+          example: `# Git graph:
+\`\`\`mermaid
+gitGraph
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit
+    branch feature
+    checkout feature
+    commit
+    checkout main
+    merge feature
+\`\`\``,
+        },
+        {
+          command: 'Click Actions',
+          description: 'Add click actions to nodes',
+          usage: 'click nodeId "javascript" "tooltip"',
+          example: `# Click actions:
+\`\`\`mermaid
+graph TD
+    A[Click me]
+    B[Clicked!]
+    
+    A --> B
+    
+    click A "alert(\'Node A clicked!\')" "Click me"
+    click B "window.open(\'https://example.com\')" "Open Link"
+\`\`\``,
+        },
+        {
+          command: 'Click Callback Functions',
+          description: 'Define custom click handlers',
+          usage: 'mermaid.initialize with click callback',
+          example: `# Callback functions:
+\`\`\`javascript
+mermaid.initialize({
+    click: function(nodeId) {
+        console.log(\'Clicked:\', nodeId);
+        // Custom click handling
+    }
+});
+\`\`\``,
+        },
+        {
+          command: 'AI Diagram Generation',
           description: 'AI-powered diagram generation',
-          usage: 'AI-enhanced diagram creation',
-          example: '# AI diagram generation (experimental):\n# Natural language to Mermaid\n# "Show a flowchart of user registration process"\n# → Generates Mermaid code\n\n# AI assistance features:\n# - Auto-completion of diagram syntax\n# - Smart layout suggestions\n# - Automatic styling recommendations\n\n# Integration with AI tools:\n# GitHub Copilot with Mermaid\n# ChatGPT + Mermaid export\n# Custom AI diagram generators',
+          usage: 'Natural language to Mermaid',
+          example: `# AI diagram generation (experimental):
+# Natural language to Mermaid
+# "Show a flowchart of user registration process"
+# → Generates Mermaid code
+
+# AI assistance features:
+# - Auto-completion of diagram syntax
+# - Smart layout suggestions
+# - Automatic styling recommendations`,
+        },
+        {
+          command: 'GitHub Copilot Integration',
+          description: 'Use GitHub Copilot with Mermaid',
+          usage: 'AI-assisted diagram creation',
+          example: `# Integration with AI tools:
+# GitHub Copilot with Mermaid
+# ChatGPT + Mermaid export
+# Custom AI diagram generators`,
         },
       ],
     },
@@ -370,22 +1394,238 @@ export const mermaidCheatsheet = {
       title: 'Real-World Examples',
       commands: [
         {
-          command: 'Software Architecture',
-          description: 'Complete system architecture diagram',
-          usage: 'Microservices architecture',
-          example: '# Microservices architecture:\n```mermaid\ngraph TB\n    subgraph "Client Layer"\n        WEB[Web App]\n        MOBILE[Mobile App]\n    end\n    \n    subgraph "API Gateway"\n        GATEWAY[API Gateway]\n    end\n    \n    subgraph "Microservices"\n        AUTH[Auth Service]\n        USER[User Service]\n        ORDER[Order Service]\n        PAYMENT[Payment Service]\n        NOTIFICATION[Notification Service]\n    end\n    \n    subgraph "Data Layer"\n        USER_DB[(User DB)]\n        ORDER_DB[(Order DB)]\n        PAYMENT_DB[(Payment DB)]\n        CACHE[(Redis Cache)]\n    end\n    \n    subgraph "External Services"\n        EMAIL[Email Service]\n        SMS[SMS Service]\n    end\n    \n    WEB --> GATEWAY\n    MOBILE --> GATEWAY\n    \n    GATEWAY --> AUTH\n    GATEWAY --> USER\n    GATEWAY --> ORDER\n    GATEWAY --> PAYMENT\n    GATEWAY --> NOTIFICATION\n    \n    AUTH --> USER_DB\n    USER --> USER_DB\n    ORDER --> ORDER_DB\n    PAYMENT --> PAYMENT_DB\n    \n    USER --> CACHE\n    ORDER --> CACHE\n    \n    NOTIFICATION --> EMAIL\n    NOTIFICATION --> SMS\n```\n\n# Class diagram for e-commerce:\n```mermaid\nclassDiagram\n    class User {\n        +int id\n        +string name\n        +string email\n        +register()\n        +login()\n        +logout()\n    }\n    \n    class Product {\n        +int id\n        +string name\n        +decimal price\n        +getDetails()\n        +updatePrice()\n    }\n    \n    class Order {\n        +int id\n        +date orderDate\n        +decimal total\n        +addItem()\n        +removeItem()\n        +calculateTotal()\n    }\n    \n    class OrderItem {\n        +int quantity\n        +decimal unitPrice\n        +getSubtotal()\n    }\n    \n    User "1" -- "0..*" Order : places\n    Order "1" -- "1..*" OrderItem : contains\n    Product "1" -- "0..*" OrderItem : "ordered in"\n```',
+          command: 'Microservices Architecture',
+          description: 'Complete microservices system diagram',
+          usage: 'Enterprise architecture pattern',
+          example: `# Microservices architecture:
+\`\`\`mermaid
+graph TB
+    subgraph "Client Layer"
+        WEB[Web App]
+        MOBILE[Mobile App]
+    end
+    
+    subgraph "API Gateway"
+        GATEWAY[API Gateway]
+    end
+    
+    subgraph "Microservices"
+        AUTH[Auth Service]
+        USER[User Service]
+        ORDER[Order Service]
+        PAYMENT[Payment Service]
+        NOTIFICATION[Notification Service]
+    end
+    
+    subgraph "Data Layer"
+        USER_DB[(User DB)]
+        ORDER_DB[(Order DB)]
+        PAYMENT_DB[(Payment DB)]
+        CACHE[(Redis Cache)]
+    end
+    
+    WEB --> GATEWAY
+    MOBILE --> GATEWAY
+    
+    GATEWAY --> AUTH
+    GATEWAY --> USER
+    GATEWAY --> ORDER
+    GATEWAY --> PAYMENT
+    GATEWAY --> NOTIFICATION
+    
+    AUTH --> USER_DB
+    USER --> USER_DB
+    ORDER --> ORDER_DB
+    PAYMENT --> PAYMENT_DB
+    
+    USER --> CACHE
+    ORDER --> CACHE
+\`\`\``,
         },
         {
-          command: 'Business Process Flow',
-          description: 'Complete business process diagram',
-          usage: 'Order processing workflow',
-          example: '# Order processing workflow:\n```mermaid\nflowchart TD\n    START([Start]) --> CHECK{Check Inventory}\n    \n    CHECK -->|Available| RESERVE[Reserve Items]\n    CHECK -->|Out of Stock| BACKORDER[Create Backorder]\n    \n    RESERVE --> PAYMENT{Payment Valid?}\n    PAYMENT -->|Valid| PROCESS[Process Order]\n    PAYMENT -->|Invalid| FAIL[Payment Failed]\n    \n    BACKORDER --> NOTIFY[Notify Customer]\n    PROCESS --> SHIP[Ship Order]\n    NOTIFY --> WAIT[Wait for Stock]\n    \n    SHIP --> TRACK[Track Delivery]\n    WAIT --> CHECK\n    FAIL --> RETRY{Retry Payment?}\n    \n    RETRY -->|Yes| PAYMENT\n    RETRY -->|No| CANCEL[Cancel Order]\n    \n    TRACK --> COMPLETE([Order Complete])\n    CANCEL --> END([End])\n    COMPLETE --> END\n```\n\n# Project management Gantt:\n```mermaid\ngantt\n    title Website Development Project\n    dateFormat  YYYY-MM-DD\n    \n    section Planning\n    Requirements     :done, req, 2024-01-01, 5d\n    Design           :done, design, after req, 7d\n    Design Review    :milestone, m1, after design, 0d\n    \n    section Development\n    Frontend Dev     :active, fe, after design, 14d\n    Backend Dev      :be, after design, 18d\n    Database Setup   :db, after design, 5d\n    \n    section Testing\n    Unit Testing     :ut, after fe, 7d\n    Integration Test :it, after be, 5d\n    UAT              :uat, after it, 7d\n    \n    section Deployment\n    Staging Deploy   :staging, after uat, 3d\n    Production Deploy:prod, after staging, 2d\n    Launch           :milestone, m2, after prod, 0d\n```',
+          command: 'E-commerce Class Diagram',
+          description: 'Complete e-commerce class structure',
+          usage: 'Business domain modeling',
+          example: `# Class diagram for e-commerce:
+\`\`\`mermaid
+classDiagram
+    class User {
+        +int id
+        +string name
+        +string email
+        +register()
+        +login()
+        +logout()
+    }
+    
+    class Product {
+        +int id
+        +string name
+        +decimal price
+        +getDetails()
+        +updatePrice()
+    }
+    
+    class Order {
+        +int id
+        +date orderDate
+        +decimal total
+        +addItem()
+        +removeItem()
+        +calculateTotal()
+    }
+    
+    class OrderItem {
+        +int quantity
+        +decimal unitPrice
+        +getSubtotal()
+    }
+    
+    User "1" -- "0..*" Order : places
+    Order "1" -- "1..*" OrderItem : contains
+    Product "1" -- "0..*" OrderItem : "ordered in"
+\`\`\``,
         },
         {
-          command: 'Data Flow and Analysis',
-          description: 'Data analysis and flow diagrams',
-          usage: 'ETL process and data analysis',
-          example: '# ETL Data Pipeline:\n```mermaid\nflowchart LR\n    subgraph "Data Sources"\n        API1[REST API 1]\n        API2[REST API 2]\n        DB1[(Database 1)]\n        FILES[CSV Files]\n    end\n    \n    subgraph "Extraction"\n        EXTRACT[Data Extraction Service]\n    end\n    \n    subgraph "Transformation"\n        CLEAN[Data Cleaning]\n        VALIDATE[Data Validation]\n        ENRICH[Data Enrichment]\n        AGGREGATE[Aggregation]\n    end\n    \n    subgraph "Loading"\n        DATAWARE[(Data Warehouse)]\n        DATALAKE[(Data Lake)]\n    end\n    \n    subgraph "Analytics"\n        DASHBOARDS[Dashboards]\n        REPORTS[Reports]\n        ML[ML Models]\n    end\n    \n    API1 --> EXTRACT\n    API2 --> EXTRACT\n    DB1 --> EXTRACT\n    FILES --> EXTRACT\n    \n    EXTRACT --> CLEAN\n    CLEAN --> VALIDATE\n    VALIDATE --> ENRICH\n    ENRICH --> AGGREGATE\n    \n    AGGREGATE --> DATAWARE\n    AGGREGATE --> DATALAKE\n    \n    DATAWARE --> DASHBOARDS\n    DATAWARE --> REPORTS\n    DATALAKE --> ML\n```\n\n# User Analytics Funnel:\n```mermaid\npie title Website Conversion Funnel\n    "Visitors" : 10000\n    "Sign-ups" : 2500\n    "Active Users" : 1500\n    "Paying Customers" : 300\n    "Premium Users" : 75\n```\n\n# Performance Metrics Quadrant:\n```mermaid\nquadrantChart\n    title Feature Performance Analysis\n    x-axis "Low Impact" --> "High Impact"\n    y-axis "Low Effort" --> "High Effort"\n    quadrant-1 "Quick Wins"\n    quadrant-2 "Major Projects"\n    quadrant-3 "Fill-ins"\n    quadrant-4 "Thankless Tasks"\n    "Bug Fixes" : [0.2, 0.3]\n    "New Features" : [0.8, 0.7]\n    "Documentation" : [0.3, 0.2]\n    "Refactoring" : [0.6, 0.8]\n```',
+          command: 'Order Processing Workflow',
+          description: 'Complete business process flow',
+          usage: 'Business process modeling',
+          example: `# Order processing workflow:
+\`\`\`mermaid
+flowchart TD
+    START([Start]) --> CHECK{Check Inventory}
+    
+    CHECK -->|Available| RESERVE[Reserve Items]
+    CHECK -->|Out of Stock| BACKORDER[Create Backorder]
+    
+    RESERVE --> PAYMENT{Payment Valid?}
+    PAYMENT -->|Valid| PROCESS[Process Order]
+    PAYMENT -->|Invalid| FAIL[Payment Failed]
+    
+    BACKORDER --> NOTIFY[Notify Customer]
+    PROCESS --> SHIP[Ship Order]
+    NOTIFY --> WAIT[Wait for Stock]
+    
+    SHIP --> TRACK[Track Delivery]
+    WAIT --> CHECK
+    FAIL --> RETRY{Retry Payment?}
+    
+    RETRY -->|Yes| PAYMENT
+    RETRY -->|No| CANCEL[Cancel Order]
+    
+    TRACK --> COMPLETE([Order Complete])
+    CANCEL --> END([End])
+    COMPLETE --> END
+\`\`\``,
+        },
+        {
+          command: 'Website Development Gantt',
+          description: 'Complete project management timeline',
+          usage: 'Project planning and tracking',
+          example: `# Project management Gantt:
+\`\`\`mermaid
+gantt
+    title Website Development Project
+    dateFormat  YYYY-MM-DD
+    
+    section Planning
+    Requirements     :done, req, 2024-01-01, 5d
+    Design           :done, design, after req, 7d
+    Design Review    :milestone, m1, after design, 0d
+    
+    section Development
+    Frontend Dev     :active, fe, after design, 14d
+    Backend Dev      :be, after design, 18d
+    Database Setup   :db, after design, 5d
+    
+    section Testing
+    Unit Testing     :ut, after fe, 7d
+    Integration Test :it, after be, 5d
+    UAT              :uat, after it, 7d
+    
+    section Deployment
+    Staging Deploy   :staging, after uat, 3d
+    Production Deploy:prod, after staging, 2d
+    Launch           :milestone, m2, after prod, 0d
+\`\`\``,
+        },
+        {
+          command: 'ETL Data Pipeline',
+          description: 'Complete data processing flow',
+          usage: 'Data engineering architecture',
+          example: `# ETL Data Pipeline:
+\`\`\`mermaid
+flowchart LR
+    subgraph "Data Sources"
+        API1[REST API 1]
+        API2[REST API 2]
+        DB1[(Database 1)]
+        FILES[CSV Files]
+    end
+    
+    subgraph "Extraction"
+        EXTRACT[Data Extraction Service]
+    end
+    
+    subgraph "Transformation"
+        CLEAN[Data Cleaning]
+        VALIDATE[Data Validation]
+        ENRICH[Data Enrichment]
+        AGGREGATE[Aggregation]
+    end
+    
+    subgraph "Loading"
+        DATAWARE[(Data Warehouse)]
+        DATALAKE[(Data Lake)]
+    end
+    
+    API1 --> EXTRACT
+    API2 --> EXTRACT
+    DB1 --> EXTRACT
+    FILES --> EXTRACT
+    
+    EXTRACT --> CLEAN
+    CLEAN --> VALIDATE
+    VALIDATE --> ENRICH
+    ENRICH --> AGGREGATE
+    
+    AGGREGATE --> DATAWARE
+    AGGREGATE --> DATALAKE
+\`\`\``,
+        },
+        {
+          command: 'Website Conversion Funnel',
+          description: 'Marketing analytics pie chart',
+          usage: 'Conversion tracking visualization',
+          example: `# User Analytics Funnel:
+\`\`\`mermaid
+pie title Website Conversion Funnel
+    "Visitors" : 10000
+    "Sign-ups" : 2500
+    "Active Users" : 1500
+    "Paying Customers" : 300
+    "Premium Users" : 75
+\`\`\``,
+        },
+        {
+          command: 'Feature Performance Quadrant',
+          description: 'Feature analysis quadrant chart',
+          usage: 'Product prioritization matrix',
+          example: `# Performance Metrics Quadrant:
+\`\`\`mermaid
+quadrantChart
+    title Feature Performance Analysis
+    x-axis "Low Impact" --> "High Impact"
+    y-axis "Low Effort" --> "High Effort"
+    quadrant-1 "Quick Wins"
+    quadrant-2 "Major Projects"
+    quadrant-3 "Fill-ins"
+    quadrant-4 "Thankless Tasks"
+    "Bug Fixes" : [0.2, 0.3]
+    "New Features" : [0.8, 0.7]
+    "Documentation" : [0.3, 0.2]
+    "Refactoring" : [0.6, 0.8]
+\`\`\``,
         },
       ],
     },

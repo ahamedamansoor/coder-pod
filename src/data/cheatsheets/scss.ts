@@ -91,25 +91,33 @@ sass --watch scss:css
 - SCSS IntelliSense`
         },
         {
-          command: 'Basic SCSS Syntax',
-          description: 'Understanding SCSS syntax differences from CSS',
-          usage: 'SCSS is CSS-compatible with additional features',
+          command: 'CSS in SCSS',
+          description: 'Regular CSS works perfectly in SCSS',
+          usage: 'SCSS is CSS-compatible',
           example: `/* Regular CSS works perfectly in SCSS */
 .container {
   display: flex;
   margin: 20px;
-}
-
-/* SCSS adds variables */
+}`
+        },
+        {
+          command: 'SCSS Variables',
+          description: 'Using variables in SCSS',
+          usage: 'Declare variables with $ prefix',
+          example: `/* SCSS adds variables */
 ${'$'}primary-color: #3498db;
 ${'$'}font-size: 16px;
 
 .button {
   background-color: ${'$'}primary-color;
   font-size: ${'$'}font-size;
-}
-
-/* Nesting (SCSS feature) */
+}`
+        },
+        {
+          command: 'SCSS Nesting',
+          description: 'Nesting selectors in SCSS',
+          usage: 'Nest selectors to follow HTML structure',
+          example: `/* Nesting (SCSS feature) */
 .nav {
   background: #333;
   
@@ -129,9 +137,13 @@ ${'$'}font-size: 16px;
       }
     }
   }
-}
-
-/* Compiled CSS output */
+}`
+        },
+        {
+          command: 'Compiled CSS Output',
+          description: 'How SCSS compiles to CSS',
+          usage: 'SCSS compilation result',
+          example: `/* Compiled CSS output */
 .nav { background: #333; }
 .nav ul { list-style: none; }
 .nav ul li { display: inline-block; }
@@ -193,9 +205,13 @@ ${'$'}secondary-color: #2ecc71;
 ${'$'}font-family: 'Helvetica', sans-serif;
 ${'$'}base-font-size: 16px;
 ${'$'}border-radius: 4px;
-${'$'}spacing-unit: 8px;
-
-/* Using variables */
+${'$'}spacing-unit: 8px;`
+        },
+        {
+          command: 'Using Variables',
+          description: 'Applying variables in CSS properties',
+          usage: 'Use variables in CSS property values',
+          example: `/* Using variables */
 .header {
   background-color: ${'$'}primary-color;
   font-family: ${'$'}font-family;
@@ -206,9 +222,13 @@ ${'$'}spacing-unit: 8px;
   background-color: ${'$'}secondary-color;
   border-radius: ${'$'}border-radius;
   font-size: ${'$'}base-font-size;
-}
-
-/* Variable scope */
+}`
+        },
+        {
+          command: 'Variable Scope',
+          description: 'Understanding variable scope in SCSS',
+          usage: 'Local vs global variable scope',
+          example: `/* Variable scope */
 ${'$'}global-color: blue;
 
 .container {
@@ -223,56 +243,80 @@ ${'$'}global-color: blue;
 // .other { color: ${'$'}local-color; } // Error: ${'$'}local-color not in scope`
         },
         {
-          command: 'Variable Types',
-          description: 'Different types of variables in SCSS',
-          usage: 'Variables can hold various data types',
+          command: 'String Variables',
+          description: 'String variables in SCSS',
+          usage: 'Store text values',
           example: `/* String variables */
 ${'$'}font-path: '/fonts/';
 ${'$'}image-url: 'https://example.com/images/';
 ${'$'}font-name: 'Open Sans';
 
-/* Number variables */
+@font-face {
+  font-family: ${'$'}font-name;
+  src: url('#{${'$'}font-path}#{${'$'}font-name}.woff2') format('woff2');
+}`
+        },
+        {
+          command: 'Number Variables',
+          description: 'Number variables in SCSS',
+          usage: 'Store numeric values',
+          example: `/* Number variables */
 ${'$'}base-size: 16;
 ${'$'}scale: 1.5;
 ${'$'}opacity: 0.8;
 
-/* Color variables */
+.responsive {
+  font-size: round(${'$'}base-size * ${'$'}scale);
+  opacity: ${'$'}opacity;
+}`
+        },
+        {
+          command: 'Color Variables',
+          description: 'Color variables in SCSS',
+          usage: 'Store color values',
+          example: `/* Color variables */
 ${'$'}white: #ffffff;
 ${'$'}black: #000000;
 ${'$'}primary: #3498db;
 ${'$'}secondary: #2ecc71;
 
-/* Boolean variables */
+.header {
+  background: ${'$'}primary;
+  color: ${'$'}white;
+}`
+        },
+        {
+          command: 'Boolean Variables',
+          description: 'Boolean variables in SCSS',
+          usage: 'Store true/false values',
+          example: `/* Boolean variables */
 ${'$'}enable-shadows: true;
 ${'$'}use-flexbox: false;
 
-/* List variables */
-${'$'}font-sizes: 12px, 14px, 16px, 18px, 24px;
-${'$'}breakpoints: (small: 576px, medium: 768px, large: 992px);
-${'$'}colors: (primary: #3498db, secondary: #2ecc71, success: #27ae60);
-
-/* Map variables */
-${'$'}grid-columns: 12;
-${'$'}container-max-widths: (sm: 540px, md: 720px, lg: 960px, xl: 1140px);
-
-/* Using different variable types */
-@font-face {
-  font-family: ${'$'}font-name;
-  src: url('#{${'$'}font-path}#{${'$'}font-name}.woff2') format('woff2');
-}
-
-.hero {
-  font-size: nth(${'$'}font-sizes, 4); // 18px
-  background: map-get(${'$'}colors, primary);
+.component {
   @if ${'$'}enable-shadows {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 }`
         },
         {
-          command: 'Variable Interpolation',
-          description: 'Using variables in selectors and property names',
-          usage: 'Use #{} to interpolate variables in strings',
+          command: 'List Variables',
+          description: 'List and map variables in SCSS',
+          usage: 'Store collections of values',
+          example: `/* List variables */
+${'$'}font-sizes: 12px, 14px, 16px, 18px, 24px;
+${'$'}breakpoints: (small: 576px, medium: 768px, large: 992px);
+${'$'}colors: (primary: #3498db, secondary: #2ecc71, success: #27ae60);
+
+.hero {
+  font-size: nth(${'$'}font-sizes, 4); // 18px
+  background: map-get(${'$'}colors, primary);
+}`
+        },
+        {
+          command: 'Selector Interpolation',
+          description: 'Using variables in selectors',
+          usage: 'Interpolate variables in class names',
           example: `/* Variable interpolation in selectors */
 ${'$'}prefix: 'user-';
 ${'$'}element: 'card';
@@ -283,9 +327,13 @@ ${'$'}element: 'card';
 }
 
 /* Compiled CSS: */
-/* .user-card { padding: 20px; border: 1px solid #ddd; } */
-
-/* Interpolation in properties */
+/* .user-card { padding: 20px; border: 1px solid #ddd; } */`
+        },
+        {
+          command: 'Property Interpolation',
+          description: 'Using variables in property names',
+          usage: 'Interpolate variables in CSS properties',
+          example: `/* Interpolation in properties */
 ${'$'}property: 'margin';
 ${'$'}side: 'top';
 
@@ -294,17 +342,25 @@ ${'$'}side: 'top';
 }
 
 /* Compiled CSS: */
-/* .box { margin-top: 10px; } */
-
-/* Interpolation in URLs */
+/* .box { margin-top: 10px; } */`
+        },
+        {
+          command: 'URL Interpolation',
+          description: 'Using variables in URLs',
+          usage: 'Interpolate variables in url() functions',
+          example: `/* Interpolation in URLs */
 ${'$'}image-path: '/assets/images/';
 ${'$'}filename: 'hero';
 
 .hero {
   background-image: url('#{${'$'}image-path}#{${'$'}filename}.jpg');
-}
-
-/* Interpolation with functions */
+}`
+        },
+        {
+          command: 'Loop Interpolation',
+          description: 'Using variables with loops',
+          usage: 'Interpolate variables in @each loops',
+          example: `/* Interpolation with functions */
 ${'$'}breakpoints: (sm: 576px, md: 768px, lg: 992px);
 
 @each ${'$'}name, ${'$'}size in ${'$'}breakpoints {
@@ -316,26 +372,34 @@ ${'$'}breakpoints: (sm: 576px, md: 768px, lg: 992px);
 }`
         },
         {
-          command: 'Variable Flags',
-          description: 'Using !default, !global, and !important flags',
-          usage: 'Control variable behavior with special flags',
+          command: '!default Flag',
+          description: 'Set default values for variables',
+          usage: 'Use !default to set values only if not already defined',
           example: `/* !default flag - set default value if not already set */
 ${'$'}primary-color: #3498db !default;
 ${'$'}secondary-color: #2ecc71 !default;
 
 // If ${'$'}primary-color is already defined, this won't override it
-${'$'}primary-color: #e74c3c !default; // Won't change if already set
-
-/* !global flag - create global variable from within scope */
+${'$'}primary-color: #e74c3c !default; // Won't change if already set`
+        },
+        {
+          command: '!global Flag',
+          description: 'Create global variables from within scope',
+          usage: 'Use !global to make variables accessible outside scope',
+          example: `/* !global flag - create global variable from within scope */
 .container {
   ${'$'}global-var: #333 !global;
   ${'$'}local-var: #666;
 }
 
 // ${'$'}global-var is now available globally
-// ${'$'}local-var is only available inside .container
-
-/* !important flag - add !important to CSS declaration */
+// ${'$'}local-var is only available inside .container`
+        },
+        {
+          command: '!important Flag',
+          description: 'Add !important to CSS declarations',
+          usage: 'Use !important flag in variable declarations',
+          example: `/* !important flag - add !important to CSS declaration */
 ${'$'}important-color: red !important;
 
 .error {
@@ -343,12 +407,20 @@ ${'$'}important-color: red !important;
 }
 
 /* Compiled CSS: */
-/* .error { color: red !important; } */
-
-/* Combining flags */
-${'$'}theme-color: blue !default !global;
-
-/* Practical example - configurable defaults */
+/* .error { color: red !important; } */`
+        },
+        {
+          command: 'Combining Variable Flags',
+          description: 'Use multiple flags together',
+          usage: 'Combine !default and !global flags',
+          example: `/* Combining flags */
+${'$'}theme-color: blue !default !global;`
+        },
+        {
+          command: 'Configurable Defaults',
+          description: 'Practical example of configurable defaults',
+          usage: 'Create themeable SCSS with default values',
+          example: `/* Practical example - configurable defaults */
 // _config.scss
 ${'$'}font-size-base: 16px !default;
 ${'$'}line-height-base: 1.5 !default;
@@ -398,9 +470,13 @@ ${'$'}font-size-base: 18px;
       }
     }
   }
-}
-
-/* Compiled CSS */
+}`
+        },
+        {
+          command: 'Compiled Nesting Output',
+          description: 'How nested SCSS compiles to CSS',
+          usage: 'See the CSS output of nested selectors',
+          example: `/* Compiled CSS */
 .nav { background: #333; padding: 1rem; }
 .nav ul { list-style: none; margin: 0; padding: 0; }
 .nav ul li { display: inline-block; margin-right: 1rem; }
@@ -408,9 +484,9 @@ ${'$'}font-size-base: 18px;
 .nav ul li a:hover { background: #555; border-radius: 4px; }`
         },
         {
-          command: 'Parent Selector (&)',
-          description: 'Using the parent selector for pseudo-classes and combinators',
-          usage: 'Use & to reference the parent selector',
+          command: 'Parent Selector with Pseudo-classes',
+          description: 'Using & with hover, active, focus states',
+          usage: 'Reference parent selector for interactive states',
           example: `/* Parent selector with pseudo-classes */
 .button {
   background: #3498db;
@@ -434,9 +510,13 @@ ${'$'}font-size-base: 18px;
     opacity: 0.6;
     cursor: not-allowed;
   }
-}
-
-/* Parent selector with pseudo-elements */
+}`
+        },
+        {
+          command: 'Parent Selector with Pseudo-elements',
+          description: 'Using & with ::before and ::after',
+          usage: 'Create pseudo-elements with parent selector',
+          example: `/* Parent selector with pseudo-elements */
 .card {
   position: relative;
   
@@ -453,9 +533,13 @@ ${'$'}font-size-base: 18px;
     bottom: 0;
     right: 0;
   }
-}
-
-/* Parent selector for compound selectors */
+}`
+        },
+        {
+          command: 'Parent Selector for Compound Selectors',
+          description: 'Using & for modifier classes',
+          usage: 'Create BEM-style modifiers',
+          example: `/* Parent selector for compound selectors */
 .sidebar {
   width: 250px;
   
@@ -470,35 +554,75 @@ ${'$'}font-size-base: 18px;
 }`
         },
         {
-          command: 'Nested Properties',
-          description: 'Nesting CSS properties with namespaces',
-          usage: 'Group related properties together',
-          example: `/* Nested properties for namespaces */
+          command: 'Font Property Nesting',
+          description: 'Nesting font properties',
+          usage: 'Group font-related properties together',
+          example: `/* Font properties */
 .button {
-  // Font properties
   font: {
     family: 'Helvetica', sans-serif;
     size: 16px;
     weight: bold;
   }
-  
-  // Margin properties
+}
+
+/* Compiled CSS */
+.button {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}`
+        },
+        {
+          command: 'Margin Property Nesting',
+          description: 'Nesting margin properties',
+          usage: 'Group margin properties together',
+          example: `/* Margin properties */
+.box {
   margin: {
     top: 10px;
     right: 20px;
     bottom: 10px;
     left: 20px;
   }
-  
-  // Border properties
+}
+
+/* Compiled CSS */
+.box {
+  margin-top: 10px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}`
+        },
+        {
+          command: 'Border Property Nesting',
+          description: 'Nesting border properties',
+          usage: 'Group border properties together',
+          example: `/* Border properties */
+.card {
   border: {
     width: 2px;
     style: solid;
     color: #3498db;
     radius: 4px;
   }
-  
-  // Background properties
+}
+
+/* Compiled CSS */
+.card {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #3498db;
+  border-radius: 4px;
+}`
+        },
+        {
+          command: 'Background Property Nesting',
+          description: 'Nesting background properties',
+          usage: 'Group background properties together',
+          example: `/* Background properties */
+.hero {
   background: {
     color: #3498db;
     image: url('bg.jpg');
@@ -506,8 +630,23 @@ ${'$'}font-size-base: 18px;
     position: center;
     size: cover;
   }
-  
-  // Animation properties
+}
+
+/* Compiled CSS */
+.hero {
+  background-color: #3498db;
+  background-image: url('bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}`
+        },
+        {
+          command: 'Animation Property Nesting',
+          description: 'Nesting animation properties',
+          usage: 'Group animation properties together',
+          example: `/* Animation properties */
+.fade-in {
   animation: {
     name: fadeIn;
     duration: 0.3s;
@@ -520,23 +659,7 @@ ${'$'}font-size-base: 18px;
 }
 
 /* Compiled CSS */
-.button {
-  font-family: 'Helvetica', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-right: 20px;
-  margin-bottom: 10px;
-  margin-left: 20px;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #3498db;
-  border-radius: 4px;
-  background-color: #3498db;
-  background-image: url('bg.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+.fade-in {
   animation-name: fadeIn;
   animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
@@ -547,9 +670,9 @@ ${'$'}font-size-base: 18px;
 }`
         },
         {
-          command: 'Advanced Nesting',
-          description: 'Complex nesting patterns and best practices',
-          usage: 'Advanced nesting techniques for maintainable code',
+          command: 'Avoid Over-Nesting',
+          description: 'Best practices for nesting depth',
+          usage: 'Limit nesting to 3 levels maximum',
           example: `/* Avoid over-nesting - limit to 3 levels max */
 // BAD - Too deeply nested
 .nav {
@@ -573,9 +696,13 @@ ${'$'}font-size-base: 18px;
   a { 
     span { }
   }
-}
-
-/* Nesting with BEM methodology */
+}`
+        },
+        {
+          command: 'BEM Nesting',
+          description: 'Nesting with BEM methodology',
+          usage: 'Use parent selector for BEM classes',
+          example: `/* Nesting with BEM methodology */
 .card {
   padding: 20px;
   border: 1px solid #ddd;
@@ -603,9 +730,13 @@ ${'$'}font-size-base: 18px;
     border-color: #3498db;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
-}
-
-/* Nesting with media queries */
+}`
+        },
+        {
+          command: 'Media Query Nesting',
+          description: 'Nesting media queries within selectors',
+          usage: 'Place responsive styles within components',
+          example: `/* Nesting with media queries */
 .container {
   width: 100%;
   padding: 20px;
@@ -632,9 +763,9 @@ ${'$'}font-size-base: 18px;
       title: 'SCSS Mixins',
       commands: [
         {
-          command: 'Basic Mixins',
-          description: 'Creating reusable code blocks with mixins',
-          usage: 'Use @mixin to define reusable styles and @include to use them',
+          command: 'Basic Mixin Definition',
+          description: 'Creating simple mixins',
+          usage: 'Use @mixin to define reusable styles',
           example: `/* Basic mixin definition */
 @mixin button-style {
   display: inline-block;
@@ -644,9 +775,13 @@ ${'$'}font-size-base: 18px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-}
-
-/* Using the mixin */
+}`
+        },
+        {
+          command: 'Using Mixins',
+          description: 'Applying mixins with @include',
+          usage: 'Use @include to apply mixin styles',
+          example: `/* Using the mixin */
 .btn-primary {
   @include button-style;
   background: #3498db;
@@ -657,9 +792,13 @@ ${'$'}font-size-base: 18px;
   @include button-style;
   background: #95a5a6;
   color: white;
-}
-
-/* Mixin with parameters */
+}`
+        },
+        {
+          command: 'Mixin with Parameters',
+          description: 'Creating mixins with parameters',
+          usage: 'Pass parameters to mixins for flexibility',
+          example: `/* Mixin with parameters */
 @mixin border-radius(${'$'}radius: 4px) {
   border-radius: ${'$'}radius;
   -webkit-border-radius: ${'$'}radius;
@@ -672,9 +811,13 @@ ${'$'}font-size-base: 18px;
 
 .rounded {
   @include border-radius(50%);
-}
-
-/* Mixin with multiple parameters */
+}`
+        },
+        {
+          command: 'Mixin with Multiple Parameters',
+          description: 'Creating mixins with multiple parameters',
+          usage: 'Pass multiple parameters for complex styling',
+          example: `/* Mixin with multiple parameters */
 @mixin gradient(${'$'}start-color, ${'$'}end-color, ${'$'}direction: to right) {
   background: ${'$'}start-color;
   background: linear-gradient(${'$'}direction, ${'$'}start-color, ${'$'}end-color);
@@ -685,9 +828,9 @@ ${'$'}font-size-base: 18px;
 }`
         },
         {
-          command: 'Advanced Mixins',
-          description: 'Complex mixins with conditional logic and multiple parameters',
-          usage: 'Create powerful mixins with @if, @each, and other control directives',
+          command: 'Mixin with Conditional Logic',
+          description: 'Mixins with @if statements',
+          usage: 'Create dynamic mixins with conditions',
           example: `/* Mixin with conditional logic */
 @mixin button-size(${'$'}size) {
   @if ${'$'}size == small {
@@ -707,9 +850,13 @@ ${'$'}font-size-base: 18px;
 
 .btn {
   @include button-size(small);
-}
-
-/* Mixin with variable arguments */
+}`
+        },
+        {
+          command: 'Mixin with Variable Arguments',
+          description: 'Mixins that accept unlimited arguments',
+          usage: 'Use ... for variable arguments',
+          example: `/* Mixin with variable arguments */
 @mixin box-shadow(${'$'}shadows...) {
   box-shadow: ${'$'}shadows;
   -webkit-box-shadow: ${'$'}shadows;
@@ -718,9 +865,13 @@ ${'$'}font-size-base: 18px;
 
 .card {
   @include box-shadow(0 2px 4px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05));
-}
-
-/* Mixin with content blocks */
+}`
+        },
+        {
+          command: 'Mixin with Content Blocks',
+          description: 'Mixins that accept content blocks',
+          usage: 'Use @content to pass styles into mixins',
+          example: `/* Mixin with content blocks */
 @mixin respond-to(${'$'}breakpoint) {
   @if ${'$'}breakpoint == small {
     @media (max-width: 576px) { @content; }
@@ -741,9 +892,9 @@ ${'$'}font-size-base: 18px;
 }`
         },
         {
-          command: 'Practical Mixins',
-          description: 'Commonly used mixins for everyday development',
-          usage: 'Essential mixins for buttons, forms, layout, and utilities',
+          command: 'Button Mixin',
+          description: 'Complete button styling mixin',
+          usage: 'Create reusable button styles',
           example: `/* Button mixin */
 @mixin button(${'$'}bg-color, ${'$'}text-color: white) {
   display: inline-block;
@@ -775,7 +926,15 @@ ${'$'}font-size-base: 18px;
   }
 }
 
-/* Flexbox centering mixin */
+.btn-primary {
+  @include button(#3498db);
+}`
+        },
+        {
+          command: 'Flexbox Mixins',
+          description: 'Flexbox layout mixins',
+          usage: 'Common flexbox patterns',
+          example: `/* Flexbox centering mixin */
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -787,7 +946,16 @@ ${'$'}font-size-base: 18px;
   flex-direction: column;
 }
 
-/* Position mixin */
+.hero {
+  @include flex-center-column;
+  min-height: 100vh;
+}`
+        },
+        {
+          command: 'Position Mixin',
+          description: 'Position utility mixin',
+          usage: 'Set positioning with optional offsets',
+          example: `/* Position mixin */
 @mixin position(${'$'}position, ${'$'}top: null, ${'$'}right: null, ${'$'}bottom: null, ${'$'}left: null) {
   position: ${'$'}position;
   top: ${'$'}top;
@@ -796,7 +964,16 @@ ${'$'}font-size-base: 18px;
   left: ${'$'}left;
 }
 
-/* Truncate text mixin */
+.modal {
+  @include position(absolute, 50%, null, null, 50%);
+  transform: translate(-50%, -50%);
+}`
+        },
+        {
+          command: 'Text Utility Mixins',
+          description: 'Text manipulation mixins',
+          usage: 'Common text utilities',
+          example: `/* Truncate text mixin */
 @mixin text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -812,28 +989,15 @@ ${'$'}font-size-base: 18px;
   }
 }
 
-/* Usage examples */
-.btn-primary {
-  @include button(#3498db);
-}
-
-.hero {
-  @include flex-center-column;
-  min-height: 100vh;
-}
-
-.modal {
-  @include position(absolute, 50%, null, null, 50%);
-  transform: translate(-50%, -50%);
+.card-title {
+  @include text-truncate;
 }`
         },
         {
-          command: 'Mixin Libraries',
-          description: 'Building and organizing mixin libraries',
-          usage: 'Create organized mixin collections for different purposes',
-          example: `/* _mixins.scss - Organized mixin library */
-
-// Animation mixins
+          command: 'Animation Mixins',
+          description: 'Reusable animation mixins',
+          usage: 'Common animation patterns',
+          example: `// Animation mixins
 @mixin fadeIn(${'$'}duration: 0.3s) {
   opacity: 0;
   animation: fadeIn ${'$'}duration ease-in-out forwards;
@@ -854,9 +1018,13 @@ ${'$'}font-size-base: 18px;
       transform: translateY(0);
     }
   }
-}
-
-// Responsive design mixins
+}`
+        },
+        {
+          command: 'Responsive Design Mixins',
+          description: 'Media query mixins',
+          usage: 'Reusable responsive breakpoints',
+          example: `// Responsive design mixins
 @mixin mobile-only {
   @media (max-width: 767px) { @content; }
 }
@@ -867,9 +1035,13 @@ ${'$'}font-size-base: 18px;
 
 @mixin desktop-up {
   @media (min-width: 1024px) { @content; }
-}
-
-// Typography mixins
+}`
+        },
+        {
+          command: 'Typography Mixins',
+          description: 'Typography utility mixins',
+          usage: 'Reusable heading styles',
+          example: `// Typography mixins
 @mixin heading(${'$'}size) {
   font-weight: 600;
   line-height: 1.2;
@@ -888,28 +1060,28 @@ ${'$'}font-size-base: 18px;
   } @else if ${'$'}size == h6 {
     font-size: 1rem;
   }
-}
+}`
+        },
+        {
+          command: 'Spacing Mixins',
+          description: 'Spacing utility mixins',
+          usage: 'Consistent spacing system',
+          example: `// Spacing mixins
+${'$'}spacing-map: (
+  xs: 0.25rem,
+  sm: 0.5rem,
+  md: 1rem,
+  lg: 1.5rem,
+  xl: 2rem,
+  xxl: 3rem
+);
 
-// Spacing mixins
 @mixin spacing(${'$'}property, ${'$'}size) {
-  ${'$'}spacing-map: (
-    xs: 0.25rem,
-    sm: 0.5rem,
-    md: 1rem,
-    lg: 1.5rem,
-    xl: 2rem,
-    xxl: 3rem
-  );
-  
   #{${'$'}property}: map-get(${'$'}spacing-map, ${'$'}size);
 }
 
 @mixin margin(${'$'}size) { @include spacing(margin, ${'$'}size); }
-@mixin padding(${'$'}size) { @include spacing(padding, ${'$'}size); }
-@mixin margin-y(${'$'}size) { 
-  @include spacing(margin-top, ${'$'}size);
-  @include spacing(margin-bottom, ${'$'}size);
-}`
+@mixin padding(${'$'}size) { @include spacing(padding, ${'$'}size); }`
         },
       ],
     },
@@ -917,9 +1089,9 @@ ${'$'}font-size-base: 18px;
       title: 'SCSS Functions',
       commands: [
         {
-          command: 'Built-in Functions',
-          description: 'Using SCSS built-in functions for colors, strings, and numbers',
-          usage: 'Leverage powerful built-in functions for dynamic styling',
+          command: 'Color Functions',
+          description: 'Built-in color manipulation functions',
+          usage: 'Lighten, darken, saturate, desaturate colors',
           example: `/* Color functions */
 ${'$'}primary-color: #3498db;
 ${'$'}secondary-color: #2ecc71;
@@ -948,9 +1120,13 @@ ${'$'}secondary-color: #2ecc71;
 // Mix colors
 .mixed {
   background: mix(${'$'}primary-color, ${'$'}secondary-color, 50%);
-}
-
-// Get color components
+}`
+        },
+        {
+          command: 'Color Component Functions',
+          description: 'Extract color components',
+          usage: 'Get red, green, blue values from colors',
+          example: `// Get color components
 .red-component {
   color: red(${'$'}primary-color); // Returns 52
 }
@@ -959,9 +1135,13 @@ ${'$'}secondary-color: #2ecc71;
 }
 .blue-component {
   color: blue(${'$'}primary-color); // Returns 219
-}
-
-/* String functions */
+}`
+        },
+        {
+          command: 'String Functions',
+          description: 'Built-in string manipulation functions',
+          usage: 'Manipulate and analyze strings',
+          example: `/* String functions */
 ${'$'}font-family: 'Helvetica Neue';
 ${'$'}class-prefix: 'btn-';
 
@@ -986,9 +1166,13 @@ ${'$'}class-prefix: 'btn-';
 // String index
 .index-position {
   content: str-index(${'$'}font-family, 'Neue');
-}
-
-/* Number functions */
+}`
+        },
+        {
+          command: 'Number Functions',
+          description: 'Built-in mathematical functions',
+          usage: 'Perform mathematical operations',
+          example: `/* Number functions */
 ${'$'}base-size: 16;
 ${'$'}scale: 1.5;
 
@@ -1020,9 +1204,9 @@ ${'$'}scale: 1.5;
 }`
         },
         {
-          command: 'Custom Functions',
-          description: 'Creating your own SCSS functions with @function',
-          usage: 'Define reusable functions for calculations and logic',
+          command: 'Unit Conversion Functions',
+          description: 'Functions for converting units',
+          usage: 'Convert between px, rem, em units',
           example: `/* Simple custom functions */
 @function strip-unit(${'$'}number) {
   @if type-of(${'$'}number) == 'number' and not unitless(${'$'}number) {
@@ -1039,7 +1223,15 @@ ${'$'}scale: 1.5;
   @return #{strip-unit(${'$'}pixels) / strip-unit(${'$'}context)}em;
 }
 
-/* Color manipulation functions */
+.header {
+  font-size: rem(24px);
+}`
+        },
+        {
+          command: 'Color Manipulation Functions',
+          description: 'Custom color utility functions',
+          usage: 'Create color utilities and contrast functions',
+          example: `/* Color manipulation functions */
 @function get-contrast(${'$'}color) {
   @if (lightness(${'$'}color) > 60) {
     @return #000;
@@ -1060,7 +1252,16 @@ ${'$'}scale: 1.5;
   }
 }
 
-/* Spacing functions */
+.button {
+  background: palette(#3498db, 'primary');
+  color: get-contrast(palette(#3498db, 'primary'));
+}`
+        },
+        {
+          command: 'Layout Functions',
+          description: 'Functions for layout calculations',
+          usage: 'Spacing, grid, and typography calculations',
+          example: `/* Spacing functions */
 @function spacing(${'$'}multiplier: 1) {
   @return ${'$'}multiplier * 8px;
 }
@@ -1078,23 +1279,17 @@ ${'$'}scale: 1.5;
   @return (${'$'}target / ${'$'}context) * 1rem;
 }
 
-/* Using custom functions */
 .header {
   font-size: rem(24px);
   line-height: line-height(rem(24px), 1.4);
   padding: spacing(2);
-}
-
-.button {
-  background: palette(#3498db, 'primary');
-  color: get-contrast(palette(#3498db, 'primary'));
   width: grid-width(6);
 }`
         },
         {
-          command: 'Advanced Functions',
-          description: 'Complex functions with loops and conditional logic',
-          usage: 'Create sophisticated functions for dynamic styling',
+          command: 'Breakpoint Functions',
+          description: 'Functions for responsive breakpoints',
+          usage: 'Dynamic breakpoint calculations',
           example: `/* Function with loops and maps */
 ${'$'}breakpoints: (
   xs: 0,
@@ -1118,9 +1313,13 @@ ${'$'}breakpoints: (
 @function breakpoint-max(${'$'}name, ${'$'}breakpoints: ${'$'}breakpoints) {
   ${'$'}next: breakpoint-next(${'$'}name, ${'$'}breakpoints);
   @return if(${'$'}next, breakpoint-min(${'$'}next, ${'$'}breakpoints) - 0.02px, null);
-}
-
-/* Color system functions */
+}`
+        },
+        {
+          command: 'Color System Functions',
+          description: 'Advanced color system functions',
+          usage: 'Comprehensive color palette system',
+          example: `/* Color system functions */
 ${'$'}color-palette: (
   primary: #3498db,
   secondary: #2ecc71,
@@ -1152,9 +1351,13 @@ ${'$'}color-palette: (
   } @else {
     @return ${'$'}base-color;
   }
-}
-
-/* Mathematical functions */
+}`
+        },
+        {
+          command: 'Mathematical Functions',
+          description: 'Advanced mathematical functions',
+          usage: 'Golden ratio and modular scale',
+          example: `/* Mathematical functions */
 @function golden-ratio(${'$'}value) {
   @return ${'$'}value * 1.618;
 }
@@ -1167,9 +1370,13 @@ ${'$'}color-palette: (
   } @else {
     @return ${'$'}base / pow(${'$'}ratio, abs(${'$'}value));
   }
-}
-
-/* Grid system functions */
+}`
+        },
+        {
+          command: 'Grid System Functions',
+          description: 'Functions for grid calculations',
+          usage: 'Container and gutter calculations',
+          example: `/* Grid system functions */
 @function container-width(${'$'}breakpoint) {
   ${'$'}container-max-widths: (
     sm: 540px,
@@ -1187,9 +1394,9 @@ ${'$'}color-palette: (
 }`
         },
         {
-          command: 'Function Libraries',
-          description: 'Organizing and maintaining function libraries',
-          usage: 'Create comprehensive function collections for different purposes',
+          command: 'Function Library',
+          description: 'Complete function library',
+          usage: 'Comprehensive function collections',
           example: `/* _functions.scss - Complete function library */
 
 // Unit conversion functions
@@ -1246,1005 +1453,525 @@ ${'$'}spacing-base: 8px;
 }
 
 @function modular-scale(${'$'}step, ${'$'}ratio: 1.25, ${'$'}base: 16px) {
-  @return ${'$'}base * pow(${'$'}ratio, ${'$'}step);
-}
-
-// Layout functions
-@function grid-columns(${'$'}columns: 12, ${'$'}gutter: 30px) {
-  ${'$'}column-width: calc((100% - #{(${'$'}columns - 1) * ${'$'}gutter}) / #{${'$'}columns});
-  @return ${'$'}column-width;
-}
-
-@function container-max-width(${'$'}breakpoint) {
-  ${'$'}containers: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1320px
-  );
-  
-  @return map-get(${'$'}containers, ${'$'}breakpoint);
-}
-
-// Animation functions
-@function ease(${'$'}type: 'in-out') {
-  ${'$'}easing-functions: (
-    in: cubic-bezier(0.4, 0, 1, 1),
-    out: cubic-bezier(0, 0, 0.2, 1),
-    in-out: cubic-bezier(0.4, 0, 0.2, 1),
-    bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55)
-  );
-  
-  @return map-get(${'$'}easing-functions, ${'$'}type);
-}
-
-@function duration(${'$'}multiplier: 1) {
-  ${'$'}base-duration: 0.3s;
-  @return ${'$'}base-duration * ${'$'}multiplier;
+  @if ${'$'}step == 0 {
+    @return ${'$'}base;
+  } @else if ${'$'}step > 0 {
+    @return ${'$'}base * pow(${'$'}ratio, ${'$'}step);
+  } @else {
+    @return ${'$'}base / pow(${'$'}ratio, abs(${'$'}step));
+  }
 }`
         },
       ],
     },
-    // ADVANCED LEVEL
+    // EXPERT LEVEL
     {
       title: 'Advanced SCSS Features',
       commands: [
         {
-          command: 'Control Directives',
-          description: 'Using @if, @for, @each, and @while for conditional logic',
-          usage: 'Create dynamic and conditional styles with control flow',
-          example: `/* @if directive - conditional styles */
-${'$'}theme: dark;
-${'$'}enable-shadows: true;
-${'$'}border-radius: 4px;
-
-.button {
-  padding: 10px 20px;
-  border: none;
-  
-  @if ${'$'}theme == dark {
-    background: #2c3e50;
-    color: white;
-  } @else if ${'$'}theme == light {
-    background: white;
-    color: #2c3e50;
-    border: 1px solid #ddd;
-  } @else {
-    background: gray;
-    color: white;
-  }
-  
-  @if ${'$'}enable-shadows {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  @if ${'$'}border-radius > 0 {
-    border-radius: ${'$'}border-radius;
-  }
-}
-
-/* @for directive - generate styles in loops */
-@for ${'$'}i from 1 through 6 {
-  h#{${'$'}i} {
-    font-size: 2em - ${'$'}i * 0.2em;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 0.5em;
-  }
-}
-
-/* Generate spacing utilities */
-@for ${'$'}i from 0 through 5 {
-  .m-#{${'$'}i} { margin: #{${'$'}i * 8}px; }
-  .p-#{${'$'}i} { padding: #{${'$'}i * 8}px; }
-  .mt-#{${'$'}i} { margin-top: #{${'$'}i * 8}px; }
-  .mb-#{${'$'}i} { margin-bottom: #{${'$'}i * 8}px; }
-}
-
-/* @each directive - iterate over lists and maps */
-${'$'}colors: primary, secondary, success, danger, warning, info;
-${'$'}color-values: (
-  primary: #3498db,
-  secondary: #2ecc71,
-  success: #27ae60,
-  danger: #e74c3c,
-  warning: #f39c12,
-  info: #17a2b8
-);
-
-@each ${'$'}color in ${'$'}colors {
-  .text-#{${'$'}color} {
-    color: map-get(${'$'}color-values, ${'$'}color);
-  }
-  
-  .bg-#{${'$'}color} {
-    background-color: map-get(${'$'}color-values, ${'$'}color);
-  }
-  
-  .btn-#{${'$'}color} {
-    background-color: map-get(${'$'}color-values, ${'$'}color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-  }
-}
-
-/* @each with maps for more complex iterations */
-${'$'}breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px
-);
-
-@each ${'$'}name, ${'$'}value in ${'$'}breakpoints {
-  @media (min-width: ${'$'}value) {
-    .container-#{${'$'}name} {
-      max-width: ${'$'}value;
-    }
-  }
-}
-
-/* @while directive - conditional loops */
-${'$'}columns: 12;
-${'$'}i: 1;
-
-@while ${'$'}i <= ${'$'}columns {
-  .col-#{${'$'}i} {
-    width: percentage(${'$'}i / ${'$'}columns);
-    float: left;
-  }
-  
-  ${'$'}i: ${'$'}i + 1;
-}`
-        },
-        {
-          command: 'Lists and Maps',
-          description: 'Working with complex data structures in SCSS',
-          usage: 'Use lists and maps for organized, data-driven styling',
-          example: `/* Working with lists */
-${'$'}font-sizes: 12px, 14px, 16px, 18px, 24px, 32px;
-${'$'}spacing-values: 0, 8px, 16px, 24px, 32px, 48px;
-
-// List functions
-${'$'}first-size: nth(${'$'}font-sizes, 1);     // 12px
-${'$'}last-size: nth(${'$'}font-sizes, -1);    // 32px
-${'$'}size-count: length(${'$'}font-sizes);    // 6
-${'$'}joined-list: join(${'$'}font-sizes, ${'$'}spacing-values, comma);
-
-// Generate classes from lists
-@each ${'$'}size in ${'$'}font-sizes {
-  .text-#{index(${'$'}font-sizes, ${'$'}size) - 1} {
-    font-size: ${'$'}size;
-  }
-}
-
-/* Working with maps */
-${'$'}colors: (
-  primary: #3498db,
-  secondary: #2ecc71,
-  success: #27ae60,
-  danger: #e74c3c,
-  warning: #f39c12,
-  info: #17a2b8,
-  light: #ecf0f1,
-  dark: #2c3e50
-);
-
-${'$'}typography: (
-  h1: (size: 2.5rem, weight: 700, line-height: 1.2),
-  h2: (size: 2rem, weight: 600, line-height: 1.3),
-  h3: (size: 1.5rem, weight: 600, line-height: 1.4),
-  h4: (size: 1.25rem, weight: 500, line-height: 1.4),
-  h5: (size: 1.125rem, weight: 500, line-height: 1.5),
-  h6: (size: 1rem, weight: 400, line-height: 1.5)
-);
-
-// Map functions
-${'$'}primary-color: map-get(${'$'}colors, primary);
-${'$'}color-keys: map-keys(${'$'}colors);
-${'$'}color-values: map-values(${'$'}colors);
-${'$'}has-color: map-has-key(${'$'}colors, primary);  // true
-${'$'}color-merged: map-merge(${'$'}colors, (custom: #ff6b6b));
-
-// Remove from map
-${'$'}colors-without-light: map-remove(${'$'}colors, light);
-
-// Generate styles from maps
-@each ${'$'}name, ${'$'}props in ${'$'}typography {
-  #{${'$'}name} {
-    font-size: map-get(${'$'}props, size);
-    font-weight: map-get(${'$'}props, weight);
-    line-height: map-get(${'$'}props, line-height);
-    margin-bottom: 0.5em;
-  }
-}
-
-/* Nested maps for complex data */
-${'$'}grid-system: (
-  columns: 12,
-  gutters: (
-    xs: 15px,
-    sm: 20px,
-    md: 25px,
-    lg: 30px,
-    xl: 35px
-  ),
-  containers: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px
-  )
-);
-
-@each ${'$'}breakpoint, ${'$'}max-width in map-get(${'$'}grid-system, containers) {
-  @media (min-width: ${'$'}max-width) {
-    .container {
-      max-width: ${'$'}max-width;
-    }
-  }
-}`
-        },
-        {
-          command: 'Module System',
-          description: 'Using SCSS modules and @use for better organization',
-          usage: 'Modern SCSS module system with @use and @forward',
-          example: `/* _variables.scss - Module with variables */
-${'$'}primary-color: #3498db !default;
-${'$'}secondary-color: #2ecc71 !default;
-${'$'}success-color: #27ae60 !default;
-${'$'}danger-color: #e74c3c !default;
-
-${'$'}font-family-base: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
-${'$'}font-size-base: 16px !default;
-${'$'}line-height-base: 1.5 !default;
-
-${'$'}border-radius: 4px !default;
-${'$'}box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !default;
-
-${'$'}spacing-unit: 8px !default;
-
-/* _mixins.scss - Module with mixins */
-@mixin button-base {
+          command: '@extend Directive',
+          description: 'Inherit styles from other selectors',
+          usage: 'Use @extend to share styles between selectors',
+          example: `/* Basic @extend usage */
+%button-base {
   display: inline-block;
   padding: 10px 20px;
   border: none;
-  border-radius: ${'$'}border-radius;
-  font-size: ${'$'}font-size-base;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@mixin responsive-grid(${'$'}columns: 12, ${'$'}gutter: 20px) {
-  display: grid;
-  grid-template-columns: repeat(${'$'}columns, 1fr);
-  gap: ${'$'}gutter;
-}
-
-/* _functions.scss - Module with functions */
-@function strip-unit(${'$'}number) {
-  @if type-of(${'$'}number) == 'number' and not unitless(${'$'}number) {
-    @return ${'$'}number / (${'$'}number * 0 + 1);
-  }
-  @return ${'$'}number;
-}
-
-@function to-rem(${'$'}pixels, ${'$'}context: 16px) {
-  @return #{strip-unit(${'$'}pixels) / strip-unit(${'$'}context)}rem;
-}
-
-@function spacing(${'$'}multiplier: 1) {
-  @return ${'$'}spacing-unit * ${'$'}multiplier;
-}
-
-/* main.scss - Using @use to import modules */
-@use 'variables' as *;
-@use 'mixins' as m;
-@use 'functions' as f;
-
-// Using variables with namespace
-.header {
-  background-color: ${'$'}primary-color;
-  font-family: ${'$'}font-family-base;
-  padding: f.spacing(2);
-}
-
-// Using mixins with namespace
-.button {
-  @include m.button-base;
-  background-color: ${'$'}primary-color;
+.btn-primary {
+  @extend %button-base;
+  background: #3498db;
   color: white;
-  
-  &:hover {
-    background-color: darken(${'$'}primary-color, 10%);
+}
+
+.btn-secondary {
+  @extend %button-base;
+  background: #95a5a6;
+  color: white;
+}
+
+/* Compiled CSS */
+.btn-primary, .btn-secondary {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn-secondary {
+  background: #95a5a6;
+  color: white;
+}`
+        },
+        {
+          command: 'Placeholder Selectors',
+          description: 'Using % placeholder selectors',
+          usage: 'Create reusable style blocks that won\'t compile to CSS',
+          example: `/* Placeholder selectors */
+%message-base {
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+%message-success {
+  @extend %message-base;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+%message-error {
+  @extend %message-base;
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.success {
+  @extend %message-success;
+}
+
+.error {
+  @extend %message-error;
+}`
+        },
+        {
+          command: '@if Control Directive',
+          description: 'Conditional logic in SCSS',
+          usage: 'Create conditional styles with @if',
+          example: `/* @if directive */
+${'$'}theme: dark;
+
+.container {
+  @if ${'$'}theme == light {
+    background: white;
+    color: black;
+  } @else if ${'$'}theme == dark {
+    background: black;
+    color: white;
+  } @else {
+    background: gray;
+    color: white;
   }
 }
 
-.hero {
+/* With functions */
+@mixin text-effect(${'$'}effect) {
+  @if ${'$'}effect == glow {
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+  } @else if ${'$'}effect == shadow {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+}
+
+.title {
+  @include text-effect(glow);
+}`
+        },
+        {
+          command: '@for Loop',
+          description: 'Iterate with @for loops',
+          usage: 'Generate styles with numeric ranges',
+          example: `/* @for loops */
+// Through loop (inclusive)
+@for ${'$'}i from 1 through 3 {
+  .item-#{${'$'}i} {
+    width: 2em * ${'$'}i;
+  }
+}
+
+// To loop (exclusive)
+@for ${'$'}i from 1 to 3 {
+  .col-#{${'$'}i} {
+    width: percentage(${'$'}i / 12);
+  }
+}
+
+/* Compiled CSS */
+.item-1 { width: 2em; }
+.item-2 { width: 4em; }
+.item-3 { width: 6em; }
+
+.col-1 { width: 8.33333%; }
+.col-2 { width: 16.66667%; }`
+        },
+        {
+          command: '@each Loop',
+          description: 'Iterate over lists and maps',
+          usage: 'Loop through collections',
+          example: `/* @each with lists */
+${'$'}icons: email, phone, location;
+
+@each ${'$'}icon in ${'$'}icons {
+  .icon-#{${'$'}icon} {
+    background-image: url('icons/#{${'$'}icon}.svg');
+  }
+}
+
+/* @each with maps */
+${'$'}colors: (
+  primary: #3498db,
+  secondary: #2ecc71,
+  success: #27ae60
+);
+
+@each ${'$'}name, ${'$'}color in ${'$'}colors {
+  .bg-#{${'$'}name} {
+    background-color: ${'$'}color;
+  }
+  .text-#{${'$'}name} {
+    color: ${'$'}color;
+  }
+}`
+        },
+        {
+          command: '@while Loop',
+          description: 'Loop while condition is true',
+          usage: 'Generate styles with conditional loops',
+          example: `/* @while loop */
+${'$'}i: 6;
+
+@while ${'$'}i > 0 {
+  .item-#{${'$'}i} {
+    width: 2em * ${'$'}i;
+  }
+  ${'$'}i: ${'$'}i - 2;
+}
+
+/* Compiled CSS */
+.item-6 { width: 12em; }
+.item-4 { width: 8em; }
+.item-2 { width: 4em; }`
+        },
+        {
+          command: '@import Directive',
+          description: 'Import SCSS files',
+          usage: 'Modularize your SCSS code',
+          example: `/* Basic imports */
+@import 'variables';
+@import 'mixins';
+@import 'functions';
+
+/* Import with specific path */
+@import 'components/buttons';
+@import 'layout/header';
+
+/* Import CSS files */
+@import 'normalize.css';
+
+/* Import multiple files */
+@import 'variables', 'mixins', 'functions';`
+        },
+        {
+          command: '@use Directive',
+          description: 'Modern way to import modules',
+          usage: 'Load modules with namespaces',
+          example: `/* @use directive */
+@use 'sass:math';
+@use 'sass:color';
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.container {
+  width: math.percentage(5/12);
+  background: v.${'$'}primary-color;
   @include m.flex-center;
-  min-height: 100vh;
 }
 
-.grid {
-  @include m.responsive-grid(3, 20px);
-}
+/* Default namespace */
+@use 'variables';
 
-/* _utilities.scss - Using @forward to expose modules */
+.button {
+  background: variables.${'$'}primary-color;
+}`
+        },
+        {
+          command: '@forward Directive',
+          description: 'Forward module contents',
+          usage: 'Expose module contents to other files',
+          example: `/* _variables.scss */
+${'$'}primary-color: #3498db;
+${'$'}secondary-color: #2ecc71;
+
+/* _mixins.scss */
 @forward 'variables';
-@forward 'mixins';
 @forward 'functions';
 
-// styles.scss - Import utilities
-@use 'utilities' as *;
-
-.component {
-  // Can now use all variables, mixins, and functions
-  background: ${'$'}primary-color;
-  @include button-base;
-  padding: spacing(2);
-}`
+/* main.scss */
+@forward 'variables' show ${'$'}primary-color;
+@forward 'mixins' hide button;`
         },
         {
-          command: 'Modern SCSS Features',
-          description: 'Latest SCSS features and modern development practices',
-          usage: 'Leverage cutting-edge SCSS capabilities',
-          example: `/* CSS Custom Properties integration */
-:root {
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --font-size-base: 16px;
-  --spacing-unit: 8px;
-}
-
-.component {
-  /* Use CSS custom properties */
-  background-color: var(--primary-color);
-  color: white;
-  padding: calc(var(--spacing-unit) * 2);
-  font-size: var(--font-size-base);
+          command: '@at-root Rule',
+          description: 'Break out of nesting',
+          usage: 'Generate styles at root level',
+          example: `/* @at-root usage */
+.parent {
+  color: blue;
   
-  /* SCSS variables still work */
-  ${'$'}border-radius: 6px;
-  border-radius: ${'$'}border-radius;
-  
-  /* Mixins work with CSS custom properties */
-  @mixin hover-lift {
-    transition: transform 0.3s ease;
+  .child {
+    color: red;
     
-    &:hover {
-      transform: translateY(-2px);
-    }
-  }
-  
-  @include hover-lift;
-}
-
-/* Built-in modules */
-@use "sass:math";
-@use "sass:color";
-@use "sass:string";
-@use "sass:list";
-
-@function calculate-spacing(${'$'}base, ${'$'}multiplier) {
-  @return math.div(${'$'}base, ${'$'}multiplier);
-}
-
-@function adjust-brightness(${'$'}color, ${'$'}amount) {
-  @return color.adjust(${'$'}color, ${'$'}lightness: ${'$'}amount);
-}
-
-/* Modern CSS Grid with SCSS */
-${'$'}grid-columns: 12;
-${'$'}grid-gaps: (
-  xs: 1rem,
-  sm: 1.5rem,
-  md: 2rem,
-  lg: 2.5rem
-);
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(${'$'}grid-columns, 1fr);
-  gap: map-get(${'$'}grid-gaps, md);
-  
-  @each ${'$'}breakpoint, ${'$'}gap in ${'$'}grid-gaps {
-    @media (min-width: #{${'$'}breakpoint}) {
-      gap: ${'$'}gap;
+    @at-root .sibling {
+      color: green;
     }
   }
 }
 
-/* CSS-in-JS like patterns */
-${'$'}component-variants: (
-  primary: (
-    background: #3498db,
-    color: white,
-    border: none
-  ),
-  secondary: (
-    background: #6c757d,
-    color: white,
-    border: none
-  ),
-  outline: (
-    background: transparent,
-    color: #3498db,
-    border: 2px solid #3498db
-  )
-);
+/* Compiled CSS */
+.parent { color: blue; }
+.parent .child { color: red; }
+.sibling { color: green; }
 
-@mixin component-variant(${'$'}variant) {
-  ${'$'}styles: map-get(${'$'}component-variants, ${'$'}variant);
-  
-  @each ${'$'}property, ${'$'}value in ${'$'}styles {
-    #{${'$'}property}: ${'$'}value;
-  }
-}
-
-.button {
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &--primary {
-    @include component-variant(primary);
-  }
-  
-  &--secondary {
-    @include component-variant(secondary);
-  }
-  
-  &--outline {
-    @include component-variant(outline);
-  }
-}
-
-/* Modern container queries (when supported) */
-@container (min-width: 768px) {
-  .card {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 1rem;
-  }
-}`
-        },
-      ],
-    },
-    {
-      title: 'Real-world Applications',
-      commands: [
-        {
-          command: 'Component Architecture',
-          description: 'Building scalable component-based SCSS architecture',
-          usage: 'Organize styles for large-scale applications',
-          example: `/* Component-based SCSS architecture */
-
-// abstracts/
-// _variables.scss
-// _mixins.scss
-// _functions.scss
-// _breakpoints.scss
-
-// base/
-// _reset.scss
-// _typography.scss
-// _utilities.scss
-
-// components/
-// _buttons.scss
-// _cards.scss
-// _forms.scss
-// _navigation.scss
-// _modals.scss
-// _tables.scss
-
-// layout/
-// _grid.scss
-// _header.scss
-// _sidebar.scss
-// _footer.scss
-
-// pages/
-// _home.scss
-// _about.scss
-// _contact.scss
-
-// themes/
-// _light.scss
-// _dark.scss
-// _variables.scss
-
-/* _buttons.scss - Component example */
-@use '../abstracts/variables' as *;
-@use '../abstracts/mixins' as *;
-
-.button {
-  @include button-base;
-  
-  &--primary {
-    @include button-variant(${'$'}primary-color, white);
-  }
-  
-  &--secondary {
-    @include button-variant(${'$'}secondary-color, white);
-  }
-  
-  &--outline {
-    @include button-outline(${'$'}primary-color);
-  }
-  
-  &--ghost {
-    @include button-ghost(${'$'}primary-color);
-  }
-  
-  &--sm {
-    @include button-size(small);
-  }
-  
-  &--lg {
-    @include button-size(large);
-  }
-  
-  &--block {
-    display: block;
-    width: 100%;
-  }
-  
-  &--loading {
-    position: relative;
-    color: transparent;
-    pointer-events: none;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 16px;
-      height: 16px;
-      margin: -8px 0 0 -8px;
-      border: 2px solid currentColor;
-      border-radius: 50%;
-      border-top-color: transparent;
-      animation: spin 1s linear infinite;
-    }
-  }
-}
-
-/* _cards.scss - Complex component */
-@use '../abstracts/variables' as *;
-@use '../abstracts/mixins' as *;
-
+/* With BEM */
 .card {
-  background: white;
-  border-radius: ${'$'}border-radius-lg;
-  box-shadow: ${'$'}box-shadow;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${'$'}box-shadow-lg;
-  }
-  
-  &__header {
-    padding: ${'$'}spacing-lg;
-    border-bottom: 1px solid ${'$'}border-color;
-    background: ${'$'}gray-50;
-  }
+  padding: 20px;
   
   &__title {
-    margin: 0;
-    font-size: ${'$'}font-size-lg;
-    font-weight: 600;
-    color: ${'$'}text-primary;
-  }
-  
-  &__subtitle {
-    margin: ${'$'}spacing-xs 0 0 0;
-    font-size: ${'$'}font-size-sm;
-    color: ${'$'}text-secondary;
-  }
-  
-  &__body {
-    padding: ${'$'}spacing-lg;
-  }
-  
-  &__text {
-    line-height: 1.6;
-    color: ${'$'}text-primary;
+    font-size: 1.5em;
     
-  &:last-child {
-    margin-bottom: 0;
-  }
-  }
-  
-  &__footer {
-    padding: ${'$'}spacing-lg;
-    border-top: 1px solid ${'$'}border-color;
-    background: ${'$'}gray-50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  &__actions {
-    display: flex;
-    gap: ${'$'}spacing-sm;
-  }
-  
-  &--interactive {
-    cursor: pointer;
-    
-    &:active {
-      transform: translateY(-2px);
-    }
-  }
-  
-  &--featured {
-    border: 2px solid ${'$'}primary-color;
-    
-    .card__header {
-      background: linear-gradient(135deg, ${'$'}primary-color, ${'$'}primary-light);
-      color: white;
-      
-      .card__title,
-      .card__subtitle {
-        color: white;
-      }
-    }
-  }
-  
-  &--dark {
-    background: ${'$'}gray-800;
-    color: white;
-    
-    .card__header,
-    .card__footer {
-      background: ${'$'}gray-700;
-      border-color: ${'$'}gray-600;
-    }
-    
-    .card__title,
-    .card__text {
-      color: white;
-    }
-    
-    .card__subtitle {
-      color: ${'$'}gray-300;
+    @at-root .card--featured & {
+      color: #3498db;
     }
   }
 }`
         },
         {
-          command: 'Design System Integration',
-          description: 'Building SCSS design systems with tokens and components',
-          usage: 'Create comprehensive design systems with SCSS',
-          example: `/* Design tokens */
-// _tokens.scss
-${'$'}color-primary: #3498db;
-${'$'}color-primary-light: #85c1e9;
-${'$'}color-primary-dark: #2874a6;
+          command: '@debug Directive',
+          description: 'Debug SCSS compilation',
+          usage: 'Output debug information',
+          example: `/* @debug usage */
+${'$'}primary-color: #3498db;
 
-${'$'}color-secondary: #2ecc71;
-${'$'}color-secondary-light: #82e0aa;
-${'$'}color-secondary-dark: #239b56;
+@debug 'Primary color is: #{$primary-color}';
 
-${'$'}color-neutral-50: #f8f9fa;
-${'$'}color-neutral-100: #e9ecef;
-${'$'}color-neutral-200: #dee2e6;
-${'$'}color-neutral-300: #ced4da;
-${'$'}color-neutral-400: #adb5bd;
-${'$'}color-neutral-500: #6c757d;
-${'$'}color-neutral-600: #495057;
-${'$'}color-neutral-700: #343a40;
-${'$'}color-neutral-800: #212529;
-${'$'}color-neutral-900: #000000;
-
-${'$'}spacing-xs: 4px;
-${'$'}spacing-sm: 8px;
-${'$'}spacing-md: 16px;
-${'$'}spacing-lg: 24px;
-${'$'}spacing-xl: 32px;
-${'$'}spacing-2xl: 48px;
-${'$'}spacing-3xl: 64px;
-
-${'$'}font-size-xs: 12px;
-${'$'}font-size-sm: 14px;
-${'$'}font-size-base: 16px;
-${'$'}font-size-lg: 18px;
-${'$'}font-size-xl: 20px;
-${'$'}font-size-2xl: 24px;
-${'$'}font-size-3xl: 30px;
-
-${'$'}border-radius-sm: 2px;
-${'$'}border-radius-md: 4px;
-${'$'}border-radius-lg: 8px;
-${'$'}border-radius-xl: 12px;
-${'$'}border-radius-2xl: 16px;
-
-${'$'}shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-${'$'}shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-${'$'}shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-${'$'}shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
-
-/* _semantic-tokens.scss */
-${'$'}color-background-primary: ${'$'}color-neutral-50;
-${'$'}color-background-secondary: ${'$'}color-neutral-100;
-${'$'}color-background-tertiary: white;
-
-${'$'}color-text-primary: ${'$'}color-neutral-900;
-${'$'}color-text-secondary: ${'$'}color-neutral-600;
-${'$'}color-text-tertiary: ${'$'}color-neutral-500;
-${'$'}color-text-inverse: white;
-
-${'$'}color-border-primary: ${'$'}color-neutral-200;
-${'$'}color-border-secondary: ${'$'}color-neutral-300;
-
-${'$'}color-success: #27ae60;
-${'$'}color-warning: #f39c12;
-${'$'}color-error: #e74c3c;
-${'$'}color-info: #3498db;
-
-/* _component-tokens.scss */
-${'$'}button-height-sm: 32px;
-${'$'}button-height-md: 40px;
-${'$'}button-height-lg: 48px;
-
-${'$'}button-padding-x-sm: 12px;
-${'$'}button-padding-x-md: 16px;
-${'$'}button-padding-x-lg: 20px;
-
-${'$'}button-font-size-sm: ${'$'}font-size-sm;
-${'$'}button-font-size-md: ${'$'}font-size-base;
-${'$'}button-font-size-lg: ${'$'}font-size-lg;
-
-${'$'}card-padding: ${'$'}spacing-lg;
-${'$'}card-border-radius: ${'$'}border-radius-lg;
-${'$'}card-shadow: ${'$'}shadow-md;
-
-${'$'}input-height: 40px;
-${'$'}input-padding-x: ${'$'}spacing-md;
-${'$'}input-border-radius: ${'$'}border-radius-md;
-${'$'}input-border-color: ${'$'}color-border-primary;
-
-/* _design-system.scss - Main design system file */
-@use 'tokens' as *;
-@use 'semantic-tokens' as *;
-@use 'component-tokens' as *;
-
-// Design system functions
-@function color(${'$'}name, ${'$'}variant: base) {
-  ${'$'}color-map: (
-    primary: (
-      base: ${'$'}color-primary,
-      light: ${'$'}color-primary-light,
-      dark: ${'$'}color-primary-dark
-    ),
-    secondary: (
-      base: ${'$'}color-secondary,
-      light: ${'$'}color-secondary-light,
-      dark: ${'$'}color-secondary-dark
-    ),
-    success: (base: ${'$'}color-success),
-    warning: (base: ${'$'}color-warning),
-    error: (base: ${'$'}color-error),
-    info: (base: ${'$'}color-info)
-  );
-  
-  ${'$'}color-set: map-get(${'$'}color-map, ${'$'}name);
-  @if ${'$'}color-set {
-    @return map-get(${'$'}color-set, ${'$'}variant);
-  } @else {
-    @return map-get(${'$'}color-map, ${'$'}name);
-  }
+/* In functions */
+@function calculate-width(${'$'}columns) {
+  @debug 'Calculating width for #{$columns} columns';
+  @return percentage(${'$'}columns / 12);
 }
 
-@function spacing(${'$'}size) {
-  ${'$'}spacing-map: (
-    xs: ${'$'}spacing-xs,
-    sm: ${'$'}spacing-sm,
-    md: ${'$'}spacing-md,
-    lg: ${'$'}spacing-lg,
-    xl: ${'$'}spacing-xl,
-    2xl: ${'$'}spacing-2xl,
-    3xl: ${'$'}spacing-3xl
-  );
-  
-  @return map-get(${'$'}spacing-map, ${'$'}size);
-}
-
-@function font-size(${'$'}size) {
-  ${'$'}font-size-map: (
-    xs: ${'$'}font-size-xs,
-    sm: ${'$'}font-size-sm,
-    base: ${'$'}font-size-base,
-    lg: ${'$'}font-size-lg,
-    xl: ${'$'}font-size-xl,
-    2xl: ${'$'}font-size-2xl,
-    3xl: ${'$'}font-size-3xl
-  );
-  
-  @return map-get(${'$'}font-size-map, ${'$'}size);
-}
-
-// Design system mixins
-@mixin button-base {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: ${'$'}input-border-radius;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-  
-  &:focus {
-    outline: 2px solid color(primary);
-    outline-offset: 2px;
-  }
-  
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
-
-@mixin button-size(${'$'}size) {
-  @if ${'$'}size == sm {
-    height: ${'$'}button-height-sm;
-    padding: 0 ${'$'}button-padding-x-sm;
-    font-size: ${'$'}button-font-size-sm;
-  } @else if ${'$'}size == md {
-    height: ${'$'}button-height-md;
-    padding: 0 ${'$'}button-padding-x-md;
-    font-size: ${'$'}button-font-size-md;
-  } @else if ${'$'}size == lg {
-    height: ${'$'}button-height-lg;
-    padding: 0 ${'$'}button-padding-x-lg;
-    font-size: ${'$'}button-font-size-lg;
-  }
-}
-
-@mixin button-variant(${'$'}bg-color, ${'$'}text-color: white) {
-  background-color: ${'$'}bg-color;
-  color: ${'$'}text-color;
-  
-  &:hover:not(:disabled) {
-    background-color: darken(${'$'}bg-color, 8%);
-    transform: translateY(-1px);
-    box-shadow: ${'$'}shadow-md;
-  }
-  
-  &:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: ${'$'}shadow-sm;
-  }
+.container {
+  width: calculate-width(6);
 }`
         },
         {
-          command: 'Performance Optimization',
-          description: 'Optimizing SCSS compilation and output CSS',
-          usage: 'Best practices for fast builds and efficient CSS',
-          example: `/* _performance-optimized.scss */
-
-// Use @use instead of @import for better performance
-@use 'variables' as *;
-@use 'mixins' as *;
-@use 'functions' as *;
-
-// Minimize nesting depth (max 3 levels)
-.header {
-  background: ${'$'}primary-color;
-  padding: ${'$'}spacing-unit * 2;
+          command: '@warn Directive',
+          description: 'Output warnings during compilation',
+          usage: 'Warn about deprecated usage',
+          example: `/* @warn usage */
+@mixin old-button(${'$'}color) {
+  @warn 'old-button() mixin is deprecated, use button() instead';
   
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
+  background: ${'$'}color;
+  padding: 10px 20px;
+}
+
+.button {
+  @include old-button(#3498db);
+}`
+        },
+        {
+          command: '@error Directive',
+          description: 'Stop compilation with error',
+          usage: 'Validate input and throw errors',
+          example: `/* @error usage */
+@function validate-color(${'$'}color) {
+  @if not map-has-key(${'$'}colors, ${'$'}color) {
+    @error 'Color "#{$color}" not found in color palette';
   }
+  @return map-get(${'$'}colors, ${'$'}color);
+}
+
+${'$'}colors: (
+  primary: #3498db,
+  secondary: #2ecc71
+);
+
+.button {
+  background: validate-color(primary);
+}`
+        },
+        {
+          command: 'List Functions',
+          description: 'Built-in list manipulation functions',
+          usage: 'Work with lists in SCSS',
+          example: `/* List functions */
+${'$'}fonts: 'Helvetica', 'Arial', sans-serif;
+${'$'}sizes: 12px, 14px, 16px, 18px;
+
+// length()
+@debug length(${'$'}fonts); // 3
+
+// nth()
+.first-font {
+  font-family: nth(${'$'}fonts, 1); // 'Helvetica'
+}
+
+// set-nth()
+.new-sizes {
+  @include set-nth(${'$'}sizes, 2, 20px);
+}
+
+// join()
+.combined-list {
+  @include join(${'$'}fonts, $sizes);
+}
+
+// append()
+.extended-sizes {
+  @include append(${'$'}sizes, 24px);
+}
+
+// index()
+.font-index {
+  @debug index(${'$'}fonts, 'Arial'); // 2
+}`
+        },
+        {
+          command: 'Map Functions',
+          description: 'Built-in map manipulation functions',
+          usage: 'Work with maps (associative arrays)',
+          example: `/* Map functions */
+${'$'}colors: (
+  primary: #3498db,
+  secondary: #2ecc71,
+  success: #27ae60
+);
+
+// map-get()
+.primary-bg {
+  background: map-get(${'$'}colors, primary);
+}
+
+// map-merge()
+${'$'}extended-colors: map-merge(${'$'}colors, (
+  warning: #f39c12,
+  danger: #e74c3c
+));
+
+// map-remove()
+${'$'}core-colors: map-remove(${'$'}colors, success);
+
+// map-keys()
+@debug map-keys(${'$'}colors); // primary, secondary, success
+
+// map-values()
+@debug map-values(${'$'}colors); // #3498db, #2ecc71, #27ae60
+
+// map-has-key()
+@debug map-has-key(${'$'}colors, primary); // true`
+        },
+        {
+          command: 'Selector Functions',
+          description: 'Built-in selector manipulation functions',
+          usage: 'Work with CSS selectors',
+          example: `/* Selector functions */
+// selector-nest()
+.nested {
+  @debug selector-nest('.foo', '.bar'); // .foo .bar
+}
+
+// selector-append()
+.appended {
+  @debug selector-append('.foo', '.bar'); // .foo.bar
+}
+
+// selector-replace()
+.replaced {
+  @debug selector-replace('.foo .bar', '.bar', '.baz'); // .foo .baz
+}
+
+// selector-unify()
+.unified {
+  @debug selector-unify('.foo', '.bar'); // .foo.bar
+}
+
+// is-superselector()
+.super {
+  @debug is-superselector('.foo', '.foo.bar'); // true
+  @debug is-superselector('.foo.bar', '.foo'); // false
+}`
+        },
+        {
+          command: 'Introspection Functions',
+          description: 'Functions to inspect SCSS values',
+          usage: 'Check types and values',
+          example: `/* Introspection functions */
+${'$'}value: 16px;
+${'$'}list: 1, 2, 3;
+${'$'}map: (key: value);
+
+// type-of()
+@debug type-of(${'$'}value); // number
+@debug type-of(${'$'}list);  // list
+@debug type-of(${'$'}map);   // map
+
+// unit()
+@debug unit(${'$'}value); // px
+
+// unitless()
+@debug unitless(16);    // true
+@debug unitless(16px);  // false
+
+// comparable()
+@debug comparable(16px, 1em); // true
+@debug comparable(16px, 16deg); // false
+
+// feature-exists()
+@debug feature-exists('custom-properties'); // true`
+        },
+        {
+          command: 'Color Functions Advanced',
+          description: 'Advanced color manipulation',
+          usage: 'Complex color operations',
+          example: `/* Advanced color functions */
+${'$'}color: #3498db;
+
+// Hue, Saturation, Lightness
+.hsl-info {
+  hue: hue(${'$'}color);        // 210deg
+  saturation: saturation(${'$'}color); // 78.4%
+  lightness: lightness(${'$'}color);   // 54.1%
+}
+
+// Alpha channel
+.alpha-info {
+  alpha: alpha(${'$'}color); // 1
+  opacity: opacity(${'$'}color); // 1
+}
+
+// Adjust color properties
+.adjusted {
+  // Adjust hue, saturation, lightness
+  background: adjust-hue(${'$'}color, 30deg);
+  background: saturate(${'$'}color, 20%);
+  background: desaturate(${'$'}color, 20%);
+  background: lighten(${'$'}color, 20%);
+  background: darken(${'$'}color, 20%);
   
-  // Instead of deeply nested
-  .menu {
-    display: flex;
-    list-style: none;
-  }
+  // Adjust alpha
+  background: fade-in(${'$'}color, 0.3);
+  background: fade-out(${'$'}color, 0.3);
   
-  .menu-item {
-    margin-left: ${'$'}spacing-unit;
-  }
-}
-
-// Use placeholder selectors for extend patterns
-%button-base {
-  display: inline-block;
-  padding: 12px 24px;
-  border: none;
-  border-radius: ${'$'}border-radius;
-  font-size: ${'$'}font-size-base;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: ${'$'}transition-base;
-}
-
-// Generate utilities efficiently
-@each ${'$'}breakpoint, ${'$'}value in ${'$'}breakpoints {
-  @media (min-width: ${'$'}value) {
-    @each ${'$'}prop, ${'$'}abbrev in (margin: m, padding: p) {
-      @each ${'$'}size, ${'$'}length in ${'$'}spacers {
-        .#{${'$'}abbrev}#{${'$'}breakpoint}-#{${'$'}size} {
-          #{${'$'}prop}: ${'$'}length !important;
-        }
-        
-        .#{${'$'}abbrev}x#{${'$'}breakpoint}-#{${'$'}size} {
-          #{${'$'}prop}-left: ${'$'}length !important;
-          #{${'$'}prop}-right: ${'$'}length !important;
-        }
-        
-        .#{${'$'}abbrev}y#{${'$'}breakpoint}-#{${'$'}size} {
-          #{${'$'}prop}-top: ${'$'}length !important;
-          #{${'$'}prop}-bottom: ${'$'}length !important;
-        }
-      }
-    }
-  }
-}
-
-// Optimize color functions
-@function theme-color(${'$'}color, ${'$'}variant: base) {
-  @if ${'$'}variant == base {
-    @return map-get(${'$'}theme-colors, ${'$'}color);
-  } @else if ${'$'}variant == light {
-    @return mix(white, map-get(${'$'}theme-colors, ${'$'}color), 20%);
-  } @else if ${'$'}variant == dark {
-    @return mix(black, map-get(${'$'}theme-colors, ${'$'}color), 20%);
-  }
-}
-
-// Use efficient loops
-${'$'}grid-columns: 12;
-@for ${'$'}i from 1 through ${'$'}grid-columns {
-  .col-#{${'$'}i} {
-    flex: 0 0 percentage(${'$'}i / ${'$'}grid-columns);
-    max-width: percentage(${'$'}i / ${'$'}grid-columns);
-  }
-}
-
-/* Build optimizations */
-// 1. Use Dart Sass (faster than Node Sass)
-// 2. Enable source maps in development only
-// 3. Use --no-source-map in production
-// 4. Minimize @import usage
-// 5. Use @use for modules
-// 6. Avoid excessive nesting
-// 7. Use placeholder selectors wisely
-// 8. Optimize loops and iterations
-
-/* sass --no-source-map --style=compressed input.scss output.css */`
+  // Grayscale
+  background: grayscale(${'$'}color);
+  
+  // Invert
+  background: invert(${'$'}color);
+}`
         },
       ],
     },

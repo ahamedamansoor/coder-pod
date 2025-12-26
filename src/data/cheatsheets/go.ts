@@ -12,22 +12,154 @@ export const goCheatsheet = {
       title: 'Getting Started with Go',
       commands: [
         {
-          command: 'Go Installation',
-          description: 'Install Go and set up environment',
-          usage: 'Download from golang.org or use package managers',
-          example: '# Install Go (Ubuntu/Debian)\nsudo apt update\nsudo apt install golang-go\n\n# Install Go (macOS with Homebrew)\nbrew install go\n\n# Install Go (Windows)\n# Download installer from golang.org\n\n# Verify installation\ngo version\ngo env\n\n# Set up workspace\nmkdir -p ~/go/{bin,src,pkg}\necho \'export GOPATH=$HOME/go\' >> ~/.bashrc\necho \'export PATH=$PATH:$GOPATH/bin\' >> ~/.bashrc\nsource ~/.bashrc\n\n# Initialize Go module\ngo mod init github.com/username/projectname',
+          command: 'Install Go on Ubuntu/Debian',
+          description: 'Install Go on Ubuntu/Debian systems',
+          usage: 'apt install golang-go',
+          example: `# Install Go (Ubuntu/Debian)
+sudo apt update
+sudo apt install golang-go`,
         },
         {
-          command: 'Running Go Code',
-          description: 'Different ways to execute Go code',
-          usage: 'go run, go build, go install',
-          example: '# Run Go file directly\ngo run main.go\n\n# Run with command line arguments\ngo run main.go arg1 arg2\n\n# Build executable\ngo build -o myapp main.go\n./myapp\n\n# Build for different platforms\nGOOS=linux GOARCH=amd64 go build -o myapp-linux main.go\nGOOS=windows GOARCH=amd64 go build -o myapp.exe main.go\nGOOS=darwin GOARCH=arm64 go build -o myapp-mac main.go\n\n# Install to GOPATH/bin\ngo install github.com/username/projectname\n\n# Run with specific Go version\ngo1.21 run main.go\n\n# Run with race detection\ngo run -race main.go',
+          command: 'Install Go on macOS',
+          description: 'Install Go on macOS with Homebrew',
+          usage: 'brew install go',
+          example: `# Install Go (macOS with Homebrew)
+brew install go`,
         },
         {
-          command: 'Go Program Structure',
-          description: 'Basic structure of a Go program',
+          command: 'Install Go on Windows',
+          description: 'Install Go on Windows',
+          usage: 'Download installer from golang.org',
+          example: `# Install Go (Windows)
+# Download installer from golang.org`,
+        },
+        {
+          command: 'Verify Go Installation',
+          description: 'Check Go version and environment',
+          usage: 'go version, go env',
+          example: `# Verify installation
+go version
+go env`,
+        },
+        {
+          command: 'Set Go Workspace',
+          description: 'Configure GOPATH and PATH',
+          usage: 'Set up workspace directories',
+          example: `# Set up workspace
+mkdir -p ~/go/{bin,src,pkg}
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.bashrc
+source ~/.bashrc`,
+        },
+        {
+          command: 'Initialize Go Module',
+          description: 'Create a new Go module',
+          usage: 'go mod init',
+          example: `# Initialize Go module
+go mod init github.com/username/projectname`,
+        },
+        {
+          command: 'Run Go File Directly',
+          description: 'Execute Go file without building',
+          usage: 'go run filename.go',
+          example: `# Run Go file directly
+go run main.go`,
+        },
+        {
+          command: 'Run with Arguments',
+          description: 'Execute Go with command line arguments',
+          usage: 'go run filename.go arg1 arg2',
+          example: `# Run with command line arguments
+go run main.go arg1 arg2`,
+        },
+        {
+          command: 'Build Go Executable',
+          description: 'Compile Go to executable',
+          usage: 'go build -o executable filename.go',
+          example: `# Build executable
+go build -o myapp main.go
+./myapp`,
+        },
+        {
+          command: 'Cross-Platform Build',
+          description: 'Build for different operating systems',
+          usage: 'GOOS=OS GOARCH=ARCH go build',
+          example: `# Build for different platforms
+GOOS=linux GOARCH=amd64 go build -o myapp-linux main.go
+GOOS=windows GOARCH=amd64 go build -o myapp.exe main.go
+GOOS=darwin GOARCH=arm64 go build -o myapp-mac main.go`,
+        },
+        {
+          command: 'Install to GOPATH',
+          description: 'Install Go program to GOPATH/bin',
+          usage: 'go install package',
+          example: `# Install to GOPATH/bin
+go install github.com/username/projectname`,
+        },
+        {
+          command: 'Run with Specific Go Version',
+          description: 'Use specific Go version',
+          usage: 'goX.X run filename.go',
+          example: `# Run with specific Go version
+go1.21 run main.go`,
+        },
+        {
+          command: 'Run with Race Detection',
+          description: 'Enable race condition detection',
+          usage: 'go run -race filename.go',
+          example: `# Run with race detection
+go run -race main.go`,
+        },
+        {
+          command: 'Basic Go Program Structure',
+          description: 'Essential Go program components',
           usage: 'package main, import, func main()',
-          example: 'package main\n\nimport (\n    "fmt"\n    "log"\n    "os"\n)\n\n// Global variable\nconst Version = "1.0.0"\n\n// Main function - entry point\nfunc main() {\n    fmt.Println("Hello, World!")\n    \n    // Handle errors\n    if err := run(); err != nil {\n        log.Fatalf("Error: %v", err)\n        os.Exit(1)\n    }\n}\n\n// Helper function\nfunc run() error {\n    fmt.Printf("Program version: %s\\n", Version)\n    return nil\n}',
+          example: `package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}`,
+        },
+        {
+          command: 'Go Program with Imports',
+          description: 'Multiple imports and error handling',
+          usage: 'Import multiple packages',
+          example: `package main
+
+import (
+    "fmt"
+    "log"
+    "os"
+)
+
+func main() {
+    fmt.Println("Hello, World!")
+    
+    if err := run(); err != nil {
+        log.Fatalf("Error: %v", err)
+        os.Exit(1)
+    }
+}
+
+func run() error {
+    return nil
+}`,
+        },
+        {
+          command: 'Global Constants in Go',
+          description: 'Define package-level constants',
+          usage: 'const NAME = value',
+          example: `package main
+
+import "fmt"
+
+const Version = "1.0.0"
+
+func main() {
+    fmt.Printf("Program version: %s\n", Version)
+}`,
         },
       ],
     },
@@ -35,22 +167,214 @@ export const goCheatsheet = {
       title: 'Basic Data Types & Variables',
       commands: [
         {
-          command: 'Basic Data Types',
-          description: 'Built-in data types in Go',
-          usage: 'int, float64, string, bool, etc.',
-          example: '// Numeric types\nvar age int = 25\nvar salary float64 = 50000.50\nvar balance float32 = 1234.56\n\n// Different integer sizes\nvar i8 int8 = 127          // 8-bit\nvar i16 int16 = 32767      // 16-bit\nvar i32 int32 = 2147483647 // 32-bit\nvar i64 int64 = 9223372036854775807 // 64-bit\n\n// Unsigned integers\nvar u8 uint8 = 255         // 8-bit (byte)\nvar u16 uint16 = 65535     // 16-bit\nvar u32 uint32 = 4294967295 // 32-bit\nvar u64 uint64 = 18446744073709551615 // 64-bit\n\n// Floating point\nvar f32 float32 = 3.14     // 32-bit\nvar f64 float64 = 3.14159265359 // 64-bit\n\n// Complex numbers\nvar c64 complex64 = 1 + 2i // 32-bit real + imaginary\nvar c128 complex128 = 1 + 2i // 64-bit real + imaginary\n\n// String\nvar name string = "Go"\nvar message = `Multiline\nstring`\n\n// Boolean\nvar isActive bool = true\nvar isComplete bool = false\n\n// Byte and rune\nvar b byte = \'A\'           // ASCII character\nvar r rune = \'世\'           // Unicode character',
+          command: 'Integer Types in Go',
+          description: 'Different integer sizes and signedness',
+          usage: 'int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64',
+          example: `// Integer types
+var age int = 25
+var i8 int8 = 127          // 8-bit
+var i16 int16 = 32767      // 16-bit
+var i32 int32 = 2147483647 // 32-bit
+var i64 int64 = 9223372036854775807 // 64-bit
+
+// Unsigned integers
+var u8 uint8 = 255         // 8-bit (byte)
+var u16 uint16 = 65535     // 16-bit
+var u32 uint32 = 4294967295 // 32-bit
+var u64 uint64 = 18446744073709551615 // 64-bit`,
         },
         {
-          command: 'Variables & Constants',
-          description: 'Variable declaration and constants',
-          usage: 'var, :=, const',
-          example: '// Variable declaration with var\nvar x int = 10\nvar y = 20                // Type inference\nvar z int                 // Zero value\n\n// Multiple variable declaration\nvar a, b, c int = 1, 2, 3\nvar d, e, f = 4, 5, 6     // Type inference\n\n// Short variable declaration (inside functions)\nx := 10                   // Type inferred as int\nname := "Go"              // Type inferred as string\nisActive := true          // Type inferred as bool\n\n// Multiple short declaration\na, b := 1, "hello"\n\n// Constants\nconst Pi = 3.14159\nconst Greeting = "Hello, World!"\nconst (\n    StatusActive   = "active"\n    StatusInactive = "inactive"\n    StatusPending  = "pending"\n)\n\n// iota for enum-like constants\nconst (\n    Monday = iota    // 0\n    Tuesday          // 1\n    Wednesday        // 2\n    Thursday         // 3\n    Friday           // 4\n    Saturday         // 5\n    Sunday           // 6\n)\n\n// Zero values\nvar i int               // 0\nvar f float64           // 0\nvar s string            // ""\nvar b bool              // false\nvar p *int              // nil\nvar sli []int           // nil\nvar m map[string]int    // nil',
+          command: 'Floating Point Types',
+          description: 'Float32 and float64 types',
+          usage: 'float32, float64',
+          example: `// Floating point
+var salary float64 = 50000.50
+var balance float32 = 1234.56
+var f32 float32 = 3.14     // 32-bit
+var f64 float64 = 3.14159265359 // 64-bit`,
         },
         {
-          command: 'Basic Operators',
-          description: 'Arithmetic, comparison, and logical operators',
-          usage: '+, -, *, /, %, ==, !=, &&, ||, !',
-          example: '// Arithmetic operators\na, b := 10, 3\nfmt.Println(a + b)   // 13 (addition)\nfmt.Println(a - b)   // 7 (subtraction)\nfmt.Println(a * b)   // 30 (multiplication)\nfmt.Println(a / b)   // 3 (integer division)\nfmt.Println(a % b)   // 1 (modulo)\n\n// Floating point division\nx, y := 10.0, 3.0\nfmt.Println(x / y)   // 3.3333333333333335\n\n// Comparison operators\nfmt.Println(a == b)  // false\nfmt.Println(a != b)  // true\nfmt.Println(a > b)   // true\nfmt.Println(a >= b)  // true\nfmt.Println(a < b)   // false\nfmt.Println(a <= b)  // true\n\n// Logical operators\nx, y := true, false\nfmt.Println(x && y)  // false (AND)\nfmt.Println(x || y)  // true (OR)\nfmt.Println(!x)      // false (NOT)\n\n// Bitwise operators\na, b := 5, 3         // 101, 011 in binary\nfmt.Println(a & b)   // 1 (0101 & 0011 = 0001)\nfmt.Println(a | b)   // 7 (0101 | 0011 = 0111)\nfmt.Println(a ^ b)   // 6 (0101 ^ 0011 = 0110)\nfmt.Println(a << 1)  // 10 (101 << 1 = 1010)\nfmt.Println(a >> 1)  // 2 (101 >> 1 = 010)\n\n// Assignment operators\nx := 10\nx += 5               // x = x + 5\nx -= 3               // x = x - 3\nx *= 2               // x = x * 2\nx /= 4               // x = x / 4\nx %= 3               // x = x % 3\n\n// Increment and decrement\nx := 0\nx++                  // x = x + 1\nx--                  // x = x - 1',
+          command: 'Complex Number Types',
+          description: 'Complex64 and complex128 types',
+          usage: 'complex64, complex128',
+          example: `// Complex numbers
+var c64 complex64 = 1 + 2i // 32-bit real + imaginary
+var c128 complex128 = 1 + 2i // 64-bit real + imaginary`,
+        },
+        {
+          command: 'String and Boolean Types',
+          description: 'String and boolean data types',
+          usage: 'string, bool',
+          example: `// String
+var name string = "Go"
+var message = \`Multiline
+string\`
+
+// Boolean
+var isActive bool = true
+var isComplete bool = false`,
+        },
+        {
+          command: 'Byte and Rune Types',
+          description: 'Byte and rune character types',
+          usage: 'byte, rune',
+          example: `// Byte and rune
+var b byte = 'A'           // ASCII character
+var r rune = '世'           // Unicode character`,
+        },
+        {
+          command: 'Variable Declaration with var',
+          description: 'Declare variables with var keyword',
+          usage: 'var name type = value',
+          example: `// Variable declaration with var
+var x int = 10
+var y = 20                // Type inference
+var z int                 // Zero value`,
+        },
+        {
+          command: 'Multiple Variable Declaration',
+          description: 'Declare multiple variables at once',
+          usage: 'var a, b, c type = value1, value2, value3',
+          example: `// Multiple variable declaration
+var a, b, c int = 1, 2, 3
+var d, e, f = 4, 5, 6     // Type inference`,
+        },
+        {
+          command: 'Short Variable Declaration',
+          description: 'Declare and infer type with :=',
+          usage: 'variable := value',
+          example: `// Short variable declaration (inside functions)
+x := 10                   // Type inferred as int
+name := "Go"              // Type inferred as string
+isActive := true          // Type inferred as bool`,
+        },
+        {
+          command: 'Multiple Short Declaration',
+          description: 'Declare multiple variables with :=',
+          usage: 'a, b := value1, value2',
+          example: `// Multiple short declaration
+a, b := 1, "hello"`,
+        },
+        {
+          command: 'Basic Constants',
+          description: 'Define constant values',
+          usage: 'const NAME = value',
+          example: `// Constants
+const Pi = 3.14159
+const Greeting = "Hello, World!"`,
+        },
+        {
+          command: 'Constant Groups',
+          description: 'Define multiple constants in a group',
+          usage: 'const ( NAME1 = value1; NAME2 = value2 )',
+          example: `const (
+    StatusActive   = "active"
+    StatusInactive = "inactive"
+    StatusPending  = "pending"
+)`,
+        },
+        {
+          command: 'Iota for Enum Constants',
+          description: 'Use iota for incrementing constants',
+          usage: 'const ( NAME1 = iota; NAME2; NAME3 )',
+          example: `// iota for enum-like constants
+const (
+    Monday = iota    // 0
+    Tuesday          // 1
+    Wednesday        // 2
+    Thursday         // 3
+    Friday           // 4
+    Saturday         // 5
+    Sunday           // 6
+)`,
+        },
+        {
+          command: 'Zero Values in Go',
+          description: 'Default values for uninitialized variables',
+          usage: 'Understanding Go zero values',
+          example: `// Zero values
+var i int               // 0
+var f float64           // 0
+var s string            // ""
+var b bool              // false
+var p *int              // nil
+var sli []int           // nil
+var m map[string]int    // nil`,
+        },
+        {
+          command: 'Arithmetic Operators',
+          description: 'Basic arithmetic operations',
+          usage: '+, -, *, /, %',
+          example: `// Arithmetic operators
+a, b := 10, 3
+fmt.Println(a + b)   // 13 (addition)
+fmt.Println(a - b)   // 7 (subtraction)
+fmt.Println(a * b)   // 30 (multiplication)
+fmt.Println(a / b)   // 3 (integer division)
+fmt.Println(a % b)   // 1 (modulo)`,
+        },
+        {
+          command: 'Floating Point Division',
+          description: 'Division with floating point numbers',
+          usage: 'Use float64 for decimal division',
+          example: `// Floating point division
+x, y := 10.0, 3.0
+fmt.Println(x / y)   // 3.3333333333333335`,
+        },
+        {
+          command: 'Comparison Operators',
+          description: 'Compare values and expressions',
+          usage: '==, !=, >, >=, <, <=',
+          example: `// Comparison operators
+fmt.Println(a == b)  // false
+fmt.Println(a != b)  // true
+fmt.Println(a > b)   // true
+fmt.Println(a >= b)  // true
+fmt.Println(a < b)   // false
+fmt.Println(a <= b)  // true`,
+        },
+        {
+          command: 'Logical Operators',
+          description: 'Boolean logic operations',
+          usage: '&&, ||, !',
+          example: `// Logical operators
+x, y := true, false
+fmt.Println(x && y)  // false (AND)
+fmt.Println(x || y)  // true (OR)
+fmt.Println(!x)      // false (NOT)`,
+        },
+        {
+          command: 'Bitwise Operators',
+          description: 'Bit-level operations',
+          usage: '&, |, ^, <<, >>',
+          example: `// Bitwise operators
+a, b := 5, 3         // 101, 011 in binary
+fmt.Println(a & b)   // 1 (0101 & 0011 = 0001)
+fmt.Println(a | b)   // 7 (0101 | 0011 = 0111)
+fmt.Println(a ^ b)   // 6 (0101 ^ 0011 = 0110)
+fmt.Println(a << 1)  // 10 (101 << 1 = 1010)
+fmt.Println(a >> 1)  // 2 (101 >> 1 = 010)`,
+        },
+        {
+          command: 'Assignment Operators',
+          description: 'Compound assignment operations',
+          usage: '+=, -=, *=, /=, %=',
+          example: `// Assignment operators
+x := 10
+x += 5               // x = x + 5
+x -= 3               // x = x - 3
+x *= 2               // x = x * 2
+x /= 4               // x = x / 4
+x %= 3               // x = x % 3`,
+        },
+        {
+          command: 'Increment and Decrement',
+          description: 'Increase or decrease values by 1',
+          usage: '++, --',
+          example: `// Increment and decrement
+x := 0
+x++                  // x = x + 1
+x--                  // x = x - 1`,
         },
       ],
     },
@@ -58,47 +382,529 @@ export const goCheatsheet = {
       title: 'Control Flow',
       commands: [
         {
-          command: 'If-Else Statements',
-          description: 'Conditional execution',
-          usage: 'if condition { } else if condition { } else { }',
-          example: 'age := 18\n\n// Simple if\nif age >= 18 {\n    fmt.Println("Adult")\n}\n\n// If-else\nif age >= 18 {\n    fmt.Println("Adult")\n} else {\n    fmt.Println("Minor")\n}\n\n// If-else if-else\nif age < 13 {\n    fmt.Println("Child")\n} else if age < 18 {\n    fmt.Println("Teenager")\n} else if age < 65 {\n    fmt.Println("Adult")\n} else {\n    fmt.Println("Senior")\n}\n\n// If with initialization\nif x := 10; x > 5 {\n    fmt.Println("x is greater than 5")\n}\n\n// If with error handling\nif value, err := getValue(); err != nil {\n    fmt.Printf("Error: %v\\n", err)\n} else {\n    fmt.Printf("Value: %v\\n", value)\n}\n\n// Multiple conditions\nusername := "admin"\npassword := "secret"\nif username == "admin" && password == "secret" {\n    fmt.Println("Access granted")\n} else if username == "admin" || password == "secret" {\n    fmt.Println("Partial access")\n} else {\n    fmt.Println("Access denied")\n}',
+          command: 'Simple If Statement',
+          description: 'Basic conditional execution',
+          usage: 'if condition { }',
+          example: `age := 18
+
+// Simple if
+if age >= 18 {
+    fmt.Println("Adult")
+}`,
         },
         {
-          command: 'Loops',
-          description: 'for loops in Go',
-          usage: 'for condition { }, for i := 0; i < n; i++ { }, for range { }',
-          example: '// Classic for loop\nfor i := 0; i < 5; i++ {\n    fmt.Printf("Count: %d\\n", i)\n}\n\n// While-like loop\ni := 0\nfor i < 5 {\n    fmt.Printf("While count: %d\\n", i)\n    i++\n}\n\n// Infinite loop\nfor {\n    fmt.Println("Infinite loop")\n    break // Exit condition\n}\n\n// For range with slice\nfruits := []string{"apple", "banana", "cherry"}\nfor index, fruit := range fruits {\n    fmt.Printf("%d: %s\\n", index, fruit)\n}\n\n// For range with map\nperson := map[string]int{\n    "age": 30,\n    "height": 175,\n}\nfor key, value := range person {\n    fmt.Printf("%s: %d\\n", key, value)\n}\n\n// For range with string\nfor index, char := range "hello" {\n    fmt.Printf("%d: %c\\n", index, char)\n}\n\n// Break and continue\nfor i := 0; i < 10; i++ {\n    if i == 3 {\n        continue // Skip 3\n    }\n    if i == 7 {\n        break    // Stop at 7\n    }\n    fmt.Println(i)\n}\n\n// Labeled break and continue\nouter:\nfor i := 0; i < 3; i++ {\n    for j := 0; j < 3; j++ {\n        if i == 1 && j == 1 {\n            break outer // Break outer loop\n        }\n        fmt.Printf("i: %d, j: %d\\n", i, j)\n    }\n}',
+          command: 'If-Else Statement',
+          description: 'Two-way conditional execution',
+          usage: 'if condition { } else { }',
+          example: `// If-else
+if age >= 18 {
+    fmt.Println("Adult")
+} else {
+    fmt.Println("Minor")
+}`,
         },
         {
-          command: 'Switch Statements',
-          description: 'Switch statements in Go',
+          command: 'If-Else If-Else Chain',
+          description: 'Multiple conditional branches',
+          usage: 'if condition1 { } else if condition2 { } else { }',
+          example: `// If-else if-else
+if age < 13 {
+    fmt.Println("Child")
+} else if age < 18 {
+    fmt.Println("Teenager")
+} else if age < 65 {
+    fmt.Println("Adult")
+} else {
+    fmt.Println("Senior")
+}`,
+        },
+        {
+          command: 'If with Initialization',
+          description: 'Initialize variable in if statement',
+          usage: 'if variable := value; condition { }',
+          example: `// If with initialization
+if x := 10; x > 5 {
+    fmt.Println("x is greater than 5")
+}`,
+        },
+        {
+          command: 'If with Error Handling',
+          description: 'Handle errors in if statements',
+          usage: 'if value, err := function(); err != nil { }',
+          example: `// If with error handling
+if value, err := getValue(); err != nil {
+    fmt.Printf("Error: %v\n", err)
+} else {
+    fmt.Printf("Value: %v\n", value)
+}`,
+        },
+        {
+          command: 'Multiple Conditions in If',
+          description: 'Combine conditions with logical operators',
+          usage: 'if condition1 && condition2 || condition3 { }',
+          example: `// Multiple conditions
+username := "admin"
+password := "secret"
+if username == "admin" && password == "secret" {
+    fmt.Println("Access granted")
+} else if username == "admin" || password == "secret" {
+    fmt.Println("Partial access")
+} else {
+    fmt.Println("Access denied")
+}`,
+        },
+        {
+          command: 'Classic For Loop',
+          description: 'Traditional three-part for loop',
+          usage: 'for init; condition; post { }',
+          example: `// Classic for loop
+for i := 0; i < 5; i++ {
+    fmt.Printf("Count: %d\n", i)
+}`,
+        },
+        {
+          command: 'While-Like Loop',
+          description: 'For loop used as while loop',
+          usage: 'for condition { }',
+          example: `// While-like loop
+i := 0
+for i < 5 {
+    fmt.Printf("While count: %d\n", i)
+    i++
+}`,
+        },
+        {
+          command: 'Infinite Loop',
+          description: 'Loop that runs forever until break',
+          usage: 'for { }',
+          example: `// Infinite loop
+for {
+    fmt.Println("Infinite loop")
+    break // Exit condition
+}`,
+        },
+        {
+          command: 'For Range with Slice',
+          description: 'Iterate over slice elements',
+          usage: 'for index, value := range slice { }',
+          example: `// For range with slice
+fruits := []string{"apple", "banana", "cherry"}
+for index, fruit := range fruits {
+    fmt.Printf("%d: %s\n", index, fruit)
+}`,
+        },
+        {
+          command: 'For Range with Map',
+          description: 'Iterate over map key-value pairs',
+          usage: 'for key, value := range map { }',
+          example: `// For range with map
+person := map[string]int{
+    "age": 30,
+    "height": 175,
+}
+for key, value := range person {
+    fmt.Printf("%s: %d\n", key, value)
+}`,
+        },
+        {
+          command: 'For Range with String',
+          description: 'Iterate over string characters',
+          usage: 'for index, rune := range string { }',
+          example: `// For range with string
+for index, char := range "hello" {
+    fmt.Printf("%d: %c\n", index, char)
+}`,
+        },
+        {
+          command: 'Break and Continue in Loop',
+          description: 'Control loop execution flow',
+          usage: 'break, continue statements',
+          example: `// Break and continue
+for i := 0; i < 10; i++ {
+    if i == 3 {
+        continue // Skip 3
+    }
+    if i == 7 {
+        break    // Stop at 7
+    }
+    fmt.Println(i)
+}`,
+        },
+        {
+          command: 'Labeled Break and Continue',
+          description: 'Break or continue outer loops',
+          usage: 'label: for { break label }',
+          example: `// Labeled break and continue
+outer:
+for i := 0; i < 3; i++ {
+    for j := 0; j < 3; j++ {
+        if i == 1 && j == 1 {
+            break outer // Break outer loop
+        }
+        fmt.Printf("i: %d, j: %d\n", i, j)
+    }
+}`,
+        },
+        {
+          command: 'Basic Switch Statement',
+          description: 'Multi-way branching with cases',
           usage: 'switch value { case v1: ... case v2: ... default: ... }',
-          example: 'day := 3\n\n// Basic switch\nswitch day {\ncase 1:\n    fmt.Println("Monday")\ncase 2:\n    fmt.Println("Tuesday")\ncase 3:\n    fmt.Println("Wednesday")\ncase 4:\n    fmt.Println("Thursday")\ncase 5:\n    fmt.Println("Friday")\ncase 6, 7:\n    fmt.Println("Weekend")\ndefault:\n    fmt.Println("Invalid day")\n}\n\n// Switch with initialization\nswitch x := 5; x {\ncase 1, 2, 3:\n    fmt.Println("Small number")\ncase 4, 5, 6:\n    fmt.Println("Medium number")\ndefault:\n    fmt.Println("Large number")\n}\n\n// Switch without condition (like if-else chain)\n{\n    score := 85\n    switch {\n    case score >= 90:\n        fmt.Println("A")\n    case score >= 80:\n        fmt.Println("B")\n    case score >= 70:\n        fmt.Println("C")\n    case score >= 60:\n        fmt.Println("D")\n    default:\n        fmt.Println("F")\n    }\n}\n\n// Type switch\nvar i interface{} = "hello"\nswitch v := i.(type) {\ncase int:\n    fmt.Printf("Integer: %d\\n", v)\ncase string:\n    fmt.Printf("String: %s\\n", v)\ncase bool:\n    fmt.Printf("Boolean: %t\\n", v)\ndefault:\n    fmt.Printf("Unknown type: %T\\n", v)\n}\n\n// Fallthrough\nx := 1\nswitch x {\ncase 1:\n    fmt.Println("One")\n    fallthrough\ncase 2:\n    fmt.Println("Two")\n    fallthrough\ncase 3:\n    fmt.Println("Three")\ndefault:\n    fmt.Println("Default")\n}',
+          example: `day := 3
+
+// Basic switch
+switch day {
+case 1:
+    fmt.Println("Monday")
+case 2:
+    fmt.Println("Tuesday")
+case 3:
+    fmt.Println("Wednesday")
+case 4:
+    fmt.Println("Thursday")
+case 5:
+    fmt.Println("Friday")
+case 6, 7:
+    fmt.Println("Weekend")
+default:
+    fmt.Println("Invalid day")
+}`,
+        },
+        {
+          command: 'Switch with Initialization',
+          description: 'Initialize variable in switch statement',
+          usage: 'switch variable := value; variable { }',
+          example: `// Switch with initialization
+switch x := 5; x {
+case 1, 2, 3:
+    fmt.Println("Small number")
+case 4, 5, 6:
+    fmt.Println("Medium number")
+default:
+    fmt.Println("Large number")
+}`,
+        },
+        {
+          command: 'Switch Without Condition',
+          description: 'Switch used as if-else chain',
+          usage: 'switch { case condition: ... }',
+          example: `// Switch without condition (like if-else chain)
+{
+    score := 85
+    switch {
+    case score >= 90:
+        fmt.Println("A")
+    case score >= 80:
+        fmt.Println("B")
+    case score >= 70:
+        fmt.Println("C")
+    case score >= 60:
+        fmt.Println("D")
+    default:
+        fmt.Println("F")
+    }
+}`,
+        },
+        {
+          command: 'Type Switch',
+          description: 'Switch on interface type',
+          usage: 'switch v := i.(type) { case type: ... }',
+          example: `// Type switch
+var i interface{} = "hello"
+switch v := i.(type) {
+case int:
+    fmt.Printf("Integer: %d\n", v)
+case string:
+    fmt.Printf("String: %s\n", v)
+case bool:
+    fmt.Printf("Boolean: %t\n", v)
+default:
+    fmt.Printf("Unknown type: %T\n", v)
+}`,
+        },
+        {
+          command: 'Switch with Fallthrough',
+          description: 'Execute next case after current',
+          usage: 'fallthrough keyword',
+          example: `// Fallthrough
+x := 1
+switch x {
+case 1:
+    fmt.Println("One")
+    fallthrough
+case 2:
+    fmt.Println("Two")
+    fallthrough
+case 3:
+    fmt.Println("Three")
+default:
+    fmt.Println("Default")
+}`,
         },
       ],
     },
-
     // INTERMEDIATE LEVEL
     {
       title: 'Functions and Methods',
       commands: [
         {
-          command: 'Function Definition',
-          description: 'Creating and using functions',
+          command: 'Basic Function Definition',
+          description: 'Create and use simple functions',
           usage: 'func functionName(params) returnType { return value }',
-          example: '// Basic function\nfunc greet(name string) string {\n    return "Hello, " + name\n}\n\n// Function with multiple parameters\nfunc add(a, b int) int {\n    return a + b\n}\n\n// Function with multiple return values\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf("division by zero")\n    }\n    return a / b, nil\n}\n\n// Named return values\nfunc calculateRectangle(width, height float64) (area, perimeter float64) {\n    area = width * height\n    perimeter = 2 * (width + height)\n    return // Return named variables\n}\n\n// Variadic function\nfunc sum(numbers ...int) int {\n    total := 0\n    for _, num := range numbers {\n        total += num\n    }\n    return total\n}\n\n// Higher-order function\nfunc applyOperation(a, b int, operation func(int, int) int) int {\n    return operation(a, b)\n}\n\n// Anonymous function\nadd := func(a, b int) int {\n    return a + b\n}\n\n// Function as parameter\nfunc filter(numbers []int, predicate func(int) bool) []int {\n    var result []int\n    for _, num := range numbers {\n        if predicate(num) {\n            result = append(result, num)\n        }\n    }\n    return result\n}\n\n// Recursive function\nfunc factorial(n int) int {\n    if n <= 1 {\n        return 1\n    }\n    return n * factorial(n-1)\n}\n\n// Function with deferred execution\nfunc processFile(filename string) error {\n    file, err := os.Open(filename)\n    if err != nil {\n        return err\n    }\n    defer file.Close() // Executed when function returns\n    \n    // Process file\n    return nil\n}',
+          example: `// Basic function
+func greet(name string) string {
+    return "Hello, " + name
+}
+
+// Function with multiple parameters
+func add(a, b int) int {
+    return a + b
+}`,
         },
         {
-          command: 'Methods',
-          description: 'Methods attached to types',
-          usage: 'func (receiver Type) methodName(params) returnType { }',
-          example: '// Define a type\ntype Rectangle struct {\n    Width  float64\n    Height float64\n}\n\n// Value receiver method\nfunc (r Rectangle) Area() float64 {\n    return r.Width * r.Height\n}\n\n// Pointer receiver method\nfunc (r *Rectangle) Scale(factor float64) {\n    r.Width *= factor\n    r.Height *= factor\n}\n\n// Method with parameters and return values\nfunc (r Rectangle) Perimeter() float64 {\n    return 2 * (r.Width + r.Height)\n}\n\n// String method for custom string representation\nfunc (r Rectangle) String() string {\n    return fmt.Sprintf("Rectangle{Width: %.2f, Height: %.2f}", r.Width, r.Height)\n}\n\n// Using methods\nrect := Rectangle{Width: 10, Height: 5}\nfmt.Printf("Area: %.2f\\n", rect.Area())\nfmt.Printf("Perimeter: %.2f\\n", rect.Perimeter())\nrect.Scale(2)\nfmt.Printf("Scaled: %s\\n", rect.String())\n\n// Method on non-struct type\ntype Celsius float64\n\nfunc (c Celsius) String() string {\n    return fmt.Sprintf("%.2f°C", c)\n}\n\nfunc (c Celsius) ToFahrenheit() Fahrenheit {\n    return Fahrenheit(c*9/5 + 32)\n}\n\ntype Fahrenheit float64\n\nfunc (f Fahrenheit) ToCelsius() Celsius {\n    return Celsius((f - 32) * 5 / 9)\n}\n\n// Method sets and interfaces\ntype Shape interface {\n    Area() float64\n    Perimeter() float64\n}\n\nfunc PrintShapeInfo(s Shape) {\n    fmt.Printf("Area: %.2f, Perimeter: %.2f\\n", s.Area(), s.Perimeter())\n}',
+          command: 'Function with Multiple Return Values',
+          description: 'Return multiple values from a function',
+          usage: 'func func(params) (type1, type2) { }',
+          example: `// Function with multiple return values
+func divide(a, b float64) (float64, error) {
+    if b == 0 {
+        return 0, fmt.Errorf("division by zero")
+    }
+    return a / b, nil
+}`,
         },
         {
-          command: 'Function Types and Closures',
-          description: 'Functions as values and closures',
-          usage: 'func type, closures, function literals',
-          example: '// Function type\ntype Operation func(int, int) int\n\n// Function as parameter\nfunc compute(a, b int, op Operation) int {\n    return op(a, b)\n}\n\n// Function returning a function\nfunc getAdder() func(int, int) int {\n    return func(a, b int) int {\n        return a + b\n    }\n}\n\n// Closure with captured variables\nfunc makeAdder(x int) func(int) int {\n    return func(y int) int {\n        return x + y\n    }\n}\n\n// Using closures\nadd5 := makeAdder(5)\nadd10 := makeAdder(10)\nfmt.Println(add5(3))   // 8\nfmt.Println(add10(3))  // 13\n\n// Closure with loop\nfunc multiplier() []func() int {\n    var multipliers []func() int\n    for i := 1; i <= 3; i++ {\n        // Capture loop variable\n        multiplier := func() int {\n            return i * 2\n        }\n        multipliers = append(multipliers, multiplier)\n    }\n    return multipliers\n}\n\n// Function as field in struct\ntype Calculator struct {\n    operations map[string]Operation\n}\n\nfunc NewCalculator() *Calculator {\n    return &Calculator{\n        operations: map[string]Operation{\n            "add": func(a, b int) int { return a + b },\n            "sub": func(a, b int) int { return a - b },\n            "mul": func(a, b int) int { return a * b },\n            "div": func(a, b int) int { return a / b },\n        },\n    }\n}\n\nfunc (c *Calculator) Calculate(a, b int, op string) (int, error) {\n    operation, exists := c.operations[op]\n    if !exists {\n        return 0, fmt.Errorf("unknown operation: %s", op)\n    }\n    return operation(a, b), nil\n}',
+          command: 'Named Return Values',
+          description: 'Use named return values in functions',
+          usage: 'func func(params) (name1 type1, name2 type2) { }',
+          example: `// Named return values
+func calculateRectangle(width, height float64) (area, perimeter float64) {
+    area = width * height
+    perimeter = 2 * (width + height)
+    return // Return named variables
+}`,
+        },
+        {
+          command: 'Variadic Functions',
+          description: 'Accept variable number of arguments',
+          usage: 'func func(params ...type) returnType { }',
+          example: `// Variadic function
+func sum(numbers ...int) int {
+    total := 0
+    for _, num := range numbers {
+        total += num
+    }
+    return total
+}`,
+        },
+        {
+          command: 'Higher-Order Functions',
+          description: 'Functions that accept other functions',
+          usage: 'func func(a, b int, operation func(int, int) int) int { }',
+          example: `// Higher-order function
+func applyOperation(a, b int, operation func(int, int) int) int {
+    return operation(a, b)
+}`,
+        },
+        {
+          command: 'Anonymous Functions',
+          description: 'Create functions without names',
+          usage: 'func(params) { }',
+          example: `// Anonymous function
+add := func(a, b int) int {
+    return a + b
+}`,
+        },
+        {
+          command: 'Function as Parameter',
+          description: 'Pass functions as parameters',
+          usage: 'func func(slice []int, predicate func(int) bool) []int { }',
+          example: `// Function as parameter
+func filter(numbers []int, predicate func(int) bool) []int {
+    var result []int
+    for _, num := range numbers {
+        if predicate(num) {
+            result = append(result, num)
+        }
+    }
+    return result
+}`,
+        },
+        {
+          command: 'Recursive Functions',
+          description: 'Functions that call themselves',
+          usage: 'func func(n int) int { return n * func(n-1) }',
+          example: `// Recursive function
+func factorial(n int) int {
+    if n <= 1 {
+        return 1
+    }
+    return n * factorial(n-1)
+}`,
+        },
+        {
+          command: 'Function with Deferred Execution',
+          description: 'Use defer for cleanup operations',
+          usage: 'defer function()',
+          example: `// Function with deferred execution
+func processFile(filename string) error {
+    file, err := os.Open(filename)
+    if err != nil {
+        return err
+    }
+    defer file.Close() // Executed when function returns
+    
+    // Process file
+    return nil
+}`,
+        },
+        {
+          command: 'Value Receiver Methods',
+          description: 'Methods that work with value copies',
+          usage: 'func (r Type) Method() returnType { }',
+          example: `// Define a type
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+
+// Value receiver method
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}`,
+        },
+        {
+          command: 'Pointer Receiver Methods',
+          description: 'Methods that can modify the receiver',
+          usage: 'func (r *Type) Method() { }',
+          example: `// Pointer receiver method
+func (r *Rectangle) Scale(factor float64) {
+    r.Width *= factor
+    r.Height *= factor
+}`,
+        },
+        {
+          command: 'Method with Parameters and Return',
+          description: 'Methods with parameters and return values',
+          usage: 'func (r Type) Method(param type) returnType { }',
+          example: `// Method with parameters and return values
+func (r Rectangle) Perimeter() float64 {
+    return 2 * (r.Width + r.Height)
+}`,
+        },
+        {
+          command: 'String Method for Custom Types',
+          description: 'Implement String() for custom string representation',
+          usage: 'func (r Type) String() string { }',
+          example: `// String method for custom string representation
+func (r Rectangle) String() string {
+    return fmt.Sprintf("Rectangle{Width: %.2f, Height: %.2f}", r.Width, r.Height)
+}`,
+        },
+        {
+          command: 'Method on Non-Struct Type',
+          description: 'Define methods on basic types',
+          usage: 'type CustomType type; func (c CustomType) Method() { }',
+          example: `// Method on non-struct type
+type Celsius float64
+
+func (c Celsius) String() string {
+    return fmt.Sprintf("%.2f°C", c)
+}
+
+func (c Celsius) ToFahrenheit() Fahrenheit {
+    return Fahrenheit(c*9/5 + 32)
+}
+
+type Fahrenheit float64
+
+func (f Fahrenheit) ToCelsius() Celsius {
+    return Celsius((f - 32) * 5 / 9)
+}`,
+        },
+        {
+          command: 'Function Types',
+          description: 'Define function as a type',
+          usage: 'type FunctionType func(param1, param2) returnType',
+          example: `// Function type
+type Operation func(int, int) int
+
+// Function as parameter
+func compute(a, b int, op Operation) int {
+    return op(a, b)
+}`,
+        },
+        {
+          command: 'Function Returning Function',
+          description: 'Functions that return other functions',
+          usage: 'func func() func(int) int { }',
+          example: `// Function returning a function
+func getAdder() func(int, int) int {
+    return func(a, b int) int {
+        return a + b
+    }
+}`,
+        },
+        {
+          command: 'Closure with Captured Variables',
+          description: 'Functions that capture variables from outer scope',
+          usage: 'func func(x int) func(int) int { }',
+          example: `// Closure with captured variables
+func makeAdder(x int) func(int) int {
+    return func(y int) int {
+        return x + y
+    }
+}
+
+// Using closures
+add5 := makeAdder(5)
+add10 := makeAdder(10)
+fmt.Println(add5(3))   // 8
+fmt.Println(add10(3))  // 13`,
+        },
+        {
+          command: 'Closure with Loop Variables',
+          description: 'Handle closures in loops correctly',
+          usage: 'Capture loop variable as parameter',
+          example: `// Closure with loop
+func multiplier() []func() int {
+    var multipliers []func() int
+    for i := 1; i <= 3; i++ {
+        // Capture loop variable
+        multiplier := func() int {
+            return i * 2
+        }
+        multipliers = append(multipliers, multiplier)
+    }
+    return multipliers
+}`,
+        },
+        {
+          command: 'Function as Field in Struct',
+          description: 'Store functions in struct fields',
+          usage: 'type Struct struct { operations map[string]FunctionType }',
+          example: `// Function as field in struct
+type Calculator struct {
+    operations map[string]Operation
+}
+
+func NewCalculator() *Calculator {
+    return &Calculator{
+        operations: map[string]Operation{
+            "add": func(a, b int) int { return a + b },
+            "sub": func(a, b int) int { return a - b },
+            "mul": func(a, b int) int { return a * b },
+            "div": func(a, b int) int { return a / b },
+        },
+    }
+}
+
+func (c *Calculator) Calculate(a, b int, op string) (int, error) {
+    operation, exists := c.operations[op]
+    if !exists {
+        return 0, fmt.Errorf("unknown operation: %s", op)
+    }
+    return operation(a, b), nil
+}`,
         },
       ],
     },
@@ -106,22 +912,313 @@ export const goCheatsheet = {
       title: 'Arrays, Slices, and Maps',
       commands: [
         {
-          command: 'Arrays',
-          description: 'Fixed-size collections',
-          usage: '[size]type, array literals, array operations',
-          example: '// Array declaration\nvar numbers [5]int                    // Zero-initialized array\nvar primes = [5]int{2, 3, 5, 7, 11}  // Array literal\n\n// Array with inferred size\nfibonacci := [...]int{0, 1, 1, 2, 3, 5, 8}\n\n// Array with specific indices\nmonths := [12]string{\n    1: "January",\n    2: "February",\n    12: "December",\n}\n\n// Array operations\nnumbers[0] = 10                      // Set element\nfirst := numbers[0]                  // Get element\nlength := len(numbers)               // Get length\n\n// Arrays are value types\narr1 := [3]int{1, 2, 3}\narr2 := arr1                          // Copy\narr2[0] = 100                        // Doesn\'t affect arr1\nfmt.Println(arr1, arr2)              // [1 2 3] [100 2 3]\n\n// Multidimensional arrays\nvar matrix [3][3]int\nmatrix[0][0] = 1\nmatrix[1][1] = 5\nmatrix[2][2] = 9\n\n// 2D array literal\nmatrix2 := [3][3]int{\n    {1, 2, 3},\n    {4, 5, 6},\n    {7, 8, 9},\n}\n\n// Iterating over arrays\nfor i, value := range numbers {\n    fmt.Printf("Index %d: %d\\n", i, value)\n}\n\n// Comparing arrays\na := [3]int{1, 2, 3}\nb := [3]int{1, 2, 3}\nc := [3]int{1, 2, 4}\nfmt.Println(a == b)  // true\nfmt.Println(a == c)  // false',
+          command: 'Array Declaration',
+          description: 'Declare arrays with fixed size',
+          usage: 'var name [size]type',
+          example: `// Array declaration
+var numbers [5]int                    // Zero-initialized array
+var primes = [5]int{2, 3, 5, 7, 11}  // Array literal`,
         },
         {
-          command: 'Slices',
-          description: 'Dynamic-size collections',
-          usage: '[]type, make(), append(), copy()',
-          example: '// Slice declaration\nvar slice []int                     // nil slice\nnumbers := []int{1, 2, 3, 4, 5}    // Slice literal\n\n// Make slice\nslice := make([]int, 5)             // Length 5, capacity 5\nslice := make([]int, 3, 10)         // Length 3, capacity 10\n\n// Slice operations\nnumbers = append(numbers, 6, 7, 8)  // Append elements\nnumbers = append(numbers, slice...) // Append another slice\n\n// Slicing\nnumbers := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}\nsub1 := numbers[2:5]                // [2, 3, 4]\nsub2 := numbers[:5]                 // [0, 1, 2, 3, 4]\nsub3 := numbers[5:]                 // [5, 6, 7, 8, 9]\nsub4 := numbers[:]                  // Copy of entire slice\n\n// Slice properties\nlength := len(numbers)              // Length\ncapacity := cap(numbers)            // Capacity\n\n// Copy slices\ndest := make([]int, len(src))\ncopied := copy(dest, src)           // Number of elements copied\n\n// Delete element from slice\nnumbers := []int{1, 2, 3, 4, 5}\nindex := 2\nnumbers = append(numbers[:index], numbers[index+1:]...) // Remove element at index 2\n\n// Insert element into slice\nnumbers = append(numbers[:index], append([]int{99}, numbers[index:]...)...)\n\n// Filter slice\neven := func(numbers []int) []int {\n    var result []int\n    for _, num := range numbers {\n        if num%2 == 0 {\n            result = append(result, num)\n        }\n    }\n    return result\n}\n\n// Slice of structs\ntype Person struct {\n    Name string\n    Age  int\n}\n\npeople := []Person{\n    {"Alice", 30},\n    {"Bob", 25},\n    {"Charlie", 35},\n}\n\n// Slice as function parameter\nfunc processSlice(s []int) {\n    s[0] = 100  // Modifies original slice\n}',
+          command: 'Array with Inferred Size',
+          description: 'Let compiler determine array size',
+          usage: '[...]type{values}',
+          example: `// Array with inferred size
+fibonacci := [...]int{0, 1, 1, 2, 3, 5, 8}`,
         },
         {
-          command: 'Maps',
-          description: 'Key-value collections',
-          usage: 'map[keyType]valueType, make(), delete()',
-          example: '// Map declaration\nvar m map[string]int                 // nil map\nages := make(map[string]int)         // Empty map\n\n// Map literal\nperson := map[string]interface{}{\n    "name":  "Alice",\n    "age":   30,\n    "email": "alice@example.com",\n}\n\n// Map operations\nages["alice"] = 30                   // Set value\nage := ages["alice"]                 // Get value\nage, exists := ages["alice"]         // Get value with existence check\nif !exists {\n    age = 0                          // Default value\n}\n\n// Delete from map\ndelete(ages, "alice")                // Delete key\n\n// Iterate over map\nfor key, value := range person {\n    fmt.Printf("%s: %v\\n", key, value)\n}\n\n// Check if map is empty\nif len(ages) == 0 {\n    fmt.Println("Map is empty")\n}\n\n// Map of structs\ntype Address struct {\n    Street  string\n    City    string\n    Country string\n}\n\naddresses := map[string]Address{\n    "home": {\n        Street:  "123 Main St",\n        City:    "New York",\n        Country: "USA",\n    },\n    "work": {\n        Street:  "456 Office Ave",\n        City:    "Boston",\n        Country: "USA",\n    },\n}\n\n// Map as function parameter\nfunc processMap(m map[string]int) {\n    m["new"] = 100  // Modifies original map\n}\n\n// Map with custom key type\ntype Person struct {\n    Name string\n    Age  int\n}\n\nfunc (p Person) String() string {\n    return fmt.Sprintf("%s (%d)", p.Name, p.Age)\n}\n\nscores := map[Person]int{\n    {"Alice", 30}: 95,\n    {"Bob", 25}:   87,\n}\n\n// Concurrent map access (not safe)\n// Use sync.Map for concurrent access\nvar safeMap sync.Map\nsafeMap.Store("key", "value")\nif val, ok := safeMap.Load("key"); ok {\n    fmt.Println(val)\n}',
+          command: 'Array with Specific Indices',
+          description: 'Initialize array at specific indices',
+          usage: '[size]type{index: value, index: value}',
+          example: `// Array with specific indices
+months := [12]string{
+    1: "January",
+    2: "February",
+    12: "December",
+}`,
+        },
+        {
+          command: 'Array Operations',
+          description: 'Access and modify array elements',
+          usage: 'array[index] = value',
+          example: `// Array operations
+numbers[0] = 10                      // Set element
+first := numbers[0]                  // Get element
+length := len(numbers)               // Get length`,
+        },
+        {
+          command: 'Arrays are Value Types',
+          description: 'Understanding array copying behavior',
+          usage: 'Arrays are copied when assigned',
+          example: `// Arrays are value types
+arr1 := [3]int{1, 2, 3}
+arr2 := arr1                          // Copy
+arr2[0] = 100                        // Doesn't affect arr1
+fmt.Println(arr1, arr2)              // [1 2 3] [100 2 3]`,
+        },
+        {
+          command: 'Multidimensional Arrays',
+          description: 'Create and use 2D arrays',
+          usage: '[rows][cols]type',
+          example: `// Multidimensional arrays
+var matrix [3][3]int
+matrix[0][0] = 1
+matrix[1][1] = 5
+matrix[2][2] = 9
+
+// 2D array literal
+matrix2 := [3][3]int{
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9},
+}`,
+        },
+        {
+          command: 'Iterating Over Arrays',
+          description: 'Loop through array elements',
+          usage: 'for index, value := range array { }',
+          example: `// Iterating over arrays
+for i, value := range numbers {
+    fmt.Printf("Index %d: %d\n", i, value)
+}`,
+        },
+        {
+          command: 'Comparing Arrays',
+          description: 'Compare arrays for equality',
+          usage: 'array1 == array2',
+          example: `// Comparing arrays
+a := [3]int{1, 2, 3}
+b := [3]int{1, 2, 3}
+c := [3]int{1, 2, 4}
+fmt.Println(a == b)  // true
+fmt.Println(a == c)  // false`,
+        },
+        {
+          command: 'Slice Declaration',
+          description: 'Declare dynamic-size slices',
+          usage: 'var name []type, name := []type{values}',
+          example: `// Slice declaration
+var slice []int                     // nil slice
+numbers := []int{1, 2, 3, 4, 5}    // Slice literal`,
+        },
+        {
+          command: 'Make Slice',
+          description: 'Create slices with make()',
+          usage: 'make([]type, length, capacity)',
+          example: `// Make slice
+slice := make([]int, 5)             // Length 5, capacity 5
+slice := make([]int, 3, 10)         // Length 3, capacity 10`,
+        },
+        {
+          command: 'Append to Slice',
+          description: 'Add elements to slice',
+          usage: 'slice = append(slice, elements)',
+          example: `// Slice operations
+numbers = append(numbers, 6, 7, 8)  // Append elements
+numbers = append(numbers, slice...) // Append another slice`,
+        },
+        {
+          command: 'Slice Slicing',
+          description: 'Create sub-slices from slices',
+          usage: 'slice[start:end]',
+          example: `// Slicing
+numbers := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+sub1 := numbers[2:5]                // [2, 3, 4]
+sub2 := numbers[:5]                 // [0, 1, 2, 3, 4]
+sub3 := numbers[5:]                 // [5, 6, 7, 8, 9]
+sub4 := numbers[:]                  // Copy of entire slice`,
+        },
+        {
+          command: 'Slice Properties',
+          description: 'Get slice length and capacity',
+          usage: 'len(slice), cap(slice)',
+          example: `// Slice properties
+length := len(numbers)              // Length
+capacity := cap(numbers)            // Capacity`,
+        },
+        {
+          command: 'Copy Slices',
+          description: 'Copy elements between slices',
+          usage: 'copy(dest, src)',
+          example: `// Copy slices
+dest := make([]int, len(src))
+copied := copy(dest, src)           // Number of elements copied`,
+        },
+        {
+          command: 'Delete Element from Slice',
+          description: 'Remove element at specific index',
+          usage: 'append(slice[:index], slice[index+1:]...)',
+          example: `// Delete element from slice
+numbers := []int{1, 2, 3, 4, 5}
+index := 2
+numbers = append(numbers[:index], numbers[index+1:]...) // Remove element at index 2`,
+        },
+        {
+          command: 'Insert Element into Slice',
+          description: 'Insert element at specific position',
+          usage: 'append(slice[:index], append([]int{value}, slice[index:]...)...)',
+          example: `// Insert element into slice
+numbers = append(numbers[:index], append([]int{99}, numbers[index:]...)...)`,
+        },
+        {
+          command: 'Filter Slice',
+          description: 'Create filtered version of slice',
+          usage: 'Iterate and conditionally append',
+          example: `// Filter slice
+even := func(numbers []int) []int {
+    var result []int
+    for _, num := range numbers {
+        if num%2 == 0 {
+            result = append(result, num)
+        }
+    }
+    return result
+}`,
+        },
+        {
+          command: 'Slice of Structs',
+          description: 'Create slices containing structs',
+          usage: '[]StructType{values}',
+          example: `// Slice of structs
+type Person struct {
+    Name string
+    Age  int
+}
+
+people := []Person{
+    {"Alice", 30},
+    {"Bob", 25},
+    {"Charlie", 35},
+}`,
+        },
+        {
+          command: 'Slice as Function Parameter',
+          description: 'Pass slices to functions',
+          usage: 'func func(s []int) { }',
+          example: `// Slice as function parameter
+func processSlice(s []int) {
+    s[0] = 100  // Modifies original slice
+}`,
+        },
+        {
+          command: 'Map Declaration',
+          description: 'Declare key-value collections',
+          usage: 'var name map[keyType]valueType, make(map[keyType]valueType)',
+          example: `// Map declaration
+var m map[string]int                 // nil map
+ages := make(map[string]int)         // Empty map`,
+        },
+        {
+          command: 'Map Literal',
+          description: 'Initialize maps with values',
+          usage: 'map[keyType]valueType{key: value}',
+          example: `// Map literal
+person := map[string]interface{}{
+    "name":  "Alice",
+    "age":   30,
+    "email": "alice@example.com",
+}`,
+        },
+        {
+          command: 'Map Operations',
+          description: 'Set, get, and check map values',
+          usage: 'map[key] = value, value, exists := map[key]',
+          example: `// Map operations
+ages["alice"] = 30                   // Set value
+age := ages["alice"]                 // Get value
+age, exists := ages["alice"]         // Get value with existence check
+if !exists {
+    age = 0                          // Default value
+}`,
+        },
+        {
+          command: 'Delete from Map',
+          description: 'Remove key-value pairs from maps',
+          usage: 'delete(map, key)',
+          example: `// Delete from map
+delete(ages, "alice")                // Delete key`,
+        },
+        {
+          command: 'Iterate Over Map',
+          description: 'Loop through map key-value pairs',
+          usage: 'for key, value := range map { }',
+          example: `// Iterate over map
+for key, value := range person {
+    fmt.Printf("%s: %v\n", key, value)
+}`,
+        },
+        {
+          command: 'Check if Map is Empty',
+          description: 'Test if map has no elements',
+          usage: 'len(map) == 0',
+          example: `// Check if map is empty
+if len(ages) == 0 {
+    fmt.Println("Map is empty")
+}`,
+        },
+        {
+          command: 'Map of Structs',
+          description: 'Store structs as map values',
+          usage: 'map[keyType]StructType',
+          example: `// Map of structs
+type Address struct {
+    Street  string
+    City    string
+    Country string
+}
+
+addresses := map[string]Address{
+    "home": {
+        Street:  "123 Main St",
+        City:    "New York",
+        Country: "USA",
+    },
+    "work": {
+        Street:  "456 Office Ave",
+        City:    "Boston",
+        Country: "USA",
+    },
+}`,
+        },
+        {
+          command: 'Map as Function Parameter',
+          description: 'Pass maps to functions',
+          usage: 'func func(m map[string]int) { }',
+          example: `// Map as function parameter
+func processMap(m map[string]int) {
+    m["new"] = 100  // Modifies original map
+}`,
+        },
+        {
+          command: 'Map with Custom Key Type',
+          description: 'Use structs as map keys',
+          usage: 'map[StructType]valueType',
+          example: `// Map with custom key type
+type Person struct {
+    Name string
+    Age  int
+}
+
+func (p Person) String() string {
+    return fmt.Sprintf("%s (%d)", p.Name, p.Age)
+}
+
+scores := map[Person]int{
+    {"Alice", 30}: 95,
+    {"Bob", 25}:   87,
+}`,
+        },
+        {
+          command: 'Concurrent Safe Map',
+          description: 'Use sync.Map for concurrent access',
+          usage: 'sync.Map{}',
+          example: `// Concurrent map access (not safe)
+// Use sync.Map for concurrent access
+var safeMap sync.Map
+safeMap.Store("key", "value")
+if val, ok := safeMap.Load("key"); ok {
+    fmt.Println(val)
+}`,
         },
       ],
     },
@@ -129,47 +1226,491 @@ export const goCheatsheet = {
       title: 'Structs and Interfaces',
       commands: [
         {
-          command: 'Structs',
-          description: 'Custom data types',
+          command: 'Basic Struct Definition',
+          description: 'Define custom data structures',
           usage: 'type Name struct { field1 type1; field2 type2 }',
-          example: '// Basic struct\ntype Person struct {\n    Name string\n    Age  int\n    Email string\n}\n\n// Struct with tags\ntype User struct {\n    ID       int    `json:"id"`\n    Username string `json:"username" db:"username"`\n    Password string `json:"-" db:"password"` // Hyphen means ignore in JSON\n    Created  time.Time `json:"created_at"`\n}\n\n// Embedded struct (composition)\ntype Address struct {\n    Street  string\n    City    string\n    Country string\n}\n\ntype PersonWithAddress struct {\n    Person  // Embedded\n    Address // Embedded\n    Phone   string\n}\n\n// Struct methods\nfunc (p Person) String() string {\n    return fmt.Sprintf("%s (%d years old)", p.Name, p.Age)\n}\n\nfunc (p *Person) HaveBirthday() {\n    p.Age++\n}\n\n// Struct constructors\nfunc NewPerson(name string, age int) *Person {\n    return &Person{\n        Name: name,\n        Age:  age,\n    }\n}\n\n// Using structs\np := Person{\n    Name: "Alice",\n    Age:  30,\n    Email: "alice@example.com",\n}\n\n// Field access\nfmt.Println(p.Name)\np.Age = 31\n\n// Pointer to struct\nptr := &p\nptr.Name = "Bob"\n\n// Struct literals\np1 := Person{Name: "Alice", Age: 30}\np2 := Person{"Bob", 25, "bob@example.com"} // Must provide all fields\n\n// Anonymous struct\nuser := struct {\n    Name string\n    Age  int\n}{\n    Name: "Charlie",\n    Age:  35,\n}\n\n// Comparing structs\na := Person{Name: "Alice", Age: 30}\nb := Person{Name: "Alice", Age: 30}\nfmt.Println(a == b) // true (if all fields are comparable)',
+          example: `// Basic struct
+type Person struct {
+    Name string
+    Age  int
+    Email string
+}`,
         },
         {
-          command: 'Interfaces',
-          description: 'Behavior contracts',
+          command: 'Struct with Tags',
+          description: 'Add metadata to struct fields',
+          usage: 'field type \`tag:"value"\`',
+          example: `// Struct with tags
+type User struct {
+    ID       int    \`json:"id"\`
+    Username string \`json:"username" db:"username"\`
+    Password string \`json:"-" db:"password"\` // Hyphen means ignore in JSON
+    Created  time.Time \`json:"created_at"\`
+}`,
+        },
+        {
+          command: 'Embedded Struct Composition',
+          description: 'Compose structs by embedding',
+          usage: 'type Child struct { Parent; otherField type }',
+          example: `// Embedded struct (composition)
+type Address struct {
+    Street  string
+    City    string
+    Country string
+}
+
+type PersonWithAddress struct {
+    Person  // Embedded
+    Address // Embedded
+    Phone   string
+}`,
+        },
+        {
+          command: 'Struct Methods',
+          description: 'Define methods on structs',
+          usage: 'func (s Struct) Method() returnType { }',
+          example: `// Struct methods
+func (p Person) String() string {
+    return fmt.Sprintf("%s (%d years old)", p.Name, p.Age)
+}
+
+func (p *Person) HaveBirthday() {
+    p.Age++
+}`,
+        },
+        {
+          command: 'Struct Constructors',
+          description: 'Create constructor functions for structs',
+          usage: 'func NewStruct(params) *Struct { }',
+          example: `// Struct constructors
+func NewPerson(name string, age int) *Person {
+    return &Person{
+        Name: name,
+        Age:  age,
+    }
+}`,
+        },
+        {
+          command: 'Using Structs',
+          description: 'Create and use struct instances',
+          usage: 'structName{field: value}',
+          example: `// Using structs
+p := Person{
+    Name: "Alice",
+    Age:  30,
+    Email: "alice@example.com",
+}
+
+// Field access
+fmt.Println(p.Name)
+p.Age = 31`,
+        },
+        {
+          command: 'Pointer to Struct',
+          description: 'Work with struct pointers',
+          usage: '&struct, pointer.field',
+          example: `// Pointer to struct
+ptr := &p
+ptr.Name = "Bob"`,
+        },
+        {
+          command: 'Struct Literals',
+          description: 'Initialize structs in different ways',
+          usage: 'Struct{field: value} or Struct{value1, value2}',
+          example: `// Struct literals
+p1 := Person{Name: "Alice", Age: 30}
+p2 := Person{"Bob", 25, "bob@example.com"} // Must provide all fields`,
+        },
+        {
+          command: 'Anonymous Struct',
+          description: 'Create structs without named type',
+          usage: 'struct { field type }{value}',
+          example: `// Anonymous struct
+user := struct {
+    Name string
+    Age  int
+}{
+    Name: "Charlie",
+    Age:  35,
+}`,
+        },
+        {
+          command: 'Comparing Structs',
+          description: 'Compare struct instances',
+          usage: 'struct1 == struct2',
+          example: `// Comparing structs
+a := Person{Name: "Alice", Age: 30}
+b := Person{Name: "Alice", Age: 30}
+fmt.Println(a == b) // true (if all fields are comparable)`,
+        },
+        {
+          command: 'Basic Interface Definition',
+          description: 'Define behavior contracts',
           usage: 'type Name interface { method1(); method2() }',
-          example: '// Basic interface\ntype Shape interface {\n    Area() float64\n    Perimeter() float64\n}\n\n// Interface with multiple methods\ntype Writer interface {\n    Write([]byte) (int, error)\n    Flush() error\n}\n\n// Empty interface (any type)\ntype Any interface{}\n\n// Interface embedding\ntype Reader interface {\n    Read([]byte) (int, error)\n}\n\ntype ReadWriter interface {\n    Reader\n    Writer\n}\n\n// Implementing interface\ntype Rectangle struct {\n    Width  float64\n    Height float64\n}\n\nfunc (r Rectangle) Area() float64 {\n    return r.Width * r.Height\n}\n\nfunc (r Rectangle) Perimeter() float64 {\n    return 2 * (r.Width + r.Height)\n}\n\ntype Circle struct {\n    Radius float64\n}\n\nfunc (c Circle) Area() float64 {\n    return math.Pi * c.Radius * c.Radius\n}\n\nfunc (c Circle) Perimeter() float64 {\n    return 2 * math.Pi * c.Radius\n}\n\n// Using interfaces\nfunc PrintShapeInfo(s Shape) {\n    fmt.Printf("Area: %.2f, Perimeter: %.2f\\n", s.Area(), s.Perimeter())\n}\n\n// Interface as field\ntype Drawer struct {\n    shapes []Shape\n}\n\nfunc (d *Drawer) AddShape(s Shape) {\n    d.shapes = append(d.shapes, s)\n}\n\nfunc (d *Drawer) DrawAll() {\n    for _, shape := range d.shapes {\n        PrintShapeInfo(shape)\n    }\n}\n\n// Type assertion\nvar s Shape = Rectangle{Width: 10, Height: 5}\nif rect, ok := s.(Rectangle); ok {\n    fmt.Printf("Rectangle: %.2f x %.2f\\n", rect.Width, rect.Height)\n}\n\n// Type switch\nfunc describeType(i interface{}) {\n    switch v := i.(type) {\n    case int:\n        fmt.Printf("Integer: %d\\n", v)\n    case string:\n        fmt.Printf("String: %s\\n", v)\n    case Rectangle:\n        fmt.Printf("Rectangle: %.2f x %.2f\\n", v.Width, v.Height)\n    default:\n        fmt.Printf("Unknown type: %T\\n", v)\n    }\n}',
+          example: `// Basic interface
+type Shape interface {
+    Area() float64
+    Perimeter() float64
+}`,
         },
         {
-          command: 'Interface Composition and Best Practices',
-          description: 'Advanced interface patterns',
-          usage: 'interface embedding, design patterns',
-          example: '// Interface composition\ntype Reader interface {\n    Read(p []byte) (n int, err error)\n}\n\ntype Writer interface {\n    Write(p []byte) (n int, err error)\n}\n\ntype ReadWriter interface {\n    Reader\n    Writer\n}\n\ntype ReadWriteCloser interface {\n    Reader\n    Writer\n    Closer\n}\n\ntype Closer interface {\n    Close() error\n}\n\n// Interface with type parameters (Go 1.18+)\ntype Comparable[T any] interface {\n    Compare(other T) int\n}\n\n// Interface as constraint\ntype Ordered interface {\n    ~int | ~int8 | ~int16 | ~int32 | ~int64 |\n        ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 |\n        ~float32 | ~float64 | ~string\n}\n\n// Generic interface\ntype Container[T any] interface {\n    Add(item T)\n    Get(index int) T\n    Size() int\n}\n\n// Interface best practices\ntype Logger interface {\n    Log(message string)\n}\n\n// Accept interfaces, return structs\nfunc ProcessData(data []byte, logger Logger) error {\n    logger.Log("Processing data")\n    // Process data\n    return nil\n}\n\n// Small interfaces are better\ntype Reader interface {\n    Read([]byte) (int, error)\n}\n\n// Large interfaces are harder to implement\ntype ComplexInterface interface {\n    Method1()\n    Method2()\n    Method3()\n    Method4()\n    Method5()\n}\n\n// Interface for testing\ntype Database interface {\n    GetUser(id int) (*User, error)\n    SaveUser(user *User) error\n    DeleteUser(id int) error\n}\n\n// Mock implementation for testing\ntype MockDatabase struct {\n    users map[int]*User\n}\n\nfunc (m *MockDatabase) GetUser(id int) (*User, error) {\n    user, exists := m.users[id]\n    if !exists {\n        return nil, fmt.Errorf("user not found")\n    }\n    return user, nil\n}\n\nfunc (m *MockDatabase) SaveUser(user *User) error {\n    m.users[user.ID] = user\n    return nil\n}\n\nfunc (m *MockDatabase) DeleteUser(id int) error {\n    delete(m.users, id)\n    return nil\n}',
+          command: 'Interface with Multiple Methods',
+          description: 'Interfaces with multiple method requirements',
+          usage: 'type Name interface { method1() error; method2() int }',
+          example: `// Interface with multiple methods
+type Writer interface {
+    Write([]byte) (int, error)
+    Flush() error
+}`,
+        },
+        {
+          command: 'Empty Interface',
+          description: 'Interface that accepts any type',
+          usage: 'interface{} or any',
+          example: `// Empty interface (any type)
+type Any interface{}`,
+        },
+        {
+          command: 'Interface Embedding',
+          description: 'Compose interfaces by embedding',
+          usage: 'type Combined interface { Interface1; Interface2 }',
+          example: `// Interface embedding
+type Reader interface {
+    Read([]byte) (int, error)
+}
+
+type ReadWriter interface {
+    Reader
+    Writer
+}`,
+        },
+        {
+          command: 'Implementing Interface',
+          description: 'Create types that satisfy interfaces',
+          usage: 'func (t Type) Method() returnType { }',
+          example: `// Implementing interface
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+func (r Rectangle) Perimeter() float64 {
+    return 2 * (r.Width + r.Height)
+}`,
+        },
+        {
+          command: 'Using Interfaces',
+          description: 'Use interfaces as function parameters',
+          usage: 'func func(s Interface) { }',
+          example: `// Using interfaces
+func PrintShapeInfo(s Shape) {
+    fmt.Printf("Area: %.2f, Perimeter: %.2f\n", s.Area(), s.Perimeter())
+}`,
+        },
+        {
+          command: 'Interface as Field',
+          description: 'Store interfaces in struct fields',
+          usage: 'type Struct struct { field Interface }',
+          example: `// Interface as field
+type Drawer struct {
+    shapes []Shape
+}
+
+func (d *Drawer) AddShape(s Shape) {
+    d.shapes = append(d.shapes, s)
+}
+
+func (d *Drawer) DrawAll() {
+    for _, shape := range d.shapes {
+        PrintShapeInfo(shape)
+    }
+}`,
+        },
+        {
+          command: 'Type Assertion',
+          description: 'Convert interface to concrete type',
+          usage: 'value := interface.(ConcreteType)',
+          example: `// Type assertion
+var s Shape = Rectangle{Width: 10, Height: 5}
+if rect, ok := s.(Rectangle); ok {
+    fmt.Printf("Rectangle: %.2f x %.2f\n", rect.Width, rect.Height)
+}`,
+        },
+        {
+          command: 'Type Switch',
+          description: 'Switch on interface type',
+          usage: 'switch v := i.(type) { case Type: ... }',
+          example: `// Type switch
+func describeType(i interface{}) {
+    switch v := i.(type) {
+    case int:
+        fmt.Printf("Integer: %d\n", v)
+    case string:
+        fmt.Printf("String: %s\n", v)
+    case Rectangle:
+        fmt.Printf("Rectangle: %.2f x %.2f\n", v.Width, v.Height)
+    default:
+        fmt.Printf("Unknown type: %T\n", v)
+    }
+}`,
         },
       ],
     },
-
     // ADVANCED LEVEL
     {
       title: 'Error Handling and Testing',
       commands: [
         {
-          command: 'Error Handling',
-          description: 'Go error handling patterns',
-          usage: 'error type, fmt.Errorf, custom errors',
-          example: '// Basic error handling\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf("division by zero")\n    }\n    return a / b, nil\n}\n\n// Using error handling\nresult, err := divide(10, 0)\nif err != nil {\n    fmt.Printf("Error: %v\\n", err)\n    return\n}\nfmt.Printf("Result: %.2f\\n", result)\n\n// Custom error type\ntype ValidationError struct {\n    Field   string\n    Message string\n}\n\nfunc (e ValidationError) Error() string {\n    return fmt.Sprintf("validation error in field %s: %s", e.Field, e.Message)\n}\n\nfunc validateAge(age int) error {\n    if age < 0 {\n        return ValidationError{Field: "age", Message: "age cannot be negative"}\n    }\n    if age > 120 {\n        return ValidationError{Field: "age", Message: "age seems unrealistic"}\n    }\n    return nil\n}\n\n// Error wrapping (Go 1.13+)\nfunc processFile(filename string) error {\n    content, err := os.ReadFile(filename)\n    if err != nil {\n        return fmt.Errorf("failed to read file %s: %w", filename, err)\n    }\n    // Process content\n    return nil\n}\n\n// Error unwrapping\nfunc handleError(err error) {\n    if errors.Is(err, os.ErrNotExist) {\n        fmt.Println("File does not exist")\n    } else if errors.Is(err, os.ErrPermission) {\n        fmt.Println("Permission denied")\n    }\n    \n    var validationErr ValidationError\n    if errors.As(err, &validationErr) {\n        fmt.Printf("Validation error in field %s\\n", validationErr.Field)\n    }\n}\n\n// Panic and recover\nfunc riskyOperation() {\n    defer func() {\n        if r := recover(); r != nil {\n            fmt.Printf("Recovered from panic: %v\\n", r)\n        }\n    }()\n    \n    // Something that might panic\n    panic("something went wrong")\n}\n\n// Error handling patterns\nfunc readFile(filename string) ([]byte, error) {\n    // Early return pattern\n    if filename == "" {\n        return nil, fmt.Errorf("filename cannot be empty")\n    }\n    \n    content, err := os.ReadFile(filename)\n    if err != nil {\n        return nil, fmt.Errorf("failed to read file: %w", err)\n    }\n    \n    return content, nil\n}\n\n// Sentinel errors\nvar ErrNotFound = errors.New("not found")\nvar ErrInvalidInput = errors.New("invalid input")\n\nfunc findUser(id int) (*User, error) {\n    if id <= 0 {\n        return nil, ErrInvalidInput\n    }\n    // Search for user\n    return nil, ErrNotFound\n}',
+          command: 'Basic Error Handling',
+          description: 'Handle errors with if statements',
+          usage: 'if err != nil { return err }',
+          example: `// Basic error handling
+func divide(a, b float64) (float64, error) {
+    if b == 0 {
+        return 0, fmt.Errorf("division by zero")
+    }
+    return a / b, nil
+}
+
+// Using error handling
+result, err := divide(10, 0)
+if err != nil {
+    fmt.Printf("Error: %v\n", err)
+    return
+}
+fmt.Printf("Result: %.2f\n", result)`,
         },
         {
-          command: 'Testing',
-          description: 'Go testing framework',
-          usage: 'testing package, table-driven tests, benchmarks',
-          example: '// Basic test\nfunc TestAdd(t *testing.T) {\n    result := add(2, 3)\n    expected := 5\n    if result != expected {\n        t.Errorf("add(2, 3) = %d; want %d", result, expected)\n    }\n}\n\n// Table-driven tests\nfunc TestCalculateArea(t *testing.T) {\n    tests := []struct {\n        name     string\n        width    float64\n        height   float64\n        expected float64\n    }{\n        {"square", 5.0, 5.0, 25.0},\n        {"rectangle", 10.0, 5.0, 50.0},\n        {"zero width", 0.0, 5.0, 0.0},\n        {"zero height", 5.0, 0.0, 0.0},\n    }\n    \n    for _, tt := range tests {\n        t.Run(tt.name, func(t *testing.T) {\n            result := calculateArea(tt.width, tt.height)\n            if result != tt.expected {\n                t.Errorf("calculateArea(%f, %f) = %f; want %f",\n                    tt.width, tt.height, result, tt.expected)\n            }\n        })\n    }\n}\n\n// Error testing\nfunc TestValidateAge(t *testing.T) {\n    tests := []struct {\n        name    string\n        age     int\n        wantErr bool\n        errType error\n    }{\n        {"valid age", 25, false, nil},\n        {"negative age", -1, true, ValidationError{}},\n        {"too old", 130, true, ValidationError{}},\n    }\n    \n    for _, tt := range tests {\n        t.Run(tt.name, func(t *testing.T) {\n            err := validateAge(tt.age)\n            if (err != nil) != tt.wantErr {\n                t.Errorf("validateAge(%d) error = %v; wantErr %v",\n                    tt.age, err, tt.wantErr)\n            }\n            \n            if tt.wantErr && tt.errType != nil {\n                var validationErr ValidationError\n                if !errors.As(err, &validationErr) {\n                    t.Errorf("validateAge(%d) error type = %T; want %T",\n                        tt.age, err, tt.errType)\n                }\n            }\n        })\n    }\n}\n\n// Benchmark tests\nfunc BenchmarkAdd(b *testing.B) {\n    for i := 0; i < b.N; i++ {\n        add(100, 200)\n    }\n}\n\nfunc BenchmarkStringConcatenation(b *testing.B) {\n    str1 := "Hello, "\n    str2 := "World!"\n    \n    b.ResetTimer()\n    for i := 0; i < b.N; i++ {\n        result := str1 + str2\n        _ = result\n    }\n}\n\n// Example tests\ncalculator := NewCalculator()\nresult, err := calculator.Calculate(10, 5, "add")\nif err != nil {\n    fmt.Printf("Error: %v\\n", err)\n} else {\n    fmt.Printf("Result: %d\\n", result)\n}\n\n// Test helpers\nfunc assertEqual[T comparable](t *testing.T, got, want T) {\n    t.Helper()\n    if got != want {\n        t.Errorf("got %v, want %v", got, want)\n    }\n}\n\nfunc assertNoError(t *testing.T, err error) {\n    t.Helper()\n    if err != nil {\n        t.Errorf("unexpected error: %v", err)\n    }\n}\n\nfunc TestWithHelpers(t *testing.T) {\n    result := add(2, 3)\n    assertEqual(t, result, 5)\n    \n    _, err := divide(10, 2)\n    assertNoError(t, err)\n}\n\n// Mock testing\ntype MockService struct {\n    calls []string\n}\n\nfunc (m *MockService) Process(data string) error {\n    m.calls = append(m.calls, "Process: "+data)\n    return nil\n}\n\nfunc TestServiceIntegration(t *testing.T) {\n    mock := &MockService{}\n    service := NewService(mock)\n    \n    err := service.DoWork("test data")\n    assertNoError(t, err)\n    \n    if len(mock.calls) != 1 {\n        t.Errorf("expected 1 call, got %d", len(mock.calls))\n    }\n    \n    if mock.calls[0] != "Process: test data" {\n        t.Errorf("expected call to Process with test data, got %s", mock.calls[0])\n    }\n}',
+          command: 'Custom Error Type',
+          description: 'Create your own error types',
+          usage: 'type Error struct { Field string; Message string }',
+          example: `// Custom error type
+type ValidationError struct {
+    Field   string
+    Message string
+}
+
+func (e ValidationError) Error() string {
+    return fmt.Sprintf("validation error in field %s: %s", e.Field, e.Message)
+}
+
+func validateAge(age int) error {
+    if age < 0 {
+        return ValidationError{Field: "age", Message: "age cannot be negative"}
+    }
+    if age > 120 {
+        return ValidationError{Field: "age", Message: "age seems unrealistic"}
+    }
+    return nil
+}`,
         },
         {
-          command: 'Test Coverage and CI/CD',
-          description: 'Test coverage and continuous integration',
-          usage: 'go test -cover, CI/CD configuration',
-          example: '# Run tests with coverage\ngo test -cover ./...\n\n# Generate coverage report\ngo test -coverprofile=coverage.out ./...\ngo tool cover -html=coverage.out -o coverage.html\n\n# Show coverage percentage\ngo test -cover ./... | grep "coverage:"\n\n# Coverage for specific package\ngo test -coverprofile=math.cover ./math\ngo tool cover -func=math.cover\n\n# Set coverage threshold\ngo test -cover ./... | awk \'/coverage:/{print $3}\' | sed \'s/%//\' | awk \'{if ($1 < 80) exit 1}\'\n\n# GitHub Actions workflow (.github/workflows/test.yml)\nname: Test\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    \n    strategy:\n      matrix:\n        go-version: [1.19, 1.20, 1.21]\n    \n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Set up Go\n      uses: actions/setup-go@v3\n      with:\n        go-version: \\${{ matrix.go-version }}\n    \n    - name: Cache Go modules\n      uses: actions/cache@v3\n      with:\n        path: ~/go/pkg/mod\n        key: \\${{ runner.os }}-go-\\${{ matrix.go-version }}-\\${{ hashFiles(\'**/go.sum\') }}\n    \n    - name: Download dependencies\n      run: go mod download\n    \n    - name: Run tests\n      run: go test -v -race -coverprofile=coverage.out ./...\n    \n    - name: Upload coverage to Codecov\n      uses: codecov/codecov-action@v3\n      with:\n        file: ./coverage.out\n        flags: unittests\n        name: codecov-umbrella\n    \n    - name: Run benchmark\n      run: go test -bench=. -benchmem ./...\n    \n    - name: Check code formatting\n      run: if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi\n    \n    - name: Run go vet\n      run: go vet ./...\n    \n    - name: Run golint\n      run: golint ./...\n\n# Makefile for testing\n.PHONY: test test-coverage test-bench lint clean\n\ntest:\n\tgo test -v ./...\n\ntest-coverage:\n\tgo test -v -coverprofile=coverage.out ./...\n\tgo tool cover -html=coverage.out -o coverage.html\n\ntest-bench:\n\tgo test -bench=. -benchmem ./...\n\nlint:\n\tgofmt -s -l .\n\tgo vet ./...\n\tgolint ./...\n\nclean:\n\trm -f coverage.out coverage.html\n\n# Dockerfile for testing\nFROM golang:1.21-alpine AS test\n\nWORKDIR /app\nCOPY go.mod go.sum ./\nRUN go mod download\n\nCOPY . .\nRUN go test -v -race -cover ./...\n\n# Integration testing\nfunc TestIntegration(t *testing.T) {\n    if testing.Short() {\n        t.Skip("Skipping integration test in short mode")\n    }\n    \n    // Integration test code\n    db := setupTestDatabase(t)\n    defer cleanupTestDatabase(t, db)\n    \n    // Test database operations\n    user := &User{Name: "Test User", Email: "test@example.com"}\n    err := db.SaveUser(user)\n    if err != nil {\n        t.Fatalf("Failed to save user: %v", err)\n    }\n    \n    saved, err := db.GetUser(user.ID)\n    if err != nil {\n        t.Fatalf("Failed to get user: %v", err)\n    }\n    \n    if saved.Name != user.Name {\n        t.Errorf("Expected name %s, got %s", user.Name, saved.Name)\n    }\n}',
+          command: 'Error Wrapping',
+          description: 'Wrap errors with context (Go 1.13+)',
+          usage: 'fmt.Errorf("context: %w", err)',
+          example: `// Error wrapping (Go 1.13+)
+func processFile(filename string) error {
+    content, err := os.ReadFile(filename)
+    if err != nil {
+        return fmt.Errorf("failed to read file %s: %w", filename, err)
+    }
+    // Process content
+    return nil
+}`,
+        },
+        {
+          command: 'Error Unwrapping',
+          description: 'Check and unwrap errors',
+          usage: 'errors.Is(err, target), errors.As(err, &target)',
+          example: `// Error unwrapping
+func handleError(err error) {
+    if errors.Is(err, os.ErrNotExist) {
+        fmt.Println("File does not exist")
+    } else if errors.Is(err, os.ErrPermission) {
+        fmt.Println("Permission denied")
+    }
+    
+    var validationErr ValidationError
+    if errors.As(err, &validationErr) {
+        fmt.Printf("Validation error in field %s\n", validationErr.Field)
+    }
+}`,
+        },
+        {
+          command: 'Panic and Recover',
+          description: 'Handle runtime panics',
+          usage: 'panic(), recover()',
+          example: `// Panic and recover
+func riskyOperation() {
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Printf("Recovered from panic: %v\n", r)
+        }
+    }()
+    
+    // Something that might panic
+    panic("something went wrong")
+}`,
+        },
+        {
+          command: 'Basic Test Function',
+          description: 'Create simple unit tests',
+          usage: 'func TestFunction(t *testing.T) { }',
+          example: `// Basic test
+func TestAdd(t *testing.T) {
+    result := add(2, 3)
+    expected := 5
+    if result != expected {
+        t.Errorf("add(2, 3) = %d; want %d", result, expected)
+    }
+}`,
+        },
+        {
+          command: 'Table-Driven Tests',
+          description: 'Test multiple cases with struct slices',
+          usage: 'tests := []struct { name string; input type; expected type }',
+          example: `// Table-driven tests
+func TestCalculateArea(t *testing.T) {
+    tests := []struct {
+        name     string
+        width    float64
+        height   float64
+        expected float64
+    }{
+        {"square", 5.0, 5.0, 25.0},
+        {"rectangle", 10.0, 5.0, 50.0},
+        {"zero width", 0.0, 5.0, 0.0},
+        {"zero height", 5.0, 0.0, 0.0},
+    }
+    
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            result := calculateArea(tt.width, tt.height)
+            if result != tt.expected {
+                t.Errorf("calculateArea(%f, %f) = %f; want %f",
+                    tt.width, tt.height, result, tt.expected)
+            }
+        })
+    }
+}`,
+        },
+        {
+          command: 'Error Testing',
+          description: 'Test error conditions and types',
+          usage: 'Test error returns and types',
+          example: `// Error testing
+func TestValidateAge(t *testing.T) {
+    tests := []struct {
+        name    string
+        age     int
+        wantErr bool
+        errType error
+    }{
+        {"valid age", 25, false, nil},
+        {"negative age", -1, true, ValidationError{}},
+        {"too old", 130, true, ValidationError{}},
+    }
+    
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            err := validateAge(tt.age)
+            if (err != nil) != tt.wantErr {
+                t.Errorf("validateAge(%d) error = %v; wantErr %v",
+                    tt.age, err, tt.wantErr)
+            }
+            
+            if tt.wantErr && tt.errType != nil {
+                var validationErr ValidationError
+                if !errors.As(err, &validationErr) {
+                    t.Errorf("validateAge(%d) error type = %T; want %T",
+                        tt.age, err, tt.errType)
+                }
+            }
+        })
+    }
+}`,
+        },
+        {
+          command: 'Benchmark Tests',
+          description: 'Measure performance of functions',
+          usage: 'func BenchmarkFunction(b *testing.B) { }',
+          example: `// Benchmark tests
+func BenchmarkAdd(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        add(2, 3)
+    }
+}
+
+func BenchmarkStringConcatenation(b *testing.B) {
+    str1 := "Hello, "
+    str2 := "World!"
+    
+    b.ResetTimer()
+    for i := 0; i < b.N; i++ {
+        result := str1 + str2
+        _ = result
+    }
+}`,
+        },
+        {
+          command: 'Test Coverage',
+          description: 'Generate and analyze test coverage',
+          usage: 'go test -cover ./...',
+          example: `# Run tests with coverage
+go test -cover ./...
+
+# Generate coverage report
+go test -coverprofile=coverage.out ./...
+go tool cover -html=coverage.out -o coverage.html
+
+# Show coverage percentage
+go test -cover ./... | grep "coverage:"`,
+        },
+        {
+          command: 'CI/CD Configuration',
+          description: 'Set up continuous integration',
+          usage: 'GitHub Actions workflow',
+          example: `# GitHub Actions workflow (.github/workflows/test.yml)
+name: Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        go-version: [1.19, 1.20, 1.21]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: \${{ matrix.go-version }}
+    
+    - name: Download dependencies
+      run: go mod download
+    
+    - name: Run tests
+      run: go test -v -race -coverprofile=coverage.out ./...
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.out
+        flags: unittests
+        name: codecov-umbrella`,
         },
       ],
     },
@@ -177,22 +1718,302 @@ export const goCheatsheet = {
       title: 'Concurrency and Parallelism',
       commands: [
         {
-          command: 'Goroutines',
-          description: 'Lightweight threads',
-          usage: 'go keyword, goroutine lifecycle',
-          example: '// Basic goroutine\nfunc sayHello(name string) {\n    for i := 0; i < 5; i++ {\n        fmt.Printf("Hello, %s! (%d)\\n", name, i)\n        time.Sleep(100 * time.Millisecond)\n    }\n}\n\nfunc main() {\n    // Start goroutine\n    go sayHello("Alice")\n    go sayHello("Bob")\n    \n    // Wait for goroutines to finish\n    time.Sleep(1 * time.Second)\n    fmt.Println("Main function finished")\n}\n\n// Goroutine with anonymous function\nfunc main() {\n    go func() {\n        fmt.Println("Anonymous goroutine")\n    }()\n    \n    // Goroutine with parameters\n    go func(msg string) {\n        fmt.Println(msg)\n    }("Hello from goroutine")\n    \n    time.Sleep(100 * time.Millisecond)\n}\n\n// Goroutine with closure\nfunc main() {\n    numbers := []int{1, 2, 3, 4, 5}\n    \n    for _, num := range numbers {\n        go func(n int) {\n            fmt.Printf("Processing %d\\n", n)\n        }(num) // Pass num as parameter to avoid race condition\n    }\n    \n    time.Sleep(100 * time.Millisecond)\n}\n\n// Goroutine lifecycle management\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n    for j := range jobs {\n        fmt.Printf("Worker %d processing job %d\\n", id, j)\n        time.Sleep(time.Second)\n        results <- j * 2\n    }\n}\n\nfunc main() {\n    jobs := make(chan int, 100)\n    results := make(chan int, 100)\n    \n    // Start workers\n    for w := 1; w <= 3; w++ {\n        go worker(w, jobs, results)\n    }\n    \n    // Send jobs\n    for j := 1; j <= 5; j++ {\n        jobs <- j\n    }\n    close(jobs)\n    \n    // Collect results\n    for a := 1; a <= 5; a++ {\n        <-results\n    }\n}\n\n// Goroutine pool pattern\ntype WorkerPool struct {\n    tasks    chan func()\n    workers  int\n    quit     chan bool\n}\n\nfunc NewWorkerPool(workers int) *WorkerPool {\n    return &WorkerPool{\n        tasks:   make(chan func()),\n        workers: workers,\n        quit:    make(chan bool),\n    }\n}\n\nfunc (wp *WorkerPool) Start() {\n    for i := 0; i < wp.workers; i++ {\n        go wp.worker()\n    }\n}\n\nfunc (wp *WorkerPool) worker() {\n    for {\n        select {\n        case task := <-wp.tasks:\n            task()\n        case <-wp.quit:\n            return\n        }\n    }\n}\n\nfunc (wp *WorkerPool) Submit(task func()) {\n    wp.tasks <- task\n}\n\nfunc (wp *WorkerPool) Stop() {\n    close(wp.quit)\n}',
+          command: 'Basic Goroutine',
+          description: 'Start lightweight threads',
+          usage: 'go functionName()',
+          example: `// Basic goroutine
+func sayHello(name string) {
+    for i := 0; i < 5; i++ {
+        fmt.Printf("Hello, %s! (%d)\n", name, i)
+        time.Sleep(100 * time.Millisecond)
+    }
+}
+
+func main() {
+    // Start goroutine
+    go sayHello("Alice")
+    go sayHello("Bob")
+    
+    // Wait for goroutines to finish
+    time.Sleep(1 * time.Second)
+    fmt.Println("Main function finished")
+}`,
         },
         {
-          command: 'Channels',
-          description: 'Communication between goroutines',
-          usage: 'make(chan type), <- operator, select',
-          example: '// Basic channel operations\nfunc main() {\n    // Create channel\n    ch := make(chan int)\n    \n    // Send data in goroutine\n    go func() {\n        ch <- 42 // Send value to channel\n    }()\n    \n    // Receive data\n    value := <-ch\n    fmt.Printf("Received: %d\\n", value)\n}\n\n// Buffered channel\nfunc main() {\n    // Buffered channel with capacity 3\n    ch := make(chan string, 3)\n    \n    // Send without blocking\n    ch <- "hello"\n    ch <- "world"\n    ch <- "go"\n    \n    // Receive\n    fmt.Println(<-ch)\n    fmt.Println(<-ch)\n    fmt.Println(<-ch)\n}\n\n// Channel directions\nfunc sender(ch chan<- int) {\n    for i := 0; i < 5; i++ {\n        ch <- i\n        fmt.Printf("Sent: %d\\n", i)\n    }\n    close(ch)\n}\n\nfunc receiver(ch <-chan int) {\n    for value := range ch {\n        fmt.Printf("Received: %d\\n", value)\n    }\n}\n\nfunc main() {\n    ch := make(chan int)\n    go sender(ch)\n    receiver(ch)\n}\n\n// Select statement\nfunc main() {\n    ch1 := make(chan string)\n    ch2 := make(chan string)\n    \n    go func() {\n        time.Sleep(1 * time.Second)\n        ch1 <- "from ch1"\n    }()\n    \n    go func() {\n        time.Sleep(2 * time.Second)\n        ch2 <- "from ch2"\n    }()\n    \n    for i := 0; i < 2; i++ {\n        select {\n        case msg1 := <-ch1:\n            fmt.Println(msg1)\n        case msg2 := <-ch2:\n            fmt.Println(msg2)\n        case <-time.After(3 * time.Second):\n            fmt.Println("Timeout!")\n        }\n    }\n}\n\n// Select with default\nfunc main() {\n    ch := make(chan int)\n    \n    for i := 0; i < 5; i++ {\n        select {\n        case ch <- i:\n            fmt.Printf("Sent: %d\\n", i)\n        default:\n            fmt.Printf("Channel full, dropped: %d\\n", i)\n        }\n    }\n}\n\n// Fan-out/Fan-in pattern\nfunc fanIn(input1, input2 <-chan string) <-chan string {\n    output := make(chan string)\n    \n    go func() {\n        defer close(output)\n        for {\n            select {\n            case s := <-input1:\n                output <- s\n            case s := <-input2:\n                output <- s\n            }\n        }\n    }()\n    \n    return output\n}\n\nfunc main() {\n    ch1 := make(chan string)\n    ch2 := make(chan string)\n    \n    go func() {\n        for i := 0; i < 5; i++ {\n            ch1 <- fmt.Sprintf("ch1-%d", i)\n            time.Sleep(100 * time.Millisecond)\n        }\n        close(ch1)\n    }()\n    \n    go func() {\n        for i := 0; i < 5; i++ {\n            ch2 <- fmt.Sprintf("ch2-%d", i)\n            time.Sleep(150 * time.Millisecond)\n        }\n        close(ch2)\n    }()\n    \n    output := fanIn(ch1, ch2)\n    \n    for msg := range output {\n        fmt.Println(msg)\n    }\n}',
+          command: 'Anonymous Goroutine',
+          description: 'Start goroutine with anonymous function',
+          usage: 'go func() { }()',
+          example: `// Goroutine with anonymous function
+func main() {
+    go func() {
+        fmt.Println("Anonymous goroutine")
+    }()
+    
+    // Goroutine with parameters
+    go func(msg string) {
+        fmt.Println(msg)
+    }("Hello from goroutine")
+    
+    time.Sleep(100 * time.Millisecond)
+}`,
         },
         {
-          command: 'Sync Package',
-          description: 'Synchronization primitives',
-          usage: 'sync.Mutex, sync.WaitGroup, sync.Once',
-          example: '// Mutex for mutual exclusion\ntype Counter struct {\n    mu    sync.Mutex\n    value int\n}\n\nfunc (c *Counter) Increment() {\n    c.mu.Lock()\n    defer c.mu.Unlock()\n    c.value++\n}\n\nfunc (c *Counter) Value() int {\n    c.mu.Lock()\n    defer c.mu.Unlock()\n    return c.value\n}\n\n// WaitGroup for waiting for goroutines\nfunc main() {\n    var wg sync.WaitGroup\n    \n    for i := 0; i < 5; i++ {\n        wg.Add(1)\n        go func(id int) {\n            defer wg.Done()\n            fmt.Printf("Worker %d starting\\n", id)\n            time.Sleep(time.Second)\n            fmt.Printf("Worker %d finished\\n", id)\n        }(i)\n    }\n    \n    wg.Wait()\n    fmt.Println("All workers finished")\n}\n\n// Once for one-time initialization\ntype Singleton struct {\n    data string\n}\n\nvar (\n    instance *Singleton\n    once     sync.Once\n)\n\nfunc GetInstance() *Singleton {\n    once.Do(func() {\n        instance = &Singleton{data: "singleton data"}\n    })\n    return instance\n}\n\n// RWMutex for read-write locks\ntype Cache struct {\n    mu    sync.RWMutex\n    items map[string]string\n}\n\nfunc NewCache() *Cache {\n    return &Cache{\n        items: make(map[string]string),\n    }\n}\n\nfunc (c *Cache) Get(key string) (string, bool) {\n    c.mu.RLock()\n    defer c.mu.RUnlock()\n    value, exists := c.items[key]\n    return value, exists\n}\n\nfunc (c *Cache) Set(key, value string) {\n    c.mu.Lock()\n    defer c.mu.Unlock()\n    c.items[key] = value\n}\n\n// Cond for condition variables\ntype Queue struct {\n    mu    sync.Mutex\n    cond  *sync.Cond\n    items []int\n}\n\nfunc NewQueue() *Queue {\n    q := &Queue{}\n    q.cond = sync.NewCond(&q.mu)\n    return q\n}\n\nfunc (q *Queue) Put(item int) {\n    q.mu.Lock()\n    defer q.mu.Unlock()\n    q.items = append(q.items, item)\n    q.cond.Signal() // Wake up one goroutine\n}\n\nfunc (q *Queue) Get() int {\n    q.mu.Lock()\n    defer q.mu.Unlock()\n    \n    for len(q.items) == 0 {\n        q.cond.Wait() // Wait until signaled\n    }\n    \n    item := q.items[0]\n    q.items = q.items[1:]\n    return item\n}\n\n// Pool for object reuse\nvar bufferPool = sync.Pool{\n    New: func() interface{} {\n        return make([]byte, 1024)\n    },\n}\n\nfunc processData(data []byte) {\n    buf := bufferPool.Get().([]byte)\n    defer bufferPool.Put(buf)\n    \n    // Use buffer\n    copy(buf, data)\n    // Process buffer\n}\n\n// Atomic operations\nfunc main() {\n    var counter int64\n    \n    // Increment atomically\n    atomic.AddInt64(&counter, 1)\n    \n    // Load atomically\n    value := atomic.LoadInt64(&counter)\n    fmt.Printf("Counter: %d\\n", value)\n    \n    // Compare and swap\n    swapped := atomic.CompareAndSwapInt64(&counter, value, value+1)\n    fmt.Printf("Swapped: %v\\n", swapped)\n}',
+          command: 'Goroutine with Closure',
+          description: 'Handle closures in goroutines correctly',
+          usage: 'go func(param type) { }(variable)',
+          example: `// Goroutine with closure
+func main() {
+    numbers := []int{1, 2, 3, 4, 5}
+    
+    for _, num := range numbers {
+        go func(n int) {
+            fmt.Printf("Processing %d\n", n)
+        }(num) // Pass num as parameter to avoid race condition
+    }
+    
+    time.Sleep(100 * time.Millisecond)
+}`,
+        },
+        {
+          command: 'Worker Pattern',
+          description: 'Implement worker pool pattern',
+          usage: 'Channels + goroutines for work distribution',
+          example: `// Goroutine lifecycle management
+func worker(id int, jobs <-chan int, results chan<- int) {
+    for j := range jobs {
+        fmt.Printf("Worker %d processing job %d\n", id, j)
+        time.Sleep(time.Second)
+        results <- j * 2
+    }
+}
+
+func main() {
+    jobs := make(chan int, 100)
+    results := make(chan int, 100)
+    
+    // Start workers
+    for w := 1; w <= 3; w++ {
+        go worker(w, jobs, results)
+    }
+    
+    // Send jobs
+    for j := 1; j <= 5; j++ {
+        jobs <- j
+    }
+    close(jobs)
+    
+    // Collect results
+    for a := 1; a <= 5; a++ {
+        <-results
+    }
+}`,
+        },
+        {
+          command: 'Basic Channel Operations',
+          description: 'Send and receive through channels',
+          usage: 'make(chan type), ch <- value, value := <-ch',
+          example: `// Basic channel operations
+func main() {
+    // Create channel
+    ch := make(chan int)
+    
+    // Send data in goroutine
+    go func() {
+        ch <- 42 // Send value to channel
+    }()
+    
+    // Receive data
+    value := <-ch
+    fmt.Printf("Received: %d\n", value)
+}`,
+        },
+        {
+          command: 'Buffered Channel',
+          description: 'Channels with capacity for non-blocking sends',
+          usage: 'make(chan type, capacity)',
+          example: `// Buffered channel
+func main() {
+    // Buffered channel with capacity 3
+    ch := make(chan string, 3)
+    
+    // Send without blocking
+    ch <- "hello"
+    ch <- "world"
+    ch <- "go"
+    
+    // Receive
+    fmt.Println(<-ch)
+    fmt.Println(<-ch)
+    fmt.Println(<-ch)
+}`,
+        },
+        {
+          command: 'Channel Directions',
+          description: 'Specify send-only or receive-only channels',
+          usage: 'chan<- type (send), <-chan type (receive)',
+          example: `// Channel directions
+func sender(ch chan<- int) {
+    for i := 0; i < 5; i++ {
+        ch <- i
+        fmt.Printf("Sent: %d\n", i)
+    }
+    close(ch)
+}
+
+func receiver(ch <-chan int) {
+    for value := range ch {
+        fmt.Printf("Received: %d\n", value)
+    }
+}
+
+func main() {
+    ch := make(chan int)
+    go sender(ch)
+    receiver(ch)
+}`,
+        },
+        {
+          command: 'Select Statement',
+          description: 'Wait on multiple channel operations',
+          usage: 'select { case <-ch1: ... case <-ch2: ... }',
+          example: `// Select statement
+func main() {
+    ch1 := make(chan string)
+    ch2 := make(chan string)
+    
+    go func() {
+        time.Sleep(1 * time.Second)
+        ch1 <- "from ch1"
+    }()
+    
+    go func() {
+        time.Sleep(2 * time.Second)
+        ch2 <- "from ch2"
+    }()
+    
+    for i := 0; i < 2; i++ {
+        select {
+        case msg1 := <-ch1:
+            fmt.Println(msg1)
+        case msg2 := <-ch2:
+            fmt.Println(msg2)
+        case <-time.After(3 * time.Second):
+            fmt.Println("Timeout!")
+        }
+    }
+}`,
+        },
+        {
+          command: 'Select with Default',
+          description: 'Non-blocking channel operations',
+          usage: 'select { case ch <- value: ... default: ... }',
+          example: `// Select with default
+func main() {
+    ch := make(chan int)
+    
+    for i := 0; i < 5; i++ {
+        select {
+        case ch <- i:
+            fmt.Printf("Sent: %d\n", i)
+        default:
+            fmt.Printf("Channel full, dropped: %d\n", i)
+        }
+    }
+}`,
+        },
+        {
+          command: 'Mutex for Mutual Exclusion',
+          description: 'Protect shared resources from race conditions',
+          usage: 'sync.Mutex{}, mu.Lock(), mu.Unlock()',
+          example: `// Mutex for mutual exclusion
+type Counter struct {
+    mu    sync.Mutex
+    value int
+}
+
+func (c *Counter) Increment() {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    c.value++
+}
+
+func (c *Counter) Value() int {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    return c.value
+}`,
+        },
+        {
+          command: 'WaitGroup for Goroutine Coordination',
+          description: 'Wait for multiple goroutines to complete',
+          usage: 'sync.WaitGroup{}, wg.Add(), wg.Done(), wg.Wait()',
+          example: `// WaitGroup for waiting for goroutines
+func main() {
+    var wg sync.WaitGroup
+    
+    for i := 0; i < 5; i++ {
+        wg.Add(1)
+        go func(id int) {
+            defer wg.Done()
+            fmt.Printf("Worker %d starting\n", id)
+            time.Sleep(time.Second)
+            fmt.Printf("Worker %d finished\n", id)
+        }(i)
+    }
+    
+    wg.Wait()
+    fmt.Println("All workers finished")
+}`,
+        },
+        {
+          command: 'Once for One-Time Initialization',
+          description: 'Initialize resources exactly once',
+          usage: 'sync.Once{}, once.Do(func() { })',
+          example: `// Once for one-time initialization
+type Singleton struct {
+    data string
+}
+
+var (
+    instance *Singleton
+    once     sync.Once
+)
+
+func GetInstance() *Singleton {
+    once.Do(func() {
+        instance = &Singleton{data: "singleton data"}
+    })
+    return instance
+}`,
+        },
+        {
+          command: 'RWMutex for Read-Write Locks',
+          description: 'Allow multiple readers or exclusive writer',
+          usage: 'sync.RWMutex{}, mu.RLock(), mu.RUnlock()',
+          example: `// RWMutex for read-write locks
+type Cache struct {
+    mu    sync.RWMutex
+    items map[string]string
+}
+
+func NewCache() *Cache {
+    return &Cache{
+        items: make(map[string]string),
+    }
+}
+
+func (c *Cache) Get(key string) (string, bool) {
+    c.mu.RLock()
+    defer c.mu.RUnlock()
+    value, exists := c.items[key]
+    return value, exists
+}
+
+func (c *Cache) Set(key, value string) {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    c.items[key] = value
+}`,
         },
       ],
     },
@@ -200,22 +2021,330 @@ export const goCheatsheet = {
       title: 'Go Best Practices and Patterns',
       commands: [
         {
-          command: 'Code Organization',
-          description: 'Project structure and package design',
-          usage: 'package layout, naming conventions',
-          example: '# Standard Go project layout\nmyproject/\n├── cmd/\n│   ├── server/\n│   │   └── main.go\n│   └── client/\n│       └── main.go\n├── internal/\n│   ├── auth/\n│   ├── database/\n│   └── handlers/\n├── pkg/\n│   ├── utils/\n│   └── models/\n├── api/\n│   └── v1/\n├── web/\n│   ├── static/\n│   └── templates/\n├── configs/\n├── scripts/\n├── docs/\n├── build/\n├── deployments/\n├── test/\n├── go.mod\n├── go.sum\n├── README.md\n└── Makefile\n\n# Package naming conventions\n// Package names should be short, lowercase, single words\npackage http\npackage json\npackage time\n\n// Avoid common package names\npackage main\npackage util  // Avoid, be more specific\npackage types  // Avoid, be more specific\n\n// Good package names\npackage server\npackage client\npackage auth\npackage database\n\n# Interface naming\n// Interface names should end with -er if they have only one method\ntype Reader interface {\n    Read([]byte) (int, error)\n}\n\ntype Writer interface {\n    Write([]byte) (int, error)\n}\n\n// For interfaces with multiple methods, use descriptive names\ntype FileSystem interface {\n    Open(name string) (File, error)\n    Create(name string) (File, error)\n    Remove(name string) error\n}\n\n# Function naming\n// Functions should be named in CamelCase\nfunc calculateTotal(items []Item) float64 {\n    // Implementation\n}\n\n// Exported functions (public) start with uppercase\nfunc CalculateTotal(items []Item) float64 {\n    // Implementation\n}\n\n// Unexported functions (private) start with lowercase\nfunc calculateTotal(items []Item) float64 {\n    // Implementation\n}\n\n# Variable naming\n// Local variables should be short and descriptive\nfunc processUser(u User) error {\n    if u.Name == "" {\n        return errors.New("empty name")\n    }\n    // Process user\n    return nil\n}\n\n// For longer scopes, use more descriptive names\nfunc processUsers(users []User) error {\n    for _, user := range users {\n        if user.Name == "" {\n            return fmt.Errorf("user %d has empty name", user.ID)\n        }\n    }\n    return nil\n}\n\n# Error handling patterns\n// Always handle errors\nfunc readFile(filename string) ([]byte, error) {\n    data, err := os.ReadFile(filename)\n    if err != nil {\n        return nil, fmt.Errorf("failed to read file %s: %w", filename, err)\n    }\n    return data, nil\n}\n\n// Don\'t ignore errors\nfunc badExample() {\n    data, _ := os.ReadFile("file.txt") // Don\'t do this\n    fmt.Println(string(data))\n}\n\nfunc goodExample() error {\n    data, err := os.ReadFile("file.txt")\n    if err != nil {\n        return err\n    }\n    fmt.Println(string(data))\n    return nil\n}',
+          command: 'Standard Go Project Layout',
+          description: 'Organize Go projects effectively',
+          usage: 'Follow standard directory structure',
+          example: `# Standard Go project layout
+myproject/
+├── cmd/
+│   ├── server/
+│   │   └── main.go
+│   └── client/
+│       └── main.go
+├── internal/
+│   ├── auth/
+│   ├── database/
+│   └── handlers/
+├── pkg/
+│   ├── utils/
+│   └── models/
+├── api/
+│   └── v1/
+├── web/
+│   ├── static/
+│   └── templates/
+├── configs/
+├── scripts/
+├── docs/
+├── build/
+├── deployments/
+├── test/
+├── go.mod
+├── go.sum
+├── README.md
+└── Makefile`,
         },
         {
-          command: 'Performance Optimization',
-          description: 'Go performance best practices',
-          usage: 'Profiling, memory management, benchmarks',
-          example: '// Profiling Go programs\n\n// CPU profiling\nfunc main() {\n    f, err := os.Create("cpu.prof")\n    if err != nil {\n        log.Fatal(err)\n    }\n    defer f.Close()\n    \n    pprof.StartCPUProfile(f)\n    defer pprof.StopCPUProfile()\n    \n    // Your code here\n    expensiveOperation()\n}\n\n// Memory profiling\nfunc main() {\n    // Your code here\n    expensiveOperation()\n    \n    f, err := os.Create("mem.prof")\n    if err != nil {\n        log.Fatal(err)\n    }\n    defer f.Close()\n    \n    pprof.WriteHeapProfile(f)\n}\n\n// Benchmarking\nfunc BenchmarkStringConcatenation(b *testing.B) {\n    str1 := "Hello, "\n    str2 := "World!"\n    \n    b.ResetTimer()\n    for i := 0; i < b.N; i++ {\n        result := str1 + str2\n        _ = result\n    }\n}\n\nfunc BenchmarkStringBuilder(b *testing.B) {\n    str1 := "Hello, "\n    str2 := "World!"\n    \n    b.ResetTimer()\n    for i := 0; i < b.N; i++ {\n        var builder strings.Builder\n        builder.WriteString(str1)\n        builder.WriteString(str2)\n        result := builder.String()\n        _ = result\n    }\n}\n\n// Memory optimization\n// Use strings.Builder for string concatenation\nfunc concatenateStrings(parts []string) string {\n    var builder strings.Builder\n    builder.Grow(len(parts) * 10) // Pre-allocate capacity\n    \n    for _, part := range parts {\n        builder.WriteString(part)\n    }\n    \n    return builder.String()\n}\n\n// Use sync.Pool for object reuse\nvar bufferPool = sync.Pool{\n    New: func() interface{} {\n        return make([]byte, 0, 1024)\n    },\n}\n\nfunc processData(data []byte) []byte {\n    buf := bufferPool.Get().([]byte)\n    defer bufferPool.Put(buf[:0]) // Reset length but keep capacity\n    \n    buf = append(buf, data...)\n    return append([]byte(nil), buf...) // Return copy\n}\n\n// Avoid allocations in hot paths\nfunc processNumbers(numbers []int) int {\n    sum := 0\n    for _, num := range numbers {\n        sum += num\n    }\n    return sum\n}\n\n// Use efficient data structures\nfunc countWords(text string) map[string]int {\n    words := strings.Fields(text)\n    counts := make(map[string]int, len(words)) // Pre-allocate\n    \n    for _, word := range words {\n        counts[word]++\n    }\n    \n    return counts\n}\n\n// Goroutine optimization\nfunc processItemsConcurrently(items []Item) []Result {\n    numWorkers := runtime.NumCPU()\n    itemChan := make(chan Item, len(items))\n    resultChan := make(chan Result, len(items))\n    \n    // Start workers\n    for i := 0; i < numWorkers; i++ {\n        go func() {\n            for item := range itemChan {\n                resultChan <- processItem(item)\n            }\n        }()\n    }\n    \n    // Send items\n    for _, item := range items {\n        itemChan <- item\n    }\n    close(itemChan)\n    \n    // Collect results\n    results := make([]Result, len(items))\n    for i := 0; i < len(items); i++ {\n        results[i] = <-resultChan\n    }\n    \n    return results\n}\n\n// Memory leak prevention\nfunc server() {\n    clients := make(map[string]net.Conn)\n    \n    for {\n        conn, err := listener.Accept()\n        if err != nil {\n            continue\n        }\n        \n        go func(c net.Conn) {\n            defer c.Close()\n            \n            // Remove client when done\n            defer func() {\n                mu.Lock()\n                delete(clients, c.RemoteAddr().String())\n                mu.Unlock()\n            }()\n            \n            // Handle connection\n            handleConnection(c)\n        }(conn)\n    }\n}',
+          command: 'Package Naming Conventions',
+          description: 'Choose appropriate package names',
+          usage: 'Short, lowercase, single words',
+          example: `# Package naming conventions
+// Package names should be short, lowercase, single words
+package http
+package json
+package time
+
+// Avoid common package names
+package main
+package util  // Avoid, be more specific
+package types  // Avoid, be more specific
+
+// Good package names
+package server
+package client
+package auth
+package database`,
         },
         {
-          command: 'Security and Validation',
-          description: 'Security best practices in Go',
-          usage: 'Input validation, secure coding',
-          example: '// Input validation\nfunc validateUserInput(input string) error {\n    // Check length\n    if len(input) == 0 {\n        return errors.New("input cannot be empty")\n    }\n    \n    if len(input) > 1000 {\n        return errors.New("input too long")\n    }\n    \n    // Check for dangerous characters\n    dangerous := []string{"<", ">", "&", "\\"", "\'", "javascript:", "data:"}\n    for _, char := range dangerous {\n        if strings.Contains(input, char) {\n            return fmt.Errorf("input contains dangerous character: %s", char)\n        }\n    }\n    \n    return nil\n}\n\n// SQL injection prevention\nfunc getUserByID(db *sql.DB, id int) (*User, error) {\n    // Use parameterized queries\n    query := "SELECT id, name, email FROM users WHERE id = ?"\n    \n    var user User\n    err := db.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Email)\n    if err != nil {\n        return nil, fmt.Errorf("failed to get user: %w", err)\n    }\n    \n    return &user, nil\n}\n\n// XSS prevention\nfunc escapeHTML(input string) string {\n    return html.EscapeString(input)\n}\n\nfunc renderTemplate(w http.ResponseWriter, data interface{}) {\n    tmpl, err := template.New("index").Parse(`\n        <h1>{{.Title}}</h1>\n        <p>{{.Content}}</p>\n    `)\n    if err != nil {\n        http.Error(w, err.Error(), http.StatusInternalServerError)\n        return\n    }\n    \n    tmpl.Execute(w, data)\n}\n\n// CSRF protection\nfunc csrfProtection(next http.Handler) http.Handler {\n    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n        if r.Method != "GET" {\n            token := r.Header.Get("X-CSRF-Token")\n            if !validateCSRFToken(token, r) {\n                http.Error(w, "Invalid CSRF token", http.StatusForbidden)\n                return\n            }\n        }\n        next.ServeHTTP(w, r)\n    })\n}\n\n// Secure headers\nfunc securityHeaders(next http.Handler) http.Handler {\n    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n        w.Header().Set("X-Content-Type-Options", "nosniff")\n        w.Header().Set("X-Frame-Options", "DENY")\n        w.Header().Set("X-XSS-Protection", "1; mode=block")\n        w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")\n        w.Header().Set("Content-Security-Policy", "default-src \'self\'")\n        \n        next.ServeHTTP(w, r)\n    })\n}\n\n// Password hashing\nfunc hashPassword(password string) (string, error) {\n    bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)\n    if err != nil {\n        return "", err\n    }\n    return string(bytes), nil\n}\n\nfunc checkPassword(password, hash string) bool {\n    err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))\n    return err == nil\n}\n\n// JWT token handling\nfunc generateJWT(userID int) (string, error) {\n    token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{\n        "user_id": userID,\n        "exp":     time.Now().Add(time.Hour * 24).Unix(),\n    })\n    \n    return token.SignedString([]byte("your-secret-key"))\n}\n\nfunc validateJWT(tokenString string) (int, error) {\n    token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {\n        if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {\n            return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])\n        }\n        return []byte("your-secret-key"), nil\n    })\n    \n    if err != nil {\n        return 0, err\n    }\n    \n    if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {\n        userID := int(claims["user_id"].(float64))\n        return userID, nil\n    }\n    \n    return 0, errors.New("invalid token")\n}\n\n// Rate limiting\nfunc rateLimit(next http.Handler) http.Handler {\n    limiter := rate.NewLimiter(rate.Limit(100), 200) // 100 requests per second, burst 200\n    \n    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n        if !limiter.Allow() {\n            http.Error(w, "Too many requests", http.StatusTooManyRequests)\n            return\n        }\n        next.ServeHTTP(w, r)\n    })\n}',
+          command: 'Interface Naming',
+          description: 'Name interfaces appropriately',
+          usage: '-er suffix for single method, descriptive for multiple',
+          example: `# Interface naming
+// Interface names should end with -er if they have only one method
+type Reader interface {
+    Read([]byte) (int, error)
+}
+
+type Writer interface {
+    Write([]byte) (int, error)
+}
+
+// For interfaces with multiple methods, use descriptive names
+type FileSystem interface {
+    Open(name string) (File, error)
+    Create(name string) (File, error)
+    Remove(name string) error
+}`,
+        },
+        {
+          command: 'Function Naming',
+          description: 'Follow Go function naming conventions',
+          usage: 'CamelCase, exported vs unexported',
+          example: `# Function naming
+// Functions should be named in CamelCase
+func calculateTotal(items []Item) float64 {
+    // Implementation
+}
+
+// Exported functions (public) start with uppercase
+func CalculateTotal(items []Item) float64 {
+    // Implementation
+}
+
+// Unexported functions (private) start with lowercase
+func calculateTotal(items []Item) float64 {
+    // Implementation
+}`,
+        },
+        {
+          command: 'Variable Naming',
+          description: 'Choose descriptive variable names',
+          usage: 'Short for local, descriptive for exported',
+          example: `# Variable naming
+// Local variables should be short and descriptive
+func processUser(u User) error {
+    if u.Name == "" {
+        return errors.New("empty name")
+    }
+    // Process user
+    return nil
+}
+
+// Exported constants should be descriptive
+const MaxRetryAttempts = 3
+const DefaultTimeout = 30 * time.Second`,
+        },
+        {
+          command: 'Error Handling Patterns',
+          description: 'Follow Go error handling best practices',
+          usage: 'Handle errors immediately, wrap with context',
+          example: `// Error handling patterns
+func processFile(filename string) error {
+    // Early return pattern
+    if filename == "" {
+        return fmt.Errorf("filename cannot be empty")
+    }
+    
+    content, err := os.ReadFile(filename)
+    if err != nil {
+        return fmt.Errorf("failed to read file %s: %w", filename, err)
+    }
+    
+    // Process content
+    return nil
+}`,
+        },
+        {
+          command: 'Resource Management',
+          description: 'Properly manage resources with defer',
+          usage: 'defer for cleanup, file handles, connections',
+          example: `// Resource management
+func processDatabase() error {
+    db, err := sql.Open("postgres", dsn)
+    if err != nil {
+        return err
+    }
+    defer db.Close()
+    
+    tx, err := db.Begin()
+    if err != nil {
+        return err
+    }
+    defer tx.Rollback() // Rollback if not committed
+    
+    // Use transaction
+    if err := tx.Commit(); err != nil {
+        return err
+    }
+    
+    return nil
+}`,
+        },
+        {
+          command: 'Interface Design',
+          description: 'Design effective interfaces',
+          usage: 'Small interfaces, accept interfaces return structs',
+          example: `// Interface design
+// Small interfaces are better
+type Reader interface {
+    Read([]byte) (int, error)
+}
+
+// Accept interfaces, return structs
+func ProcessData(data []byte, logger Logger) error {
+    logger.Log("Processing data")
+    // Process data
+    return nil
+}
+
+// Interface for testing
+type Database interface {
+    GetUser(id int) (*User, error)
+    SaveUser(user *User) error
+    DeleteUser(id int) error
+}`,
+        },
+        {
+          command: 'Performance Profiling',
+          description: 'Profile Go applications for performance',
+          usage: 'pprof package for CPU and memory profiling',
+          example: `// Profiling Go programs
+
+// CPU profiling
+func main() {
+    f, err := os.Create("cpu.prof")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer f.Close()
+    
+    pprof.StartCPUProfile(f)
+    defer pprof.StopCPUProfile()
+    
+    // Your code here
+    expensiveOperation()
+}`,
+        },
+        {
+          command: 'Memory Profiling',
+          description: 'Profile memory usage and allocations',
+          usage: 'pprof.WriteHeapProfile()',
+          example: `// Memory profiling
+func main() {
+    // Your code here
+    expensiveOperation()
+    
+    f, err := os.Create("mem.prof")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer f.Close()
+    
+    pprof.WriteHeapProfile(f)
+}`,
+        },
+        {
+          command: 'Benchmarking Best Practices',
+          description: 'Write effective benchmarks',
+          usage: 'b.ResetTimer(), b.ReportAllocs()',
+          example: `// Benchmarking
+func BenchmarkStringConcatenation(b *testing.B) {
+    str1 := "Hello, "
+    str2 := "World!"
+    
+    b.ResetTimer()
+    for i := 0; i < b.N; i++ {
+        result := str1 + str2
+        _ = result
+    }
+}
+
+func BenchmarkStringBuilder(b *testing.B) {
+    str1 := "Hello, "
+    str2 := "World!"
+    
+    b.ResetTimer()
+    b.ReportAllocs()
+    for i := 0; i < b.N; i++ {
+        var builder strings.Builder
+        builder.WriteString(str1)
+        builder.WriteString(str2)
+        result := builder.String()
+        _ = result
+    }
+}`,
+        },
+        {
+          command: 'Memory Optimization',
+          description: 'Optimize memory usage in Go',
+          usage: 'strings.Builder, sync.Pool, pre-allocation',
+          example: `// Memory optimization
+// Use strings.Builder for string concatenation
+func concatenateStrings(parts []string) string {
+    var builder strings.Builder
+    builder.Grow(len(parts) * 10) // Pre-allocate capacity
+    
+    for _, part := range parts {
+        builder.WriteString(part)
+    }
+    
+    return builder.String()
+}
+
+// Use sync.Pool for object reuse
+var bufferPool = sync.Pool{
+    New: func() interface{} {
+        return make([]byte, 0, 1024)
+    },
+}
+
+func processData(data []byte) []byte {
+    buf := bufferPool.Get().([]byte)
+    defer bufferPool.Put(buf[:0]) // Reset length but keep capacity
+    
+    buf = append(buf, data...)
+    return append([]byte(nil), buf...) // Return copy
+}`,
+        },
+        {
+          command: 'Security Best Practices',
+          description: 'Write secure Go code',
+          usage: 'Input validation, SQL injection prevention',
+          example: `// Input validation
+func validateUserInput(input string) error {
+    // Check length
+    if len(input) == 0 {
+        return errors.New("input cannot be empty")
+    }
+    
+    if len(input) > 1000 {
+        return errors.New("input too long")
+    }
+    
+    // Check for dangerous characters
+    dangerous := []string{"<", ">", "&", "\"", "'", "javascript:", "data:"}
+    for _, char := range dangerous {
+        if strings.Contains(input, char) {
+            return fmt.Errorf("input contains dangerous character: %s", char)
+        }
+    }
+    
+    return nil
+}
+
+// SQL injection prevention
+func getUserByID(db *sql.DB, id int) (*User, error) {
+    // Use parameterized queries
+    query := "SELECT id, name, email FROM users WHERE id = ?"
+    
+    var user User
+    err := db.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Email)
+    if err != nil {
+        return nil, fmt.Errorf("failed to get user: %w", err)
+    }
+    
+    return &user, nil
+}`,
         },
       ],
     },

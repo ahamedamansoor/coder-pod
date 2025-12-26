@@ -367,7 +367,7 @@ export function CheatsheetModal({
 
         {/* Content - Card Grid Layout */}
         <div className="flex-1 overflow-y-auto p-6">
-          <div className="columns-1 sm:columns-1 md:columns-2 lg:columns-2 xl:columns-3 2xl:columns-4 gap-4 space-y-4">
+          <div className="columns-1 sm:columns-1 md:columns-1 lg:columns-2 xl:columns-2 2xl:columns-3 gap-4 space-y-4">
             {filteredSections.map((section, sectionIndex) => {
               const badgeColor = sectionColors[sectionIndex % sectionColors.length];
 

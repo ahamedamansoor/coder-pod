@@ -7,45 +7,172 @@ export const npmCheatsheet = {
   icon: Server,
   colorTheme: 'purple' as const,
   sections: [
-    // BEGINNER LEVEL
     {
       title: 'Node Version Manager (NVM)',
       commands: [
         {
-          command: 'NVM Installation',
-          description: 'Install NVM for managing Node.js versions',
-          usage: 'Install NVM using curl or wget',
-          example: '# Install NVM (macOS/Linux)\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash\n\n# Alternative with wget\nwget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash\n\n# For Windows, use nvm-windows:\n# Download from https://github.com/coreybutler/nvm-windows/releases\n\n# Reload shell configuration\nsource ~/.bashrc  # or ~/.zshrc',
+          command: 'Install NVM with curl',
+          description: 'Install NVM using curl command',
+          usage: 'NVM installation on macOS/Linux',
+          example: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash`,
         },
         {
-          command: 'NVM Basic Commands',
-          description: 'Essential NVM commands for version management',
-          usage: 'nvm [command] [version]',
-          example: '# Install Node.js version\nnvm install 18\nnvm install 20.5.0\nnvm install latest\nnvm install lts\n\n# Use specific Node.js version\nnvm use 18\nnvm use 20.5.0\nnvm use latest\nnvm use lts\n\n# List installed versions\nnvm ls\nnvm list\n\n# List available versions\nnvm ls-remote\nnvm ls-remote --lts',
+          command: 'Install NVM with wget',
+          description: 'Install NVM using wget command',
+          usage: 'Alternative NVM installation',
+          example: `wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash`,
         },
         {
-          command: 'NVM Version Management',
-          description: 'Switch between and manage Node.js versions',
-          usage: 'nvm [use|current|default]',
-          example: '# Show current version\nnvm current\n\n# Set default version\nnvm default 18\nnvm alias default 20.5.0\n\n# Switch to previous version\nnvm prev\n\n# Uninstall Node.js version\nnvm uninstall 18.17.0\n\n# Verify Node.js and NPM versions\nnode --version\nnpm --version\nnvm --version',
+          command: 'Install NVM on Windows',
+          description: 'Install NVM for Windows systems',
+          usage: 'Windows NVM installation',
+          example: `# Download from https://github.com/coreybutler/nvm-windows/releases`,
         },
         {
-          command: 'NVM Aliases & Configuration',
-          description: 'Create aliases and configure NVM behavior',
+          command: 'Reload Shell Configuration',
+          description: 'Reload shell to activate NVM',
+          usage: 'Post-installation setup',
+          example: `source ~/.bashrc  # or ~/.zshrc`,
+        },
+        {
+          command: 'Install Node.js Version',
+          description: 'Install specific Node.js version',
+          usage: 'nvm install <version>',
+          example: `nvm install 18
+nvm install 20.5.0
+nvm install latest
+nvm install lts`,
+        },
+        {
+          command: 'Use Node.js Version',
+          description: 'Switch to specific Node.js version',
+          usage: 'nvm use <version>',
+          example: `nvm use 18
+nvm use 20.5.0
+nvm use latest
+nvm use lts`,
+        },
+        {
+          command: 'List Installed Node Versions',
+          description: 'Show all installed Node.js versions',
+          usage: 'nvm ls or nvm list',
+          example: `nvm ls
+nvm list`,
+        },
+        {
+          command: 'List Available Node Versions',
+          description: 'Show available Node.js versions for installation',
+          usage: 'nvm ls-remote',
+          example: `nvm ls-remote
+nvm ls-remote --lts`,
+        },
+        {
+          command: 'Show Current Node Version',
+          description: 'Display currently active Node.js version',
+          usage: 'nvm current',
+          example: `nvm current`,
+        },
+        {
+          command: 'Set Default Node Version',
+          description: 'Set default Node.js version for new shells',
+          usage: 'nvm default <version>',
+          example: `nvm default 18
+nvm alias default 20.5.0`,
+        },
+        {
+          command: 'Switch to Previous Node Version',
+          description: 'Switch to previously used Node.js version',
+          usage: 'nvm prev',
+          example: `nvm prev`,
+        },
+        {
+          command: 'Uninstall Node Version',
+          description: 'Remove specific Node.js version',
+          usage: 'nvm uninstall <version>',
+          example: `nvm uninstall 18.17.0`,
+        },
+        {
+          command: 'Verify Installations',
+          description: 'Check Node.js, NPM, and NVM versions',
+          usage: 'Version verification',
+          example: `node --version
+npm --version
+nvm --version`,
+        },
+        {
+          command: 'Create Version Alias',
+          description: 'Create alias for Node.js version',
           usage: 'nvm alias <name> <version>',
-          example: '# Create version aliases\nnvm alias stable 20.5.0\nnvm alias dev 18.17.0\nnvm alias project-default 18\n\n# List aliases\nnvm alias\n\n# Remove alias\nnvm unalias stable\n\n# NVM configuration file\n# ~/.nvm/alias  # Aliases configuration\n# ~/.nvmrc     # Project-specific Node version',
+          example: `nvm alias stable 20.5.0
+nvm alias dev 18.17.0
+nvm alias project-default 18`,
         },
         {
-          command: 'Project-Specific Node Versions',
-          description: 'Use .nvmrc files for project Node.js versions',
-          usage: '.nvmrc file in project root',
-          example: '# Create .nvmrc file\necho "18.17.0" > .nvmrc\necho "lts/*" > .nvmrc  # Use latest LTS\necho "20" > .nvmrc    # Use latest 20.x\n\n# Auto-switch to project version\nnvm use  # Automatically reads .nvmrc\n\n# Add to shell for auto-switching\necho \'nvm use\' >> ~/.bashrc\n\n# .nvmrc file content examples\n18.17.0\nlts/hydrogen\n20.5.0\nnode',
+          command: 'List Aliases',
+          description: 'Show all NVM aliases',
+          usage: 'nvm alias',
+          example: `nvm alias`,
         },
         {
-          command: 'NVM Integration with NPM',
-          description: 'How NVM works with NPM across Node versions',
-          usage: 'NPM is installed per Node.js version',
-          example: '# Each Node.js version has its own NPM\nnvm use 18\nnpm --version  # Shows NPM version for Node 18\n\nnvm use 20\nnpm --version  # Shows NPM version for Node 20\n\n# Install global packages per version\nnvm use 18\nnpm install -g typescript\n\nnvm use 20\nnpm install -g typescript  # Separate installation\n\n# Migrate global packages (experimental)\nnvm install-latest-npm  # Update NPM for current Node',
+          command: 'Remove Alias',
+          description: 'Remove NVM alias',
+          usage: 'nvm unalias <name>',
+          example: `nvm unalias stable`,
+        },
+        {
+          command: 'Create .nvmrc File',
+          description: 'Create project-specific Node version file',
+          usage: 'Project version management',
+          example: `echo "18.17.0" > .nvmrc
+echo "lts/*" > .nvmrc  # Use latest LTS
+echo "20" > .nvmrc    # Use latest 20.x`,
+        },
+        {
+          command: 'Auto-switch to Project Version',
+          description: 'Automatically switch to project Node version',
+          usage: 'nvm use with .nvmrc',
+          example: `nvm use  # Automatically reads .nvmrc`,
+        },
+        {
+          command: 'Enable Auto-switching',
+          description: 'Add auto-switching to shell configuration',
+          usage: 'Shell configuration',
+          example: `echo 'nvm use' >> ~/.bashrc`,
+        },
+        {
+          command: '.nvmrc File Examples',
+          description: 'Example .nvmrc file contents',
+          usage: 'Project version examples',
+          example: `18.17.0
+lts/hydrogen
+20.5.0
+node`,
+        },
+        {
+          command: 'Check NPM per Node Version',
+          description: 'NPM is installed per Node.js version',
+          usage: 'NVM and NPM interaction',
+          example: `nvm use 18
+npm --version  # Shows NPM version for Node 18
+
+nvm use 20
+npm --version  # Shows NPM version for Node 20`,
+        },
+        {
+          command: 'Install Global Packages per Version',
+          description: 'Install global packages for specific Node version',
+          usage: 'Version-specific global packages',
+          example: `nvm use 18
+npm install -g typescript
+
+nvm use 20
+npm install -g typescript  # Separate installation`,
+        },
+        {
+          command: 'Update NPM for Current Node',
+          description: 'Update NPM for current Node.js version',
+          usage: 'NPM update command',
+          example: `nvm install-latest-npm  # Update NPM for current Node`,
         },
       ],
     },
@@ -53,28 +180,75 @@ export const npmCheatsheet = {
       title: 'Getting Started with NPM',
       commands: [
         {
-          command: 'NPM Installation & Setup',
-          description: 'Install NPM and verify setup',
-          usage: 'npm --version && node --version',
-          example: '# NPM comes with Node.js installation\n# Install Node.js from https://nodejs.org/\n# Or using version manager:\n# nvm install 20\n# nvm use 20\n\n# Verify installation\nnode --version  # v20.x.x\nnpm --version   # v10.x.x\n\n# Check NPM environment\nnpm doctor\nnpm config list',
+          command: 'Verify NPM Installation',
+          description: 'Check NPM and Node.js installation',
+          usage: 'Installation verification',
+          example: `node --version  # v20.x.x
+npm --version   # v10.x.x`,
         },
         {
-          command: 'NPM Help System',
-          description: 'Getting help with NPM commands',
-          usage: 'npm help [command] or npm [command] --help',
-          example: '# General help\nnpm help\n\n# Help for specific command\nnpm help install\nnpm install --help\n\n# List all available commands\nnpm --help',
+          command: 'Check NPM Environment',
+          description: 'Diagnose NPM setup and configuration',
+          usage: 'Environment check',
+          example: `npm doctor
+npm config list`,
         },
         {
-          command: 'NPM Configuration',
-          description: 'Configure NPM settings and preferences',
-          usage: 'npm config set <key> <value>',
-          example: '# Set default registry\nnpm config set registry https://registry.npmjs.org/\n\n# Set default author\nnpm config set init-author-name "Your Name"\nnpm config set init-author-email "your.email@example.com"\n\n# Set save-exact for precise versions\nnpm config set save-exact true\n\n# View all configuration\nnpm config list\nnpm config list --json  # JSON format',
+          command: 'Get General Help',
+          description: 'Display general NPM help',
+          usage: 'npm help',
+          example: `npm help`,
         },
         {
-          command: 'NPM Environment Check',
-          description: 'Diagnose NPM setup issues',
-          usage: 'npm doctor',
-          example: 'npm doctor\n# Checks:\n# - npm ping connectivity\n# - registry connectivity\n# - permissions on npm cache\n# - permissions on local node_modules\n# - Node.js version compatibility',
+          command: 'Get Command Help',
+          description: 'Get help for specific NPM command',
+          usage: 'npm help <command>',
+          example: `npm help install
+npm install --help`,
+        },
+        {
+          command: 'List All Commands',
+          description: 'Show all available NPM commands',
+          usage: 'Command discovery',
+          example: `npm --help`,
+        },
+        {
+          command: 'Set Default Registry',
+          description: 'Configure default npm registry',
+          usage: 'Registry configuration',
+          example: `npm config set registry https://registry.npmjs.org/`,
+        },
+        {
+          command: 'Set Default Author',
+          description: 'Configure default author information',
+          usage: 'Author configuration',
+          example: `npm config set init-author-name "Your Name"
+npm config set init-author-email "your.email@example.com"`,
+        },
+        {
+          command: 'Set Save-Exact Configuration',
+          description: 'Configure to save exact versions',
+          usage: 'Version precision',
+          example: `npm config set save-exact true`,
+        },
+        {
+          command: 'View Configuration',
+          description: 'Display all NPM configuration',
+          usage: 'Configuration viewing',
+          example: `npm config list
+npm config list --json  # JSON format`,
+        },
+        {
+          command: 'Run NPM Doctor',
+          description: 'Comprehensive NPM environment check',
+          usage: 'System diagnostics',
+          example: `npm doctor
+# Checks:
+# - npm ping connectivity
+# - registry connectivity
+# - permissions on npm cache
+# - permissions on local node_modules
+# - Node.js version compatibility`,
         },
       ],
     },
@@ -82,28 +256,96 @@ export const npmCheatsheet = {
       title: 'Initializing Projects',
       commands: [
         {
-          command: 'Create New Package',
-          description: 'Initialize a new Node.js project',
-          usage: 'npm init [-y|--yes]',
-          example: '# Interactive mode (prompts for all fields)\nnpm init\n\n# Accept all defaults\nnpm init -y\nnpm init --yes\n\n# Specify package name and version\nnpm init --scope=@mycompany\nnpm init my-new-project',
+          command: 'Interactive Package Init',
+          description: 'Initialize project with prompts',
+          usage: 'npm init',
+          example: `npm init`,
         },
         {
-          command: 'Package Initializers',
-          description: 'Use community project templates',
-          usage: 'npm init <initializer>',
-          example: '# React application\nnpm init react-app my-app\n\n# Vite project\nnpm init vite@latest my-project\n\n# Next.js application\nnpm init next-app my-next-app\n\n# TypeScript project\nnpm init typescript-project',
+          command: 'Accept Defaults Init',
+          description: 'Initialize project with default settings',
+          usage: 'npm init -y',
+          example: `npm init -y
+npm init --yes`,
         },
         {
-          command: 'Create Command (NPM 7+)',
-          description: 'Modern way to create projects',
-          usage: 'npm create <initializer>',
-          example: '# Create Vite project\nnpm create vite@latest my-vite-app\n\n# Create React app\nnpm create react-app my-react-app\n\n# Create with specific template\nnpm create vite@latest my-app --template react-ts',
+          command: 'Scoped Package Init',
+          description: 'Initialize with scoped package name',
+          usage: 'npm init --scope',
+          example: `npm init --scope=@mycompany`,
+        },
+        {
+          command: 'Named Package Init',
+          description: 'Initialize with specific package name',
+          usage: 'npm init <name>',
+          example: `npm init my-new-project`,
+        },
+        {
+          command: 'Create React App',
+          description: 'Initialize React application',
+          usage: 'npm init react-app',
+          example: `npm init react-app my-app`,
+        },
+        {
+          command: 'Create Vite Project',
+          description: 'Initialize Vite project',
+          usage: 'npm init vite',
+          example: `npm init vite@latest my-project`,
+        },
+        {
+          command: 'Create Next.js App',
+          description: 'Initialize Next.js application',
+          usage: 'npm init next-app',
+          example: `npm init next-app my-next-app`,
+        },
+        {
+          command: 'Create TypeScript Project',
+          description: 'Initialize TypeScript project',
+          usage: 'npm init typescript-project',
+          example: `npm init typescript-project`,
+        },
+        {
+          command: 'Create Vite Project (Modern)',
+          description: 'Modern way to create Vite project',
+          usage: 'npm create vite',
+          example: `npm create vite@latest my-vite-app`,
+        },
+        {
+          command: 'Create React App (Modern)',
+          description: 'Modern way to create React app',
+          usage: 'npm create react-app',
+          example: `npm create react-app my-react-app`,
+        },
+        {
+          command: 'Create with Template',
+          description: 'Create project with specific template',
+          usage: 'npm create with template',
+          example: `npm create vite@latest my-app --template react-ts`,
         },
         {
           command: 'Package.json Structure',
           description: 'Understanding package.json fields',
           usage: 'JSON configuration file',
-          example: '{\n  "name": "my-project",\n  "version": "1.0.0",\n  "description": "A sample project",\n  "main": "index.js",\n  "type": "module",           // ES modules\n  "scripts": {\n    "start": "node index.js",\n    "test": "jest"\n  },\n  "keywords": ["node", "javascript"],\n  "author": "Your Name",\n  "license": "MIT",\n  "dependencies": {},\n  "devDependencies": {},\n  "engines": {\n    "node": ">=18.0.0",\n    "npm": ">=9.0.0"\n  }\n}',
+          example: `{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "A sample project",
+  "main": "index.js",
+  "type": "module",           // ES modules
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": ["node", "javascript"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}`,
         },
       ],
     },
@@ -114,49 +356,111 @@ export const npmCheatsheet = {
           command: 'Install All Dependencies',
           description: 'Install packages from package.json',
           usage: 'npm install',
-          example: '# Install all dependencies\nnpm install\nnpm i  # Short form\n\n# Install with exact versions from package-lock.json\nnpm ci  # Clean install for CI/CD',
+          example: `npm install
+npm i  # Short form`,
         },
         {
-          command: 'Install Production Dependencies',
-          description: 'Add packages to dependencies',
-          usage: 'npm install <package>[@version]',
-          example: '# Install latest version\nnpm install react\n\n# Install specific version\nnpm install react@18.2.0\n\n# Install version range\nnpm install react@^18.0.0\n\n# Install from git repository\nnpm install https://github.com/user/repo.git\n\n# Install local package\nnpm install ./my-local-package',
+          command: 'Clean Install',
+          description: 'Fast install for CI/CD environments',
+          usage: 'npm ci',
+          example: `npm ci  # Clean install (removes node_modules first)`,
         },
         {
-          command: 'Install Development Dependencies',
-          description: 'Add packages for development only',
-          usage: 'npm install --save-dev <package>',
-          example: '# Install as dev dependency\nnpm install --save-dev typescript\nnpm install -D eslint\nnpm i -D prettier @types/node\n\n# Dev dependencies won\'t be installed in production\nnpm install --production',
+          command: 'Install Latest Version',
+          description: 'Install latest package version',
+          usage: 'npm install <package>',
+          example: `npm install react`,
         },
         {
-          command: 'Global Package Installation',
-          description: 'Install packages globally for system-wide use',
-          usage: 'npm install --global <package>',
-          example: '# Install globally\nnpm install --global nodemon\nnpm install -g typescript\nnpm i -g @angular/cli\n\n# List global packages\nnpm list -g --depth=0\n\n# Uninstall global package\nnpm uninstall -g nodemon',
+          command: 'Install Specific Version',
+          description: 'Install exact package version',
+          usage: 'npm install <package>@<version>',
+          example: `npm install react@18.2.0`,
         },
         {
-          command: 'Optional Dependencies',
-          description: 'Install packages that may not be required',
-          usage: 'npm install --save-optional <package>',
-          example: '# Install optional dependency\nnpm install --save-optional fsevents\nnpm install -O chalk\n\n# Optional dependencies are not installed by default\n# Use --include=optional to install them\nnpm install --include=optional',
+          command: 'Install Version Range',
+          description: 'Install package within version range',
+          usage: 'npm install <package>@<range>',
+          example: `npm install react@^18.0.0`,
         },
         {
-          command: 'Exact Version Installation',
-          description: 'Install packages without version ranges',
-          usage: 'npm install --save-exact <package>',
-          example: '# Install exact version (no ^ or ~)\nnpm install --save-exact react@18.2.0\nnpm install -E lodash@4.17.21\n\n# This prevents automatic updates\n# package.json will have: "react": "18.2.0" instead of "^18.2.0"',
+          command: 'Install from Git',
+          description: 'Install package from Git repository',
+          usage: 'npm install <git-url>',
+          example: `npm install https://github.com/user/repo.git`,
+        },
+        {
+          command: 'Install Local Package',
+          description: 'Install package from local directory',
+          usage: 'npm install <local-path>',
+          example: `npm install ./my-local-package`,
+        },
+        {
+          command: 'Install Dev Dependency',
+          description: 'Add package to devDependencies',
+          usage: 'npm install --save-dev',
+          example: `npm install --save-dev typescript
+npm install -D eslint
+npm i -D prettier @types/node`,
+        },
+        {
+          command: 'Install Optional Dependency',
+          description: 'Add optional dependency',
+          usage: 'npm install --save-optional',
+          example: `npm install --save-optional fsevents
+npm install -O chalk`,
+        },
+        {
+          command: 'Install Exact Version',
+          description: 'Install without version range',
+          usage: 'npm install --save-exact',
+          example: `npm install --save-exact react@18.2.0
+npm install -E lodash@4.17.21`,
         },
         {
           command: 'Install Without Saving',
-          description: 'Install packages temporarily',
-          usage: 'npm install --no-save <package>',
-          example: '# Install without adding to package.json\nnpm install --no-save test-package\n\n# Useful for testing or one-time use\nnpm install --no-save webpack-cli',
+          description: 'Install without updating package.json',
+          usage: 'npm install --no-save',
+          example: `npm install --no-save test-package
+npm install --no-save webpack-cli`,
         },
         {
-          command: 'Clean Install (CI/CD)',
-          description: 'Fast, reliable installation for automated environments',
-          usage: 'npm ci',
-          example: '# Clean install (removes node_modules first)\nnpm ci\n\n# Install with optional dependencies\nnpm ci --include=optional\n\n# Install only production dependencies\nnpm ci --only=production\n\n# Much faster than npm install for CI/CD',
+          command: 'Install Global Package',
+          description: 'Install package globally',
+          usage: 'npm install --global',
+          example: `npm install --global nodemon
+npm install -g typescript
+npm i -g @angular/cli`,
+        },
+        {
+          command: 'List Global Packages',
+          description: 'Show installed global packages',
+          usage: 'npm list -g',
+          example: `npm list -g --depth=0`,
+        },
+        {
+          command: 'Uninstall Global Package',
+          description: 'Remove global package',
+          usage: 'npm uninstall -g',
+          example: `npm uninstall -g nodemon`,
+        },
+        {
+          command: 'Install Production Only',
+          description: 'Skip dev dependencies',
+          usage: 'npm install --production',
+          example: `npm install --production`,
+        },
+        {
+          command: 'Clean Install with Optional',
+          description: 'CI install with optional dependencies',
+          usage: 'npm ci --include',
+          example: `npm ci --include=optional`,
+        },
+        {
+          command: 'Clean Install Production Only',
+          description: 'CI install with production dependencies only',
+          usage: 'npm ci --only',
+          example: `npm ci --only=production`,
         },
       ],
     },
@@ -164,59 +468,196 @@ export const npmCheatsheet = {
       title: 'Managing Dependencies',
       commands: [
         {
-          command: 'Remove Packages',
-          description: 'Uninstall installed packages',
+          command: 'Remove Package',
+          description: 'Uninstall installed package',
           usage: 'npm uninstall <package>',
-          example: '# Remove package\nnpm uninstall lodash\nnpm un react  # Short form\n\n# Remove from specific dependency type\nnpm uninstall --save-dev typescript\nnpm uninstall --global nodemon\n\n# Remove multiple packages\nnpm uninstall lodash react axios',
+          example: `npm uninstall lodash
+npm un react  # Short form`,
         },
         {
-          command: 'Update Packages',
-          description: 'Update installed packages to latest versions',
-          usage: 'npm update [package]',
-          example: '# Update all packages (within version ranges)\nnpm update\n\n# Update specific package\nnpm update react\n\n# Update global packages\nnpm update -g\nnpm update -g npm  # Update npm itself\n\n# Dry run to see what would be updated\nnpm update --dry-run',
+          command: 'Remove Dev Dependency',
+          description: 'Remove from devDependencies',
+          usage: 'npm uninstall --save-dev',
+          example: `npm uninstall --save-dev typescript`,
+        },
+        {
+          command: 'Remove Global Package',
+          description: 'Remove global package',
+          usage: 'npm uninstall --global',
+          example: `npm uninstall --global nodemon`,
+        },
+        {
+          command: 'Remove Multiple Packages',
+          description: 'Remove multiple packages at once',
+          usage: 'npm uninstall <pkg1> <pkg2>',
+          example: `npm uninstall lodash react axios`,
+        },
+        {
+          command: 'Update All Packages',
+          description: 'Update all packages within version ranges',
+          usage: 'npm update',
+          example: `npm update`,
+        },
+        {
+          command: 'Update Specific Package',
+          description: 'Update specific package',
+          usage: 'npm update <package>',
+          example: `npm update react`,
+        },
+        {
+          command: 'Update Global Packages',
+          description: 'Update global packages',
+          usage: 'npm update -g',
+          example: `npm update -g
+npm update -g npm  # Update npm itself`,
+        },
+        {
+          command: 'Update Dry Run',
+          description: 'Preview what would be updated',
+          usage: 'npm update --dry-run',
+          example: `npm update --dry-run`,
         },
         {
           command: 'Check Outdated Packages',
           description: 'Find packages that need updating',
           usage: 'npm outdated',
-          example: '# Check for outdated packages\nnpm outdated\n\n# Check global packages\nnpm outdated --global\n\n# Output in JSON format\nnpm outdated --json',
+          example: `npm outdated`,
         },
         {
-          command: 'Security Audit',
-          description: 'Check and fix security vulnerabilities',
-          usage: 'npm audit [fix]',
-          example: '# Run security audit\nnpm audit\n\n# Automatically fix vulnerabilities\nnpm audit fix\n\n# Force fix (including breaking changes)\nnpm audit fix --force\n\n# JSON output for automation\nnpm audit --json',
+          command: 'Check Global Outdated',
+          description: 'Find outdated global packages',
+          usage: 'npm outdated --global',
+          example: `npm outdated --global`,
+        },
+        {
+          command: 'Outdated JSON Output',
+          description: 'Get outdated packages in JSON format',
+          usage: 'npm outdated --json',
+          example: `npm outdated --json`,
+        },
+        {
+          command: 'Run Security Audit',
+          description: 'Check for security vulnerabilities',
+          usage: 'npm audit',
+          example: `npm audit`,
+        },
+        {
+          command: 'Fix Security Issues',
+          description: 'Automatically fix vulnerabilities',
+          usage: 'npm audit fix',
+          example: `npm audit fix`,
+        },
+        {
+          command: 'Force Fix Security',
+          description: 'Fix including breaking changes',
+          usage: 'npm audit fix --force',
+          example: `npm audit fix --force`,
+        },
+        {
+          command: 'Audit JSON Output',
+          description: 'Get audit report in JSON format',
+          usage: 'npm audit --json',
+          example: `npm audit --json`,
         },
       ],
     },
-
-    // INTERMEDIATE LEVEL
     {
       title: 'Package Information & Discovery',
       commands: [
         {
-          command: 'List Installed Packages',
-          description: 'View installed dependencies and their versions',
-          usage: 'npm list [--depth=n]',
-          example: '# List all dependencies (tree view)\nnpm list\nnpm ls  # Short form\n\n# List only top-level dependencies\nnpm list --depth=0\n\n# List global packages\nnpm list -g --depth=0\n\n# Output as JSON\nnpm list --json\n\n# List only production dependencies\nnpm list --production',
+          command: 'List All Dependencies',
+          description: 'Show dependency tree',
+          usage: 'npm list',
+          example: `npm list
+npm ls  # Short form`,
         },
         {
-          command: 'View Package Information',
-          description: 'Get detailed information about packages',
-          usage: 'npm view <package> [field]',
-          example: '# View package details\nnpm view react\nnpm info react  # Alias\n\n# View specific field\nnpm view react version\nnpm view react description\nnpm view react dependencies\n\n# View all available versions\nnpm view react versions\n\n# View package maintainers\nnpm view react maintainers',
+          command: 'List Top-Level Dependencies',
+          description: 'Show only direct dependencies',
+          usage: 'npm list --depth=0',
+          example: `npm list --depth=0`,
         },
         {
-          command: 'Search for Packages',
-          description: 'Find packages in the npm registry',
+          command: 'List Global Dependencies',
+          description: 'Show global packages',
+          usage: 'npm list -g',
+          example: `npm list -g --depth=0`,
+        },
+        {
+          command: 'List Dependencies JSON',
+          description: 'Get dependency tree in JSON format',
+          usage: 'npm list --json',
+          example: `npm list --json`,
+        },
+        {
+          command: 'List Production Dependencies',
+          description: 'Show only production dependencies',
+          usage: 'npm list --production',
+          example: `npm list --production`,
+        },
+        {
+          command: 'View Package Details',
+          description: 'Get detailed package information',
+          usage: 'npm view <package>',
+          example: `npm view react
+npm info react  # Alias`,
+        },
+        {
+          command: 'View Package Field',
+          description: 'Get specific package field',
+          usage: 'npm view <package> <field>',
+          example: `npm view react version
+npm view react description
+npm view react dependencies`,
+        },
+        {
+          command: 'View Package Versions',
+          description: 'Show all available versions',
+          usage: 'npm view <package> versions',
+          example: `npm view react versions`,
+        },
+        {
+          command: 'View Package Maintainers',
+          description: 'Show package maintainers',
+          usage: 'npm view <package> maintainers',
+          example: `npm view react maintainers`,
+        },
+        {
+          command: 'Search Packages',
+          description: 'Find packages in registry',
           usage: 'npm search <term>',
-          example: '# Search packages\nnpm search react router\nnpm s "date formatter"  # Short form\n\n# Limit search results\nnpm search react --searchlimit=10\n\n# JSON output\nnpm search react --json',
+          example: `npm search react router
+npm s "date formatter"  # Short form`,
         },
         {
-          command: 'Package Repository & Documentation',
-          description: 'Quick access to package resources',
-          usage: 'npm repo|docs|home <package>',
-          example: '# Open package repository\nnpm repo react\n\n# Open package documentation\nnpm docs lodash\n\n# Open package homepage\nnpm home express\n\n# Open in browser automatically',
+          command: 'Limit Search Results',
+          description: 'Limit number of search results',
+          usage: 'npm search --searchlimit',
+          example: `npm search react --searchlimit=10`,
+        },
+        {
+          command: 'Search JSON Output',
+          description: 'Get search results in JSON format',
+          usage: 'npm search --json',
+          example: `npm search react --json`,
+        },
+        {
+          command: 'Open Package Repository',
+          description: 'Open package repository in browser',
+          usage: 'npm repo <package>',
+          example: `npm repo react`,
+        },
+        {
+          command: 'Open Package Documentation',
+          description: 'Open package documentation',
+          usage: 'npm docs <package>',
+          example: `npm docs lodash`,
+        },
+        {
+          command: 'Open Package Homepage',
+          description: 'Open package homepage',
+          usage: 'npm home <package>',
+          example: `npm home express`,
         },
       ],
     },
@@ -224,28 +665,77 @@ export const npmCheatsheet = {
       title: 'Running Scripts & Tasks',
       commands: [
         {
-          command: 'Run Custom Scripts',
-          description: 'Execute scripts defined in package.json',
+          command: 'Run Custom Script',
+          description: 'Execute script from package.json',
           usage: 'npm run <script-name>',
-          example: '# Run script\nnpm run build\nnpm run dev\nnpm run test\n\n# Run with arguments\nnpm run test -- --watch\nnpm start -- --port 3001\n\n# Silent mode (no npm output)\nnpm run --silent build',
+          example: `npm run build
+npm run dev
+npm run test`,
         },
         {
-          command: 'Lifecycle Scripts',
-          description: 'Built-in npm lifecycle scripts',
-          usage: 'npm start|test|stop|restart',
-          example: '# Built-in scripts\nnpm start   # Runs "start" script\nnpm test    # Runs "test" script (alias: npm t)\nnpm stop    # Runs "stop" script\nnpm restart # Runs "stop" then "start"',
+          command: 'Run Script with Arguments',
+          description: 'Pass arguments to script',
+          usage: 'npm run <script> -- <args>',
+          example: `npm run test -- --watch
+npm start -- --port 3001`,
         },
         {
-          command: 'Pre/Post Hooks',
-          description: 'Automatic script execution hooks',
-          usage: '"pre<script>": "...", "post<script>": "..."',
-          example: '{\n  "scripts": {\n    "pretest": "eslint .",\n    "test": "jest",\n    "posttest": "npm run coverage",\n    "prebuild": "npm run clean",\n    "build": "webpack",\n    "postbuild": "npm run optimize"\n  }\n}\n\n# npm run test will automatically run pretest and posttest',
+          command: 'Silent Script Execution',
+          description: 'Run script without npm output',
+          usage: 'npm run --silent',
+          example: `npm run --silent build`,
+        },
+        {
+          command: 'Start Application',
+          description: 'Run start script',
+          usage: 'npm start',
+          example: `npm start   # Runs "start" script`,
+        },
+        {
+          command: 'Run Tests',
+          description: 'Run test script',
+          usage: 'npm test',
+          example: `npm test    # Runs "test" script (alias: npm t)`,
+        },
+        {
+          command: 'Stop Application',
+          description: 'Run stop script',
+          usage: 'npm stop',
+          example: `npm stop    # Runs "stop" script`,
+        },
+        {
+          command: 'Restart Application',
+          description: 'Run stop then start scripts',
+          usage: 'npm restart',
+          example: `npm restart # Runs "stop" then "start"`,
+        },
+        {
+          command: 'Pre/Post Hooks Example',
+          description: 'Example of lifecycle hooks',
+          usage: 'package.json scripts',
+          example: `{
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "jest",
+    "posttest": "npm run coverage",
+    "prebuild": "npm run clean",
+    "build": "webpack",
+    "postbuild": "npm run optimize"
+  }
+}`,
         },
         {
           command: 'Sequential Commands',
-          description: 'Combine multiple commands in scripts',
-          usage: '"script": "cmd1 && cmd2" or "cmd1 || cmd2"',
-          example: '{\n  "scripts": {\n    "build": "tsc && webpack",\n    "dev": "npm run build && npm run serve",\n    "test:cover": "jest --coverage || echo Tests failed",\n    "clean:all": "rm -rf dist && rm -rf coverage"\n  }\n}',
+          description: 'Combine commands sequentially',
+          usage: '&& operator in scripts',
+          example: `{
+  "scripts": {
+    "build": "tsc && webpack",
+    "dev": "npm run build && npm run serve",
+    "test:cover": "jest --coverage || echo Tests failed",
+    "clean:all": "rm -rf dist && rm -rf coverage"
+  }
+}`,
         },
       ],
     },
@@ -253,28 +743,73 @@ export const npmCheatsheet = {
       title: 'NPX - Package Executor',
       commands: [
         {
-          command: 'Execute Packages',
-          description: 'Run packages without installing them',
-          usage: 'npx <package> [args]',
-          example: '# Execute locally installed package\nnpx eslint .\n\n# Execute without installing\nnpx create-react-app my-app\nnpx typescript --init\n\n# Execute specific version\nnpx create-react-app@5.0.0 my-app',
+          command: 'Execute Local Package',
+          description: 'Run locally installed package',
+          usage: 'npx <package>',
+          example: `npx eslint .`,
+        },
+        {
+          command: 'Execute Without Installing',
+          description: 'Run package without installation',
+          usage: 'npx <package>',
+          example: `npx create-react-app my-app
+npx typescript --init`,
+        },
+        {
+          command: 'Execute Specific Version',
+          description: 'Run specific package version',
+          usage: 'npx <package>@<version>',
+          example: `npx create-react-app@5.0.0 my-app`,
         },
         {
           command: 'Install and Execute',
           description: 'Temporarily install and run package',
           usage: 'npx -p <package> <command>',
-          example: '# Install and run command\nnpx -p cowsay cowsay "Hello World"\nnpx -p typescript tsc --init\n\n# Multiple packages\nnpx -p webpack -p webpack-cli webpack --mode production',
+          example: `npx -p cowsay cowsay "Hello World"
+npx -p typescript tsc --init`,
         },
         {
-          command: 'NPX Options',
-          description: 'Control npx behavior',
-          usage: 'npx [options] <package>',
-          example: '# Skip installation confirmation\nnpx --yes create-next-app@latest\nnpx -y vite my-project\n\n# Use only if already installed\nnpx --no-install eslint\n\n# Clear cache\nnpx --clear-cache\n\n# Specify node version\nnpx --node=16 node --version',
+          command: 'Multiple Packages',
+          description: 'Use multiple packages',
+          usage: 'npx -p <pkg1> -p <pkg2>',
+          example: `npx -p webpack -p webpack-cli webpack --mode production`,
+        },
+        {
+          command: 'Skip Installation Confirmation',
+          description: 'Execute without confirmation prompt',
+          usage: 'npx --yes',
+          example: `npx --yes create-next-app@latest
+npx -y vite my-project`,
+        },
+        {
+          command: 'Use Only if Installed',
+          description: 'Skip installation if not present',
+          usage: 'npx --no-install',
+          example: `npx --no-install eslint`,
+        },
+        {
+          command: 'Clear NPX Cache',
+          description: 'Clear npx cache',
+          usage: 'npx --clear-cache',
+          example: `npx --clear-cache`,
+        },
+        {
+          command: 'Specify Node Version',
+          description: 'Use specific Node version',
+          usage: 'npx --node=<version>',
+          example: `npx --node=16 node --version`,
         },
         {
           command: 'Interactive Mode',
           description: 'Interactive package execution',
-          usage: 'npx --interactive <package>',
-          example: '# Interactive mode with prompts\nnpx --interactive create-react-app\n\n# Combine with other options\nnpx -y --interactive vite my-app',
+          usage: 'npx --interactive',
+          example: `npx --interactive create-react-app`,
+        },
+        {
+          command: 'Interactive with Options',
+          description: 'Combine interactive with other options',
+          usage: 'npx -y --interactive',
+          example: `npx -y --interactive vite my-app`,
         },
       ],
     },
@@ -284,57 +819,176 @@ export const npmCheatsheet = {
         {
           command: 'Clear Cache',
           description: 'Clean npm cache to fix issues',
-          usage: 'npm cache clean [--force]',
-          example: '# Clear cache (requires --force in npm 5+)\nnpm cache clean --force\n\n# Alternative: verify and clean\nnpm cache verify\nnpm cache clean --force',
+          usage: 'npm cache clean --force',
+          example: `npm cache clean --force`,
         },
         {
           command: 'Verify Cache',
           description: 'Check cache integrity and garbage collect',
           usage: 'npm cache verify',
-          example: '# Verify cache integrity\nnpm cache verify\n\n# Fixes corrupted cache entries\n# Frees up space from unused packages',
+          example: `npm cache verify
+# Fixes corrupted cache entries
+# Frees up space from unused packages`,
         },
         {
-          command: 'View Cache Contents',
+          command: 'List Cached Packages',
           description: 'Inspect cached packages',
-          usage: 'npm cache ls [package]',
-          example: '# List all cached packages\nnpm cache ls\n\n# List specific package\nnpm cache ls react\n\n# View cache location\nnpm config get cache',
+          usage: 'npm cache ls',
+          example: `npm cache ls`,
         },
         {
-          command: 'Cache Configuration',
-          description: 'Configure cache behavior',
+          command: 'List Specific Cached Package',
+          description: 'Show cached versions of specific package',
+          usage: 'npm cache ls <package>',
+          example: `npm cache ls react`,
+        },
+        {
+          command: 'View Cache Location',
+          description: 'Show cache directory path',
+          usage: 'npm config get cache',
+          example: `npm config get cache`,
+        },
+        {
+          command: 'Set Custom Cache Location',
+          description: 'Configure custom cache directory',
           usage: 'npm config set cache <path>',
-          example: '# Set custom cache location\nnpm config set cache /path/to/cache\n\n# Disable cache (not recommended)\nnpm config set cache false\n\n# Set cache max size\nnpm config set maxsockets 5',
+          example: `npm config set cache /path/to/cache`,
+        },
+        {
+          command: 'Disable Cache',
+          description: 'Disable npm cache (not recommended)',
+          usage: 'npm config set cache false',
+          example: `npm config set cache false`,
+        },
+        {
+          command: 'Set Cache Max Sockets',
+          description: 'Configure maximum concurrent connections',
+          usage: 'npm config set maxsockets',
+          example: `npm config set maxsockets 5`,
         },
       ],
     },
-
-    // ADVANCED LEVEL
     {
       title: 'Advanced Configuration',
       commands: [
         {
-          command: 'Configuration Management',
-          description: 'Manage npm configuration settings',
-          usage: 'npm config <set|get|delete|list|edit> <key> [value]',
-          example: '# Set configuration\nnpm config set registry https://registry.npmjs.org/\nnpm config set proxy http://proxy.company.com:8080\nnpm config set https-proxy http://proxy.company.com:8080\n\n# Get configuration\nnpm config get registry\nnpm config get proxy\n\n# Delete configuration\nnpm config delete proxy\n\n# List all configuration\nnpm config list\nnpm config list --json  # JSON format\n\n# Edit configuration file\nnpm config edit  # Opens .npmrc in editor',
+          command: 'Set Registry Configuration',
+          description: 'Configure npm registry',
+          usage: 'npm config set registry',
+          example: `npm config set registry https://registry.npmjs.org/`,
         },
         {
-          command: 'Project Configuration',
-          description: 'Use .npmrc files for project-specific settings',
+          command: 'Set Proxy Configuration',
+          description: 'Configure HTTP proxy',
+          usage: 'npm config set proxy',
+          example: `npm config set proxy http://proxy.company.com:8080`,
+        },
+        {
+          command: 'Set HTTPS Proxy',
+          description: 'Configure HTTPS proxy',
+          usage: 'npm config set https-proxy',
+          example: `npm config set https-proxy http://proxy.company.com:8080`,
+        },
+        {
+          command: 'Get Configuration Value',
+          description: 'Get specific configuration value',
+          usage: 'npm config get <key>',
+          example: `npm config get registry
+npm config get proxy`,
+        },
+        {
+          command: 'Delete Configuration',
+          description: 'Remove configuration setting',
+          usage: 'npm config delete <key>',
+          example: `npm config delete proxy`,
+        },
+        {
+          command: 'List All Configuration',
+          description: 'Show all configuration settings',
+          usage: 'npm config list',
+          example: `npm config list
+npm config list --json  # JSON format`,
+        },
+        {
+          command: 'Edit Configuration File',
+          description: 'Open configuration file in editor',
+          usage: 'npm config edit',
+          example: `npm config edit  # Opens .npmrc in editor`,
+        },
+        {
+          command: 'Project .npmrc File',
+          description: 'Project-specific configuration',
           usage: '.npmrc file in project root',
-          example: '# Project .npmrc file\nregistry=https://registry.npmjs.org/\nsave-exact=true\n@mycompany:registry=https://npm.mycompany.com/\n//npm.mycompany.com/:_authToken=${NPM_TOKEN}\n\n# Environment-specific configs\n.npmrc          # Project config\n~/.npmrc         # User config\nglobal .npmrc    # System config',
+          example: `# Project .npmrc file
+registry=https://registry.npmjs.org/
+save-exact=true
+@mycompany:registry=https://npm.mycompany.com/
+//npm.mycompany.com/:_authToken=\${NPM_TOKEN}`,
         },
         {
-          command: 'Environment Variables',
-          description: 'Configure npm using environment variables',
-          usage: 'npm_config_<key>=<value>',
-          example: '# Set registry via environment\nexport npm_config_registry=https://registry.npmjs.org/\n\n# Set proxy via environment\nexport npm_config_proxy=http://proxy.company.com:8080\n\n# Use in CI/CD\nenv npm_config_registry=https://private-registry.com npm install',
+          command: 'Configuration File Locations',
+          description: 'Different .npmrc file locations',
+          usage: 'Configuration hierarchy',
+          example: `.npmrc          # Project config
+~/.npmrc         # User config
+global .npmrc    # System config`,
         },
         {
-          command: 'Authentication Configuration',
-          description: 'Configure private registry access',
-          usage: 'npm login or .npmrc authentication',
-          example: '# Login to registry\nnpm login\n# Enter username, password, email\n\n# Or configure in .npmrc\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n//private-registry.com/:_authToken=your-token\n\n# Scoped package authentication\n@mycompany:registry=https://npm.mycompany.com/\n//npm.mycompany.com/:_authToken=${NPM_TOKEN}',
+          command: 'Set Registry via Environment',
+          description: 'Configure registry using environment variable',
+          usage: 'npm_config_<key>',
+          example: `export npm_config_registry=https://registry.npmjs.org/`,
+        },
+        {
+          command: 'Set Proxy via Environment',
+          description: 'Configure proxy using environment variable',
+          usage: 'Environment proxy configuration',
+          example: `export npm_config_proxy=http://proxy.company.com:8080`,
+        },
+        {
+          command: 'Environment in CI/CD',
+          description: 'Use environment variables in CI/CD',
+          usage: 'Environment configuration',
+          example: `env npm_config_registry=https://private-registry.com npm install`,
+        },
+        {
+          command: 'Login to Registry',
+          description: 'Authenticate with npm registry',
+          usage: 'npm login',
+          example: `npm login
+# Enter username, password, email (2FA if enabled)`,
+        },
+        {
+          command: 'Check Current User',
+          description: 'Show authenticated user',
+          usage: 'npm whoami',
+          example: `npm whoami`,
+        },
+        {
+          command: 'Logout from Registry',
+          description: 'Sign out from registry',
+          usage: 'npm logout',
+          example: `npm logout`,
+        },
+        {
+          command: 'Login to Scoped Registry',
+          description: 'Authenticate with scoped registry',
+          usage: 'npm login --scope',
+          example: `npm login --scope=@mycompany --registry=https://npm.mycompany.com`,
+        },
+        {
+          command: 'Configure Authentication Token',
+          description: 'Set authentication token in .npmrc',
+          usage: '.npmrc authentication',
+          example: `//registry.npmjs.org/:_authToken=\${NPM_TOKEN}
+//private-registry.com/:_authToken=your-token`,
+        },
+        {
+          command: 'Scoped Package Authentication',
+          description: 'Configure authentication for scoped packages',
+          usage: 'Scoped authentication',
+          example: `@mycompany:registry=https://npm.mycompany.com/
+//npm.mycompany.com/:_authToken=\${NPM_TOKEN}`,
         },
       ],
     },
@@ -342,34 +996,113 @@ export const npmCheatsheet = {
       title: 'Package Publishing & Distribution',
       commands: [
         {
-          command: 'Registry Authentication',
-          description: 'Login and manage registry access',
-          usage: 'npm login|logout|whoami',
-          example: '# Login to registry\nnpm login\n# Enter username, password, email (2FA if enabled)\n\n# Check current user\nnpm whoami\n\n# Logout from registry\nnpm logout\n\n# Login to scoped registry\nnpm login --scope=@mycompany --registry=https://npm.mycompany.com',
+          command: 'Publish Package',
+          description: 'Publish package to npm registry',
+          usage: 'npm publish',
+          example: `npm publish`,
         },
         {
-          command: 'Publish Packages',
-          description: 'Publish packages to npm registry',
-          usage: 'npm publish [options]',
-          example: '# Publish package\nnpm publish\n\n# Publish scoped package as public\nnpm publish --access=public\n\n# Publish to different registry\nnpm publish --registry=https://npm.mycompany.com\n\n# Publish with tag\nnpm publish --tag beta\n\n# Dry run (check without publishing)\nnpm publish --dry-run',
+          command: 'Publish Scoped Package as Public',
+          description: 'Publish scoped package publicly',
+          usage: 'npm publish --access',
+          example: `npm publish --access=public`,
         },
         {
-          command: 'Version Management',
-          description: 'Manage package versions automatically',
-          usage: 'npm version <major|minor|patch|prerelease>',
-          example: '# Update version and create git tag\nnpm version patch    # 1.0.0 -> 1.0.1\nnpm version minor    # 1.0.0 -> 1.1.0\nnpm version major    # 1.0.0 -> 2.0.0\n\n# Pre-release versions\nnpm version prerelease --preid=alpha  # 1.0.0 -> 1.0.1-alpha.0\nnpm version prerelease --preid=beta   # 1.0.1-alpha.0 -> 1.0.1-alpha.1\n\n# Specific version\nnpm version 1.2.3\n\n# Skip git operations\nnpm version patch --no-git-tag-version',
+          command: 'Publish to Different Registry',
+          description: 'Publish to custom registry',
+          usage: 'npm publish --registry',
+          example: `npm publish --registry=https://npm.mycompany.com`,
         },
         {
-          command: 'Package Deprecation & Unpublish',
-          description: 'Manage published package lifecycle',
-          usage: 'npm deprecate|unpublish',
-          example: '# Deprecate version\nnpm deprecate my-package@1.0.0 "Use version 2.0.0 instead"\nnpm deprecate my-package@<1.2.0 "Security issues in older versions"\n\n# Unpublish version (within 72 hours)\nnpm unpublish my-package@1.0.0\n\n# Unpublish entire package (force)\nnpm unpublish my-package --force',
+          command: 'Publish with Tag',
+          description: 'Publish package with specific tag',
+          usage: 'npm publish --tag',
+          example: `npm publish --tag beta`,
+        },
+        {
+          command: 'Publish Dry Run',
+          description: 'Check package without publishing',
+          usage: 'npm publish --dry-run',
+          example: `npm publish --dry-run`,
+        },
+        {
+          command: 'Version Patch',
+          description: 'Increment patch version',
+          usage: 'npm version patch',
+          example: `npm version patch    # 1.0.0 -> 1.0.1`,
+        },
+        {
+          command: 'Version Minor',
+          description: 'Increment minor version',
+          usage: 'npm version minor',
+          example: `npm version minor    # 1.0.0 -> 1.1.0`,
+        },
+        {
+          command: 'Version Major',
+          description: 'Increment major version',
+          usage: 'npm version major',
+          example: `npm version major    # 1.0.0 -> 2.0.0`,
+        },
+        {
+          command: 'Version Prerelease Alpha',
+          description: 'Create alpha prerelease',
+          usage: 'npm version prerelease --preid',
+          example: `npm version prerelease --preid=alpha  # 1.0.0 -> 1.0.1-alpha.0`,
+        },
+        {
+          command: 'Version Prerelease Beta',
+          description: 'Create beta prerelease',
+          usage: 'npm version prerelease --preid',
+          example: `npm version prerelease --preid=beta   # 1.0.1-alpha.0 -> 1.0.1-alpha.1`,
+        },
+        {
+          command: 'Version Specific',
+          description: 'Set specific version',
+          usage: 'npm version <version>',
+          example: `npm version 1.2.3`,
+        },
+        {
+          command: 'Version Without Git Tag',
+          description: 'Update version without git operations',
+          usage: 'npm version --no-git-tag-version',
+          example: `npm version patch --no-git-tag-version`,
+        },
+        {
+          command: 'Deprecate Version',
+          description: 'Deprecate specific package version',
+          usage: 'npm deprecate <package>@<version>',
+          example: `npm deprecate my-package@1.0.0 "Use version 2.0.0 instead"
+npm deprecate my-package@<1.2.0 "Security issues in older versions"`,
+        },
+        {
+          command: 'Unpublish Version',
+          description: 'Remove specific version (within 72 hours)',
+          usage: 'npm unpublish <package>@<version>',
+          example: `npm unpublish my-package@1.0.0`,
+        },
+        {
+          command: 'Unpublish Entire Package',
+          description: 'Remove entire package (force)',
+          usage: 'npm unpublish --force',
+          example: `npm unpublish my-package --force`,
         },
         {
           command: 'Create Package Tarball',
           description: 'Create distributable package archive',
           usage: 'npm pack',
-          example: '# Create .tgz file\nnpm pack\n\n# Pack specific package\nnpm pack ./my-package\n\n# Include readme in pack\nnpm pack --pack-destination ./dist',
+          example: `npm pack`,
+        },
+        {
+          command: 'Pack Specific Package',
+          description: 'Create tarball for specific package',
+          usage: 'npm pack <path>',
+          example: `npm pack ./my-package`,
+        },
+        {
+          command: 'Pack with Destination',
+          description: 'Specify pack destination directory',
+          usage: 'npm pack --pack-destination',
+          example: `npm pack --pack-destination ./dist`,
         },
       ],
     },
@@ -377,22 +1110,83 @@ export const npmCheatsheet = {
       title: 'Advanced Security Features',
       commands: [
         {
-          command: 'Security Audit',
+          command: 'Run Security Audit',
           description: 'Comprehensive security vulnerability scanning',
-          usage: 'npm audit [options]',
-          example: '# Run security audit\nnpm audit\n\n# JSON output for automation\nnpm audit --json\n\n# Fix vulnerabilities automatically\nnpm audit fix\n\n# Force fix (including breaking changes)\nnpm audit fix --force\n\n# Fix only production dependencies\nnpm audit fix --production\n\n# Check audit signatures (npm 10+)\nnpm audit signatures',
+          usage: 'npm audit',
+          example: `npm audit`,
         },
         {
-          command: 'Package Signatures',
+          command: 'Audit JSON Output',
+          description: 'Get audit report in JSON format',
+          usage: 'npm audit --json',
+          example: `npm audit --json`,
+        },
+        {
+          command: 'Fix Security Vulnerabilities',
+          description: 'Automatically fix vulnerabilities',
+          usage: 'npm audit fix',
+          example: `npm audit fix`,
+        },
+        {
+          command: 'Force Fix Security',
+          description: 'Fix including breaking changes',
+          usage: 'npm audit fix --force',
+          example: `npm audit fix --force`,
+        },
+        {
+          command: 'Fix Production Dependencies',
+          description: 'Fix only production dependencies',
+          usage: 'npm audit fix --production',
+          example: `npm audit fix --production`,
+        },
+        {
+          command: 'Check Audit Signatures',
+          description: 'Verify package signatures (npm 10+)',
+          usage: 'npm audit signatures',
+          example: `npm audit signatures`,
+        },
+        {
+          command: 'Verify Package Signatures',
           description: 'Verify package integrity and authenticity',
-          usage: 'npm audit signatures (npm 10+)',
-          example: '# Verify package signatures\nnpm audit signatures\n\n# Enable signature verification\nnpm config set audit-signature-verification true\n\n# Check specific package signature\nnpm audit react --signatures',
+          usage: 'npm audit signatures',
+          example: `npm audit signatures`,
         },
         {
-          command: 'Security Best Practices',
-          description: 'Configure npm for enhanced security',
-          usage: 'Security configuration options',
-          example: '# Enable strict SSL\nnpm config set strict-ssl true\n\n# Set audit level\nnpm config set audit-level moderate\n# Options: low, moderate, high, critical\n\n# Enable package provenance\nnpm config set package-provenance true\n\n# Use private registry with authentication\nnpm config set registry https://secure-registry.com',
+          command: 'Enable Signature Verification',
+          description: 'Enable package signature verification',
+          usage: 'npm config set audit-signature-verification',
+          example: `npm config set audit-signature-verification true`,
+        },
+        {
+          command: 'Check Specific Package Signature',
+          description: 'Verify specific package signature',
+          usage: 'npm audit <package> --signatures',
+          example: `npm audit react --signatures`,
+        },
+        {
+          command: 'Enable Strict SSL',
+          description: 'Enforce SSL for registry connections',
+          usage: 'npm config set strict-ssl',
+          example: `npm config set strict-ssl true`,
+        },
+        {
+          command: 'Set Audit Level',
+          description: 'Configure security audit level',
+          usage: 'npm config set audit-level',
+          example: `npm config set audit-level moderate
+# Options: low, moderate, high, critical`,
+        },
+        {
+          command: 'Enable Package Provenance',
+          description: 'Enable package provenance verification',
+          usage: 'npm config set package-provenance',
+          example: `npm config set package-provenance true`,
+        },
+        {
+          command: 'Use Secure Registry',
+          description: 'Configure secure private registry',
+          usage: 'npm config set registry',
+          example: `npm config set registry https://secure-registry.com`,
         },
       ],
     },
@@ -403,62 +1197,259 @@ export const npmCheatsheet = {
           command: 'Workspace Configuration',
           description: 'Set up npm workspaces for monorepo management',
           usage: 'workspaces property in package.json',
-          example: '# Root package.json\n{\n  "name": "my-monorepo",\n  "version": "1.0.0",\n  "workspaces": [\n    "packages/*",\n    "apps/*",\n    "libs/*"\n  ],\n  "scripts": {\n    "build": "npm run build --workspaces",\n    "test": "npm run test --workspaces"\n  }\n}',
+          example: `# Root package.json
+{
+  "name": "my-monorepo",
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces"
+  }
+}`,
         },
         {
-          command: 'Workspace Commands',
-          description: 'Run commands in specific or all workspaces',
+          command: 'Run in Specific Workspace',
+          description: 'Run command in specific workspace',
           usage: 'npm <command> --workspace=<name>',
-          example: '# Run in specific workspace\nnpm run build --workspace=packages/app\nnpm install react --workspace=packages/ui\n\n# Run in all workspaces\nnpm run test --workspaces\nnpm install --workspaces\n\n# List workspaces\nnpm ls --workspaces\n\n# Install dependencies for all workspaces\nnpm install --workspaces',
+          example: `npm run build --workspace=packages/app
+npm install react --workspace=packages/ui`,
         },
         {
-          command: 'Workspace Management',
-          description: 'Advanced workspace operations',
-          usage: 'Workspace-specific commands',
-          example: '# Add dependency to specific workspace\nnpm install lodash --workspace=packages/utils\n\n# Add dev dependency to all workspaces\nnpm install --save-dev jest --workspaces\n\n# Remove from workspace\nnpm uninstall react --workspace=packages/ui\n\n# Run script in workspace context\nnpm run dev --workspace=packages/app',
+          command: 'Run in All Workspaces',
+          description: 'Run command in all workspaces',
+          usage: 'npm <command> --workspaces',
+          example: `npm run test --workspaces
+npm install --workspaces`,
         },
         {
-          command: 'Linking Local Packages',
-          description: 'Link local packages for development',
+          command: 'List Workspaces',
+          description: 'Show all configured workspaces',
+          usage: 'npm ls --workspaces',
+          example: `npm ls --workspaces`,
+        },
+        {
+          command: 'Install Dependencies for All Workspaces',
+          description: 'Install dependencies for all workspaces',
+          usage: 'npm install --workspaces',
+          example: `npm install --workspaces`,
+        },
+        {
+          command: 'Add Dependency to Specific Workspace',
+          description: 'Add dependency to specific workspace',
+          usage: 'npm install --workspace',
+          example: `npm install lodash --workspace=packages/utils`,
+        },
+        {
+          command: 'Add Dev Dependency to All Workspaces',
+          description: 'Add dev dependency to all workspaces',
+          usage: 'npm install --save-dev --workspaces',
+          example: `npm install --save-dev jest --workspaces`,
+        },
+        {
+          command: 'Remove from Workspace',
+          description: 'Remove dependency from workspace',
+          usage: 'npm uninstall --workspace',
+          example: `npm uninstall react --workspace=packages/ui`,
+        },
+        {
+          command: 'Run Script in Workspace',
+          description: 'Run script in workspace context',
+          usage: 'npm run --workspace',
+          example: `npm run dev --workspace=packages/app`,
+        },
+        {
+          command: 'Link Local Package',
+          description: 'Link local package for development',
           usage: 'npm link [package]',
-          example: '# In package directory\ncd my-package && npm link\n\n# In consuming project\ncd my-app && npm link my-package\n\n# Unlink\nnpm unlink my-package\n\n# Link in workspace context\nnpm link --workspace=packages/utils',
+          example: `# In package directory
+cd my-package && npm link`,
+        },
+        {
+          command: 'Link to Consuming Project',
+          description: 'Link package to consuming project',
+          usage: 'npm link <package>',
+          example: `# In consuming project
+cd my-app && npm link my-package`,
+        },
+        {
+          command: 'Unlink Package',
+          description: 'Unlink linked package',
+          usage: 'npm unlink <package>',
+          example: `npm unlink my-package`,
+        },
+        {
+          command: 'Link in Workspace Context',
+          description: 'Link package within workspace',
+          usage: 'npm link --workspace',
+          example: `npm link --workspace=packages/utils`,
         },
       ],
     },
-
-    // EXPERT LEVEL
     {
       title: 'Advanced NVM & Node Management',
       commands: [
         {
-          command: 'NVM Advanced Configuration',
-          description: 'Advanced NVM setup and customization',
-          usage: 'NVM environment variables and configuration',
-          example: '# NVM environment variables\nexport NVM_DIR="$HOME/.nvm"\nexport NVM_NODEJS_ORG_MIRROR="https://nodejs.org/dist"\nexport NVM_IOJS_ORG_MIRROR="https://iojs.org/dist"\n\n# Custom Node.js mirror for faster downloads\nexport NVM_NODEJS_ORG_MIRROR="https://npmmirror.com/mirrors/node"\n\n# NVM shell integration\n[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"\n[ -s "$NVM_DIR/bash_completion" ] && \\. "$NVM_DIR/bash_completion"',
+          command: 'Set NVM Directory',
+          description: 'Configure NVM installation directory',
+          usage: 'NVM_DIR environment variable',
+          example: `export NVM_DIR="$HOME/.nvm"`,
         },
         {
-          command: 'NVM Scripting & Automation',
-          description: 'Automate Node.js version management',
-          usage: 'NVM in scripts and CI/CD',
-          example: '# CI/CD example with NVM\n#!/bin/bash\n\n# Load NVM\nexport NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"\n\n# Install and use specific Node version\nnvm install 18\nnvm use 18\n\n# Install dependencies and run tests\nnpm ci\nnpm test\n\n# Docker with NVM\nFROM node:18-alpine\nRUN npm install -g nvm\nRUN nvm install 20 && nvm use 20',
+          command: 'Set Node.js Mirror',
+          description: 'Configure Node.js download mirror',
+          usage: 'NVM_NODEJS_ORG_MIRROR',
+          example: `export NVM_NODEJS_ORG_MIRROR="https://nodejs.org/dist"`,
         },
         {
-          command: 'Multiple Node Version Managers',
-          description: 'Managing multiple version managers',
-          usage: 'NVM vs fnm vs Volta vs asdf',
-          example: '# Alternative Node version managers\n\n# fnm (Fast Node Manager)\ncurl -fsSL https://fnm.vercel.app/install | bash\nfnm install 18\nfnm use 18\n\n# Volta (JavaScript Tool Manager)\ncurl https://get.volta.sh | bash\nvolta install node@18\nvolta pin node@18\n\n# asdf (Version manager for multiple languages)\nasdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git\nasdf install nodejs 18.17.0\nasdf global nodejs 18.17.0\n\n# Convert from NVM to fnm\nfnm migrate',
+          command: 'Set IO.js Mirror',
+          description: 'Configure IO.js download mirror',
+          usage: 'NVM_IOJS_ORG_MIRROR',
+          example: `export NVM_IOJS_ORG_MIRROR="https://iojs.org/dist"`,
         },
         {
-          command: 'NVM Troubleshooting',
-          description: 'Common NVM issues and solutions',
-          usage: 'Debug NVM problems',
-          example: '# NVM not found\ncommand -v nvm  # Check if NVM is loaded\n\n# Reload NVM\nsource ~/.nvm/nvm.sh\n\n# Check NVM installation\nls -la ~/.nvm\n\n# Fix permission issues\nchmod +x ~/.nvm/nvm.sh\n\n# NVM slow downloads\nexport NVM_NODEJS_ORG_MIRROR="https://npmmirror.com/mirrors/node"\n\n# Reset NVM\nrm -rf ~/.nvm\n# Reinstall NVM',
+          command: 'Use Fast Node.js Mirror',
+          description: 'Configure faster Node.js mirror',
+          usage: 'NVM_NODEJS_ORG_MIRROR for speed',
+          example: `export NVM_NODEJS_ORG_MIRROR="https://npmmirror.com/mirrors/node"`,
         },
         {
-          command: 'NVM Performance Optimization',
-          description: 'Optimize NVM for better performance',
-          usage: 'Performance tuning for NVM',
-          example: '# Use faster mirrors\nexport NVM_NODEJS_ORG_MIRROR="https://npmmirror.com/mirrors/node"\n\n# Preload Node versions\nnvm install 18 --reinstall-packages-from=current\n\n# Use binary packages (faster installation)\nexport NVM_MAKE_OPTS="-j$(nproc)"\n\n# Cache NPM packages globally\nnpm config set cache ~/.npm-global-cache\n\n# Parallel installations\nnvm install 18 && nvm install 20 &',
+          command: 'Load NVM in Shell',
+          description: 'Load NVM shell integration',
+          usage: 'NVM shell scripts',
+          example: `[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \\. "$NVM_DIR/bash_completion"`,
+        },
+        {
+          command: 'CI/CD with NVM',
+          description: 'Use NVM in CI/CD environments',
+          usage: 'NVM in automation scripts',
+          example: `#!/bin/bash
+
+# Load NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
+
+# Install and use specific Node version
+nvm install 18
+nvm use 18
+
+# Install dependencies and run tests
+npm ci
+npm test`,
+        },
+        {
+          command: 'Docker with NVM',
+          description: 'Use NVM in Docker containers',
+          usage: 'NVM in Dockerfile',
+          example: `FROM node:18-alpine
+RUN npm install -g nvm
+RUN nvm install 20 && nvm use 20`,
+        },
+        {
+          command: 'Install FNM',
+          description: 'Install Fast Node Manager',
+          usage: 'Alternative to NVM',
+          example: `curl -fsSL https://fnm.vercel.app/install | bash`,
+        },
+        {
+          command: 'Use FNM',
+          description: 'Basic FNM commands',
+          usage: 'FNM version management',
+          example: `fnm install 18
+fnm use 18`,
+        },
+        {
+          command: 'Install Volta',
+          description: 'Install Volta JavaScript Tool Manager',
+          usage: 'Alternative version manager',
+          example: `curl https://get.volta.sh | bash`,
+        },
+        {
+          command: 'Use Volta',
+          description: 'Basic Volta commands',
+          usage: 'Volta version management',
+          example: `volta install node@18
+volta pin node@18`,
+        },
+        {
+          command: 'Install asdf',
+          description: 'Install asdf version manager',
+          usage: 'Multi-language version manager',
+          example: `asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf install nodejs 18.17.0
+asdf global nodejs 18.17.0`,
+        },
+        {
+          command: 'Convert from NVM to FNM',
+          description: 'Migrate from NVM to FNM',
+          usage: 'Migration tool',
+          example: `fnm migrate`,
+        },
+        {
+          command: 'Check NVM Installation',
+          description: 'Verify NVM is properly installed',
+          usage: 'NVM troubleshooting',
+          example: `command -v nvm  # Check if NVM is loaded`,
+        },
+        {
+          command: 'Reload NVM',
+          description: 'Reload NVM configuration',
+          usage: 'NVM troubleshooting',
+          example: `source ~/.nvm/nvm.sh`,
+        },
+        {
+          command: 'Check NVM Files',
+          description: 'Inspect NVM installation files',
+          usage: 'NVM troubleshooting',
+          example: `ls -la ~/.nvm`,
+        },
+        {
+          command: 'Fix NVM Permissions',
+          description: 'Fix permission issues with NVM',
+          usage: 'NVM troubleshooting',
+          example: `chmod +x ~/.nvm/nvm.sh`,
+        },
+        {
+          command: 'Fix Slow NVM Downloads',
+          description: 'Use faster mirrors for downloads',
+          usage: 'NVM performance',
+          example: `export NVM_NODEJS_ORG_MIRROR="https://npmmirror.com/mirrors/node"`,
+        },
+        {
+          command: 'Reset NVM',
+          description: 'Completely reset NVM installation',
+          usage: 'NVM troubleshooting',
+          example: `rm -rf ~/.nvm
+# Reinstall NVM`,
+        },
+        {
+          command: 'Preload Node Versions',
+          description: 'Install Node with package migration',
+          usage: 'NVM performance optimization',
+          example: `nvm install 18 --reinstall-packages-from=current`,
+        },
+        {
+          command: 'Use Binary Packages',
+          description: 'Use binary packages for faster installation',
+          usage: 'NVM build optimization',
+          example: `export NVM_MAKE_OPTS="-j$(nproc)"`,
+        },
+        {
+          command: 'Cache NPM Packages Globally',
+          description: 'Set global NPM cache location',
+          usage: 'Performance optimization',
+          example: `npm config set cache ~/.npm-global-cache`,
+        },
+        {
+          command: 'Parallel Installations',
+          description: 'Install multiple Node versions in parallel',
+          usage: 'Performance optimization',
+          example: `nvm install 18 && nvm install 20 &`,
         },
       ],
     },
@@ -466,34 +1457,120 @@ export const npmCheatsheet = {
       title: 'Dependency Analysis & Optimization',
       commands: [
         {
-          command: 'Dependency Tree Analysis',
-          description: 'Analyze and understand dependency relationships',
-          usage: 'npm explain|ls|tree',
-          example: '# Explain why package is installed\nnpm explain lodash\nnpm why lodash  # Alias\n\n# View dependency tree\nnpm ls --json\n\n# Check for duplicates\nnpm ls --depth=0 | grep \\.\\*\\.\n\n# Find circular dependencies\nnpm ls --all',
+          command: 'Explain Package Installation',
+          description: 'Explain why package is installed',
+          usage: 'npm explain <package>',
+          example: `npm explain lodash
+npm why lodash  # Alias`,
         },
         {
-          command: 'Dependency Query (npm 8.16+)',
-          description: 'Query dependency tree with CSS selectors',
-          usage: 'npm query <selector>',
-          example: '# Query dependencies\nnpm query "[name=react]"  # Find react\nnpm query ":root > *"     # Direct dependencies\nnpm query "#react"        # By package name as ID\nnpm query ".dev"          # Dev dependencies\nnpm query ":empty"        # Packages without dependencies\nnpm query ":scope(@react)" # Scoped packages',
+          command: 'View Dependency Tree JSON',
+          description: 'Get dependency tree in JSON format',
+          usage: 'npm ls --json',
+          example: `npm ls --json`,
         },
         {
-          command: 'Package Deduplication',
+          command: 'Check for Duplicates',
+          description: 'Find duplicate dependencies',
+          usage: 'npm ls with grep',
+          example: `npm ls --depth=0 | grep \\.\\*\\.`,
+        },
+        {
+          command: 'Find Circular Dependencies',
+          description: 'Check for circular dependency issues',
+          usage: 'npm ls --all',
+          example: `npm ls --all`,
+        },
+        {
+          command: 'Query by Package Name',
+          description: 'Find packages by name using CSS selector',
+          usage: 'npm query',
+          example: `npm query "[name=react]"  # Find react`,
+        },
+        {
+          command: 'Query Direct Dependencies',
+          description: 'Find direct dependencies',
+          usage: 'npm query selector',
+          example: `npm query ":root > *"     # Direct dependencies`,
+        },
+        {
+          command: 'Query by Package ID',
+          description: 'Find package by name as ID',
+          usage: 'npm query #<package>',
+          example: `npm query "#react"        # By package name as ID`,
+        },
+        {
+          command: 'Query Dev Dependencies',
+          description: 'Find development dependencies',
+          usage: 'npm query .dev',
+          example: `npm query ".dev"          # Dev dependencies`,
+        },
+        {
+          command: 'Query Empty Packages',
+          description: 'Find packages without dependencies',
+          usage: 'npm query :empty',
+          example: `npm query ":empty"        # Packages without dependencies`,
+        },
+        {
+          command: 'Query Scoped Packages',
+          description: 'Find packages by scope',
+          usage: 'npm query :scope',
+          example: `npm query ":scope(@react)" # Scoped packages`,
+        },
+        {
+          command: 'Deduplicate Dependencies',
           description: 'Reduce duplicate dependencies',
           usage: 'npm dedupe',
-          example: '# Deduplicate dependencies\nnpm dedupe\nnpm ddp  # Short form\n\n# Check before deduping\nnpm ls --depth=0\nnpm dedupe --dry-run\n\n# Dedupe global packages\nnpm dedupe -g',
+          example: `npm dedupe
+npm ddp  # Short form`,
         },
         {
-          command: 'Dependency Diffing',
-          description: 'Compare package versions and dependencies',
-          usage: 'npm diff [package]',
-          example: '# Compare installed vs package.json\nnpm diff\n\n# Compare specific package versions\nnpm diff react@17.0.0 react@18.0.0\n\n# Compare with registry\nnpm diff --diff=package-name',
+          command: 'Dedupe Dry Run',
+          description: 'Preview deduplication changes',
+          usage: 'npm dedupe --dry-run',
+          example: `npm dedupe --dry-run`,
         },
         {
-          command: 'Funding Information',
-          description: 'View package funding details',
+          command: 'Dedupe Global Packages',
+          description: 'Deduplicate global packages',
+          usage: 'npm dedupe -g',
+          example: `npm dedupe -g`,
+        },
+        {
+          command: 'Compare Installed vs Package.json',
+          description: 'Compare installed packages with package.json',
+          usage: 'npm diff',
+          example: `npm diff`,
+        },
+        {
+          command: 'Compare Package Versions',
+          description: 'Compare specific package versions',
+          usage: 'npm diff <pkg1>@<ver1> <pkg2>@<ver2>',
+          example: `npm diff react@17.0.0 react@18.0.0`,
+        },
+        {
+          command: 'Compare with Registry',
+          description: 'Compare with registry version',
+          usage: 'npm diff --diff',
+          example: `npm diff --diff=package-name`,
+        },
+        {
+          command: 'View Funding Information',
+          description: 'Show package funding details',
           usage: 'npm fund',
-          example: '# View funding info\nnpm fund\n\n# View specific package funding\nnpm fund react\n\n# JSON output\nnpm fund --json',
+          example: `npm fund`,
+        },
+        {
+          command: 'View Specific Package Funding',
+          description: 'Show funding for specific package',
+          usage: 'npm fund <package>',
+          example: `npm fund react`,
+        },
+        {
+          command: 'Funding JSON Output',
+          description: 'Get funding info in JSON format',
+          usage: 'npm fund --json',
+          example: `npm fund --json`,
         },
       ],
     },
@@ -501,28 +1578,161 @@ export const npmCheatsheet = {
       title: 'Advanced Scripting & Automation',
       commands: [
         {
-          command: 'Package.json Scripts Advanced',
-          description: 'Complex script configurations and automation',
-          usage: 'Advanced package.json script patterns',
-          example: '{\n  "scripts": {\n    "scripts": {\n      "preinstall": "node scripts/preinstall.js",\n      "postinstall": "node scripts/postinstall.js",\n      "prepare": "npm run build",\n      "prepack": "npm run test && npm run build",\n      "postpack": "npm run cleanup"\n    },\n    "concurrent": {\n      "dev": "concurrently \\"npm run dev:server\\" \\"npm run dev:client\\"",\n      "test:all": "concurrently \\"npm run test:unit\\" \\"npm run test:integration\\""\n    },\n    "conditional": {\n      "build:prod": "cross-env NODE_ENV=production npm run build",\n      "build:dev": "cross-env NODE_ENV=development npm run build"\n    }\n  }\n}',
+          command: 'Advanced Script Configuration',
+          description: 'Complex script configurations',
+          usage: 'package.json scripts',
+          example: `{
+  "scripts": {
+    "preinstall": "node scripts/preinstall.js",
+    "postinstall": "node scripts/postinstall.js",
+    "prepare": "npm run build",
+    "prepack": "npm run test && npm run build",
+    "postpack": "npm run cleanup"
+  }
+}`,
         },
         {
-          command: 'Lifecycle Script Hooks',
-          description: 'Complete npm lifecycle script reference',
-          usage: 'npm lifecycle scripts',
-          example: '# Installation lifecycle\npreinstall, install, postinstall\nprepack, pack, postpack\nprepare, prepublish, prepublishOnly\n\n# Publishing lifecycle\nprepublishOnly, prepare, prepublish, publish, postpublish\n\n# Other lifecycle\nprestart, start, poststart\nprestop, stop, poststop\nprerestart, restart, postrestart\npretest, test, posttest\npreuninstall, uninstall, postuninstall',
+          command: 'Concurrent Script Execution',
+          description: 'Run multiple scripts concurrently',
+          usage: 'concurrently package',
+          example: `{
+  "scripts": {
+    "dev": "concurrently \\"npm run dev:server\\" \\"npm run dev:client\\"",
+    "test:all": "concurrently \\"npm run test:unit\\" \\"npm run test:integration\\""
+  }
+}`,
         },
         {
-          command: 'Script Execution Context',
-          description: 'Environment variables and context in scripts',
-          usage: 'npm script environment',
-          example: '# Available environment variables in scripts\nnpm_package_name\nnpm_package_version\nnpm_config_<key>\nnpm_lifecycle_event\nnpm_node_execpath\nnpm_execpath\n\n# Example usage in script\n"scripts": {\n  "build": "echo Building $npm_package_name@$npm_package_version",\n  "deploy": "echo $npm_lifecycle_event on $npm_config_env"\n}',
+          command: 'Conditional Script Execution',
+          description: 'Run scripts based on conditions',
+          usage: 'cross-env package',
+          example: `{
+  "scripts": {
+    "build:prod": "cross-env NODE_ENV=production npm run build",
+    "build:dev": "cross-env NODE_ENV=development npm run build"
+  }
+}`,
         },
         {
-          command: 'Cross-Platform Scripts',
-          description: 'Write scripts that work on all platforms',
-          usage: 'Cross-platform scripting tools',
-          example: '# Use cross-platform tools\n{\n  "scripts": {\n    "clean": "rimraf dist",\n    "copy": "cpy src/*.js dist/",\n    "set-env": "cross-env NODE_ENV=production",\n    "run-series": "run-s clean build test",\n    "run-parallel": "run-p lint test"\n  }\n}\n\n# Install dev dependencies\nnpm install --save-dev rimraf cpy cross-env npm-run-all',
+          command: 'Installation Lifecycle Scripts',
+          description: 'Scripts that run during installation',
+          usage: 'Lifecycle hooks',
+          example: `preinstall, install, postinstall
+prepack, pack, postpack
+prepare, prepublish, prepublishOnly`,
+        },
+        {
+          command: 'Publishing Lifecycle Scripts',
+          description: 'Scripts that run during publishing',
+          usage: 'Publish lifecycle',
+          example: `prepublishOnly, prepare, prepublish, publish, postpublish`,
+        },
+        {
+          command: 'Application Lifecycle Scripts',
+          description: 'Scripts for application lifecycle',
+          usage: 'App lifecycle hooks',
+          example: `prestart, start, poststart
+prestop, stop, poststop
+prerestart, restart, postrestart
+pretest, test, posttest`,
+        },
+        {
+          command: 'Uninstall Lifecycle Scripts',
+          description: 'Scripts that run during uninstallation',
+          usage: 'Uninstall lifecycle',
+          example: `preuninstall, uninstall, postuninstall`,
+        },
+        {
+          command: 'Package Name Variable',
+          description: 'Access package name in scripts',
+          usage: 'Environment variables',
+          example: `"scripts": {
+  "build": "echo Building $npm_package_name"
+}`,
+        },
+        {
+          command: 'Package Version Variable',
+          description: 'Access package version in scripts',
+          usage: 'Environment variables',
+          example: `"scripts": {
+  "build": "echo Building $npm_package_name@$npm_package_version"
+}`,
+        },
+        {
+          command: 'Configuration Variables',
+          description: 'Access npm config in scripts',
+          usage: 'Environment variables',
+          example: `"scripts": {
+  "deploy": "echo $npm_lifecycle_event on $npm_config_env"
+}`,
+        },
+        {
+          command: 'Lifecycle Event Variable',
+          description: 'Access current script name',
+          usage: 'Environment variables',
+          example: `npm_lifecycle_event`,
+        },
+        {
+          command: 'Node Exec Path Variable',
+          description: 'Access Node.js executable path',
+          usage: 'Environment variables',
+          example: `npm_node_execpath`,
+        },
+        {
+          command: 'NPM Exec Path Variable',
+          description: 'Access npm executable path',
+          usage: 'Environment variables',
+          example: `npm_execpath`,
+        },
+        {
+          command: 'Cross-Platform Clean',
+          description: 'Remove directories cross-platform',
+          usage: 'rimraf package',
+          example: `{
+  "scripts": {
+    "clean": "rimraf dist"
+  }
+}`,
+        },
+        {
+          command: 'Cross-Platform Copy',
+          description: 'Copy files cross-platform',
+          usage: 'cpy package',
+          example: `{
+  "scripts": {
+    "copy": "cpy src/*.js dist/"
+  }
+}`,
+        },
+        {
+          command: 'Cross-Platform Environment',
+          description: 'Set environment variables cross-platform',
+          usage: 'cross-env package',
+          example: `{
+  "scripts": {
+    "set-env": "cross-env NODE_ENV=production"
+  }
+}`,
+        },
+        {
+          command: 'Run Scripts Sequentially',
+          description: 'Run scripts in sequence',
+          usage: 'npm-run-all package',
+          example: `{
+  "scripts": {
+    "run-series": "run-s clean build test"
+  }
+}`,
+        },
+        {
+          command: 'Run Scripts in Parallel',
+          description: 'Run scripts in parallel',
+          usage: 'npm-run-all package',
+          example: `{
+  "scripts": {
+    "run-parallel": "run-p lint test"
+  }
+}`,
         },
       ],
     },
@@ -530,22 +1740,73 @@ export const npmCheatsheet = {
       title: 'Package Manager Ecosystem',
       commands: [
         {
-          command: 'Alternative Package Managers',
-          description: 'Compare npm with other package managers',
-          usage: 'Package manager alternatives',
-          example: '# Yarn (Facebook)\nyarn install\nyarn add react\nyarn remove lodash\nyarn upgrade\n\n# pnpm (Fast, disk efficient)\npnpm install\npnpm add react\npnpm remove lodash\npnpm update\n\n# Bun (Ultra-fast runtime)\nbun install\nbun add react\nbun remove lodash\nbun update',
+          command: 'Yarn Basic Commands',
+          description: 'Essential Yarn commands',
+          usage: 'Yarn package manager',
+          example: `yarn install
+yarn add react
+yarn remove lodash
+yarn upgrade`,
         },
         {
-          command: 'Package Manager Migration',
-          description: 'Convert between package managers',
-          usage: 'Migration tools and commands',
-          example: '# npm to Yarn\nyarn import  # Convert package-lock.json to yarn.lock\n\n# npm to pnpm\npnpm import  # Convert package-lock.json to pnpm-lock.yaml\n\n# pnpm to npm\npnpm dlx pnpm-to-npm\n\n# Generate lock files\nnpm install --package-lock-only  # Generate only lock file',
+          command: 'PNPM Basic Commands',
+          description: 'Essential pnpm commands',
+          usage: 'PNPM package manager',
+          example: `pnpm install
+pnpm add react
+pnpm remove lodash
+pnpm update`,
         },
         {
-          command: 'Package Manager Features Comparison',
+          command: 'Bun Basic Commands',
+          description: 'Essential Bun commands',
+          usage: 'Bun package manager',
+          example: `bun install
+bun add react
+bun remove lodash
+bun update`,
+        },
+        {
+          command: 'NPM to Yarn Migration',
+          description: 'Convert from npm to Yarn',
+          usage: 'Package manager migration',
+          example: `yarn import  # Convert package-lock.json to yarn.lock`,
+        },
+        {
+          command: 'NPM to PNPM Migration',
+          description: 'Convert from npm to pnpm',
+          usage: 'Package manager migration',
+          example: `pnpm import  # Convert package-lock.json to pnpm-lock.yaml`,
+        },
+        {
+          command: 'PNPM to NPM Migration',
+          description: 'Convert from pnpm to npm',
+          usage: 'Package manager migration',
+          example: `pnpm dlx pnpm-to-npm`,
+        },
+        {
+          command: 'Generate Lock File Only',
+          description: 'Generate only lock file',
+          usage: 'Lock file generation',
+          example: `npm install --package-lock-only  # Generate only lock file`,
+        },
+        {
+          command: 'Package Manager Features',
           description: 'Key differences between package managers',
           usage: 'Feature comparison',
-          example: '# npm: Default, largest registry\n# Yarn: Parallel installs, deterministic\n# pnpm: Content-addressable storage, efficient\n# Bun: All-in-one runtime, fastest\n\n# Common commands mapping\nnpm install  -> yarn install / pnpm install / bun install\nnpm add      -> yarn add / pnpm add / bun add\nnpm run      -> yarn run / pnpm run / bun run\nnpm audit    -> yarn audit / pnpm audit / bun audit',
+          example: `# npm: Default, largest registry
+# Yarn: Parallel installs, deterministic
+# pnpm: Content-addressable storage, efficient
+# Bun: All-in-one runtime, fastest`,
+        },
+        {
+          command: 'Command Mapping',
+          description: 'Common commands across package managers',
+          usage: 'Command comparison',
+          example: `npm install  -> yarn install / pnpm install / bun install
+npm add      -> yarn add / pnpm add / bun add
+npm run      -> yarn run / pnpm run / bun run
+npm audit    -> yarn audit / pnpm audit / bun audit`,
         },
       ],
     },
@@ -553,28 +1814,129 @@ export const npmCheatsheet = {
       title: 'Advanced NPM Utilities',
       commands: [
         {
-          command: 'Package Execution & Exploration',
-          description: 'Execute and explore installed packages',
-          usage: 'npm exec|explore|prefix',
-          example: '# Execute package binary\nnpm exec eslint .\nnpm x jest  # Short form\n\n# Explore installed package\nnpm explore lodash -- ls -la\n\n# Show project paths\nnpm prefix           # Project root\nnpm prefix -g        # Global prefix\nnpm root             # node_modules path\nnpm root -g          # Global node_modules\nnpm bin              # .bin directory\nnpm bin -g           # Global .bin',
+          command: 'Execute Package Binary',
+          description: 'Execute package binary directly',
+          usage: 'npm exec <package>',
+          example: `npm exec eslint .
+npm x jest  # Short form`,
         },
         {
-          command: 'Shell Completion',
-          description: 'Enable tab completion for npm commands',
+          command: 'Explore Installed Package',
+          description: 'Explore installed package directory',
+          usage: 'npm explore <package>',
+          example: `npm explore lodash -- ls -la`,
+        },
+        {
+          command: 'Show Project Root',
+          description: 'Display project root directory',
+          usage: 'npm prefix',
+          example: `npm prefix           # Project root`,
+        },
+        {
+          command: 'Show Global Prefix',
+          description: 'Display global installation directory',
+          usage: 'npm prefix -g',
+          example: `npm prefix -g        # Global prefix`,
+        },
+        {
+          command: 'Show node_modules Path',
+          description: 'Display node_modules directory path',
+          usage: 'npm root',
+          example: `npm root             # node_modules path`,
+        },
+        {
+          command: 'Show Global node_modules',
+          description: 'Display global node_modules path',
+          usage: 'npm root -g',
+          example: `npm root -g          # Global node_modules`,
+        },
+        {
+          command: 'Show .bin Directory',
+          description: 'Display .bin directory path',
+          usage: 'npm bin',
+          example: `npm bin              # .bin directory`,
+        },
+        {
+          command: 'Show Global .bin',
+          description: 'Display global .bin directory path',
+          usage: 'npm bin -g',
+          example: `npm bin -g           # Global .bin`,
+        },
+        {
+          command: 'Bash Completion',
+          description: 'Enable bash tab completion',
           usage: 'npm completion',
-          example: '# Bash completion\nnpm completion >> ~/.bashrc\nsource ~/.bashrc\n\n# Zsh completion\nnpm completion >> ~/.zshrc\nsource ~/.zshrc\n\n# Fish completion\nnpm completion >> ~/.config/fish/completions/npm.fish',
+          example: `npm completion >> ~/.bashrc
+source ~/.bashrc`,
         },
         {
-          command: 'Team Collaboration',
-          description: 'NPM features for team development',
-          usage: 'Team workflow commands',
-          example: '# Share configuration\nnpm team list\nnpm team create <team-name>\nnpm team add <team-name> <user>\n\n# Organization packages\nnpm org list myorg\nnpm org create myorg\n\n# Scoped packages for teams\n@mycompany/shared-utils\n@mycompany/ui-components',
+          command: 'Zsh Completion',
+          description: 'Enable zsh tab completion',
+          usage: 'npm completion',
+          example: `npm completion >> ~/.zshrc
+source ~/.zshrc`,
         },
         {
-          command: 'Package Analytics',
-          description: 'Monitor package usage and downloads',
-          usage: 'Package analytics commands',
-          example: '# Check package downloads (via web)\n# https://www.npmjs.com/package/<package-name>\n\n# View package stats\nnpm view react downloads\n\n# Compare package popularity\nnpm view react downloads\nnpm view vue downloads',
+          command: 'Fish Completion',
+          description: 'Enable fish tab completion',
+          usage: 'npm completion',
+          example: `npm completion >> ~/.config/fish/completions/npm.fish`,
+        },
+        {
+          command: 'List Teams',
+          description: 'List organization teams',
+          usage: 'npm team list',
+          example: `npm team list`,
+        },
+        {
+          command: 'Create Team',
+          description: 'Create organization team',
+          usage: 'npm team create',
+          example: `npm team create <team-name>`,
+        },
+        {
+          command: 'Add User to Team',
+          description: 'Add user to organization team',
+          usage: 'npm team add',
+          example: `npm team add <team-name> <user>`,
+        },
+        {
+          command: 'List Organizations',
+          description: 'List user organizations',
+          usage: 'npm org list',
+          example: `npm org list myorg`,
+        },
+        {
+          command: 'Create Organization',
+          description: 'Create new organization',
+          usage: 'npm org create',
+          example: `npm org create myorg`,
+        },
+        {
+          command: 'Scoped Package Examples',
+          description: 'Examples of scoped packages for teams',
+          usage: 'Scoped packages',
+          example: `@mycompany/shared-utils
+@mycompany/ui-components`,
+        },
+        {
+          command: 'Check Package Downloads',
+          description: 'Monitor package popularity (via web)',
+          usage: 'Package analytics',
+          example: `# https://www.npmjs.com/package/<package-name>`,
+        },
+        {
+          command: 'View Package Downloads',
+          description: 'Get download statistics',
+          usage: 'npm view downloads',
+          example: `npm view react downloads`,
+        },
+        {
+          command: 'Compare Package Popularity',
+          description: 'Compare download statistics',
+          usage: 'Package comparison',
+          example: `npm view react downloads
+npm view vue downloads`,
         },
       ],
     },
@@ -582,28 +1944,117 @@ export const npmCheatsheet = {
       title: 'Troubleshooting & Best Practices',
       commands: [
         {
-          command: 'Common Issues & Solutions',
-          description: 'Resolve frequent npm problems',
-          usage: 'Troubleshooting commands',
-          example: '# Clear cache and reinstall\nnpm cache clean --force\nrm -rf node_modules package-lock.json\nnpm install\n\n# Fix permission errors\nsudo chown -R $USER ~/.npm\nsudo chown -R $USER /usr/local/lib/node_modules\n\n# Fix peer dependency conflicts\nnpm install --legacy-peer-deps\n\n# Fix network issues\nnpm config set registry https://registry.npmjs.org/\nnpm config set proxy null\nnpm config set https-proxy null',
+          command: 'Clear Cache and Reinstall',
+          description: 'Complete cache clean and reinstall',
+          usage: 'Full reset procedure',
+          example: `npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install`,
         },
         {
-          command: 'Debug & Diagnostics',
-          description: 'Advanced debugging techniques',
-          usage: 'Debug commands and options',
-          example: '# Verbose logging\nnpm install --verbose\nnpm install --loglevel verbose\n\n# Time operations\nnpm install --timing\n# Check timing info: .npm/_logs/*.log\n\n# Dry run operations\nnpm install --dry-run\nnpm update --dry-run\n\n# Check npm environment\nnpm doctor\nnpm config list',
+          command: 'Fix Permission Errors',
+          description: 'Fix npm permission issues',
+          usage: 'Permission fixes',
+          example: `sudo chown -R $USER ~/.npm
+sudo chown -R $USER /usr/local/lib/node_modules`,
         },
         {
-          command: 'Performance Optimization',
-          description: 'Optimize npm performance',
-          usage: 'Performance tuning commands',
-          example: '# Increase network concurrency\nnpm config set maxsockets 10\n\n# Use local registry (mirror)\nnpm config set registry http://localhost:4873\n\n# Disable strict SSL (only for development)\nnpm config set strict-ssl false\n\n# Use npm cache efficiently\nnpm config set cache /path/to/fast/ssd\n\n# Optimize for CI/CD\nnpm ci --prefer-offline --no-audit',
+          command: 'Fix Peer Dependency Conflicts',
+          description: 'Resolve peer dependency issues',
+          usage: 'Peer dependency fixes',
+          example: `npm install --legacy-peer-deps`,
         },
         {
-          command: 'Security Best Practices',
-          description: 'Security configuration and monitoring',
-          usage: 'Security commands',
-          example: '# Regular security audits\nnpm audit\nnpm audit fix\n\n# Configure security settings\nnpm config set audit-level high\nnpm config set audit-signature-verification true\n\n# Use private registry with auth\n//private-registry.com/:_authToken=${NPM_TOKEN}\n\n# Monitor for vulnerabilities\nnpm audit --json > audit-report.json',
+          command: 'Fix Network Issues',
+          description: 'Resolve network connectivity problems',
+          usage: 'Network fixes',
+          example: `npm config set registry https://registry.npmjs.org/
+npm config set proxy null
+npm config set https-proxy null`,
+        },
+        {
+          command: 'Verbose Logging',
+          description: 'Enable detailed logging for debugging',
+          usage: 'Debug logging',
+          example: `npm install --verbose
+npm install --loglevel verbose`,
+        },
+        {
+          command: 'Time Operations',
+          description: 'Measure operation execution time',
+          usage: 'Performance analysis',
+          example: `npm install --timing
+# Check timing info: .npm/_logs/*.log`,
+        },
+        {
+          command: 'Dry Run Operations',
+          description: 'Simulate operations without changes',
+          usage: 'Operation simulation',
+          example: `npm install --dry-run
+npm update --dry-run`,
+        },
+        {
+          command: 'Check NPM Environment',
+          description: 'Comprehensive environment check',
+          usage: 'Environment diagnostics',
+          example: `npm doctor
+npm config list`,
+        },
+        {
+          command: 'Increase Network Concurrency',
+          description: 'Optimize network performance',
+          usage: 'Performance tuning',
+          example: `npm config set maxsockets 10`,
+        },
+        {
+          command: 'Use Local Registry',
+          description: 'Configure local registry mirror',
+          usage: 'Network optimization',
+          example: `npm config set registry http://localhost:4873`,
+        },
+        {
+          command: 'Disable Strict SSL',
+          description: 'Disable SSL verification (development only)',
+          usage: 'Development configuration',
+          example: `npm config set strict-ssl false`,
+        },
+        {
+          command: 'Optimize Cache Location',
+          description: 'Use fast storage for cache',
+          usage: 'Performance optimization',
+          example: `npm config set cache /path/to/fast/ssd`,
+        },
+        {
+          command: 'Optimize for CI/CD',
+          description: 'Configure npm for CI/CD environments',
+          usage: 'CI/CD optimization',
+          example: `npm ci --prefer-offline --no-audit`,
+        },
+        {
+          command: 'Regular Security Audits',
+          description: 'Schedule regular security checks',
+          usage: 'Security maintenance',
+          example: `npm audit
+npm audit fix`,
+        },
+        {
+          command: 'Configure Security Settings',
+          description: 'Set security-related configuration',
+          usage: 'Security configuration',
+          example: `npm config set audit-level high
+npm config set audit-signature-verification true`,
+        },
+        {
+          command: 'Use Private Registry with Auth',
+          description: 'Configure authenticated private registry',
+          usage: 'Private registry setup',
+          example: `//private-registry.com/:_authToken=\${NPM_TOKEN}`,
+        },
+        {
+          command: 'Monitor Vulnerabilities',
+          description: 'Generate security vulnerability reports',
+          usage: 'Security monitoring',
+          example: `npm audit --json > audit-report.json`,
         },
       ],
     },
@@ -611,22 +2062,86 @@ export const npmCheatsheet = {
       title: 'Command Reference & Flags',
       commands: [
         {
-          command: 'Essential Command Flags',
-          description: 'Commonly used npm command flags',
-          usage: 'npm [command] [flags]',
-          example: '# Dependency management flags\n--save / -S           # Save to dependencies (default)\n--save-dev / -D       # Save to devDependencies\n--save-optional / -O  # Save to optionalDependencies\n--save-exact / -E     # Save exact version\n--global / -g         # Global operation\n--production          # Skip devDependencies\n\n# Output flags\n--json                # JSON output\n--dry-run             # Simulate without changes\n--silent              # Minimal output\n--verbose             # Detailed output\n--loglevel <level>    # Set log level (silent, error, warn, notice, http, info, verbose, silly)',
+          command: 'Dependency Management Flags',
+          description: 'Common dependency management flags',
+          usage: 'npm install flags',
+          example: `--save / -S           # Save to dependencies (default)
+--save-dev / -D       # Save to devDependencies
+--save-optional / -O  # Save to optionalDependencies
+--save-exact / -E     # Save exact version
+--global / -g         # Global operation
+--production          # Skip devDependencies`,
         },
         {
-          command: 'Advanced Configuration Flags',
-          description: 'Advanced npm configuration options',
-          usage: 'Configuration flags',
-          example: '# Registry configuration\n--registry <url>      # Use custom registry\n--scope <scope>       # Set scope for scoped packages\n\n# Authentication\n--auth-token <token>  # Authentication token\n--always-auth         # Always authenticate\n\n# Network configuration\n--proxy <url>         # HTTP proxy\n--https-proxy <url>   # HTTPS proxy\n--strict-ssl          # Enforce SSL (default true)\n\n# Cache configuration\n--cache <path>        # Custom cache path\n--no-cache           # Disable cache',
+          command: 'Output Flags',
+          description: 'Common output control flags',
+          usage: 'Output formatting flags',
+          example: `--json                # JSON output
+--dry-run             # Simulate without changes
+--silent              # Minimal output
+--verbose             # Detailed output
+--loglevel <level>    # Set log level (silent, error, warn, notice, http, info, verbose, silly)`,
         },
         {
-          command: 'Quick Command Reference',
-          description: 'Essential npm commands at a glance',
-          usage: 'Command cheat sheet',
-          example: '# Package management\nnpm i <pkg>           # Install package\nnpm un <pkg>          # Uninstall package\nnpm up <pkg>          # Update package\nnpm ls                 # List packages\n\n# Information\nnpm view <pkg>        # View package info\nnpm search <term>     # Search packages\nnpm audit             # Security audit\n\n# Scripts\nnpm run <script>      # Run script\nnpm start             # Start app\nnpm test              # Run tests\n\n# Publishing\nnpm publish           # Publish package\nnpm version <type>    # Bump version',
+          command: 'Registry Configuration Flags',
+          description: 'Registry-related configuration flags',
+          usage: 'Registry configuration',
+          example: `--registry <url>      # Use custom registry
+--scope <scope>       # Set scope for scoped packages`,
+        },
+        {
+          command: 'Authentication Flags',
+          description: 'Authentication-related flags',
+          usage: 'Authentication configuration',
+          example: `--auth-token <token>  # Authentication token
+--always-auth         # Always authenticate`,
+        },
+        {
+          command: 'Network Configuration Flags',
+          description: 'Network-related configuration flags',
+          usage: 'Network configuration',
+          example: `--proxy <url>         # HTTP proxy
+--https-proxy <url>   # HTTPS proxy
+--strict-ssl          # Enforce SSL (default true)`,
+        },
+        {
+          command: 'Cache Configuration Flags',
+          description: 'Cache-related configuration flags',
+          usage: 'Cache configuration',
+          example: `--cache <path>        # Custom cache path
+--no-cache           # Disable cache`,
+        },
+        {
+          command: 'Package Management Commands',
+          description: 'Essential package management commands',
+          usage: 'Package operations',
+          example: `npm i <pkg>           # Install package
+npm un <pkg>          # Uninstall package
+npm up <pkg>          # Update package
+npm ls                 # List packages`,
+        },
+        {
+          command: 'Information Commands',
+          description: 'Package information commands',
+          usage: 'Information retrieval',
+          example: `npm view <pkg>        # View package info
+npm search <term>     # Search packages
+npm audit             # Security audit`,
+        },
+        {
+          command: 'Script Commands',
+          description: 'Script execution commands',
+          usage: 'Script management',
+          example: `npm run <script>      # Run script
+npm start             # Start app
+npm test              # Run tests`,
+        },
+        {
+          command: 'Publishing Commands',
+          description: 'Package publishing commands',
+          usage: 'Publishing operations',
+          example: `npm publish           # Publish package
+npm version <type>    # Bump version`,
         },
       ],
     },

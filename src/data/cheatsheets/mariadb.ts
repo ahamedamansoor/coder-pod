@@ -12,1230 +12,677 @@ export const mariadbCheatsheet = {
       title: 'Getting Started with MariaDB',
       commands: [
         {
-          command: 'MariaDB Installation',
-          description: 'Install MariaDB on different platforms',
-          usage: 'Download and install MariaDB server',
-          example: `======== Installation Methods ========
-# Ubuntu/Debian
+          command: 'MariaDB Overview',
+          description: 'Introduction to MariaDB database',
+          usage: 'Understanding MariaDB basics',
+          example: `MariaDB Overview:
+- Open-source relational database
+- Fork of MySQL with enhanced features
+- Drop-in replacement for MySQL
+- ACID compliant
+- Storage engine architecture (Aria, InnoDB, MyRocks)
+- JSON support, window functions, CTEs
+- Galera cluster for replication`,
+        },
+        {
+          command: 'Install MariaDB Ubuntu',
+          description: 'Install MariaDB on Ubuntu/Debian',
+          usage: 'apt package manager installation',
+          example: `# Ubuntu/Debian Installation
 sudo apt update
-sudo apt install mariadb-server mariadb-client
-
-# macOS with Homebrew
+sudo apt install mariadb-server mariadb-client`,
+        },
+        {
+          command: 'Install MariaDB macOS',
+          description: 'Install MariaDB on macOS with Homebrew',
+          usage: 'Homebrew installation',
+          example: `# macOS with Homebrew
 brew install mariadb
-brew services start mariadb
-
-# Windows
+brew services start mariadb`,
+        },
+        {
+          command: 'Install MariaDB Windows',
+          description: 'Install MariaDB on Windows',
+          usage: 'Download and run installer',
+          example: `# Windows Installation
 # Download from https://mariadb.org/download/
-# Run installer and follow setup wizard
-
-# CentOS/RHEL
+# Run installer and follow setup wizard`,
+        },
+        {
+          command: 'Install MariaDB CentOS',
+          description: 'Install MariaDB on CentOS/RHEL',
+          usage: 'yum package manager installation',
+          example: `# CentOS/RHEL Installation
 sudo yum install mariadb-server mariadb
 sudo systemctl start mariadb
-sudo systemctl enable mariadb
-
-# From source (latest version)
+sudo systemctl enable mariadb`,
+        },
+        {
+          command: 'Install MariaDB Source',
+          description: 'Compile MariaDB from source',
+          usage: 'Build from source code',
+          example: `# From source (latest version)
 wget https://downloads.mariadb.org/f/mariadb-11.2/source/mariadb-11.2.0.tar.gz
 tar xzf mariadb-11.2.0.tar.gz
 cd mariadb-11.2.0
 cmake .
 make
-sudo make install
-
-======== Verify Installation ========
+sudo make install`,
+        },
+        {
+          command: 'Verify MariaDB Installation',
+          description: 'Check MariaDB version and installation',
+          usage: 'mysql, mariadb version commands',
+          example: `# Verify Installation
 mysql --version
-mariadb --version
-
-# Start MariaDB service
+mariadb --version`,
+        },
+        {
+          command: 'Start MariaDB Service',
+          description: 'Start and check MariaDB service status',
+          usage: 'systemctl commands',
+          example: `# Start MariaDB service
 sudo systemctl start mariadb
-sudo systemctl status mariadb
-
-# Connect to MariaDB
-sudo mysql
-# or
-mysql -u root -p`,
+sudo systemctl status mariadb`,
         },
         {
-          command: 'MariaDB Security Setup',
-          description: 'Secure MariaDB installation',
-          usage: 'mysql_secure_installation script',
-          example: `======== Security Configuration ========
-# Run security script
+          command: 'Secure MariaDB Installation',
+          description: 'Run security script for initial setup',
+          usage: 'mysql_secure_installation',
+          example: `# Secure installation
 sudo mysql_secure_installation
-
-# Manual security steps
-sudo mysql
-
-# Set root password
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'strong_password';
-
-# Remove anonymous users
-DELETE FROM mysql.user WHERE User='';
-
-# Remove remote root login
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-
-# Remove test database
-DROP DATABASE IF EXISTS test;
-DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
-
-# Reload privileges
-FLUSH PRIVILEGES;
-
-======== Basic Configuration ========
-# Main config: /etc/mysql/mariadb.conf.d/50-server.cnf
-
-# Network settings
-bind-address = 127.0.0.1
-port = 3306
-
-# Memory settings
-innodb_buffer_pool_size = 256M
-key_buffer_size = 16M
-max_connections = 100
-
-# Character set
-character-set-server = utf8mb4
-collation-server = utf8mb4_unicode_ci
-
-# Logging
-log_error = /var/log/mysql/error.log
-slow_query_log = 1
-slow_query_log_file = /var/log/mysql/slow.log
-long_query_time = 2`,
+# Follow prompts for:
+# - Set root password
+# - Remove anonymous users
+# - Disallow remote root login
+# - Remove test database
+# - Reload privilege tables`,
         },
         {
-          command: 'Database and User Management',
-          description: 'Create databases and users',
-          usage: 'CREATE DATABASE, CREATE USER, GRANT',
-          example: `======== Database Operations ========
-# Connect to MariaDB
+          command: 'Connect to MariaDB',
+          description: 'Connect to MariaDB server',
+          usage: 'mysql, mariadb client',
+          example: `# Connect to MariaDB
 mysql -u root -p
+# or
+mariadb -u root -p
 
-# Create new database
-CREATE DATABASE myapp;
-CREATE DATABASE myapp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-# List databases
-SHOW DATABASES;
-
-# Connect to database
-USE myapp;
-
-# Drop database
-DROP DATABASE myapp;
-DROP DATABASE IF EXISTS myapp;
-
-======== User Management ========
-# Create new user
-CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'secure_password';
-CREATE USER 'myuser'@'%' IDENTIFIED BY 'secure_password';
-
-# List users
-SELECT User, Host FROM mysql.user;
-
-# Modify user
-ALTER USER 'myuser'@'localhost' IDENTIFIED BY 'new_password';
-ALTER USER 'myuser'@'localhost' PASSWORD EXPIRE;
-ALTER USER 'myuser'@'localhost' ACCOUNT LOCK;
-ALTER USER 'myuser'@'localhost' ACCOUNT UNLOCK;
-
-# Drop user
-DROP USER 'myuser'@'localhost';
-
-======== Privileges ========
-# Grant all privileges
-GRANT ALL PRIVILEGES ON myapp.* TO 'myuser'@'localhost';
-
-# Grant specific privileges
-GRANT SELECT, INSERT, UPDATE, DELETE ON myapp.* TO 'myuser'@'localhost';
-GRANT SELECT ON myapp.* TO 'readonly'@'%';
-
-# Grant privileges on specific tables
-GRANT SELECT ON myapp.users TO 'reportuser'@'%';
-
-# Show privileges
-SHOW GRANTS FOR 'myuser'@'localhost';
-
-# Revoke privileges
-REVOKE ALL PRIVILEGES ON myapp.* FROM 'myuser'@'localhost';
-
-# Reload privileges
-FLUSH PRIVILEGES;`,
+# Connect to specific database
+mysql -u username -p database_name
+# Connect to remote server
+mysql -h hostname -u username -p`,
         },
-      ],
-    },
-    {
-      title: 'Basic SQL Operations',
-      commands: [
         {
-          command: 'CREATE TABLE Operations',
-          description: 'Create and manage tables',
-          usage: 'CREATE TABLE, ALTER TABLE, DROP TABLE',
-          example: `======== Basic Table Creation ========
+          command: 'Basic SQL Commands',
+          description: 'Essential SQL commands',
+          usage: 'SHOW, USE, CREATE, DROP',
+          example: `# Basic SQL commands
+SHOW DATABASES;                    # List databases
+CREATE DATABASE myapp;             # Create database
+USE myapp;                         # Switch to database
+DROP DATABASE myapp;               # Delete database
+SHOW TABLES;                       # Show tables in current db`,
+        },
+        {
+          command: 'Create Table Basic',
+          description: 'Create a simple table',
+          usage: 'CREATE TABLE statement',
+          example: `# Create basic table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    description TEXT,
-    price DECIMAL(10,2) CHECK (price >= 0),
-    category_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_category (category_id)
-);
-
-======== Advanced Table Features ========
-# Table with constraints
-CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    total_amount DECIMAL(10,2) NOT NULL CHECK (total_amount > 0),
-    status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_user_date (user_id, order_date)
-);
-
-# Temporary table
-CREATE TEMPORARY TABLE temp_import (
-    id INT,
-    name VARCHAR(100),
-    value DECIMAL(10,2)
-);
-
-# Table with generated columns (MariaDB 10.2+)
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DECIMAL(10,2),
-    tax_rate DECIMAL(3,2) DEFAULT 0.20,
-    price_with_tax DECIMAL(10,2) GENERATED ALWAYS AS (price * (1 + tax_rate)) STORED
-);
-
-======== Table Management ========
-# Add column
-ALTER TABLE users ADD COLUMN phone VARCHAR(20);
-ALTER TABLE users ADD COLUMN age INT CHECK (age >= 0);
-
-# Modify column
-ALTER TABLE users MODIFY COLUMN phone VARCHAR(25);
-ALTER TABLE users CHANGE COLUMN email user_email VARCHAR(100) NOT NULL;
-
-# Drop column
-ALTER TABLE users DROP COLUMN phone;
-
-# Add index
-ALTER TABLE users ADD INDEX idx_username (username);
-ALTER TABLE users ADD UNIQUE INDEX idx_email (email);
-
-# Rename table
-RENAME TABLE users TO accounts;
-
-# Drop table
-DROP TABLE users;
-DROP TABLE IF EXISTS users CASCADE;`,
+    email VARCHAR(100) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);`,
         },
         {
-          command: 'Data Manipulation',
-          description: 'INSERT, UPDATE, DELETE operations',
-          usage: 'Basic data manipulation commands',
-          example: `======== INSERT Operations ========
-# Single row insert
-INSERT INTO users (username, email, password_hash)
-VALUES ('john_doe', 'john@example.com', 'hashed_password');
+          command: 'Insert Data',
+          description: 'Insert data into table',
+          usage: 'INSERT INTO statement',
+          example: `# Insert single record
+INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
 
-# Multiple rows insert
-INSERT INTO products (name, description, price) VALUES
-('Laptop', 'High-performance laptop', 999.99),
-('Mouse', 'Wireless optical mouse', 29.99),
-('Keyboard', 'Mechanical keyboard', 79.99);
-
-# Insert with ON DUPLICATE KEY UPDATE
-INSERT INTO products (id, name, price) 
-VALUES (1, 'Updated Product', 199.99)
-ON DUPLICATE KEY UPDATE 
-name = VALUES(name), price = VALUES(price);
-
-# Insert from SELECT
-INSERT INTO archived_users 
-SELECT * FROM users WHERE created_at < '2020-01-01';
-
-# Insert with IGNORE (ignore duplicate errors)
-INSERT IGNORE INTO users (username, email) 
-VALUES ('john_doe', 'john@example.com');
-
-======== UPDATE Operations ========
-# Simple update
-UPDATE users SET email = 'newemail@example.com' WHERE id = 1;
-
-# Update multiple columns
-UPDATE products 
-SET price = price * 1.1, updated_at = CURRENT_TIMESTAMP 
-WHERE category_id = 5;
-
-# Update with JOIN (MariaDB 10.2+)
-UPDATE users u
-JOIN orders o ON u.id = o.user_id
-SET u.last_order_date = o.order_date
-WHERE o.status = 'delivered';
-
-# UPDATE with ORDER BY and LIMIT
-UPDATE products 
-SET price = price * 0.9 
-ORDER BY price DESC 
-LIMIT 10;
-
-======== DELETE Operations ========
-# Simple delete
-DELETE FROM users WHERE id = 1;
-
-# Delete with condition
-DELETE FROM orders WHERE order_date < '2020-01-01';
-
-# Delete with JOIN
-DELETE users FROM users
-LEFT JOIN orders ON users.id = orders.user_id
-WHERE orders.id IS NULL;
-
-# Delete with ORDER BY and LIMIT
-DELETE FROM logs 
-ORDER BY created_at ASC 
-LIMIT 1000;
-
-# Truncate table (faster for all rows)
-TRUNCATE TABLE users;`,
+# Insert multiple records
+INSERT INTO users (name, email) VALUES 
+    ('Alice Smith', 'alice@example.com'),
+    ('Bob Johnson', 'bob@example.com');`,
         },
         {
-          command: 'SELECT Queries',
-          description: 'Retrieve and filter data',
-          usage: 'SELECT, WHERE, ORDER BY, LIMIT',
-          example: `======== Basic SELECT ========
-# Select all columns
+          command: 'Select Data',
+          description: 'Retrieve data from table',
+          usage: 'SELECT statement',
+          example: `# Select all data
 SELECT * FROM users;
 
 # Select specific columns
-SELECT id, username, email FROM users;
+SELECT name, email FROM users;
 
-# With WHERE clause
-SELECT * FROM users WHERE age > 25;
-SELECT * FROM products WHERE price BETWEEN 50 AND 200;
-SELECT * FROM orders WHERE status IN ('pending', 'confirmed');
+# Select with condition
+SELECT * FROM users WHERE name = 'John Doe';
 
-# Pattern matching
-SELECT * FROM users WHERE username LIKE 'john%';
-SELECT * FROM users WHERE email REGEXP '.*@gmail\\.com';
+# Select with ordering
+SELECT * FROM users ORDER BY created_at DESC;`,
+        },
+        {
+          command: 'Update Data',
+          description: 'Update existing data',
+          usage: 'UPDATE statement',
+          example: `# Update single record
+UPDATE users SET email = 'john.doe@newdomain.com' WHERE id = 1;
 
-# REGEXP operator (MariaDB extension)
-SELECT * FROM products WHERE name REGEXP '^Lap.*';
+# Update multiple records
+UPDATE users SET status = 'active' WHERE created_at > '2023-01-01';`,
+        },
+        {
+          command: 'Delete Data',
+          description: 'Delete data from table',
+          usage: 'DELETE statement',
+          example: `# Delete specific record
+DELETE FROM users WHERE id = 1;
 
-======== Ordering and Limiting ========
-# Order by
-SELECT * FROM users ORDER BY created_at DESC;
-SELECT * FROM products ORDER BY price ASC, name ASC;
+# Delete with condition
+DELETE FROM users WHERE created_at < '2022-01-01';
 
-# Limit and offset
-SELECT * FROM users ORDER BY created_at DESC LIMIT 10;
-SELECT * FROM users ORDER BY created_at DESC LIMIT 10 OFFSET 20;
+# Delete all records (keep table)
+DELETE FROM users;`,
+        },
+        {
+          command: 'Drop Table',
+          description: 'Delete entire table',
+          usage: 'DROP TABLE statement',
+          example: `# Drop table
+DROP TABLE users;
 
-# Distinct
-SELECT DISTINCT category_id FROM products;
-SELECT DISTINCT status, COUNT(*) FROM orders GROUP BY status;
-
-======== Aggregate Functions ========
-# Basic aggregates
-SELECT COUNT(*) FROM users;
-SELECT COUNT(DISTINCT email) FROM users;
-SELECT AVG(price) FROM products;
-SELECT MIN(price), MAX(price) FROM products;
-SELECT SUM(total_amount) FROM orders;
-
-# Group by
-SELECT category_id, COUNT(*), AVG(price) 
-FROM products 
-GROUP BY category_id 
-HAVING COUNT(*) > 5;
-
-# WITH ROLLUP for subtotals
-SELECT category_id, COUNT(*) 
-FROM products 
-GROUP BY category_id WITH ROLLUP;
-
-======== Window Functions (MariaDB 10.2+) ========
-# ROW_NUMBER
-SELECT name, price,
-       ROW_NUMBER() OVER (ORDER BY price DESC) as price_rank
-FROM products;
-
-# Running total
-SELECT order_date, total_amount,
-       SUM(total_amount) OVER (ORDER BY order_date) as running_total
-FROM orders;`,
+# Drop table if exists
+DROP TABLE IF EXISTS users;`,
         },
       ],
     },
     {
-      title: 'MariaDB Data Types',
+      title: 'Data Types and Constraints',
       commands: [
         {
           command: 'Numeric Data Types',
-          description: 'Integer and numeric types',
-          usage: 'INTEGER, BIGINT, DECIMAL, FLOAT, DOUBLE',
-          example: `======== Integer Types ========
-CREATE TABLE numbers (
-    tiny_int TINYINT,        -- 1 byte, -128 to 127 (signed) or 0-255 (unsigned)
-    small_int SMALLINT,      -- 2 bytes
-    regular_int INT,         -- 4 bytes
-    big_int BIGINT,          -- 8 bytes
-    boolean BOOLEAN,         -- Synonym for TINYINT(1)
-    auto_id INT AUTO_INCREMENT  -- Auto-incrementing
-);
-
-# Unsigned integers
-CREATE TABLE counters (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    count INT UNSIGNED DEFAULT 0
-);
-
-======== Decimal Types ========
-CREATE TABLE financial (
-    price DECIMAL(10,2),     -- 10 total digits, 2 after decimal
-    amount NUMERIC(15,4),    -- Same as DECIMAL
-    exact_value NUMERIC,     -- Default precision (10 digits)
-    float_val FLOAT,         -- 4 bytes
-    double_val DOUBLE        -- 8 bytes
-);
-
-# Fixed-point vs floating-point
-INSERT INTO financial (price, float_val) 
-VALUES (99.99, 99.99);  -- DECIMAL stores exact, FLOAT may store 99.989999
-
-======== Numeric Functions ========
-# Basic functions
-SELECT ROUND(3.14159, 2);     -- 3.14
-SELECT CEIL(3.14);            -- 4
-SELECT FLOOR(3.14);           -- 3
-SELECT ABS(-5);               -- 5
-SELECT MOD(10, 3);            -- 1
-SELECT POWER(2, 3);           -- 8
-SELECT SQRT(16);              -- 4
-
-# Trigonometric functions
-SELECT SIN(PI()/2);           -- 1
-SELECT COS(0);                -- 1
-SELECT TAN(PI()/4);           -- 1
-
-# Random numbers
-SELECT RAND();                -- Random double between 0 and 1
-SELECT FLOOR(RAND() * 100) + 1;  -- Random integer 1-100
-SELECT RAND(10);              -- Seeded random number`,
+          description: 'Integer and floating-point types',
+          usage: 'INT, BIGINT, DECIMAL, FLOAT, DOUBLE',
+          example: `# Numeric data types
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    price DECIMAL(10,2),           -- Fixed-point
+    weight FLOAT,                  -- Single precision
+    rating DOUBLE,                  -- Double precision
+    quantity BIGINT,               -- Large integers
+    small_num TINYINT,            -- Very small integers
+    medium_num MEDIUMINT          -- Medium integers
+);`,
         },
         {
-          command: 'Character Data Types',
-          description: 'Text and character types',
-          usage: 'VARCHAR, TEXT, CHAR, ENUM, SET',
-          example: `======== Text Types ========
-CREATE TABLE text_examples (
-    fixed_char CHAR(10),      -- Fixed length, padded with spaces
-    variable_char VARCHAR(255), -- Variable length, max 255
-    tiny_text TINYTEXT,       -- Up to 255 characters
-    regular_text TEXT,        -- Up to 65,535 characters
-    medium_text MEDIUMTEXT,   -- Up to 16,777,215 characters
-    long_text LONGTEXT        -- Up to 4,294,967,295 characters
-);
-
-======== String Functions ========
-# Basic string operations
-SELECT LENGTH('Hello World');           -- 11
-SELECT UPPER('hello');                  -- HELLO
-SELECT LOWER('HELLO');                  -- hello
-SELECT CONCAT('Hello', ' ', 'World');   -- Hello World
-
-# String manipulation
-SELECT SUBSTRING('Hello World', 1, 5);  -- Hello
-SELECT LEFT('Hello World', 5);          -- Hello
-SELECT RIGHT('Hello World', 5);         -- World
-SELECT MID('Hello World', 7, 5);        -- World
-
-# Search and replace
-SELECT POSITION('World' IN 'Hello World'); -- 7
-SELECT REPLACE('Hello World', 'World', 'MariaDB'); -- Hello MariaDB
-SELECT INSERT('Hello World', 7, 5, 'MariaDB'); -- Hello MariaDB
-
-# Trim functions
-SELECT TRIM('  hello  ');               -- hello
-SELECT LTRIM('  hello');                -- hello
-SELECT RTRIM('hello  ');                -- hello
-
-# String comparison
-SELECT STRCMP('apple', 'banana');       -- -1 (first < second)
-SELECT STRCMP('banana', 'apple');       -- 1 (first > second)
-SELECT STRCMP('apple', 'apple');        -- 0 (equal)
-
-======== ENUM and SET Types ========
-CREATE TABLE person (
-    name VARCHAR(50),
-    gender ENUM('male', 'female', 'other'),
-    hobbies SET('reading', 'sports', 'music', 'travel')
-);
-
-INSERT INTO person VALUES ('John', 'male', 'reading,sports');
-SELECT * FROM person WHERE gender = 'male';
-SELECT * FROM person WHERE FIND_IN_SET('reading', hobbies) > 0;`,
+          command: 'String Data Types',
+          description: 'Character and text types',
+          usage: 'CHAR, VARCHAR, TEXT, BLOB',
+          example: `# String data types
+CREATE TABLE documents (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),            -- Variable length string
+    code CHAR(10),                 -- Fixed length string
+    description TEXT,              -- Long text
+    content LONGTEXT,              -- Very long text
+    file_data BLOB,                -- Binary data
+    uuid CHAR(36)                 -- UUID strings
+);`,
         },
         {
           command: 'Date and Time Types',
           description: 'Temporal data types',
           usage: 'DATE, TIME, DATETIME, TIMESTAMP, YEAR',
-          example: `======== Date/Time Types ========
-CREATE TABLE temporal_data (
-    date_field DATE,              -- YYYY-MM-DD
-    time_field TIME,              -- HH:MM:SS
-    datetime_field DATETIME,      -- YYYY-MM-DD HH:MM:SS
-    timestamp_field TIMESTAMP,    -- YYYY-MM-DD HH:MM:SS, auto-updated
-    year_field YEAR               -- YYYY (1901-2155)
-);
-
+          example: `# Date and time types
 CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    event_date DATE,
-    start_time TIME,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-======== Current Date/Time ========
-SELECT CURRENT_DATE();           -- Current date
-SELECT CURRENT_TIME();           -- Current time
-SELECT CURRENT_TIMESTAMP();      -- Current date and time
-SELECT NOW();                    -- Current timestamp
-SELECT CURDATE();                -- Current date
-SELECT CURTIME();                -- Current time
-SELECT SYSDATE();                -- Current timestamp
-
-======== Date/Time Functions ========
-# Extraction
-SELECT EXTRACT(YEAR FROM CURRENT_DATE);     -- Current year
-SELECT EXTRACT(MONTH FROM CURRENT_DATE);    -- Current month
-SELECT EXTRACT(DAY FROM CURRENT_DATE);      -- Current day
-SELECT EXTRACT(HOUR FROM NOW());            -- Current hour
-
-# MariaDB specific functions
-SELECT YEAR(CURRENT_DATE);                  -- Current year
-SELECT MONTH(CURRENT_DATE);                 -- Current month
-SELECT DAYNAME(CURRENT_DATE);               -- Day name
-SELECT MONTHNAME(CURRENT_DATE);             -- Month name
-
-# Date arithmetic
-SELECT DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY);     -- Tomorrow
-SELECT DATE_SUB(CURRENT_DATE, INTERVAL 1 WEEK);    -- Last week
-SELECT CURRENT_DATE + INTERVAL 2 MONTH;            -- In 2 months
-
-# Date formatting
-SELECT DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s');   -- 2023-12-25 10:30:00
-SELECT TIME_FORMAT(NOW(), '%H:%i:%s');             -- 10:30:00
-
-# Date calculations
-SELECT DATEDIFF('2023-12-31', '2023-01-01');       -- Days between dates
-SELECT TIMEDIFF('12:00:00', '10:30:00');           -- Time difference
-SELECT FROM_DAYS(730000);                          -- Date from day number
-SELECT TO_DAYS('2023-12-25');                      -- Day number from date
-
-# Timestamp functions
-SELECT UNIX_TIMESTAMP();                           -- Unix timestamp
-SELECT FROM_UNIXTIME(1703500200);                  -- Date from Unix timestamp`,
-        },
-      ],
-    },
-    {
-      title: 'Joins and Relationships',
-      commands: [
-        {
-          command: 'INNER JOIN Operations',
-          description: 'Combine data from multiple tables',
-          usage: 'INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN',
-          example: `======== Basic INNER JOIN ========
-SELECT u.username, p.name, p.price
-FROM users u
-INNER JOIN orders o ON u.id = o.user_id
-INNER JOIN products p ON o.product_id = p.id;
-
-# Multiple joins with aliases
-SELECT u.username, o.id as order_id, o.total_amount
-FROM users u
-INNER JOIN orders o ON u.id = o.user_id
-WHERE o.status = 'completed';
-
-# JOIN with USING (when column names match)
-SELECT users.id, username, order_date
-FROM users
-INNER JOIN orders USING (id);
-
-======== OUTER JOINs ========
-# LEFT JOIN (all users, with their orders if any)
-SELECT u.username, o.id as order_id
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id;
-
-# RIGHT JOIN (all orders, with user info if any)
-SELECT u.username, o.id as order_id
-FROM users u
-RIGHT JOIN orders o ON u.id = o.user_id;
-
-# Find users without orders
-SELECT u.username
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id
-WHERE o.id IS NULL;
-
-# CROSS JOIN (Cartesian product)
-SELECT u.username, p.name
-FROM users u
-CROSS JOIN products p
-LIMIT 10;
-
-======== NATURAL JOIN ========
-# Natural join (automatically joins on columns with same names)
-SELECT * FROM users NATURAL JOIN profiles;
-
-# Natural left join
-SELECT * FROM users NATURAL LEFT JOIN orders;`,
-        },
-        {
-          command: 'Advanced Join Techniques',
-          description: 'Complex join patterns and optimization',
-          usage: 'Self joins, subquery joins, join optimization',
-          example: `======== Self JOIN ========
-# Manager-employee relationship
-SELECT e.name as employee, m.name as manager
-FROM employees e
-LEFT JOIN employees m ON e.manager_id = m.id;
-
-# Find duplicate records
-SELECT a.id, a.name, b.id as duplicate_id
-FROM users a
-JOIN users b ON a.email = b.email AND a.id < b.id;
-
-======== JOIN with Subqueries ========
-# Join with derived table
-SELECT u.username, order_summary.total_orders, order_summary.total_spent
-FROM users u
-JOIN (
-    SELECT user_id, COUNT(*) as total_orders, SUM(total_amount) as total_spent
-    FROM orders
-    GROUP BY user_id
-) order_summary ON u.id = order_summary.user_id;
-
-# JOIN with subquery in WHERE clause
-SELECT u.username
-FROM users u
-JOIN orders o ON u.id = o.user_id
-WHERE o.total_amount > (
-    SELECT AVG(total_amount) FROM orders
-);
-
-======== Multiple JOIN Conditions ========
-# Complex join conditions
-SELECT u.username, o.id, p.name
-FROM users u
-INNER JOIN orders o ON u.id = o.user_id
-INNER JOIN products p ON o.product_id = p.id AND p.category_id = 5
-WHERE u.status = 'active';
-
-======== JOIN Optimization ========
-# Use STRAIGHT_JOIN to force join order
-SELECT STRAIGHT_JOIN u.username, o.total_amount
-FROM users u
-STRAIGHT_JOIN orders o ON u.id = o.user_id;
-
-# Join with index hints
-SELECT u.username, o.total_amount
-FROM users u FORCE INDEX (idx_username)
-INNER JOIN orders o USE INDEX (idx_user_id) ON u.id = o.user_id;`,
-        },
-      ],
-    },
-
-    // INTERMEDIATE LEVEL
-    {
-      title: 'Advanced Query Techniques',
-      commands: [
-        {
-          command: 'Subqueries and Derived Tables',
-          description: 'Complex queries with subqueries',
-          usage: 'Subqueries in SELECT, FROM, WHERE clauses',
-          example: `======== Subquery in SELECT Clause ========
-SELECT u.username,
-       (SELECT COUNT(*) FROM orders WHERE user_id = u.id) as order_count,
-       (SELECT SUM(total_amount) FROM orders WHERE user_id = u.id) as total_spent
-FROM users u;
-
-# Correlated subquery
-SELECT u.username,
-       (SELECT AVG(total_amount) FROM orders WHERE user_id = u.id) as avg_order
-FROM users u
-WHERE EXISTS (SELECT 1 FROM orders WHERE user_id = u.id);
-
-======== Subquery in FROM Clause (Derived Table) ========
-SELECT user_stats.username, user_stats.order_count, user_stats.avg_amount
-FROM (
-    SELECT u.username,
-           COUNT(o.id) as order_count,
-           AVG(o.total_amount) as avg_amount
-    FROM users u
-    LEFT JOIN orders o ON u.id = o.user_id
-    GROUP BY u.id, u.username
-) user_stats
-WHERE user_stats.order_count > 5;
-
-======== Subquery in WHERE Clause ========
-# IN subquery
-SELECT * FROM products
-WHERE category_id IN (
-    SELECT id FROM categories WHERE name IN ('Electronics', 'Books')
-);
-
-# ANY/ALL subqueries
-SELECT * FROM products
-WHERE price > ALL (
-    SELECT AVG(price) FROM products GROUP BY category_id
-);
-
-# EXISTS subquery
-SELECT u.username
-FROM users u
-WHERE EXISTS (
-    SELECT 1 FROM orders o 
-    WHERE o.user_id = u.id AND o.total_amount > 1000
-);
-
-# NOT EXISTS
-SELECT u.username
-FROM users u
-WHERE NOT EXISTS (
-    SELECT 1 FROM orders o WHERE o.user_id = u.id
+    event_date DATE,               -- YYYY-MM-DD
+    event_time TIME,               -- HH:MM:SS
+    event_datetime DATETIME,       -- YYYY-MM-DD HH:MM:SS
+    created_at TIMESTAMP,          -- Auto-updating timestamp
+    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    event_year YEAR               -- YYYY
 );`,
         },
         {
-          command: 'Common Table Expressions (CTE)',
-          description: 'Recursive and non-recursive CTEs',
-          usage: 'WITH clause for complex queries',
-          example: `======== Basic CTE ========
-WITH active_users AS (
-    SELECT id, username FROM users 
-    WHERE last_login > CURRENT_DATE - INTERVAL '30 days'
-),
-user_orders AS (
-    SELECT u.id, u.username, COUNT(o.id) as order_count
-    FROM active_users u
-    LEFT JOIN orders o ON u.id = o.user_id
-    GROUP BY u.id, u.username
-)
-SELECT username, order_count
-FROM user_orders
-WHERE order_count > 0;
+          command: 'JSON Data Types',
+          description: 'JSON and JSON functions',
+          usage: 'JSON, JSON_EXTRACT, JSON functions',
+          example: `# JSON data types
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    attributes JSON,               -- JSON column
+    metadata LONGTEXT              -- JSON as text
+);
 
-======== Recursive CTE (Hierarchy) ========
-WITH RECURSIVE employee_hierarchy AS (
-    -- Base case: top-level managers
-    SELECT id, name, manager_id, 1 as level
-    FROM employees
-    WHERE manager_id IS NULL
-    
-    UNION ALL
-    
-    -- Recursive case: employees under managers
-    SELECT e.id, e.name, e.manager_id, eh.level + 1
-    FROM employees e
-    JOIN employee_hierarchy eh ON e.manager_id = eh.id
-)
-SELECT * FROM employee_hierarchy ORDER BY level, name;
+-- Insert JSON data
+INSERT INTO products (name, attributes) VALUES 
+('Laptop', '{"color": "black", "ram": "16GB", "storage": "512GB"}');
 
-======== CTE for Data Analysis ========
-WITH monthly_sales AS (
-    SELECT 
-        DATE_FORMAT(order_date, '%Y-%m') as month,
-        SUM(total_amount) as total_sales,
-        COUNT(*) as order_count
-    FROM orders
-    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
-),
-sales_growth AS (
-    SELECT 
-        month,
-        total_sales,
-        LAG(total_sales) OVER (ORDER BY month) as prev_sales,
-        ROUND(((total_sales - LAG(total_sales) OVER (ORDER BY month)) / 
-              LAG(total_sales) OVER (ORDER BY month)) * 100, 2) as growth_percent
-    FROM monthly_sales
-)
-SELECT month, total_sales, growth_percent
-FROM sales_growth
-WHERE prev_sales IS NOT NULL;`,
+-- Query JSON data
+SELECT name, JSON_EXTRACT(attributes, '$.color') as color FROM products;`,
         },
         {
-          command: 'Window Functions',
-          description: 'Advanced analytical functions',
-          usage: 'ROW_NUMBER, RANK, LAG, LEAD, window aggregates',
-          example: `======== Ranking Functions ========
-# ROW_NUMBER (unique ranking)
-SELECT name, salary,
-       ROW_NUMBER() OVER (ORDER BY salary DESC) as row_num
-FROM employees;
+          command: 'Primary Key Constraint',
+          description: 'Define primary key',
+          usage: 'PRIMARY KEY constraint',
+          example: `# Primary key constraints
+-- Single column primary key
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
 
-# RANK (same values get same rank, gaps in ranking)
-SELECT name, salary,
-       RANK() OVER (ORDER BY salary DESC) as rank_num
-FROM employees;
-
-# DENSE_RANK (same values get same rank, no gaps)
-SELECT name, salary,
-       DENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank
-FROM employees;
-
-# NTILE (divide into groups)
-SELECT name, salary,
-       NTILE(4) OVER (ORDER BY salary DESC) as quartile
-FROM employees;
-
-======== Analytic Functions ========
-# LAG and LEAD
-SELECT order_date, total_amount,
-       LAG(total_amount) OVER (ORDER BY order_date) as prev_amount,
-       LEAD(total_amount) OVER (ORDER BY order_date) as next_amount
-FROM orders;
-
-# FIRST_VALUE and LAST_VALUE
-SELECT product_name, category,
-       FIRST_VALUE(product_name) OVER (
-           PARTITION BY category 
-           ORDER BY price DESC
-       ) as most_expensive_in_category
-FROM products;
-
-======== Window Aggregates ========
-# Running total
-SELECT order_date, total_amount,
-       SUM(total_amount) OVER (
-           ORDER BY order_date 
-           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-       ) as running_total,
-       AVG(total_amount) OVER (
-           ORDER BY order_date 
-           ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING
-       ) as moving_avg
-FROM orders;
-
-# Window frames
-SELECT product_name, price,
-       AVG(price) OVER (
-           ORDER BY price 
-           ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING
-       ) as local_avg,
-       COUNT(*) OVER (
-           ORDER BY price 
-           RANGE BETWEEN 10 PRECEDING AND 10 FOLLOWING
-       ) as nearby_count
-FROM products;`,
+-- Composite primary key
+CREATE TABLE order_items (
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    PRIMARY KEY (order_id, product_id)
+);`,
         },
         {
-          command: 'Conditional Logic',
-          description: 'CASE statements and conditional expressions',
-          usage: 'CASE, IF, IFNULL, COALESCE',
-          example: `======== CASE Statements ========
-# Simple CASE
-SELECT name, salary,
-       CASE salary
-           WHEN 0 THEN 'Unpaid'
-           WHEN 50000 THEN 'Entry Level'
-           WHEN 75000 THEN 'Mid Level'
-           ELSE 'Senior Level'
-       END as salary_level
-FROM employees;
+          command: 'Foreign Key Constraint',
+          description: 'Define relationships between tables',
+          usage: 'FOREIGN KEY constraint',
+          example: `# Foreign key constraints
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    order_date DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
 
-# Searched CASE
-SELECT name, score,
-       CASE 
-           WHEN score >= 90 THEN 'A'
-           WHEN score >= 80 THEN 'B'
-           WHEN score >= 70 THEN 'C'
-           WHEN score >= 60 THEN 'D'
-           ELSE 'F'
-       END as grade
-FROM students;
+-- Add foreign key to existing table
+ALTER TABLE orders ADD CONSTRAINT fk_user 
+    FOREIGN KEY (user_id) REFERENCES users(id);`,
+        },
+        {
+          command: 'Unique Constraint',
+          description: 'Ensure unique values',
+          usage: 'UNIQUE constraint',
+          example: `# Unique constraints
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE,
+    username VARCHAR(50) UNIQUE
+);
 
-# CASE in WHERE clause
-SELECT * FROM products
-WHERE CASE 
-        WHEN category = 'Electronics' THEN price < 1000
-        WHEN category = 'Books' THEN price < 50
-        ELSE price < 100
-    END;
+-- Add unique constraint
+ALTER TABLE users ADD CONSTRAINT uk_email UNIQUE (email);`,
+        },
+        {
+          command: 'Check Constraint',
+          description: 'Validate data values',
+          usage: 'CHECK constraint',
+          example: `# Check constraints
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    price DECIMAL(10,2) CHECK (price > 0),
+    quantity INT CHECK (quantity >= 0),
+    age_limit INT CHECK (age_limit BETWEEN 0 AND 18)
+);`,
+        },
+        {
+          command: 'NOT NULL Constraint',
+          description: 'Require non-null values',
+          usage: 'NOT NULL constraint',
+          example: `# NOT NULL constraints
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20)              -- Can be NULL
+);`,
+        },
+        {
+          command: 'Default Values',
+          description: 'Set default column values',
+          usage: 'DEFAULT constraint',
+          example: `# Default values
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`,
+        },
+      ],
+    },
+    // INTERMEDIATE LEVEL
+    {
+      title: 'Advanced Queries and Joins',
+      commands: [
+        {
+          command: 'Inner Join',
+          description: 'Join tables with matching rows',
+          usage: 'INNER JOIN clause',
+          example: `# Inner join
+SELECT u.name, o.order_date, o.total
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id
+WHERE o.total > 100;`,
+        },
+        {
+          command: 'Left Join',
+          description: 'Join with all left table rows',
+          usage: 'LEFT JOIN clause',
+          example: `# Left join
+SELECT u.name, COUNT(o.id) as order_count
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name;`,
+        },
+        {
+          command: 'Right Join',
+          description: 'Join with all right table rows',
+          usage: 'RIGHT JOIN clause',
+          example: `# Right join
+SELECT p.name, c.name as category
+FROM products p
+RIGHT JOIN categories c ON p.category_id = c.id;`,
+        },
+        {
+          command: 'Full Outer Join',
+          description: 'Join with all rows from both tables',
+          usage: 'FULL OUTER JOIN clause',
+          example: `# Full outer join
+SELECT u.name, o.order_date
+FROM users u
+FULL OUTER JOIN orders o ON u.id = o.user_id;`,
+        },
+        {
+          command: 'Self Join',
+          description: 'Join table to itself',
+          usage: 'Self-referencing join',
+          example: `# Self join (employee-manager relationship)
+SELECT e.name as employee, m.name as manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;`,
+        },
+        {
+          command: 'Cross Join',
+          description: 'Cartesian product of tables',
+          usage: 'CROSS JOIN clause',
+          example: `# Cross join
+SELECT p.name, c.name as color
+FROM products p
+CROSS JOIN colors c;`,
+        },
+        {
+          command: 'Subquery in SELECT',
+          description: 'Use subquery in SELECT clause',
+          usage: 'Scalar subquery',
+          example: `# Subquery in SELECT
+SELECT name, 
+       (SELECT COUNT(*) FROM orders WHERE user_id = u.id) as order_count
+FROM users u;`,
+        },
+        {
+          command: 'Subquery in WHERE',
+          description: 'Use subquery in WHERE clause',
+          usage: 'Subquery with IN, EXISTS',
+          example: `# Subquery in WHERE
+SELECT name FROM users 
+WHERE id IN (SELECT user_id FROM orders WHERE total > 1000);
 
-======== Conditional Functions ========
-# IF function
-SELECT name, salary,
-       IF(salary > 75000, 'High', 'Standard') as salary_grade
-FROM employees;
+-- Using EXISTS
+SELECT name FROM users u 
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);`,
+        },
+        {
+          command: 'Subquery in FROM',
+          description: 'Use subquery as derived table',
+          usage: 'Derived table subquery',
+          example: `# Subquery in FROM
+SELECT avg_total FROM (
+    SELECT user_id, SUM(total) as user_total
+    FROM orders 
+    GROUP BY user_id
+) as user_totals
+WHERE user_total > 500;`,
+        },
+        {
+          command: 'Union Operations',
+          description: 'Combine result sets',
+          usage: 'UNION, UNION ALL',
+          example: `# Union operations
+SELECT name, 'admin' as role FROM admins
+UNION
+SELECT name, 'user' as role FROM users;
 
-# IFNULL and COALESCE
-SELECT name, COALESCE(phone, 'N/A') as phone_number
-FROM customers;
+-- Union all (includes duplicates)
+SELECT name FROM active_users
+UNION ALL
+SELECT name FROM inactive_users;`,
+        },
+        {
+          command: 'Intersect and Except',
+          description: 'Set operations with INTERSECT, EXCEPT',
+          usage: 'INTERSECT, EXCEPT clauses',
+          example: `# Intersect (common records)
+SELECT user_id FROM orders
+INTERSECT
+SELECT user_id FROM returns;
 
-SELECT COALESCE(nickname, first_name, 'Unknown') as display_name
-FROM users;
+-- Except (records in first but not second)
+SELECT user_id FROM premium_users
+EXCEPT
+SELECT user_id FROM expired_users;`,
+        },
+      ],
+    },
+    {
+      title: 'Aggregate Functions and Grouping',
+      commands: [
+        {
+          command: 'COUNT Function',
+          description: 'Count rows or values',
+          usage: 'COUNT(), COUNT(DISTINCT)',
+          example: `# COUNT functions
+SELECT COUNT(*) as total_rows FROM users;
+SELECT COUNT(email) as non_null_emails FROM users;
+SELECT COUNT(DISTINCT city) as unique_cities FROM users;`,
+        },
+        {
+          command: 'SUM Function',
+          description: 'Sum numeric values',
+          usage: 'SUM() function',
+          example: `# SUM function
+SELECT SUM(total) as total_sales FROM orders;
+SELECT SUM(quantity * price) as total_value FROM order_items;`,
+        },
+        {
+          command: 'AVG Function',
+          description: 'Calculate average values',
+          usage: 'AVG() function',
+          example: `# AVG function
+SELECT AVG(price) as avg_price FROM products;
+SELECT AVG(total) as avg_order_value FROM orders;`,
+        },
+        {
+          command: 'MIN and MAX Functions',
+          description: 'Find minimum and maximum values',
+          usage: 'MIN(), MAX() functions',
+          example: `# MIN and MAX functions
+SELECT MIN(price) as min_price, MAX(price) as max_price FROM products;
+SELECT MIN(order_date) as first_order, MAX(order_date) as last_order FROM orders;`,
+        },
+        {
+          command: 'GROUP BY Basics',
+          description: 'Group rows for aggregation',
+          usage: 'GROUP BY clause',
+          example: `# Basic GROUP BY
+SELECT category, COUNT(*) as product_count
+FROM products
+GROUP BY category;
 
-# NULLIF function
-SELECT NULLIF(price, 0) as actual_price
-FROM products;
+-- Multiple columns
+SELECT category, brand, AVG(price) as avg_price
+FROM products
+GROUP BY category, brand;`,
+        },
+        {
+          command: 'HAVING Clause',
+          description: 'Filter groups after aggregation',
+          usage: 'HAVING clause',
+          example: `# HAVING clause
+SELECT category, COUNT(*) as product_count
+FROM products
+GROUP BY category
+HAVING COUNT(*) > 10;
 
-# GREATEST and LEAST
-SELECT GREATEST(price, discount_price, sale_price) as max_price
-FROM products;
+-- Complex condition
+SELECT user_id, SUM(total) as total_spent
+FROM orders
+GROUP BY user_id
+HAVING SUM(total) > 1000 AND COUNT(*) >= 5;`,
+        },
+        {
+          command: 'GROUP WITH ROLLUP',
+          description: 'Create subtotals and grand totals',
+          usage: 'GROUP BY ... WITH ROLLUP',
+          example: `# GROUP BY with ROLLUP
+SELECT category, brand, COUNT(*) as count
+FROM products
+GROUP BY category, brand WITH ROLLUP;
 
-SELECT LEAST(start_date, end_date, CURRENT_DATE) as earliest_date
-FROM events;
-
-======== Conditional Aggregation ========
+-- Results include:
+-- Category + Brand combinations
+-- Category subtotals (brand = NULL)
+-- Grand total (category = NULL, brand = NULL)`,
+        },
+        {
+          command: 'GROUPING Function',
+          description: 'Identify rollup rows',
+          usage: 'GROUPING() function',
+          example: `# GROUPING function
 SELECT 
-    COUNT(*) as total_orders,
-    COUNT(IF(status = 'completed', 1, NULL)) as completed_orders,
-    COUNT(IF(total_amount > 1000, 1, NULL)) as large_orders,
-    SUM(IF(status = 'pending', total_amount, 0)) as pending_total
-FROM orders;
-
-# Conditional SUM with CASE
+    category,
+    brand,
+    COUNT(*) as count,
+    GROUPING(category) as is_category_rollup,
+    GROUPING(brand) as is_brand_rollup
+FROM products
+GROUP BY category, brand WITH ROLLUP;`,
+        },
+        {
+          command: 'Aggregate Window Functions',
+          description: 'Window functions with aggregates',
+          usage: 'OVER() clause with aggregates',
+          example: `# Aggregate window functions
 SELECT 
-    SUM(CASE WHEN status = 'completed' THEN total_amount ELSE 0 END) as completed_total,
-    SUM(CASE WHEN status = 'pending' THEN total_amount ELSE 0 END) as pending_total
+    name,
+    salary,
+    AVG(salary) OVER () as avg_salary,
+    SUM(salary) OVER (ORDER BY hire_date) as cumulative_salary,
+    COUNT(*) OVER (PARTITION BY department) as dept_count
+FROM employees;`,
+        },
+      ],
+    },
+    {
+      title: 'Window Functions',
+      commands: [
+        {
+          command: 'ROW_NUMBER Function',
+          description: 'Assign sequential numbers to rows',
+          usage: 'ROW_NUMBER() window function',
+          example: `# ROW_NUMBER function
+SELECT 
+    name,
+    salary,
+    ROW_NUMBER() OVER (ORDER BY salary DESC) as salary_rank,
+    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as dept_rank
+FROM employees;`,
+        },
+        {
+          command: 'RANK and DENSE_RANK',
+          description: 'Rank rows with ties',
+          usage: 'RANK(), DENSE_RANK() functions',
+          example: `# RANK and DENSE_RANK
+SELECT 
+    name,
+    salary,
+    RANK() OVER (ORDER BY salary DESC) as rank_with_gaps,
+    DENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank_no_gaps
+FROM employees;`,
+        },
+        {
+          command: 'NTILE Function',
+          description: 'Divide rows into groups',
+          usage: 'NTILE() function',
+          example: `# NTILE function
+SELECT 
+    name,
+    salary,
+    NTILE(4) OVER (ORDER BY salary DESC) as quartile,
+    CASE 
+        WHEN NTILE(4) OVER (ORDER BY salary DESC) = 1 THEN 'Top 25%'
+        WHEN NTILE(4) OVER (ORDER BY salary DESC) = 4 THEN 'Bottom 25%'
+    END as performance_group
+FROM employees;`,
+        },
+        {
+          command: 'LAG and LEAD Functions',
+          description: 'Access previous/next row values',
+          usage: 'LAG(), LEAD() functions',
+          example: `# LAG and LEAD functions
+SELECT 
+    order_date,
+    total,
+    LAG(total, 1) OVER (ORDER BY order_date) as previous_order_total,
+    LEAD(total, 1) OVER (ORDER BY order_date) as next_order_total,
+    total - LAG(total, 1) OVER (ORDER BY order_date) as difference
+FROM orders;`,
+        },
+        {
+          command: 'FIRST_VALUE and LAST_VALUE',
+          description: 'Get first/last values in window',
+          usage: 'FIRST_VALUE(), LAST_VALUE() functions',
+          example: `# FIRST_VALUE and LAST_VALUE
+SELECT 
+    department,
+    name,
+    salary,
+    FIRST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC) as highest_paid,
+    LAST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC 
+                          ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as lowest_paid
+FROM employees;`,
+        },
+        {
+          command: 'Window Frame Clauses',
+          description: 'Define window frame boundaries',
+          usage: 'ROWS BETWEEN, RANGE BETWEEN',
+          example: `# Window frame clauses
+SELECT 
+    order_date,
+    total,
+    SUM(total) OVER (ORDER BY order_date 
+                     ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_3day_total,
+    AVG(total) OVER (ORDER BY order_date 
+                     RANGE BETWEEN INTERVAL '7 DAY' PRECEDING AND CURRENT ROW) as moving_7day_avg
 FROM orders;`,
         },
       ],
     },
+    // ADVANCED LEVEL
     {
-      title: 'Indexing and Performance',
+      title: 'Stored Procedures and Functions',
       commands: [
         {
-          command: 'Creating Indexes',
-          description: 'Improve query performance with indexes',
-          usage: 'CREATE INDEX, different index types',
-          example: `======== Basic Indexes ========
-# B-tree index (default)
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_products_category ON products(category_id);
-
-# Composite index
-CREATE INDEX idx_orders_user_date ON orders(user_id, order_date);
-CREATE INDEX idx_products_category_price ON products(category_id, price);
-
-# Unique index
-CREATE UNIQUE INDEX idx_users_username ON users(username);
-CREATE UNIQUE INDEX idx_products_sku ON products(sku);
-
-# Partial index (MariaDB 5.3+)
-CREATE INDEX idx_active_users ON users(id) WHERE status = 'active';
-
-======== Functional Indexes (MariaDB 10.7+) ========
-# Index on expression
-CREATE INDEX idx_users_lower_email ON users((LOWER(email)));
-CREATE INDEX idx_products_upper_name ON products((UPPER(name)));
-
-# Index on computed column
-CREATE INDEX idx_orders_total_tax ON orders((total_amount * 0.1));
-
-======== Full-text Indexes ========
-# Full-text index for text search
-CREATE FULLTEXT INDEX idx_articles_content ON articles(content);
-CREATE FULLTEXT INDEX idx_products_search ON products(name, description);
-
-# Full-text search
-SELECT * FROM articles 
-WHERE MATCH(content) AGAINST('database optimization' IN NATURAL LANGUAGE MODE);
-
-SELECT * FROM products 
-WHERE MATCH(name, description) AGAINST('laptop computer' IN BOOLEAN MODE);
-
-======== Spatial Indexes ========
-# Spatial index for geographic data
-CREATE SPATIAL INDEX idx_locations_geometry ON locations(geometry);
-
-# Spatial queries
-SELECT * FROM locations 
-WHERE ST_Contains(geometry, ST_GeomFromText('POINT(-74.0060 40.7128)'));`,
-        },
-        {
-          command: 'Index Management',
-          description: 'Monitor and maintain indexes',
-          usage: 'Analyze, rebuild, and optimize indexes',
-          example: `======== Index Information ========
-# List indexes on table
-SHOW INDEX FROM users;
-SHOW INDEX FROM products FROM myapp;
-
-# Index cardinality
-SELECT table_name, index_name, cardinality
-FROM information_schema.statistics 
-WHERE table_schema = 'myapp' AND table_name = 'users';
-
-# Index usage (requires performance schema)
-SELECT * FROM performance_schema.table_io_waits_summary_by_index_usage
-WHERE object_schema = 'myapp';
-
-======== Index Maintenance ========
-# Drop and recreate index
-DROP INDEX idx_users_email ON users;
-CREATE INDEX idx_users_email ON users(email);
-
-# Analyze table (update statistics)
-ANALYZE TABLE users;
-ANALYZE TABLE products, orders;
-
-# Optimize table (reorganize and rebuild)
-OPTIMIZE TABLE users;
-OPTIMIZE TABLE products QUICK;  -- Quick optimization
-
-# Check table
-CHECK TABLE users;
-CHECK TABLE products QUICK;
-
-======== Index Optimization ========
-# Force index usage
-SELECT * FROM users FORCE INDEX (idx_email) WHERE email = 'test@example.com';
-
-# Ignore index
-SELECT * FROM products IGNORE INDEX (idx_category) WHERE category_id = 5;
-
-# Index merge optimization
-SELECT * FROM orders 
-WHERE user_id = 123 OR order_date > '2023-01-01';
-
-# Explain query execution plan
-EXPLAIN SELECT * FROM orders WHERE user_id = 123;
-EXPLAIN EXTENDED SELECT * FROM products WHERE category_id = 5 AND price > 100;
-
-# Show warnings from EXPLAIN
-SHOW WARNINGS;`,
-        },
-      ],
-    },
-    {
-      title: 'Transactions and Concurrency',
-      commands: [
-        {
-          command: 'Transaction Control',
-          description: 'Manage transactions and data consistency',
-          usage: 'BEGIN, COMMIT, ROLLBACK, SAVEPOINT',
-          example: `======== Basic Transactions ========
-START TRANSACTION;
-
-UPDATE accounts SET balance = balance - 100 
-WHERE id = 1 AND balance >= 100;
-
-UPDATE accounts SET balance = balance + 100 
-WHERE id = 2;
-
-COMMIT;
-
-# Alternative syntax
-BEGIN;
-
-UPDATE products SET stock = stock - 1 
-WHERE id = 1 AND stock > 0;
-
-INSERT INTO orders (product_id, quantity) 
-VALUES (1, 1);
-
-ROLLBACK;
-
-======== Transaction with Error Handling ========
-START TRANSACTION;
-
-DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-BEGIN
-    ROLLBACK;
-    SELECT 'Transaction failed' as result;
-END;
-
-UPDATE products SET stock = stock - 1 
-WHERE id = 1 AND stock > 0;
-
-INSERT INTO orders (product_id, quantity, total_amount)
-VALUES (1, 1, (SELECT price FROM products WHERE id = 1));
-
-COMMIT;
-
-======== Savepoints ========
-START TRANSACTION;
-
-INSERT INTO users (username, email) 
-VALUES ('user1', 'user1@example.com');
-
-SAVEPOINT sp1;
-
-INSERT INTO users (username, email) 
-VALUES ('user2', 'user2@example.com');
-
--- Rollback to savepoint
-ROLLBACK TO SAVEPOINT sp1;
-
-INSERT INTO users (username, email) 
-VALUES ('user3', 'user3@example.com');
-
-COMMIT;
-
-======== Transaction Isolation Levels ========
-# Set isolation level
-SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-
-# Show current isolation level
-SELECT @@transaction_isolation;
-
-# Set session isolation level
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;`,
-        },
-        {
-          command: 'Locking and Concurrency',
-          description: 'Manage concurrent access to data',
-          usage: 'LOCK TABLES, SELECT FOR UPDATE, NOWAIT',
-          example: `======== Table Locks ========
-# Lock table in write mode
-LOCK TABLES users WRITE;
-
-# Lock multiple tables
-LOCK TABLES users WRITE, orders READ;
-
-# Release locks
-UNLOCK TABLES;
-
-# Read lock
-LOCK TABLES products READ;
-
-======== Row-Level Locking ========
-# SELECT FOR UPDATE (lock selected rows)
-SELECT * FROM accounts 
-WHERE id = 1 
-FOR UPDATE;
-
-# SELECT FOR UPDATE NOWAIT (fail if can't lock)
-SELECT * FROM accounts 
-WHERE id = 1 
-FOR UPDATE NOWAIT;
-
-# SELECT FOR UPDATE SKIP LOCKED (skip locked rows)
-SELECT * FROM orders 
-WHERE status = 'pending' 
-FOR UPDATE SKIP LOCKED 
-LIMIT 10;
-
-# LOCK IN SHARE MODE (shared lock)
-SELECT * FROM products 
-WHERE category_id = 5 
-LOCK IN SHARE MODE;
-
-======== Deadlock Detection ========
-# Check for locks
-SHOW ENGINE INNODB STATUS;
-
-# Set lock timeout
-SET innodb_lock_wait_timeout = 50;
-SET lock_wait_timeout = 10;
-
-# Check current locks
-SELECT * FROM information_schema.innodb_locks;
-SELECT * FROM information_schema.innodb_lock_waits;
-
-# Transaction with timeout
-START TRANSACTION;
-SET innodb_lock_wait_timeout = 5;
-UPDATE accounts SET balance = balance - 100 WHERE id = 1;
--- If lock can't be acquired in 5 seconds, transaction fails`,
-        },
-      ],
-    },
-    {
-      title: 'Views and Stored Procedures',
-      commands: [
-        {
-          command: 'Creating Views',
-          description: 'Virtual tables based on queries',
-          usage: 'CREATE VIEW, REPLACE VIEW, DROP VIEW',
-          example: `======== Basic Views ========
-# Simple view
-CREATE VIEW active_users AS
-SELECT id, username, email, last_login
-FROM users
-WHERE status = 'active';
-
-# View with joins
-CREATE VIEW user_orders AS
-SELECT u.id as user_id, u.username, 
-       o.id as order_id, o.total_amount, o.order_date
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id;
-
-# View with aggregates
-CREATE VIEW user_summary AS
-SELECT u.id, u.username,
-       COUNT(o.id) as order_count,
-       COALESCE(SUM(o.total_amount), 0) as total_spent,
-       MAX(o.order_date) as last_order_date
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id
-GROUP BY u.id, u.username;
-
-# View with conditions
-CREATE VIEW recent_orders AS
-SELECT * FROM orders 
-WHERE order_date >= CURRENT_DATE - INTERVAL '30 days'
-WITH CHECK OPTION;
-
-======== View Management ========
-# Replace view
-CREATE OR REPLACE VIEW active_users AS
-SELECT id, username, email, last_login, created_at
-FROM users
-WHERE status = 'active' AND last_login > CURRENT_DATE - INTERVAL '90 days';
-
-# Check view definition
-SHOW CREATE VIEW active_users;
-
-# Drop view
-DROP VIEW active_users;
-DROP VIEW IF EXISTS user_orders;
-
-======== Updatable Views ========
-# Simple updatable view
-CREATE VIEW user_profiles AS
-SELECT id, username, email, phone
-FROM users;
-
-INSERT INTO user_profiles (username, email) 
-VALUES ('newuser', 'new@example.com');
-
-# View with triggers for updates
-CREATE VIEW order_summary AS
-SELECT user_id, COUNT(*) as order_count, SUM(total_amount) as total
-FROM orders
-GROUP BY user_id;`,
-        },
-        {
-          command: 'Stored Procedures',
-          description: 'Create and use stored procedures',
-          usage: 'CREATE PROCEDURE, CALL, OUT parameters',
-          example: `======== Basic Procedure ========
+          command: 'Create Procedure',
+          description: 'Create stored procedure',
+          usage: 'CREATE PROCEDURE statement',
+          example: `# Create basic procedure
 DELIMITER //
-CREATE PROCEDURE get_user_orders(IN user_id INT)
+CREATE PROCEDURE GetUserOrders(IN user_id INT)
 BEGIN
-    SELECT o.id, o.total_amount, o.order_date
+    SELECT o.id, o.order_date, o.total
     FROM orders o
     WHERE o.user_id = user_id
     ORDER BY o.order_date DESC;
@@ -1243,701 +690,658 @@ END //
 DELIMITER ;
 
 # Call procedure
-CALL get_user_orders(123);
-
-======== Procedure with Parameters ========
+CALL GetUserOrders(123);`,
+        },
+        {
+          command: 'Procedure with Parameters',
+          description: 'Procedure with input/output parameters',
+          usage: 'IN, OUT, INOUT parameters',
+          example: `# Procedure with parameters
 DELIMITER //
-CREATE PROCEDURE create_order(
-    IN p_user_id INT,
-    IN p_product_id INT,
-    IN p_quantity INT,
-    OUT p_order_id INT
+CREATE PROCEDURE GetUserStats(
+    IN user_id INT,
+    OUT order_count INT,
+    OUT total_spent DECIMAL(10,2)
 )
 BEGIN
-    DECLARE v_price DECIMAL(10,2);
-    DECLARE v_stock INT;
+    SELECT COUNT(*) INTO order_count
+    FROM orders WHERE user_id = user_id;
     
-    -- Get product price and stock
-    SELECT price, stock INTO v_price, v_stock
-    FROM products
-    WHERE id = p_product_id;
-    
-    -- Check stock
-    IF v_stock < p_quantity THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Insufficient stock';
-    END IF;
-    
-    -- Create order
-    INSERT INTO orders (user_id, total_amount, status)
-    VALUES (p_user_id, v_price * p_quantity, 'pending');
-    
-    SET p_order_id = LAST_INSERT_ID();
-    
-    -- Update stock
-    UPDATE products 
-    SET stock = stock - p_quantity 
-    WHERE id = p_product_id;
+    SELECT COALESCE(SUM(total), 0) INTO total_spent
+    FROM orders WHERE user_id = user_id;
 END //
 DELIMITER ;
 
-# Call procedure with output parameter
-CALL create_order(123, 1, 2, @order_id);
-SELECT @order_id;
-
-======== Procedure with Exception Handling ========
+# Call with output parameters
+CALL GetUserStats(123, @order_count, @total_spent);
+SELECT @order_count, @total_spent;`,
+        },
+        {
+          command: 'Create Function',
+          description: 'Create user-defined function',
+          usage: 'CREATE FUNCTION statement',
+          example: `# Create function
 DELIMITER //
-CREATE PROCEDURE transfer_funds(
-    IN from_account INT,
-    IN to_account INT,
-    IN amount DECIMAL(10,2),
-    OUT success BOOLEAN
-)
+CREATE FUNCTION CalculateDiscount(price DECIMAL(10,2), discount_percent DECIMAL(5,2))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    RETURN price * (1 - discount_percent / 100);
+END //
+DELIMITER ;
+
+# Use function
+SELECT name, price, CalculateDiscount(price, 10) as discounted_price
+FROM products;`,
+        },
+        {
+          command: 'Control Structures',
+          description: 'IF/ELSE, CASE, LOOP in procedures',
+          usage: 'Control flow statements',
+          example: `# Control structures in procedure
+DELIMITER //
+CREATE PROCEDURE CategorizePrice(IN price DECIMAL(10,2), OUT category VARCHAR(20))
+BEGIN
+    IF price < 10 THEN
+        SET category = 'Budget';
+    ELSEIF price < 50 THEN
+        SET category = 'Mid-range';
+    ELSEIF price < 100 THEN
+        SET category = 'Premium';
+    ELSE
+        SET category = 'Luxury';
+    END IF;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'LOOP and WHILE',
+          description: 'Looping structures in procedures',
+          usage: 'LOOP, WHILE, REPEAT statements',
+          example: `# Loop structures
+DELIMITER //
+CREATE PROCEDURE GenerateNumbers(IN count INT)
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    
+    WHILE i <= count DO
+        INSERT INTO numbers (value) VALUES (i);
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+
+# Another example with LOOP
+DELIMITER //
+CREATE PROCEDURE ProcessBatch()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE order_id INT;
+    
+    DECLARE cursor CURSOR FOR SELECT id FROM orders WHERE status = 'pending';
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN cursor;
+    
+    read_loop: LOOP
+        FETCH cursor INTO order_id;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        
+        UPDATE orders SET status = 'processed' WHERE id = order_id;
+    END LOOP;
+    
+    CLOSE cursor;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'Error Handling',
+          description: 'Handle exceptions in procedures',
+          usage: 'DECLARE HANDLER statement',
+          example: `# Error handling
+DELIMITER //
+CREATE PROCEDURE SafeInsert(IN name VARCHAR(100), OUT result VARCHAR(100))
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        ROLLBACK;
-        SET success = FALSE;
+        GET DIAGNOSTICS CONDITION 1 result = MESSAGE_TEXT;
     END;
     
-    START TRANSACTION;
-    
-    UPDATE accounts 
-    SET balance = balance - amount 
-    WHERE id = from_account AND balance >= amount;
-    
-    IF ROW_COUNT() = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Insufficient funds';
+    INSERT INTO users (name) VALUES (name);
+    SET result = 'Success';
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'Drop Procedure and Function',
+          description: 'Remove procedures and functions',
+          usage: 'DROP PROCEDURE, DROP FUNCTION',
+          example: `# Drop procedure
+DROP PROCEDURE IF EXISTS GetUserOrders;
+
+# Drop function
+DROP FUNCTION IF EXISTS CalculateDiscount;`,
+        },
+      ],
+    },
+    {
+      title: 'Triggers and Events',
+      commands: [
+        {
+          command: 'Create Trigger',
+          description: 'Create database trigger',
+          usage: 'CREATE TRIGGER statement',
+          example: `# Create trigger
+DELIMITER //
+CREATE TRIGGER before_user_insert
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+    SET NEW.created_at = CURRENT_TIMESTAMP;
+    SET NEW.updated_at = CURRENT_TIMESTAMP;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'AFTER INSERT Trigger',
+          description: 'Trigger after insert operation',
+          usage: 'AFTER INSERT trigger',
+          example: `# AFTER INSERT trigger
+DELIMITER //
+CREATE TRIGGER after_order_insert
+AFTER INSERT ON orders
+FOR EACH ROW
+BEGIN
+    UPDATE users 
+    SET order_count = order_count + 1,
+    total_spent = total_spent + NEW.total
+    WHERE id = NEW.user_id;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'BEFORE UPDATE Trigger',
+          description: 'Trigger before update operation',
+          usage: 'BEFORE UPDATE trigger',
+          example: `# BEFORE UPDATE trigger
+DELIMITER //
+CREATE TRIGGER before_user_update
+BEFORE UPDATE ON users
+FOR EACH ROW
+BEGIN
+    IF NEW.email != OLD.email THEN
+        INSERT INTO email_changes (user_id, old_email, new_email, changed_at)
+        VALUES (OLD.id, OLD.email, NEW.email, CURRENT_TIMESTAMP);
     END IF;
     
-    UPDATE accounts 
-    SET balance = balance + amount 
-    WHERE id = to_account;
+    SET NEW.updated_at = CURRENT_TIMESTAMP;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'BEFORE DELETE Trigger',
+          description: 'Trigger before delete operation',
+          usage: 'BEFORE DELETE trigger',
+          example: `# BEFORE DELETE trigger
+DELIMITER //
+CREATE TRIGGER before_user_delete
+BEFORE DELETE ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO deleted_users (id, name, email, deleted_at)
+    VALUES (OLD.id, OLD.name, OLD.email, CURRENT_TIMESTAMP);
+    
+    DELETE FROM orders WHERE user_id = OLD.id;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'Create Event',
+          description: 'Create scheduled event',
+          usage: 'CREATE EVENT statement',
+          example: `# Create event
+DELIMITER //
+CREATE EVENT cleanup_old_sessions
+ON SCHEDULE EVERY 1 DAY
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    DELETE FROM sessions WHERE last_activity < DATE_SUB(NOW(), INTERVAL 30 DAY);
+END //
+DELIMITER ;
+
+# Enable event scheduler
+SET GLOBAL event_scheduler = ON;`,
+        },
+        {
+          command: 'Recurring Event',
+          description: 'Create recurring scheduled event',
+          usage: 'Event with schedule',
+          example: `# Recurring event
+DELIMITER //
+CREATE EVENT generate_daily_report
+ON SCHEDULE EVERY 1 DAY
+STARTS '2023-01-01 02:00:00'
+DO
+BEGIN
+    INSERT INTO daily_reports (report_date, total_orders, total_revenue)
+    SELECT CURRENT_DATE, COUNT(*), SUM(total)
+    FROM orders 
+    WHERE DATE(order_date) = CURRENT_DATE - INTERVAL 1 DAY;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'Drop Trigger and Event',
+          description: 'Remove triggers and events',
+          usage: 'DROP TRIGGER, DROP EVENT',
+          example: `# Drop trigger
+DROP TRIGGER IF EXISTS before_user_insert;
+
+# Drop event
+DROP EVENT IF EXISTS cleanup_old_sessions;`,
+        },
+      ],
+    },
+    {
+      title: 'Views and Materialized Views',
+      commands: [
+        {
+          command: 'Create View',
+          description: 'Create virtual table',
+          usage: 'CREATE VIEW statement',
+          example: `# Create view
+CREATE VIEW user_orders AS
+SELECT 
+    u.id as user_id,
+    u.name,
+    u.email,
+    COUNT(o.id) as order_count,
+    COALESCE(SUM(o.total), 0) as total_spent
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name, u.email;
+
+# Use view
+SELECT * FROM user_orders WHERE order_count > 5;`,
+        },
+        {
+          command: 'View with Joins',
+          description: 'Complex view with multiple joins',
+          usage: 'View with complex query',
+          example: `# Complex view
+CREATE VIEW product_sales AS
+SELECT 
+    p.id,
+    p.name,
+    p.category,
+    p.price,
+    COALESCE(SUM(oi.quantity), 0) as total_sold,
+    COALESCE(SUM(oi.quantity * oi.price), 0) as revenue,
+    COUNT(DISTINCT o.id) as order_count
+FROM products p
+LEFT JOIN order_items oi ON p.id = oi.product_id
+LEFT JOIN orders o ON oi.order_id = o.id
+GROUP BY p.id, p.name, p.category, p.price;`,
+        },
+        {
+          command: 'Update View',
+          description: 'Update existing view',
+          usage: 'CREATE OR REPLACE VIEW',
+          example: `# Update view
+CREATE OR REPLACE VIEW user_orders AS
+SELECT 
+    u.id as user_id,
+    u.name,
+    u.email,
+    u.status,
+    COUNT(o.id) as order_count,
+    COALESCE(SUM(o.total), 0) as total_spent
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+WHERE u.status = 'active'
+GROUP BY u.id, u.name, u.email, u.status;`,
+        },
+        {
+          command: 'Materialized View',
+          description: 'Create materialized view (via table)',
+          usage: 'Table-based materialized view',
+          example: `# Materialized view simulation
+CREATE TABLE mv_user_orders (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    order_count INT DEFAULT 0,
+    total_spent DECIMAL(10,2) DEFAULT 0,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX (order_count),
+    INDEX (total_spent)
+);
+
+# Refresh materialized view
+DELIMITER //
+CREATE PROCEDURE refresh_mv_user_orders()
+BEGIN
+    TRUNCATE TABLE mv_user_orders;
+    
+    INSERT INTO mv_user_orders (user_id, name, email, order_count, total_spent)
+    SELECT 
+        u.id,
+        u.name,
+        u.email,
+        COUNT(o.id),
+        COALESCE(SUM(o.total), 0)
+    FROM users u
+    LEFT JOIN orders o ON u.id = o.user_id
+    GROUP BY u.id, u.name, u.email;
+END //
+DELIMITER ;`,
+        },
+        {
+          command: 'Drop View',
+          description: 'Remove view',
+          usage: 'DROP VIEW statement',
+          example: `# Drop view
+DROP VIEW IF EXISTS user_orders;`,
+        },
+      ],
+    },
+    {
+      title: 'Transactions and Locking',
+      commands: [
+        {
+          command: 'Basic Transaction',
+          description: 'Start and commit transaction',
+          usage: 'START TRANSACTION, COMMIT, ROLLBACK',
+          example: `# Basic transaction
+START TRANSACTION;
+
+INSERT INTO orders (user_id, total) VALUES (123, 100.00);
+SET @order_id = LAST_INSERT_ID();
+
+INSERT INTO order_items (order_id, product_id, quantity, price) 
+VALUES (@order_id, 1, 2, 50.00);
+
+UPDATE products SET stock = stock - 2 WHERE id = 1;
+
+COMMIT;`,
+        },
+        {
+          command: 'Transaction with Error Handling',
+          description: 'Handle transaction errors',
+          usage: 'ROLLBACK on error',
+          example: `# Transaction with error handling
+START TRANSACTION;
+
+BEGIN
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    INSERT INTO orders (user_id, total) VALUES (123, 100.00);
+    
+    -- This might cause an error
+    INSERT INTO order_items (order_id, product_id, quantity, price) 
+    VALUES (LAST_INSERT_ID(), 999, 1, 10.00); -- Product 999 might not exist
     
     COMMIT;
-    SET success = TRUE;
+END;`,
+        },
+        {
+          command: 'Savepoints',
+          description: 'Create transaction savepoints',
+          usage: 'SAVEPOINT, ROLLBACK TO SAVEPOINT',
+          example: `# Savepoints in transaction
+START TRANSACTION;
+
+INSERT INTO orders (user_id, total) VALUES (123, 100.00);
+SET @order_id = LAST_INSERT_ID();
+
+SAVEPOINT sp1;
+
+INSERT INTO order_items (order_id, product_id, quantity, price) 
+VALUES (@order_id, 1, 2, 50.00);
+
+-- Something went wrong, rollback to savepoint
+ROLLBACK TO SAVEPOINT sp1;
+
+-- Try different items
+INSERT INTO order_items (order_id, product_id, quantity, price) 
+VALUES (@order_id, 2, 1, 100.00);
+
+COMMIT;`,
+        },
+        {
+          command: 'Isolation Levels',
+          description: 'Set transaction isolation levels',
+          usage: 'SET TRANSACTION ISOLATION LEVEL',
+          example: `# Isolation levels
+-- READ UNCOMMITTED (lowest isolation, highest performance)
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+-- READ COMMITTED (default in many systems)
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+-- REPEATABLE READ (default in MariaDB/MySQL)
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+-- SERIALIZABLE (highest isolation, lowest performance)
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+-- Use in transaction
+START TRANSACTION;
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- Your queries here
+COMMIT;`,
+        },
+        {
+          command: 'Explicit Locking',
+          description: 'Lock tables explicitly',
+          usage: 'LOCK TABLES, UNLOCK TABLES',
+          example: `# Explicit locking
+LOCK TABLES orders WRITE, users READ;
+
+-- Perform operations on locked tables
+INSERT INTO orders (user_id, total) VALUES (123, 100.00);
+SELECT * FROM users WHERE id = 123;
+
+-- Release locks
+UNLOCK TABLES;`,
+        },
+        {
+          command: 'SELECT FOR UPDATE',
+          description: 'Lock selected rows',
+          usage: 'SELECT ... FOR UPDATE',
+          example: `# SELECT FOR UPDATE
+START TRANSACTION;
+
+-- Lock rows for update
+SELECT * FROM products WHERE id IN (1, 2, 3) FOR UPDATE;
+
+-- Update locked rows
+UPDATE products SET price = price * 1.1 WHERE id IN (1, 2, 3);
+
+COMMIT;`,
+        },
+        {
+          command: 'Deadlock Detection',
+          description: 'Handle deadlocks',
+          usage: 'Deadlock detection and retry',
+          example: `# Deadlock handling
+DELIMITER //
+CREATE PROCEDURE SafeUpdate(IN product_id INT, IN new_price DECIMAL(10,2))
+BEGIN
+    DECLARE retry_count INT DEFAULT 0;
+    DECLARE max_retries INT DEFAULT 3;
+    DECLARE deadlocked INT DEFAULT 0;
+    
+    DECLARE CONTINUE HANDLER FOR 1213  -- Deadlock error code
+    BEGIN
+        SET deadlocked = 1;
+    END;
+    
+    WHILE retry_count < max_retries DO
+        SET deadlocked = 0;
+        
+        START TRANSACTION;
+        
+        UPDATE products SET price = new_price WHERE id = product_id;
+        
+        IF deadlocked = 0 THEN
+            COMMIT;
+            LEAVE;
+        ELSE
+            ROLLBACK;
+            SET retry_count = retry_count + 1;
+            -- Wait random time before retry
+            SELECT SLEEP(0.1 * retry_count);
+        END IF;
+    END WHILE;
 END //
 DELIMITER ;`,
         },
       ],
     },
-
-    // ADVANCED LEVEL
     {
-      title: 'Advanced MariaDB Features',
+      title: 'Performance Optimization',
       commands: [
         {
-          command: 'JSON Functions',
-          description: 'Work with JSON data in MariaDB',
-          usage: 'JSON functions and operators',
-          example: `======== JSON Data Type ========
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    attributes JSON
-);
+          command: 'Create Index',
+          description: 'Create database index',
+          usage: 'CREATE INDEX statement',
+          example: `# Create indexes
+-- Single column index
+CREATE INDEX idx_email ON users(email);
 
-# Insert JSON data
-INSERT INTO products (name, attributes) 
-VALUES ('Laptop', '{
-    "brand": "Dell",
-    "specs": {
-        "cpu": "Intel i7",
-        "ram": "16GB",
-        "storage": "512GB SSD"
-    },
-    "price": 999.99,
-    "available": true
-}');
+-- Composite index
+CREATE INDEX idx_name_status ON users(name, status);
 
-======== JSON Functions ========
-# Extract JSON values
-SELECT name, 
-       JSON_EXTRACT(attributes, '$.brand') as brand,
-       JSON_EXTRACT(attributes, '$.specs.cpu') as cpu
-FROM products;
+-- Unique index
+CREATE UNIQUE INDEX idx_username ON users(username);
 
-# Extract as text (unquoted)
-SELECT name,
-       JSON_UNQUOTE(JSON_EXTRACT(attributes, '$.brand')) as brand_text
-FROM products;
-
-# Check for key existence
-SELECT name 
-FROM products 
-WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.price');
-
-# Search JSON values
-SELECT name 
-FROM products 
-WHERE JSON_EXTRACT(attributes, '$.brand') = '"Dell"';
-
-# Modify JSON data
-UPDATE products 
-SET attributes = JSON_SET(attributes, '$.price', '899.99')
-WHERE id = 1;
-
-UPDATE products 
-SET attributes = JSON_REMOVE(attributes, '$.available')
-WHERE id = 1;
-
-# JSON aggregation
-SELECT JSON_ARRAYAGG(name) as product_names FROM products;
-
-SELECT JSON_OBJECT(
-    'product', name,
-    'price', JSON_EXTRACT(attributes, '$.price')
-) as product_info FROM products;
-
-======== JSON Search Functions ========
-# JSON_CONTAINS
-SELECT * FROM products 
-WHERE JSON_CONTAINS(attributes, '"Intel"', '$.specs');
-
-# JSON_SEARCH
-SELECT name,
-       JSON_SEARCH(attributes, 'one', 'Dell') as brand_path
-FROM products;
-
-# JSON_KEYS and JSON_LENGTH
-SELECT name,
-       JSON_KEYS(attributes) as keys,
-       JSON_LENGTH(attributes) as key_count
-FROM products;`,
+-- Full-text index
+CREATE FULLTEXT INDEX idx_content ON articles(title, content);`,
         },
         {
-          command: 'Virtual Columns',
-          description: 'Computed columns in MariaDB',
-          usage: 'GENERATED ALWAYS AS clauses',
-          example: `======== Generated Columns ========
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DECIMAL(10,2),
-    tax_rate DECIMAL(3,2) DEFAULT 0.20,
-    price_with_tax DECIMAL(10,2) GENERATED ALWAYS AS (price * (1 + tax_rate)) STORED,
-    discount_price DECIMAL(10,2) GENERATED ALWAYS AS (price * 0.9) VIRTUAL,
-    category VARCHAR(50),
-    full_description VARCHAR(200) GENERATED ALWAYS AS (CONCAT(name, ' - ', category)) STORED
-);
+          command: 'Index Types',
+          description: 'Different index types',
+          usage: 'BTREE, HASH, FULLTEXT, SPATIAL',
+          example: `# Index types
+-- BTREE index (default)
+CREATE INDEX idx_price ON products(price) USING BTREE;
 
-# Insert data (only base columns)
-INSERT INTO products (name, price, category) 
-VALUES ('Laptop', 999.99, 'Electronics');
+-- HASH index (for equality comparisons)
+CREATE INDEX idx_hash_email ON users(email) USING HASH;
 
-# Generated columns are automatically calculated
-SELECT name, price, price_with_tax, discount_price, full_description
-FROM products;
+-- FULLTEXT index (for text search)
+CREATE FULLTEXT INDEX idx_search ON products(name, description);
 
-======== Update Generated Columns ========
-# When base data changes, generated columns update automatically
-UPDATE products SET price = 1099.99 WHERE id = 1;
-
-# Generated columns with expressions
-CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    total_amount DECIMAL(10,2),
-    order_date DATE,
-    month_name VARCHAR(20) GENERATED ALWAYS AS (MONTHNAME(order_date)) STORED,
-    quarter INT GENERATED ALWAYS AS (QUARTER(order_date)) STORED,
-    is_recent BOOLEAN GENERATED ALWAYS AS (order_date >= CURRENT_DATE - INTERVAL '30 days') STORED
-);
-
-======== Generated Column Indexes ========
-# Index generated columns for performance
-CREATE INDEX idx_products_price_with_tax ON products(price_with_tax);
-CREATE INDEX idx_orders_quarter ON orders(quarter);
-
-# Use generated columns in queries
-SELECT * FROM products 
-WHERE price_with_tax > 1000;
-
-SELECT * FROM orders 
-WHERE quarter = 4 AND is_recent = TRUE;`,
+-- SPATIAL index (for geographic data)
+CREATE SPATIAL INDEX idx_location ON places(location);`,
         },
         {
-          command: 'Window Functions Advanced',
-          description: 'Advanced window function features',
-          usage: 'Complex window frames and analytics',
-          example: `======== Advanced Window Frames ========
-# Different frame types
-SELECT order_date, total_amount,
-       SUM(total_amount) OVER (
-           ORDER BY order_date 
-           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-       ) as running_total_rows,
-       SUM(total_amount) OVER (
-           ORDER BY order_date 
-           RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-       ) as running_total_range,
-       SUM(total_amount) OVER (
-           ORDER BY order_date 
-           ROWS BETWEEN 3 PRECEDING AND 1 FOLLOWING
-       ) as moving_window
-FROM orders;
+          command: 'Explain Query',
+          description: 'Analyze query execution plan',
+          usage: 'EXPLAIN statement',
+          example: `# Explain query
+EXPLAIN SELECT * FROM orders WHERE user_id = 123 AND total > 100;
 
-# Window functions with GROUPS
-SELECT department, salary,
-       AVG(salary) OVER (
-           PARTITION BY department 
-           ORDER BY salary 
-           GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-       ) as dept_avg_groups
-FROM employees;
+# Extended explain
+EXPLAIN EXTENDED SELECT u.name, COUNT(o.id) 
+FROM users u 
+JOIN orders o ON u.id = o.user_id 
+GROUP BY u.name;
 
-======== Distribution Functions ========
-SELECT product_name, price,
-       PERCENT_RANK() OVER (ORDER BY price) as percent_rank,
-       CUME_DIST() OVER (ORDER BY price) as cumulative_dist,
-       NTILE(10) OVER (ORDER BY price) as decile
-FROM products;
-
-# First and last values in window
-SELECT order_date, total_amount,
-       FIRST_VALUE(total_amount) OVER (
-           ORDER BY order_date 
-           ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-       ) as first_amount,
-       LAST_VALUE(total_amount) OVER (
-           ORDER BY order_date 
-           ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-       ) as last_amount
-FROM orders;
-
-======== Window Functions with Filtering ========
-# Window functions in WHERE clause (using subquery)
-SELECT * FROM (
-    SELECT product_name, price,
-           DENSE_RANK() OVER (ORDER BY price DESC) as price_rank
-    FROM products
-) ranked
-WHERE price_rank <= 5;
-
-# Window functions with CASE
-SELECT product_name, price,
-       CASE 
-           WHEN price < AVG(price) OVER () THEN 'Below Average'
-           WHEN price > AVG(price) OVER () THEN 'Above Average'
-           ELSE 'Average'
-       END as price_category
-FROM products;`,
-        },
-      ],
-    },
-    {
-      title: 'MariaDB Security',
-      commands: [
-        {
-          command: 'User Authentication',
-          description: 'Advanced user management and authentication',
-          usage: 'Authentication plugins, password policies',
-          example: `======== Authentication Plugins ========
-# Create user with specific authentication plugin
-CREATE USER 'app_user'@'%' IDENTIFIED BY 'password' 
-WITH mysql_native_password;
-
-CREATE USER 'secure_user'@'localhost' IDENTIFIED VIA unix_socket;
-
-# PAM authentication (Linux)
-CREATE USER 'pam_user'@'localhost' 
-IDENTIFIED VIA pam USING 'mariadb';
-
-# Change authentication plugin
-ALTER USER 'app_user'@'%' IDENTIFIED VIA mysql_native_password;
-
-======== Password Policies ========
-# Require password validation
-INSTALL PLUGIN simple_password_check SONAME 'simple_password_check.so';
-
-# Set password policy variables
-SET GLOBAL simple_password_check_minimal_length = 8;
-SET GLOBAL simple_password_check_digits = 1;
-SET GLOBAL simple_password_check_uppercase = 1;
-SET GLOBAL simple_password_check_lowercase = 1;
-SET GLOBAL simple_password_check_disallowed = 'password,123456';
-
-# Password expiration
-CREATE USER 'temp_user'@'%' IDENTIFIED BY 'temp123' 
-PASSWORD EXPIRE INTERVAL 90 DAY;
-
-ALTER USER 'regular_user'@'%' PASSWORD EXPIRE NEVER;
-
-# Account locking
-CREATE USER 'new_user'@'%' IDENTIFIED BY 'newpass' ACCOUNT LOCK;
-ALTER USER 'new_user'@'%' ACCOUNT UNLOCK;
-
-======== Role Management (MariaDB 10.0+) ========
-# Create roles
-CREATE ROLE 'app_read', 'app_write', 'app_admin';
-
-# Grant privileges to roles
-GRANT SELECT ON myapp.* TO 'app_read';
-GRANT SELECT, INSERT, UPDATE, DELETE ON myapp.* TO 'app_write';
-GRANT ALL PRIVILEGES ON myapp.* TO 'app_admin';
-
-# Grant roles to users
-CREATE USER 'report_user'@'%' IDENTIFIED BY 'report123';
-GRANT 'app_read' TO 'report_user'@'%';
-
-CREATE USER 'data_entry'@'%' IDENTIFIED BY 'entry123';
-GRANT 'app_write' TO 'data_entry'@'%';
-
-# Set default role
-SET DEFAULT ROLE ALL FOR 'data_entry'@'%';
-
-# Show roles
-SHOW GRANTS FOR 'report_user'@'%';`,
+-- Show warnings
+SHOW WARNINGS;`,
         },
         {
-          command: 'Data Encryption',
-          description: 'Encrypt data at rest and in transit',
-          usage: 'InnoDB encryption, SSL/TLS, data masking',
-          example: `======== InnoDB Table Encryption ========
-# Enable file key management
-SET GLOBAL innodb_file_per_table = ON;
-SET GLOBAL innodb_file_format = 'Barracuda';
+          command: 'Query Optimization',
+          description: 'Optimize slow queries',
+          usage: 'Query optimization techniques',
+          example: `# Query optimization examples
+-- Use indexes effectively
+SELECT * FROM orders WHERE user_id = 123 AND order_date > '2023-01-01';
 
-# Create encrypted table
-CREATE TABLE sensitive_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    credit_card VARCHAR(20),
-    ssn VARCHAR(11),
-    ENCRYPTION KEY ID 1
-) ENCRYPTION = 'Y';
+-- Avoid functions on indexed columns
+-- Bad: WHERE YEAR(order_date) = 2023
+-- Good: WHERE order_date >= '2023-01-01' AND order_date < '2024-01-01'
 
-# Encrypt existing table
-ALTER TABLE customer_data ENCRYPTION = 'Y';
+-- Use LIMIT for large result sets
+SELECT * FROM large_table WHERE condition LIMIT 1000;
 
-# Create tablespace with encryption
-CREATE TABLESPACE encrypted_ts 
-ADD DATAFILE 'encrypted_ts.ibd' 
-ENCRYPTION = 'Y';
+-- Use EXISTS instead of IN for subqueries
+SELECT * FROM users u 
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);`,
+        },
+        {
+          command: 'Analyze Table',
+          description: 'Analyze table for query optimization',
+          usage: 'ANALYZE TABLE statement',
+          example: `# Analyze table
+ANALYZE TABLE users;
+ANALYZE TABLE orders;
+ANALYZE TABLE products;
 
-CREATE TABLE encrypted_table (
-    id INT PRIMARY KEY,
-    data VARCHAR(100)
-) TABLESPACE = encrypted_ts;
+-- Analyze all tables
+SELECT CONCAT('ANALYZE TABLE ', table_name, ';') 
+FROM information_schema.tables 
+WHERE table_schema = 'your_database';`,
+        },
+        {
+          command: 'Optimize Table',
+          description: 'Optimize table storage',
+          usage: 'OPTIMIZE TABLE statement',
+          example: `# Optimize table
+OPTIMIZE TABLE users;
+OPTIMIZE TABLE orders;
 
-======== SSL/TLS Configuration ========
-# Generate SSL certificates (server-side)
-# In my.cnf:
-[mysqld]
-ssl-ca = ca.pem
-ssl-cert = server-cert.pem
-ssl-key = server-key.pem
-require_secure_transport = ON
-
-# Create users requiring SSL
-CREATE USER 'secure_user'@'%' IDENTIFIED BY 'password' REQUIRE SSL;
-CREATE USER 'cert_user'@'%' IDENTIFIED BY 'password' 
-REQUIRE X509 AND SUBJECT '/CN=client';
-
-# Verify SSL connection
-SHOW VARIABLES LIKE '%ssl%';
-SHOW STATUS LIKE 'Ssl_cipher%';
-
-======== Data Masking ========
-# Create masked view
-CREATE VIEW masked_customers AS
+-- Optimize all tables
+SELECT CONCAT('OPTIMIZE TABLE ', table_name, ';') 
+FROM information_schema.tables 
+WHERE table_schema = 'your_database' 
+AND engine = 'InnoDB';`,
+        },
+        {
+          command: 'Check Table',
+          description: 'Check table for errors',
+          usage: 'CHECK TABLE statement',
+          example: `# Check table
+CHECK TABLE users;
+CHECK TABLE orders QUICK;
+CHECK TABLE products FAST;
+CHECK TABLE articles CHANGED;
+CHECK TABLE logs MEDIUM;`,
+        },
+        {
+          command: 'Repair Table',
+          description: 'Repair corrupted table',
+          usage: 'REPAIR TABLE statement',
+          example: `# Repair table
+REPAIR TABLE users;
+REPAIR TABLE orders QUICK;
+REPAIR TABLE products EXTENDED;`,
+        },
+        {
+          command: 'Show Index Usage',
+          description: 'Monitor index usage',
+          usage: 'INFORMATION_SCHEMA.STATISTICS',
+          example: `# Show index usage
 SELECT 
-    id,
-    name,
-    CONCAT(LEFT(email, 2), '***@', SUBSTRING_INDEX(email, '@', -1)) as email,
-    CONCAT('***-***-', RIGHT(phone, 4)) as phone
-FROM customers;
-
-# Function for conditional data display
-DELIMITER //
-CREATE FUNCTION safe_show_email(user_email VARCHAR(100), show_full BOOLEAN)
-RETURNS VARCHAR(100)
-READS SQL DATA
-DETERMINISTIC
-BEGIN
-    IF show_full THEN
-        RETURN user_email;
-    ELSE
-        RETURN CONCAT(LEFT(user_email, 2), '***@', SUBSTRING_INDEX(user_email, '@', -1));
-    END IF;
-END //
-DELIMITER ;
-
-# Usage
-SELECT name, safe_show_email(email, FALSE) as masked_email FROM users;`,
-        },
-      ],
-    },
-    {
-      title: 'Performance Monitoring and Tuning',
-      commands: [
-        {
-          command: 'Query Performance Analysis',
-          description: 'Analyze and optimize query performance',
-          usage: 'EXPLAIN, slow query log, performance schema',
-          example: `======== Query Analysis ========
-# Basic execution plan
-EXPLAIN SELECT * FROM orders WHERE user_id = 123;
-
-# Extended execution plan
-EXPLAIN EXTENDED SELECT u.username, COUNT(o.id) as order_count
-FROM users u
-JOIN orders o ON u.id = o.user_id
-WHERE o.order_date > '2023-01-01'
-GROUP BY u.username;
-
-# Show warnings from extended EXPLAIN
-SHOW WARNINGS;
-
-# Analyze query with profiling
-SET profiling = 1;
-SELECT * FROM large_table WHERE indexed_column = 'value';
-SHOW PROFILE;
-SHOW PROFILE FOR QUERY 1;
-
-======== Slow Query Log ========
-# Enable slow query log
-SET GLOBAL slow_query_log = 'ON';
-SET GLOBAL slow_query_log_file = '/var/log/mysql/slow.log';
-SET GLOBAL long_query_time = 1;
-SET GLOBAL log_queries_not_using_indexes = 'ON';
-
-# Analyze slow queries
-mysqldumpslow /var/log/mysql/slow.log
-mysqldumpslow -s t /var/log/mysql/slow.log  # Sort by time
-
-======== Performance Schema ========
-# Enable performance schema
-UPDATE performance_schema.setup_instruments 
-SET ENABLED = 'YES', TIMED = 'YES';
-
-# Monitor statement execution
-SELECT * FROM performance_schema.events_statements_summary_by_digest 
-ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;
-
-# Table I/O statistics
-SELECT * FROM performance_schema.table_io_waits_summary_by_table 
-WHERE OBJECT_SCHEMA = 'myapp'
-ORDER BY SUM_TIMER_WAIT DESC;
-
-# Index usage statistics
-SELECT * FROM performance_schema.table_io_waits_summary_by_index_usage
-WHERE OBJECT_SCHEMA = 'myapp'
-ORDER BY COUNT_READ DESC;`,
-        },
-        {
-          command: 'Database Configuration Tuning',
-          description: 'Optimize MariaDB configuration',
-          usage: 'Key server variables and settings',
-          example: `======== Memory Configuration ========
-# InnoDB buffer pool (most important setting)
-innodb_buffer_pool_size = 2G                    # 70-80% of RAM on dedicated server
-innodb_buffer_pool_instances = 4                # Multiple instances for large pools
-
-# Key buffer for MyISAM
-key_buffer_size = 256M                           # 25-33% of RAM for MyISAM-heavy workloads
-
-# Thread and connection settings
-max_connections = 200                             # Based on application needs
-thread_cache_size = 16                           # Cache threads for reuse
-table_open_cache = 4000                          # Number of open tables
-
-# Query cache (deprecated in MariaDB 10.1.7+ but still available)
-query_cache_type = 1
-query_cache_size = 128M
-query_cache_limit = 2M
-
-======== InnoDB Settings ========
-# Log settings
-innodb_log_file_size = 256M                      # Larger log files for better write performance
-innodb_log_buffer_size = 16M                     # Buffer for log writes
-innodb_flush_log_at_trx_commit = 2               # 0=fastest, 1=safest, 2=balanced
-
-# I/O settings
-innodb_io_capacity = 2000                        # SSD systems can use higher values
-innodb_io_capacity_max = 4000                    # Maximum I/O capacity
-innodb_read_io_threads = 8                       # Number of read threads
-innodb_write_io_threads = 8                      # Number of write threads
-
-# File settings
-innodb_file_per_table = ON                       # Separate files per table
-innodb_file_format = 'Barracuda'                 # Support for compressed tables
-innodb_large_prefix = ON                         # Support for longer indexes
-
-======== Other Performance Settings ========
-# Temporary tables
-tmp_table_size = 256M
-max_heap_table_size = 256M
-
-# Join and sort settings
-join_buffer_size = 256K
-sort_buffer_size = 256K
-
-# Network settings
-max_allowed_packet = 64M                         # Maximum packet size
-net_buffer_length = 32K                          # Network buffer size
-
-# Character set
-character-set-server = utf8mb4
-collation-server = utf8mb4_unicode_ci
-
-# Check current settings
-SHOW VARIABLES LIKE 'innodb_%';
-SHOW VARIABLES LIKE '%buffer%';
-SHOW VARIABLES LIKE '%cache%';`,
-        },
-      ],
-    },
-    {
-      title: 'Backup and Recovery',
-      commands: [
-        {
-          command: 'Database Backup',
-          description: 'Create and manage database backups',
-          usage: 'mysqldump, mariabackup, binary logs',
-          example: `======== Logical Backups with mysqldump ========
-# Complete database backup
-mysqldump -u root -p --single-transaction --routines --triggers myapp > myapp_backup.sql
-
-# All databases
-mysqldump -u root -p --single-transaction --all-databases > full_backup.sql
-
-# Compressed backup
-mysqldump -u root -p --single-transaction myapp | gzip > myapp_backup.sql.gz
-
-# Specific tables only
-mysqldump -u root -p myapp users orders > tables_backup.sql
-
-# Structure only (no data)
-mysqldump -u root -p --no-data myapp > structure_backup.sql
-
-# Data only (no structure)
-mysqldump -u root -p --no-create-info myapp > data_backup.sql
-
-======== Physical Backups with Mariabackup ========
-# Full backup
-mariabackup --backup --target-dir=/backup/full --user=root --password=password
-
-# Incremental backup
-mariabackup --backup --target-dir=/backup/inc1 --incremental-basedir=/backup/full --user=root --password=password
-
-# Prepare backup
-mariabackup --prepare --target-dir=/backup/full
-mariabackup --prepare --target-dir=/backup/full --incremental-dir=/backup/inc1
-
-# Restore backup
-mariabackup --copy-back --target-dir=/backup/full
-
-======== Binary Log Backups ========
-# Enable binary logging
-SET GLOBAL log_bin = ON;
-SET GLOBAL binlog_format = 'ROW';
-SET GLOBAL expire_logs_days = 7;
-
-# Show binary logs
-SHOW BINARY LOGS;
-SHOW MASTER STATUS;
-
-# Backup binary logs
-mysqlbinlog /var/log/mysql/mysql-bin.000001 > binlog_backup.sql
-
-# Point-in-time recovery using binary logs
-mysqlbinlog --start-datetime="2023-12-25 10:00:00" --stop-datetime="2023-12-25 11:00:00" /var/log/mysql/mysql-bin.000001 | mysql -u root -p
-
-======== Backup Script Example ========
-#!/bin/bash
-# MariaDB Backup Script
-BACKUP_DIR="/backup/mariadb"
-DATE=\$(date +%Y%m%d_%H%M%S)
-DB_NAME="myapp"
-RETENTION_DAYS=30
-
-# Create backup directory
-mkdir -p \$BACKUP_DIR
-
-# Logical backup
-mysqldump -u root -p\$MYSQL_ROOT_PASSWORD --single-transaction --routines --triggers \$DB_NAME | gzip > \$BACKUP_DIR/\${DB_NAME}_\${DATE}.sql.gz
-
-# Remove old backups
-find \$BACKUP_DIR -name "*.sql.gz" -mtime +\$RETENTION_DAYS -delete
-
-# Verify backup
-if [ \$? -eq 0 ]; then
-    echo "Backup successful: \${DB_NAME}_\${DATE}.sql.gz"
-else
-    echo "Backup failed: \${DB_NAME}_\${DATE}.sql.gz"
-    exit 1
-fi`,
-        },
-        {
-          command: 'Database Recovery',
-          description: 'Restore databases from backups',
-          usage: 'mysql, mariabackup restore, point-in-time recovery',
-          example: `======== Restore from SQL Dump ========
-# Restore entire database
-mysql -u root -p myapp < myapp_backup.sql
-
-# Restore compressed backup
-gunzip < myapp_backup.sql.gz | mysql -u root -p myapp
-
-# Restore all databases
-mysql -u root -p < full_backup.sql
-
-# Restore specific tables
-mysql -u root -p myapp < tables_backup.sql
-
-# Restore with error handling
-mysql -u root -p --force myapp < backup.sql  # Continue on errors
-
-======== Restore from Physical Backup ========
-# Stop MariaDB
-sudo systemctl stop mariadb
-
-# Move current data directory
-sudo mv /var/lib/mysql /var/lib/mysql.backup
-
-# Restore from backup
-sudo mariabackup --copy-back --target-dir=/backup/full
-
-# Fix permissions
-sudo chown -R mysql:mysql /var/lib/mysql
-
-# Start MariaDB
-sudo systemctl start mariadb
-
-======== Point-in-Time Recovery ========
-# 1. Restore from last full backup
-mysql -u root -p myapp < full_backup.sql
-
-# 2. Apply binary logs
-mysqlbinlog --start-position=154 --stop-datetime="2023-12-25 15:30:00" /var/log/mysql/mysql-bin.000002 | mysql -u root -p
-
-# 3. Verify recovery
-SELECT COUNT(*) FROM users;
-SELECT * FROM orders WHERE order_date >= '2023-12-25 15:00:00';
-
-======== Recovery Testing ========
-# Test backup integrity
-mysqldump --no-data myapp | grep -i "create table"
-
-# Test restore to temporary database
-mysql -u root -p -e "CREATE DATABASE test_restore;"
-mysql -u root -p test_restore < myapp_backup.sql
-mysql -u root -p -e "SELECT COUNT(*) FROM test_restore.users; DROP DATABASE test_restore;"
-
-# Automated recovery test script
-#!/bin/bash
-BACKUP_FILE=\$1
-TEST_DB="test_recovery_\$(date +%s)"
-
-mysql -u root -p -e "CREATE DATABASE \$TEST_DB;"
-if mysql -u root -p \$TEST_DB < \$BACKUP_FILE; then
-    echo "Backup \$BACKUP_FILE is valid"
-    mysql -u root -p -e "DROP DATABASE \$TEST_DB;"
-    exit 0
-else
-    echo "Backup \$BACKUP_FILE is invalid"
-    mysql -u root -p -e "DROP DATABASE \$TEST_DB;"
-    exit 1
-fi`,
+    table_name,
+    index_name,
+    cardinality,
+    sub_part,
+    packed,
+    nullable,
+    index_type
+FROM information_schema.statistics 
+WHERE table_schema = 'your_database'
+ORDER BY table_name, index_name;`,
         },
       ],
     },
@@ -1946,45 +1350,38 @@ fi`,
       commands: [
         {
           command: 'Master-Slave Replication',
-          description: 'Set up MariaDB replication',
-          usage: 'Configure master and slave servers',
-          example: `======== Master Configuration ========
-# On master server (my.cnf)
+          description: 'Set up master-slave replication',
+          usage: 'Replication configuration',
+          example: `# Master configuration (my.cnf)
 [mysqld]
 server-id = 1
-log_bin = mysql-bin
-binlog_format = ROW
-binlog_do_db = myapp
-gtid_domain_id = 1
-
-# Restart MariaDB
-sudo systemctl restart mariadb
+log-bin = mysql-bin
+binlog-format = ROW
+binlog-do-db = your_database
 
 # Create replication user
-CREATE USER 'repl_user'@'%' IDENTIFIED BY 'repl_password';
+CREATE USER 'repl_user'@'%' IDENTIFIED BY 'strong_password';
 GRANT REPLICATION SLAVE ON *.* TO 'repl_user'@'%';
 FLUSH PRIVILEGES;
 
 # Get master status
-SHOW MASTER STATUS;
--- Note: File and Position values
-
-======== Slave Configuration ========
-# On slave server (my.cnf)
+SHOW MASTER STATUS;`,
+        },
+        {
+          command: 'Slave Configuration',
+          description: 'Configure slave server',
+          usage: 'Slave setup commands',
+          example: `# Slave configuration (my.cnf)
 [mysqld]
 server-id = 2
-relay_log = relay-bin
-read_only = ON
-gtid_domain_id = 1
-
-# Restart MariaDB
-sudo systemctl restart mariadb
+relay-log = mysql-relay
+read-only = 1
 
 # Configure slave
 CHANGE MASTER TO
     MASTER_HOST='master_ip',
     MASTER_USER='repl_user',
-    MASTER_PASSWORD='repl_password',
+    MASTER_PASSWORD='strong_password',
     MASTER_LOG_FILE='mysql-bin.000001',
     MASTER_LOG_POS=154;
 
@@ -1992,392 +1389,704 @@ CHANGE MASTER TO
 START SLAVE;
 
 # Check slave status
-SHOW SLAVE STATUS\\G;
-
-======== GTID-based Replication ========
-# Master setup (already configured above)
-# Slave setup with GTID
-SET GLOBAL gtid_slave_pos = "0-1-1";
-
-CHANGE MASTER TO
-    MASTER_HOST='master_ip',
-    MASTER_USER='repl_user',
-    MASTER_PASSWORD='repl_password',
-    MASTER_USE_GTID = current_pos;
-
-START SLAVE;
-
-# Skip replication error
-SET GLOBAL sql_slave_skip_counter = 1;
-START SLAVE;`,
+SHOW SLAVE STATUS\\G;`,
         },
         {
-          command: 'MariaDB Galera Cluster',
-          description: 'Multi-master synchronous replication',
-          usage: 'Configure Galera Cluster',
-          example: `======== Galera Cluster Installation ========
-# Install Galera packages
-sudo apt install mariadb-server galera-4 galera-arbitrator-4
-
-# Configure first node
-sudo systemctl stop mariadb
-
-# Edit galera.cnf
+          command: 'Galera Cluster',
+          description: 'Set up Galera cluster for multi-master',
+          usage: 'Galera configuration',
+          example: `# Galera configuration (my.cnf)
 [mysqld]
-binlog_format=ROW
-default-storage-engine=innodb
-innodb_autoinc_lock_mode=2
-bind-address=0.0.0.0
+server-id = 1
+binlog_format = ROW
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method = O_DIRECT
+wsrep_on = ON
+wsrep_provider = /usr/lib/galera/libgalera_smm.so
+wsrep_cluster_name = "my_cluster"
+wsrep_cluster_address = "gcomm://node1,node2,node3"
+wsrep_node_name = "node1"
+wsrep_node_address = "192.168.1.10"
 
-# Galera Provider Configuration
-wsrep_on=ON
-wsrep_provider=/usr/lib/galera/libgalera_smm.so
-wsrep_cluster_name="my_cluster"
-wsrep_cluster_address="gcomm://node1_ip,node2_ip,node3_ip"
-wsrep_node_name="node1"
-wsrep_node_address="node1_ip"
-wsrep_sst_method=rsync
+# Start first node
+galera_new_cluster
 
-======== Start Cluster ========
-# Start first node (bootstrap)
-sudo galera_new_cluster
+# Start subsequent nodes
+systemctl start mariadb`,
+        },
+        {
+          command: 'Monitor Replication',
+          description: 'Monitor replication status',
+          usage: 'Replication monitoring commands',
+          example: `# Monitor replication
+SHOW MASTER STATUS;
+SHOW SLAVE STATUS\\G;
+SHOW PROCESSLIST;
 
-# Start other nodes
-sudo systemctl start mariadb
+# Check lag
+SELECT 
+    MASTER_POS_WAIT('mysql-bin.000001', 12345) as lag;
 
-# Check cluster status
-SHOW STATUS LIKE 'wsrep%';
-SHOW STATUS LIKE 'wsrep_cluster_size';
-SHOW STATUS LIKE 'wsrep_local_state_comment';
+# Check binary logs
+SHOW BINARY LOGS;
+SHOW BINLOG EVENTS IN 'mysql-bin.000001' LIMIT 10;`,
+        },
+        {
+          command: 'Failover Procedures',
+          description: 'Handle master failover',
+          usage: 'Failover commands',
+          example: `# Promote slave to master
+STOP SLAVE;
+RESET MASTER;
+RESET SLAVE ALL;
 
-======== Add New Node ========
-# Configure new node
-wsrep_cluster_address="gcomm://existing_node_ip"
-wsrep_node_name="new_node"
-wsrep_node_address="new_node_ip"
+# Update application to point to new master
+# Configure other slaves to replicate from new master
 
-# Start MariaDB on new node
-sudo systemctl start mariadb
-
-# Verify node joined cluster
-SHOW STATUS LIKE 'wsrep_cluster_size';  -- Should increase by 1
-
-======== Cluster Maintenance ========
-# Check node status
-SELECT * FROM information_schema.wsrep_cluster_members;
-
-# SST (State Snapshot Transfer)
-# Configure SST method
-wsrep_sst_method=rsync
-wsrep_sst_auth=backup_user:backup_password
-
-# IST (Incremental State Transfer)
-# For large clusters, configure IST
-wsrep_provider_options="gcache.size=1G;gcache.page_size=128M"
-
-# Cluster quorum
-# Configure arbitrator for two-node clusters
-sudo apt install galera-arbitrator-4
-sudo systemctl start garbd
-# Configure with same cluster address as nodes`,
+# On other slaves:
+STOP SLAVE;
+CHANGE MASTER TO
+    MASTER_HOST='new_master_ip',
+    MASTER_USER='repl_user',
+    MASTER_PASSWORD='strong_password',
+    MASTER_LOG_FILE='mysql-bin.000001',
+    MASTER_LOG_POS=154;
+START SLAVE;`,
         },
       ],
     },
     {
-      title: 'MariaDB Best Practices',
+      title: 'Security and User Management',
       commands: [
         {
-          command: 'Database Design Best Practices',
-          description: 'Optimal database design patterns',
-          usage: 'Normalization, indexing strategies, constraints',
-          example: `======== Normalization Guidelines ========
-# First Normal Form (1NF) - Atomic values
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL
-);
+          command: 'Create User',
+          description: 'Create database user',
+          usage: 'CREATE USER statement',
+          example: `# Create users
+CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'strong_password';
+CREATE USER 'appuser'@'%' IDENTIFIED BY 'strong_password';
+CREATE USER 'readonly'@'192.168.1.%' IDENTIFIED BY 'readonly_password';
 
--- Avoid: storing multiple values in single field
--- Use: separate table for one-to-many relationships
-
-# Second Normal Form (2NF) - No partial dependencies
-CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE TABLE order_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT,
-    price DECIMAL(10,2),
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
-
-# Third Normal Form (3NF) - No transitive dependencies
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50),
-    department_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id)
-);
-
--- Instead of storing department_name in users table
-
-======== Indexing Strategy ========
-# Primary keys (automatic)
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    category_id INT,
-    price DECIMAL(10,2)
-);
-
-# Foreign keys
-CREATE INDEX idx_products_category ON products(category_id);
-
-# Columns in WHERE clauses
-CREATE INDEX idx_orders_user_date ON orders(user_id, order_date);
-
-# Columns in JOIN conditions
-CREATE INDEX idx_order_items_product ON order_items(product_id);
-
-# Composite indexes for complex queries
-CREATE INDEX idx_products_category_price ON products(category_id, price);
-
-# Partial indexes for common conditions
-CREATE INDEX idx_active_users ON users(id) WHERE status = 'active';
-
-======== Constraint Best Practices ========
-# Use appropriate constraints
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DECIMAL(10,2) CHECK (price >= 0),
-    category_id INT,
-    sku VARCHAR(50) UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
-);
-
-# Complex check constraints
-ALTER TABLE orders 
-ADD CONSTRAINT valid_total_amount 
-CHECK (total_amount > 0 AND total_amount < 1000000);
-
-# Named constraints for better error messages
-ALTER TABLE users 
-ADD CONSTRAINT valid_email 
-CHECK (email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$');`,
+# Create user with authentication plugin
+CREATE USER 'secureuser'@'localhost' 
+IDENTIFIED VIA mysql_native_password 
+USING 'password_hash';`,
         },
         {
-          command: 'Performance Best Practices',
-          description: 'Optimize MariaDB performance',
-          usage: 'Query optimization, configuration tuning',
-          example: `======== Query Optimization ========
-# Use appropriate data types
-CREATE TABLE events (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  -- Use BIGINT for large tables
-    event_date DATETIME NOT NULL,                    -- Not VARCHAR
-    user_id INT UNSIGNED NOT NULL,                   -- Use UNSIGNED for IDs
-    event_type VARCHAR(20) NOT NULL,                 -- Limited length
-    metadata JSON                                     -- Use JSON for structured data
-);
+          command: 'Grant Privileges',
+          description: 'Grant user privileges',
+          usage: 'GRANT statement',
+          example: `# Grant privileges
+-- All privileges on specific database
+GRANT ALL PRIVILEGES ON myapp.* TO 'appuser'@'%';
 
-# Write efficient queries
--- Good: Specific columns
-SELECT id, username FROM users WHERE status = 'active';
+-- Read-only access
+GRANT SELECT ON myapp.* TO 'readonly'@'%';
 
--- Avoid: SELECT * unless needed
--- SELECT * FROM users;
+-- Specific privileges
+GRANT SELECT, INSERT, UPDATE ON myapp.users TO 'appuser'@'%';
+GRANT SELECT ON myapp.products TO 'readonly'@'%';
 
--- Use EXISTS instead of IN for subqueries
-SELECT u.username 
-FROM users u 
-WHERE EXISTS (
-    SELECT 1 FROM orders o 
-    WHERE o.user_id = u.id 
-    AND o.total_amount > 1000
-);
-
--- Use LIMIT with ORDER BY
-SELECT * FROM large_table 
-ORDER BY created_at DESC 
-LIMIT 100;
-
--- Proper JOIN syntax
-SELECT u.username, COUNT(o.id) as order_count
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id
-GROUP BY u.id, u.username
-HAVING order_count > 0;
-
-======== Configuration Optimization ========
-# Memory settings (my.cnf)
-# For dedicated server with 8GB RAM
-innodb_buffer_pool_size = 6G                    # 75% of RAM
-innodb_buffer_pool_instances = 4                # Multiple instances
-innodb_log_file_size = 512M                     # Large log files
-innodb_flush_log_at_trx_commit = 2              # Balanced performance
-
-# Connection settings
-max_connections = 200                            # Based on application needs
-thread_cache_size = 50                           # Cache threads
-table_open_cache = 4000                          # Open table cache
-
-# Query cache (if needed)
-query_cache_type = 1
-query_cache_size = 256M
-query_cache_limit = 4M
-
-# MariaDB specific optimizations
-aria_pagecache_buffer_size = 256M                # For Aria tables
-join_buffer_size = 256K
-sort_buffer_size = 256K
-
-======== Monitoring and Maintenance ========
-# Regular maintenance script
-#!/bin/bash
-# Optimize tables
-mysql -u root -p -e "OPTIMIZE TABLE myapp.users, myapp.orders;"
-
-# Update statistics
-mysql -u root -p -e "ANALYZE TABLE myapp.users, myapp.orders;"
-
-# Check table health
-mysql -u root -p -e "CHECK TABLE myapp.users, myapp.orders;"
-
-# Monitor slow queries
-mysql -u root -p -e "SELECT * FROM information_schema.processlist WHERE time > 5;"
-
-# Check table sizes
-SELECT 
-    table_name,
-    ROUND(((data_length + index_length) / 1024 / 1024), 2) AS 'Size (MB)'
-FROM information_schema.TABLES 
-WHERE table_schema = 'myapp'
-ORDER BY (data_length + index_length) DESC;`,
+-- Grant with grant option
+GRANT SELECT ON myapp.* TO 'manager'@'%' WITH GRANT OPTION;`,
         },
         {
-          command: 'Security Best Practices',
-          description: 'Secure MariaDB deployment',
-          usage: 'Authentication, encryption, access control',
-          example: `======== Authentication Security ========
-# Use strong passwords and authentication plugins
-CREATE USER 'app_user'@'%' IDENTIFIED BY 'ComplexP@ssw0rd!' 
-WITH mysql_native_password;
+          command: 'Revoke Privileges',
+          description: 'Revoke user privileges',
+          usage: 'REVOKE statement',
+          example: `# Revoke privileges
+REVOKE ALL PRIVILEGES ON myapp.* FROM 'appuser'@'%';
+REVOKE SELECT ON myapp.products FROM 'readonly'@'%';
+REVOKE GRANT OPTION ON myapp.* FROM 'manager'@'%';
 
-# Implement password policy
-INSTALL PLUGIN simple_password_check SONAME 'simple_password_check.so';
-SET GLOBAL simple_password_check_minimal_length = 12;
-SET GLOBAL simple_password_check_digits = 2;
-SET GLOBAL simple_password_check_special_chars = 1;
+# Revoke all privileges
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'appuser'@'%';`,
+        },
+        {
+          command: 'Show User Privileges',
+          description: 'Check user privileges',
+          usage: 'SHOW GRANTS statement',
+          example: `# Show user grants
+SHOW GRANTS FOR 'appuser'@'%';
+SHOW GRANTS FOR CURRENT_USER();
 
-# Regular user account management
-CREATE USER 'readonly_user'@'%' IDENTIFIED BY 'Read0nly!';
-GRANT SELECT ON myapp.* TO 'readonly_user'@'%';
+# Show privileges for current database
+SELECT * FROM information_schema.user_privileges;
+SELECT * FROM information_schema.table_privileges 
+WHERE table_schema = 'myapp';`,
+        },
+        {
+          command: 'Password Management',
+          description: 'Manage user passwords',
+          usage: 'Password operations',
+          example: `# Change password
+ALTER USER 'appuser'@'%' IDENTIFIED BY 'new_strong_password';
 
-CREATE USER 'app_user'@'%' IDENTIFIED BY 'AppP@ss!';
-GRANT SELECT, INSERT, UPDATE, DELETE ON myapp.* TO 'app_user'@'%';
+-- Require password change on next login
+ALTER USER 'appuser'@'%' IDENTIFIED BY 'temp_password' PASSWORD EXPIRE;
 
-# Account security features
-ALTER USER 'app_user'@'%' 
-PASSWORD EXPIRE INTERVAL 90 DAY 
-ACCOUNT LOCK;
+-- Set password policy
+SET GLOBAL validate_password.policy = 'MEDIUM';
+SET GLOBAL validate_password.length = 12;
 
-# Enable two-factor authentication where supported
-CREATE USER 'admin_user'@'localhost' 
-IDENTIFIED BY 'AdminP@ss!' 
-REQUIRE X509;
+-- Password expiration
+ALTER USER 'appuser'@'%' PASSWORD EXPIRE INTERVAL 90 DAY;`,
+        },
+        {
+          command: 'Role Management',
+          description: 'Create and manage roles',
+          usage: 'CREATE ROLE, GRANT ROLE',
+          example: `# Create roles
+CREATE ROLE 'app_developer';
+CREATE ROLE 'db_admin';
+CREATE ROLE 'readonly_user';
 
-======== Network Security ========
-# Network configuration (my.cnf)
-bind-address = 10.0.0.1                    # Bind to specific IP
-skip-networking = OFF                        # Enable network connections
-max_connect_errors = 10                      # Limit connection errors
+# Grant privileges to roles
+GRANT SELECT, INSERT, UPDATE, DELETE ON myapp.* TO 'app_developer';
+GRANT ALL PRIVILEGES ON myapp.* TO 'db_admin';
+GRANT SELECT ON myapp.* TO 'readonly_user';
 
-# SSL/TLS configuration
-ssl-ca = /etc/mysql/ssl/ca.pem
-ssl-cert = /etc/mysql/ssl/server-cert.pem
-ssl-key = /etc/mysql/ssl/server-key.pem
-require_secure_transport = ON                 # Require SSL for all connections
+# Grant roles to users
+GRANT 'app_developer' TO 'devuser'@'%';
+GRANT 'db_admin' TO 'adminuser'@'%';
 
-# Firewall rules
-# Allow only specific IPs
-# iptables -A INPUT -p tcp --dport 3306 -s 10.0.0.0/8 -j ACCEPT
-# iptables -A INPUT -p tcp --dport 3306 -j DROP
+# Set default role
+SET DEFAULT ROLE 'app_developer' FOR 'devuser'@'%';`,
+        },
+        {
+          command: 'SSL Configuration',
+          description: 'Configure SSL/TLS',
+          usage: 'SSL configuration',
+          example: `# SSL configuration (my.cnf)
+[mysqld]
+ssl-ca = /etc/mysql/ca.pem
+ssl-cert = /etc/mysql/server-cert.pem
+ssl-key = /etc/mysql/server-key.pem
+require_secure_transport = ON
 
-======== Data Encryption ========
-# Enable InnoDB encryption
-SET GLOBAL innodb_file_per_table = ON;
-SET GLOBAL innodb_file_format = 'Barracuda';
+# Require SSL for specific users
+CREATE USER 'secureuser'@'%' REQUIRE SSL;
+GRANT SELECT ON myapp.* TO 'secureuser'@%' REQUIRE SSL;
 
-# Create encrypted tablespace
-CREATE TABLESPACE secure_ts 
-ADD DATAFILE 'secure_ts.ibd' 
-ENCRYPTION = 'Y';
-
-CREATE TABLE sensitive_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    encrypted_data VARCHAR(255),
-    ENCRYPTION KEY ID 1
-) TABLESPACE = secure_ts ENCRYPTION = 'Y';
-
-# Encrypt existing tables
-ALTER TABLE customer_data ENCRYPTION = 'Y';
-
-# Data masking for sensitive information
-CREATE VIEW masked_customers AS
-SELECT 
-    id,
-    name,
-    CONCAT(LEFT(email, 2), '***@', SUBSTRING_INDEX(email, '@', -1)) as email,
-    CONCAT('***-***-', RIGHT(phone, 4)) as phone,
-    CONCAT('***-**-', RIGHT(ssn, 4)) as ssn
-FROM customers;
-
-# Grant limited access to masked view
-GRANT SELECT ON masked_customers TO 'report_user'@'%';
-
-======== Audit and Monitoring ========
-# Enable audit plugin
+# Check SSL status
+SHOW VARIABLES LIKE '%ssl%';
+SHOW STATUS LIKE 'Ssl_cipher%';`,
+        },
+        {
+          command: 'Audit Logging',
+          description: 'Set up audit logging',
+          usage: 'Audit plugin configuration',
+          example: `# Install audit plugin
 INSTALL PLUGIN server_audit SONAME 'server_audit.so';
 
 # Configure audit logging
 SET GLOBAL server_audit_events = 'CONNECT,QUERY,TABLE';
 SET GLOBAL server_audit_logging = 'ON';
 SET GLOBAL server_audit_file_path = '/var/log/mysql/audit.log';
+SET GLOBAL server_audit_file_rotate_size = 1000000000;
+SET GLOBAL server_audit_file_rotations = 5;
 
-# Monitor failed login attempts
-SELECT user, host FROM mysql.user 
-WHERE password_expired = 'Y' OR account_locked = 'Y';
+# Configuration in my.cnf
+[mysqld]
+plugin-load = server_audit=server_audit.so
+server_audit = FORCE_PLUS_PERMANENT
+server_audit_events = CONNECT,QUERY,TABLE
+server_audit_logging = ON
+server_audit_file_path = /var/log/mysql/audit.log`,
+        },
+      ],
+    },
+    {
+      title: 'Backup and Recovery',
+      commands: [
+        {
+          command: 'mysqldump Backup',
+          description: 'Create logical backup with mysqldump',
+          usage: 'mysqldump command',
+          example: `# Full database backup
+mysqldump -u root -p --all-databases > /backup/full_backup.sql
 
-# Regular security checks
+# Specific database
+mysqldump -u root -p myapp > /backup/myapp_backup.sql
+
+# Specific tables
+mysqldump -u root -p myapp users orders > /backup/tables_backup.sql
+
+# With compression
+mysqldump -u root -p myapp | gzip > /backup/myapp_backup.sql.gz
+
+# With routines and triggers
+mysqldump -u root -p --routines --triggers myapp > /backup/myapp_complete.sql`,
+        },
+        {
+          command: 'mysqldump Options',
+          description: 'Advanced mysqldump options',
+          usage: 'mysqldump with options',
+          example: `# Advanced mysqldump options
+# Consistent backup
+mysqldump -u root -p --single-transaction --routines --triggers myapp > backup.sql
+
+# Lock tables (MyISAM)
+mysqldump -u root -p --lock-all-tables myapp > backup.sql
+
+# Skip data (schema only)
+mysqldump -u root -p --no-data myapp > schema.sql
+
+# Skip create table statements
+mysqldump -u root -p --no-create-info myapp > data.sql
+
+# Where clause
+mysqldump -u root -p --where="created_at > '2023-01-01'" myapp users > recent_users.sql`,
+        },
+        {
+          command: 'mysql Restore',
+          description: 'Restore from backup',
+          usage: 'mysql command for restore',
+          example: `# Restore from backup
+mysql -u root -p < /backup/full_backup.sql
+
+# Restore specific database
+mysql -u root -p myapp < /backup/myapp_backup.sql
+
+# Restore from compressed backup
+gunzip < /backup/myapp_backup.sql.gz | mysql -u root -p myapp
+
+# Restore with source command
+mysql -u root -p
+SOURCE /backup/myapp_backup.sql;`,
+        },
+        {
+          command: 'Physical Backup',
+          description: 'Physical file backup',
+          usage: 'File system backup',
+          example: `# Physical backup (cold backup)
+# Stop MariaDB
+sudo systemctl stop mariadb
+
+# Copy data files
+sudo cp -r /var/lib/mysql /backup/mysql_backup_$(date +%Y%m%d)
+
+# Start MariaDB
+sudo systemctl start mariadb
+
+# Hot backup with MariaDB Backup
+mariabackup --backup --target-dir=/backup/mariabackup/ --user=root --password=pass
+mariabackup --prepare --target-dir=/backup/mariabackup/
+mariabackup --copy-back --target-dir=/backup/mariabackup/`,
+        },
+        {
+          command: 'Point in Time Recovery',
+          description: 'Recover to specific point in time',
+          usage: 'Binary log based recovery',
+          example: `# Point in time recovery
+# 1. Restore from full backup
+mysql -u root -p < /backup/full_backup.sql
+
+# 2. Apply binary logs
+mysqlbinlog --start-datetime="2023-01-01 00:00:00" \\
+             --stop-datetime="2023-01-01 12:00:00" \\
+             /var/lib/mysql/mysql-bin.000123 | mysql -u root -p
+
+# 3. Or use mysqlbinlog with position
+mysqlbinlog --start-position=154 \\
+             --stop-position=123456 \\
+             /var/lib/mysql/mysql-bin.000123 | mysql -u root -p`,
+        },
+        {
+          command: 'Incremental Backup',
+          description: 'Set up incremental backup strategy',
+          usage: 'Binary log backup',
+          example: `# Incremental backup setup
+# Enable binary logging
+[mysqld]
+log-bin = mysql-bin
+binlog-format = ROW
+expire_logs_days = 7
+
+# Backup script
 #!/bin/bash
-# Check for weak passwords
-mysql -u root -p -e "
-    SELECT user, host 
-    FROM mysql.user 
-    WHERE plugin = 'mysql_native_password' 
-    AND authentication_string = PASSWORD('');
-"
+BACKUP_DIR="/backup/incremental"
+DATE=$(date +%Y%m%d_%H%M%S)
 
-# Review user privileges
-mysql -u root -p -e "
-    SELECT user, host, Select_priv, Insert_priv, Update_priv, Delete_priv
-    FROM mysql.user
-    WHERE user != 'root';
-"
+# Flush logs to create new binary log
+mysql -u root -p -e "FLUSH LOGS;"
 
-# Monitor SSL usage
-SHOW VARIABLES LIKE '%ssl%';
-SHOW STATUS LIKE 'Ssl_cipher%';`,
+# Copy binary logs
+cp /var/lib/mysql/mysql-bin.* $BACKUP_DIR/
+
+# Keep last 7 days
+find $BACKUP_DIR -name "mysql-bin.*" -mtime +7 -delete`,
+        },
+      ],
+    },
+    {
+      title: 'Monitoring and Diagnostics',
+      commands: [
+        {
+          command: 'Show Process List',
+          description: 'Monitor running queries',
+          usage: 'SHOW PROCESSLIST',
+          example: `# Show process list
+SHOW PROCESSLIST;
+SHOW FULL PROCESSLIST;
+
+# Filter by user or database
+SELECT * FROM information_schema.processlist 
+WHERE user = 'appuser' AND db = 'myapp';
+
+# Kill long-running query
+KILL 12345;  -- Process ID`,
+        },
+        {
+          command: 'Show Status',
+          description: 'Check server status variables',
+          usage: 'SHOW STATUS',
+          example: `# Show status
+SHOW STATUS;
+SHOW STATUS LIKE 'Connections';
+SHOW STATUS LIKE 'Slow_queries';
+SHOW STATUS LIKE 'Threads%';
+SHOW GLOBAL STATUS LIKE 'Innodb%';`,
+        },
+        {
+          command: 'Show Variables',
+          description: 'Check server configuration',
+          usage: 'SHOW VARIABLES',
+          example: `# Show variables
+SHOW VARIABLES;
+SHOW VARIABLES LIKE 'max_connections';
+SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
+SHOW VARIABLES LIKE 'query_cache%';
+SHOW GLOBAL VARIABLES;`,
+        },
+        {
+          command: 'Performance Schema',
+          description: 'Use Performance Schema for monitoring',
+          usage: 'Performance Schema queries',
+          example: `# Performance Schema monitoring
+-- Enable performance schema
+UPDATE performance_schema.setup_instruments 
+SET ENABLED = 'YES', TIMED = 'YES';
+
+-- Monitor statement execution
+SELECT * FROM performance_schema.events_statements_summary_by_digest 
+ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;
+
+-- Monitor table I/O
+SELECT * FROM performance_schema.table_io_waits_summary_by_table 
+ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;`,
+        },
+        {
+          command: 'Slow Query Log',
+          description: 'Configure and monitor slow queries',
+          usage: 'Slow query log',
+          example: `# Configure slow query log
+SET GLOBAL slow_query_log = 'ON';
+SET GLOBAL long_query_time = 2;  -- seconds
+SET GLOBAL log_queries_not_using_indexes = 'ON';
+
+# Configuration in my.cnf
+[mysqld]
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+log_queries_not_using_indexes = 1
+
+# Analyze slow queries
+mysqldumpslow /var/log/mysql/slow.log`,
+        },
+        {
+          command: 'InnoDB Monitor',
+          description: 'Monitor InnoDB engine',
+          usage: 'InnoDB monitoring',
+          example: `# InnoDB monitoring
+SHOW ENGINE INNODB STATUS;
+
+-- InnoDB metrics
+SELECT * FROM information_schema.innodb_metrics 
+WHERE name LIKE '%buffer_pool%';
+
+-- Lock information
+SELECT * FROM information_schema.innodb_locks;
+SELECT * FROM information_schema.innodb_lock_waits;`,
+        },
+        {
+          command: 'Database Statistics',
+          description: 'Get database statistics',
+          usage: 'Information schema queries',
+          example: `# Database statistics
+-- Table sizes
+SELECT 
+    table_name,
+    ROUND(((data_length + index_length) / 1024 / 1024), 2) AS 'Size (MB)'
+FROM information_schema.tables 
+WHERE table_schema = 'your_database'
+ORDER BY (data_length + index_length) DESC;
+
+-- Row counts
+SELECT 
+    table_name,
+    table_rows
+FROM information_schema.tables 
+WHERE table_schema = 'your_database'
+ORDER BY table_rows DESC;`,
+        },
+      ],
+    },
+    {
+      title: 'MariaDB Specific Features',
+      commands: [
+        {
+          command: 'JSON Functions',
+          description: 'Use JSON functions in MariaDB',
+          usage: 'JSON_EXTRACT, JSON_CONTAINS, etc.',
+          example: `# JSON functions in MariaDB
+-- Extract JSON values
+SELECT JSON_EXTRACT('{"name": "John", "age": 30}', '$.name') as name;
+SELECT JSON_VALUE('{"name": "John", "age": 30}', '$.age') as age;
+
+-- Check JSON contains
+SELECT JSON_CONTAINS('{"tags": ["red", "blue"]}', '"red"') as has_red;
+
+-- Modify JSON
+SELECT JSON_SET('{"name": "John"}', '$.age', 30) as updated;
+SELECT JSON_INSERT('{"name": "John"}', '$.age', 30) as inserted;
+SELECT JSON_REMOVE('{"name": "John", "age": 30}', '$.age') as removed;
+
+-- JSON aggregation
+SELECT JSON_ARRAYAGG(name) as names FROM users;
+SELECT JSON_OBJECT('id', id, 'name', name) as user_obj FROM users LIMIT 1;`,
+        },
+        {
+          command: 'Window Functions Advanced',
+          description: 'Advanced window functions',
+          usage: 'NTH_VALUE, PERCENT_RANK, etc.',
+          example: `# Advanced window functions
+-- NTH_VALUE
+SELECT 
+    name,
+    salary,
+    NTH_VALUE(salary, 2) OVER (ORDER BY salary DESC) as second_highest
+FROM employees;
+
+-- PERCENT_RANK and CUME_DIST
+SELECT 
+    name,
+    salary,
+    PERCENT_RANK() OVER (ORDER BY salary DESC) as percent_rank,
+    CUME_DIST() OVER (ORDER BY salary DESC) as cumulative_dist
+FROM employees;
+
+-- FIRST_VALUE, LAST_VALUE with frame
+SELECT 
+    order_date,
+    total,
+    FIRST_VALUE(total) OVER (ORDER BY order_date 
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as first_total,
+    LAST_VALUE(total) OVER (ORDER BY order_date 
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as last_total
+FROM orders;`,
+        },
+        {
+          command: 'Sequence Objects',
+          description: 'Use sequence objects',
+          usage: 'CREATE SEQUENCE',
+          example: `# Create and use sequences
+CREATE SEQUENCE seq_order_id START WITH 1000 INCREMENT BY 1;
+
+-- Use sequence
+SELECT NEXTVAL(seq_order_id);  -- Returns 1000
+SELECT NEXTVAL(seq_order_id);  -- Returns 1001
+
+-- Get current value
+SELECT CURRVAL(seq_order_id);
+
+-- Set sequence value
+SELECT SETVAL(seq_order_id, 2000);
+
+-- Drop sequence
+DROP SEQUENCE seq_order_id;`,
+        },
+        {
+          command: 'Virtual Columns',
+          description: 'Create virtual columns',
+          usage: 'GENERATED ALWAYS AS',
+          example: `# Virtual columns
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    price DECIMAL(10,2),
+    tax_rate DECIMAL(5,2) DEFAULT 0.08,
+    tax_amount DECIMAL(10,2) GENERATED ALWAYS AS (price * tax_rate) STORED,
+    total_price DECIMAL(10,2) GENERATED ALWAYS AS (price + (price * tax_rate)) VIRTUAL
+);
+
+-- Query virtual columns
+SELECT name, price, tax_amount, total_price FROM products;`,
+        },
+        {
+          command: 'Check Constraints',
+          description: 'Use check constraints',
+          usage: 'CHECK constraint',
+          example: `# Check constraints
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INT CHECK (age >= 18 AND age <= 65),
+    salary DECIMAL(10,2) CHECK (salary > 0),
+    department VARCHAR(50) CHECK (department IN ('IT', 'Sales', 'HR', 'Finance'))
+);
+
+-- Add check constraint to existing table
+ALTER TABLE products ADD CONSTRAINT chk_price_positive 
+CHECK (price > 0);`,
+        },
+        {
+          command: 'Invisible Columns',
+          description: 'Create invisible columns',
+          usage: 'INVISIBLE keyword',
+          example: `# Invisible columns
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    internal_id INT INVISIBLE,
+    created_at TIMESTAMP INVISIBLE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Invisible columns are not returned by SELECT *
+SELECT * FROM users;  -- Won't show internal_id and created_at
+
+-- Must explicitly select invisible columns
+SELECT id, name, email, internal_id, created_at FROM users;
+
+-- Make column visible/invisible
+ALTER TABLE users ALTER COLUMN internal_id VISIBLE;
+ALTER TABLE users ALTER COLUMN created_at INVISIBLE;`,
+        },
+      ],
+    },
+    {
+      title: 'MariaDB Tools and Utilities',
+      commands: [
+        {
+          command: 'mysqlcheck',
+          description: 'Check, repair, optimize tables',
+          usage: 'mysqlcheck utility',
+          example: `# mysqlcheck examples
+# Check all tables in all databases
+mysqlcheck -u root -p --all-databases
+
+# Check specific database
+mysqlcheck -u root -p myapp
+
+# Repair tables
+mysqlcheck -u root -p --repair myapp
+
+# Optimize tables
+mysqlcheck -u root -p --optimize myapp
+
+# Analyze tables
+mysqlcheck -u root -p --analyze myapp
+
+# Auto-repair
+mysqlcheck -u root -p --auto-repair myapp`,
+        },
+        {
+          command: 'mysqladmin',
+          description: 'Administrative operations',
+          usage: 'mysqladmin utility',
+          example: `# mysqladmin examples
+# Check server status
+mysqladmin -u root -p status
+
+# Show variables
+mysqladmin -u root -p variables
+
+# Show process list
+mysqladmin -u root -p processlist
+
+# Create database
+mysqladmin -u root -p create newdb
+
+# Drop database
+mysqladmin -u root -p drop olddb
+
+# Flush privileges
+mysqladmin -u root -p flush-privileges
+
+# Ping server
+mysqladmin -u root -p ping
+
+# Shutdown server
+mysqladmin -u root -p shutdown`,
+        },
+        {
+          command: 'mysqldumpslow',
+          description: 'Analyze slow query log',
+          usage: 'mysqldumpslow utility',
+          example: `# mysqldumpslow examples
+# Show all slow queries
+mysqldumpslow /var/log/mysql/slow.log
+
+# Sort by average query time
+mysqldumpslow -s at /var/log/mysql/slow.log
+
+# Sort by number of times executed
+mysqldumpslow -s c /var/log/mysql/slow.log
+
+# Show queries with specific pattern
+mysqldumpslow -g "SELECT.*FROM users" /var/log/mysql/slow.log
+
+# Show top 10 slowest queries
+mysqldumpslow -s t -t 10 /var/log/mysql/slow.log`,
+        },
+        {
+          command: 'mysqlbinlog',
+          description: 'Process binary logs',
+          usage: 'mysqlbinlog utility',
+          example: `# mysqlbinlog examples
+# Show binary log contents
+mysqlbinlog /var/lib/mysql/mysql-bin.000123
+
+# Show specific time range
+mysqlbinlog --start-datetime="2023-01-01 00:00:00" \\
+             --stop-datetime="2023-01-01 23:59:59" \\
+             /var/lib/mysql/mysql-bin.000123
+
+# Show specific position range
+mysqlbinlog --start-position=154 --stop-position=12345 \\
+             /var/lib/mysql/mysql-bin.000123
+
+# Filter by database
+mysqlbinlog --database=myapp /var/lib/mysql/mysql-bin.000123
+
+# Convert to SQL file
+mysqlbinlog /var/lib/mysql/mysql-bin.000123 > recovery.sql`,
+        },
+        {
+          command: 'mariabackup',
+          description: 'Physical backup tool',
+          usage: 'mariabackup utility',
+          example: `# mariabackup examples
+# Full backup
+mariabackup --backup --target-dir=/backup/full/ \\
+             --user=root --password=password
+
+# Incremental backup
+mariabackup --backup --target-dir=/backup/inc1/ \\
+             --incremental-basedir=/backup/full/ \\
+             --user=root --password=password
+
+# Prepare backup
+mariabackup --prepare --target-dir=/backup/full/
+
+# Restore backup
+mariabackup --copy-back --target-dir=/backup/full/
+
+# Backup with compression
+mariabackup --backup --stream=xbstream \\
+             --user=root --password=password | gzip > backup.xb.gz`,
         },
       ],
     },

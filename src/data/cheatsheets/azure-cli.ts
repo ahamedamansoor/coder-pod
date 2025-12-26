@@ -3,156 +3,2602 @@ import { Code } from 'lucide-react';
 export const azureCliCheatsheet = {
   id: 'azure-cli',
   name: 'Azure CLI',
-  description: 'Comprehensive Azure CLI guide covering beginner to expert commands, cloud management, and automation techniques',
+  description: 'Master Azure CLI from basics to expert operations (2024 Edition)',
   icon: Code,
-  color: 'from-blue-600 to-cyan-600',
-  category: 'programming',
-  tags: ['azure', 'cli', 'cloud', 'microsoft', 'automation'],
+  colorTheme: 'blue' as const,
   sections: [
+    // BEGINNER LEVEL
     {
       title: 'Getting Started with Azure CLI',
       commands: [
         {
-          command: 'What is Azure CLI?',
-          description: 'Azure Command Line Interface is Microsoft\'s cross-platform command-line tool for managing Azure resources',
-          usage: 'Understanding Azure CLI basics and capabilities',
-          example: 'Azure CLI Overview:\n- Official command-line tool for Azure\n- Manage all Azure services from terminal\n- Automate cloud operations\n- Scriptable and integratable\n- Cross-platform support\n\nKey Features:\n- Resource management\n- Service deployment and configuration\n- Monitoring and diagnostics\n- Security and identity management\n- Data and storage operations\n\nSupported Platforms:\n- Windows (PowerShell, CMD)\n- macOS (Terminal, zsh, bash)\n- Linux (bash, zsh, fish)\n- Docker containers\n- Azure Cloud Shell\n\nInstallation Methods:\n- MSI installer (Windows)\n- Package managers (brew, apt, yum)\n- Docker images\n- Azure Cloud Shell\n- pip package manager\n\nCLI Components:\n- az: Main command\n- login: Authentication\n- group: Resource groups\n- vm: Virtual machines\n- storage: Storage accounts\n- network: Networking\n\nPrerequisites:\n- Azure subscription\n- Azure account with appropriate permissions\n- Internet connectivity\n- Bash/PowerShell environment'
+          command: 'Azure CLI Overview',
+          description: 'Azure CLI fundamentals and capabilities',
+          usage: 'Understanding Azure CLI basics',
+          example: `Azure Command Line Interface is Microsoft's cross-platform command-line tool for managing Azure resources
+
+Key Features:
+- Official command-line tool for Azure
+- Manage all Azure services from terminal
+- Automate cloud operations
+- Scriptable and integratable
+- Cross-platform support
+
+Supported Platforms:
+- Windows (PowerShell, CMD)
+- macOS (Terminal, zsh, bash)
+- Linux (bash, zsh, fish)
+- Docker containers
+- Azure Cloud Shell
+
+Prerequisites:
+- Azure subscription
+- Azure account with appropriate permissions
+- Internet connectivity
+- Bash/PowerShell environment`,
         },
         {
-          command: 'Installation',
-          description: 'Installing Azure CLI on different platforms',
-          usage: 'Setting up Azure CLI for the first time',
-          example: '# Installation on macOS\n# Using Homebrew\nbrew install azure-cli\n\n# Using curl\nbrew install curl\ncurl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash\n\n# Installation on Linux (Debian/Ubuntu)\ncurl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash\nsudo apt-get update\nsudo apt-get install azure-cli\n\n# Installation on Linux (RHEL/CentOS)\ncurl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash\nsudo yum install azure-cli\n\n# Installation on Windows\n# Using MSI Installer\n# Download from: https://aka.ms/installazurecliwindows\n\n# Using PowerShell\nInvoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile AzureCLI.msi\nStart-Process msiexec.exe -Wait -ArgumentList \'/I AzureCLI.msi /quiet\'\n\n# Using Chocolatey\nchoco install azure-cli\n\n# Using Winget\nwinget install Microsoft.AzureCLI\n\n# Verification\naz --version                    # Show CLI version\naz --help                       # Show help\nwhich az                        # Show installation path\n\n# Update Azure CLI\n# macOS (Homebrew)\nbrew update && brew upgrade azure-cli\n\n# Linux (apt)\nsudo apt-get update && sudo apt-get install --only-upgrade azure-cli\n\n# Linux (yum)\nsudo yum update azure-cli\n\n# Windows (MSI)\n# Download and run latest installer\n\n# Uninstallation\n# macOS (Homebrew)\nbrew uninstall azure-cli\n\n# Linux\nsudo apt-get remove azure-cli  # Debian/Ubuntu\nsudo yum remove azure-cli        # RHEL/CentOS\n\n# Docker Usage\ndocker run --rm -it mcr.microsoft.com/azure-cli az --version\n\n# Azure CloudShell\n# Pre-installed in Azure Portal\naz --version'
+          command: 'Install Azure CLI on macOS',
+          description: 'Install Azure CLI on macOS using Homebrew',
+          usage: 'macOS installation',
+          example: `brew install azure-cli`,
         },
         {
-          command: 'Authentication and Configuration',
-          description: 'Configuring Azure CLI authentication and settings',
-          usage: 'Setting up authentication and basic configuration',
-          example: '# Interactive Login\naz login                       # Interactive login with browser\naz login --use-device-code     # Login with device code\naz login --identity             # Login with managed identity\naz login --service-principal    # Login with service principal\n\n# Service Principal Login\naz login --service-principal -u http://azure-cli -p password --tenant tenant-id\n\n# Subscription Management\naz account list                 # List all subscriptions\naz account show                 # Show current subscription\naz account set --subscription "Subscription Name"  # Set active subscription\naz account list-locations       # List available locations\n\n# Configuration\naz configure                    # Interactive configuration\naz configure list               # List all configuration\naz configure set defaults.location=eastus  # Set default location\naz configure set defaults.group=myResourceGroup  # Set default resource group\naz configure set defaults.output=json  # Set default output format\n\n# Configuration Files\n# ~/.azure/config\n[defaults]\nlocation = eastus\ngroup = myResourceGroup\noutput = json\n\n# Environment Variables\nexport AZURE_CLI_DISABLE_CONFIRMATION=yes  # Disable prompts\nexport AZURE_DEFAULT_LOCATION=eastus        # Default location\nexport AZURE_DEFAULT_GROUP=myResourceGroup   # Default resource group\nexport AZURE_CONFIG_DIR=/path/to/config     # Custom config directory\n\n# Logout\naz logout                      # Logout from current account\naz logout --username user@example.com  # Logout specific account\naz logout --all                 # Logout from all accounts\n\n# Token Management\naz account get-access-token    # Get access token\naz account get-access-token --resource https://graph.microsoft.com  # Get Graph token\n\n# Cloud Management\naz cloud list                   # List available clouds\naz cloud set --name AzureCloud  # Set active cloud\naz cloud show --name AzureCloud  # Show cloud details\n\n# Profile Management\naz profile list                 # List profiles\naz profile show                 # Show current profile'
+          command: 'Install Azure CLI on Linux (Debian/Ubuntu)',
+          description: 'Install Azure CLI on Debian/Ubuntu systems',
+          usage: 'Linux installation',
+          example: `curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+sudo apt-get update
+sudo apt-get install azure-cli`,
         },
         {
-          command: 'Basic Commands and Operations',
-          description: 'Essential Azure CLI commands for daily use',
-          usage: 'Core commands and common operations',
-          example: '# Help and Information\naz --help                       # General help\naz --version                    # Show version\naz group --help                 # Group-specific help\naz vm create --help             # Command-specific help\n\n# Resource Group Operations\naz group list                   # List all resource groups\naz group show --name myGroup    # Show group details\naz group create --name myGroup --location eastus  # Create group\naz group delete --name myGroup  # Delete group\naz group exists --name myGroup  # Check if group exists\n\n# Output Formats\naz group list --output json     # JSON output\naz group list --output table    # Table output\naz group list --output tsv      # TSV output\naz group list --output yaml     # YAML output\naz group list --query "[].{name:name,location:location}"  # JMESPath query\n\n# Filtering and Querying\naz vm list --query "[?location==\'eastus\']"  # Filter by location\naz vm list --query "[?contains(name, \'prod\')]"  # Filter by name\naz vm list --query "sort_by([], &name)"  # Sort by name\naz vm list --top 10              # Limit results\n\n# Resource Management\naz resource list                 # List all resources\naz resource list --resource-group myGroup  # List group resources\naz resource show --id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name\n\n# Tags Management\naz group show --name myGroup --query tags  # Show group tags\naz group update --name myGroup --set tags.environment=prod  # Add tag\naz group update --name myGroup --remove tags.environment  # Remove tag\n\n# Deployment Operations\naz deployment group create --resource-group myGroup --template-file template.json\naz deployment group list --resource-group myGroup\naz deployment group show --resource-group myGroup --name deployment-name\n\n# Monitoring and Diagnostics\naz monitor activity-log list     # List activity logs\naz monitor metrics list          # List metrics\naz monitor alert list           # List alerts\n\n# Command Line Tips\n# Use quotes for values with spaces\naz group create --name "My Group" --location "East US"\n\n# Use @ for file input\naz deployment group create --resource-group myGroup --parameters @params.json\n\n# Use --yes for non-interactive\naz group delete --name myGroup --yes\n\n# Use --only-show-errors for clean output\naz vm create --resource-group myGroup --name myVM --image UbuntuLTS --only-show-errors'
-        }
-      ]
+          command: 'Install Azure CLI on Windows (PowerShell)',
+          description: 'Install Azure CLI on Windows using PowerShell',
+          usage: 'Windows installation',
+          example: `Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile AzureCLI.msi
+Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'`,
+        },
+        {
+          command: 'Install Azure CLI with Chocolatey',
+          description: 'Install Azure CLI using Chocolatey package manager',
+          usage: 'Windows installation',
+          example: `choco install azure-cli`,
+        },
+        {
+          command: 'Verify Azure CLI Installation',
+          description: 'Check Azure CLI version and installation',
+          usage: 'Installation verification',
+          example: `az --version
+az --help`,
+        },
+        {
+          command: 'Update Azure CLI (macOS)',
+          description: 'Update Azure CLI on macOS using Homebrew',
+          usage: 'CLI updates',
+          example: `brew update && brew upgrade azure-cli`,
+        },
+        {
+          command: 'Update Azure CLI (Linux)',
+          description: 'Update Azure CLI on Linux using apt',
+          usage: 'CLI updates',
+          example: `sudo apt-get update && sudo apt-get install --only-upgrade azure-cli`,
+        },
+        {
+          command: 'Interactive Azure Login',
+          description: 'Login to Azure interactively',
+          usage: 'Authentication',
+          example: `az login`,
+        },
+        {
+          command: 'Login with Device Code',
+          description: 'Login using device code flow',
+          usage: 'Authentication',
+          example: `az login --use-device-code`,
+        },
+        {
+          command: 'Login with Service Principal',
+          description: 'Login using service principal credentials',
+          usage: 'Service authentication',
+          example: `az login --service-principal -u http://azure-cli -p password --tenant tenant-id`,
+        },
+        {
+          command: 'List Azure Subscriptions',
+          description: 'List all available Azure subscriptions',
+          usage: 'Subscription management',
+          example: `az account list`,
+        },
+        {
+          command: 'Show Current Subscription',
+          description: 'Display current active subscription',
+          usage: 'Subscription management',
+          example: `az account show`,
+        },
+        {
+          command: 'Set Active Subscription',
+          description: 'Set the active Azure subscription',
+          usage: 'Subscription management',
+          example: `az account set --subscription "Subscription Name"`,
+        },
+        {
+          command: 'List Available Locations',
+          description: 'List all available Azure locations',
+          usage: 'Location planning',
+          example: `az account list-locations`,
+        },
+        {
+          command: 'Create Resource Group',
+          description: 'Create a new Azure resource group',
+          usage: 'Resource management',
+          example: `az group create --name myGroup --location eastus`,
+        },
+        {
+          command: 'List Resource Groups',
+          description: 'List all resource groups in subscription',
+          usage: 'Resource management',
+          example: `az group list`,
+        },
+        {
+          command: 'Show Resource Group Details',
+          description: 'Get details for specific resource group',
+          usage: 'Resource management',
+          example: `az group show --name myGroup`,
+        },
+        {
+          command: 'Delete Resource Group',
+          description: 'Delete a resource group and all its resources',
+          usage: 'Resource management',
+          example: `az group delete --name myGroup`,
+        },
+        {
+          command: 'Check Resource Group Exists',
+          description: 'Check if resource group exists',
+          usage: 'Resource validation',
+          example: `az group exists --name myGroup`,
+        },
+        {
+          command: 'Configure Default Location',
+          description: 'Set default location for Azure CLI',
+          usage: 'CLI configuration',
+          example: `az configure set defaults.location=eastus`,
+        },
+        {
+          command: 'Configure Default Resource Group',
+          description: 'Set default resource group for Azure CLI',
+          usage: 'CLI configuration',
+          example: `az configure set defaults.group=myResourceGroup`,
+        },
+        {
+          command: 'Set Default Output Format',
+          description: 'Configure default output format for CLI commands',
+          usage: 'CLI configuration',
+          example: `az configure set defaults.output=json`,
+        },
+        {
+          command: 'List All Resources',
+          description: 'List all resources in subscription',
+          usage: 'Resource management',
+          example: `az resource list`,
+        },
+        {
+          command: 'List Resources in Resource Group',
+          description: 'List all resources in a specific resource group',
+          usage: 'Resource management',
+          example: `az resource list --resource-group myGroup`,
+        },
+        {
+          command: 'Show Resource Details',
+          description: 'Get details for specific resource by ID',
+          usage: 'Resource management',
+          example: `az resource show --id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name`,
+        },
+        {
+          command: 'Filter Resources by Location',
+          description: 'Filter resources by specific location',
+          usage: 'Resource filtering',
+          example: `az vm list --query "[?location=='eastus']"`,
+        },
+        {
+          command: 'Filter Resources by Name',
+          description: 'Filter resources by name pattern',
+          usage: 'Resource filtering',
+          example: `az vm list --query "[?contains(name, 'prod')]"`,
+        },
+        {
+          command: 'Sort Resources by Name',
+          description: 'Sort resource list by name',
+          usage: 'Resource sorting',
+          example: `az vm list --query "sort_by([], &name)"`,
+        },
+        {
+          command: 'Limit Query Results',
+          description: 'Limit number of results returned',
+          usage: 'Query optimization',
+          example: `az vm list --top 10`,
+        },
+        {
+          command: 'Output in Table Format',
+          description: 'Display command output in table format',
+          usage: 'Output formatting',
+          example: `az group list --output table`,
+        },
+        {
+          command: 'Output in JSON Format',
+          description: 'Display command output in JSON format',
+          usage: 'Output formatting',
+          example: `az group list --output json`,
+        },
+        {
+          command: 'Output in TSV Format',
+          description: 'Display command output in TSV format',
+          usage: 'Output formatting',
+          example: `az group list --output tsv`,
+        },
+        {
+          command: 'Output in YAML Format',
+          description: 'Display command output in YAML format',
+          usage: 'Output formatting',
+          example: `az group list --output yaml`,
+        },
+        {
+          command: 'JMESPath Query for Fields',
+          description: 'Select specific fields using JMESPath',
+          usage: 'Query filtering',
+          example: `az group list --query "[].{name:name,location:location}"`,
+        },
+        {
+          command: 'Add Tag to Resource Group',
+          description: 'Add tag to Azure resource group',
+          usage: 'Resource tagging',
+          example: `az group update --name myGroup --set tags.environment=prod`,
+        },
+        {
+          command: 'Remove Tag from Resource Group',
+          description: 'Remove tag from Azure resource group',
+          usage: 'Resource tagging',
+          example: `az group update --name myGroup --remove tags.environment`,
+        },
+        {
+          command: 'Show Resource Group Tags',
+          description: 'Display tags for resource group',
+          usage: 'Resource tagging',
+          example: `az group show --name myGroup --query tags`,
+        },
+        {
+          command: 'Deploy ARM Template',
+          description: 'Deploy Azure Resource Manager template',
+          usage: 'Resource deployment',
+          example: `az deployment group create --resource-group myGroup --template-file template.json`,
+        },
+        {
+          command: 'List Deployments',
+          description: 'List deployments in resource group',
+          usage: 'Deployment management',
+          example: `az deployment group list --resource-group myGroup`,
+        },
+        {
+          command: 'Show Deployment Details',
+          description: 'Get details for specific deployment',
+          usage: 'Deployment management',
+          example: `az deployment group show --resource-group myGroup --name deployment-name`,
+        },
+        {
+          command: 'Get Access Token',
+          description: 'Get Azure access token for API calls',
+          usage: 'Authentication',
+          example: `az account get-access-token`,
+        },
+        {
+          command: 'Get Graph API Token',
+          description: 'Get Microsoft Graph API access token',
+          usage: 'Authentication',
+          example: `az account get-access-token --resource https://graph.microsoft.com`,
+        },
+        {
+          command: 'List Available Clouds',
+          description: 'List available Azure clouds',
+          usage: 'Cloud management',
+          example: `az cloud list`,
+        },
+        {
+          command: 'Set Active Cloud',
+          description: 'Set active Azure cloud',
+          usage: 'Cloud management',
+          example: `az cloud set --name AzureCloud`,
+        },
+        {
+          command: 'Show Cloud Details',
+          description: 'Show details for specific cloud',
+          usage: 'Cloud management',
+          example: `az cloud show --name AzureCloud`,
+        },
+        {
+          command: 'Logout from Azure',
+          description: 'Logout from current Azure account',
+          usage: 'Authentication',
+          example: `az logout`,
+        },
+        {
+          command: 'Logout from All Accounts',
+          description: 'Logout from all Azure accounts',
+          usage: 'Authentication',
+          example: `az logout --all`,
+        },
+      ],
     },
+    // INTERMEDIATE LEVEL
     {
-      title: 'Core Azure Services',
+      title: 'Core Azure Services - Virtual Machines',
       commands: [
         {
-          command: 'Virtual Machines (VM)',
-          description: 'Managing Azure virtual machines and compute resources',
-          usage: 'VM creation, management, and operations',
-          example: '# VM Management\naz vm list                       # List all VMs\naz vm show --name myVM --resource-group myGroup  # Show VM details\naz vm list-sizes --location eastus  # List available VM sizes\naz vm list-skus --location eastus  # List available SKUs\n\n# Create VM\naz vm create \\\n    --resource-group myGroup \\\n    --name myVM \\\n    --image UbuntuLTS \\\n    --admin-username azureuser \\\n    --generate-ssh-keys \\\n    --size Standard_B1s\n\n# Create VM with specific settings\naz vm create \\\n    --resource-group myGroup \\\n    --name myVM \\\n    --image Win2019Datacenter \\\n    --admin-username azureuser \\\n    --admin-password MyPassword123! \\\n    --size Standard_D2s_v3 \\\n    --availability-zone 1\n\n# VM Operations\naz vm start --name myVM --resource-group myGroup  # Start VM\naz vm stop --name myVM --resource-group myGroup    # Stop VM\naz vm restart --name myVM --resource-group myGroup  # Restart VM\naz vm deallocate --name myVM --resource-group myGroup  # Deallocate VM\naz vm delete --name myVM --resource-group myGroup --yes  # Delete VM\n\n# VM Extensions\naz vm extension set \\\n    --resource-group myGroup \\\n    --vm-name myVM \\\n    --name CustomScript \\\n    --publisher Microsoft.Azure.Extensions \\\n    --version 2.0 \\\n    --protected-settings file://config.json\n\n# VM Images\naz vm image list --publisher Canonical --offer UbuntuServer --all  # List Ubuntu images\naz vm image show --urn Canonical:UbuntuServer:18.04-LTS:latest  # Show image details\n\n# VM Disks\naz vm disk list --resource-group myGroup  # List disks\naz vm disk show --name myDisk --resource-group myGroup  # Show disk details\naz vm disk create --resource-group myGroup --name myDisk --size-gb 32  # Create disk\naz vm disk attach --resource-group myGroup --vm-name myVM --name myDisk  # Attach disk\n\n# VM Scaling\naz vmss create --resource-group myGroup --name myScaleSet --image UbuntuLTS --admin-username azureuser --generate-ssh-keys --vm-sku Standard_B1s --instance-count 2\n\n# VM Availability Sets\naz vm availability-set create --resource-group myGroup --name myAvailabilitySet --platform-fault-domain-count 2 --platform-update-domain-count 2\n\n# VM Snapshots\naz snapshot create --resource-group myGroup --name mySnapshot --source /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/disks/disk-name'
+          command: 'List All VMs',
+          description: 'List all virtual machines in subscription',
+          usage: 'VM enumeration',
+          example: `az vm list`,
         },
         {
-          command: 'Storage Accounts',
-          description: 'Managing Azure storage accounts and blob storage',
-          usage: 'Storage account creation, configuration, and blob operations',
-          example: '# Storage Account Management\naz storage account list          # List all storage accounts\naz storage account show --name myStorageAccount --resource-group myGroup  # Show account details\naz storage account check-name --name myStorageAccount  # Check name availability\n\n# Create Storage Account\naz storage account create \\\n    --name mystorageaccount \\\n    --resource-group myGroup \\\n    --location eastus \\\n    --sku Standard_LRS \\\n    --kind StorageV2 \\\n    --access-tier Hot\n\n# Storage Account Operations\naz storage account keys list --account-name mystorageaccount  # List keys\naz storage account keys renew --account-name mystorageaccount --key key1  # Renew key\naz storage account update --name mystorageaccount --resource-group myGroup --set tags.environment=prod  # Update account\n\n# Blob Storage\naz storage blob list --account-name mystorageaccount --container-name mycontainer  # List blobs\naz storage blob upload --account-name mystorageaccount --container-name mycontainer --name myfile.txt --file myfile.txt  # Upload blob\naz storage blob download --account-name mystorageaccount --container-name mycontainer --name myfile.txt --file downloaded.txt  # Download blob\naz storage blob delete --account-name mystorageaccount --container-name mycontainer --name myfile.txt  # Delete blob\n\n# Container Operations\naz storage container create --account-name mystorageaccount --name mycontainer  # Create container\naz storage container list --account-name mystorageaccount  # List containers\naz storage container delete --account-name mystorageaccount --name mycontainer  # Delete container\n\n# File Storage\naz storage file upload --account-name mystorageaccount --share-name myshare --path myfile.txt --source myfile.txt  # Upload file\naz storage file download --account-name mystorageaccount --share-name myshare --path myfile.txt --dest downloaded.txt  # Download file\naz storage file delete --account-name mystorageaccount --share-name myshare --path myfile.txt  # Delete file\n\n# Queue Storage\naz storage message put --account-name mystorageaccount --queue-name myqueue --content "Hello World"  # Send message\naz storage message get --account-name mystorageaccount --queue-name myqueue  # Receive message\naz storage message delete --account-name mystorageaccount --queue-name myqueue --id message-id --pop-receipt receipt  # Delete message\n\n# Table Storage\naz storage entity insert --account-name mystorageaccount --table-name mytable --entity PartitionKey=pk RowKey=rk Name=value  # Insert entity\naz storage entity query --account-name mystorageaccount --table-name mytable  # Query entities\naz storage entity delete --account-name mystorageaccount --table-name mytable --partition-key pk --row-key rk  # Delete entity\n\n# Storage Account Networking\naz storage account network-rule add --account-name mystorageaccount --subnet mySubnet  # Add network rule\naz storage account network-rule list --account-name mystorageaccount  # List network rules\n\n# Storage Account Encryption\naz storage account encryption-scope create --account-name mystorageaccount --name myEncryptionScope  # Create encryption scope\naz storage account update --name mystorageaccount --resource-group myGroup --set encryption.keySource=Microsoft.Keyvault  # Set encryption'
+          command: 'Show VM Details',
+          description: 'Get details for specific virtual machine',
+          usage: 'VM management',
+          example: `az vm show --name myVM --resource-group myGroup`,
         },
         {
-          command: 'Networking',
-          description: 'Managing Azure networking resources including VNet, subnets, and network interfaces',
-          usage: 'Network infrastructure setup and management',
-          example: '# Virtual Network (VNet)\naz network vnet list            # List all VNets\naz network vnet show --name myVNet --resource-group myGroup  # Show VNet details\naz network vnet create --resource-group myGroup --name myVNet --address-prefix 10.0.0.0/16  # Create VNet\n\n# Subnet Operations\naz network vnet subnet list --resource-group myGroup --vnet-name myVNet  # List subnets\naz network vnet subnet show --resource-group myGroup --vnet-name myVNet --name mySubnet  # Show subnet details\naz network vnet subnet create --resource-group myGroup --vnet-name myVNet --name mySubnet --address-prefix 10.0.1.0/24  # Create subnet\n\n# Network Security Groups (NSG)\naz network nsg list            # List all NSGs\naz network nsg show --name myNSG --resource-group myGroup  # Show NSG details\naz network nsg create --resource-group myGroup --name myNSG  # Create NSG\naz network nsg rule create --resource-group myGroup --nsg-name myNSG --name AllowSSH --protocol tcp --direction inbound --priority 1000 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 22 --access allow  # Create NSG rule\n\n# Network Interfaces (NIC)\naz network nic list             # List all NICs\naz network nic show --name myNIC --resource-group myGroup  # Show NIC details\naz network nic create --resource-group myGroup --name myNIC --vnet-name myVNet --subnet mySubnet  # Create NIC\n\n# Public IP Addresses\naz network public-ip list      # List all public IPs\naz network public-ip show --name myPublicIP --resource-group myGroup  # Show public IP details\naz network public-ip create --resource-group myGroup --name myPublicIP --allocation-method Static  # Create public IP\n\n# Load Balancer\naz network lb list             # List all load balancers\naz network lb show --name myLB --resource-group myGroup  # Show LB details\naz network lb create --resource-group myGroup --name myLB --frontend-ip-name myFrontend --backend-pool-name myBackend  # Create load balancer\n\n# Application Gateway\naz network application-gateway list  # List all application gateways\naz network application-gateway show --name myAG --resource-group myGroup  # Show AG details\naz network application-gateway create --resource-group myGroup --name myAG --capacity 2 --sku Standard_v2  # Create application gateway\n\n# VPN Gateway\naz network vnet-gateway list   # List all VPN gateways\naz network vnet-gateway show --name myVNG --resource-group myGroup  # Show VNG details\naz network vnet-gateway create --resource-group myGroup --name myVNG --vnet myVNet --public-ip-address myPublicIP --gateway-type Vpn --vpn-type RouteBased --sku VpnGw1  # Create VPN gateway\n\n# DNS\naz network dns zone list        # List all DNS zones\naz network dns zone show --name myZone --resource-group myGroup  # Show DNS zone details\naz network dns zone create --resource-group myGroup --name myZone  # Create DNS zone\naz network dns record-set a create --resource-group myGroup --zone-name myZone --name www  # Create A record\naz network dns record-set a add-record --resource-group myGroup --zone-name myZone --record-set-name www --ipv4-address 10.0.0.1  # Add A record\n\n# Network Watcher\naz network watcher list        # List all network watchers\naz network watcher show --name myNW --resource-group myGroup  # Show NW details\naz network watcher flow-log show --resource-group myGroup --nsg-name myNSG  # Show flow logs'
+          command: 'List VM Sizes',
+          description: 'List available VM sizes in location',
+          usage: 'VM planning',
+          example: `az vm list-sizes --location eastus`,
         },
         {
-          command: 'Azure Functions and App Services',
-          description: 'Managing serverless functions and web applications',
-          usage: 'Function apps and web app deployment and management',
-          example: '# Function App Management\naz functionapp list             # List all function apps\naz functionapp show --name myFunctionApp --resource-group myGroup  # Show function app details\naz functionapp create --resource-group myGroup --consumption-plan-location eastus --name myFunctionApp --storage-account mystorageaccount  # Create function app\n\n# Function App Operations\naz functionapp start --name myFunctionApp --resource-group myGroup  # Start function app\naz functionapp stop --name myFunctionApp --resource-group myGroup  # Stop function app\naz functionapp restart --name myFunctionApp --resource-group myGroup  # Restart function app\naz functionapp delete --name myFunctionApp --resource-group myGroup  # Delete function app\n\n# Function Deployment\naz functionapp deployment source config-zip --resource-group myGroup --name myFunctionApp --src myFunctionApp.zip  # Deploy from zip\naz functionapp deployment source config-zip --resource-group myGroup --name myFunctionApp --src https://github.com/user/repo/archive/refs/heads/main.zip  # Deploy from GitHub\n\n# Web App Management\naz webapp list                  # List all web apps\naz webapp show --name myWebApp --resource-group myGroup  # Show web app details\naz webapp create --resource-group myGroup --plan myAppServicePlan --name myWebApp --runtime "NODE|14-lts"  # Create web app\n\n# Web App Operations\naz webapp start --name myWebApp --resource-group myGroup  # Start web app\naz webapp stop --name myWebApp --resource-group myGroup  # Stop web app\naz webapp restart --name myWebApp --resource-group myGroup  # Restart web app\naz webapp delete --name myWebApp --resource-group myGroup  # Delete web app\n\n# Web App Deployment\naz webapp deployment source config-zip --resource-group myGroup --name myWebApp --src myWebApp.zip  # Deploy from zip\naz webapp up --resource-group myGroup --name myWebApp --location eastus  # Deploy and configure\n\n# App Service Plan\naz appservice plan list         # List all app service plans\naz appservice plan show --name myPlan --resource-group myGroup  # Show plan details\naz appservice plan create --resource-group myGroup --name myPlan --sku B1 --is-linux  # Create app service plan\n\n# App Service Configuration\naz webapp config appsettings set --resource-group myGroup --name myWebApp --settings "KEY1=VALUE1" "KEY2=VALUE2"  # Set app settings\naz webapp config appsettings list --resource-group myGroup --name myWebApp  # List app settings\naz webapp config appsettings delete --resource-group myGroup --name myWebApp --setting-names KEY1  # Delete app setting\n\n# Web App Logs\naz webapp log tail --name myWebApp --resource-group myGroup  # Tail logs\naz webapp log download --name myWebApp --resource-group myGroup  # Download logs\n\n# Web App SSL\naz webapp config ssl bind --certificate-thumbprint thumbprint --ssl-type SNI --resource-group myGroup --name myWebApp  # Bind SSL certificate\naz webapp config ssl list --resource-group myGroup --name myWebApp  # List SSL certificates\n\n# Web App Backup\naz webapp config backup create --resource-group myGroup --name myWebApp --backup-name myBackup  # Create backup\naz webapp config backup list --resource-group myGroup --name myWebApp  # List backups\naz webapp config backup restore --resource-group myGroup --name myWebApp --backup-name myBackup  # Restore backup'
-        }
-      ]
+          command: 'List VM SKUs',
+          description: 'List available VM SKUs in location',
+          usage: 'VM planning',
+          example: `az vm list-skus --location eastus`,
+        },
+        {
+          command: 'Create Ubuntu VM',
+          description: 'Create Ubuntu virtual machine with SSH keys',
+          usage: 'VM creation',
+          example: `az vm create \\
+    --resource-group myGroup \\
+    --name myVM \\
+    --image UbuntuLTS \\
+    --admin-username azureuser \\
+    --generate-ssh-keys \\
+    --size Standard_B1s`,
+        },
+        {
+          command: 'Create Windows VM',
+          description: 'Create Windows virtual machine with password',
+          usage: 'VM creation',
+          example: `az vm create \\
+    --resource-group myGroup \\
+    --name myVM \\
+    --image Win2019Datacenter \\
+    --admin-username azureuser \\
+    --admin-password MyPassword123! \\
+    --size Standard_D2s_v3 \\
+    --availability-zone 1`,
+        },
+        {
+          command: 'Start VM',
+          description: 'Start a virtual machine',
+          usage: 'VM operations',
+          example: `az vm start --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Stop VM',
+          description: 'Stop a virtual machine',
+          usage: 'VM operations',
+          example: `az vm stop --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Restart VM',
+          description: 'Restart a virtual machine',
+          usage: 'VM operations',
+          example: `az vm restart --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Deallocate VM',
+          description: 'Deallocate virtual machine to stop billing',
+          usage: 'VM operations',
+          example: `az vm deallocate --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Delete VM',
+          description: 'Delete virtual machine',
+          usage: 'VM operations',
+          example: `az vm delete --name myVM --resource-group myGroup --yes`,
+        },
+        {
+          command: 'List Ubuntu Images',
+          description: 'List available Ubuntu VM images',
+          usage: 'VM image selection',
+          example: `az vm image list --publisher Canonical --offer UbuntuServer --all`,
+        },
+        {
+          command: 'Show Image Details',
+          description: 'Get details for specific VM image',
+          usage: 'VM image details',
+          example: `az vm image show --urn Canonical:UbuntuServer:18.04-LTS:latest`,
+        },
+        {
+          command: 'List VM Disks',
+          description: 'List disks in resource group',
+          usage: 'Disk management',
+          example: `az vm disk list --resource-group myGroup`,
+        },
+        {
+          command: 'Show Disk Details',
+          description: 'Get details for specific disk',
+          usage: 'Disk management',
+          example: `az vm disk show --name myDisk --resource-group myGroup`,
+        },
+        {
+          command: 'Create Data Disk',
+          description: 'Create new data disk',
+          usage: 'Disk management',
+          example: `az vm disk create --resource-group myGroup --name myDisk --size-gb 32`,
+        },
+        {
+          command: 'Attach Disk to VM',
+          description: 'Attach data disk to virtual machine',
+          usage: 'Disk management',
+          example: `az vm disk attach --resource-group myGroup --vm-name myVM --name myDisk`,
+        },
+        {
+          command: 'Set VM Extension',
+          description: 'Install VM extension for custom scripts',
+          usage: 'VM extensions',
+          example: `az vm extension set \\
+    --resource-group myGroup \\
+    --vm-name myVM \\
+    --name CustomScript \\
+    --publisher Microsoft.Azure.Extensions \\
+    --version 2.0 \\
+    --protected-settings file://config.json`,
+        },
+        {
+          command: 'Create VM Scale Set',
+          description: 'Create virtual machine scale set',
+          usage: 'Scaling',
+          example: `az vmss create --resource-group myGroup --name myScaleSet --image UbuntuLTS --admin-username azureuser --generate-ssh-keys --vm-sku Standard_B1s --instance-count 3`,
+        },
+        {
+          command: 'Scale VM Scale Set',
+          description: 'Change instance count of VM scale set',
+          usage: 'Scaling',
+          example: `az vmss scale --resource-group myGroup --name myScaleSet --new-capacity 5`,
+        },
+        {
+          command: 'List VM Scale Sets',
+          description: 'List all VM scale sets',
+          usage: 'Scaling',
+          example: `az vmss list`,
+        },
+        {
+          command: 'Show VM Scale Set Details',
+          description: 'Get details for VM scale set',
+          usage: 'Scaling',
+          example: `az vmss show --resource-group myGroup --name myScaleSet`,
+        },
+        {
+          command: 'Get VM Instance View',
+          description: 'Get instance view status of VM',
+          usage: 'VM monitoring',
+          example: `az vm get-instance-view --name myVM --resource-group myGroup`,
+        },
+      ],
     },
     {
-      title: 'Intermediate Services',
+      title: 'Core Azure Services - Storage Accounts',
       commands: [
         {
-          command: 'Azure SQL Database',
-          description: 'Managing Azure SQL databases and servers',
-          usage: 'SQL database creation, configuration, and management',
-          example: '# SQL Server Management\naz sql server list               # List all SQL servers\naz sql server show --name myServer --resource-group myGroup  # Show server details\naz sql server create --name myServer --resource-group myGroup --location eastus --admin-user myadmin --admin-password MyPassword123!  # Create SQL server\n\n# SQL Database Operations\naz sql db list --server myServer --resource-group myGroup  # List databases\naz sql db show --name myDatabase --server myServer --resource-group myGroup  # Show database details\naz sql db create --name myDatabase --server myServer --resource-group myGroup --edition GeneralPurpose --family Gen5 --capacity 2  # Create database\n\n# Database Operations\naz sql db delete --name myDatabase --server myServer --resource-group myGroup --yes  # Delete database\naz sql db rename --name myDatabase --server myServer --resource-group myGroup --new-name newDatabaseName  # Rename database\naz sql db copy --name myDatabase --server myServer --resource-group myGroup --dest-name copiedDatabase  # Copy database\n\n# Database Scaling\naz sql db update --name myDatabase --server myServer --resource-group myGroup --capacity 4  # Scale up\naz sql db update --name myDatabase --server myServer --resource-group myGroup --elastic-pool myElasticPool  # Move to elastic pool\n\n# Elastic Pools\naz sql elastic-pool list --server myServer --resource-group myGroup  # List elastic pools\naz sql elastic-pool create --name myPool --server myServer --resource-group myGroup --edition GeneralPurpose --family Gen5 --capacity 2  # Create elastic pool\naz sql elastic-pool delete --name myPool --server myServer --resource-group myGroup  # Delete elastic pool\n\n# Database Security\naz sql db audit-policy show --name myDatabase --server myServer --resource-group myGroup  # Show audit policy\naz sql db audit-policy update --name myDatabase --server myServer --resource-group myGroup --state Enabled  # Enable auditing\naz sql db threat-policy show --name myDatabase --server myServer --resource-group myGroup  # Show threat detection policy\naz sql db threat-policy update --name myDatabase --server myServer --resource-group myGroup --state Enabled --email-admins admin@example.com  # Enable threat detection\n\n# Database Backup\naz sql db backup list --name myDatabase --server myServer --resource-group myGroup  # List backups\naz sql db backup create --name myDatabase --server myServer --resource-group myGroup  # Create backup\naz sql db restore --name myDatabase --server myServer --resource-group myGroup --backup-time "2023-01-01T00:00:00Z"  # Restore from backup\n\n# Database Monitoring\naz sql db metric list --name myDatabase --server myServer --resource-group myGroup  # List metrics\naz sql db op list --name myDatabase --server myServer --resource-group myGroup  # List operations\naz sql db show-usage --name myDatabase --server myServer --resource-group myGroup  # Show usage statistics\n\n# SQL Server Firewall\naz sql server firewall-rule list --server myServer --resource-group myGroup  # List firewall rules\naz sql server firewall-rule create --server myServer --resource-group myGroup --name AllowAzureIP --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0  # Allow Azure IP\naz sql server firewall-rule create --server myServer --resource-group myGroup --name AllowClientIP --start-ip-address 192.168.1.1 --end-ip-address 192.168.1.1  # Allow specific IP'
+          command: 'List Storage Accounts',
+          description: 'List all storage accounts in subscription',
+          usage: 'Storage enumeration',
+          example: `az storage account list`,
         },
         {
-          command: 'Azure Kubernetes Service (AKS)',
-          description: 'Managing Kubernetes clusters and container orchestration',
-          usage: 'AKS cluster creation, configuration, and management',
-          example: '# AKS Cluster Management\naz aks list                     # List all AKS clusters\naz aks show --name myAKSCluster --resource-group myGroup  # Show cluster details\naz aks create --resource-group myGroup --name myAKSCluster --node-count 3 --enable-addons monitoring --generate-ssh-keys  # Create AKS cluster\n\n# Cluster Operations\naz aks start --name myAKSCluster --resource-group myGroup  # Start cluster\naz aks stop --name myAKSCluster --resource-group myGroup  # Stop cluster\naz aks delete --name myAKSCluster --resource-group myGroup --yes  # Delete cluster\naz aks scale --name myAKSCluster --resource-group myGroup --node-count 5  # Scale cluster\n\n# Cluster Configuration\naz aks update --resource-group myGroup --name myAKSCluster --enable-cluster-autoscaler --min-count 1 --max-count 5  # Enable cluster autoscaler\naz aks update --resource-group myGroup --name myAKSCluster --enable-addons http_application_routing  # Add HTTP application routing\naz aks update --resource-group myGroup --name myAKSCluster --attach-acr myACR  # Attach ACR\n\n# Node Pool Management\naz aks nodepool list --cluster-name myAKSCluster --resource-group myGroup  # List node pools\naz aks nodepool show --cluster-name myAKSCluster --resource-group myGroup --name nodepool1  # Show node pool details\naz aks nodepool add --cluster-name myAKSCluster --resource-group myGroup --name nodepool2 --node-count 3 --node-vm-size Standard_B2s  # Add node pool\naz aks nodepool delete --cluster-name myAKSCluster --resource-group myGroup --name nodepool2  # Delete node pool\naz aks nodepool scale --cluster-name myAKSCluster --resource-group myGroup --name nodepool1 --node-count 5  # Scale node pool\n\n# Cluster Networking\naz aks get-credentials --resource-group myGroup --name myAKSCluster  # Get kubeconfig\naz aks browse --resource-group myGroup --name myAKSCluster  # Open Kubernetes dashboard\naz aks enable-addons --resource-group myGroup --name myAKSCluster --addons ingress-appgw --appgw-subnet-cidr "10.225.0.0/16"  # Enable Application Gateway ingress\n\n# Cluster Monitoring\naz aks enable-addons --resource-group myGroup --name myAKSCluster --addons monitoring  # Enable monitoring\naz monitor activity-log list --resource-group myGroup  # List activity logs\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.ContainerService/managedClusters/cluster-name  # List metrics\n\n# Cluster Upgrades\naz aks get-upgrades --resource-group myGroup --name myAKSCluster  # Get available upgrades\naz aks upgrade --resource-group myGroup --name myAKSCluster --kubernetes-version 1.26.3  # Upgrade cluster\naz aks nodepool upgrade --cluster-name myAKSCluster --resource-group myGroup --name nodepool1 --kubernetes-version 1.26.3  # Upgrade node pool\n\n# Cluster Security\naz aks enable-addons --resource-group myGroup --name myAKSCluster --addons azure-policy  # Enable Azure Policy\naz aks update --resource-group myGroup --name myAKSCluster --enable-aad --enable-azure-rbac  # Enable Azure AD and RBAC\naz aks update --resource-group myGroup --name myAKSCluster --enable-private-cluster  # Enable private cluster\n\n# Cluster Add-ons\naz aks enable-addons --resource-group myGroup --name myAKSCluster --addons virtual-machine --subnet-name mySubnet  # Enable virtual machine add-on\naz aks enable-addons --resource-group myGroup --name myAKSCluster --addons open-service-mesh  # Enable service mesh\naz aks enable-addons --resource-group myGroup --name myAKSCluster --addons gitops  # Enable GitOps'
+          command: 'Show Storage Account Details',
+          description: 'Get details for specific storage account',
+          usage: 'Storage management',
+          example: `az storage account show --name myStorageAccount --resource-group myGroup`,
         },
         {
-          command: 'Azure Monitor and Diagnostics',
-          description: 'Monitoring, logging, and alerting for Azure resources',
-          usage: 'Setting up monitoring, collecting logs, and creating alerts',
-          example: '# Monitor Management\naz monitor account list          # List all monitor accounts\naz monitor account show --name myMonitorAccount --resource-group myGroup  # Show monitor account details\naz monitor account create --name myMonitorAccount --resource-group myGroup --location eastus  # Create monitor account\n\n# Activity Logs\naz monitor activity-log list    # List all activity logs\naz monitor activity-log list --resource-group myGroup  # Logs for resource group\naz monitor activity-log list --resource-provider Microsoft.Compute/virtualMachines  # Logs for resource type\naz monitor activity-log list --correlation-id correlation-id  # Logs by correlation ID\n\n# Metrics\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # List metrics\naz monitor metrics list-definitions --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # List metric definitions\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --metrics "Percentage CPU" "Network In"  # Specific metrics\n\n# Alerts\naz monitor alert list            # List all alerts\naz monitor alert show --name myAlert --resource-group myGroup  # Show alert details\naz monitor metrics alert create --name myAlert --resource-group myGroup --scopes /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --condition "avg Percentage CPU > 90" --window-size 5m --evaluation-frequency 1m --severity 2  # Create metric alert\naz monitor activity-log alert create --name myAlert --resource-group myGroup --scopes /subscriptions/sub-id/resourceGroups/group-name --condition category=Administrative  # Create activity log alert\n\n# Diagnostic Settings\naz monitor diagnostic-settings list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # List diagnostic settings\naz monitor diagnostic-settings show --name mySetting --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # Show diagnostic settings\naz monitor diagnostic-settings create --name mySetting --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --workspace /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.OperationalInsights/workspaces/workspace-name  # Create diagnostic settings\n\n# Log Analytics Workspace\naz monitor log-analytics workspace list  # List all workspaces\naz monitor log-analytics workspace show --name myWorkspace --resource-group myGroup  # Show workspace details\naz monitor log-analytics workspace create --resource-group myGroup --name myWorkspace --location eastus  # Create workspace\naz monitor log-analytics workspace get-shared-keys --resource-group myGroup --name myWorkspace  # Get workspace keys\n\n# Log Queries\naz monitor log-analytics query --workspace myWorkspace --analytics-query "AzureActivity | where Category == \'Administrative\' | take 10"  # Query logs\naz monitor log-analytics query --workspace myWorkspace --analytics-query "Perf | where ObjectName == \'Processor\' | where CounterName == \'% Processor Time\' | take 10"  # Performance query\n\n# Action Groups\naz monitor action-group list     # List all action groups\naz monitor action-group show --name myActionGroup --resource-group myGroup  # Show action group details\naz monitor action-group create --name myActionGroup --resource-group myGroup --short-name myAG --email-receiver email@example.com  # Create action group\n\n# Autoscale\naz monitor autoscale list       # List all autoscale settings\naz monitor autoscale show --name myAutoscale --resource-group myGroup  # Show autoscale details\naz monitor autoscale create --resource-group myGroup --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachineScaleSets/myScaleSet --min-count 1 --max-count 10 --count 2  # Create autoscale settings\n\n# VM Insights\naz monitor vm-insights list    # List VM insights\naz monitor vm-insights show --resource-group myGroup --vm-name myVM  # Show VM insights\naz monitor vm-insights enable --resource-group myGroup --vm-name myVM --workspace /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.OperationalInsights/workspaces/workspace-name  # Enable VM insights'
+          command: 'Check Storage Account Name',
+          description: 'Check if storage account name is available',
+          usage: 'Storage planning',
+          example: `az storage account check-name --name myStorageAccount`,
         },
         {
-          command: 'Azure Key Vault',
-          description: 'Managing secrets, keys, and certificates in Azure Key Vault',
-          usage: 'Key vault creation, secret management, and security operations',
-          example: '# Key Vault Management\naz keyvault list                 # List all key vaults\naz keyvault show --name myKeyVault --resource-group myGroup  # Show key vault details\naz keyvault create --name myKeyVault --resource-group myGroup --location eastus --enable-soft-delete true --enable-purge-protection true  # Create key vault\n\n# Key Vault Operations\naz keyvault delete --name myKeyVault --resource-group myGroup  # Delete key vault\naz keyvault purge --name myKeyVault --location eastus  # Purge deleted key vault\naz keyvault update --name myKeyVault --resource-group myGroup --set tags.environment=prod  # Update key vault\n\n# Secrets Management\naz keyvault secret list --vault-name myKeyVault  # List secrets\naz keyvault secret show --vault-name myKeyVault --name mySecret  # Show secret details\naz keyvault secret set --vault-name myKeyVault --name mySecret --value "MySecretValue"  # Set secret\naz keyvault secret delete --vault-name myKeyVault --name mySecret  # Delete secret\naz keyvault secret backup --vault-name myKeyVault --name mySecret --file backup.txt  # Backup secret\naz keyvault secret restore --vault-name myKeyVault --file backup.txt  # Restore secret\n\n# Keys Management\naz keyvault key list --vault-name myKeyVault  # List keys\naz keyvault key show --vault-name myKeyVault --name myKey  # Show key details\naz keyvault key create --vault-name myKeyVault --name myKey --protection software --ops encrypt decrypt  # Create key\naz keyvault key delete --vault-name myKeyVault --name myKey  # Delete key\naz keyvault key encrypt --vault-name myKeyVault --name myKey --algorithm RSA-OAEP-256 --plaintext "Hello World"  # Encrypt data\naz keyvault key decrypt --vault-name myKeyVault --name myKey --algorithm RSA-OAEP-256 --ciphertext "encrypted-data"  # Decrypt data\n\n# Certificates Management\naz keyvault certificate list --vault-name myKeyVault  # List certificates\naz keyvault certificate show --vault-name myKeyVault --name myCertificate  # Show certificate details\naz keyvault certificate create --vault-name myKeyVault --name myCertificate --policy @policy.json  # Create certificate\naz keyvault certificate delete --vault-name myKeyVault --name myCertificate  # Delete certificate\naz keyvault certificate download --vault-name myKeyVault --name myCertificate --file certificate.pfx  # Download certificate\n\n# Key Vault Access Policies\naz keyvault show --name myKeyVault --resource-group myGroup --query "properties.accessPolicies"  # Show access policies\naz keyvault set-policy --name myKeyVault --resource-group myGroup --spn appId --secret-permissions get list set delete --key-permissions encrypt decrypt sign verify  # Set access policy\naz keyvault delete-policy --name myKeyVault --resource-group myGroup --object-id object-id  # Delete access policy\n\n# Key Vault Networking\naz keyvault network-rule add --vault-name myKeyVault --subnet mySubnet  # Add network rule\naz keyvault network-rule list --vault-name myKeyVault  # List network rules\naz keyvault update --name myKeyVault --resource-group myGroup --default-action Deny  # Set default action to deny\n\n# Key Vault Managed HSM\naz keyvault mhsm list            # List managed HSMs\naz keyvault mhsm show --name myMHSM --resource-group myGroup  # Show HSM details\naz keyvault mhsm create --name myMHSM --resource-group myGroup --location eastus --administrators object-id1 object-id2  # Create managed HSM\n\n# Key Vault Backup and Restore\naz keyvault backup --name myKeyVault --resource-group myGroup --file backup.json  # Backup key vault\naz keyvault restore --name myKeyVault --resource-group myGroup --file backup.json  # Restore key vault\n\n# Key Vault Monitoring\naz monitor diagnostic-settings create --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.KeyVault/vaults/myKeyVault --workspace /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.OperationalInsights/workspaces/workspace-name --name mySetting  # Enable diagnostic logs'
-        }
-      ]
+          command: 'Create Storage Account',
+          description: 'Create new Azure storage account',
+          usage: 'Storage creation',
+          example: `az storage account create \\
+    --name mystorageaccount \\
+    --resource-group myGroup \\
+    --location eastus \\
+    --sku Standard_LRS \\
+    --kind StorageV2 \\
+    --access-tier Hot`,
+        },
+        {
+          command: 'Delete Storage Account',
+          description: 'Delete storage account',
+          usage: 'Storage management',
+          example: `az storage account delete --name myStorageAccount --resource-group myGroup`,
+        },
+        {
+          command: 'List Storage Account Keys',
+          description: 'List access keys for storage account',
+          usage: 'Storage security',
+          example: `az storage account keys list --account-name mystorageaccount`,
+        },
+        {
+          command: 'Renew Storage Account Key',
+          description: 'Regenerate storage account access key',
+          usage: 'Storage security',
+          example: `az storage account keys renew --account-name mystorageaccount --key key1`,
+        },
+        {
+          command: 'Update Storage Account',
+          description: 'Update storage account properties',
+          usage: 'Storage management',
+          example: `az storage account update --name mystorageaccount --resource-group myGroup --set tags.environment=prod`,
+        },
+        {
+          command: 'Create Storage Container',
+          description: 'Create blob container in storage account',
+          usage: 'Blob storage',
+          example: `az storage container create --account-name mystorageaccount --name mycontainer`,
+        },
+        {
+          command: 'List Storage Containers',
+          description: 'List containers in storage account',
+          usage: 'Blob storage',
+          example: `az storage container list --account-name mystorageaccount`,
+        },
+        {
+          command: 'Delete Storage Container',
+          description: 'Delete blob container',
+          usage: 'Blob storage',
+          example: `az storage container delete --account-name mystorageaccount --name mycontainer`,
+        },
+        {
+          command: 'List Blobs in Container',
+          description: 'List all blobs in container',
+          usage: 'Blob storage',
+          example: `az storage blob list --account-name mystorageaccount --container-name mycontainer`,
+        },
+        {
+          command: 'Upload Blob to Container',
+          description: 'Upload file to blob storage',
+          usage: 'Blob storage',
+          example: `az storage blob upload --account-name mystorageaccount --container-name mycontainer --name myfile.txt --file myfile.txt`,
+        },
+        {
+          command: 'Download Blob from Container',
+          description: 'Download file from blob storage',
+          usage: 'Blob storage',
+          example: `az storage blob download --account-name mystorageaccount --container-name mycontainer --name myfile.txt --file downloaded.txt`,
+        },
+        {
+          command: 'Delete Blob from Container',
+          description: 'Delete blob from storage',
+          usage: 'Blob storage',
+          example: `az storage blob delete --account-name mystorageaccount --container-name mycontainer --name myfile.txt`,
+        },
+        {
+          command: 'Create File Share',
+          description: 'Create Azure file share',
+          usage: 'File storage',
+          example: `az storage share create --account-name mystorageaccount --name myshare`,
+        },
+        {
+          command: 'Upload File to Share',
+          description: 'Upload file to Azure file share',
+          usage: 'File storage',
+          example: `az storage file upload --account-name mystorageaccount --share-name myshare --path myfile.txt --source myfile.txt`,
+        },
+        {
+          command: 'Download File from Share',
+          description: 'Download file from Azure file share',
+          usage: 'File storage',
+          example: `az storage file download --account-name mystorageaccount --share-name myshare --path myfile.txt --dest downloaded.txt`,
+        },
+        {
+          command: 'Delete File from Share',
+          description: 'Delete file from Azure file share',
+          usage: 'File storage',
+          example: `az storage file delete --account-name mystorageaccount --share-name myshare --path myfile.txt`,
+        },
+        {
+          command: 'Create Storage Queue',
+          description: 'Create Azure storage queue',
+          usage: 'Queue storage',
+          example: `az storage queue create --account-name mystorageaccount --name myqueue`,
+        },
+        {
+          command: 'List Storage Queues',
+          description: 'List queues in storage account',
+          usage: 'Queue storage',
+          example: `az storage queue list --account-name mystorageaccount`,
+        },
+        {
+          command: 'Put Message in Queue',
+          description: 'Add message to storage queue',
+          usage: 'Queue storage',
+          example: `az storage message put --account-name mystorageaccount --queue-name myqueue --content "Hello World"`,
+        },
+        {
+          command: 'Get Messages from Queue',
+          description: 'Retrieve messages from storage queue',
+          usage: 'Queue storage',
+          example: `az storage message get --account-name mystorageaccount --queue-name myqueue`,
+        },
+      ],
     },
     {
-      title: 'Advanced Services',
+      title: 'Core Azure Services - Networking',
       commands: [
         {
-          command: 'Azure Container Registry (ACR)',
-          description: 'Managing container images and container registries',
-          usage: 'ACR creation, image management, and container operations',
-          example: '# ACR Management\naz acr list                     # List all container registries\naz acr show --name myACR --resource-group myGroup  # Show ACR details\naz acr create --resource-group myGroup --name myACR --sku Basic  # Create container registry\n\n# ACR Operations\naz acr delete --name myACR --resource-group myGroup  # Delete ACR\naz acr update --name myACR --resource-group myGroup --sku Standard  # Update SKU\naz acr show --name myACR --resource-group myGroup --query loginServer  # Get login server\n\n# Repository Management\naz acr repository list --name myACR  # List repositories\naz acr repository show --name myACR --repository myapp  # Show repository details\naz acr repository delete --name myACR --repository myapp  # Delete repository\n\n# Image Management\naz acr repository show-tags --name myACR --repository myapp  # Show image tags\naz acr repository show-manifests --name myACR --repository myapp  # Show image manifests\naz acr image delete --name myACR --repository myapp --tag latest  # Delete image tag\n\n# Image Operations\naz acr build --registry myACR --image myapp:latest .  # Build and push image\naz acr build --registry myACR --image myapp:latest --file Dockerfile .  # Build with custom Dockerfile\naz acr pack build --registry myACR --image myapp:latest --builder heroku  # Build with Cloud Native Buildpacks\n\n# Image Import/Export\naz acr import --source myregistry.azurecr.io/myapp:latest --name myACR --image myapp:imported  # Import image\naz acr import --source docker.io/library/nginx:latest --name myACR --image nginx:latest  # Import from Docker Hub\n\n# ACR Tasks\naz acr task list --registry myACR  # List tasks\naz acr task create --registry myACR --name myTask --image myapp:{{.Run.ID}} --cmd Dockerfile --context https://github.com/user/repo.git#main  # Create task\naz acr task run --registry myACR --name myTask  # Run task\naz acr task list-runs --registry myACR  # List task runs\n\n# ACR Webhooks\naz acr webhook list --registry myACR  # List webhooks\naz acr webhook create --registry myACR --name myWebhook --actions push delete --uri https://example.com/webhook  # Create webhook\naz acr webhook ping --registry myACR --name myWebhook  # Ping webhook\n\n# ACR Replication\naz acr replication list --registry myACR  # List replications\naz acr replication create --registry myACR --location westus  # Create replication\naz acr replication delete --registry myACR --location westus  # Delete replication\n\n# ACR Private Link\naz acr private-endpoint-connection list --registry myACR  # List private endpoint connections\naz acr private-endpoint-connection approve --registry myACR --name connection-name  # Approve connection\naz acr private-endpoint-connection reject --registry myACR --name connection-name  # Reject connection\n\n# ACR Security\naz acr config content-trust show --registry myACR  # Show content trust settings\naz acr config content-trust update --registry myACR --status enabled  # Enable content trust\naz acr config retention show --registry myACR  # Show retention policy\naz acr config retention update --registry myACR --days 30 --status enabled  # Set retention policy\n\n# ACR Monitoring\naz monitor diagnostic-settings create --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.ContainerRegistry/registries/myACR --workspace /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.OperationalInsights/workspaces/workspace-name --name mySetting  # Enable diagnostic logs'
+          command: 'List Virtual Networks',
+          description: 'List all virtual networks in subscription',
+          usage: 'VNet enumeration',
+          example: `az network vnet list`,
         },
         {
-          command: 'Azure DevTest Labs',
-          description: 'Managing development and testing environments',
-          usage: 'DevTest Labs creation, VM management, and lab operations',
-          example: '# DevTest Labs Management\naz lab list                     # List all labs\naz lab show --name myLab --resource-group myGroup  # Show lab details\naz lab create --name myLab --resource-group myGroup --location eastus  # Create lab\n\n# Lab Operations\naz lab delete --name myLab --resource-group myGroup  # Delete lab\naz lab claim-any --lab-name myLab --resource-group myGroup  # Claim any available VM\naz lab get --name myLab --resource-group myGroup --expand "properties($select=labStorageAccount)"  # Get lab with expanded properties\n\n# Lab VM Management\naz lab vm list --lab-name myLab --resource-group myGroup  # List lab VMs\naz lab vm show --lab-name myLab --name myVM --resource-group myGroup  # Show VM details\naz lab vm create --lab-name myLab --name myVM --resource-group myGroup --image "Windows 10 Pro" --image-type gallery --size Standard_D2_v3  # Create VM\naz lab vm delete --lab-name myLab --name myVM --resource-group myGroup  # Delete VM\n\n# Lab VM Operations\naz lab vm start --lab-name myLab --name myVM --resource-group myGroup  # Start VM\naz lab vm stop --lab-name myLab --name myVM --resource-group myGroup  # Stop VM\naz lab vm apply-artifacts --lab-name myLab --name myVM --resource-group myGroup --artifacts @artifacts.json  # Apply artifacts\n\n# Lab Environment Management\naz lab environment list --lab-name myLab --resource-group myGroup  # List environments\naz lab environment show --lab-name myLab --name myEnvironment --resource-group myGroup  # Show environment details\naz lab environment create --lab-name myLab --name myEnvironment --resource-group myGroup --template-file template.json  # Create environment\naz lab environment delete --lab-name myLab --name myEnvironment --resource-group myGroup  # Delete environment\n\n# Lab Custom Image Management\naz lab custom-image list --lab-name myLab --resource-group myGroup  # List custom images\naz lab custom-image show --lab-name myLab --name myImage --resource-group myGroup  # Show custom image details\naz lab custom-image create --lab-name myLab --name myImage --resource-group myGroup --source-vm-id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.DevTestLab/labs/labName/virtualMachines/vmName  # Create custom image\naz lab custom-image delete --lab-name myLab --name myImage --resource-group myGroup  # Delete custom image\n\n# Lab Formula Management\naz lab formula list --lab-name myLab --resource-group myGroup  # List formulas\naz lab formula show --lab-name myLab --name myFormula --resource-group myGroup  # Show formula details\naz lab formula create --lab-name myLab --name myFormula --resource-group myGroup --formula-file formula.json  # Create formula\naz lab formula delete --lab-name myLab --name myFormula --resource-group myGroup  # Delete formula\n\n# Lab Artifact Management\naz lab artifact list --lab-name myLab --resource-group myGroup  # List artifacts\naz lab artifact show --lab-name myLab --name myArtifact --resource-group myGroup  # Show artifact details\naz lab artifact source list --lab-name myLab --resource-group myGroup  # List artifact sources\naz lab artifact source create --lab-name myLab --name mySource --resource-group myGroup --uri https://github.com/user/repo.git --folder-path artifacts  # Create artifact source\n\n# Lab Schedule Management\naz lab schedule list --lab-name myLab --resource-group myGroup  # List schedules\naz lab schedule show --lab-name myLab --name mySchedule --resource-group myGroup  # Show schedule details\naz lab schedule create --lab-name myLab --name mySchedule --resource-group myGroup --time "2023-01-01T10:00:00" --time-zone "Pacific Standard Time" --status Enabled  # Create schedule\naz lab schedule delete --lab-name myLab --name mySchedule --resource-group myGroup  # Delete schedule\n\n# Lab Policy Management\naz lab policy set --lab-name myLab --name myPolicy --resource-group myGroup --policy-set-name myPolicySet --threshold 10  # Set policy\naz lab policy list --lab-name myLab --resource-group myGroup  # List policies\naz lab policy show --lab-name myLab --name myPolicy --resource-group myGroup  # Show policy details\n\n# Lab Cost Management\naz lab cost list --lab-name myLab --resource-group myGroup  # List costs\naz lab cost show --lab-name myLab --resource-group myGroup --name myCost  # Show cost details'
+          command: 'Show VNet Details',
+          description: 'Get details for specific virtual network',
+          usage: 'VNet management',
+          example: `az network vnet show --name myVNet --resource-group myGroup`,
         },
         {
-          command: 'Azure Service Bus',
-          description: 'Managing messaging queues and topics',
-          usage: 'Service Bus namespace, queues, topics, and subscriptions',
-          example: '# Service Bus Namespace Management\naz servicebus namespace list   # List all namespaces\naz servicebus namespace show --name myNamespace --resource-group myGroup  # Show namespace details\naz servicebus namespace create --resource-group myGroup --name myNamespace --location eastus --sku Standard  # Create namespace\n\n# Namespace Operations\naz servicebus namespace delete --name myNamespace --resource-group myGroup  # Delete namespace\naz servicebus namespace exists --name myNamespace  # Check if namespace exists\naz servicebus namespace authorization-rule list --namespace-name myNamespace --resource-group myGroup  # List authorization rules\n\n# Queue Management\naz servicebus queue list --namespace-name myNamespace --resource-group myGroup  # List queues\naz servicebus queue show --namespace-name myNamespace --name myQueue --resource-group myGroup  # Show queue details\naz servicebus queue create --namespace-name myNamespace --name myQueue --resource-group myGroup  # Create queue\naz servicebus queue delete --namespace-name myNamespace --name myQueue --resource-group myGroup  # Delete queue\n\n# Queue Operations\naz servicebus queue send --namespace-name myNamespace --name myQueue --message "Hello World"  # Send message\naz servicebus queue receive --namespace-name myNamespace --name myQueue  # Receive message\naz servicebus queue purge --namespace-name myNamespace --name myQueue  # Purge queue\n\n# Topic Management\naz servicebus topic list --namespace-name myNamespace --resource-group myGroup  # List topics\naz servicebus topic show --namespace-name myNamespace --name myTopic --resource-group myGroup  # Show topic details\naz servicebus topic create --namespace-name myNamespace --name myTopic --resource-group myGroup  # Create topic\naz servicebus topic delete --namespace-name myNamespace --name myTopic --resource-group myGroup  # Delete topic\n\n# Subscription Management\naz servicebus topic subscription list --namespace-name myNamespace --topic-name myTopic --resource-group myGroup  # List subscriptions\naz servicebus topic subscription show --namespace-name myNamespace --topic-name myTopic --name mySubscription --resource-group myGroup  # Show subscription details\naz servicebus topic subscription create --namespace-name myNamespace --topic-name myTopic --name mySubscription --resource-group myGroup  # Create subscription\naz servicebus topic subscription delete --namespace-name myNamespace --topic-name myTopic --name mySubscription --resource-group myGroup  # Delete subscription\n\n# Topic Operations\naz servicebus topic send --namespace-name myNamespace --name myTopic --message "Hello World"  # Send message to topic\naz servicebus topic subscription receive --namespace-name myNamespace --topic-name myTopic --name mySubscription  # Receive message from subscription\n\n# Rule Management\naz servicebus topic subscription rule list --namespace-name myNamespace --topic-name myTopic --subscription-name mySubscription --resource-group myGroup  # List rules\naz servicebus topic subscription rule show --namespace-name myNamespace --topic-name myTopic --subscription-name mySubscription --name myRule --resource-group myGroup  # Show rule details\naz servicebus topic subscription rule create --namespace-name myNamespace --topic-name myTopic --subscription-name mySubscription --name myRule --resource-group myGroup --filter-sql-expression "color = \'red\'"  # Create rule\naz servicebus topic subscription rule delete --namespace-name myNamespace --topic-name myTopic --subscription-name mySubscription --name myRule --resource-group myGroup  # Delete rule\n\n# Service Bus Disaster Recovery\naz servicebus georecovery-alias list --namespace-name myNamespace --resource-group myGroup  # List geo-recovery aliases\naz servicebus georecovery-alias show --namespace-name myNamespace --name myAlias --resource-group myGroup  # Show alias details\naz servicebus georecovery-alias set --namespace-name myNamespace --name myAlias --resource-group myGroup --partner-namespace partner-namespace  # Set partner namespace\n\n# Service Bus Monitoring\naz monitor diagnostic-settings create --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.ServiceBus/namespaces/myNamespace --workspace /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.OperationalInsights/workspaces/workspace-name --name mySetting  # Enable diagnostic logs\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.ServiceBus/namespaces/myNamespace --metrics "Incoming Messages" "Outgoing Messages"  # List metrics'
+          command: 'Create Virtual Network',
+          description: 'Create new virtual network',
+          usage: 'VNet creation',
+          example: `az network vnet create --resource-group myGroup --name myVNet --address-prefix 10.0.0.0/16`,
         },
         {
-          command: 'Azure Cosmos DB',
-          description: 'Managing globally distributed, multi-model NoSQL database',
-          usage: 'Cosmos DB account creation, database and container management',
-          example: '# Cosmos DB Account Management\naz cosmosdb list                # List all Cosmos DB accounts\naz cosmosdb show --name myCosmosDB --resource-group myGroup  # Show account details\naz cosmosdb create --name myCosmosDB --resource-group myGroup --locations regionName=eastus failoverPriority=0 isZoneRedundant=False  # Create account\n\n# Account Operations\naz cosmosdb delete --name myCosmosDB --resource-group myGroup  # Delete account\naz cosmosdb update --name myCosmosDB --resource-group myGroup --default-consistency-level Session  # Update account\naz cosmosdb keys list --name myCosmosDB --resource-group myGroup --type keys  # List keys\n\n# SQL API Database Management\naz cosmosdb sql database list --account-name myCosmosDB --resource-group myGroup  # List databases\naz cosmosdb sql database show --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Show database details\naz cosmosdb sql database create --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Create database\naz cosmosdb sql database delete --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Delete database\n\n# SQL API Container Management\naz cosmosdb sql container list --account-name myCosmosDB --resource-group myGroup --database-name myDatabase  # List containers\naz cosmosdb sql container show --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer  # Show container details\naz cosmosdb sql container create --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer --partition-key-path "/id"  # Create container\naz cosmosdb sql container delete --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer  # Delete container\n\n# MongoDB API Database Management\naz cosmosdb mongodb database list --account-name myCosmosDB --resource-group myGroup  # List MongoDB databases\naz cosmosdb mongodb database show --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Show database details\naz cosmosdb mongodb database create --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Create MongoDB database\n\n# MongoDB API Collection Management\naz cosmosdb mongodb collection list --account-name myCosmosDB --resource-group myGroup --database-name myDatabase  # List collections\naz cosmosdb mongodb collection show --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myCollection  # Show collection details\naz cosmosdb mongodb collection create --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myCollection --shard-key "_id"  # Create collection\n\n# Cassandra API Keyspace Management\naz cosmosdb cassandra keyspace list --account-name myCosmosDB --resource-group myGroup  # List keyspaces\naz cosmosdb cassandra keyspace show --account-name myCosmosDB --resource-group myGroup --name myKeyspace  # Show keyspace details\naz cosmosdb cassandra keyspace create --account-name myCosmosDB --resource-group myGroup --name myKeyspace  # Create keyspace\n\n# Cassandra API Table Management\naz cosmosdb cassandra table list --account-name myCosmosDB --resource-group myGroup --keyspace-name myKeyspace  # List tables\naz cosmosdb cassandra table show --account-name myCosmosDB --resource-group myGroup --keyspace-name myKeyspace --name myTable  # Show table details\naz cosmosdb cassandra table create --account-name myCosmosDB --resource-group myGroup --keyspace-name myKeyspace --name myTable --schema @schema.json  # Create table\n\n# Gremlin API Graph Management\naz cosmosdb gremlin database list --account-name myCosmosDB --resource-group myGroup  # List Gremlin databases\naz cosmosdb gremlin database show --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Show database details\naz cosmosdb gremlin database create --account-name myCosmosDB --resource-group myGroup --name myDatabase  # Create Gremlin database\naz cosmosdb gremlin graph list --account-name myCosmosDB --resource-group myGroup --database-name myDatabase  # List graphs\naz cosmosdb gremlin graph create --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myGraph --partition-key "/partitionKey"  # Create graph\n\n# Table API Table Management\naz cosmosdb table list --account-name myCosmosDB --resource-group myGroup  # List tables\naz cosmosdb table show --account-name myCosmosDB --resource-group myGroup --name myTable  # Show table details\naz cosmosdb table create --account-name myCosmosDB --resource-group myGroup --name myTable  # Create table\n\n# Cosmos DB SQL Operations\naz cosmosdb sql container throughput show --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer  # Show throughput\naz cosmosdb sql container throughput update --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer --max-throughput 4000  # Update throughput\naz cosmosdb sql container migrate --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer --throughput-type autoscale  # Migrate to autoscale\n\n# Cosmos DB Backup and Restore\naz cosmosdb backup list --account-name myCosmosDB --resource-group myGroup  # List backups\naz cosmosdb backup show --account-name myCosmosDB --resource-group myGroup --backup-id backup-id  # Show backup details\naz cosmosdb backup restore --account-name myCosmosDB --resource-group myGroup --backup-id backup-id --restore-timestamp "2023-01-01T00:00:00Z"  # Restore backup\n\n# Cosmos DB Monitoring\naz monitor diagnostic-settings create --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.DocumentDB/databaseAccounts/myCosmosDB --workspace /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.OperationalInsights/workspaces/workspace-name --name mySetting  # Enable diagnostic logs\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.DocumentDB/databaseAccounts/myCosmosDB --metrics "Total Request Units" "Metadata Requests"  # List metrics'
-        }
-      ]
+          command: 'Delete Virtual Network',
+          description: 'Delete virtual network',
+          usage: 'VNet management',
+          example: `az network vnet delete --name myVNet --resource-group myGroup`,
+        },
+        {
+          command: 'List VNet Subnets',
+          description: 'List subnets in virtual network',
+          usage: 'Subnet management',
+          example: `az network vnet subnet list --resource-group myGroup --vnet-name myVNet`,
+        },
+        {
+          command: 'Show Subnet Details',
+          description: 'Get details for specific subnet',
+          usage: 'Subnet management',
+          example: `az network vnet subnet show --resource-group myGroup --vnet-name myVNet --name mySubnet`,
+        },
+        {
+          command: 'Create VNet Subnet',
+          description: 'Create subnet in virtual network',
+          usage: 'Subnet creation',
+          example: `az network vnet subnet create --resource-group myGroup --vnet-name myVNet --name mySubnet --address-prefix 10.0.1.0/24`,
+        },
+        {
+          command: 'Delete VNet Subnet',
+          description: 'Delete subnet from virtual network',
+          usage: 'Subnet management',
+          example: `az network vnet subnet delete --resource-group myGroup --vnet-name myVNet --name mySubnet`,
+        },
+        {
+          command: 'List Network Security Groups',
+          description: 'List all network security groups',
+          usage: 'NSG enumeration',
+          example: `az network nsg list`,
+        },
+        {
+          command: 'Show NSG Details',
+          description: 'Get details for network security group',
+          usage: 'NSG management',
+          example: `az network nsg show --name myNSG --resource-group myGroup`,
+        },
+        {
+          command: 'Create Network Security Group',
+          description: 'Create new network security group',
+          usage: 'NSG creation',
+          example: `az network nsg create --resource-group myGroup --name myNSG`,
+        },
+        {
+          command: 'Create NSG Rule',
+          description: 'Create rule in network security group',
+          usage: 'NSG rules',
+          example: `az network nsg rule create \\
+    --resource-group myGroup \\
+    --nsg-name myNSG \\
+    --name AllowSSH \\
+    --protocol tcp \\
+    --direction inbound \\
+    --priority 1000 \\
+    --source-address-prefix "*" \\
+    --source-port-range "*" \\
+    --destination-address-prefix "*" \\
+    --destination-port-range 22 \\
+    --access allow`,
+        },
+        {
+          command: 'List Network Interfaces',
+          description: 'List all network interfaces',
+          usage: 'NIC enumeration',
+          example: `az network nic list`,
+        },
+        {
+          command: 'Show NIC Details',
+          description: 'Get details for network interface',
+          usage: 'NIC management',
+          example: `az network nic show --name myNIC --resource-group myGroup`,
+        },
+        {
+          command: 'Create Network Interface',
+          description: 'Create network interface in VNet',
+          usage: 'NIC creation',
+          example: `az network nic create --resource-group myGroup --name myNIC --vnet-name myVNet --subnet mySubnet`,
+        },
+        {
+          command: 'List Public IP Addresses',
+          description: 'List all public IP addresses',
+          usage: 'Public IP enumeration',
+          example: `az network public-ip list`,
+        },
+        {
+          command: 'Show Public IP Details',
+          description: 'Get details for public IP address',
+          usage: 'Public IP management',
+          example: `az network public-ip show --name myPublicIP --resource-group myGroup`,
+        },
+        {
+          command: 'Create Public IP Address',
+          description: 'Create new public IP address',
+          usage: 'Public IP creation',
+          example: `az network public-ip create --resource-group myGroup --name myPublicIP --allocation-method Static`,
+        },
+        {
+          command: 'List Load Balancers',
+          description: 'List all load balancers',
+          usage: 'Load balancer enumeration',
+          example: `az network lb list`,
+        },
+        {
+          command: 'Show Load Balancer Details',
+          description: 'Get details for load balancer',
+          usage: 'Load balancer management',
+          example: `az network lb show --name myLB --resource-group myGroup`,
+        },
+        {
+          command: 'Create Load Balancer',
+          description: 'Create new load balancer',
+          usage: 'Load balancer creation',
+          example: `az network lb create \\
+    --resource-group myGroup \\
+    --name myLB \\
+    --frontend-ip-name myFrontend \\
+    --backend-pool-name myBackend \\
+    --public-ip-address myPublicIP`,
+        },
+        {
+          command: 'Create NAT Gateway',
+          description: 'Create NAT gateway for VNet',
+          usage: 'NAT gateway',
+          example: `az network nat gateway create --resource-group myGroup --name myNAT --public-ip-address myPublicIP --location eastus`,
+        },
+        {
+          command: 'Create Route Table',
+          description: 'Create route table for VNet',
+          usage: 'Routing',
+          example: `az network route-table create --resource-group myGroup --name myRouteTable --location eastus`,
+        },
+        {
+          command: 'Create Route in Route Table',
+          description: 'Add route to route table',
+          usage: 'Routing',
+          example: `az network route-table route create --resource-group myGroup --route-table-name myRouteTable --name myRoute --address-prefix 0.0.0.0/0 --next-hop-type Internet`,
+        },
+      ],
     },
     {
-      title: 'Expert Level Topics',
+      title: 'Core Azure Services - App Services and Functions',
       commands: [
         {
-          command: 'Advanced CLI Techniques and Automation',
-          description: 'Advanced Azure CLI usage patterns and automation techniques',
-          usage: 'Complex operations, scripting, and optimization',
-          example: '# JMESPath Queries\naz vm list --query "[?location==\'eastus\']"  # Filter by location\naz vm list --query "[?contains(name, \'prod\')].{name:name,location:location}"  # Filter and select fields\naz vm list --query "sort_by([], &name)"  # Sort by name\naz vm list --query "reverse(sort_by([], &creationDate))"  # Sort by date descending\n\n# Pagination Control\naz vm list --top 50  # Limit results\naz vm list --all  # Get all results (may be slow)\n\n# Output Formatting and Processing\naz group list --output table  # Table format\naz group list --output tsv  # TSV format (good for scripting)\naz group list --output json | jq \'.[].name\'  # Pipe to jq for processing\naz group list --query "[].name" --output tsv | xargs -I {} az group show --name {}  # Process each result\n\n# Parallel Operations\nfor rg in $(az group list --query "[].name" --output tsv); do\n    az vm list --resource-group $rg &\ndone\nwait  # Wait for all background jobs\n\n# Batch Operations with --ids\naz vm list --query "[].id" --output tsv | az vm stop --ids @-  # Stop all VMs\naz vm list --query "[?location==\'eastus\'].id" --output tsv | az vm start --ids @-  # Start VMs in specific location\n\n# Error Handling and Retry\naz vm create --resource-group myGroup --name myVM --image UbuntuLTS --no-wait || {\n    echo "VM creation failed, retrying..."\n    az vm create --resource-group myGroup --name myVM --image UbuntuLTS\n}\n\n# Configuration Profiles\naz config set defaults.group=myResourceGroup\naz config set defaults.location=eastus\naz config set defaults.output=table\naz config set core.only_show_errors=true\naz config set extension.use_dynamic_install=yes_prompt\n\n# Environment Variables\nexport AZURE_CLI_DISABLE_CONFIRMATION=yes\nexport AZURE_DEFAULT_LOCATION=eastus\nexport AZURE_DEFAULT_GROUP=myResourceGroup\nexport AZURE_CONFIG_DIR=/custom/path\n\n# Custom Output Formats\naz vm list --query "[].{Name:name, Location:location, Size:hardwareProfile.vmSize}" --output table\n\n# Resource Graph Queries\naz graph query -q "Resources | where type =~ \'Microsoft.Compute/virtualMachines\' | where location == \'eastus\' | project name, location"  # Cross-resource queries\naz graph query -q "Resources | where type =~ \'Microsoft.Storage/storageAccounts\' | summarize count() by location"  # Aggregate by location\n\n# CLI Extensions\naz extension list  # List installed extensions\naz extension add --name azure-cli-iot  # Add extension\naz extension update --name azure-cli-iot  # Update extension\naz extension remove --name azure-cli-iot  # Remove extension\n\n# Dynamic Install\naz config set extension.use_dynamic_install=yes  # Auto-install missing extensions\n\n# CLI Aliases (in .bashrc or .zshrc)\nalias azlist=\'az group list --output table\'\nalias azvms=\'az vm list --output table\'\nalias azlocs=\'az account list-locations --output table\'\n\n# Scripts and Functions\n#!/bin/bash\n# Function to create resource group if it doesn\'t exist\ncreate_rg_if_not_exists() {\n    local rg=$1\n    local location=${2:-eastus}\n    if ! az group exists --name $rg; then\n        az group create --name $rg --location $location\n        echo "Created resource group: $rg"\n    else\n        echo "Resource group $rg already exists"\n    fi\n}\n\n# Use in scripts\ncreate_rg_if_not_exists "myResourceGroup" "westus"\n\n# Azure CLI with PowerShell\n$rgs = az group list --query "[].name" --output tsv | ForEach-Object { $_ }\nforeach ($rg in $rgs) {\n    Write-Host "Processing resource group: $rg"\n    az vm list --resource-group $rg --output table\n}'
+          command: 'List Function Apps',
+          description: 'List all function apps in subscription',
+          usage: 'Function app enumeration',
+          example: `az functionapp list`,
         },
         {
-          command: 'Security, Compliance, and Governance',
-          description: 'Advanced security operations, compliance management, and governance',
-          usage: 'Security center, policy management, and compliance frameworks',
-          example: '# Azure Security Center\naz security pricing list  # List pricing tiers\naz security pricing create --name VirtualMachines --resource-group myGroup --pricing-tier Standard  # Set pricing tier\naz security security-solutions list --resource-group myGroup  # List security solutions\naz security security-solutions create --resource-group myGroup --name mySolution --virtual-machine myVM  # Add security solution\n\n# Security Assessments\naz security assessment list  # List assessments\naz security assessment show --name assessment-name --resource-group myGroup  # Show assessment details\naz security assessment create --name myAssessment --resource-group myGroup --status Healthy  # Create assessment\n\n# Security Alerts\naz security alert list  # List alerts\naz security alert show --name alert-name --resource-group myGroup  # Show alert details\naz security alert update --name alert-name --resource-group myGroup --status Dismissed  # Update alert status\n\n# Azure Policy\naz policy definition list  # List policy definitions\naz policy definition show --name policy-name  # Show policy details\naz policy definition create --name myPolicy --display-name "My Policy" --rules @policy.json --params @params.json  # Create policy\naz policy assignment list  # List policy assignments\naz policy assignment create --name myAssignment --policy policy-definition-id --scope /subscriptions/sub-id  # Create assignment\naz policy state list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # List policy states\n\n# Azure Blueprints\naz blueprint list  # List blueprints\naz blueprint show --name myBlueprint  # Show blueprint details\naz blueprint create --name myBlueprint --description "My Blueprint"  # Create blueprint\naz blueprint version create --blueprint-name myBlueprint --version "1.0"  # Create version\naz blueprint assignment create --blueprint-name myBlueprint --assignment-name myAssignment  # Create assignment\n\n# Azure AD (Active Directory)\naz ad user list  # List users\naz ad user show --id user@example.com  # Show user details\naz ad user create --display-name "John Doe" --user-principal-name john@example.com --password MyPassword123!  # Create user\naz ad group list  # List groups\naz ad group show --group myGroup  # Show group details\naz ad group member add --group myGroup --member-id user-id  # Add member to group\n\n# Azure AD Applications\naz ad app list  # List applications\naz ad app show --id app-id  # Show app details\naz ad app create --display-name "My App" --identifier-uris "https://myapp.com"  # Create application\naz ad sp create-for-rbac --name "My Service Principal"  # Create service principal\n\n# Role Based Access Control (RBAC)\naz role definition list  # List role definitions\naz role assignment list  # List role assignments\naz role assignment create --assignee user@example.com --role "Contributor" --scope /subscriptions/sub-id/resourceGroups/group-name  # Create assignment\naz role assignment delete --assignee user@example.com --role "Contributor" --scope /subscriptions/sub-id/resourceGroups/group-name  # Delete assignment\n\n# Resource Locks\naz lock list --resource-group myGroup  # List locks\naz lock create --name myLock --resource-group myGroup --lock-type CanNotDelete  # Create lock\naz lock delete --name myLock --resource-group myGroup  # Delete lock\n\n# Tags and Tagging\naz tag list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # List tags\naz tag create --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --tags Environment=Production CostCenter=123  # Create tags\naz tag update --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --operation Merge --tags Environment=Production  # Update tags\naz tag delete --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --tag-name Environment  # Delete tag\n\n# Compliance Frameworks\naz security regulatory-compliance-standards list  # List compliance standards\naz security regulatory-compliance-controls list --standard-name "Azure CIS 1.1.0"  # List controls\naz security regulatory-compliance-assessments list --standard-name "Azure CIS 1.1.0" --control-name "1.1"  # List assessments\n\n# Azure Purview (Data Governance)\naz purview account list  # List Purview accounts\naz purview account create --name myPurview --resource-group myGroup --location eastus  # Create Purview account\naz purview datasource list --account-name myPurview  # List data sources\naz purview scan list --account-name myPurview  # List scans'
+          command: 'Show Function App Details',
+          description: 'Get details for specific function app',
+          usage: 'Function app management',
+          example: `az functionapp show --name myFunctionApp --resource-group myGroup`,
         },
         {
-          command: 'Cost Management and Optimization',
-          description: 'Cost monitoring, budgeting, and resource optimization',
-          usage: 'Cost analysis, budgeting, and resource optimization strategies',
-          example: '# Cost Management\naz costmanagement query --type Usage --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --dimension ResourceGroup,ResourceType  # Cost analysis\naz costmanagement export list --scope /subscriptions/sub-id  # List cost exports\naz costmanagement export create --name myExport --scope /subscriptions/sub-id --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --storage-account-id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Storage/storageAccounts/storageaccount  # Create cost export\n\n# Budgets\naz consumption budget list --resource-group myGroup  # List budgets\naz consumption budget create --resource-group myGroup --name myBudget --amount 1000 --time-grain Monthly --start-date 2023-01-01 --end-date 2023-12-31  # Create budget\naz consumption budget show --resource-group myGroup --name myBudget  # Show budget details\naz consumption budget delete --resource-group myGroup --name myBudget  # Delete budget\n\n# Reservations\naz reservations reservation list  # List reservations\naz reservations reservation show --reservation-order-id order-id --reservation-id reservation-id  # Show reservation details\naz reservations reservation order list  # List reservation orders\naz reservations catalog show --reserved-resource-type "VirtualMachines" --location eastus  # Show available reservations\n\n# Savings Plans\naz savingsplan list  # List savings plans\naz savingsplan show --name mySavingsPlan  # Show savings plan details\naz savingsplan create --name mySavingsPlan --resource-group myGroup --savings-plan-type Compute --committed-amount 0.001 --commitment-duration "P3Y" --billing-scope /subscriptions/sub-id  # Create savings plan\n\n# Advisor Recommendations\naz advisor recommendation list  # List all recommendations\naz advisor recommendation list --category Cost  # List cost recommendations\naz advisor recommendation list --category Performance  # List performance recommendations\naz advisor recommendation show --recommendation-id recommendation-id  # Show recommendation details\naz advisor recommendation disable --recommendation-id recommendation-id  # Disable recommendation\n\n# Resource Optimization\naz vm list --show-details --query "[?hardwareProfile.vmSize==\'Standard_D2_v3\']"  # Find overprovisioned VMs\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --metrics "Percentage CPU" --aggregation Average --interval PT1H  # Check VM utilization\naz storage account list --query "[?sku.tier==\'Premium\']"  # Find premium storage accounts\n\n# Right-Sizing Recommendations\naz advisor recommendation list --category Performance --query "[?category==\'Performance\' && contains(description, \'right-size\')]"  # Get right-sizing recommendations\naz vm show --name myVM --resource-group myGroup --query "hardwareProfile.vmSize"  # Check current VM size\naz vm list-sizes --location eastus --query "[?numberOfCores >= 4 && memoryInMb >= 8192]"  # Find appropriate VM sizes\n\n# Unused Resources\naz network public-ip list --query "[?ipAddress==null]"  # Find unused public IPs\naz disk list --query "[?diskState==\'Unattached\']"  # Find unattached disks\naz nic list --query "[?virtualMachine==null]"  # Find unused NICs\n\n# Tag-Based Cost Analysis\naz consumption usage list --top 100 --query "[].{ResourceGroup:properties.resourceGroup,ResourceType:properties.resourceType,Cost:properties.pretaxCost}" --output table  # Cost by resource group\naz tag list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # Check resource tags\n\n# Automation Scripts\n#!/bin/bash\n# Cleanup unused resources\nunused_ips=$(az network public-ip list --query "[?ipAddress==null].name" --output tsv)\nfor ip in $unused_ips; do\n    echo "Deleting unused public IP: $ip"\n    az network public-ip delete --name $ip --resource-group myGroup\ndone\n\n# Cost optimization report\necho "=== Cost Optimization Report ===" > cost_report.txt\necho "Total Cost This Month:" >> cost_report.txt\naz costmanagement query --type Usage --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate >> cost_report.txt\necho "Top 10 Most Expensive Resources:" >> cost_report.txt\naz costmanagement query --type Usage --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --dimension ResourceGroup,ResourceType --top 10 >> cost_report.txt\n\n# Scheduled Cost Management\naz automation account create --resource-group myGroup --name myAutomationAccount --location eastus  # Create automation account\naz automation runbook create --resource-group myGroup --automation-account-name myAutomationAccount --name CostReport --type PowerShell --content @runbook.ps1  # Create runbook\naz automation schedule create --resource-group myGroup --automation-account-name myAutomationAccount --name DailyCostReport --frequency Day --interval 1  # Create schedule'
+          command: 'Create Function App',
+          description: 'Create new Azure function app',
+          usage: 'Function app creation',
+          example: `az functionapp create --resource-group myGroup --consumption-plan-location eastus --name myFunctionApp --storage-account mystorageaccount`,
         },
         {
-          command: 'Multi-Cloud and Hybrid Management',
-          description: 'Managing multi-cloud environments and hybrid infrastructure',
-          usage: 'Azure Arc, Azure Stack, and multi-cloud resource management',
-          example: '# Azure Arc\naz connectedk8s list  # List connected Kubernetes clusters\naz connectedk8s connect --name myCluster --resource-group myGroup  # Connect Kubernetes cluster\naz connectedk8s show --name myCluster --resource-group myGroup  # Show cluster details\naz connectedk8s delete --name myCluster --resource-group myGroup  # Disconnect cluster\n\n# Azure Arc for Servers\naz connectedmachine list  # List connected machines\naz connectedmachine show --name myMachine --resource-group myGroup  # Show machine details\naz connectedmachine connect --name myMachine --resource-group myGroup  # Connect machine\naz connectedmachine delete --name myMachine --resource-group myGroup  # Disconnect machine\n\n# Azure Arc for SQL\naz arc sql server list  # List Arc-enabled SQL servers\naz arc sql server create --name mySQLServer --resource-group myGroup --location eastus  # Create Arc-enabled SQL server\naz arc sql server show --name mySQLServer --resource-group myGroup  # Show server details\n\n# Azure Arc for PostgreSQL\naz arc postgres server list  # List Arc-enabled PostgreSQL servers\naz arc postgres server create --name myPostgresServer --resource-group myGroup --location eastus  # Create Arc-enabled PostgreSQL server\n\n# Azure Stack Hub\naz cloud list  # List available clouds\naz cloud register --name AzureStack --endpoint https://management.local.azurestack.external  # Register Azure Stack\naz cloud set --name AzureStack  # Set Azure Stack as active cloud\naz cloud update --name AzureStack --set profile=2019-03-01-hybrid  # Update cloud profile\n\n# Azure Stack Edge\naz databoxedge device list  # List Edge devices\naz databoxedge device show --name myDevice --resource-group myGroup  # Show device details\naz databoxedge device create --name myDevice --resource-group myGroup --location eastus --sku Edge  # Create Edge device\n\n# Multi-Cloud Resource Management\naz graph query -q "Resources | where type =~ \'Microsoft.Compute/virtualMachines\' or type =~ \'aws_ec2_instance\' | project name, type, location"  # Cross-cloud resource query\naz resource list --resource-type Microsoft.Compute/virtualMachines --query "[].{Name:name,Location:location,Subscription:subscriptionId}"  # List VMs across subscriptions\n\n# Hybrid Networking\naz network express-route list  # List ExpressRoute circuits\naz network express-route create --resource-group myGroup --name myCircuit --peering-location "Silicon Valley" --bandwidth 100 --sku Standard_MeteredData  # Create ExpressRoute circuit\naz network vpn-gateway list  # List VPN gateways\naz network vpn-gateway create --resource-group myGroup --name myVNG --location eastus --sku VpnGw1  # Create VPN gateway\n\n# Azure Lighthouse (Cross-Tenant Management)\naz managedservices definition list  # List managed service definitions\naz managedservices assignment list  # List assignments\naz managedservices assignment create --definition definition-id --scope /subscriptions/sub-id  # Create assignment\n\n# Azure Policy for Multi-Cloud\naz policy assignment list --scope /providers/Microsoft.Management/managementGroups/group-name  # List policy assignments at management group\naz policy state list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name  # List policy states\n\n# Cost Management Across Clouds\naz costmanagement query --scope /providers/Microsoft.Management/managementGroups/group-name --type Usage --dataset "Aggregation:TotalCost=sum{Cost}"  # Cost at management group\naz consumption usage list --top 1000  # Large-scale usage analysis\n\n# Automation for Multi-Cloud\n#!/bin/bash\n# Sync resources across clouds\nfor sub in $(az account list --query "[].id" --output tsv); do\n    echo "Processing subscription: $sub"\n    az account set --subscription $sub\n    az vm list --output table\ndone\n\n# Cross-cloud compliance check\naz security assessment list --scope /providers/Microsoft.Management/managementGroups/group-name  # Security at scale\naz policy assignment list --scope /providers/Microsoft.Management/managementGroups/group-name  # Policy compliance\n\n# Multi-Cloud Monitoring\naz monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --metrics "Percentage CPU" --aggregation Average --interval PT1H  # Monitor across clouds\naz monitor activity-log list --resource-group myGroup --query "[].{timestamp:timestamp,operationName:operationName,caller:caller}"  # Activity log analysis\n\n# Hybrid Identity\naz ad ds list  # List Azure AD Domain Services\naz ad ds create --name myADDS --resource-group myGroup --location eastus --domain-name contoso.com  # Create Azure AD DS\naz ad sync list --resource-group myGroup  # List AD Connect sync\n\n# Azure Monitor for Hybrid\naz monitor log-analytics workspace list  # List Log Analytics workspaces\naz monitor log-analytics workspace create --resource-group myGroup --name myWorkspace --location eastus  # Create workspace\naz monitor log-analytics workspace linked-service list --resource-group myGroup --workspace-name myWorkspace  # List linked services'
-        }
-      ]
-    }
-  ]
+          command: 'Start Function App',
+          description: 'Start function app',
+          usage: 'Function app operations',
+          example: `az functionapp start --name myFunctionApp --resource-group myGroup`,
+        },
+        {
+          command: 'Stop Function App',
+          description: 'Stop function app',
+          usage: 'Function app operations',
+          example: `az functionapp stop --name myFunctionApp --resource-group myGroup`,
+        },
+        {
+          command: 'Restart Function App',
+          description: 'Restart function app',
+          usage: 'Function app operations',
+          example: `az functionapp restart --name myFunctionApp --resource-group myGroup`,
+        },
+        {
+          command: 'Delete Function App',
+          description: 'Delete function app',
+          usage: 'Function app operations',
+          example: `az functionapp delete --name myFunctionApp --resource-group myGroup`,
+        },
+        {
+          command: 'Deploy Function App from Zip',
+          description: 'Deploy function app from zip file',
+          usage: 'Function deployment',
+          example: `az functionapp deployment source config-zip --resource-group myGroup --name myFunctionApp --src myFunctionApp.zip`,
+        },
+        {
+          command: 'Deploy Function App from GitHub',
+          description: 'Deploy function app from GitHub repository',
+          usage: 'Function deployment',
+          example: `az functionapp deployment source config-zip --resource-group myGroup --name myFunctionApp --src https://github.com/user/repo/archive/refs/heads/main.zip`,
+        },
+        {
+          command: 'List Web Apps',
+          description: 'List all web apps in subscription',
+          usage: 'Web app enumeration',
+          example: `az webapp list`,
+        },
+        {
+          command: 'Show Web App Details',
+          description: 'Get details for specific web app',
+          usage: 'Web app management',
+          example: `az webapp show --name myWebApp --resource-group myGroup`,
+        },
+        {
+          command: 'Create Web App',
+          description: 'Create new Azure web app',
+          usage: 'Web app creation',
+          example: `az webapp create --resource-group myGroup --plan myAppServicePlan --name myWebApp --runtime "NODE|14-lts"`,
+        },
+        {
+          command: 'Start Web App',
+          description: 'Start web app',
+          usage: 'Web app operations',
+          example: `az webapp start --name myWebApp --resource-group myGroup`,
+        },
+        {
+          command: 'Stop Web App',
+          description: 'Stop web app',
+          usage: 'Web app operations',
+          example: `az webapp stop --name myWebApp --resource-group myGroup`,
+        },
+        {
+          command: 'Restart Web App',
+          description: 'Restart web app',
+          usage: 'Web app operations',
+          example: `az webapp restart --name myWebApp --resource-group myGroup`,
+        },
+        {
+          command: 'Delete Web App',
+          description: 'Delete web app',
+          usage: 'Web app operations',
+          example: `az webapp delete --name myWebApp --resource-group myGroup`,
+        },
+        {
+          command: 'Deploy Web App from Zip',
+          description: 'Deploy web app from zip file',
+          usage: 'Web app deployment',
+          example: `az webapp deployment source config-zip --resource-group myGroup --name myWebApp --src myWebApp.zip`,
+        },
+        {
+          command: 'Deploy Web App Quick',
+          description: 'Deploy and configure web app quickly',
+          usage: 'Web app deployment',
+          example: `az webapp up --resource-group myGroup --name myWebApp --location eastus`,
+        },
+        {
+          command: 'List App Service Plans',
+          description: 'List all app service plans',
+          usage: 'App service plan management',
+          example: `az appservice plan list`,
+        },
+        {
+          command: 'Create App Service Plan',
+          description: 'Create new app service plan',
+          usage: 'App service plan creation',
+          example: `az appservice plan create --resource-group myGroup --name myAppServicePlan --sku B1 --is-linux`,
+        },
+        {
+          command: 'Show App Service Plan Details',
+          description: 'Get details for app service plan',
+          usage: 'App service plan management',
+          example: `az appservice plan show --name myAppServicePlan --resource-group myGroup`,
+        },
+        {
+          command: 'Get Web App Logs',
+          description: 'Get logs for web app',
+          usage: 'Web app monitoring',
+          example: `az webapp log tail --name myWebApp --resource-group myGroup`,
+        },
+      ],
+    },
+    {
+      title: 'Intermediate Services - Azure SQL Database',
+      commands: [
+        {
+          command: 'List SQL Servers',
+          description: 'List all SQL servers in subscription',
+          usage: 'SQL server enumeration',
+          example: `az sql server list`,
+        },
+        {
+          command: 'Show SQL Server Details',
+          description: 'Get details for specific SQL server',
+          usage: 'SQL server management',
+          example: `az sql server show --name myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Create SQL Server',
+          description: 'Create new Azure SQL server',
+          usage: 'SQL server creation',
+          example: `az sql server create --name myServer --resource-group myGroup --location eastus --admin-user myadmin --admin-password MyPassword123!`,
+        },
+        {
+          command: 'Delete SQL Server',
+          description: 'Delete SQL server',
+          usage: 'SQL server management',
+          example: `az sql server delete --name myServer --resource-group myGroup`,
+        },
+        {
+          command: 'List SQL Databases',
+          description: 'List databases on SQL server',
+          usage: 'Database enumeration',
+          example: `az sql db list --server myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Show SQL Database Details',
+          description: 'Get details for specific SQL database',
+          usage: 'Database management',
+          example: `az sql db show --name myDatabase --server myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Create SQL Database',
+          description: 'Create new Azure SQL database',
+          usage: 'Database creation',
+          example: `az sql db create --name myDatabase --server myServer --resource-group myGroup --edition GeneralPurpose --family Gen5 --capacity 2`,
+        },
+        {
+          command: 'Delete SQL Database',
+          description: 'Delete SQL database',
+          usage: 'Database management',
+          example: `az sql db delete --name myDatabase --server myServer --resource-group myGroup --yes`,
+        },
+        {
+          command: 'Rename SQL Database',
+          description: 'Rename existing SQL database',
+          usage: 'Database management',
+          example: `az sql db rename --name myDatabase --server myServer --resource-group myGroup --new-name newDatabaseName`,
+        },
+        {
+          command: 'Copy SQL Database',
+          description: 'Create copy of SQL database',
+          usage: 'Database management',
+          example: `az sql db copy --name myDatabase --server myServer --resource-group myGroup --dest-name copiedDatabase`,
+        },
+        {
+          command: 'Scale Up SQL Database',
+          description: 'Increase SQL database capacity',
+          usage: 'Database scaling',
+          example: `az sql db update --name myDatabase --server myServer --resource-group myGroup --capacity 4`,
+        },
+        {
+          command: 'Move Database to Elastic Pool',
+          description: 'Move database to elastic pool',
+          usage: 'Database scaling',
+          example: `az sql db update --name myDatabase --server myServer --resource-group myGroup --elastic-pool myElasticPool`,
+        },
+        {
+          command: 'List Elastic Pools',
+          description: 'List elastic pools on SQL server',
+          usage: 'Elastic pool management',
+          example: `az sql elastic-pool list --server myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Create Elastic Pool',
+          description: 'Create new elastic pool',
+          usage: 'Elastic pool creation',
+          example: `az sql elastic-pool create --name myPool --server myServer --resource-group myGroup --edition GeneralPurpose --family Gen5 --capacity 2`,
+        },
+        {
+          command: 'Delete Elastic Pool',
+          description: 'Delete elastic pool',
+          usage: 'Elastic pool management',
+          example: `az sql elastic-pool delete --name myPool --server myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Show SQL Audit Policy',
+          description: 'Get audit policy for database',
+          usage: 'Database security',
+          example: `az sql db audit-policy show --name myDatabase --server myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Enable SQL Auditing',
+          description: 'Enable auditing for SQL database',
+          usage: 'Database security',
+          example: `az sql db audit-policy update --name myDatabase --server myServer --resource-group myGroup --state Enabled`,
+        },
+        {
+          command: 'Show SQL Threat Policy',
+          description: 'Get threat detection policy',
+          usage: 'Database security',
+          example: `az sql db threat-policy show --name myDatabase --server myServer --resource-group myGroup`,
+        },
+        {
+          command: 'Enable SQL Threat Detection',
+          description: 'Enable threat detection for database',
+          usage: 'Database security',
+          example: `az sql db threat-policy update --name myDatabase --server myServer --resource-group myGroup --state Enabled --email-admins admin@example.com`,
+        },
+        {
+          command: 'Create SQL Firewall Rule',
+          description: 'Create firewall rule for SQL server',
+          usage: 'SQL security',
+          example: `az sql server firewall-rule create --resource-group myGroup --server myServer --name AllowAzure --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0`,
+        },
+        {
+          command: 'List SQL Firewall Rules',
+          description: 'List firewall rules for SQL server',
+          usage: 'SQL security',
+          example: `az sql server firewall-rule list --resource-group myGroup --server myServer`,
+        },
+      ],
+    },
+    {
+      title: 'Intermediate Services - Azure Kubernetes Service (AKS)',
+      commands: [
+        {
+          command: 'List AKS Clusters',
+          description: 'List all AKS clusters in subscription',
+          usage: 'AKS enumeration',
+          example: `az aks list`,
+        },
+        {
+          command: 'Show AKS Cluster Details',
+          description: 'Get details for specific AKS cluster',
+          usage: 'AKS management',
+          example: `az aks show --name myAKSCluster --resource-group myGroup`,
+        },
+        {
+          command: 'Create AKS Cluster',
+          description: 'Create new Azure Kubernetes Service cluster',
+          usage: 'AKS creation',
+          example: `az aks create --resource-group myGroup --name myAKSCluster --node-count 3 --enable-addons monitoring --generate-ssh-keys`,
+        },
+        {
+          command: 'Start AKS Cluster',
+          description: 'Start AKS cluster',
+          usage: 'AKS operations',
+          example: `az aks start --name myAKSCluster --resource-group myGroup`,
+        },
+        {
+          command: 'Stop AKS Cluster',
+          description: 'Stop AKS cluster',
+          usage: 'AKS operations',
+          example: `az aks stop --name myAKSCluster --resource-group myGroup`,
+        },
+        {
+          command: 'Delete AKS Cluster',
+          description: 'Delete AKS cluster',
+          usage: 'AKS operations',
+          example: `az aks delete --name myAKSCluster --resource-group myGroup --yes`,
+        },
+        {
+          command: 'Scale AKS Cluster',
+          description: 'Scale number of nodes in AKS cluster',
+          usage: 'AKS scaling',
+          example: `az aks scale --name myAKSCluster --resource-group myGroup --node-count 5`,
+        },
+        {
+          command: 'Enable Cluster Autoscaler',
+          description: 'Enable cluster autoscaler for AKS',
+          usage: 'AKS configuration',
+          example: `az aks update --resource-group myGroup --name myAKSCluster --enable-cluster-autoscaler --min-count 1 --max-count 5`,
+        },
+        {
+          command: 'Add HTTP Application Routing',
+          description: 'Add HTTP application routing addon',
+          usage: 'AKS addons',
+          example: `az aks update --resource-group myGroup --name myAKSCluster --enable-addons http_application_routing`,
+        },
+        {
+          command: 'Attach ACR to AKS',
+          description: 'Attach Azure Container Registry to AKS',
+          usage: 'AKS integration',
+          example: `az aks update --resource-group myGroup --name myAKSCluster --attach-acr myACR`,
+        },
+        {
+          command: 'List AKS Node Pools',
+          description: 'List node pools in AKS cluster',
+          usage: 'Node pool management',
+          example: `az aks nodepool list --cluster-name myAKSCluster --resource-group myGroup`,
+        },
+        {
+          command: 'Show Node Pool Details',
+          description: 'Get details for specific node pool',
+          usage: 'Node pool management',
+          example: `az aks nodepool show --cluster-name myAKSCluster --resource-group myGroup --name nodepool1`,
+        },
+        {
+          command: 'Add Node Pool to AKS',
+          description: 'Add new node pool to AKS cluster',
+          usage: 'Node pool management',
+          example: `az aks nodepool add --cluster-name myAKSCluster --resource-group myGroup --name nodepool2 --node-count 3 --node-vm-size Standard_B2s`,
+        },
+        {
+          command: 'Delete Node Pool from AKS',
+          description: 'Delete node pool from AKS cluster',
+          usage: 'Node pool management',
+          example: `az aks nodepool delete --cluster-name myAKSCluster --resource-group myGroup --name nodepool2`,
+        },
+        {
+          command: 'Scale Node Pool',
+          description: 'Scale node pool size',
+          usage: 'Node pool management',
+          example: `az aks nodepool scale --cluster-name myAKSCluster --resource-group myGroup --name nodepool1 --node-count 5`,
+        },
+        {
+          command: 'Get AKS Credentials',
+          description: 'Get kubeconfig for AKS cluster',
+          usage: 'Cluster access',
+          example: `az aks get-credentials --resource-group myGroup --name myAKSCluster`,
+        },
+        {
+          command: 'Browse AKS Dashboard',
+          description: 'Open Kubernetes dashboard for AKS',
+          usage: 'Cluster monitoring',
+          example: `az aks browse --resource-group myGroup --name myAKSCluster`,
+        },
+        {
+          command: 'Enable Application Gateway Ingress',
+          description: 'Enable Application Gateway ingress controller',
+          usage: 'AKS addons',
+          example: `az aks enable-addons --resource-group myGroup --name myAKSCluster --addons ingress-appgw --appgw-name myApplicationGateway`,
+        },
+        {
+          command: 'Rotate AKS Cluster Certificates',
+          description: 'Rotate cluster certificates',
+          usage: 'AKS security',
+          example: `az aks rotate-certs --resource-group myGroup --name myAKSCluster`,
+        },
+      ],
+    },
+    {
+      title: 'Intermediate Services - Azure Monitor and Diagnostics',
+      commands: [
+        {
+          command: 'List Monitor Accounts',
+          description: 'List all Azure Monitor accounts',
+          usage: 'Monitor enumeration',
+          example: `az monitor account list`,
+        },
+        {
+          command: 'Show Monitor Account Details',
+          description: 'Get details for monitor account',
+          usage: 'Monitor management',
+          example: `az monitor account show --name myMonitorAccount --resource-group myGroup`,
+        },
+        {
+          command: 'Create Monitor Account',
+          description: 'Create new Azure Monitor account',
+          usage: 'Monitor creation',
+          example: `az monitor account create --name myMonitorAccount --resource-group myGroup --location eastus`,
+        },
+        {
+          command: 'List Activity Logs',
+          description: 'List all activity logs',
+          usage: 'Activity monitoring',
+          example: `az monitor activity-log list`,
+        },
+        {
+          command: 'List Activity Logs for Resource Group',
+          description: 'Get activity logs for specific resource group',
+          usage: 'Activity monitoring',
+          example: `az monitor activity-log list --resource-group myGroup`,
+        },
+        {
+          command: 'List Activity Logs for Resource Type',
+          description: 'Get activity logs for specific resource type',
+          usage: 'Activity monitoring',
+          example: `az monitor activity-log list --resource-provider Microsoft.Compute/virtualMachines`,
+        },
+        {
+          command: 'List Metrics for Resource',
+          description: 'List metrics for specific resource',
+          usage: 'Metrics monitoring',
+          example: `az monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name`,
+        },
+        {
+          command: 'List Metric Definitions',
+          description: 'List available metric definitions',
+          usage: 'Metrics monitoring',
+          example: `az monitor metrics list-definitions --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name`,
+        },
+        {
+          command: 'Get Specific Metrics',
+          description: 'Get specific metrics for resource',
+          usage: 'Metrics monitoring',
+          example: `az monitor metrics list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --metrics "Percentage CPU" "Network In"`,
+        },
+        {
+          command: 'List Alerts',
+          description: 'List all alerts',
+          usage: 'Alert management',
+          example: `az monitor alert list`,
+        },
+        {
+          command: 'Show Alert Details',
+          description: 'Get details for specific alert',
+          usage: 'Alert management',
+          example: `az monitor alert show --name myAlert --resource-group myGroup`,
+        },
+        {
+          command: 'Create Metric Alert',
+          description: 'Create metric-based alert',
+          usage: 'Alert creation',
+          example: `az monitor metrics alert create \\
+    --name myAlert \\
+    --resource-group myGroup \\
+    --scopes /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name \\
+    --condition "avg Percentage CPU > 90" \\
+    --window-size 5m \\
+    --evaluation-frequency 1m \\
+    --severity 2`,
+        },
+        {
+          command: 'Create Activity Log Alert',
+          description: 'Create activity log alert',
+          usage: 'Alert creation',
+          example: `az monitor activity-log alert create --name myAlert --resource-group myGroup --scopes /subscriptions/sub-id/resourceGroups/group-name --condition category=Administrative`,
+        },
+        {
+          command: 'List Diagnostic Settings',
+          description: 'List diagnostic settings for resource',
+          usage: 'Diagnostics configuration',
+          example: `az monitor diagnostic-settings list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name`,
+        },
+        {
+          command: 'Create Diagnostic Setting',
+          description: 'Create diagnostic setting for resource',
+          usage: 'Diagnostics configuration',
+          example: `az monitor diagnostic-settings create --name myDiagnosticSetting --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name --workspace myWorkspace`,
+        },
+        {
+          command: 'List Log Analytics Workspaces',
+          description: 'List all Log Analytics workspaces',
+          usage: 'Log management',
+          example: `az monitor log-analytics workspace list`,
+        },
+        {
+          command: 'Create Log Analytics Workspace',
+          description: 'Create new Log Analytics workspace',
+          usage: 'Log management',
+          example: `az monitor log-analytics workspace create --resource-group myGroup --name myWorkspace --location eastus`,
+        },
+        {
+          command: 'Query Log Analytics',
+          description: 'Execute query against Log Analytics',
+          usage: 'Log analysis',
+          example: `az monitor log-analytics query --workspace myWorkspace --analytics-query "AzureActivity | summarize count() by Category"`,
+        },
+      ],
+    },
+    {
+      title: 'Intermediate Services - Azure Key Vault',
+      commands: [
+        {
+          command: 'List Key Vaults',
+          description: 'List all key vaults in subscription',
+          usage: 'Key vault enumeration',
+          example: `az keyvault list`,
+        },
+        {
+          command: 'Show Key Vault Details',
+          description: 'Get details for specific key vault',
+          usage: 'Key vault management',
+          example: `az keyvault show --name myKeyVault --resource-group myGroup`,
+        },
+        {
+          command: 'Create Key Vault',
+          description: 'Create new Azure Key Vault',
+          usage: 'Key vault creation',
+          example: `az keyvault create --name myKeyVault --resource-group myGroup --location eastus --enable-soft-delete true --enable-purge-protection true`,
+        },
+        {
+          command: 'Delete Key Vault',
+          description: 'Delete key vault',
+          usage: 'Key vault management',
+          example: `az keyvault delete --name myKeyVault --resource-group myGroup`,
+        },
+        {
+          command: 'Purge Deleted Key Vault',
+          description: 'Permanently purge deleted key vault',
+          usage: 'Key vault management',
+          example: `az keyvault purge --name myKeyVault --location eastus`,
+        },
+        {
+          command: 'Update Key Vault',
+          description: 'Update key vault properties',
+          usage: 'Key vault management',
+          example: `az keyvault update --name myKeyVault --resource-group myGroup --set tags.environment=prod`,
+        },
+        {
+          command: 'List Key Vault Secrets',
+          description: 'List secrets in key vault',
+          usage: 'Secret management',
+          example: `az keyvault secret list --vault-name myKeyVault`,
+        },
+        {
+          command: 'Show Secret Details',
+          description: 'Get details for specific secret',
+          usage: 'Secret management',
+          example: `az keyvault secret show --vault-name myKeyVault --name mySecret`,
+        },
+        {
+          command: 'Set Secret',
+          description: 'Create or update secret in key vault',
+          usage: 'Secret management',
+          example: `az keyvault secret set --vault-name myKeyVault --name mySecret --value "MySecretValue"`,
+        },
+        {
+          command: 'Delete Secret',
+          description: 'Delete secret from key vault',
+          usage: 'Secret management',
+          example: `az keyvault secret delete --vault-name myKeyVault --name mySecret`,
+        },
+        {
+          command: 'Backup Secret',
+          description: 'Backup secret from key vault',
+          usage: 'Secret backup',
+          example: `az keyvault secret backup --vault-name myKeyVault --name mySecret --file backup.txt`,
+        },
+        {
+          command: 'Restore Secret',
+          description: 'Restore secret to key vault',
+          usage: 'Secret restore',
+          example: `az keyvault secret restore --vault-name myKeyVault --file backup.txt`,
+        },
+        {
+          command: 'List Key Vault Keys',
+          description: 'List keys in key vault',
+          usage: 'Key management',
+          example: `az keyvault key list --vault-name myKeyVault`,
+        },
+        {
+          command: 'Show Key Details',
+          description: 'Get details for specific key',
+          usage: 'Key management',
+          example: `az keyvault key show --vault-name myKeyVault --name myKey`,
+        },
+        {
+          command: 'Create Key',
+          description: 'Create new key in key vault',
+          usage: 'Key management',
+          example: `az keyvault key create --vault-name myKeyVault --name myKey --protection software --ops encrypt decrypt`,
+        },
+        {
+          command: 'Delete Key',
+          description: 'Delete key from key vault',
+          usage: 'Key management',
+          example: `az keyvault key delete --vault-name myKeyVault --name myKey`,
+        },
+        {
+          command: 'Encrypt Data with Key',
+          description: 'Encrypt data using key vault key',
+          usage: 'Key operations',
+          example: `az keyvault key encrypt --vault-name myKeyVault --name myKey --algorithm RSA-OAEP-256 --plaintext "Hello World"`,
+        },
+        {
+          command: 'Decrypt Data with Key',
+          description: 'Decrypt data using key vault key',
+          usage: 'Key operations',
+          example: `az keyvault key decrypt --vault-name myKeyVault --name myKey --algorithm RSA-OAEP-256 --ciphertext "encrypted-data"`,
+        },
+        {
+          command: 'List Key Vault Certificates',
+          description: 'List certificates in key vault',
+          usage: 'Certificate management',
+          example: `az keyvault certificate list --vault-name myKeyVault`,
+        },
+        {
+          command: 'Show Certificate Details',
+          description: 'Get details for specific certificate',
+          usage: 'Certificate management',
+          example: `az keyvault certificate show --vault-name myKeyVault --name myCertificate`,
+        },
+        {
+          command: 'Create Certificate',
+          description: 'Create new certificate in key vault',
+          usage: 'Certificate management',
+          example: `az keyvault certificate create --vault-name myKeyVault --name myCertificate --policy @policy.json`,
+        },
+        {
+          command: 'Delete Certificate',
+          description: 'Delete certificate from key vault',
+          usage: 'Certificate management',
+          example: `az keyvault certificate delete --vault-name myKeyVault --name myCertificate`,
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'Advanced Services - Azure Container Registry (ACR)',
+      commands: [
+        {
+          command: 'List Container Registries',
+          description: 'List all Azure Container Registries',
+          usage: 'ACR enumeration',
+          example: `az acr list`,
+        },
+        {
+          command: 'Show ACR Details',
+          description: 'Get details for specific container registry',
+          usage: 'ACR management',
+          example: `az acr show --name myACR --resource-group myGroup`,
+        },
+        {
+          command: 'Create Container Registry',
+          description: 'Create new Azure Container Registry',
+          usage: 'ACR creation',
+          example: `az acr create --resource-group myGroup --name myACR --sku Basic`,
+        },
+        {
+          command: 'Delete Container Registry',
+          description: 'Delete Azure Container Registry',
+          usage: 'ACR management',
+          example: `az acr delete --name myACR --resource-group myGroup`,
+        },
+        {
+          command: 'Update ACR SKU',
+          description: 'Update container registry SKU',
+          usage: 'ACR management',
+          example: `az acr update --name myACR --resource-group myGroup --sku Standard`,
+        },
+        {
+          command: 'Get ACR Login Server',
+          description: 'Get login server for container registry',
+          usage: 'ACR access',
+          example: `az acr show --name myACR --resource-group myGroup --query loginServer`,
+        },
+        {
+          command: 'List ACR Repositories',
+          description: 'List repositories in container registry',
+          usage: 'Repository management',
+          example: `az acr repository list --name myACR`,
+        },
+        {
+          command: 'Show Repository Details',
+          description: 'Get details for specific repository',
+          usage: 'Repository management',
+          example: `az acr repository show --name myACR --repository myapp`,
+        },
+        {
+          command: 'Delete Repository',
+          description: 'Delete repository from container registry',
+          usage: 'Repository management',
+          example: `az acr repository delete --name myACR --repository myapp`,
+        },
+        {
+          command: 'Show Repository Tags',
+          description: 'List tags for repository',
+          usage: 'Image management',
+          example: `az acr repository show-tags --name myACR --repository myapp`,
+        },
+        {
+          command: 'Show Repository Manifests',
+          description: 'List manifests for repository',
+          usage: 'Image management',
+          example: `az acr repository show-manifests --name myACR --repository myapp`,
+        },
+        {
+          command: 'Delete Image Tag',
+          description: 'Delete specific image tag',
+          usage: 'Image management',
+          example: `az acr image delete --name myACR --repository myapp --tag latest`,
+        },
+        {
+          command: 'Build and Push Image',
+          description: 'Build and push Docker image to ACR',
+          usage: 'Image operations',
+          example: `az acr build --registry myACR --image myapp:latest .`,
+        },
+        {
+          command: 'Build with Custom Dockerfile',
+          description: 'Build image using custom Dockerfile',
+          usage: 'Image operations',
+          example: `az acr build --registry myACR --image myapp:latest --file Dockerfile .`,
+        },
+        {
+          command: 'Build with Cloud Native Buildpacks',
+          description: 'Build image using Cloud Native Buildpacks',
+          usage: 'Image operations',
+          example: `az acr pack build --registry myACR --image myapp:latest --builder heroku`,
+        },
+        {
+          command: 'Import Image from ACR',
+          description: 'Import image from another container registry',
+          usage: 'Image import',
+          example: `az acr import --source myregistry.azurecr.io/myapp:latest --name myACR --image myapp:imported`,
+        },
+        {
+          command: 'Import Image from Docker Hub',
+          description: 'Import image from Docker Hub',
+          usage: 'Image import',
+          example: `az acr import --source docker.io/library/nginx:latest --name myACR --image nginx:latest`,
+        },
+        {
+          command: 'List ACR Tasks',
+          description: 'List ACR build tasks',
+          usage: 'ACR tasks',
+          example: `az acr task list --registry myACR`,
+        },
+        {
+          command: 'Create ACR Task',
+          description: 'Create automated build task',
+          usage: 'ACR tasks',
+          example: `az acr task create \\
+    --registry myACR \\
+    --name myTask \\
+    --image myapp:{{.Run.ID}} \\
+    --cmd Dockerfile \\
+    --context https://github.com/user/repo.git#main`,
+        },
+        {
+          command: 'Run ACR Task',
+          description: 'Execute ACR build task',
+          usage: 'ACR tasks',
+          example: `az acr task run --registry myACR --name myTask`,
+        },
+        {
+          command: 'List ACR Task Runs',
+          description: 'List task execution history',
+          usage: 'ACR tasks',
+          example: `az acr task list-runs --registry myACR`,
+        },
+        {
+          command: 'Login to ACR',
+          description: 'Login to Azure Container Registry',
+          usage: 'ACR access',
+          example: `az acr login --name myACR`,
+        },
+      ],
+    },
+    {
+      title: 'Advanced Services - Azure DevTest Labs',
+      commands: [
+        {
+          command: 'List DevTest Labs',
+          description: 'List all DevTest Labs in subscription',
+          usage: 'Lab enumeration',
+          example: `az lab list`,
+        },
+        {
+          command: 'Show Lab Details',
+          description: 'Get details for specific DevTest Lab',
+          usage: 'Lab management',
+          example: `az lab show --name myLab --resource-group myGroup`,
+        },
+        {
+          command: 'Create DevTest Lab',
+          description: 'Create new DevTest Lab',
+          usage: 'Lab creation',
+          example: `az lab create --name myLab --resource-group myGroup --location eastus`,
+        },
+        {
+          command: 'Delete DevTest Lab',
+          description: 'Delete DevTest Lab',
+          usage: 'Lab management',
+          example: `az lab delete --name myLab --resource-group myGroup`,
+        },
+        {
+          command: 'Claim Any Available VM',
+          description: 'Claim any available VM in lab',
+          usage: 'Lab VM management',
+          example: `az lab claim-any --lab-name myLab --resource-group myGroup`,
+        },
+        {
+          command: 'List Lab VMs',
+          description: 'List virtual machines in DevTest Lab',
+          usage: 'Lab VM enumeration',
+          example: `az lab vm list --lab-name myLab --resource-group myGroup`,
+        },
+        {
+          command: 'Show Lab VM Details',
+          description: 'Get details for specific lab VM',
+          usage: 'Lab VM management',
+          example: `az lab vm show --lab-name myLab --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Create Lab VM',
+          description: 'Create virtual machine in DevTest Lab',
+          usage: 'Lab VM creation',
+          example: `az lab vm create --lab-name myLab --name myVM --resource-group myGroup --image "Windows 10 Pro" --image-type gallery --size Standard_D2_v3`,
+        },
+        {
+          command: 'Delete Lab VM',
+          description: 'Delete virtual machine from DevTest Lab',
+          usage: 'Lab VM management',
+          example: `az lab vm delete --lab-name myLab --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Start Lab VM',
+          description: 'Start virtual machine in DevTest Lab',
+          usage: 'Lab VM operations',
+          example: `az lab vm start --lab-name myLab --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Stop Lab VM',
+          description: 'Stop virtual machine in DevTest Lab',
+          usage: 'Lab VM operations',
+          example: `az lab vm stop --lab-name myLab --name myVM --resource-group myGroup`,
+        },
+        {
+          command: 'Apply Artifacts to Lab VM',
+          description: 'Apply artifacts to lab virtual machine',
+          usage: 'Lab VM configuration',
+          example: `az lab vm apply-artifacts --lab-name myLab --name myVM --resource-group myGroup --artifacts @artifacts.json`,
+        },
+        {
+          command: 'List Lab Environments',
+          description: 'List environments in DevTest Lab',
+          usage: 'Environment management',
+          example: `az lab environment list --lab-name myLab --resource-group myGroup`,
+        },
+        {
+          command: 'Show Lab Environment Details',
+          description: 'Get details for specific lab environment',
+          usage: 'Environment management',
+          example: `az lab environment show --lab-name myLab --name myEnvironment --resource-group myGroup`,
+        },
+        {
+          command: 'Create Lab Environment',
+          description: 'Create environment in DevTest Lab',
+          usage: 'Environment creation',
+          example: `az lab environment create --lab-name myLab --name myEnvironment --resource-group myGroup --template-file template.json`,
+        },
+        {
+          command: 'Delete Lab Environment',
+          description: 'Delete environment from DevTest Lab',
+          usage: 'Environment management',
+          example: `az lab environment delete --lab-name myLab --name myEnvironment --resource-group myGroup`,
+        },
+        {
+          command: 'List Lab Custom Images',
+          description: 'List custom images in DevTest Lab',
+          usage: 'Image management',
+          example: `az lab custom-image list --lab-name myLab --resource-group myGroup`,
+        },
+        {
+          command: 'Show Custom Image Details',
+          description: 'Get details for custom image',
+          usage: 'Image management',
+          example: `az lab custom-image show --lab-name myLab --name myImage --resource-group myGroup`,
+        },
+        {
+          command: 'Create Lab Custom Image',
+          description: 'Create custom image in DevTest Lab',
+          usage: 'Image creation',
+          example: `az lab custom-image create --lab-name myLab --name myImage --resource-group myGroup --source-vm-id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name`,
+        },
+        {
+          command: 'Delete Lab Custom Image',
+          description: 'Delete custom image from DevTest Lab',
+          usage: 'Image management',
+          example: `az lab custom-image delete --lab-name myLab --name myImage --resource-group myGroup`,
+        },
+      ],
+    },
+    {
+      title: 'Advanced Services - Azure Service Bus',
+      commands: [
+        {
+          command: 'List Service Bus Namespaces',
+          description: 'List all Service Bus namespaces',
+          usage: 'Namespace enumeration',
+          example: `az servicebus namespace list`,
+        },
+        {
+          command: 'Show Namespace Details',
+          description: 'Get details for Service Bus namespace',
+          usage: 'Namespace management',
+          example: `az servicebus namespace show --name myNamespace --resource-group myGroup`,
+        },
+        {
+          command: 'Create Service Bus Namespace',
+          description: 'Create new Service Bus namespace',
+          usage: 'Namespace creation',
+          example: `az servicebus namespace create --resource-group myGroup --name myNamespace --location eastus --sku Standard`,
+        },
+        {
+          command: 'Delete Service Bus Namespace',
+          description: 'Delete Service Bus namespace',
+          usage: 'Namespace management',
+          example: `az servicebus namespace delete --name myNamespace --resource-group myGroup`,
+        },
+        {
+          command: 'Check Namespace Exists',
+          description: 'Check if Service Bus namespace exists',
+          usage: 'Namespace validation',
+          example: `az servicebus namespace exists --name myNamespace`,
+        },
+        {
+          command: 'List Service Bus Queues',
+          description: 'List queues in Service Bus namespace',
+          usage: 'Queue enumeration',
+          example: `az servicebus queue list --namespace-name myNamespace --resource-group myGroup`,
+        },
+        {
+          command: 'Show Queue Details',
+          description: 'Get details for specific Service Bus queue',
+          usage: 'Queue management',
+          example: `az servicebus queue show --namespace-name myNamespace --name myQueue --resource-group myGroup`,
+        },
+        {
+          command: 'Create Service Bus Queue',
+          description: 'Create new queue in Service Bus namespace',
+          usage: 'Queue creation',
+          example: `az servicebus queue create --namespace-name myNamespace --name myQueue --resource-group myGroup`,
+        },
+        {
+          command: 'Delete Service Bus Queue',
+          description: 'Delete queue from Service Bus namespace',
+          usage: 'Queue management',
+          example: `az servicebus queue delete --namespace-name myNamespace --name myQueue --resource-group myGroup`,
+        },
+        {
+          command: 'Send Message to Queue',
+          description: 'Send message to Service Bus queue',
+          usage: 'Queue operations',
+          example: `az servicebus queue send --namespace-name myNamespace --name myQueue --message "Hello World"`,
+        },
+        {
+          command: 'Receive Message from Queue',
+          description: 'Receive message from Service Bus queue',
+          usage: 'Queue operations',
+          example: `az servicebus queue receive --namespace-name myNamespace --name myQueue`,
+        },
+        {
+          command: 'Purge Queue Messages',
+          description: 'Purge all messages from queue',
+          usage: 'Queue operations',
+          example: `az servicebus queue purge --namespace-name myNamespace --name myQueue`,
+        },
+        {
+          command: 'List Service Bus Topics',
+          description: 'List topics in Service Bus namespace',
+          usage: 'Topic enumeration',
+          example: `az servicebus topic list --namespace-name myNamespace --resource-group myGroup`,
+        },
+        {
+          command: 'Show Topic Details',
+          description: 'Get details for specific Service Bus topic',
+          usage: 'Topic management',
+          example: `az servicebus topic show --namespace-name myNamespace --name myTopic --resource-group myGroup`,
+        },
+        {
+          command: 'Create Service Bus Topic',
+          description: 'Create new topic in Service Bus namespace',
+          usage: 'Topic creation',
+          example: `az servicebus topic create --namespace-name myNamespace --name myTopic --resource-group myGroup`,
+        },
+        {
+          command: 'Delete Service Bus Topic',
+          description: 'Delete topic from Service Bus namespace',
+          usage: 'Topic management',
+          example: `az servicebus topic delete --namespace-name myNamespace --name myTopic --resource-group myGroup`,
+        },
+        {
+          command: 'List Topic Subscriptions',
+          description: 'List subscriptions for Service Bus topic',
+          usage: 'Subscription management',
+          example: `az servicebus topic subscription list --namespace-name myNamespace --topic-name myTopic --resource-group myGroup`,
+        },
+        {
+          command: 'Create Topic Subscription',
+          description: 'Create subscription for Service Bus topic',
+          usage: 'Subscription creation',
+          example: `az servicebus topic subscription create --namespace-name myNamespace --topic-name myTopic --name mySubscription --resource-group myGroup`,
+        },
+        {
+          command: 'Delete Topic Subscription',
+          description: 'Delete subscription from Service Bus topic',
+          usage: 'Subscription management',
+          example: `az servicebus topic subscription delete --namespace-name myNamespace --topic-name myTopic --name mySubscription --resource-group myGroup`,
+        },
+        {
+          command: 'Send Message to Topic',
+          description: 'Send message to Service Bus topic',
+          usage: 'Topic operations',
+          example: `az servicebus topic send --namespace-name myNamespace --name myTopic --message "Hello World"`,
+        },
+        {
+          command: 'Receive Message from Subscription',
+          description: 'Receive message from topic subscription',
+          usage: 'Subscription operations',
+          example: `az servicebus topic subscription receive --namespace-name myNamespace --topic-name myTopic --name mySubscription`,
+        },
+      ],
+    },
+    {
+      title: 'Advanced Services - Azure Cosmos DB',
+      commands: [
+        {
+          command: 'List Cosmos DB Accounts',
+          description: 'List all Cosmos DB accounts in subscription',
+          usage: 'Cosmos DB enumeration',
+          example: `az cosmosdb list`,
+        },
+        {
+          command: 'Show Cosmos DB Account Details',
+          description: 'Get details for specific Cosmos DB account',
+          usage: 'Cosmos DB management',
+          example: `az cosmosdb show --name myCosmosDB --resource-group myGroup`,
+        },
+        {
+          command: 'Create Cosmos DB Account',
+          description: 'Create new Azure Cosmos DB account',
+          usage: 'Cosmos DB creation',
+          example: `az cosmosdb create --name myCosmosDB --resource-group myGroup --locations regionName=eastus failoverPriority=0 isZoneRedundant=False`,
+        },
+        {
+          command: 'Delete Cosmos DB Account',
+          description: 'Delete Cosmos DB account',
+          usage: 'Cosmos DB management',
+          example: `az cosmosdb delete --name myCosmosDB --resource-group myGroup`,
+        },
+        {
+          command: 'Update Cosmos DB Account',
+          description: 'Update Cosmos DB account settings',
+          usage: 'Cosmos DB management',
+          example: `az cosmosdb update --name myCosmosDB --resource-group myGroup --default-consistency-level Session`,
+        },
+        {
+          command: 'List Cosmos DB Keys',
+          description: 'List access keys for Cosmos DB account',
+          usage: 'Cosmos DB security',
+          example: `az cosmosdb keys list --name myCosmosDB --resource-group myGroup --type keys`,
+        },
+        {
+          command: 'List SQL Databases',
+          description: 'List SQL API databases in Cosmos DB',
+          usage: 'Database enumeration',
+          example: `az cosmosdb sql database list --account-name myCosmosDB --resource-group myGroup`,
+        },
+        {
+          command: 'Show SQL Database Details',
+          description: 'Get details for specific SQL database',
+          usage: 'Database management',
+          example: `az cosmosdb sql database show --account-name myCosmosDB --resource-group myGroup --name myDatabase`,
+        },
+        {
+          command: 'Create SQL Database',
+          description: 'Create new SQL API database',
+          usage: 'Database creation',
+          example: `az cosmosdb sql database create --account-name myCosmosDB --resource-group myGroup --name myDatabase`,
+        },
+        {
+          command: 'Delete SQL Database',
+          description: 'Delete SQL API database',
+          usage: 'Database management',
+          example: `az cosmosdb sql database delete --account-name myCosmosDB --resource-group myGroup --name myDatabase`,
+        },
+        {
+          command: 'List SQL Containers',
+          description: 'List SQL API containers in database',
+          usage: 'Container enumeration',
+          example: `az cosmosdb sql container list --account-name myCosmosDB --resource-group myGroup --database-name myDatabase`,
+        },
+        {
+          command: 'Show SQL Container Details',
+          description: 'Get details for specific SQL container',
+          usage: 'Container management',
+          example: `az cosmosdb sql container show --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer`,
+        },
+        {
+          command: 'Create SQL Container',
+          description: 'Create new SQL API container',
+          usage: 'Container creation',
+          example: `az cosmosdb sql container create --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer --partition-key-path "/id"`,
+        },
+        {
+          command: 'Delete SQL Container',
+          description: 'Delete SQL API container',
+          usage: 'Container management',
+          example: `az cosmosdb sql container delete --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer`,
+        },
+        {
+          command: 'List MongoDB Databases',
+          description: 'List MongoDB API databases',
+          usage: 'MongoDB enumeration',
+          example: `az cosmosdb mongodb database list --account-name myCosmosDB --resource-group myGroup`,
+        },
+        {
+          command: 'Create MongoDB Database',
+          description: 'Create new MongoDB API database',
+          usage: 'MongoDB creation',
+          example: `az cosmosdb mongodb database create --account-name myCosmosDB --resource-group myGroup --name myMongoDB`,
+        },
+        {
+          command: 'List MongoDB Collections',
+          description: 'List MongoDB collections',
+          usage: 'MongoDB management',
+          example: `az cosmosdb mongodb collection list --account-name myCosmosDB --resource-group myGroup --database-name myMongoDB`,
+        },
+        {
+          command: 'Create MongoDB Collection',
+          description: 'Create new MongoDB collection',
+          usage: 'MongoDB creation',
+          example: `az cosmosdb mongodb collection create --account-name myCosmosDB --resource-group myGroup --database-name myMongoDB --name myCollection --shard-key "_id"`,
+        },
+        {
+          command: 'Regenerate Cosmos DB Key',
+          description: 'Regenerate access key for Cosmos DB',
+          usage: 'Cosmos DB security',
+          example: `az cosmosdb keys regenerate --name myCosmosDB --resource-group myGroup --key-kind primary`,
+        },
+        {
+          command: 'Enable Cosmos DB SQL Throughput',
+          description: 'Set throughput for SQL database or container',
+          usage: 'Performance tuning',
+          example: `az cosmosdb sql container throughput update --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer --throughput 400`,
+        },
+        {
+          command: 'Show Cosmos DB SQL Throughput',
+          description: 'Get throughput settings for SQL resources',
+          usage: 'Performance monitoring',
+          example: `az cosmosdb sql container throughput show --account-name myCosmosDB --resource-group myGroup --database-name myDatabase --name myContainer`,
+        },
+      ],
+    },
+    // EXPERT LEVEL
+    {
+      title: 'Expert Level - Advanced CLI Techniques',
+      commands: [
+        {
+          command: 'JMESPath Filter by Location',
+          description: 'Filter Azure resources by location using JMESPath',
+          usage: 'Advanced querying',
+          example: `az vm list --query "[?location=='eastus']"`,
+        },
+        {
+          command: 'JMESPath Filter and Select Fields',
+          description: 'Filter resources and select specific fields',
+          usage: 'Advanced querying',
+          example: `az vm list --query "[?contains(name, 'prod')].{name:name,location:location}"`,
+        },
+        {
+          command: 'JMESPath Sort by Name',
+          description: 'Sort resource list by name using JMESPath',
+          usage: 'Advanced querying',
+          example: `az vm list --query "sort_by([], &name)"`,
+        },
+        {
+          command: 'JMESPath Sort by Date',
+          description: 'Sort resources by creation date descending',
+          usage: 'Advanced querying',
+          example: `az vm list --query "reverse(sort_by([], &creationDate))"`,
+        },
+        {
+          command: 'Limit Query Results',
+          description: 'Limit number of results returned',
+          usage: 'Pagination control',
+          example: `az vm list --top 50`,
+        },
+        {
+          command: 'Get All Results',
+          description: 'Get all results without pagination limits',
+          usage: 'Pagination control',
+          example: `az vm list --all`,
+        },
+        {
+          command: 'Output in Table Format',
+          description: 'Display command output in table format',
+          usage: 'Output formatting',
+          example: `az group list --output table`,
+        },
+        {
+          command: 'Output in TSV Format',
+          description: 'Display output in TSV format for scripting',
+          usage: 'Output formatting',
+          example: `az group list --output tsv`,
+        },
+        {
+          command: 'Pipe to jq for Processing',
+          description: 'Pipe JSON output to jq for advanced processing',
+          usage: 'Output processing',
+          example: `az group list --output json | jq '.[].name'`,
+        },
+        {
+          command: 'Process Each Result with xargs',
+          description: 'Process each query result with xargs',
+          usage: 'Batch processing',
+          example: `az group list --query "[].name" --output tsv | xargs -I {} az group show --name {}`,
+        },
+        {
+          command: 'Parallel Operations with Background Jobs',
+          description: 'Execute commands in parallel across resource groups',
+          usage: 'Parallel execution',
+          example: `for rg in $(az group list --query "[].name" --output tsv); do
+    az vm list --resource-group $rg &
+done
+wait  # Wait for all background jobs`,
+        },
+        {
+          command: 'Batch Operations with --ids',
+          description: 'Perform batch operations using resource IDs',
+          usage: 'Batch operations',
+          example: `az vm list --query "[].id" --output tsv | az vm stop --ids @-`,
+        },
+        {
+          command: 'Start VMs in Specific Location',
+          description: 'Start all VMs in specific location',
+          usage: 'Batch operations',
+          example: `az vm list --query "[?location=='eastus'].id" --output tsv | az vm start --ids @-`,
+        },
+        {
+          command: 'Error Handling with Retry',
+          description: 'Implement error handling and retry logic',
+          usage: 'Error handling',
+          example: `az vm create --resource-group myGroup --name myVM --image UbuntuLTS --no-wait || {
+    echo "VM creation failed, retrying..."
+    az vm create --resource-group myGroup --name myVM --image UbuntuLTS
+}`,
+        },
+        {
+          command: 'Set Default Resource Group',
+          description: 'Configure default resource group for CLI',
+          usage: 'Configuration profiles',
+          example: `az config set defaults.group=myResourceGroup`,
+        },
+        {
+          command: 'Set Default Location',
+          description: 'Configure default location for CLI',
+          usage: 'Configuration profiles',
+          example: `az config set defaults.location=eastus`,
+        },
+        {
+          command: 'Set Default Output Format',
+          description: 'Configure default output format',
+          usage: 'Configuration profiles',
+          example: `az config set defaults.output=table`,
+        },
+        {
+          command: 'Show Only Errors',
+          description: 'Configure CLI to show only errors',
+          usage: 'Configuration profiles',
+          example: `az config set core.only_show_errors=true`,
+        },
+        {
+          command: 'Enable Dynamic Extension Install',
+          description: 'Enable automatic extension installation',
+          usage: 'Configuration profiles',
+          example: `az config set extension.use_dynamic_install=yes_prompt`,
+        },
+        {
+          command: 'Set Environment Variables',
+          description: 'Configure Azure CLI with environment variables',
+          usage: 'Environment setup',
+          example: `export AZURE_CLI_DISABLE_CONFIRMATION=yes
+export AZURE_DEFAULT_LOCATION=eastus
+export AZURE_DEFAULT_GROUP=myResourceGroup
+export AZURE_CONFIG_DIR=/custom/path`,
+        },
+        {
+          command: 'Custom Output Format Query',
+          description: 'Create custom formatted output with JMESPath',
+          usage: 'Custom formatting',
+          example: `az vm list --query "[].{Name:name, Location:location, Size:hardwareProfile.vmSize}" --output table`,
+        },
+        {
+          command: 'Generate CLI Skeleton',
+          description: 'Generate JSON skeleton for commands',
+          usage: 'Command scaffolding',
+          example: `az vm create --generate-cli-skeleton`,
+        },
+        {
+          command: 'Use CLI Input JSON',
+          description: 'Use JSON file for CLI command input',
+          usage: 'File-based input',
+          example: `az vm create --resource-group myGroup --name myVM --cli-input-json file://vm-config.json`,
+        },
+        {
+          command: 'Configure Retry Mode',
+          description: 'Set CLI retry behavior for network operations',
+          usage: 'Error handling',
+          example: `az config set core.retry_mode=standard`,
+        },
+        {
+          command: 'Set Maximum Attempts',
+          description: 'Configure maximum retry attempts',
+          usage: 'Error handling',
+          example: `az config set core.max_attempts=5`,
+        },
+        {
+          command: 'Enable Debug Logging',
+          description: 'Enable debug output for troubleshooting',
+          usage: 'Debugging',
+          example: `az vm list --debug`,
+        },
+        {
+          command: 'Set Request Timeout',
+          description: 'Configure timeout for HTTP requests',
+          usage: 'Performance tuning',
+          example: `az config set core.request_timeout=30`,
+        },
+      ],
+    },
+    {
+      title: 'Expert Level - Security, Compliance, and Governance',
+      commands: [
+        {
+          command: 'List Security Center Pricing',
+          description: 'List Azure Security Center pricing tiers',
+          usage: 'Security configuration',
+          example: `az security pricing list`,
+        },
+        {
+          command: 'Set Security Center Pricing',
+          description: 'Configure Security Center pricing for resource type',
+          usage: 'Security configuration',
+          example: `az security pricing create --name VirtualMachines --resource-group myGroup --pricing-tier Standard`,
+        },
+        {
+          command: 'List Security Solutions',
+          description: 'List security solutions in resource group',
+          usage: 'Security management',
+          example: `az security security-solutions list --resource-group myGroup`,
+        },
+        {
+          command: 'Add Security Solution',
+          description: 'Add security solution to virtual machine',
+          usage: 'Security management',
+          example: `az security security-solutions create --resource-group myGroup --name mySolution --virtual-machine myVM`,
+        },
+        {
+          command: 'List Security Assessments',
+          description: 'List security assessments',
+          usage: 'Security assessment',
+          example: `az security assessment list`,
+        },
+        {
+          command: 'Show Security Assessment',
+          description: 'Get details for security assessment',
+          usage: 'Security assessment',
+          example: `az security assessment show --name assessment-name --resource-group myGroup`,
+        },
+        {
+          command: 'Create Security Assessment',
+          description: 'Create security assessment',
+          usage: 'Security assessment',
+          example: `az security assessment create --name myAssessment --resource-group myGroup --status Healthy`,
+        },
+        {
+          command: 'List Security Alerts',
+          description: 'List security alerts',
+          usage: 'Security monitoring',
+          example: `az security alert list`,
+        },
+        {
+          command: 'Show Security Alert',
+          description: 'Get details for security alert',
+          usage: 'Security monitoring',
+          example: `az security alert show --name alert-name --resource-group myGroup`,
+        },
+        {
+          command: 'Update Security Alert Status',
+          description: 'Update status of security alert',
+          usage: 'Security monitoring',
+          example: `az security alert update --name alert-name --resource-group myGroup --status Dismissed`,
+        },
+        {
+          command: 'List Policy Definitions',
+          description: 'List Azure Policy definitions',
+          usage: 'Policy management',
+          example: `az policy definition list`,
+        },
+        {
+          command: 'Show Policy Definition',
+          description: 'Get details for policy definition',
+          usage: 'Policy management',
+          example: `az policy definition show --name policy-name`,
+        },
+        {
+          command: 'Create Policy Definition',
+          description: 'Create new Azure Policy definition',
+          usage: 'Policy creation',
+          example: `az policy definition create --name myPolicy --display-name "My Policy" --rules @policy.json --params @params.json`,
+        },
+        {
+          command: 'List Policy Assignments',
+          description: 'List Azure Policy assignments',
+          usage: 'Policy management',
+          example: `az policy assignment list`,
+        },
+        {
+          command: 'Create Policy Assignment',
+          description: 'Assign policy to scope',
+          usage: 'Policy assignment',
+          example: `az policy assignment create --name myAssignment --policy policy-definition-id --scope /subscriptions/sub-id`,
+        },
+        {
+          command: 'List Policy States',
+          description: 'List policy compliance states',
+          usage: 'Policy compliance',
+          example: `az policy state list --resource /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Compute/virtualMachines/vm-name`,
+        },
+        {
+          command: 'List Blueprints',
+          description: 'List Azure Blueprints',
+          usage: 'Blueprint management',
+          example: `az blueprint list`,
+        },
+        {
+          command: 'Show Blueprint',
+          description: 'Get details for Azure Blueprint',
+          usage: 'Blueprint management',
+          example: `az blueprint show --name myBlueprint`,
+        },
+        {
+          command: 'Create Blueprint',
+          description: 'Create new Azure Blueprint',
+          usage: 'Blueprint creation',
+          example: `az blueprint create --name myBlueprint --description "My Blueprint"`,
+        },
+        {
+          command: 'Create Blueprint Version',
+          description: 'Create version of Azure Blueprint',
+          usage: 'Blueprint management',
+          example: `az blueprint version create --blueprint-name myBlueprint --version "1.0"`,
+        },
+        {
+          command: 'Assign Blueprint',
+          description: 'Assign Azure Blueprint to subscription',
+          usage: 'Blueprint assignment',
+          example: `az blueprint assignment create --blueprint-name myBlueprint --assignment-name myAssignment`,
+        },
+        {
+          command: 'Enable Azure AD Privileged Identity Management',
+          description: 'Enable PIM for Azure AD roles',
+          usage: 'Identity management',
+          example: `az role assignment create --assignee user@example.com --role "Privileged Role Administrator"`,
+        },
+        {
+          command: 'List Azure AD Role Assignments',
+          description: 'List Azure AD role assignments',
+          usage: 'Identity management',
+          example: `az ad sp list --show-mine`,
+        },
+        {
+          command: 'Create Custom Role',
+          description: 'Create custom Azure role',
+          usage: 'Role management',
+          example: `az role definition create --role-name myCustomRole --description "Custom role for specific tasks" --data @role-definition.json`,
+        },
+        {
+          command: 'Assign Custom Role',
+          description: 'Assign custom role to user/service principal',
+          usage: 'Role management',
+          example: `az role assignment create --assignee user@example.com --role myCustomRole --scope /subscriptions/sub-id/resourceGroups/group-name`,
+        },
+      ],
+    },
+    {
+      title: 'Expert Level - Cost Management and Optimization',
+      commands: [
+        {
+          command: 'Query Cost Management Data',
+          description: 'Query cost and usage data with aggregation',
+          usage: 'Cost analysis',
+          example: `az costmanagement query --type Usage --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --dimension ResourceGroup,ResourceType`,
+        },
+        {
+          command: 'List Cost Exports',
+          description: 'List cost export configurations',
+          usage: 'Cost management',
+          example: `az costmanagement export list --scope /subscriptions/sub-id`,
+        },
+        {
+          command: 'Create Cost Export',
+          description: 'Create cost export to storage account',
+          usage: 'Cost management',
+          example: `az costmanagement export create --name myExport --scope /subscriptions/sub-id --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --storage-account-id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Storage/storageAccounts/storageaccount`,
+        },
+        {
+          command: 'List Budgets',
+          description: 'List budgets in resource group or subscription',
+          usage: 'Budget management',
+          example: `az consumption budget list --resource-group myGroup`,
+        },
+        {
+          command: 'Create Budget',
+          description: 'Create cost budget for resource group',
+          usage: 'Budget creation',
+          example: `az consumption budget create --resource-group myGroup --name myBudget --amount 1000 --time-grain Monthly --start-date 2023-01-01 --end-date 2023-12-31`,
+        },
+        {
+          command: 'Show Budget Details',
+          description: 'Get details for specific budget',
+          usage: 'Budget management',
+          example: `az consumption budget show --resource-group myGroup --name myBudget`,
+        },
+        {
+          command: 'Delete Budget',
+          description: 'Delete cost budget',
+          usage: 'Budget management',
+          example: `az consumption budget delete --resource-group myGroup --name myBudget`,
+        },
+        {
+          command: 'List Reservations',
+          description: 'List Azure reservations',
+          usage: 'Reservation management',
+          example: `az reservations reservation list`,
+        },
+        {
+          command: 'Show Reservation Details',
+          description: 'Get details for specific reservation',
+          usage: 'Reservation management',
+          example: `az reservations reservation show --reservation-order-id order-id --reservation-id reservation-id`,
+        },
+        {
+          command: 'List Reservation Orders',
+          description: 'List reservation orders',
+          usage: 'Reservation management',
+          example: `az reservations reservation order list`,
+        },
+        {
+          command: 'Show Available Reservations',
+          description: 'Show available reservations for purchase',
+          usage: 'Reservation planning',
+          example: `az reservations catalog show --reserved-resource-type "VirtualMachines" --location eastus`,
+        },
+        {
+          command: 'List Savings Plans',
+          description: 'List Azure savings plans',
+          usage: 'Savings management',
+          example: `az savingsplan list`,
+        },
+        {
+          command: 'Show Savings Plan Details',
+          description: 'Get details for specific savings plan',
+          usage: 'Savings management',
+          example: `az savingsplan show --name mySavingsPlan`,
+        },
+        {
+          command: 'Create Savings Plan',
+          description: 'Create new Azure savings plan',
+          usage: 'Savings creation',
+          example: `az savingsplan create --name mySavingsPlan --resource-group myGroup --savings-plan-type Compute --committed-amount 0.001 --commitment-duration "P3Y" --billing-scope /subscriptions/sub-id`,
+        },
+        {
+          command: 'List Advisor Recommendations',
+          description: 'List all Azure Advisor recommendations',
+          usage: 'Optimization recommendations',
+          example: `az advisor recommendation list`,
+        },
+        {
+          command: 'List Cost Recommendations',
+          description: 'List cost optimization recommendations',
+          usage: 'Cost optimization',
+          example: `az advisor recommendation list --category Cost`,
+        },
+        {
+          command: 'List Performance Recommendations',
+          description: 'List performance optimization recommendations',
+          usage: 'Performance optimization',
+          example: `az advisor recommendation list --category Performance`,
+        },
+        {
+          command: 'List High Availability Recommendations',
+          description: 'List high availability recommendations',
+          usage: 'Reliability optimization',
+          example: `az advisor recommendation list --category HighAvailability`,
+        },
+        {
+          command: 'List Security Recommendations',
+          description: 'List security recommendations',
+          usage: 'Security optimization',
+          example: `az advisor recommendation list --category Security`,
+        },
+        {
+          command: 'Get Cost Forecast',
+          description: 'Get cost forecast for specified period',
+          usage: 'Cost prediction',
+          example: `az costmanagement forecast --timeframe MonthToDate --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --configuration "columns=[Date,Cost,Currency]"`,
+        },
+        {
+          command: 'Analyze Cost by Dimension',
+          description: 'Analyze costs by specific dimensions',
+          usage: 'Cost analysis',
+          example: `az costmanagement query --type Usage --dataset "Aggregation:TotalCost=sum{Cost}" --timeframe MonthToDate --group-by Type=DIMENSION,Key=ServiceName`,
+        },
+        {
+          command: 'Get Budget Notifications',
+          description: 'Get budget alert notifications',
+          usage: 'Budget monitoring',
+          example: `az monitor metrics alert list --resource-group myGroup --query "[?contains(name, 'budget')]"`,
+        },
+      ],
+    },
+    {
+      title: 'Expert Level - Multi-Cloud and Hybrid Management',
+      commands: [
+        {
+          command: 'List Connected Kubernetes Clusters',
+          description: 'List Kubernetes clusters connected to Azure Arc',
+          usage: 'Azure Arc management',
+          example: `az connectedk8s list`,
+        },
+        {
+          command: 'Connect Kubernetes Cluster to Azure Arc',
+          description: 'Connect on-premises Kubernetes cluster to Azure Arc',
+          usage: 'Azure Arc operations',
+          example: `az connectedk8s connect --name myCluster --resource-group myGroup`,
+        },
+        {
+          command: 'Show Connected Cluster Details',
+          description: 'Get details for Azure Arc connected cluster',
+          usage: 'Azure Arc management',
+          example: `az connectedk8s show --name myCluster --resource-group myGroup`,
+        },
+        {
+          command: 'Disconnect Kubernetes Cluster from Azure Arc',
+          description: 'Disconnect cluster from Azure Arc',
+          usage: 'Azure Arc operations',
+          example: `az connectedk8s delete --name myCluster --resource-group myGroup`,
+        },
+        {
+          command: 'List Connected Machines',
+          description: 'List servers connected to Azure Arc',
+          usage: 'Azure Arc for servers',
+          example: `az connectedmachine list`,
+        },
+        {
+          command: 'Show Connected Machine Details',
+          description: 'Get details for Azure Arc connected machine',
+          usage: 'Azure Arc for servers',
+          example: `az connectedmachine show --name myMachine --resource-group myGroup`,
+        },
+        {
+          command: 'Connect Machine to Azure Arc',
+          description: 'Connect on-premises server to Azure Arc',
+          usage: 'Azure Arc for servers',
+          example: `az connectedmachine connect --name myMachine --resource-group myGroup`,
+        },
+        {
+          command: 'Disconnect Machine from Azure Arc',
+          description: 'Disconnect server from Azure Arc',
+          usage: 'Azure Arc for servers',
+          example: `az connectedmachine delete --name myMachine --resource-group myGroup`,
+        },
+        {
+          command: 'List Arc-Enabled SQL Servers',
+          description: 'List SQL servers managed by Azure Arc',
+          usage: 'Azure Arc for SQL',
+          example: `az arc sql server list`,
+        },
+        {
+          command: 'Create Arc-Enabled SQL Server',
+          description: 'Enable Azure Arc for SQL Server',
+          usage: 'Azure Arc for SQL',
+          example: `az arc sql server create --name mySQLServer --resource-group myGroup --location eastus`,
+        },
+        {
+          command: 'Show Arc-Enabled SQL Server',
+          description: 'Get details for Arc-enabled SQL server',
+          usage: 'Azure Arc for SQL',
+          example: `az arc sql server show --name mySQLServer --resource-group myGroup`,
+        },
+        {
+          command: 'List Arc-Enabled PostgreSQL Servers',
+          description: 'List PostgreSQL servers managed by Azure Arc',
+          usage: 'Azure Arc for PostgreSQL',
+          example: `az arc postgres server list`,
+        },
+        {
+          command: 'Create Arc-Enabled PostgreSQL Server',
+          description: 'Enable Azure Arc for PostgreSQL server',
+          usage: 'Azure Arc for PostgreSQL',
+          example: `az arc postgres server create --name myPostgresServer --resource-group myGroup --location eastus`,
+        },
+        {
+          command: 'Register Azure Stack Cloud',
+          description: 'Register Azure Stack Hub as custom cloud',
+          usage: 'Azure Stack management',
+          example: `az cloud register --name AzureStack --endpoint https://management.local.azurestack.external`,
+        },
+        {
+          command: 'Set Azure Stack as Active Cloud',
+          description: 'Switch to Azure Stack environment',
+          usage: 'Azure Stack management',
+          example: `az cloud set --name AzureStack`,
+        },
+        {
+          command: 'Update Azure Stack Profile',
+          description: 'Update Azure Stack cloud profile',
+          usage: 'Azure Stack management',
+          example: `az cloud update --name AzureStack --set profile=2019-03-01-hybrid`,
+        },
+        {
+          command: 'List Azure Stack Edge Devices',
+          description: 'List Azure Stack Edge devices',
+          usage: 'Edge device management',
+          example: `az databoxedge device list`,
+        },
+        {
+          command: 'Show Azure Stack Edge Device',
+          description: 'Get details for Azure Stack Edge device',
+          usage: 'Edge device management',
+          example: `az databoxedge device show --name myDevice --resource-group myGroup`,
+        },
+        {
+          command: 'Create Azure Stack Edge Device',
+          description: 'Create new Azure Stack Edge device',
+          usage: 'Edge device creation',
+          example: `az databoxedge device create --name myDevice --resource-group myGroup --location eastus --sku Edge`,
+        },
+        {
+          command: 'Multi-Cloud Resource Query',
+          description: 'Query resources across multiple clouds using Azure Resource Graph',
+          usage: 'Multi-cloud management',
+          example: `az graph query -q "Resources | where type =~ 'Microsoft.Compute/virtualMachines' or type =~ 'Microsoft.Storage/storageAccounts'"`,
+        },
+        {
+          command: 'Cross-Subscription Resource Query',
+          description: 'Query resources across multiple subscriptions',
+          usage: 'Multi-subscription management',
+          example: `az graph query -q "Resources | where subscriptionId in ('sub1', 'sub2') | summarize count() by subscriptionId, type"`,
+        },
+        {
+          command: 'Hybrid Network Configuration',
+          description: 'Configure hybrid network connections',
+          usage: 'Hybrid networking',
+          example: `az network vpn-connection create --resource-group myGroup --name myConnection --vnet-gateway1 myGateway --local-gateway2 myLocalGateway --shared-key "mySharedKey"`,
+        },
+        {
+          command: 'ExpressRoute Circuit Management',
+          description: 'Manage ExpressRoute circuits for hybrid connectivity',
+          usage: 'Hybrid networking',
+          example: `az network express-route create --resource-group myGroup --name myCircuit --peering-location SiliconValley --bandwidth 200 --sku Standard_MeteredData --provider "Equinix" --location eastus`,
+        },
+        {
+          command: 'Azure Monitor for Hybrid Resources',
+          description: 'Configure monitoring for hybrid resources',
+          usage: 'Hybrid monitoring',
+          example: `az monitor log-analytics workspace linked-service create --name myLinkedService --resource-group myGroup --workspace-name myWorkspace --write-access-resource-id /subscriptions/sub-id/resourceGroups/group-name/providers/Microsoft.Automation/automationAccounts/accountName`,
+        },
+        {
+          command: 'Hybrid Identity Management',
+          description: 'Manage hybrid identity with Azure AD Connect',
+          usage: 'Identity management',
+          example: `az ad ds create --resource-group myGroup --name myDomainService --location eastus --domain-name example.com --replica-sets "eastus"`,
+        },
+      ],
+    },
+  ],
 };

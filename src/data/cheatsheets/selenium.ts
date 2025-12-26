@@ -11,28 +11,50 @@ export const seleniumCheatsheet = {
             title: 'Setup & Installation',
             commands: [
                 {
-                    command: 'Python Installation',
+                    command: 'Install Selenium Python',
                     description: 'Install Selenium for Python',
                     usage: 'pip install selenium',
-                    example: 'pip install selenium\n# Install specific version\npip install selenium==4.15.0',
+                    example: `pip install selenium`,
                 },
                 {
-                    command: 'Java Installation',
-                    description: 'Add Selenium dependency (Maven)',
+                    command: 'Install Specific Selenium Version',
+                    description: 'Install specific Selenium version',
+                    usage: 'pip install selenium==<version>',
+                    example: `pip install selenium==4.15.0`,
+                },
+                {
+                    command: 'Install Selenium Java Maven',
+                    description: 'Add Selenium dependency to Maven project',
                     usage: '<dependency> in pom.xml',
-                    example: '<dependency>\n  <groupId>org.seleniumhq.selenium</groupId>\n  <artifactId>selenium-java</artifactId>\n  <version>4.15.0</version>\n</dependency>',
+                    example: `<dependency>
+  <groupId>org.seleniumhq.selenium</groupId>
+  <artifactId>selenium-java</artifactId>
+  <version>4.15.0</version>
+</dependency>`,
                 },
                 {
-                    command: 'JavaScript Installation',
+                    command: 'Install Selenium JavaScript',
                     description: 'Install Selenium for Node.js',
                     usage: 'npm install selenium-webdriver',
-                    example: 'npm install selenium-webdriver\n# Or with TypeScript\nnpm install selenium-webdriver @types/selenium-webdriver',
+                    example: `npm install selenium-webdriver`,
                 },
                 {
-                    command: 'WebDriver Manager',
-                    description: 'Auto-manage browser drivers',
-                    usage: 'webdriver-manager (Python/Java)',
-                    example: '# Python\npip install webdriver-manager\n\n# Java\n# Use Selenium Manager (built-in 4.6+)',
+                    command: 'Install Selenium TypeScript',
+                    description: 'Install Selenium with TypeScript support',
+                    usage: 'npm install selenium-webdriver @types/selenium-webdriver',
+                    example: `npm install selenium-webdriver @types/selenium-webdriver`,
+                },
+                {
+                    command: 'Install WebDriver Manager Python',
+                    description: 'Auto-manage browser drivers for Python',
+                    usage: 'pip install webdriver-manager',
+                    example: `pip install webdriver-manager`,
+                },
+                {
+                    command: 'Selenium Manager Java',
+                    description: 'Use built-in Selenium Manager for Java',
+                    usage: 'Selenium 4.6+ includes driver management',
+                    example: `# Use Selenium Manager (built-in 4.6+)`,
                 },
             ],
         },
@@ -40,40 +62,93 @@ export const seleniumCheatsheet = {
             title: 'WebDriver Initialization',
             commands: [
                 {
-                    command: 'Chrome Driver',
-                    description: 'Initialize Chrome browser',
-                    usage: 'WebDriver driver = new ChromeDriver()',
-                    example: '# Python\nfrom selenium import webdriver\nfrom selenium.webdriver.chrome.service import Service\nfrom webdriver_manager.chrome import ChromeDriverManager\n\ndriver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))\n\n# Java\nWebDriver driver = new ChromeDriver();',
+                    command: 'Initialize Chrome Python',
+                    description: 'Initialize Chrome browser with Python',
+                    usage: 'webdriver.Chrome()',
+                    example: `from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))`,
                 },
                 {
-                    command: 'Firefox Driver',
-                    description: 'Initialize Firefox browser',
-                    usage: 'WebDriver driver = new FirefoxDriver()',
-                    example: '# Python\nfrom selenium.webdriver.firefox.service import Service\nfrom webdriver_manager.firefox import GeckoDriverManager\n\ndriver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))\n\n# Java\nWebDriver driver = new FirefoxDriver();',
+                    command: 'Initialize Chrome Java',
+                    description: 'Initialize Chrome browser with Java',
+                    usage: 'new ChromeDriver()',
+                    example: `WebDriver driver = new ChromeDriver();`,
                 },
                 {
-                    command: 'Edge Driver',
-                    description: 'Initialize Edge browser',
-                    usage: 'WebDriver driver = new EdgeDriver()',
-                    example: '# Python\ndriver = webdriver.Edge()\n\n# Java\nWebDriver driver = new EdgeDriver();',
+                    command: 'Initialize Firefox Python',
+                    description: 'Initialize Firefox browser with Python',
+                    usage: 'webdriver.Firefox()',
+                    example: `from selenium.webdriver.firefox.service import Service
+from webdriver_manager.firefox import GeckoDriverManager
+
+driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))`,
                 },
                 {
-                    command: 'Safari Driver',
-                    description: 'Initialize Safari browser',
-                    usage: 'WebDriver driver = new SafariDriver()',
-                    example: '# Python\ndriver = webdriver.Safari()\n\n# Java\nWebDriver driver = new SafariDriver();',
+                    command: 'Initialize Firefox Java',
+                    description: 'Initialize Firefox browser with Java',
+                    usage: 'new FirefoxDriver()',
+                    example: `WebDriver driver = new FirefoxDriver();`,
                 },
                 {
-                    command: 'Headless Mode',
-                    description: 'Run browser in headless mode',
-                    usage: 'ChromeOptions / FirefoxOptions',
-                    example: '# Python\nfrom selenium.webdriver.chrome.options import Options\n\noptions = Options()\noptions.add_argument("--headless")\ndriver = webdriver.Chrome(options=options)\n\n# Java\nChromeOptions options = new ChromeOptions();\noptions.addArguments("--headless");\nWebDriver driver = new ChromeDriver(options);',
+                    command: 'Initialize Edge Python',
+                    description: 'Initialize Edge browser with Python',
+                    usage: 'webdriver.Edge()',
+                    example: `driver = webdriver.Edge()`,
                 },
                 {
-                    command: 'Browser Options',
-                    description: 'Configure browser behavior',
-                    usage: 'ChromeOptions / FirefoxOptions',
-                    example: '# Python\noptions = Options()\noptions.add_argument("--start-maximized")\noptions.add_argument("--disable-notifications")\noptions.add_experimental_option("excludeSwitches", ["enable-logging"])\n\n# Java\nChromeOptions options = new ChromeOptions();\noptions.addArguments("--start-maximized", "--disable-notifications");',
+                    command: 'Initialize Edge Java',
+                    description: 'Initialize Edge browser with Java',
+                    usage: 'new EdgeDriver()',
+                    example: `WebDriver driver = new EdgeDriver();`,
+                },
+                {
+                    command: 'Initialize Safari Python',
+                    description: 'Initialize Safari browser with Python',
+                    usage: 'webdriver.Safari()',
+                    example: `driver = webdriver.Safari()`,
+                },
+                {
+                    command: 'Initialize Safari Java',
+                    description: 'Initialize Safari browser with Java',
+                    usage: 'new SafariDriver()',
+                    example: `WebDriver driver = new SafariDriver();`,
+                },
+                {
+                    command: 'Headless Chrome Python',
+                    description: 'Run Chrome in headless mode with Python',
+                    usage: 'ChromeOptions with --headless',
+                    example: `from selenium.webdriver.chrome.options import Options
+
+options = Options()
+options.add_argument("--headless")
+driver = webdriver.Chrome(options=options)`,
+                },
+                {
+                    command: 'Headless Chrome Java',
+                    description: 'Run Chrome in headless mode with Java',
+                    usage: 'ChromeOptions with --headless',
+                    example: `ChromeOptions options = new ChromeOptions();
+options.addArguments("--headless");
+WebDriver driver = new ChromeDriver(options);`,
+                },
+                {
+                    command: 'Browser Options Python',
+                    description: 'Configure browser options with Python',
+                    usage: 'ChromeOptions configuration',
+                    example: `options = Options()
+options.add_argument("--start-maximized")
+options.add_argument("--disable-notifications")
+options.add_experimental_option("excludeSwitches", ["enable-logging"])`,
+                },
+                {
+                    command: 'Browser Options Java',
+                    description: 'Configure browser options with Java',
+                    usage: 'ChromeOptions configuration',
+                    example: `ChromeOptions options = new ChromeOptions();
+options.addArguments("--start-maximized", "--disable-notifications");`,
                 },
             ],
         },
@@ -81,58 +156,117 @@ export const seleniumCheatsheet = {
             title: 'Locators',
             commands: [
                 {
-                    command: 'ID Locator',
-                    description: 'Find element by ID',
+                    command: 'Find by ID Python',
+                    description: 'Find element by ID using Python',
                     usage: 'find_element(By.ID, "id")',
-                    example: '# Python\nelement = driver.find_element(By.ID, "username")\n\n# Java\nWebElement element = driver.findElement(By.id("username"));',
+                    example: `element = driver.find_element(By.ID, "username")`,
                 },
                 {
-                    command: 'Name Locator',
-                    description: 'Find element by name attribute',
+                    command: 'Find by ID Java',
+                    description: 'Find element by ID using Java',
+                    usage: 'findElement(By.id("id"))',
+                    example: `WebElement element = driver.findElement(By.id("username"));`,
+                },
+                {
+                    command: 'Find by Name Python',
+                    description: 'Find element by name attribute using Python',
                     usage: 'find_element(By.NAME, "name")',
-                    example: '# Python\nelement = driver.find_element(By.NAME, "email")\n\n# Java\nWebElement element = driver.findElement(By.name("email"));',
+                    example: `element = driver.find_element(By.NAME, "email")`,
                 },
                 {
-                    command: 'Class Name Locator',
-                    description: 'Find element by class name',
+                    command: 'Find by Name Java',
+                    description: 'Find element by name attribute using Java',
+                    usage: 'findElement(By.name("name"))',
+                    example: `WebElement element = driver.findElement(By.name("email"));`,
+                },
+                {
+                    command: 'Find by Class Name Python',
+                    description: 'Find element by class name using Python',
                     usage: 'find_element(By.CLASS_NAME, "class")',
-                    example: '# Python\nelement = driver.find_element(By.CLASS_NAME, "btn-primary")\n\n# Java\nWebElement element = driver.findElement(By.className("btn-primary"));',
+                    example: `element = driver.find_element(By.CLASS_NAME, "btn-primary")`,
                 },
                 {
-                    command: 'Tag Name Locator',
-                    description: 'Find element by HTML tag',
+                    command: 'Find by Class Name Java',
+                    description: 'Find element by class name using Java',
+                    usage: 'findElement(By.className("class"))',
+                    example: `WebElement element = driver.findElement(By.className("btn-primary"));`,
+                },
+                {
+                    command: 'Find by Tag Name Python',
+                    description: 'Find element by HTML tag using Python',
                     usage: 'find_element(By.TAG_NAME, "tag")',
-                    example: '# Python\nelement = driver.find_element(By.TAG_NAME, "input")\n\n# Java\nWebElement element = driver.findElement(By.tagName("input"));',
+                    example: `element = driver.find_element(By.TAG_NAME, "input")`,
                 },
                 {
-                    command: 'Link Text Locator',
-                    description: 'Find link by exact text',
+                    command: 'Find by Tag Name Java',
+                    description: 'Find element by HTML tag using Java',
+                    usage: 'findElement(By.tagName("tag"))',
+                    example: `WebElement element = driver.findElement(By.tagName("input"));`,
+                },
+                {
+                    command: 'Find by Link Text Python',
+                    description: 'Find link by exact text using Python',
                     usage: 'find_element(By.LINK_TEXT, "text")',
-                    example: '# Python\nelement = driver.find_element(By.LINK_TEXT, "Click Here")\n\n# Java\nWebElement element = driver.findElement(By.linkText("Click Here"));',
+                    example: `element = driver.find_element(By.LINK_TEXT, "Click Here")`,
                 },
                 {
-                    command: 'Partial Link Text',
-                    description: 'Find link by partial text',
+                    command: 'Find by Link Text Java',
+                    description: 'Find link by exact text using Java',
+                    usage: 'findElement(By.linkText("text"))',
+                    example: `WebElement element = driver.findElement(By.linkText("Click Here"));`,
+                },
+                {
+                    command: 'Find by Partial Link Text Python',
+                    description: 'Find link by partial text using Python',
                     usage: 'find_element(By.PARTIAL_LINK_TEXT, "text")',
-                    example: '# Python\nelement = driver.find_element(By.PARTIAL_LINK_TEXT, "Click")\n\n# Java\nWebElement element = driver.findElement(By.partialLinkText("Click"));',
+                    example: `element = driver.find_element(By.PARTIAL_LINK_TEXT, "Click")`,
                 },
                 {
-                    command: 'CSS Selector',
-                    description: 'Find element by CSS selector',
+                    command: 'Find by Partial Link Text Java',
+                    description: 'Find link by partial text using Java',
+                    usage: 'findElement(By.partialLinkText("text"))',
+                    example: `WebElement element = driver.findElement(By.partialLinkText("Click"));`,
+                },
+                {
+                    command: 'Find by CSS Selector Python',
+                    description: 'Find element by CSS selector using Python',
                     usage: 'find_element(By.CSS_SELECTOR, "selector")',
-                    example: '# Python\nelement = driver.find_element(By.CSS_SELECTOR, "#username")\nelement = driver.find_element(By.CSS_SELECTOR, ".btn-primary")\nelement = driver.find_element(By.CSS_SELECTOR, "input[type=\'text\']")\n\n# Java\nWebElement element = driver.findElement(By.cssSelector("#username"));',
+                    example: `element = driver.find_element(By.CSS_SELECTOR, "#username")
+element = driver.find_element(By.CSS_SELECTOR, ".btn-primary")
+element = driver.find_element(By.CSS_SELECTOR, "input[type='text']")`,
                 },
                 {
-                    command: 'XPath Locator',
-                    description: 'Find element by XPath',
+                    command: 'Find by CSS Selector Java',
+                    description: 'Find element by CSS selector using Java',
+                    usage: 'findElement(By.cssSelector("selector"))',
+                    example: `WebElement element = driver.findElement(By.cssSelector("#username"));`,
+                },
+                {
+                    command: 'Find by XPath Python',
+                    description: 'Find element by XPath using Python',
                     usage: 'find_element(By.XPATH, "xpath")',
-                    example: '# Python\nelement = driver.find_element(By.XPATH, "//input[@id=\'username\']")\nelement = driver.find_element(By.XPATH, "//button[contains(text(), \'Submit\')]")\n\n# Java\nWebElement element = driver.findElement(By.xpath("//input[@id=\'username\']"));',
+                    example: `element = driver.find_element(By.XPATH, "//input[@id='username']")
+element = driver.find_element(By.XPATH, "//button[contains(text(), 'Submit')]")`,
                 },
                 {
-                    command: 'Find Multiple Elements',
-                    description: 'Find all matching elements',
+                    command: 'Find by XPath Java',
+                    description: 'Find element by XPath using Java',
+                    usage: 'findElement(By.xpath("xpath"))',
+                    example: `WebElement element = driver.findElement(By.xpath("//input[@id='username']"));`,
+                },
+                {
+                    command: 'Find Multiple Elements Python',
+                    description: 'Find all matching elements using Python',
                     usage: 'find_elements(By.*, "value")',
-                    example: '# Python\nelements = driver.find_elements(By.CLASS_NAME, "item")\nfor element in elements:\n    print(element.text)\n\n# Java\nList<WebElement> elements = driver.findElements(By.className("item"));',
+                    example: `elements = driver.find_elements(By.CLASS_NAME, "item")
+for element in elements:
+    print(element.text)`,
+                },
+                {
+                    command: 'Find Multiple Elements Java',
+                    description: 'Find all matching elements using Java',
+                    usage: 'findElements(By.*, "value")',
+                    example: `List<WebElement> elements = driver.findElements(By.className("item"));`,
                 },
             ],
         },
@@ -141,63 +275,77 @@ export const seleniumCheatsheet = {
             commands: [
                 {
                     command: 'Absolute XPath',
-                    description: 'Full path from root',
+                    description: 'Full path from root element',
                     usage: '/html/body/div/input',
-                    example: '//input[@id="username"]\n# Avoid absolute XPath when possible',
+                    example: `//input[@id="username"]
+# Avoid absolute XPath when possible`,
                 },
                 {
                     command: 'Relative XPath',
                     description: 'Path from current node',
                     usage: '//tag[@attribute="value"]',
-                    example: '//input[@id="username"]\n//button[@type="submit"]',
+                    example: `//input[@id="username"]
+//button[@type="submit"]`,
                 },
                 {
                     command: 'XPath by Text',
-                    description: 'Find by text content',
+                    description: 'Find element by exact text content',
                     usage: '//tag[text()="exact"]',
-                    example: '//button[text()="Submit"]\n//a[text()="Click Here"]',
+                    example: `//button[text()="Submit"]
+//a[text()="Click Here"]`,
                 },
                 {
-                    command: 'XPath Contains',
-                    description: 'Partial text match',
+                    command: 'XPath Contains Text',
+                    description: 'Find element by partial text match',
                     usage: '//tag[contains(text(), "partial")]',
-                    example: '//button[contains(text(), "Submit")]\n//div[contains(@class, "error")]',
+                    example: `//button[contains(text(), "Submit")]
+//div[contains(@class, "error")]`,
                 },
                 {
                     command: 'XPath Starts With',
-                    description: 'Attribute starts with value',
+                    description: 'Find element where attribute starts with value',
                     usage: '//tag[starts-with(@attr, "value")]',
-                    example: '//input[starts-with(@id, "user")]\n//div[starts-with(@class, "btn")]',
+                    example: `//input[starts-with(@id, "user")]
+//div[starts-with(@class, "btn")]`,
                 },
                 {
                     command: 'XPath Ancestor',
                     description: 'Find ancestor elements',
                     usage: '//tag//ancestor::ancestorTag',
-                    example: '//input[@id="username"]//ancestor::form\n//span//ancestor::div[@class="container"]',
+                    example: `//input[@id="username"]//ancestor::form
+//span//ancestor::div[@class="container"]`,
                 },
                 {
-                    command: 'XPath Following',
-                    description: 'Find following siblings',
+                    command: 'XPath Following Sibling',
+                    description: 'Find following sibling elements',
                     usage: '//tag//following-sibling::siblingTag',
-                    example: '//input[@id="username"]//following-sibling::input\n//h1//following-sibling::p',
+                    example: `//input[@id="username"]//following-sibling::input
+//h1//following-sibling::p`,
                 },
                 {
-                    command: 'XPath Preceding',
-                    description: 'Find preceding siblings',
+                    command: 'XPath Preceding Sibling',
+                    description: 'Find preceding sibling elements',
                     usage: '//tag//preceding-sibling::siblingTag',
-                    example: '//input[@id="password"]//preceding-sibling::input',
+                    example: `//input[@id="password"]//preceding-sibling::input`,
                 },
                 {
                     command: 'XPath Parent',
                     description: 'Find parent element',
                     usage: '//tag//parent::parentTag',
-                    example: '//input[@id="username"]//parent::div\n//span//parent::button',
+                    example: `//input[@id="username"]//parent::div
+//span//parent::button`,
                 },
                 {
-                    command: 'XPath And/Or',
-                    description: 'Multiple conditions',
+                    command: 'XPath And Condition',
+                    description: 'Multiple conditions with AND',
                     usage: '//tag[@attr1="val1" and @attr2="val2"]',
-                    example: '//input[@type="text" and @name="email"]\n//button[@class="btn" or @id="submit"]',
+                    example: `//input[@type="text" and @name="email"]`,
+                },
+                {
+                    command: 'XPath Or Condition',
+                    description: 'Multiple conditions with OR',
+                    usage: '//tag[@attr1="val1" or @attr2="val2"]',
+                    example: `//button[@class="btn" or @id="submit"]`,
                 },
             ],
         },
@@ -205,58 +353,130 @@ export const seleniumCheatsheet = {
             title: 'Element Interactions',
             commands: [
                 {
-                    command: 'Click',
-                    description: 'Click on element',
+                    command: 'Click Element Python',
+                    description: 'Click on element using Python',
                     usage: 'element.click()',
-                    example: '# Python\nbutton = driver.find_element(By.ID, "submit")\nbutton.click()\n\n# Java\nWebElement button = driver.findElement(By.id("submit"));\nbutton.click();',
+                    example: `button = driver.find_element(By.ID, "submit")
+button.click()`,
                 },
                 {
-                    command: 'Send Keys',
-                    description: 'Type text into input',
+                    command: 'Click Element Java',
+                    description: 'Click on element using Java',
+                    usage: 'element.click()',
+                    example: `WebElement button = driver.findElement(By.id("submit"));
+button.click();`,
+                },
+                {
+                    command: 'Send Keys Python',
+                    description: 'Type text into input using Python',
                     usage: 'element.send_keys("text")',
-                    example: '# Python\ninput_field = driver.find_element(By.ID, "username")\ninput_field.send_keys("john.doe")\n\n# Java\nWebElement input = driver.findElement(By.id("username"));\ninput.sendKeys("john.doe");',
+                    example: `input_field = driver.find_element(By.ID, "username")
+input_field.send_keys("john.doe")`,
                 },
                 {
-                    command: 'Clear',
-                    description: 'Clear input field',
+                    command: 'Send Keys Java',
+                    description: 'Type text into input using Java',
+                    usage: 'element.sendKeys("text")',
+                    example: `WebElement input = driver.findElement(By.id("username"));
+input.sendKeys("john.doe");`,
+                },
+                {
+                    command: 'Clear Input Python',
+                    description: 'Clear input field using Python',
                     usage: 'element.clear()',
-                    example: '# Python\ninput_field.clear()\n\n# Java\ninput.clear();',
+                    example: `input_field.clear()`,
                 },
                 {
-                    command: 'Submit',
-                    description: 'Submit form',
+                    command: 'Clear Input Java',
+                    description: 'Clear input field using Java',
+                    usage: 'element.clear()',
+                    example: `input.clear();`,
+                },
+                {
+                    command: 'Submit Form Python',
+                    description: 'Submit form using Python',
                     usage: 'element.submit()',
-                    example: '# Python\nform = driver.find_element(By.TAG_NAME, "form")\nform.submit()\n\n# Java\nform.submit();',
+                    example: `form = driver.find_element(By.TAG_NAME, "form")
+form.submit()`,
                 },
                 {
-                    command: 'Get Text',
-                    description: 'Get element text content',
+                    command: 'Submit Form Java',
+                    description: 'Submit form using Java',
+                    usage: 'element.submit()',
+                    example: `form.submit();`,
+                },
+                {
+                    command: 'Get Element Text Python',
+                    description: 'Get element text content using Python',
                     usage: 'element.text',
-                    example: '# Python\ntext = element.text\nprint(text)\n\n# Java\nString text = element.getText();',
+                    example: `text = element.text
+print(text)`,
                 },
                 {
-                    command: 'Get Attribute',
-                    description: 'Get element attribute value',
+                    command: 'Get Element Text Java',
+                    description: 'Get element text content using Java',
+                    usage: 'element.getText()',
+                    example: `String text = element.getText();`,
+                },
+                {
+                    command: 'Get Attribute Python',
+                    description: 'Get element attribute value using Python',
                     usage: 'element.get_attribute("attr")',
-                    example: '# Python\nvalue = element.get_attribute("href")\nclass_name = element.get_attribute("class")\n\n# Java\nString href = element.getAttribute("href");\nString className = element.getAttribute("class");',
+                    example: `value = element.get_attribute("href")
+class_name = element.get_attribute("class")`,
                 },
                 {
-                    command: 'Is Displayed',
-                    description: 'Check if element is visible',
+                    command: 'Get Attribute Java',
+                    description: 'Get element attribute value using Java',
+                    usage: 'element.getAttribute("attr")',
+                    example: `String href = element.getAttribute("href");
+String className = element.getAttribute("class");`,
+                },
+                {
+                    command: 'Check Element Displayed Python',
+                    description: 'Check if element is visible using Python',
                     usage: 'element.is_displayed()',
-                    example: '# Python\nif element.is_displayed():\n    print("Element is visible")\n\n# Java\nif (element.isDisplayed()) {\n    System.out.println("Element is visible");\n}',
+                    example: `if element.is_displayed():
+    print("Element is visible")`,
                 },
                 {
-                    command: 'Is Enabled',
-                    description: 'Check if element is enabled',
+                    command: 'Check Element Displayed Java',
+                    description: 'Check if element is visible using Java',
+                    usage: 'element.isDisplayed()',
+                    example: `if (element.isDisplayed()) {
+    System.out.println("Element is visible");
+}`,
+                },
+                {
+                    command: 'Check Element Enabled Python',
+                    description: 'Check if element is enabled using Python',
                     usage: 'element.is_enabled()',
-                    example: '# Python\nif element.is_enabled():\n    element.click()\n\n# Java\nif (element.isEnabled()) {\n    element.click();\n}',
+                    example: `if element.is_enabled():
+    element.click()`,
                 },
                 {
-                    command: 'Is Selected',
-                    description: 'Check if checkbox/radio is selected',
+                    command: 'Check Element Enabled Java',
+                    description: 'Check if element is enabled using Java',
+                    usage: 'element.isEnabled()',
+                    example: `if (element.isEnabled()) {
+    element.click();
+}`,
+                },
+                {
+                    command: 'Check Element Selected Python',
+                    description: 'Check if checkbox/radio is selected using Python',
                     usage: 'element.is_selected()',
-                    example: '# Python\ncheckbox = driver.find_element(By.ID, "agree")\nif not checkbox.is_selected():\n    checkbox.click()\n\n# Java\nif (!checkbox.isSelected()) {\n    checkbox.click();\n}',
+                    example: `checkbox = driver.find_element(By.ID, "agree")
+if not checkbox.is_selected():
+    checkbox.click()`,
+                },
+                {
+                    command: 'Check Element Selected Java',
+                    description: 'Check if checkbox/radio is selected using Java',
+                    usage: 'element.isSelected()',
+                    example: `if (!checkbox.isSelected()) {
+    checkbox.click();
+}`,
                 },
             ],
         },
@@ -264,34 +484,104 @@ export const seleniumCheatsheet = {
             title: 'Waits',
             commands: [
                 {
-                    command: 'Implicit Wait',
-                    description: 'Set default wait time for all elements',
+                    command: 'Implicit Wait Python',
+                    description: 'Set default wait time for all elements using Python',
                     usage: 'driver.implicitly_wait(seconds)',
-                    example: '# Python\ndriver.implicitly_wait(10)  # Wait up to 10 seconds\n\n# Java\ndriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));',
+                    example: `driver.implicitly_wait(10)  # Wait up to 10 seconds`,
                 },
                 {
-                    command: 'Explicit Wait',
-                    description: 'Wait for specific condition',
+                    command: 'Implicit Wait Java',
+                    description: 'Set default wait time for all elements using Java',
+                    usage: 'manage().timeouts().implicitlyWait()',
+                    example: `driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));`,
+                },
+                {
+                    command: 'Explicit Wait Python',
+                    description: 'Wait for specific condition using Python',
                     usage: 'WebDriverWait + ExpectedConditions',
-                    example: '# Python\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\n\nwait = WebDriverWait(driver, 10)\nelement = wait.until(EC.presence_of_element_located((By.ID, "username")))\n\n# Java\nWebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));\nWebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));',
+                    example: `from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+wait = WebDriverWait(driver, 10)
+element = wait.until(EC.presence_of_element_located((By.ID, "username")))`,
                 },
                 {
-                    command: 'Expected Conditions',
-                    description: 'Common wait conditions',
-                    usage: 'EC.condition_name()',
-                    example: '# Python\n# Element is present\nEC.presence_of_element_located((By.ID, "id"))\n# Element is visible\nEC.visibility_of_element_located((By.ID, "id"))\n# Element is clickable\nEC.element_to_be_clickable((By.ID, "id"))\n# Text is present\nEC.text_to_be_present_in_element((By.ID, "id"), "text")\n# Element is selected\nEC.element_to_be_selected((By.ID, "id"))\n\n# Java\nExpectedConditions.presenceOfElementLocated(By.id("id"))\nExpectedConditions.visibilityOfElementLocated(By.id("id"))\nExpectedConditions.elementToBeClickable(By.id("id"))',
+                    command: 'Explicit Wait Java',
+                    description: 'Wait for specific condition using Java',
+                    usage: 'WebDriverWait + ExpectedConditions',
+                    example: `WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));`,
                 },
                 {
-                    command: 'Fluent Wait',
-                    description: 'Wait with custom polling and exceptions',
+                    command: 'Wait for Element Presence Python',
+                    description: 'Wait until element is present in DOM using Python',
+                    usage: 'EC.presence_of_element_located()',
+                    example: `EC.presence_of_element_located((By.ID, "id"))`,
+                },
+                {
+                    command: 'Wait for Element Visibility Python',
+                    description: 'Wait until element is visible using Python',
+                    usage: 'EC.visibility_of_element_located()',
+                    example: `EC.visibility_of_element_located((By.ID, "id"))`,
+                },
+                {
+                    command: 'Wait for Element Clickable Python',
+                    description: 'Wait until element is clickable using Python',
+                    usage: 'EC.element_to_be_clickable()',
+                    example: `EC.element_to_be_clickable((By.ID, "id"))`,
+                },
+                {
+                    command: 'Wait for Text Presence Python',
+                    description: 'Wait until text is present in element using Python',
+                    usage: 'EC.text_to_be_present_in_element()',
+                    example: `EC.text_to_be_present_in_element((By.ID, "id"), "text")`,
+                },
+                {
+                    command: 'Wait for Element Selected Python',
+                    description: 'Wait until element is selected using Python',
+                    usage: 'EC.element_to_be_selected()',
+                    example: `EC.element_to_be_selected((By.ID, "id"))`,
+                },
+                {
+                    command: 'Expected Conditions Java',
+                    description: 'Common wait conditions using Java',
+                    usage: 'ExpectedConditions methods',
+                    example: `ExpectedConditions.presenceOfElementLocated(By.id("id"))
+ExpectedConditions.visibilityOfElementLocated(By.id("id"))
+ExpectedConditions.elementToBeClickable(By.id("id"))`,
+                },
+                {
+                    command: 'Fluent Wait Python',
+                    description: 'Wait with custom polling and exceptions using Python',
+                    usage: 'WebDriverWait with custom settings',
+                    example: `from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+
+wait = WebDriverWait(driver, 10, poll_frequency=1, ignored_exceptions=[TimeoutException])
+element = wait.until(EC.presence_of_element_located((By.ID, "id")))`,
+                },
+                {
+                    command: 'Fluent Wait Java',
+                    description: 'Wait with custom polling and exceptions using Java',
                     usage: 'FluentWait with conditions',
-                    example: '# Python\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\nfrom selenium.common.exceptions import TimeoutException\n\nwait = WebDriverWait(driver, 10, poll_frequency=1, ignored_exceptions=[TimeoutException])\nelement = wait.until(EC.presence_of_element_located((By.ID, "id")))\n\n# Java\nFluentWait<WebDriver> wait = new FluentWait<>(driver)\n    .withTimeout(Duration.ofSeconds(10))\n    .pollingEvery(Duration.ofSeconds(1))\n    .ignoring(NoSuchElementException.class);',
+                    example: `FluentWait<WebDriver> wait = new FluentWait<>(driver)
+    .withTimeout(Duration.ofSeconds(10))
+    .pollingEvery(Duration.ofSeconds(1))
+    .ignoring(NoSuchElementException.class);`,
                 },
                 {
-                    command: 'Sleep',
-                    description: 'Hard wait (not recommended)',
+                    command: 'Sleep Python',
+                    description: 'Hard wait using Python (not recommended)',
                     usage: 'time.sleep(seconds)',
-                    example: '# Python\nimport time\ntime.sleep(5)  # Wait 5 seconds\n\n# Java\nThread.sleep(5000);  // Wait 5 seconds',
+                    example: `import time
+time.sleep(5)  # Wait 5 seconds`,
+                },
+                {
+                    command: 'Sleep Java',
+                    description: 'Hard wait using Java (not recommended)',
+                    usage: 'Thread.sleep(milliseconds)',
+                    example: `Thread.sleep(5000);  // Wait 5 seconds`,
                 },
             ],
         },
@@ -299,40 +589,78 @@ export const seleniumCheatsheet = {
             title: 'Browser Navigation',
             commands: [
                 {
-                    command: 'Get URL',
-                    description: 'Navigate to URL',
+                    command: 'Navigate to URL Python',
+                    description: 'Navigate to URL using Python',
                     usage: 'driver.get(url)',
-                    example: '# Python\ndriver.get("https://example.com")\n\n# Java\ndriver.get("https://example.com");',
+                    example: `driver.get("https://example.com")`,
                 },
                 {
-                    command: 'Get Current URL',
-                    description: 'Get current page URL',
+                    command: 'Navigate to URL Java',
+                    description: 'Navigate to URL using Java',
+                    usage: 'driver.get(url)',
+                    example: `driver.get("https://example.com");`,
+                },
+                {
+                    command: 'Get Current URL Python',
+                    description: 'Get current page URL using Python',
                     usage: 'driver.current_url',
-                    example: '# Python\ncurrent_url = driver.current_url\nprint(current_url)\n\n# Java\nString currentUrl = driver.getCurrentUrl();',
+                    example: `current_url = driver.current_url
+print(current_url)`,
                 },
                 {
-                    command: 'Get Title',
-                    description: 'Get page title',
+                    command: 'Get Current URL Java',
+                    description: 'Get current page URL using Java',
+                    usage: 'driver.getCurrentUrl()',
+                    example: `String currentUrl = driver.getCurrentUrl();`,
+                },
+                {
+                    command: 'Get Page Title Python',
+                    description: 'Get page title using Python',
                     usage: 'driver.title',
-                    example: '# Python\ntitle = driver.title\nprint(title)\n\n# Java\nString title = driver.getTitle();',
+                    example: `title = driver.title
+print(title)`,
                 },
                 {
-                    command: 'Navigate Back',
-                    description: 'Go back in browser history',
+                    command: 'Get Page Title Java',
+                    description: 'Get page title using Java',
+                    usage: 'driver.getTitle()',
+                    example: `String title = driver.getTitle();`,
+                },
+                {
+                    command: 'Navigate Back Python',
+                    description: 'Go back in browser history using Python',
                     usage: 'driver.back()',
-                    example: '# Python\ndriver.back()\n\n# Java\ndriver.navigate().back();',
+                    example: `driver.back()`,
                 },
                 {
-                    command: 'Navigate Forward',
-                    description: 'Go forward in browser history',
+                    command: 'Navigate Back Java',
+                    description: 'Go back in browser history using Java',
+                    usage: 'driver.navigate().back()',
+                    example: `driver.navigate().back();`,
+                },
+                {
+                    command: 'Navigate Forward Python',
+                    description: 'Go forward in browser history using Python',
                     usage: 'driver.forward()',
-                    example: '# Python\ndriver.forward()\n\n# Java\ndriver.navigate().forward();',
+                    example: `driver.forward()`,
                 },
                 {
-                    command: 'Refresh',
-                    description: 'Refresh current page',
+                    command: 'Navigate Forward Java',
+                    description: 'Go forward in browser history using Java',
+                    usage: 'driver.navigate().forward()',
+                    example: `driver.navigate().forward();`,
+                },
+                {
+                    command: 'Refresh Page Python',
+                    description: 'Refresh current page using Python',
                     usage: 'driver.refresh()',
-                    example: '# Python\ndriver.refresh()\n\n# Java\ndriver.navigate().refresh();',
+                    example: `driver.refresh()`,
+                },
+                {
+                    command: 'Refresh Page Java',
+                    description: 'Refresh current page using Java',
+                    usage: 'driver.navigate().refresh()',
+                    example: `driver.navigate().refresh();`,
                 },
             ],
         },
@@ -340,46 +668,97 @@ export const seleniumCheatsheet = {
             title: 'Window Management',
             commands: [
                 {
-                    command: 'Get Window Handle',
-                    description: 'Get current window handle',
+                    command: 'Get Current Window Handle Python',
+                    description: 'Get current window handle using Python',
                     usage: 'driver.current_window_handle',
-                    example: '# Python\nhandle = driver.current_window_handle\n\n# Java\nString handle = driver.getWindowHandle();',
+                    example: `handle = driver.current_window_handle`,
                 },
                 {
-                    command: 'Get All Window Handles',
-                    description: 'Get all open windows',
+                    command: 'Get Current Window Handle Java',
+                    description: 'Get current window handle using Java',
+                    usage: 'driver.getWindowHandle()',
+                    example: `String handle = driver.getWindowHandle();`,
+                },
+                {
+                    command: 'Get All Window Handles Python',
+                    description: 'Get all open windows using Python',
                     usage: 'driver.window_handles',
-                    example: '# Python\nhandles = driver.window_handles\nfor handle in handles:\n    driver.switch_to.window(handle)\n\n# Java\nSet<String> handles = driver.getWindowHandles();\nfor (String handle : handles) {\n    driver.switchTo().window(handle);\n}',
+                    example: `handles = driver.window_handles
+for handle in handles:
+    driver.switch_to.window(handle)`,
                 },
                 {
-                    command: 'Switch Window',
-                    description: 'Switch to specific window',
+                    command: 'Get All Window Handles Java',
+                    description: 'Get all open windows using Java',
+                    usage: 'driver.getWindowHandles()',
+                    example: `Set<String> handles = driver.getWindowHandles();
+for (String handle : handles) {
+    driver.switchTo().window(handle);
+}`,
+                },
+                {
+                    command: 'Switch to Window Python',
+                    description: 'Switch to specific window using Python',
                     usage: 'driver.switch_to.window(handle)',
-                    example: '# Python\nhandles = driver.window_handles\ndriver.switch_to.window(handles[1])\n\n# Java\ndriver.switchTo().window(handle);',
+                    example: `handles = driver.window_handles
+driver.switch_to.window(handles[1])`,
                 },
                 {
-                    command: 'Close Window',
-                    description: 'Close current window',
+                    command: 'Switch to Window Java',
+                    description: 'Switch to specific window using Java',
+                    usage: 'driver.switchTo().window(handle)',
+                    example: `driver.switchTo().window(handle);`,
+                },
+                {
+                    command: 'Close Window Python',
+                    description: 'Close current window using Python',
                     usage: 'driver.close()',
-                    example: '# Python\ndriver.close()  # Closes current window\ndriver.quit()   # Closes all windows\n\n# Java\ndriver.close();  // Closes current window\ndriver.quit();   // Closes all windows',
+                    example: `driver.close()  # Closes current window
+driver.quit()   # Closes all windows`,
                 },
                 {
-                    command: 'Maximize Window',
-                    description: 'Maximize browser window',
+                    command: 'Close Window Java',
+                    description: 'Close current window using Java',
+                    usage: 'driver.close()',
+                    example: `driver.close();  // Closes current window
+driver.quit();   // Closes all windows`,
+                },
+                {
+                    command: 'Maximize Window Python',
+                    description: 'Maximize browser window using Python',
                     usage: 'driver.maximize_window()',
-                    example: '# Python\ndriver.maximize_window()\n\n# Java\ndriver.manage().window().maximize();',
+                    example: `driver.maximize_window()`,
                 },
                 {
-                    command: 'Set Window Size',
-                    description: 'Set window dimensions',
+                    command: 'Maximize Window Java',
+                    description: 'Maximize browser window using Java',
+                    usage: 'manage().window().maximize()',
+                    example: `driver.manage().window().maximize();`,
+                },
+                {
+                    command: 'Set Window Size Python',
+                    description: 'Set window dimensions using Python',
                     usage: 'driver.set_window_size(width, height)',
-                    example: '# Python\ndriver.set_window_size(1920, 1080)\n\n# Java\ndriver.manage().window().setSize(new Dimension(1920, 1080));',
+                    example: `driver.set_window_size(1920, 1080)`,
                 },
                 {
-                    command: 'Get Window Size',
-                    description: 'Get window dimensions',
+                    command: 'Set Window Size Java',
+                    description: 'Set window dimensions using Java',
+                    usage: 'manage().window().setSize()',
+                    example: `driver.manage().window().setSize(new Dimension(1920, 1080));`,
+                },
+                {
+                    command: 'Get Window Size Python',
+                    description: 'Get window dimensions using Python',
                     usage: 'driver.get_window_size()',
-                    example: '# Python\nsize = driver.get_window_size()\nprint(size["width"], size["height"])\n\n# Java\nDimension size = driver.manage().window().getSize();',
+                    example: `size = driver.get_window_size()
+print(size["width"], size["height"])`,
+                },
+                {
+                    command: 'Get Window Size Java',
+                    description: 'Get window dimensions using Java',
+                    usage: 'manage().window().getSize()',
+                    example: `Dimension size = driver.manage().window().getSize();`,
                 },
             ],
         },
@@ -387,28 +766,116 @@ export const seleniumCheatsheet = {
             title: 'Frames & Alerts',
             commands: [
                 {
-                    command: 'Switch to Frame',
-                    description: 'Switch to iframe',
-                    usage: 'driver.switch_to.frame()',
-                    example: '# Python\n# By index\ndriver.switch_to.frame(0)\n# By element\nframe = driver.find_element(By.ID, "frame-id")\ndriver.switch_to.frame(frame)\n# By name/id\ndriver.switch_to.frame("frame-name")\n\n# Java\n// By index\ndriver.switchTo().frame(0);\n// By element\nWebElement frame = driver.findElement(By.id("frame-id"));\ndriver.switchTo().frame(frame);',
+                    command: 'Switch to Frame by Index Python',
+                    description: 'Switch to iframe by index using Python',
+                    usage: 'driver.switch_to.frame(index)',
+                    example: `driver.switch_to.frame(0)`,
                 },
                 {
-                    command: 'Switch to Default Content',
-                    description: 'Switch back to main document',
+                    command: 'Switch to Frame by Index Java',
+                    description: 'Switch to iframe by index using Java',
+                    usage: 'driver.switchTo().frame(index)',
+                    example: `driver.switchTo().frame(0);`,
+                },
+                {
+                    command: 'Switch to Frame by Element Python',
+                    description: 'Switch to iframe by element using Python',
+                    usage: 'driver.switch_to.frame(element)',
+                    example: `frame = driver.find_element(By.ID, "frame-id")
+driver.switch_to.frame(frame)`,
+                },
+                {
+                    command: 'Switch to Frame by Element Java',
+                    description: 'Switch to iframe by element using Java',
+                    usage: 'driver.switchTo().frame(element)',
+                    example: `WebElement frame = driver.findElement(By.id("frame-id"));
+driver.switchTo().frame(frame);`,
+                },
+                {
+                    command: 'Switch to Frame by Name Python',
+                    description: 'Switch to iframe by name/id using Python',
+                    usage: 'driver.switch_to.frame("name")',
+                    example: `driver.switch_to.frame("frame-name")`,
+                },
+                {
+                    command: 'Switch to Frame by Name Java',
+                    description: 'Switch to iframe by name/id using Java',
+                    usage: 'driver.switchTo().frame("name")',
+                    example: `driver.switchTo().frame("frame-name");`,
+                },
+                {
+                    command: 'Switch to Default Content Python',
+                    description: 'Switch back to main document using Python',
                     usage: 'driver.switch_to.default_content()',
-                    example: '# Python\ndriver.switch_to.default_content()\n\n# Java\ndriver.switchTo().defaultContent();',
+                    example: `driver.switch_to.default_content()`,
                 },
                 {
-                    command: 'Switch to Parent Frame',
-                    description: 'Switch to parent frame',
+                    command: 'Switch to Default Content Java',
+                    description: 'Switch back to main document using Java',
+                    usage: 'driver.switchTo().defaultContent()',
+                    example: `driver.switchTo().defaultContent();`,
+                },
+                {
+                    command: 'Switch to Parent Frame Python',
+                    description: 'Switch to parent frame using Python',
                     usage: 'driver.switch_to.parent_frame()',
-                    example: '# Python\ndriver.switch_to.parent_frame()\n\n# Java\ndriver.switchTo().parentFrame();',
+                    example: `driver.switch_to.parent_frame()`,
                 },
                 {
-                    command: 'Handle Alert',
-                    description: 'Interact with JavaScript alerts',
-                    usage: 'driver.switch_to.alert',
-                    example: '# Python\nalert = driver.switch_to.alert\nalert.accept()  # Click OK\nalert.dismiss()  # Click Cancel\ntext = alert.text  # Get alert text\nalert.send_keys("text")  # Type in prompt\n\n# Java\nAlert alert = driver.switchTo().alert();\nalert.accept();  // Click OK\nalert.dismiss();  // Click Cancel\nString text = alert.getText();  // Get alert text',
+                    command: 'Switch to Parent Frame Java',
+                    description: 'Switch to parent frame using Java',
+                    usage: 'driver.switchTo().parentFrame()',
+                    example: `driver.switchTo().parentFrame();`,
+                },
+                {
+                    command: 'Handle Alert Accept Python',
+                    description: 'Accept JavaScript alert using Python',
+                    usage: 'alert.accept()',
+                    example: `alert = driver.switch_to.alert
+alert.accept()  # Click OK`,
+                },
+                {
+                    command: 'Handle Alert Accept Java',
+                    description: 'Accept JavaScript alert using Java',
+                    usage: 'alert.accept()',
+                    example: `Alert alert = driver.switchTo().alert();
+alert.accept();  // Click OK`,
+                },
+                {
+                    command: 'Handle Alert Dismiss Python',
+                    description: 'Dismiss JavaScript alert using Python',
+                    usage: 'alert.dismiss()',
+                    example: `alert.dismiss()  # Click Cancel`,
+                },
+                {
+                    command: 'Handle Alert Dismiss Java',
+                    description: 'Dismiss JavaScript alert using Java',
+                    usage: 'alert.dismiss()',
+                    example: `alert.dismiss();  // Click Cancel`,
+                },
+                {
+                    command: 'Get Alert Text Python',
+                    description: 'Get alert text using Python',
+                    usage: 'alert.text',
+                    example: `text = alert.text  # Get alert text`,
+                },
+                {
+                    command: 'Get Alert Text Java',
+                    description: 'Get alert text using Java',
+                    usage: 'alert.getText()',
+                    example: `String text = alert.getText();  // Get alert text`,
+                },
+                {
+                    command: 'Send Keys to Alert Python',
+                    description: 'Type text in prompt alert using Python',
+                    usage: 'alert.send_keys("text")',
+                    example: `alert.send_keys("text")  # Type in prompt`,
+                },
+                {
+                    command: 'Send Keys to Alert Java',
+                    description: 'Type text in prompt alert using Java',
+                    usage: 'alert.sendKeys("text")',
+                    example: `alert.sendKeys("text");  // Type in prompt`,
                 },
             ],
         },
@@ -416,58 +883,124 @@ export const seleniumCheatsheet = {
             title: 'Actions Class',
             commands: [
                 {
-                    command: 'Actions Initialization',
-                    description: 'Create Actions object',
-                    usage: 'Actions(driver)',
-                    example: '# Python\nfrom selenium.webdriver.common.action_chains import ActionChains\n\nactions = ActionChains(driver)\n\n# Java\nimport org.openqa.selenium.interactions.Actions;\n\nActions actions = new Actions(driver);',
+                    command: 'Initialize Actions Python',
+                    description: 'Create Actions object using Python',
+                    usage: 'ActionChains(driver)',
+                    example: `from selenium.webdriver.common.action_chains import ActionChains
+
+actions = ActionChains(driver)`,
                 },
                 {
-                    command: 'Click Action',
-                    description: 'Click using Actions',
-                    usage: 'actions.click(element)',
-                    example: '# Python\nactions.click(element).perform()\n\n# Java\nactions.click(element).perform();',
+                    command: 'Initialize Actions Java',
+                    description: 'Create Actions object using Java',
+                    usage: 'new Actions(driver)',
+                    example: `import org.openqa.selenium.interactions.Actions;
+
+Actions actions = new Actions(driver);`,
                 },
                 {
-                    command: 'Double Click',
-                    description: 'Double click action',
-                    usage: 'actions.double_click(element)',
-                    example: '# Python\nactions.double_click(element).perform()\n\n# Java\nactions.doubleClick(element).perform();',
+                    command: 'Click Action Python',
+                    description: 'Click using Actions with Python',
+                    usage: 'actions.click(element).perform()',
+                    example: `actions.click(element).perform()`,
                 },
                 {
-                    command: 'Right Click',
-                    description: 'Context menu click',
-                    usage: 'actions.context_click(element)',
-                    example: '# Python\nactions.context_click(element).perform()\n\n# Java\nactions.contextClick(element).perform();',
+                    command: 'Click Action Java',
+                    description: 'Click using Actions with Java',
+                    usage: 'actions.click(element).perform()',
+                    example: `actions.click(element).perform();`,
                 },
                 {
-                    command: 'Hover',
-                    description: 'Mouse hover action',
-                    usage: 'actions.move_to_element(element)',
-                    example: '# Python\nactions.move_to_element(element).perform()\n\n# Java\nactions.moveToElement(element).perform();',
+                    command: 'Double Click Python',
+                    description: 'Double click action using Python',
+                    usage: 'actions.double_click(element).perform()',
+                    example: `actions.double_click(element).perform()`,
                 },
                 {
-                    command: 'Drag and Drop',
-                    description: 'Drag element to target',
-                    usage: 'actions.drag_and_drop(source, target)',
-                    example: '# Python\nsource = driver.find_element(By.ID, "source")\ntarget = driver.find_element(By.ID, "target")\nactions.drag_and_drop(source, target).perform()\n\n# Java\nWebElement source = driver.findElement(By.id("source"));\nWebElement target = driver.findElement(By.id("target"));\nactions.dragAndDrop(source, target).perform();',
+                    command: 'Double Click Java',
+                    description: 'Double click action using Java',
+                    usage: 'actions.doubleClick(element).perform()',
+                    example: `actions.doubleClick(element).perform();`,
                 },
                 {
-                    command: 'Key Down/Up',
-                    description: 'Press and release keys',
-                    usage: 'actions.key_down/up(key)',
-                    example: '# Python\nfrom selenium.webdriver.common.keys import Keys\n\nactions.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).perform()\n\n# Java\nimport org.openqa.selenium.Keys;\n\nactions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).perform();',
+                    command: 'Right Click Python',
+                    description: 'Context menu click using Python',
+                    usage: 'actions.context_click(element).perform()',
+                    example: `actions.context_click(element).perform()`,
                 },
                 {
-                    command: 'Send Keys',
-                    description: 'Send keyboard input',
-                    usage: 'actions.send_keys(text)',
-                    example: '# Python\nactions.send_keys("Hello World").perform()\n\n# Java\nactions.sendKeys("Hello World").perform();',
+                    command: 'Right Click Java',
+                    description: 'Context menu click using Java',
+                    usage: 'actions.contextClick(element).perform()',
+                    example: `actions.contextClick(element).perform();`,
                 },
                 {
-                    command: 'Build and Perform',
-                    description: 'Chain multiple actions',
+                    command: 'Hover Action Python',
+                    description: 'Mouse hover action using Python',
+                    usage: 'actions.move_to_element(element).perform()',
+                    example: `actions.move_to_element(element).perform()`,
+                },
+                {
+                    command: 'Hover Action Java',
+                    description: 'Mouse hover action using Java',
+                    usage: 'actions.moveToElement(element).perform()',
+                    example: `actions.moveToElement(element).perform();`,
+                },
+                {
+                    command: 'Drag and Drop Python',
+                    description: 'Drag element to target using Python',
+                    usage: 'actions.drag_and_drop(source, target).perform()',
+                    example: `source = driver.find_element(By.ID, "source")
+target = driver.find_element(By.ID, "target")
+actions.drag_and_drop(source, target).perform()`,
+                },
+                {
+                    command: 'Drag and Drop Java',
+                    description: 'Drag element to target using Java',
+                    usage: 'actions.dragAndDrop(source, target).perform()',
+                    example: `WebElement source = driver.findElement(By.id("source"));
+WebElement target = driver.findElement(By.id("target"));
+actions.dragAndDrop(source, target).perform();`,
+                },
+                {
+                    command: 'Key Down Python',
+                    description: 'Press key down using Python',
+                    usage: 'actions.key_down(key)',
+                    example: `from selenium.webdriver.common.keys import Keys
+
+actions.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).perform()`,
+                },
+                {
+                    command: 'Key Down Java',
+                    description: 'Press key down using Java',
+                    usage: 'actions.keyDown(key)',
+                    example: `import org.openqa.selenium.Keys;
+
+actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).perform();`,
+                },
+                {
+                    command: 'Send Keys Action Python',
+                    description: 'Send keyboard input using Actions with Python',
+                    usage: 'actions.send_keys(text).perform()',
+                    example: `actions.send_keys("Hello World").perform()`,
+                },
+                {
+                    command: 'Send Keys Action Java',
+                    description: 'Send keyboard input using Actions with Java',
+                    usage: 'actions.sendKeys(text).perform()',
+                    example: `actions.sendKeys("Hello World").perform();`,
+                },
+                {
+                    command: 'Chain Actions Python',
+                    description: 'Chain multiple actions using Python',
                     usage: 'actions.action1().action2().perform()',
-                    example: '# Python\nactions.move_to_element(element1).click().move_to_element(element2).click().perform()\n\n# Java\nactions.moveToElement(element1).click().moveToElement(element2).click().perform();',
+                    example: `actions.move_to_element(element1).click().move_to_element(element2).click().perform()`,
+                },
+                {
+                    command: 'Chain Actions Java',
+                    description: 'Chain multiple actions using Java',
+                    usage: 'actions.action1().action2().perform()',
+                    example: `actions.moveToElement(element1).click().moveToElement(element2).click().perform();`,
                 },
             ],
         },
@@ -475,28 +1008,58 @@ export const seleniumCheatsheet = {
             title: 'JavaScript Execution',
             commands: [
                 {
-                    command: 'Execute Script',
-                    description: 'Execute JavaScript code',
+                    command: 'Execute JavaScript Python',
+                    description: 'Execute JavaScript code using Python',
                     usage: 'driver.execute_script(script)',
-                    example: '# Python\ndriver.execute_script("return document.title;")\ndriver.execute_script("window.scrollTo(0, document.body.scrollHeight);")\n\n# Java\nJavascriptExecutor js = (JavascriptExecutor) driver;\njs.executeScript("return document.title;");\njs.executeScript("window.scrollTo(0, document.body.scrollHeight);");',
+                    example: `driver.execute_script("return document.title;")
+driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")`,
                 },
                 {
-                    command: 'Scroll to Element',
-                    description: 'Scroll element into view',
+                    command: 'Execute JavaScript Java',
+                    description: 'Execute JavaScript code using Java',
+                    usage: 'js.executeScript(script)',
+                    example: `JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("return document.title;");
+js.executeScript("window.scrollTo(0, document.body.scrollHeight);");`,
+                },
+                {
+                    command: 'Scroll to Element Python',
+                    description: 'Scroll element into view using Python',
                     usage: 'execute_script with scrollIntoView',
-                    example: '# Python\nelement = driver.find_element(By.ID, "element-id")\ndriver.execute_script("arguments[0].scrollIntoView(true);", element)\n\n# Java\nWebElement element = driver.findElement(By.id("element-id"));\njs.executeScript("arguments[0].scrollIntoView(true);", element);',
+                    example: `element = driver.find_element(By.ID, "element-id")
+driver.execute_script("arguments[0].scrollIntoView(true);", element)`,
                 },
                 {
-                    command: 'Click with JavaScript',
-                    description: 'Click using JavaScript',
+                    command: 'Scroll to Element Java',
+                    description: 'Scroll element into view using Java',
+                    usage: 'js.executeScript with scrollIntoView',
+                    example: `WebElement element = driver.findElement(By.id("element-id"));
+js.executeScript("arguments[0].scrollIntoView(true);", element);`,
+                },
+                {
+                    command: 'Click with JavaScript Python',
+                    description: 'Click using JavaScript with Python',
                     usage: 'execute_script("arguments[0].click()", element)',
-                    example: '# Python\nelement = driver.find_element(By.ID, "button")\ndriver.execute_script("arguments[0].click();", element)\n\n# Java\njs.executeScript("arguments[0].click();", element);',
+                    example: `element = driver.find_element(By.ID, "button")
+driver.execute_script("arguments[0].click();", element)`,
                 },
                 {
-                    command: 'Get Element Value',
-                    description: 'Get value using JavaScript',
+                    command: 'Click with JavaScript Java',
+                    description: 'Click using JavaScript with Java',
+                    usage: 'js.executeScript("arguments[0].click()", element)',
+                    example: `js.executeScript("arguments[0].click();", element);`,
+                },
+                {
+                    command: 'Get Element Value JavaScript Python',
+                    description: 'Get value using JavaScript with Python',
                     usage: 'execute_script("return arguments[0].value", element)',
-                    example: '# Python\nvalue = driver.execute_script("return arguments[0].value;", element)\n\n# Java\nString value = (String) js.executeScript("return arguments[0].value;", element);',
+                    example: `value = driver.execute_script("return arguments[0].value;", element)`,
+                },
+                {
+                    command: 'Get Element Value JavaScript Java',
+                    description: 'Get value using JavaScript with Java',
+                    usage: 'js.executeScript("return arguments[0].value", element)',
+                    example: `String value = (String) js.executeScript("return arguments[0].value;", element);`,
                 },
             ],
         },
@@ -504,16 +1067,31 @@ export const seleniumCheatsheet = {
             title: 'Screenshots',
             commands: [
                 {
-                    command: 'Take Screenshot',
-                    description: 'Capture screenshot',
+                    command: 'Take Screenshot Python',
+                    description: 'Capture screenshot using Python',
                     usage: 'driver.save_screenshot(filename)',
-                    example: '# Python\ndriver.save_screenshot("screenshot.png")\n\n# Java\nFile screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);\nFileUtils.copyFile(screenshot, new File("screenshot.png"));',
+                    example: `driver.save_screenshot("screenshot.png")`,
                 },
                 {
-                    command: 'Element Screenshot',
-                    description: 'Screenshot of specific element',
+                    command: 'Take Screenshot Java',
+                    description: 'Capture screenshot using Java',
+                    usage: 'getScreenshotAs(OutputType.FILE)',
+                    example: `File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(screenshot, new File("screenshot.png"));`,
+                },
+                {
+                    command: 'Element Screenshot Python',
+                    description: 'Screenshot of specific element using Python',
                     usage: 'element.screenshot(filename)',
-                    example: '# Python\nelement = driver.find_element(By.ID, "element-id")\nelement.screenshot("element.png")\n\n# Java\nWebElement element = driver.findElement(By.id("element-id"));\nFile elementScreenshot = element.getScreenshotAs(OutputType.FILE);',
+                    example: `element = driver.find_element(By.ID, "element-id")
+element.screenshot("element.png")`,
+                },
+                {
+                    command: 'Element Screenshot Java',
+                    description: 'Screenshot of specific element using Java',
+                    usage: 'element.getScreenshotAs(OutputType.FILE)',
+                    example: `WebElement element = driver.findElement(By.id("element-id"));
+File elementScreenshot = element.getScreenshotAs(OutputType.FILE);`,
                 },
             ],
         },
@@ -521,34 +1099,71 @@ export const seleniumCheatsheet = {
             title: 'Cookies',
             commands: [
                 {
-                    command: 'Get All Cookies',
-                    description: 'Retrieve all cookies',
+                    command: 'Get All Cookies Python',
+                    description: 'Retrieve all cookies using Python',
                     usage: 'driver.get_cookies()',
-                    example: '# Python\ncookies = driver.get_cookies()\nfor cookie in cookies:\n    print(cookie["name"], cookie["value"])\n\n# Java\nSet<Cookie> cookies = driver.manage().getCookies();\nfor (Cookie cookie : cookies) {\n    System.out.println(cookie.getName() + " = " + cookie.getValue());\n}',
+                    example: `cookies = driver.get_cookies()
+for cookie in cookies:
+    print(cookie["name"], cookie["value"])`,
                 },
                 {
-                    command: 'Get Cookie',
-                    description: 'Get specific cookie',
+                    command: 'Get All Cookies Java',
+                    description: 'Retrieve all cookies using Java',
+                    usage: 'manage().getCookies()',
+                    example: `Set<Cookie> cookies = driver.manage().getCookies();
+for (Cookie cookie : cookies) {
+    System.out.println(cookie.getName() + " = " + cookie.getValue());
+}`,
+                },
+                {
+                    command: 'Get Specific Cookie Python',
+                    description: 'Get specific cookie using Python',
                     usage: 'driver.get_cookie(name)',
-                    example: '# Python\ncookie = driver.get_cookie("session_id")\nprint(cookie["value"])\n\n# Java\nCookie cookie = driver.manage().getCookieNamed("session_id");',
+                    example: `cookie = driver.get_cookie("session_id")
+print(cookie["value"])`,
                 },
                 {
-                    command: 'Add Cookie',
-                    description: 'Add new cookie',
+                    command: 'Get Specific Cookie Java',
+                    description: 'Get specific cookie using Java',
+                    usage: 'manage().getCookieNamed(name)',
+                    example: `Cookie cookie = driver.manage().getCookieNamed("session_id");`,
+                },
+                {
+                    command: 'Add Cookie Python',
+                    description: 'Add new cookie using Python',
                     usage: 'driver.add_cookie(cookie_dict)',
-                    example: '# Python\ndriver.add_cookie({"name": "test", "value": "123"})\n\n# Java\nCookie cookie = new Cookie("test", "123");\ndriver.manage().addCookie(cookie);',
+                    example: `driver.add_cookie({"name": "test", "value": "123"})`,
                 },
                 {
-                    command: 'Delete Cookie',
-                    description: 'Delete specific cookie',
+                    command: 'Add Cookie Java',
+                    description: 'Add new cookie using Java',
+                    usage: 'manage().addCookie(cookie)',
+                    example: `Cookie cookie = new Cookie("test", "123");
+driver.manage().addCookie(cookie);`,
+                },
+                {
+                    command: 'Delete Cookie Python',
+                    description: 'Delete specific cookie using Python',
                     usage: 'driver.delete_cookie(name)',
-                    example: '# Python\ndriver.delete_cookie("session_id")\n\n# Java\ndriver.manage().deleteCookieNamed("session_id");',
+                    example: `driver.delete_cookie("session_id")`,
                 },
                 {
-                    command: 'Delete All Cookies',
-                    description: 'Clear all cookies',
+                    command: 'Delete Cookie Java',
+                    description: 'Delete specific cookie using Java',
+                    usage: 'manage().deleteCookieNamed(name)',
+                    example: `driver.manage().deleteCookieNamed("session_id");`,
+                },
+                {
+                    command: 'Delete All Cookies Python',
+                    description: 'Clear all cookies using Python',
                     usage: 'driver.delete_all_cookies()',
-                    example: '# Python\ndriver.delete_all_cookies()\n\n# Java\ndriver.manage().deleteAllCookies();',
+                    example: `driver.delete_all_cookies()`,
+                },
+                {
+                    command: 'Delete All Cookies Java',
+                    description: 'Clear all cookies using Java',
+                    usage: 'manage().deleteAllCookies()',
+                    example: `driver.manage().deleteAllCookies();`,
                 },
             ],
         },
@@ -556,40 +1171,111 @@ export const seleniumCheatsheet = {
             title: 'Select Dropdown',
             commands: [
                 {
-                    command: 'Select by Visible Text',
-                    description: 'Select option by text',
-                    usage: 'Select(element).select_by_visible_text(text)',
-                    example: '# Python\nfrom selenium.webdriver.support.ui import Select\n\nselect = Select(driver.find_element(By.ID, "dropdown"))\nselect.select_by_visible_text("Option 1")\n\n# Java\nimport org.openqa.selenium.support.ui.Select;\n\nSelect select = new Select(driver.findElement(By.id("dropdown")));\nselect.selectByVisibleText("Option 1");',
+                    command: 'Initialize Select Python',
+                    description: 'Create Select object using Python',
+                    usage: 'Select(element)',
+                    example: `from selenium.webdriver.support.ui import Select
+
+select = Select(driver.find_element(By.ID, "dropdown"))`,
                 },
                 {
-                    command: 'Select by Value',
-                    description: 'Select option by value attribute',
-                    usage: 'Select(element).select_by_value(value)',
-                    example: '# Python\nselect.select_by_value("value1")\n\n# Java\nselect.selectByValue("value1");',
+                    command: 'Initialize Select Java',
+                    description: 'Create Select object using Java',
+                    usage: 'new Select(element)',
+                    example: `import org.openqa.selenium.support.ui.Select;
+
+Select select = new Select(driver.findElement(By.id("dropdown")));`,
                 },
                 {
-                    command: 'Select by Index',
-                    description: 'Select option by index',
-                    usage: 'Select(element).select_by_index(index)',
-                    example: '# Python\nselect.select_by_index(0)  # First option\n\n# Java\nselect.selectByIndex(0);  // First option',
+                    command: 'Select by Visible Text Python',
+                    description: 'Select option by text using Python',
+                    usage: 'select_by_visible_text(text)',
+                    example: `select.select_by_visible_text("Option 1")`,
                 },
                 {
-                    command: 'Get Selected Option',
-                    description: 'Get currently selected option',
-                    usage: 'Select(element).first_selected_option',
-                    example: '# Python\nselected = select.first_selected_option\nprint(selected.text)\n\n# Java\nWebElement selected = select.getFirstSelectedOption();\nSystem.out.println(selected.getText());',
+                    command: 'Select by Visible Text Java',
+                    description: 'Select option by text using Java',
+                    usage: 'selectByVisibleText(text)',
+                    example: `select.selectByVisibleText("Option 1");`,
                 },
                 {
-                    command: 'Get All Options',
-                    description: 'Get all dropdown options',
-                    usage: 'Select(element).options',
-                    example: '# Python\noptions = select.options\nfor option in options:\n    print(option.text)\n\n# Java\nList<WebElement> options = select.getOptions();\nfor (WebElement option : options) {\n    System.out.println(option.getText());\n}',
+                    command: 'Select by Value Python',
+                    description: 'Select option by value attribute using Python',
+                    usage: 'select_by_value(value)',
+                    example: `select.select_by_value("value1")`,
                 },
                 {
-                    command: 'Deselect',
-                    description: 'Deselect option (multi-select)',
-                    usage: 'Select(element).deselect_all()',
-                    example: '# Python\nselect.deselect_all()\nselect.deselect_by_visible_text("Option 1")\n\n# Java\nselect.deselectAll();\nselect.deselectByVisibleText("Option 1");',
+                    command: 'Select by Value Java',
+                    description: 'Select option by value attribute using Java',
+                    usage: 'selectByValue(value)',
+                    example: `select.selectByValue("value1");`,
+                },
+                {
+                    command: 'Select by Index Python',
+                    description: 'Select option by index using Python',
+                    usage: 'select_by_index(index)',
+                    example: `select.select_by_index(0)  # First option`,
+                },
+                {
+                    command: 'Select by Index Java',
+                    description: 'Select option by index using Java',
+                    usage: 'selectByIndex(index)',
+                    example: `select.selectByIndex(0);  // First option`,
+                },
+                {
+                    command: 'Get Selected Option Python',
+                    description: 'Get currently selected option using Python',
+                    usage: 'first_selected_option',
+                    example: `selected = select.first_selected_option
+print(selected.text)`,
+                },
+                {
+                    command: 'Get Selected Option Java',
+                    description: 'Get currently selected option using Java',
+                    usage: 'getFirstSelectedOption()',
+                    example: `WebElement selected = select.getFirstSelectedOption();
+System.out.println(selected.getText());`,
+                },
+                {
+                    command: 'Get All Options Python',
+                    description: 'Get all dropdown options using Python',
+                    usage: 'options',
+                    example: `options = select.options
+for option in options:
+    print(option.text)`,
+                },
+                {
+                    command: 'Get All Options Java',
+                    description: 'Get all dropdown options using Java',
+                    usage: 'getOptions()',
+                    example: `List<WebElement> options = select.getOptions();
+for (WebElement option : options) {
+    System.out.println(option.getText());
+}`,
+                },
+                {
+                    command: 'Deselect All Python',
+                    description: 'Deselect all options using Python',
+                    usage: 'deselect_all()',
+                    example: `select.deselect_all()`,
+                },
+                {
+                    command: 'Deselect All Java',
+                    description: 'Deselect all options using Java',
+                    usage: 'deselectAll()',
+                    example: `select.deselectAll();`,
+                },
+                {
+                    command: 'Deselect by Visible Text Python',
+                    description: 'Deselect option by text using Python',
+                    usage: 'deselect_by_visible_text(text)',
+                    example: `select.deselect_by_visible_text("Option 1")`,
+                },
+                {
+                    command: 'Deselect by Visible Text Java',
+                    description: 'Deselect option by text using Java',
+                    usage: 'deselectByVisibleText(text)',
+                    example: `select.deselectByVisibleText("Option 1");`,
                 },
             ],
         },
@@ -597,10 +1283,52 @@ export const seleniumCheatsheet = {
             title: 'Page Object Model',
             commands: [
                 {
-                    command: 'Page Class Structure',
-                    description: 'Organize page elements and methods',
+                    command: 'Page Class Python',
+                    description: 'Create page object class using Python',
                     usage: 'class PageName:',
-                    example: '# Python\nclass LoginPage:\n    def __init__(self, driver):\n        self.driver = driver\n        self.username = (By.ID, "username")\n        self.password = (By.ID, "password")\n        self.submit = (By.ID, "submit")\n    \n    def login(self, username, password):\n        self.driver.find_element(*self.username).send_keys(username)\n        self.driver.find_element(*self.password).send_keys(password)\n        self.driver.find_element(*self.submit).click()\n\n# Java\npublic class LoginPage {\n    private WebDriver driver;\n    private By username = By.id("username");\n    private By password = By.id("password");\n    private By submit = By.id("submit");\n    \n    public LoginPage(WebDriver driver) {\n        this.driver = driver;\n    }\n    \n    public void login(String username, String password) {\n        driver.findElement(this.username).sendKeys(username);\n        driver.findElement(this.password).sendKeys(password);\n        driver.findElement(this.submit).click();\n    }\n}',
+                    example: `class LoginPage:
+    def __init__(self, driver):
+        self.driver = driver
+        self.username = (By.ID, "username")
+        self.password = (By.ID, "password")
+        self.submit = (By.ID, "submit")`,
+                },
+                {
+                    command: 'Page Methods Python',
+                    description: 'Add methods to page class using Python',
+                    usage: 'def method_name(self)',
+                    example: `def login(self, username, password):
+    self.driver.find_element(*self.username).send_keys(username)
+    self.driver.find_element(*self.password).send_keys(password)
+    self.driver.find_element(*self.submit).click()`,
+                },
+                {
+                    command: 'Page Class Java',
+                    description: 'Create page object class using Java',
+                    usage: 'public class PageName',
+                    example: `public class LoginPage {
+    private WebDriver driver;
+    private By username = By.id("username");
+    private By password = By.id("password");
+    private By submit = By.id("submit");`,
+                },
+                {
+                    command: 'Page Constructor Java',
+                    description: 'Create page constructor using Java',
+                    usage: 'public PageName(WebDriver driver)',
+                    example: `public LoginPage(WebDriver driver) {
+    this.driver = driver;
+}`,
+                },
+                {
+                    command: 'Page Methods Java',
+                    description: 'Add methods to page class using Java',
+                    usage: 'public void methodName()',
+                    example: `public void login(String username, String password) {
+    driver.findElement(this.username).sendKeys(username);
+    driver.findElement(this.password).sendKeys(password);
+    driver.findElement(this.submit).click();
+}`,
                 },
             ],
         },
@@ -609,40 +1337,48 @@ export const seleniumCheatsheet = {
             commands: [
                 {
                     command: 'Use Explicit Waits',
-                    description: 'Prefer explicit waits over implicit',
+                    description: 'Prefer explicit waits over implicit waits',
                     usage: 'WebDriverWait with ExpectedConditions',
-                    example: '# Always use explicit waits for better reliability',
+                    example: `# Always use explicit waits for better reliability`,
                 },
                 {
                     command: 'Page Object Model',
                     description: 'Use POM for maintainability',
                     usage: 'Separate page classes',
-                    example: '# Organize code with Page Object Model pattern',
+                    example: `# Organize code with Page Object Model pattern`,
                 },
                 {
                     command: 'Avoid Hard Waits',
                     description: 'Minimize time.sleep() usage',
                     usage: 'Use WebDriverWait instead',
-                    example: '# Use explicit waits instead of sleep',
+                    example: `# Use explicit waits instead of sleep`,
                 },
                 {
                     command: 'Unique Locators',
                     description: 'Use stable, unique locators',
                     usage: 'Prefer ID, then CSS/XPath',
-                    example: '# Use ID > CSS Selector > XPath',
+                    example: `# Use ID > CSS Selector > XPath`,
                 },
                 {
-                    command: 'Clean Up',
-                    description: 'Always close browser',
+                    command: 'Clean Up Resources Python',
+                    description: 'Always close browser using Python',
                     usage: 'driver.quit() in finally block',
-                    example: '# Python\ntry:\n    # test code\nfinally:\n    driver.quit()\n\n# Java\ntry {\n    // test code\n} finally {\n    driver.quit();\n}',
+                    example: `try:
+    # test code
+finally:
+    driver.quit()`,
+                },
+                {
+                    command: 'Clean Up Resources Java',
+                    description: 'Always close browser using Java',
+                    usage: 'driver.quit() in finally block',
+                    example: `try {
+    // test code
+} finally {
+    driver.quit();
+}`,
                 },
             ],
         },
     ],
 };
-
-
-
-
-

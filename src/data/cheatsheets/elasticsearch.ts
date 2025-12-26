@@ -3,7 +3,7 @@ import { Database } from 'lucide-react';
 export const elasticsearchCheatsheet = {
   id: 'elasticsearch',
   name: 'Elasticsearch',
-  description: 'Master Elasticsearch from basics to advanced features (2024)',
+  description: 'Master Elasticsearch from basics to expert operations (2024 Edition)',
   icon: Database,
   colorTheme: 'yellow' as const,
   sections: [
@@ -12,45 +12,60 @@ export const elasticsearchCheatsheet = {
       title: 'Getting Started with Elasticsearch',
       commands: [
         {
-          command: 'Elasticsearch Introduction',
-          description: 'Understanding Elasticsearch concepts and architecture',
-          usage: 'Basic Elasticsearch terminology and concepts',
-          example: `# Elasticsearch is a distributed, RESTful search and analytics engine
-
-======== Key Concepts ==========
-# Document: Basic unit of information stored in JSON format
-# Index: Collection of documents with similar characteristics
-# Shard: Split of an index across multiple nodes
-# Replica: Copy of a shard for high availability
-# Cluster: Collection of one or more nodes
-# Node: Single server in a cluster
-# Mapping: Schema definition for documents
-# Field: Key-value pair in a document
-
-======== Architecture Benefits ==========
-# Distributed nature for horizontal scaling
-# Near real-time search capabilities
-# Multi-tenancy with multi-type support
-# RESTful API for easy integration
-# Built-in support for complex queries
-# Automatic failover and data replication
-# Schemaless JSON document storage`,
+          command: 'Elasticsearch Overview',
+          description: 'Introduction to Elasticsearch concepts',
+          usage: 'Understanding Elasticsearch fundamentals',
+          example: `Elasticsearch Overview:
+- Distributed, RESTful search and analytics engine
+- Built on Apache Lucene for full-text search
+- Near real-time search and analytics capabilities
+- Scalable horizontal architecture with automatic sharding
+- JSON document storage with schema flexibility
+- Multi-tenancy support with multiple indices
+- Built-in support for complex data types and geo data
+- Real-time data processing and aggregation engine`,
         },
         {
-          command: 'Installation and Setup',
-          description: 'Install and configure Elasticsearch',
-          usage: 'Installation commands for different platforms',
-          example: `# Elasticsearch 8.x Installation
-
-======== Docker Installation ==========
-# Single Node Docker
-docker run -p 9200:9200 -p 9300:9300 \\
+          command: 'Core Concepts',
+          description: 'Essential Elasticsearch terminology',
+          usage: 'Understanding key concepts',
+          example: `Core Concepts:
+- Document: Basic unit of information stored in JSON format
+- Index: Collection of documents with similar characteristics
+- Shard: Split of an index across multiple nodes
+- Replica: Copy of a shard for high availability
+- Cluster: Collection of one or more nodes
+- Node: Single server in a cluster
+- Mapping: Schema definition for documents
+- Field: Key-value pair in a document`,
+        },
+        {
+          command: 'Architecture Benefits',
+          description: 'Advantages of Elasticsearch architecture',
+          usage: 'Why choose Elasticsearch',
+          example: `Architecture Benefits:
+- Distributed nature for horizontal scaling
+- Near real-time search capabilities
+- Multi-tenancy with multi-type support
+- RESTful API for easy integration
+- Built-in support for complex queries
+- Automatic failover and data replication
+- Schemaless JSON document storage`,
+        },
+        {
+          command: 'Docker Single Node',
+          description: 'Install Elasticsearch with Docker',
+          usage: 'Quick Docker setup',
+          example: `docker run -p 9200:9200 -p 9300:9300 \\
   -e "discovery.type=single-node" \\
   -e "xpack.security.enabled=false" \\
-  docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-
-======== Docker Compose ==========
-version: '3.8'
+  docker.elastic.co/elasticsearch/elasticsearch:8.11.0`,
+        },
+        {
+          command: 'Docker Compose Setup',
+          description: 'Elasticsearch with Docker Compose',
+          usage: 'Multi-container setup',
+          example: `version: '3.8'
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
@@ -66,17 +81,22 @@ services:
       - es_data:/usr/share/elasticsearch/data
 
 volumes:
-  es_data:
-
-======== Package Installation ==========
-# APT Installation (Ubuntu/Debian)
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  es_data:`,
+        },
+        {
+          command: 'APT Installation',
+          description: 'Install on Ubuntu/Debian',
+          usage: 'Package manager installation',
+          example: `wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
 sudo apt update
-sudo apt install elasticsearch
-
-# YUM Installation (CentOS/RHEL)
-rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+sudo apt install elasticsearch`,
+        },
+        {
+          command: 'YUM Installation',
+          description: 'Install on CentOS/RHEL',
+          usage: 'RPM package installation',
+          example: `rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 echo "[elasticsearch-8.x]
 name=Elasticsearch repository for 8.x packages
 baseurl=https://artifacts.elastic.co/packages/8.x/yum
@@ -85,142 +105,1157 @@ gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 autorefresh=1
 type=rpm-md" | sudo tee /etc/yum.repos.d/elasticsearch.repo
-sudo yum install elasticsearch
-
-======== Homebrew Installation (macOS) ==========
-brew tap elastic/tap
+sudo yum install elasticsearch`,
+        },
+        {
+          command: 'Homebrew Installation',
+          description: 'Install on macOS',
+          usage: 'macOS installation',
+          example: `brew tap elastic/tap
 brew install elastic/tap/elasticsearch-full`,
         },
         {
           command: 'Basic Configuration',
-          description: 'Configure Elasticsearch settings',
-          usage: 'elasticsearch.yml configuration file',
+          description: 'Configure basic Elasticsearch settings',
+          usage: 'elasticsearch.yml setup',
           example: `# Edit: /etc/elasticsearch/elasticsearch.yml
-
-======== Basic Configuration ==========
 cluster.name: my-application
 node.name: node-1
 path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 network.host: 0.0.0.0
 http.port: 9200
-discovery.type: single-node
-
-======== Memory Configuration ==========
-# Edit: /etc/elasticsearch/jvm.options
--Xms1g
--Xmx1g
-
-======== Security Configuration ==========
-xpack.security.enabled: true
-xpack.security.transport.ssl.enabled: true
-
-======== Production Settings ==========
-bootstrap.memory_lock: true
-action.auto_create_index: +*
-
-======== Start Service ==========
-# Systemd (Linux)
-sudo systemctl start elasticsearch
-sudo systemctl enable elasticsearch
-
-# macOS Homebrew
-brew services start elastic/tap/elasticsearch-full`,
+discovery.type: single-node`,
         },
         {
-          command: 'Basic Operations',
-          description: 'Start, stop, and verify Elasticsearch',
-          usage: 'Service management and health checks',
-          example: `# Service Management
-
-======== Start/Stop Service ==========
-# Systemd (Linux)
-sudo systemctl start elasticsearch
-sudo systemctl stop elasticsearch
-sudo systemctl restart elasticsearch
-sudo systemctl status elasticsearch
-
-# macOS Homebrew
-brew services start elastic/tap/elasticsearch-full
-brew services stop elastic/tap/elasticsearch-full
-
-======== Verify Installation ==========
-# Basic health check
-curl -X GET "localhost:9200"
-
-# Pretty printed output
-curl -X GET "localhost:9200/?pretty"
-
-# Cluster health
-curl -X GET "localhost:9200/_cluster/health?pretty"
-
-# Cluster statistics
-curl -X GET "localhost:9200/_cluster/stats?pretty"
-
-# Node information
-curl -X GET "localhost:9200/_nodes?pretty"
-
-======== Basic API Test ==========
-# Test cluster connectivity
-curl -X GET "localhost:9200/_cat/health?v"
-
-# List all indices
-curl -X GET "localhost:9200/_cat/indices?v"
-
-# Show cluster settings
-curl -X GET "localhost:9200/_cluster/settings?pretty"`,
+          command: 'Memory Configuration',
+          description: 'Configure JVM memory settings',
+          usage: 'Performance tuning',
+          example: `# Edit: /etc/elasticsearch/jvm.options
+-Xms1g
+-Xmx1g`,
+        },
+        {
+          command: 'Security Configuration',
+          description: 'Enable security features',
+          usage: 'Security setup',
+          example: `xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true`,
+        },
+        {
+          command: 'Production Settings',
+          description: 'Production-ready configuration',
+          usage: 'Production optimization',
+          example: `bootstrap.memory_lock: true
+action.auto_create_index: +*`,
+        },
+        {
+          command: 'Start Service Linux',
+          description: 'Start Elasticsearch on Linux',
+          usage: 'Systemd service management',
+          example: `sudo systemctl start elasticsearch
+sudo systemctl enable elasticsearch`,
+        },
+        {
+          command: 'Start Service macOS',
+          description: 'Start Elasticsearch on macOS',
+          usage: 'Homebrew service management',
+          example: `brew services start elastic/tap/elasticsearch-full`,
+        },
+        {
+          command: 'Stop Service Linux',
+          description: 'Stop Elasticsearch on Linux',
+          usage: 'Service management',
+          example: `sudo systemctl stop elasticsearch`,
+        },
+        {
+          command: 'Restart Service Linux',
+          description: 'Restart Elasticsearch on Linux',
+          usage: 'Service restart',
+          example: `sudo systemctl restart elasticsearch`,
+        },
+        {
+          command: 'Check Service Status',
+          description: 'Verify Elasticsearch service status',
+          usage: 'Service monitoring',
+          example: `sudo systemctl status elasticsearch`,
+        },
+        {
+          command: 'Stop Service macOS',
+          description: 'Stop Elasticsearch on macOS',
+          usage: 'macOS service management',
+          example: `brew services stop elastic/tap/elasticsearch-full`,
+        },
+        {
+          command: 'Cluster Health Check',
+          description: 'Check cluster health status',
+          usage: 'Health monitoring',
+          example: `curl -X GET "localhost:9200/_cluster/health?pretty"`,
+        },
+        {
+          command: 'Node Information',
+          description: 'Get node details',
+          usage: 'Node monitoring',
+          example: `curl -X GET "localhost:9200/_nodes?pretty"`,
+        },
+        {
+          command: 'Index List',
+          description: 'List all indices',
+          usage: 'Index enumeration',
+          example: `curl -X GET "localhost:9200/_cat/indices?v"`,
+        },
+        {
+          command: 'Cluster Settings',
+          description: 'View cluster configuration',
+          usage: 'Configuration viewing',
+          example: `curl -X GET "localhost:9200/_cluster/settings?pretty"`,
+        },
+        {
+          command: 'Verify Installation',
+          description: 'Test Elasticsearch installation',
+          usage: 'Installation verification',
+          example: `curl -X GET "localhost:9200"`,
         },
       ],
     },
     {
-      title: 'Basic Index Operations',
+      title: 'Index Management',
       commands: [
         {
-          command: 'Creating Indices',
-          description: 'Create new indices with settings and mappings',
-          usage: 'PUT /index_name with configuration',
-          example: `# Basic Index Creation
-
-======== Simple Index ==========
-curl -X PUT "localhost:9200/my_index?pretty"
-
-======== Index with Settings ==========
-curl -X PUT "localhost:9200/my_index" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+          command: 'Create Index',
+          description: 'Create a new index',
+          usage: 'Index creation',
+          example: `curl -X PUT "localhost:9200/my_index?pretty"`,
+        },
+        {
+          command: 'Create Index with Settings',
+          description: 'Create index with custom settings',
+          usage: 'Advanced index creation',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
   "settings": {
     "number_of_shards": 3,
-    "number_of_replicas": 1,
-    "index": {
-      "max_result_window": 50000,
-      "refresh_interval": "1s"
-    }
+    "number_of_replicas": 1
   }
-}'
-
-======== Index with Mappings ==========
-curl -X PUT "localhost:9200/products" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+}'`,
+        },
+        {
+          command: 'Create Index with Mapping',
+          description: 'Create index with field mapping',
+          usage: 'Schema definition',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
   "mappings": {
     "properties": {
-      "name": {"type": "text"},
-      "price": {"type": "double"},
-      "in_stock": {"type": "boolean"},
-      "tags": {"type": "keyword"},
-      "created": {"type": "date", "format": "yyyy-MM-dd HH:mm:ss"},
-      "description": {"type": "text", "analyzer": "english"}
+      "title": { "type": "text" },
+      "author": { "type": "keyword" },
+      "published_date": { "type": "date" },
+      "content": { "type": "text" }
     }
   }
-}'
-
-======== Complete Index Creation ==========
-curl -X PUT "localhost:9200/blog_posts" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+}'`,
+        },
+        {
+          command: 'Get Index Mapping',
+          description: 'Retrieve index mapping',
+          usage: 'Schema inspection',
+          example: `curl -X GET "localhost:9200/my_index/_mapping?pretty"`,
+        },
+        {
+          command: 'Get Index Settings',
+          description: 'Retrieve index settings',
+          usage: 'Configuration viewing',
+          example: `curl -X GET "localhost:9200/my_index/_settings?pretty"`,
+        },
+        {
+          command: 'Update Index Settings',
+          description: 'Modify index settings',
+          usage: 'Dynamic configuration',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "number_of_replicas": 2
+  }
+}'`,
+        },
+        {
+          command: 'Delete Index',
+          description: 'Remove an index',
+          usage: 'Index deletion',
+          example: `curl -X DELETE "localhost:9200/my_index?pretty"`,
+        },
+        {
+          command: 'Delete Multiple Indices',
+          description: 'Remove multiple indices',
+          usage: 'Batch index deletion',
+          example: `curl -X DELETE "localhost:9200/index1,index2,index3?pretty"`,
+        },
+        {
+          command: 'Delete All Indices',
+          description: 'Remove all indices',
+          usage: 'Complete index cleanup',
+          example: `curl -X DELETE "localhost:9200/_all?pretty"`,
+        },
+        {
+          command: 'Index Exists',
+          description: 'Check if index exists',
+          usage: 'Index validation',
+          example: `curl -X HEAD "localhost:9200/my_index"`,
+        },
+        {
+          command: 'Open Index',
+          description: 'Open closed index',
+          usage: 'Index operations',
+          example: `curl -X POST "localhost:9200/my_index/_open?pretty"`,
+        },
+        {
+          command: 'Close Index',
+          description: 'Close index to save resources',
+          usage: 'Resource management',
+          example: `curl -X POST "localhost:9200/my_index/_close?pretty"`,
+        },
+        {
+          command: 'Freeze Index',
+          description: 'Freeze index to minimize memory',
+          usage: 'Memory optimization',
+          example: `curl -X POST "localhost:9200/my_index/_freeze?pretty"`,
+        },
+        {
+          command: 'Unfreeze Index',
+          description: 'Unfreeze frozen index',
+          usage: 'Restore index operations',
+          example: `curl -X POST "localhost:9200/my_index/_unfreeze?pretty"`,
+        },
+        {
+          command: 'Shrink Index',
+          description: 'Reduce index shard count',
+          usage: 'Index optimization',
+          example: `curl -X POST "localhost:9200/my_index/_shrink/target_index?pretty" -H 'Content-Type: application/json' -d'
+{
   "settings": {
-    "number_of_shards": 2,
-    "number_of_replicas": 1,
+    "index.number_of_shards": 1
+  }
+}'`,
+        },
+        {
+          command: 'Split Index',
+          description: 'Increase index shard count',
+          usage: 'Index scaling',
+          example: `curl -X POST "localhost:9200/my_index/_split/target_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "index.number_of_shards": 5
+  }
+}'`,
+        },
+        {
+          command: 'Clone Index',
+          description: 'Create index copy',
+          usage: 'Index duplication',
+          example: `curl -X POST "localhost:9200/my_index/_clone/cloned_index?pretty"`,
+        },
+        {
+          command: 'Rollover Index',
+          description: 'Create new index when conditions met',
+          usage: 'Time-based index management',
+          example: `curl -X POST "localhost:9200/logs-000001/_rollover?pretty" -H 'Content-Type: application/json' -d'
+{
+  "conditions": {
+    "max_age": "7d",
+    "max_docs": 1000000
+  }
+}'`,
+        },
+      ],
+    },
+    {
+      title: 'Document Operations',
+      commands: [
+        {
+          command: 'Index Document',
+          description: 'Add or replace document',
+          usage: 'Document creation',
+          example: `curl -X POST "localhost:9200/my_index/_doc?pretty" -H 'Content-Type: application/json' -d'
+{
+  "title": "Elasticsearch Guide",
+  "author": "John Doe",
+  "published_date": "2024-01-01",
+  "content": "Learn Elasticsearch from scratch"
+}'`,
+        },
+        {
+          command: 'Index Document with ID',
+          description: 'Add document with specific ID',
+          usage: 'Controlled document creation',
+          example: `curl -X PUT "localhost:9200/my_index/_doc/1?pretty" -H 'Content-Type: application/json' -d'
+{
+  "title": "Elasticsearch Guide",
+  "author": "John Doe",
+  "published_date": "2024-01-01"
+}'`,
+        },
+        {
+          command: 'Get Document',
+          description: 'Retrieve document by ID',
+          usage: 'Document retrieval',
+          example: `curl -X GET "localhost:9200/my_index/_doc/1?pretty"`,
+        },
+        {
+          command: 'Get Document Source',
+          description: 'Get document source only',
+          usage: 'Source data retrieval',
+          example: `curl -X GET "localhost:9200/my_index/_doc/1/_source?pretty"`,
+        },
+        {
+          command: 'Get Document Fields',
+          description: 'Get specific document fields',
+          usage: 'Selective field retrieval',
+          example: `curl -X GET "localhost:9200/my_index/_doc/1?pretty&source_includes=title,author"`,
+        },
+        {
+          command: 'Check Document Exists',
+          description: 'Verify document existence',
+          usage: 'Document validation',
+          example: `curl -X HEAD "localhost:9200/my_index/_doc/1"`,
+        },
+        {
+          command: 'Update Document',
+          description: 'Modify existing document',
+          usage: 'Document modification',
+          example: `curl -X POST "localhost:9200/my_index/_doc/1/_update?pretty" -H 'Content-Type: application/json' -d'
+{
+  "doc": {
+    "title": "Updated Elasticsearch Guide"
+  }
+}'`,
+        },
+        {
+          command: 'Update with Script',
+          description: 'Update document using script',
+          usage: 'Scripted updates',
+          example: `curl -X POST "localhost:9200/my_index/_doc/1/_update?pretty" -H 'Content-Type: application/json' -d'
+{
+  "script": {
+    "source": "ctx._source.views += params.views",
+    "params": {
+      "views": 1
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Upsert Document',
+          description: 'Update or insert document',
+          usage: 'Conditional document creation',
+          example: `curl -X POST "localhost:9200/my_index/_doc/1/_update?pretty" -H 'Content-Type: application/json' -d'
+{
+  "script": {
+    "source": "ctx._source.views += params.views",
+    "params": {
+      "views": 1
+    }
+  },
+  "upsert": {
+    "title": "New Document",
+    "views": 1
+  }
+}'`,
+        },
+        {
+          command: 'Delete Document',
+          description: 'Remove document by ID',
+          usage: 'Document deletion',
+          example: `curl -X DELETE "localhost:9200/my_index/_doc/1?pretty"`,
+        },
+        {
+          command: 'Delete by Query',
+          description: 'Delete documents matching query',
+          usage: 'Batch document deletion',
+          example: `curl -X POST "localhost:9200/my_index/_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "author": "John Doe"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Bulk Index Documents',
+          description: 'Index multiple documents',
+          usage: 'Bulk operations',
+          example: `curl -X POST "localhost:9200/my_index/_bulk?pretty" -H 'Content-Type: application/json' -d'
+{ "index": { "_id": "1" } }
+{ "title": "Document 1", "author": "John" }
+{ "index": { "_id": "2" } }
+{ "title": "Document 2", "author": "Jane" }'`,
+        },
+        {
+          command: 'Bulk Update Documents',
+          description: 'Update multiple documents',
+          usage: 'Bulk updates',
+          example: `curl -X POST "localhost:9200/my_index/_bulk?pretty" -H 'Content-Type: application/json' -d'
+{ "update": { "_id": "1" } }
+{ "doc": { "title": "Updated Title 1" } }
+{ "update": { "_id": "2" } }
+{ "doc": { "title": "Updated Title 2" } }'`,
+        },
+        {
+          command: 'Bulk Delete Documents',
+          description: 'Delete multiple documents',
+          usage: 'Bulk deletions',
+          example: `curl -X POST "localhost:9200/my_index/_bulk?pretty" -H 'Content-Type: application/json' -d'
+{ "delete": { "_id": "1" } }
+{ "delete": { "_id": "2" } }'`,
+        },
+        {
+          command: 'Multi Get Documents',
+          description: 'Retrieve multiple documents',
+          usage: 'Batch document retrieval',
+          example: `curl -X GET "localhost:9200/_mget?pretty" -H 'Content-Type: application/json' -d'
+{
+  "docs": [
+    {
+      "_index": "my_index",
+      "_id": "1"
+    },
+    {
+      "_index": "my_index",
+      "_id": "2"
+    }
+  ]
+}'`,
+        },
+      ],
+    },
+    {
+      title: 'Search Queries',
+      commands: [
+        {
+          command: 'Match All Query',
+          description: 'Search all documents',
+          usage: 'Basic search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  }
+}'`,
+        },
+        {
+          command: 'Match Query',
+          description: 'Full-text search',
+          usage: 'Text search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "title": "elasticsearch guide"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Match Phrase Query',
+          description: 'Exact phrase search',
+          usage: 'Phrase matching',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_phrase": {
+      "title": "elasticsearch guide"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Match Phrase Prefix Query',
+          description: 'Phrase prefix search',
+          usage: 'Autocomplete functionality',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_phrase_prefix": {
+      "title": "elastic sea"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Multi Match Query',
+          description: 'Search multiple fields',
+          usage: 'Cross-field search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "multi_match": {
+      "query": "elasticsearch",
+      "fields": ["title", "content"]
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Term Query',
+          description: 'Exact term matching',
+          usage: 'Keyword search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "term": {
+      "author.keyword": "John Doe"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Terms Query',
+          description: 'Multiple exact terms',
+          usage: 'Multiple keyword search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "terms": {
+      "author.keyword": ["John Doe", "Jane Smith"]
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Range Query',
+          description: 'Search within range',
+          usage: 'Numeric/date range search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "range": {
+      "published_date": {
+        "gte": "2024-01-01",
+        "lte": "2024-12-31"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Exists Query',
+          description: 'Find documents with field',
+          usage: 'Field existence check',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "exists": {
+      "field": "author"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Wildcard Query',
+          description: 'Pattern matching with wildcards',
+          usage: 'Flexible pattern search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "wildcard": {
+      "title": "elastic*"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Regexp Query',
+          description: 'Regular expression search',
+          usage: 'Advanced pattern matching',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "regexp": {
+      "title": "elastic.*search"
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Fuzzy Query',
+          description: 'Fuzzy matching for typos',
+          usage: 'Approximate matching',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "fuzzy": {
+      "title": {
+        "value": "elastcsearch",
+        "fuzziness": "AUTO"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Bool Query - Must',
+          description: 'AND condition in boolean query',
+          usage: 'Required conditions',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "title": "elasticsearch" } },
+        { "match": { "content": "guide" } }
+      ]
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Bool Query - Should',
+          description: 'OR condition in boolean query',
+          usage: 'Optional conditions',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "title": "elasticsearch" } },
+        { "match": { "title": "search" } }
+      ]
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Bool Query - Must Not',
+          description: 'NOT condition in boolean query',
+          usage: 'Exclusion conditions',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        { "match": { "author": "John Doe" } }
+      ]
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Bool Query - Filter',
+          description: 'Filter context in boolean query',
+          usage: 'Filtering conditions',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "filter": [
+        { "term": { "status": "published" } }
+      ]
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Bool Query - Minimum Should Match',
+          description: 'Minimum conditions to match',
+          usage: 'Partial matching control',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "title": "elasticsearch" } },
+        { "match": { "content": "search" } },
+        { "match": { "author": "John" } }
+      ],
+      "minimum_should_match": 2
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Nested Query',
+          description: 'Search nested objects',
+          usage: 'Nested document search',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "nested": {
+      "path": "comments",
+      "query": {
+        "match": {
+          "comments.author": "John"
+        }
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Has Child Query',
+          description: 'Search by child documents',
+          usage: 'Parent-child relationships',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "has_child": {
+      "type": "comment",
+      "query": {
+        "match": {
+          "content": "great"
+        }
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Has Parent Query',
+          description: 'Search by parent documents',
+          usage: 'Child-parent relationships',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "article",
+      "query": {
+        "match": {
+          "title": "elasticsearch"
+        }
+      }
+    }
+  }
+}'`,
+        },
+      ],
+    },
+    {
+      title: 'Aggregations',
+      commands: [
+        {
+          command: 'Terms Aggregation',
+          description: 'Group by field values',
+          usage: 'Categorical aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "authors": {
+      "terms": {
+        "field": "author.keyword"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Date Histogram Aggregation',
+          description: 'Group by date intervals',
+          usage: 'Time-based aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "daily_posts": {
+      "date_histogram": {
+        "field": "published_date",
+        "calendar_interval": "day"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Histogram Aggregation',
+          description: 'Group by numeric intervals',
+          usage: 'Numeric aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "price_ranges": {
+      "histogram": {
+        "field": "price",
+        "interval": 50
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Range Aggregation',
+          description: 'Group by custom ranges',
+          usage: 'Custom range aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "price_ranges": {
+      "range": {
+        "field": "price",
+        "ranges": [
+          { "to": 50, "key": "cheap" },
+          { "from": 50, "to": 100, "key": "medium" },
+          { "from": 100, "key": "expensive" }
+        ]
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Stats Aggregation',
+          description: 'Basic statistics',
+          usage: 'Statistical analysis',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "price_stats": {
+      "stats": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Extended Stats Aggregation',
+          description: 'Extended statistics',
+          usage: 'Advanced statistical analysis',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "price_stats": {
+      "extended_stats": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Cardinality Aggregation',
+          description: 'Count unique values',
+          usage: 'Unique count aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "unique_authors": {
+      "cardinality": {
+        "field": "author.keyword"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Percentiles Aggregation',
+          description: 'Calculate percentiles',
+          usage: 'Percentile analysis',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "price_percentiles": {
+      "percentiles": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Average Aggregation',
+          description: 'Calculate average value',
+          usage: 'Mean calculation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "avg_price": {
+      "avg": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Sum Aggregation',
+          description: 'Calculate sum of values',
+          usage: 'Sum calculation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "total_sales": {
+      "sum": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Min Aggregation',
+          description: 'Find minimum value',
+          usage: 'Minimum calculation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "min_price": {
+      "min": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Max Aggregation',
+          description: 'Find maximum value',
+          usage: 'Maximum calculation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "max_price": {
+      "max": {
+        "field": "price"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Nested Aggregation',
+          description: 'Aggregation within aggregation',
+          usage: 'Multi-level aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "authors": {
+      "terms": {
+        "field": "author.keyword"
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Filter Aggregation',
+          description: 'Aggregate filtered results',
+          usage: 'Conditional aggregation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "published_books": {
+      "filter": {
+        "term": {
+          "status.keyword": "published"
+        }
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}'`,
+        },
+      ],
+    },
+    // INTERMEDIATE LEVEL
+    {
+      title: 'Mapping and Analysis',
+      commands: [
+        {
+          command: 'Text Field Mapping',
+          description: 'Define text field mapping',
+          usage: 'Text field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "analyzer": "standard"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Keyword Field Mapping',
+          description: 'Define keyword field mapping',
+          usage: 'Exact match field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "status": {
+        "type": "keyword"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Numeric Field Mapping',
+          description: 'Define numeric field mapping',
+          usage: 'Number field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "price": {
+        "type": "double"
+      },
+      "quantity": {
+        "type": "integer"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Date Field Mapping',
+          description: 'Define date field mapping',
+          usage: 'Date field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "created_at": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Boolean Field Mapping',
+          description: 'Define boolean field mapping',
+          usage: 'Boolean field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "is_active": {
+        "type": "boolean"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Object Field Mapping',
+          description: 'Define object field mapping',
+          usage: 'Nested object configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "address": {
+        "type": "object",
+        "properties": {
+          "street": { "type": "text" },
+          "city": { "type": "keyword" },
+          "zip": { "type": "keyword" }
+        }
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Nested Field Mapping',
+          description: 'Define nested field mapping',
+          usage: 'Nested array configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "comments": {
+        "type": "nested",
+        "properties": {
+          "author": { "type": "keyword" },
+          "content": { "type": "text" },
+          "date": { "type": "date" }
+        }
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Array Field Mapping',
+          description: 'Define array field mapping',
+          usage: 'Array configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "tags": {
+        "type": "keyword"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Geo Point Field Mapping',
+          description: 'Define geographic point mapping',
+          usage: 'Location field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_point"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'IP Field Mapping',
+          description: 'Define IP address field mapping',
+          usage: 'IP field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "ip_address": {
+        "type": "ip"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Custom Analyzer',
+          description: 'Create custom analyzer',
+          usage: 'Text analysis configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
     "analysis": {
       "analyzer": {
         "my_analyzer": {
@@ -232,992 +1267,82 @@ curl -X PUT "localhost:9200/blog_posts" \\
   },
   "mappings": {
     "properties": {
-      "title": {"type": "text", "analyzer": "my_analyzer"},
-      "content": {"type": "text", "analyzer": "my_analyzer"},
-      "author": {"type": "keyword"},
-      "publish_date": {"type": "date"},
-      "tags": {"type": "keyword"}
-    }
-  }
-}'`,
-        },
-        {
-          command: 'Managing Indices',
-          description: 'List, examine, and delete indices',
-          usage: 'GET/DELETE operations on indices',
-          example: `# Index Management Operations
-
-======== List Indices ==========
-# List all indices
-curl -X GET "localhost:9200/_cat/indices?v"
-
-# List specific index
-curl -X GET "localhost:9200/_cat/indices/my_index?v"
-
-# List indices with human-readable sizes
-curl -X GET "localhost:9200/_cat/indices?v&h=index,health,status,docs.count,store.size,pri.store.size"
-
-======== Index Information ==========
-# Get index settings
-curl -X GET "localhost:9200/my_index/_settings?pretty"
-
-# Get index mappings
-curl -X GET "localhost:9200/my_index/_mapping?pretty"
-
-# Get index statistics
-curl -X GET "localhost:9200/my_index/_stats?pretty"
-
-# Get complete index information
-curl -X GET "localhost:9200/my_index?pretty"
-
-======== Delete Index ==========
-# Delete single index
-curl -X DELETE "localhost:9200/my_index"
-
-# Delete multiple indices
-curl -X DELETE "localhost:9200/index1,index2"
-
-# Delete all indices (use with caution!)
-curl -X DELETE "localhost:9200/_all"
-
-# Delete indices matching pattern
-curl -X DELETE "localhost:9200/test-*"
-
-======== Index Aliases ==========
-# Create alias
-curl -X POST "localhost:9200/_aliases" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "actions": [
-    {"add": {"index": "my_index", "alias": "my_alias"}}
-  ]
-}'
-
-# View aliases
-curl -X GET "localhost:9200/_cat/aliases?v"`,
-        },
-        {
-          command: 'Document Operations',
-          description: 'Basic CRUD operations on documents',
-          usage: 'POST/PUT/GET/DELETE document operations',
-          example: `# Document CRUD Operations
-
-======== Index Document ==========
-# Index with auto-generated ID
-curl -X POST "localhost:9200/my_index/_doc" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "name": "Product 1",
-  "price": 29.99,
-  "in_stock": true,
-  "tags": ["electronics", "gadget"]
-}'
-
-# Index with specific ID
-curl -X PUT "localhost:9200/my_index/_doc/1" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "name": "Product 1",
-  "price": 29.99,
-  "in_stock": true
-}'
-
-======== Retrieve Document ==========
-# Get document by ID
-curl -X GET "localhost:9200/my_index/_doc/1?pretty"
-
-# Get document source only
-curl -X GET "localhost:9200/my_index/_source/1"
-
-# Get document with specific fields
-curl -X GET "localhost:9200/my_index/_doc/1?_source=name,price&pretty"
-
-======== Update Document ==========
-# Partial update
-curl -X POST "localhost:9200/my_index/_update/1" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "doc": {
-    "price": 19.99,
-    "in_stock": false
-  }
-}'
-
-# Script update
-curl -X POST "localhost:9200/my_index/_update/1" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "script": {
-    "source": "ctx._source.price += params.amount",
-    "params": {"amount": 5}
-  }
-}'
-
-======== Delete Document ==========
-# Delete by ID
-curl -X DELETE "localhost:9200/my_index/_doc/1"
-
-# Delete by query
-curl -X POST "localhost:9200/my_index/_delete_by_query" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "match": {"in_stock": false}
-  }
-}'`,
-        },
-      ],
-    },
-
-    // INTERMEDIATE LEVEL
-    {
-      title: 'Search and Querying',
-      commands: [
-        {
-          command: 'Basic Search',
-          description: 'Fundamental search operations',
-          usage: 'GET /index/_search with queries',
-          example: `# Basic Search Operations
-
-======== Match All Query ==========
-# Search all documents
-curl -X GET "localhost:9200/my_index/_search?pretty"
-
-# Explicit match all
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {"match_all": {}}
-}'
-
-======== Term Queries ==========
-# Match query (full-text search)
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "match": {
-      "name": "product"
-    }
-  }
-}'
-
-# Term query (exact match)
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "term": {
-      "tags.keyword": "electronics"
-    }
-  }
-}'
-
-======== Range Queries ==========
-# Numeric range
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "range": {
-      "price": {
-        "gte": 10,
-        "lte": 100
-      }
-    }
-  }
-}'
-
-# Date range
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "range": {
-      "created": {
-        "gte": "2024-01-01",
-        "lte": "2024-12-31"
+      "content": {
+        "type": "text",
+        "analyzer": "my_analyzer"
       }
     }
   }
 }'`,
         },
         {
-          command: 'Compound Queries',
-          description: 'Combine multiple queries',
-          usage: 'bool, must, should, must_not queries',
-          example: `# Compound Query Operations
-
-======== Boolean Queries ==========
-# Must (AND) - All conditions must match
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "bool": {
-      "must": [
-        {"match": {"name": "product"}},
-        {"range": {"price": {"gte": 10, "lte": 100}}}
-      ]
-    }
-  }
-}'
-
-# Should (OR) - At least one condition must match
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "bool": {
-      "should": [
-        {"match": {"name": "laptop"}},
-        {"match": {"description": "computer"}}
-      ],
-      "minimum_should_match": 1
-    }
-  }
-}'
-
-# Must Not (NOT) - Conditions must not match
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "bool": {
-      "must": [{"match": {"name": "product"}}],
-      "must_not": [{"term": {"status": "discontinued"}}]
-    }
-  }
-}'
-
-======== Filter Queries ==========
-# Filter context (no scoring, faster)
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "bool": {
-      "filter": [
-        {"term": {"category": "electronics"}},
-        {"range": {"price": {"lte": 1000}}}
-      ]
-    }
-  }
-}'
-
-======== Nested Boolean Queries ==========
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "bool": {
-      "must": [
-        {"match": {"name": "laptop"}}
-      ],
-      "filter": [
-        {"term": {"in_stock": true}},
-        {"range": {"price": {"lte": 1500}}}
-      ],
-      "must_not": [
-        {"term": {"brand": "discontinued"}}
-      ],
-      "should": [
-        {"term": {"warranty": "extended"}}
-      ],
-      "minimum_should_match": 0
-    }
-  }
+          command: 'Standard Analyzer',
+          description: 'Use standard text analyzer',
+          usage: 'Default text analysis',
+          example: `curl -X GET "localhost:9200/my_index/_analyze?pretty" -H 'Content-Type: application/json' -d'
+{
+  "analyzer": "standard",
+  "text": "Elasticsearch is powerful"
 }'`,
         },
         {
-          command: 'Advanced Search Features',
-          description: 'Advanced search capabilities',
-          usage: 'fuzzy, wildcard, regex, phrase queries',
-          example: `# Advanced Search Features
-
-======== Fuzzy Search ==========
-# Fuzzy matching (typo tolerance)
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "fuzzy": {
-      "name": {
-        "value": "produt",
-        "fuzziness": "AUTO"
-      }
-    }
-  }
-}'
-
-======== Wildcard Queries ==========
-# Wildcard patterns
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "wildcard": {
-      "name": "prod*"
-    }
-  }
-}'
-
-======== Phrase Queries ==========
-# Exact phrase matching
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "match_phrase": {
-      "description": "high quality laptop"
-    }
-  }
-}'
-
-======== Prefix Queries ==========
-# Prefix matching
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "prefix": {
-      "name": "lap"
-    }
-  }
-}'
-
-======== Regexp Queries ==========
-# Regular expression matching
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "regexp": {
-      "name": "prod[0-9]{3}"
-    }
-  }
-}'
-
-======== Multi-match Queries ==========
-# Search multiple fields
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {
-    "multi_match": {
-      "query": "laptop computer",
-      "fields": ["title", "description", "tags"],
-      "type": "best_fields"
-    }
-  }
+          command: 'Keyword Analyzer',
+          description: 'Use keyword analyzer',
+          usage: 'Exact match analysis',
+          example: `curl -X GET "localhost:9200/my_index/_analyze?pretty" -H 'Content-Type: application/json' -d'
+{
+  "analyzer": "keyword",
+  "text": "Elasticsearch is powerful"
 }'`,
         },
-      ],
-    },
-    {
-      title: 'Aggregations and Analytics',
-      commands: [
         {
-          command: 'Basic Aggregations',
-          description: 'Data aggregation and analysis',
-          usage: 'Aggregations framework for analytics',
-          example: `# Basic Aggregations
-
-======== Metrics Aggregations ==========
-# Average price
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "avg_price": {
-      "avg": {"field": "price"}
-    }
-  }
-}'
-
-# Multiple metrics
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "price_stats": {
-      "stats": {"field": "price"}
-    }
-  }
-}'
-
-======== Bucket Aggregations ==========
-# Terms aggregation (group by field)
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "categories": {
-      "terms": {"field": "category.keyword"}
-    }
-  }
-}'
-
-# Range aggregation
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "price_ranges": {
-      "range": {
-        "field": "price",
-        "ranges": [
-          {"to": 50, "key": "cheap"},
-          {"from": 50, "to": 200, "key": "medium"},
-          {"from": 200, "key": "expensive"}
-        ]
-      }
-    }
-  }
-}'
-
-======== Date Histogram ==========
-# Daily aggregation
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "daily_sales": {
-      "date_histogram": {
-        "field": "created",
-        "calendar_interval": "day"
+          command: 'Custom Tokenizer',
+          description: 'Create custom tokenizer',
+          usage: 'Text tokenization configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "pattern",
+          "pattern": "|"
+        }
       }
     }
   }
 }'`,
         },
         {
-          command: 'Advanced Aggregations',
-          description: 'Complex aggregation patterns',
-          usage: 'Nested, pipeline, and composite aggregations',
-          example: `# Advanced Aggregations
-
-======== Nested Aggregations ==========
-# Category with average price
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "categories": {
-      "terms": {"field": "category.keyword"},
-      "aggs": {
-        "avg_price": {
-          "avg": {"field": "price"}
-        },
-        "price_ranges": {
-          "range": {
-            "field": "price",
-            "ranges": [
-              {"to": 100, "key": "budget"},
-              {"from": 100, "key": "premium"}
-            ]
-          }
-        }
-      }
-    }
-  }
-}'
-
-======== Pipeline Aggregations ==========
-# Moving average
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "sales_per_month": {
-      "date_histogram": {
-        "field": "created",
-        "calendar_interval": "month"
-      },
-      "aggs": {
-        "moving_avg": {
-          "moving_avg": {
-            "buckets_path": "_count",
-            "model": "simple",
-            "window": 3
-          }
-        }
-      }
-    }
-  }
-}'
-
-======== Composite Aggregations ==========
-# Pagination for large aggregations
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "my_composite": {
-      "composite": {
-        "size": 2,
-        "sources": [
-          {
-            "category": {
-              "terms": {"field": "category.keyword"}
-            }
-          },
-          {
-            "brand": {
-              "terms": {"field": "brand.keyword"}
-            }
-          }
-        ]
-      }
-    }
-  }
-}'
-
-======== Significant Terms ==========
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {"match": {"description": "laptop"}},
-  "size": 0,
-  "aggs": {
-    "significant_brands": {
-      "significant_terms": {"field": "brand.keyword"}
+          command: 'Add Field Mapping',
+          description: 'Add new field to existing mapping',
+          usage: 'Dynamic mapping update',
+          example: `curl -X PUT "localhost:9200/my_index/_mapping?pretty" -H 'Content-Type: application/json' -d'
+{
+  "properties": {
+    "new_field": {
+      "type": "text"
     }
   }
 }'`,
         },
         {
-          command: 'Analytics and Insights',
-          description: 'Business intelligence with aggregations',
-          usage: 'Real-world analytics patterns',
-          example: `# Analytics and Business Intelligence
-
-======== Sales Analytics ==========
-# Monthly sales with trends
-curl -X GET "localhost:9200/sales/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "monthly_sales": {
-      "date_histogram": {
-        "field": "sale_date",
-        "calendar_interval": "month"
-      },
-      "aggs": {
-        "total_revenue": {
-          "sum": {"field": "amount"}
-        },
-        "avg_order_value": {
-          "avg": {"field": "amount"}
-        },
-        "top_products": {
-          "terms": {
-            "field": "product_name.keyword",
-            "size": 5
-          }
-        }
-      }
-    }
-  }
-}'
-
-======== Customer Segmentation ==========
-curl -X GET "localhost:9200/customers/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "age_groups": {
-      "range": {
-        "field": "age",
-        "ranges": [
-          {"to": 25, "key": "young"},
-          {"from": 25, "to": 45, "key": "middle"},
-          {"from": 45, "key": "senior"}
-        ]
-      },
-      "aggs": {
-        "avg_purchase_value": {
-          "avg": {"field": "total_spent"}
-        },
-        "preferred_categories": {
-          "terms": {
-            "field": "favorite_category.keyword",
-            "size": 3
-          }
-        }
-      }
-    }
-  }
-}'
-
-======== Performance Metrics ==========
-curl -X GET "localhost:9200/logs/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "response_time_percentiles": {
-      "percentiles": {
-        "field": "response_time",
-        "percents": [50, 90, 95, 99]
-      }
-    },
-    "error_rate_by_service": {
-      "terms": {"field": "service_name.keyword"},
-      "aggs": {
-        "error_rate": {
-          "bucket_script": {
-            "buckets_path": {
-              "errors": "error_count>doc_count",
-              "total": "total_count>doc_count"
-            },
-            "script": "params.errors / params.total * 100"
-          }
-        },
-        "error_count": {
-          "filter": {"term": {"status": "error"}}
-        },
-        "total_count": {
-          "global": {}
-        }
-      }
-    }
-  }
-}'`,
-        },
-      ],
-    },
-
-    // ADVANCED LEVEL
-    {
-      title: 'Data Modeling and Mapping',
-      commands: [
-        {
-          command: 'Field Types and Mappings',
-          description: 'Understanding Elasticsearch field types',
-          usage: 'Configure field mappings for optimal performance',
-          example: `# Field Types and Mappings
-
-======== Core Field Types ==========
-curl -X PUT "localhost:9200/field_types" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "mappings": {
-    "properties": {
-      "text_field": {"type": "text"},
-      "keyword_field": {"type": "keyword"},
-      "integer_field": {"type": "integer"},
-      "float_field": {"type": "float"},
-      "double_field": {"type": "double"},
-      "boolean_field": {"type": "boolean"},
-      "date_field": {"type": "date"},
-      "binary_field": {"type": "binary"}
-    }
-  }
-}'
-
-======== Complex Field Types ==========
-curl -X PUT "localhost:9200/complex_types" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "mappings": {
-    "properties": {
-      "object_field": {
-        "type": "object",
-        "properties": {
-          "name": {"type": "text"},
-          "value": {"type": "integer"}
-        }
-      },
-      "nested_field": {
-        "type": "nested",
-        "properties": {
-          "tag": {"type": "keyword"},
-          "score": {"type": "float"}
-        }
-      },
-      "geo_point_field": {"type": "geo_point"},
-      "geo_shape_field": {"type": "geo_shape"},
-      "ip_field": {"type": "ip"},
-      "completion_field": {
-        "type": "completion",
-        "analyzer": "simple"
-      }
-    }
-  }
-}'
-
-======== Array Types ==========
-curl -X PUT "localhost:9200/array_types" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "mappings": {
-    "properties": {
-      "tags": {"type": "keyword"},
-      "numbers": {"type": "integer"},
-      "dates": {"type": "date"},
-      "objects": {
-        "type": "object",
-        "properties": {
-          "key": {"type": "keyword"},
-          "value": {"type": "text"}
-        }
-      }
-    }
-  }
-}'
-
-======== Multi-field Mapping ==========
-curl -X PUT "localhost:9200/multi_fields" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+          command: 'Multi Field Mapping',
+          description: 'Multiple analyzers for same field',
+          usage: 'Multi-field configuration',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
   "mappings": {
     "properties": {
       "title": {
         "type": "text",
         "fields": {
-          "keyword": {"type": "keyword"},
-          "english": {"type": "text", "analyzer": "english"},
-          "suggest": {"type": "completion"}
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
         }
       }
-    }
-  }
-}'`,
-        },
-        {
-          command: 'Analysis and Analyzers',
-          description: 'Text analysis configuration',
-          usage: 'Custom analyzers for text processing',
-          example: `# Text Analysis Configuration
-
-======== Built-in Analyzers ==========
-curl -X PUT "localhost:9200/analyzers_test" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "my_standard": {
-          "type": "standard",
-          "stopwords": "_english_"
-        },
-        "my_english": {
-          "type": "english",
-          "stemmer": "possessive_english"
-        }
-      }
-    }
-  },
-  "mappings": {
-    "properties": {
-      "content": {
-        "type": "text",
-        "analyzer": "my_english",
-        "fields": {
-          "keyword": {"type": "keyword"}
-        }
-      }
-    }
-  }
-}'
-
-======== Custom Analyzer ==========
-curl -X PUT "localhost:9200/custom_analyzer" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "my_stopwords": {
-          "type": "stop",
-          "stopwords": ["and", "or", "the"]
-        },
-        "my_synonym": {
-          "type": "synonym",
-          "synonyms": ["laptop => notebook", "phone => smartphone"]
-        }
-      },
-      "analyzer": {
-        "my_custom_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "filter": [
-            "lowercase",
-            "my_stopwords",
-            "my_synonym",
-            "snowball"
-          ]
-        }
-      }
-    }
-  }
-}'
-
-======== Analyze API ==========
-# Test analyzer
-curl -X GET "localhost:9200/_analyze" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "analyzer": "standard",
-  "text": "Hello World! This is a test."
-}'
-
-# Test custom analyzer
-curl -X GET "localhost:9200/custom_analyzer/_analyze" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "analyzer": "my_custom_analyzer",
-  "text": "I bought a new laptop and smartphone"
-}'
-
-======== Character Filters ==========
-curl -X PUT "localhost:9200/char_filter_example" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "settings": {
-    "analysis": {
-      "char_filter": {
-        "my_mapping": {
-          "type": "mapping",
-          "mappings": ["& => and", "@ => at"]
-        }
-      },
-      "analyzer": {
-        "my_email_analyzer": {
-          "type": "custom",
-          "tokenizer": "uax_url_email",
-          "char_filter": ["my_mapping"],
-          "filter": ["lowercase"]
-        }
-      }
-    }
-  }
-}'`,
-        },
-        {
-          command: 'Data Modeling Best Practices',
-          description: 'Optimal data modeling patterns',
-          usage: 'Design patterns for different use cases',
-          example: `# Data Modeling Best Practices
-
-======== E-commerce Product Model ==========
-curl -X PUT "localhost:9200/ecommerce_products" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "mappings": {
-    "properties": {
-      "product_id": {"type": "keyword"},
-      "name": {
-        "type": "text",
-        "fields": {"keyword": {"type": "keyword"}}
-      },
-      "description": {
-        "type": "text",
-        "analyzer": "english"
-      },
-      "price": {"type": "double"},
-      "category": {
-        "type": "object",
-        "properties": {
-          "main": {"type": "keyword"},
-          "sub": {"type": "keyword"}
-        }
-      },
-      "variants": {
-        "type": "nested",
-        "properties": {
-          "color": {"type": "keyword"},
-          "size": {"type": "keyword"},
-          "price": {"type": "double"},
-          "in_stock": {"type": "boolean"}
-        }
-      },
-      "reviews": {
-        "type": "nested",
-        "properties": {
-          "rating": {"type": "integer"},
-          "comment": {"type": "text"},
-          "review_date": {"type": "date"},
-          "reviewer": {"type": "keyword"}
-        }
-      },
-      "inventory": {
-        "type": "object",
-        "properties": {
-          "quantity": {"type": "integer"},
-          "reserved": {"type": "integer"},
-          "available": {"type": "integer"}
-        }
-      },
-      "created_at": {"type": "date"},
-      "updated_at": {"type": "date"}
-    }
-  }
-}'
-
-======== Log Data Model ==========
-curl -X PUT "localhost:9200/application_logs" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "mappings": {
-    "properties": {
-      "timestamp": {"type": "date"},
-      "level": {"type": "keyword"},
-      "message": {"type": "text"},
-      "service": {"type": "keyword"},
-      "environment": {"type": "keyword"},
-      "host": {"type": "keyword"},
-      "user_id": {"type": "keyword"},
-      "session_id": {"type": "keyword"},
-      "request_id": {"type": "keyword"},
-      "duration_ms": {"type": "integer"},
-      "status_code": {"type": "integer"},
-      "error": {
-        "type": "object",
-        "properties": {
-          "type": {"type": "keyword"},
-          "message": {"type": "text"},
-          "stack_trace": {"type": "text"}
-        }
-      },
-      "tags": {"type": "keyword"},
-      "metadata": {"type": "object", "enabled": false}
-    }
-  }
-}'
-
-======== Time Series Data Model ==========
-curl -X PUT "localhost:9200/metrics_data" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "mappings": {
-    "properties": {
-      "@timestamp": {"type": "date"},
-      "metric_name": {"type": "keyword"},
-      "metric_type": {"type": "keyword"},
-      "value": {"type": "double"},
-      "unit": {"type": "keyword"},
-      "source": {
-        "type": "object",
-        "properties": {
-          "host": {"type": "keyword"},
-          "service": {"type": "keyword"},
-          "environment": {"type": "keyword"}
-        }
-      },
-      "labels": {"type": "object"},
-      "dimensions": {"type": "object"}
     }
   }
 }'`,
@@ -1225,305 +1350,379 @@ curl -X PUT "localhost:9200/metrics_data" \\
       ],
     },
     {
-      title: 'Performance and Optimization',
+      title: 'Advanced Search',
       commands: [
         {
-          command: 'Index Performance',
-          description: 'Optimize index performance',
-          usage: 'Settings and configurations for speed',
-          example: `# Index Performance Optimization
-
-======== Performance Settings ==========
-curl -X PUT "localhost:9200/performance_index" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "settings": {
-    "number_of_shards": 3,
-    "number_of_replicas": 1,
-    "refresh_interval": "30s",
-    "index": {
-      "max_result_window": 50000,
-      "translog": {
-        "flush_threshold_size": "1gb"
-      },
-      "merge": {
-        "policy": {
-          "max_merge_at_once": 5,
-          "segments_per_tier": 10
+          command: 'Highlight Results',
+          description: 'Highlight search terms in results',
+          usage: 'Search result highlighting',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "content": "elasticsearch"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "content": {}
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Custom Highlight',
+          description: 'Custom highlighting configuration',
+          usage: 'Advanced highlighting',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "content": "elasticsearch"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "content": {
+        "pre_tags": ["<em>"],
+        "post_tags": ["</em>"],
+        "fragment_size": 150
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Sort Results',
+          description: 'Sort search results',
+          usage: 'Result ordering',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "published_date": {
+        "order": "desc"
+      }
+    }
+  ]
+}'`,
+        },
+        {
+          command: 'Multi Field Sort',
+          description: 'Sort by multiple fields',
+          usage: 'Complex sorting',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "priority": {
+        "order": "desc"
+      }
+    },
+    {
+      "published_date": {
+        "order": "asc"
+      }
+    }
+  ]
+}'`,
+        },
+        {
+          command: 'Score Sort',
+          description: 'Sort by relevance score',
+          usage: 'Relevance-based sorting',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "content": "elasticsearch"
+    }
+  },
+  "sort": [
+    {
+      "_score": {
+        "order": "desc"
+      }
+    }
+  ]
+}'`,
+        },
+        {
+          command: 'Pagination',
+          description: 'Paginate search results',
+          usage: 'Result pagination',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  },
+  "from": 0,
+  "size": 10
+}'`,
+        },
+        {
+          command: 'Source Filtering',
+          description: 'Select specific source fields',
+          usage: 'Field selection',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  },
+  "_source": ["title", "author"]
+}'`,
+        },
+        {
+          command: 'Exclude Source Fields',
+          description: 'Exclude specific source fields',
+          usage: 'Field exclusion',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  },
+  "_source": {
+    "excludes": ["content"]
+  }
+}'`,
+        },
+        {
+          command: 'Script Fields',
+          description: 'Add computed fields to results',
+          usage: 'Dynamic field calculation',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  },
+  "script_fields": {
+    "discounted_price": {
+      "script": {
+        "source": "doc['price'].value * 0.9"
+      }
+    }
+  }
+}'`,
+        },
+        {
+          command: 'Explain Query',
+          description: 'Get query explanation',
+          usage: 'Query debugging',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "content": "elasticsearch"
+    }
+  },
+  "explain": true
+}'`,
+        },
+        {
+          command: 'Profile Query',
+          description: 'Get query performance profile',
+          usage: 'Performance analysis',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "content": "elasticsearch"
+    }
+  },
+  "profile": true
+}'`,
+        },
+        {
+          command: 'Search Template',
+          description: 'Use parameterized search templates',
+          usage: 'Reusable queries',
+          example: `curl -X GET "localhost:9200/_scripts/my_template?pretty" -H 'Content-Type: application/json' -d'
+{
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "match": {
+          "{{field}}": "{{value}}"
         }
       }
     }
   }
-}'
+}
 
-======== Bulk Indexing ==========
-curl -X POST "localhost:9200/_bulk" \\
-  -H 'Content-Type: application/json' \\
-  -d'
-{"index": {"_index": "performance_index"}}
-{"field1": "value1", "field2": "value2"}
-{"index": {"_index": "performance_index"}}
-{"field1": "value3", "field2": "value4"}
-'
-
-======== Optimized Bulk Indexing ==========
-curl -X PUT "localhost:9200/bulk_optimized/_settings" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "index": {
-    "refresh_interval": "-1",
-    "number_of_replicas": 0
+curl -X GET "localhost:9200/my_index/_search/template?pretty" -H 'Content-Type: application/json' -d'
+{
+  "id": "my_template",
+  "params": {
+    "field": "title",
+    "value": "elasticsearch"
   }
-}'
-
-# Perform bulk indexing...
-
-# Restore normal settings
-curl -X PUT "localhost:9200/bulk_optimized/_settings" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "index": {
-    "refresh_interval": "1s",
-    "number_of_replicas": 1
-  }
-}'
-
-======== Force Merge ==========
-# Merge segments to reduce disk usage
-curl -X POST "localhost:9200/performance_index/_forcemerge?max_num_segments=1"
-
-======== Index Templates ==========
-curl -X PUT "localhost:9200/_index_template/performance_template" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "index_patterns": ["performance-*"],
-  "template": {
-    "settings": {
-      "number_of_shards": 3,
-      "number_of_replicas": 1,
-      "refresh_interval": "5s"
-    },
-    "mappings": {
-      "properties": {
-        "timestamp": {"type": "date"},
-        "metric": {"type": "keyword"},
-        "value": {"type": "double"}
+}'`,
+        },
+        {
+          command: 'Function Score Query',
+          description: 'Modify document scores',
+          usage: 'Custom scoring',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match": {
+          "content": "elasticsearch"
+        }
+      },
+      "field_value_factor": {
+        "field": "popularity",
+        "modifier": "log1p",
+        "factor": 2
       }
     }
   }
 }'`,
         },
         {
-          command: 'Query Performance',
-          description: 'Optimize query performance',
-          usage: 'Query optimization techniques',
-          example: `# Query Performance Optimization
-
-======== Query Optimization ==========
-# Use filter context instead of query when possible
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+          command: 'Boosting Query',
+          description: 'Promote or demote documents',
+          usage: 'Query boosting',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
   "query": {
-    "bool": {
-      "filter": [  # Faster than must
-        {"term": {"status": "active"}},
-        {"range": {"created": {"gte": "2024-01-01"}}}
-      ]
+    "boosting": {
+      "positive": {
+        "match": {
+          "content": "elasticsearch"
+        }
+      },
+      "negative": {
+        "match": {
+          "content": "advertisement"
+        }
+      },
+      "negative_boost": 0.2
     }
   }
-}'
-
-======== Pagination Optimization ==========
-# Use search_after for deep pagination
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 100,
-  "query": {"match_all": {}},
-  "sort": [
-    {"timestamp": "asc"},
-    {"_id": "asc"}
-  ]
-}'
-
-# Next page using search_after
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 100,
-  "query": {"match_all": {}},
-  "search_after": ["2024-01-01T00:00:00", "doc_id"],
-  "sort": [
-    {"timestamp": "asc"},
-    {"_id": "asc"}
-  ]
-}'
-
-======== Source Filtering ==========
-# Return only required fields
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {"match_all": {}},
-  "_source": ["name", "price", "category"]
-}'
-
-======== Caching ==========
-# Use request cache for expensive aggregations
-curl -X GET "localhost:9200/my_index/_search?pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "size": 0,
-  "aggs": {
-    "expensive_agg": {
-      "terms": {"field": "category.keyword"}
-    }
-  }
-}'
-
-# Disable caching for real-time data
-curl -X GET "localhost:9200/my_index/_search?request_cache=false&pretty" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": {"range": {"timestamp": {"gte": "now-1m"}}}
 }'`,
         },
         {
-          command: 'Memory and Resource Management',
-          description: 'Manage memory and system resources',
-          usage: 'JVM and system optimization',
-          example: `# Memory and Resource Management
-
-======== JVM Settings ==========
-# Edit: /etc/elasticsearch/jvm.options
-
-# Heap size (set to 50% of RAM, max 32GB)
--Xms4g
--Xmx4g
-
-# GC settings
--XX:+UseG1GC
--XX:MaxGCPauseMillis=200
-
-# Memory settings
--XX:+UnlockExperimentalVMOptions
--XX:+UseCGroupMemoryLimitForHeap
-
-======== System Settings ==========
-# Edit: /etc/elasticsearch/elasticsearch.yml
-
-# Memory lock
-bootstrap.memory_lock: true
-
-# File descriptors
-bootstrap.system_call_filter: false
-
-======== Thread Pool Settings ==========
-curl -X PUT "localhost:9200/_cluster/settings" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "persistent": {
-    "thread_pool.search.size": 4,
-    "thread_pool.search.queue_size": 1000,
-    "thread_pool.write.size": 4,
-    "thread_pool.write.queue_size": 1000
+          command: 'Constant Score Query',
+          description: 'Ignore score calculations',
+          usage: 'Filter-based queries',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "status.keyword": "published"
+        }
+      }
+    }
   }
-}'
-
-======== Circuit Breaker Settings ==========
-curl -X PUT "localhost:9200/_cluster/settings" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "persistent": {
-    "indices.breaker.total.limit": "70%",
-    "indices.breaker.request.limit": "60%",
-    "indices.breaker.fielddata.limit": "40%"
+}'`,
+        },
+        {
+          command: 'Dis Max Query',
+          description: 'Disjunction maximum query',
+          usage: 'Best match from multiple queries',
+          example: `curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "dis_max": {
+      "queries": [
+        { "match": { "title": "elasticsearch" } },
+        { "match": { "content": "elasticsearch" } }
+      ],
+      "tie_breaker": 0.3
+    }
   }
-}'
-
-======== Monitoring Memory Usage ==========
-# Node stats
-curl -X GET "localhost:9200/_nodes/stats/jvm,indices?pretty"
-
-# Memory usage by indices
-curl -X GET "localhost:9200/_cat/indices?v&h=index,docs.count,store.size,memory.total,memory.fields"
-
-# Field data usage
-curl -X GET "localhost:9200/_cat/fielddata?v&h=field,host,ip,node,size"
-
-======== Clear Cache ==========
-# Clear all caches
-curl -X POST "localhost:9200/_cache/clear"
-
-# Clear specific cache
-curl -X POST "localhost:9200/my_index/_cache/clear?request=true&query=true&field_data=true"`,
+}'`,
         },
       ],
     },
-
-    // EXPERT LEVEL
     {
       title: 'Cluster Management',
       commands: [
         {
-          command: 'Cluster Configuration',
-          description: 'Configure and manage Elasticsearch clusters',
-          usage: 'Multi-node cluster setup and management',
-          example: `# Cluster Configuration
-
-======== Multi-Node Cluster Setup ==========
-# Edit: /etc/elasticsearch/elasticsearch.yml (Node 1)
-cluster.name: my-cluster
-node.name: node-1
-network.host: 192.168.1.101
-discovery.seed_hosts: ["192.168.1.101", "192.168.1.102", "192.168.1.103"]
-cluster.initial_master_nodes: ["node-1", "node-2", "node-3"]
-
-# Edit: /etc/elasticsearch/elasticsearch.yml (Node 2)
-cluster.name: my-cluster
-node.name: node-2
-network.host: 192.168.1.102
-discovery.seed_hosts: ["192.168.1.101", "192.168.1.102", "192.168.1.103"]
-cluster.initial_master_nodes: ["node-1", "node-2", "node-3"]
-
-======== Cluster Health Monitoring ==========
-# Overall cluster health
-curl -X GET "localhost:9200/_cluster/health?pretty"
-
-# Detailed health with level
-curl -X GET "localhost:9200/_cluster/health?pretty&level=shards"
-
-# Cluster state
-curl -X GET "localhost:9200/_cluster/state?pretty"
-
-# Cluster stats
-curl -X GET "localhost:9200/_cluster/stats?pretty"
-
-======== Node Management ==========
-# List all nodes
-curl -X GET "localhost:9200/_cat/nodes?v"
-
-# Node statistics
-curl -X GET "localhost:9200/_nodes/stats?pretty"
-
-# Node information
-curl -X GET "localhost:9200/_nodes?pretty"
-
-======== Shard Allocation ==========
-# Get shard allocation
-curl -X GET "localhost:9200/_cat/shards?v"
-
-# Shard allocation explanation
-curl -X GET "localhost:9200/_cluster/allocation/explain?pretty"
-
-# Manual shard allocation
-curl -X POST "localhost:9200/_cluster/reroute" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+          command: 'Cluster Health',
+          description: 'Check cluster health status',
+          usage: 'Health monitoring',
+          example: `curl -X GET "localhost:9200/_cluster/health?pretty"`,
+        },
+        {
+          command: 'Detailed Cluster Health',
+          description: 'Get detailed health information',
+          usage: 'Comprehensive health check',
+          example: `curl -X GET "localhost:9200/_cluster/health?pretty&level=shards"`,
+        },
+        {
+          command: 'Cluster State',
+          description: 'Get cluster state information',
+          usage: 'Cluster state monitoring',
+          example: `curl -X GET "localhost:9200/_cluster/state?pretty"`,
+        },
+        {
+          command: 'Cluster Stats',
+          description: 'Get cluster statistics',
+          usage: 'Performance metrics',
+          example: `curl -X GET "localhost:9200/_cluster/stats?pretty"`,
+        },
+        {
+          command: 'Node Info',
+          description: 'Get node information',
+          usage: 'Node monitoring',
+          example: `curl -X GET "localhost:9200/_nodes?pretty"`,
+        },
+        {
+          command: 'Node Stats',
+          description: 'Get node statistics',
+          usage: 'Node performance metrics',
+          example: `curl -X GET "localhost:9200/_nodes/stats?pretty"`,
+        },
+        {
+          command: 'Pending Tasks',
+          description: 'Check pending cluster tasks',
+          usage: 'Task monitoring',
+          example: `curl -X GET "localhost:9200/_cluster/pending_tasks?pretty"`,
+        },
+        {
+          command: 'Master Node Info',
+          description: 'Get master node information',
+          usage: 'Master node monitoring',
+          example: `curl -X GET "localhost:9200/_cluster/state/master_node?pretty"`,
+        },
+        {
+          command: 'Cluster Settings',
+          description: 'Get cluster settings',
+          usage: 'Configuration viewing',
+          example: `curl -X GET "localhost:9200/_cluster/settings?pretty"`,
+        },
+        {
+          command: 'Update Cluster Settings',
+          description: 'Update cluster configuration',
+          usage: 'Dynamic configuration',
+          example: `curl -X PUT "localhost:9200/_cluster/settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "all"
+  }
+}'`,
+        },
+        {
+          command: 'Reroute API',
+          description: 'Manually reroute shards',
+          usage: 'Shard allocation control',
+          example: `curl -X POST "localhost:9200/_cluster/reroute?pretty" -H 'Content-Type: application/json' -d'
+{
   "commands": [
     {
-      "allocate_primary": {
+      "allocate_empty_primary": {
         "index": "my_index",
         "shard": 0,
         "node": "node-1"
@@ -1533,476 +1732,916 @@ curl -X POST "localhost:9200/_cluster/reroute" \\
 }'`,
         },
         {
-          command: 'High Availability',
-          description: 'Configure high availability and failover',
-          usage: 'Replication, failover, and disaster recovery',
-          example: `# High Availability Configuration
-
-======== Replication Settings ==========
-curl -X PUT "localhost:9200/my_index/_settings" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "index": {
-    "number_of_replicas": 2,
-    "auto_expand_replicas": "0-all"
+          command: 'Exclude Node from Allocation',
+          description: 'Temporarily exclude node from allocation',
+          usage: 'Maintenance mode',
+          example: `curl -X PUT "localhost:9200/_cluster/settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "transient": {
+    "cluster.routing.allocation.exclude._name": "node-1"
   }
-}'
-
-======== Snapshot and Restore ==========
-# Configure snapshot repository
-curl -X PUT "localhost:9200/_snapshot/my_backup" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "type": "fs",
-  "settings": {
-    "location": "/backup/elasticsearch",
-    "compress": true
-  }
-}'
-
-# Create snapshot
-curl -X PUT "localhost:9200/_snapshot/my_backup/snapshot_1"
-
-# Restore snapshot
-curl -X POST "localhost:9200/_snapshot/my_backup/snapshot_1/_restore"
-
-# Restore with new index name
-curl -X POST "localhost:9200/_snapshot/my_backup/snapshot_1/_restore" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "indices": "my_index",
-  "rename_pattern": "(.+)",
-  "rename_replacement": "restored_$1"
-}'
-
-======== Cross-Cluster Replication ==========
-# Configure follower index
-curl -X PUT "localhost:9200/follower_index/_ccr/follow" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "remote_cluster": "remote_cluster",
-  "leader_index": "leader_index",
-  "max_read_request_operation_count": 5120,
-  "max_outstanding_read_requests": 16
-}'
-
-# Pause following
-curl -X POST "localhost:9200/follower_index/_ccr/pause"
-
-# Resume following
-curl -X POST "localhost:9200/follower_index/_ccr/resume"
-
-======== Disaster Recovery ==========
-# Cluster backup script
-#!/bin/bash
-DATE=$(date +%Y%m%d_%H%M%S)
-SNAPSHOT_NAME="backup_$DATE"
-
-curl -X PUT "localhost:9200/_snapshot/my_backup/$SNAPSHOT_NAME?wait_for_completion=true"
-
-# Clean old snapshots (keep last 7)
-curl -X DELETE "localhost:9200/_snapshot/my_backup/$(curl -s localhost:9200/_cat/snapshots/my_backup?h=snapshot | sort | head -n -7 | awk '{print $1}' | tr '\\n' ',' | sed 's/,$//')"`,
+}'`,
         },
         {
-          command: 'Security and Authentication',
-          description: 'Configure security features',
-          usage: 'User management, SSL/TLS, and access control',
-          example: `# Security Configuration
-
-======== Enable Security ==========
-# Edit: /etc/elasticsearch/elasticsearch.yml
+          command: 'Clear Cache',
+          description: 'Clear node caches',
+          usage: 'Cache management',
+          example: `curl -X POST "localhost:9200/_cache/clear?pretty"`,
+        },
+        {
+          command: 'Clear Field Data Cache',
+          description: 'Clear field data cache',
+          usage: 'Memory management',
+          example: `curl -X POST "localhost:9200/_cache/clear?pretty&fielddata=true"`,
+        },
+        {
+          command: 'Refresh Indices',
+          description: 'Refresh index to make changes visible',
+          usage: 'Index refresh',
+          example: `curl -X POST "localhost:9200/my_index/_refresh?pretty"`,
+        },
+        {
+          command: 'Force Merge',
+          description: 'Force merge index segments',
+          usage: 'Index optimization',
+          example: `curl -X POST "localhost:9200/my_index/_forcemerge?pretty"`,
+        },
+        {
+          command: 'Flush Indices',
+          description: 'Flush index to disk',
+          usage: 'Data persistence',
+          example: `curl -X POST "localhost:9200/my_index/_flush?pretty"`,
+        },
+        {
+          command: 'Synced Flush',
+          description: 'Perform synced flush',
+          usage: 'Fast recovery preparation',
+          example: `curl -X POST "localhost:9200/my_index/_flush?pretty&wait_if_ongoing=true"`,
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'Security and Authentication',
+      commands: [
+        {
+          command: 'Enable Security',
+          description: 'Enable X-Pack security features',
+          usage: 'Security setup',
+          example: `# In elasticsearch.yml
 xpack.security.enabled: true
-xpack.security.transport.ssl.enabled: true
-xpack.security.transport.ssl.verification: certificate
-xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12
-xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12
-
-======== Generate Certificates ==========
-# Generate CA
-elasticsearch-certutil ca
-
-# Generate certificates for nodes
-elasticsearch-certutil cert --name elastic --ca-cert elastic-stack-ca.p12 --ca-pass --out elastic-certificates.p12
-
-======== User Management ==========
-# Setup built-in users
-elasticsearch-setup-passwords interactive
-
-# Create role
-curl -X POST "localhost:9200/_security/role/my_role" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
+xpack.security.transport.ssl.enabled: true`,
+        },
+        {
+          command: 'Setup Passwords',
+          description: 'Set up built-in user passwords',
+          usage: 'User authentication setup',
+          example: `cd /usr/share/elasticsearch
+bin/elasticsearch-setup-passwords interactive`,
+        },
+        {
+          command: 'Create User',
+          description: 'Create new user',
+          usage: 'User management',
+          example: `curl -X POST "localhost:9200/_security/user/john?pretty" -u elastic -H 'Content-Type: application/json' -d'
+{
+  "password": "johnpassword",
+  "roles": [ "power_user" ],
+  "full_name": "John Doe",
+  "email": "john@example.com"
+}'`,
+        },
+        {
+          command: 'Create Role',
+          description: 'Create custom role',
+          usage: 'Role management',
+          example: `curl -X POST "localhost:9200/_security_role/content_writer?pretty" -u elastic -H 'Content-Type: application/json' -d'
+{
   "indices": [
     {
-      "names": ["my_index"],
-      "privileges": ["read", "write"]
+      "names": [ "content-*" ],
+      "privileges": [ "create", "index", "read", "write" ]
     }
   ]
-}'
-
-# Create user
-curl -X POST "localhost:9200/_security/user/my_user" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "password": "secure_password",
-  "roles": ["my_role"],
-  "full_name": "My User",
-  "email": "user@example.com"
-}'
-
-======== API Key Authentication ==========
-# Create API key
-curl -X POST "localhost:9200/_security/api_key" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "name": "my-api-key",
-  "expiration": "30d",
-  "role_descriptors": {
-    "my_role": {
-      "indices": [
+}'`,
+        },
         {
-          "names": ["my_index"],
-          "privileges": ["read"]
-        }
-      ]
+          command: 'API Key Authentication',
+          description: 'Create API key for authentication',
+          usage: 'API key management',
+          example: `curl -X POST "localhost:9200/_security/api_key?pretty" -u elastic -H 'Content-Type: application/json' -d'
+{
+  "name": "my-api-key",
+  "expiration": "1d",
+  "roles": [ "read" ]
+}'`,
+        },
+        {
+          command: 'SSL Configuration',
+          description: 'Configure SSL/TLS',
+          usage: 'Secure communication setup',
+          example: `# In elasticsearch.yml
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.certificate: certs/elastic.crt
+xpack.security.http.ssl.key: certs/elastic.key
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.certificate: certs/elastic.crt
+xpack.security.transport.ssl.key: certs/elastic.key`,
+        },
+        {
+          command: 'Field Level Security',
+          description: 'Restrict access to specific fields',
+          usage: 'Field access control',
+          example: `curl -X POST "localhost:9200/_security_role/field_access?pretty" -u elastic -H 'Content-Type: application/json' -d'
+{
+  "indices": [
+    {
+      "names": [ "sensitive_data" ],
+      "privileges": [ "read" ],
+      "field_security": {
+        "grant": [ "title", "category" ],
+        "except": [ "ssn", "credit_card" ]
+      }
     }
-  }
-}'
-
-======== SSL/TLS Configuration ==========
-# Enable HTTPS
-curl -X PUT "localhost:9200/_cluster/settings" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "persistent": {
-    "xpack.security.http.ssl.enabled": true
-  }
-}'
-
-# Test HTTPS connection
-curl -X GET "https://localhost:9200" --cacert /path/to/ca.crt -u elastic:password`,
+  ]
+}'`,
+        },
+        {
+          command: 'Document Level Security',
+          description: 'Restrict access to specific documents',
+          usage: 'Document access control',
+          example: `curl -X POST "localhost:9200/_security_role/document_access?pretty" -u elastic -H 'Content-Type: application/json' -d'
+{
+  "indices": [
+    {
+      "names": [ "documents" ],
+      "privileges": [ "read" ],
+      "query": {
+        "term": {
+          "owner": "john"
+        }
+      }
+    }
+  ]
+}'`,
+        },
+        {
+          command: 'Audit Logging',
+          description: 'Enable security audit logging',
+          usage: 'Security monitoring',
+          example: `# In elasticsearch.yml
+xpack.security.audit.enabled: true
+xpack.security.audit.logfile.events.include: ["access_denied", "authentication_failed"]`,
+        },
+        {
+          command: 'LDAP Authentication',
+          description: 'Configure LDAP authentication',
+          usage: 'Enterprise authentication',
+          example: `# In elasticsearch.yml
+xpack.security.authc.realms.ldap1:
+  type: ldap
+  order: 0
+  url: "ldap://ldap.example.com:389"
+  bind_dn: "cn=admin,dc=example,dc=com"
+  bind_password: "password"
+  user_search.base_dn: "ou=users,dc=example,dc=com"
+  user_search.filter: "(uid={0})"
+  group_search.base_dn: "ou=groups,dc=example,dc=com"
+  group_search.filter: "(member={0})"`,
         },
       ],
     },
     {
-      title: 'Advanced Features and Integrations',
+      title: 'Performance Optimization',
       commands: [
         {
-          command: 'Machine Learning',
-          description: 'Elasticsearch ML features',
-          usage: 'Anomaly detection and forecasting',
-          example: `# Machine Learning Features
-
-======== Anomaly Detection ==========
-# Create job
-curl -X PUT "localhost:9200/_ml/anomaly_detectors/server_metrics" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "analysis_config": {
-    "bucket_span": "10m",
-    "detectors": [
-      {
-        "detector_description": "High CPU usage",
-        "function": "high_count",
-        "by_field_name": "host"
-      }
-    ]
-  },
-  "data_description": {
-    "time_field": "@timestamp",
-    "time_format": "epoch_ms"
+          command: 'Index Buffer Size',
+          description: 'Configure index buffer size',
+          usage: 'Memory optimization',
+          example: `# In elasticsearch.yml
+indices.memory.index_buffer_size: 10%
+indices.memory.min_index_buffer_size: 48mb`,
+        },
+        {
+          command: 'Field Data Cache',
+          description: 'Configure field data cache',
+          usage: 'Cache optimization',
+          example: `# In elasticsearch.yml
+indices.fielddata.cache.size: 40%
+indices.breaker.fielddata.limit: 60%`,
+        },
+        {
+          command: 'Query Cache',
+          description: 'Configure query cache',
+          usage: 'Query performance',
+          example: `# In elasticsearch.yml
+indices.queries.cache.size: 5%
+indices.queries.cache.expire: 1h`,
+        },
+        {
+          command: 'Request Cache',
+          description: 'Configure request cache',
+          usage: 'Result caching',
+          example: `# In elasticsearch.yml
+indices.requests.cache.enable: true
+indices.requests.cache.expire: 10m`,
+        },
+        {
+          command: 'Thread Pool Settings',
+          description: 'Configure thread pools',
+          usage: 'Concurrency optimization',
+          example: `# In elasticsearch.yml
+thread_pool.search.size: 4
+thread_pool.search.queue_size: 1000
+thread_pool.write.size: 4
+thread_pool.write.queue_size: 1000`,
+        },
+        {
+          command: 'Refresh Interval',
+          description: 'Configure index refresh interval',
+          usage: 'Real-time vs throughput balance',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "refresh_interval": "30s"
   }
-}'
-
-# Open job
-curl -X POST "localhost:9200/_ml/anomaly_detectors/server_metrics/_open"
-
-# Get results
-curl -X GET "localhost:9200/_ml/anomaly_detectors/server_metrics/results?pretty"
-
-======== Forecasting ==========
-# Create forecast job
-curl -X PUT "localhost:9200/_ml/anomaly_detectors/sales_forecast" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "analysis_config": {
-    "bucket_span": "1d",
-    "detectors": [
-      {
-        "detector_description": "Sales forecast",
-        "function": "sum",
-        "by_field_name": "product"
-      }
-    ]
-  },
-  "data_description": {
-    "time_field": "timestamp",
-    "time_format": "epoch_ms"
+}'`,
+        },
+        {
+          command: 'Translog Settings',
+          description: 'Configure transaction log',
+          usage: 'Durability vs performance',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "translog.durability": "async",
+    "translog.flush_threshold_size": "512mb"
   }
-}'
-
-# Create forecast
-curl -X POST "localhost:9200/_ml/anomaly_detectors/sales_forecast/_forecast" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "duration": "7d",
-  "expires_in": "30d"
-}'
-
-======== Data Frame Analytics ==========
-# Create classification job
-curl -X PUT "localhost:9200/_ml/data_frame/analytics/iris_classification" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "source": {
-    "index": "iris_data"
-  },
-  "dest": {
-    "index": "iris_classification_results"
-  },
-  "analysis": {
-    "classification": {
-      "dependent_variable": "species",
-      "training_percent": 80
-    }
+}'`,
+        },
+        {
+          command: 'Merge Policy',
+          description: 'Configure merge policy',
+          usage: 'Segment merging optimization',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "merge.policy.max_merge_at_once": 5,
+    "merge.policy.segments_per_tier": 10
   }
-}'
-
-# Start job
-curl -X POST "localhost:9200/_ml/data_frame/analytics/iris_classification/_start"
-
-======== Inference ==========
-# Deploy trained model
-curl -X PUT "localhost:9200/_ml/trained_models/iris_classification/deployment/_start"
-
-# Use model for inference
-curl -X POST "localhost:9200/_ml/trained_models/iris_classification/deployment/_infer" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "docs": [
+}'`,
+        },
+        {
+          command: 'Index Sorting',
+          description: 'Configure index sorting',
+          usage: 'Query performance optimization',
+          example: `curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "index.sort.field": "timestamp",
+    "index.sort.order": "desc"
+  }
+}'`,
+        },
+        {
+          command: 'Source Compression',
+          description: 'Compress _source field',
+          usage: 'Storage optimization',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "codec": "best_compression"
+  }
+}'`,
+        },
+        {
+          command: 'Disable All Indexing',
+          description: 'Temporarily disable indexing',
+          usage: 'Bulk loading optimization',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "number_of_replicas": 0,
+    "refresh_interval": -1
+  }
+}'`,
+        },
+        {
+          command: 'Re-enable Indexing',
+          description: 'Re-enable normal indexing',
+          usage: 'Post-bulk optimization',
+          example: `curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "number_of_replicas": 1,
+    "refresh_interval": "1s"
+  }
+}'`,
+        },
+      ],
+    },
     {
-      "sepal_length": 5.1,
-      "sepal_width": 3.5,
-      "petal_length": 1.4,
-      "petal_width": 0.2
-    }
+      title: 'Monitoring and Analytics',
+      commands: [
+        {
+          command: 'Index Stats',
+          description: 'Get index statistics',
+          usage: 'Index monitoring',
+          example: `curl -X GET "localhost:9200/my_index/_stats?pretty"`,
+        },
+        {
+          command: 'Indices Stats',
+          description: 'Get all indices statistics',
+          usage: 'Cluster-wide monitoring',
+          example: `curl -X GET "localhost:9200/_stats?pretty"`,
+        },
+        {
+          command: 'Cat API Indices',
+          description: 'Get index information in tabular format',
+          usage: 'Quick index overview',
+          example: `curl -X GET "localhost:9200/_cat/indices?v"`,
+        },
+        {
+          command: 'Cat API Shards',
+          description: 'Get shard information',
+          usage: 'Shard monitoring',
+          example: `curl -X GET "localhost:9200/_cat/shards?v"`,
+        },
+        {
+          command: 'Cat API Nodes',
+          description: 'Get node information in tabular format',
+          usage: 'Node overview',
+          example: `curl -X GET "localhost:9200/_cat/nodes?v"`,
+        },
+        {
+          command: 'Cat API Segments',
+          description: 'Get segment information',
+          usage: 'Segment monitoring',
+          example: `curl -X GET "localhost:9200/_cat/segments/my_index?v"`,
+        },
+        {
+          command: 'Cat API Recovery',
+          description: 'Get shard recovery information',
+          usage: 'Recovery monitoring',
+          example: `curl -X GET "localhost:9200/_cat/recovery?v"`,
+        },
+        {
+          command: 'Pending Cluster Tasks',
+          description: 'Get pending cluster tasks',
+          usage: 'Task monitoring',
+          example: `curl -X GET "localhost:9200/_cat/pending_tasks?v"`,
+        },
+        {
+          command: 'ThreadPool Info',
+          description: 'Get thread pool information',
+          usage: 'Performance monitoring',
+          example: `curl -X GET "localhost:9200/_cat/thread_pool?v"`,
+        },
+        {
+          command: 'Fielddata Usage',
+          description: 'Check field data memory usage',
+          usage: 'Memory monitoring',
+          example: `curl -X GET "localhost:9200/_cat/fielddata?v&fields=*"`,
+        },
+        {
+          command: 'Index Templates',
+          description: 'List index templates',
+          usage: 'Template management',
+          example: `curl -X GET "localhost:9200/_cat/templates?v"`,
+        },
+        {
+          command: 'Snapshot Repository',
+          description: 'Check snapshot repository status',
+          usage: 'Backup monitoring',
+          example: `curl -X GET "localhost:9200/_snapshot/_all?pretty"`,
+        },
+        {
+          command: 'Snapshot Status',
+          description: 'Get current snapshot status',
+          usage: 'Backup progress monitoring',
+          example: `curl -X GET "localhost:9200/_snapshot/my_repo/_current?pretty"`,
+        },
+        {
+          command: 'Index Mappings',
+          description: 'Get index mappings using Cat API',
+          usage: 'Mapping overview',
+          example: `curl -X GET "localhost:9200/_cat/mappings?v"`,
+        },
+        {
+          command: 'Aliases Information',
+          description: 'Get index aliases',
+          usage: 'Alias management',
+          example: `curl -X GET "localhost:9200/_cat/aliases?v"`,
+        },
+      ],
+    },
+    {
+      title: 'Snapshot and Restore',
+      commands: [
+        {
+          command: 'Create Snapshot Repository',
+          description: 'Create backup repository',
+          usage: 'Backup setup',
+          example: `curl -X PUT "localhost:9200/_snapshot/my_backup?pretty" -H 'Content-Type: application/json' -d'
+{
+  "type": "fs",
+  "settings": {
+    "location": "/backup/my_backup"
+  }
+}'`,
+        },
+        {
+          command: 'Shared File System Repository',
+          description: 'Create shared filesystem repository',
+          usage: 'Network backup setup',
+          example: `curl -X PUT "localhost:9200/_snapshot/my_backup?pretty" -H 'Content-Type: application/json' -d'
+{
+  "type": "fs",
+  "settings": {
+    "location": "/backup/my_backup",
+    "compress": true
+  }
+}'`,
+        },
+        {
+          command: 'S3 Repository',
+          description: 'Create S3 backup repository',
+          usage: 'Cloud backup setup',
+          example: `curl -X PUT "localhost:9200/_snapshot/s3_repository?pretty" -H 'Content-Type: application/json' -d'
+{
+  "type": "s3",
+  "settings": {
+    "bucket": "my-backup-bucket",
+    "region": "us-east-1",
+    "base_path": "elasticsearch"
+  }
+}'`,
+        },
+        {
+          command: 'Create Snapshot',
+          description: 'Create backup snapshot',
+          usage: 'Backup creation',
+          example: `curl -X PUT "localhost:9200/_snapshot/my_backup/snapshot_1?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "my_index,other_index",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}'`,
+        },
+        {
+          command: 'Snapshot All Indices',
+          description: 'Backup all indices',
+          usage: 'Full cluster backup',
+          example: `curl -X PUT "localhost:9200/_snapshot/my_backup/snapshot_all?pretty"`,
+        },
+        {
+          command: 'Wait for Snapshot Completion',
+          description: 'Wait for snapshot to complete',
+          usage: 'Synchronous backup',
+          example: `curl -X PUT "localhost:9200/_snapshot/my_backup/snapshot_1?wait_for_completion=true&pretty"`,
+        },
+        {
+          command: 'List Snapshots',
+          description: 'List all snapshots in repository',
+          usage: 'Backup inventory',
+          example: `curl -X GET "localhost:9200/_snapshot/my_backup/_all?pretty"`,
+        },
+        {
+          command: 'Get Snapshot Status',
+          description: 'Get snapshot status and details',
+          usage: 'Backup monitoring',
+          example: `curl -X GET "localhost:9200/_snapshot/my_backup/snapshot_1?pretty"`,
+        },
+        {
+          command: 'Delete Snapshot',
+          description: 'Delete specific snapshot',
+          usage: 'Backup cleanup',
+          example: `curl -X DELETE "localhost:9200/_snapshot/my_backup/snapshot_1?pretty"`,
+        },
+        {
+          command: 'Restore Snapshot',
+          description: 'Restore from snapshot',
+          usage: 'Data recovery',
+          example: `curl -X POST "localhost:9200/_snapshot/my_backup/snapshot_1/_restore?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "my_index",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}'`,
+        },
+        {
+          command: 'Restore with Rename',
+          description: 'Restore with index renaming',
+          usage: 'Selective recovery',
+          example: `curl -X POST "localhost:9200/_snapshot/my_backup/snapshot_1/_restore?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "my_index",
+  "rename_pattern": "(.+)",
+  "rename_replacement": "restored_$1"
+}'`,
+        },
+        {
+          command: 'Restore to Different Cluster',
+          description: 'Restore snapshot to different cluster',
+          usage: 'Cross-cluster recovery',
+          example: `curl -X POST "localhost:9200/_snapshot/my_backup/snapshot_1/_restore?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "my_index",
+  "index_settings": {
+    "index.number_of_replicas": 0
+  },
+  "ignore_index_settings": [
+    "index.refresh_interval"
   ]
 }'`,
         },
         {
-          command: 'Elasticsearch SQL',
-          description: 'SQL interface for Elasticsearch',
-          usage: 'Run SQL queries on Elasticsearch data',
-          example: `# Elasticsearch SQL
-
-======== Basic SQL Queries ==========
-# Simple SELECT
-curl -X POST "localhost:9200/_sql?format=txt" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT name, price FROM my_index WHERE price > 100"
-}'
-
-# JSON format
-curl -X POST "localhost:9200/_sql?format=json" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT COUNT(*) as total FROM my_index"
-}'
-
-======== Advanced SQL Features ==========
-# Aggregations
-curl -X POST "localhost:9200/_sql?format=txt" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT category, AVG(price) as avg_price FROM my_index GROUP BY category ORDER BY avg_price DESC"
-}'
-
-# JOIN operations (limited)
-curl -X POST "localhost:9200/_sql?format=txt" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT p.name, c.category_name FROM products p JOIN categories c ON p.category_id = c.id"
-}'
-
-# Date functions
-curl -X POST "localhost:9200/_sql?format=txt" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT DATE_TRUNC(\"month\", created) as month, COUNT(*) as count FROM logs GROUP BY month ORDER BY month"
-}'
-
-======== SQL to DSL Translation ==========
-# Convert SQL to DSL
-curl -X POST "localhost:9200/_sql/translate" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT * FROM my_index WHERE price > 100 AND category = \"electronics\""
-}'
-
-======== SQL with Parameters ==========
-curl -X POST "localhost:9200/_sql?format=json" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SELECT * FROM my_index WHERE price > ? AND category = ?",
-  "params": [100, "electronics"]
-}'
-
-======== Show Tables and Describe ==========
-# List indices as tables
-curl -X POST "localhost:9200/_sql?format=txt" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "SHOW TABLES"
-}'
-
-# Describe table structure
-curl -X POST "localhost:9200/_sql?format=txt" \\
-  -H 'Content-Type: application/json' \\
-  -d'{
-  "query": "DESCRIBE my_index"
-}'`,
+          command: 'Snapshot Verification',
+          description: 'Verify snapshot integrity',
+          usage: 'Backup validation',
+          example: `curl -X POST "localhost:9200/_snapshot/my_backup/snapshot_1/_verify?pretty"`,
         },
         {
-          command: 'Integration and ETL',
-          description: 'Integrate with external systems',
-          usage: 'Logstash, Beats, and third-party integrations',
-          example: `# Integration and ETL
+          command: 'Long Running Snapshots',
+          description: 'Manage long running snapshots',
+          usage: 'Backup management',
+          example: `curl -X DELETE "localhost:9200/_snapshot/my_backup/snapshot_1" -H 'Content-Type: application/json' -d'
+{
+  "ignore": false
+}'`,
+        },
+      ],
+    },
+    {
+      title: 'Integration and APIs',
+      commands: [
+        {
+          command: 'Python Client Basic',
+          description: 'Basic Python Elasticsearch client',
+          usage: 'Python integration',
+          example: `from elasticsearch import Elasticsearch
 
-======== Logstash Configuration ==========
-# logstash.conf
-input {
-  beats {
-    port => 5044
+es = Elasticsearch(["http://localhost:9200"])
+
+# Index document
+es.index(index="my_index", id=1, body={
+    "title": "Test Document",
+    "content": "This is a test"
+})
+
+# Search
+response = es.search(index="my_index", body={
+    "query": {"match_all": {}}
+})`,
+        },
+        {
+          command: 'Python Bulk Operations',
+          description: 'Bulk operations with Python client',
+          usage: 'Python bulk processing',
+          example: `from elasticsearch import Elasticsearch, helpers
+
+es = Elasticsearch(["http://localhost:9200"])
+
+actions = [
+    {
+        "_index": "my_index",
+        "_id": j,
+        "_source": {
+            "title": f"Document {j}",
+            "content": f"Content {j}"
+        }
+    }
+    for j in range(100)
+]
+
+helpers.bulk(es, actions)`,
+        },
+        {
+          command: 'Node.js Client Basic',
+          description: 'Basic Node.js Elasticsearch client',
+          usage: 'Node.js integration',
+          example: `const { Client } = require('@elastic/elasticsearch');
+
+const client = new Client({ node: 'http://localhost:9200' });
+
+// Index document
+await client.index({
+  index: 'my_index',
+  id: 1,
+  body: {
+    title: 'Test Document',
+    content: 'This is a test'
   }
-  jdbc {
-    jdbc_driver_library => "/path/to/mysql-connector.jar"
-    jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
-    jdbc_connection_string => "jdbc:mysql://localhost:3306/mydb"
-    jdbc_user => "user"
-    jdbc_password => "password"
-    schedule => "* * * * *"
-    statement => "SELECT * FROM products WHERE updated_at > :sql_last_value"
-    use_column_value => true
-    tracking_column => "updated_at"
-    tracking_column_type => "timestamp"
+});
+
+// Search
+const response = await client.search({
+  index: 'my_index',
+  body: {
+    query: { match_all: {} }
+  }
+});`,
+        },
+        {
+          command: 'Java Client Basic',
+          description: 'Basic Java Elasticsearch client',
+          usage: 'Java integration',
+          example: `import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.common.xcontent.XContentType;
+
+RestHighLevelClient client = new RestHighLevelClient(
+    RestClient.builder(new HttpHost("localhost", 9200, "http")));
+
+IndexRequest request = new IndexRequest("my_index")
+    .id("1")
+    .source("{\"title\":\"Test\",\"content\":\"Content\"}", XContentType.JSON);
+
+client.index(request, RequestOptions.DEFAULT);`,
+        },
+        {
+          command: 'Logstash Configuration',
+          description: 'Basic Logstash configuration',
+          usage: 'Log data processing',
+          example: `input {
+  file {
+    path => "/var/log/nginx/access.log"
+    start_position => "beginning"
   }
 }
 
 filter {
-  if [fields][logtype] == "apache" {
-    grok {
-      match => { "message" => "%{COMBINEDAPACHELOG}" }
-    }
-    date {
-      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
-    }
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
   }
-  
-  mutate {
-    convert => { "price" => "float" }
-    remove_field => ["password", "secret"]
+  date {
+    match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
   }
 }
 
 output {
   elasticsearch {
-    hosts => ["localhost:9200"]
-    index => "logs-%{+YYYY.MM.dd}"
-    user => "elastic"
-    password => "changeme"
+    hosts => ["http://localhost:9200"]
+    index => "nginx-logs-%{+YYYY.MM.dd}"
   }
-  
-  if [type] == "products" {
-    elasticsearch {
-      hosts => ["localhost:9200"]
-      index => "products"
-      document_id => "%{id}"
-    }
-  }
-}
-
-======== Filebeat Configuration ==========
-# filebeat.yml
-filebeat.inputs:
+}`,
+        },
+        {
+          command: 'Beats Configuration',
+          description: 'Filebeat configuration',
+          usage: 'Log shipping',
+          example: `filebeat.inputs:
 - type: log
   enabled: true
   paths:
     - /var/log/*.log
-  fields:
-    logtype: syslog
-  fields_under_root: true
-
-output.elasticsearch:
-  hosts => ["localhost:9200"]
-  username: "elastic"
-  password: "changeme"
-  index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
-
-setup.kibana:
-  host: "localhost:5601"
-
-======== Metricbeat Configuration ==========
-# metricbeat.yml
-metricbeat.modules:
-- module: system
-  metricsets:
-    - cpu
-    - memory
-    - network
-    - diskio
-    - filesystem
-  enabled: true
-  period: 10s
 
 output.elasticsearch:
   hosts: ["localhost:9200"]
-  username: "elastic"
-  password: "changeme"
+  index: "filebeat-%{+yyyy.MM.dd}"
 
-======== Python Client Integration ==========
-# Python script
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
-
-# Connect to Elasticsearch
-es = Elasticsearch(
-    ["localhost:9200"],
-    http_auth=('elastic', 'changeme')
-)
-
-# Index document
-es.index(
-    index="my_index",
-    id=1,
-    body={"name": "Product 1", "price": 29.99}
-)
-
-# Bulk indexing
-actions = [
-    {
-        "_index": "my_index",
-        "_source": {"name": f"Product {i}", "price": i * 10}
-    }
-    for i in range(1000)
-]
-
-bulk(es, actions)
-
-======== Kafka Integration ==========
-# Elasticsearch sink connector configuration
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded`,
+        },
+        {
+          command: 'Kibana Integration',
+          description: 'Kibana index pattern creation',
+          usage: 'Visualization setup',
+          example: `curl -X POST "localhost:5601/api/saved_objects/_import" \\
+  -H "kbn-xsrf: true" \\
+  -H "Content-Type: application/json" \\
+  --form file=@index-pattern.json`,
+        },
+        {
+          command: 'REST API Authentication',
+          description: 'API authentication with username/password',
+          usage: 'Secure API access',
+          example: `curl -X GET "localhost:9200/_cluster/health?pretty" \\
+  -u elastic:password`,
+        },
+        {
+          command: 'API Key Authentication',
+          description: 'API authentication with API key',
+          usage: 'Key-based authentication',
+          example: `curl -X GET "localhost:9200/_cluster/health?pretty" \\
+  -H "Authorization: ApiKey base64encodedkey"`,
+        },
+        {
+          command: 'Cross-Cluster Search',
+          description: 'Search across multiple clusters',
+          usage: 'Multi-cluster queries',
+          example: `curl -X GET "localhost:9200/cluster_one:my_index,cluster_two:my_index/_search?pretty" -H 'Content-Type: application/json' -d'
 {
-  "name": "elasticsearch-sink",
-  "config": {
-    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
-    "tasks.max": "1",
-    "topics": "my-topic",
-    "connection.url": "http://localhost:9200",
-    "type.name": "_doc",
-    "key.ignore": "true",
-    "schema.ignore": "true"
+  "query": {
+    "match": {
+      "title": "elasticsearch"
+    }
   }
-}`,
+}'`,
+        },
+        {
+          command: 'Remote Clusters',
+          description: 'Configure remote clusters',
+          usage: 'Cross-cluster setup',
+          example: `# In elasticsearch.yml
+cluster.remote.cluster_one.seeds:
+  - "node1.remote1:9300"
+cluster.remote.cluster_two.seeds:
+  - "node1.remote2:9300"`,
+        },
+        {
+          command: 'SQL API',
+          description: 'SQL query API',
+          usage: 'SQL interface',
+          example: `curl -X POST "localhost:9200/_sql?format=json&pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": "SELECT * FROM my_index WHERE author = 'John Doe'"
+}'`,
+        },
+        {
+          command: 'EQL API',
+          description: 'Event Query Language API',
+          usage: 'Event correlation',
+          example: `curl -X POST "localhost:9200/my_index/_eql/search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": "process where process.name = \"elasticsearch\""
+}'`,
+        },
+      ],
+    },
+    {
+      title: 'Best Practices',
+      commands: [
+        {
+          command: 'Index Design Best Practices',
+          description: 'Optimal index design guidelines',
+          usage: 'Index design recommendations',
+          example: `Index Design Best Practices:
+1. Use time-based indices for time-series data
+2. Keep shard size between 10-50GB
+3. Limit number of fields per index (<1000)
+4. Use appropriate data types for fields
+5. Avoid deep nesting in documents
+6. Use _source filtering for large documents
+7. Consider index lifecycle management
+8. Plan for growth with sharding strategy`,
+        },
+        {
+          command: 'Query Performance Best Practices',
+          description: 'Optimize query performance',
+          usage: 'Query optimization guidelines',
+          example: `Query Performance Best Practices:
+1. Use filter context instead of query when possible
+2. Avoid wildcards at the beginning of terms
+3. Use specific field types for exact matches
+4. Limit the use of scripts in queries
+5. Use index sorting for frequent sort patterns
+6. Implement query caching strategies
+7. Use routing for targeted queries
+8. Monitor slow queries and optimize`,
+        },
+        {
+          command: 'Memory Management Best Practices',
+          description: 'Optimize memory usage',
+          usage: 'Memory optimization guidelines',
+          example: `Memory Management Best Practices:
+1. Set JVM heap to 50% of system RAM (max 31GB)
+2. Use file system cache for remaining memory
+3. Monitor field data cache usage
+4. Configure circuit breakers properly
+5. Use efficient data structures
+6. Clear caches during maintenance
+7. Monitor GC patterns and tune accordingly
+8. Use appropriate refresh intervals`,
+        },
+        {
+          command: 'Security Best Practices',
+          description: 'Implement security measures',
+          usage: 'Security recommendations',
+          example: `Security Best Practices:
+1. Enable security features in production
+2. Use strong authentication methods
+3. Implement role-based access control
+4. Enable audit logging
+5. Use SSL/TLS for all communications
+6. Regularly update Elasticsearch versions
+7. Monitor security events
+8. Implement network segmentation`,
+        },
+      ],
+    },
+    {
+      title: 'Troubleshooting',
+      commands: [
+        {
+          command: 'Check Cluster Health Issues',
+          description: 'Diagnose cluster health problems',
+          usage: 'Health troubleshooting',
+          example: `# Check detailed health
+curl -X GET "localhost:9200/_cluster/health?pretty&level=shards"
+
+# Check unassigned shards
+curl -X GET "localhost:9200/_cat/shards?v&h=index,shard,prirep,state,node"
+
+# Check pending tasks
+curl -X GET "localhost:9200/_cluster/pending_tasks?pretty"`,
+        },
+        {
+          command: 'Memory Issues',
+          description: 'Diagnose memory problems',
+          usage: 'Memory troubleshooting',
+          example: `# Check JVM heap usage
+curl -X GET "localhost:9200/_nodes/stats/jvm?pretty"
+
+# Check field data usage
+curl -X GET "localhost:9200/_cat/fielddata?v&fields=*"
+
+# Check circuit breaker stats
+curl -X GET "localhost:9200/_nodes/stats/breaker?pretty"`,
+        },
+        {
+          command: 'Slow Query Diagnosis',
+          description: 'Identify slow queries',
+          usage: 'Performance troubleshooting',
+          example: `# Enable slow log
+curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index.search.slowlog.threshold.query.warn": "1s",
+  "index.search.slowlog.threshold.query.info": "500ms"
+}
+
+# Check search profile
+curl -X GET "localhost:9200/my_index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "profile": true
+}'`,
+        },
+        {
+          command: 'Index Issues',
+          description: 'Diagnose index problems',
+          usage: 'Index troubleshooting',
+          example: `# Check index status
+curl -X GET "localhost:9200/_cat/indices?v&health=yellow"
+
+# Check segments
+curl -X GET "localhost:9200/_cat/segments/my_index?v"
+
+# Check recovery status
+curl -X GET "localhost:9200/_cat/recovery?v"`,
+        },
+        {
+          command: 'Network Issues',
+          description: 'Diagnose network connectivity problems',
+          usage: 'Network troubleshooting',
+          example: `# Check node connectivity
+curl -X GET "localhost:9200/_cat/nodes?v&h=ip,port,http_address"
+
+# Check transport stats
+curl -X GET "localhost:9200/_nodes/stats/transport?pretty"
+
+# Check connection pools
+curl -X GET "localhost:9200/_nodes/stats/http?pretty"`,
+        },
+        {
+          command: 'Disk Space Issues',
+          description: 'Handle disk space problems',
+          usage: 'Storage troubleshooting',
+          example: `# Check disk usage
+curl -X GET "localhost:9200/_cat/allocation?v"
+
+# Check watermark settings
+curl -X GET "localhost:9200/_cluster/settings?include_defaults=true&pretty"
+
+# Adjust disk watermarks
+curl -X PUT "localhost:9200/_cluster/settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "transient": {
+    "cluster.routing.allocation.disk.watermark.low": "85%",
+    "cluster.routing.allocation.disk.watermark.high": "90%",
+    "cluster.routing.allocation.disk.watermark.flood_stage": "95%"
+  }
+}'`,
+        },
+        {
+          command: 'Performance Tuning',
+          description: 'General performance optimization',
+          usage: 'Performance troubleshooting',
+          example: `# Check thread pool stats
+curl -X GET "localhost:9200/_cat/thread_pool?v"
+
+# Check cache stats
+curl -X GET "localhost:9200/_nodes/stats/indices/query_cache,fielddata,request_cache?pretty"
+
+# Optimize refresh interval
+curl -X PUT "localhost:9200/my_index/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index": {
+    "refresh_interval": "30s"
+  }
+}'`,
         },
       ],
     },

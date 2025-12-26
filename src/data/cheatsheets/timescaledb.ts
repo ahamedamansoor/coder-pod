@@ -12,35 +12,51 @@ export const timescaledbCheatsheet = {
       title: 'Getting Started with TimescaleDB',
       commands: [
         {
-          command: 'TimescaleDB Introduction',
-          description: 'Understanding TimescaleDB concepts and architecture',
-          usage: 'Basic TimescaleDB terminology and concepts',
-          example: `-- TimescaleDB is a PostgreSQL extension for time-series data
-
-======== Key Concepts ==========
--- Hypertable: Main abstraction for time-series data
--- Chunk: Physical partition of hypertable data
--- Dimension: Column used for partitioning (time is always one)
--- Continuous Aggregate: Pre-aggregated data that updates automatically
--- Compression: Reduces storage footprint for historical data
--- Retention Policy: Automatically removes old data
-
-======== Architecture Benefits ==========
--- Scales PostgreSQL for time-series workloads
--- Maintains full SQL compatibility
--- Automatic partitioning by time
--- Efficient queries on time-series data
--- Built-in data lifecycle management
--- PostgreSQL ecosystem compatibility`,
+          command: 'TimescaleDB Overview',
+          description: 'Introduction to TimescaleDB concepts',
+          usage: 'Understanding TimescaleDB fundamentals',
+          example: `TimescaleDB Overview:
+- PostgreSQL extension for time-series data
+- Scales PostgreSQL for time-series workloads
+- Maintains full SQL compatibility
+- Automatic partitioning by time
+- Efficient queries on time-series data
+- Built-in data lifecycle management
+- PostgreSQL ecosystem compatibility`,
         },
         {
-          command: 'Installation and Setup',
-          description: 'Install and configure TimescaleDB',
-          usage: 'Installation commands for different platforms',
-          example: `-- PostgreSQL 14+ with TimescaleDB 2.x
-
-======== Ubuntu/Debian ==========
-# Add TimescaleDB repository
+          command: 'Key Concepts',
+          description: 'Core TimescaleDB concepts',
+          usage: 'Understanding TimescaleDB terminology',
+          example: `Core Concepts:
+- Hypertable: Main abstraction for time-series data
+- Chunk: Physical partition of hypertable data
+- Dimension: Column used for partitioning (time is always one)
+- Continuous Aggregate: Pre-aggregated data that updates automatically
+- Compression: Reduces storage footprint for historical data
+- Retention Policy: Automatically removes old data
+- Data Node: Stores partitioned data
+- Access Node: Coordinates queries across data nodes`,
+        },
+        {
+          command: 'Architecture Benefits',
+          description: 'Advantages of TimescaleDB architecture',
+          usage: 'Why choose TimescaleDB',
+          example: `Architecture Benefits:
+- Automatic partitioning by time
+- Efficient time-series queries
+- Built-in data lifecycle management
+- PostgreSQL compatibility
+- Horizontal scaling capabilities
+- Compression for storage optimization
+- Continuous aggregates for performance
+- Multi-node support for large deployments`,
+        },
+        {
+          command: 'Install TimescaleDB Ubuntu',
+          description: 'Install TimescaleDB on Ubuntu/Debian',
+          usage: 'apt package installation',
+          example: `# Add TimescaleDB repository
 wget --quiet -O - https://packagecloud.io/timescale/timescaledb/gpgkey | sudo apt-key add -
 echo "deb https://packagecloud.io/timescale/timescaledb/ubuntu/ $(lsb_release -c -s) main" | sudo tee /etc/apt/sources.list.d/timescaledb.list
 sudo apt update
@@ -48,704 +64,1535 @@ sudo apt update
 # Install TimescaleDB
 sudo apt install timescaledb-2-postgresql-14
 
-======== Docker ==========
-docker run -d --name timescaledb \\
-  -p 5432:5432 \\
-  -e POSTGRES_PASSWORD=password \\
+# Enable extension
+sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"`,
+        },
+        {
+          command: 'Install TimescaleDB CentOS',
+          description: 'Install TimescaleDB on CentOS/RHEL',
+          usage: 'yum package installation',
+          example: `# Add TimescaleDB repository
+sudo tee /etc/yum.repos.d/timescaledb.repo <<EOL
+[timescaledb]
+name=timescaledb repository
+baseurl=https://packagecloud.io/timescale/timescaledb/el/7/\$basearch
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey=https://packagecloud.io/timescale/timescaledb/gpgkey
+EOL
+
+# Install TimescaleDB
+sudo yum install -y timescaledb-2-postgresql-14
+
+# Enable extension
+sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"`,
+        },
+        {
+          command: 'Install TimescaleDB Docker',
+          description: 'Install TimescaleDB using Docker',
+          usage: 'Docker installation',
+          example: `# Pull TimescaleDB image
+docker pull timescale/timescaledb:latest-pg14
+
+# Run TimescaleDB container
+docker run -d --name timescaledb \
+  -p 5432:5432 \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=timeseries \
   timescale/timescaledb:latest-pg14
 
-======== Enable TimescaleDB ==========
-sudo timescaledb-tune --quiet --yes
-sudo systemctl restart postgresql`,
+# Connect to container
+docker exec -it timescaledb psql -U postgres -d timeseries`,
         },
         {
-          command: 'Database Connection and Setup',
-          description: 'Connect to TimescaleDB and create database',
-          usage: 'Connection and initial setup commands',
-          example: `-- Connect to PostgreSQL
-psql -U postgres -h localhost
+          command: 'Enable TimescaleDB',
+          description: 'Enable TimescaleDB extension',
+          usage: 'CREATE EXTENSION command',
+          example: `-- Connect to database
+psql -U postgres -d your_database
 
-======== Create Database ==========
-CREATE DATABASE timeseries;
-\\c timeseries;
-
-======== Enable TimescaleDB Extension ==========
+-- Enable TimescaleDB extension
 CREATE EXTENSION IF NOT EXISTS timescaledb;
 
-======== Verify Installation ==========
-\\dx
-SELECT extversion FROM pg_extension WHERE extname = 'timescaledb';
+-- Verify installation
+\\dx timescaledb
 
-======== TimescaleDB Configuration Views ==========
-SELECT * FROM timescaledb_information.hypertables;
-SELECT * FROM timescaledb_information.chunks;`,
+-- Check TimescaleDB version
+SELECT timescaledb_version();`,
         },
-      ],
-    },
-    {
-      title: 'Basic Hypertable Operations',
-      commands: [
         {
-          command: 'Creating Hypertables',
-          description: 'Convert regular tables to hypertables',
-          usage: 'SELECT create_hypertable syntax',
-          example: `-- Create regular table first
+          command: 'Create Hypertable',
+          description: 'Create a basic hypertable',
+          usage: 'CREATE TABLE + create_hypertable',
+          example: `-- Create regular table
 CREATE TABLE sensor_data (
-  time TIMESTAMPTZ NOT NULL,
-  device_id INTEGER NOT NULL,
+  time TIMESTAMP NOT NULL,
+  device_id TEXT NOT NULL,
   temperature DOUBLE PRECISION,
   humidity DOUBLE PRECISION,
   location TEXT
 );
 
-======== Basic Hypertable Creation ==========
+-- Convert to hypertable
 SELECT create_hypertable('sensor_data', 'time');
 
-======== Hypertable with Space Partitioning ==========
+-- Create hypertable with time partitioning
 SELECT create_hypertable(
   'sensor_data', 
-  'time', 
-  partitioning_column => 'device_id',
-  number_partitions => 4
-);
-
-======== Advanced Hypertable Options ==========
-SELECT create_hypertable(
-  'sensor_data',
   'time',
-  chunk_time_interval => INTERVAL '1 hour',
-  if_not_exists => TRUE,
-  partitioning_column => 'device_id',
-  number_partitions => 8
+  chunk_time_interval => INTERVAL '1 day'
 );`,
         },
         {
-          command: 'Hypertable Information',
-          description: 'View hypertable metadata and properties',
-          usage: 'Information functions and views',
-          example: `======== View All Hypertables ==========
+          command: 'Create Hypertable with Space Partitioning',
+          description: 'Create hypertable with space partitioning',
+          usage: 'create_hypertable with space partition',
+          example: `-- Create table for space partitioning
+CREATE TABLE sensor_data (
+  time TIMESTAMP NOT NULL,
+  device_id TEXT NOT NULL,
+  temperature DOUBLE PRECISION,
+  humidity DOUBLE PRECISION
+);
+
+-- Create hypertable with space partitioning
+SELECT create_hypertable(
+  'sensor_data',
+  'time',
+  'device_id',
+  chunk_time_interval => INTERVAL '1 day',
+  number_partitions => 4
+);`,
+        },
+        {
+          command: 'Insert Data into Hypertable',
+          description: 'Insert time-series data',
+          usage: 'INSERT INTO hypertable',
+          example: `-- Insert single record
+INSERT INTO sensor_data (time, device_id, temperature, humidity)
+VALUES (NOW(), 'sensor_001', 23.5, 65.2);
+
+-- Insert multiple records
+INSERT INTO sensor_data (time, device_id, temperature, humidity)
+VALUES 
+  (NOW(), 'sensor_001', 24.1, 66.8),
+  (NOW() - INTERVAL '1 hour', 'sensor_002', 22.3, 64.5),
+  (NOW() - INTERVAL '2 hours', 'sensor_001', 23.8, 65.9);`,
+        },
+        {
+          command: 'Query Hypertable Data',
+          description: 'Query time-series data',
+          usage: 'SELECT from hypertable',
+          example: `-- Query all data
+SELECT * FROM sensor_data;
+
+-- Query with time filter
+SELECT * FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours';
+
+-- Query specific device
+SELECT * FROM sensor_data 
+WHERE device_id = 'sensor_001' 
+AND time >= NOW() - INTERVAL '1 day';
+
+-- Query with aggregation
+SELECT 
+  device_id,
+  AVG(temperature) as avg_temp,
+  MAX(temperature) as max_temp,
+  COUNT(*) as readings
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '1 day'
+GROUP BY device_id;`,
+        },
+        {
+          command: 'Show Hypertable Information',
+          description: 'Get hypertable metadata',
+          usage: 'Information functions',
+          example: `-- Show hypertable details
 SELECT * FROM timescaledb_information.hypertables;
 
-======== Detailed Hypertable Info ==========
-SELECT 
-  hypertable_name,
-  table_name,
-  schema_name,
-  num_dimensions,
-  num_chunks,
-  compression_enabled
-FROM timescaledb_information.hypertables;
+-- Show chunk information
+SELECT * FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data';
 
-======== View Chunks ==========
-SELECT * FROM timescaledb_information.chunks;
-
-======== Chunk Details ==========
+-- Show chunk sizes
 SELECT 
   chunk_name,
-  hypertable_name,
   range_start,
   range_end,
-  size
-FROM timescaledb_information.chunks
+  pg_size_pretty(pg_total_relation_size(chunk_schema||'.'||chunk_name)) as size
+FROM timescaledb_information.chunks 
 WHERE hypertable_name = 'sensor_data';`,
         },
         {
-          command: 'Basic Data Operations',
-          description: 'Insert and query time-series data',
-          usage: 'Standard SQL with time-series optimizations',
-          example: `-- Insert single record
-INSERT INTO sensor_data (time, device_id, temperature, humidity, location)
-VALUES (NOW(), 1, 23.5, 65.2, 'Server Room');
-
-======== Bulk Insert ==========
-INSERT INTO sensor_data (time, device_id, temperature, humidity, location)
-VALUES 
-  (NOW() - INTERVAL '1 hour', 1, 22.1, 64.8, 'Server Room'),
-  (NOW() - INTERVAL '2 hours', 2, 24.3, 67.1, 'Data Center');
-
-======== Basic Queries ==========
--- Recent data
-SELECT * FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 hour' 
-ORDER BY time DESC;
-
-======== Latest Value per Device ==========
-SELECT DISTINCT ON (device_id) 
-  device_id, 
-  temperature, 
-  humidity, 
-  time
-FROM sensor_data 
-ORDER BY device_id, time DESC;`,
-        },
-      ],
-    },
-
-    // INTERMEDIATE LEVEL
-    {
-      title: 'Time Series Functions',
-      commands: [
-        {
-          command: 'Time Bucket Functions',
-          description: 'Aggregate data into time buckets',
-          usage: 'time_bucket and related functions',
-          example: `======== Basic Time Bucket ==========
+          command: 'Time Bucketing',
+          description: 'Aggregate data by time intervals',
+          usage: 'time_bucket function',
+          example: `-- Create 1-hour time buckets
 SELECT 
-  time_bucket('1 hour', time) AS hour,
+  time_bucket('1 hour', time) as hour,
   device_id,
-  AVG(temperature) AS avg_temp,
-  COUNT(*) AS readings
+  AVG(temperature) as avg_temp,
+  COUNT(*) as readings
 FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day'
+WHERE time >= NOW() - INTERVAL '24 hours'
 GROUP BY hour, device_id
-ORDER BY hour DESC;
+ORDER BY hour;
 
-======== Time Bucket Gap Filling ==========
+-- Create 15-minute buckets
 SELECT 
-  time,
-  COALESCE(AVG(temperature), 0) AS avg_temp
-FROM generate_series(
-  '2024-01-01'::timestamptz, 
-  '2024-01-07'::timestamptz, 
-  '1 day'::interval
-) AS time
-LEFT JOIN sensor_data ON 
-  time_bucket('1 day', sensor_data.time) = time
-GROUP BY time
-ORDER BY time;`,
+  time_bucket('15 minutes', time) as bucket,
+  AVG(temperature) as avg_temp,
+  STDDEV(temperature) as temp_stddev
+FROM sensor_data 
+GROUP BY bucket
+ORDER BY bucket;`,
         },
         {
           command: 'First and Last Functions',
           description: 'Get first/last values in time buckets',
-          usage: 'first, last, first_agg, last_agg',
-          example: `======== First and Last Values ==========
+          usage: 'first/last aggregate functions',
+          example: `-- Get first and last values per hour
 SELECT 
+  time_bucket('1 hour', time) as hour,
   device_id,
-  first(temperature, time) AS first_temp,
-  last(temperature, time) AS last_temp,
-  first(time) AS first_reading,
-  last(time) AS last_reading
+  first(temperature, time) as first_temp,
+  last(temperature, time) as last_temp,
+  first(time, time) as first_time,
+  last(time, time) as last_time
 FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day'
-GROUP BY device_id;
-
-======== First/Last with Time Bucket ==========
-SELECT 
-  time_bucket('1 hour', time) AS hour,
-  device_id,
-  first(temperature, time) AS temp_start,
-  last(temperature, time) AS temp_end
-FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day'
-GROUP BY hour, device_id
-ORDER BY hour DESC;`,
+WHERE time >= NOW() - INTERVAL '24 hours'
+GROUP BY hour, device_id;`,
         },
         {
-          command: 'Histogram and Stats Functions',
-          description: 'Statistical analysis of time-series data',
-          usage: 'histogram, stats_agg, approx functions',
-          example: `======== Histogram ==========
+          command: 'Histogram Functions',
+          description: 'Create histograms of time-series data',
+          usage: 'histogram aggregate functions',
+          example: `-- Create temperature histogram
 SELECT 
   device_id,
-  histogram(temperature, 10) AS temp_distribution
+  histogram(temperature, 5, 20, 10) as temp_hist
 FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day'
+WHERE time >= NOW() - INTERVAL '24 hours'
 GROUP BY device_id;
 
-======== Stats Aggregate ==========
-SELECT 
-  time_bucket('1 hour', time) AS hour,
-  stats_agg(temperature) AS temp_stats
-FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day'
-GROUP BY hour
-ORDER BY hour DESC;
-
-======== Approximate Functions ==========
+-- Get histogram bins
 SELECT 
   device_id,
-  approx_percentile(temperature, 0.5) AS median_temp,
-  approx_percentile(temperature, 0.95) AS p95_temp,
-  approx_cardinality(DISTINCT device_id) AS unique_devices
+  histogram_bin(temperature, 5, 20, 10) as temp_bin,
+  COUNT(*) as count
 FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day'
-GROUP BY device_id;`,
+WHERE time >= NOW() - INTERVAL '24 hours'
+GROUP BY device_id, temp_bin
+ORDER BY temp_bin;`,
         },
       ],
     },
     {
-      title: 'Continuous Aggregates',
+      title: 'TimescaleDB Data Types and Functions',
       commands: [
         {
-          command: 'Creating Continuous Aggregates',
-          description: 'Create automatically updating materialized views',
-          usage: 'CREATE MATERIALIZED VIEW with timescaledb',
-          example: `======== Hourly Aggregate ==========
-CREATE MATERIALIZED VIEW hourly_metrics
+          command: 'Time Interval Data Types',
+          description: 'Time interval types in TimescaleDB',
+          usage: 'INTERVAL and time functions',
+          example: `-- Time interval literals
+SELECT INTERVAL '1 day';
+SELECT INTERVAL '2 hours 30 minutes';
+SELECT INTERVAL '1 week 3 days';
+
+-- Time interval arithmetic
+SELECT NOW() + INTERVAL '1 day';
+SELECT NOW() - INTERVAL '2 hours';
+
+-- Extract components from interval
+SELECT EXTRACT(DAY FROM INTERVAL '3 days 4 hours');
+SELECT EXTRACT(HOUR FROM INTERVAL '2 days 5 hours');`,
+        },
+        {
+          command: 'Time Zone Functions',
+          description: 'Handle time zones in time-series data',
+          usage: 'Time zone conversion functions',
+          example: `-- Convert time zones
+SELECT time_zone('UTC', NOW());
+SELECT time_zone('America/New_York', NOW());
+
+-- Show all time zones
+SELECT * FROM pg_timezone_names;
+
+-- Convert UTC to local time
+SELECT time_zone('America/Los_Angeles', '2024-01-01 12:00:00 UTC'::timestamptz);`,
+        },
+        {
+          command: 'Time Bucket Gap Filling',
+          description: 'Fill gaps in time-series data',
+          usage: 'time_bucket_gapfill function',
+          example: `-- Fill gaps with linear interpolation
+SELECT 
+  time_bucket_gapfill('1 hour', time) AS hour,
+  AVG(temperature) as avg_temp,
+  LOCATE(linear(INTERPOLATE, AVG(temperature), hour)) 
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours'
+GROUP BY hour
+ORDER BY hour;
+
+-- Fill gaps with previous value
+SELECT 
+  time_bucket_gapfill('1 hour', time) AS hour,
+  AVG(temperature) as avg_temp,
+  LOCATE(previous(INTERPOLATE, AVG(temperature), hour)) 
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours'
+GROUP BY hour
+ORDER BY hour;`,
+        },
+        {
+          command: 'Rollup Functions',
+          description: 'Rollup time-series data',
+          usage: 'rollup functions',
+          example: `-- Rollup to daily averages
+SELECT 
+  rollup(time, time_bucket('1 day', time)) as day,
+  device_id,
+  AVG(temperature) as avg_temp,
+  COUNT(*) as readings
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '30 days'
+GROUP BY day, device_id;
+
+-- Rollup to weekly data
+SELECT 
+  rollup(time, time_bucket('1 week', time)) as week,
+  AVG(temperature) as avg_temp,
+  MIN(temperature) as min_temp,
+  MAX(temperature) as max_temp
+FROM sensor_data 
+GROUP BY week
+ORDER BY week;`,
+        },
+        {
+          command: 'Underlying Functions',
+          description: 'Access underlying PostgreSQL functions',
+          usage: 'underlying_agg function',
+          example: `-- Get underlying PostgreSQL aggregate
+SELECT 
+  time_bucket('1 hour', time) as hour,
+  underlying_avg(temperature) as avg_temp,
+  underlying_count(temperature) as count
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours'
+GROUP BY hour;
+
+-- Use with custom aggregates
+SELECT 
+  time_bucket('1 hour', time) as hour,
+  underlying_percentile_cont(0.95) WITHIN GROUP (ORDER BY temperature) as p95_temp
+FROM sensor_data 
+GROUP BY hour;`,
+        },
+        {
+          command: 'Stateful Functions',
+          description: 'Stateful aggregate functions',
+          usage: 'stateful_agg functions',
+          example: `-- Stateful moving average
+SELECT 
+  time,
+  temperature,
+  stateful_avg(temperature) OVER (
+    ORDER BY time 
+    RANGE BETWEEN INTERVAL '1 hour' PRECEDING AND CURRENT ROW
+  ) as moving_avg
+FROM sensor_data 
+WHERE device_id = 'sensor_001'
+ORDER BY time;
+
+-- Stateful moving sum
+SELECT 
+  time,
+  value,
+  stateful_sum(value) OVER (
+    ORDER BY time 
+    RANGE BETWEEN INTERVAL '24 hours' PRECEDING AND CURRENT ROW
+  ) as rolling_sum
+FROM metrics;`,
+        },
+      ],
+    },
+    {
+      title: 'TimescaleDB Compression',
+      commands: [
+        {
+          command: 'Enable Compression',
+          description: 'Enable compression on hypertable',
+          usage: 'alter_table_set_compression',
+          example: `-- Enable compression with default settings
+SELECT alter_table_set_compression('sensor_data');
+
+-- Enable compression with custom settings
+SELECT alter_table_set_compression(
+  'sensor_data',
+  segmentby => 'device_id',
+  orderby => 'time DESC'
+);
+
+-- Check compression status
+SELECT * FROM timescaledb_information.compressed_hypertables;`,
+        },
+        {
+          command: 'Configure Compression Settings',
+          description: 'Configure compression parameters',
+          usage: 'Compression configuration options',
+          example: `-- Set compression segment by column
+SELECT alter_compression_policy(
+  'sensor_data',
+  INTERVAL '7 days',
+  segmentby => 'device_id',
+  orderby => 'time DESC'
+);
+
+-- Set compression with multiple segment by columns
+SELECT alter_compression_policy(
+  'sensor_data',
+  INTERVAL '7 days',
+  segmentby => ARRAY['device_id', 'location'],
+  orderby => 'time DESC'
+);`,
+        },
+        {
+          command: 'Add Compression Policy',
+          description: 'Add automatic compression policy',
+          usage: 'add_compression_policy function',
+          example: `-- Add compression policy
+SELECT add_compression_policy(
+  'sensor_data',
+  INTERVAL '7 days'
+);
+
+-- Add policy with custom settings
+SELECT add_compression_policy(
+  'sensor_data',
+  INTERVAL '7 days',
+  if_not_exists => TRUE
+);
+
+-- View compression policies
+SELECT * FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_compression';`,
+        },
+        {
+          command: 'Compress Individual Chunks',
+          description: 'Manually compress specific chunks',
+          usage: 'compress_chunk function',
+          example: `-- Compress specific chunk
+SELECT compress_chunk(
+  '_timescaledb_catalog._hyper_1_1_chunk'
+);
+
+-- Compress multiple chunks
+SELECT compress_chunk(
+  '_timescaledb_catalog._hyper_1_1_chunk',
+  '_timescaledb_catalog._hyper_1_2_chunk'
+);
+
+-- Check compression status
+SELECT 
+  chunk_name,
+  compressed,
+  pg_size_pretty(pg_total_relation_size(chunk_schema||'.'||chunk_name)) as size
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data';`,
+        },
+        {
+          command: 'Decompress Data',
+          description: 'Decompress compressed chunks',
+          usage: 'decompress_chunk function',
+          example: `-- Decompress specific chunk
+SELECT decompress_chunk(
+  '_timescaledb_catalog._hyper_1_1_chunk'
+);
+
+-- Decompress all chunks
+SELECT decompress_chunk(chunk_name)
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data'
+AND compressed = TRUE;`,
+        },
+        {
+          command: 'Compression Statistics',
+          description: 'Monitor compression effectiveness',
+          usage: 'Compression monitoring',
+          example: `-- Compression statistics
+SELECT 
+  hypertable_name,
+  num_compressed_chunks,
+  num_uncompressed_chunks,
+  pg_size_pretty(compressed_size) as compressed_size,
+  pg_size_pretty(uncompressed_size) as uncompressed_size,
+  ROUND(compressed_size::float / uncompressed_size * 100, 2) as compression_ratio
+FROM timescaledb_information.compressed_hypetables_stats;
+
+-- Detailed chunk compression info
+SELECT 
+  chunk_name,
+  compressed,
+  pg_size_pretty(pg_total_relation_size(chunk_schema||'.'||chunk_name)) as size
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data'
+ORDER BY size DESC;`,
+        },
+      ],
+    },
+    // INTERMEDIATE LEVEL
+    {
+      title: 'TimescaleDB Continuous Aggregates',
+      commands: [
+        {
+          command: 'Create Continuous Aggregate',
+          description: 'Create basic continuous aggregate',
+          usage: 'CREATE MATERIALIZED VIEW',
+          example: `-- Create continuous aggregate for hourly averages
+CREATE MATERIALIZED VIEW sensor_data_hourly 
 WITH (timescaledb.continuous) AS
 SELECT 
   time_bucket('1 hour', time) AS hour,
   device_id,
   AVG(temperature) AS avg_temperature,
-  AVG(humidity) AS avg_humidity,
-  MIN(temperature) AS min_temperature,
   MAX(temperature) AS max_temperature,
-  COUNT(*) AS reading_count
-FROM sensor_data
-GROUP BY hour, device_id;
-
-======== Add Refresh Policy ==========
+  MIN(temperature) AS min_temperature,
+  COUNT(*) AS readings_count
+FROM sensor_data 
+GROUP BY hour, device_id;`,
+        },
+        {
+          command: 'Create Continuous Aggregate with Refresh',
+          description: 'Create continuous aggregate with custom refresh',
+          usage: 'WITH REFRESH OPTION',
+          example: `-- Create with custom refresh interval
+CREATE MATERIALIZED VIEW sensor_data_daily 
+WITH (timescaledb.continuous, timescaledb.refresh_interval = '1 hour') AS
+SELECT 
+  time_bucket('1 day', time) AS day,
+  device_id,
+  AVG(temperature) AS avg_temperature,
+  STDDEV(temperature) AS temp_stddev
+FROM sensor_data 
+GROUP BY day, device_id;`,
+        },
+        {
+          command: 'Add Refresh Policy',
+          description: 'Add automatic refresh policy',
+          usage: 'add_continuous_aggregate_policy',
+          example: `-- Add refresh policy
 SELECT add_continuous_aggregate_policy(
-  'hourly_metrics',
-  start_offset => INTERVAL '1 day',
-  end_offset => INTERVAL '1 hour',
-  schedule_interval => INTERVAL '1 hour'
+  'sensor_data_hourly',
+  start_offset => INTERVAL '1 hour',
+  end_offset => INTERVAL '1 minute',
+  schedule_interval => INTERVAL '5 minutes'
+);
+
+-- Add policy with custom settings
+SELECT add_continuous_aggregate_policy(
+  'sensor_data_hourly',
+  start_offset => INTERVAL '3 hours',
+  end_offset => INTERVAL '1 minute',
+  schedule_interval => INTERVAL '10 minutes',
+  if_not_exists => TRUE
 );`,
         },
         {
-          command: 'Managing Continuous Aggregates',
-          description: 'Refresh and maintain continuous aggregates',
-          usage: 'refresh policies and maintenance',
-          example: `======== Refresh Continuous Aggregate ==========
-CALL refresh_continuous_aggregate('hourly_metrics', NULL, NULL);
+          command: 'Refresh Continuous Aggregate',
+          description: 'Manually refresh continuous aggregate',
+          usage: 'refresh_continuous_aggregate',
+          example: `-- Refresh all data
+CALL refresh_continuous_aggregate('sensor_data_hourly');
 
-======== View Refresh Policies ==========
-SELECT * FROM timescaledb_information.continuous_aggregates;
+-- Refresh specific time range
+CALL refresh_continuous_aggregate(
+  'sensor_data_hourly',
+  NOW() - INTERVAL '1 day',
+  NOW()
+);
 
-======== Remove Refresh Policy ==========
-SELECT remove_continuous_aggregate_policy('hourly_metrics');
-
-======== Modify Refresh Policy ==========
-SELECT alter_continuous_aggregate_policy(
-  'hourly_metrics',
-  schedule_interval => INTERVAL '2 hours',
-  end_offset => INTERVAL '30 minutes'
+-- Refresh with window
+CALL refresh_continuous_aggregate(
+  'sensor_data_hourly',
+  NOW() - INTERVAL '1 week',
+  NOW(),
+  '1 day'
 );`,
         },
         {
-          command: 'Querying Continuous Aggregates',
-          description: 'Efficient queries on pre-aggregated data',
-          usage: 'Query patterns for continuous aggregates',
-          example: `======== Query Hourly Data ==========
-SELECT * FROM hourly_metrics 
-WHERE hour > NOW() - INTERVAL '7 days' 
-  AND device_id = 1
+          command: 'Query Continuous Aggregates',
+          description: 'Query continuous aggregate data',
+          usage: 'SELECT from continuous aggregate',
+          example: `-- Query continuous aggregate
+SELECT * FROM sensor_data_hourly 
+WHERE hour >= NOW() - INTERVAL '24 hours'
 ORDER BY hour DESC;
 
-======== Time Range Query ==========
+-- Query with additional filters
 SELECT 
   hour,
   device_id,
   avg_temperature,
-  max_temperature - min_temperature AS temp_range
-FROM hourly_metrics 
-WHERE hour BETWEEN '2024-01-01' AND '2024-01-31'
-ORDER BY hour, device_id;`,
+  readings_count
+FROM sensor_data_hourly 
+WHERE hour >= NOW() - INTERVAL '7 days'
+AND avg_temperature > 25.0
+ORDER BY avg_temperature DESC;`,
+        },
+        {
+          command: 'Continuous Aggregate with Joins',
+          description: 'Create continuous aggregate with joins',
+          usage: 'Joins in continuous aggregates',
+          example: `-- Create continuous aggregate with device metadata
+CREATE MATERIALIZED VIEW device_temp_summary 
+WITH (timescaledb.continuous) AS
+SELECT 
+  time_bucket('1 hour', s.time) AS hour,
+  d.device_id,
+  d.location,
+  d.device_type,
+  AVG(s.temperature) AS avg_temperature,
+  COUNT(*) AS readings_count
+FROM sensor_data s
+JOIN devices d ON s.device_id = d.device_id
+GROUP BY hour, d.device_id, d.location, d.device_type;`,
+        },
+        {
+          command: 'Continuous Aggregate Information',
+          description: 'Get continuous aggregate metadata',
+          usage: 'Information functions',
+          example: `-- Show continuous aggregates
+SELECT * FROM timescaledb_information.continuous_aggregates;
+
+-- Show refresh policies
+SELECT * FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_refresh_continuous_aggregate';
+
+-- Show materialized view stats
+SELECT 
+  view_name,
+  pg_size_pretty(pg_total_relation_size(view_schema||'.'||view_name)) as size
+FROM timescaledb_information.continuous_aggregates;`,
+        },
+        {
+          command: 'Drop Continuous Aggregate',
+          description: 'Remove continuous aggregate',
+          usage: 'DROP MATERIALIZED VIEW',
+          example: `-- Drop continuous aggregate
+DROP MATERIALIZED VIEW sensor_data_hourly;
+
+-- Drop with cascade
+DROP MATERIALIZED VIEW sensor_data_hourly CASCADE;
+
+-- Remove refresh policy
+SELECT remove_continuous_aggregate_policy('sensor_data_hourly');`,
         },
       ],
     },
-
-    // ADVANCED LEVEL
     {
-      title: 'Data Compression',
+      title: 'TimescaleDB Data Retention',
       commands: [
         {
-          command: 'Enabling Compression',
-          description: 'Compress historical data to save space',
-          usage: 'ALTER TABLE compression commands',
-          example: `======== Enable Compression ==========
-ALTER TABLE sensor_data SET (
-  timescaledb.compress,
-  timescaledb.compress_segmentby = 'device_id',
-  timescaledb.compress_orderby = 'time DESC'
-);
-
-======== Add Compression Policy ==========
-SELECT add_compression_policy(
+          command: 'Create Retention Policy',
+          description: 'Create data retention policy',
+          usage: 'add_retention_policy function',
+          example: `-- Add retention policy to delete old data
+SELECT add_retention_policy(
   'sensor_data',
-  INTERVAL '1 month',
-  compress_after => INTERVAL '1 week'
+  INTERVAL '30 days'
 );
 
-======== View Compression Settings ==========
-SELECT * FROM timescaledb_information.compression_settings;`,
+-- Add policy with custom settings
+SELECT add_retention_policy(
+  'sensor_data',
+  INTERVAL '90 days',
+  if_not_exists => TRUE
+);`,
         },
         {
-          command: 'Managing Compression',
-          description: 'Decompress and manage compressed data',
-          usage: 'Decompression and maintenance commands',
-          example: `======== Decompress Data ==========
-SELECT decompress_chunk('_timescaledb_catalog._hyper_1_1_chunk');
+          command: 'Drop Retention Policy',
+          description: 'Remove retention policy',
+          usage: 'remove_retention_policy function',
+          example: `-- Remove retention policy
+SELECT remove_retention_policy('sensor_data');
 
-======== View Compression Stats ==========
+-- Remove if exists
+SELECT remove_retention_policy(
+  'sensor_data',
+  if_exists => TRUE
+);`,
+        },
+        {
+          command: 'Data Rehydration',
+          description: 'Rehydrate compressed data for modification',
+          usage: 'rehydrate_chunk function',
+          example: `-- Rehydrate specific chunk
+SELECT rehydrate_chunk(
+  '_timescaledb_catalog._hyper_1_1_chunk'
+);
+
+-- Rehydrate multiple chunks
+SELECT rehydrate_chunk(chunk_name)
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data'
+AND compressed = TRUE
+AND range_end < NOW() - INTERVAL '1 day';`,
+        },
+        {
+          command: 'Drop Chunks',
+          description: 'Manually drop old chunks',
+          usage: 'drop_chunks function',
+          example: `-- Drop chunks older than 30 days
+SELECT drop_chunks(
+  INTERVAL '30 days',
+  'sensor_data'
+);
+
+-- Drop chunks with specific time range
+SELECT drop_chunks(
+  '2024-01-01',
+  '2024-02-01',
+  'sensor_data'
+);
+
+-- Drop chunks from multiple tables
+SELECT drop_chunks(
+  INTERVAL '30 days',
+  ARRAY['sensor_data', 'device_logs']
+);`,
+        },
+        {
+          command: 'Retention Policy Information',
+          description: 'Monitor retention policies',
+          usage: 'Policy monitoring',
+          example: `-- Show retention policies
+SELECT * FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_retention';
+
+-- Show chunk age distribution
+SELECT 
+  hypertable_name,
+  COUNT(*) as chunk_count,
+  MIN(range_start) as oldest_chunk,
+  MAX(range_end) as newest_chunk
+FROM timescaledb_information.chunks 
+GROUP BY hypertable_name;`,
+        },
+      ],
+    },
+    {
+      title: 'TimescaleDB Advanced Queries',
+      commands: [
+        {
+          command: 'Time Weighted Average',
+          description: 'Calculate time-weighted averages',
+          usage: 'time_weighted_average function',
+          example: `-- Time-weighted average temperature
+SELECT 
+  device_id,
+  time_weighted_average(
+    'linear', 
+    temperature, 
+    time
+  ) as twa_temp
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours'
+AND device_id = 'sensor_001'
+GROUP BY device_id;
+
+-- Time-weighted average with gaps
+SELECT 
+  device_id,
+  time_weighted_average(
+    'linear', 
+    temperature, 
+    time,
+    '1 hour'
+  ) as twa_temp
+FROM sensor_data 
+GROUP BY device_id;`,
+        },
+        {
+          command: 'Locate Function',
+          description: 'Find values in time buckets',
+          usage: 'locate function',
+          example: `-- Find first value in each hour
+SELECT 
+  time_bucket('1 hour', time) as hour,
+  device_id,
+  locate(
+    min,
+    temperature,
+    time_bucket('1 hour', time)
+  ) as first_temp_in_hour
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours'
+GROUP BY hour, device_id;
+
+-- Find last value in each hour
+SELECT 
+  time_bucket('1 hour', time) as hour,
+  locate(
+    max,
+    temperature,
+    time_bucket('1 hour', time)
+  ) as last_temp_in_hour
+FROM sensor_data 
+GROUP BY hour;`,
+        },
+        {
+          command: 'Interpolate Function',
+          description: 'Interpolate missing values',
+          usage: 'interpolate function',
+          example: `-- Linear interpolation
+SELECT 
+  time_bucket('15 minutes', time) as bucket,
+  interpolate(
+    linear,
+    AVG(temperature),
+    bucket
+  ) as interpolated_temp
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '6 hours'
+GROUP BY bucket
+ORDER BY bucket;
+
+-- Previous value interpolation
+SELECT 
+  time_bucket('15 minutes', time) as bucket,
+  interpolate(
+    previous,
+    AVG(temperature),
+    bucket
+  ) as interpolated_temp
+FROM sensor_data 
+GROUP BY bucket
+ORDER BY bucket;`,
+        },
+        {
+          command: 'Delta Functions',
+          description: 'Calculate changes over time',
+          usage: 'delta functions',
+          example: `-- Calculate delta between consecutive values
+SELECT 
+  time,
+  temperature,
+  delta(temperature) OVER (ORDER BY time) as temp_change
+FROM sensor_data 
+WHERE device_id = 'sensor_001'
+ORDER BY time;
+
+-- Calculate rate of change
+SELECT 
+  time,
+  temperature,
+  rate(temperature, time) OVER (ORDER BY time) as temp_rate
+FROM sensor_data 
+WHERE device_id = 'sensor_001'
+ORDER BY time;`,
+        },
+        {
+          command: 'Advanced Time Bucketing',
+          description: 'Advanced time bucket operations',
+          usage: 'Advanced time_bucket functions',
+          example: `-- Time bucket with origin
+SELECT 
+  time_bucket('1 hour', time, '2024-01-01 00:00:00') as hour,
+  AVG(temperature) as avg_temp
+FROM sensor_data 
+GROUP BY hour
+ORDER BY hour;
+
+-- Time bucket with timezone
+SELECT 
+  time_bucket('1 day', time, 'America/New_York') as day,
+  AVG(temperature) as avg_temp
+FROM sensor_data 
+GROUP BY day
+ORDER BY day;`,
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'TimescaleDB Multi-Node Architecture',
+      commands: [
+        {
+          command: 'Multi-Node Overview',
+          description: 'Understanding multi-node architecture',
+          usage: 'Multi-node concepts',
+          example: `Multi-Node Architecture:
+- Data Node: Stores partitioned data chunks
+- Access Node: Coordinates queries across data nodes
+- Distributed hypertables: Tables spread across nodes
+- Replication: Data replication for high availability
+- Load balancing: Query distribution across nodes
+- Scaling: Horizontal scaling for large datasets`,
+        },
+        {
+          command: 'Setup Data Node',
+          description: 'Configure a data node',
+          usage: 'Data node configuration',
+          example: `-- Configure data node in postgresql.conf
+shared_preload_libraries = 'timescaledb'
+timescaledb.enable_multi_node = 'on'
+timescaledb.node_type = 'data'
+listen_addresses = '*'
+port = 5432
+
+-- Restart PostgreSQL
+sudo systemctl restart postgresql
+
+-- Create database
+CREATE DATABASE timeseries;`,
+        },
+        {
+          command: 'Setup Access Node',
+          description: 'Configure an access node',
+          usage: 'Access node configuration',
+          example: `-- Configure access node in postgresql.conf
+shared_preload_libraries = 'timescaledb'
+timescaledb.enable_multi_node = 'on'
+timescaledb.node_type = 'access'
+listen_addresses = '*'
+port = 5432
+
+-- Restart PostgreSQL
+sudo systemctl restart postgresql
+
+-- Enable TimescaleDB
+CREATE EXTENSION IF NOT EXISTS timescaledb;`,
+        },
+        {
+          command: 'Add Data Node',
+          description: 'Add data node to access node',
+          usage: 'add_data_node function',
+          example: `-- Add data node
+SELECT add_data_node(
+  'data_node_1',
+  'host=data_node_1_host port=5432 dbname=timeseries user=postgres password=password'
+);
+
+-- Add multiple data nodes
+SELECT add_data_node(
+  'data_node_2',
+  'host=data_node_2_host port=5432 dbname=timeseries user=postgres password=password'
+);
+
+-- List data nodes
+SELECT * FROM timescaledb_information.data_nodes;`,
+        },
+        {
+          command: 'Create Distributed Hypertable',
+          description: 'Create hypertable distributed across nodes',
+          usage: 'create_distributed_hypertable',
+          example: `-- Create distributed hypertable
+SELECT create_distributed_hypertable(
+  'sensor_data',
+  'time',
+  'device_id',
+  replication_factor => 1
+);
+
+-- Create with custom partitioning
+SELECT create_distributed_hypertable(
+  'sensor_data',
+  'time',
+  'device_id',
+  chunk_time_interval => INTERVAL '1 day',
+  replication_factor => 2
+);`,
+        },
+        {
+          command: 'Attach Distributed Hypertable',
+          description: 'Attach existing hypertable to distributed setup',
+          usage: 'attach_distributed_hypertable',
+          example: `-- Attach existing hypertable
+SELECT attach_distributed_hypertable(
+  'sensor_data',
+  'time',
+  'device_id',
+  replication_factor => 1
+);
+
+-- Attach with custom settings
+SELECT attach_distributed_hypertable(
+  'sensor_data',
+  'time',
+  'device_id',
+  chunk_time_interval => INTERVAL '1 day'
+);`,
+        },
+        {
+          command: 'Distributed Query Planning',
+          description: 'Understand distributed query execution',
+          usage: 'Query planning in distributed setup',
+          example: `-- Explain distributed query
+EXPLAIN (VERBOSE, BUFFERS) 
+SELECT * FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '1 day';
+
+-- Check query execution
+SELECT * FROM timescaledb_information.query_stats 
+WHERE hypertable_name = 'sensor_data'
+ORDER BY total_exec_time DESC;
+
+-- Monitor distributed queries
+SELECT * FROM timescaledb_information.jobs 
+WHERE proc_name LIKE 'policy_%';`,
+        },
+      ],
+    },
+    {
+      title: 'TimescaleDB Performance Optimization',
+      commands: [
+        {
+          command: 'Chunk Size Optimization',
+          description: 'Optimize chunk size for performance',
+          usage: 'Chunk size tuning',
+          example: `-- Create hypertable with optimal chunk size
+SELECT create_hypertable(
+  'sensor_data',
+  'time',
+  chunk_time_interval => INTERVAL '1 day'  -- 100MB-1GB per chunk
+);
+
+-- For high-frequency data (1 second intervals)
+SELECT create_hypertable(
+  'high_freq_data',
+  'time',
+  chunk_time_interval => INTERVAL '1 hour'
+);
+
+-- For low-frequency data (daily data)
+SELECT create_hypertable(
+  'low_freq_data',
+  'time',
+  chunk_time_interval => INTERVAL '1 month'
+);`,
+        },
+        {
+          command: 'Index Optimization',
+          description: 'Optimize indexes for time-series queries',
+          usage: 'Indexing strategies',
+          example: `-- Create composite index on time and device_id
+CREATE INDEX ON sensor_data (time DESC, device_id);
+
+-- Create index on device_id for device-specific queries
+CREATE INDEX ON sensor_data (device_id, time DESC);
+
+-- Create partial index for recent data
+CREATE INDEX ON sensor_data (time DESC, device_id) 
+WHERE time >= NOW() - INTERVAL '7 days';
+
+-- Create BRIN index for time range queries
+CREATE INDEX ON sensor_data USING BRIN (time);`,
+        },
+        {
+          command: 'Query Performance Tuning',
+          description: 'Optimize query performance',
+          usage: 'Query optimization techniques',
+          example: `-- Use time_bucket for efficient aggregation
+SELECT 
+  time_bucket('1 hour', time) as hour,
+  device_id,
+  AVG(temperature) as avg_temp
+FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '24 hours'
+  AND time < NOW()
+GROUP BY hour, device_id;
+
+-- Use LIMIT with time ordering
+SELECT * FROM sensor_data 
+WHERE device_id = 'sensor_001'
+ORDER BY time DESC
+LIMIT 100;
+
+-- Use appropriate time range filters
+SELECT * FROM sensor_data 
+WHERE time >= '2024-01-01' AND time < '2024-01-02'
+AND device_id = 'sensor_001';`,
+        },
+        {
+          command: 'Memory Configuration',
+          description: 'Configure memory for optimal performance',
+          usage: 'Memory tuning parameters',
+          example: `-- PostgreSQL memory configuration
+shared_buffers = 256MB                    -- 25% of RAM
+effective_cache_size = 1GB                -- 75% of RAM
+work_mem = 4MB                            -- Per query operation
+maintenance_work_mem = 64MB               -- Maintenance operations
+autovacuum_work_mem = -1                  -- Use maintenance_work_mem
+
+-- TimescaleDB specific
+timescaledb.max_background_workers = 8    -- Background workers
+timescaledb.max_concurrent_background_workers = 4`,
+        },
+        {
+          command: 'Parallel Query Optimization',
+          description: 'Enable parallel query execution',
+          usage: 'Parallel query configuration',
+          example: `-- Enable parallel queries
+max_parallel_workers_per_gather = 2
+max_parallel_workers = 8
+parallel_tuple_cost = 0.1
+parallel_setup_cost = 1000.0
+
+-- Force parallel execution for large scans
+SET max_parallel_workers_per_gather = 4;
+SET parallel_tuple_cost = 0.01;
+
+-- Monitor parallel query usage
+SELECT * FROM pg_stat_progress_vacuum;
+SELECT * FROM pg_stat_progress_analyze;`,
+        },
+        {
+          command: 'Connection Pooling',
+          description: 'Configure connection pooling',
+          usage: 'PgBouncer configuration',
+          example: `-- PgBouncer configuration (pgbouncer.ini)
+[databases]
+timeseries = host=localhost port=5432 dbname=timeseries
+
+[pgbouncer]
+listen_port = 6432
+listen_addr = 127.0.0.1
+auth_type = md5
+auth_file = /etc/pgbouncer/userlist.txt
+logfile = /var/log/pgbouncer/pgbouncer.log
+pidfile = /var/run/pgbouncer/pgbouncer.pid
+admin_users = postgres
+stats_users = stats, postgres
+
+-- Connection settings
+pool_mode = transaction
+max_client_conn = 100
+default_pool_size = 20
+min_pool_size = 5
+reserve_pool_size = 5`,
+        },
+      ],
+    },
+    {
+      title: 'TimescaleDB Backup and Recovery',
+      commands: [
+        {
+          command: 'Logical Backup',
+          description: 'Create logical backup with pg_dump',
+          usage: 'pg_dump for TimescaleDB',
+          example: `-- Full logical backup
+pg_dump -h localhost -U postgres -d timeseries > timeseries_backup.sql
+
+-- Compressed backup
+pg_dump -h localhost -U postgres -d timeseries | gzip > timeseries_backup.sql.gz
+
+-- Custom format backup (parallel)
+pg_dump -h localhost -U postgres -d timeseries -Fd -j 4 -f timeseries_backup
+
+-- Backup only schema
+pg_dump -h localhost -U postgres -d timeseries -s > timeseries_schema.sql`,
+        },
+        {
+          command: 'Physical Backup',
+          description: 'Create physical backup with pg_basebackup',
+          usage: 'pg_basebackup for TimescaleDB',
+          example: `-- Physical backup
+pg_basebackup -h localhost -D /backup/timeseries -U postgres -v -P -W
+
+-- Compressed physical backup
+pg_basebackup -h localhost -D /backup/timeseries -U postgres -v -P -W -z
+
+-- Create backup manifest
+pg_basebackup -h localhost -D /backup/timeseries -U postgres -v -P -W -l backup_label`,
+        },
+        {
+          command: 'Continuous Archiving',
+          description: 'Setup continuous WAL archiving',
+          usage: 'WAL archiving configuration',
+          example: `-- Enable WAL archiving in postgresql.conf
+wal_level = replica
+archive_mode = on
+archive_command = 'cp %p /backup/wal/%f'
+archive_timeout = 300
+
+-- Create archive directory
+mkdir -p /backup/wal
+chown postgres:postgres /backup/wal
+
+-- Test archive command
+archive_command = 'test ! -f /backup/wal/%f && cp %p /backup/wal/%f'`,
+        },
+        {
+          command: 'Point-in-Time Recovery',
+          description: 'Restore to specific point in time',
+          usage: 'PITR procedures',
+          example: `-- Create recovery.conf
+restore_command = 'cp /backup/wal/%f %p'
+recovery_target_time = '2024-01-01 12:00:00'
+recovery_target_inclusive = true
+
+-- Or use recovery.signal (PostgreSQL 12+)
+echo 'recovery_target_time = "2024-01-01 12:00:00"' >> postgresql.conf
+touch /var/lib/postgresql/12/main/recovery.signal
+
+-- Start recovery
+sudo systemctl start postgresql`,
+        },
+        {
+          command: 'TimescaleDB Specific Backup',
+          description: 'Backup TimescaleDB specific objects',
+          usage: 'TimescaleDB backup strategies',
+          example: `-- Backup continuous aggregates
+SELECT * FROM timescaledb_information.continuous_aggregates;
+
+-- Backup compression policies
+SELECT * FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_compression';
+
+-- Backup retention policies
+SELECT * FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_retention';
+
+-- Export hypertable definitions
+SELECT * FROM timescaledb_information.hypertables;`,
+        },
+        {
+          command: 'Restore TimescaleDB',
+          description: 'Restore TimescaleDB database',
+          usage: 'Restore procedures',
+          example: `-- Restore from logical backup
+psql -h localhost -U postgres -d timeseries < timeseries_backup.sql
+
+-- Restore from compressed backup
+gunzip -c timeseries_backup.sql.gz | psql -h localhost -U postgres -d timeseries
+
+-- Restore from custom format
+pg_restore -h localhost -U postgres -d timeseries -j 4 /backup/timeseries_backup
+
+-- After restore, recreate TimescaleDB objects
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+-- Recreate hypertables, continuous aggregates, etc.`,
+        },
+      ],
+    },
+    {
+      title: 'TimescaleDB Monitoring',
+      commands: [
+        {
+          command: 'Hypertable Monitoring',
+          description: 'Monitor hypertable health',
+          usage: 'Hypertable monitoring queries',
+          example: `-- Hypertable overview
+SELECT * FROM timescaledb_information.hypertables;
+
+-- Chunk distribution
+SELECT 
+  hypertable_name,
+  COUNT(*) as chunk_count,
+  pg_size_pretty(SUM(pg_total_relation_size(chunk_schema||'.'||chunk_name))) as total_size
+FROM timescaledb_information.chunks 
+GROUP BY hypertable_name;
+
+-- Chunk age analysis
+SELECT 
+  hypertable_name,
+  chunk_name,
+  range_start,
+  range_end,
+  age(NOW(), range_end) as chunk_age
+FROM timescaledb_information.chunks 
+ORDER BY range_end;`,
+        },
+        {
+          command: 'Performance Metrics',
+          description: 'Monitor performance metrics',
+          usage: 'Performance monitoring queries',
+          example: `-- Query performance stats
+SELECT * FROM timescaledb_information.query_stats 
+ORDER BY total_exec_time DESC
+LIMIT 10;
+
+-- Chunk I/O statistics
 SELECT 
   chunk_name,
-  compressed_size,
-  uncompressed_size,
-  compression_ratio
-FROM timescaledb_information.compressed_chunk_stats;
+  seq_scan,
+  seq_tup_read,
+  idx_scan,
+  idx_tup_fetch
+FROM pg_stat_user_tables 
+WHERE schemaname LIKE '_timescaledb_catalog%'
+ORDER BY seq_scan DESC;
 
-======== Remove Compression Policy ==========
-SELECT remove_compression_policy('sensor_data');`,
+-- Background worker stats
+SELECT * FROM timescaledb_information.jobs;`,
         },
         {
-          command: 'Advanced Compression Patterns',
-          description: 'Optimize compression for different data patterns',
-          usage: 'Advanced compression strategies',
-          example: `======== Multi-Column Compression ==========
-ALTER TABLE sensor_data SET (
-  timescaledb.compress,
-  timescaledb.compress_segmentby = 'device_id, location',
-  timescaledb.compress_orderby = 'time DESC, temperature DESC, humidity DESC'
-);
-
-======== Compression Monitoring ==========
+          command: 'Compression Monitoring',
+          description: 'Monitor compression effectiveness',
+          usage: 'Compression monitoring',
+          example: `-- Compression statistics
 SELECT 
   hypertable_name,
   num_compressed_chunks,
   num_uncompressed_chunks,
-  pg_size_pretty(compressed_size) AS compressed,
-  pg_size_pretty(uncompressed_size) AS uncompressed
-FROM timescaledb_information.hypertable_compression_stats;`,
-        },
-      ],
-    },
-    {
-      title: 'Data Retention and Lifecycle',
-      commands: [
-        {
-          command: 'Data Retention Policies',
-          description: 'Automatically remove old data',
-          usage: 'add_retention_policy and related functions',
-          example: `======== Basic Retention Policy ==========
-SELECT add_retention_policy(
-  'sensor_data', 
-  INTERVAL '1 year'
-);
-
-======== Advanced Retention Policy ==========
-SELECT add_retention_policy(
-  'sensor_data',
-  INTERVAL '6 months',
-  drop_after => INTERVAL '1 month',
-  schedule_interval => INTERVAL '1 day'
-);
-
-======== Remove Retention Policy ==========
-SELECT remove_retention_policy('sensor_data');`,
-        },
-        {
-          command: 'Data Lifecycle Management',
-          description: 'Complex data lifecycle strategies',
-          usage: 'Advanced lifecycle patterns',
-          example: `======== Tiered Storage Strategy ==========
-CREATE OR REPLACE FUNCTION tiered_storage()
-RETURNS void LANGUAGE plpgsql AS $$
-BEGIN
-  PERFORM move_chunk(
-    older_than => INTERVAL '6 months',
-    destination_schema => 'archive',
-    source_table => 'sensor_data'
-  );
-  PERFORM compress_chunk(
-    older_than => INTERVAL '3 months',
-    table_name => 'sensor_data'
-  );
-END;
-$$;
-
-SELECT add_job('tiered_storage', '1 day');`,
-        },
-        {
-          command: 'Chunk Management',
-          description: 'Advanced chunk operations',
-          usage: 'show_chunks, move_chunk, split_chunk',
-          example: `======== View Chunks ==========
-SELECT * FROM show_chunks('sensor_data');
-SELECT * FROM show_chunks('sensor_data', older_than => INTERVAL '1 month');
-
-======== Move Chunks ==========
-SELECT move_chunk(
-  chunk => '_timescaledb_catalog._hyper_1_1_chunk',
-  destination_tablespace => 'ssd_storage'
-);
-
-======== Split Chunks ==========
-SELECT split_chunk(
-  '_timescaledb_catalog._hyper_1_1_chunk',
-  split_point => '2024-06-15'::timestamptz
-);`,
-        },
-      ],
-    },
-
-    // EXPERT LEVEL
-    {
-      title: 'Advanced Query Optimization',
-      commands: [
-        {
-          command: 'Query Performance Analysis',
-          description: 'Analyze and optimize time-series queries',
-          usage: 'EXPLAIN, query optimization techniques',
-          example: `======== Query Analysis ==========
-EXPLAIN (ANALYZE, BUFFERS) 
-SELECT time_bucket('1 hour', time) AS hour,
-       device_id,
-       AVG(temperature) AS avg_temp
-FROM sensor_data 
-WHERE time > NOW() - INTERVAL '7 days'
-GROUP BY hour, device_id
-ORDER BY hour DESC;
-
-======== Optimized Time Range Queries ==========
-SELECT * FROM sensor_data 
-WHERE time >= '2024-01-01'::timestamptz 
-  AND time < '2024-02-01'::timestamptz
-  AND device_id = 1;
-
-======== Index Usage ==========
-CREATE INDEX ON sensor_data (device_id, time DESC);
-CREATE INDEX ON sensor_data (time DESC, device_id);`,
-        },
-        {
-          command: 'Advanced Time Series Joins',
-          description: 'Efficient joins with time-series data',
-          usage: 'Join patterns and optimization',
-          example: `======== Time Series Join ==========
-SELECT 
-  s.time,
-  s.device_id,
-  s.temperature,
-  d.location,
-  d.device_type
-FROM sensor_data s
-JOIN devices d ON s.device_id = d.device_id
-WHERE s.time > NOW() - INTERVAL '1 day'
-ORDER BY s.time DESC;
-
-======== As of Join (Time Travel) ==========
-SELECT 
-  s.time,
-  s.device_id,
-  s.temperature,
-  d.location AS device_location
-FROM sensor_data s
-LEFT JOIN LATERAL (
-  SELECT location 
-  FROM device_history dh 
-  WHERE dh.device_id = s.device_id 
-    AND dh.effective_time <= s.time 
-  ORDER BY dh.effective_time DESC 
-  LIMIT 1
-) d ON true
-WHERE s.time > NOW() - INTERVAL '1 day';`,
-        },
-        {
-          command: 'Window Functions for Time Series',
-          description: 'Advanced window function patterns',
-          usage: 'Window functions with time-series data',
-          example: `======== Moving Averages ==========
-SELECT 
-  time,
-  temperature,
-  AVG(temperature) OVER (
-    ORDER BY time 
-    ROWS BETWEEN 5 PRECEDING AND CURRENT ROW
-  ) AS moving_avg_6,
-  AVG(temperature) OVER (
-    ORDER BY time 
-    RANGE BETWEEN INTERVAL '1 hour' PRECEDING AND CURRENT ROW
-  ) AS hourly_avg
-FROM sensor_data 
-WHERE device_id = 1 
-  AND time > NOW() - INTERVAL '1 day'
-ORDER BY time;
-
-======== Lag/Lead for Change Detection ==========
-SELECT 
-  time,
-  temperature,
-  LAG(temperature, 1) OVER (ORDER BY time) AS prev_temp,
-  temperature - LAG(temperature, 1) OVER (ORDER BY time) AS temp_change,
-  CASE 
-    WHEN temperature > LAG(temperature, 1) OVER (ORDER BY time) THEN 'Increasing'
-    WHEN temperature < LAG(temperature, 1) OVER (ORDER BY time) THEN 'Decreasing'
-    ELSE 'Stable'
-  END AS trend
-FROM sensor_data 
-WHERE device_id = 1 
-  AND time > NOW() - INTERVAL '6 hours'
-ORDER BY time;`,
-        },
-      ],
-    },
-    {
-      title: 'Monitoring and Maintenance',
-      commands: [
-        {
-          command: 'TimescaleDB Monitoring',
-          description: 'Monitor TimescaleDB performance and health',
-          usage: 'Monitoring queries and system views',
-          example: `======== Hypertable Health ==========
-SELECT 
-  hypertable_name,
-  num_chunks,
-  num_compressed_chunks,
-  uncompressed_size,
-  compressed_size,
   compression_ratio
-FROM timescaledb_information.hypertable_sizes;
+FROM timescaledb_information.compressed_hypetables_stats;
 
-======== Job Monitoring ==========
+-- Compression job status
 SELECT 
   job_id,
   proc_name,
   schedule_interval,
-  next_start,
   last_success,
-  last_run_status
-FROM timescaledb_information.jobs
-ORDER BY next_start;
-
-======== Background Worker Stats ==========
-SELECT * FROM timescaledb_information.worker_stats;`,
+  next_run
+FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_compression';`,
         },
         {
-          command: 'Maintenance Operations',
-          description: 'Regular maintenance tasks and optimization',
-          usage: 'Maintenance commands and procedures',
-          example: `======== Database Maintenance ==========
-ANALYZE sensor_data;
-VACUUM (ANALYZE) sensor_data;
+          command: 'Continuous Aggregate Monitoring',
+          description: 'Monitor continuous aggregates',
+          usage: 'Continuous aggregate monitoring',
+          example: `-- Continuous aggregate status
+SELECT * FROM timescaledb_information.continuous_aggregates;
 
-======== Reindex for Performance ==========
-REINDEX INDEX CONCURRENTLY sensor_data_device_id_time_idx;
+-- Refresh job status
+SELECT 
+  job_id,
+  proc_name,
+  schedule_interval,
+  last_success,
+  next_run,
+  runtime
+FROM timescaledb_information.jobs 
+WHERE proc_name = 'policy_refresh_continuous_aggregate';
 
-======== Configuration Tuning ==========
-ALTER SYSTEM SET shared_preload_libraries = 'timescaledb';
-ALTER SYSTEM SET max_connections = 200;
-ALTER SYSTEM SET shared_buffers = '256MB';
-ALTER SYSTEM SET effective_cache_size = '1GB';
-SELECT pg_reload_conf();`,
+-- Materialized view size
+SELECT 
+  view_name,
+  pg_size_pretty(pg_total_relation_size(view_schema||'.'||view_name)) as size
+FROM timescaledb_information.continuous_aggregates;`,
         },
         {
-          command: 'Backup and Recovery',
-          description: 'Backup strategies for TimescaleDB',
-          usage: 'Backup and restore procedures',
-          example: `======== Logical Backup ==========
-pg_dump -h localhost -U postgres -d timeseries -f timeseries_backup.sql
+          command: 'System Resource Monitoring',
+          description: 'Monitor system resources',
+          usage: 'System monitoring queries',
+          example: `-- Database size
+SELECT 
+  pg_database.datname,
+  pg_size_pretty(pg_database_size(pg_database.datname)) as size
+FROM pg_database;
 
-======== Physical Backup ==========
-pg_basebackup -h localhost -D /backup/timescale_base \\
-  -U postgres -v -P -W
+-- Table sizes
+SELECT 
+  schemaname,
+  tablename,
+  pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size,
+  pg_size_pretty(pg_relation_size(schemaname||'.'||tablename)) as table_size,
+  pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename) - pg_relation_size(schemaname||'.'||tablename)) as index_size
+FROM pg_tables 
+WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;`,
+        },
+        {
+          command: 'Alert Queries',
+          description: 'Queries for alerting',
+          usage: 'Monitoring alert queries',
+          example: `-- Alert: Large chunks
+SELECT 
+  hypertable_name,
+  chunk_name,
+  pg_size_pretty(pg_total_relation_size(chunk_schema||'.'||chunk_name)) as size
+FROM timescaledb_information.chunks 
+WHERE pg_total_relation_size(chunk_schema||'.'||chunk_name) > 10 * 1024 * 1024 * 1024; -- > 10GB
 
-======== Point-in-Time Recovery ==========
-ALTER SYSTEM SET wal_level = replica;
-ALTER SYSTEM SET archive_mode = on;
-ALTER SYSTEM SET archive_command = 'cp %p /backup/wal/%f';
-SELECT pg_reload_conf();`,
+-- Alert: Failed jobs
+SELECT * FROM timescaledb_information.jobs 
+WHERE last_run_status != 'success';
+
+-- Alert: High query times
+SELECT * FROM timescaledb_information.query_stats 
+WHERE mean_exec_time > 1000; -- > 1 second`,
         },
       ],
     },
     {
-      title: 'Modern TimescaleDB Features',
+      title: 'TimescaleDB Troubleshooting',
       commands: [
         {
-          command: 'TimescaleDB 2.x Features',
-          description: 'Latest features in TimescaleDB 2.x',
-          usage: 'New functions and capabilities',
-          example: `======== Multi-Dimensional Hypertables ==========
-SELECT create_hypertable(
-  'sensor_data',
-  'time',
-  partitioning_column => ARRAY['device_id', 'location'],
-  number_partitions => ARRAY[4, 3]
-);
+          command: 'Common Issues',
+          description: 'Diagnose common TimescaleDB issues',
+          usage: 'Troubleshooting guide',
+          example: `Common Issues:
+1. Slow queries on recent data
+   - Check if chunks are compressed
+   - Verify indexes exist
+   - Review query plans with EXPLAIN
 
-======== Enhanced Compression ==========
-ALTER TABLE sensor_data SET (
-  timescaledb.compress,
-  timescaledb.compress_segmentby = 'device_id, location',
-  timescaledb.compress_orderby = 'time DESC, temperature DESC'
-);
+2. High memory usage
+   - Check work_mem settings
+   - Monitor connection count
+   - Review background workers
 
-======== TimescaleDB Toolkit ==========
-CREATE EXTENSION IF NOT EXISTS timescaledb_toolkit;
+3. Compression not working
+   - Verify compression policy exists
+   - Check if data meets compression criteria
+   - Review compression settings
 
-SELECT 
-  time_bucket('1 hour', time) AS hour,
-  device_id,
-  toolkit.exponential_moving_average(
-    temperature, 
-    0.3
-  ) OVER (
-    PARTITION BY device_id 
-    ORDER BY time
-  ) AS ema_temp
-FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day';`,
+4. Continuous aggregates not updating
+   - Check refresh policy status
+   - Verify policy schedule
+   - Review job logs`,
         },
         {
-          command: 'Advanced Analytics',
-          description: 'Machine learning and statistical functions',
-          usage: 'TimescaleDB toolkit analytics',
-          example: `======== Statistical Functions ==========
-SELECT 
-  device_id,
-  toolkit.corr(
-    temperature, 
-    humidity
-  ) AS temp_humidity_correlation,
-  toolkit.linear_regression(
-    temperature, 
-    humidity
-  ) AS regression
-FROM sensor_data 
-WHERE time > NOW() - INTERVAL '7 days'
-GROUP BY device_id;
+          command: 'Query Plan Analysis',
+          description: 'Analyze query execution plans',
+          usage: 'EXPLAIN and query planning',
+          example: `-- Analyze query plan
+EXPLAIN (ANALYZE, BUFFERS, VERBOSE) 
+SELECT * FROM sensor_data 
+WHERE time >= NOW() - INTERVAL '1 day'
+AND device_id = 'sensor_001';
 
-======== Anomaly Detection ==========
-SELECT 
-  time,
-  device_id,
-  temperature,
-  toolkit.anomaly_detect(
-    temperature, 
-    0.95
-  ) OVER (
-    PARTITION BY device_id 
-    ORDER BY time 
-    ROWS BETWEEN 100 PRECEDING AND CURRENT ROW
-  ) AS is_anomaly
-FROM sensor_data 
-WHERE time > NOW() - INTERVAL '1 day';`,
+-- Check for chunk pruning
+EXPLAIN (ANALYZE) 
+SELECT COUNT(*) FROM sensor_data 
+WHERE time >= '2024-01-01' AND time < '2024-01-02';
+
+-- Monitor query performance
+SELECT * FROM timescaledb_information.query_stats 
+ORDER BY total_exec_time DESC;`,
         },
         {
-          command: 'Integration Features',
-          description: 'Integration with external systems',
-          usage: 'External data sources and APIs',
-          example: `======== PostgreSQL Extensions ==========
-CREATE EXTENSION IF NOT EXISTS postgis;
+          command: 'Chunk Issues',
+          description: 'Diagnose chunk-related problems',
+          usage: 'Chunk troubleshooting',
+          example: `-- Check chunk status
+SELECT 
+  chunk_name,
+  range_start,
+  range_end,
+  compressed,
+  pg_size_pretty(pg_total_relation_size(chunk_schema||'.'||chunk_name)) as size
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data'
+ORDER BY range_end DESC;
 
-CREATE TABLE location_data (
-  time TIMESTAMPTZ NOT NULL,
-  device_id INTEGER NOT NULL,
-  location GEOGRAPHY(POINT, 4326),
-  temperature DOUBLE PRECISION
-);
+-- Find empty chunks
+SELECT chunk_name, range_start, range_end
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data'
+AND pg_total_relation_size(chunk_schema||'.'||chunk_name) = 0;`,
+        },
+        {
+          command: 'Performance Issues',
+          description: 'Diagnose performance problems',
+          usage: 'Performance troubleshooting',
+          example: `-- Check slow queries
+SELECT query, mean_exec_time, calls, total_exec_time
+FROM timescaledb_information.query_stats 
+WHERE mean_exec_time > 1000
+ORDER BY mean_exec_time DESC;
 
-SELECT create_hypertable('location_data', 'time');
+-- Check for missing indexes
+SELECT 
+  schemaname,
+  tablename,
+  attname,
+  n_distinct,
+  correlation
+FROM pg_stats 
+WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+ORDER BY n_distinct DESC;`,
+        },
+        {
+          command: 'Recovery Procedures',
+          description: 'Recover from failures',
+          usage: 'Disaster recovery procedures',
+          example: `-- Recover from corrupted chunk
+SELECT decompress_chunk(chunk_name)
+FROM timescaledb_information.chunks 
+WHERE chunk_name = 'corrupted_chunk';
 
-======== Foreign Data Wrappers ==========
-CREATE EXTENSION IF NOT EXISTS postgres_fdw;
+-- Recreate continuous aggregate
+DROP MATERIALIZED VIEW IF EXISTS sensor_data_hourly;
+CREATE MATERIALIZED VIEW sensor_data_hourly 
+WITH (timescaledb.continuous) AS
+SELECT time_bucket('1 hour', time) as hour,
+       device_id,
+       AVG(temperature) as avg_temperature
+FROM sensor_data 
+GROUP BY hour, device_id;
 
-CREATE SERVER external_db 
-  FOREIGN DATA WRAPPER postgres_fdw 
-  OPTIONS (host 'external-host', dbname 'external_db');
-
-CREATE USER MAPPING FOR current_user 
-  SERVER external_db 
-  OPTIONS (user 'external_user', password 'external_pass');`,
+-- Recompress data
+SELECT compress_chunk(chunk_name)
+FROM timescaledb_information.chunks 
+WHERE hypertable_name = 'sensor_data'
+AND compressed = FALSE;`,
+        },
+      ],
+    },
+    {
+      title: 'TimescaleDB Best Practices',
+      commands: [
+        {
+          command: 'Data Modeling Best Practices',
+          description: 'Guidelines for time-series data modeling',
+          usage: 'Modeling principles',
+          example: `Data Modeling Best Practices:
+1. Always include time as first column
+2. Use appropriate time intervals for chunking
+3. Choose partition keys wisely
+4. Normalize metadata, denormalize metrics
+5. Use appropriate data types
+6. Plan for data growth
+7. Consider query patterns
+8. Use compression for historical data`,
+        },
+        {
+          command: 'Performance Best Practices',
+          description: 'Performance optimization guidelines',
+          usage: 'Performance tips',
+          example: `Performance Best Practices:
+1. Use time_bucket for aggregations
+2. Create appropriate indexes
+3. Optimize chunk size
+4. Use compression for old data
+5. Monitor query performance
+6. Use continuous aggregates
+7. Configure memory properly
+8. Enable parallel queries`,
+        },
+        {
+          command: 'Operations Best Practices',
+          description: 'Operational guidelines',
+          usage: 'Operations tips',
+          example: `Operations Best Practices:
+1. Regular backups and testing
+2. Monitor disk space usage
+3. Implement retention policies
+4. Use compression policies
+5. Monitor background jobs
+6. Plan capacity requirements
+7. Document architecture
+8. Test disaster recovery`,
+        },
+        {
+          command: 'Security Best Practices',
+          description: 'Security guidelines for TimescaleDB',
+          usage: 'Security tips',
+          example: `Security Best Practices:
+1. Use strong authentication
+2. Enable SSL/TLS connections
+3. Implement row-level security
+4. Regular security updates
+5. Monitor access logs
+6. Use connection pooling
+7. Limit superuser access
+8. Encrypt sensitive data`,
         },
       ],
     },

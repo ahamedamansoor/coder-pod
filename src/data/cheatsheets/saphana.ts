@@ -1,6 +1,6 @@
 import { Database } from 'lucide-react';
 
-export const hanaCheatsheet = {
+export const saphanaCheatsheet = {
   id: 'saphana',
   name: 'SAP HANA',
   description: 'Master SAP HANA from basics to expert operations (2024 Edition)',

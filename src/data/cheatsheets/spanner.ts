@@ -12,888 +12,1354 @@ export const spannerCheatsheet = {
       title: 'Getting Started with Google Spanner',
       commands: [
         {
-          command: 'Google Spanner Introduction',
-          description: 'Understanding Google Spanner concepts and architecture',
-          usage: 'Basic Spanner terminology and concepts',
-          example: `# Google Spanner is a globally distributed relational database service
-
-======== Key Concepts ==========
-# Globally Distributed: Data replicated across multiple regions
-# Horizontal Scalability: Automatically scales to handle any workload
-# Strong Consistency: External consistency across all replicas
-# ACID Transactions: Full transactional support globally
-# SQL Interface: Standard SQL with ANSI 2011 features
-# Schema Evolution: Online schema changes without downtime
-# Multi-Regional: Active-active replication across regions
-# Automatic Sharding: Data automatically partitioned across nodes
-
-======== Architecture Benefits ==========
-# Global scale with local latency
-# 99.999% availability SLA
-# Zero downtime for maintenance
-# Automatic failover and recovery
-# Consistent backups globally
-# Integrated with Google Cloud ecosystem
-- Cloud Storage integration
-- BigQuery integration
-- Dataflow pipelines
-- Cloud Functions triggers
-
-======== Google Spanner Components ==========
-# Spanner Instances: Compute and storage resources
-# Spanner Databases: Schema and data containers
-# Spanner Nodes: Compute units for processing
-# Cloud Console: Web-based management interface
-# gcloud CLI: Command-line interface
-# Client Libraries: Multiple language support
-# Change Streams: CDC and data streaming
-# Backup and Restore: Point-in-time recovery`,
+          command: 'Google Spanner Overview',
+          description: 'Introduction to Google Spanner concepts',
+          usage: 'Understanding Spanner fundamentals',
+          example: `Google Spanner Overview:
+- Globally distributed relational database service
+- Horizontal scalability with automatic sharding
+- Strong consistency across all replicas (external consistency)
+- Full ACID transactions globally
+- Standard SQL with ANSI 2011 features
+- Online schema changes without downtime
+- 99.999% availability SLA
+- Integrated with Google Cloud ecosystem`,
         },
         {
-          command: 'Installation and Setup',
-          description: 'Set up Google Cloud and Spanner using various methods',
-          usage: 'Cloud Console, gcloud CLI, and client libraries',
-          example: `# Google Spanner Setup Options
-
-======== Google Cloud Setup ==========
-# Install Google Cloud CLI
-# Download from: https://cloud.google.com/sdk/docs/install
+          command: 'Key Concepts',
+          description: 'Core Spanner concepts',
+          usage: 'Understanding Spanner terminology',
+          example: `Core Concepts:
+- Spanner Instances: Compute and storage resources
+- Spanner Databases: Schema and data containers
+- Spanner Nodes: Compute units for processing
+- Splits: Data partitions for distribution
+- Replicas: Data copies across regions/zones
+- Change Streams: CDC and data streaming
+- Staleness: Data consistency controls
+- Sessions: Database connection contexts`,
+        },
+        {
+          command: 'Architecture Benefits',
+          description: 'Advantages of Spanner architecture',
+          usage: 'Why choose Google Spanner',
+          example: `Architecture Benefits:
+- Global scale with local latency
+- Zero downtime for maintenance
+- Automatic failover and recovery
+- Consistent backups globally
+- Strong consistency without trade-offs
+- Automatic sharding and load balancing
+- Multi-region active-active replication
+- Integrated monitoring and logging`,
+        },
+        {
+          command: 'Install Google Cloud SDK',
+          description: 'Install and configure gcloud CLI',
+          usage: 'Google Cloud SDK setup',
+          example: `# Install Google Cloud SDK
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
 
 # Initialize gcloud
 gcloud init
 
-# Login to Google Cloud
+# Authenticate
 gcloud auth login
 
-# Set your project
-gcloud config set project YOUR_PROJECT_ID
+# Set project
+gcloud config set project your-project-id
 
-# Enable Spanner API
-gcloud services enable spanner.googleapis.com
-
-# Verify Spanner API is enabled
-gcloud services list --enabled | grep spanner
-
-======== Cloud Console Setup ==========
-# 1. Go to Google Cloud Console
-# 2. Navigate to Spanner section
-# 3. Create new instance
-# 4. Choose configuration (regional or multi-regional)
-# 5. Set node count and display name
-# 6. Create database
-
-======== Client Libraries Setup ==========
-# Python
-pip install google-cloud-spanner
-
-# Node.js
-npm install @google-cloud/spanner
-
-# Java
-# Add to pom.xml:
-# <dependency>
-#   <groupId>com.google.cloud</groupId>
-#   <artifactId>google-cloud-spanner</artifactId>
-#   <version>6.45.0</version>
-# </dependency>
-
-# Go
-go get cloud.google.com/go/spanner
-
-======== Verification ==========
-# Test connection via gcloud
-gcloud spanner databases list --instance=YOUR_INSTANCE
-
-# Check instance details
-gcloud spanner instances describe YOUR_INSTANCE
-
-# Test basic query
-gcloud spanner databases execute-sql YOUR_DATABASE \\
-  --instance=YOUR_INSTANCE \\
-  --sql="SELECT 'Hello Spanner' as greeting"`,
+# Install Spanner component
+gcloud components install spanner`,
         },
         {
-          command: 'Database Connection',
-          description: 'Connect to Google Spanner from various tools and languages',
-          usage: 'Cloud Console, gcloud, JDBC, and client libraries',
-          example: `# Google Spanner Connection Methods
+          command: 'Create Spanner Instance',
+          description: 'Create a Spanner instance',
+          usage: 'gcloud spanner instances create',
+          example: `# Create regional instance
+gcloud spanner instances create my-instance \\
+  --config=regional-us-central1 \\
+  --description="My Spanner Instance" \\
+  --nodes=1
 
-======== Cloud Console Connection ==========
-# 1. Open Google Cloud Console
-# 2. Navigate to Spanner
-# 3. Select your instance and database
-# 4. Use Query editor for SQL operations
-# 5. View schema and data in web interface
-
-======== gcloud CLI Connection ==========
-# List instances
+# Create multi-regional instance
+gcloud spanner instances create my-global-instance \\
+  --config=nam6 \\
+  --description="Global Spanner Instance" \\
+  --nodes=3`,
+        },
+        {
+          command: 'List Spanner Instances',
+          description: 'List all instances',
+          usage: 'gcloud spanner instances list',
+          example: `# List all instances
 gcloud spanner instances list
 
-# Execute SQL
-gcloud spanner databases execute-sql DATABASE_ID \\
-  --instance=INSTANCE_ID \\
-  --sql="SELECT * FROM TABLE"
+# List with details
+gcloud spanner instances list --format="table(name,config,description,nodeCount)"
 
-# Interactive SQL shell
-gcloud spanner databases execute-sql DATABASE_ID \\
-  --instance=INSTANCE_ID \\
-  --interactive
+# Filter instances
+gcloud spanner instances list --filter="description:production"`,
+        },
+        {
+          command: 'Describe Spanner Instance',
+          description: 'Get instance details',
+          usage: 'gcloud spanner instances describe',
+          example: `# Describe instance
+gcloud spanner instances describe my-instance
 
-======== Python Connection ==========
+# Get instance configuration
+gcloud spanner instances describe my-instance --format="value(config)"`,
+        },
+        {
+          command: 'Create Spanner Database',
+          description: 'Create a database',
+          usage: 'gcloud spanner databases create',
+          example: `# Create empty database
+gcloud spanner databases create my-database \\
+  --instance=my-instance
+
+# Create database with DDL
+gcloud spanner databases create my-database \\
+  --instance=my-instance \\
+  --ddl-file=schema.sql`,
+        },
+        {
+          command: 'List Spanner Databases',
+          description: 'List all databases',
+          usage: 'gcloud spanner databases list',
+          example: `# List databases in instance
+gcloud spanner databases list --instance=my-instance
+
+# List with details
+gcloud spanner databases list --instance=my-instance --format="table(name,createTime)"`,
+        },
+        {
+          command: 'Basic Table Creation',
+          description: 'Create a basic table',
+          usage: 'CREATE TABLE statement',
+          example: `CREATE TABLE Users (
+  UserId STRING(36) NOT NULL,
+  Email STRING(255) NOT NULL,
+  FirstName STRING(50),
+  LastName STRING(50),
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  UpdatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (UserId);`,
+        },
+        {
+          command: 'Table with Composite Key',
+          description: 'Create table with composite primary key',
+          usage: 'Composite primary key',
+          example: `CREATE TABLE UserPosts (
+  UserId STRING(36) NOT NULL,
+  PostId STRING(36) NOT NULL,
+  Title STRING(500),
+  Content STRING(MAX),
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (UserId, PostId);`,
+        },
+        {
+          command: 'Table with Interleaving',
+          description: 'Create interleaved tables',
+          usage: 'INTERLEAVE IN PARENT',
+          example: `CREATE TABLE UserPosts (
+  UserId STRING(36) NOT NULL,
+  PostId STRING(36) NOT NULL,
+  Title STRING(500),
+  Content STRING(MAX),
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  PRIMARY KEY (UserId, PostId),
+) INTERLEAVE IN PARENT Users ON DELETE CASCADE;
+
+CREATE TABLE PostComments (
+  UserId STRING(36) NOT NULL,
+  PostId STRING(36) NOT NULL,
+  CommentId STRING(36) NOT NULL,
+  Content STRING(MAX),
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  PRIMARY KEY (UserId, PostId, CommentId),
+) INTERLEAVE IN PARENT UserPosts ON DELETE CASCADE;`,
+        },
+        {
+          command: 'Create Index',
+          description: 'Create secondary indexes',
+          usage: 'CREATE INDEX statement',
+          example: `-- Simple index
+CREATE INDEX UsersByEmail ON Users (Email);
+
+-- Composite index
+CREATE INDEX UserPostsByCreated ON UserPosts (UserId, CreatedAt DESC);
+
+-- Storing index
+CREATE INDEX UserPostsByTitle ON UserPosts (Title) STORING (Content, CreatedAt);`,
+        },
+        {
+          command: 'Insert Data',
+          description: 'Insert records into tables',
+          usage: 'INSERT INTO statement',
+          example: `-- Single insert
+INSERT INTO Users (UserId, Email, FirstName, LastName, CreatedAt, UpdatedAt)
+VALUES ('user-123', 'john@example.com', 'John', 'Doe', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());
+
+-- Multiple inserts
+INSERT INTO Users (UserId, Email, FirstName, LastName, CreatedAt, UpdatedAt)
+VALUES 
+  ('user-456', 'jane@example.com', 'Jane', 'Smith', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP()),
+  ('user-789', 'bob@example.com', 'Bob', 'Johnson', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());`,
+        },
+        {
+          command: 'Update Data',
+          description: 'Update existing records',
+          usage: 'UPDATE statement',
+          example: `-- Simple update
+UPDATE Users 
+SET FirstName = 'Johnathan', UpdatedAt = PENDING_COMMIT_TIMESTAMP()
+WHERE UserId = 'user-123';
+
+-- Update with condition
+UPDATE Users 
+SET Email = 'newemail@example.com', UpdatedAt = PENDING_COMMIT_TIMESTAMP()
+WHERE UserId = 'user-123' AND Email = 'oldemail@example.com';`,
+        },
+        {
+          command: 'Delete Data',
+          description: 'Delete records from tables',
+          usage: 'DELETE statement',
+          example: `-- Delete specific record
+DELETE FROM Users WHERE UserId = 'user-123';
+
+-- Delete with condition
+DELETE FROM Users 
+WHERE CreatedAt < TIMESTAMP('2023-01-01T00:00:00Z');
+
+-- Delete cascade (for interleaved tables)
+DELETE FROM Users WHERE UserId = 'user-123';`,
+        },
+        {
+          command: 'Select Data',
+          description: 'Query data from tables',
+          usage: 'SELECT statement',
+          example: `-- Select all columns
+SELECT * FROM Users;
+
+-- Select specific columns
+SELECT UserId, Email, FirstName FROM Users;
+
+-- Select with WHERE clause
+SELECT * FROM Users WHERE Email = 'john@example.com';
+
+-- Select with ORDER BY
+SELECT * FROM Users ORDER BY CreatedAt DESC;
+
+-- Select with LIMIT
+SELECT * FROM Users ORDER BY CreatedAt DESC LIMIT 10;`,
+        },
+        {
+          command: 'Drop Table',
+          description: 'Delete a table',
+          usage: 'DROP TABLE statement',
+          example: `DROP TABLE PostComments;
+DROP TABLE UserPosts;
+DROP TABLE Users;`,
+        },
+        {
+          command: 'Drop Database',
+          description: 'Delete a database',
+          usage: 'gcloud spanner databases delete',
+          example: `gcloud spanner databases delete my-database --instance=my-instance`,
+        },
+        {
+          command: 'Drop Instance',
+          description: 'Delete an instance',
+          usage: 'gcloud spanner instances delete',
+          example: `gcloud spanner instances delete my-instance`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Data Types',
+      commands: [
+        {
+          command: 'String Data Types',
+          description: 'String and text data types',
+          usage: 'STRING type usage',
+          example: `-- String types
+STRING(36)     -- Fixed length string
+STRING(255)    -- Variable length string
+STRING(MAX)    -- Maximum length string (1MB)
+STRING         -- Default length string
+
+-- Example usage
+CREATE TABLE Documents (
+  DocId STRING(36) NOT NULL,
+  Title STRING(500),
+  Content STRING(MAX),
+  Tags STRING(100) ARRAY,
+) PRIMARY KEY (DocId);`,
+        },
+        {
+          command: 'Numeric Data Types',
+          description: 'Numeric data types',
+          usage: 'NUMERIC and INT types',
+          example: `-- Numeric types
+INT64          -- 64-bit integer
+FLOAT64        -- 64-bit floating point
+NUMERIC        -- Arbitrary precision decimal
+
+-- Example usage
+CREATE TABLE Products (
+  ProductId STRING(36) NOT NULL,
+  Price NUMERIC(10,2),
+  Quantity INT64,
+  Rating FLOAT64,
+) PRIMARY KEY (ProductId);`,
+        },
+        {
+          command: 'Date and Time Types',
+          description: 'Temporal data types',
+          usage: 'DATE, TIME, TIMESTAMP',
+          example: `-- Date and time types
+DATE           -- Calendar date
+TIME           -- Time of day
+TIMESTAMP      -- Absolute time
+
+-- Example usage
+CREATE TABLE Events (
+  EventId STRING(36) NOT NULL,
+  EventDate DATE,
+  EventTime TIME,
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (EventId);`,
+        },
+        {
+          command: 'Boolean and Bytes Types',
+          description: 'BOOL and BYTES types',
+          usage: 'Boolean and binary data',
+          example: `-- Boolean and bytes types
+BOOL           -- True/false values
+BYTES(MAX)     -- Binary data (up to 10MB)
+
+-- Example usage
+CREATE TABLE Files (
+  FileId STRING(36) NOT NULL,
+  IsPublic BOOL,
+  Content BYTES(MAX),
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (FileId);`,
+        },
+        {
+          command: 'Array Types',
+          description: 'ARRAY data types',
+          usage: 'ARRAY usage',
+          example: `-- Array types
+ARRAY<STRING(50)>     -- Array of strings
+ARRAY<INT64>           -- Array of integers
+ARRAY<NUMERIC>         -- Array of decimals
+
+-- Example usage
+CREATE TABLE Products (
+  ProductId STRING(36) NOT NULL,
+  Categories ARRAY<STRING(50)>,
+  Tags ARRAY<STRING(20)>,
+  Prices ARRAY<NUMERIC(10,2)>,
+) PRIMARY KEY (ProductId);`,
+        },
+        {
+          command: 'JSON Data Type',
+          description: 'JSON data type',
+          usage: 'JSON type usage',
+          example: `-- JSON type
+JSON               -- JSON data
+
+-- Example usage
+CREATE TABLE UserData (
+  UserId STRING(36) NOT NULL,
+  Profile JSON,
+  Preferences JSON,
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (UserId);
+
+-- Insert JSON data
+INSERT INTO UserData (UserId, Profile, Preferences, CreatedAt)
+VALUES ('user-123', JSON '{"name": "John", "age": 30}', JSON '{"theme": "dark"}', PENDING_COMMIT_TIMESTAMP());`,
+        },
+        {
+          command: 'Commit Timestamp Option',
+          description: 'Use commit timestamps',
+          usage: 'allow_commit_timestamp option',
+          example: `-- Using commit timestamps
+CREATE TABLE AuditLogs (
+  LogId STRING(36) NOT NULL,
+  Message STRING(MAX),
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  UpdatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (LogId);
+
+-- Insert with commit timestamp
+INSERT INTO AuditLogs (LogId, Message, CreatedAt, UpdatedAt)
+VALUES ('log-123', 'User login', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Query Operations',
+      commands: [
+        {
+          command: 'Basic SELECT Queries',
+          description: 'Fundamental SELECT operations',
+          usage: 'Basic query patterns',
+          example: `-- Select all columns
+SELECT * FROM Users;
+
+-- Select specific columns
+SELECT UserId, Email, FirstName FROM Users;
+
+-- Select with WHERE clause
+SELECT * FROM Users WHERE Email = 'john@example.com';
+
+-- Select with multiple conditions
+SELECT * FROM Users WHERE CreatedAt >= TIMESTAMP('2024-01-01T00:00:00Z') AND IsActive = TRUE;`,
+        },
+        {
+          command: 'ORDER BY and LIMIT',
+          description: 'Sort and limit results',
+          usage: 'ORDER BY and LIMIT clauses',
+          example: `-- Order by single column
+SELECT * FROM Users ORDER BY CreatedAt DESC;
+
+-- Order by multiple columns
+SELECT * FROM Users ORDER BY LastName ASC, FirstName ASC;
+
+-- Limit results
+SELECT * FROM Users ORDER BY CreatedAt DESC LIMIT 10;
+
+-- Limit with offset
+SELECT * FROM Users ORDER BY CreatedAt DESC LIMIT 10 OFFSET 20;`,
+        },
+        {
+          command: 'Aggregate Functions',
+          description: 'Use aggregate functions',
+          usage: 'COUNT, SUM, AVG, MAX, MIN',
+          example: `-- Count rows
+SELECT COUNT(*) FROM Users;
+SELECT COUNT(UserId) FROM Users;
+
+-- Sum and average
+SELECT SUM(Quantity), AVG(Price) FROM OrderItems;
+
+-- Min and max
+SELECT MIN(CreatedAt), MAX(CreatedAt) FROM Users;
+
+-- Group by aggregation
+SELECT Email, COUNT(*) FROM Users GROUP BY Email;`,
+        },
+        {
+          command: 'JOIN Operations',
+          description: 'Join multiple tables',
+          usage: 'INNER JOIN, LEFT JOIN',
+          example: `-- Inner join
+SELECT u.FirstName, p.Title 
+FROM Users u 
+INNER JOIN UserPosts p ON u.UserId = p.UserId;
+
+-- Left join
+SELECT u.FirstName, p.Title 
+FROM Users u 
+LEFT JOIN UserPosts p ON u.UserId = p.UserId;
+
+-- Join with aggregation
+SELECT u.FirstName, COUNT(p.PostId) as PostCount
+FROM Users u 
+LEFT JOIN UserPosts p ON u.UserId = p.UserId
+GROUP BY u.FirstName;`,
+        },
+        {
+          command: 'Subqueries',
+          description: 'Use subqueries in queries',
+          usage: 'Subquery patterns',
+          example: `-- Subquery in WHERE clause
+SELECT * FROM Users 
+WHERE UserId IN (SELECT UserId FROM UserPosts WHERE CreatedAt >= TIMESTAMP('2024-01-01T00:00:00Z'));
+
+-- Subquery in SELECT clause
+SELECT 
+  FirstName,
+  (SELECT COUNT(*) FROM UserPosts WHERE UserId = u.UserId) as PostCount
+FROM Users u;
+
+-- EXISTS subquery
+SELECT * FROM Users u 
+WHERE EXISTS (SELECT 1 FROM UserPosts p WHERE p.UserId = u.UserId);`,
+        },
+        {
+          command: 'Window Functions',
+          description: 'Use window functions',
+          usage: 'OVER() clause',
+          example: `-- Row number
+SELECT 
+  FirstName,
+  ROW_NUMBER() OVER (ORDER BY CreatedAt DESC) as RowNum
+FROM Users;
+
+-- Running total
+SELECT 
+  OrderDate,
+  Amount,
+  SUM(Amount) OVER (ORDER BY OrderDate) as RunningTotal
+FROM Orders;
+
+-- Rank functions
+SELECT 
+  ProductId,
+  Sales,
+  RANK() OVER (ORDER BY Sales DESC) as SalesRank
+FROM Products;`,
+        },
+        {
+          command: 'CTE (Common Table Expressions)',
+          description: 'Use CTEs for complex queries',
+          usage: 'WITH clause',
+          example: `-- Simple CTE
+WITH ActiveUsers AS (
+  SELECT UserId, Email FROM Users WHERE IsActive = TRUE
+)
+SELECT * FROM ActiveUsers WHERE Email LIKE '%@gmail.com';
+
+-- Multiple CTEs
+WITH UserStats AS (
+  SELECT UserId, COUNT(*) as PostCount FROM UserPosts GROUP BY UserId
+),
+HighActivityUsers AS (
+  SELECT UserId FROM UserStats WHERE PostCount > 10
+)
+SELECT u.FirstName, us.PostCount 
+FROM Users u 
+JOIN UserStats us ON u.UserId = us.UserId 
+WHERE u.UserId IN (SELECT UserId FROM HighActivityUsers);`,
+        },
+      ],
+    },
+    // INTERMEDIATE LEVEL
+    {
+      title: 'Spanner Transactions',
+      commands: [
+        {
+          command: 'Begin Transaction',
+          description: 'Start a transaction',
+          usage: 'BEGIN TRANSACTION',
+          example: `-- Begin transaction
+BEGIN;
+
+-- Transaction operations
+INSERT INTO Users (UserId, Email, FirstName, CreatedAt, UpdatedAt)
+VALUES ('user-123', 'john@example.com', 'John', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());
+
+INSERT INTO UserPosts (UserId, PostId, Title, CreatedAt)
+VALUES ('user-123', 'post-123', 'First Post', PENDING_COMMIT_TIMESTAMP());
+
+COMMIT;`,
+        },
+        {
+          command: 'Commit Transaction',
+          description: 'Commit transaction changes',
+          usage: 'COMMIT statement',
+          example: `-- Commit transaction
+COMMIT;
+
+-- Commit with retry logic (in application code)
+-- Implement exponential backoff for retry
+-- Handle abort errors appropriately`,
+        },
+        {
+          command: 'Rollback Transaction',
+          description: 'Rollback transaction changes',
+          usage: 'ROLLBACK statement',
+          example: `-- Rollback transaction
+ROLLBACK;
+
+-- Example with error handling
+BEGIN;
+INSERT INTO Users (UserId, Email, FirstName, CreatedAt, UpdatedAt)
+VALUES ('user-123', 'john@example.com', 'John', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());
+
+-- Some error occurred
+ROLLBACK;`,
+        },
+        {
+          command: 'Savepoints',
+          description: 'Use savepoints in transactions',
+          usage: 'SAVEPOINT and ROLLBACK TO SAVEPOINT',
+          example: `-- Create savepoint
+BEGIN;
+INSERT INTO Users (UserId, Email, FirstName, CreatedAt, UpdatedAt)
+VALUES ('user-123', 'john@example.com', 'John', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());
+
+SAVEPOINT sp1;
+
+INSERT INTO UserPosts (UserId, PostId, Title, CreatedAt)
+VALUES ('user-123', 'post-123', 'First Post', PENDING_COMMIT_TIMESTAMP());
+
+-- Rollback to savepoint
+ROLLBACK TO SAVEPOINT sp1;
+
+COMMIT;`,
+        },
+        {
+          command: 'Read-Write Transaction',
+          description: 'Read-write transaction pattern',
+          usage: 'Transaction with reads and writes',
+          example: `-- Read-write transaction
+BEGIN;
+
+-- Read current value
+SELECT Balance FROM Accounts WHERE AccountId = 'acc-123';
+
+-- Write new value
+UPDATE Accounts 
+SET Balance = Balance - 100, UpdatedAt = PENDING_COMMIT_TIMESTAMP()
+WHERE AccountId = 'acc-123' AND Balance >= 100;
+
+COMMIT;`,
+        },
+        {
+          command: 'Read-Only Transaction',
+          description: 'Read-only transaction with staleness',
+          usage: 'READ ONLY transaction',
+          example: `-- Read-only transaction
+BEGIN READ ONLY;
+
+-- Read with exact staleness
+SELECT * FROM Users 
+WHERE CreatedAt >= TIMESTAMP('2024-01-01T00:00:00Z')
+OPTIONS (read_staleness='10_seconds');
+
+-- Read with max staleness
+SELECT * FROM Users 
+OPTIONS (read_staleness='max_staleness');
+
+COMMIT;`,
+        },
+        {
+          command: 'Transaction Retry Logic',
+          description: 'Handle transaction aborts',
+          usage: 'Retry pattern implementation',
+          example: `-- Application retry logic pattern
+function executeWithRetry(operation, maxRetries = 5) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return operation();
+    } catch (error) {
+      if (error.code === 'ABORTED' && i < maxRetries - 1) {
+        // Exponential backoff
+        await sleep(Math.pow(2, i) * 100);
+        continue;
+      }
+      throw error;
+    }
+  }
+}`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Indexing Strategies',
+      commands: [
+        {
+          command: 'Secondary Index Basics',
+          description: 'Create and use secondary indexes',
+          usage: 'CREATE INDEX statement',
+          example: `-- Simple secondary index
+CREATE INDEX UsersByEmail ON Users (Email);
+
+-- Composite secondary index
+CREATE INDEX UserPostsByUserDate ON UserPosts (UserId, CreatedAt DESC);
+
+-- Storing index (includes additional columns)
+CREATE INDEX UserPostsByTitle ON UserPosts (Title) STORING (Content, CreatedAt);
+
+-- Unique index
+CREATE UNIQUE INDEX UsersEmailUnique ON Users (Email);`,
+        },
+        {
+          command: 'Query with Index',
+          description: 'Use indexes in queries',
+          usage: 'Index-aware queries',
+          example: `-- Query using index
+SELECT * FROM Users@{FORCE_INDEX=UsersByEmail} 
+WHERE Email = 'john@example.com';
+
+-- Query with composite index
+SELECT * FROM UserPosts@{FORCE_INDEX=UserPostsByUserDate}
+WHERE UserId = 'user-123' 
+ORDER BY CreatedAt DESC;
+
+-- Query using storing index
+SELECT Title, Content, CreatedAt 
+FROM UserPosts@{FORCE_INDEX=UserPostsByTitle}
+WHERE Title LIKE '%Spanner%';`,
+        },
+        {
+          command: 'Index Management',
+          description: 'Manage existing indexes',
+          usage: 'DROP INDEX, index information',
+          example: `-- Drop index
+DROP INDEX UsersByEmail;
+
+-- List indexes
+SELECT INDEX_NAME, TABLE_NAME 
+FROM INFORMATION_SCHEMA.INDEXES 
+WHERE TABLE_SCHEMA = '';
+
+-- Index statistics
+SELECT * FROM SPANNER_SYS.INDEX_STATS 
+WHERE TABLE_NAME = 'Users';`,
+        },
+        {
+          command: 'Indexing Best Practices',
+          description: 'Optimize index usage',
+          usage: 'Index optimization tips',
+          example: `Index Best Practices:
+1. Create indexes on frequently queried columns
+2. Use composite indexes for multi-column queries
+3. Use STORING clause to avoid table lookups
+4. Monitor index usage and remove unused indexes
+5. Consider read/write ratio when creating indexes
+6. Use appropriate index types (UNIQUE vs regular)
+7. Index cardinality affects performance
+8. Too many indexes impact write performance`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Schema Evolution',
+      commands: [
+        {
+          command: 'Add Column',
+          description: 'Add column to existing table',
+          usage: 'ALTER TABLE ADD COLUMN',
+          example: `-- Add nullable column
+ALTER TABLE Users ADD COLUMN PhoneNumber STRING(20);
+
+-- Add column with default value
+ALTER TABLE Users ADD COLUMN IsActive BOOL DEFAULT TRUE;
+
+-- Add NOT NULL column (requires backfill)
+ALTER TABLE Users ADD COLUMN BirthDate DATE DEFAULT NULL;
+-- Backfill data, then make NOT NULL
+ALTER TABLE Users ALTER COLUMN BirthDate SET NOT NULL;`,
+        },
+        {
+          command: 'Drop Column',
+          description: 'Remove column from table',
+          usage: 'ALTER TABLE DROP COLUMN',
+          example: `-- Drop column
+ALTER TABLE Users DROP COLUMN PhoneNumber;
+
+-- Drop multiple columns
+ALTER TABLE Users DROP COLUMN PhoneNumber, DROP COLUMN BirthDate;`,
+        },
+        {
+          command: 'Modify Column',
+          description: 'Modify existing column',
+          usage: 'ALTER TABLE ALTER COLUMN',
+          example: `-- Change column type
+ALTER TABLE Users ALTER COLUMN PhoneNumber SET DATA TYPE STRING(25);
+
+-- Change default value
+ALTER TABLE Users ALTER COLUMN IsActive SET DEFAULT FALSE;
+
+-- Add NOT NULL constraint
+ALTER TABLE Users ALTER COLUMN Email SET NOT NULL;`,
+        },
+        {
+          command: 'Create Table with Evolution',
+          description: 'Design for schema evolution',
+          usage: 'Schema evolution best practices',
+          example: `-- Design for evolution
+CREATE TABLE Users (
+  UserId STRING(36) NOT NULL,
+  Email STRING(255) NOT NULL,
+  FirstName STRING(50),
+  LastName STRING(50),
+  -- Future columns can be added here
+  CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  UpdatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+) PRIMARY KEY (UserId);
+
+-- Add new column later
+ALTER TABLE Users ADD COLUMN MiddleName STRING(50);`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Change Data Capture',
+      commands: [
+        {
+          command: 'Create Change Stream',
+          description: 'Create change stream for CDC',
+          usage: 'CREATE CHANGE STREAM',
+          example: `-- Create change stream for table
+CREATE CHANGE STREAM UsersStream FOR Users;
+
+-- Create change stream for specific columns
+CREATE CHANGE STREAM UsersEmailStream FOR Users (Email, UpdatedAt);
+
+-- Create change stream with filter
+CREATE CHANGE STREAM ActiveUsersStream 
+FOR Users 
+OPTIONS (retention_period = '7d');`,
+        },
+        {
+          command: 'Query Change Stream',
+          description: 'Query change stream data',
+          usage: 'Query change stream',
+          example: `-- Query change stream
+SELECT * FROM READ UsersStream 
+  AT TIMESTAMP '2024-01-01T00:00:00Z';
+
+-- Query with time range
+SELECT * FROM READ UsersStream 
+  BETWEEN TIMESTAMP '2024-01-01T00:00:00Z' 
+  AND TIMESTAMP '2024-01-02T00:00:00Z';
+
+-- Query specific changes
+SELECT * FROM READ UsersStream 
+  WHERE data_type = 'NEW_DATA' 
+  AND mod_type = 'INSERT';`,
+        },
+        {
+          command: 'Change Stream with Dataflow',
+          description: 'Integrate with Dataflow',
+          usage: 'Dataflow integration',
+          example: `-- Dataflow template for change stream
+gcloud dataflow jobs run spanner-cdc-job \\
+  --gcs-location gs://dataflow-templates/latest/ \\
+  --parameters \\
+    instanceId=my-instance, \\
+    databaseId=my-database, \\
+    changeStreamName=UsersStream, \\
+    outputTable=project:dataset.output_table`,
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'Spanner Performance Optimization',
+      commands: [
+        {
+          command: 'Query Performance',
+          description: 'Optimize query performance',
+          usage: 'Query optimization techniques',
+          example: `-- Use appropriate indexes
+SELECT * FROM Users@{FORCE_INDEX=UsersByEmail} 
+WHERE Email = 'john@example.com';
+
+-- Use LIMIT to reduce data transfer
+SELECT * FROM Users ORDER BY CreatedAt DESC LIMIT 100;
+
+-- Use specific columns instead of *
+SELECT UserId, Email, FirstName FROM Users;
+
+-- Use EXISTS instead of IN for subqueries
+SELECT * FROM Users u 
+WHERE EXISTS (SELECT 1 FROM UserPosts p WHERE p.UserId = u.UserId);
+
+-- Use parameterized queries
+SELECT * FROM Users WHERE UserId = @userId;`,
+        },
+        {
+          command: 'Instance Scaling',
+          description: 'Scale Spanner instances',
+          usage: 'Instance scaling operations',
+          example: `-- Add nodes to instance
+gcloud spanner instances update my-instance --nodes=3
+
+-- Remove nodes from instance
+gcloud spanner instances update my-instance --nodes=1
+
+-- Scale to different configuration
+gcloud spanner instances update my-instance --config=regional-us-central1
+
+-- Monitor instance utilization
+gcloud spanner instances describe my-instance --format="table(name,nodeCount,config)"`,
+        },
+        {
+          command: 'Hotspot Detection',
+          description: 'Detect and handle hotspots',
+          usage: 'Hotspot monitoring',
+          example: `-- Monitor hotspots
+SELECT * FROM SPANNER_SYS.LOCK_STATS 
+WHERE HOTSPOT = TRUE;
+
+-- Query to find hot keys
+SELECT * FROM SPANNER_SYS.TRANSACTION_STATS 
+WHERE HOT_KEY = TRUE;
+
+-- Redistribute hot keys
+-- Use hash sharding or UUID keys
+-- Consider table redesign for better distribution`,
+        },
+        {
+          command: 'Read Optimization',
+          description: 'Optimize read operations',
+          usage: 'Read performance tips',
+          example: `-- Use stale reads for non-critical data
+SELECT * FROM Users 
+OPTIONS (read_staleness='15_seconds');
+
+-- Use batch reads
+SELECT * FROM Users WHERE UserId IN ('user-1', 'user-2', 'user-3');
+
+-- Use parallel queries
+SELECT * FROM Users@{FORCE_PARALLELISM=4};
+
+-- Use read-only transactions
+BEGIN READ ONLY;
+SELECT * FROM Users WHERE CreatedAt >= TIMESTAMP('2024-01-01T00:00:00Z');
+COMMIT;`,
+        },
+        {
+          command: 'Write Optimization',
+          description: 'Optimize write operations',
+          usage: 'Write performance tips',
+          example: `-- Use batch writes
+INSERT INTO Users (UserId, Email, FirstName, CreatedAt, UpdatedAt)
+VALUES 
+  ('user-1', 'user1@example.com', 'User1', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP()),
+  ('user-2', 'user2@example.com', 'User2', PENDING_COMMIT_TIMESTAMP(), PENDING_COMMIT_TIMESTAMP());
+
+-- Use mutations for bulk operations
+-- Use client library batch operations
+-- Avoid hot keys in writes
+-- Use appropriate transaction size`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Backup and Restore',
+      commands: [
+        {
+          command: 'Create Backup',
+          description: 'Create database backup',
+          usage: 'gcloud spanner backups create',
+          example: `# Create backup
+gcloud spanner backups create my-backup \\
+  --instance=my-instance \\
+  --database=my-database \\
+  --retention-period=30d
+
+# Create backup with custom expiration
+gcloud spanner backups create my-backup-2024 \\
+  --instance=my-instance \\
+  --database=my-database \\
+  --retention-period=90d \\
+  --version-time='2024-01-01T00:00:00Z'`,
+        },
+        {
+          command: 'List Backups',
+          description: 'List available backups',
+          usage: 'gcloud spanner backups list',
+          example: `# List all backups
+gcloud spanner backups list --instance=my-instance
+
+# List backups with filter
+gcloud spanner backups list --instance=my-instance --filter="createTime>='2024-01-01T00:00:00Z'"
+
+# List with details
+gcloud spanner backups list --instance=my-instance --format="table(name,size,createTime,expireTime)"`,
+        },
+        {
+          command: 'Restore from Backup',
+          description: 'Restore database from backup',
+          usage: 'gcloud spanner databases restore',
+          example: `# Restore to new database
+gcloud spanner databases restore my-backup \\
+  --source-instance=my-instance \\
+  --source-database=my-database \\
+  --destination-instance=my-instance \\
+  --destination-database=my-restored-database
+
+# Restore to specific time
+gcloud spanner databases restore my-backup \\
+  --source-instance=my-instance \\
+  --source-database=my-database \\
+  --destination-instance=my-instance \\
+  --destination-database=my-restored-db \\
+  --restore-time='2024-01-01T12:00:00Z'`,
+        },
+        {
+          command: 'Backup Automation',
+          description: 'Automate backup creation',
+          usage: 'Scheduled backups',
+          example: `# Create scheduled backup using Cloud Scheduler
+gcloud scheduler jobs create http daily-backup \\
+  --schedule="0 2 * * *" \\
+  --http-method=POST \\
+  --uri="https://spanner.googleapis.com/v1/projects/your-project/instances/my-instance/databases/my-database/backups" \\
+  --message-body='{"retentionPeriod": "30d"}' \\
+  --oauth-service-account-email="spanner-backup@your-project.iam.gserviceaccount.com"
+
+# Use Cloud Functions for backup automation
+# Implement backup logic in Cloud Function
+# Trigger via Cloud Scheduler or Pub/Sub`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Security',
+      commands: [
+        {
+          command: 'IAM Roles',
+          description: 'Configure IAM roles',
+          usage: 'IAM role management',
+          example: `# Grant Spanner admin role
+gcloud projects add-iam-policy-binding your-project \\
+  --member="user:admin@example.com" \\
+  --role="roles/spanner.admin"
+
+# Grant database admin role
+gcloud spanner databases add-iam-policy-binding my-database \\
+  --instance=my-instance \\
+  --member="user:dbadmin@example.com" \\
+  --role="roles/spanner.databaseAdmin"
+
+# Grant viewer role
+gcloud spanner databases add-iam-policy-binding my-database \\
+  --instance=my-instance \\
+  --member="user:viewer@example.com" \\
+  --role="roles/spanner.databaseViewer"`,
+        },
+        {
+          command: 'Fine-Grained Access Control',
+          description: 'Implement fine-grained permissions',
+          usage: 'Table-level permissions',
+          example: `# Grant table-specific access
+gcloud spanner databases add-iam-policy-binding my-database \\
+  --instance=my-instance \\
+  --member="user:analyst@example.com" \\
+  --role="roles/spanner.databaseUser" \\
+  --condition="expression.title='TableAccess', expression.body='resource.name.startsWith('projects/_/instances/my-instance/databases/my-database/tables/Users')'"`,
+        },
+        {
+          command: 'Data Encryption',
+          description: 'Configure data encryption',
+          usage: 'CMEK encryption',
+          example: `# Create database with CMEK
+gcloud spanner databases create my-database \\
+  --instance=my-instance \\
+  --encryption-key=projects/your-project/locations/us-central1/keyRings/my-keyring/cryptoKeys/my-key
+
+# Update database encryption
+gcloud spanner databases update my-database \\
+  --instance=my-instance \\
+  --encryption-key=projects/your-project/locations/us-central1/keyRings/my-keyring/cryptoKeys/my-key`,
+        },
+        {
+          command: 'Network Security',
+          description: 'Configure network security',
+          usage: 'VPC service controls',
+          example: `# Configure VPC service perimeter
+gcloud access-context-manager perimeters create spanner-perimeter \\
+  --title="Spanner Perimeter" \\
+  --description="Perimeter for Spanner access" \\
+  --perimeter-type=BRIDGE \\
+  --resources=projects/your-project \\
+  --restricted-services=spanner.googleapis.com
+
+# Configure authorized networks
+gcloud spanner instances update my-instance \\
+  --authorized-networks=192.168.1.0/24,10.0.0.0/8`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Monitoring',
+      commands: [
+        {
+          command: 'Cloud Monitoring Metrics',
+          description: 'Monitor Spanner metrics',
+          usage: 'Cloud Monitoring setup',
+          example: `# Key metrics to monitor
+# - spanner.googleapis.com/instance/node_count
+# - spanner.googleapis.com/instance/storage/used_bytes
+# - spanner.googleapis.com/database/transaction/commit_count
+# - spanner.googleapis.com/database/query/latency
+# - spanner.googleapis.com/database/lock/request_count
+# - spanner.googleapis.com/database/server/session_count
+
+# Create monitoring dashboard
+gcloud monitoring dashboards create --config-from-file=spanner-dashboard.json`,
+        },
+        {
+          command: 'Performance Monitoring',
+          description: 'Monitor performance metrics',
+          usage: 'Performance analysis',
+          example: `-- Query performance stats
+SELECT * FROM SPANNER_SYS.QUERY_STATS_TOP_MINUTE 
+WHERE database_name = 'my-database'
+ORDER BY avg_latency_seconds DESC;
+
+-- Transaction statistics
+SELECT * FROM SPANNER_SYS.TRANSACTION_STATS 
+WHERE database_name = 'my-database';
+
+-- Lock statistics
+SELECT * FROM SPANNER_SYS.LOCK_STATS 
+WHERE database_name = 'my-database';`,
+        },
+        {
+          command: 'Alerting Setup',
+          description: 'Configure alerts',
+          usage: 'Cloud Monitoring alerts',
+          example: `# Create alert policy for high latency
+gcloud monitoring policies create --policy-from-file=high-latency-policy.json
+
+# Alert policy example
+{
+  "displayName": "Spanner High Latency",
+  "conditions": [
+    {
+      "displayName": "Query latency > 100ms",
+      "conditionThreshold": {
+        "filter": "metric.type=\"spanner.googleapis.com/database/query/latency\"",
+        "aggregations": [{"alignmentPeriod": "60s"}],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0.1,
+        "duration": "300s"
+      }
+    }
+  ]
+}`,
+        },
+      ],
+    },
+    {
+      title: 'Spanner Client Libraries',
+      commands: [
+        {
+          command: 'Python Client Setup',
+          description: 'Setup Python client',
+          usage: 'google-cloud-spanner Python library',
+          example: `# Install library
+pip install google-cloud-spanner
+
+# Basic usage
 from google.cloud import spanner
 
-# Initialize client
 client = spanner.Client()
 instance = client.instance('my-instance')
 database = instance.database('my-database')
 
-# Execute query
+# Query with parameters
 with database.snapshot() as snapshot:
     results = snapshot.execute_sql(
-        "SELECT * FROM singers"
-    )
-    for row in results:
-        print(row)
+        "SELECT * FROM Users WHERE Email = @email",
+        params={"email": "john@example.com"},
+        param_types={"email": spanner.param_types.STRING}
+    )`,
+        },
+        {
+          command: 'Java Client Setup',
+          description: 'Setup Java client',
+          usage: 'Google Cloud Spanner Java library',
+          example: `// Maven dependency
+<dependency>
+    <groupId>com.google.cloud</groupId>
+    <artifactId>google-cloud-spanner</artifactId>
+    <version>6.44.0</version>
+</dependency>
 
-======== Node.js Connection ==========
+// Basic usage
+SpannerOptions options = SpannerOptions.newBuilder().build();
+Spanner spanner = options.getService();
+DatabaseId dbId = DatabaseId.of("project", "instance", "database");
+DatabaseClient dbClient = spanner.getDatabaseClient(dbId);
+
+// Query with parameters
+ResultSet resultSet = dbClient.singleUse()
+    .executeQuery(Statement.of("SELECT * FROM Users WHERE Email = @email")
+    .withBindVariable("email", "john@example.com"));`,
+        },
+        {
+          command: 'Node.js Client Setup',
+          description: 'Setup Node.js client',
+          usage: '@google-cloud/spanner Node.js library',
+          example: `// Install library
+npm install @google-cloud/spanner
+
+// Basic usage
 const {Spanner} = require('@google-cloud/spanner');
-
-// Initialize client
 const spanner = new Spanner();
 const instance = spanner.instance('my-instance');
 const database = instance.database('my-database');
 
-// Execute query
-const [rows] = await database.run({
-    sql: 'SELECT * FROM singers'
-});
+// Query with parameters
+const query = {
+  sql: 'SELECT * FROM Users WHERE Email = @email',
+  params: {
+    email: 'john@example.com'
+  }
+};
 
-rows.forEach(row => {
-    console.log(row.toJSON());
-});
+const [rows] = await database.run(query);`,
+        },
+        {
+          command: 'Go Client Setup',
+          description: 'Setup Go client',
+          usage: 'cloud.google.com/go/spanner Go library',
+          example: `// Install library
+go get cloud.google.com/go/spanner
 
-======== Java Connection ==========
-import com.google.cloud.spanner.*;
+// Basic usage
+import (
+    "context"
+    "cloud.google.com/go/spanner"
+)
 
-// Initialize client
-SpannerOptions options = SpannerOptions.newBuilder().build();
-Spanner spanner = options.getService();
-DatabaseId dbId = DatabaseId.of("project", "instance", "database");
-
-// Execute query
-try (ResultSet rs = spanner.getDatabaseClient(dbId)
-    .singleUse()
-    .executeQuery(Statement.of("SELECT * FROM singers"))) {
-    while (rs.next()) {
-        System.out.println(rs.getString(0));
-    }
+client, err := spanner.NewClient(ctx, "projects/project/instances/instance/databases/database")
+if err != nil {
+    log.Fatal(err)
 }
+defer client.Close()
 
-======== JDBC Connection ==========
-# JDBC URL format:
-# jdbc:cloudspanner://localhost:9010/projects/PROJECT_ID/instances/INSTANCE_ID/databases/DATABASE_ID
-
-# Connection example:
-Connection connection = DriverManager.getConnection(
-    "jdbc:cloudspanner://localhost:9010/projects/my-project/instances/my-instance/databases/my-database"
-);`,
-        },
-        {
-          command: 'Basic Database Operations',
-          description: 'Essential database management commands',
-          usage: 'Instance creation, database management, basic queries',
-          example: `# Basic Database Operations
-
-======== Instance Management ==========
-# Create regional instance
-gcloud spanner instances create my-instance \\
-  --config=regional-us-central1 \\
-  --description="My Spanner Instance" \\
-  --nodes=3
-
-# Create multi-regional instance
-gcloud spanner instances create global-instance \\
-  --config=nam6 \\
-  --description="Global Instance" \\
-  --nodes=1
-
-# List instances
-gcloud spanner instances list
-
-# Update instance (scale up/down)
-gcloud spanner instances update my-instance --nodes=5
-
-# Delete instance
-gcloud spanner instances delete my-instance
-
-======== Database Management ==========
-# Create database with schema
-gcloud spanner databases create my-database \\
-  --instance=my-instance \\
-  --ddl="CREATE TABLE Singers (
-    SingerId INT64 NOT NULL,
-    FirstName STRING(1024),
-    LastName STRING(1024),
-    SingerInfo BYTES(MAX)
-  ) PRIMARY KEY (SingerId)"
-
-# List databases
-gcloud spanner databases list --instance=my-instance
-
-# Get database info
-gcloud spanner databases describe my-database \\
-  --instance=my-instance
-
-# Update database schema
-gcloud spanner databases ddl update my-database \\
-  --instance=my-instance \\
-  --ddl="CREATE TABLE Albums (
-    AlbumId INT64 NOT NULL,
-    SingerId INT64 NOT NULL,
-    AlbumTitle STRING(1024),
-    MarketingBudget INT64
-  ) PRIMARY KEY (AlbumId)"
-
-======== Basic System Queries ==========
-# Current database info
-SELECT * FROM INFORMATION_SCHEMA.DATABASES
-
-# Table information
-SELECT 
-  TABLE_NAME,
-  TABLE_TYPE,
-  CREATION_TIME
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA = ''
-
-# Index information
-SELECT 
-  INDEX_NAME,
-  TABLE_NAME,
-  IS_UNIQUE,
-  IS_NULL_FILTERED
-FROM INFORMATION_SCHEMA.INDEXES
-WHERE TABLE_SCHEMA = ''
-
-======== Statistics and Monitoring ==========
-# Table statistics
-SELECT 
-  TABLE_NAME,
-  ROW_COUNT,
-  SIZE_BYTES,
-  LOGICAL_BYTES_STORED
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA = ''
-
-# Database options
-SELECT 
-  OPTION_NAME,
-  OPTION_VALUE
-FROM INFORMATION_SCHEMA.DATABASE_OPTIONS
-WHERE DATABASE_NAME = 'my-database'`,
-        },
-      ],
-    },
-    {
-      title: 'Basic SQL Operations',
-      commands: [
-        {
-          command: 'Create Tables and Schemas',
-          description: 'Create schemas and tables with Spanner-specific features',
-          usage: 'CREATE TABLE, data types, constraints, and optimization',
-          example: `# Creating Schemas and Tables in Spanner
-
-======== Basic Table Creation ==========
-# Simple table
-CREATE TABLE CUSTOMERS (
-    CUSTOMER_ID STRING(36) NOT NULL,
-    FIRST_NAME STRING(100) NOT NULL,
-    LAST_NAME STRING(100) NOT NULL,
-    EMAIL STRING(255),
-    PHONE STRING(20),
-    CREATED_AT TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true)
-) PRIMARY KEY (CUSTOMER_ID);
-
-# Table with auto-increment alternative
-CREATE TABLE ORDERS (
-    ORDER_ID STRING(36) NOT NULL DEFAULT (GENERATE_UUID()),
-    CUSTOMER_ID STRING(36) NOT NULL,
-    ORDER_DATE TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
-    TOTAL_AMOUNT NUMERIC,
-    STATUS STRING(50),
-    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID)
-) PRIMARY KEY (ORDER_ID);
-
-======== Spanner-Specific Features ==========
-# Interleaved tables (parent-child)
-CREATE TABLE CUSTOMERS (
-    CUSTOMER_ID STRING(36) NOT NULL,
-    CUSTOMER_NAME STRING(255),
-    CREATED_AT TIMESTAMP NOT NULL,
-) PRIMARY KEY (CUSTOMER_ID);
-
-CREATE TABLE ORDERS (
-    CUSTOMER_ID STRING(36) NOT NULL,
-    ORDER_ID STRING(36) NOT NULL,
-    ORDER_TOTAL NUMERIC,
-    CREATED_AT TIMESTAMP NOT NULL,
-    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID)
-) PRIMARY KEY (CUSTOMER_ID, ORDER_ID),
-INTERLEAVE IN PARENT CUSTOMERS ON DELETE CASCADE;
-
-# Table with commit timestamp
-CREATE TABLE AUDIT_LOG (
-    LOG_ID STRING(36) NOT NULL,
-    TABLE_NAME STRING(100),
-    OPERATION STRING(10),
-    USER_EMAIL STRING(255),
-    TIMESTAMP TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true)
-) PRIMARY KEY (LOG_ID);
-
-======== Data Types and Constraints ==========
-# Comprehensive table with all data types
-CREATE TABLE PRODUCTS (
-    PRODUCT_ID STRING(36) NOT NULL,
-    NAME STRING(255) NOT NULL,
-    DESCRIPTION STRING(MAX),
-    PRICE NUMERIC(10,2),
-    QUANTITY_IN_STOCK INT64,
-    IS_AVAILABLE BOOL,
-    CREATED_DATE DATE,
-    CREATED_AT TIMESTAMP,
-    METADATA JSON,
-    TAGS ARRAY<STRING(100)>,
-    CONSTRAINT CHK_Price_Positive CHECK (PRICE >= 0),
-    CONSTRAINT CHK_Stock_NonNegative CHECK (QUANTITY_IN_STOCK >= 0)
-) PRIMARY KEY (PRODUCT_ID);
-
-======== Index Creation ==========
-# Secondary index
-CREATE INDEX PRODUCTS_BY_NAME ON PRODUCTS (NAME);
-
-# Composite index
-CREATE INDEX ORDERS_BY_CUSTOMER_DATE ON ORDERS (CUSTOMER_ID, ORDER_DATE DESC);
-
-# Storing index (covering index)
-CREATE INDEX PRODUCTS_WITH_PRICE ON PRODUCTS (CATEGORY, PRICE)
-STORING (NAME, DESCRIPTION);
-
-# Unique index
-CREATE UNIQUE INDEX CUSTOMERS_BY_EMAIL ON CUSTOMERS (EMAIL);
-
-# Filtered index (Spanner 6.0+)
-CREATE INDEX ACTIVE_PRODUCTS ON PRODUCTS (PRODUCT_ID, NAME)
-WHERE IS_AVAILABLE = TRUE;`,
-        },
-        {
-          command: 'Data Manipulation',
-          description: 'Insert, update, delete operations with Spanner features',
-          usage: 'DML operations, transactions, and batch processing',
-          example: `# Data Manipulation in Spanner
-
-======== Insert Operations ==========
-# Single row insert
-INSERT INTO CUSTOMERS (CUSTOMER_ID, FIRST_NAME, LAST_NAME, EMAIL)
-VALUES ('cust-001', 'John', 'Doe', 'john.doe@example.com');
-
-# Multiple row insert
-INSERT INTO CUSTOMERS (CUSTOMER_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE)
-VALUES 
-    ('cust-002', 'Jane', 'Smith', 'jane.smith@example.com', '555-0101'),
-    ('cust-003', 'Bob', 'Johnson', 'bob.johnson@example.com', '555-0102');
-
-# Insert with generated UUID
-INSERT INTO ORDERS (ORDER_ID, CUSTOMER_ID, TOTAL_AMOUNT, STATUS)
-VALUES (GENERATE_UUID(), 'cust-001', 99.99, 'PENDING');
-
-# Insert with commit timestamp
-INSERT INTO AUDIT_LOG (LOG_ID, TABLE_NAME, OPERATION, USER_EMAIL)
-VALUES (GENERATE_UUID(), 'CUSTOMERS', 'INSERT', 'admin@example.com');
-
-======== Update Operations ==========
-# Simple update
-UPDATE CUSTOMERS 
-SET PHONE = '555-0103' 
-WHERE CUSTOMER_ID = 'cust-001';
-
-# Update with calculation
-UPDATE PRODUCTS 
-SET PRICE = PRICE * 1.1 
-WHERE CATEGORY = 'Electronics';
-
-# Update with timestamp
-UPDATE ORDERS 
-SET STATUS = 'SHIPPED', 
-    SHIPPED_AT = CURRENT_TIMESTAMP() 
-WHERE ORDER_DATE < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 7 DAY);
-
-======== Delete Operations ==========
-# Delete with conditions
-DELETE FROM CUSTOMERS 
-WHERE CREATED_AT < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 365 DAY);
-
-# Delete based on subquery
-DELETE FROM ORDERS 
-WHERE CUSTOMER_ID IN (
-    SELECT CUSTOMER_ID 
-    FROM CUSTOMERS 
-    WHERE STATUS = 'INACTIVE'
-);
-
-# Truncate table (not supported directly)
-DELETE FROM TABLE_NAME WHERE TRUE;
-
-======== Batch Operations ==========
-# Using mutations (Python example)
-from google.cloud import spanner
-
-def batch_insert():
-    client = spanner.Client()
-    instance = client.instance('my-instance')
-    database = instance.database('my-database')
-    
-    with database.batch() as batch:
-        batch.insert(
-            table='CUSTOMERS',
-            columns=['CUSTOMER_ID', 'FIRST_NAME', 'LAST_NAME', 'EMAIL'],
-            values=[
-                ('cust-004', 'Alice', 'Brown', 'alice@example.com'),
-                ('cust-005', 'Charlie', 'Wilson', 'charlie@example.com')
-            ]
-        )
-
-# Partitioned DML for large operations
-UPDATE PRODUCTS@{PARTITIONED_UPDATE} 
-SET PRICE = PRICE * 0.9 
-WHERE CATEGORY = 'Clearance';
-
-DELETE FROM ORDERS@{PARTITIONED_DELETE} 
-WHERE ORDER_DATE < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 YEAR);`,
-        },
-        {
-          command: 'Basic Queries and Functions',
-          description: 'SELECT queries and Spanner-specific functions',
-          usage: 'Basic queries with Spanner functions and optimizations',
-          example: `# Basic Queries and Functions in Spanner
-
-======== Simple Queries ==========
-# Select all columns
-SELECT * FROM CUSTOMERS;
-
-# Select specific columns
-SELECT CUSTOMER_ID, FIRST_NAME, LAST_NAME, EMAIL 
-FROM CUSTOMERS 
-WHERE CREATED_AT >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY)
-ORDER BY LAST_NAME, FIRST_NAME;
-
-# Distinct values
-SELECT DISTINCT STATUS FROM ORDERS;
-
-======== Aggregation Functions ==========
-# Basic aggregations
-SELECT COUNT(*) AS TOTAL_CUSTOMERS,
-       COUNTIF(CREATED_AT >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 7 DAY)) AS NEW_CUSTOMERS,
-       COUNTIF(EMAIL IS NOT NULL) AS CUSTOMERS_WITH_EMAIL
-FROM CUSTOMERS;
-
-# Group by with having
-SELECT CATEGORY, 
-       COUNT(*) AS PRODUCT_COUNT,
-       AVG(PRICE) AS AVG_PRICE,
-       SUM(QUANTITY_IN_STOCK) AS TOTAL_STOCK
-FROM PRODUCTS
-GROUP BY CATEGORY
-HAVING COUNT(*) > 5
-ORDER BY AVG_PRICE DESC;
-
-======== String Functions ==========
-# String manipulation
-SELECT 
-    FIRST_NAME,
-    LAST_NAME,
-    CONCAT(FIRST_NAME, ' ', LAST_NAME) AS FULL_NAME,
-    UPPER(EMAIL) AS UPPERCASE_EMAIL,
-    LENGTH(FIRST_NAME) AS FIRST_NAME_LENGTH,
-    SUBSTR(FIRST_NAME, 1, 1) AS INITIAL
-FROM CUSTOMERS;
-
-# String search
-SELECT * FROM PRODUCTS 
-WHERE UPPER(NAME) LIKE '%LAPTOP%'
-  OR CONTAINS_SUBSTR(DESCRIPTION, 'gaming');
-
-======== Date and Time Functions ==========
-# Date calculations
-SELECT 
-    ORDER_ID,
-    ORDER_DATE,
-    TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), ORDER_DATE, DAY) AS DAYS_AGO,
-    TIMESTAMP_ADD(ORDER_DATE, INTERVAL 6 MONTH) AS SIX_MONTHS_LATER,
-    EXTRACT(YEAR FROM ORDER_DATE) AS ORDER_YEAR
-FROM ORDERS;
-
-# Timestamp operations
-SELECT 
-    LOG_ID,
-    TIMESTAMP,
-    TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), TIMESTAMP, SECOND) AS SECONDS_AGO,
-    FORMAT_TIMESTAMP('%Y-%m-%d %H:%M:%S', TIMESTAMP) AS FORMATTED_TIME
-FROM AUDIT_LOG;
-
-======== Conditional Functions ==========
-# CASE statements
-SELECT 
-    PRODUCT_ID,
-    NAME,
-    PRICE,
-    CASE 
-        WHEN PRICE < 50 THEN 'Budget'
-        WHEN PRICE < 200 THEN 'Mid-Range'
-        WHEN PRICE < 500 THEN 'Premium'
-        ELSE 'Luxury'
-    END AS PRICE_CATEGORY
-FROM PRODUCTS;
-
-# COALESCE and NULLIF
-SELECT 
-    CUSTOMER_ID,
-    COALESCE(PHONE, 'N/A') AS PHONE,
-    NULLIF(STATUS, 'ACTIVE') AS NON_ACTIVE_STATUS
-FROM CUSTOMERS;
-
-======== JSON Functions ==========
-# JSON operations (Spanner 6.0+)
-SELECT 
-    PRODUCT_ID,
-    NAME,
-    JSON_VALUE(METADATA, '$.brand') AS BRAND,
-    JSON_QUERY(METADATA, '$.specifications') AS SPECS,
-    JSON_EXTRACT_ARRAY(METADATA, '$.tags') AS TAGS
-FROM PRODUCTS
-WHERE METADATA IS NOT NULL;`,
-        },
-      ],
-    },
-
-    // INTERMEDIATE LEVEL
-    {
-      title: 'Advanced SQL Features',
-      commands: [
-        {
-          command: 'Window Functions',
-          description: 'Advanced analytical functions with window operations',
-          usage: 'OVER, ROWS, RANGE, window functions in Spanner',
-          example: `# Window Functions in Google Spanner
-
-======== Ranking Functions ==========
-# ROW_NUMBER, RANK, DENSE_RANK
-SELECT 
-    CUSTOMER_ID,
-    FIRST_NAME,
-    TOTAL_SPENT,
-    ROW_NUMBER() OVER (ORDER BY TOTAL_SPENT DESC) AS ROW_NUM,
-    RANK() OVER (ORDER BY TOTAL_SPENT DESC) AS RANK_NUM,
-    DENSE_RANK() OVER (ORDER BY TOTAL_SPENT DESC) AS DENSE_RANK_NUM
-FROM (
-    SELECT 
-        C.CUSTOMER_ID,
-        C.FIRST_NAME,
-        COALESCE(SUM(O.TOTAL_AMOUNT), 0) AS TOTAL_SPENT
-    FROM CUSTOMERS C
-    LEFT JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
-    GROUP BY C.CUSTOMER_ID, C.FIRST_NAME
-) CUSTOMER_SPENDING;
-
-======== Aggregate Window Functions ==========
-# Moving averages and running totals
-SELECT 
-    ORDER_DATE,
-    TOTAL_AMOUNT,
-    SUM(TOTAL_AMOUNT) OVER (ORDER BY ORDER_DATE 
-                           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS RUNNING_TOTAL,
-    AVG(TOTAL_AMOUNT) OVER (ORDER BY ORDER_DATE 
-                           ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS MOVING_AVG_3,
-    LAG(TOTAL_AMOUNT, 1) OVER (ORDER BY ORDER_DATE) AS PREVIOUS_ORDER_AMOUNT
-FROM ORDERS
-ORDER BY ORDER_DATE;
-
-======== Distribution Functions ==========
-# NTILE and percentiles
-SELECT 
-    PRODUCT_ID,
-    NAME,
-    PRICE,
-    NTILE(4) OVER (ORDER BY PRICE) AS PRICE_QUARTILE,
-    PERCENT_RANK() OVER (ORDER BY PRICE) AS PRICE_PERCENTILE
-FROM PRODUCTS;
-
-======== Partition Window Functions ==========
-# Window functions with partitioning
-SELECT 
-    CATEGORY,
-    PRODUCT_ID,
-    NAME,
-    PRICE,
-    ROW_NUMBER() OVER (PARTITION BY CATEGORY ORDER BY PRICE DESC) AS RANK_IN_CATEGORY,
-    AVG(PRICE) OVER (PARTITION BY CATEGORY) AS AVG_CATEGORY_PRICE,
-    PRICE - AVG(PRICE) OVER (PARTITION BY CATEGORY) AS PRICE_DIFF_FROM_AVG
-FROM PRODUCTS
-ORDER BY CATEGORY, PRICE DESC;`,
-        },
-        {
-          command: 'Subqueries and CTEs',
-          description: 'Complex subqueries and Common Table Expressions',
-          usage: 'WITH clauses, correlated subqueries, EXISTS in Spanner',
-          example: `# Subqueries and CTEs in Google Spanner
-
-======== Common Table Expressions ==========
-# Basic CTE
-WITH CUSTOMER_STATS AS (
-    SELECT 
-        CUSTOMER_ID,
-        COUNT(*) AS ORDER_COUNT,
-        SUM(TOTAL_AMOUNT) AS TOTAL_SPENT,
-        AVG(TOTAL_AMOUNT) AS AVG_ORDER_VALUE
-    FROM ORDERS
-    GROUP BY CUSTOMER_ID
+// Query with parameters
+stmt := spanner.NewStatement(
+    "SELECT * FROM Users WHERE Email = @email",
+    map[string]interface{}{"email": "john@example.com"},
 )
-SELECT 
-    C.FIRST_NAME,
-    C.LAST_NAME,
-    CS.ORDER_COUNT,
-    CS.TOTAL_SPENT,
-    CS.AVG_ORDER_VALUE
-FROM CUSTOMERS C
-JOIN CUSTOMER_STATS CS ON C.CUSTOMER_ID = CS.CUSTOMER_ID
-WHERE CS.ORDER_COUNT > 5;
-
-======== Recursive CTEs ==========
-# Hierarchical data with recursive CTE
-WITH RECURSIVE EMPLOYEE_HIERARCHY AS (
-    -- Base case: top-level managers
-    SELECT 
-        EMPLOYEE_ID,
-        NAME,
-        MANAGER_ID,
-        1 AS LEVEL
-    FROM EMPLOYEES
-    WHERE MANAGER_ID IS NULL
-    
-    UNION ALL
-    
-    -- Recursive case: subordinates
-    SELECT 
-        E.EMPLOYEE_ID,
-        E.NAME,
-        E.MANAGER_ID,
-        EH.LEVEL + 1
-    FROM EMPLOYEES E
-    JOIN EMPLOYEE_HIERARCHY EH ON E.MANAGER_ID = EH.EMPLOYEE_ID
-)
-SELECT * FROM EMPLOYEE_HIERARCHY ORDER BY LEVEL, NAME;`,
-        },
-        {
-          command: 'Join Operations',
-          description: 'Advanced join types and optimization in Spanner',
-          usage: 'INNER, LEFT, RIGHT, FULL joins with Spanner features',
-          example: `# Advanced Join Operations in Google Spanner
-
-======== Basic Joins ==========
-# Inner join with multiple conditions
-SELECT 
-    C.CUSTOMER_ID,
-    C.FIRST_NAME,
-    O.ORDER_ID,
-    O.TOTAL_AMOUNT,
-    O.ORDER_DATE
-FROM CUSTOMERS C
-INNER JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
-WHERE O.ORDER_DATE >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY);
-
-======== Advanced Join Types ==========
-# Left join with aggregation
-SELECT 
-    C.CUSTOMER_ID,
-    C.FIRST_NAME,
-    COUNT(O.ORDER_ID) AS ORDER_COUNT,
-    COALESCE(SUM(O.TOTAL_AMOUNT), 0) AS TOTAL_SPENT
-FROM CUSTOMERS C
-LEFT JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
-GROUP BY C.CUSTOMER_ID, C.FIRST_NAME
-ORDER BY TOTAL_SPENT DESC;
-
-======== Self-Joins ==========
-# Employee-manager relationships
-SELECT 
-    E.NAME AS EMPLOYEE,
-    M.NAME AS MANAGER
-FROM EMPLOYEES E
-LEFT JOIN EMPLOYEES M ON E.MANAGER_ID = M.EMPLOYEE_ID;`,
+iter := client.Single().Query(ctx, stmt)`,
         },
       ],
     },
     {
-      title: 'Spanner-Specific Features',
+      title: 'Spanner Best Practices',
       commands: [
         {
-          command: 'Interleaved Tables',
-          description: 'Optimize parent-child relationships with interleaved tables',
-          usage: 'INTERLEAVE IN PARENT for co-located data',
-          example: `# Interleaved Tables in Google Spanner
-
-======== Basic Interleaved Tables ==========
-# Parent table
-CREATE TABLE CUSTOMERS (
-    CUSTOMER_ID STRING(36) NOT NULL,
-    FIRST_NAME STRING(100),
-    LAST_NAME STRING(100),
-    EMAIL STRING(255),
-    CREATED_AT TIMESTAMP NOT NULL,
-) PRIMARY KEY (CUSTOMER_ID);
-
-# Child table interleaved in parent
-CREATE TABLE ORDERS (
-    CUSTOMER_ID STRING(36) NOT NULL,
-    ORDER_ID STRING(36) NOT NULL,
-    ORDER_DATE TIMESTAMP NOT NULL,
-    TOTAL_AMOUNT NUMERIC,
-    STATUS STRING(50),
-    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID)
-) PRIMARY KEY (CUSTOMER_ID, ORDER_ID),
-INTERLEAVE IN PARENT CUSTOMERS ON DELETE CASCADE;
-
-======== Performance Benefits ==========
-# Co-located data access
-SELECT 
-    C.CUSTOMER_ID,
-    C.FIRST_NAME,
-    O.ORDER_ID,
-    O.TOTAL_AMOUNT
-FROM CUSTOMERS C
-JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
-WHERE C.CUSTOMER_ID = 'cust-001';`,
+          command: 'Schema Design Best Practices',
+          description: 'Optimal schema design patterns',
+          usage: 'Schema design guidelines',
+          example: `Schema Design Best Practices:
+1. Use appropriate primary keys for distribution
+2. Interleave related tables for performance
+3. Use STORING indexes to avoid table lookups
+4. Design for read/write patterns
+5. Use appropriate data types to optimize storage
+6. Plan for schema evolution
+7. Avoid hot keys in primary key design
+8. Use composite keys for hierarchical data`,
         },
         {
-          command: 'Change Streams and CDC',
-          description: 'Implement change data capture with change streams',
-          usage: 'CREATE CHANGE STREAM for real-time data streaming',
-          example: `# Change Streams and CDC in Google Spanner
-
-======== Basic Change Stream ==========
-# Create change stream for specific table
-CREATE CHANGE STREAM CUSTOMER_STREAM FOR CUSTOMERS;
-
-# Create change stream for multiple tables
-CREATE CHANGE STREAM ECOMMERCE_STREAM 
-  FOR CUSTOMERS, ORDERS, ORDER_ITEMS;
-
-======== Query Change Streams ==========
-# Query change stream data
-SELECT 
-  change_stream_name,
-  partition_token,
-  start_timestamp,
-  end_timestamp,
-  data_change_records
-FROM 
-  READ_CUSTOMER_STREAM (
-    start_timestamp => '2024-01-01T00:00:00Z',
-    end_timestamp => '2024-01-02T00:00:00Z'
-  );`,
+          command: 'Performance Best Practices',
+          description: 'Optimize performance',
+          usage: 'Performance optimization tips',
+          example: `Performance Best Practices:
+1. Use appropriate indexes for query patterns
+2. Use batch operations for bulk data
+3. Implement retry logic for transactions
+4. Use stale reads for non-critical data
+5. Monitor and optimize hotspots
+6. Use parallel queries for large datasets
+7. Optimize transaction size and duration
+8. Use read-only transactions when possible`,
         },
         {
-          command: 'JSON and Array Operations',
-          description: 'Work with JSON and array data types in Spanner',
-          usage: 'JSON functions, array operations, and structured data',
-          example: `# JSON and Array Operations in Google Spanner
-
-======== JSON Data Type ==========
-# Table with JSON column
-CREATE TABLE PRODUCTS (
-    PRODUCT_ID STRING(36) NOT NULL,
-    NAME STRING(255),
-    PRICE NUMERIC,
-    METADATA JSON,
-    TAGS ARRAY<STRING(100)>,
-    CREATED_AT TIMESTAMP NOT NULL
-) PRIMARY KEY (PRODUCT_ID);
-
-# Insert JSON data
-INSERT INTO PRODUCTS (PRODUCT_ID, NAME, PRICE, METADATA, TAGS)
-VALUES (
-    'prod-001',
-    'Laptop Pro',
-    1299.99,
-    JSON '{"brand": "TechCorp", "model": "X1"}',
-    ARRAY['electronics', 'computers', 'premium']
-);
-
-======== JSON Functions ==========
-# Extract JSON values
-SELECT 
-    PRODUCT_ID,
-    NAME,
-    JSON_VALUE(METADATA, '$.brand') AS BRAND,
-    JSON_QUERY(METADATA, '$.specifications') AS SPECS
-FROM PRODUCTS
-WHERE METADATA IS NOT NULL;`,
+          command: 'Cost Optimization',
+          description: 'Reduce Spanner costs',
+          usage: 'Cost optimization strategies',
+          example: `Cost Optimization:
+1. Right-size instance nodes
+2. Use appropriate backup retention
+3. Optimize query patterns to reduce compute
+4. Use interleaved tables to reduce storage
+5. Monitor and remove unused indexes
+6. Use auto-scaling for variable workloads
+7. Implement data lifecycle policies
+8. Choose appropriate instance configurations`,
+        },
+        {
+          command: 'Security Best Practices',
+          description: 'Secure Spanner deployments',
+          usage: 'Security guidelines',
+          example: `Security Best Practices:
+1. Use principle of least privilege with IAM
+2. Enable CMEK for sensitive data
+3. Use VPC service controls
+4. Implement fine-grained access control
+5. Monitor access with Cloud Audit Logs
+6. Use authorized networks
+7. Regularly rotate service account keys
+8. Implement data classification and tagging`,
         },
       ],
     },
-
-    // ADVANCED LEVEL
     {
-      title: 'Advanced Analytics',
+      title: 'Spanner Troubleshooting',
       commands: [
         {
-          command: 'Statistical Functions',
-          description: 'Statistical and analytical functions in Spanner',
-          usage: 'Statistical aggregates, correlation, regression',
-          example: `# Statistical Functions in Google Spanner
+          command: 'Common Issues',
+          description: 'Diagnose common problems',
+          usage: 'Troubleshooting guide',
+          example: `Common Issues:
+1. Transaction aborts
+   - Implement exponential backoff retry
+   - Check for lock contention
+   - Reduce transaction size
 
-======== Basic Statistical Functions ==========
-# Statistical aggregations
-SELECT 
-    COUNT(*) AS TOTAL_RECORDS,
-    AVG(PRICE) AS MEAN_PRICE,
-    STDDEV(PRICE) AS PRICE_STDDEV,
-    VAR_SAMP(PRICE) AS PRICE_VARIANCE,
-    MIN(PRICE) AS MIN_PRICE,
-    MAX(PRICE) AS MAX_PRICE
-FROM PRODUCTS
-WHERE PRICE IS NOT NULL;
+2. Hotspot errors
+   - Redesign primary keys
+   - Use hash sharding
+   - Distribute write patterns
 
-======== Correlation and Covariance ==========
-# Correlation analysis
-SELECT 
-    CORR(PRICE, QUANTITY_IN_STOCK) AS_PRICE_STOCK_CORRELATION,
-    COVAR_SAMP(PRICE, QUANTITY_IN_STOCK) AS COVARIANCE
-FROM PRODUCTS
-WHERE PRICE IS NOT NULL 
-  AND QUANTITY_IN_STOCK IS NOT NULL;`,
+3. High latency
+   - Check query execution plans
+   - Optimize indexes
+   - Scale instance nodes
+
+4. Connection errors
+   - Check network connectivity
+   - Verify IAM permissions
+   - Monitor session pool usage`,
         },
         {
-          command: 'Performance Optimization',
-          description: 'Optimize Spanner queries for maximum performance',
-          usage: 'Index strategies, query hints, and execution plans',
-          example: `# Query Optimization in Google Spanner
+          command: 'Query Analysis',
+          description: 'Analyze query performance',
+          usage: 'Query optimization',
+          example: `-- Analyze query execution
+EXPLAIN SELECT * FROM Users WHERE Email = 'john@example.com';
 
-======== Index Strategy ==========
-# Create optimal indexes
-CREATE INDEX ORDERS_CUSTOMER_DATE ON ORDERS (CUSTOMER_ID, ORDER_DATE DESC)
-STORING (TOTAL_AMOUNT, STATUS);
+-- Check query statistics
+SELECT * FROM SPANNER_SYS.QUERY_STATS_TOP_MINUTE 
+WHERE text LIKE '%Users%';
 
-CREATE INDEX PRODUCTS_CATEGORY_PRICE ON PRODUCTS (CATEGORY, PRICE DESC)
-STORING (NAME, DESCRIPTION);
+-- Monitor slow queries
+SELECT * FROM SPANNER_SYS.QUERY_STATS_TOP_MINUTE 
+WHERE avg_latency_seconds > 1.0
+ORDER BY avg_latency_seconds DESC;`,
+        },
+        {
+          command: 'Recovery Procedures',
+          description: 'Recover from failures',
+          usage: 'Disaster recovery',
+          example: `# Restore from backup
+gcloud spanner databases restore my-backup \\
+  --source-instance=my-instance \\
+  --source-database=my-database \\
+  --destination-instance=my-instance \\
+  --destination-database=my-restored-db
 
-======== Query Execution Analysis ==========
-# Explain query plan
-EXPLAIN SELECT 
-    C.FIRST_NAME,
-    COUNT(O.ORDER_ID) as ORDER_COUNT
-FROM CUSTOMERS C
-JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
-GROUP BY C.CUSTOMER_ID, C.FIRST_NAME;`,
+# Point-in-time recovery
+gcloud spanner databases restore my-backup \\
+  --source-instance=my-instance \\
+  --source-database=my-database \\
+  --destination-instance=my-instance \\
+  --destination-database=my-recovered-db \\
+  --restore-time='2024-01-01T12:00:00Z'
+
+# Failover to replica
+# Applications should implement retry logic
+# Use multi-region configurations for high availability`,
         },
       ],
     },

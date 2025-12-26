@@ -12,28 +12,68 @@ export const jsonCheatsheet = {
             title: 'Getting Started with JSON',
             commands: [
                 {
-                    command: 'JSON Structure',
+                    command: 'JSON Structure Example',
                     description: 'Basic JSON syntax and structure',
                     usage: 'JSON objects, arrays, strings, numbers, booleans, null',
-                    example: '{\n  "name": "John Doe",\n  "age": 30,\n  "isStudent": false,\n  "address": {\n    "street": "123 Main St",\n    "city": "New York"\n  },\n  "hobbies": ["reading", "coding", "gaming"],\n  "scores": [95, 87, 92],\n  "metadata": null\n}',
+                    example: `{
+  "name": "John Doe",
+  "age": 30,
+  "isStudent": false,
+  "address": {
+    "street": "123 Main St",
+    "city": "New York"
+  },
+  "hobbies": ["reading", "coding", "gaming"],
+  "scores": [95, 87, 92],
+  "metadata": null
+}`,
                 },
                 {
-                    command: 'JSON Data Types',
+                    command: 'JSON Data Types Example',
                     description: 'Valid JSON data types',
                     usage: 'String, Number, Boolean, Array, Object, null',
-                    example: '{\n  "string": "Hello World",\n  "number": 42,\n  "float": 3.14,\n  "boolean": true,\n  "array": [1, 2, 3],\n  "object": {"key": "value"},\n  "null": null\n}',
+                    example: `{
+  "string": "Hello World",
+  "number": 42,
+  "float": 3.14,
+  "boolean": true,
+  "array": [1, 2, 3],
+  "object": {"key": "value"},
+  "null": null
+}`,
                 },
                 {
-                    command: 'JSON Validation',
+                    command: 'JSON Validation Function',
                     description: 'Validate JSON format',
                     usage: 'JSON.parse(), try-catch',
-                    example: 'function validateJSON(jsonString) {\n  try {\n    JSON.parse(jsonString);\n    return true;\n  } catch (error) {\n    console.error("Invalid JSON:", error.message);\n    return false;\n  }\n}\n\nconst isValid = validateJSON(\'{"name": "John"}\'); // true\nconst isInvalid = validateJSON(\'{"name": John}\'); // false',
+                    example: `function validateJSON(jsonString) {
+  try {
+    JSON.parse(jsonString);
+    return true;
+  } catch (error) {
+    console.error("Invalid JSON:", error.message);
+    return false;
+  }
+}`,
                 },
                 {
-                    command: 'JSON Comments',
+                    command: 'JSON Validation Examples',
+                    description: 'Test JSON validation function',
+                    usage: 'validateJSON() with examples',
+                    example: `const isValid = validateJSON('{"name": "John"}'); // true
+const isInvalid = validateJSON('{"name": John}'); // false`,
+                },
+                {
+                    command: 'JSON Comments Workaround',
                     description: 'Work around JSON no-comments limitation',
                     usage: 'Use special properties or preprocessing',
-                    example: '{\n  "_comment": "This is a comment workaround",\n  "_description": "User profile data",\n  "name": "John Doe",\n  "_note": "Age must be greater than 18",\n  "age": 25\n}',
+                    example: `{
+  "_comment": "This is a comment workaround",
+  "_description": "User profile data",
+  "name": "John Doe",
+  "_note": "Age must be greater than 18",
+  "age": 25
+}`,
                 },
             ],
         },
@@ -44,25 +84,82 @@ export const jsonCheatsheet = {
                     command: 'Parse JSON String',
                     description: 'Convert JSON string to JavaScript object',
                     usage: 'JSON.parse(jsonString)',
-                    example: 'const jsonString = \'{"name": "John", "age": 30}\';\nconst obj = JSON.parse(jsonString);\nconsole.log(obj.name); // "John"\nconsole.log(obj.age); // 30',
+                    example: `const jsonString = '{"name": "John", "age": 30}';
+const obj = JSON.parse(jsonString);
+console.log(obj.name); // "John"
+console.log(obj.age); // 30`,
                 },
                 {
-                    command: 'Stringify Object',
+                    command: 'Stringify Object Basic',
                     description: 'Convert JavaScript object to JSON string',
-                    usage: 'JSON.stringify(obj, replacer, space)',
-                    example: 'const user = { name: "John", age: 30, password: "secret" };\n\n// Basic stringify\nconst json = JSON.stringify(user);\n\n// With pretty printing\nconst prettyJson = JSON.stringify(user, null, 2);\n\n// Excluding sensitive data\nconst safeJson = JSON.stringify(user, (key, value) => {\n  return key === "password" ? undefined : value;\n});',
+                    usage: 'JSON.stringify(obj)',
+                    example: `const user = { name: "John", age: 30, password: "secret" };
+
+// Basic stringify
+const json = JSON.stringify(user);`,
+                },
+                {
+                    command: 'Stringify with Pretty Printing',
+                    description: 'Format JSON with indentation',
+                    usage: 'JSON.stringify(obj, null, space)',
+                    example: `// With pretty printing
+const prettyJson = JSON.stringify(user, null, 2);`,
+                },
+                {
+                    command: 'Stringify with Replacer',
+                    description: 'Exclude sensitive data during stringify',
+                    usage: 'JSON.stringify(obj, replacer)',
+                    example: `// Excluding sensitive data
+const safeJson = JSON.stringify(user, (key, value) => {
+  return key === "password" ? undefined : value;
+});`,
                 },
                 {
                     command: 'Deep Clone with JSON',
                     description: 'Create deep copy of object using JSON',
                     usage: 'JSON.parse(JSON.stringify(obj))',
-                    example: 'const original = { a: 1, b: { c: 2 } };\nconst cloned = JSON.parse(JSON.stringify(original));\n\ncloned.b.c = 3;\nconsole.log(original.b.c); // 2 (unchanged)\nconsole.log(cloned.b.c); // 3\n\n// Note: Doesnt work with functions, undefined, circular references',
+                    example: `const original = { a: 1, b: { c: 2 } };
+const cloned = JSON.parse(JSON.stringify(original));
+
+cloned.b.c = 3;
+console.log(original.b.c); // 2 (unchanged)
+console.log(cloned.b.c); // 3
+
+// Note: Doesnt work with functions, undefined, circular references`,
                 },
                 {
-                    command: 'JSON Path Navigation',
-                    description: 'Navigate nested JSON structures',
-                    usage: 'Dot notation, bracket notation, optional chaining',
-                    example: 'const data = {\n  user: {\n    profile: {\n      name: "John",\n      contacts: [{ type: "email", value: "john@example.com" }]\n    }\n  }\n};\n\n// Dot notation\nconst name = data.user.profile.name;\n\n// Bracket notation\nconst firstContact = data.user.profile.contacts[0];\n\n// Optional chaining (ES2020)\nconst email = data?.user?.profile?.contacts?.[0]?.value;',
+                    command: 'JSON Path Navigation Data',
+                    description: 'Sample nested JSON structure',
+                    usage: 'Example data for navigation',
+                    example: `const data = {
+  user: {
+    profile: {
+      name: "John",
+      contacts: [{ type: "email", value: "john@example.com" }]
+    }
+  }
+};`,
+                },
+                {
+                    command: 'Dot Notation Navigation',
+                    description: 'Access nested properties with dot notation',
+                    usage: 'object.property.nestedProperty',
+                    example: `// Dot notation
+const name = data.user.profile.name;`,
+                },
+                {
+                    command: 'Bracket Notation Navigation',
+                    description: 'Access array elements with bracket notation',
+                    usage: 'object.array[index]',
+                    example: `// Bracket notation
+const firstContact = data.user.profile.contacts[0];`,
+                },
+                {
+                    command: 'Optional Chaining Navigation',
+                    description: 'Safe navigation with optional chaining',
+                    usage: 'object?.property?.array?.[index]',
+                    example: `// Optional chaining (ES2020)
+const email = data?.user?.profile?.contacts?.[0]?.value;`,
                 },
             ],
         },
@@ -70,28 +167,107 @@ export const jsonCheatsheet = {
             title: 'JSON Schema & Validation',
             commands: [
                 {
-                    command: 'Basic JSON Schema',
+                    command: 'Basic JSON Schema Definition',
                     description: 'Define structure and validation rules',
-                    usage: 'Schema definition, validation',
-                    example: 'const userSchema = {\n  type: "object",\n  properties: {\n    name: { type: "string", minLength: 1 },\n    age: { type: "number", minimum: 0, maximum: 150 },\n    email: { type: "string", format: "email" },\n    isActive: { type: "boolean" }\n  },\n  required: ["name", "email"],\n  additionalProperties: false\n};',
+                    usage: 'Schema definition',
+                    example: `const userSchema = {
+  type: "object",
+  properties: {
+    name: { type: "string", minLength: 1 },
+    age: { type: "number", minimum: 0, maximum: 150 },
+    email: { type: "string", format: "email" },
+    isActive: { type: "boolean" }
+  },
+  required: ["name", "email"],
+  additionalProperties: false
+};`,
                 },
                 {
-                    command: 'JSON Schema Validation',
+                    command: 'JSON Schema Validation Setup',
+                    description: 'Setup Ajv for validation',
+                    usage: 'Ajv library initialization',
+                    example: `const Ajv = require("ajv");
+const ajv = new Ajv();
+
+const validate = ajv.compile(userSchema);`,
+                },
+                {
+                    command: 'JSON Schema Validation Example',
                     description: 'Validate JSON against schema',
-                    usage: 'Ajv library, validation functions',
-                    example: 'const Ajv = require("ajv");\nconst ajv = new Ajv();\n\nconst validate = ajv.compile(userSchema);\nconst data = { name: "John", age: 25, email: "john@example.com" };\n\nif (validate(data)) {\n  console.log("Valid data");\n} else {\n  console.log("Invalid:", validate.errors);\n}',
+                    usage: 'Validation functions',
+                    example: `const data = { name: "John", age: 25, email: "john@example.com" };
+
+if (validate(data)) {
+  console.log("Valid data");
+} else {
+  console.log("Invalid:", validate.errors);
+}`,
                 },
                 {
-                    command: 'Advanced Schema Features',
+                    command: 'Advanced Schema Properties',
                     description: 'Complex validation patterns',
                     usage: 'Conditional validation, pattern properties',
-                    example: '{\n  type: "object",\n  properties: {\n    type: { enum: ["user", "admin"] },\n    username: { type: "string" },\n    password: { type: "string", minLength: 8 },\n    adminCode: { type: "string" }\n  },\n  required: ["type", "username"],\n  if: { properties: { type: { const: "admin" } } },\n  then: { required: ["password", "adminCode"] },\n  else: { required: ["password"] },\n  patternProperties: {\n    "^custom_": { type: "string" }\n  }\n}',
+                    example: `{
+  type: "object",
+  properties: {
+    type: { enum: ["user", "admin"] },
+    username: { type: "string" },
+    password: { type: "string", minLength: 8 },
+    adminCode: { type: "string" }
+  },
+  required: ["type", "username"],`,
                 },
                 {
-                    command: 'Schema Composition',
-                    description: 'Combine multiple schemas',
-                    usage: 'allOf, anyOf, oneOf, not',
-                    example: '{\n  allOf: [\n    { type: "object" },\n    { properties: { name: { type: "string" } } }\n  ],\n  anyOf: [\n    { properties: { email: { type: "string", format: "email" } } },\n    { properties: { phone: { type: "string" } } }\n  ],\n  oneOf: [\n    { properties: { type: { const: "individual" } } },\n    { properties: { type: { const: "company" } } }\n  ],\n  not: { properties: { deprecated: { const: true } } }\n}',
+                    command: 'Schema Conditional Validation',
+                    description: 'Conditional validation rules',
+                    usage: 'if/then/else in schema',
+                    example: `  if: { properties: { type: { const: "admin" } } },
+  then: { required: ["password", "adminCode"] },
+  else: { required: ["password"] },`,
+                },
+                {
+                    command: 'Schema Pattern Properties',
+                    description: 'Pattern-based property validation',
+                    usage: 'patternProperties in schema',
+                    example: `  patternProperties: {
+    "^custom_": { type: "string" }
+  }
+}`,
+                },
+                {
+                    command: 'Schema allOf Composition',
+                    description: 'Combine schemas with allOf',
+                    usage: 'allOf for schema composition',
+                    example: `{
+  allOf: [
+    { type: "object" },
+    { properties: { name: { type: "string" } } }
+  ],`,
+                },
+                {
+                    command: 'Schema anyOf Composition',
+                    description: 'Combine schemas with anyOf',
+                    usage: 'anyOf for schema composition',
+                    example: `  anyOf: [
+    { properties: { email: { type: "string", format: "email" } } },
+    { properties: { phone: { type: "string" } } }
+  ],`,
+                },
+                {
+                    command: 'Schema oneOf Composition',
+                    description: 'Combine schemas with oneOf',
+                    usage: 'oneOf for schema composition',
+                    example: `  oneOf: [
+    { properties: { type: { const: "individual" } } },
+    { properties: { type: { const: "company" } } }
+  ],`,
+                },
+                {
+                    command: 'Schema not Composition',
+                    description: 'Negate schema with not',
+                    usage: 'not for schema composition',
+                    example: `  not: { properties: { deprecated: { const: true } } }
+}`,
                 },
             ],
         },
@@ -99,28 +275,154 @@ export const jsonCheatsheet = {
             title: 'JSON Manipulation & Transformation',
             commands: [
                 {
-                    command: 'Filter JSON Data',
-                    description: 'Filter and search JSON arrays',
-                    usage: 'Array methods, functional programming',
-                    example: 'const users = [\n  { id: 1, name: "John", age: 30, active: true },\n  { id: 2, name: "Jane", age: 25, active: false },\n  { id: 3, name: "Bob", age: 35, active: true }\n];\n\n// Filter active users\nconst activeUsers = users.filter(user => user.active);\n\n// Find by ID\nconst userById = users.find(user => user.id === 2);\n\n// Map to specific fields\nconst userNames = users.map(user => ({ name: user.name, age: user.age }));\n\n// Chain operations\nconst result = users\n  .filter(user => user.active)\n  .map(user => user.name.toUpperCase());',
+                    command: 'Filter JSON Data Setup',
+                    description: 'Sample data for filtering',
+                    usage: 'Array of user objects',
+                    example: `const users = [
+  { id: 1, name: "John", age: 30, active: true },
+  { id: 2, name: "Jane", age: 25, active: false },
+  { id: 3, name: "Bob", age: 35, active: true }
+];`,
                 },
                 {
-                    command: 'Sort JSON Arrays',
-                    description: 'Sort JSON data by different criteria',
-                    usage: 'Array.sort() with custom comparators',
-                    example: 'const products = [\n  { name: "Laptop", price: 999, rating: 4.5 },\n  { name: "Phone", price: 699, rating: 4.8 },\n  { name: "Tablet", price: 299, rating: 4.2 }\n];\n\n// Sort by price\nproducts.sort((a, b) => a.price - b.price);\n\n// Sort by rating (descending)\nproducts.sort((a, b) => b.rating - a.rating);\n\n// Sort by name\nproducts.sort((a, b) => a.name.localeCompare(b.name));\n\n// Multi-criteria sort\nproducts.sort((a, b) => {\n  if (b.rating !== a.rating) return b.rating - a.rating;\n  return a.price - b.price;\n});',
+                    command: 'Filter Active Users',
+                    description: 'Filter users by active status',
+                    usage: 'Array.filter() method',
+                    example: `// Filter active users
+const activeUsers = users.filter(user => user.active);`,
                 },
                 {
-                    command: 'Group JSON Data',
-                    description: 'Group JSON objects by properties',
-                    usage: 'Reduce method for grouping',
-                    example: 'const students = [\n  { name: "Alice", grade: "A", subject: "Math" },\n  { name: "Bob", grade: "B", subject: "Math" },\n  { name: "Charlie", grade: "A", subject: "Science" },\n  { name: "David", grade: "C", subject: "Math" }\n];\n\n// Group by grade\nconst byGrade = students.reduce((groups, student) => {\n  const grade = student.grade;\n  if (!groups[grade]) groups[grade] = [];\n  groups[grade].push(student);\n  return groups;\n}, {});\n\n// Group by subject\nconst bySubject = students.reduce((groups, student) => {\n  const subject = student.subject;\n  if (!groups[subject]) groups[subject] = [];\n  groups[subject].push(student);\n  return groups;\n}, {});',
+                    command: 'Find User by ID',
+                    description: 'Find specific user by ID',
+                    usage: 'Array.find() method',
+                    example: `// Find by ID
+const userById = users.find(user => user.id === 2);`,
                 },
                 {
-                    command: 'Transform JSON Structure',
-                    description: 'Restructure JSON data',
-                    usage: 'Map, reduce, object manipulation',
-                    example: 'const rawData = [\n  { date: "2023-01-01", product: "Laptop", sales: 100 },\n  { date: "2023-01-01", product: "Phone", sales: 150 },\n  { date: "2023-01-02", product: "Laptop", sales: 120 }\n];\n\n// Transform to nested structure\nconst transformed = rawData.reduce((result, item) => {\n  const { date, product, sales } = item;\n  \n  if (!result[date]) result[date] = {};\n  result[date][product] = sales;\n  \n  return result;\n}, {});\n\n// Result:\n// {\n//   "2023-01-01": { "Laptop": 100, "Phone": 150 },\n//   "2023-01-02": { "Laptop": 120 }\n// }',
+                    command: 'Map User Fields',
+                    description: 'Extract specific fields from users',
+                    usage: 'Array.map() method',
+                    example: `// Map to specific fields
+const userNames = users.map(user => ({ name: user.name, age: user.age }));`,
+                },
+                {
+                    command: 'Chain Filter Operations',
+                    description: 'Chain multiple array operations',
+                    usage: 'Method chaining',
+                    example: `// Chain operations
+const result = users
+  .filter(user => user.active)
+  .map(user => user.name.toUpperCase());`,
+                },
+                {
+                    command: 'Sort JSON Data Setup',
+                    description: 'Sample data for sorting',
+                    usage: 'Array of product objects',
+                    example: `const products = [
+  { name: "Laptop", price: 999, rating: 4.5 },
+  { name: "Phone", price: 699, rating: 4.8 },
+  { name: "Tablet", price: 299, rating: 4.2 }
+];`,
+                },
+                {
+                    command: 'Sort by Price',
+                    description: 'Sort products by price ascending',
+                    usage: 'Array.sort() with numeric comparison',
+                    example: `// Sort by price
+products.sort((a, b) => a.price - b.price);`,
+                },
+                {
+                    command: 'Sort by Rating Descending',
+                    description: 'Sort products by rating descending',
+                    usage: 'Array.sort() with reverse numeric comparison',
+                    example: `// Sort by rating (descending)
+products.sort((a, b) => b.rating - a.rating);`,
+                },
+                {
+                    command: 'Sort by Name',
+                    description: 'Sort products by name alphabetically',
+                    usage: 'Array.sort() with localeCompare',
+                    example: `// Sort by name
+products.sort((a, b) => a.name.localeCompare(b.name));`,
+                },
+                {
+                    command: 'Multi-Criteria Sort',
+                    description: 'Sort by multiple criteria',
+                    usage: 'Array.sort() with complex comparator',
+                    example: `// Multi-criteria sort
+products.sort((a, b) => {
+  if (b.rating !== a.rating) return b.rating - a.rating;
+  return a.price - b.price;
+});`,
+                },
+                {
+                    command: 'Group JSON Data Setup',
+                    description: 'Sample data for grouping',
+                    usage: 'Array of student objects',
+                    example: `const students = [
+  { name: "Alice", grade: "A", subject: "Math" },
+  { name: "Bob", grade: "B", subject: "Math" },
+  { name: "Charlie", grade: "A", subject: "Science" },
+  { name: "David", grade: "C", subject: "Math" }
+];`,
+                },
+                {
+                    command: 'Group by Grade',
+                    description: 'Group students by grade',
+                    usage: 'Array.reduce() for grouping',
+                    example: `// Group by grade
+const byGrade = students.reduce((groups, student) => {
+  const grade = student.grade;
+  if (!groups[grade]) groups[grade] = [];
+  groups[grade].push(student);
+  return groups;
+}, {});`,
+                },
+                {
+                    command: 'Group by Subject',
+                    description: 'Group students by subject',
+                    usage: 'Array.reduce() for grouping',
+                    example: `// Group by subject
+const bySubject = students.reduce((groups, student) => {
+  const subject = student.subject;
+  if (!groups[subject]) groups[subject] = [];
+  groups[subject].push(student);
+  return groups;
+}, {});`,
+                },
+                {
+                    command: 'Transform JSON Data Setup',
+                    description: 'Sample data for transformation',
+                    usage: 'Flat array structure',
+                    example: `const rawData = [
+  { date: "2023-01-01", product: "Laptop", sales: 100 },
+  { date: "2023-01-01", product: "Phone", sales: 150 },
+  { date: "2023-01-02", product: "Laptop", sales: 120 }
+];`,
+                },
+                {
+                    command: 'Transform to Nested Structure',
+                    description: 'Convert flat data to nested structure',
+                    usage: 'Array.reduce() for transformation',
+                    example: `// Transform to nested structure
+const transformed = rawData.reduce((result, item) => {
+  const { date, product, sales } = item;
+  
+  if (!result[date]) result[date] = {};
+  result[date][product] = sales;
+  
+  return result;
+}, {});`,
+                },
+                {
+                    command: 'Transform Result Example',
+                    description: 'Result of transformation',
+                    usage: 'Expected output structure',
+                    example: `// Result:
+// {
+//   "2023-01-01": { "Laptop": 100, "Phone": 150 },
+//   "2023-01-02": { "Laptop": 120 }
+// }`,
                 },
             ],
         },
@@ -128,28 +430,129 @@ export const jsonCheatsheet = {
             title: 'JSON Performance & Optimization',
             commands: [
                 {
-                    command: 'Large JSON Processing',
-                    description: 'Handle large JSON files efficiently',
-                    usage: 'Streaming, chunking, memory management',
-                    example: 'const fs = require("fs");\nconst JSONStream = require("JSONStream");\n\n// Stream large JSON file\nconst stream = fs.createReadStream("large-file.json")\n  .pipe(JSONStream.parse("*"));\n\nstream.on("data", (data) => {\n  // Process each item individually\n  processItem(data);\n});\n\n// Process in chunks\nfunction processInChunks(array, chunkSize, processor) {\n  for (let i = 0; i < array.length; i += chunkSize) {\n    const chunk = array.slice(i, i + chunkSize);\n    processor(chunk);\n  }\n}',
+                    command: 'Stream Large JSON Setup',
+                    description: 'Setup for streaming large JSON files',
+                    usage: 'Required modules for streaming',
+                    example: `const fs = require("fs");
+const JSONStream = require("JSONStream");`,
                 },
                 {
-                    command: 'JSON Compression',
-                    description: 'Compress JSON data for transmission',
-                    usage: 'Gzip, Brotli, custom compression',
-                    example: 'const zlib = require("zlib");\n\n// Gzip compression\nconst jsonString = JSON.stringify(largeObject);\nconst compressed = zlib.gzipSync(jsonString);\n\n// Brotli compression (better ratio)\nconst brotliCompressed = zlib.brotliCompressSync(jsonString);\n\n// Custom compression for repetitive data\nfunction compressRepetitive(data) {\n  const json = JSON.stringify(data);\n  return json.replace(/"([^"]+)":/g, (match, key) => {\n    return keyMap[key] || (keyMap[key] = keys.length, keys.push(key), `"${keys.length - 1}":`);\n  });\n}',
+                    command: 'Stream Large JSON File',
+                    description: 'Process large JSON file as stream',
+                    usage: 'JSONStream for memory efficiency',
+                    example: `// Stream large JSON file
+const stream = fs.createReadStream("large-file.json")
+  .pipe(JSONStream.parse("*"));
+
+stream.on("data", (data) => {
+  // Process each item individually
+  processItem(data);
+});`,
                 },
                 {
-                    command: 'Memory-Efficient Parsing',
-                    description: 'Parse JSON with minimal memory usage',
-                    usage: 'Iterative parsing, lazy evaluation',
-                    example: 'const { parse: JSONParse } = require("json-stream-stringify");\n\n// Iterative JSON parser\nfunction parseIteratively(jsonString) {\n  let depth = 0;\n  let start = 0;\n  \n  for (let i = 0; i < jsonString.length; i++) {\n    if (jsonString[i] === "{") depth++;\n    if (jsonString[i] === "}") depth--;\n    \n    if (depth === 0 && jsonString[i] === "}") {\n      const object = JSON.parse(jsonString.slice(start, i + 1));\n      processObject(object);\n      start = i + 1;\n    }\n  }\n}',
+                    command: 'Process in Chunks Function',
+                    description: 'Function to process arrays in chunks',
+                    usage: 'Chunk processing for memory management',
+                    example: `// Process in chunks
+function processInChunks(array, chunkSize, processor) {
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.slice(i, i + chunkSize);
+    processor(chunk);
+  }
+}`,
                 },
                 {
-                    command: 'JSON Caching',
+                    command: 'Gzip Compression Setup',
+                    description: 'Setup for JSON compression',
+                    usage: 'zlib module import',
+                    example: `const zlib = require("zlib");
+
+// Gzip compression
+const jsonString = JSON.stringify(largeObject);`,
+                },
+                {
+                    command: 'Gzip Compression',
+                    description: 'Compress JSON with Gzip',
+                    usage: 'zlib.gzipSync()',
+                    example: `const compressed = zlib.gzipSync(jsonString);`,
+                },
+                {
+                    command: 'Brotli Compression',
+                    description: 'Compress JSON with Brotli',
+                    usage: 'zlib.brotliCompressSync()',
+                    example: `// Brotli compression (better ratio)
+const brotliCompressed = zlib.brotliCompressSync(jsonString);`,
+                },
+                {
+                    command: 'Custom Compression Setup',
+                    description: 'Setup for custom compression',
+                    usage: 'Key mapping for repetitive data',
+                    example: `// Custom compression for repetitive data
+function compressRepetitive(data) {
+  const keyMap = {};
+  const keys = [];
+  const json = JSON.stringify(data);
+  return json.replace(/"([^"]+)":/g, (match, key) => {
+    return keyMap[key] || (keyMap[key] = keys.length, keys.push(key), \`"\${keys.length - 1}":\`);
+  });
+}`,
+                },
+                {
+                    command: 'Iterative JSON Parser Setup',
+                    description: 'Setup for iterative parsing',
+                    usage: 'Required module import',
+                    example: `const { parse: JSONParse } = require("json-stream-stringify");`,
+                },
+                {
+                    command: 'Iterative JSON Parser',
+                    description: 'Parse JSON iteratively for memory efficiency',
+                    usage: 'Character-by-character parsing',
+                    example: `// Iterative JSON parser
+function parseIteratively(jsonString) {
+  let depth = 0;
+  let start = 0;
+  
+  for (let i = 0; i < jsonString.length; i++) {
+    if (jsonString[i] === "{") depth++;
+    if (jsonString[i] === "}") depth--;
+    
+    if (depth === 0 && jsonString[i] === "}") {
+      const object = JSON.parse(jsonString.slice(start, i + 1));
+      processObject(object);
+      start = i + 1;
+    }
+  }
+}`,
+                },
+                {
+                    command: 'JSON Cache Setup',
+                    description: 'Setup for JSON caching',
+                    usage: 'LRU cache initialization',
+                    example: `const LRU = require("lru-cache");
+const jsonCache = new LRU({ max: 1000, ttl: 1000 * 60 * 5 });`,
+                },
+                {
+                    command: 'JSON Cache Function',
                     description: 'Cache parsed JSON objects',
-                    usage: 'LRU cache, memoization',
-                    example: 'const LRU = require("lru-cache");\nconst jsonCache = new LRU({ max: 1000, ttl: 1000 * 60 * 5 });\n\nfunction getCachedJSON(key, fetcher) {\n  let data = jsonCache.get(key);\n  \n  if (!data) {\n    const jsonString = fetcher(key);\n    data = JSON.parse(jsonString);\n    jsonCache.set(key, data);\n  }\n  \n  return data;\n}\n\n// Usage\nconst userData = getCachedJSON("user:123", () => fetchUserJSON(123));',
+                    usage: 'Memoization with LRU cache',
+                    example: `function getCachedJSON(key, fetcher) {
+  let data = jsonCache.get(key);
+  
+  if (!data) {
+    const jsonString = fetcher(key);
+    data = JSON.parse(jsonString);
+    jsonCache.set(key, data);
+  }
+  
+  return data;
+}`,
+                },
+                {
+                    command: 'JSON Cache Usage',
+                    description: 'Example of using JSON cache',
+                    usage: 'getCachedJSON() with fetcher',
+                    example: `// Usage
+const userData = getCachedJSON("user:123", () => fetchUserJSON(123));`,
                 },
             ],
         },
@@ -157,28 +560,147 @@ export const jsonCheatsheet = {
             title: 'JSON Security & Best Practices',
             commands: [
                 {
-                    command: 'Prevent JSON Injection',
-                    description: 'Secure JSON parsing and handling',
-                    usage: 'Input sanitization, safe parsing',
-                    example: 'function safeJSONParse(jsonString) {\n  // Remove potentially dangerous content\n  const sanitized = jsonString\n    .replace(/<script[^>]*>.*?<\\/script>/gi, "")\n    .replace(/javascript:/gi, "")\n    .replace(/on\\w+\\s*=/gi, "");\n  \n  try {\n    return JSON.parse(sanitized);\n  } catch (error) {\n    throw new Error("Invalid or dangerous JSON");\n  }\n}\n\n// Validate before parsing\nfunction validateAndParse(jsonString) {\n  if (typeof jsonString !== "string") {\n    throw new Error("Input must be a string");\n  }\n  \n  if (jsonString.length > MAX_JSON_SIZE) {\n    throw new Error("JSON too large");\n  }\n  \n  return safeJSONParse(jsonString);\n}',
+                    command: 'Safe JSON Parse Function',
+                    description: 'Secure JSON parsing with sanitization',
+                    usage: 'Input sanitization before parsing',
+                    example: `function safeJSONParse(jsonString) {
+  // Remove potentially dangerous content
+  const sanitized = jsonString
+    .replace(/<script[^>]*>.*?<\\/script>/gi, "")
+    .replace(/javascript:/gi, "")
+    .replace(/on\\w+\\s*=/gi, "");
+  
+  try {
+    return JSON.parse(sanitized);
+  } catch (error) {
+    throw new Error("Invalid or dangerous JSON");
+  }
+}`,
                 },
                 {
-                    command: 'Secure JSON Serialization',
+                    command: 'Validate and Parse Function',
+                    description: 'Validate input before parsing',
+                    usage: 'Input validation and safe parsing',
+                    example: `function validateAndParse(jsonString) {
+  if (typeof jsonString !== "string") {
+    throw new Error("Input must be a string");
+  }
+  
+  if (jsonString.length > MAX_JSON_SIZE) {
+    throw new Error("JSON too large");
+  }
+  
+  return safeJSONParse(jsonString);
+}`,
+                },
+                {
+                    command: 'Secure Serialize Setup',
+                    description: 'Setup for secure serialization',
+                    usage: 'Sensitive fields definition',
+                    example: `function secureSerialize(obj, userRole) {
+  const sensitiveFields = ["password", "ssn", "creditCard"];
+  const adminFields = ["internalId", "auditLog"];`,
+                },
+                {
+                    command: 'Secure Serialize Function',
                     description: 'Prevent data leakage in JSON output',
-                    usage: 'Selective serialization, data filtering',
-                    example: 'function secureSerialize(obj, userRole) {\n  const sensitiveFields = ["password", "ssn", "creditCard"];\n  const adminFields = ["internalId", "auditLog"];\n  \n  return JSON.stringify(obj, (key, value) => {\n    // Remove sensitive fields\n    if (sensitiveFields.includes(key)) return undefined;\n    \n    // Remove admin fields for non-admin users\n    if (adminFields.includes(key) && userRole !== "admin") {\n      return undefined;\n    }\n    \n    // Handle circular references\n    if (typeof value === "object" && value !== null) {\n      if (seen.has(value)) return "[Circular]";\n      seen.add(value);\n    }\n    \n    return value;\n  });\n}',
+                    usage: 'Selective serialization with replacer',
+                    example: `  return JSON.stringify(obj, (key, value) => {
+    // Remove sensitive fields
+    if (sensitiveFields.includes(key)) return undefined;
+    
+    // Remove admin fields for non-admin users
+    if (adminFields.includes(key) && userRole !== "admin") {
+      return undefined;
+    }
+    
+    // Handle circular references
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) return "[Circular]";
+      seen.add(value);
+    }
+    
+    return value;
+  });
+}`,
                 },
                 {
-                    command: 'JSON Error Handling',
-                    description: 'Robust error handling for JSON operations',
-                    usage: 'Try-catch, validation, fallbacks',
-                    example: 'function robustJSONParse(jsonString, fallback = null) {\n  try {\n    const parsed = JSON.parse(jsonString);\n    \n    // Validate parsed object\n    if (parsed === null || typeof parsed !== "object") {\n      console.warn("Parsed JSON is not an object");\n      return fallback;\n    }\n    \n    return parsed;\n  } catch (error) {\n    console.error("JSON parsing failed:", error.message);\n    \n    // Try to fix common JSON errors\n    const fixed = jsonString\n      .replace(/,\\s*}/g, "}") // Remove trailing commas\n      .replace(/,\\s*]/g, "]") // Remove trailing commas in arrays\n      .replace(/\'/g, "\\""); // Fix quotes\n    \n    try {\n      return JSON.parse(fixed);\n    } catch {\n      return fallback;\n    }\n  }\n}',
+                    command: 'Robust JSON Parse Function',
+                    description: 'Robust error handling for JSON parsing',
+                    usage: 'Try-catch with fallback and error fixing',
+                    example: `function robustJSONParse(jsonString, fallback = null) {
+  try {
+    const parsed = JSON.parse(jsonString);
+    
+    // Validate parsed object
+    if (parsed === null || typeof parsed !== "object") {
+      console.warn("Parsed JSON is not an object");
+      return fallback;
+    }
+    
+    return parsed;
+  } catch (error) {
+    console.error("JSON parsing failed:", error.message);`,
                 },
                 {
-                    command: 'JSON Best Practices',
-                    description: 'Industry best practices for JSON usage',
-                    usage: 'Naming conventions, structure design',
-                    example: '// Good JSON structure\nconst goodAPIResponse = {\n  success: true,\n  data: {\n    users: [\n      {\n        id: "uuid-string",\n        name: "John Doe",\n        email: "john@example.com",\n        createdAt: "2023-01-01T00:00:00Z",\n        updatedAt: "2023-01-01T00:00:00Z"\n      }\n    ],\n    pagination: {\n      page: 1,\n      limit: 20,\n      total: 100,\n      hasNext: true\n    }\n  },\n  errors: null,\n  metadata: {\n    version: "1.0",\n    timestamp: "2023-01-01T00:00:00Z"\n  }\n};\n\n// Naming conventions\n// - camelCase for properties\n// - Descriptive names\n// - Consistent date format (ISO 8601)\n// - Use null for missing values\n// - Include metadata for API responses',
+                    command: 'JSON Error Fixing',
+                    description: 'Attempt to fix common JSON errors',
+                    usage: 'Regex-based error correction',
+                    example: `    // Try to fix common JSON errors
+    const fixed = jsonString
+      .replace(/,\\s*}/g, "}") // Remove trailing commas
+      .replace(/,\\s*]/g, "]") // Remove trailing commas in arrays
+      .replace(/\'/g, "\\""); // Fix quotes
+    
+    try {
+      return JSON.parse(fixed);
+    } catch {
+      return fallback;
+    }
+  }
+}`,
+                },
+                {
+                    command: 'Good JSON Structure',
+                    description: 'Example of well-structured API response',
+                    usage: 'Best practices for API responses',
+                    example: `// Good JSON structure
+const goodAPIResponse = {
+  success: true,
+  data: {
+    users: [
+      {
+        id: "uuid-string",
+        name: "John Doe",
+        email: "john@example.com",
+        createdAt: "2023-01-01T00:00:00Z",
+        updatedAt: "2023-01-01T00:00:00Z"
+      }
+    ],
+    pagination: {
+      page: 1,
+      limit: 20,
+      total: 100,
+      hasNext: true
+    }
+  },
+  errors: null,
+  metadata: {
+    version: "1.0",
+    timestamp: "2023-01-01T00:00:00Z"
+  }
+};`,
+                },
+                {
+                    command: 'JSON Naming Conventions',
+                    description: 'Best practices for JSON naming',
+                    usage: 'Naming and structure guidelines',
+                    example: `// Naming conventions
+// - camelCase for properties
+// - Descriptive names
+// - Consistent date format (ISO 8601)
+// - Use null for missing values
+// - Include metadata for API responses`,
                 },
             ],
         },
@@ -186,28 +708,168 @@ export const jsonCheatsheet = {
             title: 'JSON APIs & Web Standards',
             commands: [
                 {
-                    command: 'JSON API Specification',
-                    description: 'Build APIs following JSON:API standard',
-                    usage: 'Resource objects, relationships, links',
-                    example: '{\n  "data": {\n    "type": "articles",\n    "id": "1",\n    "attributes": {\n      "title": "JSON:API paints my bikeshed!",\n      "content": "The shortest article. Ever."\n    },\n    "relationships": {\n      "author": {\n        "data": { "type": "people", "id": "9" }\n      }\n    },\n    "links": {\n      "self": "http://example.com/articles/1"\n    }\n  },\n  "included": [\n    {\n      "type": "people",\n      "id": "9",\n      "attributes": {\n        "name": "Dan Gebhardt"\n      }\n    }\n  ]\n}',
+                    command: 'JSON API Data Structure',
+                    description: 'JSON:API resource object structure',
+                    usage: 'Resource objects with attributes and relationships',
+                    example: `{
+  "data": {
+    "type": "articles",
+    "id": "1",
+    "attributes": {
+      "title": "JSON:API paints my bikeshed!",
+      "content": "The shortest article. Ever."
+    },
+    "relationships": {
+      "author": {
+        "data": { "type": "people", "id": "9" }
+      }
+    },
+    "links": {
+      "self": "http://example.com/articles/1"
+    }
+  },`,
                 },
                 {
-                    command: 'JSON Web Tokens (JWT)',
-                    description: 'Create and parse JWT tokens',
-                    usage: 'Header, payload, signature',
-                    example: 'const jwt = require("jsonwebtoken");\n\n// Create JWT\nconst payload = {\n  sub: "1234567890",\n  name: "John Doe",\n  iat: Math.floor(Date.now() / 1000),\n  exp: Math.floor(Date.now() / 1000) + (60 * 60)\n};\n\nconst token = jwt.sign(payload, "secret-key");\n\n// Parse JWT\nconst decoded = jwt.verify(token, "secret-key");\nconsole.log(decoded.name); // "John Doe"\n\n// JWT structure: header.payload.signature\nconst parts = token.split(".");\nconst header = JSON.parse(Buffer.from(parts[0], "base64").toString());\nconst payloadData = JSON.parse(Buffer.from(parts[1], "base64").toString());',
+                    command: 'JSON API Included Data',
+                    description: 'Include related resources in response',
+                    usage: 'included array for related data',
+                    example: `  "included": [
+    {
+      "type": "people",
+      "id": "9",
+      "attributes": {
+        "name": "Dan Gebhardt"
+      }
+    }
+  ]
+}`,
+                },
+                {
+                    command: 'JWT Create Token',
+                    description: 'Create JWT token with payload',
+                    usage: 'jsonwebtoken library',
+                    example: `const jwt = require("jsonwebtoken");
+
+// Create JWT
+const payload = {
+  sub: "1234567890",
+  name: "John Doe",
+  iat: Math.floor(Date.now() / 1000),
+  exp: Math.floor(Date.now() / 1000) + (60 * 60)
+};
+
+const token = jwt.sign(payload, "secret-key");`,
+                },
+                {
+                    command: 'JWT Parse Token',
+                    description: 'Parse and verify JWT token',
+                    usage: 'jwt.verify() method',
+                    example: `// Parse JWT
+const decoded = jwt.verify(token, "secret-key");
+console.log(decoded.name); // "John Doe"`,
+                },
+                {
+                    command: 'JWT Structure Explanation',
+                    description: 'Understanding JWT token structure',
+                    usage: 'Header, payload, signature components',
+                    example: `// JWT structure: header.payload.signature
+const parts = token.split(".");
+const header = JSON.parse(Buffer.from(parts[0], "base64").toString());
+const payloadData = JSON.parse(Buffer.from(parts[1], "base64").toString());`,
+                },
+                {
+                    command: 'JSON Patch Setup',
+                    description: 'Setup for JSON patch operations',
+                    usage: 'fast-json-patch library',
+                    example: `const jsonpatch = require("fast-json-patch");
+
+const original = { name: "John", age: 30 };`,
                 },
                 {
                     command: 'JSON Patch Operations',
                     description: 'Apply partial updates to JSON objects',
-                    usage: 'RFC 6902 JSON Patch',
-                    example: 'const jsonpatch = require("fast-json-patch");\n\nconst original = { name: "John", age: 30 };\nconst patch = [\n  { op: "replace", path: "/name", value: "Jane" },\n  { op: "add", path: "/email", value: "jane@example.com" },\n  { op: "remove", path: "/age" }\n];\n\nconst updated = jsonpatch.applyPatch(original, patch).newDocument;\n// Result: { name: "Jane", email: "jane@example.com" }\n\n// Generate patch from differences\nconst diff = jsonpatch.compare(original, updated);\nconsole.log(diff); // The patch operations',
+                    usage: 'RFC 6902 JSON Patch operations',
+                    example: `const patch = [
+  { op: "replace", path: "/name", value: "Jane" },
+  { op: "add", path: "/email", value: "jane@example.com" },
+  { op: "remove", path: "/age" }
+];`,
                 },
                 {
-                    command: 'JSON Streaming',
-                    description: 'Stream JSON data over HTTP',
-                    usage: 'Server-sent events, streaming responses',
-                    example: 'const express = require("express");\nconst app = express();\n\napp.get("/stream-json", (req, res) => {\n  res.writeHead(200, {\n    "Content-Type": "application/x-ndjson",\n    "Transfer-Encoding": "chunked"\n  });\n  \n  const data = [\n    { id: 1, name: "Item 1" },\n    { id: 2, name: "Item 2" },\n    { id: 3, name: "Item 3" }\n  ];\n  \n  data.forEach((item, index) => {\n    setTimeout(() => {\n      res.write(JSON.stringify(item) + "\\n");\n      \n      if (index === data.length - 1) {\n        res.end();\n      }\n    }, index * 1000);\n  });\n});\n\n// Client-side streaming\nfetch("/stream-json")\n  .then(response => response.body.getReader())\n  .then(reader => {\n    function read() {\n      return reader.read().then(({ done, value }) => {\n        if (done) return;\n        \n        const text = new TextDecoder().decode(value);\n        const lines = text.trim().split("\\n");\n        \n        lines.forEach(line => {\n          const data = JSON.parse(line);\n          console.log("Received:", data);\n        });\n        \n        return read();\n      });\n    }\n    \n    return read();\n  });',
+                    command: 'JSON Patch Apply',
+                    description: 'Apply patch to original object',
+                    usage: 'jsonpatch.applyPatch()',
+                    example: `const updated = jsonpatch.applyPatch(original, patch).newDocument;
+// Result: { name: "Jane", email: "jane@example.com" }`,
+                },
+                {
+                    command: 'JSON Patch Compare',
+                    description: 'Generate patch from differences',
+                    usage: 'jsonpatch.compare()',
+                    example: `// Generate patch from differences
+const diff = jsonpatch.compare(original, updated);
+console.log(diff); // The patch operations`,
+                },
+                {
+                    command: 'JSON Streaming Server Setup',
+                    description: 'Setup Express server for JSON streaming',
+                    usage: 'Express.js streaming response',
+                    example: `const express = require("express");
+const app = express();
+
+app.get("/stream-json", (req, res) => {
+  res.writeHead(200, {
+    "Content-Type": "application/x-ndjson",
+    "Transfer-Encoding": "chunked"
+  });`,
+                },
+                {
+                    command: 'JSON Streaming Server Data',
+                    description: 'Stream JSON data from server',
+                    usage: 'setTimeout for delayed streaming',
+                    example: `  const data = [
+    { id: 1, name: "Item 1" },
+    { id: 2, name: "Item 2" },
+    { id: 3, name: "Item 3" }
+  ];
+  
+  data.forEach((item, index) => {
+    setTimeout(() => {
+      res.write(JSON.stringify(item) + "\\n");
+      
+      if (index === data.length - 1) {
+        res.end();
+      }
+    }, index * 1000);
+  });
+});`,
+                },
+                {
+                    command: 'JSON Streaming Client',
+                    description: 'Consume JSON stream on client',
+                    usage: 'Fetch API with streaming',
+                    example: `// Client-side streaming
+fetch("/stream-json")
+  .then(response => response.body.getReader())
+  .then(reader => {
+    function read() {
+      return reader.read().then(({ done, value }) => {
+        if (done) return;
+        
+        const text = new TextDecoder().decode(value);
+        const lines = text.trim().split("\\n");
+        
+        lines.forEach(line => {
+          const data = JSON.parse(line);
+          console.log("Received:", data);
+        });
+        
+        return read();
+      });
+    }
+    
+    return read();
+  });`,
                 },
             ],
         },
@@ -215,28 +877,164 @@ export const jsonCheatsheet = {
             title: 'Advanced JSON Features & Patterns',
             commands: [
                 {
-                    command: 'JSON with BigInt',
-                    description: 'Handle large numbers in JSON',
-                    usage: 'BigInt serialization, custom replacer',
-                    example: 'function jsonBigIntStringify(obj) {\n  return JSON.stringify(obj, (key, value) => {\n    if (typeof value === "bigint") {\n      return value.toString() + "n";\n    }\n    return value;\n  });\n}\n\nfunction jsonBigIntParse(jsonString) {\n  return JSON.parse(jsonString, (key, value) => {\n    if (typeof value === "string" && /^\\d+n$/.test(value)) {\n      return BigInt(value.slice(0, -1));\n    }\n    return value;\n  });\n}\n\nconst data = { bigNumber: BigInt(123456789012345678901234567890) };\nconst json = jsonBigIntStringify(data);\nconst parsed = jsonBigIntParse(json);\nconsole.log(parsed.bigNumber === data.bigNumber); // true',
+                    command: 'BigInt Stringify Function',
+                    description: 'Serialize BigInt values in JSON',
+                    usage: 'Custom replacer for BigInt',
+                    example: `function jsonBigIntStringify(obj) {
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === "bigint") {
+      return value.toString() + "n";
+    }
+    return value;
+  });
+}`,
                 },
                 {
-                    command: 'JSON with Dates',
-                    description: 'Properly handle dates in JSON',
-                    usage: 'ISO 8601, custom serialization',
-                    example: 'function jsonDateStringify(obj) {\n  return JSON.stringify(obj, (key, value) => {\n    if (value instanceof Date) {\n      return { __type: "Date", value: value.toISOString() };\n    }\n    return value;\n  });\n}\n\nfunction jsonDateParse(jsonString) {\n  return JSON.parse(jsonString, (key, value) => {\n    if (value && typeof value === "object" && value.__type === "Date") {\n      return new Date(value.value);\n    }\n    return value;\n  });\n}\n\nconst event = {\n  name: "Conference",\n  date: new Date(),\n  attendees: ["Alice", "Bob"]\n};\n\nconst json = jsonDateStringify(event);\nconst parsed = jsonDateParse(json);\nconsole.log(parsed.date instanceof Date); // true',
+                    command: 'BigInt Parse Function',
+                    description: 'Parse BigInt values from JSON',
+                    usage: 'Custom reviver for BigInt',
+                    example: `function jsonBigIntParse(jsonString) {
+  return JSON.parse(jsonString, (key, value) => {
+    if (typeof value === "string" && /^\\d+n$/.test(value)) {
+      return BigInt(value.slice(0, -1));
+    }
+    return value;
+  });
+}`,
                 },
                 {
-                    command: 'JSON with Functions',
-                    description: 'Serialize and deserialize functions',
-                    usage: 'Function serialization, eval alternative',
-                    example: 'function jsonFunctionStringify(obj) {\n  return JSON.stringify(obj, (key, value) => {\n    if (typeof value === "function") {\n      return { __type: "Function", value: value.toString() };\n    }\n    return value;\n  });\n}\n\nfunction jsonFunctionParse(jsonString) {\n  return JSON.parse(jsonString, (key, value) => {\n    if (value && typeof value === "object" && value.__type === "Function") {\n      // Use Function constructor instead of eval for safety\n      const funcBody = value.value.replace(/^function[^(]*\\([^)]*\\)\\s*{/, "")\n                                .replace(/}$/, "");\n      return new Function(funcBody);\n    }\n    return value;\n  });\n}\n\nconst calculator = {\n  add: (a, b) => a + b,\n  multiply: (a, b) => a * b\n};\n\nconst json = jsonFunctionStringify(calculator);\nconst parsed = jsonFunctionParse(json);\nconsole.log(parsed.add(2, 3)); // 5',
+                    command: 'BigInt Usage Example',
+                    description: 'Example of BigInt JSON serialization',
+                    usage: 'Complete BigInt workflow',
+                    example: `const data = { bigNumber: BigInt(123456789012345678901234567890) };
+const json = jsonBigIntStringify(data);
+const parsed = jsonBigIntParse(json);
+console.log(parsed.bigNumber === data.bigNumber); // true`,
                 },
                 {
-                    command: 'JSON Circular References',
+                    command: 'Date Stringify Function',
+                    description: 'Serialize Date objects in JSON',
+                    usage: 'Custom replacer for Date',
+                    example: `function jsonDateStringify(obj) {
+  return JSON.stringify(obj, (key, value) => {
+    if (value instanceof Date) {
+      return { __type: "Date", value: value.toISOString() };
+    }
+    return value;
+  });
+}`,
+                },
+                {
+                    command: 'Date Parse Function',
+                    description: 'Parse Date objects from JSON',
+                    usage: 'Custom reviver for Date',
+                    example: `function jsonDateParse(jsonString) {
+  return JSON.parse(jsonString, (key, value) => {
+    if (value && typeof value === "object" && value.__type === "Date") {
+      return new Date(value.value);
+    }
+    return value;
+  });
+}`,
+                },
+                {
+                    command: 'Date Usage Example',
+                    description: 'Example of Date JSON serialization',
+                    usage: 'Complete Date workflow',
+                    example: `const event = {
+  name: "Conference",
+  date: new Date(),
+  attendees: ["Alice", "Bob"]
+};
+
+const json = jsonDateStringify(event);
+const parsed = jsonDateParse(json);
+console.log(parsed.date instanceof Date); // true`,
+                },
+                {
+                    command: 'Function Stringify Function',
+                    description: 'Serialize functions in JSON',
+                    usage: 'Custom replacer for functions',
+                    example: `function jsonFunctionStringify(obj) {
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === "function") {
+      return { __type: "Function", value: value.toString() };
+    }
+    return value;
+  });
+}`,
+                },
+                {
+                    command: 'Function Parse Function',
+                    description: 'Parse functions from JSON',
+                    usage: 'Custom reviver for functions',
+                    example: `function jsonFunctionParse(jsonString) {
+  return JSON.parse(jsonString, (key, value) => {
+    if (value && typeof value === "object" && value.__type === "Function") {
+      // Use Function constructor instead of eval for safety
+      const funcBody = value.value.replace(/^function[^(]*\\([^)]*\\)\\s*{/, "")
+                                .replace(/}$/, "");
+      return new Function(funcBody);
+    }
+    return value;
+  });
+}`,
+                },
+                {
+                    command: 'Function Usage Example',
+                    description: 'Example of function JSON serialization',
+                    usage: 'Complete function workflow',
+                    example: `const calculator = {
+  add: (a, b) => a + b,
+  multiply: (a, b) => a * b
+};
+
+const json = jsonFunctionStringify(calculator);
+const parsed = jsonFunctionParse(json);
+console.log(parsed.add(2, 3)); // 5`,
+                },
+                {
+                    command: 'Circular Stringify Function',
                     description: 'Handle circular references in JSON',
-                    usage: 'Circular detection, custom replacer',
-                    example: 'function jsonStringifyCircular(obj, space) {\n  const seen = new WeakSet();\n  \n  return JSON.stringify(obj, (key, value) => {\n    if (typeof value === "object" && value !== null) {\n      if (seen.has(value)) {\n        return "[Circular Reference]";\n      }\n      seen.add(value);\n    }\n    return value;\n  }, space);\n}\n\nconst obj = { name: "Parent" };\nobj.self = obj; // Circular reference\nobj.child = { name: "Child", parent: obj };\n\nconst json = jsonStringifyCircular(obj, 2);\nconsole.log(json);\n// Output:\n// {\n//   "name": "Parent",\n//   "self": "[Circular Reference]",\n//   "child": {\n//     "name": "Child",\n//     "parent": "[Circular Reference]"\n//   }\n// }',
+                    usage: 'WeakSet for circular detection',
+                    example: `function jsonStringifyCircular(obj, space) {
+  const seen = new WeakSet();
+  
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return "[Circular Reference]";
+      }
+      seen.add(value);
+    }
+    return value;
+  }, space);
+}`,
+                },
+                {
+                    command: 'Circular Reference Example',
+                    description: 'Example of circular reference handling',
+                    usage: 'Create and serialize circular objects',
+                    example: `const obj = { name: "Parent" };
+obj.self = obj; // Circular reference
+obj.child = { name: "Child", parent: obj };
+
+const json = jsonStringifyCircular(obj, 2);
+console.log(json);`,
+                },
+                {
+                    command: 'Circular Reference Output',
+                    description: 'Expected output for circular references',
+                    usage: 'Understanding circular reference serialization',
+                    example: `// Output:
+// {
+//   "name": "Parent",
+//   "self": "[Circular Reference]",
+//   "child": {
+//     "name": "Child",
+//     "parent": "[Circular Reference]"
+//   }
+// }`,
                 },
             ],
         },

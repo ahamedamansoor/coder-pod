@@ -13,184 +13,2455 @@ export const homebrewCheatsheet = {
       title: 'Getting Started with Homebrew',
       commands: [
         {
-          command: 'What is Homebrew?',
-          description: 'Homebrew is a free and open-source software package management system that simplifies the installation of software on Apple macOS and Linux',
-          usage: 'Understanding Homebrew capabilities and basic concepts',
-          example: 'Homebrew Overview:\n- Package manager for macOS and Linux\n- Installs software to /usr/local (macOS) or ~/.linuxbrew (Linux)\n- Manages packages, formulae, and casks\n- Handles dependencies automatically\n- Community-driven repository\n\nKey Components:\n- Formulae: Software packages (CLI tools, libraries)\n- Casks: macOS applications with GUI\n- Taps: Additional repositories\n- Cellar: Installed package location\n- Keg: Package installation directory\n\nCore Concepts:\n- Formula: Ruby script defining package\n- Cask: Ruby script defining macOS app\n- Tap: Git repository of formulae/casks\n- Bottle: Pre-compiled binary package\n- Cellar: Directory for installed packages\n\nPackage Types:\n- Formula: Command-line tools, libraries, utilities\n- Cask: macOS applications, fonts, plugins\n- Services: Background services and daemons\n\nInstallation Locations:\n- macOS: /usr/local/Cellar (packages), /usr/local/Caskroom (casks)\n- Linux: ~/.linuxbrew/Cellar, ~/.linuxbrew/Caskroom\n\nBenefits:\n- Simplified installation process\n- Automatic dependency management\n- Easy updates and maintenance\n- Large package repository\n- Community support\n\nIntegration:\n- Shell environment setup\n- PATH configuration\n- Man page integration\n- Completion scripts'
+          command: 'Homebrew Overview',
+          description: 'Homebrew fundamentals and core concepts',
+          usage: 'Understanding Homebrew capabilities',
+          example: `Homebrew Overview:
+- Package manager for macOS and Linux
+- Installs software to /usr/local (macOS) or ~/.linuxbrew (Linux)
+- Manages packages, formulae, and casks
+- Handles dependencies automatically
+- Community-driven repository
+
+Key Components:
+- Formulae: Software packages (CLI tools, libraries)
+- Casks: macOS applications with GUI
+- Taps: Additional repositories
+- Cellar: Installed package location
+- Keg: Package installation directory
+
+Core Concepts:
+- Formula: Ruby script defining package
+- Cask: Ruby script defining macOS app
+- Tap: Git repository of formulae/casks
+- Bottle: Pre-compiled binary package
+- Cellar: Directory for installed packages
+
+Package Types:
+- Formula: Command-line tools, libraries, utilities
+- Cask: macOS applications, fonts, plugins
+- Services: Background services and daemons
+
+Installation Locations:
+- macOS: /usr/local/Cellar (packages), /usr/local/Caskroom (casks)
+- Linux: ~/.linuxbrew/Cellar, ~/.linuxbrew/Caskroom
+
+Benefits:
+- Simplified installation process
+- Automatic dependency management
+- Easy updates and maintenance
+- Large package repository
+- Community support
+
+Integration:
+- Shell environment setup
+- PATH configuration
+- Man page integration
+- Completion scripts`,
         },
         {
-          command: 'Installation and Setup',
-          description: 'Installing Homebrew and configuring the environment',
-          usage: 'Setting up Homebrew on macOS and Linux systems',
-          example: '# macOS Installation\n\n# Prerequisites\n- Xcode Command Line Tools\n- macOS 10.14 or later\n- Administrative privileges\n\n# Install Xcode Command Line Tools\nxcode-select --install\n\n# Install Homebrew\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\n\n# Linux Installation\n\n# Prerequisites\n- GCC 4.4+ or Clang 3.0+\n- Linux kernel 2.6.32+\n- 64-bit x86_64 architecture\n\n# Install Homebrew on Linux\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\n\n# Post-Installation Setup\n\n# Add Homebrew to PATH (macOS Intel)\necho \'eval "$(/usr/local/bin/brew shellenv)"\' >> ~/.zshrc\neval "$(/usr/local/bin/brew shellenv)"\n\n# Add Homebrew to PATH (macOS Apple Silicon)\necho \'eval "$(/opt/homebrew/bin/brew shellenv)"\' >> ~/.zshrc\neval "$(/opt/homebrew/bin/brew shellenv)"\n\n# Add Homebrew to PATH (Linux)\necho \'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"\' >> ~/.zshrc\neval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"\n\n# Verify Installation\nbrew doctor             # Check for issues\nbrew help               # Show help\nbrew --version          # Show version\n\n# Shell Completion\n\n# Enable Zsh completion\necho \'FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"\' >> ~/.zshrc\n\n# Enable Bash completion\necho \'source "$(brew --prefix)/etc/bash_completion"\' >> ~/.bashrc\n\n# Environment Variables\nexport HOMEBREW_NO_AUTO_UPDATE=1  # Disable auto-update\nexport HOMEBREW_NO_ENV_HINTS=1    # Disable environment hints\nexport HOMEBREW_NO_ANALYTICS=1     # Disable analytics'
+          command: 'Install Xcode Command Line Tools',
+          description: 'Install Xcode Command Line Tools on macOS',
+          usage: 'macOS prerequisites',
+          example: `xcode-select --install`,
         },
         {
-          command: 'Basic Configuration',
-          description: 'Essential Homebrew configuration and customization',
-          usage: 'Optimizing Homebrew settings and environment',
-          example: '# Configuration Files\n\n# Global Configuration\n~/.brewconfig         # User-specific config\n/etc/brewconfig       # System-wide config\n\n# Environment Variables\n\n# Disable Auto-update\nexport HOMEBREW_NO_AUTO_UPDATE=1\n\n# Disable Environment Hints\nexport HOMEBREW_NO_ENV_HINTS=1\n\n# Disable Analytics\nexport HOMEBREW_NO_ANALYTICS=1\n\n# Set Custom Installation Directory\nexport HOMEBREW_PREFIX="/opt/homebrew"\n\n# Custom Bottle Domain\nexport HOMEBREW_BOTTLE_DOMAIN="https://my-mirror.com"\n\n# Git Configuration\nbrew config             # Show current configuration\nbrew update --force     # Force update\n\n# Repository Management\n\n# Add Custom Tap\nbrew tap user/repo      # Add user tap\nbrew tap --list        # List all taps\nbrew untap user/repo    # Remove tap\n\n# Core Repository\nbrew --repository       # Show core repo path\nbrew --repository homebrew/core\n\n# Cask Repository\nbrew --repository homebrew/cask\n\n# Cleanup Configuration\n\n# Auto-cleanup Settings\nbrew cleanup --prune=30  # Keep 30 days of history\nbrew cleanup --dry-run  # Preview cleanup\n\n# Performance Optimization\n\n# Parallel Builds\nexport HOMEBREW_MAKE_JOBS=4  # Use 4 CPU cores\n\n# Build from Source\nexport HOMEBREW_BUILD_FROM_SOURCE=1\n\n# Bottle Settings\nexport HOMEBREW_BOTTLE_ARCH=arm64e  # ARM64 bottles\n\n# Logging\nexport HOMEBREW_VERBOSE=1  # Verbose output\nexport HOMEBREW_DEBUG=1    # Debug output\n\n# Security Settings\n\n# Secure Installation\nexport HOMEBREW_CURL_OPTS="--tlsv1.2"\nexport HOMEBREW_GIT_OPTS="--no-pager"\n\n# Custom Mirrors\nexport HOMEBREW_API_DOMAIN="https://api.github.com"\nexport HOMEBREW_BREW_GIT_REMOTE="https://github.com/Homebrew/brew"'
-        }
-      ]
+          command: 'Install Homebrew on macOS',
+          description: 'Install Homebrew using official installer script',
+          usage: 'macOS installation',
+          example: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`,
+        },
+        {
+          command: 'Install Homebrew on Linux',
+          description: 'Install Homebrew on Linux systems',
+          usage: 'Linux installation',
+          example: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`,
+        },
+        {
+          command: 'Configure Homebrew PATH (macOS Intel)',
+          description: 'Add Homebrew to PATH on Intel Macs',
+          usage: 'Environment setup',
+          example: `echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zshrc
+eval "$(/usr/local/bin/brew shellenv)"`,
+        },
+        {
+          command: 'Configure Homebrew PATH (macOS Apple Silicon)',
+          description: 'Add Homebrew to PATH on Apple Silicon Macs',
+          usage: 'Environment setup',
+          example: `echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+eval "$(/opt/homebrew/bin/brew shellenv)"`,
+        },
+        {
+          command: 'Configure Homebrew PATH (Linux)',
+          description: 'Add Homebrew to PATH on Linux',
+          usage: 'Environment setup',
+          example: `echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"`,
+        },
+        {
+          command: 'Verify Homebrew Installation',
+          description: 'Check Homebrew installation and get help',
+          usage: 'Installation verification',
+          example: `brew doctor             # Check for issues
+brew help               # Show help
+brew --version          # Show version`,
+        },
+        {
+          command: 'Enable Zsh Completion',
+          description: 'Enable Zsh shell completion for Homebrew',
+          usage: 'Shell completion',
+          example: `echo 'FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"' >> ~/.zshrc`,
+        },
+        {
+          command: 'Enable Bash Completion',
+          description: 'Enable Bash shell completion for Homebrew',
+          usage: 'Shell completion',
+          example: `echo 'source "$(brew --prefix)/etc/bash_completion"' >> ~/.bashrc`,
+        },
+        {
+          command: 'Disable Auto-Update',
+          description: 'Disable automatic Homebrew updates',
+          usage: 'Environment configuration',
+          example: `export HOMEBREW_NO_AUTO_UPDATE=1`,
+        },
+        {
+          command: 'Disable Environment Hints',
+          description: 'Disable environment hints in Homebrew',
+          usage: 'Environment configuration',
+          example: `export HOMEBREW_NO_ENV_HINTS=1`,
+        },
+        {
+          command: 'Disable Analytics',
+          description: 'Disable Homebrew analytics collection',
+          usage: 'Privacy configuration',
+          example: `export HOMEBREW_NO_ANALYTICS=1`,
+        },
+        {
+          command: 'Show Homebrew Configuration',
+          description: 'Display current Homebrew configuration',
+          usage: 'Configuration management',
+          example: `brew config`,
+        },
+        {
+          command: 'Force Update Homebrew',
+          description: 'Force update Homebrew and formulae',
+          usage: 'Update management',
+          example: `brew update --force`,
+        },
+        {
+          command: 'Add Custom Tap',
+          description: 'Add a custom tap repository',
+          usage: 'Repository management',
+          example: `brew tap user/repo`,
+        },
+        {
+          command: 'List All Taps',
+          description: 'List all installed taps',
+          usage: 'Repository management',
+          example: `brew tap --list`,
+        },
+        {
+          command: 'Remove Tap',
+          description: 'Remove a tap repository',
+          usage: 'Repository management',
+          example: `brew untap user/repo`,
+        },
+        {
+          command: 'Show Core Repository Path',
+          description: 'Display the core repository path',
+          usage: 'Repository information',
+          example: `brew --repository`,
+        },
+        {
+          command: 'Show Specific Repository Path',
+          description: 'Display path for specific repository',
+          usage: 'Repository information',
+          example: `brew --repository homebrew/core`,
+        },
+        {
+          command: 'Auto-Cleanup Settings',
+          description: 'Configure automatic cleanup settings',
+          usage: 'Maintenance configuration',
+          example: `brew cleanup --prune=30  # Keep 30 days of history
+brew cleanup --dry-run  # Preview cleanup`,
+        },
+        {
+          command: 'Configure Parallel Builds',
+          description: 'Set number of CPU cores for parallel builds',
+          usage: 'Performance configuration',
+          example: `export HOMEBREW_MAKE_JOBS=4  # Use 4 CPU cores`,
+        },
+        {
+          command: 'Build from Source',
+          description: 'Force building packages from source',
+          usage: 'Build configuration',
+          example: `export HOMEBREW_BUILD_FROM_SOURCE=1`,
+        },
+        {
+          command: 'Set Bottle Architecture',
+          description: 'Configure specific bottle architecture',
+          usage: 'Architecture configuration',
+          example: `export HOMEBREW_BOTTLE_ARCH=arm64e  # ARM64 bottles`,
+        },
+        {
+          command: 'Enable Verbose Output',
+          description: 'Enable verbose output for debugging',
+          usage: 'Debugging configuration',
+          example: `export HOMEBREW_VERBOSE=1  # Verbose output`,
+        },
+        {
+          command: 'Enable Debug Output',
+          description: 'Enable debug output for troubleshooting',
+          usage: 'Debugging configuration',
+          example: `export HOMEBREW_DEBUG=1    # Debug output`,
+        },
+        {
+          command: 'Configure Secure Installation',
+          description: 'Configure secure installation settings',
+          usage: 'Security configuration',
+          example: `export HOMEBREW_CURL_OPTS="--tlsv1.2"
+export HOMEBREW_GIT_OPTS="--no-pager"`,
+        },
+        {
+          command: 'Set Custom Mirrors',
+          description: 'Configure custom API and Git mirrors',
+          usage: 'Network configuration',
+          example: `export HOMEBREW_API_DOMAIN="https://api.github.com"
+export HOMEBREW_BREW_GIT_REMOTE="https://github.com/Homebrew/brew"`,
+        },
+      ],
     },
     {
       title: 'Package Management',
       commands: [
         {
-          command: 'Installing Packages',
-          description: 'Installing formulae, casks, and managing dependencies',
-          usage: 'Basic and advanced package installation techniques',
-          example: '# Basic Installation\n\n# Install Formula (CLI tool)\nbrew install wget        # Install wget\nbrew install git         # Install git\nbrew install node        # Install Node.js\n\n# Install Cask (macOS app)\nbrew install --cask visual-studio-code\nbrew install --cask firefox\nbrew install --cask slack\n\n# Install Multiple Packages\nbrew install wget curl git # Install multiple formulae\nbrew install --cask firefox chrome # Install multiple casks\n\n# Advanced Installation\n\n# Install Specific Version\nbrew install node@16      # Install Node.js 16\nbrew install python@3.9  # Install Python 3.9\n\n# Install from Tap\nbrew tap homebrew/cask-versions\nbrew install --cask firefox-developer-edition\n\n# Install Development Version\nbrew install --HEAD node  # Install latest development version\n\n# Build from Source\nbrew install --build-from-source wget\n\n# Installation Options\n\n# Interactive Installation\nbrew install --interactive git\n\n# With Dependencies\nbrew install --include-test wget\n\n# Ignore Dependencies\nbrew install --ignore-dependencies wget\n\n# Custom Prefix\nbrew install --prefix=/opt/custom wget\n\n# Package Information\n\n# Search Packages\nbrew search wget        # Search for packages\nbrew search /text/      # Regex search\n\n# Package Information\nbrew info wget          # Show package info\nbrew info --cask firefox # Show cask info\n\n# List Available Versions\nbrew info --versions node\n\n# Check if Package Exists\nbrew list | grep wget   # Check if installed\n\n# Dependency Management\n\n# Show Dependencies\nbrew deps wget          # Show dependencies\nbrew deps --tree wget  # Dependency tree\nbrew deps --installed wget # Installed dependencies\n\n# Install with Optional Dependencies\nbrew install wget --with-optional-deps\n\n# Installation Troubleshooting\n\n# Verbose Installation\nbrew install --verbose wget\n\n# Debug Installation\nbrew install --debug wget\n\n# Force Reinstall\nbrew reinstall wget    # Reinstall package\nbrew install --force wget # Force installation'
+          command: 'Install Formula (CLI Tool)',
+          description: 'Install a basic formula package',
+          usage: 'Basic package installation',
+          example: `brew install wget        # Install wget
+brew install git         # Install git
+brew install node        # Install Node.js`,
         },
         {
-          command: 'Managing Installed Packages',
-          description: 'Listing, updating, and managing installed packages',
-          usage: 'Package maintenance and version management',
-          example: '# Listing Packages\n\n# List All Formulae\nbrew list               # List installed formulae\nbrew list --formula     # List only formulae\n\n# List All Casks\nbrew list --cask       # List installed casks\n\n# List Package Files\nbrew list wget          # List files for package\nbrew list --verbose wget # Detailed file list\n\n# Updating Packages\n\n# Update Homebrew\nbrew update             # Update brew and formulae\nbrew update --merge     # Merge during update\n\n# Upgrade All Packages\nbrew upgrade            # Upgrade all packages\nbrew upgrade --formula  # Upgrade only formulae\nbrew upgrade --cask     # Upgrade only casks\n\n# Upgrade Specific Package\nbrew upgrade wget       # Upgrade specific package\nbrew upgrade node@16    # Upgrade specific version\n\n# Outdated Packages\nbrew outdated           # Show outdated packages\nbrew outdated --formula  # Show outdated formulae\nbrew outdated --cask    # Show outdated casks\n\n# Version Management\n\n# Switch Between Versions\nbrew switch node 16.0.0  # Switch to specific version\nbrew unlink node        # Unlink current version\nbrew link node@16       # Link specific version\n\n# Pin Packages (prevent upgrades)\nbrew pin node           # Pin package\nbrew unpin node         # Unpin package\nbrew list --pinned      # List pinned packages\n\n# Package Removal\n\n# Uninstall Package\nbrew uninstall wget     # Remove package\nbrew uninstall --force wget # Force removal\n\n# Remove Multiple Packages\nbrew uninstall wget curl git\n\n# Cleanup After Removal\nbrew uninstall wget --ignore-dependencies\n\n# Package Information\n\n# Check Package Details\nbrew info wget          # Package information\nbrew info --json wget   # JSON format info\nbrew info --cask firefox # Cask information\n\n# Package Dependencies\nbrew uses wget          # Show packages that use this\nbrew deps --tree wget  # Dependency tree\nbrew deps wget          # Show dependencies\n\n# Installation History\nbrew log wget           # Installation history\nbrew log --oneline wget # One-line history\n\n# Package Health\n\n# Check Package Integrity\nbrew doctor             # Check system health\nbrew doctor --verbose   # Detailed check\n\n# Verify Installations\nbrew test wget          # Test package\nbrew install --test wget # Install with tests'
+          command: 'Install Cask (macOS App)',
+          description: 'Install a macOS application',
+          usage: 'GUI application installation',
+          example: `brew install --cask visual-studio-code
+brew install --cask firefox
+brew install --cask slack`,
         },
         {
-          command: 'Package Cleanup and Maintenance',
-          description: 'Cleaning up old versions and maintaining system health',
-          usage: 'System maintenance and optimization',
-          example: '# Cleanup Operations\n\n# Basic Cleanup\nbrew cleanup            # Remove old versions\nbrew cleanup --prune=30 # Keep last 30 days\nbrew cleanup --dry-run  # Preview cleanup\n\n# Aggressive Cleanup\nbrew cleanup --scrub    # Remove all old versions\nbrew cleanup -s        # Scrub cache\n\n# Specific Package Cleanup\nbrew cleanup wget       # Cleanup specific package\n\n# Cache Management\n\n# Clear Cache\nbrew cleanup --cache   # Clear package cache\nrm -rf "$(brew --cache)" # Remove entire cache\n\n# Cache Size\ndu -sh "$(brew --cache)" # Show cache size\n\n# Orphaned Packages\n\n# Remove Orphans\nbrew autoremove          # Remove unused dependencies\nbrew autoremove --dry-run # Preview removal\n\n# Manual Orphan Removal\nbrew leaves              # Show orphaned packages\nbrew remove $(brew leaves) # Remove orphans\n\n# System Maintenance\n\n# Check System Health\nbrew doctor             # Check for issues\nbrew doctor --verbose   # Detailed diagnosis\n\n# Fix Common Issues\nbrew update --force     # Force update\nbrew prune              # Remove dead symlinks\nbrew link --overwrite python # Fix linking issues\n\n# Performance Optimization\n\n# Optimize Performance\nbrew cleanup --prune=7  # Keep recent versions\nbrew analytics off     # Disable analytics\n\n# Parallel Operations\nexport HOMEBREW_MAKE_JOBS=8 # Use 8 CPU cores\n\n# Storage Management\n\n# Disk Usage Analysis\ndu -sh "$(brew --prefix)" # Homebrew size\nbrew list --formula | wc -l # Count formulae\nbrew list --cask | wc -l   # Count casks\n\n# Large Packages\nbrew list --formula | xargs brew info --json | jq -r \'.[] | select(.installed[0].used_for_megabytes > 100) | .name\'\n\n# Maintenance Schedule\n\n# Daily Maintenance\nbrew update && brew upgrade && brew cleanup\n\n# Weekly Deep Clean\nbrew cleanup --prune=7 && brew autoremove && brew doctor\n\n# Monthly Health Check\nbrew doctor --verbose && brew test $(brew leaves)\n\n# Advanced Cleanup\n\n# Remove All and Reinstall\nbrew list | xargs brew uninstall\nbrew cleanup --scrub\nbrew install coreutils # Reinstall essential packages\n\n# Reset to Defaults\nbrew update-reset       # Reset to HEAD\nbrew uninstall --force $(brew list) # Remove all'
-        }
-      ]
+          command: 'Install Multiple Formulae',
+          description: 'Install multiple formula packages at once',
+          usage: 'Batch package installation',
+          example: `brew install wget curl git # Install multiple formulae`,
+        },
+        {
+          command: 'Install Multiple Casks',
+          description: 'Install multiple macOS applications at once',
+          usage: 'Batch application installation',
+          example: `brew install --cask firefox chrome # Install multiple casks`,
+        },
+        {
+          command: 'Install Specific Version',
+          description: 'Install a specific version of a package',
+          usage: 'Version management',
+          example: `brew install node@16      # Install Node.js 16
+brew install python@3.9  # Install Python 3.9`,
+        },
+        {
+          command: 'Install from Tap',
+          description: 'Install package from a custom tap',
+          usage: 'Tap package installation',
+          example: `brew tap homebrew/cask-versions
+brew install --cask firefox-developer-edition`,
+        },
+        {
+          command: 'Install Development Version',
+          description: 'Install the latest development version',
+          usage: 'Development packages',
+          example: `brew install --HEAD node  # Install latest development version`,
+        },
+        {
+          command: 'Build from Source',
+          description: 'Force build package from source code',
+          usage: 'Source compilation',
+          example: `brew install --build-from-source wget`,
+        },
+        {
+          command: 'Interactive Installation',
+          description: 'Install package interactively',
+          usage: 'Interactive installation',
+          example: `brew install --interactive git`,
+        },
+        {
+          command: 'Install with Test Dependencies',
+          description: 'Install package including test dependencies',
+          usage: 'Development installation',
+          example: `brew install --include-test wget`,
+        },
+        {
+          command: 'Install Ignoring Dependencies',
+          description: 'Install package without dependencies',
+          usage: 'Selective installation',
+          example: `brew install --ignore-dependencies wget`,
+        },
+        {
+          command: 'Install with Custom Prefix',
+          description: 'Install package to custom directory',
+          usage: 'Custom installation path',
+          example: `brew install --prefix=/opt/custom wget`,
+        },
+        {
+          command: 'Search Packages',
+          description: 'Search for available packages',
+          usage: 'Package discovery',
+          example: `brew search wget        # Search for packages
+brew search /text/      # Regex search`,
+        },
+        {
+          command: 'Show Package Information',
+          description: 'Display detailed package information',
+          usage: 'Package information',
+          example: `brew info wget          # Show package info
+brew info --cask firefox # Show cask info`,
+        },
+        {
+          command: 'List Available Versions',
+          description: 'Show all available versions of a package',
+          usage: 'Version information',
+          example: `brew info --versions node`,
+        },
+        {
+          command: 'Check if Package Installed',
+          description: 'Check if specific package is installed',
+          usage: 'Package verification',
+          example: `brew list | grep wget   # Check if installed`,
+        },
+        {
+          command: 'Show Package Dependencies',
+          description: 'Display dependencies for a package',
+          usage: 'Dependency information',
+          example: `brew deps wget          # Show dependencies
+brew deps --tree wget  # Dependency tree
+brew deps --installed wget # Installed dependencies`,
+        },
+        {
+          command: 'Install with Optional Dependencies',
+          description: 'Install package with optional dependencies',
+          usage: 'Complete installation',
+          example: `brew install wget --with-optional-deps`,
+        },
+        {
+          command: 'Verbose Installation',
+          description: 'Install package with verbose output',
+          usage: 'Debugging installation',
+          example: `brew install --verbose wget`,
+        },
+        {
+          command: 'Debug Installation',
+          description: 'Install package with debug output',
+          usage: 'Troubleshooting installation',
+          example: `brew install --debug wget`,
+        },
+        {
+          command: 'Force Reinstall',
+          description: 'Force reinstallation of a package',
+          usage: 'Package reinstallation',
+          example: `brew reinstall wget    # Reinstall package`,
+        },
+        {
+          command: 'List All Formulae',
+          description: 'List all installed formula packages',
+          usage: 'Package listing',
+          example: `brew list               # List installed formulae
+brew list --formula     # List only formulae`,
+        },
+        {
+          command: 'List All Casks',
+          description: 'List all installed cask packages',
+          usage: 'Application listing',
+          example: `brew list --cask       # List installed casks`,
+        },
+        {
+          command: 'List Package Files',
+          description: 'Show files installed by a package',
+          usage: 'File listing',
+          example: `brew list wget          # List files for package
+brew list --verbose wget # Detailed file list`,
+        },
+        {
+          command: 'Update Homebrew',
+          description: 'Update Homebrew and formulae',
+          usage: 'System updates',
+          example: `brew update             # Update brew and formulae
+brew update --merge     # Merge during update`,
+        },
+        {
+          command: 'Upgrade All Packages',
+          description: 'Upgrade all installed packages',
+          usage: 'System upgrades',
+          example: `brew upgrade            # Upgrade all packages
+brew upgrade --formula  # Upgrade only formulae
+brew upgrade --cask     # Upgrade only casks`,
+        },
+        {
+          command: 'Upgrade Specific Package',
+          description: 'Upgrade a specific package',
+          usage: 'Selective upgrades',
+          example: `brew upgrade wget       # Upgrade specific package
+brew upgrade node@16    # Upgrade specific version`,
+        },
+        {
+          command: 'Show Outdated Packages',
+          description: 'List packages that have updates available',
+          usage: 'Update checking',
+          example: `brew outdated           # Show outdated packages
+brew outdated --formula  # Show outdated formulae
+brew outdated --cask    # Show outdated casks`,
+        },
+        {
+          command: 'Switch Package Version',
+          description: 'Switch between installed versions',
+          usage: 'Version switching',
+          example: `brew switch node 16.0.0  # Switch to specific version`,
+        },
+        {
+          command: 'Unlink Package',
+          description: 'Unlink current version of package',
+          usage: 'Version management',
+          example: `brew unlink node        # Unlink current version`,
+        },
+        {
+          command: 'Link Package Version',
+          description: 'Link specific version of package',
+          usage: 'Version management',
+          example: `brew link node@16       # Link specific version`,
+        },
+        {
+          command: 'Pin Package',
+          description: 'Pin package to prevent upgrades',
+          usage: 'Version locking',
+          example: `brew pin node           # Pin package`,
+        },
+        {
+          command: 'Unpin Package',
+          description: 'Unpin package to allow upgrades',
+          usage: 'Version unlocking',
+          example: `brew unpin node         # Unpin package`,
+        },
+        {
+          command: 'List Pinned Packages',
+          description: 'List all pinned packages',
+          usage: 'Version management',
+          example: `brew list --pinned      # List pinned packages`,
+        },
+        {
+          command: 'Uninstall Package',
+          description: 'Remove installed package',
+          usage: 'Package removal',
+          example: `brew uninstall wget     # Remove package
+brew uninstall --force wget # Force removal`,
+        },
+        {
+          command: 'Uninstall Multiple Packages',
+          description: 'Remove multiple packages at once',
+          usage: 'Batch removal',
+          example: `brew uninstall wget curl git`,
+        },
+        {
+          command: 'Uninstall Ignoring Dependencies',
+          description: 'Remove package without affecting dependencies',
+          usage: 'Selective removal',
+          example: `brew uninstall wget --ignore-dependencies`,
+        },
+        {
+          command: 'Show Package Details',
+          description: 'Get detailed package information',
+          usage: 'Package information',
+          example: `brew info wget          # Package information
+brew info --json wget   # JSON format info
+brew info --cask firefox # Cask information`,
+        },
+        {
+          command: 'Show Package Usage',
+          description: 'Show packages that depend on this package',
+          usage: 'Dependency tracking',
+          example: `brew uses wget          # Show packages that use this`,
+        },
+        {
+          command: 'Show Installation History',
+          description: 'Display installation and modification history',
+          usage: 'Package history',
+          example: `brew log wget           # Installation history`,
+        },
+        {
+          command: 'Basic Cleanup',
+          description: 'Remove old package versions',
+          usage: 'System cleanup',
+          example: `brew cleanup            # Remove old versions
+brew cleanup --prune=30 # Keep last 30 days
+brew cleanup --dry-run  # Preview cleanup`,
+        },
+        {
+          command: 'Aggressive Cleanup',
+          description: 'Remove all old versions and scrub cache',
+          usage: 'Deep cleanup',
+          example: `brew cleanup --scrub    # Remove all old versions
+brew cleanup -s        # Scrub cache`,
+        },
+        {
+          command: 'Cleanup Specific Package',
+          description: 'Clean up old versions of specific package',
+          usage: 'Targeted cleanup',
+          example: `brew cleanup wget       # Cleanup specific package`,
+        },
+        {
+          command: 'Clear Package Cache',
+          description: 'Clear the package download cache',
+          usage: 'Cache management',
+          example: `brew cleanup --cache   # Clear package cache
+rm -rf "$(brew --cache)" # Remove entire cache`,
+        },
+        {
+          command: 'Show Cache Size',
+          description: 'Display size of package cache',
+          usage: 'Cache monitoring',
+          example: `du -sh "$(brew --cache)" # Show cache size`,
+        },
+        {
+          command: 'Remove Orphaned Packages',
+          description: 'Remove unused dependencies',
+          usage: 'Dependency cleanup',
+          example: `brew autoremove          # Remove unused dependencies
+brew autoremove --dry-run # Preview removal`,
+        },
+        {
+          command: 'Show Orphaned Packages',
+          description: 'List packages with no dependents',
+          usage: 'Orphan identification',
+          example: `brew leaves              # Show orphaned packages`,
+        },
+        {
+          command: 'Remove All Orphans',
+          description: 'Remove all orphaned packages',
+          usage: 'Complete cleanup',
+          example: `brew remove $(brew leaves) # Remove orphans`,
+        },
+        {
+          command: 'Check System Health',
+          description: 'Run comprehensive system health check',
+          usage: 'System diagnostics',
+          example: `brew doctor             # Check for issues
+brew doctor --verbose   # Detailed diagnosis`,
+        },
+        {
+          command: 'Fix Common Issues',
+          description: 'Apply common fixes for Homebrew issues',
+          usage: 'Troubleshooting',
+          example: `brew update --force     # Force update
+brew prune              # Remove dead symlinks
+brew link --overwrite python # Fix linking issues`,
+        },
+        {
+          command: 'Optimize Performance',
+          description: 'Optimize Homebrew performance settings',
+          usage: 'Performance tuning',
+          example: `brew cleanup --prune=7  # Keep recent versions
+brew analytics off     # Disable analytics`,
+        },
+        {
+          command: 'Configure Parallel Operations',
+          description: 'Set CPU cores for parallel operations',
+          usage: 'Performance configuration',
+          example: `export HOMEBREW_MAKE_JOBS=8 # Use 8 CPU cores`,
+        },
+        {
+          command: 'Analyze Disk Usage',
+          description: 'Analyze Homebrew disk usage',
+          usage: 'Storage analysis',
+          example: `du -sh "$(brew --prefix)" # Homebrew size
+brew list --formula | wc -l # Count formulae
+brew list --cask | wc -l   # Count casks`,
+        },
+        {
+          command: 'Find Large Packages',
+          description: 'Identify packages using significant disk space',
+          usage: 'Storage optimization',
+          example: `brew list --formula | xargs brew info --json | jq -r '.[] | select(.installed[0].used_for_megabytes > 100) | .name'`,
+        },
+        {
+          command: 'Daily Maintenance',
+          description: 'Perform daily maintenance tasks',
+          usage: 'Regular maintenance',
+          example: `brew update && brew upgrade && brew cleanup`,
+        },
+        {
+          command: 'Weekly Deep Clean',
+          description: 'Perform weekly deep cleaning',
+          usage: 'Periodic maintenance',
+          example: `brew cleanup --prune=7 && brew autoremove && brew doctor`,
+        },
+        {
+          command: 'Monthly Health Check',
+          description: 'Perform comprehensive monthly health check',
+          usage: 'Periodic maintenance',
+          example: `brew doctor --verbose && brew test $(brew leaves)`,
+        },
+      ],
     },
     {
       title: 'Cask Management',
       commands: [
         {
-          command: 'Installing and Managing Casks',
-          description: 'Managing macOS applications with Homebrew Cask',
-          usage: 'Installing GUI applications and system utilities',
-          example: '# Cask Installation\n\n# Basic Cask Installation\nbrew install --cask visual-studio-code\nbrew install --cask firefox\nbrew install --cask slack\nbrew install --cask 1password\n\n# Install Multiple Casks\nbrew install --cask firefox chrome opera\n\n# Install Specific Version\nbrew install --cask firefox-developer-edition\nbrew install --cask sublime-text\n\n# Cask from Custom Tap\nbrew tap homebrew/cask-versions\nbrew install --cask iterm2-beta\n\n# Cask Information\n\n# Search Casks\nbrew search --cask firefox  # Search casks\nbrew search --cask /editor/ # Regex search\n\n# Cask Details\nbrew info --cask firefox   # Cask information\nbrew info --cask --json firefox # JSON info\n\n# List Installed Casks\nbrew list --cask          # Installed casks\nbrew list --cask --verbose # Detailed list\n\n# Cask Files\nbrew list --cask firefox  # Files installed by cask\n\n# Cask Management\n\n# Update Casks\nbrew update              # Update cask database\nbrew upgrade --cask      # Upgrade all casks\nbrew upgrade --cask firefox # Upgrade specific cask\n\n# Reinstall Cask\nbrew reinstall --cask firefox\n\n# Force Reinstall\nbrew reinstall --cask --force firefox\n\n# Cask Removal\n\n# Uninstall Cask\nbrew uninstall --cask firefox\n\n# Remove Multiple Casks\nbrew uninstall --cask firefox chrome\n\n# Force Removal\nbrew uninstall --cask --force firefox\n\n# Cleanup After Removal\nbrew uninstall --cask --zap firefox # Remove all files\n\n# Cask Configuration\n\n# Cask Options\nbrew install --cask --appdir=/Applications firefox\nbrew install --cask --fontdir=/Library/Fonts font-name\n\n# Language Specific\nbrew install --cask --language=ja firefox\n\n# Cask Troubleshooting\n\n# Verbose Installation\nbrew install --cask --verbose firefox\n\n# Debug Installation\nbrew install --cask --debug firefox\n\n# Check Cask Health\nbrew doctor              # Check for issues\nbrew test --cask firefox  # Test cask\n\n# Advanced Cask Features\n\n# Cask Dependencies\nbrew deps --cask firefox  # Show cask dependencies\nbrew uses --cask firefox  # What uses this cask\n\n# Cask Versions\nbrew info --cask --versions firefox # Available versions\n\n# Cask Audits\nbrew audit --cask new-cask # Audit new cask\n\n# Cask Development\n\n# Create New Cask\nbrew create --cask https://example.com/app.dmg\n\n# Edit Cask\nbrew edit --cask firefox\n\n# Custom Cask Repository\nbrew tap user/homebrew-cask-custom\nbrew install --cask user/homebrew-cask-custom/app'
+          command: 'Install Basic Cask',
+          description: 'Install a macOS application using cask',
+          usage: 'Application installation',
+          example: `brew install --cask visual-studio-code
+brew install --cask firefox
+brew install --cask slack
+brew install --cask 1password`,
         },
         {
-          command: 'Advanced Cask Operations',
-          description: 'Advanced cask management and customization',
-          usage: 'Fine-tuning cask installations and managing complex scenarios',
-          example: '# Cask Customization\n\n# Installation Options\nbrew install --cask --appdir=/Applications firefox\nbrew install --cask --appdir=~/Applications firefox\nbrew install --cask --fontdir=/Library/Fonts font-name\nbrew install --cask --screenresolution=1920x1080 app\nbrew install --cask --language=en app\nbrew install --cask --require-sha app\n\n# Multiple Versions\nbrew install --cask firefox\nbrew install --cask firefox-developer-edition\n\n# Version Management\nbrew switch --cask firefox stable\nbrew unlink --cask firefox\nbrew link --cask firefox-developer-edition\n\n# Cask Dependencies\n\n# Check Dependencies\nbrew deps --cask --tree firefox\nbrew deps --cask --installed firefox\n\n# Install with Dependencies\nbrew install --cask --include-dependencies firefox\n\n# Dependency Conflicts\nbrew install --cask --skip-cask-deps firefox\n\n# Cask Updates\n\n# Selective Updates\nbrew upgrade --cask firefox\nbrew upgrade --cask --greedy # Upgrade greedy casks\n\n# Greedy Auto-updates\nbrew install --cask --greedy auto-update-app\n\n# Cask Removal\n\n# Complete Removal\nbrew uninstall --cask --zap firefox # Remove all files\n\n# Remove Configuration\nbrew uninstall --cask firefox --force\n\n# Remove Multiple Casks\nbrew uninstall --cask $(brew list --cask | grep -v essential)\n\n# Cask Information\n\n# Detailed Information\nbrew info --cask --json=v1 firefox\nbrew info --cask --verbose firefox\n\n# Installation History\nbrew log --cask firefox\nbrew log --oneline --cask firefox\n\n# Cask Health\n\n# Health Check\nbrew doctor --check-for-deleted-files\nbrew doctor --check-for-unnecessary-files\n\n# Verify Installation\nbrew test --cask --verbose firefox\n\n# Cask Troubleshooting\n\n# Common Issues\nbrew link --overwrite --cask firefox\nbrew reinstall --cask firefox\n\n# Permission Issues\nsudo chown -R $(whoami) /usr/local/Caskroom\nsudo chown -R $(whoami) /opt/homebrew/Caskroom\n\n# Cask Development\n\n# Create Cask Template\nbrew create --cask --set-name myapp https://example.com/myapp.dmg\n\n# Edit Cask Formula\nbrew edit --cask myapp\n\n# Audit Cask\nbrew audit --cask --online myapp\nbrew audit --cask --strict myapp\n\n# Style Check\nbrew style --cask myapp\n\n# Custom Cask Repository\n\n# Create Personal Tap\nbrew tap username/homebrew-cask-custom\n\n# Add Cask to Tap\nbrew create --cask --tap=username/homebrew-cask-custom myapp\n\n# Install from Custom Tap\nbrew install --cask username/homebrew-cask-custom/myapp\n\n# Advanced Cask Features\n\n# Multiple Architecture Support\nbrew install --cask --architecture=arm64 app\nbrew install --cask --architecture=x86_64 app\n\n# Sha Verification\nbrew install --cask --sha256=hash app\n\n# Auto-update Configuration\nbrew install --cask --auto-update app\n\n# Language and Region\nbrew install --cask --language=en_US app\nbrew install --cask --region=US app'
-        }
-      ]
+          command: 'Install Multiple Casks',
+          description: 'Install multiple applications at once',
+          usage: 'Batch application installation',
+          example: `brew install --cask firefox chrome opera`,
+        },
+        {
+          command: 'Install Specific Cask Version',
+          description: 'Install specific version of application',
+          usage: 'Version management',
+          example: `brew install --cask firefox-developer-edition
+brew install --cask sublime-text`,
+        },
+        {
+          command: 'Install from Custom Tap',
+          description: 'Install cask from custom tap repository',
+          usage: 'Tap cask installation',
+          example: `brew tap homebrew/cask-versions
+brew install --cask iterm2-beta`,
+        },
+        {
+          command: 'Search Casks',
+          description: 'Search for available cask applications',
+          usage: 'Application discovery',
+          example: `brew search --cask firefox  # Search casks
+brew search --cask /editor/ # Regex search`,
+        },
+        {
+          command: 'Show Cask Details',
+          description: 'Display detailed cask information',
+          usage: 'Application information',
+          example: `brew info --cask firefox   # Cask information
+brew info --cask --json firefox # JSON info`,
+        },
+        {
+          command: 'List Installed Casks',
+          description: 'List all installed cask applications',
+          usage: 'Application listing',
+          example: `brew list --cask          # Installed casks
+brew list --cask --verbose # Detailed list`,
+        },
+        {
+          command: 'List Cask Files',
+          description: 'Show files installed by a cask',
+          usage: 'File listing',
+          example: `brew list --cask firefox  # Files installed by cask`,
+        },
+        {
+          command: 'Update Casks',
+          description: 'Update cask database and applications',
+          usage: 'Application updates',
+          example: `brew update              # Update cask database
+brew upgrade --cask      # Upgrade all casks
+brew upgrade --cask firefox # Upgrade specific cask`,
+        },
+        {
+          command: 'Reinstall Cask',
+          description: 'Reinstall a cask application',
+          usage: 'Application reinstallation',
+          example: `brew reinstall --cask firefox`,
+        },
+        {
+          command: 'Force Reinstall Cask',
+          description: 'Force reinstallation of cask',
+          usage: 'Forced reinstallation',
+          example: `brew reinstall --cask --force firefox`,
+        },
+        {
+          command: 'Uninstall Cask',
+          description: 'Remove a cask application',
+          usage: 'Application removal',
+          example: `brew uninstall --cask firefox`,
+        },
+        {
+          command: 'Uninstall Multiple Casks',
+          description: 'Remove multiple cask applications',
+          usage: 'Batch removal',
+          example: `brew uninstall --cask firefox chrome`,
+        },
+        {
+          command: 'Force Remove Cask',
+          description: 'Force removal of cask application',
+          usage: 'Forced removal',
+          example: `brew uninstall --cask --force firefox`,
+        },
+        {
+          command: 'Complete Cask Removal',
+          description: 'Remove cask and all associated files',
+          usage: 'Complete removal',
+          example: `brew uninstall --cask --zap firefox # Remove all files`,
+        },
+        {
+          command: 'Install with Custom App Directory',
+          description: 'Install cask to custom applications directory',
+          usage: 'Custom installation path',
+          example: `brew install --cask --appdir=/Applications firefox`,
+        },
+        {
+          command: 'Install with Custom Font Directory',
+          description: 'Install font cask to custom directory',
+          usage: 'Font installation',
+          example: `brew install --cask --fontdir=/Library/Fonts font-name`,
+        },
+        {
+          command: 'Install with Language',
+          description: 'Install cask with specific language',
+          usage: 'Language-specific installation',
+          example: `brew install --cask --language=ja firefox`,
+        },
+        {
+          command: 'Verbose Cask Installation',
+          description: 'Install cask with verbose output',
+          usage: 'Debugging installation',
+          example: `brew install --cask --verbose firefox`,
+        },
+        {
+          command: 'Debug Cask Installation',
+          description: 'Install cask with debug output',
+          usage: 'Troubleshooting installation',
+          example: `brew install --cask --debug firefox`,
+        },
+        {
+          command: 'Test Cask',
+          description: 'Test installed cask application',
+          usage: 'Application verification',
+          example: `brew test --cask firefox  # Test cask`,
+        },
+        {
+          command: 'Switch Cask Version',
+          description: 'Switch between cask versions',
+          usage: 'Version management',
+          example: `brew switch --cask firefox stable`,
+        },
+        {
+          command: 'Unlink Cask',
+          description: 'Unlink current cask version',
+          usage: 'Version management',
+          example: `brew unlink --cask firefox`,
+        },
+        {
+          command: 'Link Cask Version',
+          description: 'Link specific cask version',
+          usage: 'Version management',
+          example: `brew link --cask firefox-developer-edition`,
+        },
+        {
+          command: 'Show Cask Dependencies',
+          description: 'Display cask dependencies',
+          usage: 'Dependency information',
+          example: `brew deps --cask --tree firefox
+brew deps --cask --installed firefox`,
+        },
+        {
+          command: 'Install with Dependencies',
+          description: 'Install cask including dependencies',
+          usage: 'Complete installation',
+          example: `brew install --cask --include-dependencies firefox`,
+        },
+        {
+          command: 'Skip Cask Dependencies',
+          description: 'Install cask without dependencies',
+          usage: 'Selective installation',
+          example: `brew install --cask --skip-cask-deps firefox`,
+        },
+        {
+          command: 'Upgrade Greedy Casks',
+          description: 'Upgrade casks that auto-update',
+          usage: 'Auto-updating applications',
+          example: `brew upgrade --cask --greedy # Upgrade greedy casks`,
+        },
+        {
+          command: 'Install Greedy Auto-Update',
+          description: 'Install cask with greedy auto-update flag',
+          usage: 'Auto-updating applications',
+          example: `brew install --cask --greedy auto-update-app`,
+        },
+        {
+          command: 'Show Detailed Cask Information',
+          description: 'Get comprehensive cask information',
+          usage: 'Detailed information',
+          example: `brew info --cask --json=v1 firefox
+brew info --cask --verbose firefox`,
+        },
+        {
+          command: 'Show Cask Installation History',
+          description: 'Display cask installation history',
+          usage: 'Installation history',
+          example: `brew log --cask firefox
+brew log --oneline --cask firefox`,
+        },
+        {
+          command: 'Check Deleted Files',
+          description: 'Check for deleted files in system',
+          usage: 'System health check',
+          example: `brew doctor --check-for-deleted-files`,
+        },
+        {
+          command: 'Check Unnecessary Files',
+          description: 'Check for unnecessary files',
+          usage: 'System cleanup check',
+          example: `brew doctor --check-for-unnecessary-files`,
+        },
+        {
+          command: 'Verify Cask Installation',
+          description: 'Verify cask installation integrity',
+          usage: 'Installation verification',
+          example: `brew test --cask --verbose firefox`,
+        },
+        {
+          command: 'Fix Cask Linking',
+          description: 'Fix cask linking issues',
+          usage: 'Troubleshooting',
+          example: `brew link --overwrite --cask firefox`,
+        },
+        {
+          command: 'Fix Cask Permissions',
+          description: 'Fix permission issues for caskroom',
+          usage: 'Permission fixes',
+          example: `sudo chown -R $(whoami) /usr/local/Caskroom
+sudo chown -R $(whoami) /opt/homebrew/Caskroom`,
+        },
+      ],
     },
     {
       title: 'Tap Management',
       commands: [
         {
-          command: 'Managing Taps',
-          description: 'Adding, removing, and managing Homebrew taps',
-          usage: 'Extending Homebrew with additional repositories',
-          example: '# Tap Operations\n\n# Add Tap\nbrew tap homebrew/cask      # Add official tap\nbrew tap user/repo          # Add user tap\nbrew tap https://github.com/user/repo # Add by URL\n\n# List Taps\nbrew tap                    # List all taps\nbrew tap --list            # Alternative command\n\n# Remove Tap\nbrew untap homebrew/cask    # Remove tap\nbrew untap user/repo        # Remove user tap\n\n# Tap Information\n\n# Tap Details\nbrew tap-info homebrew/cask # Show tap info\nbrew tap-info user/repo     # Show user tap info\n\n# Tap Contents\nbrew list --formula homebrew/cask # List formulae in tap\nbrew list --cask homebrew/cask     # List casks in tap\n\n# Core Taps\nbrew --repository homebrew/core     # Core formulae\nbrew --repository homebrew/cask     # Official casks\nbrew --repository homebrew/core      # Alternative core\n\n# Official Taps\nbrew tap homebrew/cask              # Official casks\nbrew tap homebrew/cask-versions      # Versioned casks\nbrew tap homebrew/cask-fonts         # Font casks\nbrew tap homebrew/cask-drivers      # Driver casks\nbrew tap homebrew/services           # Services\n\n# Community Taps\nbrew tap homebrew/cask-versions     # Alternative versions\nbrew tap homebrew/cask-fonts         # Font packages\nbrew tap homebrew/cask-drivers      # Hardware drivers\nbrew tap homebrew/services           # Background services\n\n# User Taps\n\n# Add Personal Tap\nbrew tap username/homebrew-tap\n\n# Browse Tap Contents\nbrew search --desc /text/ homebrew/tap-name\n\n# Install from Tap\nbrew install homebrew/tap-name/package\nbrew install --cask homebrew/tap-name/app\n\n# Tap Maintenance\n\n# Update Tap\nbrew update                # Update all taps\nbrew update homebrew/tap   # Update specific tap\n\n# Repair Tap\nbrew tap --repair homebrew/tap # Fix broken tap\n\n# Tap Health\nbrew doctor               # Check tap issues\nbrew tap --full-name username/repo # Full tap name\n\n# Advanced Tap Operations\n\n# Clone Tap Manually\ncd $(brew --repository)/Library/Taps\ngit clone https://github.com/user/repo username/repo\n\n# Force Tap Update\nbrew tap --force user/repo\n\n# Custom Tap URL\nbrew tap custom-tap https://github.com/user/custom-repo.git\n\n# Pin Tap (prevent updates)\nbrew tap-pin homebrew/core\nbrew tap-unpin homebrew/core\n\n# Tap Development\n\n# Create Tap\nmkdir -p $(brew --repository)/Library/Taps/username/homebrew-tap\ncd $(brew --repository)/Library/Taps/username/homebrew-tap\ngit init\n\n# Add Formula to Tap\nbrew create --tap=username/homebrew-tap https://example.com/package.tar.gz\n\n# Tap Maintenance\ngit add .\ngit commit -m "Add new formula"\ngit push origin main\n\n# Tap Troubleshooting\n\n# Fix Broken Tap\nbrew untap user/repo\nbrew tap user/repo\n\n# Reset Tap\ncd $(brew --repository)/Library/Taps/user/repo\ngit reset --hard origin/main\n\n# Clean Tap\nbrew cleanup --prune=0 # Keep all versions'
+          command: 'Add Official Tap',
+          description: 'Add official Homebrew tap',
+          usage: 'Official tap installation',
+          example: `brew tap homebrew/cask      # Add official tap`,
         },
         {
-          command: 'Creating and Managing Custom Taps',
-          description: 'Building and maintaining custom Homebrew taps',
-          usage: 'Developing custom formulae and sharing with community',
-          example: '# Custom Tap Creation\n\n# Initialize Custom Tap\nbrew tap username/homebrew-custom\ncd "$(brew --repository)/Library/Taps/username/homebrew-custom"\n\n# Tap Structure\nmkdir -p Formula\nmkdir -p Casks\nmkdir -f README.md\ngit init\n\n# Create Formula Template\nbrew create https://example.com/software-1.0.tar.gz\n\n# Edit Formula\nbrew edit software\n\n# Formula Structure\nclass Software < Formula\n  desc "Description of software"\n  homepage "https://example.com/software"\n  url "https://example.com/software-1.0.tar.gz"\n  sha256 "sha256_hash"\n  license "MIT"\n\n  depends_on "openssl"\n  depends_on "cmake" => :build\n\n  def install\n    system "./configure", "--prefix=#{prefix}"\n    system "make", "install"\n  end\n\n  test do\n    system "#{bin}/software", "--version"\n  end\nend\n\n# Create Cask Template\nbrew create --cask https://example.com/app.dmg\n\n# Cask Structure\nclass App < Cask\n  version "1.0.0"\n  sha256 "sha256_hash"\n\n  url "https://example.com/app-#{version}.dmg"\n  name "App Name"\n  name "App Domain"\n  homepage "https://example.com/"\n\n  app "App.app"\n  uninstall quit: "com.example.app"\n\n  zap trash: [\n    "~/Library/Application Support/App",\n    "~/Library/Preferences/com.example.app.plist"\n  ]\nend\n\n# Tap Maintenance\n\n# Add and Commit\ngit add .\ngit commit -m "Add software formula and app cask"\ngit branch -M main\ngit remote add origin https://github.com/username/homebrew-custom.git\ngit push -u origin main\n\n# Version Updates\n\n# Update Formula\nbrew edit software\n# Update version, URL, and sha256\n\ngit add Formula/software.rb\ngit commit -m "Update software to version 1.1.0"\ngit push origin main\n\n# Update Cask\nbrew edit --cask app\n# Update version, URL, and sha256\n\ngit add Casks/app.rb\ngit commit -m "Update app to version 1.1.0"\ngit push origin main\n\n# Tap Publishing\n\n# Public Repository\ngit remote set-url origin https://github.com/username/homebrew-custom.git\n\n# Enable Issues and PRs\n# Configure GitHub repository settings\n\n# Tap Usage\n\n# Install from Custom Tap\nbrew tap username/homebrew-custom\nbrew install software\nbrew install --cask app\n\n# Update Custom Tap\nbrew update username/homebrew-custom\n\n# Remove Custom Tap\nbrew untap username/homebrew-custom\n\n# Advanced Tap Features\n\n# Multiple Formulae\nbrew create https://example.com/tool-1.0.tar.gz\nbrew create https://example.com/lib-2.0.tar.gz\n\n# Formula Dependencies\nclass Tool < Formula\n  depends_on "lib"\n  # ... rest of formula\nend\n\n# Bottles (Pre-built Binaries)\n# Configure GitHub Actions for automatic building\n# Upload bottles to releases\n\n# Tap Testing\n\n# Test Formula\nbrew test software\nbrew install --build-from-source software\n\n# Test Cask\nbrew test --cask app\nbrew audit --cask app\n\n# Tap Documentation\n\n# README.md\n# Homebrew/custom tap\n\n## Formulae\n- `software` - Description of software\n\n## Casks\n- `app` - Description of application\n\n## Installation\n\n```bash\nbrew tap username/homebrew-custom\nbrew install software\nbrew install --cask app\n```\n\n# Troubleshooting\n\n# Common Issues\nbrew doctor                    # Check for issues\nbrew untap username/homebrew-custom\nbrew tap username/homebrew-custom\n\n# Manual Repair\ncd "$(brew --repository)/Library/Taps/username/homebrew-custom"\ngit reset --hard origin/main\nbrew update'
-        }
-      ]
+          command: 'Add User Tap',
+          description: 'Add user-created tap',
+          usage: 'Community tap installation',
+          example: `brew tap user/repo          # Add user tap`,
+        },
+        {
+          command: 'Add Tap by URL',
+          description: 'Add tap using direct URL',
+          usage: 'URL-based tap installation',
+          example: `brew tap https://github.com/user/repo # Add by URL`,
+        },
+        {
+          command: 'List All Taps',
+          description: 'List all installed taps',
+          usage: 'Tap enumeration',
+          example: `brew tap                    # List all taps
+brew tap --list            # Alternative command`,
+        },
+        {
+          command: 'Remove Official Tap',
+          description: 'Remove official Homebrew tap',
+          usage: 'Official tap removal',
+          example: `brew untap homebrew/cask    # Remove tap`,
+        },
+        {
+          command: 'Remove User Tap',
+          description: 'Remove user-created tap',
+          usage: 'Community tap removal',
+          example: `brew untap user/repo        # Remove user tap`,
+        },
+        {
+          command: 'Show Tap Details',
+          description: 'Display detailed tap information',
+          usage: 'Tap information',
+          example: `brew tap-info homebrew/cask # Show tap info
+brew tap-info user/repo     # Show user tap info`,
+        },
+        {
+          command: 'List Formulae in Tap',
+          description: 'List formula packages in specific tap',
+          usage: 'Tap content listing',
+          example: `brew list --formula homebrew/cask # List formulae in tap`,
+        },
+        {
+          command: 'List Casks in Tap',
+          description: 'List cask applications in specific tap',
+          usage: 'Tap content listing',
+          example: `brew list --cask homebrew/cask     # List casks in tap`,
+        },
+        {
+          command: 'Show Core Repository',
+          description: 'Display core formula repository path',
+          usage: 'Repository information',
+          example: `brew --repository homebrew/core     # Core formulae`,
+        },
+        {
+          command: 'Show Cask Repository',
+          description: 'Display official cask repository path',
+          usage: 'Repository information',
+          example: `brew --repository homebrew/cask     # Official casks`,
+        },
+        {
+          command: 'Add Version Casks Tap',
+          description: 'Add tap for alternative versions',
+          usage: 'Version taps',
+          example: `brew tap homebrew/cask-versions      # Versioned casks`,
+        },
+        {
+          command: 'Add Font Casks Tap',
+          description: 'Add tap for font packages',
+          usage: 'Font taps',
+          example: `brew tap homebrew/cask-fonts         # Font casks`,
+        },
+        {
+          command: 'Add Driver Casks Tap',
+          description: 'Add tap for hardware drivers',
+          usage: 'Driver taps',
+          example: `brew tap homebrew/cask-drivers      # Driver casks`,
+        },
+        {
+          command: 'Add Services Tap',
+          description: 'Add tap for background services',
+          usage: 'Service taps',
+          example: `brew tap homebrew/services           # Services`,
+        },
+        {
+          command: 'Add Personal Tap',
+          description: 'Add personal custom tap',
+          usage: 'Personal tap creation',
+          example: `brew tap username/homebrew-tap`,
+        },
+        {
+          command: 'Browse Tap Contents',
+          description: 'Search within specific tap',
+          usage: 'Tap content search',
+          example: `brew search --desc /text/ homebrew/tap-name`,
+        },
+        {
+          command: 'Install from Tap',
+          description: 'Install package from specific tap',
+          usage: 'Tap package installation',
+          example: `brew install homebrew/tap-name/package
+brew install --cask homebrew/tap-name/app`,
+        },
+        {
+          command: 'Update All Taps',
+          description: 'Update all installed taps',
+          usage: 'Tap updates',
+          example: `brew update                # Update all taps`,
+        },
+        {
+          command: 'Update Specific Tap',
+          description: 'Update specific tap repository',
+          usage: 'Selective tap updates',
+          example: `brew update homebrew/tap   # Update specific tap`,
+        },
+        {
+          command: 'Repair Tap',
+          description: 'Repair broken tap repository',
+          usage: 'Tap maintenance',
+          example: `brew tap --repair homebrew/tap # Fix broken tap`,
+        },
+        {
+          command: 'Check Tap Health',
+          description: 'Check tap for issues',
+          usage: 'Tap diagnostics',
+          example: `brew doctor               # Check tap issues`,
+        },
+        {
+          command: 'Show Full Tap Name',
+          description: 'Display full tap name with username',
+          usage: 'Tap identification',
+          example: `brew tap --full-name username/repo # Full tap name`,
+        },
+        {
+          command: 'Clone Tap Manually',
+          description: 'Manually clone tap repository',
+          usage: 'Manual tap management',
+          example: `cd "$(brew --repository)/Library/Taps"
+git clone https://github.com/user/repo homebrew/repo`,
+        },
+        {
+          command: 'Update Tap Remotes',
+          description: 'Update remote URLs for taps',
+          usage: 'Tap remote management',
+          example: `cd "$(brew --repository)/Library/Taps/homebrew/repo"
+git remote set-url origin https://github.com/Homebrew/repo.git`,
+        },
+        {
+          command: 'Reset Tap Repository',
+          description: 'Reset tap repository to clean state',
+          usage: 'Tap recovery',
+          example: `cd "$(brew --repository)/Library/Taps/user/repo"
+git reset --hard origin/main`,
+        },
+        {
+          command: 'Show Tap Statistics',
+          description: 'Display statistics for tap',
+          usage: 'Tap analytics',
+          example: `cd "$(brew --repository)/Library/Taps/user/repo"
+git log --oneline | wc -l  # Count commits
+git ls-files | wc -l        # Count files`,
+        },
+      ],
     },
     {
       title: 'Services and Daemons',
       commands: [
         {
-          command: 'Managing Services',
-          description: 'Installing and managing background services with Homebrew',
-          usage: 'Controlling system services and daemons',
-          example: '# Service Management\n\n# Install Service\nbrew install nginx          # Install with service support\nbrew install mysql          # Install MySQL service\nbrew install redis          # Install Redis service\nbrew install postgresql      # Install PostgreSQL service\n\n# Service Commands\n\n# Start Service\nbrew services start nginx   # Start nginx service\nbrew services start mysql   # Start MySQL service\nbrew services start redis   # Start Redis service\n\n# Stop Service\nbrew services stop nginx    # Stop nginx service\nbrew services stop mysql    # Stop MySQL service\n\n# Restart Service\nbrew services restart nginx # Restart nginx service\nbrew services restart mysql # Restart MySQL service\n\n# Service Status\nbrew services list          # List all services\nbrew services list | grep nginx # Check specific service\n\n# Service Information\n\n# Service Details\nbrew services info nginx    # Show service info\nbrew services info mysql    # Show MySQL info\n\n# Service Logs\nbrew services log nginx     # View service logs\nbrew services log --tail nginx # Follow logs\nbrew services log --all nginx # All logs\n\n# Service Configuration\n\n# Auto-start Services\nbrew services start nginx   # Start now and at login\nbrew services run nginx     # Start now only\n\n# Disable Auto-start\nbrew services stop nginx   # Stop and disable auto-start\n\n# Manual Service Files\n# Location: ~/Library/LaunchAgents/ or /Library/LaunchDaemons/\nls ~/Library/LaunchAgents/homebrew.*.plist\n\n# Service Troubleshooting\n\n# Check Service Status\nbrew services list | grep nginx\nlaunchctl list | grep nginx\n\n# Manual Service Control\nlaunchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist\nlaunchctl unload ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist\n\n# Service Logs\nsudo tail -f /usr/local/var/log/nginx/access.log\nsudo tail -f /usr/local/var/log/nginx/error.log\n\n# Service Configuration Files\n\n# Nginx Configuration\n/usr/local/etc/nginx/nginx.conf\n/usr/local/etc/nginx/servers/\n\n# MySQL Configuration\n/usr/local/etc/my.cnf\n/usr/local/var/mysql/\n\n# Redis Configuration\n/usr/local/etc/redis.conf\n/usr/local/var/db/redis/\n\n# PostgreSQL Configuration\n/usr/local/var/postgresql/postgresql.conf\n/usr/local/var/postgresql/pg_hba.conf\n\n# Advanced Service Management\n\n# Custom Service Files\nbrew services start --file=/path/to/service.plist custom-service\n\n# Service Environment Variables\n# Set in service plist or shell environment\nexport PATH="/usr/local/bin:$PATH"\n\n# Service Dependencies\n# Ensure required services are running\nbrew services start mysql\nbrew services start redis\n\n# Service Health\n\n# Service Health Check\nbrew services list | grep "started"\nps aux | grep nginx\nnetstat -an | grep :80\n\n# Performance Monitoring\nbrew services info nginx  # Show PID and status\ntop -p $(pgrep nginx)  # Monitor process\n\n# Service Backup\n\n# Backup Configuration\nsudo cp /usr/local/etc/nginx/nginx.conf ~/nginx-backup.conf\nsudo cp /usr/local/etc/my.cnf ~/mysql-backup.cnf\n\n# Backup Data\nsudo cp -r /usr/local/var/mysql ~/mysql-backup\nsudo cp -r /usr/local/var/db/redis ~/redis-backup\n\n# Service Security\n\n# Secure Service Configuration\n# Edit service configs to restrict access\n# Set appropriate permissions\nsudo chmod 600 /usr/local/etc/my.cnf\n\n# Firewall Rules\n# Configure firewall for service ports\n# macOS: System Preferences → Security & Privacy → Firewall\n\n# Service Updates\n\n# Update Service Packages\nbrew upgrade nginx\nbrew upgrade mysql\nbrew upgrade redis\n\n# Restart After Update\nbrew services restart nginx\nbrew services restart mysql\nbrew services restart redis'
+          command: 'Install Service Package',
+          description: 'Install package with service support',
+          usage: 'Service installation',
+          example: `brew install nginx          # Install with service support
+brew install mysql          # Install MySQL service
+brew install redis          # Install Redis service
+brew install postgresql      # Install PostgreSQL service`,
         },
         {
-          command: 'Advanced Service Configuration',
-          description: 'Advanced service management and customization',
-          usage: 'Fine-tuning services for production environments',
-          example: '# Service Customization\n\n# Custom Service Files\n# Create custom plist in ~/Library/LaunchAgents/\n<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n  <key>Label</key>\n  <string>homebrew.mxcl.custom-service</string>\n  <key>ProgramArguments</key>\n  <array>\n    <string>/usr/local/opt/custom-service/bin/custom-service</string>\n    <string>--config=/usr/local/etc/custom-service.conf</string>\n  </array>\n  <key>RunAtLoad</key>\n  <true/>\n  <key>KeepAlive</key>\n  <true/>\n</dict>\n</plist>\n\n# Load Custom Service\nlaunchctl load ~/Library/LaunchAgents/homebrew.mxcl.custom-service.plist\n\n# Service Environment\n\n# Environment Variables in Service\n<key>EnvironmentVariables</key>\n<dict>\n  <key>PATH</key>\n  <string>/usr/local/bin:/usr/bin:/bin</string>\n  <key>RAILS_ENV</key>\n  <string>production</string>\n</dict>\n\n# Working Directory\n<key>WorkingDirectory</key>\n<string>/usr/local/var/custom-service</string>\n\n# Service Logging\n\n# Custom Log Location\n<key>StandardOutPath</key>\n<string>/usr/local/var/log/custom-service.log</string>\n<key>StandardErrorPath</key>\n<string>/usr/local/var/log/custom-service.err</string>\n\n# Log Rotation\n# Configure logrotate for service logs\n/usr/local/etc/logrotate.d/custom-service:\n/usr/local/var/log/custom-service.log {\n    daily\n    rotate 7\n    compress\n    missingok\n    notifempty\n    create 644 root admin\n}\n\n# Service Dependencies\n\n# Service Dependencies\n<key>StartInterval</key>\n<integer>300</integer>\n<key>StartOnMount</key>\n<true/>\n\n# Resource Limits\n<key>HardResourceLimits</key>\n<dict>\n  <key>NumberOfFiles</key>\n  <integer>4096</integer>\n</dict>\n\n# Service Monitoring\n\n# Service Health Checks\nbrew services list | grep "started"\nps aux | grep -v grep | grep nginx\nnetstat -tulpn | grep :80\n\n# Service Restart on Failure\n<key>KeepAlive</key>\n<dict>\n  <key>SuccessfulExit</key>\n  <false/>\n</dict>\n\n# Service Backup Automation\n\n# Automated Backup Script\n#!/bin/bash\n# backup-services.sh\nDATE=$(date +%Y%m%d)\nBACKUP_DIR="/backup/services"\n\n# Backup configurations\nmkdir -p $BACKUP_DIR/$DATE\ncp /usr/local/etc/nginx/nginx.conf $BACKUP_DIR/$DATE/\ncp /usr/local/etc/my.cnf $BACKUP_DIR/$DATE/\n\n# Backup databases\nmysqldump -u root -p --all-databases > $BACKUP_DIR/$DATE/mysql.sql\nredis-cli BGSAVE\n\n# Clean old backups (keep 7 days)\nfind $BACKUP_DIR -type d -mtime +7 -exec rm -rf {} \\;\n\n# Schedule with cron\n# 0 2 * * * /path/to/backup-services.sh\n\n# Service Performance Tuning\n\n# Nginx Performance\n# /usr/local/etc/nginx/nginx.conf\nworker_processes auto;\nworker_connections 1024;\n\n# MySQL Performance\n# /usr/local/etc/my.cnf\n[mysqld]\ninnodb_buffer_pool_size = 1G\nmax_connections = 200\n\n# Redis Performance\n# /usr/local/etc/redis.conf\nmaxmemory 512mb\nmaxmemory-policy allkeys-lru\n\n# Service Security\n\n# SSL Configuration\n# Generate SSL certificate\nopenssl req -x509 -nodes -days 365 -newkey rsa:2048 \\\n  -keyout /usr/local/etc/nginx/ssl/nginx.key \\\n  -out /usr/local/etc/nginx/ssl/nginx.crt\n\n# Configure HTTPS\nserver {\n    listen 443 ssl;\n    ssl_certificate /usr/local/etc/nginx/ssl/nginx.crt;\n    ssl_certificate_key /usr/local/etc/nginx/ssl/nginx.key;\n}\n\n# Service Monitoring Scripts\n\n# Monitor Service Status\n#!/bin/bash\n# monitor-services.sh\nSERVICES=("nginx" "mysql" "redis")\n\nfor service in "${SERVICES[@]}"; do\n    if ! brew services list | grep -q "$service.*started"; then\n        echo "Service $service is not running. Starting..."\n        brew services start $service\n    fi\ndone\n\n# Service Troubleshooting\n\n# Debug Service Issues\nbrew services list --verbose\nlaunchctl list | grep homebrew\n\n# Manual Service Control\nlaunchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist\nlaunchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist\n\n# Service Logs Analysis\ntail -f /usr/local/var/log/nginx/access.log\ntail -f /usr/local/var/log/nginx/error.log\n\n# Service Configuration Validation\nnginx -t                    # Test nginx config\nmysql --help --verbose     # Test MySQL config\nredis-cli config get *     # Check Redis config'
-        }
-      ]
+          command: 'Start Service',
+          description: 'Start a background service',
+          usage: 'Service control',
+          example: `brew services start nginx   # Start nginx service
+brew services start mysql   # Start MySQL service
+brew services start redis   # Start Redis service`,
+        },
+        {
+          command: 'Stop Service',
+          description: 'Stop a running background service',
+          usage: 'Service control',
+          example: `brew services stop nginx    # Stop nginx service
+brew services stop mysql    # Stop MySQL service`,
+        },
+        {
+          command: 'Restart Service',
+          description: 'Restart a background service',
+          usage: 'Service control',
+          example: `brew services restart nginx # Restart nginx service
+brew services restart mysql # Restart MySQL service`,
+        },
+        {
+          command: 'List All Services',
+          description: 'List all managed services',
+          usage: 'Service enumeration',
+          example: `brew services list          # List all services`,
+        },
+        {
+          command: 'Check Specific Service',
+          description: 'Check status of specific service',
+          usage: 'Service monitoring',
+          example: `brew services list | grep nginx # Check specific service`,
+        },
+        {
+          command: 'Show Service Information',
+          description: 'Display detailed service information',
+          usage: 'Service information',
+          example: `brew services info nginx    # Show service info
+brew services info mysql    # Show MySQL info`,
+        },
+        {
+          command: 'View Service Logs',
+          description: 'View service log files',
+          usage: 'Service monitoring',
+          example: `brew services log nginx     # View service logs
+brew services log --tail nginx # Follow logs
+brew services log --all nginx # All logs`,
+        },
+        {
+          command: 'Start Service Only',
+          description: 'Start service without auto-start at login',
+          usage: 'Service control',
+          example: `brew services run nginx     # Start now only`,
+        },
+        {
+          command: 'Disable Auto-Start',
+          description: 'Stop service and disable auto-start',
+          usage: 'Service control',
+          example: `brew services stop nginx   # Stop and disable auto-start`,
+        },
+        {
+          command: 'List Service Files',
+          description: 'List service launch agent files',
+          usage: 'Service file management',
+          example: `ls ~/Library/LaunchAgents/homebrew.*.plist`,
+        },
+        {
+          command: 'Check Service Status with launchctl',
+          description: 'Check service status using launchctl',
+          usage: 'Service monitoring',
+          example: `launchctl list | grep nginx`,
+        },
+        {
+          command: 'Load Service Manually',
+          description: 'Load service using launchctl',
+          usage: 'Manual service control',
+          example: `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist`,
+        },
+        {
+          command: 'Unload Service Manually',
+          description: 'Unload service using launchctl',
+          usage: 'Manual service control',
+          example: `launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist`,
+        },
+        {
+          command: 'View Nginx Access Logs',
+          description: 'View Nginx access log file',
+          usage: 'Log monitoring',
+          example: `sudo tail -f /usr/local/var/log/nginx/access.log`,
+        },
+        {
+          command: 'View Nginx Error Logs',
+          description: 'View Nginx error log file',
+          usage: 'Log monitoring',
+          example: `sudo tail -f /usr/local/var/log/nginx/error.log`,
+        },
+        {
+          command: 'Show Nginx Configuration',
+          description: 'Display Nginx configuration file path',
+          usage: 'Configuration management',
+          example: `/usr/local/etc/nginx/nginx.conf`,
+        },
+        {
+          command: 'Show MySQL Configuration',
+          description: 'Display MySQL configuration file path',
+          usage: 'Configuration management',
+          example: `/usr/local/etc/my.cnf`,
+        },
+        {
+          command: 'Show Redis Configuration',
+          description: 'Display Redis configuration file path',
+          usage: 'Configuration management',
+          example: `/usr/local/etc/redis.conf`,
+        },
+        {
+          command: 'Show PostgreSQL Configuration',
+          description: 'Display PostgreSQL configuration file path',
+          usage: 'Configuration management',
+          example: `/usr/local/var/postgresql/postgresql.conf`,
+        },
+      ],
     },
     {
       title: 'Development and Build Tools',
       commands: [
         {
-          command: 'Development Environment Setup',
-          description: 'Setting up development tools and environments with Homebrew',
-          usage: 'Installing programming languages, frameworks, and development tools',
-          example: '# Programming Languages\n\n# Node.js Development\nbrew install node          # Install Node.js\nbrew install node@16       # Install Node.js 16\nbrew install yarn          # Install Yarn package manager\nbrew install nvm            # Install Node Version Manager\n\n# Python Development\nbrew install python@3.9     # Install Python 3.9\nbrew install python@3.10    # Install Python 3.10\nbrew install pyenv          # Install Python version manager\nbrew install pipenv        # Install Python virtual environment\n\n# Ruby Development\nbrew install ruby           # Install Ruby\nbrew install rbenv          # Install Ruby version manager\nbrew install bundler        # Install Ruby gem manager\n\n# Java Development\nbrew install openjdk@11     # Install OpenJDK 11\nbrew install openjdk@17     # Install OpenJDK 17\nbrew install maven           # Install Maven\nbrew install gradle         # Install Gradle\n\n# Go Development\nbrew install go             # Install Go\nbrew install go@1.19        # Install Go 1.19\n\n# Rust Development\nbrew install rust           # Install Rust\nbrew install rustup-init    # Install Rustup\n\n# Web Development\n\n# Frontend Tools\nbrew install node           # Node.js for frontend\nbrew install yarn           # Package manager\nbrew install pnpm           # Fast package manager\n\n# Build Tools\nbrew install webpack        # Module bundler\nbrew install parcel         # Build tool\nbrew install vite           # Modern build tool\n\n# CSS Preprocessors\nbrew install sass/sass/sass # Sass compiler\nbrew install node           # For PostCSS\nnpm install -g postcss       # PostCSS processor\n\n# Database Tools\n\n# MySQL\nbrew install mysql          # Install MySQL\nbrew install mysql-client    # MySQL client\nbrew install mycli           # MySQL CLI enhanced\n\n# PostgreSQL\nbrew install postgresql      # Install PostgreSQL\nbrew install pgcli           # PostgreSQL CLI enhanced\n\n# MongoDB\nbrew install mongodb/brew/mongodb-community\nbrew install mongocli         # MongoDB CLI\n\n# Redis\nbrew install redis           # Install Redis\nbrew install redis-cli       # Redis CLI\n\n# SQLite\nbrew install sqlite          # Install SQLite\n\n# Version Managers\n\n# Node Version Manager\nbrew install nvm             # Install NVM\nsource $(brew --prefix nvm)/nvm.sh\n\n# Python Version Manager\nbrew install pyenv           # Install pyenv\necho \'eval "$(pyenv init -)"\' >> ~/.zshrc\n\n# Ruby Version Manager\nbrew install rbenv           # Install rbenv\necho \'eval "$(rbenv init -)"\' >> ~/.zshrc\n\n# Java Version Manager\nbrew install jenv            # Install jenv\necho \'export PATH="$HOME/.jenv/bin:$PATH"\' >> ~/.zshrc\neval "$(jenv init -)"\n\n# Container Tools\n\n# Docker\nbrew install --cask docker   # Install Docker Desktop\nbrew install docker-compose # Docker Compose\nbrew install docker-machine  # Docker Machine\n\n# Kubernetes\nbrew install kubectl        # Kubernetes CLI\nbrew install helm           # Kubernetes package manager\nbrew install minikube        # Local Kubernetes\n\n# Development Utilities\n\n# Git Tools\nbrew install git             # Git version control\nbrew install git-lfs         # Git Large File Storage\nbrew install hub             # GitHub CLI\nbrew install gh              # GitHub official CLI\n\n# Text Editors\nbrew install --cask visual-studio-code\nbrew install --cask sublime-text\nbrew install --cask atom\n\n# Terminal Tools\nbrew install --cask iterm2   # Terminal emulator\nbrew install --cask alacritty # GPU-accelerated terminal\nbrew install tmux           # Terminal multiplexer\nbrew install zsh            # Z shell\nbrew install fish           # Friendly shell\n\n# Build Dependencies\n\n# Build Tools\nbrew install make            # Make utility\nbrew install cmake           # CMake build system\nbrew install autoconf        # Autoconf tool\nbrew install automake        # Automake tool\nbrew install libtool         # Libtool\n\n# Libraries\nbrew install openssl         # SSL/TLS library\nbrew install readline        # Input library\nbrew install sqlite          # Database library\nbrew install libxml2         # XML library\nbrew install libxslt         # XSLT library\n\n# Development Environment\n\n# Environment Setup\nexport PATH="/usr/local/bin:$PATH"\nexport PATH="/usr/local/sbin:$PATH"\n\n# Shell Configuration\necho \'source $(brew --prefix)/etc/profile.d/z.sh\' >> ~/.zshrc\n\n# Auto-completion\nbrew install bash-completion # Bash completion\nbrew install zsh-completions # Zsh completion\n\n# Development Servers\n\n# Local Development\nbrew install nginx          # Web server\nbrew install apache          # Apache server\nbrew install dnsmasq         # DNS server\n\n# Database Services\nbrew services start mysql    # Start MySQL\nbrew services start postgresql # Start PostgreSQL\nbrew services start redis    # Start Redis'
+          command: 'Install Node.js Development',
+          description: 'Install Node.js and related tools',
+          usage: 'JavaScript development setup',
+          example: `brew install node          # Install Node.js
+brew install node@16       # Install Node.js 16
+brew install yarn          # Install Yarn package manager
+brew install nvm            # Install Node Version Manager`,
         },
         {
-          command: 'Build and Compilation Tools',
-          description: 'Advanced build tools and compilation utilities',
-          usage: 'Setting up build environments and compiling software',
-          example: '# Build Systems\n\n# Make\nbrew install make            # GNU Make\nbrew install cmake           # CMake\nbrew install ninja           # Ninja build system\nbrew install meson           # Meson build system\n\n# Compilation Tools\nbrew install gcc             # GNU Compiler Collection\nbrew install clang           # Clang compiler\nbrew install llvm            # LLVM toolchain\n\n# Package Managers\nbrew install pkg-config      # Package configuration\nbrew install autoconf        # Autoconf\nbrew install automake        # Automake\nbrew install libtool         # Libtool\n\n# Cross-Compilation\nbrew install mingw-w64       # Windows cross-compiler\nbrew install arm-linux-gnueabihf-binutils # ARM cross-compiler\n\n# Build Dependencies\n\n# Essential Libraries\nbrew install openssl         # SSL/TLS\nbrew install readline        # Input library\nbrew install ncurses         # Terminal library\nbrew install zlib            # Compression library\nbrew install libffi           # Foreign Function Interface\n\n# Graphics Libraries\nbrew install imagemagick     # Image processing\nbrew install ghostscript     # PostScript interpreter\nbrew install poppler         # PDF rendering\n\n# Audio/Video Libraries\nbrew install ffmpeg           # Multimedia framework\nbrew install libav            # Audio/video library\nbrew install sdl2             # Game development\n\n# Development Libraries\nbrew install boost            # C++ libraries\nbrew install qt               # Qt framework\nbrew install gtk+3           # GTK+ framework\nbrew install wxwidgets        # wxWidgets\n\n# Build Optimization\n\n# Parallel Builds\nexport MAKEFLAGS="-j$(nproc)" # Use all CPU cores\nexport CMAKE_BUILD_TYPE=Release # Release build\n\n# Compiler Optimization\nexport CFLAGS="-O3 -march=native"\nexport CXXFLAGS="-O3 -march=native"\n\n# Build Tools Configuration\n\n# CMake Configuration\nbrew install cmake          # Install CMake\ncmake --version           # Check version\n\n# Ninja Configuration\nbrew install ninja          # Install Ninja\nninja --version            # Check version\n\n# Meson Configuration\nbrew install meson          # Install Meson\nmeson --version            # Check version\n\n# Build Scripts\n\n# Makefile Template\n# Makefile\nCC = gcc\nCFLAGS = -Wall -O2\nTARGET = myprogram\nSRCDIR = src\nOBJDIR = obj\n\nall: $(TARGET)\n\n$(TARGET): $(OBJDIR)/main.o\n\t$(CC) $(CFLAGS) -o $@ $^\n\n$(OBJDIR)/%.o: $(SRCDIR)/%.c\n\t@mkdir -p $(OBJDIR)\n\t$(CC) $(CFLAGS) -c -o $@ $<\n\nclean:\n\trm -rf $(OBJDIR) $(TARGET)\n\n# CMake Configuration\n# CMakeLists.txt\ncmake_minimum_required(VERSION 3.10)\nproject(MyProject)\n\nset(CMAKE_CXX_STANDARD 17)\nset(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")\n\nadd_executable(myprogram src/main.cpp)\ntarget_link_libraries(myprogram pthread)\n\n# Build Commands\n\n# Make Build\nmake                      # Build with Make\nmake -j$(nproc)          # Parallel build\nmake clean                # Clean build\n\n# CMake Build\nmkdir build && cd build    # Create build directory\ncmake ..                  # Configure\nmake                      # Build\nmake install              # Install\n\n# Ninja Build\nmkdir build && cd build    # Create build directory\ncmake -G Ninja ..        # Configure with Ninja\nninja                     # Build\nninja install             # Install\n\n# Meson Build\nmeson setup builddir      # Configure\nmeson compile -C builddir # Build\nmeson install -C builddir  # Install\n\n# Build Troubleshooting\n\n# Debug Build\nmake DEBUG=1              # Debug build\ncmake -DCMAKE_BUILD_TYPE=Debug ..\n\n# Verbose Build\nmake VERBOSE=1            # Verbose Make\nninja -v                 # Verbose Ninja\n\n# Build Analysis\nmake -n                  # Dry run\ncmake --debug-output ..   # Debug CMake\n\n# Build Dependencies\nbrew deps --tree package   # Show dependency tree\nbrew install --build-from-source package # Build from source'
-        }
-      ]
+          command: 'Install Python Development',
+          description: 'Install Python and development tools',
+          usage: 'Python development setup',
+          example: `brew install python@3.9     # Install Python 3.9
+brew install python@3.10    # Install Python 3.10
+brew install pyenv          # Install Python version manager
+brew install pipenv        # Install Python virtual environment`,
+        },
+        {
+          command: 'Install Ruby Development',
+          description: 'Install Ruby and development tools',
+          usage: 'Ruby development setup',
+          example: `brew install ruby           # Install Ruby
+brew install rbenv          # Install Ruby version manager
+brew install bundler        # Install Ruby gem manager`,
+        },
+        {
+          command: 'Install Java Development',
+          description: 'Install Java and build tools',
+          usage: 'Java development setup',
+          example: `brew install openjdk@11     # Install OpenJDK 11
+brew install openjdk@17     # Install OpenJDK 17
+brew install maven           # Install Maven
+brew install gradle         # Install Gradle`,
+        },
+        {
+          command: 'Install Go Development',
+          description: 'Install Go programming language',
+          usage: 'Go development setup',
+          example: `brew install go             # Install Go
+brew install go@1.19        # Install Go 1.19`,
+        },
+        {
+          command: 'Install Rust Development',
+          description: 'Install Rust and toolchain',
+          usage: 'Rust development setup',
+          example: `brew install rust           # Install Rust
+brew install rustup-init    # Install Rustup`,
+        },
+        {
+          command: 'Install Frontend Tools',
+          description: 'Install frontend development tools',
+          usage: 'Frontend development setup',
+          example: `brew install node           # Node.js for frontend
+brew install yarn           # Package manager
+brew install pnpm           # Fast package manager`,
+        },
+        {
+          command: 'Install Build Tools',
+          description: 'Install modern build tools',
+          usage: 'Build tool setup',
+          example: `brew install webpack        # Module bundler
+brew install parcel         # Build tool
+brew install vite           # Modern build tool`,
+        },
+        {
+          command: 'Install CSS Preprocessors',
+          description: 'Install CSS preprocessing tools',
+          usage: 'CSS development setup',
+          example: `brew install sass/sass/sass # Sass compiler
+brew install node           # For PostCSS
+npm install -g postcss       # PostCSS processor`,
+        },
+        {
+          command: 'Install MySQL Tools',
+          description: 'Install MySQL database and tools',
+          usage: 'Database development setup',
+          example: `brew install mysql          # Install MySQL
+brew install mysql-client    # MySQL client
+brew install mycli           # MySQL CLI enhanced`,
+        },
+        {
+          command: 'Install PostgreSQL Tools',
+          description: 'Install PostgreSQL database and tools',
+          usage: 'Database development setup',
+          example: `brew install postgresql      # Install PostgreSQL
+brew install pgcli           # PostgreSQL CLI enhanced`,
+        },
+        {
+          command: 'Install MongoDB Tools',
+          description: 'Install MongoDB database and tools',
+          usage: 'Database development setup',
+          example: `brew install mongodb/brew/mongodb-community # Install MongoDB
+brew install mongosh        # MongoDB Shell`,
+        },
+        {
+          command: 'Install Redis Tools',
+          description: 'Install Redis and tools',
+          usage: 'Database development setup',
+          example: `brew install redis          # Install Redis
+brew install redis-cli      # Redis CLI client`,
+        },
+        {
+          command: 'Install SQLite Tools',
+          description: 'Install SQLite and tools',
+          usage: 'Database development setup',
+          example: `brew install sqlite          # Install SQLite
+brew install sqlite-utils   # SQLite utilities`,
+        },
+        {
+          command: 'Install Build Systems',
+          description: 'Install build system tools',
+          usage: 'Build system setup',
+          example: `brew install make            # GNU Make
+brew install cmake           # CMake
+brew install ninja           # Ninja build system
+brew install meson           # Meson build system`,
+        },
+        {
+          command: 'Install Compilation Tools',
+          description: 'Install compiler and toolchain',
+          usage: 'Compilation setup',
+          example: `brew install gcc             # GNU Compiler Collection
+brew install clang           # Clang compiler
+brew install llvm            # LLVM toolchain`,
+        },
+        {
+          command: 'Install Package Managers',
+          description: 'Install package configuration tools',
+          usage: 'Build dependency management',
+          example: `brew install pkg-config      # Package configuration
+brew install autoconf        # Autoconf
+brew install automake        # Automake
+brew install libtool         # Libtool`,
+        },
+        {
+          command: 'Install Cross-Compilation Tools',
+          description: 'Install cross-compilation tools',
+          usage: 'Cross-platform development',
+          example: `brew install mingw-w64       # Windows cross-compiler
+brew install arm-linux-gnueabihf-binutils # ARM cross-compiler`,
+        },
+        {
+          command: 'Install Essential Libraries',
+          description: 'Install essential development libraries',
+          usage: 'Library dependencies',
+          example: `brew install openssl         # SSL/TLS
+brew install readline        # Input library
+brew install ncurses         # Terminal library
+brew install zlib            # Compression library
+brew install libffi           # Foreign Function Interface`,
+        },
+        {
+          command: 'Install Graphics Libraries',
+          description: 'Install graphics and image processing libraries',
+          usage: 'Graphics development',
+          example: `brew install imagemagick     # Image processing
+brew install ghostscript     # PostScript interpreter
+brew install poppler         # PDF rendering`,
+        },
+        {
+          command: 'Install Audio/Video Libraries',
+          description: 'Install multimedia libraries',
+          usage: 'Multimedia development',
+          example: `brew install ffmpeg           # Multimedia framework
+brew install libav            # Audio/video library
+brew install sdl2             # Game development`,
+        },
+        {
+          command: 'Install Development Frameworks',
+          description: 'Install GUI and application frameworks',
+          usage: 'Application development',
+          example: `brew install boost            # C++ libraries
+brew install qt               # Qt framework
+brew install gtk+3           # GTK+ framework
+brew install wxwidgets        # wxWidgets`,
+        },
+        {
+          command: 'Configure Parallel Builds',
+          description: 'Configure parallel build execution',
+          usage: 'Build optimization',
+          example: `export MAKEFLAGS="-j$(nproc)" # Use all CPU cores
+export CMAKE_BUILD_TYPE=Release # Release build`,
+        },
+        {
+          command: 'Configure Compiler Optimization',
+          description: 'Set compiler optimization flags',
+          usage: 'Build optimization',
+          example: `export CFLAGS="-O3 -march=native"
+export CXXFLAGS="-O3 -march=native"`,
+        },
+        {
+          command: 'Configure Linker Optimization',
+          description: 'Set linker optimization flags',
+          usage: 'Build optimization',
+          example: `export LDFLAGS="-Wl,-O1"`,
+        },
+      ],
     },
     {
       title: 'System Administration',
       commands: [
         {
-          command: 'System Maintenance and Monitoring',
-          description: 'System administration tasks and monitoring with Homebrew',
-          usage: 'Maintaining system health and performance',
-          example: '# System Maintenance\n\n# Update and Upgrade\nbrew update                # Update Homebrew\nbrew upgrade               # Upgrade all packages\nbrew cleanup                # Clean up old versions\n\n# Health Check\nbrew doctor                 # Check for issues\nbrew doctor --verbose       # Detailed check\n\n# System Information\nbrew --version              # Homebrew version\nbrew --prefix               # Installation prefix\nbrew --repository           # Repository location\n\n# Package Statistics\nbrew list --formula | wc -l # Count formulae\nbrew list --cask | wc -l     # Count casks\ndu -sh "$(brew --prefix)"   # Disk usage\n\n# Performance Monitoring\n\n# CPU Usage\ntop -o cpu                # Show CPU usage\nhtop                       # Enhanced process viewer\nbrew install htop           # Install htop\n\n# Memory Usage\nfree -h                    # Memory usage (Linux)\nvm_stat                    # Memory usage (macOS)\nactivity monitor           # GUI tool (macOS)\n\n# Disk Usage\ndf -h                      # Disk usage\ndu -sh *                   # Directory sizes\nbrew install ncdu          # Disk usage analyzer\n\n# Network Monitoring\nnetstat -an                # Network connections\nlsof -i                    # Network files\nbrew install nmap          # Network scanner\n\n# System Logs\n\n# Log Locations\n/var/log/system.log        # System log (macOS)\n/var/log/messages          # System messages (Linux)\nbrew log --oneline package # Package logs\n\n# Log Monitoring\ntail -f /var/log/system.log # Follow system log\nbrew services log service   # Service logs\n\n# System Cleanup\n\n# Temporary Files\nbrew cleanup --prune=7      # Keep 7 days\nrm -rf /tmp/*               # Clear temp files\nrm -rf ~/Library/Caches/*   # Clear user caches\n\n# Large Files\nfind / -size +100M 2>/dev/null # Find large files\ndu -h / | grep -E "[0-9]+G"  # Find GB-sized directories\n\n# System Security\n\n# Security Scan\nbrew install clamav        # Antivirus\nfreshclam                  # Update virus database\nclamscan -r /              # Scan system\n\n# Firewall Status\nsudo ufw status            # Firewall (Linux)\nsudo pfctl -s info         # Firewall (macOS)\n\n# System Updates\n\n# macOS Updates\nsoftwareupdate --list      # List available updates\nsoftwareupdate --install --all # Install all updates\n\n# Linux Updates\nsudo apt update && sudo apt upgrade  # Ubuntu/Debian\nsudo yum update              # CentOS/RHEL\n\n# System Backup\n\n# Homebrew Backup\nbrew list > package-list.txt # Save package list\nbrew bundle dump             # Create Brewfile\n\n# System Backup\nrsync -av --progress /source/ /destination/\ntimeshift                   # System snapshots\n\n# System Recovery\n\n# Restore Packages\nbrew bundle install         # Restore from Brewfile\n\n# System Restore\n# Use Time Machine (macOS)\n# Use system restore points (Windows)\n\n# System Optimization\n\n# SSD Optimization\nbrew install trim-force    # Enable TRIM\nsudo trim force enable      # Force TRIM\n\n# Memory Optimization\nsudo purge                  # Clear disk cache\nbrew install ramdisk        # Create RAM disk\n\n# CPU Optimization\nbrew install cpufrequtils   # CPU frequency control\n\n# System Diagnostics\n\n# Hardware Info\nsystem_profiler SPHardwareDataType # Hardware info (macOS)\nlscpu                      # CPU info (Linux)\nlsmem                      # Memory info (Linux)\n\n# System Benchmarks\nbrew install sysbench      # System benchmarking\nsysbench cpu --test=run    # CPU benchmark\nsysbench memory --test=run # Memory benchmark\n\n# System Monitoring Tools\n\n# Process Monitoring\nbrew install htop          # Process viewer\nbrew install btop          # Modern process viewer\nbrew install glances       # System monitoring\n\n# Resource Monitoring\nbrew install iotop         # I/O monitoring\nbrew install nethogs       # Network monitoring\nbrew install powertop      # Power usage\n\n# System Administration Scripts\n\n# Maintenance Script\n#!/bin/bash\n# maintenance.sh\necho "Starting system maintenance..."\n\n# Update Homebrew\nbrew update && brew upgrade\n\n# Clean up\nbrew cleanup --prune=7\n\n# Health check\nbrew doctor\n\n# System cleanup\nfind ~/Downloads -type f -mtime +30 -delete\n\n# Backup important files\nrsync -av ~/Documents /backup/\n\necho "Maintenance complete!"\n\n# Schedule with cron\n# 0 2 * * 0 /path/to/maintenance.sh'
+          command: 'Update and Upgrade System',
+          description: 'Perform complete system update',
+          usage: 'System maintenance',
+          example: `brew update                # Update Homebrew
+brew upgrade               # Upgrade all packages
+brew cleanup                # Clean up old versions`,
         },
         {
-          command: 'Security and Hardening',
-          description: 'Security hardening and system protection',
-          usage: 'Implementing security measures and protecting the system',
-          example: '# Security Updates\n\n# Keep System Updated\nbrew update                # Update Homebrew\nbrew upgrade               # Upgrade packages\nsoftwareupdate --install --all # macOS updates\n\n# Security Packages\nbrew install clamav        # Antivirus\nbrew install lynis         # Security auditing\nbrew install nmap          # Network scanner\nbrew install wireshark     # Network analyzer\n\n# Firewall Configuration\n\n# macOS Firewall\nsudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on\nsudo /usr/libexec/ApplicationFirewall/socketfilterfw --add /usr/local/bin/brew\n\n# Linux Firewall (UFW)\nsudo ufw enable\nsudo ufw default deny incoming\nsudo ufw allow ssh\nsudo ufw allow 22/tcp\n\n# Advanced Firewall\nbrew install pfctl        # Packet filter (macOS)\nsudo pfctl -e             # Enable pfctl\n\n# System Hardening\n\n# File Permissions\nsudo chmod 600 ~/.ssh/id_rsa\nsudo chmod 644 ~/.ssh/id_rsa.pub\nsudo chmod 700 ~/.ssh\n\n# Disable Unused Services\nsudo launchctl disable com.apple.bluetoothaudiod\nsudo launchctl disable com.apple.apsd\n\n# Secure Shell\nbrew install openssh       # SSH client/server\nssh-keygen -t ed25519      # Generate SSH key\nssh-copy-id user@server   # Copy key to server\n\n# Password Management\nbrew install bitwarden-cli # Password manager\nbrew install pass          # Password store\n\n# Encryption Tools\nbrew install gnupg         # GPG encryption\ngpg --gen-key             # Generate GPG key\ngpg --encrypt --recipient user@domain.com file.txt\n\n# System Monitoring\n\n# Intrusion Detection\nbrew install osquery       # OS monitoring\nbrew install wazuh-agent   # Intrusion detection\n\n# Log Monitoring\nbrew install fail2ban      # Ban IPs after failed attempts\nsudo systemctl enable fail2ban # Enable fail2ban\n\n# Security Auditing\n\n# System Audit\nsudo lynis audit system    # Security audit\nbrew install rkhunter     # Rootkit detection\nsudo rkhunter --check      # Check for rootkits\n\n# Network Security\n\n# Port Scanning\nnmap -sV target            # Scan target\nnmap -O target             # OS detection\nnmap -sS target            # SYN scan\n\n# SSL/TLS Security\nbrew install openssl       # OpenSSL\nopenssl s_client -connect example.com:443 # Test SSL\n\n# Certificate Management\nbrew install certbot       # Let\'s Encrypt client\nsudo certbot --nginx       # Get SSL certificate\n\n# Application Security\n\n# Web Application Security\nbrew install sqlmap        # SQL injection testing\nbrew install nikto         # Web server scanner\n\n# Code Security\nbrew install sonar-scanner # Code quality\nbrew install bandit        # Python security\n\n# Backup Security\n\n# Encrypted Backup\nbrew install duplicity     # Encrypted backup\nduplicity --encrypt-key KEY /source file:///backup\n\n# Secure Delete\nbrew install srm           # Secure rm\nsrm -rf sensitive_file    # Secure delete\n\n# Privacy Protection\n\n# Tracking Protection\nbrew install tor           # Tor network\nbrew install privoxy       # Privacy proxy\n\n# DNS Security\nbrew install dnscrypt-proxy # Encrypted DNS\nsudo dnscrypt-proxy -config /usr/local/etc/dnscrypt-proxy.toml\n\n# Security Scripts\n\n# Security Check Script\n#!/bin/bash\n# security-check.sh\necho "Running security check..."\n\n# Check for updates\nbrew update\n\n# Run security audit\nsudo lynis audit system\n\n# Check for rootkits\nsudo rkhunter --check\n\n# Scan open ports\nnmap -sS localhost\n\n# Check file permissions\nfind / -perm 777 -type f 2>/dev/null\n\n# Monitor login attempts\nsudo last | head -20\n\necho "Security check complete!"\n\n# Security Best Practices\n\n# Regular Updates\n# Schedule security updates\n# Monitor security advisories\n\n# Principle of Least Privilege\n# Use sudo instead of root\n# Create separate user accounts\n\n# Network Security\n# Use VPN for remote access\n# Disable unused services\n# Configure firewall properly\n\n# Data Protection\n# Encrypt sensitive data\n# Use strong passwords\n# Enable two-factor authentication\n\n# Monitoring\n# Set up log monitoring\n# Configure alerts for suspicious activity\n# Regular security audits'
-        }
-      ]
+          command: 'System Health Check',
+          description: 'Run comprehensive system health check',
+          usage: 'System diagnostics',
+          example: `brew doctor                 # Check for issues
+brew doctor --verbose       # Detailed check`,
+        },
+        {
+          command: 'Show System Information',
+          description: 'Display Homebrew system information',
+          usage: 'System information',
+          example: `brew --version              # Homebrew version
+brew --prefix               # Installation prefix
+brew --repository           # Repository location`,
+        },
+        {
+          command: 'Package Statistics',
+          description: 'Show package installation statistics',
+          usage: 'Usage analytics',
+          example: `brew list --formula | wc -l # Count formulae
+brew list --cask | wc -l     # Count casks
+du -sh "$(brew --prefix)"   # Disk usage`,
+        },
+        {
+          command: 'Monitor CPU Usage',
+          description: 'Monitor CPU usage and processes',
+          usage: 'Performance monitoring',
+          example: `top -o cpu                # Show CPU usage
+htop                       # Enhanced process viewer
+brew install htop           # Install htop`,
+        },
+        {
+          command: 'Monitor Memory Usage',
+          description: 'Monitor system memory usage',
+          usage: 'Performance monitoring',
+          example: `free -h                    # Memory usage (Linux)
+vm_stat                    # Memory usage (macOS)
+activity monitor           # GUI tool (macOS)`,
+        },
+        {
+          command: 'Monitor Disk Usage',
+          description: 'Monitor disk space usage',
+          usage: 'Storage monitoring',
+          example: `df -h                      # Disk usage
+du -sh *                   # Directory sizes
+brew install ncdu          # Disk usage analyzer`,
+        },
+        {
+          command: 'Network Monitoring',
+          description: 'Monitor network connections and activity',
+          usage: 'Network monitoring',
+          example: `netstat -an                # Network connections
+lsof -i                    # Network files
+brew install nmap          # Network scanner`,
+        },
+        {
+          command: 'View System Logs',
+          description: 'Access system log files',
+          usage: 'Log monitoring',
+          example: `/var/log/system.log        # System log (macOS)
+/var/log/messages          # System messages (Linux)
+brew log --oneline package # Package logs`,
+        },
+        {
+          command: 'Monitor System Logs',
+          description: 'Follow system log files in real-time',
+          usage: 'Log monitoring',
+          example: `tail -f /var/log/system.log # Follow system log
+brew services log service   # Service logs`,
+        },
+        {
+          command: 'System Cleanup',
+          description: 'Perform system cleanup operations',
+          usage: 'System maintenance',
+          example: `brew cleanup --prune=7      # Keep 7 days
+rm -rf /tmp/*               # Clear temp files
+rm -rf ~/Library/Caches/*   # Clear user caches`,
+        },
+        {
+          command: 'Find Large Files',
+          description: 'Find large files on system',
+          usage: 'Storage analysis',
+          example: `find / -size +100M 2>/dev/null # Find large files
+du -h / | grep -E "[0-9]+G"  # Find GB-sized directories`,
+        },
+        {
+          command: 'Install Security Tools',
+          description: 'Install security and monitoring tools',
+          usage: 'Security setup',
+          example: `brew install clamav        # Antivirus
+brew install lynis         # Security auditing
+brew install nmap          # Network scanner
+brew install wireshark     # Network analyzer`,
+        },
+        {
+          command: 'Configure macOS Firewall',
+          description: 'Configure macOS built-in firewall',
+          usage: 'Firewall configuration',
+          example: `sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add /usr/local/bin/brew`,
+        },
+        {
+          command: 'Configure Linux Firewall',
+          description: 'Configure UFW firewall on Linux',
+          usage: 'Firewall configuration',
+          example: `sudo ufw enable
+sudo ufw default deny incoming
+sudo ufw allow ssh
+sudo ufw allow 22/tcp`,
+        },
+        {
+          command: 'Install Advanced Firewall',
+          description: 'Install advanced packet filtering tools',
+          usage: 'Advanced firewall',
+          example: `brew install pfctl        # Packet filter (macOS)
+sudo pfctl -e             # Enable pfctl`,
+        },
+        {
+          command: 'Secure File Permissions',
+          description: 'Set secure file permissions for SSH',
+          usage: 'Security hardening',
+          example: `sudo chmod 600 ~/.ssh/id_rsa
+sudo chmod 644 ~/.ssh/id_rsa.pub
+sudo chmod 700 ~/.ssh`,
+        },
+        {
+          command: 'Disable Unused Services',
+          description: 'Disable unnecessary system services',
+          usage: 'Service hardening',
+          example: `sudo launchctl disable com.apple.bluetoothaudiod
+sudo launchctl disable com.apple.apsd`,
+        },
+        {
+          command: 'Install SSH Tools',
+          description: 'Install SSH client and server',
+          usage: 'Secure shell setup',
+          example: `brew install openssh       # SSH client/server`,
+        },
+        {
+          command: 'Generate SSH Key',
+          description: 'Generate SSH key pair',
+          usage: 'SSH key management',
+          example: `ssh-keygen -t ed25519      # Generate SSH key`,
+        },
+        {
+          command: 'Copy SSH Key to Server',
+          description: 'Copy SSH public key to remote server',
+          usage: 'SSH key distribution',
+          example: `ssh-copy-id user@server   # Copy key to server`,
+        },
+        {
+          command: 'Install Password Managers',
+          description: 'Install password management tools',
+          usage: 'Credential management',
+          example: `brew install bitwarden-cli # Password manager
+brew install pass          # Password store`,
+        },
+        {
+          command: 'Install Encryption Tools',
+          description: 'Install encryption and GPG tools',
+          usage: 'Data encryption',
+          example: `brew install gnupg         # GPG encryption`,
+        },
+        {
+          command: 'Generate GPG Key',
+          description: 'Generate GPG encryption key',
+          usage: 'GPG key management',
+          example: `gpg --gen-key             # Generate GPG key`,
+        },
+        {
+          command: 'Encrypt File with GPG',
+          description: 'Encrypt file using GPG',
+          usage: 'File encryption',
+          example: `gpg --encrypt --recipient user@domain.com file.txt`,
+        },
+        {
+          command: 'Install Monitoring Tools',
+          description: 'Install system monitoring and intrusion detection',
+          usage: 'System monitoring',
+          example: `brew install osquery       # OS monitoring
+brew install wazuh-agent   # Intrusion detection`,
+        },
+        {
+          command: 'Install Log Monitoring',
+          description: 'Install log monitoring and intrusion prevention',
+          usage: 'Log security',
+          example: `brew install fail2ban      # Ban IPs after failed attempts
+sudo systemctl enable fail2ban # Enable fail2ban`,
+        },
+        {
+          command: 'System Security Audit',
+          description: 'Run comprehensive security audit',
+          usage: 'Security assessment',
+          example: `sudo lynis audit system    # Security audit
+brew install rkhunter     # Rootkit detection
+sudo rkhunter --check      # Check for rootkits`,
+        },
+        {
+          command: 'Network Security Scan',
+          description: 'Perform network security scanning',
+          usage: 'Network security',
+          example: `nmap -sV -sC target.com    # Service and script scan
+nmap -O target.com         # OS detection
+nmap -p- target.com        # Full port scan`,
+        },
+      ],
     },
     {
       title: 'Advanced Features',
       commands: [
         {
-          command: 'Bottles and Binary Packages',
-          description: 'Understanding and managing pre-compiled binary packages',
-          usage: 'Working with bottles for faster installation',
-          example: '# Bottle Management\n\n# What are Bottles?\n# Pre-compiled binary packages\n# Faster installation than source\n# Architecture-specific builds\n# Stored in package repositories\n\n# Bottle Information\nbrew info --json=v1 wget | jq .[0].bottle.stable\nbrew info --bottle wget\n\n# Force Build from Source\nbrew install --build-from-source wget\nexport HOMEBREW_BUILD_FROM_SOURCE=1\n\n# Bottle Architecture\nbrew install --bottle-arch=arm64 wget\nbrew install --bottle-arch=x86_64 wget\n\n# Custom Bottle Domain\nexport HOMEBREW_BOTTLE_DOMAIN="https://my-mirror.com"\n\n# Local Bottles\n\n# Create Local Bottle\nbrew bottle --json --root-url=https://my-mirror.com wget\n\n# Install Local Bottle\nbrew install --bottle-url=https://my-mirror.com/wget-1.21.3.arm64_ventura.bottle.tar.gz wget\n\n# Bottle Management\n\n# List Available Bottles\nbrew info --json=v1 --bottle-all package\n\n# Download Only\nbrew fetch --bottle wget\n\n# Verify Bottle\nbrew install --verbose wget\n\n# Bottle Development\n\n# Build Bottle\nbrew install --build-bottle wget\nbrew bottle wget\n\n# Upload Bottle\n# Upload to GitHub releases or custom server\n\n# Bottle Configuration\n\n# Disable Bottles\nexport HOMEBREW_BUILD_FROM_SOURCE=1\nbrew install --build-from-source package\n\n# Bottle Cache\nbrew cache --list\nbrew cache --clean\n\n# Bottle Troubleshooting\n\n# Bottle Issues\nbrew uninstall package\nbrew install --build-from-source package\n\n# Corrupted Bottle\nbrew cleanup --prune=0\nbrew install package'
+          command: 'Understanding Bottles',
+          description: 'Learn about pre-compiled binary packages',
+          usage: 'Bottle concepts',
+          example: `What are Bottles?
+- Pre-compiled binary packages
+- Faster installation than source
+- Architecture-specific builds
+- Stored in package repositories`,
         },
         {
-          command: 'Formula Development',
-          description: 'Creating and maintaining Homebrew formulae',
-          usage: 'Developing custom formulae for software packages',
-          example: '# Formula Creation\n\n# Create New Formula\nbrew create https://example.com/software-1.0.tar.gz\n\n# Formula Structure\nclass Software < Formula\n  desc "Description of software"\n  homepage "https://example.com/software"\n  url "https://example.com/software-1.0.tar.gz"\n  sha256 "sha256_hash"\n  license "MIT"\n  head "https://github.com/user/software.git", branch: "main"\n\n  depends_on "cmake" => :build\n  depends_on "openssl"\n  depends_on "python@3.9"\n\n  def install\n    system "./configure", "--prefix=#{prefix}"\n    system "make", "install"\n  end\n\n  test do\n    system "#{bin}/software", "--version"\n  end\nend\n\n# Formula Components\n\n# Metadata\ndesc "Software description"\nhomepage "https://example.com"\nlicense "MIT"\n\n# Version Information\nurl "https://example.com/software-1.0.tar.gz"\nsha256 "hash"\nhead "https://github.com/user/software.git"\n\n# Dependencies\ndepends_on "dependency"\ndepends_on "build-tool" => :build\n\n# Installation\ndef install\n  # Installation commands\nend\n\n# Testing\ndef test\n  # Test commands\nend\n\n# Advanced Formula Features\n\n# Multiple Versions\nclass SoftwareAT16 < Formula\n  desc "Software version 16"\n  url "https://example.com/software-16.0.tar.gz"\nend\n\n# Bottle Specification\nbottle do\n  sha256 cellar: :any_skip_relocation, arm64_ventura: "hash"\n  sha256 cellar: :any_skip_relocation, x86_64_linux: "hash"\nend\n\n# Patches\npatch :DATA\n__END__\n--- a/configure\n+++ b/configure\n@@ -1,3 +1,3 @@\n-VERSION="1.0"\n+VERSION="1.1"\n\n# Conflicts\nconflicts_with "other-software"\n\n# Options\noption "with-feature" "Enable feature"\n\n# Installation Methods\n\ndef install\n  # Standard installation\n  system "./configure", "--prefix=#{prefix}"\n  system "make", "install"\n  \n  # Alternative installation\n  bin.install "software"\n  lib.install "libsoftware.a"\n  include.install "software.h"\n  \n  # Post-installation\n  bash_completion.install "completion.sh"\n  zsh_completion.install "_software"\nend\n\n# Testing\ndef test\n  system "#{bin}/software", "--test"\nend\n\n# Formula Development\n\n# Edit Formula\nbrew edit software\n\n# Test Formula\nbrew install --build-from-source --verbose software\nbrew test software\n\n# Audit Formula\nbrew audit --strict software\nbrew style software\n\n# Formula Maintenance\n\n# Update Formula\nbrew edit software\n# Update version, URL, and sha256\n\n# Test Update\nbrew uninstall software\nbrew install software\nbrew test software\n\n# Submit Formula\n# Fork homebrew-core\n# Create pull request\n\n# Formula Utilities\n\n# Generate Formula\nbrew generate-formula https://example.com/software.tar.gz\n\n# Formula Information\nbrew info software\nbrew info --json=v1 software\n\n# Formula Dependencies\nbrew deps --tree software\nbrew uses software\n\n# Formula Testing\n\n# Integration Test\nbrew install software\nsoftware --version\n\n# Uninstall Test\nbrew uninstall software\nbrew install software\n\n# Formula Best Practices\n\n# Follow Style Guide\nbrew style software\n\n# Use Proper Naming\n# Follow naming conventions\n\n# Include Tests\n# Always include test block\n\n# Document Dependencies\n# Clearly document all dependencies\n\n# Handle Edge Cases\n# Handle different systems and architectures'
+          command: 'Show Bottle Information',
+          description: 'Display bottle information for package',
+          usage: 'Bottle information',
+          example: `brew info --json=v1 wget | jq .[0].bottle.stable
+brew info --bottle wget`,
         },
         {
-          command: 'Performance Optimization',
-          description: 'Optimizing Homebrew performance and system resources',
-          usage: 'Improving installation speed and system efficiency',
-          example: '# Performance Tuning\n\n# Parallel Builds\nexport HOMEBREW_MAKE_JOBS=$(nproc) # Use all CPU cores\nexport MAKEFLAGS="-j$(nproc)"\n\n# Build Optimization\nexport HOMEBREW_BUILD_FROM_SOURCE=1 # Build from source\nexport HOMEBREW_NO_BOTTLE=1 # Disable bottles\n\n# Cache Optimization\nexport HOMEBREW_CACHE_MAX_SIZE=10G # Set cache size\nbrew cleanup --prune=30 # Keep 30 days\n\n# Network Optimization\nexport HOMEBREW_BOTTLE_DOMAIN="https://fast-mirror.com"\nexport HOMEBREW_API_DOMAIN="https://fast-api.com"\n\n# Disk Optimization\n\n# SSD Optimization\nbrew install trim-force # Enable TRIM\nsudo trim force enable\n\n# Cleanup Strategies\nbrew cleanup --prune=7 # Keep recent versions\nbrew cleanup --scrub # Remove all old versions\n\n# Memory Optimization\n\n# Reduce Memory Usage\nexport HOMEBREW_NO_AUTO_UPDATE=1 # Disable auto-update\nexport HOMEBREW_NO_ANALYTICS=1 # Disable analytics\n\n# Monitor Memory Usage\nbrew info --json=v1 package | jq .[0].installed[0].used_for_megabytes\n\n# Installation Speed\n\n# Use Local Mirrors\nexport HOMEBREW_BREW_GIT_REMOTE="https://mirror.github.com/homebrew.git"\nexport HOMEBREW_CORE_GIT_REMOTE="https://mirror.github.com/homebrew-core.git"\n\n# Pre-fetch Dependencies\nbrew fetch --deps package\n\n# Build Optimization\n\n# Compiler Optimization\nexport CFLAGS="-O3 -march=native"\nexport CXXFLAGS="-O3 -march=native"\n\n# Linker Optimization\nexport LDFLAGS="-Wl,-O1"\n\n# Parallel Compilation\nexport MAKEFLAGS="-j$(nproc)"\n\n# System Optimization\n\n# CPU Frequency\nbrew install cpufrequtils # CPU frequency control\ncpufreq-set -g performance\n\n# I/O Optimization\nbrew install ionice # I/O scheduler\nionice -c 1 -n 7 brew install package\n\n# Network Optimization\n\n# Connection Pooling\nexport HOMEBREW_CURL_OPTS="--connect-timeout 30 --max-time 300"\n\n# Parallel Downloads\n# Configure package manager for parallel downloads\n\n# Performance Monitoring\n\n# Installation Time\ntime brew install package\n\n# Resource Usage\nbrew install --verbose package\n\n# System Load\nhtop # Monitor CPU and memory\niotop # Monitor I/O\n\n# Optimization Scripts\n\n# Performance Tuning Script\n#!/bin/bash\n# optimize-brew.sh\n\n# Set optimal job count\nexport HOMEBREW_MAKE_JOBS=$(nproc)\n\n# Configure cache\nexport HOMEBREW_CACHE_MAX_SIZE=5G\n\n# Optimize build flags\nexport CFLAGS="-O2 -pipe"\nexport CXXFLAGS="-O2 -pipe"\n\n# Clean up old packages\nbrew cleanup --prune=7\n\necho "Homebrew optimized!"\n\n# Benchmark Script\n#!/bin/bash\n# benchmark-brew.sh\n\n# Test installation speed\necho "Testing installation speed..."\ntime brew install hello\n\n# Test parallel builds\necho "Testing parallel builds..."\ntime brew install --build-from-source wget\n\n# Test cache performance\necho "Testing cache performance..."\ntime brew reinstall package\n\necho "Benchmark complete!"\n\n# Performance Tips\n\n# Use SSD for Homebrew\n# Configure fast mirrors\n# Use parallel builds\n# Regular cleanup\n# Monitor system resources\n\n# Troubleshooting\n\n# Slow Builds\nbrew doctor # Check for issues\nbrew update # Update formulae\nbrew cleanup # Clean up\n\n# Memory Issues\nexport HOMEBREW_NO_AUTO_UPDATE=1\nexport HOMEBREW_MAKE_JOBS=2 # Reduce parallelism\n\n# Disk Space\nbrew cleanup --prune=0 # Remove all old versions\ndu -sh $(brew --cache) # Check cache size'
-        }
-      ]
+          command: 'Force Build from Source',
+          description: 'Force building package from source code',
+          usage: 'Source compilation',
+          example: `brew install --build-from-source wget
+export HOMEBREW_BUILD_FROM_SOURCE=1`,
+        },
+        {
+          command: 'Set Bottle Architecture',
+          description: 'Install specific architecture bottle',
+          usage: 'Architecture selection',
+          example: `brew install --bottle-arch=arm64 wget
+brew install --bottle-arch=x86_64 wget`,
+        },
+        {
+          command: 'Set Custom Bottle Domain',
+          description: 'Configure custom bottle mirror',
+          usage: 'Bottle mirror configuration',
+          example: `export HOMEBREW_BOTTLE_DOMAIN="https://my-mirror.com"`,
+        },
+        {
+          command: 'Create Local Bottle',
+          description: 'Create local bottle package',
+          usage: 'Bottle creation',
+          example: `brew bottle --json --root-url=https://my-mirror.com wget`,
+        },
+        {
+          command: 'Install Local Bottle',
+          description: 'Install bottle from custom URL',
+          usage: 'Local bottle installation',
+          example: `brew install --bottle-url=https://my-mirror.com/wget-1.21.3.arm64_ventura.bottle.tar.gz wget`,
+        },
+        {
+          command: 'List Available Bottles',
+          description: 'List all available bottles for package',
+          usage: 'Bottle enumeration',
+          example: `brew info --json=v1 --bottle-all package`,
+        },
+        {
+          command: 'Download Bottle Only',
+          description: 'Download bottle without installation',
+          usage: 'Bottle download',
+          example: `brew fetch --bottle wget`,
+        },
+        {
+          command: 'Verify Bottle Installation',
+          description: 'Verify bottle installation integrity',
+          usage: 'Bottle verification',
+          example: `brew install --verbose wget`,
+        },
+        {
+          command: 'Build Bottle',
+          description: 'Build bottle for distribution',
+          usage: 'Bottle building',
+          example: `brew install --build-bottle wget
+brew bottle wget`,
+        },
+        {
+          command: 'Manage Bottle Cache',
+          description: 'Manage bottle download cache',
+          usage: 'Cache management',
+          example: `brew cache --list
+brew cache --clean`,
+        },
+        {
+          command: 'Disable Bottles',
+          description: 'Disable bottle usage completely',
+          usage: 'Bottle disable',
+          example: `export HOMEBREW_BUILD_FROM_SOURCE=1
+brew install --build-from-source package`,
+        },
+        {
+          command: 'Fix Bottle Issues',
+          description: 'Troubleshoot bottle installation problems',
+          usage: 'Bottle troubleshooting',
+          example: `brew uninstall package
+brew install --build-from-source package`,
+        },
+        {
+          command: 'Clean Corrupted Bottles',
+          description: 'Clean up corrupted bottle cache',
+          usage: 'Bottle recovery',
+          example: `brew cleanup --prune=0
+brew install package`,
+        },
+        {
+          command: 'Create New Formula',
+          description: 'Create new Homebrew formula',
+          usage: 'Formula creation',
+          example: `brew create https://example.com/software-1.0.tar.gz`,
+        },
+        {
+          command: 'Edit Formula',
+          description: 'Edit existing formula',
+          usage: 'Formula modification',
+          example: `brew edit software`,
+        },
+        {
+          command: 'Formula Structure',
+          description: 'Basic formula structure template',
+          usage: 'Formula development',
+          example: `class Software < Formula
+  desc "Description of software"
+  homepage "https://example.com/software"
+  url "https://example.com/software-1.0.tar.gz"
+  sha256 "sha256_hash"
+  license "MIT"
+
+  depends_on "openssl"
+  depends_on "cmake" => :build
+
+  def install
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/software", "--version"
+  end
+end`,
+        },
+        {
+          command: 'Formula Metadata',
+          description: 'Formula metadata components',
+          usage: 'Formula development',
+          example: `desc "Software description"
+homepage "https://example.com"
+license "MIT"`,
+        },
+        {
+          command: 'Formula Version Information',
+          description: 'Version and source information',
+          usage: 'Formula development',
+          example: `url "https://example.com/software-1.0.tar.gz"
+sha256 "hash"
+head "https://github.com/user/software.git"`,
+        },
+        {
+          command: 'Formula Dependencies',
+          description: 'Define package dependencies',
+          usage: 'Formula development',
+          example: `depends_on "dependency"
+depends_on "build-tool" => :build`,
+        },
+        {
+          command: 'Formula Installation',
+          description: 'Define installation process',
+          usage: 'Formula development',
+          example: `def install
+  # Installation commands
+end`,
+        },
+        {
+          command: 'Formula Testing',
+          description: 'Define package tests',
+          usage: 'Formula development',
+          example: `def test
+  # Test commands
+end`,
+        },
+        {
+          command: 'Multiple Version Formula',
+          description: 'Create formula for specific version',
+          usage: 'Version management',
+          example: `class SoftwareAT16 < Formula
+  desc "Software version 16"
+  url "https://example.com/software-16.0.tar.gz"
+end`,
+        },
+        {
+          command: 'Bottle Specification',
+          description: 'Define bottle requirements',
+          usage: 'Bottle configuration',
+          example: `bottle do
+  sha256 cellar: :any_skip_relocation, arm64_ventura: "hash"
+  sha256 cellar: :any_skip_relocation, x86_64_linux: "hash"
+end`,
+        },
+        {
+          command: 'Formula Patches',
+          description: 'Apply patches to source code',
+          usage: 'Source modification',
+          example: `patch :DATA
+__END__
+--- a/configure
++++ b/configure
+@@ -1,3 +1,3 @@
+-VERSION="1.0"
++VERSION="1.1"`,
+        },
+        {
+          command: 'Formula Conflicts',
+          description: 'Define conflicting packages',
+          usage: 'Conflict management',
+          example: `conflicts_with "other-software"`,
+        },
+        {
+          command: 'Formula Options',
+          description: 'Define build options',
+          usage: 'Build customization',
+          example: `option "with-feature" "Enable feature"`,
+        },
+        {
+          command: 'Standard Installation Method',
+          description: 'Standard configure and make installation',
+          usage: 'Installation method',
+          example: `def install
+  system "./configure", "--prefix=#{prefix}"
+  system "make", "install"
+end`,
+        },
+        {
+          command: 'Alternative Installation Method',
+          description: 'Manual file installation',
+          usage: 'Installation method',
+          example: `def install
+  bin.install "software"
+  lib.install "libsoftware.a"
+  include.install "software.h"
+end`,
+        },
+        {
+          command: 'Post-Installation Setup',
+          description: 'Setup completion scripts and tools',
+          usage: 'Post-installation',
+          example: `bash_completion.install "completion.sh"
+zsh_completion.install "_software"`,
+        },
+        {
+          command: 'Test Formula',
+          description: 'Test formula installation',
+          usage: 'Formula testing',
+          example: `brew install --build-from-source --verbose software
+brew test software`,
+        },
+        {
+          command: 'Audit Formula',
+          description: 'Audit formula for compliance',
+          usage: 'Formula validation',
+          example: `brew audit --strict software
+brew style software`,
+        },
+        {
+          command: 'Submit Formula Pull Request',
+          description: 'Submit formula to Homebrew',
+          usage: 'Formula contribution',
+          example: `git add Formula/software.rb
+git commit -m "Add software 1.0"
+git push origin feature/add-software
+# Create pull request on GitHub`,
+        },
+        {
+          command: 'Configure Parallel Builds',
+          description: 'Optimize build parallelization',
+          usage: 'Performance tuning',
+          example: `export HOMEBREW_MAKE_JOBS=$(nproc) # Use all CPU cores
+export MAKEFLAGS="-j$(nproc)"`,
+        },
+        {
+          command: 'Build Optimization Settings',
+          description: 'Configure build optimization',
+          usage: 'Build configuration',
+          example: `export HOMEBREW_BUILD_FROM_SOURCE=1 # Build from source
+export HOMEBREW_NO_BOTTLE=1 # Disable bottles`,
+        },
+        {
+          command: 'Cache Optimization',
+          description: 'Optimize cache settings',
+          usage: 'Cache management',
+          example: `export HOMEBREW_CACHE_MAX_SIZE=10G # Set cache size
+brew cleanup --prune=30 # Keep 30 days`,
+        },
+        {
+          command: 'Network Optimization',
+          description: 'Configure network settings for speed',
+          usage: 'Network configuration',
+          example: `export HOMEBREW_BOTTLE_DOMAIN="https://fast-mirror.com"
+export HOMEBREW_API_DOMAIN="https://fast-api.com"`,
+        },
+        {
+          command: 'SSD Optimization',
+          description: 'Optimize for SSD storage',
+          usage: 'Storage optimization',
+          example: `brew install trim-force # Enable TRIM
+sudo trim force enable`,
+        },
+        {
+          command: 'Cleanup Strategies',
+          description: 'Optimize cleanup operations',
+          usage: 'Storage optimization',
+          example: `brew cleanup --prune=7 # Keep recent versions
+brew cleanup --scrub # Remove all old versions`,
+        },
+        {
+          command: 'Memory Optimization',
+          description: 'Reduce memory usage during operations',
+          usage: 'Memory optimization',
+          example: `export HOMEBREW_NO_AUTO_UPDATE=1 # Disable auto-update
+export HOMEBREW_NO_ANALYTICS=1 # Disable analytics`,
+        },
+        {
+          command: 'Monitor Memory Usage',
+          description: 'Monitor package memory usage',
+          usage: 'Memory monitoring',
+          example: `brew info --json=v1 package | jq .[0].installed[0].used_for_megabytes`,
+        },
+        {
+          command: 'Use Local Mirrors',
+          description: 'Configure local mirror repositories',
+          usage: 'Network optimization',
+          example: `export HOMEBREW_BREW_GIT_REMOTE="https://mirror.github.com/homebrew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirror.github.com/homebrew-core.git"`,
+        },
+        {
+          command: 'Pre-fetch Dependencies',
+          description: 'Download dependencies before installation',
+          usage: 'Installation optimization',
+          example: `brew fetch --deps package`,
+        },
+        {
+          command: 'Compiler Optimization',
+          description: 'Configure compiler optimization flags',
+          usage: 'Build optimization',
+          example: `export CFLAGS="-O3 -march=native"
+export CXXFLAGS="-O3 -march=native"`,
+        },
+        {
+          command: 'Linker Optimization',
+          description: 'Configure linker optimization',
+          usage: 'Build optimization',
+          example: `export LDFLAGS="-Wl,-O1"`,
+        },
+        {
+          command: 'CPU Frequency Control',
+          description: 'Control CPU frequency for builds',
+          usage: 'Hardware optimization',
+          example: `brew install cpufrequtils # CPU frequency control
+cpufreq-set -g performance`,
+        },
+        {
+          command: 'I/O Optimization',
+          description: 'Optimize I/O scheduling',
+          usage: 'I/O optimization',
+          example: `brew install ionice # I/O scheduler
+ionice -c 1 -n 7 brew install package`,
+        },
+        {
+          command: 'Connection Pooling',
+          description: 'Configure connection settings',
+          usage: 'Network optimization',
+          example: `export HOMEBREW_CURL_OPTS="--connect-timeout 30 --max-time 300"`,
+        },
+        {
+          command: 'Measure Installation Time',
+          description: 'Time installation operations',
+          usage: 'Performance monitoring',
+          example: `time brew install package`,
+        },
+        {
+          command: 'Resource Usage Analysis',
+          description: 'Analyze resource consumption',
+          usage: 'Resource monitoring',
+          example: `/usr/bin/time -v brew install package`,
+        },
+      ],
     },
     {
       title: 'Expert Level Topics',
       commands: [
         {
-          command: 'Advanced Troubleshooting',
-          description: 'Expert-level troubleshooting techniques for complex Homebrew issues',
-          usage: 'Diagnosing and resolving difficult Homebrew problems',
-          example: '# Advanced Diagnostics\n\n# System Health Check\nbrew doctor --verbose\nbrew doctor --debug\n\n# Permission Issues\nsudo chown -R $(whoami) /usr/local/Homebrew\nsudo chown -R $(whoami) /usr/local/Caskroom\nsudo chown -R $(whoami) /usr/local/var/homebrew\n\n# Apple Silicon Specific\nsudo chown -R $(whoami) /opt/homebrew\nsoftwareupdate --install-rosetta --agree-to-license\n\n# Git Repository Issues\ncd $(brew --repository)\ngit status\ngit reset --hard origin/master\n\n# Network Issues\nbrew update --verbose\nbrew update --force\n\n# Corrupted Installation\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\n\n# Advanced Debugging\n\n# Debug Installation\nbrew install --debug --verbose package\nbrew install --build-from-source --debug package\n\n# Environment Debugging\nbrew config\nbrew --env\nenv | grep HOMEBREW\n\n# Dependency Issues\nbrew deps --tree package\nbrew deps --installed package\nbrew install --ignore-dependencies package\n\n# Compilation Issues\nbrew install --build-from-source package\nbrew install --cc=clang package\nbrew install --env=std package\n\n# Complex Scenarios\n\n# Multiple Python Versions\nbrew unlink python@3.9\nbrew link python@3.10\nbrew switch python 3.10.0\n\n# Conflicting Packages\nbrew uninstall --force package1 package2\nbrew install package1\nbrew install package2\n\n# Mixed Architecture Issues\nbrew uninstall --ignore-dependencies package\nbrew install --bottle-arch=arm64 package\n\n# Permission Recovery\nsudo mkdir -p /usr/local/var/homebrew\nsudo chown -R $(whoami):admin /usr/local/var/homebrew\nchmod 755 /usr/local/var/homebrew\n\n# Network Recovery\nexport HOMEBREW_NO_AUTO_UPDATE=1\nexport HOMEBREW_CURL_OPTS="--connect-timeout 10 --max-time 60"\n\n# Cache Issues\nbrew cleanup --prune=0\nrm -rf $(brew --cache)\n\n# Repository Corruption\ncd $(brew --repository)\ngit fsck\ngit reset --hard origin/master\n\n# Advanced Repair\n\n# Complete Reset\nbrew uninstall --force $(brew list)\nbrew cleanup --scrub\nbrew update --force\n\n# Selective Reinstall\nbrew install package@version\nbrew switch package version\n\n# Manual Installation\nwget https://example.com/package.tar.gz\ntar xzf package.tar.gz\ncd package\n./configure --prefix=/usr/local\nmake && make install\n\n# Expert Diagnostics\n\n# System Integration\n/usr/bin/xcode-select --print-path\nxcode-select --install\n\n# PATH Issues\necho $PATH | tr \':\' \'\\n\' | grep brew\nwhich brew\n\n# Shell Integration\nbrew --prefix shellenv\nsource $(brew --prefix shellenv)\n\n# Performance Analysis\ntime brew install package\n/usr/bin/time -v brew install package\n\n# Resource Monitoring\nbrew install --verbose package 2>&1 | tee install.log\nps aux | grep brew\n\n# Troubleshooting Scripts\n\n# Comprehensive Diagnostic\n#!/bin/bash\n# diagnose-brew.sh\n\necho "=== Homebrew Diagnostic ==="\necho "Version: $(brew --version)"\necho "Prefix: $(brew --prefix)"\necho "Repository: $(brew --repository)"\necho "Cache: $(brew --cache)"\necho ""\necho "=== System Info ==="\necho "OS: $(uname -s)"\necho "Arch: $(uname -m)"\necho "Shell: $SHELL"\necho ""\necho "=== Health Check ==="\nbrew doctor\necho ""\necho "=== Permissions ==="\nls -la $(brew --prefix)\necho ""\necho "=== Network Test ==="\ncurl -I https://github.com\necho ""\necho "=== Disk Space ==="\ndf -h $(brew --prefix)\necho ""\necho "=== Memory ==="\nfree -h 2>/dev/null || vm_stat\necho ""\necho "=== Process Check ==="\nps aux | grep brew\necho ""\necho "=== Diagnostic Complete ==="\n\n# Automated Repair\n#!/bin/bash\n# repair-brew.sh\n\necho "Starting Homebrew repair..."\n\n# Fix permissions\nsudo chown -R $(whoami) /usr/local/Homebrew\nsudo chown -R $(whoami) /usr/local/Caskroom\nsudo chown -R $(whoami) /usr/local/var/homebrew\n\n# Reset repository\ncd $(brew --repository)\ngit reset --hard origin/master\n\n# Update and clean\nbrew update --force\nbrew cleanup --prune=0\n\n# Check health\nbrew doctor\n\necho "Repair complete!"'
+          command: 'Advanced System Health Check',
+          description: 'Run comprehensive system diagnostics',
+          usage: 'Advanced diagnostics',
+          example: `brew doctor --verbose
+brew doctor --debug`,
         },
         {
-          command: 'Enterprise and Large-Scale Deployment',
-          description: 'Homebrew deployment in enterprise environments',
-          usage: 'Managing Homebrew at scale with standardization and automation',
-          example: '# Enterprise Deployment\n\n# Standardized Installation\n\n# Custom Installation Script\n#!/bin/bash\n# enterprise-brew-install.sh\n\n# Set standard environment\nexport HOMEBREW_NO_ANALYTICS=1\nexport HOMEBREW_NO_AUTO_UPDATE=1\nexport HOMEBREW_CASK_OPTS="--appdir=/Applications"\n\n# Install to standard location\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\n\n# Configure environment\necho \'eval "$(/usr/local/bin/brew shellenv)"\' >> /etc/zprofile\necho \'eval "$(/usr/local/bin/brew shellenv)"\' >> /etc/profile\n\n# Install standard packages\nbrew install git curl wget\nbrew install --cask visual-studio-code\n\n# Configuration Management\n\n# Centralized Configuration\n# /etc/homebrew/config\nexport HOMEBREW_NO_ANALYTICS=1\nexport HOMEBREW_NO_AUTO_UPDATE=1\nexport HOMEBREW_BOTTLE_DOMAIN="https://internal-mirror.company.com"\nexport HOMEBREW_CASK_OPTS="--appdir=/Applications"\n\n# Custom Tap Configuration\nbrew tap company/homebrew-internal\nbrew tap company/homebrew-casks\n\n# Package Standardization\n\n# Standard Package List\ncat > /etc/homebrew/packages.txt << EOF\ngit\ncurl\nwget\nnode\npython@3.9\nvisual-studio-code\nslack\nfirefox\nEOF\n\n# Install Standard Packages\nwhile read package; do\n  brew install $package\ndone < /etc/homebrew/packages.txt\n\n# Automation and Scripting\n\n# Automated Setup Script\n#!/bin/bash\n# setup-workstation.sh\n\n# Load configuration\nsource /etc/homebrew/config\n\n# Update Homebrew\nbrew update\n\n# Install standard packages\nbrew bundle --file=/etc/homebrew/Brewfile\n\n# Configure services\nbrew services start mysql\nbrew services start redis\n\n# Security hardening\nbrew install clamav\nfreshclam\n\n# Monitoring and Logging\n\n# Installation Logging\nbrew install package 2>&1 | tee /var/log/homebrew-install.log\n\n# Usage Monitoring\nbrew install --verbose package 2>&1 | tee /var/log/homebrew-usage.log\n\n# System Health\necho "$(date): $(brew doctor | head -1)" >> /var/log/homebrew-health.log\n\n# Security and Compliance\n\n# Security Configuration\nexport HOMEBREW_CURL_OPTS="--tlsv1.2"\nexport HOMEBREW_GIT_OPTS="--no-pager"\n\n# Audit Packages\nbrew audit --strict package\nbrew install --cask --audit package\n\n# Compliance Reporting\n#!/bin/bash\n# compliance-report.sh\n\necho "=== Homebrew Compliance Report ==="\necho "Generated: $(date)"\necho ""\necho "Installed Packages:"\nbrew list --formula\necho ""\necho "Installed Casks:"\nbrew list --cask\necho ""\necho "System Health:"\nbrew doctor\necho ""\necho "Security Status:"\nbrew audit --strict $(brew list)\n\n# Large-Scale Management\n\n# Mass Deployment\n# Use configuration management tools\n# Ansible, Puppet, Chef scripts\n\n# Example Ansible Task\n- name: Install Homebrew\n  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\n  become: yes\n\n- name: Install packages\n  homebrew:\n    name: "{{ item }}"\n    state: present\n  loop:\n    - git\n    - curl\n    - node\n\n# Performance Optimization\n\n# Caching Server\n# Set up local package cache\nexport HOMEBREW_CACHE_URL="https://internal-cache.company.com"\n\n# Parallel Installation\nexport HOMEBREW_MAKE_JOBS=8\n\n# Network Optimization\n# Configure internal mirrors\nexport HOMEBREW_BREW_GIT_REMOTE="https://internal-git.company.com/homebrew.git"\n\n# Backup and Recovery\n\n# Automated Backup\n#!/bin/bash\n# backup-homebrew.sh\n\nBACKUP_DIR="/backup/homebrew/$(date +%Y%m%d)"\nmkdir -p $BACKUP_DIR\n\n# Backup package list\nbrew list > $BACKUP_DIR/packages.txt\nbrew list --cask > $BACKUP_DIR/casks.txt\n\n# Backup configurations\ncp -r /usr/local/etc $BACKUP_DIR/\ncp -r ~/.brew $BACKUP_DIR/\n\n# Create Brewfile\nbrew bundle dump --file=$BACKUP_DIR/Brewfile\n\necho "Backup complete: $BACKUP_DIR"\n\n# Disaster Recovery\n#!/bin/bash\n# restore-homebrew.sh\n\nBACKUP_DIR=$1\n\n# Restore packages\nwhile read package; do\n  brew install $package\ndone < $BACKUP_DIR/packages.txt\n\n# Restore casks\nwhile read cask; do\n  brew install --cask $cask\ndone < $BACKUP_DIR/casks.txt\n\n# Restore from Brewfile\nbrew bundle --file=$BACKUP_DIR/Brewfile\n\n# Enterprise Best Practices\n\n# Standardization\n- Use consistent installation paths\n- Implement package version control\n- Maintain package documentation\n\n# Security\n- Regular security audits\n- Package verification\n- Access control\n\n# Monitoring\n- Installation logging\n- Usage tracking\n- Performance monitoring\n\n# Maintenance\n- Regular updates\n- Cleanup schedules\n- Health checks\n\n# Documentation\n- Installation guides\n- Troubleshooting procedures\n- User training materials'
+          command: 'Fix Permission Issues',
+          description: 'Fix Homebrew permission problems',
+          usage: 'Permission recovery',
+          example: `sudo chown -R $(whoami) /usr/local/Homebrew
+sudo chown -R $(whoami) /usr/local/Caskroom
+sudo chown -R $(whoami) /usr/local/var/homebrew`,
         },
         {
-          command: 'Homebrew Ecosystem and Community',
-          description: 'Understanding the Homebrew ecosystem and community contributions',
-          usage: 'Engaging with the Homebrew community and contributing to the project',
-          example: '# Homebrew Ecosystem\n\n# Core Components\n- Homebrew/brew: Core package manager\n- Homebrew/homebrew-core: Core formulae\n- Homebrew/homebrew-cask: macOS applications\n- Homebrew/homebrew-services: Service management\n\n# Community Resources\n\n# Official Website\nhttps://brew.sh/           # Official documentation\nhttps://formulae.brew.sh/ # Package database\n\n# GitHub Repository\nhttps://github.com/Homebrew/brew\nhttps://github.com/Homebrew/homebrew-core\nhttps://github.com/Homebrew/homebrew-cask\n\n# Community Forums\nhttps://discourse.brew.sh/ # Official forum\nhttps://github.com/Homebrew/discussions # GitHub discussions\n\n# Contributing to Homebrew\n\n# Fork Repository\ngit clone https://github.com/Homebrew/homebrew-core.git\ncd homebrew-core\n\n# Create Formula\nbrew create https://example.com/software-1.0.tar.gz\n\n# Edit Formula\nbrew edit software\n\n# Test Formula\nbrew install --build-from-source --verbose software\nbrew test software\n\n# Audit Formula\nbrew audit --strict software\nbrew style software\n\n# Submit Pull Request\ngit add Formula/software.rb\ngit commit -m "Add software 1.0"\ngit push origin feature/add-software\n# Create pull request on GitHub\n\n# Formula Guidelines\n\n# Naming Conventions\n- Use lowercase letters\n- Use hyphens for spaces\n- Avoid version numbers in name\n\n# Style Guidelines\nbrew style software          # Check style\nbrew audit --strict software   # Audit formula\n\n# Testing Requirements\n- Always include test block\n- Test basic functionality\n- Test edge cases\n\n# Documentation\n- Clear description\n- Complete homepage URL\n- License information\n\n# Community Tap Development\n\n# Create Personal Tap\nbrew tap username/homebrew-custom\n\n# Add Formula to Tap\ncd $(brew --repository)/Library/Taps/username/homebrew-custom\nbrew create https://example.com/custom-software.tar.gz\n\n# Publish Tap\ngit init\ngit add .\ngit commit -m "Initial commit"\ngit remote add origin https://github.com/username/homebrew-custom.git\ngit push -u origin main\n\n# Share Tap\nbrew tap username/homebrew-custom\nbrew install custom-software\n\n# Homebrew Events\n\n# Homebrew Conference\n# Annual conference for contributors\n# Presentations and workshops\n# Networking opportunities\n\n# Local Meetups\n# Find local Homebrew meetups\n# Organize local events\n# Share knowledge and experience\n\n# Contributing Guidelines\n\n# Code of Conduct\n- Respectful communication\n- Inclusive environment\n- Professional behavior\n\n# Contribution Types\n- Formula maintenance\n- Bug reports\n- Feature requests\n- Documentation\n- Translation\n\n# Development Workflow\n\n# Issue Reporting\nhttps://github.com/Homebrew/brew/issues\n- Search existing issues\n- Provide detailed information\n- Include system information\n\n# Feature Requests\n- Use issue templates\n- Provide use cases\n- Consider implementation\n\n# Bug Reports\n- Include error messages\n- Provide system info\n- Show reproduction steps\n\n# Homebrew Extensions\n\n# Third-Party Tools\n- Homebrew Bundle: Brewfile management\n- Homebrew Cask Upgrade: Cask management\n- Homebrew Services: Service management\n\n# Integrations\n- Shell completion\n- Editor integration\n- CI/CD integration\n\n# Documentation Contributions\n\n# Documentation Repository\nhttps://github.com/Homebrew/brew.sh\n\n# Improving Documentation\n- Fix typos\n- Add examples\n- Improve clarity\n- Translate content\n\n# Homebrew Analytics\n\n# Opt-in Analytics\nbrew analytics on    # Enable analytics\nbrew analytics off   # Disable analytics\n\n# Analytics Data\nbrew analytics --days=30  # 30-day data\nbrew analytics --category=install # Installation data\n\n# Privacy\n- Anonymous usage data\n- No personal information\n- Opt-out available\n\n# Homebrew Governance\n\n# Leadership Team\n- Maintainers\n- Contributors\n- Community managers\n\n# Decision Making\n- Consensus-based\n- Transparent process\n- Community input\n\n# Roadmap\n- Future features\n- Technical debt\n- Community needs\n\n# Supporting Homebrew\n\n# Financial Support\n- GitHub Sponsors\n- Patreon\n- Corporate sponsorship\n\n# Non-Financial Support\n- Code contributions\n- Documentation\n- Community support\n- Testing and feedback\n\n# Homebrew Best Practices\n\n# For Users\n- Keep Homebrew updated\n- Use official taps\n- Report issues\n- Follow security practices\n\n# For Contributors\n- Follow style guidelines\n- Test thoroughly\n- Document changes\n- Engage respectfully\n\n# For Organizations\n- Use Homebrew for development\n- Contribute to ecosystem\n- Support maintainers\n- Share best practices'
+          command: 'Apple Silicon Permission Fix',
+          description: 'Fix permissions on Apple Silicon Macs',
+          usage: 'Apple Silicon fixes',
+          example: `sudo chown -R $(whoami) /opt/homebrew
+softwareupdate --install-rosetta --agree-to-license`,
         },
         {
-          command: 'Future Trends and Emerging Features',
-          description: 'Exploring the future of Homebrew and package management',
-          usage: 'Understanding upcoming features and industry trends',
-          example: '# Homebrew Roadmap\n\n# Upcoming Features\n\n# Performance Improvements\n- Parallel installation\n- Optimized dependency resolution\n- Enhanced caching\n- Reduced memory usage\n\n# User Experience\n- Improved error messages\n- Better progress indicators\n- Enhanced completion\n- Interactive prompts\n\n# Platform Support\n- Enhanced Apple Silicon support\n- Improved Linux compatibility\n- Windows Subsystem for Linux\n- Container support\n\n# Security Enhancements\n- Package verification\n- Secure repositories\n- Dependency scanning\n- Privacy improvements\n\n# Emerging Technologies\n\n# Container Integration\nbrew install docker          # Container support\nbrew install podman          # Alternative container runtime\nbrew install kubectl         # Kubernetes integration\nbrew install helm           # Package management for K8s\n\n# Cloud Native\nbrew install terraform      # Infrastructure as code\nbrew install kustomize       # Kubernetes configuration\nbrew install argocd          # GitOps deployment\n\n# Development Tools\nbrew install github-cli      # GitHub CLI\nbrew install gitlab-runner   # GitLab CI/CD\nbrew install jenkins         # CI/CD server\n\n# AI/ML Tools\nbrew install python@3.11    # Python for ML\nbrew install r              # Statistical computing\nbrew install julia          # Scientific computing\nbrew install tensorflow     # Machine learning\n\n# Industry Trends\n\n# Package Management Evolution\n- Semantic versioning\n- Dependency graphs\n- Automated updates\n- Rollback capabilities\n\n# Security Trends\n- Supply chain security\n- Vulnerability scanning\n- Automated patching\n- Zero-trust architecture\n\n# Performance Trends\n- Parallel processing\n- Resource optimization\n- Caching strategies\n- Network optimization\n\n# Future Homebrew Features\n\n# Enhanced Dependency Management\nbrew deps --graph package    # Dependency graph\nbrew install --resolve-deps package # Smart dependency resolution\nbrew upgrade --smart package # Intelligent upgrades\n\n# Advanced Cask Features\nbrew install --cask --auto-update app # Auto-updating casks\nbrew install --cask --version-lock app # Version locking\nbrew install --cask --backup app # Backup before update\n\n# Improved Services\nbrew services --monitor service # Service monitoring\nbrew services --backup service # Service backup\nbrew services --migrate service # Service migration\n\n# Enhanced Analytics\nbrew analytics --predictive # Predictive analytics\nbrew analytics --usage-patterns # Usage patterns\nbrew analytics --performance # Performance metrics\n\n# Development Tools Integration\nbrew install --dev-tools package # Development environment\nbrew install --test-framework package # Testing tools\nbrew install --ci-cd package # CI/CD integration\n\n# Cross-Platform Features\nbrew install --universal package # Universal binaries\nbrew install --cross-platform package # Cross-platform support\nbrew install --container package # Container optimization\n\n# AI-Powered Features\nbrew install --ai-recommend package # AI recommendations\nbrew install --auto-configure package # Auto-configuration\nbrew install --smart-update package # Smart updates\n\n# Emerging Use Cases\n\n# DevOps Integration\nbrew install --infrastructure package # Infrastructure tools\nbrew install --monitoring package # Monitoring tools\nbrew install --automation package # Automation tools\n\n# Data Science\nbrew install --data-science package # Data science tools\nbrew install --visualization package # Visualization tools\nbrew install --big-data package # Big data tools\n\n# Web Development\nbrew install --web-dev package # Web development tools\nbrew install --frontend package # Frontend tools\nbrew install --backend package # Backend tools\n\n# Mobile Development\nbrew install --mobile-dev package # Mobile development\nbrew install --cross-platform package # Cross-platform tools\nbrew install --testing package # Testing tools\n\n# Future Considerations\n\n# Sustainability\n- Energy efficiency\n- Resource optimization\n- Green computing\n- Carbon footprint\n\n# Accessibility\n- Screen reader support\n- Keyboard navigation\n- High contrast mode\n- Localization\n\n# Compliance\n- GDPR compliance\n- Security standards\n- Industry regulations\n- Audit requirements\n\n# Community Growth\n- Contributor programs\n- Mentorship initiatives\n- Diversity and inclusion\n- Global outreach\n\n# Technical Innovation\n- Machine learning integration\n- Natural language processing\n- Predictive analytics\n- Automated optimization\n\n# Homebrew Future Vision\n\n# Goals\n- Universal package management\n- Seamless cross-platform support\n- Intelligent automation\n- Enhanced security\n- Superior performance\n\n# Challenges\n- Platform fragmentation\n- Security threats\n- Performance optimization\n- User experience\n- Community management\n\n# Opportunities\n- Cloud integration\n- AI/ML integration\n- Container adoption\n- DevOps adoption\n- Open source growth\n\n# Next Steps\n- Follow roadmap\n- Participate in community\n- Contribute to development\n- Provide feedback\n- Support the project'
-        }
-      ]
-    }
-  ]
+          command: 'Git Repository Issues',
+          description: 'Fix Git repository corruption',
+          usage: 'Repository recovery',
+          example: `cd $(brew --repository)
+git status
+git reset --hard origin/master`,
+        },
+        {
+          command: 'Network Issues Diagnosis',
+          description: 'Diagnose and fix network connectivity issues',
+          usage: 'Network troubleshooting',
+          example: `brew update --verbose
+brew update --force`,
+        },
+        {
+          command: 'Complete Reinstallation',
+          description: 'Completely reinstall Homebrew',
+          usage: 'Complete recovery',
+          example: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`,
+        },
+        {
+          command: 'Debug Installation',
+          description: 'Install package with full debug output',
+          usage: 'Advanced debugging',
+          example: `brew install --debug --verbose package
+brew install --build-from-source --debug package`,
+        },
+        {
+          command: 'Environment Debugging',
+          description: 'Debug Homebrew environment configuration',
+          usage: 'Environment troubleshooting',
+          example: `brew config
+brew --env
+env | grep HOMEBREW`,
+        },
+        {
+          command: 'Dependency Issues Diagnosis',
+          description: 'Diagnose and fix dependency problems',
+          usage: 'Dependency troubleshooting',
+          example: `brew deps --tree package
+brew deps --installed package
+brew install --ignore-dependencies package`,
+        },
+        {
+          command: 'Compilation Issues Fix',
+          description: 'Fix compilation and build issues',
+          usage: 'Build troubleshooting',
+          example: `brew install --build-from-source package
+brew install --cc=clang package
+brew install --env=std package`,
+        },
+        {
+          command: 'Multiple Python Versions',
+          description: 'Manage multiple Python installations',
+          usage: 'Python version management',
+          example: `brew unlink python@3.9
+brew link python@3.10
+brew switch python 3.10.0`,
+        },
+        {
+          command: 'Conflicting Packages Resolution',
+          description: 'Resolve package conflicts',
+          usage: 'Conflict resolution',
+          example: `brew uninstall --force package1 package2
+brew install package1
+brew install package2`,
+        },
+        {
+          command: 'Mixed Architecture Issues',
+          description: 'Fix architecture compatibility issues',
+          usage: 'Architecture troubleshooting',
+          example: `brew uninstall --ignore-dependencies package
+brew install --bottle-arch=arm64 package`,
+        },
+        {
+          command: 'Permission Recovery',
+          description: 'Recover Homebrew directory permissions',
+          usage: 'Permission recovery',
+          example: `sudo mkdir -p /usr/local/var/homebrew
+sudo chown -R $(whoami):admin /usr/local/var/homebrew
+chmod 755 /usr/local/var/homebrew`,
+        },
+        {
+          command: 'Network Recovery Settings',
+          description: 'Configure network settings for recovery',
+          usage: 'Network recovery',
+          example: `export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_CURL_OPTS="--connect-timeout 10 --max-time 60"`,
+        },
+        {
+          command: 'Cache Issues Resolution',
+          description: 'Clear and rebuild corrupted cache',
+          usage: 'Cache recovery',
+          example: `brew cleanup --prune=0
+rm -rf $(brew --cache)`,
+        },
+        {
+          command: 'Repository Corruption Fix',
+          description: 'Fix corrupted Git repository',
+          usage: 'Repository recovery',
+          example: `cd $(brew --repository)
+git fetch --unshallow
+git reset --hard origin/master`,
+        },
+        {
+          command: 'Enterprise Installation Script',
+          description: 'Standardized enterprise installation',
+          usage: 'Enterprise deployment',
+          example: `#!/bin/bash
+# enterprise-brew-install.sh
+
+# Set standard environment
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+# Install to standard location
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`,
+        },
+        {
+          command: 'Configure Enterprise Environment',
+          description: 'Configure enterprise-wide environment',
+          usage: 'Enterprise configuration',
+          example: `echo 'eval "$(/usr/local/bin/brew shellenv)"' >> /etc/zprofile
+echo 'eval "$(/usr/local/bin/brew shellenv)"' >> /etc/profile`,
+        },
+        {
+          command: 'Install Standard Packages',
+          description: 'Install enterprise standard packages',
+          usage: 'Standard deployment',
+          example: `brew install git curl wget
+brew install --cask visual-studio-code`,
+        },
+        {
+          command: 'Centralized Configuration',
+          description: 'Create centralized configuration',
+          usage: 'Enterprise configuration',
+          example: `# /etc/homebrew/config
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_BOTTLE_DOMAIN="https://internal-mirror.company.com"
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"`,
+        },
+        {
+          command: 'Custom Tap Configuration',
+          description: 'Configure enterprise taps',
+          usage: 'Enterprise taps',
+          example: `brew tap company/homebrew-internal
+brew tap company/homebrew-casks`,
+        },
+        {
+          command: 'Standard Package List',
+          description: 'Create standard package list',
+          usage: 'Standard deployment',
+          example: `cat > /etc/homebrew/packages.txt << EOF
+git
+curl
+wget
+node
+python@3.9
+visual-studio-code
+slack
+firefox
+EOF`,
+        },
+        {
+          command: 'Install Standard Packages Script',
+          description: 'Install packages from standard list',
+          usage: 'Automated deployment',
+          example: `while read package; do
+  brew install $package
+done < /etc/homebrew/packages.txt`,
+        },
+        {
+          command: 'Automated Setup Script',
+          description: 'Complete automated workstation setup',
+          usage: 'Full automation',
+          example: `#!/bin/bash
+# setup-workstation.sh
+
+# Load configuration
+source /etc/homebrew/config
+
+# Update Homebrew
+brew update
+
+# Install standard packages
+brew bundle --file=/etc/homebrew/Brewfile
+
+# Configure services
+brew services start mysql
+brew services start redis`,
+        },
+        {
+          command: 'Security Hardening',
+          description: 'Apply enterprise security settings',
+          usage: 'Security configuration',
+          example: `brew install clamav
+freshclan`,
+        },
+        {
+          command: 'Installation Logging',
+          description: 'Log all installation activities',
+          usage: 'Audit logging',
+          example: `brew install package 2>&1 | tee /var/log/homebrew-install.log`,
+        },
+        {
+          command: 'Usage Monitoring',
+          description: 'Monitor Homebrew usage patterns',
+          usage: 'Usage analytics',
+          example: `brew install --verbose package 2>&1 | tee /var/log/homebrew-usage.log`,
+        },
+        {
+          command: 'System Health Monitoring',
+          description: 'Monitor system health with Homebrew',
+          usage: 'Health monitoring',
+          example: `echo "$(date): $(brew doctor | head -1)" >> /var/log/homebrew-health.log`,
+        },
+        {
+          command: 'Performance Monitoring',
+          description: 'Monitor Homebrew performance metrics',
+          usage: 'Performance tracking',
+          example: `/usr/bin/time -v brew install package 2>&1 | tee /var/log/homebrew-performance.log`,
+        },
+        {
+          command: 'Core Components Overview',
+          description: 'Understanding Homebrew ecosystem components',
+          usage: 'Ecosystem understanding',
+          example: `Core Components:
+- Homebrew/brew: Core package manager
+- Homebrew/homebrew-core: Core formulae
+- Homebrew/homebrew-cask: macOS applications
+- Homebrew/homebrew-services: Service management`,
+        },
+        {
+          command: 'Community Resources',
+          description: 'Access Homebrew community resources',
+          usage: 'Community engagement',
+          example: `Official Website:
+https://brew.sh/           # Official documentation
+https://formulae.brew.sh/ # Package database
+
+GitHub Repository:
+https://github.com/Homebrew/brew
+https://github.com/Homebrew/homebrew-core
+https://github.com/Homebrew/homebrew-cask`,
+        },
+        {
+          command: 'Community Forums',
+          description: 'Engage with Homebrew community',
+          usage: 'Community support',
+          example: `Community Forums:
+https://discourse.brew.sh/ # Official forum
+https://github.com/Homebrew/discussions # GitHub discussions`,
+        },
+        {
+          command: 'Contribute to Homebrew',
+          description: 'Start contributing to Homebrew',
+          usage: 'Contribution workflow',
+          example: `# Fork Repository
+git clone https://github.com/Homebrew/homebrew-core.git
+cd homebrew-core`,
+        },
+        {
+          command: 'Create and Test Formula',
+          description: 'Create and test new formula',
+          usage: 'Formula contribution',
+          example: `brew create https://example.com/software-1.0.tar.gz
+brew edit software
+brew install --build-from-source --verbose software
+brew test software`,
+        },
+        {
+          command: 'Audit and Style Formula',
+          description: 'Validate formula compliance',
+          usage: 'Formula validation',
+          example: `brew audit --strict software
+brew style software`,
+        },
+        {
+          command: 'Submit Pull Request',
+          description: 'Submit contribution to Homebrew',
+          usage: 'Contribution submission',
+          example: `git add Formula/software.rb
+git commit -m "Add software 1.0"
+git push origin feature/add-software
+# Create pull request on GitHub`,
+        },
+        {
+          command: 'Formula Naming Conventions',
+          description: 'Follow proper naming conventions',
+          usage: 'Formula standards',
+          example: `Naming Conventions:
+- Use lowercase letters
+- Use hyphens for spaces
+- Avoid version numbers in name`,
+        },
+        {
+          command: 'Style Guidelines',
+          description: 'Follow Homebrew style guidelines',
+          usage: 'Code standards',
+          example: `brew style software          # Check style
+brew audit --strict software   # Audit formula`,
+        },
+        {
+          command: 'Testing Requirements',
+          description: 'Meet testing requirements',
+          usage: 'Testing standards',
+          example: `Testing Requirements:
+- Always include test block
+- Test basic functionality
+- Test edge cases`,
+        },
+        {
+          command: 'Documentation Standards',
+          description: 'Follow documentation requirements',
+          usage: 'Documentation standards',
+          example: `Documentation:
+- Clear description
+- Complete homepage URL
+- License information`,
+        },
+        {
+          command: 'Create Personal Tap',
+          description: 'Create personal custom tap',
+          usage: 'Tap creation',
+          example: `brew tap username/homebrew-custom`,
+        },
+        {
+          command: 'Add Formula to Tap',
+          description: 'Add formula to personal tap',
+          usage: 'Tap management',
+          example: `cd "$(brew --repository)/Library/Taps/username/homebrew-custom"
+brew create https://example.com/custom-software.tar.gz`,
+        },
+        {
+          command: 'Publish Tap',
+          description: 'Publish tap to GitHub',
+          usage: 'Tap publishing',
+          example: `git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/username/homebrew-custom.git
+git push -u origin main`,
+        },
+        {
+          command: 'Performance Improvements Roadmap',
+          description: 'Upcoming performance enhancements',
+          usage: 'Future features',
+          example: `Performance Improvements:
+- Parallel installation
+- Optimized dependency resolution
+- Enhanced caching
+- Reduced memory usage`,
+        },
+        {
+          command: 'User Experience Enhancements',
+          description: 'Planned UX improvements',
+          usage: 'Future features',
+          example: `User Experience:
+- Improved error messages
+- Better progress indicators
+- Enhanced completion
+- Interactive prompts`,
+        },
+        {
+          command: 'Platform Support Expansion',
+          description: 'Future platform support plans',
+          usage: 'Future features',
+          example: `Platform Support:
+- Enhanced Apple Silicon support
+- Improved Linux compatibility
+- Windows Subsystem for Linux
+- Container support`,
+        },
+        {
+          command: 'Security Enhancements',
+          description: 'Planned security improvements',
+          usage: 'Future features',
+          example: `Security Enhancements:
+- Package verification
+- Secure repositories
+- Dependency scanning
+- Privacy improvements`,
+        },
+        {
+          command: 'Container Integration Tools',
+          description: 'Install container-related tools',
+          usage: 'Container development',
+          example: `brew install docker          # Container support
+brew install podman          # Alternative container runtime
+brew install kubectl         # Kubernetes integration
+brew install helm           # Package management for K8s`,
+        },
+        {
+          command: 'Cloud Native Tools',
+          description: 'Install cloud development tools',
+          usage: 'Cloud development',
+          example: `brew install terraform      # Infrastructure as code
+brew install kustomize       # Kubernetes configuration
+brew install argocd          # GitOps deployment`,
+        },
+        {
+          command: 'Development Tools',
+          description: 'Install modern development tools',
+          usage: 'Development setup',
+          example: `brew install github-cli      # GitHub CLI
+brew install gitlab-runner   # GitLab CI/CD
+brew install jenkins         # CI/CD server`,
+        },
+        {
+          command: 'AI/ML Development Tools',
+          description: 'Install artificial intelligence tools',
+          usage: 'AI/ML development',
+          example: `brew install python@3.11    # Python for ML
+brew install r              # Statistical computing
+brew install julia          # Scientific computing
+brew install tensorflow     # Machine learning`,
+        },
+        {
+          command: 'Package Management Evolution',
+          description: 'Future package management trends',
+          usage: 'Industry trends',
+          example: `Package Management Evolution:
+- Semantic versioning
+- Dependency graphs
+- Automated updates
+- Rollback capabilities`,
+        },
+        {
+          command: 'Security Trends',
+          description: 'Security evolution in package management',
+          usage: 'Security trends',
+          example: `Security Trends:
+- Supply chain security
+- Vulnerability scanning
+- Automated patching
+- Zero-trust architecture`,
+        },
+        {
+          command: 'Performance Trends',
+          description: 'Performance optimization trends',
+          usage: 'Performance trends',
+          example: `Performance Trends:
+- Parallel processing
+- Resource optimization
+- Caching strategies
+- Network optimization`,
+        },
+        {
+          command: 'Enhanced Dependency Management',
+          description: 'Future dependency management features',
+          usage: 'Future features',
+          example: `brew deps --graph package    # Dependency graph
+brew install --resolve-deps package # Smart dependency resolution
+brew upgrade --smart package        # Smart upgrades`,
+        },
+        {
+          command: 'Automated Updates',
+          description: 'Future automated update capabilities',
+          usage: 'Future features',
+          example: `brew upgrade --auto       # Automatic upgrades
+brew update --background   # Background updates
+brew upgrade --dry-run     # Preview upgrades`,
+        },
+        {
+          command: 'Enhanced Security Features',
+          description: 'Future security capabilities',
+          usage: 'Future features',
+          example: `brew install --verify package    # Package verification
+brew audit --security package      # Security audit
+brew scan --vulnerabilities package # Vulnerability scan`,
+        },
+      ],
+    },
+  ],
 };
