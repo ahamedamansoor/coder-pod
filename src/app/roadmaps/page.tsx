@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, BookOpen, ArrowRight, Layers, Code2, Server, TestTube, Briefcase, Brain } from 'lucide-react';
+import { MapPin, BookOpen, ArrowRight, Layers, Code2, Server, TestTube, Briefcase, Brain, Grid3x3, List } from 'lucide-react';
 import { languages, roleBasedRoadmaps } from '@/data/languages';
 import { cn } from '@/lib/utils';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
@@ -56,11 +56,22 @@ export default function RoadmapsPage() {
   const [selectedLanguage, setSelectedLanguage] = useState<typeof languages[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'grouped'>('grouped');
 
   const [searchQuery, setSearchQuery] = useState('');
 
   // Combine all roadmaps
   const allRoadmaps = [...(roleBasedRoadmaps || []), ...languages];
+
+  // Category icons mapping
+  const categoryIcons: Record<string, any> = {
+    'all': Layers,
+    'roles': Briefcase,
+    'frontend': Code2,
+    'backend': Server,
+    'algorithms': Brain,
+    'testing': TestTube,
+  };
 
   // Filter based on active category and search query
   const filteredRoadmaps = allRoadmaps.filter(r => {
@@ -108,7 +119,7 @@ export default function RoadmapsPage() {
       />
 
       {/* Main Content */}
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 xl:px-12 py-8 overflow-y-auto relative z-10">
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 xl:px-12 py-6 overflow-y-auto relative z-10">
         <div className="w-full">
           {/* Page Title - Scrolls with content */}
           <div className="flex-shrink-0 mb-4">
@@ -120,7 +131,7 @@ export default function RoadmapsPage() {
           </div>
 
           {/* Innovative Filter Pills - Sticky */}
-          <div className="sticky top-0 z-40 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 xl:-mx-12 xl:px-12 py-4 mb-6 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200">
+          <div className="sticky top-0 z-40 -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 px-4 sm:px-6 lg:px-8 xl:px-12 pt-4 pb-4 mb-6 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200">
             <div className="flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto w-full">
               <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 w-fit">
                 {categories.map((cat) => {
@@ -175,73 +186,265 @@ export default function RoadmapsPage() {
                 />
                 <Code2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
               </div>
+
+              {/* View Mode Toggle */}
+              <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
+                <button
+                  onClick={() => setViewMode('grouped')}
+                  className={cn(
+                    'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
+                    viewMode === 'grouped'
+                      ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  )}
+                >
+                  <List className="w-4 h-4" />
+                  <span>Grouped</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={cn(
+                    'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
+                    viewMode === 'grid'
+                      ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  )}
+                >
+                  <Grid3x3 className="w-4 h-4" />
+                  <span>Grid</span>
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Full Width Card Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-            {filteredRoadmaps.map((roadmap, index) => {
-              const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
-              const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
-              const isRoleBased = categoryMap.roles.includes(roadmap.slug);
+          {/* Roadmaps Display */}
+          {searchQuery ? (
+            /* Search Results - Grid View */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+              {filteredRoadmaps.map((roadmap, index) => {
+                const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
+                const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
+                const isRoleBased = categoryMap.roles.includes(roadmap.slug);
 
-              return (
-                <div
-                  key={roadmap.slug}
-                  onClick={() => handleLanguageClick(roadmap)}
-                  className="group cursor-pointer"
-                >
-                  {/* Clean Card */}
-                  <div className={cn(
-                    'relative h-full rounded-xl overflow-hidden',
-                    'bg-white dark:bg-slate-900',
-                    'border border-slate-200 dark:border-slate-800',
-                    'shadow-sm hover:shadow-md',
-                    'transition-all duration-200',
-                    'hover:-translate-y-0.5'
-                  )}>
-
-                    {/* Thin Accent Line - Left Border */}
+                return (
+                  <div
+                    key={roadmap.slug}
+                    onClick={() => handleLanguageClick(roadmap)}
+                    className="group cursor-pointer"
+                  >
+                    {/* Clean Card */}
                     <div className={cn(
-                      'absolute left-0 top-0 bottom-0 w-1',
-                      accentColor
-                    )} />
+                      'relative h-full rounded-xl overflow-hidden',
+                      'bg-white dark:bg-slate-900',
+                      'border border-slate-200 dark:border-slate-800',
+                      'shadow-sm hover:shadow-md',
+                      'transition-all duration-200',
+                      'hover:-translate-y-0.5'
+                    )}>
 
-                    {/* Card Content */}
-                    <div className="p-5 pl-6">
-                      {/* Header Row */}
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
-                            {roadmap.name}
-                          </h3>
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
-                            {isRoleBased ? 'Career Path' : 'Skill Path'}
-                          </span>
-                        </div>
-                      </div>
+                      {/* Thin Accent Line - Left Border */}
+                      <div className={cn(
+                        'absolute left-0 top-0 bottom-0 w-1',
+                        accentColor
+                      )} />
 
-                      {/* Description */}
-                      <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 min-h-[2.5rem]">
-                        {roadmap.description || `Master ${roadmap.name} with structured learning.`}
-                      </p>
-
-                      {/* Footer */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-                          <BookOpen className="w-4 h-4" />
-                          <span>{topicCount} topics</span>
+                      {/* Card Content */}
+                      <div className="p-5 pl-6">
+                        {/* Header Row */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
+                              {roadmap.name}
+                            </h3>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                              {isRoleBased ? 'Career Path' : 'Skill Path'}
+                            </span>
+                          </div>
                         </div>
 
-                        {/* Arrow */}
-                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
+                        {/* Description */}
+                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 min-h-[2.5rem]">
+                          {roadmap.description || `Master ${roadmap.name} with structured learning.`}
+                        </p>
+
+                        {/* Footer */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+                            <BookOpen className="w-4 h-4" />
+                            <span>{topicCount} topics</span>
+                          </div>
+
+                          {/* Arrow */}
+                          <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : viewMode === 'grouped' ? (
+            /* Grouped View by Category */
+            <div className="space-y-8">
+              {(activeCategory === 'all' ? categories.filter(c => c.id !== 'all') : categories.filter(c => c.id === activeCategory && c.id !== 'all')).map((category) => {
+                const CategoryIcon = categoryIcons[category.id] || Layers;
+                const categoryRoadmaps = activeCategory === 'all' 
+                  ? allRoadmaps.filter(r => categoryMap[category.id]?.includes(r.slug))
+                  : allRoadmaps.filter(r => categoryMap[category.id]?.includes(r.slug));
+                
+                if (categoryRoadmaps.length === 0) return null;
+                
+                return (
+                  <div key={category.id} className="space-y-4">
+                    {/* Category Header */}
+                    <div className="flex items-center gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+                      <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+                        <CategoryIcon className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                          {category.label}
+                        </h2>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                          {categoryRoadmaps.length} roadmap{categoryRoadmaps.length !== 1 ? 's' : ''}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Roadmap Grid for this Category */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                      {categoryRoadmaps.map((roadmap, index) => {
+                        const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
+                        const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
+                        const isRoleBased = categoryMap.roles.includes(roadmap.slug);
+
+                        return (
+                          <div
+                            key={roadmap.slug}
+                            onClick={() => handleLanguageClick(roadmap)}
+                            className="group cursor-pointer"
+                          >
+                            {/* Clean Card */}
+                            <div className={cn(
+                              'relative h-full rounded-xl overflow-hidden',
+                              'bg-white dark:bg-slate-900',
+                              'border border-slate-200 dark:border-slate-800',
+                              'shadow-sm hover:shadow-md',
+                              'transition-all duration-200',
+                              'hover:-translate-y-0.5'
+                            )}>
+
+                              {/* Thin Accent Line - Left Border */}
+                              <div className={cn(
+                                'absolute left-0 top-0 bottom-0 w-1',
+                                accentColor
+                              )} />
+
+                              {/* Card Content */}
+                              <div className="p-5 pl-6">
+                                {/* Header Row */}
+                                <div className="flex items-start justify-between mb-3">
+                                  <div>
+                                    <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
+                                      {roadmap.name}
+                                    </h3>
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                                      {isRoleBased ? 'Career Path' : 'Skill Path'}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Description */}
+                                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 min-h-[2.5rem]">
+                                  {roadmap.description || `Master ${roadmap.name} with structured learning.`}
+                                </p>
+
+                                {/* Footer */}
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+                                    <BookOpen className="w-4 h-4" />
+                                    <span>{topicCount} topics</span>
+                                  </div>
+
+                                  {/* Arrow */}
+                                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            /* Grid View (All roadmaps in one grid) */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+              {filteredRoadmaps.map((roadmap, index) => {
+                const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
+                const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
+                const isRoleBased = categoryMap.roles.includes(roadmap.slug);
+
+                return (
+                  <div
+                    key={roadmap.slug}
+                    onClick={() => handleLanguageClick(roadmap)}
+                    className="group cursor-pointer"
+                  >
+                    {/* Clean Card */}
+                    <div className={cn(
+                      'relative h-full rounded-xl overflow-hidden',
+                      'bg-white dark:bg-slate-900',
+                      'border border-slate-200 dark:border-slate-800',
+                      'shadow-sm hover:shadow-md',
+                      'transition-all duration-200',
+                      'hover:-translate-y-0.5'
+                    )}>
+
+                      {/* Thin Accent Line - Left Border */}
+                      <div className={cn(
+                        'absolute left-0 top-0 bottom-0 w-1',
+                        accentColor
+                      )} />
+
+                      {/* Card Content */}
+                      <div className="p-5 pl-6">
+                        {/* Header Row */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
+                              {roadmap.name}
+                            </h3>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                              {isRoleBased ? 'Career Path' : 'Skill Path'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 min-h-[2.5rem]">
+                          {roadmap.description || `Master ${roadmap.name} with structured learning.`}
+                        </p>
+
+                        {/* Footer */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+                            <BookOpen className="w-4 h-4" />
+                            <span>{topicCount} topics</span>
+                          </div>
+
+                          {/* Arrow */}
+                          <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Empty State */}
           {filteredRoadmaps.length === 0 && (

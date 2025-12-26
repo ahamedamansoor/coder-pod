@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LucideIcon, X, Copy, Check, Search, Filter } from 'lucide-react';
+import { LucideIcon, X, Copy, Check, Search, Filter, Code, BookOpen, Terminal, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CheatsheetCommand {
@@ -22,6 +22,15 @@ interface CheatsheetCommand {
 interface CheatsheetSection {
   title: string;
   commands: CheatsheetCommand[];
+}
+
+interface FilterOptions {
+  searchQuery: string;
+  selectedSections: string[];
+  contentType: 'all' | 'commands' | 'examples' | 'usage';
+  searchIn: 'all' | 'commands' | 'descriptions' | 'examples' | 'usage';
+  hasExample: boolean;
+  hasUsage: boolean;
 }
 
 interface CheatsheetModalProps {
@@ -60,6 +69,26 @@ const sectionColors = [
   'bg-pink-500',
 ];
 
+// Helper function to highlight text
+const highlightText = (text: string, query: string): React.ReactNode => {
+  if (!query.trim()) return text;
+
+  const parts = text.split(new RegExp(`(${query})`, 'gi'));
+  return (
+    <>
+      {parts.map((part, index) => 
+        part.toLowerCase() === query.toLowerCase() ? (
+          <mark key={index} className="bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100 px-0.5 rounded">
+            {part}
+          </mark>
+        ) : (
+          <span key={index}>{part}</span>
+        )
+      )}
+    </>
+  );
+};
+
 export function CheatsheetModal({
   open,
   onClose,
@@ -69,9 +98,18 @@ export function CheatsheetModal({
   sections,
 }: CheatsheetModalProps) {
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSections, setSelectedSections] = useState<string[]>([]);
   const [showTopics, setShowTopics] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  
+  // Enhanced filter state
+  const [filters, setFilters] = useState<FilterOptions>({
+    searchQuery: '',
+    selectedSections: [],
+    contentType: 'all',
+    searchIn: 'all',
+    hasExample: false,
+    hasUsage: false,
+  });
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -83,50 +121,127 @@ export function CheatsheetModal({
     }
   };
 
-  // Filter logic
+  // Enhanced filter logic
   const filteredSections = useMemo(() => {
     let filtered = sections;
 
-    // Filter by selected sections (multi-select)
-    if (selectedSections.length > 0) {
-      filtered = filtered.filter(section => selectedSections.includes(section.title));
+    // Filter by selected sections
+    if (filters.selectedSections.length > 0) {
+      filtered = filtered.filter(section => filters.selectedSections.includes(section.title));
+    }
+
+    // Filter by content type
+    if (filters.contentType !== 'all') {
+      filtered = filtered.map(section => ({
+        ...section,
+        commands: section.commands.filter(cmd => {
+          switch (filters.contentType) {
+            case 'commands':
+              return cmd.command.trim() !== '';
+            case 'examples':
+              return cmd.example && cmd.example.trim() !== '';
+            case 'usage':
+              return cmd.usage && cmd.usage.trim() !== '' && cmd.usage !== cmd.command;
+            default:
+              return true;
+          }
+        })
+      })).filter(section => section.commands.length > 0);
+    }
+
+    // Filter by hasExample/hasUsage flags
+    if (filters.hasExample || filters.hasUsage) {
+      filtered = filtered.map(section => ({
+        ...section,
+        commands: section.commands.filter(cmd => {
+          if (filters.hasExample && !filters.hasUsage) {
+            return cmd.example && cmd.example.trim() !== '';
+          }
+          if (filters.hasUsage && !filters.hasExample) {
+            return cmd.usage && cmd.usage.trim() !== '' && cmd.usage !== cmd.command;
+          }
+          if (filters.hasExample && filters.hasUsage) {
+            return (cmd.example && cmd.example.trim() !== '') || 
+                   (cmd.usage && cmd.usage.trim() !== '' && cmd.usage !== cmd.command);
+          }
+          return true;
+        })
+      })).filter(section => section.commands.length > 0);
     }
 
     // Filter by search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
+    if (filters.searchQuery.trim()) {
+      const query = filters.searchQuery.toLowerCase();
       filtered = filtered.map(section => ({
         ...section,
-        commands: section.commands.filter(cmd =>
-          cmd.command.toLowerCase().includes(query) ||
-          cmd.description.toLowerCase().includes(query) ||
-          (cmd.usage && cmd.usage.toLowerCase().includes(query)) ||
-          (cmd.example && cmd.example.toLowerCase().includes(query))
-        )
+        commands: section.commands.filter(cmd => {
+          const searchTargets = [];
+          
+          switch (filters.searchIn) {
+            case 'commands':
+              searchTargets.push(cmd.command);
+              break;
+            case 'descriptions':
+              searchTargets.push(cmd.description);
+              break;
+            case 'examples':
+              if (cmd.example) searchTargets.push(cmd.example);
+              break;
+            case 'usage':
+              if (cmd.usage) searchTargets.push(cmd.usage);
+              break;
+            case 'all':
+            default:
+              searchTargets.push(cmd.command, cmd.description);
+              if (cmd.example) searchTargets.push(cmd.example);
+              if (cmd.usage) searchTargets.push(cmd.usage);
+              break;
+          }
+          
+          return searchTargets.some(target => 
+            target && target.toLowerCase().includes(query)
+          );
+        })
       })).filter(section => section.commands.length > 0);
     }
 
     return filtered;
-  }, [sections, searchQuery, selectedSections]);
+  }, [sections, filters]);
 
-  // Handle section filter click (multi-select)
+  // Handle section filter click
   const handleSectionClick = (sectionTitle: string) => {
-    setSelectedSections(prev => {
-      if (prev.includes(sectionTitle)) {
-        // Remove if already selected
-        return prev.filter(title => title !== sectionTitle);
-      } else {
-        // Add if not selected
-        return [...prev, sectionTitle];
-      }
+    setFilters(prev => ({
+      ...prev,
+      selectedSections: prev.selectedSections.includes(sectionTitle)
+        ? prev.selectedSections.filter(title => title !== sectionTitle)
+        : [...prev.selectedSections, sectionTitle]
+    }));
+  };
+
+  // Update filter functions
+  const updateFilter = (key: keyof FilterOptions, value: any) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  // Clear all filters
+  const clearFilters = () => {
+    setFilters({
+      searchQuery: '',
+      selectedSections: [],
+      contentType: 'all',
+      searchIn: 'all',
+      hasExample: false,
+      hasUsage: false,
     });
   };
 
-  // Clear filters
-  const clearFilters = () => {
-    setSelectedSections([]);
-    setSearchQuery('');
-  };
+  // Check if any filters are active
+  const hasActiveFilters = filters.searchQuery.trim() !== '' || 
+                          filters.selectedSections.length > 0 || 
+                          filters.contentType !== 'all' || 
+                          filters.searchIn !== 'all' || 
+                          filters.hasExample || 
+                          filters.hasUsage;
 
   // Calculate totals
   const totalCommands = filteredSections.reduce((acc, s) => acc + s.commands.length, 0);
@@ -170,18 +285,18 @@ export function CheatsheetModal({
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
                     placeholder="Filter commands..."
-                    value={searchQuery}
+                    value={filters.searchQuery}
                     onChange={(e) => {
-                      setSearchQuery(e.target.value);
+                      updateFilter('searchQuery', e.target.value);
                       // Keep selected sections when searching - they work together
                     }}
                     className="pl-9 pr-10 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
                   />
-                  {searchQuery && (
+                  {filters.searchQuery && (
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setSearchQuery('')}
+                      onClick={() => updateFilter('searchQuery', '')}
                       className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                     >
                       <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
@@ -197,7 +312,7 @@ export function CheatsheetModal({
                   <Filter className="w-3.5 h-3.5 mr-1.5" />
                   {showTopics ? 'Hide Filters' : 'Advanced Filters'}
                   <span className="ml-1.5 text-[10px] opacity-75">
-                    ({selectedSections.length > 0 ? selectedSections.length : sections.length})
+                    ({filters.selectedSections.length > 0 ? filters.selectedSections.length : sections.length})
                   </span>
                 </Button>
               </div>
@@ -208,20 +323,20 @@ export function CheatsheetModal({
                   <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">
                     Topics:
                   </span>
-                  {(selectedSections.length > 0 || searchQuery) && (
+                  {(filters.selectedSections.length > 0 || filters.searchQuery) && (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={clearFilters}
                       className="h-7 px-2 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                     >
-                      Clear filters {selectedSections.length > 0 && `(${selectedSections.length})`}
+                      Clear filters {filters.selectedSections.length > 0 && `(${filters.selectedSections.length})`}
                     </Button>
                   )}
                   <div className="flex flex-wrap gap-2">
                     {sections.map((section, index) => {
                       const badgeColor = sectionColors[index % sectionColors.length];
-                      const isSelected = selectedSections.includes(section.title);
+                      const isSelected = filters.selectedSections.includes(section.title);
 
                       return (
                         <button
@@ -280,13 +395,13 @@ export function CheatsheetModal({
                           {/* Command Title - Enhanced with better font weight */}
                           <div className="text-center">
                             <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-tight">
-                              {cmd.command}
+                              {highlightText(cmd.command, filters.searchQuery)}
                             </h4>
                             
                             {/* Description */}
                             {cmd.description && (
                               <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                                {cmd.description}
+                                {highlightText(cmd.description, filters.searchQuery)}
                               </p>
                             )}
                           </div>
@@ -295,7 +410,7 @@ export function CheatsheetModal({
                           <div className="relative group">
                             <pre className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 text-sm font-mono overflow-x-auto">
                               <code className="text-slate-800 dark:text-slate-200">
-                                {cmd.example || cmd.command}
+                                {highlightText(cmd.example || cmd.command, filters.searchQuery)}
                               </code>
                             </pre>
 
@@ -315,7 +430,7 @@ export function CheatsheetModal({
                           {/* Usage note */}
                           {cmd.usage && cmd.usage !== cmd.command && (
                             <p className="text-xs text-slate-500 dark:text-slate-500 font-mono">
-                              {cmd.usage}
+                              {highlightText(cmd.usage, filters.searchQuery)}
                             </p>
                           )}
 
@@ -340,7 +455,7 @@ export function CheatsheetModal({
               </div>
               <p className="text-lg font-semibold text-slate-900 dark:text-white">No commands found</p>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Try adjusting your search for "{searchQuery}"
+                Try adjusting your search for "{filters.searchQuery}"
               </p>
             </div>
           )}

@@ -18,24 +18,40 @@ export { vscodeCheatsheet } from './vscode';
 export { jetbrainsCheatsheet } from './jetbrains';
 export { regexCheatsheet } from './regex';
 export { emmetCheatsheet } from './emmet';
+export { mermaidCheatsheet } from './mermaid';
 export { mongodbCheatsheet } from './mongodb';
+export { mariadbCheatsheet } from './mariadb';
+export { oracleCheatsheet } from './oracle';
 export { postgresqlCheatsheet } from './postgresql';
 export { redisCheatsheet } from './redis';
-export { firebaseCheatsheet } from './firebase';
 export { sqlCheatsheet } from './sql';
 export { cassandraCheatsheet } from './cassandra';
 export { timescaledbCheatsheet } from './timescaledb';
+export { dynamodbCheatsheet } from './dynamodb';
+export { spannerCheatsheet } from './spanner';
+export { hanaCheatsheet } from './hana';
+export { neo4jCheatsheet } from './neo4j';
+export { elasticsearchCheatsheet } from './elasticsearch';
+export { goCheatsheet } from './go';
 export { bashCheatsheet } from './bash';
 export { homebrewCheatsheet } from './homebrew';
+export { awsCliCheatsheet } from './aws-cli';
+export { azureCliCheatsheet } from './azure-cli';
+export { restApisCheatsheet } from './rest-apis';
+export { graphqlCheatsheet } from './graphql';
+export { websocketsCheatsheet } from './websockets';
+export { jsonCheatsheet } from './json';
+export { protobufCheatsheet } from './protobuf';
 export { chromeCheatsheet } from './chrome';
 export { firefoxCheatsheet } from './firefox';
-export { edgeCheatsheet } from './edge';
 export { safariCheatsheet } from './safari';
 export { kubernetesCheatsheet } from './kubernetes';
 export { scssCheatsheet } from './scss';
-export { tailwindCheatsheet } from './tailwind';
+export { canvasCheatsheet } from './canvas';
 export { seleniumCheatsheet } from './selenium';
 export { expressCheatsheet } from './express';
+export { edgeDevToolsCheatsheet } from './edge-dev-tools';
+export { d3Cheatsheet } from './d3';
 
 // Export all cheatsheets as an array
 import { linuxCheatsheet } from './linux';
@@ -63,24 +79,39 @@ import { vscodeCheatsheet } from './vscode';
 import { jetbrainsCheatsheet } from './jetbrains';
 import { regexCheatsheet } from './regex';
 import { emmetCheatsheet } from './emmet';
+import { mermaidCheatsheet } from './mermaid';
 import { mongodbCheatsheet } from './mongodb';
+import { mariadbCheatsheet } from './mariadb';
+import { oracleCheatsheet } from './oracle';
 import { postgresqlCheatsheet } from './postgresql';
 import { redisCheatsheet } from './redis';
-import { firebaseCheatsheet } from './firebase';
 import { sqlCheatsheet } from './sql';
 import { cassandraCheatsheet } from './cassandra';
 import { timescaledbCheatsheet } from './timescaledb';
+import { dynamodbCheatsheet } from './dynamodb';
+import { spannerCheatsheet } from './spanner';
+import { hanaCheatsheet } from './hana';
+import { neo4jCheatsheet } from './neo4j';
+import { elasticsearchCheatsheet } from './elasticsearch';
+import { goCheatsheet } from './go';
 import { bashCheatsheet } from './bash';
 import { homebrewCheatsheet } from './homebrew';
-import { awsCheatsheet } from './aws';
+import { awsCliCheatsheet } from './aws-cli';
+import { azureCliCheatsheet } from './azure-cli';
+import { restApisCheatsheet } from './rest-apis';
+import { graphqlCheatsheet } from './graphql';
+import { websocketsCheatsheet } from './websockets';
+import { jsonCheatsheet } from './json';
+import { protobufCheatsheet } from './protobuf';
 import { chromeCheatsheet } from './chrome';
 import { firefoxCheatsheet } from './firefox';
-import { edgeCheatsheet } from './edge';
 import { safariCheatsheet } from './safari';
 import { scssCheatsheet } from './scss';
-import { tailwindCheatsheet } from './tailwind';
+import { canvasCheatsheet } from './canvas';
 import { seleniumCheatsheet } from './selenium';
 import { expressCheatsheet } from './express';
+import { edgeDevToolsCheatsheet } from './edge-dev-tools';
+import { d3Cheatsheet } from './d3';
 
 export const allCheatsheets = [
   linuxCheatsheet,
@@ -108,67 +139,139 @@ export const allCheatsheets = [
   jetbrainsCheatsheet,
   regexCheatsheet,
   emmetCheatsheet,
+  mermaidCheatsheet,
   mongodbCheatsheet,
+  mariadbCheatsheet,
+  oracleCheatsheet,
   postgresqlCheatsheet,
   redisCheatsheet,
-  firebaseCheatsheet,
   sqlCheatsheet,
   cassandraCheatsheet,
   timescaledbCheatsheet,
+  dynamodbCheatsheet,
+  spannerCheatsheet,
+  hanaCheatsheet,
+  neo4jCheatsheet,
+  elasticsearchCheatsheet,
+  goCheatsheet,
   bashCheatsheet,
   homebrewCheatsheet,
-  awsCheatsheet,
+  awsCliCheatsheet,
+  azureCliCheatsheet,
+  restApisCheatsheet,
+  graphqlCheatsheet,
+  websocketsCheatsheet,
+  jsonCheatsheet,
+  protobufCheatsheet,
   chromeCheatsheet,
   firefoxCheatsheet,
-  edgeCheatsheet,
   safariCheatsheet,
   scssCheatsheet,
-  tailwindCheatsheet,
+  canvasCheatsheet,
   seleniumCheatsheet,
   expressCheatsheet,
+  edgeDevToolsCheatsheet,
+  d3Cheatsheet,
 ];
 
 // Categorized cheatsheets
 export const cheatsheetCategories = [
   {
-    id: 'programming',
+    id: 'web-development',
+    name: 'Web Development',
+    cheatsheets: [
+      htmlCheatsheet,
+      cssCheatsheet,
+      scssCheatsheet,
+      javascriptCheatsheet,
+      typescriptCheatsheet,
+      reactCheatsheet,
+      vueCheatsheet,
+      angularCheatsheet,
+      nextjsCheatsheet,
+      nodeCheatsheet,
+      expressCheatsheet,
+      canvasCheatsheet,
+      d3Cheatsheet,
+      jsonCheatsheet,
+      restApisCheatsheet,
+      graphqlCheatsheet,
+      websocketsCheatsheet,
+      protobufCheatsheet,
+    ],
+  },
+  {
+    id: 'programming-languages',
     name: 'Programming Languages',
     cheatsheets: [
       pythonCheatsheet,
       javaCheatsheet,
-      javascriptCheatsheet,
-      typescriptCheatsheet,
-      nodeCheatsheet,
-      htmlCheatsheet,
-      cssCheatsheet,
-      scssCheatsheet,
-      tailwindCheatsheet,
-      reactCheatsheet,
-      nextjsCheatsheet,
-      vueCheatsheet,
-      angularCheatsheet,
-      springCheatsheet,
-      springBootCheatsheet,
+      goCheatsheet,
+      bashCheatsheet,
     ],
   },
   {
     id: 'databases',
-    name: 'Databases',
-    cheatsheets: [mongodbCheatsheet, postgresqlCheatsheet, redisCheatsheet, firebaseCheatsheet, sqlCheatsheet, cassandraCheatsheet, timescaledbCheatsheet],
+    name: 'Databases & Storage',
+    cheatsheets: [
+      mongodbCheatsheet,
+      mariadbCheatsheet,
+      oracleCheatsheet,
+      postgresqlCheatsheet,
+      redisCheatsheet,
+      sqlCheatsheet,
+      cassandraCheatsheet,
+      timescaledbCheatsheet,
+      dynamodbCheatsheet,
+      spannerCheatsheet,
+      hanaCheatsheet,
+      neo4jCheatsheet,
+      elasticsearchCheatsheet,
+    ],
+  },
+  {
+    id: 'devops-cloud',
+    name: 'DevOps & Cloud',
+    cheatsheets: [
+      gitCheatsheet,
+      dockerCheatsheet,
+      kubernetesCheatsheet,
+      awsCliCheatsheet,
+      azureCliCheatsheet,
+      homebrewCheatsheet,
+    ],
   },
   {
     id: 'developer-tools',
     name: 'Developer Tools',
-    cheatsheets: [gitCheatsheet, dockerCheatsheet, kubernetesCheatsheet, awsCheatsheet, npmCheatsheet, homebrewCheatsheet, seleniumCheatsheet, expressCheatsheet],
+    cheatsheets: [
+      npmCheatsheet,
+      seleniumCheatsheet,
+      regexCheatsheet,
+      emmetCheatsheet,
+      mermaidCheatsheet,
+    ],
   },
   {
-    id: 'editors-tools',
-    name: 'Editors & Tools',
-    cheatsheets: [vimCheatsheet, vscodeCheatsheet, jetbrainsCheatsheet, regexCheatsheet, emmetCheatsheet, chromeCheatsheet, firefoxCheatsheet, edgeCheatsheet, safariCheatsheet],
+    id: 'editors-browsers',
+    name: 'Editors & Browsers',
+    cheatsheets: [
+      vimCheatsheet,
+      vscodeCheatsheet,
+      jetbrainsCheatsheet,
+      chromeCheatsheet,
+      firefoxCheatsheet,
+      safariCheatsheet,
+      edgeDevToolsCheatsheet,
+    ],
   },
   {
-    id: 'system',
-    name: 'System & Terminal',
-    cheatsheets: [linuxCheatsheet, macCheatsheet, windowsCheatsheet, bashCheatsheet],
+    id: 'operating-systems',
+    name: 'Operating Systems',
+    cheatsheets: [
+      linuxCheatsheet,
+      macCheatsheet,
+      windowsCheatsheet,
+    ],
   },
 ];

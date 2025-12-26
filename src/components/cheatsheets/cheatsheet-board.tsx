@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Copy, Check, ChevronRight, Terminal, Layers, ArrowRight, BookOpen, X } from 'lucide-react';
+import { Search, Copy, Check, ChevronRight, Terminal, Layers, ArrowRight, BookOpen, X, Globe, Code, Database, Cloud, Wrench, Monitor, Cpu, Grid3x3, List } from 'lucide-react';
 import { CheatsheetModal } from './cheatsheet-modal';
 import { cn } from '@/lib/utils';
 import { cheatsheetCategories, allCheatsheets } from '@/data/cheatsheets';
@@ -22,12 +22,75 @@ type MatchingCommand = {
   };
 };
 
+type CheatsheetCommand = {
+  command?: string;
+  description?: string;
+  usage?: string;
+  example?: string;
+};
+
+type CheatsheetSection = {
+  title: string;
+  commands: CheatsheetCommand[];
+};
+
+type Cheatsheet = {
+  id: string;
+  name: string;
+  description: string;
+  icon: any;
+  color?: string;
+  colorTheme?: string;
+  category: string;
+  tags: string[];
+  sections: CheatsheetSection[];
+};
+
 // Type guard to check if an object is a valid command
 const isValidCommand = (obj: any): obj is { command: string; description: string; usage: string; example?: string } => {
   return obj && 
-         typeof obj.command === 'string' && 
-         typeof obj.description === 'string' && 
-         typeof obj.usage === 'string';
+         obj.command !== undefined && 
+         obj.description !== undefined && 
+         obj.usage !== undefined &&
+         (typeof obj.command === 'string' || typeof obj.command === 'number') && 
+         (typeof obj.description === 'string' || typeof obj.description === 'number') && 
+         (typeof obj.usage === 'string' || typeof obj.usage === 'number');
+};
+
+// Check if a command is technical/useful (not just descriptive)
+const isTechnicalCommand = (command: { command: string; description: string; usage: string }): boolean => {
+  const commandText = command.command.toLowerCase();
+  const usageText = command.usage.toLowerCase();
+  
+  // Filter out non-technical, descriptive content
+  const nonTechnicalPatterns = [
+    'what is', 'getting started', 'understanding', 'basics', 'introduction',
+    'installing', 'setup', 'overview', 'learn', 'basic', 'fundamentals'
+  ];
+  
+  // Check if command or usage contains non-technical patterns
+  const isNonTechnical = nonTechnicalPatterns.some(pattern => 
+    commandText.includes(pattern) || 
+    usageText.includes(pattern) ||
+    command.description.toLowerCase().includes(pattern)
+  );
+  
+  // Check if it looks like an actual technical command
+  const isTechnical = (
+    // Contains symbols or operators
+    /[=+\-*>()[\]{}]/.test(commandText) ||
+    // Contains technical keywords
+    /graph|sequence|class|state|gantt|pie|flowchart|diagram|chart|er|node|edge|arrow|style|theme|subgraph|participant|classdef|style|link|click|activate|deactivate|loop|alt|opt|par|state|transition|entity|relationship|cardinality|milestone|task|dependency|quadrant|axis|data/.test(commandText) ||
+    // Usage contains technical syntax
+    /[=+\-*>()[\]{}]/.test(usageText) ||
+    /```|mermaid|graph|sequence|class|state|gantt|pie|er/.test(usageText) ||
+    // Command is short and technical looking (not a descriptive phrase)
+    (commandText.length < 30 && !/\s/.test(commandText)) ||
+    // Contains specific technical patterns
+    /^graph\s|^sequence|^class|^state|^gantt|^pie|^er|^\w+->\w+|^\w+\[\w+\]|\w+\.\w+/.test(commandText)
+  );
+  
+  return !isNonTechnical && isTechnical;
 };
 
 export default function CheatsheetBoard() {
@@ -35,6 +98,7 @@ export default function CheatsheetBoard() {
   const [selectedSheet, setSelectedSheet] = useState<typeof allCheatsheets[0] | null>(null);
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'grouped'>('grouped');
 
   // Enhanced filter that searches deeply within commands
   const searchInSheet = (sheet: typeof allCheatsheets[0], query: string): boolean => {
@@ -47,21 +111,26 @@ export default function CheatsheetBoard() {
       return true;
     }
 
-    return sheet.sections.some(section => {
+    return sheet.sections.some((section: CheatsheetSection) => {
       if (section.title.toLowerCase().includes(lowerQuery)) {
         return true;
       }
-      return section.commands.some(command => {
+      return section.commands.some((command: CheatsheetCommand) => {
         // Use type guard to ensure we only process valid command objects
         if (!isValidCommand(command)) {
           return false;
         }
         
+        // Only show technical commands in search results
+        if (!isTechnicalCommand(command)) {
+          return false;
+        }
+        
         return (
-          (command.command?.toLowerCase().includes(lowerQuery) ?? false) ||
-          (command.description?.toLowerCase().includes(lowerQuery) ?? false) ||
-          (command.usage?.toLowerCase().includes(lowerQuery) ?? false) ||
-          (command.example?.toLowerCase().includes(lowerQuery) ?? false)
+          (command.command?.toString().toLowerCase().includes(lowerQuery) ?? false) ||
+          (command.description?.toString().toLowerCase().includes(lowerQuery) ?? false) ||
+          (command.usage?.toString().toLowerCase().includes(lowerQuery) ?? false) ||
+          (command.example?.toString().toLowerCase().includes(lowerQuery) ?? false)
         );
       });
     });
@@ -75,25 +144,30 @@ export default function CheatsheetBoard() {
     const matches: MatchingCommand[] = [];
 
     allCheatsheets.forEach(sheet => {
-      sheet.sections.forEach(section => {
-        section.commands.forEach(command => {
+      sheet.sections.forEach((section: CheatsheetSection) => {
+        section.commands.forEach((command: CheatsheetCommand) => {
           // Use type guard to ensure we only process valid command objects
           if (!isValidCommand(command)) {
             return;
           }
           
+          // Only show technical commands in search results
+          if (!isTechnicalCommand(command)) {
+            return;
+          }
+          
           const textMatch = (
-            (command.command?.toLowerCase().includes(lowerQuery) ?? false) ||
-            (command.description?.toLowerCase().includes(lowerQuery) ?? false) ||
-            (command.usage?.toLowerCase().includes(lowerQuery) ?? false) ||
-            (command.example?.toLowerCase().includes(lowerQuery) ?? false)
+            (command.command?.toString().toLowerCase().includes(lowerQuery) ?? false) ||
+            (command.description?.toString().toLowerCase().includes(lowerQuery) ?? false) ||
+            (command.usage?.toString().toLowerCase().includes(lowerQuery) ?? false) ||
+            (command.example?.toString().toLowerCase().includes(lowerQuery) ?? false)
           );
 
           if (textMatch) {
             matches.push({
               sheetName: sheet.name,
               sheetIcon: sheet.icon,
-              sheetColorTheme: sheet.colorTheme,
+              sheetColorTheme: (sheet as any).colorTheme || (sheet as any).color,
               sectionTitle: section.title,
               command: command,
             });
@@ -106,12 +180,22 @@ export default function CheatsheetBoard() {
   };
 
   // Build category list with counts
+  const categoryIcons: Record<string, any> = {
+    'web-development': Globe,
+    'programming-languages': Code,
+    'databases': Database,
+    'devops-cloud': Cloud,
+    'developer-tools': Wrench,
+    'editors-browsers': Monitor,
+    'operating-systems': Cpu,
+  };
+
   const categories = [
     { id: 'all', label: 'All', icon: Layers, count: allCheatsheets.length },
     ...cheatsheetCategories.map(cat => ({
       id: cat.id,
       label: cat.name,
-      icon: Terminal,
+      icon: categoryIcons[cat.id] || Terminal,
       count: cat.cheatsheets.length
     }))
   ];
@@ -215,6 +299,36 @@ export default function CheatsheetBoard() {
               })}
             </div>
           </div>
+
+          {/* View Mode Toggle */}
+          <div className="w-full flex justify-center">
+            <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
+              <button
+                onClick={() => setViewMode('grouped')}
+                className={cn(
+                  'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
+                  viewMode === 'grouped'
+                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                )}
+              >
+                <List className="w-4 h-4" />
+                <span>Grouped</span>
+              </button>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={cn(
+                  'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                )}
+              >
+                <Grid3x3 className="w-4 h-4" />
+                <span>Grid</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -228,68 +342,228 @@ export default function CheatsheetBoard() {
           )}>
             {/* Left Panel: Cheatsheet Cards */}
             <div className="min-w-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-                {filteredCheatsheets.map((sheet) => {
-                  const Icon = sheet.icon;
-                  const commandCount = sheet.sections.reduce((total: number, section) => total + section.commands.length, 0);
+              {isSearching ? (
+                /* Search Results - Grid View */
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                  {filteredCheatsheets.map((sheet) => {
+                    const Icon = sheet.icon;
+                    const commandCount = sheet.sections.reduce((total: number, section: CheatsheetSection) => total + section.commands.length, 0);
 
-                  return (
-                    <div
-                      key={sheet.id}
-                      id={`cheatsheet-card-${sheet.id}`}
-                      data-testid={`cheatsheet-card-${sheet.id}`}
-                      onClick={() => setSelectedSheet(sheet)}
-                      className="group cursor-pointer"
-                    >
-                      {/* Clean Card */}
-                      <div className={cn(
-                        'relative h-full rounded-xl overflow-hidden',
-                        'bg-white dark:bg-slate-900',
-                        'border border-slate-200 dark:border-slate-800',
-                        'shadow-sm hover:shadow-md',
-                        'transition-all duration-200',
-                        'hover:-translate-y-0.5'
-                      )}>
+                    return (
+                      <div
+                        key={sheet.id}
+                        id={`cheatsheet-card-${sheet.id}`}
+                        data-testid={`cheatsheet-card-${sheet.id}`}
+                        onClick={() => setSelectedSheet(sheet)}
+                        className="group cursor-pointer"
+                      >
+                        {/* Clean Card */}
+                        <div className={cn(
+                          'relative h-full rounded-xl overflow-hidden',
+                          'bg-white dark:bg-slate-900',
+                          'border border-slate-200 dark:border-slate-800',
+                          'shadow-sm hover:shadow-md',
+                          'transition-all duration-200',
+                          'hover:-translate-y-0.5'
+                        )}>
 
-                        {/* Thin Accent Line */}
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+                          {/* Thin Accent Line */}
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
 
-                        {/* Card Content */}
-                        <div className="p-5 pl-6 flex flex-col h-full">
-                          {/* Header */}
-                          <div className="flex items-start gap-3 mb-3">
-                            <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                              <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          {/* Card Content */}
+                          <div className="p-5 pl-6 flex flex-col h-full">
+                            {/* Header */}
+                            <div className="flex items-start gap-3 mb-3">
+                              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
+                                <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">
+                                  {sheet.name}
+                                </h3>
+                                <span className="text-xs text-slate-500 dark:text-slate-400">
+                                  {commandCount} commands
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">
-                                {sheet.name}
-                              </h3>
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {commandCount} commands
-                              </span>
-                            </div>
-                          </div>
 
-                          {/* Description - Fixed to 3 lines */}
-                          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 min-h-[3.75rem] flex-1">
-                            {sheet.description}
-                          </p>
+                            {/* Description - Fixed to 3 lines */}
+                            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 min-h-[3.75rem] flex-1">
+                              {sheet.description}
+                            </p>
 
-                          {/* Footer */}
-                          <div className="flex items-center justify-between mt-auto">
-                            <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-                              <BookOpen className="w-4 h-4" />
-                              <span>{sheet.sections.length} sections</span>
+                            {/* Footer */}
+                            <div className="flex items-center justify-between mt-auto">
+                              <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+                                <BookOpen className="w-4 h-4" />
+                                <span>{sheet.sections.length} sections</span>
+                              </div>
+                              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
                             </div>
-                            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              ) : viewMode === 'grouped' ? (
+                /* Grouped View by Category */
+                <div className="space-y-8">
+                  {(activeCategory === 'all' ? cheatsheetCategories : cheatsheetCategories.filter(c => c.id === activeCategory)).map((category) => {
+                    const CategoryIcon = categoryIcons[category.id] || Terminal;
+                    const categorySheets = activeCategory === 'all' ? category.cheatsheets : category.cheatsheets.filter(sheet => searchInSheet(sheet, searchQuery));
+                    
+                    if (categorySheets.length === 0) return null;
+                    
+                    return (
+                      <div key={category.id} className="space-y-4">
+                        {/* Category Header */}
+                        <div className="flex items-center gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+                          <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+                            <CategoryIcon className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+                          </div>
+                          <div>
+                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                              {category.name}
+                            </h2>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">
+                              {categorySheets.length} cheatsheet{categorySheets.length !== 1 ? 's' : ''}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Cheatsheet Grid for this Category */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                          {categorySheets.map((sheet) => {
+                            const Icon = sheet.icon;
+                            const commandCount = sheet.sections.reduce((total: number, section: CheatsheetSection) => total + section.commands.length, 0);
+
+                            return (
+                              <div
+                                key={sheet.id}
+                                id={`cheatsheet-card-${sheet.id}`}
+                                data-testid={`cheatsheet-card-${sheet.id}`}
+                                onClick={() => setSelectedSheet(sheet)}
+                                className="group cursor-pointer"
+                              >
+                                {/* Clean Card */}
+                                <div className={cn(
+                                  'relative h-full rounded-xl overflow-hidden',
+                                  'bg-white dark:bg-slate-900',
+                                  'border border-slate-200 dark:border-slate-800',
+                                  'shadow-sm hover:shadow-md',
+                                  'transition-all duration-200',
+                                  'hover:-translate-y-0.5'
+                                )}>
+
+                                  {/* Thin Accent Line */}
+                                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+
+                                  {/* Card Content */}
+                                  <div className="p-5 pl-6 flex flex-col h-full">
+                                    {/* Header */}
+                                    <div className="flex items-start gap-3 mb-3">
+                                      <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
+                                        <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">
+                                          {sheet.name}
+                                        </h3>
+                                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                                          {commandCount} commands
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    {/* Description - Fixed to 3 lines */}
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 min-h-[3.75rem] flex-1">
+                                      {sheet.description}
+                                    </p>
+
+                                    {/* Footer */}
+                                    <div className="flex items-center justify-between mt-auto">
+                                      <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+                                        <BookOpen className="w-4 h-4" />
+                                        <span>{sheet.sections.length} sections</span>
+                                      </div>
+                                      <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                /* Grid View (All cheatsheets in one grid) */
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                  {filteredCheatsheets.map((sheet) => {
+                    const Icon = sheet.icon;
+                    const commandCount = sheet.sections.reduce((total: number, section: CheatsheetSection) => total + section.commands.length, 0);
+
+                    return (
+                      <div
+                        key={sheet.id}
+                        id={`cheatsheet-card-${sheet.id}`}
+                        data-testid={`cheatsheet-card-${sheet.id}`}
+                        onClick={() => setSelectedSheet(sheet)}
+                        className="group cursor-pointer"
+                      >
+                        {/* Clean Card */}
+                        <div className={cn(
+                          'relative h-full rounded-xl overflow-hidden',
+                          'bg-white dark:bg-slate-900',
+                          'border border-slate-200 dark:border-slate-800',
+                          'shadow-sm hover:shadow-md',
+                          'transition-all duration-200',
+                          'hover:-translate-y-0.5'
+                        )}>
+
+                          {/* Thin Accent Line */}
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+
+                          {/* Card Content */}
+                          <div className="p-5 pl-6 flex flex-col h-full">
+                            {/* Header */}
+                            <div className="flex items-start gap-3 mb-3">
+                              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
+                                <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">
+                                  {sheet.name}
+                                </h3>
+                                <span className="text-xs text-slate-500 dark:text-slate-400">
+                                  {commandCount} commands
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Description - Fixed to 3 lines */}
+                            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 min-h-[3.75rem] flex-1">
+                              {sheet.description}
+                            </p>
+
+                            {/* Footer */}
+                            <div className="flex items-center justify-between mt-auto">
+                              <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+                                <BookOpen className="w-4 h-4" />
+                                <span>{sheet.sections.length} sections</span>
+                              </div>
+                              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-200" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Empty State */}
               {filteredCheatsheets.length === 0 && (
@@ -343,37 +617,104 @@ export default function CheatsheetBoard() {
                       {matchingCommands.map((match, index) => {
                         const MatchIcon = match.sheetIcon;
                         const isCopied = copiedCommand === match.command.command;
+                        const hasUsage = match.command.usage && match.command.usage !== match.command.command;
+                        const hasExample = match.command.example && match.command.example.length > 50;
 
                         return (
-                          <div key={index} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                            <div className="flex items-center gap-2 mb-2">
-                              <MatchIcon className="h-3.5 w-3.5 text-blue-500" />
-                              <span className="text-xs text-slate-500">
-                                {match.sheetName} • {match.sectionTitle}
-                              </span>
-                            </div>
+                          <div key={index} className="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-200">
+                            <div className="p-4">
+                              {/* Header with icon and metadata */}
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className={`p-1.5 rounded-lg bg-${match.sheetColorTheme}-50 dark:bg-${match.sheetColorTheme}-950/30`}>
+                                  <MatchIcon className={`h-3.5 w-3.5 text-${match.sheetColorTheme}-600 dark:text-${match.sheetColorTheme}-400`} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                                      {match.sheetName}
+                                    </span>
+                                    <span className="text-xs text-slate-400">•</span>
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                                      {match.sectionTitle}
+                                    </span>
+                                  </div>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  className={`h-7 w-7 p-0 flex-shrink-0 transition-all duration-200 ${
+                                    isCopied 
+                                      ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' 
+                                      : 'hover:bg-slate-100 dark:hover:bg-slate-700'
+                                  }`}
+                                  onClick={() => copyToClipboard(match.command.command!)}
+                                >
+                                  {isCopied ? (
+                                    <Check className="h-3.5 w-3.5" />
+                                  ) : (
+                                    <Copy className="h-3.5 w-3.5" />
+                                  )}
+                                </Button>
+                              </div>
 
-                            <div className="flex items-start gap-2 mb-2">
-                              <code className="flex-1 text-sm font-mono bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-900 dark:text-white break-all">
-                                {match.command.command}
-                              </code>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                className="h-7 w-7 p-0 flex-shrink-0"
-                                onClick={() => copyToClipboard(match.command.command!)}
-                              >
-                                {isCopied ? (
-                                  <Check className="h-3.5 w-3.5 text-green-500" />
-                                ) : (
-                                  <Copy className="h-3.5 w-3.5" />
-                                )}
-                              </Button>
-                            </div>
+                              {/* Main command display */}
+                              <div className="mb-3">
+                                <div className="flex items-start gap-2">
+                                  <div className="flex-1 min-w-0">
+                                    <code className="block text-sm font-mono bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg text-slate-900 dark:text-white break-all leading-relaxed border border-slate-200 dark:border-slate-700">
+                                      {match.command.command}
+                                    </code>
+                                  </div>
+                                </div>
+                              </div>
 
-                            <p className="text-xs text-slate-600 dark:text-slate-400">
-                              {match.command.description}
-                            </p>
+                              {/* Description */}
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2 leading-relaxed">
+                                {match.command.description}
+                              </p>
+
+                              {/* Usage (if different from command) */}
+                              {hasUsage && (
+                                <div className="mb-2">
+                                  <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Usage:</div>
+                                  <code className="text-xs font-mono bg-slate-50 dark:bg-slate-800/50 px-2 py-1 rounded text-slate-700 dark:text-slate-300 block">
+                                    {match.command.usage}
+                                  </code>
+                                </div>
+                              )}
+
+                              {/* Example preview (truncated) */}
+                              {hasExample && (
+                                <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                                  <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Example:</div>
+                                  <div className="text-xs font-mono bg-slate-50 dark:bg-slate-800/30 px-2 py-1 rounded text-slate-600 dark:text-slate-400 max-h-20 overflow-y-auto line-clamp-3">
+                                    {match.command.example?.substring(0, 150)}...
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Quick actions */}
+                              <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-6 px-2 text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                                  onClick={() => copyToClipboard(match.command.example || match.command.usage || match.command.command!)}
+                                >
+                                  Copy Example
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-6 px-2 text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                                  onClick={() => {
+                                    setSelectedSheet(allCheatsheets.find(sheet => sheet.name === match.sheetName) || null);
+                                  }}
+                                >
+                                  View Full
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                         );
                       })}
@@ -393,7 +734,7 @@ export default function CheatsheetBoard() {
           onClose={() => setSelectedSheet(null)}
           title={selectedSheet.name}
           icon={selectedSheet.icon}
-          colorTheme={selectedSheet.colorTheme}
+          colorTheme={(selectedSheet as any).colorTheme || (selectedSheet as any).color}
           sections={selectedSheet.sections}
         />
       )}

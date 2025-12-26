@@ -1,462 +1,226 @@
-import { Database } from 'lucide-react';
+import { Code } from 'lucide-react';
 
 export const firebaseCheatsheet = {
   id: 'firebase',
   name: 'Firebase',
-  description: 'Firebase platform commands & SDK',
-  icon: Database,
-  colorTheme: 'amber' as const,
+  description: 'Comprehensive Firebase guide covering beginner to expert commands, backend services, and mobile/web development',
+  icon: Code,
+  color: 'from-yellow-500 to-orange-500',
+  category: 'programming',
+  tags: ['firebase', 'backend', 'mobile', 'web', 'database'],
   sections: [
     {
-      title: 'Firebase CLI',
+      title: 'Getting Started with Firebase',
       commands: [
         {
-          command: 'firebase login',
-          description: 'Login to Firebase',
-          usage: 'firebase login',
-          example: 'firebase login\n# Opens browser for authentication',
+          command: 'What is Firebase?',
+          description: 'Firebase is a comprehensive mobile and web application development platform by Google',
+          usage: 'Understanding Firebase services and capabilities',
+          example: 'Firebase Overview:\n- Backend-as-a-Service (BaaS) platform\n- Real-time database and cloud storage\n- Authentication and user management\n- Cloud functions and hosting\n- Analytics and performance monitoring\n- Machine learning and AI capabilities\n\nCore Services:\n- Firebase Authentication: User sign-in and identity\n- Cloud Firestore: NoSQL document database\n- Firebase Realtime Database: Real-time data synchronization\n- Firebase Storage: Cloud storage for files\n- Firebase Hosting: Web hosting service\n- Cloud Functions: Serverless backend code\n- Firebase Analytics: User analytics and insights\n- Firebase Performance Monitoring: App performance\n- Firebase Crashlytics: Crash reporting\n- Firebase Remote Config: Remote configuration\n- Firebase Cloud Messaging: Push notifications\n- Firebase Dynamic Links: Deep linking\n- Firebase Test Lab: App testing\n\nPlatform Support:\n- Web applications\n- iOS apps (Swift/Objective-C)\n- Android apps (Java/Kotlin)\n- Flutter apps\n- Unity games\n- C++ applications\n\nKey Benefits:\n- Rapid development\n- Real-time data synchronization\n- Scalable infrastructure\n- Built-in security\n- Cross-platform support\n- Google Cloud integration'
         },
         {
-          command: 'firebase init',
-          description: 'Initialize Firebase project',
-          usage: 'firebase init [feature]',
-          example: 'firebase init\nfirebase init hosting\nfirebase init firestore',
+          command: 'Firebase CLI Installation',
+          description: 'Installing and setting up Firebase Command Line Interface',
+          usage: 'Setting up Firebase development environment',
+          example: '# Prerequisites\n- Node.js 14.0 or later\n- npm or yarn package manager\n- Google account\n\n# Install Firebase CLI\nnpm install -g firebase-tools\n# or\nyarn global add firebase-tools\n\n# Verify Installation\nfirebase --version\nfirebase --help\n\n# Login to Firebase\nfirebase login\nfirebase login --no-localhost # For remote servers\n\n# List Projects\nfirebase projects:list\n\n# Initialize Firebase Project\nfirebase init\n\n# Project Initialization Options\n- Firestore: Database\n- Functions: Cloud Functions\n- Hosting: Web hosting\n- Storage: Cloud Storage\n- Emulators: Local development\n\n# Configuration Files\nfirebase.json      # Main configuration\n.firebaserc        # Project settings\n.firestore.rules   # Firestore rules\n.storage.rules     # Storage rules\n\n# Environment Setup\nexport GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"\n\n# Firebase Shell\nfirebase setup:emulators:database\nfirebase setup:emulators:firestore\nfirebase setup:emulators:storage\nfirebase setup:emulators:functions\nfirebase setup:emulators:hosting'
         },
         {
-          command: 'firebase projects:list',
-          description: 'List all Firebase projects',
-          usage: 'firebase projects:list',
-          example: 'firebase projects:list\n# Shows all your projects',
-        },
-        {
-          command: 'firebase use',
-          description: 'Set active project',
-          usage: 'firebase use project-id',
-          example: 'firebase use my-app-prod\nfirebase use --add  # Add project alias',
-        },
-        {
-          command: 'firebase deploy',
-          description: 'Deploy to Firebase',
-          usage: 'firebase deploy [--only feature]',
-          example: 'firebase deploy\nfirebase deploy --only hosting\nfirebase deploy --only functions',
-        },
-        {
-          command: 'firebase serve',
-          description: 'Start local server',
-          usage: 'firebase serve [--only feature]',
-          example: 'firebase serve\nfirebase serve --only hosting\nfirebase serve --port 5001',
-        },
-        {
-          command: 'firebase emulators:start',
-          description: 'Start Firebase emulators',
-          usage: 'firebase emulators:start',
-          example: 'firebase emulators:start\nfirebase emulators:start --only firestore,auth',
-        },
-      ],
+          command: 'Project Setup and Configuration',
+          description: 'Creating and configuring Firebase projects',
+          usage: 'Setting up Firebase projects and services',
+          example: '# Create New Project\nfirebase projects:create --display-name "My Project"\nfirebase projects:create --organization-id=org-id\n\n# Use Existing Project\nfirebase use project-id\nfirebase use --add # Add project alias\n\n# List Projects\nfirebase projects:list\nfirebase projects:list --filter="displayName:My*"\n\n# Project Information\nfirebase projects:describe project-id\n\n# Delete Project\nfirebase projects:delete project-id\n\n# Service Account Setup\nfirebase login:ci\nfirebase use project-id\nfirebase apps:list\n\n# Configuration Files\n\n# firebase.json\n{\n  "firestore": {\n    "rules": "firestore.rules",\n    "indexes": "firestore.indexes.json"\n  },\n  "functions": {\n    "source": "functions",\n    "predeploy": [\n      "npm --prefix \"$RESOURCE_DIR\" run lint",\n      "npm --prefix \"$RESOURCE_DIR\" run build"\n    ]\n  },\n  "hosting": {\n    "public": "public",\n    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],\n    "rewrites": [\n      {\n        "source": "**",\n        "destination": "/index.html"\n      }\n    ]\n  },\n  "storage": {\n    "rules": "storage.rules"\n  }\n}\n\n# .firebaserc\n{\n  "projects": {\n    "default": "my-project-id",\n    "production": "my-prod-project-id"\n  }\n}'
+        }
+      ]
     },
     {
-      title: 'Firestore - Initialize',
+      title: 'Authentication',
       commands: [
         {
-          command: 'getFirestore()',
-          description: 'Initialize Firestore',
-          usage: 'import { getFirestore } from "firebase/firestore"',
-          example: 'import { getFirestore } from "firebase/firestore";\nconst db = getFirestore(app);',
+          command: 'Firebase Authentication Setup',
+          description: 'Setting up user authentication and identity providers',
+          usage: 'Configuring authentication methods and providers',
+          example: '# Enable Authentication Providers\n\n# Firebase Console Setup\n1. Go to Firebase Console\n2. Select Authentication\n3. Enable sign-in providers:\n   - Email/Password\n   - Google\n   - Facebook\n   - Twitter\n   - GitHub\n   - Apple\n   - Phone\n   - Anonymous\n\n# Web SDK Setup\nimport { initializeApp } from "firebase/app";\nimport { getAuth } from "firebase/auth";\n\nconst firebaseConfig = {\n  apiKey: "api-key",\n  authDomain: "project-id.firebaseapp.com",\n  projectId: "project-id",\n  storageBucket: "project-id.appspot.com",\n  messagingSenderId: "sender-id",\n  appId: "app-id"\n};\n\nconst app = initializeApp(firebaseConfig);\nconst auth = getAuth(app);\n\n# Email/Password Authentication\nimport { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";\n\n// Sign up new user\ncreateUserWithEmailAndPassword(auth, email, password)\n  .then((userCredential) => {\n    const user = userCredential.user;\n  })\n  .catch((error) => {\n    const errorCode = error.code;\n    const errorMessage = error.message;\n  });\n\n// Sign in existing user\nsignInWithEmailAndPassword(auth, email, password)\n  .then((userCredential) => {\n    const user = userCredential.user;\n  })\n  .catch((error) => {\n    const errorCode = error.code;\n    const errorMessage = error.message;\n  });\n\n# Google Authentication\nimport { GoogleAuthProvider, signInWithPopup } from "firebase/auth";\n\nconst provider = new GoogleAuthProvider();\nsignInWithPopup(auth, provider)\n  .then((result) => {\n    const credential = GoogleAuthProvider.credentialFromResult(result);\n    const token = credential.accessToken;\n    const user = result.user;\n  })\n  .catch((error) => {\n    const errorCode = error.code;\n    const errorMessage = error.message;\n  });'
         },
         {
-          command: 'initializeApp()',
-          description: 'Initialize Firebase app',
-          usage: 'import { initializeApp } from "firebase/app"',
-          example: 'import { initializeApp } from "firebase/app";\nconst app = initializeApp(firebaseConfig);',
+          command: 'Advanced Authentication Features',
+          description: 'Advanced authentication methods and security features',
+          usage: 'Implementing custom authentication and security measures',
+          example: '# Custom Authentication\nimport { signInWithCustomToken } from "firebase/auth";\n\n// Backend generates custom token\nconst customToken = await admin.auth().createCustomToken(uid);\n\n// Client signs in with custom token\nsignInWithCustomToken(auth, customToken)\n  .then((userCredential) => {\n    const user = userCredential.user;\n  })\n  .catch((error) => {\n    // Handle error\n  });\n\n# Phone Authentication\nimport { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";\n\n// Set up reCAPTCHA\nconst appVerifier = new RecaptchaVerifier(\'recaptcha-container\', {}, auth);\n\n// Send verification code\nconst confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);\n\n// Verify code\nconst result = await confirmationResult.confirm(code);\n\n# User Management\nimport { updateProfile, updateEmail, updatePassword, reauthenticateWithCredential } from "firebase/auth";\n\n// Update user profile\nawait updateProfile(auth.currentUser, {\n  displayName: "John Doe",\n  photoURL: "https://example.com/john-doe.jpg"\n});\n\n// Update email\nawait updateEmail(auth.currentUser, "new-email@example.com");\n\n// Update password\nawait updatePassword(auth.currentUser, "newPassword");\n\n# Anonymous Authentication\nimport { signInAnonymously } from "firebase/auth";\n\nsignInAnonymously(auth)\n  .then((userCredential) => {\n    const user = userCredential.user;\n  })\n  .catch((error) => {\n    // Handle error\n  });\n\n# Link Authentication Providers\nimport { linkWithPopup, unlink } from "firebase/auth";\n\n// Link Google account to email/password user\nconst provider = new GoogleAuthProvider();\nawait linkWithPopup(auth.currentUser, provider);\n\n// Unlink provider\nawait unlink(auth.currentUser, provider.providerId);\n\n# Multi-Factor Authentication\nimport { multiFactor, PhoneMultiFactorGenerator } from "firebase/auth";\n\n// Enroll MFA\nconst session = await multiFactor(auth.currentUser).getSession();\nconst phoneAuthOptions = {\n  phoneNumber: phoneNumber,\n  session: session\n};\nconst phoneFactor = await PhoneMultiFactorGenerator.assertion(phoneAuthOptions);\nawait multiFactor(auth.currentUser).enroll(phoneFactor, "Personal phone number");'
         },
-      ],
+        {
+          command: 'Authentication Security and Rules',
+          description: 'Security rules and authentication best practices',
+          usage: 'Securing authentication and implementing security measures',
+          example: '# Security Rules for Authentication\n\n# firestore.rules\nrules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    // Users can only read/write their own data\n    match /users/{userId} {\n      allow read, write: if request.auth != null && request.auth.uid == userId;\n    }\n    \n    // Authenticated users can read public data\n    match /public/{document} {\n      allow read: if request.auth != null;\n    }\n    \n    // Admin users can write anything\n    match /admin/{document} {\n      allow read, write: if request.auth != null && \n        request.auth.token.admin == true;\n    }\n  }\n}\n\n# Custom Claims\nimport { getAuth } from "firebase/auth";\nimport { admin } from "firebase-admin";\n\n// Set custom claims\nawait admin.auth().setCustomUserClaims(uid, {\n  admin: true,\n  role: "moderator"\n});\n\n// Check custom claims in rules\nallow read, write: if request.auth.token.admin == true;\n\n# Session Management\nimport { onAuthStateChanged } from "firebase/auth";\n\n// Monitor auth state changes\nonAuthStateChanged(auth, (user) => {\n  if (user) {\n    // User is signed in\n    const uid = user.uid;\n    const email = user.email;\n    const displayName = user.displayName;\n  } else {\n    // User is signed out\n  }\n});\n\n# Token Management\nimport { getIdToken, getIdTokenResult } from "firebase/auth";\n\n// Get ID token\nconst idToken = await getIdToken(auth.currentUser);\n\n// Get token with custom claims\nconst idTokenResult = await getIdTokenResult(auth.currentUser);\nconst admin = idTokenResult.claims.admin;\n\n# Password Security\n// Enforce strong passwords\nconst strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/;\n\n# Email Verification\nimport { sendEmailVerification } from "firebase/auth";\n\nawait sendEmailVerification(auth.currentUser);\n\n# Password Reset\nimport { sendPasswordResetEmail } from "firebase/auth";\n\nawait sendPasswordResetEmail(auth, email);\n\n# Account Deletion\nimport { deleteUser } from "firebase/auth";\n\nawait deleteUser(auth.currentUser);'
+        }
+      ]
     },
     {
-      title: 'Firestore - Add Data',
+      title: 'Cloud Firestore',
       commands: [
         {
-          command: 'addDoc()',
-          description: 'Add document with auto ID',
-          usage: 'addDoc(collection(db, path), data)',
-          example: 'import { collection, addDoc } from "firebase/firestore";\n\nconst docRef = await addDoc(collection(db, "users"), {\n  name: "John Doe",\n  email: "john@example.com",\n  created: new Date()\n});',
+          command: 'Firestore Database Operations',
+          description: 'Basic CRUD operations with Cloud Firestore',
+          usage: 'Reading, writing, and managing data in Firestore',
+          example: '# Initialize Firestore\nimport { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";\n\nconst db = getFirestore(app);\n\n# Write Data\n\n// Add document with auto ID\nimport { addDoc } from "firebase/firestore";\n\nconst docRef = await addDoc(collection(db, "users"), {\n  name: "John Doe",\n  email: "john@example.com",\n  createdAt: new Date()\n});\n\n// Set document with custom ID\nawait setDoc(doc(db, "users", "user123"), {\n  name: "Jane Doe",\n  email: "jane@example.com"\n});\n\n# Read Data\n\n// Get single document\nconst docSnap = await getDoc(doc(db, "users", "user123"));\nif (docSnap.exists()) {\n  console.log("Document data:", docSnap.data());\n} else {\n  console.log("No such document!");\n}\n\n// Get multiple documents\nimport { getDocs, query, where } from "firebase/firestore";\n\nconst q = query(collection(db, "users"), where("name", "==", "John Doe"));\nconst querySnapshot = await getDocs(q);\nquerySnapshot.forEach((doc) => {\n  console.log(doc.id, " => ", doc.data());\n});\n\n# Update Data\n\n// Update document\nawait updateDoc(doc(db, "users", "user123"), {\n  email: "newemail@example.com",\n  updatedAt: new Date()\n});\n\n// Merge data\nawait setDoc(doc(db, "users", "user123"), {\n  newField: "newValue"\n}, { merge: true });\n\n# Delete Data\n\n// Delete document\nawait deleteDoc(doc(db, "users", "user123"));\n\n// Delete field\nimport { deleteField } from "firebase/firestore";\n\nawait updateDoc(doc(db, "users", "user123"), {\n  unwantedField: deleteField()\n});'
         },
         {
-          command: 'setDoc()',
-          description: 'Set document with custom ID',
-          usage: 'setDoc(doc(db, path, id), data)',
-          example: 'import { doc, setDoc } from "firebase/firestore";\n\nawait setDoc(doc(db, "users", "user123"), {\n  name: "Jane Doe",\n  email: "jane@example.com"\n});',
+          command: 'Advanced Firestore Queries',
+          description: 'Complex queries and data retrieval patterns',
+          usage: 'Advanced querying techniques and optimization',
+          example: '# Complex Queries\nimport { query, where, orderBy, limit, startAfter, getDocs } from "firebase/firestore";\n\n# Compound Queries\n\n// Multiple where clauses\nconst q = query(\n  collection(db, "users"),\n  where("age", ">=", 18),\n  where("status", "==", "active"),\n  orderBy("createdAt", "desc"),\n  limit(10)\n);\n\n# Array Queries\n\n// Array contains\nconst q = query(\n  collection(db, "posts"),\n  where("tags", "array-contains", "javascript")\n);\n\n// Array contains any\nconst q = query(\n  collection(db, "posts"),\n  where("tags", "array-contains-any", ["javascript", "python"])\n);\n\n# In Queries\n\nconst q = query(\n  collection(db, "users"),\n  where("role", "in", ["admin", "moderator"])\n);\n\n# Pagination\n\n// Get first page\nconst firstQuery = query(\n  collection(db, "posts"),\n  orderBy("createdAt", "desc"),\n  limit(10)\n);\n\nconst firstSnapshot = await getDocs(firstQuery);\nconst lastVisible = firstSnapshot.docs[firstSnapshot.docs.length - 1];\n\n// Get next page\nconst nextQuery = query(\n  collection(db, "posts"),\n  orderBy("createdAt", "desc"),\n  startAfter(lastVisible),\n  limit(10)\n);\n\n# Real-time Updates\nimport { onSnapshot } from "firebase/firestore";\n\n// Listen to document changes\nconst unsubscribe = onSnapshot(doc(db, "users", "user123"), (doc) => {\n  console.log("Current data: ", doc.data());\n});\n\n// Listen to collection changes\nconst unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {\n  snapshot.docChanges().forEach((change) => {\n    if (change.type === "added") {\n      console.log("New user: ", change.doc.data());\n    }\n    if (change.type === "modified") {\n      console.log("Modified user: ", change.doc.data());\n    }\n    if (change.type === "removed") {\n      console.log("Removed user: ", change.doc.data());\n    }\n  });\n});\n\n# Transactions and Batched Writes\nimport { runTransaction, writeBatch } from "firebase/firestore";\n\n// Transaction\ntry {\n  await runTransaction(db, async (transaction) => {\n    const userDoc = await transaction.get(doc(db, "users", "user123"));\n    const newBalance = userDoc.data().balance + 100;\n    transaction.update(doc(db, "users", "user123"), { balance: newBalance });\n  });\n  console.log("Transaction successfully committed!");\n} catch (error) {\n  console.log("Transaction failed: ", error);\n}\n\n// Batched writes\nconst batch = writeBatch(db);\n\nbatch.set(doc(db, "users", "user1"), { name: "User 1" });\nbatch.update(doc(db, "users", "user2"), { status: "active" });\nbatch.delete(doc(db, "users", "user3"));\n\nawait batch.commit();'
         },
         {
-          command: 'setDoc() merge',
-          description: 'Update or create document',
-          usage: 'setDoc(doc, data, { merge: true })',
-          example: 'await setDoc(doc(db, "users", "user123"), {\n  lastLogin: new Date()\n}, { merge: true });  // Updates only lastLogin',
-        },
-      ],
+          command: 'Firestore Data Modeling and Security',
+          description: 'Data modeling patterns and security rules',
+          usage: 'Designing efficient data structures and implementing security',
+          example: '# Data Modeling Patterns\n\n# Embedded Documents\n// Good for related data that\'s accessed together\n{\n  "userId": "user123",\n  "profile": {\n    "name": "John Doe",\n    "email": "john@example.com",\n    "avatar": "https://example.com/avatar.jpg"\n  },\n  "settings": {\n    "theme": "dark",\n    "notifications": true\n  }\n}\n\n# Collection Group Queries\n// Query across all collections with same name\nconst postsQuery = query(\n  collectionGroup(db, "posts"),\n  where("published", "==", true)\n);\n\n# Denormalization\n// Store duplicate data for faster reads\n{\n  "users": {\n    "user123": {\n      "name": "John Doe",\n      "posts": 42\n    }\n  },\n  "posts": {\n    "post1": {\n      "title": "My Post",\n      "authorName": "John Doe", // Denormalized\n      "authorId": "user123"\n    }\n  }\n}\n\n# Security Rules\n\n# firestore.rules\nrules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    // Users can read/write their own profile\n    match /users/{userId} {\n      allow read, write: if request.auth != null && request.auth.uid == userId;\n    }\n    \n    // Public posts can be read by anyone\n    match /posts/{postId} {\n      allow read: if resource.data.published == true;\n      allow write: if request.auth != null && \n        request.auth.uid == resource.data.authorId;\n    }\n    \n    // Comments can be read by authenticated users\n    match /posts/{postId}/comments/{commentId} {\n      allow read: if request.auth != null;\n      allow create: if request.auth != null && \n        request.auth.uid == resource.data.userId;\n    }\n    \n    // Admin access\n    match /admin/{document=**} {\n      allow read, write: if request.auth != null && \n        request.auth.token.admin == true;\n    }\n  }\n}\n\n# Indexes Configuration\n\n# firestore.indexes.json\n{\n  "indexes": [\n    {\n      "collectionGroup": "posts",\n      "queryScope": "COLLECTION",\n      "fields": [\n        {\n          "fieldPath": "published",\n          "order": "ASCENDING"\n        },\n        {\n          "fieldPath": "createdAt",\n          "order": "DESCENDING"\n        }\n      ]\n    },\n    {\n      "collectionGroup": "posts",\n      "queryScope": "COLLECTION",\n      "fields": [\n        {\n          "fieldPath": "authorId",\n          "order": "ASCENDING"\n        },\n        {\n          "fieldPath": "createdAt",\n          "order": "DESCENDING"\n        }\n      ]\n    }\n  ],\n  "fieldOverrides": [\n    {\n      "collectionGroup": "posts",\n      "fieldPath": "views",\n      "indexes": [\n        {\n          "order": "ASCENDING",\n          "queryScope": "COLLECTION"\n        },\n        {\n          "order": "DESCENDING",\n          "queryScope": "COLLECTION"\n        },\n        {\n          "arrayConfig": "CONTAINS",\n          "queryScope": "COLLECTION"\n        }\n      ]\n    }\n  ]\n}'
+        }
+      ]
     },
     {
-      title: 'Firestore - Read Data',
+      title: 'Cloud Functions',
       commands: [
         {
-          command: 'getDoc()',
-          description: 'Get single document',
-          usage: 'getDoc(doc(db, path, id))',
-          example: 'import { doc, getDoc } from "firebase/firestore";\n\nconst docSnap = await getDoc(doc(db, "users", "user123"));\nif (docSnap.exists()) {\n  console.log(docSnap.data());\n}',
+          command: 'Cloud Functions Setup and Basics',
+          description: 'Setting up and writing basic Cloud Functions',
+          usage: 'Creating serverless backend functions',
+          example: '# Initialize Cloud Functions\nfirebase init functions\n\n# Choose JavaScript or TypeScript\n# Use ESLint? Yes\n# Install dependencies? Yes\n\n# Basic HTTP Function\n// functions/index.js\nconst functions = require("firebase-functions");\nconst express = require("express");\nconst cors = require("cors");\n\nconst app = express();\napp.use(cors({ origin: true }));\n\n// Basic HTTP function\nexports.helloWorld = functions.https.onRequest((request, response) => {\n  response.send("Hello from Firebase!");\n});\n\n# Express.js App\nconst app = express();\n\napp.get("/api/users", async (req, res) => {\n  try {\n    const users = await admin.firestore().collection("users").get();\n    const userList = users.docs.map(doc => ({\n      id: doc.id,\n      ...doc.data()\n    }));\n    res.json(userList);\n  } catch (error) {\n    res.status(500).json({ error: error.message });\n  }\n});\n\nexports.api = functions.https.onRequest(app);\n\n# Callable Functions\nexports.addMessage = functions.https.onCall(async (data, context) => {\n  // Check authentication\n  if (!context.auth) {\n    throw new functions.https.HttpsError(\n      "unauthenticated", \n      "The function must be called while authenticated."\n    );\n  }\n  \n  // Validate input\n  if (!data.text || typeof data.text !== "string") {\n    throw new functions.https.HttpsError(\n      "invalid-argument",\n      "The function must be called with a text argument."\n    );\n  }\n  \n  // Write to Firestore\n  const messageRef = await admin.firestore().collection("messages").add({\n    text: data.text,\n    uid: context.auth.uid,\n    createdAt: admin.firestore.FieldValue.serverTimestamp()\n  });\n  \n  return { id: messageRef.id };\n});\n\n# Background Triggers\n\n# Firestore Trigger\nexports.onUserCreate = functions.firestore\n  .document("users/{userId}")\n  .onCreate(async (snap, context) => {\n    const newValue = snap.data();\n    const userId = context.params.userId;\n    \n    // Send welcome email\n    await admin.auth().generateEmailVerificationLink(newValue.email);\n    \n    // Create user profile\n    await admin.firestore().collection("profiles").doc(userId).set({\n      displayName: newValue.displayName,\n      createdAt: admin.firestore.FieldValue.serverTimestamp()\n    });\n  });\n\n# Auth Trigger\nexports.onUserDelete = functions.auth.user().onDelete(async (user) => {\n  const uid = user.uid;\n  \n  // Delete user data\n  await admin.firestore().collection("users").doc(uid).delete();\n  await admin.firestore().collection("profiles").doc(uid).delete();\n  \n  // Delete user files\n  const bucket = admin.storage().bucket();\n  await bucket.deleteFiles({\n    prefix: `users/${uid}/`\n  });\n});'
         },
         {
-          command: 'getDocs()',
-          description: 'Get all documents in collection',
-          usage: 'getDocs(collection(db, path))',
-          example: 'import { collection, getDocs } from "firebase/firestore";\n\nconst querySnapshot = await getDocs(collection(db, "users"));\nquerySnapshot.forEach((doc) => {\n  console.log(doc.id, doc.data());\n});',
+          command: 'Advanced Cloud Functions',
+          description: 'Advanced patterns and optimization techniques',
+          usage: 'Implementing complex serverless logic',
+          example: '# Scheduled Functions\nexports.dailyCleanup = functions.pubsub\n  .schedule("every 24 hours")\n  .onRun(async (context) => {\n    const cutoffDate = new Date();\n    cutoffDate.setDate(cutoffDate.getDate() - 30);\n    \n    // Delete old logs\n    const oldLogs = await admin.firestore()\n      .collection("logs")\n      .where("createdAt", "<", cutoffDate)\n      .get();\n    \n    const batch = admin.firestore().batch();\n    oldLogs.docs.forEach(doc => {\n      batch.delete(doc.ref);\n    });\n    \n    await batch.commit();\n    console.log(`Deleted ${oldLogs.size} old logs`);\n  });\n\n# Storage Triggers\nexports.onImageUpload = functions.storage\n  .object()\n  .onFinalize(async (object) => {\n    const fileBucket = object.bucket;\n    const filePath = object.name;\n    const contentType = object.contentType;\n    \n    if (!contentType.startsWith("image/")) {\n      return;\n    }\n    \n    // Generate thumbnail\n    const bucket = admin.storage().bucket(fileBucket);\n    const tempFilePath = path.join(os.tmpdir(), filePath);\n    \n    await bucket.file(filePath).download({ destination: tempFilePath });\n    \n    // Process image and create thumbnail\n    const thumbnail = await processImage(tempFilePath);\n    const thumbnailPath = `thumbnails/${filePath}`;\n    \n    await bucket.file(thumbnailPath).save(thumbnail);\n    \n    // Update Firestore with thumbnail URL\n    await admin.firestore().collection("images").doc(filePath).update({\n      thumbnailUrl: `https://storage.googleapis.com/${fileBucket}/${thumbnailPath}`\n    });\n  });\n\n# Pub/Sub Functions\nexports.processQueue = functions.pubsub\n  .topic("message-queue")\n  .onPublish(async (message, context) => {\n    const data = message.json;\n    \n    try {\n      // Process message\n      await processMessage(data);\n      \n      // Acknowledge message\n      message.ack();\n    } catch (error) {\n      // Retry message\n      message.nack();\n    }\n  });\n\n# Error Handling and Logging\nexports.robustFunction = functions.https.onCall(async (data, context) => {\n  try {\n    // Validate input\n    if (!data.required) {\n      throw new functions.https.HttpsError(\n        "invalid-argument",\n        "Required field is missing"\n      );\n    }\n    \n    // Log start\n    functions.logger.log("Processing request", { data, uid: context.auth?.uid });\n    \n    // Main logic\n    const result = await processData(data);\n    \n    // Log success\n    functions.logger.log("Request processed successfully", { result });\n    \n    return result;\n    \n  } catch (error) {\n    // Log error\n    functions.logger.error("Request failed", error);\n    \n    // Return error to client\n    throw new functions.https.HttpsError(\n      "internal",\n      "An error occurred while processing your request"\n    );\n  }\n});\n\n# Performance Optimization\n\n# Memory and CPU allocation\nexports.heavyFunction = functions.runWith({\n  memory: "1GB",\n  timeoutSeconds: 540\n}).https.onRequest(async (req, res) => {\n  // Heavy processing\n  const result = await heavyProcessing();\n  res.json(result);\n});\n\n# Cold start optimization\nconst heavyModule = require("./heavy-module");\n\nexports.optimizedFunction = functions.https.onRequest(async (req, res) => {\n  // Module is already loaded\n  const result = heavyModule.process(req.body);\n  res.json(result);\n});'
         },
         {
-          command: 'onSnapshot()',
-          description: 'Real-time listener',
-          usage: 'onSnapshot(docRef, callback)',
-          example: 'import { doc, onSnapshot } from "firebase/firestore";\n\nconst unsubscribe = onSnapshot(doc(db, "users", "user123"), (doc) => {\n  console.log("Current data:", doc.data());\n});\n\n// Later: unsubscribe();',
-        },
-      ],
+          command: 'Functions Deployment and Testing',
+          description: 'Deploying and testing Cloud Functions',
+          usage: 'Managing function lifecycle and testing strategies',
+          example: '# Local Development\n\n# Start emulators\nfirebase emulators:start\n\n# Start specific emulators\nfirebase emulators:start --only functions,firestore\n\n# Export emulator configuration\nfirebase emulators:start --import ./emulator-data\n\n# Testing with Emulators\nimport { initializeApp } from "firebase/app";\nimport { getFunctions, connectFunctionsEmulator } from "firebase/functions";\n\nconst app = initializeApp({\n  projectId: "demo-project"\n});\n\nconst functions = getFunctions(app);\nconnectFunctionsEmulator(functions, "localhost", 5001);\n\n# Deployment\n\n# Deploy all functions\nfirebase deploy --only functions\n\n# Deploy specific function\nfirebase deploy --only functions:helloWorld\n\n# Deploy with regions\nfirebase deploy --only functions:myFunction --region us-central1\n\n# Deploy multiple regions\nfirebase deploy --only functions:multiRegionFunction --region us-central1,us-west1\n\n# Configuration\n\n# firebase.json functions config\n{\n  "functions": {\n    "source": "functions",\n    "predeploy": [\n      "npm --prefix \"$RESOURCE_DIR\" run lint",\n      "npm --prefix \"$RESOURCE_DIR\" run build"\n    ],\n    "runtime": "nodejs18"\n  }\n}\n\n# Environment Variables\n\n# Set environment variables\nfirebase functions:config:set slack.webhook.url="https://hooks.slack.com/..."\nfirebase functions:config:set stripe.secret_key="sk_test_..."\n\n# Access in functions\nconst functions = require("firebase-functions");\nconst config = functions.config();\nconst slackUrl = config.slack.webhook.url;\nconst stripeSecret = config.stripe.secret_key;\n\n# Secrets Management\n\n# Store secrets\nfirebase functions:secrets:set API_KEY "\nfirebase functions:secrets:set DB_PASSWORD "\n\n# Access secrets\nexports.myFunction = functions.runWith({\n  secrets: ["API_KEY", "DB_PASSWORD"]\n}).https.onRequest((req, res) => {\n  const apiKey = process.env.API_KEY;\n  const dbPassword = process.env.DB_PASSWORD;\n  \n  // Use secrets\n  res.json({ success: true });\n});\n\n# Testing\n\n# Unit tests\n// functions/test/index.test.js\nconst firebaseFunctionsTest = require("@firebase-testing/functions");\nconst admin = require("firebase-admin");\n\nconst myFunctions = require("../index");\n\ndescribe("Cloud Functions", () => {\n  let functions;\n  \n  beforeAll(() => {\n    functions = firebaseFunctionsTest();\n    admin.initializeApp();\n  });\n  \n  test("helloWorld returns greeting", async () => {\n    const wrapped = functions.wrap(myFunctions.helloWorld);\n    const req = { query: { text: "input" } };\n    const res = { send: jest.fn() };\n    \n    await wrapped(req, res);\n    \n    expect(res.send).toHaveBeenCalledWith("Hello from Firebase!");\n  });\n});\n\n# Integration tests\nconst firebase = require("@firebase/testing");\n\ndescribe("Firestore integration", () => {\n  let app;\n  \n  beforeAll(async () => {\n    app = firebase.initializeTestApp({\n      projectId: "test-project",\n      auth: { uid: "user123" }\n    });\n  });\n  \n  afterAll(async () => {\n    await app.delete();\n  });\n  \n  test("creates user document", async () => {\n    const db = app.firestore();\n    await db.collection("users").doc("user123").set({\n      name: "Test User"\n    });\n    \n    const doc = await db.collection("users").doc("user123").get();\n    expect(doc.exists).toBe(true);\n  });\n});'
+        }
+      ]
     },
     {
-      title: 'Firestore - Query Data',
+      title: 'Firebase Hosting',
       commands: [
         {
-          command: 'where()',
-          description: 'Filter documents',
-          usage: 'query(collection, where(field, operator, value))',
-          example: 'import { collection, query, where, getDocs } from "firebase/firestore";\n\nconst q = query(collection(db, "users"), where("age", ">", 18));\nconst querySnapshot = await getDocs(q);',
+          command: 'Firebase Hosting Setup',
+          description: 'Setting up and configuring Firebase Hosting',
+          usage: 'Deploying web applications to Firebase Hosting',
+          example: '# Initialize Firebase Hosting\nfirebase init hosting\n\n# Configuration Options\n- Public directory: public, build, dist\n- Configure as single-page app: Yes/No\n- Set up automatic builds: Yes/No\n\n# firebase.json Configuration\n{\n  "hosting": {\n    "public": "public",\n    "ignore": [\n      "firebase.json",\n      "**/.*",\n      "**/node_modules/**"\n    ],\n    "rewrites": [\n      {\n        "source": "**",\n        "destination": "/index.html"\n      }\n    ],\n    "headers": [\n      {\n        "source": "**/*.@(js|css)",\n        "headers": [\n          {\n            "key": "Cache-Control",\n            "value": "max-age=31536000"\n          }\n        ]\n      }\n    ],\n    "redirects": [\n      {\n        "source": "/home",\n        "destination": "/",\n        "type": 301\n      }\n    ]\n  }\n}\n\n# Deploy to Hosting\n\n# Deploy to default site\nfirebase deploy --only hosting\n\n# Deploy to specific site\nfirebase deploy --only hosting:mysite\n\n# Deploy with message\nfirebase deploy --only hosting -m "Update homepage"\n\n# Preview deployment\nfirebase hosting:channel:deploy preview\n\n# Multi-Site Configuration\n{\n  "hosting": [\n    {\n      "target": "blog",\n      "public": "blog/dist",\n      "ignore": ["**/.*"],\n      "rewrites": [\n        {\n          "source": "**",\n          "destination": "/index.html"\n        }\n      ]\n    },\n    {\n      "target": "app",\n      "public": "app/build",\n      "ignore": ["**/.*"],\n      "rewrites": [\n        {\n          "source": "**",\n          "destination": "/index.html"\n        }\n      ]\n    }\n  ]\n}\n\n# Deploy to specific target\nfirebase deploy --only hosting:blog\nfirebase deploy --only hosting:app'
         },
         {
-          command: 'orderBy()',
-          description: 'Sort results',
-          usage: 'query(collection, orderBy(field, direction))',
-          example: 'const q = query(\n  collection(db, "users"),\n  orderBy("created", "desc")\n);',
+          command: 'Advanced Hosting Features',
+          description: 'Advanced hosting configurations and optimization',
+          usage: 'Optimizing hosting performance and security',
+          example: '# Custom Domain Setup\n\n# Add custom domain\nfirebase hosting:sites:create mysite\nfirebase hosting:channels:deploy mysite\n\n# Connect domain\nfirebase hosting:main:site:create mysite\nfirebase hosting:main:site:update mysite\n\n# SSL Configuration\n# Automatic SSL provisioning\n# Custom SSL certificates\n\n# Performance Optimization\n\n# Cache Headers\n{\n  "hosting": {\n    "headers": [\n      {\n        "source": "**/*.@(jpg|jpeg|png|gif|webp)",\n        "headers": [\n          {\n            "key": "Cache-Control",\n            "value": "max-age=31536000, immutable"\n          }\n        ]\n      },\n      {\n        "source": "**/*.@(js|css)",\n        "headers": [\n          {\n            "key": "Cache-Control",\n            "value": "max-age=31536000"\n          }\n        ]\n      },\n      {\n        "source": "**/*.@(html)",\n        "headers": [\n          {\n            "key": "Cache-Control",\n            "value": "max-age=3600"\n          }\n        ]\n      }\n    ]\n  }\n}\n\n# Security Headers\n{\n  "hosting": {\n    "headers": [\n      {\n        "source": "**",\n        "headers": [\n          {\n            "key": "X-Content-Type-Options",\n            "value": "nosniff"\n          },\n          {\n            "key": "X-Frame-Options",\n            "value": "DENY"\n          },\n          {\n            "key": "X-XSS-Protection",\n            "value": "1; mode=block"\n          },\n          {\n            "key": "Strict-Transport-Security",\n            "value": "max-age=31536000; includeSubDomains"\n          }\n        ]\n      }\n    ]\n  }\n}\n\n# URL Rewrites\n{\n  "hosting": {\n    "rewrites": [\n      {\n        "source": "/blog/**",\n        "destination": "/blog/index.html"\n      },\n      {\n        "source": "/api/**",\n        "function": "api"\n      },\n      {\n        "source": "/**",\n        "destination": "/index.html"\n      }\n    ]\n  }\n}\n\n# Redirects\n{\n  "hosting": {\n    "redirects": [\n      {\n        "source": "/old-page",\n        "destination": "/new-page",\n        "type": 301\n      },\n      {\n        "source": "/blog/:post*",\n        "destination": "/posts/:post*",\n        "type": 301\n      },\n      {\n        "source": "/:path*",\n        "destination": "https://newdomain.com/:path*",\n        "type": 301\n      }\n    ]\n  }\n}\n\n# Internationalization (i18n)\n{\n  "hosting": {\n    "public": "public",\n    "i18n": {\n      "root": "/localized"\n    },\n    "ignore": ["**/.*"]\n  }\n}\n\n# Directory structure:\n# public/\n#   index.html (default)\n#   localized/\n#     en/\n#       index.html\n#     es/\n#       index.html\n#     fr/\n#       index.html\n\n# Deployment with i18n\nfirebase deploy --only hosting\n\n# Access localized content\n# https://your-app.web.app/ (default)\n# https://your-app.web.app/en/ (English)\n# https://your-app.web.app/es/ (Spanish)\n# https://your-app.web.app/fr/ (French)'
         },
         {
-          command: 'limit()',
-          description: 'Limit results',
-          usage: 'query(collection, limit(n))',
-          example: 'const q = query(\n  collection(db, "users"),\n  orderBy("created", "desc"),\n  limit(10)\n);  // Get 10 newest users',
-        },
-        {
-          command: 'Multiple filters',
-          description: 'Combine query conditions',
-          usage: 'query(collection, where(), where(), orderBy())',
-          example: 'const q = query(\n  collection(db, "users"),\n  where("status", "==", "active"),\n  where("age", ">=", 18),\n  orderBy("age"),\n  limit(20)\n);',
-        },
-        {
-          command: 'startAfter()',
-          description: 'Pagination',
-          usage: 'query(collection, startAfter(lastDoc))',
-          example: 'const first = query(collection(db, "users"), limit(25));\nconst snapshot = await getDocs(first);\nconst lastVisible = snapshot.docs[snapshot.docs.length-1];\n\nconst next = query(\n  collection(db, "users"),\n  startAfter(lastVisible),\n  limit(25)\n);',
-        },
-      ],
+          command: 'CI/CD and Automated Deployment',
+          description: 'Setting up continuous integration and deployment',
+          usage: 'Automating hosting deployments with GitHub Actions',
+          example: '# GitHub Actions Workflow\n\n# .github/workflows/firebase-hosting.yml\nname: Deploy to Firebase Hosting\non:\n  push:\n    branches:\n      - main\n  pull_request:\n    branches:\n      - main\n\njobs:\n  build_and_deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      \n      - name: Setup Node.js\n        uses: actions/setup-node@v3\n        with:\n          node-version: "18"\n          cache: "npm"\n      \n      - name: Install dependencies\n        run: npm ci\n      \n      - name: Run tests\n        run: npm test\n      \n      - name: Build application\n        run: npm run build\n      \n      - name: Deploy to Firebase\n        uses: FirebaseExtended/action-hosting-deploy@v0\n        with:\n          repoToken: \'${{ secrets.GITHUB_TOKEN }}\'\n          firebaseServiceAccount: \'${{ secrets.FIREBASE_SERVICE_ACCOUNT }}\'\n          channelId: live\n          projectId: your-project-id\n        env:\n          FIREBASE_CLI_PREVIEWS: hostingchannels\n\n# Environment Setup\n\n# Service Account Key\n# Generate service account key:\n# 1. Go to Firebase Console\n# 2. Project Settings > Service Accounts\n# 3. Generate new private key\n# 4. Add to GitHub secrets as FIREBASE_SERVICE_ACCOUNT\n\n# Multi-Environment Deployment\n\n# Staging workflow\nname: Deploy to Staging\non:\n  push:\n    branches:\n      - develop\n\njobs:\n  deploy_staging:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - name: Deploy to Staging\n        uses: FirebaseExtended/action-hosting-deploy@v0\n        with:\n          repoToken: \'${{ secrets.GITHUB_TOKEN }}\'\n          firebaseServiceAccount: \'${{ secrets.FIREBASE_SERVICE_ACCOUNT_STAGING }}\'\n          channelId: staging\n          projectId: your-project-staging\n\n# Production workflow\nname: Deploy to Production\non:\n  push:\n    branches:\n      - main\n\njobs:\n  deploy_production:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - name: Deploy to Production\n        uses: FirebaseExtended/action-hosting-deploy@v0\n        with:\n          repoToken: \'${{ secrets.GITHUB_TOKEN }}\'\n          firebaseServiceAccount: \'${{ secrets.FIREBASE_SERVICE_ACCOUNT }}\'\n          channelId: live\n          projectId: your-project-id\n\n# Rollback Strategy\n\n# Rollback to previous version\nfirebase hosting:rollback\n\n# Rollback to specific version\nfirebase hosting:rollback --version=5\n\n# Preview Deployments\n\n# Create preview for PR\nfirebase hosting:channel:deploy pr-123 --expires 7d\n\n# List preview channels\nfirebase hosting:channel:list\n\n# Delete preview channel\nfirebase hosting:channel:delete pr-123\n\n# Custom Deployment Scripts\n\n# deploy.sh\n#!/bin/bash\n\n# Environment\nENVIRONMENT=${1:-staging}\nPROJECT_ID="your-project-${ENVIRONMENT}"\n\n# Build\nnpm run build\n\n# Deploy\nfirebase deploy --only hosting --project $PROJECT_ID\n\necho "Deployed to $ENVIRONMENT"\n\n# Usage\n# ./deploy.sh staging\n# ./deploy.sh production'
+        }
+      ]
     },
     {
-      title: 'Firestore - Update/Delete',
+      title: 'Firebase Storage',
       commands: [
         {
-          command: 'updateDoc()',
-          description: 'Update document fields',
-          usage: 'updateDoc(doc(db, path, id), data)',
-          example: 'import { doc, updateDoc } from "firebase/firestore";\n\nawait updateDoc(doc(db, "users", "user123"), {\n  name: "Updated Name",\n  "address.city": "New York"  // Nested field\n});',
+          command: 'Firebase Storage Setup',
+          description: 'Setting up and using Firebase Storage for file uploads',
+          usage: 'Uploading, downloading, and managing files',
+          example: '# Initialize Firebase Storage\nimport { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";\n\nconst storage = getStorage(app);\n\n# Upload Files\n\n# Upload from Blob or File\nconst storageRef = ref(storage, "images/user123/profile.jpg");\n\n// File from input element\nconst file = document.getElementById("fileInput").files[0];\nawait uploadBytes(storageRef, file);\n\n# Upload with Metadata\nimport { uploadBytesResumable, getMetadata } from "firebase/storage";\n\nconst metadata = {\n  contentType: "image/jpeg",\n  customMetadata: {\n    "uploadedBy": "user123",\n    "category": "profile"\n  }\n};\n\nconst uploadTask = uploadBytesResumable(storageRef, file, metadata);\n\n# Monitor Upload Progress\nuploadTask.on("state_changed", \n  (snapshot) => {\n    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;\n    console.log("Upload is " + progress + "% done");\n    \n    switch (snapshot.state) {\n      case "paused":\n        console.log("Upload is paused");\n        break;\n      case "running":\n        console.log("Upload is running");\n        break;\n    }\n  }, \n  (error) => {\n    console.error("Upload failed:", error);\n  }, \n  () => {\n    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {\n      console.log("File available at", downloadURL);\n    });\n  }\n);\n\n# Download Files\n\n# Get download URL\nconst url = await getDownloadURL(storageRef);\n\n# Download to memory\nconst bytes = await getBytes(storageRef);\nconst blob = new Blob([bytes]);\n\n# Upload from String\nconst messageRef = ref(storage, "messages/user123/message.txt");\nconst message = "Hello, World!";\nawait uploadString(messageRef, message);\n\n# Delete Files\nimport { deleteObject } from "firebase/storage";\n\nawait deleteObject(storageRef);\n\n# List Files\nimport { listAll, list, getMetadata } from "firebase/storage";\n\n// List all files\nconst listRef = ref(storage, "images/user123/");\nconst res = await listAll(listRef);\n\nres.items.forEach((itemRef) => {\n  console.log(itemRef.name);\n});\n\n// Paginated listing\nconst listPage = await list(listRef, { maxResults: 10 });\n\n# File Metadata\nconst metadata = await getMetadata(storageRef);\nconsole.log("Size:", metadata.size);\nconsole.log("Type:", metadata.contentType);\nconsole.log("Created:", metadata.timeCreated);'
         },
         {
-          command: 'deleteDoc()',
-          description: 'Delete document',
-          usage: 'deleteDoc(doc(db, path, id))',
-          example: 'import { doc, deleteDoc } from "firebase/firestore";\n\nawait deleteDoc(doc(db, "users", "user123"));',
+          command: 'Advanced Storage Operations',
+          description: 'Advanced file management and optimization',
+          usage: 'Implementing complex storage patterns',
+          example: '# Image Processing\n\n# Generate Thumbnails\nconst sharp = require("sharp");\n\nexports.generateThumbnail = functions.storage\n  .object()\n  .onFinalize(async (object) => {\n    const filePath = object.name;\n    const fileName = path.basename(filePath);\n    \n    if (!fileName.includes("thumb_")) {\n      const fileDir = path.dirname(filePath);\n      const thumbFileName = `thumb_${fileName}`;\n      const thumbFilePath = path.join(fileDir, thumbFileName);\n      \n      const bucket = admin.storage().bucket();\n      const tempFilePath = path.join(os.tmpdir(), filePath);\n      const tempThumbPath = path.join(os.tmpdir(), thumbFilePath);\n      \n      // Download original image\n      await bucket.file(filePath).download({ destination: tempFilePath });\n      \n      // Generate thumbnail\n      await sharp(tempFilePath)\n        .resize(200, 200)\n        .toFile(tempThumbPath);\n      \n      // Upload thumbnail\n      await bucket.upload(tempThumbPath, {\n        destination: thumbFilePath\n      });\n      \n      // Clean up temp files\n      fs.unlinkSync(tempFilePath);\n      fs.unlinkSync(tempThumbPath);\n    }\n  });\n\n# File Validation\n\n# Validate file type and size\nconst validateFile = (file, maxSize = 5 * 1024 * 1024) => {\n  const allowedTypes = [\n    "image/jpeg",\n    "image/png",\n    "image/gif",\n    "application/pdf"\n  ];\n  \n  if (!allowedTypes.includes(file.type)) {\n    throw new Error("File type not allowed");\n  }\n  \n  if (file.size > maxSize) {\n    throw new Error("File too large");\n  }\n};\n\n# Secure File Upload\nconst uploadSecureFile = async (file, userId) => {\n  validateFile(file);\n  \n  const fileExt = file.name.split(".").pop();\n  const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;\n  const filePath = `users/${userId}/${fileName}`;\n  \n  const storageRef = ref(storage, filePath);\n  await uploadBytes(storageRef, file);\n  \n  const downloadURL = await getDownloadURL(storageRef);\n  \n  // Save file info to Firestore\n  await admin.firestore().collection("files").add({\n    userId,\n    fileName,\n    filePath,\n    downloadURL,\n    size: file.size,\n    type: file.type,\n    createdAt: admin.firestore.FieldValue.serverTimestamp()\n  });\n  \n  return downloadURL;\n};\n\n# Batch Operations\n\n# Upload multiple files\nconst uploadMultipleFiles = async (files, userId) => {\n  const uploadPromises = files.map(file => uploadSecureFile(file, userId));\n  const results = await Promise.all(uploadPromises);\n  return results;\n};\n\n# Delete user files\nconst deleteUserFiles = async (userId) => {\n  const bucket = admin.storage().bucket();\n  \n  // List all user files\n  const [files] = await bucket.getFiles({\n    prefix: `users/${userId}/`\n  });\n  \n  // Delete all files\n  const deletePromises = files.map(file => file.delete());\n  await Promise.all(deletePromises);\n};\n\n# Storage Security Rules\n\n# storage.rules\nrules_version = \'2\';\nservice firebase.storage {\n  match /b/{bucket}/o {\n    // Users can only read/write their own files\n    match /users/{userId}/{allPaths=**} {\n      allow read, write: if request.auth != null && request.auth.uid == userId;\n    }\n    \n    // Public images can be read by anyone\n    match /public/{allPaths=**} {\n      allow read;\n      allow write: if request.auth != null;\n    }\n    \n    // Profile pictures can be read by authenticated users\n    match /profiles/{userId}/{allPaths=**} {\n      allow read: if request.auth != null;\n      allow write: if request.auth != null && request.auth.uid == userId;\n    }\n    \n    // File size and type validation\n    match /uploads/{userId}/{fileName} {\n      allow write: if request.auth != null && \n        request.auth.uid == userId &&\n        fileName.matches("\\\\.(jpg|jpeg|png|gif|pdf)$") &&\n        request.resource.size < 5 * 1024 * 1024; // 5MB limit\n    }\n  }\n}'
         },
         {
-          command: 'deleteField()',
-          description: 'Delete field from document',
-          usage: 'updateDoc(doc, { field: deleteField() })',
-          example: 'import { updateDoc, deleteField } from "firebase/firestore";\n\nawait updateDoc(doc(db, "users", "user123"), {\n  email: deleteField()\n});',
-        },
-        {
-          command: 'increment()',
-          description: 'Increment numeric field',
-          usage: 'updateDoc(doc, { field: increment(n) })',
-          example: 'import { updateDoc, increment } from "firebase/firestore";\n\nawait updateDoc(doc(db, "posts", "post123"), {\n  views: increment(1),\n  likes: increment(-1)\n});',
-        },
-        {
-          command: 'arrayUnion()',
-          description: 'Add to array',
-          usage: 'updateDoc(doc, { field: arrayUnion(items) })',
-          example: 'import { updateDoc, arrayUnion } from "firebase/firestore";\n\nawait updateDoc(doc(db, "users", "user123"), {\n  tags: arrayUnion("new-tag", "another-tag")\n});',
-        },
-        {
-          command: 'arrayRemove()',
-          description: 'Remove from array',
-          usage: 'updateDoc(doc, { field: arrayRemove(items) })',
-          example: 'await updateDoc(doc(db, "users", "user123"), {\n  tags: arrayRemove("old-tag")\n});',
-        },
-      ],
+          command: 'Storage Optimization and CDN',
+          description: 'Optimizing storage performance and using CDN',
+          usage: 'Improving file delivery and reducing costs',
+          example: '# Image Optimization\n\n# Compress images before upload\nconst compressImage = async (file) => {\n  return new Promise((resolve) => {\n    const reader = new FileReader();\n    reader.onload = (event) => {\n      const img = new Image();\n      img.onload = () => {\n        const canvas = document.createElement("canvas");\n        const ctx = canvas.getContext("2d");\n        \n        // Calculate new dimensions\n        let { width, height } = img;\n        const maxSize = 1920;\n        \n        if (width > height) {\n          if (width > maxSize) {\n            height *= maxSize / width;\n            width = maxSize;\n          }\n        } else {\n          if (height > maxSize) {\n            width *= maxSize / height;\n            height = maxSize;\n          }\n        }\n        \n        canvas.width = width;\n        canvas.height = height;\n        \n        ctx.drawImage(img, 0, 0, width, height);\n        \n        canvas.toBlob(resolve, "image/jpeg", 0.8);\n      };\n      img.src = event.target.result;\n    };\n    reader.readAsDataURL(file);\n  });\n};\n\n# Upload optimized image\nconst uploadOptimizedImage = async (file, userId) => {\n  const compressedFile = await compressImage(file);\n  return uploadSecureFile(compressedFile, userId);\n};\n\n# Progressive Image Loading\n\n# Create low-quality placeholder\nconst createPlaceholder = (file) => {\n  return new Promise((resolve) => {\n    const reader = new FileReader();\n    reader.onload = (event) => {\n      const img = new Image();\n      img.onload = () => {\n        const canvas = document.createElement("canvas");\n        const ctx = canvas.getContext("2d");\n        \n        canvas.width = 40;\n        canvas.height = 40;\n        \n        ctx.drawImage(img, 0, 0, 40, 40);\n        \n        canvas.toBlob(resolve, "image/jpeg", 0.1);\n      };\n      img.src = event.target.result;\n    };\n    reader.readAsDataURL(file);\n  });\n};\n\n# Upload with placeholder\nconst uploadWithPlaceholder = async (file, userId) => {\n  const placeholder = await createPlaceholder(file);\n  const placeholderRef = ref(storage, `placeholders/${userId}/${Date.now()}.jpg`);\n  \n  await uploadBytes(placeholderRef, placeholder);\n  const placeholderURL = await getDownloadURL(placeholderRef);\n  \n  const mainURL = await uploadOptimizedImage(file, userId);\n  \n  return { mainURL, placeholderURL };\n};\n\n# CDN Configuration\n\n# Firebase Hosting + Storage\n{\n  "hosting": {\n    "public": "public",\n    "headers": [\n      {\n        "source": "**/*.@(jpg|jpeg|png|gif|webp)",\n        "headers": [\n          {\n            "key": "Cache-Control",\n            "value": "max-age=31536000, immutable"\n          },\n          {\n            "key": "Cross-Origin-Resource-Policy",\n            "value": "cross-origin"\n          }\n        ]\n      }\n    ]\n  }\n}\n\n# Custom Domain for Storage\n# Configure custom domain for Firebase Hosting\n# Storage files accessible via custom domain\n\n# Image Transformation Service\n\n# Cloud Function for image transformation\nexports.transformImage = functions.https.onRequest(async (req, res) => {\n  const { url, width, height, quality } = req.query;\n  \n  if (!url) {\n    return res.status(400).json({ error: "URL parameter required" });\n  }\n  \n  try {\n    const transformedImage = await transformImage({\n      url,\n      width: parseInt(width) || 800,\n      height: parseInt(height) || 600,\n      quality: parseInt(quality) || 80\n    });\n    \n    res.set("Cache-Control", "public, max-age=31536000");\n    res.set("Cross-Origin-Resource-Policy", "cross-origin");\n    res.type("image/jpeg");\n    res.send(transformedImage);\n  } catch (error) {\n    res.status(500).json({ error: error.message });\n  }\n});\n\n# Usage\n# https://your-project.cloudfunctions.net/transformImage?url=storage-url&width=400&height=300'
+        }
+      ]
     },
     {
-      title: 'Firestore - Batch Operations',
+      title: 'Analytics and Monitoring',
       commands: [
         {
-          command: 'writeBatch()',
-          description: 'Batch write operations',
-          usage: 'writeBatch(db)',
-          example: 'import { writeBatch, doc } from "firebase/firestore";\n\nconst batch = writeBatch(db);\n\nbatch.set(doc(db, "users", "user1"), { name: "Alice" });\nbatch.update(doc(db, "users", "user2"), { age: 30 });\nbatch.delete(doc(db, "users", "user3"));\n\nawait batch.commit();',
+          command: 'Firebase Analytics Setup',
+          description: 'Setting up and configuring Firebase Analytics',
+          usage: 'Tracking user behavior and app performance',
+          example: '# Web Analytics Setup\n\n# Install Analytics SDK\nnpm install firebase analytics\n\n# Initialize Analytics\nimport { getAnalytics } from "firebase/analytics";\n\nconst analytics = getAnalytics(app);\n\n# Custom Events\nimport { logEvent } from "firebase/analytics";\n\n// Track custom event\nlogEvent(analytics, "button_click", {\n  button_name: "signup",\n  page: "homepage"\n});\n\n# E-commerce Events\n\n// Purchase event\nlogEvent(analytics, "purchase", {\n  transaction_id: "T12345",\n  value: 99.99,\n  currency: "USD",\n  items: [\n    {\n      item_id: "SKU123",\n      item_name: "Product Name",\n      category: "Electronics",\n      quantity: 1,\n      price: 99.99\n    }\n  ]\n});\n\n# Screen View\nlogEvent(analytics, "screen_view", {\n  screen_name: "Profile",\n  screen_class: "ProfileActivity"\n});\n\n# User Properties\nimport { setUserProperties } from "firebase/analytics";\n\nsetUserProperties(analytics, {\n  account_type: "premium",\n  user_level: "advanced"\n});\n\n# Mobile Analytics (iOS)\n\n# Add Firebase Analytics to iOS\n# Podfile\npod \'Firebase/Analytics\'\n\n# Swift\nimport Firebase\n\n@UIApplicationMain\nclass AppDelegate: UIResponder, UIApplicationDelegate {\n  func application(_ application: UIApplication,\n                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {\n    FirebaseApp.configure()\n    return true\n  }\n}\n\n# Track events\nAnalytics.logEvent("button_click", parameters: [\n  "button_name": "signup" as NSObject,\n  "page": "homepage" as NSObject\n])\n\n# Mobile Analytics (Android)\n\n# Add Firebase Analytics to Android\n# build.gradle (app)\nimplementation \'com.google.firebase:firebase-analytics\'\n\n# Java\nimport com.google.firebase.analytics.FirebaseAnalytics;\n\nprivate lateinit var firebaseAnalytics: FirebaseAnalytics\n\noverride fun onCreate(savedInstanceState: Bundle?) {\n    super.onCreate(savedInstanceState)\n    setContentView(R.layout.activity_main)\n    \n    firebaseAnalytics = FirebaseAnalytics.getInstance(this)\n}\n\n# Track events\nval bundle = Bundle()\nbundle.putString(FirebaseAnalytics.Param.ITEM_ID, "id")\nbundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "name")\nbundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")\nfirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)'
         },
         {
-          command: 'runTransaction()',
-          description: 'Run transaction',
-          usage: 'runTransaction(db, callback)',
-          example: 'import { runTransaction, doc } from "firebase/firestore";\n\nawait runTransaction(db, async (transaction) => {\n  const docRef = doc(db, "accounts", "account123");\n  const docSnap = await transaction.get(docRef);\n  const newBalance = docSnap.data().balance - 100;\n  transaction.update(docRef, { balance: newBalance });\n});',
+          command: 'Performance Monitoring',
+          description: 'Setting up Firebase Performance Monitoring',
+          usage: 'Tracking app performance and identifying bottlenecks',
+          example: '# Web Performance Monitoring\n\n# Install Performance SDK\nnpm install firebase performance\n\n# Initialize Performance\nimport { getPerformance } from "firebase/performance";\n\nconst perf = getPerformance(app);\n\n# Custom Traces\nimport { trace } from "firebase/performance";\n\n// Create custom trace\nconst customTrace = trace(perf, "custom_trace");\n\ncustomTrace.start();\n\n// Add custom metric\ncustomTrace.putMetric("metric_name", metricValue);\n\n// Add custom attribute\ncustomTrace.putAttribute("attribute_name", "attribute_value");\n\ncustomTrace.stop();\n\n# HTTP Request Monitoring\nimport { getPerformance, trace } from "firebase/performance";\n\nconst perf = getPerformance(app);\n\n// Automatic HTTP monitoring is enabled by default\n// Manual HTTP monitoring\nconst httpMetric = new HTTPMetric(\n  perf,\n  "https://api.example.com/data",\n  "GET"\n);\n\nhttpMetric.responseContentType = "application/json";\nhttpMetric.responsePayloadSize = 1024;\nhttpMetric.requestPayloadSize = 512;\n\nhttpMetric.start();\n\n// Make HTTP request\nfetch("https://api.example.com/data")\n  .then(response => response.json())\n  .then(data => {\n    httpMetric.httpResponseCode = 200;\n    httpMetric.stop();\n  })\n  .catch(error => {\n    httpMetric.httpResponseCode = 500;\n    httpMetric.stop();\n  });\n\n# Screen Rendering\nimport { trace } from "firebase/performance";\n\nconst screenRenderTrace = trace(perf, "screen_render");\nscreenRenderTrace.start();\n\n// Render screen\nrenderScreen();\n\nscreenRenderTrace.stop();\n\n# Mobile Performance (iOS)\n\n# Add Performance Monitoring to iOS\npod \'Firebase/Performance\'\n\n# Swift\nimport FirebasePerformance\n\n// Custom trace\nlet trace = Performance.startTrace(name: "custom_trace")\ntrace?.incrementMetric("metric_name", by: 1)\ntrace?.stop()\n\n# HTTP metric\nlet metric = HTTPMetric(url: URL(string: "https://api.example.com")!,\n                      httpMethod: "GET")\nmetric.start()\n// Make request\nmetric.responseCode = 200\nmetric.stop()\n\n# Mobile Performance (Android)\n\n# Add Performance Monitoring to Android\nimplementation \'com.google.firebase:firebase-perf\'\n\n# Java\nimport com.google.firebase.perf.FirebasePerformance;\nimport com.google.firebase.perf.metrics.Trace;\n\n// Custom trace\nTrace myTrace = FirebasePerformance.getInstance().newTrace("test_trace");\nmyTrace.start();\nmyTrace.putMetric("metric", 1);\nmyTrace.stop();\n\n# Performance Monitoring Configuration\n\n# firebase.json\n{\n  "performance": {\n    "dataCollectionEnabled": true,\n    "instrumentationEnabled": true\n  }\n}\n\n# Disable monitoring\nfirebase performance:disable\n\n# Enable monitoring\nfirebase performance:enable'
         },
-      ],
+        {
+          command: 'Crashlytics and Error Reporting',
+          description: 'Setting up Firebase Crashlytics for crash reporting',
+          usage: 'Monitoring app crashes and errors',
+          example: '# Web Crashlytics\n\n# Note: Crashlytics is primarily for mobile apps\n# For web apps, use Performance Monitoring and custom error tracking\n\n# Custom Error Tracking\nimport { getAnalytics } from "firebase/analytics";\nimport { logEvent } from "firebase/analytics";\n\n// Track custom errors\nconst trackError = (error, context = {}) => {\n  logEvent(analytics, "app_error", {\n    error_message: error.message,\n    error_stack: error.stack,\n    error_context: JSON.stringify(context),\n    timestamp: new Date().toISOString()\n  });\n};\n\n# Global error handler\nwindow.addEventListener("error", (event) => {\n  trackError(event.error, {\n    filename: event.filename,\n    lineno: event.lineno,\n    colno: event.colno\n  });\n});\n\nwindow.addEventListener("unhandledrejection", (event) => {\n  trackError(new Error(event.reason), {\n    type: "unhandled_promise_rejection"\n  });\n});\n\n# Mobile Crashlytics (iOS)\n\n# Add Crashlytics to iOS\npod \'Firebase/Crashlytics\'\n\n# Swift\nimport FirebaseCrashlytics\n\n@UIApplicationMain\nclass AppDelegate: UIResponder, UIApplicationDelegate {\n  func application(_ application: UIApplication,\n                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {\n    FirebaseApp.configure()\n    \n    // Enable debug logging in debug builds\n    #if DEBUG\n      Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)\n    #else\n      Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)\n    #endif\n    \n    return true\n  }\n}\n\n# Custom crash\nCrashlytics.crashlytics().record(error: NSError(\n  domain: "CustomError",\n  code: -1,\n  userInfo: [NSLocalizedDescriptionKey: "Custom error message"]\n))\n\n# Set user identifier\nCrashlytics.crashlytics().setUserID("user123")\n\n# Custom keys\nCrashlytics.crashlytics().setCustomValue("premium_user", true)\nCrashlytics.crashlytics().setCustomValue("last_action", "purchase")\n\n# Mobile Crashlytics (Android)\n\n# Add Crashlytics to Android\nimplementation \'com.google.firebase:firebase-crashlytics\'\nimplementation \'com.google.firebase:firebase-analytics\'\n\n# Java\nimport com.google.firebase.crashlytics.FirebaseCrashlytics;\n\n// Enable Crashlytics\nFirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);\n\n// Custom crash\nFirebaseCrashlytics.getInstance().recordException(\n  new RuntimeException("Custom error message")\n);\n\n# Set user identifier\nFirebaseCrashlytics.getInstance().setUserId("user123");\n\n# Custom keys\nFirebaseCrashlytics.getInstance().setCustomKey("premium_user", true);\nFirebaseCrashlytics.getInstance().setCustomKey("last_action", "purchase");\n\n# Error Logging Strategy\n\n# Centralized error logging\nconst errorLogger = {\n  log: (error, context = {}) => {\n    // Log to console\n    console.error(error, context);\n    \n    // Track in Analytics\n    trackError(error, context);\n    \n    // Send to external service if needed\n    if (process.env.NODE_ENV === "production") {\n      // Send to error tracking service\n    }\n  },\n  \n  setUser: (user) => {\n    // Set user context\n    if (typeof window !== "undefined" && window.gtag) {\n      window.gtag("set", "user_properties", {\n        user_id: user.id,\n        user_type: user.type\n      });\n    }\n  },\n  \n  clearUser: () => {\n    // Clear user context\n    if (typeof window !== "undefined" && window.gtag) {\n      window.gtag("set", "user_properties", null);\n    }\n  }\n};\n\nexport default errorLogger;'
+        }
+      ]
     },
     {
-      title: 'Authentication - Setup',
+      title: 'Advanced Firebase Features',
       commands: [
         {
-          command: 'getAuth()',
-          description: 'Initialize Auth',
-          usage: 'import { getAuth } from "firebase/auth"',
-          example: 'import { getAuth } from "firebase/auth";\nconst auth = getAuth(app);',
+          command: 'Remote Configuration',
+          description: 'Using Firebase Remote Configuration for dynamic app behavior',
+          usage: 'Implementing feature flags and remote configuration',
+          example: '# Remote Config Setup\n\n# Initialize Remote Config\nimport { getRemoteConfig, fetchAndActivate, getValue } from "firebase/remote-config";\n\nconst remoteConfig = getRemoteConfig(app);\n\n# Configure Remote Config\nremoteConfig.settings = {\n  minimumFetchIntervalMillis: 3600000, // 1 hour\n  fetchTimeoutMillis: 60000 // 1 minute\n};\n\n# Set default values\nremoteConfig.defaultConfig = {\n  "show_new_feature": false,\n  "max_upload_size": 5242880, // 5MB\n  "theme": "light",\n  "maintenance_mode": false\n};\n\n# Fetch and activate\nconst fetchConfig = async () => {\n  try {\n    const fetched = await fetchAndActivate(remoteConfig);\n    if (fetched) {\n      console.log("Remote config activated");\n    }\n  } catch (error) {\n    console.error("Failed to fetch remote config:", error);\n  }\n};\n\n# Get configuration values\nconst showNewFeature = getValue(remoteConfig, "show_new_feature").asBoolean();\nconst maxUploadSize = getValue(remoteConfig, "max_upload_size").asNumber();\nconst theme = getValue(remoteConfig, "theme").asString();\n\n# Use in application\nif (showNewFeature) {\n  // Show new feature\n  showNewFeatureUI();\n}\n\n# Apply theme\napplyTheme(theme);\n\n# Check maintenance mode\nif (getValue(remoteConfig, "maintenance_mode").asBoolean()) {\n  showMaintenanceScreen();\n}\n\n# Mobile Remote Config (iOS)\n\n# Add Remote Config to iOS\npod \'Firebase/RemoteConfig\'\n\n# Swift\nimport FirebaseRemoteConfig\n\nlet remoteConfig = RemoteConfig.remoteConfig()\nlet settings = RemoteConfigSettings()\nsettings.minimumFetchInterval = 3600\nremoteConfig.configSettings = settings\n\n# Set defaults\nlet defaultValues: [String: Any] = [\n  "show_new_feature": false as NSObject,\n  "theme": "light" as NSObject\n]\nremoteConfig.setDefaults(defaultValues)\n\n# Fetch and activate\nremoteConfig.fetch(withExpirationDuration: 3600) { (status, error) in\n  if status == .success {\n    remoteConfig.activate() { changed, error in\n      // Handle activation\n    }\n  }\n}\n\n# Get values\nlet showNewFeature = remoteConfig["show_new_feature"]?.boolValue ?? false\nlet theme = remoteConfig["theme"]?.stringValue ?? "light"\n\n# Mobile Remote Config (Android)\n\n# Add Remote Config to Android\nimplementation \'com.google.firebase:firebase-config\'\n\n# Java\nimport com.google.firebase.remoteconfig.FirebaseRemoteConfig;\nimport com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;\n\nFirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();\n\nFirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()\n    .setMinimumFetchIntervalInSeconds(3600)\n    .build();\nmFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);\n\n# Set defaults\nMap<String, Object> defaultValues = new HashMap<>();\ndefaultValues.put("show_new_feature", false);\ndefaultValues.put("theme", "light");\nmFirebaseRemoteConfig.setDefaultsAsync(defaultValues);\n\n# Fetch and activate\nmFirebaseRemoteConfig.fetchAndActivate()\n    .addOnCompleteListener(this, task -> {\n        if (task.isSuccessful()) {\n            boolean updated = task.getResult();\n            Log.d(TAG, "Config params updated: " + updated);\n        } else {\n            Log.e(TAG, "Config fetch failed");\n        }\n    });\n\n# Get values\nboolean showNewFeature = mFirebaseRemoteConfig.getBoolean("show_new_feature");\nString theme = mFirebaseRemoteConfig.getString("theme");'
         },
         {
-          command: 'onAuthStateChanged()',
-          description: 'Listen to auth state',
-          usage: 'onAuthStateChanged(auth, callback)',
-          example: 'import { onAuthStateChanged } from "firebase/auth";\n\nonAuthStateChanged(auth, (user) => {\n  if (user) {\n    console.log("User logged in:", user.uid);\n  } else {\n    console.log("User logged out");\n  }\n});',
+          command: 'Cloud Messaging',
+          description: 'Setting up Firebase Cloud Messaging for push notifications',
+          usage: 'Implementing push notifications and message handling',
+          example: '# Web Push Notifications\n\n# Initialize Cloud Messaging\nimport { getMessaging, getToken, onMessage } from "firebase/messaging";\n\nconst messaging = getMessaging(app);\n\n# Request permission\nconst requestPermission = async () => {\n  try {\n    const permission = await Notification.requestPermission();\n    if (permission === "granted") {\n      console.log("Notification permission granted");\n      return true;\n    } else {\n      console.log("Notification permission denied");\n      return false;\n    }\n  } catch (error) {\n    console.error("Error requesting permission:", error);\n    return false;\n  }\n};\n\n# Get FCM token\nconst getFCMToken = async () => {\n  try {\n    const currentToken = await getToken(messaging, {\n      vapidKey: "YOUR_VAPID_KEY"\n    });\n    \n    if (currentToken) {\n      console.log("FCM token:", currentToken);\n      \n      // Send token to server\n      await sendTokenToServer(currentToken);\n      return currentToken;\n    } else {\n      console.log("No FCM token available");\n      return null;\n    }\n  } catch (error) {\n    console.error("Error getting FCM token:", error);\n    return null;\n  }\n};\n\n# Handle foreground messages\nonMessage(messaging, (payload) => {\n  console.log("Message received:", payload);\n  \n  // Show notification\n  const notificationTitle = payload.notification.title;\n  const notificationOptions = {\n    body: payload.notification.body,\n    icon: "/firebase-logo.png",\n    click_action: payload.notification.click_action\n  };\n  \n  new Notification(notificationTitle, notificationOptions);\n});\n\n# Background message handler\nnavigator.serviceWorker.addEventListener("message", (event) => {\n  if (event.data && event.data.type === "BACKGROUND_MESSAGE") {\n    // Handle background message\n    console.log("Background message:", event.data.payload);\n  }\n});\n\n# Mobile FCM (iOS)\n\n# Add Cloud Messaging to iOS\npod \'Firebase/Messaging\'\n\n# Swift\nimport FirebaseMessaging\nimport UserNotifications\n\n@UIApplicationMain\nclass AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {\n  func application(_ application: UIApplication,\n                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {\n    FirebaseApp.configure()\n    \n    // Set delegate\n    Messaging.messaging().delegate = self\n    \n    // Register for remote notifications\n    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in\n      // Handle permission\n    }\n    \n    application.registerForRemoteNotifications()\n    \n    return true\n  }\n  \n  func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {\n    print("FCM token: \\(fcmToken ?? "")")\n    // Send token to server\n  }\n  \n  func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {\n    // Handle remote notification\n  }\n}\n\n# Mobile FCM (Android)\n\n# Add Cloud Messaging to Android\nimplementation \'com.google.firebase:firebase-messaging\'\n\n# Java\nimport com.google.firebase.messaging.FirebaseMessaging;\nimport com.google.firebase.messaging.FirebaseMessagingService;\n\npublic class MyFirebaseMessagingService extends FirebaseMessagingService {\n  @Override\n  public void onNewToken(String token) {\n    Log.d(TAG, "FCM token: " + token);\n    // Send token to server\n  }\n  \n  @Override\n  public void onMessageReceived(RemoteMessage remoteMessage) {\n    // Handle message\n    if (remoteMessage.getNotification() != null) {\n      // Show notification\n    }\n  }\n}\n\n# Token refresh\nFirebaseMessaging.getInstance().getToken()\n    .addOnCompleteListener(task -> {\n        if (!task.isSuccessful()) {\n            Log.w(TAG, "Fetching FCM registration token failed", task.getException());\n            return;\n        }\n        String token = task.getResult();\n        Log.d(TAG, "FCM token: " + token);\n    });'
         },
-      ],
+        {
+          command: 'Dynamic Links and Deep Linking',
+          description: 'Setting up Firebase Dynamic Links for deep linking',
+          usage: 'Creating and managing dynamic links',
+          example: '# Dynamic Links Setup\n\n# Create Dynamic Link\nimport { getDynamicLink, getShortLink } from "firebase/dynamic-links";\n\nconst link = getDynamicLink(app);\n\n# Create long dynamic link\nconst longLink = await link.buildDynamicLink({\n  link: "https://www.example.com/product/123",\n  domainUriPrefix: "https://yourapp.page.link",\n  android: {\n    packageName: "com.example.app",\n    fallbackUrl: "https://www.example.com/product/123"\n  },\n  ios: {\n    bundleId: "com.example.app.ios",\n    fallbackUrl: "https://www.example.com/product/123"\n  },\n  navigationInfo: {\n    enableForcedRedirect: true\n  },\n  analyticsInfo: {\n    campaign: "product-share",\n    source: "mobile-app"\n  },\n  socialMetaTagInfo: {\n    title: "Check out this product!",\n    description: "Amazing product with great features",\n    imageUrl: "https://www.example.com/product-image.jpg"\n  }\n});\n\n# Create short dynamic link\nconst shortLink = await getShortLink(longLink);\nconsole.log("Short link:", shortLink);\n\n# Handle Dynamic Links\n\n# Web handling\nimport { getDynamicLink } from "firebase/dynamic-links";\n\nconst handleDynamicLink = async () => {\n  const dynamicLink = await getDynamicLink(app);\n  const link = await dynamicLink.getDynamicLink();\n  \n  if (link) {\n    console.log("Dynamic link received:", link);\n    \n    // Handle the deep link\n    if (link.url === "https://www.example.com/product/123") {\n      // Navigate to product page\n      navigateToProduct("123");\n    }\n  }\n};\n\n# Mobile Dynamic Links (iOS)\n\n# Add Dynamic Links to iOS\npod \'Firebase/DynamicLinks\'\n\n# Swift\nimport FirebaseDynamicLinks\n\n@UIApplicationMain\nclass AppDelegate: UIResponder, UIApplicationDelegate {\n  func application(_ application: UIApplication,\n                   continue userActivity: NSUserActivity,\n                   restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {\n    \n    let handled = DynamicLinks.dynamicLinks()\n      .handleUniversalLink(userActivity.webpageURL!) { dynamiclink, error in\n        if let dynamiclink = dynamiclink {\n          // Handle dynamic link\n          self.handleDynamicLink(dynamiclink)\n        }\n      }\n    \n    return handled\n  }\n  \n  func handleDynamicLink(_ dynamicLink: DynamicLink) {\n    guard let url = dynamicLink.url else { return }\n    \n    // Extract parameters and navigate\n    let components = URLComponents(url: url, resolvingAgainstBaseURL: false)\n    let productId = components?.queryItems?.first(where: { $0.name == "id" })?.value\n    \n    if let productId = productId {\n      navigateToProduct(productId)\n    }\n  }\n}\n\n# Mobile Dynamic Links (Android)\n\n# Add Dynamic Links to Android\nimplementation \'com.google.firebase:firebase-dynamic-links\'\n\n# Java\nimport com.google.firebase.dynamiclinks.FirebaseDynamicLinks;\nimport com.google.firebase.dynamiclinks.PendingDynamicLinkData;\n\npublic class MainActivity extends AppCompatActivity {\n  @Override\n  protected void onCreate(Bundle savedInstanceState) {\n    super.onCreate(savedInstanceState);\n    setContentView(R.layout.activity_main);\n    \n    // Handle dynamic link\n    FirebaseDynamicLinks.getInstance()\n      .getDynamicLink(getIntent())\n      .addOnSuccessListener(this, pendingDynamicLinkData -> {\n        if (pendingDynamicLinkData != null) {\n          Uri deepLink = pendingDynamicLinkData.getLink();\n          // Handle deep link\n          handleDeepLink(deepLink);\n        }\n      })\n      .addOnFailureListener(this, e -> {\n        Log.w(TAG, "getDynamicLink:onFailure", e);\n      });\n  }\n  \n  private void handleDeepLink(Uri deepLink) {\n    String productId = deepLink.getQueryParameter("id");\n    if (productId != null) {\n      navigateToProduct(productId);\n    }\n  }\n}'
+        }
+      ]
     },
     {
-      title: 'Authentication - Sign In/Up',
+      title: 'Expert Level Topics',
       commands: [
         {
-          command: 'createUserWithEmailAndPassword()',
-          description: 'Create user with email',
-          usage: 'createUserWithEmailAndPassword(auth, email, password)',
-          example: 'import { createUserWithEmailAndPassword } from "firebase/auth";\n\nconst userCredential = await createUserWithEmailAndPassword(\n  auth,\n  "user@example.com",\n  "password123"\n);\nconst user = userCredential.user;',
+          command: 'Firebase Security Best Practices',
+          description: 'Implementing comprehensive security measures',
+          usage: 'Securing Firebase applications and data',
+          example: '# Security Rules Best Practices\n\n# Firestore Security\nrules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    // Function to check if user is owner\n    function isOwner(userId) {\n      return request.auth != null && request.auth.uid == userId;\n    }\n    \n    // Function to check if user is admin\n    function isAdmin() {\n      return request.auth != null && \n        request.auth.token.admin == true;\n    }\n    \n    // Function to validate data\n    function isValidUserData() {\n      return request.resource.data.keys().hasAll(["name", "email"]) &&\n        request.resource.data.name is string &&\n        request.resource.data.email is string &&\n        request.resource.data.email.matches(".*@.*\\\\..*");\n    }\n    \n    // Users collection\n    match /users/{userId} {\n      allow read, write: if isOwner(userId);\n      allow create: if isOwner(userId) && isValidUserData();\n    }\n    \n    // Public data\n    match /public/{document} {\n      allow read: if request.auth != null;\n      allow write: if isAdmin();\n    }\n  }\n}\n\n# Storage Security\nservice firebase.storage {\n  match /b/{bucket}/o {\n    // Function to validate file type\n    function isValidImage() {\n      return resource.contentType.matches("image/.*");\n    }\n    \n    // Function to validate file size\n    function isValidFileSize() {\n      return resource.size < 5 * 1024 * 1024; // 5MB\n    }\n    \n    // User files\n    match /users/{userId}/{allPaths=**} {\n      allow read, write: if request.auth != null && \n        request.auth.uid == userId;\n      allow create: if request.auth != null && \n        request.auth.uid == userId && isValidImage() && isValidFileSize();\n    }\n  }\n}\n\n# Authentication Security\n\n# Custom claims for role-based access\nconst setCustomClaims = async (uid, role) => {\n  await admin.auth().setCustomUserClaims(uid, { role });\n};\n\n# Verify custom claims in rules\nallow read, write: if request.auth.token.role == "admin";\n\n# Email verification enforcement\nexports.enforceEmailVerification = functions.auth.user().onCreate(async (user) => {\n  if (!user.emailVerified) {\n    await admin.auth().updateUser(user.uid, {\n      emailVerified: false\n    });\n    \n    // Send verification email\n    await admin.auth().generateEmailVerificationLink(user.email);\n  }\n});\n\n# Data Encryption\n\n# Encrypt sensitive data before storing\nconst crypto = require("crypto");\n\nconst encryptData = (data, key) => {\n  const algorithm = "aes-256-gcm";\n  const iv = crypto.randomBytes(16);\n  const cipher = crypto.createCipher(algorithm, key, iv);\n  \n  let encrypted = cipher.update(data, "utf8", "hex");\n  encrypted += cipher.final("hex");\n  \n  const authTag = cipher.getAuthTag();\n  \n  return {\n    encrypted,\n    iv: iv.toString("hex"),\n    authTag: authTag.toString("hex")\n  };\n};\n\n# API Key Management\n\n# Use environment variables for API keys\nconst API_KEYS = {\n  STRIPE: process.env.STRIPE_SECRET_KEY,\n  TWILIO: process.env.TWILIO_AUTH_TOKEN\n};\n\n# Rate Limiting\n\n# Implement rate limiting in Cloud Functions\nconst rateLimit = require("express-rate-limit");\n\nconst limiter = rateLimit({\n  windowMs: 15 * 60 * 1000, // 15 minutes\n  max: 100, // limit each IP to 100 requests per windowMs\n  message: "Too many requests from this IP"\n});\n\napp.use("/api/", limiter);\n\n# Input Validation\n\n# Validate and sanitize input\nconst validateInput = (data, schema) => {\n  const Joi = require("joi");\n  const { error } = schema.validate(data);\n  if (error) {\n    throw new Error(`Validation error: ${error.details[0].message}`);\n  }\n};\n\n# CORS Configuration\n\n# Configure CORS for security\nconst cors = require("cors");\n\nconst corsOptions = {\n  origin: ["https://yourdomain.com"],\n  optionsSuccessStatus: 200\n};\n\napp.use(cors(corsOptions));'
         },
         {
-          command: 'signInWithEmailAndPassword()',
-          description: 'Sign in with email',
-          usage: 'signInWithEmailAndPassword(auth, email, password)',
-          example: 'import { signInWithEmailAndPassword } from "firebase/auth";\n\nawait signInWithEmailAndPassword(\n  auth,\n  "user@example.com",\n  "password123"\n);',
+          command: 'Firebase Performance Optimization',
+          description: 'Optimizing Firebase applications for performance',
+          usage: 'Implementing performance best practices',
+          example: '# Firestore Performance\n\n# Batch operations for efficiency\nconst batchWrite = async (operations) => {\n  const batch = admin.firestore().batch();\n  \n  operations.forEach(({ type, ref, data }) => {\n    switch (type) {\n      case "set":\n        batch.set(ref, data);\n        break;\n      case "update":\n        batch.update(ref, data);\n        break;\n      case "delete":\n        batch.delete(ref);\n        break;\n    }\n  });\n  \n  await batch.commit();\n};\n\n# Use transactions for atomic operations\nconst transferPoints = async (fromUserId, toUserId, amount) => {\n  const db = admin.firestore();\n  \n  await db.runTransaction(async (transaction) => {\n    const fromRef = db.collection("users").doc(fromUserId);\n    const toRef = db.collection("users").doc(toUserId);\n    \n    const fromDoc = await transaction.get(fromRef);\n    const toDoc = await transaction.get(toRef);\n    \n    const fromBalance = fromDoc.data().points;\n    const toBalance = toDoc.data().points;\n    \n    if (fromBalance < amount) {\n      throw new Error("Insufficient points");\n    }\n    \n    transaction.update(fromRef, { points: fromBalance - amount });\n    transaction.update(toRef, { points: toBalance + amount });\n  });\n};\n\n# Optimize queries with indexes\nconst optimizedQuery = async (userId, limit = 10) => {\n  const db = admin.firestore();\n  \n  const query = db.collection("posts")\n    .where("userId", "==", userId)\n    .where("published", "==", true)\n    .orderBy("createdAt", "desc")\n    .limit(limit);\n  \n  const snapshot = await query.get();\n  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));\n};\n\n# Real-time Updates Optimization\n\n# Use onSnapshot with caching\nconst cachedQuery = (cacheKey, queryFn) => {\n  let cache = new Map();\n  \n  return (params) => {\n    const key = `${cacheKey}:${JSON.stringify(params)}`;\n    \n    if (cache.has(key)) {\n      return Promise.resolve(cache.get(key));\n    }\n    \n    const result = queryFn(params);\n    cache.set(key, result);\n    \n    // Clear cache after 5 minutes\n    setTimeout(() => cache.delete(key), 5 * 60 * 1000);\n    \n    return result;\n  };\n};\n\n# Storage Performance\n\n# Implement image optimization\nconst sharp = require("sharp");\n\nconst optimizeImage = async (imageBuffer, options = {}) => {\n  const {\n    width = 1920,\n    height = 1080,\n    quality = 80,\n    format = "jpeg"\n  } = options;\n  \n  return await sharp(imageBuffer)\n    .resize(width, height, { fit: "inside", withoutEnlargement: true })\n    .jpeg({ quality })\n    .toBuffer();\n};\n\n# Cloud Functions Performance\n\n# Use memory and timeout optimization\nexports.optimizedFunction = functions.runWith({\n  memory: "1GB",\n  timeoutSeconds: 540\n}).https.onRequest(async (req, res) => {\n  // Function implementation\n});\n\n# Implement caching\nconst NodeCache = require("node-cache");\nconst cache = new NodeCache({ stdTTL: 600 }); // 10 minutes\n\nconst cachedFunction = async (key, fn) => {\n  let result = cache.get(key);\n  \n  if (!result) {\n    result = await fn();\n    cache.set(key, result);\n  }\n  \n  return result;\n};\n\n# Database Connection Pooling\n\n# Use connection pooling for external databases\nconst mysql = require("mysql2/promise");\n\nconst pool = mysql.createPool({\n  host: process.env.DB_HOST,\n  user: process.env.DB_USER,\n  password: process.env.DB_PASSWORD,\n  database: process.env.DB_NAME,\n  waitForConnections: true,\n  connectionLimit: 10,\n  queueLimit: 0\n});\n\n# Frontend Performance\n\n# Lazy loading for images\nconst LazyImage = ({ src, alt, ...props }) => {\n  const [isLoaded, setIsLoaded] = useState(false);\n  const imgRef = useRef();\n  \n  useEffect(() => {\n    const observer = new IntersectionObserver(\n      ([entry]) => {\n        if (entry.isIntersecting) {\n          setIsLoaded(true);\n          observer.disconnect();\n        }\n      },\n      { threshold: 0.1 }\n    );\n    \n    if (imgRef.current) {\n      observer.observe(imgRef.current);\n    }\n    \n    return () => observer.disconnect();\n  }, []);\n  \n  return (\n    <img\n      ref={imgRef}\n      src={isLoaded ? src : undefined}\n      alt={alt}\n      {...props}\n    />\n  );\n};\n\n# Code splitting\nimport { lazy, Suspense } from "react";\n\nconst LazyComponent = lazy(() => import("./LazyComponent"));\n\nfunction App() {\n  return (\n    <Suspense fallback={<div>Loading...</div>}>\n      <LazyComponent />\n    </Suspense>\n  );\n}'
         },
         {
-          command: 'signInWithPopup()',
-          description: 'Sign in with popup (Google, etc)',
-          usage: 'signInWithPopup(auth, provider)',
-          example: 'import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";\n\nconst provider = new GoogleAuthProvider();\nconst result = await signInWithPopup(auth, provider);\nconst user = result.user;',
+          command: 'Firebase Testing Strategies',
+          description: 'Comprehensive testing approaches for Firebase applications',
+          usage: 'Unit testing, integration testing, and end-to-end testing',
+          example: '# Unit Testing with Jest\n\n# Firestore Testing\nimport { initializeTestApp, initializeAdminApp } from "@firebase/testing";\n\ndescribe("Firestore Operations", () => {\n  let app;\n  let db;\n  \n  beforeEach(async () => {\n    app = initializeTestApp({\n      projectId: "test-project",\n      auth: { uid: "user123" }\n    });\n    db = app.firestore();\n  });\n  \n  afterEach(async () => {\n    await app.delete();\n  });\n  \n  test("should create user document", async () => {\n    const userRef = db.collection("users").doc("user123");\n    await userRef.set({\n      name: "Test User",\n      email: "test@example.com"\n    });\n    \n    const doc = await userRef.get();\n    expect(doc.exists).toBe(true);\n    expect(doc.data().name).toBe("Test User");\n  });\n  \n  test("should enforce security rules", async () => {\n    const adminApp = initializeAdminApp({ projectId: "test-project" });\n    const adminDb = adminApp.firestore();\n    \n    // Create data as admin\n    await adminDb.collection("users").doc("user123").set({\n      name: "Test User"\n    });\n    \n    // Try to read as different user\n    const otherApp = initializeTestApp({\n      projectId: "test-project",\n      auth: { uid: "user456" }\n    });\n    const otherDb = otherApp.firestore();\n    \n    const userRef = otherDb.collection("users").doc("user123");\n    const doc = await userRef.get();\n    expect(doc.exists).toBe(false); // Should be denied by security rules\n    \n    await otherApp.delete();\n    await adminApp.delete();\n  });\n});\n\n# Cloud Functions Testing\n\nconst firebaseFunctionsTest = require("@firebase/testing/functions");\nconst admin = require("firebase-admin");\n\nconst myFunctions = require("../index");\n\ndescribe("Cloud Functions", () => {\n  let functions;\n  \n  beforeAll(() => {\n    functions = firebaseFunctionsTest();\n    admin.initializeApp();\n  });\n  \n  afterAll(() => {\n    functions.cleanup();\n  });\n  \n  test("should create user profile on user creation", async () => {\n    const wrapped = functions.wrap(myFunctions.onUserCreate);\n    \n    const userData = {\n      uid: "user123",\n      email: "test@example.com",\n      displayName: "Test User"\n    };\n    \n    const snap = {\n      data: () => userData\n    };\n    \n    const context = { params: { userId: "user123" } };\n    \n    await wrapped(snap, context);\n    \n    // Verify profile was created\n    const profileDoc = await admin.firestore()\n      .collection("profiles")\n      .doc("user123")\n      .get();\n    \n    expect(profileDoc.exists).toBe(true);\n    expect(profileDoc.data().displayName).toBe("Test User");\n  });\n});\n\n# Authentication Testing\n\nimport { getAuth, signInWithEmailAndPassword } from "firebase/auth";\n\ndescribe("Authentication", () => {\n  let auth;\n  \n  beforeEach(() => {\n    auth = getAuth(initializeTestApp());\n  });\n  \n  test("should sign in with valid credentials", async () => {\n    // Mock successful sign-in\n    const mockUser = {\n      uid: "user123",\n      email: "test@example.com"\n    };\n    \n    jest.spyOn(auth, "signInWithEmailAndPassword")\n      .mockResolvedValue({ user: mockUser });\n    \n    const result = await signInWithEmailAndPassword(\n      auth,\n      "test@example.com",\n      "password123"\n    );\n    \n    expect(result.user.uid).toBe("user123");\n  });\n});\n\n# Integration Testing\n\n# Cypress E2E Testing\ndescribe("Firebase Integration", () => {\n  beforeEach(() => {\n    cy.login("test@example.com", "password123");\n  });\n  \n  it("should create and read documents", () => {\n    cy.visit("/profile");\n    \n    cy.get("[data-testid=name-input]")\n      .type("John Doe")\n      .blur();\n    \n    cy.get("[data-testid=save-button]").click();\n    \n    cy.get("[data-testid=success-message]")\n      .should("be.visible");\n    \n    // Reload and verify data persistence\n    cy.reload();\n    \n    cy.get("[data-testid=name-input]")\n      .should("have.value", "John Doe");\n  });\n});\n\n# Performance Testing\n\n# Lighthouse CI\nmodule.exports = {\n  ci: {\n    collect: {\n      url: ["http://localhost:3000"],\n      numberOfRuns: 3\n    },\n    assert: {\n      assertions: {\n        "categories:performance": ["warn", { minScore: 0.8 }],\n        "categories:accessibility": ["error", { minScore: 0.9 }]\n      }\n    },\n    upload: {\n      target: "temporary-public-storage"\n    }\n  }\n};\n\n# Load Testing\n\n# Artillery configuration\nconfig:\n  target: "https://your-function-url.cloudfunctions.net"\n  phases:\n    - duration: 60\n      arrivalRate: 10\nscenarios:\n  - name: "Load test API"\n    weight: 100\n    flow:\n      - get:\n          url: "/api/data"'
         },
         {
-          command: 'signOut()',
-          description: 'Sign out user',
-          usage: 'signOut(auth)',
-          example: 'import { signOut } from "firebase/auth";\n\nawait signOut(auth);',
-        },
-        {
-          command: 'sendPasswordResetEmail()',
-          description: 'Send password reset email',
-          usage: 'sendPasswordResetEmail(auth, email)',
-          example: 'import { sendPasswordResetEmail } from "firebase/auth";\n\nawait sendPasswordResetEmail(auth, "user@example.com");',
-        },
-      ],
-    },
-    {
-      title: 'Storage - Upload/Download',
-      commands: [
-        {
-          command: 'getStorage()',
-          description: 'Initialize Storage',
-          usage: 'import { getStorage } from "firebase/storage"',
-          example: 'import { getStorage } from "firebase/storage";\nconst storage = getStorage(app);',
-        },
-        {
-          command: 'uploadBytes()',
-          description: 'Upload file',
-          usage: 'uploadBytes(ref(storage, path), file)',
-          example: 'import { ref, uploadBytes } from "firebase/storage";\n\nconst storageRef = ref(storage, "images/profile.jpg");\nawait uploadBytes(storageRef, file);',
-        },
-        {
-          command: 'uploadString()',
-          description: 'Upload base64/data URL',
-          usage: 'uploadString(ref, string, format)',
-          example: 'import { ref, uploadString } from "firebase/storage";\n\nconst storageRef = ref(storage, "images/profile.jpg");\nawait uploadString(storageRef, base64String, "base64");',
-        },
-        {
-          command: 'getDownloadURL()',
-          description: 'Get download URL',
-          usage: 'getDownloadURL(ref(storage, path))',
-          example: 'import { ref, getDownloadURL } from "firebase/storage";\n\nconst url = await getDownloadURL(ref(storage, "images/profile.jpg"));',
-        },
-        {
-          command: 'deleteObject()',
-          description: 'Delete file',
-          usage: 'deleteObject(ref(storage, path))',
-          example: 'import { ref, deleteObject } from "firebase/storage";\n\nawait deleteObject(ref(storage, "images/old-profile.jpg"));',
-        },
-        {
-          command: 'listAll()',
-          description: 'List files in directory',
-          usage: 'listAll(ref(storage, path))',
-          example: 'import { ref, listAll } from "firebase/storage";\n\nconst listRef = ref(storage, "images");\nconst res = await listAll(listRef);\nres.items.forEach((itemRef) => {\n  console.log(itemRef.name);\n});',
-        },
-      ],
-    },
-    {
-      title: 'Cloud Functions - Deploy',
-      commands: [
-        {
-          command: 'functions:deploy',
-          description: 'Deploy functions',
-          usage: 'firebase deploy --only functions',
-          example: 'firebase deploy --only functions\nfirebase deploy --only functions:myFunction',
-        },
-        {
-          command: 'functions:log',
-          description: 'View function logs',
-          usage: 'firebase functions:log',
-          example: 'firebase functions:log\nfirebase functions:log --only myFunction',
-        },
-        {
-          command: 'functions:shell',
-          description: 'Test functions locally',
-          usage: 'firebase functions:shell',
-          example: 'firebase functions:shell\n# Then call: myFunction({data: "test"})',
-        },
-      ],
-    },
-    {
-      title: 'Cloud Functions - HTTP',
-      commands: [
-        {
-          command: 'onRequest()',
-          description: 'HTTP function (v2)',
-          usage: 'import { onRequest } from "firebase-functions/v2/https"',
-          example: 'import { onRequest } from "firebase-functions/v2/https";\n\nexport const myFunction = onRequest((req, res) => {\n  res.json({ message: "Hello World" });\n});',
-        },
-        {
-          command: 'onCall()',
-          description: 'Callable function',
-          usage: 'import { onCall } from "firebase-functions/v2/https"',
-          example: 'import { onCall } from "firebase-functions/v2/https";\n\nexport const addMessage = onCall(async (request) => {\n  const text = request.data.text;\n  return { result: `Added: ${text}` };\n});',
-        },
-      ],
-    },
-    {
-      title: 'Cloud Functions - Triggers',
-      commands: [
-        {
-          command: 'onDocumentCreated()',
-          description: 'Firestore onCreate trigger',
-          usage: 'onDocumentCreated(path, callback)',
-          example: 'import { onDocumentCreated } from "firebase-functions/v2/firestore";\n\nexport const onUserCreate = onDocumentCreated(\n  "users/{userId}",\n  (event) => {\n    const data = event.data.data();\n    console.log("New user:", data.name);\n  }\n);',
-        },
-        {
-          command: 'onDocumentUpdated()',
-          description: 'Firestore onUpdate trigger',
-          usage: 'onDocumentUpdated(path, callback)',
-          example: 'export const onUserUpdate = onDocumentUpdated(\n  "users/{userId}",\n  (event) => {\n    const before = event.data.before.data();\n    const after = event.data.after.data();\n  }\n);',
-        },
-        {
-          command: 'onDocumentDeleted()',
-          description: 'Firestore onDelete trigger',
-          usage: 'onDocumentDeleted(path, callback)',
-          example: 'export const onUserDelete = onDocumentDeleted(\n  "users/{userId}",\n  (event) => {\n    const data = event.data.data();\n    // Cleanup user data\n  }\n);',
-        },
-      ],
-    },
-    {
-      title: 'Hosting',
-      commands: [
-        {
-          command: 'hosting:channel:deploy',
-          description: 'Deploy to preview channel',
-          usage: 'firebase hosting:channel:deploy channel-name',
-          example: 'firebase hosting:channel:deploy preview\n# Creates preview URL',
-        },
-        {
-          command: 'hosting:clone',
-          description: 'Clone to another site',
-          usage: 'firebase hosting:clone source:target',
-          example: 'firebase hosting:clone prod:staging',
-        },
-      ],
-    },
-    {
-      title: 'Realtime Database',
-      commands: [
-        {
-          command: 'getDatabase()',
-          description: 'Initialize Realtime DB',
-          usage: 'import { getDatabase } from "firebase/database"',
-          example: 'import { getDatabase } from "firebase/database";\nconst db = getDatabase(app);',
-        },
-        {
-          command: 'set()',
-          description: 'Write data',
-          usage: 'set(ref(db, path), data)',
-          example: 'import { ref, set } from "firebase/database";\n\nawait set(ref(db, "users/" + userId), {\n  username: "john",\n  email: "john@example.com"\n});',
-        },
-        {
-          command: 'get()',
-          description: 'Read data once',
-          usage: 'get(ref(db, path))',
-          example: 'import { ref, get } from "firebase/database";\n\nconst snapshot = await get(ref(db, "users/" + userId));\nif (snapshot.exists()) {\n  console.log(snapshot.val());\n}',
-        },
-        {
-          command: 'onValue()',
-          description: 'Listen for changes',
-          usage: 'onValue(ref(db, path), callback)',
-          example: 'import { ref, onValue } from "firebase/database";\n\nconst unsubscribe = onValue(ref(db, "users/" + userId), (snapshot) => {\n  console.log(snapshot.val());\n});',
-        },
-        {
-          command: 'push()',
-          description: 'Add to list with auto ID',
-          usage: 'push(ref(db, path), data)',
-          example: 'import { ref, push } from "firebase/database";\n\nconst newPostRef = push(ref(db, "posts"));\nawait set(newPostRef, {\n  title: "New Post",\n  content: "...",\n  timestamp: Date.now()\n});',
-        },
-      ],
-    },
-    {
-      title: 'Admin SDK - Firestore',
-      commands: [
-        {
-          command: 'admin.firestore()',
-          description: 'Initialize Admin Firestore',
-          usage: 'const db = admin.firestore()',
-          example: 'import * as admin from "firebase-admin";\n\nadmin.initializeApp();\nconst db = admin.firestore();',
-        },
-        {
-          command: 'collection().add()',
-          description: 'Add document (Admin)',
-          usage: 'db.collection(path).add(data)',
-          example: 'await db.collection("users").add({\n  name: "John",\n  email: "john@example.com",\n  created: admin.firestore.FieldValue.serverTimestamp()\n});',
-        },
-        {
-          command: 'doc().get()',
-          description: 'Get document (Admin)',
-          usage: 'db.collection(path).doc(id).get()',
-          example: 'const doc = await db.collection("users").doc("user123").get();\nif (doc.exists) {\n  console.log(doc.data());\n}',
-        },
-      ],
-    },
-    {
-      title: 'Security Rules',
-      commands: [
-        {
-          command: 'Firestore Rules',
-          description: 'Basic Firestore security',
-          usage: 'firestore.rules',
-          example: 'rules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /users/{userId} {\n      allow read, write: if request.auth != null && request.auth.uid == userId;\n    }\n  }\n}',
-        },
-        {
-          command: 'Storage Rules',
-          description: 'Basic Storage security',
-          usage: 'storage.rules',
-          example: 'rules_version = \'2\';\nservice firebase.storage {\n  match /b/{bucket}/o {\n    match /users/{userId}/{allPaths=**} {\n      allow read, write: if request.auth != null && request.auth.uid == userId;\n    }\n  }\n}',
-        },
-      ],
-    },
-  ],
+          command: 'Firebase Enterprise and Scale',
+          description: 'Scaling Firebase applications for enterprise use',
+          usage: 'Enterprise patterns and large-scale deployment',
+          example: '# Multi-Project Architecture\n\n# Project Structure\n{\n  "development": "my-app-dev",\n  "staging": "my-app-staging",\n  "production": "my-app-prod"\n}\n\n# Environment Configuration\nconst config = {\n  development: {\n    projectId: "my-app-dev",\n    apiKey: "dev-api-key",\n    authDomain: "my-app-dev.firebaseapp.com"\n  },\n  staging: {\n    projectId: "my-app-staging",\n    apiKey: "staging-api-key",\n    authDomain: "my-app-staging.firebaseapp.com"\n  },\n  production: {\n    projectId: "my-app-prod",\n    apiKey: "prod-api-key",\n    authDomain: "my-app-prod.firebaseapp.com"\n  }\n};\n\n# Initialize Firebase with environment config\nconst firebaseConfig = config[process.env.NODE_ENV];\nconst app = initializeApp(firebaseConfig);\n\n# Data Migration Strategy\n\n# Migration script for large datasets\nconst migrateData = async (sourceProject, targetProject) => {\n  const sourceApp = initializeApp({ projectId: sourceProject });\n  const targetApp = initializeApp({ projectId: targetProject });\n  \n  const sourceDb = getFirestore(sourceApp);\n  const targetDb = getFirestore(targetApp);\n  \n  const collections = ["users", "posts", "comments"];\n  \n  for (const collectionName of collections) {\n    const snapshot = await sourceDb.collection(collectionName).get();\n    \n    const batch = targetDb.batch();\n    let count = 0;\n    \n    for (const doc of snapshot.docs) {\n      batch.set(targetDb.collection(collectionName).doc(doc.id), doc.data());\n      count++;\n      \n      if (count === 500) { // Firestore batch limit\n        await batch.commit();\n        batch = targetDb.batch();\n        count = 0;\n      }\n    }\n    \n    if (count > 0) {\n      await batch.commit();\n    }\n  }\n};\n\n# Backup and Disaster Recovery\n\n# Automated backup script\nconst backupFirestore = async () => {\n  const db = getFirestore(app);\n  const collections = await db.listCollections();\n  \n  for (const collection of collections) {\n    const snapshot = await db.collection(collection.path).get();\n    const data = snapshot.docs.map(doc => ({\n      id: doc.id,\n      data: doc.data()\n    }));\n    \n    // Save to cloud storage\n    const bucket = getStorage(app).bucket();\n    const file = bucket.file(`backups/${collection.path}/${Date.now()}.json`);\n    await file.save(JSON.stringify(data, null, 2));\n  }\n};\n\n# Performance Monitoring\n\n# Custom performance metrics\nconst trace = getPerformance(app);\nconst customTrace = trace.trace("custom-metric");\n\ncustomTrace.putMetric("response_time", 123);\ncustomTrace.putAttribute("screen", "home");\ncustomTrace.start();\ncustomTrace.stop();\n\n# Cost Optimization\n\n# Firestore cost optimization\nconst optimizedQuery = db.collection("posts")\n  .where("published", "==", true)\n  .orderBy("createdAt", "desc")\n  .limit(20); // Limit results to reduce read operations\n\n# Caching strategy\nconst cache = new Map();\n\nconst getCachedData = async (key, fetchFunction) => {\n  if (cache.has(key)) {\n    return cache.get(key);\n  }\n  \n  const data = await fetchFunction();\n  cache.set(key, data);\n  \n  // Clear cache after 5 minutes\n  setTimeout(() => cache.delete(key), 5 * 60 * 1000);\n  \n  return data;\n};\n\n# Security and Compliance\n\n# GDPR compliance helpers\nconst deleteUserData = async (userId) => {\n  const db = getFirestore(app);\n  const storage = getStorage(app);\n  \n  // Delete user documents\n  const userCollections = ["users", "userPosts", "userComments"];\n  \n  for (const collectionName of userCollections) {\n    const snapshot = await db.collection(collectionName)\n      .where("userId", "==", userId)\n      .get();\n    \n    const batch = db.batch();\n    snapshot.docs.forEach(doc => batch.delete(doc.ref));\n    await batch.commit();\n  }\n  \n  // Delete user files from storage\n  const bucket = storage.bucket();\n  const userFiles = await bucket.getFiles({\n    prefix: `users/${userId}/`\n  });\n  \n  await Promise.all(userFiles[0].map(file => file.delete()));\n};\n\n# Audit logging\nconst auditLog = async (action, userId, details) => {\n  await admin.firestore().collection("audit").add({\n    action,\n    userId,\n    details,\n    timestamp: admin.firestore.FieldValue.serverTimestamp(),\n    ipAddress: details.ipAddress,\n    userAgent: details.userAgent\n  });\n};'
+        }
+      ]
+    }
+  ]
 };

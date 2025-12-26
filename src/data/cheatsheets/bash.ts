@@ -1,646 +1,175 @@
-import { Terminal } from 'lucide-react';
+import { Code } from 'lucide-react';
 
 export const bashCheatsheet = {
   id: 'bash',
   name: 'Bash',
-  description: 'Bash scripting & shell commands',
-  icon: Terminal,
-  colorTheme: 'slate' as const,
+  description: 'Comprehensive Bash scripting guide covering beginner to expert commands, shell programming, and automation techniques',
+  icon: Code,
+  color: 'from-green-600 to-emerald-600',
+  category: 'programming',
+  tags: ['bash', 'shell', 'linux', 'scripting', 'automation'],
   sections: [
     {
-      title: 'Bash Basics',
+      title: 'Getting Started with Bash',
       commands: [
         {
-          command: 'Shebang',
-          description: 'Script header',
-          usage: '#!/bin/bash',
-          example: '#!/bin/bash\n# First line of every bash script\n\n#!/usr/bin/env bash  # More portable',
+          command: 'What is Bash?',
+          description: 'Bash (Bourne Again Shell) is a Unix shell and command language interpreter',
+          usage: 'Understanding Bash shell basics',
+          example: 'Bash Overview:\n- Default shell on most Linux distributions\n- Command-line interpreter\n- Scripting language\n- Process management\n- File system navigation\n\nShell Types:\n- bash: Bourne Again Shell (default)\n- sh: Bourne Shell (basic)\n- zsh: Z Shell (advanced)\n- fish: Friendly Interactive Shell\n- ksh: KornShell\n\nCheck your shell:\necho $SHELL                    # Shows current shell\necho $0                       # Shows current shell name\nwhich bash                   # Shows bash location\nbash --version               # Shows bash version\n\nStart different shells:\nbash                         # Start bash shell\nsh                           # Start sh shell\nzsh                          # Start zsh shell\n\nShell features:\n- Command history\n- Tab completion\n- Command line editing\n- Scripting capabilities\n- Environment variables\n- Process control'
         },
         {
-          command: 'echo',
-          description: 'Print to stdout',
-          usage: 'echo [options] string',
-          example: 'echo "Hello World"\necho -n "No newline"  # No trailing newline\necho -e "Line1\\nLine2"  # Enable escape sequences',
+          command: 'Basic Navigation',
+          description: 'Essential file system navigation commands',
+          usage: 'Moving around the file system',
+          example: '# Directory navigation\npwd                          # Print working directory\nls                           # List files in current directory\nls -la                       # List all files with details\nls -lh                       # List with human-readable sizes\nls -t                        # List sorted by time\nls -r                        # Reverse order\n\n# Changing directories\ncd /path/to/directory        # Change to specific directory\ncd ..                        # Go up one directory\ncd ../..                     # Go up two directories\ncd ~                         # Go to home directory\ncd -                         # Go to previous directory\ncd $HOME                     # Go to home directory\n\n# File operations\ntouch filename.txt           # Create empty file\nmkdir directory_name         # Create directory\nmkdir -p path/to/dir         # Create nested directories\nrmdir empty_directory        # Remove empty directory\nrm filename                  # Remove file\nrm -r directory              # Remove directory and contents\nrm -rf directory             # Force remove directory\n\n# Copy and move\ncp source.txt destination    # Copy file\ncp -r source_dir dest_dir   # Copy directory\nmv old_name new_name         # Rename file/directory\nmv file.txt /path/to/dest    # Move file\n\n# File viewing\ncat filename.txt             # Display file content\nless filename.txt            # View file with pagination\nmore filename.txt            # View file with pagination\nhead -n 10 filename.txt      # Show first 10 lines\ntail -n 10 filename.txt      # Show last 10 lines\ntail -f filename.txt         # Follow file changes'
         },
         {
-          command: 'Comments',
-          description: 'Add comments',
-          usage: '# Single line comment',
-          example: '# This is a comment\necho "code"  # Inline comment',
+          command: 'File Permissions',
+          description: 'Understanding and managing file permissions',
+          usage: 'chmod, chown, and permission basics',
+          example: '# Permission basics\nls -l filename                # View file permissions\n# Example: -rwxr-xr--\n# -: file type (d=directory, l=link, -=file)\n# rwx: owner permissions (read, write, execute)\n# r-x: group permissions (read, execute)\n# r--: others permissions (read only)\n\n# Symbolic permissions\nchmod u+x filename            # Add execute for owner\nchmod g+w filename            # Add write for group\nchmod o-r filename            # Remove read for others\nchmod a+r filename            # Add read for all\nchmod u=rwx,g=rx,o=r filename # Set specific permissions\n\n# Numeric permissions (octal)\n# 4 = read, 2 = write, 1 = execute\n# 7 = 4+2+1 = rwx, 6 = 4+2 = rw-, 5 = 4+1 = r-x, 4 = r--\nchmod 755 filename            # rwxr-xr-x (common for executables)\nchmod 644 filename            # rw-r--r-- (common for files)\nchmod 777 filename            # rwxrwxrwx (full permissions)\nchmod 700 directory            # rwx------ (private directory)\n\n# Ownership\nsudo chown user filename       # Change owner\nsudo chown user:group filename # Change owner and group\nsudo chgrp group filename      # Change group only\n\n# Special permissions\nchmod +s filename              # Set SUID bit\nchmod +s directory             # Set SGID bit\nchmod +t directory             # Set sticky bit\n\n# View permissions in octal\nstat -c "%a %n" filename       # Show octal permissions\ngetfacl filename               # Show detailed ACL permissions'
         },
         {
-          command: 'Command substitution',
-          description: 'Store command output',
-          usage: '$(command) or `command`',
-          example: 'today=$(date +%Y-%m-%d)\necho "Today is $today"\n\n# Old syntax (avoid)\ntoday=`date +%Y-%m-%d`',
-        },
-      ],
+          command: 'Environment Variables',
+          description: 'Working with shell environment variables',
+          usage: 'Setting, viewing, and exporting variables',
+          example: '# Environment variables\nenv                          # List all environment variables\nprintenv                     # List all environment variables\nset                          # List all variables (including shell vars)\necho $HOME                   # Show specific variable\necho $PATH                   # Show PATH variable\necho $USER                   # Show current user\n\n# Setting variables\nMY_VAR="value"               # Set shell variable (local)\nexport MY_VAR="value"        # Set environment variable\nexport VAR1="val1" VAR2="val2" # Set multiple variables\n\n# Variable operations\necho ${VAR}                  # Use variable\necho ${VAR:-default}         # Use default if unset\necho ${VAR:+value}           # Use value if set\necho ${#VAR}                 # Get string length\necho ${VAR:2:3}              # Get substring\n\n# PATH manipulation\necho $PATH | tr \':\' \'\\n\'    # Show PATH entries per line\nexport PATH=$PATH:/new/path  # Add to PATH\nexport PATH="/new/path:$PATH" # Add to beginning of PATH\n\n# Temporary variables\ntemp_file=$(mktemp)           # Create temporary file\ntemp_dir=$(mktemp -d)         # Create temporary directory\n\n# Load environment from file\nsource .env                   # Load environment file\n. .env                        # Alternative syntax\n\n# Common environment variables\nexport EDITOR=vim             # Set default editor\nexport BROWSER=firefox        # Set default browser\nexport LANG=en_US.UTF-8       # Set locale\nexport TZ=America/New_York    # Set timezone'
+        }
+      ]
     },
     {
-      title: 'Variables',
+      title: 'Basic Commands',
       commands: [
         {
-          command: 'Variable assignment',
-          description: 'Create variables',
-          usage: 'name=value',
-          example: 'name="John"\nage=30\npath=/home/user\n\n# No spaces around =',
+          command: 'Text Processing',
+          description: 'Essential text manipulation commands',
+          usage: 'grep, sed, awk, sort, uniq, cut',
+          example: '# grep - search patterns\ngrep "pattern" file          # Search for pattern\ngrep -i "pattern" file        # Case insensitive search\ngrep -r "pattern" /dir/       # Recursive search\ngrep -n "pattern" file        # Show line numbers\ngrep -v "pattern" file        # Invert match (show non-matching)\ngrep -c "pattern" file        # Count matches\ngrep -l "pattern" *.txt       # Show files with matches\n\ngrep -E "regex" file          # Extended regex\ngrep -o "pattern" file        # Show only matches\ngrep -A 5 "pattern" file      # Show 5 lines after match\ngrep -B 5 "pattern" file      # Show 5 lines before match\ngrep -C 5 "pattern" file      # Show 5 lines before and after\n\n# sed - stream editor\nsed \'s/old/new/g\' file        # Replace all occurrences\nsed \'s/old/new/\' file         # Replace first occurrence\nsed -i \'s/old/new/g\' file     # Replace in file (in-place)\nsed -i.bak \'s/old/new/g\' file # Replace with backup\nsed \'s/old/new/gi\' file       # Case insensitive replace\nsed \'s/old/new/2\' file        # Replace 2nd occurrence\nsed \'/pattern/d\' file         # Delete lines matching pattern\nsed \'1d\' file                 # Delete first line\nsed \'$d\' file                 # Delete last line\nsed -n \'1,5p\' file            # Show lines 1-5\nsed -n \'/start/,/end/p\' file  # Show lines between patterns\n\n# awk - pattern scanning and processing\nawk \'{print $1}\' file         # Print first column\nawk \'{print $NF}\' file         # Print last column\nawk \'{print NR, $0}\' file     # Print line number and content\nawk \'/pattern/ {print}\' file  # Print lines matching pattern\nawk \'{print length($0)}\' file # Print line lengths\nawk -F: \'{print $1}\' /etc/passwd # Use : as delimiter\nawk \'{sum+=$1} END {print sum}\' file # Sum first column\n\n# sort - sort lines\nsort file                     # Sort alphabetically\nsort -n file                  # Sort numerically\nsort -r file                  # Reverse sort\nsort -k2 file                 # Sort by 2nd column\nsort -u file                  # Unique lines\nsort -t: -k3 -n /etc/passwd   # Sort passwd by UID\n\n# uniq - unique lines\nuniq file                     # Remove adjacent duplicates\nuniq -c file                  # Count duplicates\nuniq -u file                  # Show unique lines only\nuniq -d file                  # Show duplicates only\n\n# cut - extract columns\ncut -d: -f1 /etc/passwd       # Extract first field (delimiter :)\ncut -c1-5 file                # Extract characters 1-5\ncut -f1,3 file                # Extract fields 1 and 3'
         },
         {
-          command: 'Variable expansion',
-          description: 'Use variables',
-          usage: '$variable or ${variable}',
-          example: 'echo $name\necho ${name}\necho "Hello, $name"',
-        },
-        {
-          command: 'Read-only variables',
-          description: 'Constant variables',
-          usage: 'readonly variable',
-          example: 'readonly API_KEY="secret123"\nAPI_KEY="new"  # Error: readonly',
-        },
-        {
-          command: 'Environment variables',
-          description: 'Export variables',
-          usage: 'export VARIABLE=value',
-          example: 'export PATH=$PATH:/usr/local/bin\nexport DATABASE_URL="postgres://..."',
-        },
-        {
-          command: 'Default values',
-          description: 'Variable with fallback',
-          usage: '${var:-default}',
-          example: 'name=${1:-"Guest"}\necho "Hello, $name"\n\n# If $1 empty, use "Guest"',
-        },
-        {
-          command: 'String length',
-          description: 'Get string length',
-          usage: '${#variable}',
-          example: 'name="John"\necho ${#name}  # Output: 4',
-        },
-      ],
+          command: 'File Operations',
+          description: 'Advanced file manipulation commands',
+          usage: 'find, locate, xargs, tar, gzip',
+          example: '# find - search for files\nfind . -name "*.txt"          # Find files by name\nfind . -type f                # Find only files\nfind . -type d                # Find only directories\nfind . -size +100M            # Find files larger than 100MB\nfind . -mtime -7              # Find files modified in last 7 days\nfind . -user username         # Find files by owner\nfind . -perm 644              # Find files with specific permissions\nfind . -name "*.log" -delete  # Find and delete files\nfind . -name "*.tmp" -exec rm {} \\; # Find and execute command\n\n# locate - quickly find files\nlocate filename               # Find file by name\nupdatedb                      # Update file database\n\n# xargs - build and execute command lines\nfind . -name "*.txt" | xargs rm # Find and delete files\nfind . -name "*.jpg" | xargs cp -t /backup/ # Find and copy\necho "1 2 3" | xargs -n 1     # Process one argument at a time\n\n# tar - archive files\ntar -czf archive.tar.gz files/ # Create compressed archive\ntar -xzf archive.tar.gz       # Extract compressed archive\ntar -czf backup.tar.gz *.txt  # Archive all .txt files\ntar -tzf archive.tar.gz       # List archive contents\ntar -xzf archive.tar.gz file.txt # Extract specific file\n\n# gzip - compress files\ngzip file.txt                 # Compress file\ngunzip file.txt.gz            # Decompress file\ngzip -k file.txt              # Compress and keep original\ngzip -d file.txt.gz           # Decompress\n\n# Other compression\nzip archive.zip files/        # Create zip archive\nunzip archive.zip             # Extract zip archive\nzip -r archive.zip directory/ # Recursive zip\n\n# File comparison\ndiff file1.txt file2.txt      # Compare files\ndiff -u file1.txt file2.txt   # Unified format\ndiff -r dir1/ dir2/           # Compare directories\n\n# File content analysis\nwc file.txt                   # Word count\nwc -l file.txt                # Line count\nwc -w file.txt                # Word count\nwc -c file.txt                # Character count\ndu -sh file.txt               # File size in human readable\ndu -sh directory/             # Directory size'
+        }
+      ]
     },
     {
-      title: 'Arrays',
+      title: 'Intermediate Commands',
       commands: [
         {
-          command: 'Array declaration',
-          description: 'Create array',
-          usage: 'array=(val1 val2 val3)',
-          example: 'fruits=("apple" "banana" "orange")\nnumbers=(1 2 3 4 5)',
+          command: 'Process Management',
+          description: 'Managing processes and system resources',
+          usage: 'ps, top, kill, jobs, bg, fg',
+          example: '# Process information\nps                           # Show current processes\nps aux                       # Show all processes in detail\nps -ef                       # Show all processes (alternative)\ntop                          # Interactive process viewer\nhtop                         # Enhanced process viewer (if installed)\n\n# Process control\nkill PID                     # Terminate process by PID\nkill -9 PID                  # Force kill process\nkillall process_name         # Kill process by name\npkill process_name           # Kill processes by name\n\n# Background jobs\ncommand &                    # Run command in background\njobs                         # List background jobs\nbg %1                        # Resume job 1 in background\nfg %1                        # Bring job 1 to foreground\nkill %1                      # Kill background job 1\n\n# Process monitoring\nwatch -n 1 "ps aux | grep process" # Monitor process every second\npstree                       # Show process tree\npgrep process_name           # Find process PID\n\n# System resources\nfree -h                      # Show memory usage\ndf -h                        # Show disk usage\ndu -sh *                     # Show directory sizes\niotop                        # Monitor I/O usage (if installed)\n\n# Nice and renice (process priority)\nnice -n 10 command           # Run command with lower priority\nrenice 10 PID                # Change process priority\n\n# Process signals\nkill -l                      # List all signals\nkill -SIGTERM PID            # Terminate signal (15)\nkill -SIGKILL PID            # Kill signal (9)\nkill -SIGHUP PID             # Hangup signal (1)\nkill -SIGSTOP PID            # Stop signal (19)\nkill -SIGCONT PID            # Continue signal (18)'
         },
         {
-          command: 'Access array elements',
-          description: 'Get array values',
-          usage: '${array[index]}',
-          example: 'fruits=("apple" "banana" "orange")\necho ${fruits[0]}  # apple\necho ${fruits[1]}  # banana',
+          command: 'Network Commands',
+          description: 'Network diagnostics and management',
+          usage: 'ping, curl, wget, netstat, ssh',
+          example: '# Network connectivity\nping google.com              # Test connectivity\nping -c 4 google.com         # Send 4 packets\nping -i 2 google.com         # 2 second interval\n\n# Network information\nip addr show                 # Show IP addresses (modern)\nifconfig                     # Show IP addresses (legacy)\nip route show                # Show routing table\nnetstat -rn                  # Show routing table (legacy)\n\n# Port scanning and connections\nnetstat -tuln                # Show listening ports\nss -tuln                     # Show listening ports (modern)\nlsof -i :80                  # Show processes using port 80\nnetstat -an | grep LISTEN    # Show all listening connections\n\n# Network testing\ncurl -I https://example.com  # Get HTTP headers\ncurl -v https://example.com  # Verbose output\nwget https://example.com     # Download file\nwget -r https://example.com  # Recursive download\n\n# DNS\nnslookup google.com          # DNS lookup\ndig google.com               # Detailed DNS lookup\nhost google.com              # Simple DNS lookup\ndig google.com MX            # Mail exchange records\n\n# SSH (Secure Shell)\nssh user@hostname            # Connect to remote host\nssh -p 2222 user@hostname    # Connect on specific port\nssh -i key.pem user@host     # Connect with private key\nscp file.txt user@host:/path/ # Copy file to remote host\nscp user@host:/path/file.txt . # Copy file from remote host\n\n# Network monitoring\ntcpdump -i eth0              # Capture network traffic\niftop                        # Monitor network bandwidth\nnmap -sV hostname             # Scan open ports and services'
         },
         {
-          command: 'All array elements',
-          description: 'Get all values',
-          usage: '${array[@]} or ${array[*]}',
-          example: 'fruits=("apple" "banana" "orange")\necho ${fruits[@]}  # apple banana orange\necho "Fruits: ${fruits[*]}"',
+          command: 'System Information',
+          description: 'Getting system information and status',
+          usage: 'uname, lscpu, lsblk, lsusb',
+          example: '# System information\nuname -a                     # Show all system info\nuname -r                     # Show kernel version\nuname -m                     # Show machine architecture\n\n# Hardware information\nlscpu                        # CPU information\nlsblk                        # Block device information\nlsusb                        # USB devices\nlspci                        # PCI devices\nlshw                         # Hardware list (if installed)\ndmesg                        # Kernel messages\n\n# Memory and storage\nfree -h                      # Memory usage\ncat /proc/meminfo            # Detailed memory info\ndf -h                        # Disk usage\ndu -sh /path/to/dir          # Directory size\nls -lh /path/to/file         # File size\n\n# System uptime and load\nuptime                       # System uptime and load\nw                            # Who is logged in and what they\'re doing\nwho                          # Who is logged in\nlast                         # Recent logins\n\n# Process and system limits\nulimit -a                    # Show system limits\nulimit -n 65536              # Increase file descriptor limit\n\n# Environment and configuration\nenv | grep -E "^(PATH|HOME|USER|SHELL)" # Key environment variables\nprintenv | sort              # All environment variables sorted\nset | grep -E "^(BASH|HOME|USER|PATH)" # Shell variables\n\n# System services (systemd)\nsystemctl status              # Show service status\nsystemctl start service      # Start service\nsystemctl stop service       # Stop service\nsystemctl restart service    # Restart service\nsystemctl enable service     # Enable service at boot\nsystemctl disable service    # Disable service\njournalctl -u service        # View service logs\n\n# System logs\ntail -f /var/log/syslog      # Follow system log\ntail -f /var/log/auth.log    # Follow authentication log\njournalctl -f                # Follow systemd logs'
         },
         {
-          command: 'Array length',
-          description: 'Get array size',
-          usage: '${#array[@]}',
-          example: 'fruits=("apple" "banana" "orange")\necho ${#fruits[@]}  # Output: 3',
-        },
-        {
-          command: 'Add to array',
-          description: 'Append elements',
-          usage: 'array+=(element)',
-          example: 'fruits=("apple" "banana")\nfruits+=("orange")\necho ${fruits[@]}  # apple banana orange',
-        },
-        {
-          command: 'Associative arrays',
-          description: 'Key-value arrays (Bash 4+)',
-          usage: 'declare -A array',
-          example: 'declare -A user\nuser[name]="John"\nuser[age]=30\necho ${user[name]}  # John',
-        },
-      ],
+          command: 'Text Editors',
+          description: 'Working with command-line text editors',
+          usage: 'vim, nano, emacs basics',
+          example: '# Vim (Vi Improved)\nvim filename.txt             # Open file in vim\nvim +10 filename.txt         # Open file at line 10\n\n# Vim modes\n# Normal mode: ESC (navigation, commands)\n# Insert mode: i, a, o (text editing)\n# Visual mode: v, V, Ctrl+v (selection)\n# Command mode: : (ex commands)\n\n# Essential Vim commands\ni                            # Enter insert mode\nESC                          # Return to normal mode\n:w                           # Save file\n:q                           # Quit\n:wq                          # Save and quit\n:q!                          # Quit without saving\n:filename                    # Save as filename\n\n# Navigation\nh j k l                      # Left, down, up, right\nw                            # Next word\nb                            # Previous word\n0                            # Beginning of line\n$                            # End of line\ngg                           # Beginning of file\nG                            # End of file\n:10                          # Go to line 10\n\n# Editing\ndd                           # Delete line\ndw                           # Delete word\nx                            # Delete character\nyy                           # Copy line\np                            # Paste after cursor\nP                            # Paste before cursor\nu                            # Undo\nCtrl+r                       # Redo\n\n# Search\n/pattern                     # Search forward\n?pattern                     # Search backward\nn                            # Next match\nN                            # Previous match\n:%s/old/new/g                # Replace all\n\n# Nano (simpler editor)\nnano filename.txt            # Open file in nano\n\n# Nano shortcuts\nCtrl+X                       # Exit and save\nCtrl+O                       # Save file\nCtrl+W                       # Search\nCtrl+K                       # Cut line\nCtrl+U                       # Paste line\nCtrl+G                       # Get help\nCtrl+Y                       # Go to previous page\nCtrl+V                       # Go to next page\n\n# Emacs\nemacs filename.txt           # Open file in emacs\nemacs -nw filename.txt       # Open without window system\n\n# Basic Emacs shortcuts\nCtrl+X Ctrl+S                # Save\nCtrl+X Ctrl+C                # Exit\nCtrl+X Ctrl+F                # Open file\nCtrl+S                       # Search forward\nCtrl+R                       # Search backward\nCtrl+G                       # Cancel operation'
+        }
+      ]
     },
     {
-      title: 'Conditionals',
+      title: 'Shell Scripting Basics',
       commands: [
         {
-          command: 'if statement',
-          description: 'Basic if condition',
-          usage: 'if [ condition ]; then ... fi',
-          example: 'if [ "$age" -gt 18 ]; then\n  echo "Adult"\nfi',
+          command: 'Script Structure',
+          description: 'Basic shell script structure and execution',
+          usage: 'Creating and running shell scripts',
+          example: '#!/bin/bash                    # Shebang line\n\n# Basic script structure\n#!/bin/bash\n\n# Comments start with #\n# This is a shell script\n\n# Variables\nNAME="John"\nAGE=25\n\n# Output\necho "Hello, $NAME!"\necho "Age: $AGE"\n\n# Command substitution\nCURRENT_DATE=$(date)\necho "Today is: $CURRENT_DATE"\n\n# Exit with status\nexit 0\n\n# Save script as myscript.sh\n# Make executable: chmod +x myscript.sh\n# Run: ./myscript.sh\n\n# Alternative execution\nbash myscript.sh             # Run with bash\nsh myscript.sh               # Run with sh\nsource myscript.sh           # Source script (run in current shell)\n. myscript.sh                # Alternative source syntax\n\n# Script with arguments\n#!/bin/bash\n\necho "Script name: $0"\necho "First argument: $1"\necho "Second argument: $2"\necho "All arguments: $@"\necho "Number of arguments: $#"\n\n# Example usage: ./script.sh arg1 arg2 arg3'
         },
         {
-          command: 'if-else',
-          description: 'If with else',
-          usage: 'if [ condition ]; then ... else ... fi',
-          example: 'if [ "$age" -ge 18 ]; then\n  echo "Adult"\nelse\n  echo "Minor"\nfi',
+          command: 'Variables and Parameters',
+          description: 'Working with variables and script parameters',
+          usage: 'Variable assignment, parameter expansion',
+          example: '# Variable assignment\nVAR1="Hello"\nVAR2=\'World\'                 # Single quotes (no expansion)\nVAR3="Value with spaces"\nVAR4=123                      # Numbers are also strings\n\n# Variable usage\necho $VAR1\necho "${VAR1} ${VAR2}"        # Braces for clarity\necho "Value: ${VAR3}"\n\n# Command substitution\nCURRENT_DIR=$(pwd)\necho "Current directory: $CURRENT_DIR"\n\n# Arithmetic\nNUM1=10\nNUM2=5\nSUM=$((NUM1 + NUM2))\necho "Sum: $SUM"\n\n# Parameter expansion\necho ${VAR:-default}          # Use default if unset\necho ${VAR:=default}          # Set and use default if unset\necho ${VAR:+value}            # Use value if set\necho ${#VAR}                  # String length\necho ${VAR:2:3}               # Substring\n\n# String manipulation\nTEXT="Hello World"\necho ${TEXT#Hello}            # Remove prefix\necho ${TEXT%World}            # Remove suffix\necho ${TEXT/World/Bash}       # Replace first occurrence\necho ${TEXT//l/L}             # Replace all occurrences\n\n# Arrays\nARR=(apple banana cherry)\necho ${ARR[0]}                 # First element\necho ${ARR[@]}                 # All elements\necho ${#ARR[@]}                # Number of elements\n\n# Associative arrays (Bash 4+)\ndeclare -A PERSON\nPERSON[name]="John"\nPERSON[age]=25\necho ${PERSON[name]}\necho ${PERSON[age]}\n\n# Environment variables\nexport GLOBAL_VAR="value"     # Export to environment\necho $GLOBAL_VAR\n\n# Read-only variables\nreadonly CONSTANT="value"\n# CONSTANT="new"              # This would cause error'
         },
         {
-          command: 'if-elif-else',
-          description: 'Multiple conditions',
-          usage: 'if [ cond1 ]; then ... elif [ cond2 ]; then ... fi',
-          example: 'if [ "$score" -ge 90 ]; then\n  echo "A"\nelif [ "$score" -ge 80 ]; then\n  echo "B"\nelse\n  echo "C"\nfi',
+          command: 'Conditional Statements',
+          description: 'If-else conditions and test operators',
+          usage: 'Testing conditions and making decisions',
+          example: '# If-else statements\n#!/bin/bash\n\nAGE=18\n\nif [ $AGE -ge 18 ]; then\n    echo "You are an adult"\nelif [ $AGE -ge 13 ]; then\n    echo "You are a teenager"\nelse\n    echo "You are a child"\nfi\n\n# Test operators\n# Numeric comparisons\n[ 5 -eq 5 ]                   # Equal\n[ 5 -ne 3 ]                   # Not equal\n[ 5 -gt 3 ]                   # Greater than\n[ 5 -ge 5 ]                   # Greater or equal\n[ 3 -lt 5 ]                   # Less than\n[ 3 -le 5 ]                   # Less or equal\n\n# String comparisons\n[ "$VAR1" = "$VAR2" ]         # Equal\n[ "$VAR1" != "$VAR2" ]        # Not equal\n[ -z "$VAR" ]                 # String is empty\n[ -n "$VAR" ]                 # String is not empty\n\n# File tests\n[ -f file.txt ]               # File exists and is regular\n[ -d directory ]              # Directory exists\n[ -e file.txt ]               # File exists (any type)\n[ -r file.txt ]               # File is readable\n[ -w file.txt ]               # File is writable\n[ -x file.txt ]               # File is executable\n[ -s file.txt ]               # File is not empty\n\n# Logical operators\n[ -f file ] && echo "File exists"    # AND\n[ -f file ] || echo "File not found" # OR\n[ ! -f file ] && echo "No file"      # NOT\n\n# Case statement\nFRUIT="apple"\ncase $FRUIT in\n    apple)\n        echo "It\'s an apple"\n        ;;\n    banana|cherry)\n        echo "It\'s a fruit"\n        ;;\n    *)\n        echo "Unknown fruit"\n        ;;\nesac\n\n# Example with command line arguments\nif [ $# -eq 0 ]; then\n    echo "Usage: $0 <filename>"\n    exit 1\nfi\n\nif [ ! -f "$1" ]; then\n    echo "Error: File $1 does not exist"\n    exit 1\nfi\n\necho "Processing file: $1"'
         },
         {
-          command: 'String comparison',
-          description: 'Compare strings',
-          usage: '[ "$str1" = "$str2" ]',
-          example: 'if [ "$name" = "John" ]; then\n  echo "Hello John"\nfi\n\nif [ "$name" != "John" ]; then\n  echo "Not John"\nfi',
-        },
-        {
-          command: 'Numeric comparison',
-          description: 'Compare numbers',
-          usage: '[ $num1 -op $num2 ]',
-          example: '# -eq (equal), -ne (not equal)\n# -gt (greater), -lt (less)\n# -ge (>=), -le (<=)\n\nif [ $age -gt 18 ]; then\n  echo "Adult"\nfi',
-        },
-        {
-          command: 'File tests',
-          description: 'Check file conditions',
-          usage: '[ -test file ]',
-          example: 'if [ -f "file.txt" ]; then\n  echo "File exists"\nfi\n\n# -f (file), -d (directory)\n# -e (exists), -r (readable)\n# -w (writable), -x (executable)',
-        },
-        {
-          command: 'Logical operators',
-          description: 'AND, OR, NOT',
-          usage: '[ cond1 ] && [ cond2 ]',
-          example: 'if [ $age -gt 18 ] && [ "$name" = "John" ]; then\n  echo "Adult John"\nfi\n\nif [ $age -lt 18 ] || [ "$role" = "admin" ]; then\n  echo "Access granted"\nfi',
-        },
-        {
-          command: '[[ ]] (extended test)',
-          description: 'Modern test syntax',
-          usage: '[[ condition ]]',
-          example: 'if [[ $age -gt 18 && $name == "John" ]]; then\n  echo "Adult John"\nfi\n\n# Pattern matching\nif [[ $file == *.txt ]]; then\n  echo "Text file"\nfi',
-        },
-      ],
+          command: 'Loops and Iteration',
+          description: 'For loops, while loops, and iteration patterns',
+          usage: 'Repeating operations and iterating over data',
+          example: '# For loop with range\nfor i in {1..5}; do\n    echo "Number: $i"\ndone\n\n# For loop with list\nfor fruit in apple banana cherry; do\n    echo "Fruit: $fruit"\ndone\n\n# For loop with files\nfor file in *.txt; do\n    echo "Processing: $file"\ndone\n\n# C-style for loop\nfor ((i=0; i<5; i++)); do\n    echo "Index: $i"\ndone\n\n# While loop\ncounter=0\nwhile [ $counter -lt 5 ]; do\n    echo "Counter: $counter"\n    ((counter++))\ndone\n\n# While loop with file input\nwhile read line; do\n    echo "Line: $line"\ndone < file.txt\n\n# Until loop\nuntil [ $counter -eq 5 ]; do\n    echo "Counter: $counter"\n    ((counter++))\ndone\n\n# Break and continue\nfor i in {1..10}; do\n    if [ $i -eq 5 ]; then\n        continue               # Skip iteration 5\n    fi\n    \n    if [ $i -eq 8 ]; then\n        break                  # Exit loop at 8\n    fi\n    \n    echo "Number: $i"\ndone\n\n# Loop with arrays\nFRUITS=(apple banana cherry date)\nfor fruit in "${FRUITS[@]}"; do\n    echo "Fruit: $fruit"\ndone\n\n# Nested loops\nfor i in {1..3}; do\n    for j in {a..c}; do\n        echo "$i$j"\n    done\ndone\n\n# Practical example: Process files\nfor file in *.log; do\n    if [ -f "$file" ]; then\n        echo "Processing $file..."\n        # Process file here\n        gzip "$file"           # Compress file\n    fi\ndone\n\n# Loop with command output\nfor user in $(cut -d: -f1 /etc/passwd | head -5); do\n    echo "User: $user"\ndone'
+        }
+      ]
     },
     {
-      title: 'Loops',
+      title: 'Advanced Scripting',
       commands: [
         {
-          command: 'for loop',
-          description: 'Iterate over list',
-          usage: 'for var in list; do ... done',
-          example: 'for fruit in apple banana orange; do\n  echo $fruit\ndone\n\nfor i in {1..5}; do\n  echo "Number $i"\ndone',
+          command: 'Functions',
+          description: 'Creating and using functions in shell scripts',
+          usage: 'Function definition, parameters, return values',
+          example: '# Function definition and usage\n#!/bin/bash\n\n# Simple function\nhello() {\n    echo "Hello, World!"\n}\n\n# Function with parameters\ngreet() {\n    local name=$1\n    local age=$2\n    echo "Hello, $name! You are $age years old."\n}\n\n# Function with return value\nadd() {\n    local num1=$1\n    local num2=$2\n    local result=$((num1 + num2))\n    echo $result\n}\n\n# Function with return status\nis_file_exists() {\n    if [ -f "$1" ]; then\n        return 0    # Success\n    else\n        return 1    # Failure\n    fi\n}\n\n# Function with local variables\ncalculate() {\n    local x=$1\n    local y=$2\n    local sum=$((x + y))\n    local product=$((x * y))\n    echo "Sum: $sum, Product: $product"\n}\n\n# Recursive function\nfactorial() {\n    local n=$1\n    if [ $n -le 1 ]; then\n        echo 1\n    else\n        local prev=$(factorial $((n - 1)))\n        echo $((n * prev))\n    fi\n}\n\n# Usage examples\nhello\ngreet "John" 25\nresult=$(add 10 20)\necho "10 + 20 = $result"\n\nif is_file_exists "test.txt"; then\n    echo "File exists"\nelse\n    echo "File does not exist"\nfi\n\ncalculate 5 3\n\nfact=$(factorial 5)\necho "5! = $fact"\n\n# Function with array parameter\nprocess_array() {\n    local arr=("$@")\n    echo "Array length: ${#arr[@]}"\n    for item in "${arr[@]}"; do\n        echo "Item: $item"\n    done\n}\n\nFRUITS=(apple banana cherry)\nprocess_array "${FRUITS[@]}"'
         },
         {
-          command: 'C-style for loop',
-          description: 'Numeric iteration',
-          usage: 'for ((init; condition; increment))',
-          example: 'for ((i=0; i<5; i++)); do\n  echo "Count: $i"\ndone',
+          command: 'Error Handling',
+          description: 'Robust error handling and debugging techniques',
+          usage: 'Trap signals, error checking, debugging',
+          example: '# Error handling in shell scripts\n#!/bin/bash\n\n# Exit on error\nset -e\n\n# Exit on unset variables\nset -u\n\n# Exit on pipe failures\nset -o pipefail\n\n# Error handling function\nerror_exit() {\n    echo "Error: $1" >&2\n    exit 1\n}\n\n# Check command success\ncheck_command() {\n    if [ $? -ne 0 ]; then\n        error_exit "Command failed: $1"\n    fi\n}\n\n# Trap signals and errors\ntrap \'echo "Script interrupted"; exit 1\' INT TERM\ntrap \'echo "Error on line $LINENO"; exit 1\' ERR\n\n# Safe file operations\nsafe_write() {\n    local file=$1\n    local content=$2\n    \n    if [ ! -f "$file" ]; then\n        echo "$content" > "$file" || error_exit "Cannot write to $file"\n    else\n        echo "File $file already exists"\n    fi\n}\n\n# Backup before modification\nbackup_and_modify() {\n    local file=$1\n    \n    if [ -f "$file" ]; then\n        cp "$file" "$file.backup.$(date +%Y%m%d_%H%M%S)"\n        echo "Backup created"\n    fi\n}\n\n# Validation functions\nvalidate_number() {\n    local num=$1\n    if ! [[ "$num" =~ ^[0-9]+$ ]]; then\n        error_exit "Invalid number: $num"\n    fi\n}\n\nvalidate_email() {\n    local email=$1\n    if ! [[ "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$ ]]; then\n        error_exit "Invalid email: $email"\n    fi\n}\n\n# Debug mode\nDEBUG=${DEBUG:-0}\ndebug() {\n    if [ $DEBUG -eq 1 ]; then\n        echo "DEBUG: $1" >&2\n    fi\n}\n\n# Logging\nlog() {\n    local level=$1\n    shift\n    local message="$*"\n    local timestamp=$(date "+%Y-%m-%d %H:%M:%S")\n    echo "[$timestamp] [$level] $message" >> script.log\n}\n\n# Usage examples\nvalidate_number 123\nvalidate_email "user@example.com"\ndebug "This is a debug message"\nlog "INFO" "Script started successfully"\n\n# Safe operations\nsafe_write "output.txt" "Hello, World!"\nbackup_and_modify "important.conf"'
         },
         {
-          command: 'while loop',
-          description: 'Loop while condition true',
-          usage: 'while [ condition ]; do ... done',
-          example: 'counter=0\nwhile [ $counter -lt 5 ]; do\n  echo $counter\n  ((counter++))\ndone',
+          command: 'Advanced Text Processing',
+          description: 'Complex text manipulation and data processing',
+          usage: 'Advanced regex, multi-line processing, data transformation',
+          example: '# Advanced text processing\n\n# Multi-line processing with awk\nawk \'\nBEGIN { count = 0; sum = 0 }\n/^[0-9]+/ { \n    count++; \n    sum += $1 \n}\nEND { \n    print "Count:", count \n    print "Average:", sum/count \n}\' numbers.txt\n\n# Complex regex with grep\ngrep -E "^[A-Z][a-z]+ [A-Z][a-z]+$" names.txt  # First Last names\ngrep -E "\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\." ip.txt  # IP addresses\n\n# Advanced sed operations\nsed -n \'/start/,/end/p\' file.txt                    # Print between patterns\nsed -n \'1,5p; 10,15p\' file.txt                      # Print specific lines\nsed \'/^$/d\' file.txt                                # Remove empty lines\nsed \'s/^[ \\t]*//;s/[ \\t]*$//\' file.txt              # Trim whitespace\n\n# Complex awk scripts\nawk -F, \'NR>1 {\n    total += $3\n    count++\n    if ($3 > max) max = $3\n    if ($3 < min) min = $3\n}\nEND {\n    print "Average:", total/count\n    print "Max:", max\n    print "Min:", min\n}\' data.csv\n\n# Text statistics\nword_count() {\n    local file=$1\n    echo "Lines: $(wc -l < "$file")"\n    echo "Words: $(wc -w < "$file")"\n    echo "Characters: $(wc -c < "$file")"\n    echo "Unique words: $(tr "[:space:]" "\\n" < "$file" | sort -u | wc -l)"\n}\n\n# CSV processing\nprocess_csv() {\n    local file=$1\n    local field=$2\n    \n    # Extract specific column\n    cut -d, -f$field "$file" | tail -n +2  # Skip header\n    \n    # Count unique values in column\n    cut -d, -f$field "$file" | tail -n +2 | sort | uniq -c\n}\n\n# Log file analysis\nanalyze_log() {\n    local log_file=$1\n    \n    echo "Top 10 IP addresses:"\n    awk \'{print $1}\' "$log_file" | sort | uniq -c | sort -nr | head -10\n    \n    echo "\\nTop 10 requested pages:"\n    awk \'{print $7}\' "$log_file" | sort | uniq -c | sort -nr | head -10\n    \n    echo "\\nHTTP status codes:"\n    awk \'{print $9}\' "$log_file" | sort | uniq -c | sort -nr\n}\n\n# Text transformation\nnormalize_text() {\n    tr "[:upper:]" "[:lower:]" |    # Convert to lowercase\n    sed "s/[^a-z0-9]/ /g" |          # Replace non-alphanumeric with space\n    tr -s " " "\\n" |                # Split into words\n    grep -v "^$" |                   # Remove empty lines\n    sort | uniq                      # Unique words\n}'
         },
         {
-          command: 'until loop',
-          description: 'Loop until condition true',
-          usage: 'until [ condition ]; do ... done',
-          example: 'counter=0\nuntil [ $counter -ge 5 ]; do\n  echo $counter\n  ((counter++))\ndone',
-        },
-        {
-          command: 'break',
-          description: 'Exit loop',
-          usage: 'break',
-          example: 'for i in {1..10}; do\n  if [ $i -eq 5 ]; then\n    break\n  fi\n  echo $i\ndone',
-        },
-        {
-          command: 'continue',
-          description: 'Skip iteration',
-          usage: 'continue',
-          example: 'for i in {1..5}; do\n  if [ $i -eq 3 ]; then\n    continue\n  fi\n  echo $i\ndone  # Skips 3',
-        },
-      ],
+          command: 'File System Operations',
+          description: 'Advanced file system operations and management',
+          usage: 'Symbolic links, inodes, advanced find operations',
+          example: '# Advanced file operations\n\n# Symbolic links\nln -s target link_name              # Create symbolic link\nln -sf target link_name             # Force overwrite existing link\nreadlink link_name                  # Show link target\nfind . -type l                      # Find all symbolic links\n\n# Hard links\nln source hard_link                 # Create hard link\nfind . -type f -links +1            # Find files with hard links\n\n# Inode information\nls -i file.txt                      # Show inode number\nstat file.txt                       # Detailed file information\nfind . -inum 123456                 # Find by inode number\n\n# Advanced find operations\nfind . -type f -name "*.log" -mtime +30 -delete  # Delete old logs\nfind . -type f -size +100M -exec ls -lh {} \\;    # Find large files\nfind . -type f -exec chmod 644 {} \\;            # Change permissions\nfind . -type d -empty                # Find empty directories\nfind . -type f -executable           # Find executable files\n\n# File system analysis\ndisk_usage() {\n    echo "Disk usage by directory:"\n    du -sh /* 2>/dev/null | sort -hr | head -10\n    \n    echo "\\nLargest files in current directory:"\n    find . -type f -exec ls -lh {} \\; | sort -rh -k5 | head -10\n}\n\n# File monitoring\nwatch_directory() {\n    local dir=$1\n    inotifywait -m -r -e modify,create,delete "$dir"\n}\n\n# Backup operations\ncreate_backup() {\n    local source=$1\n    local backup_dir=$2\n    local timestamp=$(date +%Y%m%d_%H%M%S)\n    local backup_name="backup_${timestamp}.tar.gz"\n    \n    tar -czf "$backup_dir/$backup_name" -C "$(dirname "$source")" "$(basename "$source")"\n    echo "Backup created: $backup_name"\n}\n\n# File integrity verification\nverify_checksum() {\n    local file=$1\n    local algorithm=${2:-md5}\n    \n    case $algorithm in\n        md5) openssl md5 "$file" ;;\n        sha1) openssl sha1 "$file" ;;\n        sha256) openssl sha256 "$file" ;;\n        *) echo "Unsupported algorithm: $algorithm" ;;\n    esac\n}\n\n# Batch file operations\nbatch_rename() {\n    local pattern=$1\n    local replacement=$2\n    \n    for file in *$pattern*; do\n        new_name=$(echo "$file" | sed "s/$pattern/$replacement/g")\n        if [ "$file" != "$new_name" ]; then\n            mv "$file" "$new_name"\n            echo "Renamed: $file -> $new_name"\n        fi\n    done\n}\n\n# Directory synchronization\nsync_directories() {\n    local source=$1\n    local destination=$2\n    \n    rsync -av --delete "$source/" "$destination/"\n    echo "Sync completed from $source to $destination"\n}'
+        }
+      ]
     },
     {
-      title: 'Functions',
+      title: 'Expert Level Topics',
       commands: [
         {
-          command: 'Function definition',
-          description: 'Create function',
-          usage: 'function_name() { commands; }',
-          example: 'greet() {\n  echo "Hello, $1"\n}\n\ngreet "John"  # Call function',
+          command: 'Process Substitution',
+          description: 'Advanced process substitution techniques',
+          usage: '<(), >(), named pipes',
+          example: '# Process substitution\n\n# Compare command outputs\ndiff <(command1) <(command2)\ndiff <(ls dir1) <(ls dir2)\n\n# Process multiple files simultaneously\npaste <(cut -f1 file1) <(cut -f2 file2) > combined.txt\n\n# Create temporary files on the fly\nwhile read line; do\n    echo "Processing: $line"\ndone < <(find . -name "*.txt")\n\n# Multi-way communication\ncat <(echo "header") file.txt <(echo "footer") > complete.txt\n\n# Named pipes\nmkfifo mypipe                      # Create named pipe\necho "data" > mypipe &            # Write to pipe\ncat < mypipe                      # Read from pipe\nrm mypipe                          # Remove named pipe\n\n# Advanced examples\n# Process log file in real time\ntail -f access.log | while read line; do\n    echo "$(date): $line" | tee -a processed.log\ndone\n\n# Parallel processing with process substitution\nfor file in *.txt; do\n    (process_file "$file" > "${file}.processed") &\ndone\nwait                               # Wait for all background jobs\n\n# Compare directory contents\ncomm -12 <(ls dir1 | sort) <(ls dir2 | sort)  # Common files\ncomm -23 <(ls dir1 | sort) <(ls dir2 | sort)  # Files only in dir1'
         },
         {
-          command: 'Function with return',
-          description: 'Return value',
-          usage: 'return value',
-          example: 'add() {\n  result=$(($1 + $2))\n  return $result\n}\n\nadd 5 3\necho $?  # 8',
+          command: 'Advanced Networking',
+          description: 'Network programming and advanced network operations',
+          usage: 'netcat, sockets, network scripting',
+          example: '# Network programming with bash\n\n# Netcat (nc) operations\n# Simple chat server\nnc -l -p 12345                     # Listen on port 12345\nnc localhost 12345                 # Connect to server\n\n# File transfer\nnc -l -p 12345 > received_file     # Receive file\nnc localhost 12345 < send_file      # Send file\n\n# Port scanning\nnc -z -v localhost 22-80           # Scan ports 22-80\nnc -z -v google.com 80             # Check specific port\n\n# Simple HTTP server with nc\nwhile true; do\n    echo -e "HTTP/1.1 200 OK\\r\\nContent-Type: text/html\\r\\n\\r\\nHello World" | nc -l 8080\ndone\n\n# Network monitoring\ntcpdump -i eth0 -n port 80          # Monitor HTTP traffic\nss -tulpn                          # Show all listening ports\nnetstat -tulnp                     # Alternative to ss\n\n# DNS operations\ndig +short google.com              # Quick IP lookup\ndig google.com MX                  # Mail servers\nnslookup -type=NS google.com       # Name servers\n\n# Network scripting\ncheck_connectivity() {\n    local host=$1\n    local port=$2\n    local timeout=5\n    \n    if timeout $timeout bash -c "</dev/tcp/$host/$port"; then\n        echo "Connection to $host:$port successful"\n        return 0\n    else\n        echo "Connection to $host:$port failed"\n        return 1\n    fi\n}\n\n# Batch network check\nfor host in google.com facebook.com twitter.com; do\n    echo "Checking $host..."\n    ping -c 1 "$host" > /dev/null && echo "$host is up" || echo "$host is down"\ndone\n\n# Port forward with ssh\nssh -L 8080:localhost:80 user@server    # Local port forward\nssh -R 8080:localhost:80 user@server    # Remote port forward\nssh -D 1080 user@server                  # SOCKS proxy\n\n# Network statistics\nnetstat -s | grep -E "(segments|packets)"\nss -s                                    # Socket statistics\n\n# Bandwidth monitoring\niftop                                    # Real-time bandwidth\nnloadavg                                  # System load'
         },
         {
-          command: 'Local variables',
-          description: 'Function-scoped variables',
-          usage: 'local var=value',
-          example: 'myfunction() {\n  local temp="local value"\n  echo $temp\n}\n\nmyfunction',
+          command: 'System Administration',
+          description: 'System administration and automation tasks',
+          usage: 'User management, service control, monitoring',
+          example: '# User management\nsudo adduser username                   # Add new user\nsudo userdel username                   # Delete user\nsudo usermod -aG sudo username          # Add to sudo group\nsudo passwd username                    # Change password\n\n# Group management\nsudo groupadd groupname                 # Add group\nsudo groupdel groupname                 # Delete group\nsudo usermod -aG groupname username     # Add user to group\n\n# Service management (systemd)\nsudo systemctl start service\nsudo systemctl stop service\nsudo systemctl restart service\nsudo systemctl status service\nsudo systemctl enable service            # Start at boot\nsudo systemctl disable service           # Don\'t start at boot\nsudo systemctl daemon-reload            # Reload systemd\n\n# Process monitoring\nps aux --sort=-%cpu | head -10          # Top CPU processes\nps aux --sort=-%mem | head -10          # Top memory processes\nwatch -n 1 "ps aux | head -10"          # Monitor processes\n\n# System monitoring\nhtop                                    # Interactive process viewer\ntop                                     # Process viewer\niotop                                   # I/O monitoring\nnethogs                                  # Network usage by process\n\n# Log management\nsudo journalctl -u service              # Service logs\nsudo journalctl -f                      # Follow logs\ntail -f /var/log/syslog                # System logs\ntail -f /var/log/auth.log              # Authentication logs\n\n# Disk management\ndf -h                                   # Disk usage\ndu -sh * | sort -hr                    # Directory sizes\nlsblk                                   # Block devices\nmount | column -t                       # Mounted filesystems\n\n# Backup automation\nbackup_system() {\n    local backup_dir="/backup/$(date +%Y%m%d)"\n    mkdir -p "$backup_dir"\n    \n    # Backup important directories\n    tar -czf "$backup_dir/home.tar.gz" /home\n    tar -czf "$backup_dir/etc.tar.gz" /etc\n    \n    # Backup databases\n    mysqldump --all-databases > "$backup_dir/mysql.sql"\n    \n    echo "Backup completed: $backup_dir"\n}\n\n# System maintenance\ncleanup_system() {\n    # Clean package cache\n    sudo apt clean 2>/dev/null || sudo yum clean all 2>/dev/null\n    \n    # Remove old logs\n    sudo find /var/log -name "*.log" -mtime +30 -delete\n    \n    # Clean temporary files\n    sudo find /tmp -type f -mtime +7 -delete\n    \n    echo "System cleanup completed"\n}\n\n# Performance monitoring\nmonitor_performance() {\n    echo "=== CPU Usage ==="\n    top -bn1 | grep "Cpu(s)" | awk \'{print $2}\' | cut -d\'%\' -f1\n    \n    echo "=== Memory Usage ==="\n    free | grep Mem | awk \'{printf("%.2f%%\\n", $3/$2 * 100.0)}\'\n    \n    echo "=== Disk Usage ==="\n    df -h | grep -vE \'^Filesystem|tmpfs|cdrom\' | awk \'{print $5 " " $6}\'\n    \n    echo "=== Load Average ==="\n    uptime | awk -F\'load average:\' \'{print $2}\'\n}'
         },
         {
-          command: 'Function arguments',
-          description: 'Access parameters',
-          usage: '$1, $2, ... $@',
-          example: 'greet() {\n  echo "Hello, $1"\n  echo "You are $2 years old"\n}\n\ngreet "John" 30',
-        },
-      ],
-    },
-    {
-      title: 'Input/Output',
-      commands: [
-        {
-          command: 'read',
-          description: 'Read user input',
-          usage: 'read variable',
-          example: 'echo "Enter your name:"\nread name\necho "Hello, $name"\n\nread -p "Enter age: " age\nread -s password  # Silent input',
-        },
-        {
-          command: 'Redirection',
-          description: 'Redirect input/output',
-          usage: '> file (overwrite), >> file (append)',
-          example: 'echo "Hello" > file.txt  # Overwrite\necho "World" >> file.txt  # Append\n\ncommand < input.txt  # Read from file',
-        },
-        {
-          command: 'Pipe',
-          description: 'Chain commands',
-          usage: 'command1 | command2',
-          example: 'cat file.txt | grep "error"\nls -l | wc -l  # Count files',
-        },
-        {
-          command: 'Here document',
-          description: 'Multi-line input',
-          usage: '<< EOF ... EOF',
-          example: 'cat << EOF\nThis is line 1\nThis is line 2\nEOF\n\nmysql -u user << SQL\nSELECT * FROM users;\nSQL',
-        },
-        {
-          command: 'Here string',
-          description: 'Pass string as input',
-          usage: '<<< "string"',
-          example: 'grep "pattern" <<< "text to search"\nbc <<< "5 + 3"  # 8',
-        },
-      ],
-    },
-    {
-      title: 'String Manipulation',
-      commands: [
-        {
-          command: 'String concatenation',
-          description: 'Combine strings',
-          usage: 'str1$str2',
-          example: 'first="Hello"\nlast="World"\nfull="$first $last"\necho $full  # Hello World',
-        },
-        {
-          command: 'Substring',
-          description: 'Extract part of string',
-          usage: '${string:position:length}',
-          example: 'text="Hello World"\necho ${text:0:5}  # Hello\necho ${text:6}    # World',
-        },
-        {
-          command: 'Replace substring',
-          description: 'Find and replace',
-          usage: '${string/pattern/replacement}',
-          example: 'text="Hello World"\necho ${text/World/Universe}  # Hello Universe\necho ${text//o/0}  # Hell0 W0rld (all)',
-        },
-        {
-          command: 'Remove prefix',
-          description: 'Remove from start',
-          usage: '${string#pattern}',
-          example: 'file="path/to/file.txt"\necho ${file#*/}  # to/file.txt\necho ${file##*/}  # file.txt (greedy)',
-        },
-        {
-          command: 'Remove suffix',
-          description: 'Remove from end',
-          usage: '${string%pattern}',
-          example: 'file="file.txt.bak"\necho ${file%.bak}  # file.txt\necho ${file%%.*}  # file (greedy)',
-        },
-        {
-          command: 'Upper/lowercase',
-          description: 'Change case (Bash 4+)',
-          usage: '${string^^} or ${string,,}',
-          example: 'text="Hello World"\necho ${text^^}  # HELLO WORLD\necho ${text,,}  # hello world\necho ${text^}   # Hello world (first char)',
-        },
-      ],
-    },
-    {
-      title: 'Arithmetic',
-      commands: [
-        {
-          command: '$(( ))',
-          description: 'Arithmetic expansion',
-          usage: '$((expression))',
-          example: 'result=$((5 + 3))\necho $result  # 8\n\necho $((10 * 2))  # 20',
-        },
-        {
-          command: 'let',
-          description: 'Arithmetic evaluation',
-          usage: 'let expression',
-          example: 'let result=5+3\necho $result  # 8\n\nlet counter++\nlet "result = 10 * 2"',
-        },
-        {
-          command: '(( ))',
-          description: 'Arithmetic command',
-          usage: '((expression))',
-          example: 'counter=0\n((counter++))\necho $counter  # 1\n\nif ((counter > 0)); then\n  echo "Positive"\nfi',
-        },
-        {
-          command: 'bc',
-          description: 'Floating point math',
-          usage: 'bc <<< expression',
-          example: 'result=$(bc <<< "10 / 3")\necho $result  # 3.33...\n\nresult=$(bc <<< "scale=2; 10 / 3")\necho $result  # 3.33',
-        },
-      ],
-    },
-    {
-      title: 'Special Variables',
-      commands: [
-        {
-          command: '$0',
-          description: 'Script name',
-          usage: '$0',
-          example: 'echo "Script name: $0"',
-        },
-        {
-          command: '$1, $2, ...',
-          description: 'Positional parameters',
-          usage: '$1, $2, $3, ...',
-          example: '#!/bin/bash\necho "First arg: $1"\necho "Second arg: $2"\n\n# Run: ./script.sh hello world',
-        },
-        {
-          command: '$#',
-          description: 'Number of arguments',
-          usage: '$#',
-          example: 'echo "You passed $# arguments"',
-        },
-        {
-          command: '$@',
-          description: 'All arguments (array)',
-          usage: '$@',
-          example: 'for arg in "$@"; do\n  echo $arg\ndone',
-        },
-        {
-          command: '$*',
-          description: 'All arguments (string)',
-          usage: '$*',
-          example: 'echo "All args: $*"',
-        },
-        {
-          command: '$?',
-          description: 'Last command exit status',
-          usage: '$?',
-          example: 'ls /nonexistent\nif [ $? -ne 0 ]; then\n  echo "Command failed"\nfi',
-        },
-        {
-          command: '$$',
-          description: 'Current process ID',
-          usage: '$$',
-          example: 'echo "PID: $$"\nlog_file="/tmp/script.$$.log"',
-        },
-        {
-          command: '$!',
-          description: 'Last background process PID',
-          usage: '$!',
-          example: 'sleep 10 &\necho "Background PID: $!"\nwait $!',
-        },
-      ],
-    },
-    {
-      title: 'Error Handling',
-      commands: [
-        {
-          command: 'set -e',
-          description: 'Exit on error',
-          usage: 'set -e',
-          example: '#!/bin/bash\nset -e\n\n# Script exits if any command fails\ncommand1\ncommand2',
-        },
-        {
-          command: 'set -u',
-          description: 'Exit on undefined variable',
-          usage: 'set -u',
-          example: 'set -u\n\necho $undefined_var  # Error: unbound variable',
-        },
-        {
-          command: 'set -o pipefail',
-          description: 'Pipe failure detection',
-          usage: 'set -o pipefail',
-          example: 'set -o pipefail\n\n# Fails if any command in pipe fails\ncommand1 | command2 | command3',
-        },
-        {
-          command: 'trap',
-          description: 'Handle signals',
-          usage: 'trap command signal',
-          example: 'cleanup() {\n  echo "Cleaning up..."\n  rm -f /tmp/*.tmp\n}\n\ntrap cleanup EXIT\ntrap cleanup INT  # Ctrl+C',
-        },
-        {
-          command: '|| (OR)',
-          description: 'Execute on failure',
-          usage: 'command || fallback',
-          example: 'mkdir /tmp/mydir || echo "Failed to create dir"\ncd /path || exit 1',
-        },
-        {
-          command: '&& (AND)',
-          description: 'Execute on success',
-          usage: 'command && next_command',
-          example: 'cd /tmp && ls\nmkdir mydir && cd mydir && touch file.txt',
-        },
-      ],
-    },
-    {
-      title: 'Case Statement',
-      commands: [
-        {
-          command: 'case',
-          description: 'Pattern matching',
-          usage: 'case $var in pattern) commands;; esac',
-          example: 'case $1 in\n  start)\n    echo "Starting..."\n    ;;\n  stop)\n    echo "Stopping..."\n    ;;\n  *)\n    echo "Unknown command"\n    ;;\nesac',
-        },
-        {
-          command: 'case with patterns',
-          description: 'Multiple patterns',
-          usage: 'pattern1|pattern2)',
-          example: 'case $file in\n  *.txt|*.log)\n    echo "Text file"\n    ;;\n  *.jpg|*.png)\n    echo "Image file"\n    ;;\nesac',
-        },
-      ],
-    },
-    {
-      title: 'Process Management',
-      commands: [
-        {
-          command: 'Background execution',
-          description: 'Run in background',
-          usage: 'command &',
-          example: 'long_process &\necho "Running in background"\n\nsleep 10 &\necho "PID: $!"',
-        },
-        {
-          command: 'wait',
-          description: 'Wait for background jobs',
-          usage: 'wait [PID]',
-          example: 'command1 &\npid1=$!\ncommand2 &\npid2=$!\n\nwait $pid1 $pid2\necho "Both completed"',
-        },
-        {
-          command: 'jobs',
-          description: 'List background jobs',
-          usage: 'jobs',
-          example: 'sleep 100 &\nsleep 200 &\njobs  # Lists running jobs',
-        },
-        {
-          command: 'fg',
-          description: 'Bring job to foreground',
-          usage: 'fg %job_number',
-          example: 'sleep 100 &\nfg %1  # Bring to foreground',
-        },
-        {
-          command: 'bg',
-          description: 'Resume in background',
-          usage: 'bg %job_number',
-          example: '# Press Ctrl+Z to suspend\nbg %1  # Resume in background',
-        },
-      ],
-    },
-    {
-      title: 'Command Line Arguments',
-      commands: [
-        {
-          command: 'getopts',
-          description: 'Parse options',
-          usage: 'getopts optstring name',
-          example: 'while getopts "hv:f:" opt; do\n  case $opt in\n    h) echo "Help"; ;;\n    v) verbose=$OPTARG; ;;\n    f) file=$OPTARG; ;;\n  esac\ndone\n\n# Usage: script.sh -h -v 2 -f file.txt',
-        },
-        {
-          command: 'shift',
-          description: 'Shift positional parameters',
-          usage: 'shift [n]',
-          example: 'echo "First: $1"\nshift\necho "Now first: $1"\nshift 2  # Shift by 2',
-        },
-      ],
-    },
-    {
-      title: 'Debugging',
-      commands: [
-        {
-          command: 'set -x',
-          description: 'Enable debug mode',
-          usage: 'set -x',
-          example: 'set -x\nname="John"\necho "Hello $name"\nset +x  # Disable',
-        },
-        {
-          command: 'bash -x',
-          description: 'Run script in debug mode',
-          usage: 'bash -x script.sh',
-          example: 'bash -x myscript.sh\n# Shows each command before execution',
-        },
-        {
-          command: 'set -v',
-          description: 'Verbose mode',
-          usage: 'set -v',
-          example: 'set -v\n# Prints commands before executing',
-        },
-      ],
-    },
-    {
-      title: 'File Operations',
-      commands: [
-        {
-          command: 'Test file exists',
-          description: 'Check file presence',
-          usage: '[ -f file ]',
-          example: 'if [ -f "config.txt" ]; then\n  echo "Config exists"\nfi',
-        },
-        {
-          command: 'Test directory exists',
-          description: 'Check directory',
-          usage: '[ -d directory ]',
-          example: 'if [ -d "/path/to/dir" ]; then\n  echo "Directory exists"\nfi',
-        },
-        {
-          command: 'Test readable/writable',
-          description: 'Check permissions',
-          usage: '[ -r file ] or [ -w file ]',
-          example: 'if [ -r "file.txt" ]; then\n  cat file.txt\nfi\n\nif [ -w "file.txt" ]; then\n  echo "Can write"\nfi',
-        },
-        {
-          command: 'Test executable',
-          description: 'Check executable permission',
-          usage: '[ -x file ]',
-          example: 'if [ -x "./script.sh" ]; then\n  ./script.sh\nfi',
-        },
-        {
-          command: 'Test file size',
-          description: 'Check if file has content',
-          usage: '[ -s file ]',
-          example: 'if [ -s "data.txt" ]; then\n  echo "File has content"\nfi',
-        },
-      ],
-    },
-    {
-      title: 'Regular Expressions',
-      commands: [
-        {
-          command: '=~ operator',
-          description: 'Regex matching',
-          usage: '[[ string =~ pattern ]]',
-          example: 'email="user@example.com"\nif [[ $email =~ ^[a-z]+@[a-z]+\\.[a-z]+$ ]]; then\n  echo "Valid email"\nfi',
-        },
-        {
-          command: 'grep in script',
-          description: 'Pattern search',
-          usage: 'grep pattern file',
-          example: 'if grep -q "error" log.txt; then\n  echo "Errors found"\nfi\n\n# -q: quiet mode',
-        },
-      ],
-    },
-    {
-      title: 'Modern Bash Features (Bash 4+)',
-      commands: [
-        {
-          command: 'Associative arrays',
-          description: 'Hash maps',
-          usage: 'declare -A array',
-          example: 'declare -A colors\ncolors[red]="#FF0000"\ncolors[blue]="#0000FF"\necho ${colors[red]}',
-        },
-        {
-          command: 'Globstar',
-          description: 'Recursive globbing',
-          usage: 'shopt -s globstar',
-          example: 'shopt -s globstar\nfor file in **/*.txt; do\n  echo $file\ndone  # All .txt files recursively',
-        },
-        {
-          command: 'Read into array',
-          description: 'Read lines into array',
-          usage: 'mapfile -t array < file',
-          example: 'mapfile -t lines < file.txt\nfor line in "${lines[@]}"; do\n  echo $line\ndone',
-        },
-        {
-          command: 'Case modification',
-          description: 'Upper/lowercase',
-          usage: '${var^^} or ${var,,}',
-          example: 'name="john"\necho ${name^^}  # JOHN\necho ${name^}   # John',
-        },
-      ],
-    },
-    {
-      title: 'Best Practices',
-      commands: [
-        {
-          command: 'Strict mode',
-          description: 'Safe scripting',
-          usage: 'set -euo pipefail',
-          example: '#!/bin/bash\nset -euo pipefail\nIFS=$\'\\n\\t\'\n\n# Exit on error, undefined vars, pipe failures',
-        },
-        {
-          command: 'Quote variables',
-          description: 'Prevent word splitting',
-          usage: '"$variable"',
-          example: '# Bad\nfile=$1\nrm $file\n\n# Good\nfile="$1"\nrm "$file"',
-        },
-        {
-          command: 'Use functions',
-          description: 'Organize code',
-          usage: 'function_name() { ... }',
-          example: 'setup() {\n  echo "Setting up..."\n}\n\ncleanup() {\n  echo "Cleaning up..."\n}\n\nsetup\n# main code\ncleanup',
-        },
-        {
-          command: 'Check dependencies',
-          description: 'Verify commands exist',
-          usage: 'command -v cmd',
-          example: 'if ! command -v jq &> /dev/null; then\n  echo "jq is not installed"\n  exit 1\nfi',
-        },
-      ],
-    },
-  ],
+          command: 'Security and Hardening',
+          description: 'Security best practices and system hardening',
+          usage: 'Permissions, encryption, security auditing',
+          example: '# Security best practices\n\n# File permissions and ownership\nfind /var/www -type f -exec chmod 644 {} \\;    # Secure file permissions\nfind /var/www -type d -exec chmod 755 {} \\;    # Secure directory permissions\nfind /home -type f -name "*.ssh" -exec chmod 600 {} \\;  # SSH keys\n\n# Security auditing\ncheck_open_ports() {\n    echo "=== Open Ports ==="\n    ss -tuln | grep LISTEN\n    \n    echo "\\n=== Running Services ==="\n    systemctl list-units --type=service --state=running\n}\n\n# User security audit\naudit_users() {\n    echo "=== Users with shell access ==="\n    cat /etc/passwd | grep -E "bash|sh|zsh"\n    \n    echo "\\n=== Users with sudo access ==="\n    groups $(whoami)\n    sudo -l -U $(whoami)\n    \n    echo "\\n=== Recent logins ==="\n    last -n 10\n}\n\n# File integrity monitoring\nmonitor_integrity() {\n    local dir=$1\n    local checksum_file="checksums.md5"\n    \n    # Generate checksums\n    find "$dir" -type f -exec md5sum {} \\; > "$checksum_file"\n    echo "Checksums saved to $checksum_file"\n    \n    # Verify integrity\n    md5sum -c "$checksum_file"\n}\n\n# Password policy\ncheck_password_policy() {\n    echo "=== Password Policy ==="\n    grep "^PASS_MAX_DAYS" /etc/login.defs\n    grep "^PASS_MIN_DAYS" /etc/login.defs\n    grep "^PASS_WARN_AGE" /etc/login.defs\n    \n    echo "\\n=== Users with expired passwords ==="\n    sudo chage -l $(whoami) | grep "Password expires"\n}\n\n# Firewall management (ufw)\nsetup_firewall() {\n    sudo ufw enable\n    sudo ufw default deny incoming\n    sudo ufw default allow outgoing\n    sudo ufw allow ssh\n    sudo ufw allow 80/tcp\n    sudo ufw allow 443/tcp\n    sudo ufw status verbose\n}\n\n# SSH hardening\nharden_ssh() {\n    local sshd_config="/etc/ssh/sshd_config"\n    \n    # Backup original config\n    sudo cp "$sshd_config" "$sshd_config.backup"\n    \n    # Security settings\n    sudo sed -i \'s/#PermitRootLogin yes/PermitRootLogin no/\' "$sshd_config"\n    sudo sed -i \'s/#PasswordAuthentication yes/PasswordAuthentication no/\' "$sshd_config"\n    sudo sed -i \'s/#PermitEmptyPasswords yes/PermitEmptyPasswords no/\' "$sshd_config"\n    \n    # Restart SSH service\n    sudo systemctl restart sshd\n    \n    echo "SSH hardening completed"\n}\n\n# System update and patching\nupdate_system() {\n    # Update package lists\n    sudo apt update 2>/dev/null || sudo yum check-update 2>/dev/null\n    \n    # Upgrade packages\n    sudo apt upgrade -y 2>/dev/null || sudo yum update -y 2>/dev/null\n    \n    # Remove unnecessary packages\n    sudo apt autoremove -y 2>/dev/null || sudo yum autoremove -y 2>/dev/null\n    \n    echo "System update completed"\n}\n\n# Log monitoring for security\nmonitor_security_logs() {\n    echo "=== Failed login attempts ==="\n    grep "Failed password" /var/log/auth.log | tail -10\n    \n    echo "\\n=== Root login attempts ==="\n    grep "root.*Accepted" /var/log/auth.log | tail -10\n    \n    echo "\\n=== SSH connections ==="\n    grep "ssh.*Accepted" /var/log/auth.log | tail -10\n}'
+        }
+      ]
+    }
+  ]
 };

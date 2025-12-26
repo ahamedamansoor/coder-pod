@@ -1,0 +1,3274 @@
+import { Code } from 'lucide-react';
+
+export const canvasCheatsheet = {
+  id: 'canvas',
+  name: 'Canvas',
+  description: 'Master HTML5 Canvas from basics to advanced features',
+  icon: Code,
+  colorTheme: 'orange' as const,
+  sections: [
+    // BEGINNER LEVEL
+    {
+      title: 'Getting Started with Canvas',
+      commands: [
+        {
+          command: 'What is HTML5 Canvas?',
+          description: 'Understanding Canvas API and capabilities',
+          usage: 'Canvas is HTML5 element for drawing graphics',
+          example: `Canvas Overview:
+- HTML5 element for 2D/3D graphics
+- JavaScript-based drawing API
+- Pixel-based rendering system
+- Real-time graphics and animations
+- Image manipulation and processing
+- Game development platform
+- Data visualization
+- Photo editing capabilities
+- Interactive graphics
+- Cross-browser support
+
+Key Features:
+- 2D drawing context
+- WebGL for 3D graphics
+- Path drawing and shapes
+- Text rendering
+- Image manipulation
+- Animation support
+- Event handling
+- Performance optimized
+
+Common Uses:
+- Games and interactive media
+- Data visualizations
+- Image editors
+- Drawing applications
+- Charts and graphs
+- Photo filters
+- Real-time visualizations
+- Creative coding`
+        },
+        {
+          command: 'Canvas Element Setup',
+          description: 'Basic HTML5 canvas element setup',
+          usage: '<canvas> element with proper attributes',
+          example: `<!-- Basic canvas element -->
+<canvas id="myCanvas" width="800" height="600"></canvas>
+
+<!-- Canvas with fallback content -->
+<canvas id="myCanvas" width="800" height="600">
+  Your browser does not support the canvas element.
+</canvas>
+
+<!-- Canvas with CSS styling -->
+<style>
+  canvas {
+    border: 1px solid #000;
+    background-color: #f0f0f0;
+    display: block;
+    margin: 0 auto;
+  }
+</style>
+
+<canvas id="styledCanvas" width="800" height="600"></canvas>
+
+<!-- Responsive canvas -->
+<style>
+  .responsive-canvas {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<canvas id="responsiveCanvas" class="responsive-canvas" width="800" height="600"></canvas>
+
+<!-- High DPI canvas for retina displays -->
+<canvas id="retinaCanvas" width="1600" height="1200" style="width: 800px; height: 600px;"></canvas>`
+        },
+        {
+          command: 'Canvas Context',
+          description: 'Get and initialize canvas drawing context',
+          usage: 'Get 2D rendering context from canvas',
+          example: `// Get canvas element
+const canvas = document.getElementById('myCanvas');
+
+// Get 2D rendering context
+const ctx = canvas.getContext('2d');
+
+// Check if canvas is supported
+if (canvas.getContext) {
+  const ctx = canvas.getContext('2d');
+  // Canvas is supported, start drawing
+} else {
+  // Canvas is not supported
+  console.log('Canvas not supported');
+}
+
+// Get WebGL context (for 3D graphics)
+const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+// Canvas context properties
+console.log('Canvas width:', canvas.width);
+console.log('Canvas height:', canvas.height);
+console.log('Context type:', ctx.constructor.name);
+
+// Set canvas size programmatically
+canvas.width = 800;
+canvas.height = 600;
+
+// Clear canvas
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+// Save and restore context state
+ctx.save();
+// Make changes to context
+ctx.restore();`
+        },
+        {
+          command: 'Canvas Coordinate System',
+          description: 'Understanding canvas coordinates and units',
+          usage: 'Work with canvas coordinate system',
+          example: `// Canvas coordinate system
+// Origin (0,0) is top-left corner
+// X increases to the right
+// Y increases downward
+
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Draw coordinate system indicators
+ctx.strokeStyle = '#ccc';
+ctx.lineWidth = 1;
+
+// Draw grid
+for (let x = 0; x <= canvas.width; x += 50) {
+  ctx.beginPath();
+  ctx.moveTo(x, 0);
+  ctx.lineTo(x, canvas.height);
+  ctx.stroke();
+}
+
+for (let y = 0; y <= canvas.height; y += 50) {
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(canvas.width, y);
+  ctx.stroke();
+}
+
+// Mark origin
+ctx.fillStyle = 'red';
+ctx.beginPath();
+ctx.arc(0, 0, 5, 0, Math.PI * 2);
+ctx.fill();
+
+// Coordinate examples
+ctx.fillStyle = 'blue';
+ctx.fillRect(100, 100, 50, 50); // x=100, y=100
+
+ctx.fillStyle = 'green';
+ctx.fillRect(300, 200, 50, 50); // x=300, y=200
+
+// Transform coordinate system
+ctx.save();
+ctx.translate(100, 100); // Move origin to (100, 100)
+ctx.fillStyle = 'purple';
+ctx.fillRect(0, 0, 50, 50); // Now at (100, 100) in original coordinates
+ctx.restore();`
+        },
+      ],
+    },
+    {
+      title: 'Basic Drawing',
+      commands: [
+        {
+          command: 'Drawing Rectangles',
+          description: 'Create rectangles and squares',
+          usage: 'fillRect(), strokeRect(), clearRect()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Filled rectangle
+ctx.fillStyle = 'blue';
+ctx.fillRect(50, 50, 100, 60);
+
+// Stroked rectangle
+ctx.strokeStyle = 'red';
+ctx.lineWidth = 3;
+ctx.strokeRect(200, 50, 100, 60);
+
+// Both filled and stroked
+ctx.fillStyle = 'lightgreen';
+ctx.fillRect(350, 50, 100, 60);
+ctx.strokeStyle = 'darkgreen';
+ctx.strokeRect(350, 50, 100, 60);
+
+// Clear rectangle (eraser)
+ctx.clearRect(75, 75, 50, 30);
+
+// Rounded rectangle helper function
+function roundRect(x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
+// Draw rounded rectangle
+roundRect(50, 150, 100, 60, 10);
+ctx.fillStyle = 'orange';
+ctx.fill();
+ctx.strokeStyle = 'darkorange';
+ctx.stroke();`
+        },
+        {
+          command: 'Drawing Lines and Paths',
+          description: 'Create lines and complex paths',
+          usage: 'beginPath(), moveTo(), lineTo(), stroke()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Simple line
+ctx.beginPath();
+ctx.moveTo(50, 50);
+ctx.lineTo(200, 50);
+ctx.strokeStyle = 'blue';
+ctx.lineWidth = 2;
+ctx.stroke();
+
+// Connected lines
+ctx.beginPath();
+ctx.moveTo(50, 100);
+ctx.lineTo(100, 150);
+ctx.lineTo(150, 100);
+ctx.lineTo(200, 150);
+ctx.strokeStyle = 'red';
+ctx.lineWidth = 3;
+ctx.stroke();
+
+// Complex path
+ctx.beginPath();
+ctx.moveTo(250, 50);
+ctx.lineTo(300, 100);
+ctx.lineTo(350, 50);
+ctx.lineTo(400, 100);
+ctx.lineTo(450, 50);
+ctx.strokeStyle = 'green';
+ctx.lineWidth = 2;
+ctx.stroke();
+
+// Closed path
+ctx.beginPath();
+ctx.moveTo(50, 200);
+ctx.lineTo(100, 250);
+ctx.lineTo(150, 250);
+ctx.lineTo(200, 200);
+ctx.closePath();
+ctx.fillStyle = 'lightblue';
+ctx.fill();
+ctx.strokeStyle = 'darkblue';
+ctx.stroke();
+
+// Dashed line
+ctx.setLineDash([5, 5]);
+ctx.beginPath();
+ctx.moveTo(250, 200);
+ctx.lineTo(450, 200);
+ctx.strokeStyle = 'purple';
+ctx.stroke();
+
+// Reset line dash
+ctx.setLineDash([]);`
+        },
+        {
+          command: 'Drawing Circles and Arcs',
+          description: 'Create circles, arcs, and curves',
+          usage: 'arc(), arcTo(), quadraticCurveTo(), bezierCurveTo()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Full circle
+ctx.beginPath();
+ctx.arc(100, 100, 50, 0, Math.PI * 2);
+ctx.fillStyle = 'lightblue';
+ctx.fill();
+ctx.strokeStyle = 'blue';
+ctx.stroke();
+
+// Partial arc (semi-circle)
+ctx.beginPath();
+ctx.arc(250, 100, 50, 0, Math.PI);
+ctx.strokeStyle = 'red';
+ctx.lineWidth = 3;
+ctx.stroke();
+
+// Multiple arcs
+ctx.beginPath();
+ctx.arc(400, 100, 30, 0, Math.PI * 0.5);
+ctx.strokeStyle = 'green';
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(400, 100, 40, Math.PI * 0.5, Math.PI);
+ctx.strokeStyle = 'orange';
+ctx.stroke();
+
+// Quadratic curve
+ctx.beginPath();
+ctx.moveTo(50, 200);
+ctx.quadraticCurveTo(100, 150, 150, 200);
+ctx.strokeStyle = 'purple';
+ctx.lineWidth = 2;
+ctx.stroke();
+
+// Bezier curve
+ctx.beginPath();
+ctx.moveTo(200, 200);
+ctx.bezierCurveTo(250, 150, 350, 250, 400, 200);
+ctx.strokeStyle = 'darkgreen';
+ctx.lineWidth = 2;
+ctx.stroke();
+
+// ArcTo (rounded corner)
+ctx.beginPath();
+ctx.moveTo(50, 300);
+ctx.arcTo(150, 300, 150, 350, 50);
+ctx.arcTo(150, 350, 50, 350, 50);
+ctx.arcTo(50, 350, 50, 300, 50);
+ctx.closePath();
+ctx.fillStyle = 'lightcoral';
+ctx.fill();`
+        },
+        {
+          command: 'Colors and Styles',
+          description: 'Apply colors, gradients, and patterns',
+          usage: 'fillStyle, strokeStyle, createLinearGradient()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Solid colors
+ctx.fillStyle = '#FF5733';
+ctx.fillRect(50, 50, 100, 60);
+
+ctx.strokeStyle = 'rgb(0, 128, 255)';
+ctx.lineWidth = 3;
+ctx.strokeRect(200, 50, 100, 60);
+
+// RGBA with transparency
+ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+ctx.fillRect(350, 50, 100, 60);
+
+// Linear gradient
+const linearGradient = ctx.createLinearGradient(50, 150, 150, 210);
+linearGradient.addColorStop(0, 'red');
+linearGradient.addColorStop(0.5, 'yellow');
+linearGradient.addColorStop(1, 'green');
+ctx.fillStyle = linearGradient;
+ctx.fillRect(50, 150, 100, 60);
+
+// Radial gradient
+const radialGradient = ctx.createRadialGradient(250, 180, 10, 250, 180, 50);
+radialGradient.addColorStop(0, 'white');
+radialGradient.addColorStop(0.5, 'lightblue');
+radialGradient.addColorStop(1, 'darkblue');
+ctx.fillStyle = radialGradient;
+ctx.fillRect(200, 150, 100, 60);
+
+// Pattern
+const patternCanvas = document.createElement('canvas');
+patternCanvas.width = 10;
+patternCanvas.height = 10;
+const patternCtx = patternCanvas.getContext('2d');
+patternCtx.fillStyle = 'lightgreen';
+patternCtx.fillRect(0, 0, 5, 5);
+patternCtx.fillRect(5, 5, 5, 5);
+patternCtx.fillStyle = 'darkgreen';
+patternCtx.fillRect(5, 0, 5, 5);
+patternCtx.fillRect(0, 5, 5, 5);
+
+const pattern = ctx.createPattern(patternCanvas, 'repeat');
+ctx.fillStyle = pattern;
+ctx.fillRect(350, 150, 100, 60);`
+        },
+      ],
+    },
+    {
+      title: 'Text in Canvas',
+      commands: [
+        {
+          command: 'Drawing Text',
+          description: 'Render text on canvas',
+          usage: 'fillText(), strokeText(), measureText()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Filled text
+ctx.font = '24px Arial';
+ctx.fillStyle = 'blue';
+ctx.fillText('Hello Canvas!', 50, 50);
+
+// Stroked text
+ctx.font = '32px Times New Roman';
+ctx.strokeStyle = 'red';
+ctx.lineWidth = 2;
+ctx.strokeText('Outlined Text', 50, 100);
+
+// Both filled and stroked
+ctx.font = '28px Georgia';
+ctx.fillStyle = 'lightgreen';
+ctx.strokeStyle = 'darkgreen';
+ctx.lineWidth = 1;
+ctx.fillText('Filled & Outlined', 50, 150);
+ctx.strokeText('Filled & Outlined', 50, 150);
+
+// Text alignment
+ctx.font = '20px Arial';
+ctx.textAlign = 'left';
+ctx.fillStyle = 'purple';
+ctx.fillText('Left aligned', 50, 200);
+
+ctx.textAlign = 'center';
+ctx.fillText('Center aligned', 250, 200);
+
+ctx.textAlign = 'right';
+ctx.fillText('Right aligned', 450, 200);
+
+// Text baseline
+ctx.textAlign = 'center';
+ctx.textBaseline = 'top';
+ctx.fillText('Top', 100, 250);
+
+ctx.textBaseline = 'middle';
+ctx.fillText('Middle', 200, 250);
+
+ctx.textBaseline = 'bottom';
+ctx.fillText('Bottom', 300, 250);
+
+// Measure text
+const text = 'Measure this text';
+const metrics = ctx.measureText(text);
+console.log('Text width:', metrics.width);
+console.log('Actual bounds:', metrics.actualBoundingBoxLeft, metrics.actualBoundingBoxRight);`
+        },
+        {
+          command: 'Text Styling',
+          description: 'Advanced text styling and effects',
+          usage: 'Font properties, shadows, gradients',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Font variations
+ctx.font = 'bold 24px Arial';
+ctx.fillStyle = 'blue';
+ctx.fillText('Bold Arial', 50, 50);
+
+ctx.font = 'italic 20px Times New Roman';
+ctx.fillStyle = 'red';
+ctx.fillText('Italic Times', 50, 80);
+
+ctx.font = 'bold italic 18px Georgia';
+ctx.fillStyle = 'green';
+ctx.fillText('Bold Italic Georgia', 50, 110);
+
+// Text shadow
+ctx.font = '32px Arial';
+ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+ctx.shadowBlur = 4;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.fillStyle = 'orange';
+ctx.fillText('Shadow Text', 50, 150);
+
+// Gradient text
+const gradient = ctx.createLinearGradient(50, 180, 250, 180);
+gradient.addColorStop(0, 'red');
+gradient.addColorStop(0.5, 'yellow');
+gradient.addColorStop(1, 'green');
+ctx.font = '28px Arial';
+ctx.fillStyle = gradient;
+ctx.fillText('Gradient Text', 50, 190);
+
+// Outline text with shadow
+ctx.shadowColor = 'rgba(0, 0, 255, 0.5)';
+ctx.shadowBlur = 3;
+ctx.shadowOffsetX = 1;
+ctx.shadowOffsetY = 1;
+ctx.font = '24px Arial';
+ctx.strokeStyle = 'darkblue';
+ctx.lineWidth = 2;
+ctx.strokeText('Outlined Shadow', 50, 230);
+
+// Reset shadow
+ctx.shadowColor = 'transparent';
+ctx.shadowBlur = 0;
+ctx.shadowOffsetX = 0;
+ctx.shadowOffsetY = 0;
+
+// Multi-line text helper
+function drawMultilineText(text, x, y, lineHeight) {
+  const lines = text.split('\\n');
+  lines.forEach((line, index) => {
+    ctx.fillText(line, x, y + (index * lineHeight));
+  });
+}
+
+ctx.font = '16px Arial';
+ctx.fillStyle = 'black';
+drawMultilineText('Line 1\\nLine 2\\nLine 3', 50, 280, 20);`
+        },
+      ],
+    },
+
+    // INTERMEDIATE LEVEL
+    {
+      title: 'Images and Media',
+      commands: [
+        {
+          command: 'Drawing Images',
+          description: 'Load and draw images on canvas',
+          usage: 'drawImage() with various parameters',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Create image object
+const img = new Image();
+
+// Load image
+img.onload = function() {
+  // Draw image at original size
+  ctx.drawImage(img, 50, 50);
+  
+  // Draw scaled image
+  ctx.drawImage(img, 200, 50, 100, 100);
+  
+  // Draw cropped and scaled image
+  ctx.drawImage(img, 
+    0, 0, 100, 100,  // Source rectangle
+    350, 50, 150, 150 // Destination rectangle
+  );
+};
+
+img.src = 'path/to/image.jpg';
+
+// Draw image from another canvas
+const sourceCanvas = document.createElement('canvas');
+sourceCanvas.width = 100;
+sourceCanvas.height = 100;
+const sourceCtx = sourceCanvas.getContext('2d');
+sourceCtx.fillStyle = 'lightblue';
+sourceCtx.fillRect(0, 0, 100, 100);
+
+ctx.drawImage(sourceCanvas, 50, 200);
+
+// Draw video frame
+const video = document.getElementById('myVideo');
+video.addEventListener('play', function() {
+  function drawFrame() {
+    if (!video.paused && !video.ended) {
+      ctx.drawImage(video, 200, 200, 200, 150);
+      requestAnimationFrame(drawFrame);
+    }
+  }
+  drawFrame();
+});
+
+// Image loading with error handling
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = src;
+  });
+}
+
+// Usage
+loadImage('path/to/image.jpg')
+  .then(img => {
+    ctx.drawImage(img, 0, 0);
+  })
+  .catch(error => {
+    console.error(error);
+  });`
+        },
+        {
+          command: 'Image Manipulation',
+          description: 'Manipulate pixels and apply effects',
+          usage: 'getImageData(), putImageData(), pixel manipulation',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Draw an image first
+const img = new Image();
+img.onload = function() {
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+  // Get image data
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  
+  // Convert to grayscale
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+    data[i] = gray;     // Red
+    data[i + 1] = gray; // Green
+    data[i + 2] = gray; // Blue
+    // Alpha channel (data[i + 3]) remains unchanged
+  }
+  
+  // Put modified image data back
+  ctx.putImageData(imageData, 0, 0);
+};
+
+img.src = 'path/to/image.jpg';
+
+// Invert colors
+function invertColors(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = 255 - data[i];         // Red
+    data[i + 1] = 255 - data[i + 1]; // Green
+    data[i + 2] = 255 - data[i + 2]; // Blue
+  }
+  return imageData;
+}
+
+// Brightness adjustment
+function adjustBrightness(imageData, value) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = Math.min(255, Math.max(0, data[i] + value));
+    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + value));
+    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + value));
+  }
+  return imageData;
+}
+
+// Get pixel color at specific position
+function getPixelColor(imageData, x, y) {
+  const index = (y * imageData.width + x) * 4;
+  return {
+    r: imageData.data[index],
+    g: imageData.data[index + 1],
+    b: imageData.data[index + 2],
+    a: imageData.data[index + 3]
+  };
+}
+
+// Set pixel color at specific position
+function setPixelColor(imageData, x, y, color) {
+  const index = (y * imageData.width + x) * 4;
+  imageData.data[index] = color.r;
+  imageData.data[index + 1] = color.g;
+  imageData.data[index + 2] = color.b;
+  imageData.data[index + 3] = color.a;
+}`
+        },
+        {
+          command: 'Image Filters and Effects',
+          description: 'Apply various filters and effects',
+          usage: 'Convolution kernels, image processing',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Convolution kernel for image effects
+function applyConvolution(imageData, kernel) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const output = new ImageData(width, height);
+  const outputData = output.data;
+  
+  for (let y = 1; y < height - 1; y++) {
+    for (let x = 1; x < width - 1; x++) {
+      let r = 0, g = 0, b = 0;
+      
+      for (let ky = -1; ky <= 1; ky++) {
+        for (let kx = -1; kx <= 1; kx++) {
+          const idx = ((y + ky) * width + (x + kx)) * 4;
+          const kidx = (ky + 1) * 3 + (kx + 1);
+          
+          r += data[idx] * kernel[kidx];
+          g += data[idx + 1] * kernel[kidx];
+          b += data[idx + 2] * kernel[kidx];
+        }
+      }
+      
+      const idx = (y * width + x) * 4;
+      outputData[idx] = Math.min(255, Math.max(0, r));
+      outputData[idx + 1] = Math.min(255, Math.max(0, g));
+      outputData[idx + 2] = Math.min(255, Math.max(0, b));
+      outputData[idx + 3] = data[idx + 3];
+    }
+  }
+  
+  return output;
+}
+
+// Blur kernel
+const blurKernel = [
+  1/16, 2/16, 1/16,
+  2/16, 4/16, 2/16,
+  1/16, 2/16, 1/16
+];
+
+// Sharpen kernel
+const sharpenKernel = [
+   0, -1,  0,
+  -1,  5, -1,
+   0, -1,  0
+];
+
+// Edge detection kernel
+const edgeKernel = [
+  -1, -1, -1,
+  -1,  8, -1,
+  -1, -1, -1
+];
+
+// Apply filters
+const img = new Image();
+img.onload = function() {
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  
+  // Apply blur
+  const blurred = applyConvolution(imageData, blurKernel);
+  ctx.putImageData(blurred, 0, 0);
+  
+  // Apply sharpen
+  const sharpened = applyConvolution(imageData, sharpenKernel);
+  ctx.putImageData(sharpened, 0, 0);
+  
+  // Apply edge detection
+  const edges = applyConvolution(imageData, edgeKernel);
+  ctx.putImageData(edges, 0, 0);
+};
+
+img.src = 'path/to/image.jpg';
+
+// Sepia effect
+function applySepia(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+    data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+    data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+  }
+  return imageData;
+}`
+        },
+      ],
+    },
+    {
+      title: 'Transformations',
+      commands: [
+        {
+          command: 'Translation and Rotation',
+          description: 'Move and rotate canvas content',
+          usage: 'translate(), rotate(), save(), restore()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Translation
+ctx.save();
+ctx.translate(100, 100);
+ctx.fillStyle = 'red';
+ctx.fillRect(0, 0, 50, 50); // Now at (100, 100)
+ctx.restore();
+
+// Rotation
+ctx.save();
+ctx.translate(200, 100);
+ctx.rotate(Math.PI / 4); // 45 degrees
+ctx.fillStyle = 'blue';
+ctx.fillRect(-25, -25, 50, 50); // Centered at rotation point
+ctx.restore();
+
+// Combined translation and rotation
+ctx.save();
+ctx.translate(300, 100);
+ctx.rotate(Math.PI / 6); // 30 degrees
+ctx.fillStyle = 'green';
+ctx.fillRect(0, 0, 50, 30);
+ctx.restore();
+
+// Multiple transformations
+ctx.save();
+ctx.translate(100, 200);
+ctx.rotate(Math.PI / 8);
+ctx.translate(50, 0);
+ctx.fillStyle = 'purple';
+ctx.fillRect(-25, -25, 50, 50);
+ctx.restore();
+
+// Rotation around specific point
+function rotateAroundPoint(x, y, angle) {
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.translate(-x, -y);
+}
+
+ctx.save();
+rotateAroundPoint(250, 250, Math.PI / 3);
+ctx.fillStyle = 'orange';
+ctx.fillRect(225, 225, 50, 50);
+ctx.restore();
+
+// Animated rotation
+let angle = 0;
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  ctx.save();
+  ctx.translate(350, 250);
+  ctx.rotate(angle);
+  ctx.fillStyle = 'darkblue';
+  ctx.fillRect(-25, -25, 50, 50);
+  ctx.restore();
+  
+  angle += 0.02;
+  requestAnimationFrame(animate);
+}
+animate();`
+        },
+        {
+          command: 'Scaling and Reflection',
+          description: 'Scale and reflect canvas content',
+          usage: 'scale(), negative scaling for reflection',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Scaling
+ctx.save();
+ctx.translate(100, 100);
+ctx.scale(2, 2); // Double size
+ctx.fillStyle = 'red';
+ctx.fillRect(0, 0, 25, 25); // Appears as 50x50
+ctx.restore();
+
+// Non-uniform scaling
+ctx.save();
+ctx.translate(200, 100);
+ctx.scale(3, 1); // 3x width, 1x height
+ctx.fillStyle = 'blue';
+ctx.fillRect(0, 0, 25, 25);
+ctx.restore();
+
+// Reflection (horizontal flip)
+ctx.save();
+ctx.translate(300, 100);
+ctx.scale(-1, 1); // Flip horizontally
+ctx.fillStyle = 'green';
+ctx.fillRect(-25, -25, 50, 50);
+ctx.restore();
+
+// Reflection (vertical flip)
+ctx.save();
+ctx.translate(100, 200);
+ctx.scale(1, -1); // Flip vertically
+ctx.fillStyle = 'purple';
+ctx.fillRect(-25, -25, 50, 50);
+ctx.restore();
+
+// Double reflection (both axes)
+ctx.save();
+ctx.translate(200, 200);
+ctx.scale(-1, -1); // Flip both axes
+ctx.fillStyle = 'orange';
+ctx.fillRect(-25, -25, 50, 50);
+ctx.restore();
+
+// Combined transformations
+ctx.save();
+ctx.translate(300, 200);
+ctx.scale(1.5, 1.5);
+ctx.rotate(Math.PI / 4);
+ctx.fillStyle = 'darkblue';
+ctx.fillRect(-25, -25, 50, 50);
+ctx.restore();
+
+// Scaling with origin adjustment
+function scaleFromPoint(x, y, scaleX, scaleY) {
+  ctx.translate(x, y);
+  ctx.scale(scaleX, scaleY);
+  ctx.translate(-x, -y);
+}
+
+ctx.save();
+scaleFromPoint(350, 250, 2, 2);
+ctx.fillStyle = 'darkgreen';
+ctx.fillRect(325, 225, 50, 50);
+ctx.restore();`
+        },
+        {
+          command: 'Complex Transformations',
+          description: 'Advanced transformation techniques',
+          usage: 'setTransform(), transform matrices',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Set transform matrix
+// ctx.setTransform(a, b, c, d, e, f)
+// a: horizontal scaling
+// b: horizontal skewing
+// c: vertical skewing
+// d: vertical scaling
+// e: horizontal translation
+// f: vertical translation
+
+ctx.setTransform(1, 0, 0, 1, 0, 0); // Identity matrix
+ctx.fillStyle = 'red';
+ctx.fillRect(50, 50, 50, 50);
+
+// Custom transformation
+ctx.setTransform(2, 0.5, -0.5, 2, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(0, 0, 50, 50);
+
+// Reset transform
+ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+// Transform helper functions
+function skew(x, y) {
+  ctx.transform(1, y, x, 1, 0, 0);
+}
+
+function rotate(degrees) {
+  const radians = degrees * Math.PI / 180;
+  ctx.transform(Math.cos(radians), Math.sin(radians), 
+                -Math.sin(radians), Math.cos(radians), 0, 0);
+}
+
+function scale(scaleX, scaleY) {
+  ctx.transform(scaleX, 0, 0, scaleY, 0, 0);
+}
+
+// Combined custom transformations
+ctx.save();
+ctx.translate(200, 200);
+skew(0.5, 0);
+rotate(30);
+scale(1.5, 1.5);
+ctx.fillStyle = 'green';
+ctx.fillRect(-25, -25, 50, 50);
+ctx.restore();
+
+// Get current transform
+const transform = ctx.getTransform();
+console.log('Current transform:', transform);
+
+// Check if point is in path with transformations
+ctx.save();
+ctx.translate(300, 200);
+ctx.rotate(Math.PI / 4);
+ctx.beginPath();
+ctx.rect(-25, -25, 50, 50);
+ctx.fillStyle = 'purple';
+ctx.fill();
+
+// Check if point is in transformed path
+const point = { x: 320, y: 220 };
+const isPointInPath = ctx.isPointInPath(point.x, point.y);
+console.log('Point in path:', isPointInPath);
+ctx.restore();`
+        },
+      ],
+    },
+    {
+      title: 'Animation Basics',
+      commands: [
+        {
+          command: 'Animation Loop',
+          description: 'Create basic animation loops',
+          usage: 'requestAnimationFrame(), clearRect()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+let x = 0;
+let y = canvas.height / 2;
+let speed = 2;
+
+function animate() {
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Update position
+  x += speed;
+  
+  // Bounce off walls
+  if (x > canvas.width - 50 || x < 0) {
+    speed = -speed;
+  }
+  
+  // Draw circle
+  ctx.beginPath();
+  ctx.arc(x, y, 25, 0, Math.PI * 2);
+  ctx.fillStyle = 'blue';
+  ctx.fill();
+  
+  // Continue animation
+  requestAnimationFrame(animate);
+}
+
+// Start animation
+animate();
+
+// Controlled animation with start/stop
+let animationId = null;
+let isAnimating = false;
+
+function startAnimation() {
+  if (!isAnimating) {
+    isAnimating = true;
+    animate();
+  }
+}
+
+function stopAnimation() {
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    isAnimating = false;
+  }
+}
+
+// Frame rate control
+let lastTime = 0;
+const fps = 60;
+const frameInterval = 1000 / fps;
+
+function animateWithFPS(currentTime) {
+  animationId = requestAnimationFrame(animateWithFPS);
+  
+  const deltaTime = currentTime - lastTime;
+  
+  if (deltaTime > frameInterval) {
+    // Update and draw
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ... drawing code ...
+    
+    lastTime = currentTime - (deltaTime % frameInterval);
+  }
+}`
+        },
+        {
+          command: 'Easing and Timing',
+          description: 'Smooth animation with easing functions',
+          usage: 'Easing functions for natural motion',
+          example: `// Easing functions
+const easing = {
+  linear: t => t,
+  easeInQuad: t => t * t,
+  easeOutQuad: t => t * (2 - t),
+  easeInOutQuad: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+  easeInCubic: t => t * t * t,
+  easeOutCubic: t => (--t) * t * t + 1,
+  easeInOutCubic: t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+  easeInElastic: t => {
+    if (t === 0 || t === 1) return t;
+    const p = 0.3;
+    return -Math.pow(2, 10 * (t - 1)) * Math.sin((t - 1.1) * 2 * Math.PI / p);
+  },
+  easeOutElastic: t => {
+    if (t === 0 || t === 1) return t;
+    const p = 0.3;
+    return Math.pow(2, -10 * t) * Math.sin((t - 0.1) * 2 * Math.PI / p) + 1;
+  }
+};
+
+// Animated property with easing
+function animateProperty(startValue, endValue, duration, easingFunction, callback) {
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    const easedProgress = easingFunction(progress);
+    const currentValue = startValue + (endValue - startValue) * easedProgress;
+    
+    callback(currentValue);
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// Usage example
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+let ballX = 50;
+
+animateProperty(50, 350, 2000, easing.easeOutBounce, (x) => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.arc(x, 200, 20, 0, Math.PI * 2);
+  ctx.fillStyle = 'red';
+  ctx.fill();
+  ballX = x;
+});
+
+// Bounce easing function
+easing.easeOutBounce = t => {
+  if (t < 1 / 2.75) {
+    return 7.5625 * t * t;
+  } else if (t < 2 / 2.75) {
+    t -= 1.5 / 2.75;
+    return 7.5625 * t * t + 0.75;
+  } else if (t < 2.5 / 2.75) {
+    t -= 2.25 / 2.75;
+    return 7.5625 * t * t + 0.9375;
+  } else {
+    t -= 2.625 / 2.75;
+    return 7.5625 * t * t + 0.984375;
+  }
+};`
+        },
+        {
+          command: 'Sprite Animation',
+          description: 'Create sprite-based animations',
+          usage: 'Sprite sheets and frame animation',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Sprite animation class
+class SpriteAnimation {
+  constructor(image, frameWidth, frameHeight, frameCount, animationSpeed) {
+    this.image = image;
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+    this.frameCount = frameCount;
+    this.animationSpeed = animationSpeed;
+    this.currentFrame = 0;
+    this.lastFrameTime = 0;
+  }
+  
+  update(currentTime) {
+    if (currentTime - this.lastFrameTime > this.animationSpeed) {
+      this.currentFrame = (this.currentFrame + 1) % this.frameCount;
+      this.lastFrameTime = currentTime;
+    }
+  }
+  
+  draw(ctx, x, y) {
+    const sourceX = this.currentFrame * this.frameWidth;
+    const sourceY = 0;
+    
+    ctx.drawImage(
+      this.image,
+      sourceX, sourceY, this.frameWidth, this.frameHeight,
+      x, y, this.frameWidth, this.frameHeight
+    );
+  }
+}
+
+// Load sprite sheet
+const spriteImage = new Image();
+spriteImage.onload = function() {
+  // Create animation (assuming 8 frames, 64x64 each, 100ms per frame)
+  const walkAnimation = new SpriteAnimation(spriteImage, 64, 64, 8, 100);
+  
+  let characterX = 100;
+  let characterY = 200;
+  
+  function animate(currentTime) {
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update animation
+    walkAnimation.update(currentTime);
+    
+    // Draw sprite
+    walkAnimation.draw(ctx, characterX, characterY);
+    
+    // Move character
+    characterX += 2;
+    if (characterX > canvas.width) {
+      characterX = -64;
+    }
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate(0);
+};
+
+spriteImage.src = 'sprite-sheet.png';
+
+// Multiple animations
+class Character {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.currentAnimation = null;
+    this.animations = {};
+  }
+  
+  addAnimation(name, animation) {
+    this.animations[name] = animation;
+    if (!this.currentAnimation) {
+      this.currentAnimation = animation;
+    }
+  }
+  
+  setAnimation(name) {
+    if (this.animations[name]) {
+      this.currentAnimation = this.animations[name];
+    }
+  }
+  
+  update(currentTime) {
+    if (this.currentAnimation) {
+      this.currentAnimation.update(currentTime);
+    }
+  }
+  
+  draw(ctx) {
+    if (this.currentAnimation) {
+      this.currentAnimation.draw(ctx, this.x, this.y);
+    }
+  }
+}
+        }
+      ],
+    },
+
+    // ADVANCED LEVEL
+    {
+      title: 'Advanced Drawing Techniques',
+      commands: [
+        {
+          command: 'Composite Operations',
+          description: 'Control how shapes are drawn together',
+          usage: 'globalCompositeOperation property',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Draw first circle
+ctx.fillStyle = 'red';
+ctx.beginPath();
+ctx.arc(100, 100, 50, 0, Math.PI * 2);
+ctx.fill();
+
+// Set composite operation
+ctx.globalCompositeOperation = 'source-over'; // Default
+ctx.fillStyle = 'blue';
+ctx.beginPath();
+ctx.arc(150, 100, 50, 0, Math.PI * 2);
+ctx.fill();
+
+// Clear and try different operations
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+// Source-over (default)
+ctx.globalCompositeOperation = 'source-over';
+ctx.fillStyle = 'red';
+ctx.fillRect(50, 50, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(100, 100, 100, 100);
+
+// Source-in
+ctx.globalCompositeOperation = 'source-in';
+ctx.fillStyle = 'red';
+ctx.fillRect(250, 50, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(300, 100, 100, 100);
+
+// Source-out
+ctx.globalCompositeOperation = 'source-out';
+ctx.fillStyle = 'red';
+ctx.fillRect(50, 200, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(100, 250, 100, 100);
+
+// Destination-over
+ctx.globalCompositeOperation = 'destination-over';
+ctx.fillStyle = 'red';
+ctx.fillRect(250, 200, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(300, 250, 100, 100);
+
+// Lighter
+ctx.globalCompositeOperation = 'lighter';
+ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+ctx.fillRect(50, 350, 100, 100);
+ctx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+ctx.fillRect(100, 400, 100, 100);
+
+// Multiply
+ctx.globalCompositeOperation = 'multiply';
+ctx.fillStyle = 'red';
+ctx.fillRect(250, 350, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(300, 400, 100, 100);
+
+// Screen
+ctx.globalCompositeOperation = 'screen';
+ctx.fillStyle = 'red';
+ctx.fillRect(450, 50, 100, 100);
+ctx.fillStyle = 'blue';
+ctx.fillRect(500, 100, 100, 100);
+
+// Reset to default
+ctx.globalCompositeOperation = 'source-over';`
+        },
+        {
+          command: 'Clipping and Masking',
+          description: 'Create clipping regions and masks',
+          usage: 'clip(), save(), restore()',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Basic clipping
+ctx.save();
+ctx.beginPath();
+ctx.arc(150, 150, 80, 0, Math.PI * 2);
+ctx.clip();
+
+// Draw image - only visible inside circle
+const img = new Image();
+img.onload = function() {
+  ctx.drawImage(img, 50, 50, 200, 200);
+};
+img.src = 'path/to/image.jpg';
+
+ctx.restore();
+
+// Complex clipping path
+ctx.save();
+ctx.beginPath();
+ctx.moveTo(250, 100);
+ctx.lineTo(350, 100);
+ctx.lineTo(400, 200);
+ctx.lineTo(300, 250);
+ctx.lineTo(200, 200);
+ctx.closePath();
+ctx.clip();
+
+// Draw gradient fill
+const gradient = ctx.createLinearGradient(200, 100, 400, 250);
+gradient.addColorStop(0, 'red');
+gradient.addColorStop(1, 'blue');
+ctx.fillStyle = gradient;
+ctx.fillRect(200, 100, 200, 150);
+
+ctx.restore();
+
+// Text clipping
+ctx.save();
+ctx.font = 'bold 60px Arial';
+ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+
+// Create text clipping path
+ctx.beginPath();
+ctx.fillText('CLIP', 150, 350);
+ctx.clip();
+
+// Draw pattern inside text
+const patternCanvas = document.createElement('canvas');
+patternCanvas.width = 20;
+patternCanvas.height = 20;
+const patternCtx = patternCanvas.getContext('2d');
+patternCtx.fillStyle = 'lightgreen';
+patternCtx.fillRect(0, 0, 10, 10);
+patternCtx.fillRect(10, 10, 10, 10);
+patternCtx.fillStyle = 'darkgreen';
+patternCtx.fillRect(10, 0, 10, 10);
+patternCtx.fillRect(0, 10, 10, 10);
+
+const pattern = ctx.createPattern(patternCanvas, 'repeat');
+ctx.fillStyle = pattern;
+ctx.fillRect(0, 300, 300, 100);
+
+ctx.restore();
+
+// Nested clipping
+ctx.save();
+ctx.beginPath();
+ctx.rect(50, 400, 200, 100);
+ctx.clip();
+
+ctx.save();
+ctx.beginPath();
+ctx.arc(150, 450, 40, 0, Math.PI * 2);
+ctx.clip();
+
+// This will only be visible in the intersection
+ctx.fillStyle = 'purple';
+ctx.fillRect(100, 420, 100, 60);
+
+ctx.restore();
+ctx.restore();`
+        },
+        {
+          command: 'Advanced Path Operations',
+          description: 'Complex path manipulations',
+          usage: 'Path2D object, path operations',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Path2D object
+const path = new Path2D();
+path.rect(50, 50, 100, 100);
+path.arc(150, 150, 50, 0, Math.PI * 2);
+path.moveTo(200, 200);
+path.lineTo(300, 250);
+path.lineTo(250, 300);
+path.closePath();
+
+ctx.fillStyle = 'lightblue';
+ctx.fill(path);
+
+// SVG path string
+const svgPath = new Path2D('M 100 300 L 200 300 L 150 350 Z');
+ctx.fillStyle = 'lightgreen';
+ctx.fill(svgPath);
+
+// Path operations
+function addPaths(path1, path2) {
+  const combined = new Path2D(path1);
+  combined.addPath(path2);
+  return combined;
+}
+
+const rectPath = new Path2D();
+rectPath.rect(300, 50, 80, 80);
+
+const circlePath = new Path2D();
+circlePath.arc(340, 90, 30, 0, Math.PI * 2);
+
+const combinedPath = addPaths(rectPath, circlePath);
+ctx.fillStyle = 'orange';
+ctx.fill(combinedPath);
+
+// Hit detection with Path2D
+function createInteractivePath(x, y, size) {
+  const path = new Path2D();
+  path.arc(x, y, size, 0, Math.PI * 2);
+  return path;
+}
+
+const interactivePaths = [
+  { path: createInteractivePath(100, 450, 30), color: 'red' },
+  { path: createInteractivePath(200, 450, 30), color: 'green' },
+  { path: createInteractivePath(300, 450, 30), color: 'blue' }
+];
+
+// Draw paths
+interactivePaths.forEach(item => {
+  ctx.fillStyle = item.color;
+  ctx.fill(item.path);
+});
+
+// Click detection
+canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  interactivePaths.forEach(item => {
+    if (ctx.isPointInPath(item.path, x, y)) {
+      console.log('Clicked on', item.color, 'circle');
+    }
+  });
+});
+
+// Complex path construction
+class PathBuilder {
+  constructor() {
+    this.path = new Path2D();
+  }
+  
+  moveTo(x, y) {
+    this.path.moveTo(x, y);
+    return this;
+  }
+  
+  lineTo(x, y) {
+    this.path.lineTo(x, y);
+    return this;
+  }
+  
+  arc(x, y, radius, startAngle, endAngle) {
+    this.path.arc(x, y, radius, startAngle, endAngle);
+    return this;
+  }
+  
+  closePath() {
+    this.path.closePath();
+    return this;
+  }
+  
+  getPath() {
+    return this.path;
+  }
+}
+
+const complexPath = new PathBuilder()
+  .moveTo(400, 300)
+  .lineTo(450, 350)
+  .arc(400, 400, 50, Math.PI / 2, Math.PI * 1.5)
+  .lineTo(350, 350)
+  .closePath()
+  .getPath();
+
+ctx.fillStyle = 'purple';
+ctx.fill(complexPath);`
+        },
+      ],
+    },
+    {
+      title: 'Performance Optimization',
+      commands: [
+        {
+          command: 'Rendering Optimization',
+          description: 'Optimize canvas rendering performance',
+          usage: 'Techniques for better performance',
+          example: `const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Use offscreen canvas for complex operations
+const offscreenCanvas = document.createElement('canvas');
+offscreenCanvas.width = canvas.width;
+offscreenCanvas.height = canvas.height;
+const offCtx = offscreenCanvas.getContext('2d');
+
+// Draw complex scene once
+function drawComplexScene() {
+  offCtx.clearRect(0, 0, offscreenCanvas.width, offscreenCanvas.height);
+  
+  // Draw many objects
+  for (let i = 0; i < 1000; i++) {
+    offCtx.fillStyle = \`hsl(\${i % 360}, 70%, 50%)\`;
+    offCtx.fillRect(
+      Math.random() * offscreenCanvas.width,
+      Math.random() * offscreenCanvas.height,
+      10, 10
+    );
+  }
+}
+
+// Copy to main canvas
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(offscreenCanvas, 0, 0);
+  requestAnimationFrame(render);
+}
+
+drawComplexScene();
+render();
+
+// Object pooling for frequently created objects
+class ObjectPool {
+  constructor(createFn, resetFn, initialSize = 10) {
+    this.createFn = createFn;
+    this.resetFn = resetFn;
+    this.pool = [];
+    
+    for (let i = 0; i < initialSize; i++) {
+      this.pool.push(this.createFn());
+    }
+  }
+  
+  acquire() {
+    if (this.pool.length > 0) {
+      return this.pool.pop();
+    }
+    return this.createFn();
+  }
+  
+  release(obj) {
+    this.resetFn(obj);
+    this.pool.push(obj);
+  }
+}
+
+// Pool for particles
+const particlePool = new ObjectPool(
+  () => ({ x: 0, y: 0, vx: 0, vy: 0, life: 0 }),
+  (obj) => { obj.x = 0; obj.y = 0; obj.vx = 0; obj.vy = 0; obj.life = 0; }
+);
+
+// Dirty rectangle optimization
+class DirtyRectManager {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.dirtyRects = [];
+  }
+  
+  addDirtyRect(x, y, width, height) {
+    this.dirtyRects.push({ x, y, width, height });
+  }
+  
+  clearAndRender(renderFn) {
+    if (this.dirtyRects.length === 0) {
+      // Clear entire canvas
+      this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
+      renderFn(0, 0, this.canvas.width, this.canvas.height);
+    } else {
+      // Clear only dirty regions
+      const ctx = this.canvas.getContext('2d');
+      this.dirtyRects.forEach(rect => {
+        ctx.clearRect(rect.x, rect.y, rect.width, rect.height);
+        renderFn(rect.x, rect.y, rect.width, rect.height);
+      });
+    }
+    
+    this.dirtyRects = [];
+  }
+}
+
+// Reduce state changes
+function drawOptimized(objects) {
+  // Group by color to reduce fillStyle changes
+  const grouped = {};
+  objects.forEach(obj => {
+    if (!grouped[obj.color]) {
+      grouped[obj.color] = [];
+    }
+    grouped[obj.color].push(obj);
+  });
+  
+  Object.keys(grouped).forEach(color => {
+    ctx.fillStyle = color;
+    grouped[color].forEach(obj => {
+      ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+    });
+  });
+}
+
+// Use requestIdleCallback for non-critical rendering
+function renderNonCritical() {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      // Render background elements
+      drawBackground();
+    }, { timeout: 100 });
+  } else {
+    // Fallback
+    setTimeout(drawBackground, 0);
+  }
+}`
+        },
+        {
+          command: 'Memory Management',
+          description: 'Manage memory efficiently in canvas',
+          usage: 'Prevent memory leaks and optimize usage',
+          example: `// Canvas memory management best practices
+
+// 1. Clear event listeners and animations
+class CanvasManager {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.animationId = null;
+    this.eventListeners = [];
+  }
+  
+  startAnimation() {
+    const animate = () => {
+      this.update();
+      this.draw();
+      this.animationId = requestAnimationFrame(animate);
+    };
+    animate();
+  }
+  
+  stopAnimation() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+  }
+  
+  addEventListener(type, handler) {
+    this.canvas.addEventListener(type, handler);
+    this.eventListeners.push({ type, handler });
+  }
+  
+  destroy() {
+    this.stopAnimation();
+    
+    // Remove all event listeners
+    this.eventListeners.forEach(({ type, handler }) => {
+      this.canvas.removeEventListener(type, handler);
+    });
+    
+    // Clear canvas
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Clear references
+    this.canvas = null;
+    this.ctx = null;
+  }
+}
+
+// 2. Image memory management
+class ImageCache {
+  constructor(maxSize = 50) {
+    this.cache = new Map();
+    this.maxSize = maxSize;
+  }
+  
+  get(key) {
+    if (this.cache.has(key)) {
+      // Move to end (LRU)
+      const value = this.cache.get(key);
+      this.cache.delete(key);
+      this.cache.set(key, value);
+      return value;
+    }
+    return null;
+  }
+  
+  set(key, value) {
+    if (this.cache.size >= this.maxSize) {
+      // Remove oldest item
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, value);
+  }
+  
+  clear() {
+    this.cache.clear();
+  }
+}
+
+const imageCache = new ImageCache();
+
+// 3. Offscreen canvas cleanup
+function createOffscreenCanvas(width, height) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  
+  // Store cleanup function
+  canvas.cleanup = function() {
+    const ctx = this.getContext('2d');
+    ctx.clearRect(0, 0, this.width, this.height);
+    this.width = 0;
+    this.height = 0;
+  };
+  
+  return canvas;
+}
+
+// 4. Pattern and gradient cleanup
+function createManagedLinearGradient(ctx, x0, y0, x1, y1) {
+  const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+  
+  // Add cleanup method
+  gradient.cleanup = function() {
+    // Clear color stops
+    while (this.addColorStop.length > 0) {
+      this.addColorStop(0, 'transparent');
+    }
+  };
+  
+  return gradient;
+}
+
+// 5. WebGL context cleanup (if using WebGL)
+function createWebGLContext(canvas) {
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  
+  if (gl) {
+    gl.cleanup = function() {
+      // Delete buffers
+      const buffers = this.getParameter(this.ARRAY_BUFFER_BINDING);
+      if (buffers) {
+        this.deleteBuffer(buffers);
+      }
+      
+      // Delete textures
+      const textures = this.getParameter(this.TEXTURE_BINDING_2D);
+      if (textures) {
+        this.deleteTexture(textures);
+      }
+      
+      // Delete shaders and programs
+      const program = this.getParameter(this.CURRENT_PROGRAM);
+      if (program) {
+        this.deleteProgram(program);
+      }
+    };
+  }
+  
+  return gl;
+}
+
+// 6. Memory monitoring
+function monitorMemory() {
+  if (performance.memory) {
+    console.log('Memory usage:', {
+      used: Math.round(performance.memory.usedJSHeapSize / 1048576) + ' MB',
+      total: Math.round(performance.memory.totalJSHeapSize / 1048576) + ' MB',
+      limit: Math.round(performance.memory.jsHeapSizeLimit / 1048576) + ' MB'
+    });
+  }
+}
+
+// Monitor memory periodically
+setInterval(monitorMemory, 10000);`
+        },
+        {
+          command: 'Canvas Best Practices',
+          description: 'Best practices for canvas development',
+          usage: 'Guidelines for efficient canvas code',
+          example: `// Canvas best practices
+
+// 1. Use requestAnimationFrame for animations
+function animate() {
+  update();
+  draw();
+  requestAnimationFrame(animate);
+}
+
+// 2. Batch operations together
+function drawBatch(objects) {
+  objects.forEach(obj => {
+    ctx.save();
+    ctx.translate(obj.x, obj.y);
+    ctx.rotate(obj.rotation);
+    
+    // Draw object
+    ctx.fillStyle = obj.color;
+    ctx.fillRect(-obj.width/2, -obj.height/2, obj.width, obj.height);
+    
+    ctx.restore();
+  });
+}
+
+// 3. Use hardware acceleration hints
+canvas.style.willChange = 'transform';
+canvas.style.transform = 'translateZ(0)';
+
+// 4. Optimize for high DPI displays
+function setupHighDPICanvas(canvas) {
+  const ctx = canvas.getContext('2d');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
+  // Set actual size in memory
+  canvas.width = canvas.clientWidth * devicePixelRatio;
+  canvas.height = canvas.clientHeight * devicePixelRatio;
+  
+  // Scale the drawing context
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  
+  return ctx;
+}
+
+// 5. Use offscreen canvas for complex rendering
+const offscreenCanvas = document.createElement('canvas');
+offscreenCanvas.width = canvas.width;
+offscreenCanvas.height = canvas.height;
+const offCtx = offscreenCanvas.getContext('2d');
+
+function renderComplexScene() {
+  // Render to offscreen canvas first
+  offCtx.clearRect(0, 0, offscreenCanvas.width, offscreenCanvas.height);
+  
+  // Complex drawing operations
+  drawComplexElements(offCtx);
+  
+  // Copy to main canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(offscreenCanvas, 0, 0);
+}
+
+// 6. Minimize state changes
+function drawOptimized(objects) {
+  // Group by properties to minimize state changes
+  const grouped = {};
+  
+  objects.forEach(obj => {
+    const key = \`\${obj.fillStyle}-\${obj.strokeStyle}-\${obj.lineWidth}\`;
+    if (!grouped[key]) {
+      grouped[key] = [];
+    }
+    grouped[key].push(obj);
+  });
+  
+  Object.keys(grouped).forEach(key => {
+    const [fillStyle, strokeStyle, lineWidth] = key.split('-');
+    
+    ctx.fillStyle = fillStyle;
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = parseInt(lineWidth);
+    
+    grouped[key].forEach(obj => {
+      ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+    });
+  });
+}
+
+// 7. Use appropriate image formats
+function loadImageOptimized(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    
+    img.onload = () => {
+      // Optimize image size if needed
+      if (img.width > 1024 || img.height > 1024) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        const scale = Math.min(1024 / img.width, 1024 / img.height);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        const optimizedImg = new Image();
+        optimizedImg.onload = () => resolve(optimizedImg);
+        optimizedImg.src = canvas.toDataURL('image/jpeg', 0.8);
+      } else {
+        resolve(img);
+      }
+    };
+    
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+// 8. Profile and measure performance
+function measurePerformance(fn, label) {
+  return function(...args) {
+    const start = performance.now();
+    const result = fn.apply(this, args);
+    const end = performance.now();
+    
+    console.log(\`\${label}: \${end - start}ms\`);
+    return result;
+  };
+}
+
+// Usage
+const drawOptimizedMeasured = measurePerformance(drawOptimized, 'drawOptimized');
+
+// 9. Use appropriate canvas size
+function resizeCanvas(canvas, container) {
+  const rect = container.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  
+  return ctx;
+}
+
+// 10. Clean up properly
+function cleanupCanvas(canvas) {
+  const ctx = canvas.getContext('2d');
+  
+  // Clear all resources
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Remove event listeners
+  canvas.removeEventListener('click', handleClick);
+  canvas.removeEventListener('mousemove', handleMouseMove);
+  
+  // Cancel animations
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+  }
+  
+  // Clear references
+  canvas.width = 0;
+  canvas.height = 0;
+}`
+        },
+      ],
+    },
+    {
+      title: 'Modern Canvas Features',
+      commands: [
+        {
+          command: 'OffscreenCanvas',
+          description: 'Use OffscreenCanvas for better performance',
+          usage: 'OffscreenCanvas API for worker rendering',
+          example: `// OffscreenCanvas for worker-based rendering
+
+// Main thread
+const canvas = document.getElementById('myCanvas');
+const offscreen = canvas.transferControlToOffscreen();
+
+// Send to worker
+const worker = new Worker('canvas-worker.js');
+worker.postMessage({ canvas: offscreen }, [offscreen]);
+
+// Worker thread (canvas-worker.js)
+self.onmessage = function(e) {
+  const { canvas } = e.data;
+  const ctx = canvas.getContext('2d');
+  
+  let animationId;
+  
+  function animate() {
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw animated content
+    const time = Date.now() * 0.001;
+    
+    ctx.fillStyle = 'blue';
+    ctx.beginPath();
+    ctx.arc(
+      canvas.width / 2 + Math.cos(time) * 100,
+      canvas.height / 2 + Math.sin(time) * 100,
+      20,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+    
+    animationId = requestAnimationFrame(animate);
+  }
+  
+  animate();
+};
+
+// Fallback for browsers without OffscreenCanvas support
+function createFallbackOffscreen(width, height) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  return canvas;
+}
+
+// Check for OffscreenCanvas support
+if (typeof OffscreenCanvas !== 'undefined') {
+  const offscreen = new OffscreenCanvas(width, height);
+  const ctx = offscreen.getContext('2d');
+  
+  // Use offscreen canvas
+  ctx.fillStyle = 'red';
+  ctx.fillRect(0, 0, 100, 100);
+  
+  // Transfer to main canvas
+  const bitmap = offscreen.transferToImageBitmap();
+  const mainCtx = canvas.getContext('2d');
+  mainCtx.drawImage(bitmap, 0, 0);
+} else {
+  // Fallback
+  const fallbackCanvas = createFallbackOffscreen(width, height);
+  const ctx = fallbackCanvas.getContext('2d');
+  
+  ctx.fillStyle = 'red';
+  ctx.fillRect(0, 0, 100, 100);
+  
+  const mainCtx = canvas.getContext('2d');
+  mainCtx.drawImage(fallbackCanvas, 0, 0);
+}
+
+// Advanced OffscreenCanvas usage
+class OffscreenRenderer {
+  constructor(width, height) {
+    this.canvas = new OffscreenCanvas(width, height);
+    this.ctx = this.canvas.getContext('2d');
+    this.width = width;
+    this.height = height;
+  }
+  
+  render(scene) {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    
+    // Render scene
+    scene.objects.forEach(obj => {
+      this.ctx.save();
+      this.ctx.translate(obj.x, obj.y);
+      this.ctx.rotate(obj.rotation);
+      
+      this.ctx.fillStyle = obj.color;
+      this.ctx.fillRect(-obj.width/2, -obj.height/2, obj.width, obj.height);
+      
+      this.ctx.restore();
+    });
+    
+    return this.transferToBitmap();
+  }
+  
+  transferToBitmap() {
+    return this.canvas.transferToImageBitmap();
+  }
+}
+
+// Usage in main thread
+const renderer = new OffscreenRenderer(800, 600);
+
+function renderFrame(scene) {
+  const bitmap = renderer.render(scene);
+  const mainCtx = canvas.getContext('2d');
+  mainCtx.drawImage(bitmap, 0, 0);
+}`
+        },
+        {
+          command: 'Canvas and WebAssembly',
+          description: 'Integrate WebAssembly with canvas',
+          usage: 'WASM for performance-critical operations',
+          example: `// WebAssembly integration with Canvas
+
+// C/C++ code compiled to WASM (example: image processing)
+// int* process_image(int* data, int width, int height, int brightness) {
+//     for (int i = 0; i < width * height * 4; i += 4) {
+//         data[i] = min(255, data[i] + brightness);     // Red
+//         data[i + 1] = min(255, data[i + 1] + brightness); // Green
+//         data[i + 2] = min(255, data[i + 2] + brightness); // Blue
+//         // Alpha channel unchanged
+//     }
+//     return data;
+// }
+
+// JavaScript wrapper
+class WASMImageProcessor {
+  constructor() {
+    this.wasmModule = null;
+    this.memory = null;
+  }
+  
+  async load() {
+    const response = await fetch('image-processor.wasm');
+    const wasmBuffer = await response.arrayBuffer();
+    
+    this.wasmModule = await WebAssembly.instantiate(wasmBuffer);
+    this.memory = this.wasmModule.instance.exports.memory;
+  }
+  
+  processImage(imageData, brightness) {
+    const width = imageData.width;
+    const height = imageData.height;
+    const data = imageData.data;
+    
+    // Allocate memory in WASM
+    const ptr = this.wasmModule.instance.exports.allocate(width * height * 4);
+    
+    // Copy image data to WASM memory
+    const wasmData = new Uint8ClampedArray(this.memory.buffer, ptr, width * height * 4);
+    wasmData.set(data);
+    
+    // Process in WASM
+    this.wasmModule.instance.exports.process_image(ptr, width, height, brightness);
+    
+    // Copy result back
+    const result = new Uint8ClampedArray(wasmData);
+    imageData.data.set(result);
+    
+    // Free WASM memory
+    this.wasmModule.instance.exports.deallocate(ptr);
+    
+    return imageData;
+  }
+}
+
+// Usage
+const processor = new WASMImageProcessor();
+await processor.load();
+
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+const img = new Image();
+img.onload = function() {
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const processedData = processor.processImage(imageData, 50);
+  
+  ctx.putImageData(processedData, 0, 0);
+};
+img.src = 'image.jpg';
+
+// High-performance particle system with WASM
+class WASMParticleSystem {
+  constructor(particleCount) {
+    this.particleCount = particleCount;
+    this.wasmModule = null;
+    this.particlesPtr = null;
+  }
+  
+  async load() {
+    const response = await fetch('particle-system.wasm');
+    const wasmBuffer = await response.arrayBuffer();
+    
+    this.wasmModule = await WebAssembly.instantiate(wasmBuffer);
+    
+    // Allocate particle data
+    this.particlesPtr = this.wasmModule.instance.exports.allocate_particles(this.particleCount);
+  }
+  
+  update(deltaTime) {
+    this.wasmModule.instance.exports.update_particles(
+      this.particlesPtr,
+      this.particleCount,
+      deltaTime
+    );
+  }
+  
+  render(ctx) {
+    const particles = new Float32Array(
+      this.wasmModule.instance.exports.memory.buffer,
+      this.particlesPtr,
+      this.particleCount * 4 // x, y, vx, vy per particle
+    );
+    
+    ctx.fillStyle = 'blue';
+    for (let i = 0; i < this.particleCount; i++) {
+      const x = particles[i * 4];
+      const y = particles[i * 4 + 1];
+      
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  
+  destroy() {
+    if (this.particlesPtr) {
+      this.wasmModule.instance.exports.deallocate_particles(this.particlesPtr);
+    }
+  }
+}`
+        },
+        {
+          command: 'Canvas with WebGPU',
+          description: 'Future-looking WebGPU integration',
+          usage: 'WebGPU for high-performance graphics',
+          example: `// WebGPU integration (future API)
+// Note: WebGPU is still experimental and not widely supported
+
+class WebGPURenderer {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.device = null;
+    this.context = null;
+    this.pipeline = null;
+  }
+  
+  async init() {
+    // Check for WebGPU support
+    if (!navigator.gpu) {
+      throw new Error('WebGPU not supported');
+    }
+    
+    // Get adapter
+    const adapter = await navigator.gpu.requestAdapter();
+    if (!adapter) {
+      throw new Error('No appropriate GPUAdapter found');
+    }
+    
+    // Get device
+    this.device = await adapter.requestDevice();
+    
+    // Get context
+    this.context = this.canvas.getContext('webgpu');
+    
+    // Configure context
+    const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+    this.context.configure({
+      device: this.device,
+      format: presentationFormat,
+      alphaMode: 'premultiplied',
+    });
+    
+    // Create render pipeline
+    this.pipeline = this.device.createRenderPipeline({
+      layout: 'auto',
+      vertex: {
+        module: this.device.createShaderModule({
+          code: vertexShaderCode
+        }),
+        entryPoint: 'main',
+      },
+      fragment: {
+        module: this.device.createShaderModule({
+          code: fragmentShaderCode
+        }),
+        entryPoint: 'main',
+        targets: [{
+          format: presentationFormat,
+        }],
+      },
+      primitive: {
+        topology: 'triangle-list',
+      },
+    });
+  }
+  
+  render() {
+    // Create command encoder
+    const commandEncoder = this.device.createCommandEncoder();
+    
+    // Create texture view
+    const textureView = this.context.getCurrentTexture().createView();
+    
+    // Begin render pass
+    const renderPassDescriptor = {
+      colorAttachments: [{
+        view: textureView,
+        clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    };
+    
+    const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
+    passEncoder.setPipeline(this.pipeline);
+    passEncoder.draw(3); // Draw triangle
+    passEncoder.end();
+    
+    // Submit commands
+    this.device.queue.submit([commandEncoder.finish()]);
+  }
+}
+
+// Fallback to Canvas 2D if WebGPU not available
+class CanvasRenderer {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+  }
+  
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Draw triangle
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.canvas.width / 2, 50);
+    this.ctx.lineTo(50, this.canvas.height - 50);
+    this.ctx.lineTo(this.canvas.width - 50, this.canvas.height - 50);
+    this.ctx.closePath();
+    
+    this.ctx.fillStyle = 'blue';
+    this.ctx.fill();
+  }
+}
+
+// Universal renderer that chooses best available API
+class UniversalRenderer {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.renderer = null;
+  }
+  
+  async init() {
+    try {
+      // Try WebGPU first
+      this.renderer = new WebGPURenderer(this.canvas);
+      await this.renderer.init();
+      console.log('Using WebGPU renderer');
+    } catch (error) {
+      console.log('WebGPU not available, falling back to Canvas 2D');
+      this.renderer = new CanvasRenderer(this.canvas);
+    }
+  }
+  
+  render() {
+    this.renderer.render();
+  }
+}
+
+// Usage
+const canvas = document.getElementById('myCanvas');
+const renderer = new UniversalRenderer(canvas);
+
+await renderer.init();
+
+function animate() {
+  renderer.render();
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// WebGPU shader examples
+const vertexShaderCode = \`
+  @vertex
+  fn main(@builtin(vertex_index) vertexIndex: u32) -> @builtin(position) vec4<f32> {
+    var pos = array<vec2<f32>, 3>(
+      vec2<f32>(0.0, 0.5),
+      vec2<f32>(-0.5, -0.5),
+      vec2<f32>(0.5, -0.5)
+    );
+    
+    return vec4<f32>(pos[vertexIndex], 0.0, 1.0);
+  }
+\`;
+
+const fragmentShaderCode = \`
+  @fragment
+  fn main() -> @location(0) vec4<f32> {
+    return vec4<f32>(1.0, 0.0, 0.0, 1.0); // Red
+  }
+\`;`
+        },
+      ],
+    },
+    {
+      title: 'Canvas Libraries and Frameworks',
+      commands: [
+        {
+          command: 'Popular Canvas Libraries',
+          description: 'Overview of canvas libraries and frameworks',
+          usage: 'Choose the right library for your needs',
+          example: `// Popular Canvas Libraries Overview
+
+// 1. Fabric.js - Object model on top of canvas
+import { fabric } from 'fabric';
+
+const canvas = new fabric.Canvas('myCanvas');
+
+// Add shapes
+const rect = new fabric.Rect({
+  left: 100,
+  top: 100,
+  width: 50,
+  height: 50,
+  fill: 'red'
+});
+
+canvas.add(rect);
+
+// Add text
+const text = new fabric.Text('Hello World', {
+  left: 200,
+  top: 100,
+  fontFamily: 'Arial',
+  fontSize: 20
+});
+
+canvas.add(text);
+
+// Event handling
+canvas.on('mouse:down', function(options) {
+  if (options.target) {
+    console.log('Clicked on:', options.target);
+  }
+});
+
+// Serialization
+const json = JSON.stringify(canvas.toJSON());
+canvas.loadFromJSON(json, function() {
+  canvas.renderAll();
+});
+
+// 2. Konva.js - 2D canvas library
+import Konva from 'konva';
+
+const stage = new Konva.Stage({
+  container: 'container',
+  width: 800,
+  height: 600
+});
+
+const layer = new Konva.Layer();
+stage.add(layer);
+
+// Add shape
+const circle = new Konva.Circle({
+  x: 100,
+  y: 100,
+  radius: 50,
+  fill: 'green',
+  stroke: 'black',
+  strokeWidth: 2
+});
+
+layer.add(circle);
+layer.draw();
+
+// Animation
+circle.to({
+  x: 300,
+  y: 300,
+  duration: 2,
+  easing: Konva.Easings.EaseInOut
+});
+
+// 3. p5.js - Creative coding library
+import p5 from 'p5';
+
+new p5((p) => {
+  p.setup = function() {
+    p.createCanvas(800, 600);
+  };
+  
+  p.draw = function() {
+    p.background(220);
+    
+    // Animated circle
+    const x = p.width / 2 + p.cos(p.frameCount * 0.05) * 100;
+    const y = p.height / 2 + p.sin(p.frameCount * 0.05) * 100;
+    
+    p.fill(255, 0, 0);
+    p.circle(x, y, 50);
+  };
+  
+  p.mousePressed = function() {
+    console.log('Mouse pressed at:', p.mouseX, p.mouseY);
+  };
+});
+
+// 4. Three.js - 3D graphics (uses WebGL)
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('myCanvas') });
+
+renderer.setSize(800, 600);
+
+// Add cube
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+camera.position.z = 5;
+
+function animate() {
+  requestAnimationFrame(animate);
+  
+  cube.rotation.x += 0.01;
+  cube.rotation.y += 0.01;
+  
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// 5. Paper.js - Vector graphics scripting framework
+import paper from 'paper';
+
+paper.setup('myCanvas');
+
+const path = new paper.Path();
+path.strokeColor = 'black';
+path.add(new paper.Point(30, 75));
+path.add(new paper.Point(30, 25));
+path.add(new paper.Point(80, 25));
+path.add(new paper.Point(80, 75));
+path.closed = true;
+
+// Animate path
+path.onFrame = function(event) {
+  path.rotate(1);
+};
+
+paper.view.draw();
+
+// 6. Phaser - Game framework
+import Phaser from 'phaser';
+
+const config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  canvas: document.getElementById('myCanvas'),
+  scene: {
+    preload: preload,
+    create: create,
+    update: update
+  }
+};
+
+const game = new Phaser.Game(config);
+
+function preload() {
+  // Load assets
+}
+
+function create() {
+  // Create game objects
+  this.add.rectangle(400, 300, 100, 100, 0x6666ff);
+}
+
+function update() {
+  // Game loop
+}
+
+// 7. Chart.js - Charting library
+import Chart from 'chart.js/auto';
+
+const ctx = document.getElementById('myCanvas').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});`
+        },
+        {
+          command: 'Building Custom Canvas Library',
+          description: 'Create your own canvas utility library',
+          usage: 'Modular canvas library architecture',
+          example: `// Custom Canvas Library Architecture
+
+// Core Canvas class
+class Canvas2D {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.width = canvas.width;
+    this.height = canvas.height;
+    
+    this.objects = [];
+    this.animationId = null;
+    this.isAnimating = false;
+  }
+  
+  // Object management
+  add(object) {
+    this.objects.push(object);
+    return this;
+  }
+  
+  remove(object) {
+    const index = this.objects.indexOf(object);
+    if (index > -1) {
+      this.objects.splice(index, 1);
+    }
+    return this;
+  }
+  
+  clear() {
+    this.objects = [];
+    return this;
+  }
+  
+  // Rendering
+  render() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    
+    // Sort objects by z-index
+    this.objects.sort((a, b) => a.zIndex - b.zIndex);
+    
+    // Render all objects
+    this.objects.forEach(object => {
+      if (object.visible) {
+        object.render(this.ctx);
+      }
+    });
+    
+    return this;
+  }
+  
+  // Animation
+  start() {
+    if (!this.isAnimating) {
+      this.isAnimating = true;
+      this.animate();
+    }
+    return this;
+  }
+  
+  stop() {
+    this.isAnimating = false;
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    return this;
+  }
+  
+  animate() {
+    if (!this.isAnimating) return;
+    
+    // Update all objects
+    this.objects.forEach(object => {
+      if (object.update) {
+        object.update();
+      }
+    });
+    
+    this.render();
+    this.animationId = requestAnimationFrame(() => this.animate());
+  }
+  
+  // Events
+  on(event, handler) {
+    this.canvas.addEventListener(event, handler);
+    return this;
+  }
+  
+  off(event, handler) {
+    this.canvas.removeEventListener(event, handler);
+    return this;
+  }
+}
+
+// Base object class
+class CanvasObject {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+    this.zIndex = 0;
+    this.visible = true;
+    this.rotation = 0;
+    this.scaleX = 1;
+    this.scaleY = 1;
+  }
+  
+  render(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.scale(this.scaleX, this.scaleY);
+    
+    this.draw(ctx);
+    
+    ctx.restore();
+  }
+  
+  draw(ctx) {
+    // Override in subclasses
+  }
+  
+  update() {
+    // Override in subclasses
+  }
+}
+
+// Rectangle class
+class Rectangle extends CanvasObject {
+  constructor(x, y, width, height, color = 'black') {
+    super(x, y);
+    this.width = width;
+    this.height = height;
+    this.color = color;
+  }
+  
+  draw(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
+  }
+}
+
+// Circle class
+class Circle extends CanvasObject {
+  constructor(x, y, radius, color = 'black') {
+    super(x, y);
+    this.radius = radius;
+    this.color = color;
+  }
+  
+  draw(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+// Text class
+class Text extends CanvasObject {
+  constructor(x, y, text, fontSize = 16, color = 'black') {
+    super(x, y);
+    this.text = text;
+    this.fontSize = fontSize;
+    this.color = color;
+    this.font = 'Arial';
+    this.textAlign = 'center';
+    this.textBaseline = 'middle';
+  }
+  
+  draw(ctx) {
+    ctx.font = \`\${this.fontSize}px \${this.font}\`;
+    ctx.fillStyle = this.color;
+    ctx.textAlign = this.textAlign;
+    ctx.textBaseline = this.textBaseline;
+    ctx.fillText(this.text, 0, 0);
+  }
+}
+
+// Animated sprite class
+class Sprite extends CanvasObject {
+  constructor(x, y, image, frameWidth, frameHeight, frameCount) {
+    super(x, y);
+    this.image = image;
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+    this.frameCount = frameCount;
+    this.currentFrame = 0;
+    this.animationSpeed = 100; // ms per frame
+    this.lastFrameTime = 0;
+  }
+  
+  update() {
+    const now = Date.now();
+    if (now - this.lastFrameTime > this.animationSpeed) {
+      this.currentFrame = (this.currentFrame + 1) % this.frameCount;
+      this.lastFrameTime = now;
+    }
+  }
+  
+  draw(ctx) {
+    const sourceX = this.currentFrame * this.frameWidth;
+    const sourceY = 0;
+    
+    ctx.drawImage(
+      this.image,
+      sourceX, sourceY, this.frameWidth, this.frameHeight,
+      -this.frameWidth/2, -this.frameHeight/2, 
+      this.frameWidth, this.frameHeight
+    );
+  }
+}
+
+// Particle system class
+class ParticleSystem extends CanvasObject {
+  constructor(x, y, particleCount = 100) {
+    super(x, y);
+    this.particles = [];
+    this.particleCount = particleCount;
+    this.initParticles();
+  }
+  
+  initParticles() {
+    for (let i = 0; i < this.particleCount; i++) {
+      this.particles.push({
+        x: 0,
+        y: 0,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        life: 1,
+        color: \`hsl(\${Math.random() * 360}, 70%, 50%)\`
+      });
+    }
+  }
+  
+  update() {
+    this.particles.forEach(particle => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      particle.life -= 0.01;
+      
+      if (particle.life <= 0) {
+        particle.x = 0;
+        particle.y = 0;
+        particle.life = 1;
+      }
+    });
+  }
+  
+  draw(ctx) {
+    this.particles.forEach(particle => {
+      ctx.save();
+      ctx.globalAlpha = particle.life;
+      ctx.fillStyle = particle.color;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+}
+
+// Usage example
+const canvas = new Canvas2D(document.getElementById('myCanvas'));
+
+// Add objects
+canvas.add(new Rectangle(200, 200, 100, 50, 'blue'))
+      .add(new Circle(400, 200, 30, 'red'))
+      .add(new Text(300, 100, 'Hello Canvas!', 24, 'black'))
+      .add(new ParticleSystem(300, 300, 50));
+
+// Start animation
+canvas.start();
+
+// Add interaction
+canvas.on('click', (e) => {
+  const rect = canvas.canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  // Add new circle at click position
+  canvas.add(new Circle(x, y, 20, 'green'));
+});
+
+// Export library
+export {
+  Canvas2D,
+  CanvasObject,
+  Rectangle,
+  Circle,
+  Text,
+  Sprite,
+  ParticleSystem
+};`
+        },
+        {
+          command: 'Canvas Testing and Debugging',
+          description: 'Test and debug canvas applications',
+          usage: 'Testing strategies and debugging tools',
+          example: `// Canvas Testing and Debugging
+
+// 1. Unit testing canvas operations
+class CanvasTestSuite {
+  constructor() {
+    this.tests = [];
+    this.results = [];
+  }
+  
+  addTest(name, testFn) {
+    this.tests.push({ name, testFn });
+  }
+  
+  async runTests() {
+    this.results = [];
+    
+    for (const test of this.tests) {
+      try {
+        // Create test canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = 100;
+        canvas.height = 100;
+        const ctx = canvas.getContext('2d');
+        
+        // Run test
+        await test.testFn(ctx, canvas);
+        
+        this.results.push({ name: test.name, passed: true });
+      } catch (error) {
+        this.results.push({ name: test.name, passed: false, error: error.message });
+      }
+    }
+    
+    return this.results;
+  }
+}
+
+// Example tests
+const testSuite = new CanvasTestSuite();
+
+testSuite.addTest('Rectangle Drawing', (ctx, canvas) => {
+  ctx.fillStyle = 'red';
+  ctx.fillRect(10, 10, 50, 50);
+  
+  const imageData = ctx.getImageData(30, 30, 1, 1);
+  const pixel = imageData.data;
+  
+  if (pixel[0] !== 255 || pixel[1] !== 0 || pixel[2] !== 0) {
+    throw new Error('Rectangle not drawn correctly');
+  }
+});
+
+testSuite.addTest('Circle Drawing', (ctx, canvas) => {
+  ctx.fillStyle = 'blue';
+  ctx.beginPath();
+  ctx.arc(50, 50, 20, 0, Math.PI * 2);
+  ctx.fill();
+  
+  const imageData = ctx.getImageData(50, 50, 1, 1);
+  const pixel = imageData.data;
+  
+  if (pixel[0] !== 0 || pixel[1] !== 0 || pixel[2] !== 255) {
+    throw new Error('Circle not drawn correctly');
+  }
+});
+
+// Run tests
+testSuite.runTests().then(results => {
+  console.log('Test Results:', results);
+});
+
+// 2. Visual debugging tools
+class CanvasDebugger {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.debugMode = false;
+    this.debugInfo = [];
+  }
+  
+  enableDebugMode() {
+    this.debugMode = true;
+    this.setupDebugOverlay();
+  }
+  
+  disableDebugMode() {
+    this.debugMode = false;
+    this.removeDebugOverlay();
+  }
+  
+  setupDebugOverlay() {
+    // Create debug overlay
+    this.debugOverlay = document.createElement('div');
+    this.debugOverlay.style.cssText = \`
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 12px;
+      border-radius: 5px;
+      z-index: 1000;
+    \`;
+    
+    document.body.appendChild(this.debugOverlay);
+    this.updateDebugInfo();
+  }
+  
+  removeDebugOverlay() {
+    if (this.debugOverlay) {
+      document.body.removeChild(this.debugOverlay);
+      this.debugOverlay = null;
+    }
+  }
+  
+  updateDebugInfo() {
+    if (!this.debugMode) return;
+    
+    const info = [
+      \`Canvas Size: \${this.canvas.width}x\${this.canvas.height}\`,
+      \`Context: \${this.ctx.constructor.name}\`,
+      \`Transform: \${this.getTransformString()}\`,
+      \`Fill Style: \${this.ctx.fillStyle}\`,
+      \`Stroke Style: \${this.ctx.strokeStyle}\`,
+      \`Line Width: \${this.ctx.lineWidth}\`,
+      \`Global Alpha: \${this.ctx.globalAlpha}\`,
+      \`Composite Operation: \${this.ctx.globalCompositeOperation}\`
+    ];
+    
+    this.debugOverlay.innerHTML = info.join('<br>');
+  }
+  
+  getTransformString() {
+    const transform = this.ctx.getTransform();
+    return \`[\${transform.a}, \${transform.b}, \${transform.c}, \${transform.d}, \${transform.e}, \${transform.f}]\`;
+  }
+  
+  // Draw debug grid
+  drawGrid(spacing = 50) {
+    if (!this.debugMode) return;
+    
+    this.ctx.save();
+    this.ctx.strokeStyle = 'rgba(255, 0, 0, 0.3)';
+    this.ctx.lineWidth = 1;
+    this.ctx.setLineDash([5, 5]);
+    
+    for (let x = 0; x <= this.canvas.width; x += spacing) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, this.canvas.height);
+      this.ctx.stroke();
+    }
+    
+    for (let y = 0; y <= this.canvas.height; y += spacing) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(this.canvas.width, y);
+      this.ctx.stroke();
+    }
+    
+    this.ctx.restore();
+  }
+  
+  // Highlight bounding boxes
+  drawBoundingBox(x, y, width, height, label = '') {
+    if (!this.debugMode) return;
+    
+    this.ctx.save();
+    this.ctx.strokeStyle = 'red';
+    this.ctx.lineWidth = 2;
+    this.ctx.setLineDash([]);
+    
+    this.ctx.strokeRect(x, y, width, height);
+    
+    if (label) {
+      this.ctx.fillStyle = 'red';
+      this.ctx.font = '12px monospace';
+      this.ctx.fillText(label, x, y - 5);
+    }
+    
+    this.ctx.restore();
+  }
+}
+
+// 3. Performance monitoring
+class CanvasPerformanceMonitor {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.frameCount = 0;
+    this.lastTime = performance.now();
+    this.fps = 0;
+    this.frameTime = 0;
+    this.memoryUsage = 0;
+  }
+  
+  start() {
+    this.monitor();
+  }
+  
+  monitor() {
+    const now = performance.now();
+    const delta = now - this.lastTime;
+    
+    this.frameCount++;
+    this.frameTime = delta;
+    
+    if (this.frameCount % 30 === 0) {
+      this.fps = Math.round(1000 / delta);
+      
+      if (performance.memory) {
+        this.memoryUsage = Math.round(performance.memory.usedJSHeapSize / 1048576);
+      }
+      
+      this.updateDisplay();
+    }
+    
+    this.lastTime = now;
+    requestAnimationFrame(() => this.monitor());
+  }
+  
+  updateDisplay() {
+    const info = \`FPS: \${this.fps} | Frame Time: \${this.frameTime}ms | Memory: \${this.memoryUsage}MB\`;
+    
+    let display = document.getElementById('performance-display');
+    if (!display) {
+      display = document.createElement('div');
+      display.id = 'performance-display';
+      display.style.cssText = \`
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #0f0;
+        padding: 5px;
+        font-family: monospace;
+        font-size: 12px;
+        z-index: 1000;
+      \`;
+      document.body.appendChild(display);
+    }
+    
+    display.textContent = info;
+  }
+}
+
+// 4. Error handling and recovery
+class CanvasErrorHandler {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.errorCount = 0;
+    this.maxErrors = 10;
+  }
+  
+  wrapMethod(methodName, originalMethod) {
+    return function(...args) {
+      try {
+        return originalMethod.apply(this.ctx, args);
+      } catch (error) {
+        this.handleError(error, methodName, args);
+        return null;
+      }
+    }.bind(this);
+  }
+  
+  handleError(error, methodName, args) {
+    this.errorCount++;
+    console.error(\`Canvas error in \${methodName}:\`, error);
+    
+    if (this.errorCount >= this.maxErrors) {
+      console.error('Too many canvas errors, disabling canvas');
+      this.disableCanvas();
+    } else {
+      // Try to recover
+      this.recover();
+    }
+  }
+  
+  recover() {
+    try {
+      // Reset context state
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.globalAlpha = 1;
+      this.ctx.globalCompositeOperation = 'source-over';
+      
+      // Clear canvas
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      
+      console.log('Canvas recovered from error');
+    } catch (error) {
+      console.error('Failed to recover canvas:', error);
+    }
+  }
+  
+  disableCanvas() {
+    this.canvas.style.display = 'none';
+    
+    const errorMessage = document.createElement('div');
+    errorMessage.textContent = 'Canvas disabled due to errors';
+    errorMessage.style.cssText = 'color: red; font-weight: bold;';
+    
+    this.canvas.parentNode.insertBefore(errorMessage, this.canvas);
+  }
+}
+
+// Usage example
+const canvas = document.getElementById('myCanvas');
+const debugger = new CanvasDebugger(canvas);
+const monitor = new CanvasPerformanceMonitor(canvas);
+const errorHandler = new CanvasErrorHandler(canvas);
+
+debugger.enableDebugMode();
+monitor.start();
+
+// Wrap canvas methods for error handling
+const originalFillRect = canvas.getContext('2d').fillRect;
+canvas.getContext('2d').fillRect = errorHandler.wrapMethod('fillRect', originalFillRect);`
+        },
+      ],
+    },
+  ],
+};
